@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-158021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22FD7AE56AB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43DA7AE55F9
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDAC54E0E01
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D441C7B1B01
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3196225792;
-	Mon, 23 Jun 2025 22:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C79D2222AF;
+	Mon, 23 Jun 2025 22:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ae6TPy7A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M7guSZB3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13CE223DE8;
-	Mon, 23 Jun 2025 22:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C4D717BD9;
+	Mon, 23 Jun 2025 22:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717289; cv=none; b=tb3e7fUnugR2hgQRAWy286fXclYbCYvM6ThpnBsiEuFdoUny6cy+ZvyVGeix7GjVdrCdUzW3T8wAHBaqrOZ/GF1fwWo8jPBOTtZM/BXJFRG3RMPTt0JcuO1Of/jFe7EUi4XFTOk6V1SJ6zptiDpTSWgnhQNV6OK7HWtXtlUCOXs=
+	t=1750716999; cv=none; b=bUktL9e5s0i0xsFMm7iDh37Q159vByVnQSZjEyaGyGAx1JjmqQ8KHhozaS1urLcosB1DqeK4mxxR8tM4EQKB/sJhOeSpb2YvFW0ipUWZmNyvPX5YpMPxXQkpx+s7LpC/3ZAhrNUpAEvAG3t9o4eeczOaWvuKYFBTjf+cwX29V1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717289; c=relaxed/simple;
-	bh=GxZ2Ai0PW7tmVWFpqWns4mcVM26JnKyTsz380sh3Q4A=;
+	s=arc-20240116; t=1750716999; c=relaxed/simple;
+	bh=G+Fz/e3vu1ZBCDcqrDdHWfeCYrXaLGQ+8Kh4YDmuqC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EqzODFvHzYwDBR4tFgu114bxLHAcvRtmwN+LOR3Xw3vTzu5zXJ4ENn8/8GCuv/TZBuPKtdGFD9vYsAHhll8ac4xfGP0k+Jgbo86pjVgxz69c/HnsC9XyURCTsg8CfP2xFwZ4V72zGXqG+6RgStkJ/SKFZE/FBnUUQQSWax4FqTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ae6TPy7A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0D9C4CEEA;
-	Mon, 23 Jun 2025 22:21:29 +0000 (UTC)
+	 MIME-Version; b=Vilq1ypSI5Pcck7D9hfnGoX2nE7Ql+9b5/Z40HMXvW9Zd/H4YMDlYz13Dn+Z8r7IVMy9Ql6dGJ7WbwyAOk/tOUhxusYiRGp/Udv05TRA/BtLgKLa1kQsRb6NxdYy5VyHQalKrsEvzjrUepGU26C6adTcry1hvc8e/93alVlJiLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M7guSZB3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB86AC4CEEA;
+	Mon, 23 Jun 2025 22:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717289;
-	bh=GxZ2Ai0PW7tmVWFpqWns4mcVM26JnKyTsz380sh3Q4A=;
+	s=korg; t=1750716999;
+	bh=G+Fz/e3vu1ZBCDcqrDdHWfeCYrXaLGQ+8Kh4YDmuqC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ae6TPy7AhCFM5C7zSXvbXbeXv/WpKRdpaASHfEAhzRMXLuy1iS28iM3Jf39mB1QqB
-	 2813Qle9vFKejLnDm3YhMisUoSkHnXh48UUTnVAYdugevpB+D6MQND9H7hotScymDB
-	 zadxQC2zsYK2mZVR709REFnL3hXgLO6OxUNYjmSE=
+	b=M7guSZB3+xnz9hrUmyrVlcgyb/MO5XvFWEaiZc6biOXDrYu0mKWWRwKylLVry4gHU
+	 Zk726whoDEq3Je2uLLV1pyukHqv5z35hWPPAEgZB+YtyXRnUb/YV/KkRdePvEueLow
+	 GnyjB/PoAR4dwdtycHRCwj/UeAnLRG4i/yq8MRgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Tipton <quic_mdtipton@quicinc.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 396/508] cpufreq: scmi: Skip SCMI devices that arent used by the CPUs
-Date: Mon, 23 Jun 2025 15:07:21 +0200
-Message-ID: <20250623130655.005975353@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.12 305/414] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
+Date: Mon, 23 Jun 2025 15:07:22 +0200
+Message-ID: <20250623130649.627643340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,94 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Tipton <quic_mdtipton@quicinc.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 6c9bb86922728c7a4cceb99f131e00dd87514f20 ]
+commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
 
-Currently, all SCMI devices with performance domains attempt to register
-a cpufreq driver, even if their performance domains aren't used to
-control the CPUs. The cpufreq framework only supports registering a
-single driver, so only the first device will succeed. And if that device
-isn't used for the CPUs, then cpufreq will scale the wrong domains.
+Fuzzing hit another invalid pointer dereference due to the lack of
+checking whether jffs2_prealloc_raw_node_refs() completed successfully.
+Subsequent logic implies that the node refs have been allocated.
 
-To avoid this, return early from scmi_cpufreq_probe() if the probing
-SCMI device isn't referenced by the CPU device phandles.
+Handle that. The code is ready for propagating the error upwards.
 
-This keeps the existing assumption that all CPUs are controlled by a
-single SCMI device.
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
+Call Trace:
+ jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
+ jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
+ jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
+ jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
+ generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
+ __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
+ generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
+ call_write_iter include/linux/fs.h:2039 [inline]
+ do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
+ do_iter_write+0x18c/0x710 fs/read_write.c:866
+ vfs_writev+0x1db/0x6a0 fs/read_write.c:939
+ do_pwritev fs/read_write.c:1036 [inline]
+ __do_sys_pwritev fs/read_write.c:1083 [inline]
+ __se_sys_pwritev fs/read_write.c:1078 [inline]
+ __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
 
-Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c | 36 +++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ fs/jffs2/erase.c |    4 +++-
+ fs/jffs2/scan.c  |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
-index e4989764efe2a..6ff77003a96ea 100644
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -299,6 +299,40 @@ static struct cpufreq_driver scmi_cpufreq_driver = {
- 	.register_em	= scmi_cpufreq_register_em,
- };
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(stru
+ 			.totlen =	cpu_to_je32(c->cleanmarker_size)
+ 		};
  
-+static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
-+{
-+	struct device_node *scmi_np = dev_of_node(scmi_dev);
-+	struct device_node *cpu_np, *np;
-+	struct device *cpu_dev;
-+	int cpu, idx;
-+
-+	if (!scmi_np)
-+		return false;
-+
-+	for_each_possible_cpu(cpu) {
-+		cpu_dev = get_cpu_device(cpu);
-+		if (!cpu_dev)
-+			continue;
-+
-+		cpu_np = dev_of_node(cpu_dev);
-+
-+		np = of_parse_phandle(cpu_np, "clocks", 0);
-+		of_node_put(np);
-+
-+		if (np == scmi_np)
-+			return true;
-+
-+		idx = of_property_match_string(cpu_np, "power-domain-names", "perf");
-+		np = of_parse_phandle(cpu_np, "power-domains", idx);
-+		of_node_put(np);
-+
-+		if (np == scmi_np)
-+			return true;
-+	}
-+
-+	return false;
-+}
-+
- static int scmi_cpufreq_probe(struct scmi_device *sdev)
- {
- 	int ret;
-@@ -307,7 +341,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+-		jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		if (ret)
++			goto filebad;
  
- 	handle = sdev->handle;
+ 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
  
--	if (!handle)
-+	if (!handle || !scmi_dev_used_by_cpus(dev))
- 		return -ENODEV;
+--- a/fs/jffs2/scan.c
++++ b/fs/jffs2/scan.c
+@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
  
- 	perf_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_PERF, &ph);
--- 
-2.39.5
-
+ 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
+ 			  __func__, skip);
+-		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		if (ret)
++			goto out;
+ 		jffs2_scan_dirty_space(c, c->nextblock, skip);
+ 	}
+ #endif
 
 
 
