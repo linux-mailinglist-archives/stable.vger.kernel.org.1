@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-156306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C68FEAE4F03
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59F8AAE4F0C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1FD1B6040F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CAE53ABA48
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEE31F582A;
-	Mon, 23 Jun 2025 21:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA0C22069F;
+	Mon, 23 Jun 2025 21:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmFwn44U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvpALvsA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D3B3FB1B;
-	Mon, 23 Jun 2025 21:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188591ACEDA;
+	Mon, 23 Jun 2025 21:11:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713091; cv=none; b=BhUwA09lfC3t1Q3MRFgXk8kc/3LAuyk6MUtw/LOeWxNSmtfzNGIBxlIYbOiazMIrqh61edqlK5M9Y5duYDi/A6bvwhmYTDnFfSR+othdZVrQFLVplvFaoZjnL9FVS3HoA0oHuLwiq3Bp/345ib7qsEzfxoOfsG59zhFkqvMJ20o=
+	t=1750713111; cv=none; b=nNH4/9GK2hF7FUY+YNu9TJTUGkP/A9b8tLTAF7acf8xc3Tdqzl9XsTvxaURFABGtYpFR31XBcQpmXjDC+2FZSyz2KJvRnPMPKSY5dRxqYf5bA8YJXHbdL2xevqSYnfceUbenTXo9iKWEwl03mljLArvKgJrt6884qu8Rhn7Eyoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713091; c=relaxed/simple;
-	bh=1UTF/S6aZpyj6xjMBN08aLda/FR+QfOdqBZ1ZdsOXXA=;
+	s=arc-20240116; t=1750713111; c=relaxed/simple;
+	bh=Nk5500ky838XpibLHOrhzdjmTvVDrPt3MazQ2N5dzaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OEEHvhBz/U2rfdV4l389dAv2tF4gWp9xnrbtlFxRlxDURGtVSp9EXERE0c/5b31s5e1TAU3lKhAU6tKnj2VGSvDOhiIei08/z2qRDec/A30qm1zX456Ydr9SReJDipFRAwzRplpjwGVka2RV1/wm+YKCyeJzFleaYoBqvOSicNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmFwn44U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ECDC4CEEA;
-	Mon, 23 Jun 2025 21:11:30 +0000 (UTC)
+	 MIME-Version; b=NmVcccl+RTAm7j1JkcPeKF17ntmOYAoEb7WL0fFPTsk00Bvmrzi0Q4uVzwKZ6ZG3amlgCJzsaZk5MhirYk+S+JB3W5Y/Wv/1qdxmEXhherTsgJAXGOPKAOIJXkRnPhsuhjZPHmaHVw1wWWtepzcwAPAPQRIibbf6qRfx1AT2jDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvpALvsA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32B7C4CEEA;
+	Mon, 23 Jun 2025 21:11:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713091;
-	bh=1UTF/S6aZpyj6xjMBN08aLda/FR+QfOdqBZ1ZdsOXXA=;
+	s=korg; t=1750713111;
+	bh=Nk5500ky838XpibLHOrhzdjmTvVDrPt3MazQ2N5dzaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YmFwn44Uf709tfE5dnMJPZ4Y0RSROfYFY8a0mXnsPwRWmWLw9GZUiGFSn0Tjys8s+
-	 qJGLeX7NvnElxPgTqPRF312n6ZVrzngAIJJmwyEgev6m4qarcNnhdP3YXxX52Gw5oU
-	 hw8nkhcVc3VM9DfWTQJZhsIUhriEz6GIPQ/eFf38=
+	b=fvpALvsAUcfthZ0dEBDewwLRmCBlqdGHJm7rp+FIjG+nZ2myxgpVqiku6sTxJOFkQ
+	 ya/qj3gG8mu53llbNo15p9LAd1x1FQjWiYTl1+8Y3sCN0o/gXJ8jOre94Tj23RvJ9a
+	 CR2giLdLWPkI6Y01aF8V2AoB9jL3sUg+Wy0WcNKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jack Morgenstein <jackm@nvidia.com>,
-	Feng Liu <feliu@nvidia.com>,
-	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>,
-	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com,
+	KaFai Wan <mannkafai@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/508] RDMA/cma: Fix hang when cma_netevent_callback fails to queue_work
-Date: Mon, 23 Jun 2025 15:02:22 +0200
-Message-ID: <20250623130647.655981666@linuxfoundation.org>
+Subject: [PATCH 6.1 098/508] bpf: Avoid __bpf_prog_ret0_warn when jit fails
+Date: Mon, 23 Jun 2025 15:02:23 +0200
+Message-ID: <20250623130647.682689238@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -71,50 +67,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jack Morgenstein <jackm@nvidia.com>
+From: KaFai Wan <mannkafai@gmail.com>
 
-[ Upstream commit 92a251c3df8ea1991cd9fe00f1ab0cfce18d7711 ]
+[ Upstream commit 86bc9c742426a16b52a10ef61f5b721aecca2344 ]
 
-The cited commit fixed a crash when cma_netevent_callback was called for
-a cma_id while work on that id from a previous call had not yet started.
-The work item was re-initialized in the second call, which corrupted the
-work item currently in the work queue.
+syzkaller reported an issue:
 
-However, it left a problem when queue_work fails (because the item is
-still pending in the work queue from a previous call). In this case,
-cma_id_put (which is called in the work handler) is therefore not
-called. This results in a userspace process hang (zombie process).
+WARNING: CPU: 3 PID: 217 at kernel/bpf/core.c:2357 __bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Modules linked in:
+CPU: 3 UID: 0 PID: 217 Comm: kworker/u32:6 Not tainted 6.15.0-rc4-syzkaller-00040-g8bac8898fe39
+RIP: 0010:__bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Call Trace:
+ <TASK>
+ bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
+ __bpf_prog_run include/linux/filter.h:718 [inline]
+ bpf_prog_run include/linux/filter.h:725 [inline]
+ cls_bpf_classify+0x74a/0x1110 net/sched/cls_bpf.c:105
+ ...
 
-Fix this by calling cma_id_put() if queue_work fails.
+When creating bpf program, 'fp->jit_requested' depends on bpf_jit_enable.
+This issue is triggered because of CONFIG_BPF_JIT_ALWAYS_ON is not set
+and bpf_jit_enable is set to 1, causing the arch to attempt JIT the prog,
+but jit failed due to FAULT_INJECTION. As a result, incorrectly
+treats the program as valid, when the program runs it calls
+`__bpf_prog_ret0_warn` and triggers the WARN_ON_ONCE(1).
 
-Fixes: 45f5dcdd0497 ("RDMA/cma: Fix workqueue crash in cma_netevent_work_handler")
-Link: https://patch.msgid.link/r/4f3640b501e48d0166f312a64fdadf72b059bd04.1747827103.git.leon@kernel.org
-Signed-off-by: Jack Morgenstein <jackm@nvidia.com>
-Signed-off-by: Feng Liu <feliu@nvidia.com>
-Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
-Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
-Reviewed-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reported-by: syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/6816e34e.a70a0220.254cdc.002c.GAE@google.com
+Fixes: fa9dd599b4da ("bpf: get rid of pure_initcall dependency to enable jits")
+Signed-off-by: KaFai Wan <mannkafai@gmail.com>
+Link: https://lore.kernel.org/r/20250526133358.2594176-1-mannkafai@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/bpf/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
-index bb3c361bd8d45..0b2cb31d0f999 100644
---- a/drivers/infiniband/core/cma.c
-+++ b/drivers/infiniband/core/cma.c
-@@ -5190,7 +5190,8 @@ static int cma_netevent_callback(struct notifier_block *self,
- 			   neigh->ha, ETH_ALEN))
- 			continue;
- 		cma_id_get(current_id);
--		queue_work(cma_wq, &current_id->id.net_work);
-+		if (!queue_work(cma_wq, &current_id->id.net_work))
-+			cma_id_put(current_id);
- 	}
- out:
- 	spin_unlock_irqrestore(&id_table_lock, flags);
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index c281f5b8705e1..2ed1d00bede0b 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -2209,7 +2209,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
+ 	/* In case of BPF to BPF calls, verifier did all the prep
+ 	 * work with regards to JITing, etc.
+ 	 */
+-	bool jit_needed = false;
++	bool jit_needed = fp->jit_requested;
+ 
+ 	if (fp->bpf_func)
+ 		goto finalize;
 -- 
 2.39.5
 
