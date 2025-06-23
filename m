@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BF35AE513D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5AAE506E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD4264A32AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18A9188A3E4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0AF1DDC04;
-	Mon, 23 Jun 2025 21:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267F51F4628;
+	Mon, 23 Jun 2025 21:24:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejapOw3s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdGSQDv4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B73AC2E0;
-	Mon, 23 Jun 2025 21:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B9E1E51FA;
+	Mon, 23 Jun 2025 21:24:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714326; cv=none; b=kqS2Pfx50aunktQI+j1V5kF9GA2bEUdPQDIYcgpz7+yqQKTJ9cwTx2mOzv1w6jfMSXMntcUiDA/LYREVxkhEX8OQ+qa1mHhQx3UE5YLimn6weFQvDPdlwZ7uC/SxHJcOSdXWTUDIzU88UyHe0AewHYfsrOZP1C280Gl2xHYnOos=
+	t=1750713871; cv=none; b=Taltqo4BVzqXL3ZJRZJUm3EZaT77sZE5zePCIC0w1JzqlwEGt00kJvkOqWto3vAtgwAyB2s4Ez2mKKP4hxOy1xF9FSaI9t4YZJBV2JmlB0sFb9EMCvUJpwOUuRGt0sp1LYS4jPxYgmTIEKWYVaJzzxAnqCECk06g9fQRGXK5pt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714326; c=relaxed/simple;
-	bh=t6nG/YLeJOoYcVxWwMKvEcxfjMiTT3ddKdCZHT4J1h8=;
+	s=arc-20240116; t=1750713871; c=relaxed/simple;
+	bh=EFIFhzGF5UamCc9ROWph60/lp2yTETaJx+rInjPj3Cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VT41sYQebm1Y2m48UqIv6ajBnW+Z7imehAOVdJg/KNYD8wAi56NVdGzLtBz+z7FBm7xZ9QRtbsImYxLtiNVNYjdM1yt4y3zT9C2oUe7m3QzUTQhmn+qMXveurS7twV/FIqJ2u9/7y6VivJFYzX0rRHXQQfHTf2zujSRj+lFsf8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejapOw3s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6B24C4CEEA;
-	Mon, 23 Jun 2025 21:32:05 +0000 (UTC)
+	 MIME-Version; b=bQzc9SXO3wg4ehLf9MBFk6gbpt+2yK3b8fotI7VnYBvggiVLWEJFQ0rb3kTBP2R+QQiRK8al9080RAeLGsVVEHZDDkT+VFWMY6lF+YjENOaKCojyNX2wy3d3fbiqD/W6YgNMP082rit4vmxL9xKxudStHDthRbELAgCclnjmD2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdGSQDv4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735E1C4CEEA;
+	Mon, 23 Jun 2025 21:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714326;
-	bh=t6nG/YLeJOoYcVxWwMKvEcxfjMiTT3ddKdCZHT4J1h8=;
+	s=korg; t=1750713871;
+	bh=EFIFhzGF5UamCc9ROWph60/lp2yTETaJx+rInjPj3Cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejapOw3sNxeK5Sa2RePKbD2dFtxqv2XszPEwRC0zLsYoNC8t2KTq7oBZ9vSwfV2TZ
-	 7j1DTMrmey5qN7vAEaGt94NmMLri0sMuQ7L9E8lbHOvURPZcq31DvnHZqGQGQ6O2Dd
-	 zErqMIjwU5dTDVBY7Zqa3aIIm+5/DH0gK1m8BjQY=
+	b=QdGSQDv41St8/voHPMPBkWu5ELDI+DsKrVMW9uZmr/LJ54Pzd2bcaxrtPHzzHUt5L
+	 EoHArdUDjTOfHhIGPpZ9HxTaKA75tkg9uwLs3LsjbCepwscXeKZF/HEvF5s2QbE6rF
+	 QiAmzI9i9ezYfVGtDBtbNf6/LLqKfBrdBpDlF+wU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 130/290] gpiolib: of: Add polarity quirk for s5m8767
-Date: Mon, 23 Jun 2025 15:06:31 +0200
-Message-ID: <20250623130630.833125740@linuxfoundation.org>
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 191/355] NFC: nci: uart: Set tty->disc_data only in success path
+Date: Mon, 23 Jun 2025 15:06:32 +0200
+Message-ID: <20250623130632.421372594@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 4e310626eb4df52a31a142c1360fead0fcbd3793 ]
+commit fc27ab48904ceb7e4792f0c400f1ef175edf16fe upstream.
 
-This is prepare patch for switching s5m8767 regulator driver to
-use GPIO descriptor. DTS for exynos5250 spring incorrectly specifies
-"active low" polarity for the DVS and DS line. But per datasheet,
-they are actually active high. So add polarity quirk for it.
+Setting tty->disc_data before opening the NCI device means we need to
+clean it up on error paths.  This also opens some short window if device
+starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
+(broken hardware?).  Close the window by exposing tty->disc_data only on
+the success path, when opening of the NCI device and try_module_get()
+succeeds.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250327004945.563765-1-peng.fan@oss.nxp.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The code differs in error path in one aspect: tty->disc_data won't be
+ever assigned thus NULL-ified.  This however should not be relevant
+difference, because of "tty->disc_data=NULL" in nci_uart_tty_open().
+
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://patch.msgid.link/20250618073649.25049-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-of.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/nfc/nci/uart.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index a0a2a0f75bba4..c1e83b2926ae4 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -203,6 +203,15 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
- 		 */
- 		{ "lantiq,pci-xway",	"gpio-reset",	false },
- #endif
-+#if IS_ENABLED(CONFIG_REGULATOR_S5M8767)
-+		/*
-+		 * According to S5M8767, the DVS and DS pin are
-+		 * active-high signals. However, exynos5250-spring.dts use
-+		 * active-low setting.
-+		 */
-+		{ "samsung,s5m8767-pmic", "s5m8767,pmic-buck-dvs-gpios", true },
-+		{ "samsung,s5m8767-pmic", "s5m8767,pmic-buck-ds-gpios", true },
-+#endif
- #if IS_ENABLED(CONFIG_TOUCHSCREEN_TSC2005)
- 		/*
- 		 * DTS for Nokia N900 incorrectly specified "active high"
--- 
-2.39.5
-
+--- a/net/nfc/nci/uart.c
++++ b/net/nfc/nci/uart.c
+@@ -131,22 +131,22 @@ static int nci_uart_set_driver(struct tt
+ 
+ 	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
+ 	nu->tty = tty;
+-	tty->disc_data = nu;
+ 	skb_queue_head_init(&nu->tx_q);
+ 	INIT_WORK(&nu->write_work, nci_uart_write_work);
+ 	spin_lock_init(&nu->rx_lock);
+ 
+ 	ret = nu->ops.open(nu);
+ 	if (ret) {
+-		tty->disc_data = NULL;
+ 		kfree(nu);
++		return ret;
+ 	} else if (!try_module_get(nu->owner)) {
+ 		nu->ops.close(nu);
+-		tty->disc_data = NULL;
+ 		kfree(nu);
+ 		return -ENOENT;
+ 	}
+-	return ret;
++	tty->disc_data = nu;
++
++	return 0;
+ }
+ 
+ /* ------ LDISC part ------ */
 
 
 
