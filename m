@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-155916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8342AE4438
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B93FAE443B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA547AC562
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:35:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2B1B7AC697
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:35:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFE3250BEC;
-	Mon, 23 Jun 2025 13:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD922522A8;
+	Mon, 23 Jun 2025 13:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeS6GDSV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSFX/XWD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE516419;
-	Mon, 23 Jun 2025 13:34:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF2602F24;
+	Mon, 23 Jun 2025 13:34:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685667; cv=none; b=KBayGZQpuaJ1TvHTObPAOKenl89Vl8UHnnaj+QT5vClj6rTZhTvzpmAZKigPdLSehgNUFPhq15BODi+183Oq2BCHorLW5GIlOCpkvdOhxVUQpCZi9XleU/lh+fDoQ6/2cWt9kczMebrnHPUfoTQed2dIH98qe+COgBmmYeRFXMA=
+	t=1750685683; cv=none; b=XZELBfYMfEP0GXJLanXzrl+TE8FGb5uJJ7ZhSX/cU8dhP6neY8K5vg9U9ZBxJa2x08M1ihs/cHXkY8vZOXepAb+je1kT5kcM3vk7Uh/OtdqRsW9Qgtc65E6FqOgR4WPCsfhOF544Ct7l+Ac4sSLNpWTNaV+ZYmkfzo/+7uqO3Vs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685667; c=relaxed/simple;
-	bh=+yg/0ADJaKy5JxcGf8XQTnj7Av01v962/PNil6/bxTo=;
+	s=arc-20240116; t=1750685683; c=relaxed/simple;
+	bh=0+QEK4PuI4K/QZTbdyHe83Mf4hf7EihLhGRjDZQnIZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfFTUHAmeKeRvKi6nbMgQsywgfvTM9EAGty+3bWoSN4e529wYY12yTMOfyYp6zViNKHcCAIEFbCliJMsLEEl/rj0JZddSmPkUV3Gpw8B1Ww9vMWKp/9XzOeGuv3dhGsCi/Coc6UsVEwtwJg7VBLoH/8zPR9qgfsF4jfml4lPawE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeS6GDSV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC37C4CEF0;
-	Mon, 23 Jun 2025 13:34:26 +0000 (UTC)
+	 MIME-Version; b=qMros4t+AUb4+0OJ5j+xI1lPTUjD5OOj5EFqjyqVbSwYQD/o5r7H7apPGgG19HigY8Th//uNymkt6RAVnZQBy43vQ1zrKMn1/XbtOiL0blb68dl47ipcKKdtnvXzsjCKgNPx+pP5Iva30/l4oqR36KQZrFM3zBpUjbhHBgxIHAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSFX/XWD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2B3C4CEEA;
+	Mon, 23 Jun 2025 13:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685666;
-	bh=+yg/0ADJaKy5JxcGf8XQTnj7Av01v962/PNil6/bxTo=;
+	s=korg; t=1750685682;
+	bh=0+QEK4PuI4K/QZTbdyHe83Mf4hf7EihLhGRjDZQnIZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PeS6GDSVpLAVMwWpUnkG8eGRqx3I9m2Qj6+C2MHJ+W2GtEn+okvLi3t3MRqVRvsBB
-	 51reCNsoBHnPelaV0iy2QNt59Gfl3a88arbll/sd8k9+KtbzEHyySZ1PzalPSTfEW1
-	 Eg/Z5L+VHLFaHurQT3GYVdhh/DnI7JmacM5xONzc=
+	b=nSFX/XWDdwvovYdXnG1Ymo0BvSd/PdbRwN2SqWmXOVfAvnMJ0fbXdjcueUxobguPf
+	 zlCdk9aPqJ53oECNX2wtTVeJ/5TaBOkXGzzfeeJAnNMuuX4G3Uqt7UNzULfnPD1wJQ
+	 Tc89LCpo04FWTf1CbYIoi1/Mjw7IgEEyzeJTOwIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 5.4 111/222] bus: fsl-mc: do not add a device-link for the UAPI used DPMCP device
-Date: Mon, 23 Jun 2025 15:07:26 +0200
-Message-ID: <20250623130615.445753928@linuxfoundation.org>
+	syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	Jan Kara <jack@suse.cz>,
+	Andreas Dilger <adilger@dilger.ca>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.4 112/222] ext4: inline: fix len overflow in ext4_prepare_inline_data
+Date: Mon, 23 Jun 2025 15:07:27 +0200
+Message-ID: <20250623130615.474107498@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,61 +68,122 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit dd7d8e012b23de158ca0188239c7a1f2a83b4484 upstream.
+commit 227cb4ca5a6502164f850d22aec3104d7888b270 upstream.
 
-The fsl-mc bus associated to the root DPRC in a DPAA2 system exports a
-device file for userspace access to the MC firmware. In case the DPRC's
-local MC portal (DPMCP) is currently in use, a new DPMCP device is
-allocated through the fsl_mc_portal_allocate() function.
+When running the following code on an ext4 filesystem with inline_data
+feature enabled, it will lead to the bug below.
 
-In this case, the call to fsl_mc_portal_allocate() will fail with -EINVAL
-when trying to add a device link between the root DPRC (consumer) and
-the newly allocated DPMCP device (supplier). This is because the DPMCP
-is a dependent of the DPRC device (the bus).
+        fd = open("file1", O_RDWR | O_CREAT | O_TRUNC, 0666);
+        ftruncate(fd, 30);
+        pwrite(fd, "a", 1, (1UL << 40) + 5UL);
 
-Fix this by not adding a device link in case the DPMCP is allocated for
-the root DPRC's usage.
+That happens because write_begin will succeed as when
+ext4_generic_write_inline_data calls ext4_prepare_inline_data, pos + len
+will be truncated, leading to ext4_prepare_inline_data parameter to be 6
+instead of 0x10000000006.
 
-Fixes: afb77422819f ("bus: fsl-mc: automatically add a device_link on fsl_mc_[portal,object]_allocate")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Then, later when write_end is called, we hit:
+
+        BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
+
+at ext4_write_inline_data.
+
+Fix it by using a loff_t type for the len parameter in
+ext4_prepare_inline_data instead of an unsigned int.
+
+[   44.545164] ------------[ cut here ]------------
+[   44.545530] kernel BUG at fs/ext4/inline.c:240!
+[   44.545834] Oops: invalid opcode: 0000 [#1] SMP NOPTI
+[   44.546172] CPU: 3 UID: 0 PID: 343 Comm: test Not tainted 6.15.0-rc2-00003-g9080916f4863 #45 PREEMPT(full)  112853fcebfdb93254270a7959841d2c6aa2c8bb
+[   44.546523] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+[   44.546523] RIP: 0010:ext4_write_inline_data+0xfe/0x100
+[   44.546523] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e 41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 49
+[   44.546523] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
+[   44.546523] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: 0000010000000006
+[   44.546523] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: ffff9329c158e738
+[   44.546523] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+[   44.546523] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: 0000006210000000
+[   44.546523] R13: fffffc7e4015e700 R14: 0000010000000005 R15: ffff9329c158e738
+[   44.546523] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) knlGS:0000000000000000
+[   44.546523] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   44.546523] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: 0000000000770eb0
+[   44.546523] PKRU: 55555554
+[   44.546523] Call Trace:
+[   44.546523]  <TASK>
+[   44.546523]  ext4_write_inline_data_end+0x126/0x2d0
+[   44.546523]  generic_perform_write+0x17e/0x270
+[   44.546523]  ext4_buffered_write_iter+0xc8/0x170
+[   44.546523]  vfs_write+0x2be/0x3e0
+[   44.546523]  __x64_sys_pwrite64+0x6d/0xc0
+[   44.546523]  do_syscall_64+0x6a/0xf0
+[   44.546523]  ? __wake_up+0x89/0xb0
+[   44.546523]  ? xas_find+0x72/0x1c0
+[   44.546523]  ? next_uptodate_folio+0x317/0x330
+[   44.546523]  ? set_pte_range+0x1a6/0x270
+[   44.546523]  ? filemap_map_pages+0x6ee/0x840
+[   44.546523]  ? ext4_setattr+0x2fa/0x750
+[   44.546523]  ? do_pte_missing+0x128/0xf70
+[   44.546523]  ? security_inode_post_setattr+0x3e/0xd0
+[   44.546523]  ? ___pte_offset_map+0x19/0x100
+[   44.546523]  ? handle_mm_fault+0x721/0xa10
+[   44.546523]  ? do_user_addr_fault+0x197/0x730
+[   44.546523]  ? do_syscall_64+0x76/0xf0
+[   44.546523]  ? arch_exit_to_user_mode_prepare+0x1e/0x60
+[   44.546523]  ? irqentry_exit_to_user_mode+0x79/0x90
+[   44.546523]  entry_SYSCALL_64_after_hwframe+0x55/0x5d
+[   44.546523] RIP: 0033:0x7f42999c6687
+[   44.546523] Code: 48 89 fa 4c 89 df e8 58 b3 00 00 8b 93 08 03 00 00 59 5e 48 83 f8 fc 74 1a 5b c3 0f 1f 84 00 00 00 00 00 48 8b 44 24 10 0f 05 <5b> c3 0f 1f 80 00 00 00 00 83 e2 39 83 fa 08 75 de e8 23 ff ff ff
+[   44.546523] RSP: 002b:00007ffeae4a7930 EFLAGS: 00000202 ORIG_RAX: 0000000000000012
+[   44.546523] RAX: ffffffffffffffda RBX: 00007f4299934740 RCX: 00007f42999c6687
+[   44.546523] RDX: 0000000000000001 RSI: 000055ea6149200f RDI: 0000000000000003
+[   44.546523] RBP: 00007ffeae4a79a0 R08: 0000000000000000 R09: 0000000000000000
+[   44.546523] R10: 0000010000000005 R11: 0000000000000202 R12: 0000000000000000
+[   44.546523] R13: 00007ffeae4a7ac8 R14: 00007f4299b86000 R15: 000055ea61493dd8
+[   44.546523]  </TASK>
+[   44.546523] Modules linked in:
+[   44.568501] ---[ end trace 0000000000000000 ]---
+[   44.568889] RIP: 0010:ext4_write_inline_data+0xfe/0x100
+[   44.569328] Code: 3c 0e 48 83 c7 48 48 89 de 5b 41 5c 41 5d 41 5e 41 5f 5d e9 e4 fa 43 01 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc 0f 0b <0f> 0b 0f 1f 44 00 00 55 41 57 41 56 41 55 41 54 53 48 83 ec 20 49
+[   44.570931] RSP: 0018:ffffb342008b79a8 EFLAGS: 00010216
+[   44.571356] RAX: 0000000000000001 RBX: ffff9329c579c000 RCX: 0000010000000006
+[   44.571959] RDX: 000000000000003c RSI: ffffb342008b79f0 RDI: ffff9329c158e738
+[   44.572571] RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000000
+[   44.573148] R10: 00007ffffffff000 R11: ffffffff9bd0d910 R12: 0000006210000000
+[   44.573748] R13: fffffc7e4015e700 R14: 0000010000000005 R15: ffff9329c158e738
+[   44.574335] FS:  00007f4299934740(0000) GS:ffff932a60179000(0000) knlGS:0000000000000000
+[   44.575027] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[   44.575520] CR2: 00007f4299a1ec90 CR3: 0000000002886002 CR4: 0000000000770eb0
+[   44.576112] PKRU: 55555554
+[   44.576338] Kernel panic - not syncing: Fatal exception
+[   44.576517] Kernel Offset: 0x1a600000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+
+Reported-by: syzbot+fe2a25dae02a207717a0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fe2a25dae02a207717a0
+Fixes: f19d5870cbf7 ("ext4: add normal write support for inline data")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250408105814.2837951-3-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Andreas Dilger <adilger@dilger.ca>
+Link: https://patch.msgid.link/20250415-ext4-prepare-inline-overflow-v1-1-f4c13d900967@igalia.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/fsl-mc/mc-io.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ fs/ext4/inline.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/fsl-mc/mc-io.c
-+++ b/drivers/bus/fsl-mc/mc-io.c
-@@ -214,12 +214,19 @@ int __must_check fsl_mc_portal_allocate(
- 	if (error < 0)
- 		goto error_cleanup_resource;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -389,7 +389,7 @@ out:
+ }
  
--	dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
--						   &dpmcp_dev->dev,
--						   DL_FLAG_AUTOREMOVE_CONSUMER);
--	if (!dpmcp_dev->consumer_link) {
--		error = -EINVAL;
--		goto error_cleanup_mc_io;
-+	/* If the DPRC device itself tries to allocate a portal (usually for
-+	 * UAPI interaction), don't add a device link between them since the
-+	 * DPMCP device is an actual child device of the DPRC and a reverse
-+	 * dependency is not allowed.
-+	 */
-+	if (mc_dev != mc_bus_dev) {
-+		dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
-+							   &dpmcp_dev->dev,
-+							   DL_FLAG_AUTOREMOVE_CONSUMER);
-+		if (!dpmcp_dev->consumer_link) {
-+			error = -EINVAL;
-+			goto error_cleanup_mc_io;
-+		}
- 	}
- 
- 	*new_mc_io = mc_io;
+ static int ext4_prepare_inline_data(handle_t *handle, struct inode *inode,
+-				    unsigned int len)
++				    loff_t len)
+ {
+ 	int ret, size, no_expand;
+ 	struct ext4_inode_info *ei = EXT4_I(inode);
 
 
 
