@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC8EDAE4F4E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D891BAE51C6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8966217E492
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABDD31B63DF1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A3D22069F;
-	Mon, 23 Jun 2025 21:14:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CAD221FD2;
+	Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wlz53oHJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQGtj/dM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE981DF98B;
-	Mon, 23 Jun 2025 21:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906A74409;
+	Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713272; cv=none; b=PV5Fwg7Of5fYq6IHsv1ooc7Wuv/uM7JfDw87Q5AQWvkhDxFBpTsu2b14YRNUoQ9itZQHoY39ON4HgyZi+xnH2ew9m2OTVSnQdMwXwoi/f86e1cuoNltk3QCEBmQWsZxet7gYDxpdwOfcwD6Aox0Bq7upVjZ/HncI1BTg62Zr8h4=
+	t=1750714642; cv=none; b=KzikdpQZ3+TwjKuM9XBMciJMp0D58hxjnTM6LkmybRHL00BdUkg6BqTnNTfyVbZoUjKVnC9JR7erPCQ2Sao2/IAK3475NCw1xtAjmHv00eaoHZp2xW6m5rjfVh0L1GguyrAZbr+RnX9F/I2KXsM39tVy7P8w66DKmQVSJjEHM4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713272; c=relaxed/simple;
-	bh=vgsja0pqPyTp0x0s0/cSlezVo6Nbd23SNWs3O1hAzPM=;
+	s=arc-20240116; t=1750714642; c=relaxed/simple;
+	bh=HSAm9CTSf98U14MejWTeEmePrpTBIspyq7ae0ZUVyAg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d7cXXhyghx+FsD6EF/1aKb4xq1hg/bL6/KGX//5MTiLiI5p/NpaPz9Yx1YHsFPrqx0ZkDOohlRDMUdxts9MNaE3bqIW2v/ZzWSd/9+u4lHPVThcY0/+cokQ4n8dKZDC0BYvYKMcND9V4LNw9n2GDqtmOVwtOp9MNJf9iWOCT+p4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wlz53oHJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5535FC4CEEA;
-	Mon, 23 Jun 2025 21:14:32 +0000 (UTC)
+	 MIME-Version; b=ryEnKrdZ2PVYlLsLZJT/ZxCD65IoWWP8zrGY8Ph4TEqH8RFw5VHzVGPJeK1NYD9dP7sv5YtY4af4M8zM+JOP/yirOsEKl88Rm7zAr8PzAeMqXUR642yLX1p8nF23nKOEARKwFAxdpTGtHo2OGNlZpOVjX947PItXquD7WtbX1+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQGtj/dM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29617C4CEEA;
+	Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713272;
-	bh=vgsja0pqPyTp0x0s0/cSlezVo6Nbd23SNWs3O1hAzPM=;
+	s=korg; t=1750714642;
+	bh=HSAm9CTSf98U14MejWTeEmePrpTBIspyq7ae0ZUVyAg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wlz53oHJyZtK5PF14zRfyci7lrlQ+/TodXyQnsh2fQ6QCubWMyO7jIPMS7Tl8GrU8
-	 pVkUJ7oa8rSjyntScalmHXX3PtKp3Y6zNCOF9OnLF0xDHYahU9nA48q21HiutteKmn
-	 vRTAMz7C4h50rr6x+Whsyry9jPnsiw6aR0RrxcP0=
+	b=oQGtj/dM4fhVuqjd1zXELjRJeAzdt3bnobU6qgiWXMnkSCtluihZeYrkjotKYttxP
+	 muU85FUSOmKwsklia5PCVcwjGWrNd/lw0z9Y6TeCJsIRiJ6yTqLZeA3zuUflKUd0ID
+	 b3s3tyRdv5GnCdojfghauQhkLjuIAK5DsakSwgKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
-	Charalampos Mitrodimas <charmitro@posteo.net>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 114/411] net: tipc: fix refcount warning in tipc_aead_encrypt
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.12 121/414] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
 Date: Mon, 23 Jun 2025 15:04:18 +0200
-Message-ID: <20250623130636.402005532@linuxfoundation.org>
+Message-ID: <20250623130645.095617339@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charalampos Mitrodimas <charmitro@posteo.net>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
+commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
 
-syzbot reported a refcount warning [1] caused by calling get_net() on
-a network namespace that is being destroyed (refcount=0). This happens
-when a TIPC discovery timer fires during network namespace cleanup.
+The function sunxi_nfc_hw_ecc_write_chunk() calls the
+sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
+function sunxi_nfc_randomizer_config(). Consequently, the randomization
+might not conduct correctly, which will affect the lifespan of NAND flash.
+A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
 
-The recently added get_net() call in commit e279024617134 ("net/tipc:
-fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
-hold a reference to the network namespace. However, if the namespace
-is already being destroyed, its refcount might be zero, leading to the
-use-after-free warning.
+Add the sunxi_nfc_randomizer_config() to config randomizer.
 
-Replace get_net() with maybe_get_net(), which safely checks if the
-refcount is non-zero before incrementing it. If the namespace is being
-destroyed, return -ENODEV early, after releasing the bearer reference.
-
-[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-
-Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
-Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
-Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+Cc: stable@vger.kernel.org # v4.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/tipc/crypto.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/sunxi_nand.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
-index 35e0ffa1bd84b..07f35c48bd3a2 100644
---- a/net/tipc/crypto.c
-+++ b/net/tipc/crypto.c
-@@ -829,7 +829,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
- 	}
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1049,6 +1049,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
+ 	if (ret)
+ 		return ret;
  
- 	/* Get net to avoid freed tipc_crypto when delete namespace */
--	get_net(aead->crypto->net);
-+	if (!maybe_get_net(aead->crypto->net)) {
-+		tipc_bearer_put(b);
-+		rc = -ENODEV;
-+		goto exit;
-+	}
++	sunxi_nfc_randomizer_config(nand, page, false);
+ 	sunxi_nfc_randomizer_enable(nand);
+ 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
  
- 	/* Now, do encrypt */
- 	rc = crypto_aead_encrypt(req);
--- 
-2.39.5
-
 
 
 
