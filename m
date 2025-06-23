@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38824AE50E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9BCEAE4F91
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 463417A26F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8A481B6118D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC45121FF50;
-	Mon, 23 Jun 2025 21:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2111B2236E9;
+	Mon, 23 Jun 2025 21:16:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrZTnISZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZAFXVtH1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA791EFFA6;
-	Mon, 23 Jun 2025 21:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0B761FE46D;
+	Mon, 23 Jun 2025 21:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714118; cv=none; b=MpDI9snPaWTGBrM9PAu2dF+cyzfGYPOh7P2ocoU1R25yc2MA6KlfwG8IAFPEjCvyt7XoacBuSb7FpfKbmfREVaxt4tylFUJj64TlVjKkJujQ9V05r6NK2sY3PHkdhlYTtgVsUc7PbT/zU32EYQs0uJjqGJxNfv4pu9scGjMFGIE=
+	t=1750713399; cv=none; b=SMXK9Ez5uoc/XpJ2N+5JfQb5hwsCQk0SrDLr4dMWt8y+NhjywHy+8XrLcuaQrA3ZHIVheIIXdEeEfCVmHJoCUOkyRhY11T5Fdo0NQ3Tuq1pfgKHKKFaOKuBWISN9KGMS1FH8wJWiJD+QNHEBe+HKULD3vFAXtfKg3PARFTn0WEs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714118; c=relaxed/simple;
-	bh=H7XXFwIe+XDDvkPGjRlhjTxa/wnc93V6pxlRqBwOIiY=;
+	s=arc-20240116; t=1750713399; c=relaxed/simple;
+	bh=aS0X4SJaG4DLGiC2IfCHk7GURUlU2tApPlsc0teruW0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dbZNPWp9Jt0BKVkuLHclEjySg3y2tinpp/JVwsWIpt7Ngzs/a1MZ8R1HqzDFhKtwknCjZQ4trVicCqtcxtbcpgc5PUyl3DeaIjBWzvnR4NOHeTaXivp6UE57VJlc4wCjiui45X2DnrwWpZ5iprnYbu8mZui/VtmBIkeI/gITnQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrZTnISZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20AFAC4CEEA;
-	Mon, 23 Jun 2025 21:28:37 +0000 (UTC)
+	 MIME-Version; b=D6UeX370xY2zCRuDlrhW/+L7+1kNydk6Qq/7IyRBWckvoIhH9LO8a0jUy3K8MCHc0rVb/afda+EcEzXgAYal5x+5qQ/Yk8G1qAXnDHkgnzRHsgzK3Zf8UQ6XbN/xGTnhhYH7Nc/oS3mtw1pT2LXvxSMQTQ7hAELjbGbb0WBpNUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZAFXVtH1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D6DC4CEEA;
+	Mon, 23 Jun 2025 21:16:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714118;
-	bh=H7XXFwIe+XDDvkPGjRlhjTxa/wnc93V6pxlRqBwOIiY=;
+	s=korg; t=1750713399;
+	bh=aS0X4SJaG4DLGiC2IfCHk7GURUlU2tApPlsc0teruW0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yrZTnISZvEgfktz4PccwqwRV+y+/cxrBJ6A7cxhdSBhS04OB+ZYPx5Vm7r9XTg6O5
-	 lDPN8Ih0ksj3PKxOrLZsQ2V03gPYP5DBTo9rdRVi63HMOmSopOly0JTlhXLAbuXlwx
-	 k1Twdc/BMB22hRrDmBjnfbWoKXudtlSKFbwIn7jQ=
+	b=ZAFXVtH16ZJDcFv2qzGzWMm+R9LIZvjEsGMRG0vpnTPyc5KJmGiTpUwVav9WMYzAc
+	 eCRt4WgXro4LbsSj2FFQBmjYekMtBn2PLm1eLlecZVwbO6orNyXw6L64U/tKYTuBgR
+	 MQgbkH2gk/A5N38LVg5vZJ1NUTbF8IT7Vr5rNdSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 391/592] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
+	Chao Gao <chao.gao@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 088/290] KVM: VMX: Flush shadow VMCS on emergency reboot
 Date: Mon, 23 Jun 2025 15:05:49 +0200
-Message-ID: <20250623130709.744770786@linuxfoundation.org>
+Message-ID: <20250623130629.626637301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+From: Chao Gao <chao.gao@intel.com>
 
-[ Upstream commit 2b801487ac3be7bec561ae62d1a6c4d6f5283f8c ]
+commit a0ee1d5faff135e28810f29e0f06328c66f89852 upstream.
 
-The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
+Ensure the shadow VMCS cache is evicted during an emergency reboot to
+prevent potential memory corruption if the cache is evicted after reboot.
 
-Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
-Link: https://patch.msgid.link/20240313180227.2224780-1-victor.gonzalo@anddroptable.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This issue was identified through code inspection, as __loaded_vmcs_clear()
+flushes both the normal VMCS and the shadow VMCS.
+
+Avoid checking the "launched" state during an emergency reboot, unlike the
+behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
+can interfere with operations like copy_shadow_to_vmcs12(), where shadow
+VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
+right after the VMCS load, the shadow VMCSes will be active but the
+"launched" state may not be set.
+
+Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kvm/vmx/vmx.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 130b9a8aa7ebe..67ee3b6e6d85c 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -44,6 +44,8 @@
- 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
- 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
-+#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
-+	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_CC_A_MODULE_FIRMWARE(api)			\
- 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -787,8 +787,11 @@ static void vmx_emergency_disable(void)
+ 		return;
  
-@@ -422,6 +424,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
--- 
-2.39.5
-
+ 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
+-			    loaded_vmcss_on_cpu_link)
++			    loaded_vmcss_on_cpu_link) {
+ 		vmcs_clear(v->vmcs);
++		if (v->shadow_vmcs)
++			vmcs_clear(v->shadow_vmcs);
++	}
+ 
+ 	kvm_cpu_vmxoff();
+ }
 
 
 
