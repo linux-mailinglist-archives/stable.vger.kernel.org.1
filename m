@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-158090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E060EAE56E9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1C76AE5602
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683A71C20577
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 835D57B1DC6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F1622370A;
-	Mon, 23 Jun 2025 22:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06BFC224B01;
+	Mon, 23 Jun 2025 22:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2Oaii6w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mk+VZAIP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B32192EC;
-	Mon, 23 Jun 2025 22:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88FB222576;
+	Mon, 23 Jun 2025 22:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717458; cv=none; b=Nqup+MeeiwxBSK82dTeJw4O3j7T/aqFyh5Rj6STnM4tpLndEZfhRw4xr+D/WIfpJai99gtsXHqk+gizU7XeqBVRwH56opNuhZk41SrunYE6r597/NsNz75n2WS83U4PdfVy5gIoFykF2ImD4lNPe3kKB36dyPbGuVW7Sz7tUt3I=
+	t=1750717018; cv=none; b=j+qx5o8nHZTwa4v3sr6SFKtpq2y/ghwr1advpU+RHnQVkNOD1/erXGnAkVe/dHHIy0KrPfsPizYrbmvsn6oX2XivhlgOLTSZo/d+rMozpQDR/hwulqFJvWq9ZiT1YG3zuj7aNKLu5CehP66SXWXzZTFLV3jlPVVs/TXqxQr0s5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717458; c=relaxed/simple;
-	bh=eXyCLuWJo6ITotZYHEZihRxduPcwhUdV83NG/Blju5E=;
+	s=arc-20240116; t=1750717018; c=relaxed/simple;
+	bh=MTVPJT0+VJqmWmMP+/GtIc7KrM530QkAj9K9QZ3G4ZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWsEHOUc1TSZ5iyGpPrn0KSfcRQ7/WT6tgB+E8gpGdnfvDF/BLtdSSmG1sCi46BpB4VPtdElGAezX5KEGfbsTJ76s6qm0lwEIClsCFuEnnjSsE/rziu8AV/rYHAS6X5+nX5XZBMPWcxi2v207E4e/CRkdYb8PqxyWfYX2MS2tgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2Oaii6w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC8AC4CEEA;
-	Mon, 23 Jun 2025 22:24:17 +0000 (UTC)
+	 MIME-Version; b=lS85rB1ilv92DMhDXtcCG/XWdUsS5vYa4Fe3nuRMVukyu6Qoqnvm6IY6u3ViT8c1G6lLIkXimGQ/YD9mwGeW5l+DT+3318Ko5JgGTWQavsEntlS9AikPbBks5MGEmxLxFMVdnijED9YnmQ4NbeH2tbKf+618ryFVLH51fr8EafA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mk+VZAIP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 516F1C4CEEA;
+	Mon, 23 Jun 2025 22:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717458;
-	bh=eXyCLuWJo6ITotZYHEZihRxduPcwhUdV83NG/Blju5E=;
+	s=korg; t=1750717018;
+	bh=MTVPJT0+VJqmWmMP+/GtIc7KrM530QkAj9K9QZ3G4ZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G2Oaii6wtn2NUuo3tQiXwxVc4fgjSwOzOHQh7MQnQyIiMNy30pJ258tZ3lm55nwbX
-	 RshBApsVN8YNU12E94HlzY9yQd1bxzJ6DZ4Trpyh8PB84b9A5UfcSrrrMG/nRXRLc8
-	 3Y8lBEqe0VNFri9flY21PysB+SsGq+aP1dd5yrLc=
+	b=mk+VZAIPiEc/0wdsjuAdkcaMVII8oE602WUjWJ8Q++wiWtXGhYY0r0Aa5sEOgF1Ku
+	 7WW70MS8gsbJi4oLJM3Rg6SK+9PrPVuMXInZM7UbhGDY2FO882UdDOqNqcNo+/hm0z
+	 MYQ8vHvnVIAYhwu3gpSOfFeD38eEPAcHkJSKEztk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tali Perry <tali.perry1@gmail.com>,
-	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 398/508] i2c: npcm: Add clock toggle recovery
-Date: Mon, 23 Jun 2025 15:07:23 +0200
-Message-ID: <20250623130655.049185106@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 307/414] cifs: serialize other channels when query server interfaces is pending
+Date: Mon, 23 Jun 2025 15:07:24 +0200
+Message-ID: <20250623130649.677746967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tali Perry <tali.perry1@gmail.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
+commit b5e3e6e28cf3853566ba5d816f79aba5be579158 upstream.
 
-During init of the bus, the module checks that the bus is idle.
-If one of the lines are stuck try to recover them first before failing.
-Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
+Today, during smb2_reconnect, session_mutex is released as soon as
+the tcon is reconnected and is in a good state. However, in case
+multichannel is enabled, there is also a query of server interfaces that
+follows. We've seen that this query can race with reconnects of other
+channels, causing them to step on each other with reconnects.
 
-Signed-off-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
-Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change extends the hold of session_mutex till after the query of
+server interfaces is complete. In order to avoid recursive smb2_reconnect
+checks during query ioctl, this change also introduces a session flag
+for sessions where such a query is in progress.
+
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/smb/client/cifsglob.h |    1 +
+ fs/smb/client/smb2pdu.c  |   24 ++++++++++++++++++------
+ 2 files changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index 0947e3d155c56..828234d1ee477 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -1973,10 +1973,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
+--- a/fs/smb/client/cifsglob.h
++++ b/fs/smb/client/cifsglob.h
+@@ -1058,6 +1058,7 @@ struct cifs_chan {
+ };
  
- 	/* Check HW is OK: SDA and SCL should be high at this point. */
- 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
--		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
--		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
--			npcm_i2c_get_SCL(&bus->adap));
--		return -ENXIO;
-+		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
-+				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
-+		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
-+			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
-+				bus->num, npcm_i2c_get_SDA(&bus->adap),
-+				npcm_i2c_get_SCL(&bus->adap));
-+			return -ENXIO;
-+		}
- 	}
+ #define CIFS_SES_FLAG_SCALE_CHANNELS (0x1)
++#define CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES (0x2)
  
- 	npcm_i2c_int_enable(bus, true);
--- 
-2.39.5
-
+ /*
+  * Session structure.  One of these for each uid session with a particular host
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -428,14 +428,19 @@ skip_sess_setup:
+ 	if (!rc &&
+ 	    (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL) &&
+ 	    server->ops->query_server_interfaces) {
+-		mutex_unlock(&ses->session_mutex);
+-
+ 		/*
+-		 * query server network interfaces, in case they change
++		 * query server network interfaces, in case they change.
++		 * Also mark the session as pending this update while the query
++		 * is in progress. This will be used to avoid calling
++		 * smb2_reconnect recursively.
+ 		 */
++		ses->flags |= CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
+ 		xid = get_xid();
+ 		rc = server->ops->query_server_interfaces(xid, tcon, false);
+ 		free_xid(xid);
++		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
++
++		mutex_unlock(&ses->session_mutex);
+ 
+ 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
+ 			/*
+@@ -577,11 +582,18 @@ static int smb2_ioctl_req_init(u32 opcod
+ 			       struct TCP_Server_Info *server,
+ 			       void **request_buf, unsigned int *total_len)
+ {
+-	/* Skip reconnect only for FSCTL_VALIDATE_NEGOTIATE_INFO IOCTLs */
+-	if (opcode == FSCTL_VALIDATE_NEGOTIATE_INFO) {
++	/*
++	 * Skip reconnect in one of the following cases:
++	 * 1. For FSCTL_VALIDATE_NEGOTIATE_INFO IOCTLs
++	 * 2. For FSCTL_QUERY_NETWORK_INTERFACE_INFO IOCTL when called from
++	 * smb2_reconnect (indicated by CIFS_SES_FLAG_SCALE_CHANNELS ses flag)
++	 */
++	if (opcode == FSCTL_VALIDATE_NEGOTIATE_INFO ||
++	    (opcode == FSCTL_QUERY_NETWORK_INTERFACE_INFO &&
++	     (tcon->ses->flags & CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES)))
+ 		return __smb2_plain_req_init(SMB2_IOCTL, tcon, server,
+ 					     request_buf, total_len);
+-	}
++
+ 	return smb2_plain_req_init(SMB2_IOCTL, tcon, server,
+ 				   request_buf, total_len);
+ }
 
 
 
