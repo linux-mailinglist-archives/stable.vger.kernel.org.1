@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20A7DAE5412
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECF67AE4EBE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F01494448F5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9B8F17C92A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FEB2236E5;
-	Mon, 23 Jun 2025 21:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 326FA22156B;
+	Mon, 23 Jun 2025 21:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMf9UU0H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0u7C+Z2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4175070838;
-	Mon, 23 Jun 2025 21:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EFF21CA07;
+	Mon, 23 Jun 2025 21:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715922; cv=none; b=PGDroJPvWrrD12KrhArbqbf4FLuVDBYeEf+0CckJBmxJxkP4w8ocSDGnubhZbzFzgkJoxqhGIRK/EV8oo22ksf8d6m4u5Gfw99H95fxvwX1xeufqYvBtAEcG1/j9MZP4huV15/drQH5mT/UzZ82N4FY+gn1szVF+jlvgppLKwQA=
+	t=1750712918; cv=none; b=W47MCacRAYKYQsTr67Vftos4TiC81BsIuoBUXs+JsIvDUJEfuOQKXAyHX0k1Hd8sw7cZqYkVchm9LaVPs/ZDWUcvWfey+Xo+OtzMDjgZyJE4tqCE1c1kNlULdIBdEQWL8Jtnp8i3Sp2oWrb5R0KcHxGjeFb00yxzNwYWLAe/lfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715922; c=relaxed/simple;
-	bh=/PCe7GJZoY/tZD99C3UmS3qOTQpPpNkmJzq+7+W1Rf0=;
+	s=arc-20240116; t=1750712918; c=relaxed/simple;
+	bh=F8p8XlXHhlgg9AxD0m9kMSWOGS+yP6cyz6s4i2rWkSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A/i62pv04DMEQ74LZZsD4iqyVpjK2ikADgP3EVAsqIqvD9W2QokUuuEwyBouum2ANkdFV9+Wfx1bKPuVMyrE9EvE/JnK+hAcgf+at5aFzudc0KVxv7wobmsOpC+WIW42d8NKHDsv8LM6l61VqqIYAIoBfWkhdc/ixzIa9x5zNt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMf9UU0H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC3A5C4CEEA;
-	Mon, 23 Jun 2025 21:58:41 +0000 (UTC)
+	 MIME-Version; b=CxK9CizTXKyVPgA5Onv0AmggfcQoDb9y37yIPt8gd70r5vm7wgvHWrcaNot7Ys8Z35iXwzeaThlrvQmLsg52Sdv24TlISN3ctS7Abv3gnetxs8Q2Rx3mYXnuABs1VyCMKUp3pA0ymrcpWMFWPVVo3qWYq5biKEtSZWac77iZUlI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0u7C+Z2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52611C4CEEA;
+	Mon, 23 Jun 2025 21:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715922;
-	bh=/PCe7GJZoY/tZD99C3UmS3qOTQpPpNkmJzq+7+W1Rf0=;
+	s=korg; t=1750712918;
+	bh=F8p8XlXHhlgg9AxD0m9kMSWOGS+yP6cyz6s4i2rWkSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pMf9UU0HFDvnGMc/nn6cXNBMh9Ge+mngug3gAIfPrswEsRNHV39eK1yicA0Fc53o9
-	 pFqy2+wqNhSAbMkaI2Y/UA7lzO1MfTSpVk77Q9HBf5+8RV+/oJK1ZlJsdE1+PHl4kf
-	 N3pHhovQNiOKAQwwV3Z5tcxnIqsuy7zMLeGtSQ4Y=
+	b=G0u7C+Z2KAICexeIwtkRPoWRzg+OlTMMpGsF+UvxCWbSo6697OmWaA5jRgg6Ut5ES
+	 qaGPawB0SBQnpaOOUbSUjRWPPR4nkLhrO7xnxm2AADBQv1l3+jwjpp89SBTCCksW5X
+	 7+el2eCL+izDtWV/VJe3SV+bzluydgc/rozbPGb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 229/290] Input: sparcspkr - avoid unannotated fall-through
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Maxime Ripard <mripard@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 155/222] media: tc358743: ignore video while HPD is low
 Date: Mon, 23 Jun 2025 15:08:10 +0200
-Message-ID: <20250623130633.815426015@linuxfoundation.org>
+Message-ID: <20250623130616.744388858@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-commit 8b1d858cbd4e1800e9336404ba7892b5a721230d upstream.
+[ Upstream commit 6829c5b5d26b1be31880d74ec24cb32d2d75f1ae ]
 
-Fix follow warnings with clang-21i (and reformat for clarity):
-  drivers/input/misc/sparcspkr.c:78:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-     78 |                 case SND_TONE: break;
-        |                 ^
-  drivers/input/misc/sparcspkr.c:78:3: note: insert 'break;' to avoid fall-through
-     78 |                 case SND_TONE: break;
-        |                 ^
-        |                 break;
-  drivers/input/misc/sparcspkr.c:113:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-    113 |                 case SND_TONE: break;
-        |                 ^
-  drivers/input/misc/sparcspkr.c:113:3: note: insert 'break;' to avoid fall-through
-    113 |                 case SND_TONE: break;
-        |                 ^
-        |                 break;
-  2 warnings generated.
+If the HPD is low (happens if there is no EDID or the
+EDID is being updated), then return -ENOLINK in
+tc358743_get_detected_timings() instead of detecting video.
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/6730E40353C76908+20250415052439.155051-1-wangyuli@uniontech.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This avoids userspace thinking that it can start streaming when
+the HPD is low.
+
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240628-stoic-bettong-of-fortitude-e25611@houat/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/sparcspkr.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/media/i2c/tc358743.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/input/misc/sparcspkr.c
-+++ b/drivers/input/misc/sparcspkr.c
-@@ -75,9 +75,14 @@ static int bbc_spkr_event(struct input_d
- 		return -1;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index f042570bc5cae..f4ebe93a495c4 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -309,6 +309,10 @@ static int tc358743_get_detected_timings(struct v4l2_subdev *sd,
  
- 	switch (code) {
--		case SND_BELL: if (value) value = 1000;
--		case SND_TONE: break;
--		default: return -1;
-+	case SND_BELL:
-+		if (value)
-+			value = 1000;
-+		break;
-+	case SND_TONE:
-+		break;
-+	default:
-+		return -1;
- 	}
+ 	memset(timings, 0, sizeof(struct v4l2_dv_timings));
  
- 	if (value > 20 && value < 32767)
-@@ -113,9 +118,14 @@ static int grover_spkr_event(struct inpu
- 		return -1;
- 
- 	switch (code) {
--		case SND_BELL: if (value) value = 1000;
--		case SND_TONE: break;
--		default: return -1;
-+	case SND_BELL:
-+		if (value)
-+			value = 1000;
-+		break;
-+	case SND_TONE:
-+		break;
-+	default:
-+		return -1;
- 	}
- 
- 	if (value > 20 && value < 32767)
++	/* if HPD is low, ignore any video */
++	if (!(i2c_rd8(sd, HPD_CTL) & MASK_HPD_OUT0))
++		return -ENOLINK;
++
+ 	if (no_signal(sd)) {
+ 		v4l2_dbg(1, debug, sd, "%s: no valid signal\n", __func__);
+ 		return -ENOLINK;
+-- 
+2.39.5
+
 
 
 
