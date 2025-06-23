@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-157480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CC69AE5423
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E84DDAE5458
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCB674C0760
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487C31BC11A0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EA782248B0;
-	Mon, 23 Jun 2025 21:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E83223DC1;
+	Mon, 23 Jun 2025 21:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrTABY+N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQW2TRq/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3FB6136;
-	Mon, 23 Jun 2025 21:59:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0367F6136;
+	Mon, 23 Jun 2025 21:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715971; cv=none; b=qZROU9yihDWezgl2dKlrDlStVGo7Fe2N/1XkkJEbqTNHHN0iWzPVAp3p+SnvafaKLzxMiZg+4b4poJvDuDTC/67ck4AxFcmyZXtfSMSAKISVwJwo/yRPUKlWdaM7qn7d2MDCvi/NtIxPpK6NGBL3VGSQjWhixv5/z5q49lZPdDE=
+	t=1750715988; cv=none; b=QtD2NjK//PqaiDVNbTmnJT2VGke9+Iv44tXsU2E3rHavD8twGKBZXnAUMdQEUx5TldPLUmgKOFp84aKlScopJEO9qi5BDu8XWSz/xHsswaqvm/PZtcKBVoYpObknAWBHmefk+idmq2wkwIQtUYmTpEHYGHzibzUDDo8vsILejbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715971; c=relaxed/simple;
-	bh=dTXXHWrYcazqJapTs1bSB9wafvfXS+zUm8b1SrPaqF4=;
+	s=arc-20240116; t=1750715988; c=relaxed/simple;
+	bh=LFxYaxx5eHpzj0KUixUlgm+MHT+6mn3RQeTI9bkJsO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Auej81lJKjZiZdkKeMPhTKJq0i/YzKOVgGwO0wTDRYz78yo9bK1jjGuSM2UaRkdzweHBz/Mc9e74bj5huQonoxr2lkEkftHDb4iK7UtK2CDhlUcXvduo+Ix0DLw8oz9xU2jtFkGHc790vn5F0MtKiAmzRnFDu2AWUtWR2BObww4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrTABY+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D7EC4CEEA;
-	Mon, 23 Jun 2025 21:59:30 +0000 (UTC)
+	 MIME-Version; b=cnN4p4YZ1Ga9mF7fsFuAaklCo1nPzIxyuGJFVuRrb2nupG9pElMAO4kQwQXspdXFut6QPQ/BLe1OnFdEAc/g3FK6Nzhyw/J2vY5sxc+HQW1zAMitshfeW1vGgRQu1gvgyi1eZ8Ds7QmBkvTgzbJWcAnEz3siWlovTtZ41vdKxjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQW2TRq/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8768CC4CEEA;
+	Mon, 23 Jun 2025 21:59:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715970;
-	bh=dTXXHWrYcazqJapTs1bSB9wafvfXS+zUm8b1SrPaqF4=;
+	s=korg; t=1750715987;
+	bh=LFxYaxx5eHpzj0KUixUlgm+MHT+6mn3RQeTI9bkJsO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrTABY+NXZBTX6s0/+38NSMyddNbN7ITyPmtzLEhz107AmR7J5vOWSqHWOqus63rC
-	 r3Cl5EK5Rvc0fpSk/e9UoSGIXDCKw7ArXf1ccycP3pKxdps6xgCx2VuEGVmJwoDna6
-	 28ZV+VPC73YFxI135thyYZTKfMgJP+4ngq24as38=
+	b=YQW2TRq/gLHQ17o77jcbbktavbfQJpEitTQXuZqAwLYDrIdime2SRZdyQquYLSqCs
+	 uVKvID5FjRv39XMQf4Ohgfhm9J4e7Arnu0Q9Idtc/bZU2zjb1qDE2OegK8rQgDx7z2
+	 VL5Ot0pBye6DycVgNJPKh9+d1E+H5Cx5782aANTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	David Hildenbrand <david@redhat.com>,
-	Dev Jain <dev.jain@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.6 232/290] arm64: Restrict pagetable teardown to avoid false warning
-Date: Mon, 23 Jun 2025 15:08:13 +0200
-Message-ID: <20250623130633.903176177@linuxfoundation.org>
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.6 233/290] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
+Date: Mon, 23 Jun 2025 15:08:14 +0200
+Message-ID: <20250623130633.936279347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
 References: <20250623130626.910356556@linuxfoundation.org>
@@ -69,47 +65,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dev Jain <dev.jain@arm.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
+commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
 
-Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
-pXd_free_pYd_table()") removes the pxd_present() checks because the
-caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
-caller only checks pud_present(); pud_free_pmd_page() recurses on each
-pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
-possible to hit a warning in the latter, since pmd_none => !pmd_table().
-Thus, add a pmd_present() check in pud_free_pmd_page().
+PCM1 not in Pulseaudio's control list; standardize control to
+"Speaker" and "Headphone".
 
-This problem was found by code inspection.
-
-Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
-Cc: stable@vger.kernel.org
-Reported-by: Ryan Roberts <ryan.roberts@arm.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Dev Jain <dev.jain@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/mm/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/usb/mixer_maps.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1253,7 +1253,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
- 	next = addr;
- 	end = addr + PUD_SIZE;
- 	do {
--		pmd_free_pte_page(pmdp, next);
-+		if (pmd_present(pmdp_get(pmdp)))
-+			pmd_free_pte_page(pmdp, next);
- 	} while (pmdp++, next += PMD_SIZE, next != end);
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -383,6 +383,13 @@ static const struct usbmix_name_map ms_u
+ 	{ 0 }   /* terminator */
+ };
  
- 	pud_clear(pudp);
++/* KTMicro USB */
++static struct usbmix_name_map s31b2_0022_map[] = {
++	{ 23, "Speaker Playback" },
++	{ 18, "Headphone Playback" },
++	{ 0 }
++};
++
+ /* ASUS ROG Zenith II with Realtek ALC1220-VB */
+ static const struct usbmix_name_map asus_zenith_ii_map[] = {
+ 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
+@@ -692,6 +699,11 @@ static const struct usbmix_ctl_map usbmi
+ 		.id = USB_ID(0x045e, 0x083c),
+ 		.map = ms_usb_link_map,
+ 	},
++	{
++		/* KTMicro USB */
++		.id = USB_ID(0X31b2, 0x0022),
++		.map = s31b2_0022_map,
++	},
+ 	{ 0 } /* terminator */
+ };
+ 
 
 
 
