@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-156217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A009BAE4EA6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26D12AE527F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 72ABD189F7DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D74188C8F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EA721638A;
-	Mon, 23 Jun 2025 21:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F53221FCC;
+	Mon, 23 Jun 2025 21:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cYScOpyb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q27A927N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F3B0217668;
-	Mon, 23 Jun 2025 21:07:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA664315A;
+	Mon, 23 Jun 2025 21:44:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712871; cv=none; b=JFhsXAWITKTr2ia34qVpxrrxiiz3IKdV+xaXYKqfQk2agIVp7Fx8aFlTJe4SqVCotFbuhv00aTio0t/0YT31/WKMtziHgb9TGBziX+3R8Xbm/3JEA2vqFNk71c0669w0GroAHEh/kOW9y9oi01Nbn/Q6MY92Z7yQ7wIlyzDEfoE=
+	t=1750715055; cv=none; b=n6TAvBVJeRMmPhfGfHPA8a0kA6DyGbPZ7xlFGuYKSEYteqhqA6QMTU9c9dOPymJT6GaujQMPcGFYoaSmq+TMI3QnYhgxOJ26VDIr42E0FG+L6SN9BT9IcPlgx2cDO6Q+ndEFLGGfJbd1AkS8T/1YiNPpeR9sEY7mrK4dM0QPdak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712871; c=relaxed/simple;
-	bh=kBdey57rEhVp52xGpd5W+8O6SQt12Lsk1FznCGvj8Aw=;
+	s=arc-20240116; t=1750715055; c=relaxed/simple;
+	bh=DbEFIL4uTrOUZMsOL9a8bzLV3DVpmWMNB6zzJLg69oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RIfW8wi1XPvbgYyxTwCcXOFHBlgOHcLIVgf52UObLW9j6nOAiARDP4UVJeJK14UhQHzKPfRmB65iKf2a0nhoEiLiBHH1v7VxnuKuFYL6uYR4zWrym2C7Fs8F2MQbZfFZfQAcPoEoizLy3+n74gGa62nM8JKP6Rd2o/Z9V0O/AD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cYScOpyb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CECBC4CEEA;
-	Mon, 23 Jun 2025 21:07:50 +0000 (UTC)
+	 MIME-Version; b=ndhfTb1mVdFnayxbkbjHoupLBls2M55ARcL1EumN/PSHH+TVLWnyy7HvsQmdmeYH/uX4Em993CqS+eZ78LU2eC2LhJRAzNumOJlfttqViqK5CsliOVcm/4GXT+bsTwIjUrtOl9I3klXZxOVx/sSPeq4+21O4TsaQb4li1NsHU5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q27A927N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459ABC4CEEA;
+	Mon, 23 Jun 2025 21:44:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712871;
-	bh=kBdey57rEhVp52xGpd5W+8O6SQt12Lsk1FznCGvj8Aw=;
+	s=korg; t=1750715055;
+	bh=DbEFIL4uTrOUZMsOL9a8bzLV3DVpmWMNB6zzJLg69oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cYScOpybVsleLTHgrl4gKKGYXv0SDZNormdrdaUHxTm4uXEzPw3lCeo/1SR/oWvSG
-	 amDcVZdTE6C5ban39xKMR7fQ6MQfdUj6pm8JYyRR7/es1uo1pbagcMFlv3rxnhMpub
-	 8NsRJOwf2kQnsXAPRpf0o5851rR2EUure01GAjq4=
+	b=Q27A927N2QuwPPW7rpVpwzVoQ+Z6eMshXXW+GjKkBeKzTfhFDh2S7Pq1wiFkdlPVz
+	 PMyirC5otVTQcIwNbx6TI9AbQBn5V17dhZwPJ51zrgPZZy3Wgh7980HhBw6HrV9xt2
+	 XJNaSJFtkZ5gmJtv4ZQoMkteGu/FnmDi0k1hBMV8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 298/592] media: renesas: vsp1: Fix media bus code setup on RWPF source pad
-Date: Mon, 23 Jun 2025 15:04:16 +0200
-Message-ID: <20250623130707.474751478@linuxfoundation.org>
+Subject: [PATCH 6.1 212/508] xfs: take m_growlock when running growfsrt
+Date: Mon, 23 Jun 2025 15:04:17 +0200
+Message-ID: <20250623130650.480634658@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit b6e57605eff6224df4debf188eb7a02dedb7686f ]
+[ Upstream commit 16e1fbdce9c8d084863fd63cdaff8fb2a54e2f88 ]
 
-The RWPF source pad media bus code can only be different from the sink
-pad code when enabling color space conversion, which can only convert
-between RGB and YUV. If the sink pad code is HSV, no conversion is
-possible. Fix the pad set format handler to reflect this hardware
-limitation.
+Take the grow lock when we're expanding the realtime volume, like we do
+for the other growfs calls.
 
-Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Reviewed-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
-Link: https://lore.kernel.org/r/20250429232904.26413-5-laurent.pinchart+renesas@ideasonboard.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/renesas/vsp1/vsp1_rwpf.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ fs/xfs/xfs_rtalloc.c | 38 +++++++++++++++++++++++++-------------
+ 1 file changed, 25 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/media/platform/renesas/vsp1/vsp1_rwpf.c b/drivers/media/platform/renesas/vsp1/vsp1_rwpf.c
-index 9d38203e73d00..1b4bac7b7cfa1 100644
---- a/drivers/media/platform/renesas/vsp1/vsp1_rwpf.c
-+++ b/drivers/media/platform/renesas/vsp1/vsp1_rwpf.c
-@@ -76,11 +76,20 @@ static int vsp1_rwpf_set_format(struct v4l2_subdev *subdev,
- 	format = v4l2_subdev_state_get_format(state, fmt->pad);
+diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
+index 5cf1e91f4c205..149fcfc485d89 100644
+--- a/fs/xfs/xfs_rtalloc.c
++++ b/fs/xfs/xfs_rtalloc.c
+@@ -953,34 +953,39 @@ xfs_growfs_rt(
+ 	/* Needs to have been mounted with an rt device. */
+ 	if (!XFS_IS_REALTIME_MOUNT(mp))
+ 		return -EINVAL;
++
++	if (!mutex_trylock(&mp->m_growlock))
++		return -EWOULDBLOCK;
+ 	/*
+ 	 * Mount should fail if the rt bitmap/summary files don't load, but
+ 	 * we'll check anyway.
+ 	 */
++	error = -EINVAL;
+ 	if (!mp->m_rbmip || !mp->m_rsumip)
+-		return -EINVAL;
++		goto out_unlock;
  
- 	if (fmt->pad == RWPF_PAD_SOURCE) {
-+		const struct v4l2_mbus_framefmt *sink_format =
-+			v4l2_subdev_state_get_format(state, RWPF_PAD_SINK);
+ 	/* Shrink not supported. */
+ 	if (in->newblocks <= sbp->sb_rblocks)
+-		return -EINVAL;
++		goto out_unlock;
+ 
+ 	/* Can only change rt extent size when adding rt volume. */
+ 	if (sbp->sb_rblocks > 0 && in->extsize != sbp->sb_rextsize)
+-		return -EINVAL;
++		goto out_unlock;
+ 
+ 	/* Range check the extent size. */
+ 	if (XFS_FSB_TO_B(mp, in->extsize) > XFS_MAX_RTEXTSIZE ||
+ 	    XFS_FSB_TO_B(mp, in->extsize) < XFS_MIN_RTEXTSIZE)
+-		return -EINVAL;
++		goto out_unlock;
+ 
+ 	/* Unsupported realtime features. */
++	error = -EOPNOTSUPP;
+ 	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp) || xfs_has_quota(mp))
+-		return -EOPNOTSUPP;
++		goto out_unlock;
+ 
+ 	nrblocks = in->newblocks;
+ 	error = xfs_sb_validate_fsb_count(sbp, nrblocks);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 	/*
+ 	 * Read in the last block of the device, make sure it exists.
+ 	 */
+@@ -988,7 +993,7 @@ xfs_growfs_rt(
+ 				XFS_FSB_TO_BB(mp, nrblocks - 1),
+ 				XFS_FSB_TO_BB(mp, 1), 0, &bp, NULL);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 	xfs_buf_relse(bp);
+ 
+ 	/*
+@@ -996,8 +1001,10 @@ xfs_growfs_rt(
+ 	 */
+ 	nrextents = nrblocks;
+ 	do_div(nrextents, in->extsize);
+-	if (!xfs_validate_rtextents(nrextents))
+-		return -EINVAL;
++	if (!xfs_validate_rtextents(nrextents)) {
++		error = -EINVAL;
++		goto out_unlock;
++	}
+ 	nrbmblocks = howmany_64(nrextents, NBBY * sbp->sb_blocksize);
+ 	nrextslog = xfs_compute_rextslog(nrextents);
+ 	nrsumlevels = nrextslog + 1;
+@@ -1009,8 +1016,11 @@ xfs_growfs_rt(
+ 	 * the log.  This prevents us from getting a log overflow,
+ 	 * since we'll log basically the whole summary file at once.
+ 	 */
+-	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1))
+-		return -EINVAL;
++	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1)) {
++		error = -EINVAL;
++		goto out_unlock;
++	}
 +
- 		/*
- 		 * The RWPF performs format conversion but can't scale, only the
--		 * format code can be changed on the source pad.
-+		 * format code can be changed on the source pad when converting
-+		 * between RGB and YUV.
- 		 */
--		format->code = fmt->format.code;
-+		if (sink_format->code != MEDIA_BUS_FMT_AHSV8888_1X32 &&
-+		    fmt->format.code != MEDIA_BUS_FMT_AHSV8888_1X32)
-+			format->code = fmt->format.code;
-+		else
-+			format->code = sink_format->code;
-+
- 		fmt->format = *format;
- 		goto done;
+ 	/*
+ 	 * Get the old block counts for bitmap and summary inodes.
+ 	 * These can't change since other growfs callers are locked out.
+@@ -1022,10 +1032,10 @@ xfs_growfs_rt(
+ 	 */
+ 	error = xfs_growfs_rt_alloc(mp, rbmblocks, nrbmblocks, mp->m_rbmip);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 	error = xfs_growfs_rt_alloc(mp, rsumblocks, nrsumblocks, mp->m_rsumip);
+ 	if (error)
+-		return error;
++		goto out_unlock;
+ 
+ 	rsum_cache = mp->m_rsum_cache;
+ 	if (nrbmblocks != sbp->sb_rbmblocks)
+@@ -1190,6 +1200,8 @@ xfs_growfs_rt(
+ 		}
  	}
+ 
++out_unlock:
++	mutex_unlock(&mp->m_growlock);
+ 	return error;
+ }
+ 
 -- 
 2.39.5
 
