@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA85AE523A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C032AE5366
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA4CC7ACDFB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1857A443C8A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABA12222C2;
-	Mon, 23 Jun 2025 21:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083D8219A7A;
+	Mon, 23 Jun 2025 21:52:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiJXSFGy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAhiT09n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377AF21D3DD;
-	Mon, 23 Jun 2025 21:41:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B631E22E6;
+	Mon, 23 Jun 2025 21:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714897; cv=none; b=qsV9P/kY/bqn5oG4s3xyqoYVUn4fUxP1qGxeWKnLcOo4VLBblvvDDvHGJ7C2xGjBq3lFEKnAFpjYSQ6jG9MOSDj4WbaZX7FsbY34y/3k875YWyHUo170HJ7tOVZGeGgLpT9rMEgZPSwpuWb7NNhlYMPKkYdc7JN+ISabbRt6hsM=
+	t=1750715545; cv=none; b=dXuEzk/lewQhTKAHIijt/+Qt94iBWgJ/XswBJ0ygvbG7nb2IJL+Pu4M/KUj/wxOYPsxxTHk9vSWKN+ocMFX4KVqWttwhIccjBlwlhMCOImkrOp0iiyobZIFk1lL0iVgBfzhcTHydhHRU1MkNimiwvYzipGgPZfd3KooV8L3lEo0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714897; c=relaxed/simple;
-	bh=+2bsT03t3rymu/lmI1KySaAYHC1OQ/9vl7CgFBCoShQ=;
+	s=arc-20240116; t=1750715545; c=relaxed/simple;
+	bh=VgnEf0jS/7qBlvV+APVjxFBt4oO2b6yHEeDktjVMLM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RjXFaEi/zfeeYmsEOy+JOk7GoaeDXg9KeFtRdbhJBQ/wqYFSpz1bvt8hTZ0lOtZBlKd/JM/+c0Bnwy32ehtvA8TxIIuOpHkaesFRNDOncc6TbfuovEuriQkXDOQI3DRATGzOqQqLKZ1DW7H0jl6SQTFybmeILsqtOs27twkHuUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiJXSFGy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D08C4CEEA;
-	Mon, 23 Jun 2025 21:41:36 +0000 (UTC)
+	 MIME-Version; b=SfNur35QEyGsdt+shzaIzyS3Id2Ho8CDkFNy3+MzHcZb/w8Xn7QgAy36xd8JH2CeRFC23yYNyMYlqlP77MCdERgg28g0eesBnIpUvhlEHyGVzp/TOQn1PJ7bq+N5X83csttb64/F5GQF3AOu3p9HhiQuELG/ekLPxMbCeiGYIBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAhiT09n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51568C4CEEA;
+	Mon, 23 Jun 2025 21:52:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714897;
-	bh=+2bsT03t3rymu/lmI1KySaAYHC1OQ/9vl7CgFBCoShQ=;
+	s=korg; t=1750715545;
+	bh=VgnEf0jS/7qBlvV+APVjxFBt4oO2b6yHEeDktjVMLM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WiJXSFGyPqkeyzNQgZeNZ5+BSeu9LlzdvSPsqqrHFgnTr+IwMmgBy696cpx1qCZvo
-	 7yAKC3sqzs+huDd8nmuD2VdySZSqRzFHHahCvqRHcSHtTolZ08PlrCnE5u/JXaKUeq
-	 adBBXimJiSEK/Amp8gHCuCStP6DKYyYpCV9pmneI=
+	b=eAhiT09nEhB7YH2yr/niE4V0Dz9az6R9ZjAnCaFpzVKRYZBZbt3e64JNouCSezAU1
+	 BpV5IHdJ6FLMib0e8+RkdP9/h+mcmfhMXRJGfZVyy2Rq334NSM6U97HtwcioLrLXtZ
+	 5HEUUNrd3CFHqiQln5bjhpmZpDq8A0cPAyD6Qb3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 167/290] libbpf: Add identical pointer detection to btf_dedup_is_equiv()
+Subject: [PATCH 5.15 284/411] media: ccs-pll: Better validate VT PLL branch
 Date: Mon, 23 Jun 2025 15:07:08 +0200
-Message-ID: <20250623130631.916181050@linuxfoundation.org>
+Message-ID: <20250623130640.798682871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 8e64c387c942229c551d0f23de4d9993d3a2acb6 ]
+[ Upstream commit cd9cb0313a42ae029cd5af9293b0add984ed252e ]
 
-Recently as a side-effect of
+Check that the VT PLL dividers are actually found, don't trust they always
+are even though they should be.
 
-commit ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
-
-issues were observed in deduplication between modules and kernel BTF
-such that a large number of kernel types were not deduplicated so
-were found in module BTF (task_struct, bpf_prog etc).  The root cause
-appeared to be a failure to dedup struct types, specifically those
-with members that were pointers with __percpu annotations.
-
-The issue in dedup is at the point that we are deduplicating structures,
-we have not yet deduplicated reference types like pointers.  If multiple
-copies of a pointer point at the same (deduplicated) integer as in this
-case, we do not see them as identical.  Special handling already exists
-to deal with structures and arrays, so add pointer handling here too.
-
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250429161042.2069678-1-alan.maguire@oracle.com
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/media/i2c/ccs-pll.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
-index 8484b563b53d0..2e9f28cece3ff 100644
---- a/tools/lib/bpf/btf.c
-+++ b/tools/lib/bpf/btf.c
-@@ -3922,6 +3922,19 @@ static bool btf_dedup_identical_structs(struct btf_dedup *d, __u32 id1, __u32 id
- 	return true;
+diff --git a/drivers/media/i2c/ccs-pll.c b/drivers/media/i2c/ccs-pll.c
+index c876ea851ed7c..fe9e3a90749de 100644
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -442,7 +442,7 @@ static int ccs_pll_calculate_vt_tree(struct device *dev,
+ 	return -EINVAL;
  }
  
-+static bool btf_dedup_identical_ptrs(struct btf_dedup *d, __u32 id1, __u32 id2)
-+{
-+	struct btf_type *t1, *t2;
-+
-+	t1 = btf_type_by_id(d->btf, id1);
-+	t2 = btf_type_by_id(d->btf, id2);
-+
-+	if (!btf_is_ptr(t1) || !btf_is_ptr(t2))
-+		return false;
-+
-+	return t1->type == t2->type;
-+}
-+
- /*
-  * Check equivalence of BTF type graph formed by candidate struct/union (we'll
-  * call it "candidate graph" in this description for brevity) to a type graph
-@@ -4054,6 +4067,9 @@ static int btf_dedup_is_equiv(struct btf_dedup *d, __u32 cand_id,
- 		 */
- 		if (btf_dedup_identical_structs(d, hypot_type_id, cand_id))
- 			return 1;
-+		/* A similar case is again observed for PTRs. */
-+		if (btf_dedup_identical_ptrs(d, hypot_type_id, cand_id))
-+			return 1;
- 		return 0;
+-static void
++static int
+ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
+ 		     const struct ccs_pll_branch_limits_bk *op_lim_bk,
+ 		     struct ccs_pll *pll, struct ccs_pll_branch_fr *pll_fr,
+@@ -565,6 +565,8 @@ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
+ 		if (best_pix_div < SHRT_MAX >> 1)
+ 			break;
  	}
++	if (best_pix_div == SHRT_MAX >> 1)
++		return -EINVAL;
  
+ 	pll->vt_bk.sys_clk_div = DIV_ROUND_UP(vt_div, best_pix_div);
+ 	pll->vt_bk.pix_clk_div = best_pix_div;
+@@ -577,6 +579,8 @@ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
+ out_calc_pixel_rate:
+ 	pll->pixel_rate_pixel_array =
+ 		pll->vt_bk.pix_clk_freq_hz * pll->vt_lanes;
++
++	return 0;
+ }
+ 
+ /*
+@@ -852,8 +856,10 @@ int ccs_pll_calculate(struct device *dev, const struct ccs_pll_limits *lim,
+ 		if (pll->flags & CCS_PLL_FLAG_DUAL_PLL)
+ 			break;
+ 
+-		ccs_pll_calculate_vt(dev, lim, op_lim_bk, pll, op_pll_fr,
+-				     op_pll_bk, cphy, phy_const);
++		rval = ccs_pll_calculate_vt(dev, lim, op_lim_bk, pll, op_pll_fr,
++					    op_pll_bk, cphy, phy_const);
++		if (rval)
++			continue;
+ 
+ 		rval = check_bk_bounds(dev, lim, pll, PLL_VT);
+ 		if (rval)
 -- 
 2.39.5
 
