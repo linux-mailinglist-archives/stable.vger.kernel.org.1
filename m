@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20E0CAE570A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE8BAE559D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8A201C2380B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94A7F4C4972
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E956A225792;
-	Mon, 23 Jun 2025 22:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B3D8227BB5;
+	Mon, 23 Jun 2025 22:11:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPToCjL/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQWcuMqy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B82222581;
-	Mon, 23 Jun 2025 22:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19937229B21;
+	Mon, 23 Jun 2025 22:11:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717528; cv=none; b=Zs0sS9trzrRXQ9H0nbU2RMvjt8aGdYiEkZRfd1rNWwr5pwRuhnbHfKVc07/EbIBDSxDDnke4UhtvIYI4LlLcEXBYVAZ3KRu0rDdqjXd1FYmwSl0B0dE/Nfhv/DLPiGzFktXqLjG+S/7reJnVMkt26nIEJZ00utnrXh6/wkGUNAw=
+	t=1750716716; cv=none; b=Av06MpmYj08QCXOBMl3KdtWfYHZ/1NT1qrbHIvZq0+gL349Yx80IvhAadTW1WGkryPbNhkzucuXprp+nWvJoCIhv3e/6qconyG7ysTO3+SZ+JV+i+D6ITNtT1Nr2QlU1l6rzle/Eu6c6myByngsuyNon1Umnku3X5bBTFyzojNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717528; c=relaxed/simple;
-	bh=MXzvnJA9D7nQ4E18LkmG8aNVVmfu/LECdTcA2UBBTlI=;
+	s=arc-20240116; t=1750716716; c=relaxed/simple;
+	bh=xGE7oH3TXcFtyJuz+pZpbBk5OqcXZY2XlNoutgMxTo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TPFy6RbBXdhjFyk7sY7tWEtQ4KTNY9DOHbTQ8PW8j9NXrYbkLeB3dz+krw06ahhFVX1nkVKS2cBxj1jJNc1R8gTlFjIOc4biPUh5NE5bRWwnLS2faxrLJXWQae33D1EJgKcaZWOatnb++ZuRQrwxCSzkXUAohX2wObHDEnQaVIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPToCjL/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3572EC4CEEA;
-	Mon, 23 Jun 2025 22:25:28 +0000 (UTC)
+	 MIME-Version; b=e8LrFinZ6d27THfs5bajGyfsxzF0juGJOrtNeisF2TTUJEPDsmHVQwXWba+r5cA0XRNK/NrY4Mleof0CcqBcu8wydN/9jYLxyBSiXipEmZV2zG6bOHHzmD7JZVeOFieGymVDI1wkssUaZQIbOA59jD1B+sLuJLOBrJ9XcK1kmew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQWcuMqy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D89C4CEEA;
+	Mon, 23 Jun 2025 22:11:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717528;
-	bh=MXzvnJA9D7nQ4E18LkmG8aNVVmfu/LECdTcA2UBBTlI=;
+	s=korg; t=1750716715;
+	bh=xGE7oH3TXcFtyJuz+pZpbBk5OqcXZY2XlNoutgMxTo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FPToCjL/PAOMXfyAlpE3QDRcTZgGR7gPTFXnxJC6W6l8/OYoGPJBaLKYcCvRjUiL4
-	 c8z5C2gSacYqLXz5t582OvkmempG5FuUIwASIDK2hKClMs/DceLljBmEa4hlGgwSz/
-	 4Xt1m4RZL2aHpXiMVFxj8rBoCumbiaFksBdYnFG0=
+	b=mQWcuMqyu31Y8KqgXn0zjqvTpOxOd2bxm3gEhX0eEXWoPnxKqX2AuS/vaLLl3vy4Y
+	 QiCVEsqvWsSZ8FvoMhIKL7JfNe7wXhQ9nEsiFzLDmD+N74ElpyKZEUisxonBLZ0rJB
+	 WGAzE5XWe7O4JEK9E7bouGj9MlHoPl9osdWNtvNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Daniel Wagner <dwagner@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 407/414] scsi: elx: efct: Fix memory leak in efct_hw_parse_filter()
-Date: Mon, 23 Jun 2025 15:09:04 +0200
-Message-ID: <20250623130652.119903106@linuxfoundation.org>
+Subject: [PATCH 6.6 284/290] arm64/ptrace: Fix stack-out-of-bounds read in regs_get_kernel_stack_nth()
+Date: Mon, 23 Jun 2025 15:09:05 +0200
+Message-ID: <20250623130635.462426068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit 2a8a5a5dd06eef580f9818567773fd75057cb875 ]
+[ Upstream commit 39dfc971e42d886e7df01371cd1bef505076d84c ]
 
-strsep() modifies the address of the pointer passed to it so that it no
-longer points to the original address. This means kfree() gets the wrong
-pointer.
+KASAN reports a stack-out-of-bounds read in regs_get_kernel_stack_nth().
 
-Fix this by passing unmodified pointer returned from kstrdup() to
-kfree().
+Call Trace:
+[   97.283505] BUG: KASAN: stack-out-of-bounds in regs_get_kernel_stack_nth+0xa8/0xc8
+[   97.284677] Read of size 8 at addr ffff800089277c10 by task 1.sh/2550
+[   97.285732]
+[   97.286067] CPU: 7 PID: 2550 Comm: 1.sh Not tainted 6.6.0+ #11
+[   97.287032] Hardware name: linux,dummy-virt (DT)
+[   97.287815] Call trace:
+[   97.288279]  dump_backtrace+0xa0/0x128
+[   97.288946]  show_stack+0x20/0x38
+[   97.289551]  dump_stack_lvl+0x78/0xc8
+[   97.290203]  print_address_description.constprop.0+0x84/0x3c8
+[   97.291159]  print_report+0xb0/0x280
+[   97.291792]  kasan_report+0x84/0xd0
+[   97.292421]  __asan_load8+0x9c/0xc0
+[   97.293042]  regs_get_kernel_stack_nth+0xa8/0xc8
+[   97.293835]  process_fetch_insn+0x770/0xa30
+[   97.294562]  kprobe_trace_func+0x254/0x3b0
+[   97.295271]  kprobe_dispatcher+0x98/0xe0
+[   97.295955]  kprobe_breakpoint_handler+0x1b0/0x210
+[   97.296774]  call_break_hook+0xc4/0x100
+[   97.297451]  brk_handler+0x24/0x78
+[   97.298073]  do_debug_exception+0xac/0x178
+[   97.298785]  el1_dbg+0x70/0x90
+[   97.299344]  el1h_64_sync_handler+0xcc/0xe8
+[   97.300066]  el1h_64_sync+0x78/0x80
+[   97.300699]  kernel_clone+0x0/0x500
+[   97.301331]  __arm64_sys_clone+0x70/0x90
+[   97.302084]  invoke_syscall+0x68/0x198
+[   97.302746]  el0_svc_common.constprop.0+0x11c/0x150
+[   97.303569]  do_el0_svc+0x38/0x50
+[   97.304164]  el0_svc+0x44/0x1d8
+[   97.304749]  el0t_64_sync_handler+0x100/0x130
+[   97.305500]  el0t_64_sync+0x188/0x190
+[   97.306151]
+[   97.306475] The buggy address belongs to stack of task 1.sh/2550
+[   97.307461]  and is located at offset 0 in frame:
+[   97.308257]  __se_sys_clone+0x0/0x138
+[   97.308910]
+[   97.309241] This frame has 1 object:
+[   97.309873]  [48, 184) 'args'
+[   97.309876]
+[   97.310749] The buggy address belongs to the virtual mapping at
+[   97.310749]  [ffff800089270000, ffff800089279000) created by:
+[   97.310749]  dup_task_struct+0xc0/0x2e8
+[   97.313347]
+[   97.313674] The buggy address belongs to the physical page:
+[   97.314604] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14f69a
+[   97.315885] flags: 0x15ffffe00000000(node=1|zone=2|lastcpupid=0xfffff)
+[   97.316957] raw: 015ffffe00000000 0000000000000000 dead000000000122 0000000000000000
+[   97.318207] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+[   97.319445] page dumped because: kasan: bad access detected
+[   97.320371]
+[   97.320694] Memory state around the buggy address:
+[   97.321511]  ffff800089277b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   97.322681]  ffff800089277b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   97.323846] >ffff800089277c00: 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 00 00 00 00
+[   97.325023]                          ^
+[   97.325683]  ffff800089277c80: 00 00 00 00 00 00 00 00 00 f3 f3 f3 f3 f3 f3 f3
+[   97.326856]  ffff800089277d00: f3 f3 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+This issue seems to be related to the behavior of some gcc compilers and
+was also fixed on the s390 architecture before:
 
-Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Link: https://lore.kernel.org/r/20250612163616.24298-1-v.shevtsov@mt-integration.ru
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ commit d93a855c31b7 ("s390/ptrace: Avoid KASAN false positives in regs_get_kernel_stack_nth()")
+
+As described in that commit, regs_get_kernel_stack_nth() has confirmed that
+`addr` is on the stack, so reading the value at `*addr` should be allowed.
+Use READ_ONCE_NOCHECK() helper to silence the KASAN check for this case.
+
+Fixes: 0a8ea52c3eb1 ("arm64: Add HAVE_REGS_AND_STACK_ACCESS_API feature")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Link: https://lore.kernel.org/r/20250604005533.1278992-1-wutengda@huaweicloud.com
+[will: Use '*addr' as the argument to READ_ONCE_NOCHECK()]
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/elx/efct/efct_hw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ arch/arm64/kernel/ptrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
-index 5a5525054d71c..5b079b8b7a082 100644
---- a/drivers/scsi/elx/efct/efct_hw.c
-+++ b/drivers/scsi/elx/efct/efct_hw.c
-@@ -1120,7 +1120,7 @@ int
- efct_hw_parse_filter(struct efct_hw *hw, void *value)
- {
- 	int rc = 0;
--	char *p = NULL;
-+	char *p = NULL, *pp = NULL;
- 	char *token;
- 	u32 idx = 0;
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index a26293e0cc555..c30f5a70bd18f 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -139,7 +139,7 @@ unsigned long regs_get_kernel_stack_nth(struct pt_regs *regs, unsigned int n)
  
-@@ -1132,6 +1132,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
- 		efc_log_err(hw->os, "p is NULL\n");
- 		return -ENOMEM;
- 	}
-+	pp = p;
- 
- 	idx = 0;
- 	while ((token = strsep(&p, ",")) && *token) {
-@@ -1144,7 +1145,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
- 		if (idx == ARRAY_SIZE(hw->config.filter_def))
- 			break;
- 	}
--	kfree(p);
-+	kfree(pp);
- 
- 	return rc;
+ 	addr += n;
+ 	if (regs_within_kernel_stack(regs, (unsigned long)addr))
+-		return *addr;
++		return READ_ONCE_NOCHECK(*addr);
+ 	else
+ 		return 0;
  }
 -- 
 2.39.5
