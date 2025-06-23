@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-155680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F452AE4368
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF598AE446E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31FCD17F7D9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 553023A36D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4AE4C7F;
-	Mon, 23 Jun 2025 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47691253F08;
+	Mon, 23 Jun 2025 13:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xo9+rx67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2i86E3Qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78EE248191;
-	Mon, 23 Jun 2025 13:24:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F81253B73;
+	Mon, 23 Jun 2025 13:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685054; cv=none; b=IETwpjNVaqkuchNgaJS6FlW3SpNcEKSUJfGyzykD4DlkKtt/Jj3JaYpn9WVPZ++yT7Lyyy6+bgf3XwJimknI0OcvryKe7zY2bf1cDpdD/Nvt/HLeOlV3s/yCFiElu3PfIzmWOZVk4YsCwrs3mYeKQ2KKLC2iisat1bNgFXJ6fOY=
+	t=1750685570; cv=none; b=nppq0ZQj5B0kOv7hYgR3NldOwwZJ3Z3+srHz5L5NF0qoUHXc++oh1wOYK8oeAFm9Ti+3U3rfhaVX7iZxfDJoaHCve6YYbRFlBnrTb1Ldcw1spkPyNwS+/NjtPOnDNg/4n+GVwiK5o2+0IBsXTJcsuh2xrhcdZtpKYgBUmsX7D0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685054; c=relaxed/simple;
-	bh=EHZjonKyg07PMaJmxwwjPR5XT45YjD8Y0YNAivxWaSM=;
+	s=arc-20240116; t=1750685570; c=relaxed/simple;
+	bh=M+h2lYOxK8CISQfcEcM5EPovpV6+x3VDYeUEMWSyK5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EvmxEqtijtYBZC8/dlwA8Ux1Um/OznHCBP8t6A9cddjCxIqfS+NbROCrtIejdqzTdNnIf/JWeWj1LcC8GKaHhD5vqM1X8DWkBBprFfHiy2vNdr/ToOwhov3pVX2BGy62cs/2pNejvW6VXePfD4amulNuPs7w9zw57ji4XN3+vuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xo9+rx67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A6D1C4CEEA;
-	Mon, 23 Jun 2025 13:24:14 +0000 (UTC)
+	 MIME-Version; b=qCdRVeHS0JM4zW6A2Xkv8pnCu95SeFiFihSa8tAtmK1bDhdsWJaFheL+toNMx7iu/tHqAP6E+Nr+nBh4QOIcK7XnfNUvppdJrEg68INSjFn0HJT27ZfZdG7dfNEAiuSsW5E7ZS7keYBZjrqpapWaEacIs24GQ0FhZ/7gByVo7aU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2i86E3Qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88170C4CEEA;
+	Mon, 23 Jun 2025 13:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685054;
-	bh=EHZjonKyg07PMaJmxwwjPR5XT45YjD8Y0YNAivxWaSM=;
+	s=korg; t=1750685569;
+	bh=M+h2lYOxK8CISQfcEcM5EPovpV6+x3VDYeUEMWSyK5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xo9+rx67M8k/e+w5xbEw1J8pUSrBQy111km0BvISWyiKDOVMgMnSQyU9/l81jr39Z
-	 eKKVWU7DemPESysaGAdg9k/7ElOk/0ZBRLS3GonHxGjSfKPPOxVuinKakitxx+/L8r
-	 p6s1qq2aXOfCCAl7zT3/IdnGhmm5KGscKBDeY6WQ=
+	b=2i86E3QwZy/Lclt2EuhfZTuuIy5Cyhb5MOXjg3Ud38yt9EZ4msVlLmxWO88fsvwYA
+	 Px8z5S7YxmrtPIkmuemQMe9RNOmr1ni6n7EmbZC8FubSzGbhbAManilO0FBRxxfR7+
+	 5piJjFjiUbF27NtmB2qYo1+KVSXCoFA8onhYXgyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 229/592] Make cc-option work correctly for the -Wno-xyzzy pattern
+Subject: [PATCH 5.15 043/411] wifi: rtw88: do not ignore hardware read error during DPK
 Date: Mon, 23 Jun 2025 15:03:07 +0200
-Message-ID: <20250623130705.737188667@linuxfoundation.org>
+Message-ID: <20250623130634.297080515@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +60,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 550ccb178de2f379f5e1a1833dd6f4bdafef4b68 ]
+[ Upstream commit 20d3c19bd8f9b498173c198eadf54580c8caa336 ]
 
-This is the follow-up to commit a79be02bba5c ("Fix mis-uses of
-'cc-option' for warning disablement") where I mentioned that the best
-fix would be to just make 'cc-option' a bit smarter, and work for all
-compiler options, including the '-Wno-xyzzy' pattern that it used to
-accept unknown options for.
+In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
+by 'check_hw_ready()' but issue a warning to denote possible
+DPK issue. Compile tested only.
 
-It turns out that fixing cc-option is pretty straightforward: just
-rewrite any '-Wno-xyzzy' option pattern to use '-Wxyzzy' instead for
-testing.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-That makes the whole artificial distinction between 'cc-option' and
-'cc-disable-warning' go away, and we can happily forget about the odd
-build rule that you have to treat compiler options that disable warnings
-specially.
-
-The 'cc-disable-warning' helper remains as a backwards compatibility
-syntax for now, but is implemented in terms of the new and improved
-cc-option.
-
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250415090720.194048-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.compiler | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index f4fcc1eaaeaee..65cfa72e376be 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -43,7 +43,7 @@ as-instr = $(call try-run,\
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
- __cc-option = $(call try-run,\
--	$(1) -Werror $(2) $(3) -c -x c /dev/null -o "$$TMP",$(3),$(4))
-+	$(1) -Werror $(2) $(3:-Wno-%=-W%) -c -x c /dev/null -o "$$TMP",$(3),$(4))
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index b799655d08e15..96b7f2efeaaa9 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -3946,7 +3946,8 @@ static void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
  
- # cc-option
- # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
-@@ -57,7 +57,7 @@ cc-option-yn = $(if $(call cc-option,$1),y,n)
+-	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
++	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
++		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
  
- # cc-disable-warning
- # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
--cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip $1))
-+cc-disable-warning = $(call cc-option,-Wno-$(strip $1))
- 
- # gcc-min-version
- # Usage: cflags-$(call gcc-min-version, 70100) += -foo
+ 	rtw_write8(rtwdev, 0x1b10, 0x0);
+ 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
 -- 
 2.39.5
 
