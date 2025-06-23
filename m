@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-158190-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB7CAE5758
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 367CAAE55FD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BB247B459F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EA7E4C6BEC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0DA224AED;
-	Mon, 23 Jun 2025 22:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4151C22A80D;
+	Mon, 23 Jun 2025 22:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xB4uDijp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WO6CkxVh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99ECEB676;
-	Mon, 23 Jun 2025 22:28:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01792236EF;
+	Mon, 23 Jun 2025 22:15:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717705; cv=none; b=IjW+36MMt8SZC9mV+tGzwgHk1tCa1mSJY6x3v2SDE3qXTakDAHcnt6ynoL6jCM/3bwdqi0LOTQ0aHgwt+oPBgz2uE8RKn3a7RrFJ/wIKLYCrIeHSPQt20j2KB4qjV4bnHdyAJgP50jHbnoP34oRE7xuMstcCaBMhaWZVLpk0FnU=
+	t=1750716904; cv=none; b=cTkfJYTpWI0oRryI9mrC4pjSm0UcaLwG2fyEv6rDd5H9i/ncE54yHA+qqyS/Snq/iGmRrvSkE551KNzO7Iar5VJY9UoT8EXDlX0Ur0USIvd/9vSVOjl8z4D3QhXhrYD9HxAGkIK/qX9CgzlQdUrjx8/mq+Gd4x077jXTY7mp6tw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717705; c=relaxed/simple;
-	bh=1bm3qEBb9uBxwFBIYJGg1eM0KKbXf8/t/KjYS4+FSfA=;
+	s=arc-20240116; t=1750716904; c=relaxed/simple;
+	bh=okGVvH/UnwSQggs31Pmj9KZF5YWaeWkITmpKZt4RCd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bnck9H/mvz0H/SACmgj5N+W/4vNL3/VCUrpThsuM4adf1Ma9lVsq+i7TGtUgJ8Af+YUya2laulMMnbvP4s80hbU8sV7cCcp38ZnExeLtemRFlH99iTzbcai8IvZvXK/UjXGACD7EaVYDq0+Q8/ZFSkGDfpwznD89r0VnI3WDxmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xB4uDijp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31105C4CEEA;
-	Mon, 23 Jun 2025 22:28:25 +0000 (UTC)
+	 MIME-Version; b=nNRF8f5gkailwQpBM+YFySOYfJ4VO9tgW+qsxWqYa7j/6VyPkk+uGv+WdrygtgnFTNkZsLxskf7piAHdt1pjtgkkl0D5QXULpBWO7TeUbm6kkRw5m6biI2vvAhYxHbEtdw/RSLk10S8i2vlCsSAeYB3CoO1wQESVx0hXum8m7+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WO6CkxVh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865F6C4CEEA;
+	Mon, 23 Jun 2025 22:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717705;
-	bh=1bm3qEBb9uBxwFBIYJGg1eM0KKbXf8/t/KjYS4+FSfA=;
+	s=korg; t=1750716903;
+	bh=okGVvH/UnwSQggs31Pmj9KZF5YWaeWkITmpKZt4RCd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xB4uDijp1v/slsJVFhVL9l2YbsX9b3XycmYIPMncPeH+x35+IEOVrcEjiFcii+n4x
-	 n72dgDyUss1k50GZgZw/azZXHK7lgGoMcvwU1leo9OYoLq7TNW35nQZaVvs42l1Qu1
-	 hSpx3AzMBW7Y9ck/pYeGEwoXqgWw6VPAjco+p7S0=
+	b=WO6CkxVhzmuTPoi6i+/NNrc5LXvJzrPLU4+3KguveoXGj55cm9AZ2hvq3TOb3TDMr
+	 iHElquzGI1Kob8Qenpr/2MGuvYpDGv1+w6aakCCA+LfndnKF7u62aDF7E/IO9Ku8Uf
+	 HlpHytzAIvD73TUngQlJ+LH7KCBWTE1NxlktxlUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 480/508] ptp: allow reading of currently dialed frequency to succeed on free-running clocks
+	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.15 567/592] rust: devres: fix doctest build under `!CONFIG_PCI`
 Date: Mon, 23 Jun 2025 15:08:45 +0200
-Message-ID: <20250623130656.881806302@linuxfoundation.org>
+Message-ID: <20250623130713.929070950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Miguel Ojeda <ojeda@kernel.org>
 
-[ Upstream commit aa112cbc5f0ac6f3b44d829005bf34005d9fe9bb ]
+commit 42055939a3a4cac8afbebff85a29571c2bd3238c upstream.
 
-There is a bug in ptp_clock_adjtime() which makes it refuse the
-operation even if we just want to read the current clock dialed
-frequency, not modify anything (tx->modes == 0). That should be possible
-even if the clock is free-running. For context, the kernel UAPI is the
-same for getting and setting the frequency of a POSIX clock.
+The doctest requires `CONFIG_PCI`:
 
-For example, ptp4l errors out at clock_create() -> clockadj_get_freq()
--> clock_adjtime() time, when it should logically only have failed on
-actual adjustments to the clock, aka if the clock was configured as
-slave. But in master mode it should work.
+    error[E0432]: unresolved import `kernel::pci`
+        --> rust/doctests_kernel_generated.rs:2689:44
+         |
+    2689 | use kernel::{device::Core, devres::Devres, pci};
+         |                                            ^^^ no `pci` in the root
+         |
+    note: found an item that was configured out
+        --> rust/kernel/lib.rs:96:9
+    note: the item is gated here
+        --> rust/kernel/lib.rs:95:1
 
-This was discovered when examining the issue described in the previous
-commit, where ptp_clock_freerun() returned true despite n_vclocks being
-zero.
+Thus conditionally compile it (which still checks the syntax).
 
-Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250613174749.406826-3-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f301cb978c06 ("rust: devres: implement Devres::access()")
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://lore.kernel.org/r/20250511182533.1016163-1-ojeda@kernel.org
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_clock.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ rust/kernel/devres.rs |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/ptp/ptp_clock.c b/drivers/ptp/ptp_clock.c
-index af66ed48dc006..642c939d4523c 100644
---- a/drivers/ptp/ptp_clock.c
-+++ b/drivers/ptp/ptp_clock.c
-@@ -104,7 +104,8 @@ static int ptp_clock_adjtime(struct posix_clock *pc, struct __kernel_timex *tx)
- 	struct ptp_clock_info *ops;
- 	int err = -EOPNOTSUPP;
- 
--	if (ptp_clock_freerun(ptp)) {
-+	if (tx->modes & (ADJ_SETOFFSET | ADJ_FREQUENCY | ADJ_OFFSET) &&
-+	    ptp_clock_freerun(ptp)) {
- 		pr_err("ptp: physical clock is free running\n");
- 		return -EBUSY;
- 	}
--- 
-2.39.5
-
+--- a/rust/kernel/devres.rs
++++ b/rust/kernel/devres.rs
+@@ -208,6 +208,7 @@ impl<T> Devres<T> {
+     /// # Example
+     ///
+     /// ```no_run
++    /// # #![cfg(CONFIG_PCI)]
+     /// # use kernel::{device::Core, devres::Devres, pci};
+     ///
+     /// fn from_core(dev: &pci::Device<Core>, devres: Devres<pci::Bar<0x4>>) -> Result {
 
 
 
