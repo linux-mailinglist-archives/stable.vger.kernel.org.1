@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45183AE570B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 783BBAE5687
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9863C3B7259
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E8574478F5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953C822422F;
-	Mon, 23 Jun 2025 22:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC7D223708;
+	Mon, 23 Jun 2025 22:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ICNB1nD1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhNzHuta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 511DC15ADB4;
-	Mon, 23 Jun 2025 22:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACBC61F7580;
+	Mon, 23 Jun 2025 22:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717370; cv=none; b=WNe1qqkBxChW84RRd1V3pM8yP6NQbDE0E8vpjA8KKjHHMnwhwqJJej9ohW3WRCLAfqjfbFV4GVHRaoIAVvlDO+uN5cVClIOTLgqJR/+owSe4ypNJ6oxDkSFujql7RgQlubwQquv6LeP4Z7OdsE1Wq5bJAmqeBDdV8mX2uVQFKBY=
+	t=1750717082; cv=none; b=JzMOC7kkwD2aHPHz2GfATWphhzd53wYwQkVSUcvtwiaZNxQdP5mR4Bs1tg6WGPWh/he4wsTl+n1qXDbGlqsV5CtcVB6W++GOYg8E4YsxWKvtIAnZmETF7PcJqnkxFkmxNYj7a7JumzrRfnv6sywIb1HoIUjR8KDRG4AW6VFXLUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717370; c=relaxed/simple;
-	bh=S9oOW2YVc1pIkZ6lnf5NJGLYQv8Z4SIKFhp+mjvGadE=;
+	s=arc-20240116; t=1750717082; c=relaxed/simple;
+	bh=WaybvoPJsEQ1nWkd19mJ/3YHEiisLmc9toqJYQiaLKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qgK/+TqPKWZYkdWTkJPNYXsIQq6YumW+8HoXY9KaFGK9GwnbHsn3CkwK8FtRfErY7uc82CEZ2PGFuLXGg8xDR+US/sdWKKN63J/8L+dfNCz+4vX0y9ZX2U1UvolP208WL4nx2wktDn9JNFHw6KOVzNxXk0dG1z5pJAuKLpESbdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ICNB1nD1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16F6C4CEEA;
-	Mon, 23 Jun 2025 22:22:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZfNMbM8KDICMV8kplB7lWpi1ZuzqHYkLPCTGFw337AJIpvz+3ubDM9nDimQvUycF7RTJO4GQEbgNuPs0zXatVQedhbXvVztko0BboZzLESPYzc6uQ2KcImx0a8J6ztKYyQw9jfDlJShOIoIOjFDp/oEieuU/vPihYWFC/AemmzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhNzHuta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD06C4CEEA;
+	Mon, 23 Jun 2025 22:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717370;
-	bh=S9oOW2YVc1pIkZ6lnf5NJGLYQv8Z4SIKFhp+mjvGadE=;
+	s=korg; t=1750717082;
+	bh=WaybvoPJsEQ1nWkd19mJ/3YHEiisLmc9toqJYQiaLKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ICNB1nD1iDE31pN9EQe02eANIy1yHodSSk5ShLWQM9+VK6PUW/m/XNUihTGyz0XvX
-	 UQpMxZB8AF4uRfUKBj2Z0fP3ehM+GQqbAKF4Otems3zipxnIDuyCANRXjX0qBq+Qdq
-	 ukBlR/Pl3Q1Ba4VAKPexP+QFHXEjaWLC/QZT0ez8=
+	b=JhNzHuta1yPsHQp06muqf3EfECecmuJuJozkXrdZcduxzgcmc8xhWPzKXWOSbTR8S
+	 1tucxwW3vMPlDYjYhMiYCCOmivpzE661H1YmkhemrFZgK2RiCW9oCcfgw8Ppd5OEIh
+	 LUdcYeTwWsgqqO7izN+/yy8DKK1Etla+0g4YsbXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 413/508] wifi: mac80211: do not offer a mesh path if forwarding is disabled
-Date: Mon, 23 Jun 2025 15:07:38 +0200
-Message-ID: <20250623130655.376398661@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.12 322/414] platform/x86/intel-uncore-freq: Fail module load when plat_info is NULL
+Date: Mon, 23 Jun 2025 15:07:39 +0200
+Message-ID: <20250623130650.045051025@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
 
-[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
+commit 685f88c72a0c4d12d3bd2ff50286938f14486f85 upstream.
 
-When processing a PREQ the code would always check whether we have a
-mesh path locally and reply accordingly. However, when forwarding is
-disabled then we should not reply with this information as we will not
-forward data packets down that path.
+Address a Smatch static checker warning regarding an unchecked
+dereference in the function call:
+set_cdie_id(i, cluster_info, plat_info)
+when plat_info is NULL.
 
-Move the check for dot11MeshForwarding up in the function and skip the
-mesh path lookup in that case. In the else block, set forward to false
-so that the rest of the function becomes a no-op and the
-dot11MeshForwarding check does not need to be duplicated.
+Instead of addressing this one case, in general if plat_info is NULL
+then it can cause other issues. For example in a two package system it
+will give warning for duplicate sysfs entry as package ID will be always
+zero for both packages when creating string for attribute group name.
 
-This explains an effect observed in the Freifunk community where mesh
-forwarding is disabled. In that case a mesh with three STAs and only bad
-links in between them, individual STAs would occionally have indirect
-mpath entries. This should not have happened.
+plat_info is derived from TPMI ID TPMI_BUS_INFO, which is integral to
+the core TPMI design. Therefore, it should not be NULL on a production
+platform. Consequently, the module should fail to load if plat_info is
+NULL.
 
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/platform-driver-x86/aEKvGCLd1qmX04Tc@stanley.mountain/T/#u
+Fixes: 8a54e2253e4c ("platform/x86/intel-uncore-freq: Uncore frequency control via TPMI")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250606205300.2384494-1-srinivas.pandruvada@linux.intel.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/mesh_hwmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 47eb67dc11cfe..da9e152a7aaba 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -625,7 +625,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 				mesh_path_add_gate(mpath);
- 		}
- 		rcu_read_unlock();
--	} else {
-+	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
- 		rcu_read_lock();
- 		mpath = mesh_path_lookup(sdata, target_addr);
- 		if (mpath) {
-@@ -643,6 +643,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 		rcu_read_unlock();
-+	} else {
-+		forward = false;
- 	}
+--- a/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
++++ b/drivers/platform/x86/intel/uncore-frequency/uncore-frequency-tpmi.c
+@@ -467,10 +467,13 @@ static int uncore_probe(struct auxiliary
  
- 	if (reply) {
-@@ -660,7 +662,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
+ 	/* Get the package ID from the TPMI core */
+ 	plat_info = tpmi_get_platform_data(auxdev);
+-	if (plat_info)
+-		pkg = plat_info->package_id;
+-	else
++	if (unlikely(!plat_info)) {
+ 		dev_info(&auxdev->dev, "Platform information is NULL\n");
++		ret = -ENODEV;
++		goto err_rem_common;
++	}
++
++	pkg = plat_info->package_id;
  
--	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
-+	if (forward) {
- 		u32 preq_id;
- 		u8 hopcount;
- 
--- 
-2.39.5
-
+ 	for (i = 0; i < num_resources; ++i) {
+ 		struct tpmi_uncore_power_domain_info *pd_info;
 
 
 
