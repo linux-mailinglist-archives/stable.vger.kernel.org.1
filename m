@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-156256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73095AE4ED1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC45DAE4E83
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B7813BE696
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8CE31189F204
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B968C21638A;
-	Mon, 23 Jun 2025 21:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98885202983;
+	Mon, 23 Jun 2025 21:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="02FmrczK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CU9erjEP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E8070838;
-	Mon, 23 Jun 2025 21:09:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52AB3219E0;
+	Mon, 23 Jun 2025 21:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712965; cv=none; b=rdN6TfjVz+1X7m1LinOllkZ3T75fjcFlJZafS7MAIIM34KGBLtyJYf9Fl5nGjI8C2CeD0K3+QTGjePqNmCgJllRcPYfLeR7jYjEUDhi3R+RDsYjuHKz04qfoEqY0K856z8MU0eXPd333uoKGEVSNbm+mbJg9MCgoSJAT6k27FTs=
+	t=1750712787; cv=none; b=cvdHq2aa+iCh+4oW/90JwQ+kVQbMJWfR/DKmEMuHSqzZ8AvBO8UF9EOuG2nUczta4CFN5cIwWBI7CW7BZyJhSa+mYe7o7LbZtBx0yEVmuEjSuvzb7uTjoBysiH9gMqTMWNQpbonAEkTvvLxxv55LqMyTVsF4PmxXeSw4rpUU3pY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712965; c=relaxed/simple;
-	bh=6libn/03bzzk1aRq8ZgeB20pLD+ttrjHfXejeSm7oQI=;
+	s=arc-20240116; t=1750712787; c=relaxed/simple;
+	bh=D9W9C2IQ8Al9J65TvI4xNWK6RvlCo5vNq76ynypn+Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aD4icXNHbQ7TBmsISNxrXOduhiMhJ/oNiC6FYhbtA0Gjayj1aL7+suYlPjma0EeE+uDuICXBNbaurb/onNyN9DTS0Vk8sYz+N4czaffwOprK8ztgYE0VQeL6iqDNkAO5LyqyOFTBD7/AP8WMiypD/kgTr+6r9sI8achg5zzfu0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=02FmrczK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F10AC4CEEA;
-	Mon, 23 Jun 2025 21:09:24 +0000 (UTC)
+	 MIME-Version; b=pVKZwcrmXJCAC3FNHIiAByBBBDY2rvs1sI9K1O8IdduBljF4UIGRbMi4fLYSZb8GhFB22fT40PQQH6A3tU8YirYsEctud7nk7c1U+kOm0dRSUcLovvkcPg/RI7kNKfxoGoRaDHQ35dtgfLhky80MSd5HK5Fu1aIIHXZ9z/ARaHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CU9erjEP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A70C4CEEA;
+	Mon, 23 Jun 2025 21:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712965;
-	bh=6libn/03bzzk1aRq8ZgeB20pLD+ttrjHfXejeSm7oQI=;
+	s=korg; t=1750712787;
+	bh=D9W9C2IQ8Al9J65TvI4xNWK6RvlCo5vNq76ynypn+Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=02FmrczK0XT33xBnjMgJZIuoPQ99rYpr+1Gzlx1pbUXWBJfxc4DArpdu9+TW5+6KG
-	 QKMNF/OekuRZ6vNxAor8FfVDYzhyUspsCMreMtgA9KduiHpfRs7o/yMRmkRQTV+Jlt
-	 J5v+fwUMsLMyXv5tO64zwkTIAKTdnZG4OWgo6H60=
+	b=CU9erjEPMdzHJcWC1Pts2q08lpNHkoVWjb6XwRtmpksiVRo9IXQg8lFBJrXUAXtY+
+	 VNk/R+Qhie9LxGP1LIiPLITzXXbL170NY3NvQDfDWBkfoF4hgtNc2C5OJKaVCwkED3
+	 3i7Ey2UuY5IJsM2rRDEwB7yliwOuafB738ZGNn9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	lmarch2 <2524158037@qq.com>,
+	Viktor Malik <vmalik@redhat.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/508] f2fs: fix to do sanity check on sbi->total_valid_block_count
-Date: Mon, 23 Jun 2025 15:01:43 +0200
-Message-ID: <20250623130646.669815955@linuxfoundation.org>
+Subject: [PATCH 6.1 060/508] libbpf: Fix buffer overflow in bpf_object__init_prog
+Date: Mon, 23 Jun 2025 15:01:45 +0200
+Message-ID: <20250623130646.718269478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,74 +68,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Viktor Malik <vmalik@redhat.com>
 
-[ Upstream commit 05872a167c2cab80ef186ef23cc34a6776a1a30c ]
+[ Upstream commit ee684de5c1b0ac01821320826baec7da93f3615b ]
 
-syzbot reported a f2fs bug as below:
+As shown in [1], it is possible to corrupt a BPF ELF file such that
+arbitrary BPF instructions are loaded by libbpf. This can be done by
+setting a symbol (BPF program) section offset to a large (unsigned)
+number such that <section start + symbol offset> overflows and points
+before the section data in the memory.
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/f2fs.h:2521!
-RIP: 0010:dec_valid_block_count+0x3b2/0x3c0 fs/f2fs/f2fs.h:2521
-Call Trace:
- f2fs_truncate_data_blocks_range+0xc8c/0x11a0 fs/f2fs/file.c:695
- truncate_dnode+0x417/0x740 fs/f2fs/node.c:973
- truncate_nodes+0x3ec/0xf50 fs/f2fs/node.c:1014
- f2fs_truncate_inode_blocks+0x8e3/0x1370 fs/f2fs/node.c:1197
- f2fs_do_truncate_blocks+0x840/0x12b0 fs/f2fs/file.c:810
- f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:838
- f2fs_truncate+0x417/0x720 fs/f2fs/file.c:888
- f2fs_setattr+0xc4f/0x12f0 fs/f2fs/file.c:1112
- notify_change+0xbca/0xe90 fs/attr.c:552
- do_truncate+0x222/0x310 fs/open.c:65
- handle_truncate fs/namei.c:3466 [inline]
- do_open fs/namei.c:3849 [inline]
- path_openat+0x2e4f/0x35d0 fs/namei.c:4004
- do_filp_open+0x284/0x4e0 fs/namei.c:4031
- do_sys_openat2+0x12b/0x1d0 fs/open.c:1429
- do_sys_open fs/open.c:1444 [inline]
- __do_sys_creat fs/open.c:1522 [inline]
- __se_sys_creat fs/open.c:1516 [inline]
- __x64_sys_creat+0x124/0x170 fs/open.c:1516
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+Consider the situation below where:
+- prog_start = sec_start + symbol_offset    <-- size_t overflow here
+- prog_end   = prog_start + prog_size
 
-The reason is: in fuzzed image, sbi->total_valid_block_count is
-inconsistent w/ mapped blocks indexed by inode, so, we should
-not trigger panic for such case, instead, let's print log and
-set fsck flag.
+    prog_start        sec_start        prog_end        sec_end
+        |                |                 |              |
+        v                v                 v              v
+    .....................|################################|............
 
-Fixes: 39a53e0ce0df ("f2fs: add superblock and major in-memory structure")
-Reported-by: syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67f3c0b2.050a0220.396535.0547.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+The report in [1] also provides a corrupted BPF ELF which can be used as
+a reproducer:
+
+    $ readelf -S crash
+    Section Headers:
+      [Nr] Name              Type             Address           Offset
+           Size              EntSize          Flags  Link  Info  Align
+    ...
+      [ 2] uretprobe.mu[...] PROGBITS         0000000000000000  00000040
+           0000000000000068  0000000000000000  AX       0     0     8
+
+    $ readelf -s crash
+    Symbol table '.symtab' contains 8 entries:
+       Num:    Value          Size Type    Bind   Vis      Ndx Name
+    ...
+         6: ffffffffffffffb8   104 FUNC    GLOBAL DEFAULT    2 handle_tp
+
+Here, the handle_tp prog has section offset ffffffffffffffb8, i.e. will
+point before the actual memory where section 2 is allocated.
+
+This is also reported by AddressSanitizer:
+
+    =================================================================
+    ==1232==ERROR: AddressSanitizer: heap-buffer-overflow on address 0x7c7302fe0000 at pc 0x7fc3046e4b77 bp 0x7ffe64677cd0 sp 0x7ffe64677490
+    READ of size 104 at 0x7c7302fe0000 thread T0
+        #0 0x7fc3046e4b76 in memcpy (/lib64/libasan.so.8+0xe4b76)
+        #1 0x00000040df3e in bpf_object__init_prog /src/libbpf/src/libbpf.c:856
+        #2 0x00000040df3e in bpf_object__add_programs /src/libbpf/src/libbpf.c:928
+        #3 0x00000040df3e in bpf_object__elf_collect /src/libbpf/src/libbpf.c:3930
+        #4 0x00000040df3e in bpf_object_open /src/libbpf/src/libbpf.c:8067
+        #5 0x00000040f176 in bpf_object__open_file /src/libbpf/src/libbpf.c:8090
+        #6 0x000000400c16 in main /poc/poc.c:8
+        #7 0x7fc3043d25b4 in __libc_start_call_main (/lib64/libc.so.6+0x35b4)
+        #8 0x7fc3043d2667 in __libc_start_main@@GLIBC_2.34 (/lib64/libc.so.6+0x3667)
+        #9 0x000000400b34 in _start (/poc/poc+0x400b34)
+
+    0x7c7302fe0000 is located 64 bytes before 104-byte region [0x7c7302fe0040,0x7c7302fe00a8)
+    allocated by thread T0 here:
+        #0 0x7fc3046e716b in malloc (/lib64/libasan.so.8+0xe716b)
+        #1 0x7fc3045ee600 in __libelf_set_rawdata_wrlock (/lib64/libelf.so.1+0xb600)
+        #2 0x7fc3045ef018 in __elf_getdata_rdlock (/lib64/libelf.so.1+0xc018)
+        #3 0x00000040642f in elf_sec_data /src/libbpf/src/libbpf.c:3740
+
+The problem here is that currently, libbpf only checks that the program
+end is within the section bounds. There used to be a check
+`while (sec_off < sec_sz)` in bpf_object__add_programs, however, it was
+removed by commit 6245947c1b3c ("libbpf: Allow gaps in BPF program
+sections to support overriden weak functions").
+
+Add a check for detecting the overflow of `sec_off + prog_sz` to
+bpf_object__init_prog to fix this issue.
+
+[1] https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
+
+Fixes: 6245947c1b3c ("libbpf: Allow gaps in BPF program sections to support overriden weak functions")
+Reported-by: lmarch2 <2524158037@qq.com>
+Signed-off-by: Viktor Malik <vmalik@redhat.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Link: https://github.com/lmarch2/poc/blob/main/libbpf/libbpf.md
+Link: https://lore.kernel.org/bpf/20250415155014.397603-1-vmalik@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ tools/lib/bpf/libbpf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 840a458554517..ef9149bd398ae 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2387,8 +2387,14 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
- 	blkcnt_t sectors = count << F2FS_LOG_SECTORS_PER_BLOCK;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index 98d5e566e0582..2fb66ca0f50a5 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -818,7 +818,7 @@ bpf_object__add_programs(struct bpf_object *obj, Elf_Data *sec_data,
+ 			return -LIBBPF_ERRNO__FORMAT;
+ 		}
  
- 	spin_lock(&sbi->stat_lock);
--	f2fs_bug_on(sbi, sbi->total_valid_block_count < (block_t) count);
--	sbi->total_valid_block_count -= (block_t)count;
-+	if (unlikely(sbi->total_valid_block_count < count)) {
-+		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%lu, count:%u",
-+			  sbi->total_valid_block_count, inode->i_ino, count);
-+		sbi->total_valid_block_count = 0;
-+		set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	} else {
-+		sbi->total_valid_block_count -= count;
-+	}
- 	if (sbi->reserved_blocks &&
- 		sbi->current_reserved_blocks < sbi->reserved_blocks)
- 		sbi->current_reserved_blocks = min(sbi->reserved_blocks,
+-		if (sec_off + prog_sz > sec_sz) {
++		if (sec_off + prog_sz > sec_sz || sec_off + prog_sz < sec_off) {
+ 			pr_warn("sec '%s': program at offset %zu crosses section boundary\n",
+ 				sec_name, sec_off);
+ 			return -LIBBPF_ERRNO__FORMAT;
 -- 
 2.39.5
 
