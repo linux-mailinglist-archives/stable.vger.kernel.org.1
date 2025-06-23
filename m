@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5819EAE5266
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0449AE5267
 	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0789B17E898
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83B0A1B651AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF822257E;
-	Mon, 23 Jun 2025 21:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB2E22256B;
+	Mon, 23 Jun 2025 21:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUDiGJbZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VfXZda6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F7A1E1A05;
-	Mon, 23 Jun 2025 21:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FC74315A;
+	Mon, 23 Jun 2025 21:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714992; cv=none; b=B5EhnGQjeqmHTb2B6adKB/29bCfO8s0FzrW6voIxpt+2ac6d4BHvYcFxpj6aX57TWk3HLZYvzaZcF6dCcnmt0Ua1uLzqfAcNiC38GfCqHg5SbCPVkUhPZpsDy90pG9Vrnu6eHF2gv2vNvjx91k3UiuSFJ4fCg7sFjNcOoM6N5dw=
+	t=1750715007; cv=none; b=E2mxmXyr+w2jt90Qt2f0+hb7bOVmH7ukgtMpGmRv7u/+NHPNtWz/0b3ZsBw4r5q3fUKSoNX11lpJqdgUvHad3L3MHlOJHgCQ8tpqQkeK7yOoajcRb/ltht1vSWyELvjDI0qJ7WJty1h//TZtMvYNmJFTPNr4RfJSfsIGARH9qYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714992; c=relaxed/simple;
-	bh=K5qo4OHiO7hIVDbZMJCrpsBVPXj2gFBaw+3CT7k/EyA=;
+	s=arc-20240116; t=1750715007; c=relaxed/simple;
+	bh=XdMCK9X8NjuxgMhwBH9DpDUwPnX476PG8XPPlllqmOA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDQwXynTdgEoolKZSxIj3xNF7FR1BRtZJJMQXZERROm+68/K+TnsHgGGmo/LC0Ph2mJs1nXnHz1D63LtVndsHHG3mpuX8vOsbW8XH3QLdnTDXUxyXxEbxWVnVPtr/qSWe5jFZ0yYh9WQSPtS6Y8J/Ar3aPjfan440nVRi5L9ZL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUDiGJbZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A5EC4CEED;
-	Mon, 23 Jun 2025 21:43:11 +0000 (UTC)
+	 MIME-Version; b=Zj6EBz3YhqAz8exO+nZ6cKd134AHCYLzNIabHgJEZ9XqXBJBv5rBBP6YT+q1Wsu6tH2SrXl5t6/Q/KLL0yx/aERA1b3HzUVS9q9kqvu6SnXqxCVKt6AwFrcpIIKj/epnZZ2PO8JKM0z+h2+C+zTVm8kAPcSRTqkPoVWn8FQgx2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VfXZda6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99B9AC4CEEA;
+	Mon, 23 Jun 2025 21:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714992;
-	bh=K5qo4OHiO7hIVDbZMJCrpsBVPXj2gFBaw+3CT7k/EyA=;
+	s=korg; t=1750715006;
+	bh=XdMCK9X8NjuxgMhwBH9DpDUwPnX476PG8XPPlllqmOA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pUDiGJbZ+rJ5GNCBl3vwni0aw6g49DwjWgWFgkOYcKIaFwiOnCVnQ0tOwBDRhM9cr
-	 ur4VsW9BYpwon6+z99mI/rUs3uu70ZEYos/1Qdm8M+PQDSlUviIkvVikdLvuTfp3aa
-	 T7g+s6cOKhEcoABrK5QWrgx/dURCo8U2ENwXpc+Q=
+	b=VfXZda6wAXzvLKN3Z32EsuACiLh9Zbw8WmuoyXT6GOAqagVKiiADyzC/oMAaPrdwe
+	 bLB7rixFoM+rX33rJtzabf6KZ1FKkQRVHuQLjUl1wjnEok6aQmaKQQTu+0D8/vtHWO
+	 0yYkooyn2wCiwUWRm2tusxrwnJY35X/0+Ni40fd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Chandan Babu R <chandanbabu@kernel.org>,
 	Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 208/508] xfs: attr forks require attr, not attr2
-Date: Mon, 23 Jun 2025 15:04:13 +0200
-Message-ID: <20250623130650.385031884@linuxfoundation.org>
+Subject: [PATCH 6.1 209/508] xfs: conditionally allow FS_XFLAG_REALTIME changes if S_DAX is set
+Date: Mon, 23 Jun 2025 15:04:14 +0200
+Message-ID: <20250623130650.407767767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -70,17 +70,15 @@ Content-Transfer-Encoding: 8bit
 
 From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 73c34b0b85d46bf9c2c0b367aeaffa1e2481b136 ]
+[ Upstream commit 8d16762047c627073955b7ed171a36addaf7b1ff ]
 
-It turns out that I misunderstood the difference between the attr and
-attr2 feature bits.  "attr" means that at some point an attr fork was
-created somewhere in the filesystem.  "attr2" means that inodes have
-variable-sized forks, but says nothing about whether or not there
-actually /are/ attr forks in the system.
+If a file has the S_DAX flag (aka fsdax access mode) set, we cannot
+allow users to change the realtime flag unless the datadev and rtdev
+both support fsdax access modes.  Even if there are no extents allocated
+to the file, the setattr thread could be racing with another thread
+that has already started down the write code paths.
 
-If we have an attr fork, we only need to check that attr is set.
-
-Fixes: 99d9d8d05da26 ("xfs: scrub inode block mappings")
+Fixes: ba23cba9b3bdc ("fs: allow per-device dax status checking for filesystems")
 Signed-off-by: Darrick J. Wong <djwong@kernel.org>
 Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
@@ -88,28 +86,31 @@ Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
 Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/scrub/bmap.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ fs/xfs/xfs_ioctl.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/xfs/scrub/bmap.c b/fs/xfs/scrub/bmap.c
-index f0b9cb6506fdd..45b135929144e 100644
---- a/fs/xfs/scrub/bmap.c
-+++ b/fs/xfs/scrub/bmap.c
-@@ -647,7 +647,13 @@ xchk_bmap(
- 		}
- 		break;
- 	case XFS_ATTR_FORK:
--		if (!xfs_has_attr(mp) && !xfs_has_attr2(mp))
+diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
+index 1afb1b1b831ea..ef3dc07785669 100644
+--- a/fs/xfs/xfs_ioctl.c
++++ b/fs/xfs/xfs_ioctl.c
+@@ -1128,6 +1128,17 @@ xfs_ioctl_setattr_xflags(
+ 		/* Can't change realtime flag if any extents are allocated. */
+ 		if (ip->i_df.if_nextents || ip->i_delayed_blks)
+ 			return -EINVAL;
++
 +		/*
-+		 * "attr" means that an attr fork was created at some point in
-+		 * the life of this filesystem.  "attr2" means that inodes have
-+		 * variable-sized data/attr fork areas.  Hence we only check
-+		 * attr here.
++		 * If S_DAX is enabled on this file, we can only switch the
++		 * device if both support fsdax.  We can't update S_DAX because
++		 * there might be other threads walking down the access paths.
 +		 */
-+		if (!xfs_has_attr(mp))
- 			xchk_ino_set_corrupt(sc, sc->ip->i_ino);
- 		break;
- 	default:
++		if (IS_DAX(VFS_I(ip)) &&
++		    (mp->m_ddev_targp->bt_daxdev == NULL ||
++		     (mp->m_rtdev_targp &&
++		      mp->m_rtdev_targp->bt_daxdev == NULL)))
++			return -EINVAL;
+ 	}
+ 
+ 	if (rtflag) {
 -- 
 2.39.5
 
