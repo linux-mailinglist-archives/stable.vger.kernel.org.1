@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5AAE506E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB58FAE527A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18A9188A3E4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21647A36BD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 267F51F4628;
-	Mon, 23 Jun 2025 21:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0751F5820;
+	Mon, 23 Jun 2025 21:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdGSQDv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0gUKg/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B9E1E51FA;
-	Mon, 23 Jun 2025 21:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD322AEE4;
+	Mon, 23 Jun 2025 21:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713871; cv=none; b=Taltqo4BVzqXL3ZJRZJUm3EZaT77sZE5zePCIC0w1JzqlwEGt00kJvkOqWto3vAtgwAyB2s4Ez2mKKP4hxOy1xF9FSaI9t4YZJBV2JmlB0sFb9EMCvUJpwOUuRGt0sp1LYS4jPxYgmTIEKWYVaJzzxAnqCECk06g9fQRGXK5pt4=
+	t=1750715053; cv=none; b=LBRS+GUcT9lZ1BokByX8B//tDBQVFYOCRixBOfPgNqZGDUDHc5ZAw5Rl3FLYBp0ANMbc3oRL1LsFA3YqmjW8kSzJLIsNZiqVn1U2c0kpP8T1JxOjB5q5md0o2fxR6Eic2aGZ4wPQG3GRPjHwbROpEsXJ1qOcbaxD3/XW0LBf8/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713871; c=relaxed/simple;
-	bh=EFIFhzGF5UamCc9ROWph60/lp2yTETaJx+rInjPj3Cc=;
+	s=arc-20240116; t=1750715053; c=relaxed/simple;
+	bh=khPw7qlwfoC0lZSp8m+MGaMEiEvNSqll0TPuivmuu04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQzc9SXO3wg4ehLf9MBFk6gbpt+2yK3b8fotI7VnYBvggiVLWEJFQ0rb3kTBP2R+QQiRK8al9080RAeLGsVVEHZDDkT+VFWMY6lF+YjENOaKCojyNX2wy3d3fbiqD/W6YgNMP082rit4vmxL9xKxudStHDthRbELAgCclnjmD2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdGSQDv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 735E1C4CEEA;
-	Mon, 23 Jun 2025 21:24:31 +0000 (UTC)
+	 MIME-Version; b=jPYp2zO7ffEfkOPhhbra0oGNAO1FanpE2u9t5v27wrdR3DVq2TSPSm2Xwu5/d1oHZPQYRt1cZLMlaMvK5Uowy7tavUOZbXOJmytfl7BivqUk9BdiM81f9RV1KpPnBPx3nN6ZJbZv8gxTqkqnrBvMha/ExtGciGMD72QkO/2u6s8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0gUKg/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89A2C4CEEA;
+	Mon, 23 Jun 2025 21:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713871;
-	bh=EFIFhzGF5UamCc9ROWph60/lp2yTETaJx+rInjPj3Cc=;
+	s=korg; t=1750715053;
+	bh=khPw7qlwfoC0lZSp8m+MGaMEiEvNSqll0TPuivmuu04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdGSQDv41St8/voHPMPBkWu5ELDI+DsKrVMW9uZmr/LJ54Pzd2bcaxrtPHzzHUt5L
-	 EoHArdUDjTOfHhIGPpZ9HxTaKA75tkg9uwLs3LsjbCepwscXeKZF/HEvF5s2QbE6rF
-	 QiAmzI9i9ezYfVGtDBtbNf6/LLqKfBrdBpDlF+wU=
+	b=u0gUKg/rd87re0IDtp3yPl9Sdqvuha2bYt0TOXdAbFD3s40P6+qCC/GJMFVEG2tW7
+	 GCS2TKKbY7q4dbKGKexwJgHodLr6c1ah0viDF5X3ZdXTju73M17Lnaoh1nJIGpGIju
+	 wL2Mh4ovFvXF2nQz5c5x2fAqW0Ionabh4gFnJ9hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 191/355] NFC: nci: uart: Set tty->disc_data only in success path
+	Collin Funk <collin.funk1@gmail.com>,
+	Paul Eggert <eggert@cs.ucla.edu>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 434/592] fs/xattr.c: fix simple_xattr_list()
 Date: Mon, 23 Jun 2025 15:06:32 +0200
-Message-ID: <20250623130632.421372594@linuxfoundation.org>
+Message-ID: <20250623130710.759939744@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit fc27ab48904ceb7e4792f0c400f1ef175edf16fe upstream.
+[ Upstream commit 800d0b9b6a8b1b354637b4194cc167ad1ce2bdd3 ]
 
-Setting tty->disc_data before opening the NCI device means we need to
-clean it up on error paths.  This also opens some short window if device
-starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
-(broken hardware?).  Close the window by exposing tty->disc_data only on
-the success path, when opening of the NCI device and try_module_get()
-succeeds.
+commit 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always
+include security.* xattrs") failed to reset err after the call to
+security_inode_listsecurity(), which returns the length of the
+returned xattr name. This results in simple_xattr_list() incorrectly
+returning this length even if a POSIX acl is also set on the inode.
 
-The code differs in error path in one aspect: tty->disc_data won't be
-ever assigned thus NULL-ified.  This however should not be relevant
-difference, because of "tty->disc_data=NULL" in nci_uart_tty_open().
+Reported-by: Collin Funk <collin.funk1@gmail.com>
+Closes: https://lore.kernel.org/selinux/8734ceal7q.fsf@gmail.com/
+Reported-by: Paul Eggert <eggert@cs.ucla.edu>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2369561
+Fixes: 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always include security.* xattrs")
 
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20250618073649.25049-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/20250605165116.2063-1-stephen.smalley.work@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/uart.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/xattr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/nfc/nci/uart.c
-+++ b/net/nfc/nci/uart.c
-@@ -131,22 +131,22 @@ static int nci_uart_set_driver(struct tt
- 
- 	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
- 	nu->tty = tty;
--	tty->disc_data = nu;
- 	skb_queue_head_init(&nu->tx_q);
- 	INIT_WORK(&nu->write_work, nci_uart_write_work);
- 	spin_lock_init(&nu->rx_lock);
- 
- 	ret = nu->ops.open(nu);
- 	if (ret) {
--		tty->disc_data = NULL;
- 		kfree(nu);
-+		return ret;
- 	} else if (!try_module_get(nu->owner)) {
- 		nu->ops.close(nu);
--		tty->disc_data = NULL;
- 		kfree(nu);
- 		return -ENOENT;
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 8ec5b0204bfdc..600ae97969cf2 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -1479,6 +1479,7 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+ 		buffer += err;
  	}
--	return ret;
-+	tty->disc_data = nu;
-+
-+	return 0;
- }
+ 	remaining_size -= err;
++	err = 0;
  
- /* ------ LDISC part ------ */
+ 	read_lock(&xattrs->lock);
+ 	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
+-- 
+2.39.5
+
 
 
 
