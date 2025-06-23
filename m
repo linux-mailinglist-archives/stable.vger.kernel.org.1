@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10A0DAE52EB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED08CAE5123
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE14F442C80
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B3CA4413DC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F2B70838;
-	Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF6174315A;
+	Mon, 23 Jun 2025 21:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r79HXxzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gepxXCM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C213FD4;
-	Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA8DC2E0;
+	Mon, 23 Jun 2025 21:31:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715284; cv=none; b=LMz6zp5fUqfkdc3AHjJXrBNFA9N93IJqDyfhPK+DtuLM8rrxhBDKKXkWY3AKhQafBHr4SD4kY5RnxaFDHKr31LUDft2dzX3MnBn54ChcKBvhPpAcp4lnGiypwXSISmjB057/R5ha0O6ar4Deb97zHavEvGyIzS4LE+5+tk2wAsQ=
+	t=1750714262; cv=none; b=dHWo0ZZ4c7VxodSLBq8nq8Ck0/z4FFMVY7GzNvOBgKSVx5JXfXLCqYS//qxMoo9Jia5ydFpq+yA7smlKI07WkzO/JZON3MMmV3ByDEv8xBWbkyB9N3nJ2Qtt9Ftuw7LKG6CaHBxppWG9fOdogaXka6y/Z3K3++0FrfOIb189/08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715284; c=relaxed/simple;
-	bh=u3eKzRRqEjmiLbqOzGsFDmKoQ058RwK3dfRhrMswoHE=;
+	s=arc-20240116; t=1750714262; c=relaxed/simple;
+	bh=lAbfPB2Ibu6TgK4hBybmPJ3V4U+iFUIOsak/MYZLigs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cU+NsyS56aBj8A1G8e+lpiivKczDoSaxEI1PYxU/JRBGv+2A4ijZ1JgpmEggnTmL/5nR/2KjMVjG8n2nLpw9nnybHJTF1Z1GTjfFt0gEEEEyiKS1a9juSywnuNVXUZ2TynWoaBggkA6yOVCfs7Ai06CBHS7eChvcugwA1FX2ZEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r79HXxzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3863EC4CEEA;
-	Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rvFL2Tk+EsKTR+n4uAhXg/5wtmYeF0BFj1iPqu+rwT6Ejc2ScSR6ZqeDGL/Z3MZNA3RLrkvVVmZdt2XlL58/vZRI/x5Dy+mo4MvaY00HLQQarqt9nHPZk78kfL6NOV4E43AC8qZACHiQisLERS0KsWt3nwKbkvxT8UkJTy0XE94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gepxXCM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19EE3C4CEEA;
+	Mon, 23 Jun 2025 21:31:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715284;
-	bh=u3eKzRRqEjmiLbqOzGsFDmKoQ058RwK3dfRhrMswoHE=;
+	s=korg; t=1750714262;
+	bh=lAbfPB2Ibu6TgK4hBybmPJ3V4U+iFUIOsak/MYZLigs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r79HXxzbcEMD03zTXyIRjWSsArlFy96Prtv9ieiolZUAyow9jYoCZ2RLEgMDDcgtQ
-	 7BpI+otal0CPMKTNA+2me50tZzdoiUgX116rhWBnPGOWxkVweQ+N/MV2/x7XaN4Ig7
-	 FeAZoWFjIzmiMEYdUMXXknEzVniT0ZEJnpUTg3ns=
+	b=gepxXCM6A9fmErzDx4pmNwVPKWrsLmMTqEoXMHBaRfKF/ItIiAREAOVY6LscUo9lp
+	 eIO2LaPl0Jl/1ub+5XIpIoi4xu7/gtVmcLly8TdWe8EW6SsStaBCZQ80Qys9DSr5Ir
+	 wI9b/DZLMUpQvNdY6yEAeWrY4p3WXVyERU++0IMA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.15 243/411] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
+	Seunghun Han <kkamagui@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 126/290] ACPICA: fix acpi parse and parseext cache leaks
 Date: Mon, 23 Jun 2025 15:06:27 +0200
-Message-ID: <20250623130639.769076971@linuxfoundation.org>
+Message-ID: <20250623130630.720557787@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,241 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Seunghun Han <kkamagui@gmail.com>
 
-commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
+[ Upstream commit bed18f0bdcd6737a938264a59d67923688696fc4 ]
 
-The function sunxi_nfc_hw_ecc_write_chunk() calls the
-sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
-function sunxi_nfc_randomizer_config(). Consequently, the randomization
-might not conduct correctly, which will affect the lifespan of NAND flash.
-A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
+ACPICA commit 8829e70e1360c81e7a5a901b5d4f48330e021ea5
 
-Add the sunxi_nfc_randomizer_config() to config randomizer.
+I'm Seunghun Han, and I work for National Security Research Institute of
+South Korea.
 
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I have been doing a research on ACPI and found an ACPI cache leak in ACPI
+early abort cases.
+
+Boot log of ACPI cache leak is as follows:
+[    0.352414] ACPI: Added _OSI(Module Device)
+[    0.353182] ACPI: Added _OSI(Processor Device)
+[    0.353182] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    0.353182] ACPI: Added _OSI(Processor Aggregator Device)
+[    0.356028] ACPI: Unable to start the ACPI Interpreter
+[    0.356799] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
+[    0.360215] kmem_cache_destroy Acpi-State: Slab cache still has objects
+[    0.360648] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W
+4.12.0-rc4-next-20170608+ #10
+[    0.361273] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
+virtual_box 12/01/2006
+[    0.361873] Call Trace:
+[    0.362243]  ? dump_stack+0x5c/0x81
+[    0.362591]  ? kmem_cache_destroy+0x1aa/0x1c0
+[    0.362944]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.363296]  ? acpi_os_delete_cache+0xa/0x10
+[    0.363646]  ? acpi_ut_delete_caches+0x6d/0x7b
+[    0.364000]  ? acpi_terminate+0xa/0x14
+[    0.364000]  ? acpi_init+0x2af/0x34f
+[    0.364000]  ? __class_create+0x4c/0x80
+[    0.364000]  ? video_setup+0x7f/0x7f
+[    0.364000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.364000]  ? do_one_initcall+0x4e/0x1a0
+[    0.364000]  ? kernel_init_freeable+0x189/0x20a
+[    0.364000]  ? rest_init+0xc0/0xc0
+[    0.364000]  ? kernel_init+0xa/0x100
+[    0.364000]  ? ret_from_fork+0x25/0x30
+
+I analyzed this memory leak in detail. I found that “Acpi-State” cache and
+“Acpi-Parse” cache were merged because the size of cache objects was same
+slab cache size.
+
+I finally found “Acpi-Parse” cache and “Acpi-parse_ext” cache were leaked
+using SLAB_NEVER_MERGE flag in kmem_cache_create() function.
+
+Real ACPI cache leak point is as follows:
+[    0.360101] ACPI: Added _OSI(Module Device)
+[    0.360101] ACPI: Added _OSI(Processor Device)
+[    0.360101] ACPI: Added _OSI(3.0 _SCP Extensions)
+[    0.361043] ACPI: Added _OSI(Processor Aggregator Device)
+[    0.364016] ACPI: Unable to start the ACPI Interpreter
+[    0.365061] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
+[    0.368174] kmem_cache_destroy Acpi-Parse: Slab cache still has objects
+[    0.369332] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
+4.12.0-rc4-next-20170608+ #8
+[    0.371256] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
+virtual_box 12/01/2006
+[    0.372000] Call Trace:
+[    0.372000]  ? dump_stack+0x5c/0x81
+[    0.372000]  ? kmem_cache_destroy+0x1aa/0x1c0
+[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.372000]  ? acpi_os_delete_cache+0xa/0x10
+[    0.372000]  ? acpi_ut_delete_caches+0x56/0x7b
+[    0.372000]  ? acpi_terminate+0xa/0x14
+[    0.372000]  ? acpi_init+0x2af/0x34f
+[    0.372000]  ? __class_create+0x4c/0x80
+[    0.372000]  ? video_setup+0x7f/0x7f
+[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.372000]  ? do_one_initcall+0x4e/0x1a0
+[    0.372000]  ? kernel_init_freeable+0x189/0x20a
+[    0.372000]  ? rest_init+0xc0/0xc0
+[    0.372000]  ? kernel_init+0xa/0x100
+[    0.372000]  ? ret_from_fork+0x25/0x30
+[    0.388039] kmem_cache_destroy Acpi-parse_ext: Slab cache still has objects
+[    0.389063] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
+4.12.0-rc4-next-20170608+ #8
+[    0.390557] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
+virtual_box 12/01/2006
+[    0.392000] Call Trace:
+[    0.392000]  ? dump_stack+0x5c/0x81
+[    0.392000]  ? kmem_cache_destroy+0x1aa/0x1c0
+[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.392000]  ? acpi_os_delete_cache+0xa/0x10
+[    0.392000]  ? acpi_ut_delete_caches+0x6d/0x7b
+[    0.392000]  ? acpi_terminate+0xa/0x14
+[    0.392000]  ? acpi_init+0x2af/0x34f
+[    0.392000]  ? __class_create+0x4c/0x80
+[    0.392000]  ? video_setup+0x7f/0x7f
+[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
+[    0.392000]  ? do_one_initcall+0x4e/0x1a0
+[    0.392000]  ? kernel_init_freeable+0x189/0x20a
+[    0.392000]  ? rest_init+0xc0/0xc0
+[    0.392000]  ? kernel_init+0xa/0x100
+[    0.392000]  ? ret_from_fork+0x25/0x30
+
+When early abort is occurred due to invalid ACPI information, Linux kernel
+terminates ACPI by calling acpi_terminate() function. The function calls
+acpi_ut_delete_caches() function to delete local caches (acpi_gbl_namespace_
+cache, state_cache, operand_cache, ps_node_cache, ps_node_ext_cache).
+
+But the deletion codes in acpi_ut_delete_caches() function only delete
+slab caches using kmem_cache_destroy() function, therefore the cache
+objects should be flushed before acpi_ut_delete_caches() function.
+
+"Acpi-Parse" cache and "Acpi-ParseExt" cache are used in an AML parse
+function, acpi_ps_parse_loop(). The function should complete all ops
+using acpi_ps_complete_final_op() when an error occurs due to invalid
+AML codes.
+However, the current implementation of acpi_ps_complete_final_op() does not
+complete all ops when it meets some errors and this cause cache leak.
+
+This cache leak has a security threat because an old kernel (<= 4.9) shows
+memory locations of kernel functions in stack dump. Some malicious users
+could use this information to neutralize kernel ASLR.
+
+To fix ACPI cache leak for enhancing security, I made a patch to complete all
+ops unconditionally for acpi_ps_complete_final_op() function.
+
+I hope that this patch improves the security of Linux kernel.
+
+Thank you.
+
+Link: https://github.com/acpica/acpica/commit/8829e70e
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2363774.ElGaqSPkdT@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/acpica/psobject.c | 52 ++++++++++------------------------
+ 1 file changed, 15 insertions(+), 37 deletions(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1061,6 +1061,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
- 	if (ret)
- 		return ret;
+diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
+index 54471083ba545..0bce1baaa62b3 100644
+--- a/drivers/acpi/acpica/psobject.c
++++ b/drivers/acpi/acpica/psobject.c
+@@ -636,7 +636,8 @@ acpi_status
+ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 			  union acpi_parse_object *op, acpi_status status)
+ {
+-	acpi_status status2;
++	acpi_status return_status = status;
++	u8 ascending = TRUE;
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+ 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
  
+@@ -650,7 +651,7 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 			  op));
+ 	do {
+ 		if (op) {
+-			if (walk_state->ascending_callback != NULL) {
++			if (ascending && walk_state->ascending_callback != NULL) {
+ 				walk_state->op = op;
+ 				walk_state->op_info =
+ 				    acpi_ps_get_opcode_info(op->common.
+@@ -672,49 +673,26 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 				}
+ 
+ 				if (status == AE_CTRL_TERMINATE) {
+-					status = AE_OK;
+-
+-					/* Clean up */
+-					do {
+-						if (op) {
+-							status2 =
+-							    acpi_ps_complete_this_op
+-							    (walk_state, op);
+-							if (ACPI_FAILURE
+-							    (status2)) {
+-								return_ACPI_STATUS
+-								    (status2);
+-							}
+-						}
+-
+-						acpi_ps_pop_scope(&
+-								  (walk_state->
+-								   parser_state),
+-								  &op,
+-								  &walk_state->
+-								  arg_types,
+-								  &walk_state->
+-								  arg_count);
+-
+-					} while (op);
+-
+-					return_ACPI_STATUS(status);
++					ascending = FALSE;
++					return_status = AE_CTRL_TERMINATE;
+ 				}
+ 
+ 				else if (ACPI_FAILURE(status)) {
+ 
+ 					/* First error is most important */
+ 
+-					(void)
+-					    acpi_ps_complete_this_op(walk_state,
+-								     op);
+-					return_ACPI_STATUS(status);
++					ascending = FALSE;
++					return_status = status;
+ 				}
+ 			}
+ 
+-			status2 = acpi_ps_complete_this_op(walk_state, op);
+-			if (ACPI_FAILURE(status2)) {
+-				return_ACPI_STATUS(status2);
++			status = acpi_ps_complete_this_op(walk_state, op);
++			if (ACPI_FAILURE(status)) {
++				ascending = FALSE;
++				if (ACPI_SUCCESS(return_status) ||
++				    return_status == AE_CTRL_TERMINATE) {
++					return_status = status;
++				}
+ 			}
+ 		}
+ 
+@@ -724,5 +702,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
+ 
+ 	} while (op);
+ 
+-	return_ACPI_STATUS(status);
++	return_ACPI_STATUS(return_status);
+ }
+-- 
+2.39.5
+
 
 
 
