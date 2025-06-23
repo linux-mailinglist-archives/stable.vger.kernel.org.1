@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C33F6AE522D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847FBAE50EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C501B64893
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B8D14A248B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7452222A9;
-	Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D627D221723;
+	Mon, 23 Jun 2025 21:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8Li/GkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pBXtwjE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99844315A;
-	Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 939431E5B71;
+	Mon, 23 Jun 2025 21:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714865; cv=none; b=PyyGD+qkXlR/d2WnjhzCX1DVtaOOOTH7ueMZN3reQMqx4wnECaD47cGESPYm8Iv/JWN3J5vx41qRv4Skzqe9BzEL6C+4BI0rWRKgEusnIk7QnQV1dFQMgl64qdtKXo7Gsv4wobqa+d09c4NEXtxYQQdCmi+/xGNu7/2pV7gjwok=
+	t=1750714157; cv=none; b=VaM7a97Yc/zdU87PXqCENlsXomPocpP0/qJfZqPA1yjqPo3wVpgDKRkpnfplvvamgcOLkQkAl75uSJrw9zk/mkHEHAWobCRI/CGXt9I/YTtm19zrSKGOv/5WZWN/aCToXbK9FRCGZO14VeOHXuJruPxwWE7Phih9zDUvehdPoL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714865; c=relaxed/simple;
-	bh=DxjW80zt/sk0J6mKBJI3VWOkA3zxi8sKVJ2EqgmuMLE=;
+	s=arc-20240116; t=1750714157; c=relaxed/simple;
+	bh=ngtdygAut+1bEYMuRKdp/8uPJS9xkWC5vFiaw5hmHNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivPo4ogFSzTmeqeQc3XVwa2uXNyOjYRAUM0vprWpjeEuC5VdYBqz+sIOpC+vmVATTerXWtEOrHiuk1P29QNk5oywtjbpHjwcjF4suZs9KDlAvz4P/ouWaH1+pMjJTAM6MLOvohfytSUn0WuZleTJ3zeyLE6WVG7rz6XUbmZFo4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8Li/GkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DB6C4CEEA;
-	Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
+	 MIME-Version; b=HPnPF0BvvKHmReP+LCpb0HQDe0/4aID+Y8dgytdXumKODoSn/HGAhlJ/qHD/DNTK8a4PuVORoEVb1UKZU2a838HDr6QgA2k4Qr5BOeeFC9eAPJ/ED0UfPRB+nloT0M7JukCJOpoUl3wDkZV9rQfnMPSARQOr5bpOXyvLJ+uaP8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pBXtwjE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2897FC4CEEA;
+	Mon, 23 Jun 2025 21:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714865;
-	bh=DxjW80zt/sk0J6mKBJI3VWOkA3zxi8sKVJ2EqgmuMLE=;
+	s=korg; t=1750714157;
+	bh=ngtdygAut+1bEYMuRKdp/8uPJS9xkWC5vFiaw5hmHNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8Li/GkY/KmjJh316MGpXJKWsJijsNUj2eVwzukPMCeNflY4gv/xgZ7Mov76zZgzh
-	 g0mAn4IPdBvmlJAgNRLtySei2HRlZO22KI7UVWDTZSiQg9cltn7nrYXMzrh5QAeWrT
-	 2xDZU+0503u699qdyRRGlmZsiHznHDcRVCBh1LTA=
+	b=pBXtwjE20Jw1cziRkZuAxSeBO0n+imbs4GhoO3uPLz72JNaNJKFXhWKPPkqs5i6yK
+	 hLJGsFKjX7KPzJVcb9rBkZMlb/FXnZh+yuLrscu3N7i6qBw59Uyqqg1GVzIsvTkLZp
+	 4uOLYvicqarh7lbUk2dAxTnV+iu8aELQq8Rkgh9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Luis Henriques <luis@igalia.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 443/592] fs: drop assert in file_seek_cur_needs_f_lock
+Subject: [PATCH 6.6 140/290] emulex/benet: correct command version selection in be_cmd_get_stats()
 Date: Mon, 23 Jun 2025 15:06:41 +0200
-Message-ID: <20250623130710.968665946@linuxfoundation.org>
+Message-ID: <20250623130631.112208291@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luis Henriques <luis@igalia.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit dd2d6b7f6f519d078a866a36a625b0297d81c5bc ]
+[ Upstream commit edb888d29748cee674006a52e544925dacc7728e ]
 
-The assert in function file_seek_cur_needs_f_lock() can be triggered very
-easily because there are many users of vfs_llseek() (such as overlayfs)
-that do their custom locking around llseek instead of relying on
-fdget_pos(). Just drop the overzealous assertion.
+Logic here always sets hdr->version to 2 if it is not a BE3 or Lancer chip,
+even if it is BE2. Use 'else if' to prevent multiple assignments, setting
+version 0 for BE2, version 1 for BE3 and Lancer, and version 2 for others.
+Fixes potential incorrect version setting when BE2_chip and
+BE3_chip/lancer_chip checks could both be true.
 
-Fixes: da06e3c51794 ("fs: don't needlessly acquire f_lock")
-Suggested-by: Jan Kara <jack@suse.cz>
-Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
-Signed-off-by: Luis Henriques <luis@igalia.com>
-Link: https://lore.kernel.org/20250613101111.17716-1-luis@igalia.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250519141731.691136-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/file.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/file.c b/fs/file.c
-index 3a3146664cf37..b6db031545e65 100644
---- a/fs/file.c
-+++ b/fs/file.c
-@@ -1198,8 +1198,12 @@ bool file_seek_cur_needs_f_lock(struct file *file)
- 	if (!(file->f_mode & FMODE_ATOMIC_POS) && !file->f_op->iterate_shared)
- 		return false;
- 
--	VFS_WARN_ON_ONCE((file_count(file) > 1) &&
--			 !mutex_is_locked(&file->f_pos_lock));
-+	/*
-+	 * Note that we are not guaranteed to be called after fdget_pos() on
-+	 * this file obj, in which case the caller is expected to provide the
-+	 * appropriate locking.
-+	 */
-+
- 	return true;
- }
- 
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index 51b8377edd1d0..a89aa4ac0a064 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -1609,7 +1609,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	/* version 1 of the cmd is not supported only by BE2 */
+ 	if (BE2_chip(adapter))
+ 		hdr->version = 0;
+-	if (BE3_chip(adapter) || lancer_chip(adapter))
++	else if (BE3_chip(adapter) || lancer_chip(adapter))
+ 		hdr->version = 1;
+ 	else
+ 		hdr->version = 2;
 -- 
 2.39.5
 
