@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157295-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9CD3AE5356
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6641AAE5020
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D02941B66A1D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2196F3BC27F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239A6224B1E;
-	Mon, 23 Jun 2025 21:51:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47CA51E5B71;
+	Mon, 23 Jun 2025 21:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRi1kv71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KUEsP02B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D09D5224AFA;
-	Mon, 23 Jun 2025 21:51:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040261ACEDA;
+	Mon, 23 Jun 2025 21:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715518; cv=none; b=acYULNuJW6iNZJtdlm5KrMxLpp7KVpsneyQoBODtz0eVVezd7B0QOyiCSX+UU3Rczx9W7ivRqAiUijdkKVWtLwBVS0TLVR5IKt3JkFRJC6jIXycU6LCK0KpK3F+63/fUI20qViLgd/Atylv5JoPpX6Kbhtj+zs0F7Rp/nMU2few=
+	t=1750713739; cv=none; b=nH21kp3KxfyVndEkwRPLTyaquzVsLW7bjgue2MUpJAx/0y94u7qJsYHqPrW2ZDPCLq35Jb2UIY5hMg2QWcLMvWkHxT3v9G+jJ2Hd/FmpiREJnOnfgQ74p442IdMBdKWeHLdiatx4Gu4bLgEoebHTtVqIS0j5H0MGR13e/8LDtn8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715518; c=relaxed/simple;
-	bh=53/A5mWpzhgWoFXLuPNXVE4dAgQ9i6rRJDJD61aDHdk=;
+	s=arc-20240116; t=1750713739; c=relaxed/simple;
+	bh=1w5TCGJmUVZmHU9cvlpxmyNUAfW+IKe/lQ+Yf6N43Dk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRCEcviHKjCNNx7bxv/YFOXCSUZXi2YmIevpn81pLcuMsiqbQ14B/CaunXbdSbXmKFeVX1TqvI5Xyf3u9YCUOTlHHjsjnGi3nP8tgUj0pFXVP6d7qFQOnR3MV7pP2SlZSpnw/njoa3DdJ2HQYDP+XMyzcbqhY/HhS3Jn9rf0NSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRi1kv71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6864BC4CEF1;
-	Mon, 23 Jun 2025 21:51:58 +0000 (UTC)
+	 MIME-Version; b=abVDs7H+srH0xHz6SsykRSTcca+1BT0lFmQCB0jYOftqavXVQW9ZPEOZkjKwDkCUUjhe0DVD0aXxFse8hvpWzJlIY7aNXMob4EoNPRE9fat1ivXX3/tJj3C5XHVA2fAF19usAQIP87zvodyelEqG32vWjR1Lhe/Jnby/2pg8ahI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KUEsP02B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA9DC4CEEA;
+	Mon, 23 Jun 2025 21:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715518;
-	bh=53/A5mWpzhgWoFXLuPNXVE4dAgQ9i6rRJDJD61aDHdk=;
+	s=korg; t=1750713738;
+	bh=1w5TCGJmUVZmHU9cvlpxmyNUAfW+IKe/lQ+Yf6N43Dk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRi1kv71bJQbOgcZqmwbVZ27xf7J4rLfE4JA+r9Y1yPp7zh5EvPhZSpc6AhDYPWBT
-	 fRHzBmK0O0EessUD3aEjQEH0NZ6TXmtzlaqLTcAy3KmpNGVCJU9wPan1QpK3Y+gFHy
-	 zT6xq06eEikaKckUp1Q4UOo69sYl1ToO8hYeNTHk=
+	b=KUEsP02BTg6yXijqo7Th4/KaTjGFGplBo1Azr9bU4IalqgIZB1en+kvZvXnidw+ta
+	 x01Qo1GvBqXcKFs94E9FyeQ/rqBLL7mGP3hAVCMraWEwk/nqs+zZQzsSXN2mqV/Oha
+	 BOGCgyTYWjLsqinGYn7InDN6/cMgsuXL1GuXcZ1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 211/414] net: dlink: add synchronization for stats update
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 087/290] KVM: SVM: Clear current_vmcb during vCPU free for all *possible* CPUs
 Date: Mon, 23 Jun 2025 15:05:48 +0200
-Message-ID: <20250623130647.283197880@linuxfoundation.org>
+Message-ID: <20250623130629.598102000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
+commit 1bee4838eb3a2c689f23c7170ea66ae87ea7d93a upstream.
 
-This patch synchronizes code that accesses from both user-space
-and IRQ contexts. The `get_stats()` function can be called from both
-context.
+When freeing a vCPU and thus its VMCB, clear current_vmcb for all possible
+CPUs, not just online CPUs, as it's theoretically possible a CPU could go
+offline and come back online in conjunction with KVM reusing the page for
+a new VMCB.
 
-`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
-in the `tx_errors()` function. Therefore, these fields must also be
-protected by synchronized.
-
-There is no code that accessses `dev->stats.tx_errors` between the
-previous and updated lines, so the updating point can be moved.
-
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/20250320013759.3965869-1-yosry.ahmed@linux.dev
+Fixes: fd65d3142f73 ("kvm: svm: Ensure an IBPB on all affected CPUs when freeing a vmcb")
+Cc: stable@vger.kernel.org
+Cc: Jim Mattson <jmattson@google.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+[sean: split to separate patch, write changelog]
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
- drivers/net/ethernet/dlink/dl2k.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 6bf8a7aeef908..787218d60c6b1 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
- 	np->ioaddr = ioaddr;
- 	np->chip_id = chip_idx;
- 	np->pdev = pdev;
-+
-+	spin_lock_init(&np->stats_lock);
- 	spin_lock_init (&np->tx_lock);
- 	spin_lock_init (&np->rx_lock);
- 
-@@ -865,7 +867,6 @@ tx_error (struct net_device *dev, int tx_status)
- 	frame_id = (tx_status & 0xffff0000);
- 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
- 		dev->name, tx_status, frame_id);
--	dev->stats.tx_errors++;
- 	/* Ttransmit Underrun */
- 	if (tx_status & 0x10) {
- 		dev->stats.tx_fifo_errors++;
-@@ -902,9 +903,15 @@ tx_error (struct net_device *dev, int tx_status)
- 		rio_set_led_mode(dev);
- 		/* Let TxStartThresh stay default value */
- 	}
-+
-+	spin_lock(&np->stats_lock);
- 	/* Maximum Collisions */
- 	if (tx_status & 0x08)
- 		dev->stats.collisions++;
-+
-+	dev->stats.tx_errors++;
-+	spin_unlock(&np->stats_lock);
-+
- 	/* Restart the Tx */
- 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
- }
-@@ -1073,7 +1080,9 @@ get_stats (struct net_device *dev)
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1503,7 +1503,7 @@ static void svm_clear_current_vmcb(struc
+ {
  	int i;
- #endif
- 	unsigned int stat_reg;
-+	unsigned long flags;
  
-+	spin_lock_irqsave(&np->stats_lock, flags);
- 	/* All statistics registers need to be acknowledged,
- 	   else statistic overflow could cause problems */
- 
-@@ -1123,6 +1132,9 @@ get_stats (struct net_device *dev)
- 	dr16(TCPCheckSumErrors);
- 	dr16(UDPCheckSumErrors);
- 	dr16(IPCheckSumErrors);
-+
-+	spin_unlock_irqrestore(&np->stats_lock, flags);
-+
- 	return &dev->stats;
+-	for_each_online_cpu(i)
++	for_each_possible_cpu(i)
+ 		cmpxchg(per_cpu_ptr(&svm_data.current_vmcb, i), vmcb, NULL);
  }
  
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae960..56aff2f0bdbfa 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -372,6 +372,8 @@ struct netdev_private {
- 	struct pci_dev *pdev;
- 	void __iomem *ioaddr;
- 	void __iomem *eeprom_addr;
-+	// To ensure synchronization when stats are updated.
-+	spinlock_t stats_lock;
- 	spinlock_t tx_lock;
- 	spinlock_t rx_lock;
- 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
--- 
-2.39.5
-
 
 
 
