@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-157150-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8564AAE52C4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A0F0AE4F73
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B04B63AD776
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8752E3BF35F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FF8D219A7A;
-	Mon, 23 Jun 2025 21:45:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE30D1F582A;
+	Mon, 23 Jun 2025 21:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGezQe8X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xOO1d2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDFB21B9E5;
-	Mon, 23 Jun 2025 21:45:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2CF2628C;
+	Mon, 23 Jun 2025 21:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715157; cv=none; b=L7pWlA9cl3RlL4Ip0UrIrCQLDhYmEiCYRa8NIlzNEgyFXsd5IKfpP5aFUIRAjLYRAxOyT9BapKuSG5BeBg+UHXHV5ULk3rT/kJXi6o+z9OfS0TPJ4h3S/nd8G1xdJ43SSuYLFBaxMRYNdjY9Y27co/Oh4brWIOLYWH9vyt6I+Po=
+	t=1750713363; cv=none; b=EjVkI6L5r/DOBIhKuAiP5siskjADtxCm1KPz6lMIFokzek74iCMa2K7bhiDyg6HAp2roDC7GAvvYdljp2oCtECzQjj2uXwTmXlGRnAPcNYz5ZqSj2IE4DcEXBmzLGvCkRyb5AmLGqWWX+ItSTJPcu1sAk1jLWZ/o86xdSMlPjl4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715157; c=relaxed/simple;
-	bh=jWA+JWoWPw0tPKoYSbdrPmvMe/GDE00V7yVYSbDO9T0=;
+	s=arc-20240116; t=1750713363; c=relaxed/simple;
+	bh=wDOjEp4ShBDsxnjTPeD6K+oHRmvtc8eyiZHTJRKYunw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dARtTCHpdvrNFpnO5+n9mCVCWlDbq+LeMvjHbNKrScr+uEYBnoYIQxym6DMigCegfrLYKwhrpocZJDX3b7V0nanb8qB0AYv2bMeEQnGxY3RZY3sfcjO9o6UKbGLSDeHPcjjo4oORxRNMANkF7+KYTmluLyXgj2tIiSV4ZP5m1bE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGezQe8X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 771D0C4CEEA;
-	Mon, 23 Jun 2025 21:45:56 +0000 (UTC)
+	 MIME-Version; b=aY/UNdrAEpqOpIN+srY1LMJ+C7VixSxy/hxxJTMn6blZlfEeid6x+0eEm6Veqbzd+7P03L5qkgZ+ogbbtJ9mKtyKTVECnWard8KYDeMWpFyPt08kGATf3JevftupbAzibu/iouK7IADBKikqj8QDD/HqJVcNO0byhWIafJkRelc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xOO1d2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03734C4CEED;
+	Mon, 23 Jun 2025 21:16:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715156;
-	bh=jWA+JWoWPw0tPKoYSbdrPmvMe/GDE00V7yVYSbDO9T0=;
+	s=korg; t=1750713363;
+	bh=wDOjEp4ShBDsxnjTPeD6K+oHRmvtc8eyiZHTJRKYunw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HGezQe8XnHyEdgjaRzHie5VOwIkjLgJaQc6+cSrglL1IbdEyLqTBEpKF5GSnf+6RA
-	 dLNhESbci0gaTMQs11l2i+pqVGrWG3PnGYqTPNc3fcIP7QqFv4pAMdZ0lF7QkrM4jC
-	 +Ptd//7wBIpHyLAJ+8gmlKficA+AsPhlUrdJTcwM=
+	b=0xOO1d2mWr2jBW4WNRpMz/MryaxrPEpdgRjMV3VpSAebeuXHiZzKxQ6zMhjOYpPpS
+	 VbmP31oOQjS5LXHZtxRWrVc/i4b+erTWudsUGkIXVjFzwqZpPncsJcaLCXqfRmw4eL
+	 NSDEs4sGEcB6uR0yDOw65NWic8JsUXnMzlHAy8PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 186/414] Make cc-option work correctly for the -Wno-xyzzy pattern
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 062/290] ext4: factor out ext4_get_maxbytes()
 Date: Mon, 23 Jun 2025 15:05:23 +0200
-Message-ID: <20250623130646.670500482@linuxfoundation.org>
+Message-ID: <20250623130628.870031309@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,73 +62,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 550ccb178de2f379f5e1a1833dd6f4bdafef4b68 ]
+commit dbe27f06fa38b9bfc598f8864ae1c5d5831d9992 upstream.
 
-This is the follow-up to commit a79be02bba5c ("Fix mis-uses of
-'cc-option' for warning disablement") where I mentioned that the best
-fix would be to just make 'cc-option' a bit smarter, and work for all
-compiler options, including the '-Wno-xyzzy' pattern that it used to
-accept unknown options for.
+There are several locations that get the correct maxbytes value based on
+the inode's block type. It would be beneficial to extract a common
+helper function to make the code more clear.
 
-It turns out that fixing cc-option is pretty straightforward: just
-rewrite any '-Wno-xyzzy' option pattern to use '-Wxyzzy' instead for
-testing.
-
-That makes the whole artificial distinction between 'cc-option' and
-'cc-disable-warning' go away, and we can happily forget about the odd
-build rule that you have to treat compiler options that disable warnings
-specially.
-
-The 'cc-disable-warning' helper remains as a backwards compatibility
-syntax for now, but is implemented in terms of the new and improved
-cc-option.
-
-Acked-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Thomas Weißschuh <linux@weissschuh.net>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250506012009.3896990-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Makefile.compiler | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/ext4.h    |    7 +++++++
+ fs/ext4/extents.c |    7 +------
+ fs/ext4/file.c    |    7 +------
+ 3 files changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
-index c6cd729b65cbf..05685b3df9e5e 100644
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -43,7 +43,7 @@ as-instr = $(call try-run,\
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
- __cc-option = $(call try-run,\
--	$(1) -Werror $(2) $(3) -c -x c /dev/null -o "$$TMP",$(3),$(4))
-+	$(1) -Werror $(2) $(3:-Wno-%=-W%) -c -x c /dev/null -o "$$TMP",$(3),$(4))
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3351,6 +3351,13 @@ static inline unsigned int ext4_flex_bg_
+ 	return 1 << sbi->s_log_groups_per_flex;
+ }
  
- # cc-option
- # Usage: cflags-y += $(call cc-option,-march=winchip-c6,-march=i586)
-@@ -57,7 +57,7 @@ cc-option-yn = $(if $(call cc-option,$1),y,n)
++static inline loff_t ext4_get_maxbytes(struct inode *inode)
++{
++	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		return inode->i_sb->s_maxbytes;
++	return EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
++}
++
+ #define ext4_std_error(sb, errno)				\
+ do {								\
+ 	if ((errno))						\
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4970,12 +4970,7 @@ static const struct iomap_ops ext4_iomap
  
- # cc-disable-warning
- # Usage: cflags-y += $(call cc-disable-warning,unused-but-set-variable)
--cc-disable-warning = $(if $(call cc-option,-W$(strip $1)),-Wno-$(strip $1))
-+cc-disable-warning = $(call cc-option,-Wno-$(strip $1))
+ static int ext4_fiemap_check_ranges(struct inode *inode, u64 start, u64 *len)
+ {
+-	u64 maxbytes;
+-
+-	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+-		maxbytes = inode->i_sb->s_maxbytes;
+-	else
+-		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
++	u64 maxbytes = ext4_get_maxbytes(inode);
  
- # gcc-min-version
- # Usage: cflags-$(call gcc-min-version, 70100) += -foo
--- 
-2.39.5
-
+ 	if (*len == 0)
+ 		return -EINVAL;
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -898,12 +898,7 @@ static int ext4_file_open(struct inode *
+ loff_t ext4_llseek(struct file *file, loff_t offset, int whence)
+ {
+ 	struct inode *inode = file->f_mapping->host;
+-	loff_t maxbytes;
+-
+-	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
+-		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
+-	else
+-		maxbytes = inode->i_sb->s_maxbytes;
++	loff_t maxbytes = ext4_get_maxbytes(inode);
+ 
+ 	switch (whence) {
+ 	default:
 
 
 
