@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4926DAE55C5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B93FCAE5731
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B508717B307
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7784E30C8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81421229B15;
-	Mon, 23 Jun 2025 22:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA8F22422F;
+	Mon, 23 Jun 2025 22:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zimGTQxX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jh2Rwh6P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0281F7580;
-	Mon, 23 Jun 2025 22:13:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1042222B2;
+	Mon, 23 Jun 2025 22:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716796; cv=none; b=CY9afLaa84Lrxr43o9ZuWlTLQV8LlZsNGmenfAo/Jw1ROsTcpdbMBopTLJxnS7L8uF8T/wrE/NaEJYCE+3iKaEsUbu2lolijdYZnz13In0f1Zem+v0xd9aFvxo/i5tvxKAOYJ9RBukJyMbD+006JFj7YLh2NbG2e9ztLlJ4hfR4=
+	t=1750717626; cv=none; b=JL59hhz4UMIV8CWRWf4gdq3i7nLj+GXtBl5N4Tdr01q8TD35qDiJtX144iVny/7ZP4wr1utbhjk1HJfIQjhzrHE4SHKpi9W0IIzfxzJjVrdelYDyodEtAMBG9rrTQxoGxhhAUwENfQGcPspC98XfPj0NQ1HWP1FvFVi+cAPJNxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716796; c=relaxed/simple;
-	bh=XwVaDUe1ATspLoahMd0ZRKs/deUxhWmZEgUALPT043I=;
+	s=arc-20240116; t=1750717626; c=relaxed/simple;
+	bh=A61kyApMLT3NLDDEAvljlD4CLlkwSUJtakXRvyYPjxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YLzE/WH78m2DAUZ5NTv+aOrFZTgmi01m5/NqumJQqgUHYroCqRJWg+V2a1mD/sJhFICCEEWKavxdlwdHJuVqSkxadobGj1Z1oWVE15awAk14YUU5S7RsZDZsnMN1Epxr+4IWym5zdJ75M0MfD3Au+t7YmwDZpDvyGf3mpxbA/8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zimGTQxX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA954C4CEEA;
-	Mon, 23 Jun 2025 22:13:15 +0000 (UTC)
+	 MIME-Version; b=Lq+qZE5wp0v4g5KBS9kcnLDWWyLO/HEjNg6FSI70sdX6ro0iBTBmr8rm+gNW3KM6SQl5Xm7TcBx/0IEWGffh5/PWMA+b6KFemyeMQD61XMqMzyMLRCY8ejr/R8RzKOBKX+1nP5BicIVQ4EZjNXDjUu7crpozYDd1uoli9LSyH0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jh2Rwh6P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65482C4CEEA;
+	Mon, 23 Jun 2025 22:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716796;
-	bh=XwVaDUe1ATspLoahMd0ZRKs/deUxhWmZEgUALPT043I=;
+	s=korg; t=1750717626;
+	bh=A61kyApMLT3NLDDEAvljlD4CLlkwSUJtakXRvyYPjxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zimGTQxXTnnjlz/MKhdeSRXXPFNf8QtVk/mEn75J0Lwc3Fi3Isgn9uiwn1ITx6JoI
-	 p2ZR8773AT3e1QcUSGKhXpq4qSmBZ9zjfqlkfbR8H/tTP1XZUJLTfOEqR/BPhWF1Tj
-	 ub984F7bQlLXKutCCV/3WuYOdHDKDBCEVkrzJAVE=
+	b=Jh2Rwh6P8zei/GClBM9X1am/gaZbC5bFgi+BK0NjY7e9JueNJIA+h4+PYIRSJHgPd
+	 6hDfzmIeKbCEvZHdz2JB8QxY4MWyovAYXze/r6engPsHAqrph1lLO+Bv2wHcOtMREr
+	 On1HtyWPE2nJDZBXsLksrbMgUd6cW1Un6AA5fKJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liu Song <liusong@linux.alibaba.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.15 393/411] arm64: spectre: increase parameters that can be used to turn off bhb mitigation individually
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	zhangjian <zhangjian496@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 400/414] smb: client: fix first command failure during re-negotiation
 Date: Mon, 23 Jun 2025 15:08:57 +0200
-Message-ID: <20250623130643.570935408@linuxfoundation.org>
+Message-ID: <20250623130651.939293304@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liu Song <liusong@linux.alibaba.com>
+From: zhangjian <zhangjian496@huawei.com>
 
-[ Upstream commit 877ace9eab7de032f954533afd5d1ecd0cf62eaf ]
+commit 34331d7beed7576acfc98e991c39738b96162499 upstream.
 
-In our environment, it was found that the mitigation BHB has a great
-impact on the benchmark performance. For example, in the lmbench test,
-the "process fork && exit" test performance drops by 20%.
-So it is necessary to have the ability to turn off the mitigation
-individually through cmdline, thus avoiding having to compile the
-kernel by adjusting the config.
+after fabc4ed200f9, server_unresponsive add a condition to check whether client
+need to reconnect depending on server->lstrp. When client failed to reconnect
+for some time and abort connection, server->lstrp is updated for the last time.
+In the following scene, server->lstrp is too old. This cause next command
+failure in re-negotiation rather than waiting for re-negotiation done.
 
-Signed-off-by: Liu Song <liusong@linux.alibaba.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/1661514050-22263-1-git-send-email-liusong@linux.alibaba.com
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+1. mount -t cifs -o username=Everyone,echo_internal=10 //$server_ip/export /mnt
+2. ssh $server_ip "echo b > /proc/sysrq-trigger &"
+3. ls /mnt
+4. sleep 21s
+5. ssh $server_ip "service firewalld stop"
+6. ls # return EHOSTDOWN
+
+If the interval between 5 and 6 is too small, 6 may trigger sending negotiation
+request. Before backgrounding cifsd thread try to receive negotiation response
+from server in cifs_readv_from_socket, server_unresponsive may trigger
+cifs_reconnect which cause 6 to be failed:
+
+ls thread
+----------------
+  smb2_negotiate
+    server->tcpStatus = CifsInNegotiate
+    compound_send_recv
+      wait_for_compound_request
+
+cifsd thread
+----------------
+  cifs_readv_from_socket
+    server_unresponsive
+      server->tcpStatus == CifsInNegotiate && jiffies > server->lstrp + 20s
+        cifs_reconnect
+          cifs_abort_connection: mid_state = MID_RETRY_NEEDED
+
+ls thread
+----------------
+      cifs_sync_mid_result return EAGAIN
+  smb2_negotiate return EHOSTDOWN
+
+Though server->lstrp means last server response time, it is updated in
+cifs_abort_connection and cifs_get_tcp_session. We can also update server->lstrp
+before switching into CifsInNegotiate state to avoid failure in 6.
+
+Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Acked-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: zhangjian <zhangjian496@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    5 +++++
- arch/arm64/kernel/proton-pack.c                 |   10 +++++++++-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -3105,6 +3105,7 @@
- 					       spectre_bhi=off [X86]
- 					       spectre_v2_user=off [X86]
- 					       ssbd=force-off [ARM64]
-+					       nospectre_bhb [ARM64]
- 					       tsx_async_abort=off [X86]
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -3993,6 +3993,7 @@ retry:
+ 		return 0;
+ 	}
  
- 				Exceptions:
-@@ -3526,6 +3527,10 @@
- 			vulnerability. System may allow data leaks with this
- 			option.
++	server->lstrp = jiffies;
+ 	server->tcpStatus = CifsInNegotiate;
+ 	spin_unlock(&server->srv_lock);
  
-+	nospectre_bhb	[ARM64] Disable all mitigations for Spectre-BHB (branch
-+			history injection) vulnerability. System may allow data leaks
-+			with this option.
-+
- 	nospec_store_bypass_disable
- 			[HW] Disable all mitigations for the Speculative Store Bypass vulnerability
- 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -1023,6 +1023,14 @@ static void this_cpu_set_vectors(enum ar
- 	isb();
- }
- 
-+static bool __read_mostly __nospectre_bhb;
-+static int __init parse_spectre_bhb_param(char *str)
-+{
-+	__nospectre_bhb = true;
-+	return 0;
-+}
-+early_param("nospectre_bhb", parse_spectre_bhb_param);
-+
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
- {
- 	bp_hardening_cb_t cpu_cb;
-@@ -1036,7 +1044,7 @@ void spectre_bhb_enable_mitigation(const
- 		/* No point mitigating Spectre-BHB alone. */
- 	} else if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY)) {
- 		pr_info_once("spectre-bhb mitigation disabled by compile time option\n");
--	} else if (cpu_mitigations_off()) {
-+	} else if (cpu_mitigations_off() || __nospectre_bhb) {
- 		pr_info_once("spectre-bhb mitigation disabled by command line option\n");
- 	} else if (supports_ecbhb(SCOPE_LOCAL_CPU)) {
- 		state = SPECTRE_MITIGATED;
 
 
 
