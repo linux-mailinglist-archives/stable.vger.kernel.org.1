@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E78FAE5200
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71020AE549C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6B9D442E69
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C381BC1C3C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7662236FB;
-	Mon, 23 Jun 2025 21:39:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2829A21FF2B;
+	Mon, 23 Jun 2025 22:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIaytkEG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVrp2hY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397BF221FC7;
-	Mon, 23 Jun 2025 21:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7241A4F12;
+	Mon, 23 Jun 2025 22:03:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714770; cv=none; b=rqnzjCPp+5B1hhxQPScCBCboK4xYApPg85IP4ZLHrqgfB0ICP/zHFEjxs6J7D5MHvnBSLNBOyc/Yzd90X3VQoHBcD7FnLmtV2Iv9BgGENpeAI6AS77u8ms3M16d2lVJh/YDX348HRw7wnT1Ved/+ZXvswkC9AO8EFj3EPKJvrq8=
+	t=1750716188; cv=none; b=iRQkQin/7OZC4zBkIHKMEYmgnbsv9RgPDYsvcMmD+GHSl4NKUy+ViQp2rqM44pcwCtzJO67bxk8H8w0CxIlMsquHYZuCmqh0LevmtwHiUDujXQ7ptqjKiK+fPbU50AWE4rWXQcH09IdBsdx0jXEAypavYL+My/tIq/5rq2HcHBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714770; c=relaxed/simple;
-	bh=a2S7gdUVq9ygX+CFqKAl+1wByy7vif5uLJpFMKX7baE=;
+	s=arc-20240116; t=1750716188; c=relaxed/simple;
+	bh=e8jVjt99ubrvLiJsukak/yarfRfbrbn+bH8wrrr/nho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aqIz8mJVGcQ+uuz/D4fmSaevHNIUeXXxZCQrAg2q5Bc7OidQtVooV/j9VfnqYkJphSmPXErkIs1cKU7PYYD8n6WOncyA/b5TZAS1CKM8cREUu4YSImBInA/2S+ZZ4s8ie7VVM7Bi6vCGSBoqPciHhJS5DFs5VXzbq7bgLSuJRag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIaytkEG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBEFC4CEEA;
-	Mon, 23 Jun 2025 21:39:29 +0000 (UTC)
+	 MIME-Version; b=eD840rDLEMogoUA5Q2/tgSHXCqPWfN+EHTmeckpdmEXr/i6czwZGYpLptYlAEWS6E45kep5KfL80fKe39kx+fEX7iD5sw3O2c74CfAPxI+PIiyLMn0yaLS94iKyX3zVUK8Emh3YM/jTIvyzs8I5+w7fMvMVTyuhs8amOyKiFMHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVrp2hY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67EFFC4CEEA;
+	Mon, 23 Jun 2025 22:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714769;
-	bh=a2S7gdUVq9ygX+CFqKAl+1wByy7vif5uLJpFMKX7baE=;
+	s=korg; t=1750716188;
+	bh=e8jVjt99ubrvLiJsukak/yarfRfbrbn+bH8wrrr/nho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yIaytkEGm50PJ3Q7rqlPgZj7T92BBzmCnGWDbZFaHcaeMcUHqYH5bfLUln7bvAAq2
-	 P7YZKXObqQSRtEq2ndhLADxGGOS9Wl+RbGDnHPPrNL6fmQ2Za3yzIAPK70pB8AYkVQ
-	 /2ZDMHmYd/eySR5VD0T9goMQflY9pocqws+gqVf4=
+	b=RVrp2hY02Bb15h012V7EO/aQ236Lwoe/14328XX/Iz9RJ0+xuHmIDpnYDeXwiFOb4
+	 Gn5dTVJZdJ9PJLJ7gy1hZEiL1OIlVC8gpWoosuuJxv01GXF0H3DggqgwmAcr4tiocZ
+	 rzBQAL4/NFVNhRnnNFi+xeUpxoTyDfpiMRkYlIRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Johan Hovold <johan+linaro@kernel.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 208/411] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
+Subject: [PATCH 6.1 307/508] media: ov8856: suppress probe deferral errors
 Date: Mon, 23 Jun 2025 15:05:52 +0200
-Message-ID: <20250623130638.907249699@linuxfoundation.org>
+Message-ID: <20250623130652.866011173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
+commit e3d86847fba58cf71f66e81b6a2515e07039ae17 upstream.
 
-The PLL calculator does a search of the PLL configuration space for all
-valid OP pre-PLL clock dividers. The maximum did not take into account the
-CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
-dividers (other than 1) are valid. Do that now.
+Probe deferral should not be logged as an error:
 
-Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
+	ov8856 24-0010: failed to get HW configuration: -517
+
+Use dev_err_probe() for the clock lookup and drop the (mostly) redundant
+dev_err() from sensor probe() to suppress it.
+
+Note that errors during regulator lookup is already correctly logged
+using dev_err_probe().
+
+Fixes: 0c2c7a1e0d69 ("media: ov8856: Add devicetree support")
 Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov8856.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
- 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
- 	max_op_pre_pll_clk_div =
- 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
--		      clk_div_even(pll->ext_clk_freq_hz /
-+		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
- 				   op_lim_fr->min_pll_ip_clk_freq_hz));
- 	min_op_pre_pll_clk_div =
- 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
+--- a/drivers/media/i2c/ov8856.c
++++ b/drivers/media/i2c/ov8856.c
+@@ -2319,8 +2319,8 @@ static int ov8856_get_hwcfg(struct ov885
+ 	if (!is_acpi_node(fwnode)) {
+ 		ov8856->xvclk = devm_clk_get(dev, "xvclk");
+ 		if (IS_ERR(ov8856->xvclk)) {
+-			dev_err(dev, "could not get xvclk clock (%pe)\n",
+-				ov8856->xvclk);
++			dev_err_probe(dev, PTR_ERR(ov8856->xvclk),
++				      "could not get xvclk clock\n");
+ 			return PTR_ERR(ov8856->xvclk);
+ 		}
+ 
+@@ -2425,11 +2425,8 @@ static int ov8856_probe(struct i2c_clien
+ 		return -ENOMEM;
+ 
+ 	ret = ov8856_get_hwcfg(ov8856, &client->dev);
+-	if (ret) {
+-		dev_err(&client->dev, "failed to get HW configuration: %d",
+-			ret);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	v4l2_i2c_subdev_init(&ov8856->sd, client, &ov8856_subdev_ops);
+ 
 
 
 
