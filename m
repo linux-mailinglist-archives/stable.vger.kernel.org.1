@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37928AE53A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 164CFAE51AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2E0A4A8387
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FD7A1B64097
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAB0223DC1;
-	Mon, 23 Jun 2025 21:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C90221FD2;
+	Mon, 23 Jun 2025 21:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXgHSF/m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2Mi3Z/w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A800221FBE;
-	Mon, 23 Jun 2025 21:55:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A661EE7C6;
+	Mon, 23 Jun 2025 21:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715722; cv=none; b=sOZwVVl5fWW3UyxeiRor05f+/epSyZADg5y5SGUjm9+NPiBTq5/enZekAs5PzoyVosrYgPxXPT+FDotimWEpRr01fonBsJdLM6ZtqxEuR1Al1ryemjeIeHx3/p+lTV5XD0kV15m/N9Q3py1xr1scQdhgag8SS9jIh09SjHIVVH0=
+	t=1750714575; cv=none; b=DXHz45WGuYlJNX6JNohAR8FOmWmfk35uYlXsW52vrVdxZE/1NYjT2ZON//Hhn8kiOJIqePHFrexOw+IsGIHu51AS+SE5Ju8JNYXLPm8EK4r+hfIRoNcofFBSuGD/eWx17cRSgzev6pwE48yHRe9pUJBfC41u5ZpddipnsgYerQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715722; c=relaxed/simple;
-	bh=YoHDvgCRhkQlnHSiWaGLtxunlJseBfa6/rP1qQ8uoAs=;
+	s=arc-20240116; t=1750714575; c=relaxed/simple;
+	bh=808r7me2KcAD9UFyMPNK/wwF3Gro/BI97fYHG8qXCHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hGGDg0k5IN73giv7ulgezuAPw9LTemVdhiKZciaOg0xEt6bUMKjCM83C/vWG+JeX5NtJDdvQ8/c6YnFEGEocadT/zsj9T9sp/tm4o5ltT0n8vtEfI0PSRy1Scs38hpN9x20xsOexmoZLb6lGOStA/bBWixVfVUPLaWsZ6Blnv0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXgHSF/m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F113C4CEF1;
-	Mon, 23 Jun 2025 21:55:21 +0000 (UTC)
+	 MIME-Version; b=koIWyHoconcerhWGbaAuIslO6zmxvZUny9KQC1hehbu6wQBINT293FSoBcwprNtj8D721qaCNibztJtyNogrppoJldXs7lroKZJ8UAw6z0ALc+RlqjMzaZy+7Vp53eBcRuxV9VIwZPm3MUdvpj5Os+qGzbybW4BvTrzOHuYaGRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2Mi3Z/w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07817C4CEEA;
+	Mon, 23 Jun 2025 21:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715721;
-	bh=YoHDvgCRhkQlnHSiWaGLtxunlJseBfa6/rP1qQ8uoAs=;
+	s=korg; t=1750714575;
+	bh=808r7me2KcAD9UFyMPNK/wwF3Gro/BI97fYHG8qXCHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WXgHSF/mIeja7lSIVrp2ZLVQU8hOJ3b5weJiy0upcptDbZb2/DxqOZLENYDy9ArMy
-	 fidxom59V/s4X11IjXwZ2N6LZLAffwKGFgRZxSex4Mx+UVCxSHnmzmPHnYiIhc3Ypk
-	 +WzmTk5QP36mGVLXkZPJ5V3f/+TxaKCHHrkaKtFY=
+	b=S2Mi3Z/ww6TRd9eh52EGdgSvrol/X/W87blBgzZSX4LPJQZXMggnkYWD/JDWZF7k1
+	 7g2s5RRIYkZdtqbMj7/6bTk5H6e/fcgr6EPeV7ND6dO9OS43UQPM6kqOGIUMv6ds2S
+	 El3hRQNBRABUYkmm/cGg9J9JrRHYqXit7UzKM5+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leon Yen <leon.yen@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 203/414] wifi: mt76: mt7925: introduce thermal protection
+	Christian Hewitt <christianshewitt@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 196/411] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
 Date: Mon, 23 Jun 2025 15:05:40 +0200
-Message-ID: <20250623130647.083137209@linuxfoundation.org>
+Message-ID: <20250623130638.610467341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leon Yen <leon.yen@mediatek.com>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit 1d81e893b422a6f0ae70f8648867c2e73edfb413 ]
+commit 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 upstream.
 
-Add thermal protection to prevent the chip from possible overheating
-due to prolonged high traffic and adverse operating conditions.
+Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
+non-boolean properties") added a warning when trying to parse a property
+with a value (boolean properties are defined as: absent = false, present
+without any value = true). This causes a warning from meson-card-utils.
 
-Signed-off-by: Leon Yen <leon.yen@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250509082117.453819-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+meson-card-utils needs to know about the existence of the
+"audio-routing" and/or "audio-widgets" properties in order to properly
+parse them. Switch to of_property_present() in order to silence the
+following warning messages during boot:
+  OF: /sound: Read of boolean property 'audio-routing' with a value.
+  OF: /sound: Read of boolean property 'audio-widgets' with a value.
+
+Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
+Tested-by: Christian Hewitt <christianshewitt@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/wireless/mediatek/mt76/mt7925/init.c  |  6 ++++++
- .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 20 ++++++++++++++++++-
- .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  1 +
- 3 files changed, 26 insertions(+), 1 deletion(-)
+ sound/soc/meson/meson-card-utils.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-index 039949b344b98..14553dcc61c57 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
-@@ -204,6 +204,12 @@ static void mt7925_init_work(struct work_struct *work)
- 		return;
- 	}
- 
-+	ret = mt7925_mcu_set_thermal_protect(dev);
-+	if (ret) {
-+		dev_err(dev->mt76.dev, "thermal protection enable failed\n");
-+		return;
-+	}
-+
- 	/* we support chip reset now */
- 	dev->hw_init_done = true;
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-index a19c108ad4b5c..57a1db394dda4 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
-@@ -961,6 +961,23 @@ int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable)
- }
- EXPORT_SYMBOL_GPL(mt7925_mcu_set_deep_sleep);
- 
-+int mt7925_mcu_set_thermal_protect(struct mt792x_dev *dev)
-+{
-+	char cmd[64];
-+	int ret = 0;
-+
-+	snprintf(cmd, sizeof(cmd), "ThermalProtGband %d %d %d %d %d %d %d %d %d %d",
-+		 0, 100, 90, 80, 30, 1, 1, 115, 105, 5);
-+	ret = mt7925_mcu_chip_config(dev, cmd);
-+
-+	snprintf(cmd, sizeof(cmd), "ThermalProtAband %d %d %d %d %d %d %d %d %d %d",
-+		 1, 100, 90, 80, 30, 1, 1, 115, 105, 5);
-+	ret |= mt7925_mcu_chip_config(dev, cmd);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(mt7925_mcu_set_thermal_protect);
-+
- int mt7925_run_firmware(struct mt792x_dev *dev)
+--- a/sound/soc/meson/meson-card-utils.c
++++ b/sound/soc/meson/meson-card-utils.c
+@@ -245,7 +245,7 @@ static int meson_card_parse_of_optional(
+ 						    const char *p))
  {
- 	int err;
-@@ -3288,7 +3305,8 @@ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 		else
- 			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
+ 	/* If property is not provided, don't fail ... */
+-	if (!of_property_read_bool(card->dev->of_node, propname))
++	if (!of_property_present(card->dev->of_node, propname))
+ 		return 0;
  
--		if (cmd == MCU_UNI_CMD(HIF_CTRL))
-+		if (cmd == MCU_UNI_CMD(HIF_CTRL) ||
-+		    cmd == MCU_UNI_CMD(CHIP_CONFIG))
- 			uni_txd->option &= ~MCU_CMD_ACK;
- 
- 		goto exit;
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-index 887427e0760ae..780c5921679aa 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
-@@ -635,6 +635,7 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
- int mt7925_mcu_set_timing(struct mt792x_phy *phy,
- 			  struct ieee80211_bss_conf *link_conf);
- int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable);
-+int mt7925_mcu_set_thermal_protect(struct mt792x_dev *dev);
- int mt7925_mcu_set_channel_domain(struct mt76_phy *phy);
- int mt7925_mcu_set_radio_en(struct mt792x_phy *phy, bool enable);
- int mt7925_mcu_set_chctx(struct mt76_phy *phy, struct mt76_vif *mvif,
--- 
-2.39.5
-
+ 	/* ... but do fail if it is provided and the parsing fails */
 
 
 
