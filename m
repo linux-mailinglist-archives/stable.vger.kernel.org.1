@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-155596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32865AE42D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E86B7AE41C0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:11:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 94DD43A173B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D3033A934A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D47D2571A1;
-	Mon, 23 Jun 2025 13:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22E2B2505CB;
+	Mon, 23 Jun 2025 13:10:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BahFhEak"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbP2OgM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3980125291B;
-	Mon, 23 Jun 2025 13:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2FEF24DCF8;
+	Mon, 23 Jun 2025 13:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684837; cv=none; b=uXjrNzDLFu7CgGI9Ah0dLL6PUl419j3tLXqetMmzt5LklTCg47E0qk55GbMJoOyhZadx/egpCNjpiVr+PyA5HkmBTNlhRFLLEVolrVuM0MCaoK4a8uod5vCkIn9D+t3BT9noZC1QFLW6/fRgVWrCISgKY593njpqd2x7o74R6SY=
+	t=1750684225; cv=none; b=HvzSE/gx9MMO6wT2LZFtWWOlODh6CDsfsl4cf8Mm2f6Z1bzbpS8ytsb7ptm1EMk+VA24VtcBLVBpmmT+LmNfUxWl7T1bwU4vZAP2hUUX8XifaU/R1wAKeZEiPFjOgL01LB2RMWTIBlk7rt1dkuC23wy+X+V4C8tV5hjrt7NyKvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684837; c=relaxed/simple;
-	bh=tydNrfFemZCVhuuPOXJCwPHZOfMGcB5UilpA6QeopAU=;
+	s=arc-20240116; t=1750684225; c=relaxed/simple;
+	bh=x9LF2UGngbEuRUMjfZNVqN9CD33xUGK+MUN6p8tz8nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWMmqvxhrHGN0e0USnU6FoEgCmszCT/Yi8MMps94zYIQ9GmRGqCTaEnkMepWoYvOkBCU4a/cQ2M5LF+hje+m1p0vYXd44Fp2bEy6enbEhVK5Mr5YV3xbiJJ1DUQGxTVdzoZa6+QTr8RrFPS0XmEWmSrN/3XqraW6IPg8u7EB7RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BahFhEak; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B90FC4CEEA;
-	Mon, 23 Jun 2025 13:20:36 +0000 (UTC)
+	 MIME-Version; b=rExy7qZcT3iv3yAvzeTa8tqc1yED1qxrEHkiOJH3u1jm8VEJhsscLrVw4DCycXaM9g85BnW/lAJEs/aTl3HRxInpyZ49ZtGCjxveMBbHR2WonfB16/wgN6t2dO8Ol4QZbYY1ydMbuWdKlegQ+DPFNAKnY0DGDe1YjHI6zsJEz3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbP2OgM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6673C4CEEA;
+	Mon, 23 Jun 2025 13:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684837;
-	bh=tydNrfFemZCVhuuPOXJCwPHZOfMGcB5UilpA6QeopAU=;
+	s=korg; t=1750684225;
+	bh=x9LF2UGngbEuRUMjfZNVqN9CD33xUGK+MUN6p8tz8nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BahFhEakyrZS3kRXYERKAKU03n5JhK75az86qa0vv/t2pnir9Zj6CPAVWL9entzNo
-	 je+RXGtMjOsp37LxRLFcH1Ha60/eNcWQkbdCJ5ez12X2nD2I9P2avyq75SRAnyXEuC
-	 rymSBbEPXJaGWX3+NHiRtzEH/O2wkioeNwSfWj7U=
+	b=GbP2OgM6p2Hz6CzWECKRgTrZV3nlvhSPRIqZmJ1cIjbY5OAYJD4QKuJmDPC/Yy+pI
+	 kbD1rpIYBv3ryBsANV67gkmD9Vm8SPpraImv3pjb6KkwlXz6+BxlRSZ5y+9eIWgCZa
+	 8EPSxKsGVr9PbuPQ7MH/rFnOsbGapNf+QLhuOtWU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.15 181/592] PCI: dwc: ep: Correct PBA offset in .set_msix() callback
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 002/414] crypto: marvell/cesa - Do not chain submitted requests
 Date: Mon, 23 Jun 2025 15:02:19 +0200
-Message-ID: <20250623130704.587138554@linuxfoundation.org>
+Message-ID: <20250623130642.081914770@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 810276362bad172d063d1f6be1cc2cb425b90103 upstream.
+commit 0413bcf0fc460a68a2a7a8354aee833293d7d693 upstream.
 
-While dw_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
-the calculation of the PBA offset is wrong because it calculates space for
-(N-1) entries instead of N.
+This driver tries to chain requests together before submitting them
+to hardware in order to reduce completion interrupts.
 
-This results in the following QEMU error when using PCI passthrough on a
-device which relies on the PCI endpoint subsystem:
+However, it even extends chains that have already been submitted
+to hardware.  This is dangerous because there is no way of knowing
+whether the hardware has already read the DMA memory in question
+or not.
 
-  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
+Fix this by splitting the chain list into two.  One for submitted
+requests and one for requests that have not yet been submitted.
+Only extend the latter.
 
-Fix the calculation of PBA offset in the MSI-X capability.
-
-[bhelgaas: more specific subject and commit log]
-
-Fixes: 83153d9f36e2 ("PCI: endpoint: Fix ->set_msix() to take BIR and offset as arguments")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250514074313.283156-9-cassel@kernel.org
+Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Fixes: 85030c5168f1 ("crypto: marvell - Add support for chaining crypto requests in TDMA mode")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/crypto/marvell/cesa/cesa.c |    2 -
+ drivers/crypto/marvell/cesa/cesa.h |    9 ++++--
+ drivers/crypto/marvell/cesa/tdma.c |   53 ++++++++++++++++++++++---------------
+ 3 files changed, 39 insertions(+), 25 deletions(-)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -585,6 +585,7 @@ static int dw_pcie_ep_set_msix(struct pc
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	struct dw_pcie_ep_func *ep_func;
- 	u32 val, reg;
-+	u16 actual_interrupts = interrupts + 1;
+--- a/drivers/crypto/marvell/cesa/cesa.c
++++ b/drivers/crypto/marvell/cesa/cesa.c
+@@ -94,7 +94,7 @@ static int mv_cesa_std_process(struct mv
  
- 	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
- 	if (!ep_func || !ep_func->msix_cap)
-@@ -595,7 +596,7 @@ static int dw_pcie_ep_set_msix(struct pc
- 	reg = ep_func->msix_cap + PCI_MSIX_FLAGS;
- 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
--	val |= interrupts;
-+	val |= interrupts; /* 0's based value */
- 	dw_pcie_writew_dbi(pci, reg, val);
+ static int mv_cesa_int_process(struct mv_cesa_engine *engine, u32 status)
+ {
+-	if (engine->chain.first && engine->chain.last)
++	if (engine->chain_hw.first && engine->chain_hw.last)
+ 		return mv_cesa_tdma_process(engine, status);
  
- 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
-@@ -603,7 +604,7 @@ static int dw_pcie_ep_set_msix(struct pc
- 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 	return mv_cesa_std_process(engine, status);
+--- a/drivers/crypto/marvell/cesa/cesa.h
++++ b/drivers/crypto/marvell/cesa/cesa.h
+@@ -440,8 +440,10 @@ struct mv_cesa_dev {
+  *			SRAM
+  * @queue:		fifo of the pending crypto requests
+  * @load:		engine load counter, useful for load balancing
+- * @chain:		list of the current tdma descriptors being processed
+- *			by this engine.
++ * @chain_hw:		list of the current tdma descriptors being processed
++ *			by the hardware.
++ * @chain_sw:		list of the current tdma descriptors that will be
++ *			submitted to the hardware.
+  * @complete_queue:	fifo of the processed requests by the engine
+  *
+  * Structure storing CESA engine information.
+@@ -463,7 +465,8 @@ struct mv_cesa_engine {
+ 	struct gen_pool *pool;
+ 	struct crypto_queue queue;
+ 	atomic_t load;
+-	struct mv_cesa_tdma_chain chain;
++	struct mv_cesa_tdma_chain chain_hw;
++	struct mv_cesa_tdma_chain chain_sw;
+ 	struct list_head complete_queue;
+ 	int irq;
+ };
+--- a/drivers/crypto/marvell/cesa/tdma.c
++++ b/drivers/crypto/marvell/cesa/tdma.c
+@@ -38,6 +38,15 @@ void mv_cesa_dma_step(struct mv_cesa_req
+ {
+ 	struct mv_cesa_engine *engine = dreq->engine;
  
- 	reg = ep_func->msix_cap + PCI_MSIX_PBA;
--	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
-+	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
- 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
++	spin_lock_bh(&engine->lock);
++	if (engine->chain_sw.first == dreq->chain.first) {
++		engine->chain_sw.first = NULL;
++		engine->chain_sw.last = NULL;
++	}
++	engine->chain_hw.first = dreq->chain.first;
++	engine->chain_hw.last = dreq->chain.last;
++	spin_unlock_bh(&engine->lock);
++
+ 	writel_relaxed(0, engine->regs + CESA_SA_CFG);
  
- 	dw_pcie_dbi_ro_wr_dis(pci);
+ 	mv_cesa_set_int_mask(engine, CESA_SA_INT_ACC0_IDMA_DONE);
+@@ -96,25 +105,27 @@ void mv_cesa_dma_prepare(struct mv_cesa_
+ void mv_cesa_tdma_chain(struct mv_cesa_engine *engine,
+ 			struct mv_cesa_req *dreq)
+ {
+-	if (engine->chain.first == NULL && engine->chain.last == NULL) {
+-		engine->chain.first = dreq->chain.first;
+-		engine->chain.last  = dreq->chain.last;
+-	} else {
+-		struct mv_cesa_tdma_desc *last;
++	struct mv_cesa_tdma_desc *last = engine->chain_sw.last;
+ 
+-		last = engine->chain.last;
++	/*
++	 * Break the DMA chain if the request being queued needs the IV
++	 * regs to be set before lauching the request.
++	 */
++	if (!last || dreq->chain.first->flags & CESA_TDMA_SET_STATE)
++		engine->chain_sw.first = dreq->chain.first;
++	else {
+ 		last->next = dreq->chain.first;
+-		engine->chain.last = dreq->chain.last;
+-
+-		/*
+-		 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
+-		 * the last element of the current chain, or if the request
+-		 * being queued needs the IV regs to be set before lauching
+-		 * the request.
+-		 */
+-		if (!(last->flags & CESA_TDMA_BREAK_CHAIN) &&
+-		    !(dreq->chain.first->flags & CESA_TDMA_SET_STATE))
+-			last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
++		last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
++	}
++	last = dreq->chain.last;
++	engine->chain_sw.last = last;
++	/*
++	 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
++	 * the last element of the current chain.
++	 */
++	if (last->flags & CESA_TDMA_BREAK_CHAIN) {
++		engine->chain_sw.first = NULL;
++		engine->chain_sw.last = NULL;
+ 	}
+ }
+ 
+@@ -127,7 +138,7 @@ int mv_cesa_tdma_process(struct mv_cesa_
+ 
+ 	tdma_cur = readl(engine->regs + CESA_TDMA_CUR);
+ 
+-	for (tdma = engine->chain.first; tdma; tdma = next) {
++	for (tdma = engine->chain_hw.first; tdma; tdma = next) {
+ 		spin_lock_bh(&engine->lock);
+ 		next = tdma->next;
+ 		spin_unlock_bh(&engine->lock);
+@@ -149,12 +160,12 @@ int mv_cesa_tdma_process(struct mv_cesa_
+ 								 &backlog);
+ 
+ 			/* Re-chaining to the next request */
+-			engine->chain.first = tdma->next;
++			engine->chain_hw.first = tdma->next;
+ 			tdma->next = NULL;
+ 
+ 			/* If this is the last request, clear the chain */
+-			if (engine->chain.first == NULL)
+-				engine->chain.last  = NULL;
++			if (engine->chain_hw.first == NULL)
++				engine->chain_hw.last  = NULL;
+ 			spin_unlock_bh(&engine->lock);
+ 
+ 			ctx = crypto_tfm_ctx(req->tfm);
 
 
 
