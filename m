@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10771AE50DF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1F4AE521D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DCE1B62EE7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 832DF4A5221
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD9321FF50;
-	Mon, 23 Jun 2025 21:28:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3804A221FDC;
+	Mon, 23 Jun 2025 21:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hG0Chgov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PUSRtOWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2051E5B71;
-	Mon, 23 Jun 2025 21:28:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E9019D084;
+	Mon, 23 Jun 2025 21:40:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714126; cv=none; b=CSaqjudVCvMti+tkoztqx5cNP3rN6kuj4TIbceJ912bR1bQAKEb0nx7ntJUk5ciCC6H9gVFCDJ95cmqVKOehxReVx0iUIHhJgnLa0upeWNE0LxQ+J/or9GBCVJH80pdS6tN2qBJNpam/xI0q68VJbqM4PN+cBKjMcEiUjum0F2Y=
+	t=1750714834; cv=none; b=ZfwEcfPOfEdpW3Z/JwA4pE+pcacOoa0LBoFmr2uAESt7EtXYco11bl8BGr57LrJLhkf3OIYXcfZplZJzFwTztvAliSMNhrKfTxrlySSdBYjbVvzJ1cs9QoEY1qZ4lk/8m9IzxRWnRoLFgDi4iySJP80NqIrqfPb7ncHgGYClhWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714126; c=relaxed/simple;
-	bh=vprkshYoG2XWcuEgeRJ9UtnQB6/Sr9fjjLipL9+VU1Q=;
+	s=arc-20240116; t=1750714834; c=relaxed/simple;
+	bh=MQcY3de9OhbTzJ/aIhAxEs2ezpaQZEQj9qy6IAIabUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A8iS/NACFPRAoSr3FRBytG39OotuJGifcbJubM30JadMCWhzyUsI0klaXOChPzousvuL2Lh5dT8BOttEr09lLPhiEH53TDEYp9oVSvnf1/W3yoGS9GuzFAKxzH2SOzOeNrJrbsYEue4DHw9uabK+zjAXmdufusYQt2C9Wc9hERk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hG0Chgov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74598C4CEEA;
-	Mon, 23 Jun 2025 21:28:45 +0000 (UTC)
+	 MIME-Version; b=rTgdOMD3kFU/HvHaa7Uy3pt0CGrPjHg/CVhr+lO3Rc1lsNwlnYjJyLI4epR8M4y5apzJ0oRjiDtJvUHjQ6dYQ17QExs+axTRreuRr6QTzFhgCj/Z9LlrowFfFvPhliZ+HBH4k4muV/lJp+wcSWjQ+SfXi5ya4YTx3N5PadyUtpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PUSRtOWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D8BC4CEF0;
+	Mon, 23 Jun 2025 21:40:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714125;
-	bh=vprkshYoG2XWcuEgeRJ9UtnQB6/Sr9fjjLipL9+VU1Q=;
+	s=korg; t=1750714833;
+	bh=MQcY3de9OhbTzJ/aIhAxEs2ezpaQZEQj9qy6IAIabUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hG0Chgov/YGl1NbRWg5jKi3Q3IVcOR/7NIAUeoe1jC+jTRzW/QmnfweY/u2AWI/ii
-	 LEtXEPxBvvfsQr4TVtB7ELw/bHQx2Q9G8ZsnFMGwRxaKdsT0Qywkwk3TbH1dr3eULa
-	 ZUvNGF3Sk2QB7kWiQnrf7VbQZkCMwPKoDndBPdLU=
+	b=PUSRtOWwNMbRYb791kB6wEfX4moiQjZR8STfw2iK3fQ19ecuMqAETqdPYbQ3ZIp+w
+	 km6guEbIJNJQ+QLXOwFbBxu3Tym9IE9uWTvh3SQoN7rBGjYOf1m8UQdYr9FT/0kz9t
+	 2YdML3TLGgIiB0Up0jd2OHNRqYzPKsTxHtcD9AV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tan En De <ende.tan@starfivetech.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 138/290] i2c: designware: Invoke runtime suspend on quick slave re-registration
+Subject: [PATCH 6.15 441/592] powerpc/vdso: Fix build of VDSO32 with pcrel
 Date: Mon, 23 Jun 2025 15:06:39 +0200
-Message-ID: <20250623130631.055834371@linuxfoundation.org>
+Message-ID: <20250623130710.922864372@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tan En De <ende.tan@starfivetech.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
+[ Upstream commit b93755f408325170edb2156c6a894ed1cae5f4f6 ]
 
-Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
-the runtime suspend is invoked immediately when unregistering a slave.
-This prevents a race condition where suspend was skipped when
-unregistering and registering slave in quick succession.
+Building vdso32 on power10 with pcrel leads to following errors:
 
-For example, consider the rapid sequence of
-`delete_device -> new_device -> delete_device -> new_device`.
-In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
-might not be invoked after `delete_device` operation.
+	  VDSO32A arch/powerpc/kernel/vdso/gettimeofday-32.o
+	arch/powerpc/kernel/vdso/gettimeofday.S: Assembler messages:
+	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: syntax error; found `@', expected `,'
+	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
+	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: junk at end of line: `@notoc'
+	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
+	 ...
+	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/gettimeofday-32.o] Error 1
+	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
 
-This is because after `delete_device` operation, when the
-pm_runtime_put() is about to trigger suspend, the following `new_device`
-operation might race and cancel the suspend.
+Once the above is fixed, the following happens:
 
-If that happens, during the `new_device` operation,
-dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
-means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
-Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
-skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
-the interrupt mask register using devmem, it will show as zero.
+	  VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
+	cc1: error: '-mpcrel' requires '-mcmodel=medium'
+	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:89: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
+	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
+	make: *** [Makefile:251: __sub-make] Error 2
 
-Example shell script to reproduce the issue:
-```
-  #!/bin/sh
+Make sure pcrel version of CFUNC() macro is used only for powerpc64
+builds and remove -mpcrel for powerpc32 builds.
 
-  SLAVE_LADDR=0x1010
-  SLAVE_BUS=13
-  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
-  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
-
-  # Create initial device
-  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
-  sleep 2
-
-  # Rapid sequence of
-  # delete_device -> new_device -> delete_device -> new_device
-  echo $SLAVE_LADDR > $DELETE_DEVICE
-  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
-  echo $SLAVE_LADDR > $DELETE_DEVICE
-  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
-
-  # Using devmem to inspect IC_INTR_MASK will show as zero
-```
-
-Signed-off-by: Tan En De <ende.tan@starfivetech.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/1fa3453f07d42a50a70114da9905bf7b73304fca.1747073669.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-slave.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/ppc_asm.h | 2 +-
+ arch/powerpc/kernel/vdso/Makefile  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-index 345b532a2b455..ea4c4955fe264 100644
---- a/drivers/i2c/busses/i2c-designware-slave.c
-+++ b/drivers/i2c/busses/i2c-designware-slave.c
-@@ -91,7 +91,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
- 	i2c_dw_disable(dev);
- 	synchronize_irq(dev->irq);
- 	dev->slave = NULL;
--	pm_runtime_put(dev->dev);
-+	pm_runtime_put_sync_suspend(dev->dev);
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 02897f4b0dbf8..b891910fce8a6 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -183,7 +183,7 @@
+ /*
+  * Used to name C functions called from asm
+  */
+-#ifdef CONFIG_PPC_KERNEL_PCREL
++#if defined(__powerpc64__) && defined(CONFIG_PPC_KERNEL_PCREL)
+ #define CFUNC(name) name@notoc
+ #else
+ #define CFUNC(name) name
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index e8824f9333261..8834dfe9d7279 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -53,7 +53,7 @@ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WAR
+ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- 	return 0;
- }
+ CC32FLAGS := -m32
+-CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
++CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc -mpcrel
+ ifdef CONFIG_CC_IS_CLANG
+ # This flag is supported by clang for 64-bit but not 32-bit so it will cause
+ # an unused command line flag warning for this file.
 -- 
 2.39.5
 
