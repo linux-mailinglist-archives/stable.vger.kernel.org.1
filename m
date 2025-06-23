@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-156090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5ECAE4504
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E1E3AE4456
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC5E16CE3A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E95E1BC00F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2BE6242D90;
-	Mon, 23 Jun 2025 13:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA1E2472AF;
+	Mon, 23 Jun 2025 13:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMmUBkbc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlaG3zzz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0A63347DD;
-	Mon, 23 Jun 2025 13:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F51253F20;
+	Mon, 23 Jun 2025 13:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686124; cv=none; b=t2qCpXczTJWgT9Z059fF5HIGgr67rdASf1cu9BhQQeNMvTrFjpKMtvSuqfEyL7CxNdkv077uSfzVEN/MxfJS+UMZ1bz9bEOcNJOcfax0069N5V7jVsdGasBB6yhkFCzv/lLdigFm+vFQdMb74T/tGSsxtCYM8VZkH/uY7fkR4qI=
+	t=1750685747; cv=none; b=DGPXwlGlFE672Md9Smtpizx+0V+f+ADNV8jFxoUJROW975t4mao8C+cNDOtQCL70aZpPq+rMfrDzJkBGqnlopgB4iZzAl/w83xWQHQgKKM0ygBuh0hGs4dEO1Kg0BVh91QxJ0fBHMZhtsOVkFI9MHqDuWfR22a4udZdr586rNsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686124; c=relaxed/simple;
-	bh=zX7ANpt+7iz/jJ9r8K8EfHfzZff/JgC5sS9XWV9NSo0=;
+	s=arc-20240116; t=1750685747; c=relaxed/simple;
+	bh=RRCXfEprhEVtcpATvkLNC2zN7MM/jznvAmeCaX10BsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MmIcBggll65nTDEe+jzpBEUbXxtsmyL6a/N/Wci/z82hcPiKM4FGN+qDhRYVt4ocqRIDL33WqeW8+lOt3ReoXViUNoFDAx8ww0XF1qQt9nA4dMikyBPy259graJ06fg4EMTG6DX+fUG5quyK0eW/Q+PUZ0OV7UeLkefi1FBOiQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMmUBkbc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4536CC4CEEA;
-	Mon, 23 Jun 2025 13:42:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Ek0N19s8SlxxkzS3zVJOUsl67cpWFC/cYoryFP1h8uhRdNrBSV2cxVCFL0q7rWxXZ2ideAe4sXBVCpqeEKPgUsFebFFm/lPNiNhd6BoJS6695yns5SWUpxsqfHPjm53WOBiBDbW8kbhXpUML5CCHLS+Qx5OoleA2y/ijFc/p4Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlaG3zzz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED60C4CEEA;
+	Mon, 23 Jun 2025 13:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686124;
-	bh=zX7ANpt+7iz/jJ9r8K8EfHfzZff/JgC5sS9XWV9NSo0=;
+	s=korg; t=1750685746;
+	bh=RRCXfEprhEVtcpATvkLNC2zN7MM/jznvAmeCaX10BsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sMmUBkbcNhkmLaVsIjfodmfpQrfku+GIZ9/r3T2Oe1HVk4iTZr0JRgkVwvXjJQ116
-	 8vC5MzEu8Pv3f3Jui+TDxc8iBZCSU932cA6pc6nYo6GKJWaQfP1nYMFK7AlZ0m6FlC
-	 ERYeWczbDDheybG39C16XBDmx/zMTxiLosCzTSnA=
+	b=OlaG3zzzIJjc/9ta8ezEGXHujZYhIuGkcQYZ90QVprcXTHgZrwsQ1XDJoslcqOxp4
+	 FSKpISHsEDE5jOKvcc6p1lxmPaROpKs21F+0a8jB1+NgzX/InDacH58GgUUMU2KR6z
+	 Qb5z2oAghonFz2Zocnl8FkInVKBrdPZzYcHiYquw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Marcelo Schmitt <marcelo.schmitt@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/355] serial: Fix potential null-ptr-deref in mlb_usio_probe()
-Date: Mon, 23 Jun 2025 15:04:52 +0200
-Message-ID: <20250623130629.534919917@linuxfoundation.org>
+Subject: [PATCH 5.10 092/355] iio: adc: ad7124: Fix 3dB filter frequency reading
+Date: Mon, 23 Jun 2025 15:04:53 +0200
+Message-ID: <20250623130629.563496455@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -59,47 +61,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 
-[ Upstream commit 86bcae88c9209e334b2f8c252f4cc66beb261886 ]
+[ Upstream commit 8712e4986e7ce42a14c762c4c350f290989986a5 ]
 
-devm_ioremap() can return NULL on error. Currently, mlb_usio_probe()
-does not check for this case, which could result in a NULL pointer
-dereference.
+The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
+and for sinc3 the factor is 0.272 according to the data sheets for
+ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
 
-Add NULL check after devm_ioremap() to prevent this issue.
-
-Fixes: ba44dc043004 ("serial: Add Milbeaut serial control")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://lore.kernel.org/r/20250403070339.64990-1-bsdhenrymartin@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
+Link: https://patch.msgid.link/20250317115247.3735016-6-u.kleine-koenig@baylibre.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/milbeaut_usio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7124.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/milbeaut_usio.c b/drivers/tty/serial/milbeaut_usio.c
-index 8f2cab7f66ad3..d9f094514945b 100644
---- a/drivers/tty/serial/milbeaut_usio.c
-+++ b/drivers/tty/serial/milbeaut_usio.c
-@@ -523,7 +523,10 @@ static int mlb_usio_probe(struct platform_device *pdev)
- 	}
- 	port->membase = devm_ioremap(&pdev->dev, res->start,
- 				resource_size(res));
--
-+	if (!port->membase) {
-+		ret = -ENOMEM;
-+		goto failed;
-+	}
- 	ret = platform_get_irq_byname(pdev, "rx");
- 	mlb_usio_irq[index][RX] = ret;
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index 99d1288e66828..503814fca4dc0 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -320,9 +320,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
  
+ 	switch (st->channel_config[channel].filter_type) {
+ 	case AD7124_SINC3_FILTER:
+-		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
++		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
+ 	case AD7124_SINC4_FILTER:
+-		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
++		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
+ 	default:
+ 		return -EINVAL;
+ 	}
 -- 
 2.39.5
 
