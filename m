@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41403AE432C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C6AFAE4347
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B105189536C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4544B3B5E7B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619EB25393A;
-	Mon, 23 Jun 2025 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF32522A8;
+	Mon, 23 Jun 2025 13:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRz//rGu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mFReaP+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91C24678E;
-	Mon, 23 Jun 2025 13:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7937223A9BE;
+	Mon, 23 Jun 2025 13:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685052; cv=none; b=AVvM8ZEde4H6BoVY8czD70j4GLGiGM9KHEiTB/NmmVSaqiJwDngxPndyRRnfaTgLYz2/5bdEWySiKEQYdJuK4fEybvl6lW+/+dTnsxkJsts8xtHtPWpDWBa0xDK1LR4txM3DoaGB3qTto32vwLNdMMKIos/XE7Mhkt89owWBfO0=
+	t=1750685067; cv=none; b=csq9HRoM0xGjFI2jZ7NMMe0UAHhdPaoOujGJEMxE7t8p0W26xhS/w/7s6H6MwqZx0gMBX/FnKh4hMqxPtpuwws6b3qdphwbcqyhTOOwaDAIV+2KiJFbkGaP5ghQOxGJ6p8eiE67oG8wX4lapQQv3q6xswxVMjJbRwg67zDJgryQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685052; c=relaxed/simple;
-	bh=Nz2ZKjeaVw6iuJxMCdzhyM67Iskge3+SZdiNdSp22v0=;
+	s=arc-20240116; t=1750685067; c=relaxed/simple;
+	bh=oDPwD4ksy8BnKD+LRq6e3+yzgHHVckeq8oKMtC1y0cc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PYzk/T74mglVEL2SSxd1C8OEjqTcl+iolaqsspV02fuGVZZP5T/9+gyMkjlNzuhC8Q3EJ5kv66Ml/4+isVEgzKREhwEWYU0QRRZOD33D5SACG+zP9cgDhApMZcJE0hYHkEpLMiWhETfw5wwM7y5aoNgs7ObSEuQ6j2UnOQliFCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRz//rGu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9500C4CEF3;
-	Mon, 23 Jun 2025 13:24:11 +0000 (UTC)
+	 MIME-Version; b=c4hgEyLTWQS6Gy8LkUXnSA/6DMrldNS1l3/qGd8OYI75zippMajxQhHef/XMOh89QNhLh78BZ959nRq2T54z5h0V9bk34958f5s6EYjEtl1dVkHMDZ3AbCU1nz8iYtEW38qqPzEI0Chem0V662ALp7m5HoHkcy5kprn2JQNPZTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mFReaP+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC44C4CEEA;
+	Mon, 23 Jun 2025 13:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685052;
-	bh=Nz2ZKjeaVw6iuJxMCdzhyM67Iskge3+SZdiNdSp22v0=;
+	s=korg; t=1750685067;
+	bh=oDPwD4ksy8BnKD+LRq6e3+yzgHHVckeq8oKMtC1y0cc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YRz//rGuNfSZCmXAZt7SSAoe4ieTLoh0klrF/XyztL9W66Jimr5BsiRfwrqiDq95O
-	 c2DcjFKWhRLVs2BCgWVxpo3itWlD+Coyj++htAghGm/mCmQkHKTYo7eqZxDWeG22vg
-	 uI3xN9PwMFAxGIrbkNmchC52Jjo6VMkM1mKqcCSg=
+	b=2mFReaP+woGcx+JTsdIUBoYaBUctiGwCDUKzukM1MfQssJSr5wfWrQNDP8xRTxkoO
+	 070hkF/OWLoJEHLo3hvU5t8Q0yT4EerceVBIVsGM4e6TcUskVr+yUv8zLVM2yOkihW
+	 wt6x+4lx6EFUWuf10AhPVnGwyzGFNH/STU544Ct4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Li RongQing <lirongqing@baidu.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 050/355] netfilter: nf_tables: nft_fib_ipv6: fix VRF ipv4/ipv6 result discrepancy
-Date: Mon, 23 Jun 2025 15:04:11 +0200
-Message-ID: <20250623130628.334928189@linuxfoundation.org>
+Subject: [PATCH 5.10 051/355] vfio/type1: Fix error unwind in migration dirty bitmap allocation
+Date: Mon, 23 Jun 2025 15:04:12 +0200
+Message-ID: <20250623130628.364618061@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -66,77 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 8b53f46eb430fe5b42d485873b85331d2de2c469 ]
+[ Upstream commit 4518e5a60c7fbf0cdff393c2681db39d77b4f87e ]
 
-With a VRF, ipv4 and ipv6 FIB expression behave differently.
+When setting up dirty page tracking at the vfio IOMMU backend for
+device migration, if an error is encountered allocating a tracking
+bitmap, the unwind loop fails to free previously allocated tracking
+bitmaps.  This occurs because the wrong loop index is used to
+generate the tracking object.  This results in unintended memory
+usage for the life of the current DMA mappings where bitmaps were
+successfully allocated.
 
-   fib daddr . iif oif
+Use the correct loop index to derive the tracking object for
+freeing during unwind.
 
-Will return the input interface name for ipv4, but the real device
-for ipv6.  Example:
-
-If VRF device name is tvrf and real (incoming) device is veth0.
-First round is ok, both ipv4 and ipv6 will yield 'veth0'.
-
-But in the second round (incoming device will be set to "tvrf"), ipv4
-will yield "tvrf" whereas ipv6 returns "veth0" for the second round too.
-
-This makes ipv6 behave like ipv4.
-
-A followup patch will add a test case for this, without this change
-it will fail with:
-  get element inet t fibif6iif { tvrf . dead:1::99 . tvrf }
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  FAIL: did not find tvrf . dead:1::99 . tvrf in fibif6iif
-
-Alternatively we could either not do anything at all or change
-ipv4 to also return the lower/real device, however, nft (userspace)
-doc says "iif: if fib lookup provides a route then check its output
-interface is identical to the packets input interface." which is what
-the nft fib ipv4 behaviour is.
-
-Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Link: https://lore.kernel.org/r/20250521034647.2877-1-lirongqing@baidu.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/netfilter/nft_fib_ipv6.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
-index 1a08b00aa3213..b7e543d4d57be 100644
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -154,6 +154,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- {
- 	const struct nft_fib *priv = nft_expr_priv(expr);
- 	int noff = skb_network_offset(pkt->skb);
-+	const struct net_device *found = NULL;
- 	const struct net_device *oif = NULL;
- 	u32 *dest = &regs->data[priv->dreg];
- 	struct ipv6hdr *iph, _iph;
-@@ -198,11 +199,15 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 	if (rt->rt6i_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
- 		goto put_rt_err;
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index 9b01f88ae4762..b2a543e7cac45 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -269,7 +269,7 @@ static int vfio_dma_bitmap_alloc_all(struct vfio_iommu *iommu, size_t pgsize)
+ 			struct rb_node *p;
  
--	if (oif && oif != rt->rt6i_idev->dev &&
--	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) != oif->ifindex)
--		goto put_rt_err;
-+	if (!oif) {
-+		found = rt->rt6i_idev->dev;
-+	} else {
-+		if (oif == rt->rt6i_idev->dev ||
-+		    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == oif->ifindex)
-+			found = oif;
-+	}
+ 			for (p = rb_prev(n); p; p = rb_prev(p)) {
+-				struct vfio_dma *dma = rb_entry(n,
++				struct vfio_dma *dma = rb_entry(p,
+ 							struct vfio_dma, node);
  
--	nft_fib_store_result(dest, priv, rt->rt6i_idev->dev);
-+	nft_fib_store_result(dest, priv, found);
-  put_rt_err:
- 	ip6_rt_put(rt);
- }
+ 				vfio_dma_bitmap_free(dma);
 -- 
 2.39.5
 
