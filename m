@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-157396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58BA6AE53D6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5F2AE5467
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE021894E6B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BCC1A188ADA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41F9223714;
-	Mon, 23 Jun 2025 21:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AD81221FD6;
+	Mon, 23 Jun 2025 22:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoSexVac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NzMnn06M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8326B223316;
-	Mon, 23 Jun 2025 21:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A344409;
+	Mon, 23 Jun 2025 22:00:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715763; cv=none; b=Q00Xv0CmdTTYYy6Csorh3bFsSF6c2+dgxDRbAxkisrjpVVZuMxJUoyy+/75vQ3B8Um8rSXRfNmpOoWgY6oLx2WpwXphpA6b74eEDyFsz1XmVVJfZ8YEL+YyX4Hwxg/Vm/ja9EuO1w/PUkEZ4GB1U4A3RzLVBJM4478aclf+WdkY=
+	t=1750716017; cv=none; b=Mpxsx25tVryzkgziJvj5QUKXNExj27slzAKGvN/epgifBiF234/OuGRNXJjV4lfTFLCLlX89aNO0bMaPfo+ZZB5sBtlSSdvU/6BNDCNqTmkNsFdTSmW/bo4aJPjVp4xqg6QUWJgeKd1BKa4SsvvwUdBFO9Of+DMTHBZ7OzZ/96s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715763; c=relaxed/simple;
-	bh=wTerhwoUCUbwz7qaGl5ACG3z3A0iBMoZH53LEtSEn2M=;
+	s=arc-20240116; t=1750716017; c=relaxed/simple;
+	bh=WO2J9Q5W5Sz6as3RsFqoLmWApkiG7p9mrEc4PCtdVgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMTQXcdGZl6uSN/dgmZwxCZHE97YrKeZEvS8a65W6OIW03f8CMpoz0XImKMQhPsQF7D8Pbj/DrpuASSGT1YJZmBMRO0NXpUkqMi0njlde6LJxXHIsYolH8QTV4iNt9kQxq/wFGWBwrvqpRMAKwND3fo9vmjrtZJQ4NK2kIzyOcg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoSexVac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B168C4CEEA;
-	Mon, 23 Jun 2025 21:56:02 +0000 (UTC)
+	 MIME-Version; b=n35XhN8FPnTydEGSFyUQUHnIZUSovGLKQQNYel12+MoRQFDUm9U/I0WJjvmmE6kK1FCXkCScqCozSLD7meJ+GYWqA8ZalAjykq0RSg8dkQ88C3OMuYuDhWovbLj3vDYoAZsR3t1jFBm+9oGthIoNZ8KMhZVmKjxJD2ZB0U+WRz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NzMnn06M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B267FC4CEEA;
+	Mon, 23 Jun 2025 22:00:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715763;
-	bh=wTerhwoUCUbwz7qaGl5ACG3z3A0iBMoZH53LEtSEn2M=;
+	s=korg; t=1750716017;
+	bh=WO2J9Q5W5Sz6as3RsFqoLmWApkiG7p9mrEc4PCtdVgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoSexVacZj6NwbB+1ZS2mChgsAro/xVqxQgPRhbICRgmvUH+7+T8To3tldpEkjGXF
-	 wn1EyhBRcGN4pNdoJc22XCa6SIoI+ozl6cQ2fj2Ku4DdrAiExfIt0G4sYrq3OIFMFx
-	 LAHZJAJoksvvy8yQC7KuNMQtJtjWEeXxWYdEF424=
+	b=NzMnn06MYOAi+ADMPzLJTv7LTWh3pmvJmze5dHLkEwwzy2rTYCnVdQjv8QMzBdoD6
+	 YuVXQE4bsYLHJS8a3lq3fo/zA7wEbEcvbU5AWkcGuE7A0r1CCHJfYNElJdGZz1tCmS
+	 AiYURKqJ1PimW7UKhJM3eI/XvyQIdO+Qf3Gorbng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jonathan Lane <jon@borg.moe>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 295/355] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+Subject: [PATCH 6.6 235/290] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
 Date: Mon, 23 Jun 2025 15:08:16 +0200
-Message-ID: <20250623130635.644679921@linuxfoundation.org>
+Message-ID: <20250623130633.996435910@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jonathan Lane <jon@borg.moe>
 
-commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
+commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
 
-Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
-noises after runtime-PM suspend.  Disable the codec runtime PM as a
-workaround.
+Like many Dell laptops, the 3.5mm port by default can not detect a
+combined headphones+mic headset or even a pure microphone.  This
+change enables the port's functionality.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
+Signed-off-by: Jonathan Lane <jon@borg.moe>
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
+Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2295,6 +2295,8 @@ static const struct snd_pci_quirk power_
- 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	/* Dell ALC3271 */
- 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
-+	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -9952,6 +9952,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
++	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
 
 
 
