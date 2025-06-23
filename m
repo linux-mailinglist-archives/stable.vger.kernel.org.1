@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-157204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC10AAE52ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A368BAE52BF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 862A0443F94
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF49E4A6BA0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24EE1C5D46;
-	Mon, 23 Jun 2025 21:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0B5221B9E5;
+	Mon, 23 Jun 2025 21:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dbzo6oNG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rR18GBya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 919103FD4;
-	Mon, 23 Jun 2025 21:48:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E2001E5206;
+	Mon, 23 Jun 2025 21:46:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715294; cv=none; b=QHs0cD922nQUX02u5sUVgr4uEIw7a7fMfA4k9jHDUEkiLtFPnxi0q1ZRbCbxAHXpi5MzyW3KT5UeB4xvYdYBDPA/q4aIDgSjauMpYOc4K+/+QkSbvEju0x0tQP7VnnMzO1eaFu9c8cFFZuaaHdfMwBcZ/cLpcy9v9sZFyqXeCyk=
+	t=1750715213; cv=none; b=VeqDXVIEt/MaLcWkaTZHclgqeQgeefmmgBlE/OrahdWFHiPN5kgah36rI0T2H8V7Bkgj/VB9AlTaaMz9joVEDq6sviEOBqxPh6T1FXVubexTzDb9+gNzfE/fbPyoFoMg1qIQrdImbKWfco1Rs0yHn82Y+0R1ki3OKE5zut9jBvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715294; c=relaxed/simple;
-	bh=vxTG93/JxqrfO8hIodKpnM/p8JxJfULyJKSrVZOFpr0=;
+	s=arc-20240116; t=1750715213; c=relaxed/simple;
+	bh=aaniwihfBmGNR7RuR7DTGaK3ffGAijDaXoPL21wArsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPYG26vM1xu9UG1sLoc1eZC314D8jv6/DGnybTBm1xNfvHXqRLtCU8zSRJ7wxVKUe+57GEiakWmCZiHOsm0VxZ6ghnIMN/M1OVuYL/7KBh/oiwA3ael0OeI5DWGKJ2M9UA0eFvv+467YtBtczKi03+eUZAgmyvFhGR4wXvgb7BI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dbzo6oNG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F082C4CEEA;
-	Mon, 23 Jun 2025 21:48:13 +0000 (UTC)
+	 MIME-Version; b=pzyKbvUd2je+UYzLA6rMFoXfen7/pUuO9yJ4QOoZms0IP4Rd3MkAA753n/yrciWUA3C1kZzV87ks4ShO+hEHpOMsG/fHN/W81690bavafAmL2eH4DanS1K24R5svrtycb4mz8Apa6EX7C/1/pnLxRqhzz1dTtFIduf7yeZBKsy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rR18GBya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC86C4CEEA;
+	Mon, 23 Jun 2025 21:46:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715294;
-	bh=vxTG93/JxqrfO8hIodKpnM/p8JxJfULyJKSrVZOFpr0=;
+	s=korg; t=1750715213;
+	bh=aaniwihfBmGNR7RuR7DTGaK3ffGAijDaXoPL21wArsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dbzo6oNG4+l/l7+7kS6E/TOBBB7Oc/P3qRNcux0DOmfvHCgJ1/8gOJqj4bBkc9dr0
-	 2hrnce9wFCU0dn0YsS7Fg8JtOweude6iuq5CsTO0LV14Dd6BS5VlSvGUk0eF++pWtA
-	 a2NqQQu5PcsJSfYUtG5qfGNtE/icA+tXfJ0sspa8=
+	b=rR18GBya9WleWah1N6/T5jTS3lD3qtnnEncIuBptyM+XjQJlfht98n4y+0COPNvG7
+	 hVzIi2JIza5karr+AIXHeqwuvcFbe1AJg3nqZauTuKE0eZhGCZmRtIbWT9R02z3X08
+	 cy/zVBQDVcdplHyhFetiuM5OYNbN0x2TrZBU0Y0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 266/355] clk: rockchip: rk3036: mark ddrphy as critical
+	David.Kaplan@amd.com,
+	peterz@infradead.org,
+	pawan.kumar.gupta@linux.intel.com,
+	mingo@kernel.org,
+	brad.spengler@opensrcsec.com,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Breno Leitao <leitao@debian.org>
+Subject: [PATCH 6.6 206/290] Revert "x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2" on v6.6 and older
 Date: Mon, 23 Jun 2025 15:07:47 +0200
-Message-ID: <20250623130634.751430900@linuxfoundation.org>
+Message-ID: <20250623130633.123267806@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 596a977b34a722c00245801a5774aa79cec4e81d ]
+This reverts commit 7adb96687ce8819de5c7bb172c4eeb6e45736e06 which is
+commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d upstream.
 
-The ddrphy is supplied by the dpll, but due to the limited number of PLLs
-on the rk3036, the dpll also is used for other periperhals, like the GPU.
+commit 7adb96687ce8 ("x86/bugs: Make spectre user default depend on
+MITIGATION_SPECTRE_V2") depends on commit 72c70f480a70 ("x86/bugs: Add
+a separate config for Spectre V2"), which introduced
+MITIGATION_SPECTRE_V2.
 
-So it happened, when the Lima driver turned off the gpu clock, this in
-turn also disabled the dpll and thus the ram.
+commit 72c70f480a70 ("x86/bugs: Add a separate config for Spectre V2")
+never landed in stable tree, thus, stable tree doesn't have
+MITIGATION_SPECTRE_V2, that said, commit 7adb96687ce8 ("x86/bugs: Make
+spectre user default depend on MITIGATION_SPECTRE_V2") has no value if
+the dependecy was not applied.
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250503202532.992033-4-heiko@sntech.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Revert commit 7adb96687ce8 ("x86/bugs: Make spectre user default
+depend on MITIGATION_SPECTRE_V2")  in stable kernel which landed in in
+5.4.294, 5.10.238, 5.15.185, 6.1.141 and 6.6.93 stable versions.
+
+Cc: David.Kaplan@amd.com
+Cc: peterz@infradead.org
+Cc: pawan.kumar.gupta@linux.intel.com
+Cc: mingo@kernel.org
+Cc: brad.spengler@opensrcsec.com
+Cc: stable@vger.kernel.org # 6.6 6.1 5.15 5.10 5.4
+Reported-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk-rk3036.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/kernel-parameters.txt |    2 --
+ arch/x86/kernel/cpu/bugs.c                      |   10 +++-------
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3036.c b/drivers/clk/rockchip/clk-rk3036.c
-index 6a46f85ad8372..4a8c72d995735 100644
---- a/drivers/clk/rockchip/clk-rk3036.c
-+++ b/drivers/clk/rockchip/clk-rk3036.c
-@@ -429,6 +429,7 @@ static const char *const rk3036_critical_clocks[] __initconst = {
- 	"hclk_peri",
- 	"pclk_peri",
- 	"pclk_ddrupctl",
-+	"ddrphy",
- };
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5978,8 +5978,6 @@
  
- static void __init rk3036_clk_init(struct device_node *np)
--- 
-2.39.5
-
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
+-			Selecting specific mitigation does not force enable
+-			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1442,13 +1442,9 @@ static __ro_after_init enum spectre_v2_m
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
+ {
+-	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
+-	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
+-		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
+-
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1461,7 +1457,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return mode;
++		return SPECTRE_V2_USER_CMD_AUTO;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1471,8 +1467,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
+ 	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
+-	return mode;
++	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
++	return SPECTRE_V2_USER_CMD_AUTO;
+ }
+ 
+ static inline bool spectre_v2_in_ibrs_mode(enum spectre_v2_mitigation mode)
 
 
 
