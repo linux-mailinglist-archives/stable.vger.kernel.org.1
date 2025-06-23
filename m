@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-158155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620C1AE572F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84A66AE561F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D037B3E7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD4A93AF5EB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3692222B2;
-	Mon, 23 Jun 2025 22:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EE5226D00;
+	Mon, 23 Jun 2025 22:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pr9n5Bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdfO/SWF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCC1222581;
-	Mon, 23 Jun 2025 22:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33D1F7580;
+	Mon, 23 Jun 2025 22:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717619; cv=none; b=P/jOMAK3dzhrbKho78Y1LSHO+HSptfX6xvsCmKjujLW4PQ5wJZOYRJsjWLDx57537UnCrmgwwMFs9XfQSV/xUfJIrC12AlFU0jpWCkBixiV3A76GlwHzemp9ivoxWt1v/oEqhyGNkG7sw3HJLLb7gEhj0brFB7Zg2IBdLLHVRD4=
+	t=1750716884; cv=none; b=Yli8q5nRQOIID/K0+7SycPszRMVWXsrzkyxs2BMtZTRRkWl9nlhNVAMb4OVz/oKyxP0SCC1QlXfcgaRfmEtI7ix4F4X/Qka7uwKpzKsqXE5uYuvnmPKCsKRAxSIXL8RNPg0h+eCppRsfLyeuTpeffKw7mcCF2EEOL+VAMsOxbV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717619; c=relaxed/simple;
-	bh=YzytVnKiUK7Bqr8EYW7J5SoyughQLLadVA6TelgSzvY=;
+	s=arc-20240116; t=1750716884; c=relaxed/simple;
+	bh=2hYZDC8eSnmMHF2eYPyOjEwddZ6ViNS36kZF0LS7TOk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=is/eJfpd3GxVnIRO8O8W4gRWGRLMabQCX+Gt1apU/duuqu4ATlyVbQWdURV24e4y46hfC6Oj3qrrvHMFBG7ppvjeccpHIBrHpb+oc+4Ydv+b5uqr3FK5RRdzNGzSYYPuBC2xFoydEaoUewqtbaGmzAtW4MvwchQhr4HAb2ZDhqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pr9n5Bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F8BC4CEEA;
-	Mon, 23 Jun 2025 22:26:58 +0000 (UTC)
+	 MIME-Version; b=SnrIVTQri6bGot97VqJg0KEetr3YErU08naEaSw0reUllT3edYPaiX2Pu5Vrjp6OWV5pL7ah2L4fwONIsyFboh7ODtgHZR6Mo6dOR/RHidrWuNtOoBM8wViSLIa66vzQPDlnWbiJlAbsOxdLf4JpRQ0uOLL8tTPBRFjYCmFaf9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdfO/SWF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F23C4CEEA;
+	Mon, 23 Jun 2025 22:14:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717619;
-	bh=YzytVnKiUK7Bqr8EYW7J5SoyughQLLadVA6TelgSzvY=;
+	s=korg; t=1750716884;
+	bh=2hYZDC8eSnmMHF2eYPyOjEwddZ6ViNS36kZF0LS7TOk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pr9n5Bv803aZZt17JNPhpLa0Ej6QXHm1lxGIto4g4nxwttw+2p4rEjf9RT+TSM7c
-	 J8fIT2PuqvUk1g7AY1l1PNnkxLVif7188wCxiQHaRjKKl5rYJGWxR669Z+wwn2sW2A
-	 o6EEQVJcKE7S7jZA7DY3KJ7QWUsRyd6Vv50CZFk0=
+	b=ZdfO/SWF/1SPGgrLqEMMxNVBfZL2TJAgqQOzFQ0yOI8y5d4a685SIdurTdnoNcBak
+	 5qqpDmOGMQMq1+QZCfrmYrlC1MEKcOmxW3zmitmQGJktvDe12ITbVmNV3DnujH8tKf
+	 5eDk22SIJ6CIlfwxzDyYvq2jsatLmDDaPklNckqg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Christian Lamparter <chunkeey@gmail.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 473/508] drm/nouveau/bl: increase buffer size to avoid truncate warning
-Date: Mon, 23 Jun 2025 15:08:38 +0200
-Message-ID: <20250623130656.728142161@linuxfoundation.org>
+Subject: [PATCH 5.15 375/411] wifi: carl9170: do not ping device which has failed to load firmware
+Date: Mon, 23 Jun 2025 15:08:39 +0200
+Message-ID: <20250623130643.081616710@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +61,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
+[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
 
-The nouveau_get_backlight_name() function generates a unique name for the
-backlight interface, appending an id from 1 to 99 for all backlight devices
-after the first.
+Syzkaller reports [1, 2] crashes caused by an attempts to ping
+the device which has failed to load firmware. Since such a device
+doesn't pass 'ieee80211_register_hw()', an internal workqueue
+managed by 'ieee80211_queue_work()' is not yet created and an
+attempt to queue work on it causes null-ptr-deref.
 
-GCC 15 (and likely other compilers) produce the following
--Wformat-truncation warning:
+[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
+[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
 
-nouveau_backlight.c: In function ‘nouveau_backlight_init’:
-nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                                     ^~
-In function ‘nouveau_get_backlight_name’,
-    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
-nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                        ^~~~~~~~~~~~~~~~
-nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The warning started appearing after commit ab244be47a8f ("drm/nouveau:
-Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
-for the ida usage removed the explicit value check for ids larger than 99.
-The compiler is unable to intuit that the ida_alloc_max() limits the
-returned value range between 0 and 99.
-
-Because the compiler can no longer infer that the number ranges from 0 to
-99, it thinks that it could use as many as 11 digits (10 + the potential -
-sign for negative numbers).
-
-The warning has gone unfixed for some time, with at least one kernel test
-robot report. The code breaks W=1 builds, which is especially frustrating
-with the introduction of CONFIG_WERROR.
-
-The string is stored temporarily on the stack and then copied into the
-device name. Its not a big deal to use 11 more bytes of stack rounding out
-to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
-warning. This fixes the W=1 builds that include this driver.
-
-Compile tested only.
-
-Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
-Suggested-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-index a614582779cae..6469820e46151 100644
---- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-@@ -41,7 +41,7 @@
- #include "nouveau_acpi.h"
+diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+index a5265997b5767..debac4699687e 100644
+--- a/drivers/net/wireless/ath/carl9170/usb.c
++++ b/drivers/net/wireless/ath/carl9170/usb.c
+@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
  
- static struct ida bl_ida;
--#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
-+#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
+ 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
+ 			/*
+-			 * The system is too slow to cope with
+-			 * the enormous workload. We have simply
+-			 * run out of active rx urbs and this
+-			 * unfortunately leads to an unpredictable
+-			 * device.
++			 * At this point, either the system is too slow to
++			 * cope with the enormous workload (so we have simply
++			 * run out of active rx urbs and this unfortunately
++			 * leads to an unpredictable device), or the device
++			 * is not fully functional after an unsuccessful
++			 * firmware loading attempts (so it doesn't pass
++			 * ieee80211_register_hw() and there is no internal
++			 * workqueue at all).
+ 			 */
  
- static bool
- nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
+-			ieee80211_queue_work(ar->hw, &ar->ping_work);
++			if (ar->registered)
++				ieee80211_queue_work(ar->hw, &ar->ping_work);
++			else
++				pr_warn_once("device %s is not registered\n",
++					     dev_name(&ar->udev->dev));
+ 		}
+ 	} else {
+ 		/*
 -- 
 2.39.5
 
