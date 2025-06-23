@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-155885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74966AE444D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 32510AE41BF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D3A13B6105
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43E683AAC07
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C078255E2F;
-	Mon, 23 Jun 2025 13:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA46253359;
+	Mon, 23 Jun 2025 13:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/k+pHGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZ0cBARH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9182F24;
-	Mon, 23 Jun 2025 13:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B757252917;
+	Mon, 23 Jun 2025 13:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685588; cv=none; b=rR4C6yQmedoZG4XNlwIEtQbCU/w5yvmbnWx8S92h7SuEBfe8kDzpMH5Ue7ZL2zJnmO9VMvpZ5Cf+0mQjw/WKfGevoutm024WgxU2ZG5ZwSYqbyIA4BW9mEan8EAWAe5zCqw6KTCHxPjWQSb9j72yziYuWR3FwfDqBRD0nRgANNI=
+	t=1750684216; cv=none; b=tY7KTmY6wLQCYFZfXKkI+MyeV2GTMG+HR4KLSkbLZoTDGvBwNzQ5FzefFGPlklZDbd/WkJ2oKXyZMapXhzd0ptKn267RH3TVOcgnTIyDQXSsBykQrroba5FwDJKW9W/eU/qd/rwa0pcAhmk72f8/SKdNZ8Ao1V1anLXaXH7AvvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685588; c=relaxed/simple;
-	bh=5BvW2IopkqCdqc10UhTARxn9uFoqDy+IfddEQDF/vU4=;
+	s=arc-20240116; t=1750684216; c=relaxed/simple;
+	bh=j519RX/iLTf1rnCuN/XIkPfeuYv7WVVj75U7TEzAg3I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MvolkICVc6XWoglJJ3Zxe4g4poXqqhbr0GgCAIXrnqWQoRBuzojVDZLD1KdUbIOo6irsuukz4xqeB3Ss0ziXp6obYaiaTIxVJxneIXaxW70Z452Fg7iBJciIHo4HMDNvnovgV7fD9OF0SVjOABmEbBLCGChr5i5MNSFgA9B/CAE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/k+pHGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68041C4CEEA;
-	Mon, 23 Jun 2025 13:33:07 +0000 (UTC)
+	 MIME-Version; b=XiUeRxvwNEpKtN0IfvCqNPFjLvVoJIfRrNa2OlPwtMV2OdwairpnXnQ9nPb6tjNFpriuWp0VdP+5HvrElNkvRTSBorL+p2dDYKfMBPKvkG2EsAzkFAU+kRKSHnSDbKh9HAncb9qoLMEt9AuNnrvSJ+bQzPBWwM2fk3fH8kttwkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZ0cBARH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24DCC4CEEA;
+	Mon, 23 Jun 2025 13:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685587;
-	bh=5BvW2IopkqCdqc10UhTARxn9uFoqDy+IfddEQDF/vU4=;
+	s=korg; t=1750684216;
+	bh=j519RX/iLTf1rnCuN/XIkPfeuYv7WVVj75U7TEzAg3I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M/k+pHGdhpHmlNFcUMXUx1ccCnxgKb8NMJThjZOPAzlXQU1Krhe53/YcdkfMHa37q
-	 icn57HH8VijrFe3EurtZ3i9+to7ul8hMRjiyWnZxg7mgriuh6E0oD2xNDR9CPvkgsh
-	 o0/7tNeWCzoKXepASCofd3mmNQgeVap6rwuLvAQI=
+	b=JZ0cBARHaDZAxphE4MGyaPHph0ixru6ceCYHOJnmf5A9FzTcFvIZTw1T0w27UMz4C
+	 MLiPrclSlGnNdK9Jm3wmlWpsDRaNkfP8ZKq4XYC5asyoB5bDkJ+DuIppoWvaOdPpDI
+	 9UGYoDfhoZXL9rNukxv5yo2s4uu750D40s6OUfds=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/355] ARM: dts: at91: at91sam9263: fix NAND chip selects
-Date: Mon, 23 Jun 2025 15:04:22 +0200
-Message-ID: <20250623130628.661350455@linuxfoundation.org>
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.6 002/290] crypto: marvell/cesa - Do not chain submitted requests
+Date: Mon, 23 Jun 2025 15:04:23 +0200
+Message-ID: <20250623130626.999774646@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
+commit 0413bcf0fc460a68a2a7a8354aee833293d7d693 upstream.
 
-NAND did not work on my USB-A9263. I discovered that the offending
-commit converted the PIO bank for chip selects wrongly, so all A9263
-boards need to be fixed.
+This driver tries to chain requests together before submitting them
+to hardware in order to reduce completion interrupts.
 
-Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, it even extends chains that have already been submitted
+to hardware.  This is dangerous because there is no way of knowing
+whether the hardware has already read the DMA memory in question
+or not.
+
+Fix this by splitting the chain list into two.  One for submitted
+requests and one for requests that have not yet been submitted.
+Only extend the latter.
+
+Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Fixes: 85030c5168f1 ("crypto: marvell - Add support for chaining crypto requests in TDMA mode")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/at91sam9263ek.dts | 2 +-
- arch/arm/boot/dts/tny_a9263.dts     | 2 +-
- arch/arm/boot/dts/usb_a9263.dts     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/crypto/marvell/cesa/cesa.c |    2 -
+ drivers/crypto/marvell/cesa/cesa.h |    9 ++++--
+ drivers/crypto/marvell/cesa/tdma.c |   53 ++++++++++++++++++++++---------------
+ 3 files changed, 39 insertions(+), 25 deletions(-)
 
-diff --git a/arch/arm/boot/dts/at91sam9263ek.dts b/arch/arm/boot/dts/at91sam9263ek.dts
-index 71f60576761a0..df206bdb67883 100644
---- a/arch/arm/boot/dts/at91sam9263ek.dts
-+++ b/arch/arm/boot/dts/at91sam9263ek.dts
-@@ -148,7 +148,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/tny_a9263.dts b/arch/arm/boot/dts/tny_a9263.dts
-index 62b7d9f9a926c..c8b6318aaa838 100644
---- a/arch/arm/boot/dts/tny_a9263.dts
-+++ b/arch/arm/boot/dts/tny_a9263.dts
-@@ -64,7 +64,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index d1c07503ff76f..87a5f96014e01 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -84,7 +84,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
--- 
-2.39.5
-
+--- a/drivers/crypto/marvell/cesa/cesa.c
++++ b/drivers/crypto/marvell/cesa/cesa.c
+@@ -94,7 +94,7 @@ static int mv_cesa_std_process(struct mv
+ 
+ static int mv_cesa_int_process(struct mv_cesa_engine *engine, u32 status)
+ {
+-	if (engine->chain.first && engine->chain.last)
++	if (engine->chain_hw.first && engine->chain_hw.last)
+ 		return mv_cesa_tdma_process(engine, status);
+ 
+ 	return mv_cesa_std_process(engine, status);
+--- a/drivers/crypto/marvell/cesa/cesa.h
++++ b/drivers/crypto/marvell/cesa/cesa.h
+@@ -440,8 +440,10 @@ struct mv_cesa_dev {
+  *			SRAM
+  * @queue:		fifo of the pending crypto requests
+  * @load:		engine load counter, useful for load balancing
+- * @chain:		list of the current tdma descriptors being processed
+- *			by this engine.
++ * @chain_hw:		list of the current tdma descriptors being processed
++ *			by the hardware.
++ * @chain_sw:		list of the current tdma descriptors that will be
++ *			submitted to the hardware.
+  * @complete_queue:	fifo of the processed requests by the engine
+  *
+  * Structure storing CESA engine information.
+@@ -463,7 +465,8 @@ struct mv_cesa_engine {
+ 	struct gen_pool *pool;
+ 	struct crypto_queue queue;
+ 	atomic_t load;
+-	struct mv_cesa_tdma_chain chain;
++	struct mv_cesa_tdma_chain chain_hw;
++	struct mv_cesa_tdma_chain chain_sw;
+ 	struct list_head complete_queue;
+ 	int irq;
+ };
+--- a/drivers/crypto/marvell/cesa/tdma.c
++++ b/drivers/crypto/marvell/cesa/tdma.c
+@@ -38,6 +38,15 @@ void mv_cesa_dma_step(struct mv_cesa_req
+ {
+ 	struct mv_cesa_engine *engine = dreq->engine;
+ 
++	spin_lock_bh(&engine->lock);
++	if (engine->chain_sw.first == dreq->chain.first) {
++		engine->chain_sw.first = NULL;
++		engine->chain_sw.last = NULL;
++	}
++	engine->chain_hw.first = dreq->chain.first;
++	engine->chain_hw.last = dreq->chain.last;
++	spin_unlock_bh(&engine->lock);
++
+ 	writel_relaxed(0, engine->regs + CESA_SA_CFG);
+ 
+ 	mv_cesa_set_int_mask(engine, CESA_SA_INT_ACC0_IDMA_DONE);
+@@ -96,25 +105,27 @@ void mv_cesa_dma_prepare(struct mv_cesa_
+ void mv_cesa_tdma_chain(struct mv_cesa_engine *engine,
+ 			struct mv_cesa_req *dreq)
+ {
+-	if (engine->chain.first == NULL && engine->chain.last == NULL) {
+-		engine->chain.first = dreq->chain.first;
+-		engine->chain.last  = dreq->chain.last;
+-	} else {
+-		struct mv_cesa_tdma_desc *last;
++	struct mv_cesa_tdma_desc *last = engine->chain_sw.last;
+ 
+-		last = engine->chain.last;
++	/*
++	 * Break the DMA chain if the request being queued needs the IV
++	 * regs to be set before lauching the request.
++	 */
++	if (!last || dreq->chain.first->flags & CESA_TDMA_SET_STATE)
++		engine->chain_sw.first = dreq->chain.first;
++	else {
+ 		last->next = dreq->chain.first;
+-		engine->chain.last = dreq->chain.last;
+-
+-		/*
+-		 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
+-		 * the last element of the current chain, or if the request
+-		 * being queued needs the IV regs to be set before lauching
+-		 * the request.
+-		 */
+-		if (!(last->flags & CESA_TDMA_BREAK_CHAIN) &&
+-		    !(dreq->chain.first->flags & CESA_TDMA_SET_STATE))
+-			last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
++		last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
++	}
++	last = dreq->chain.last;
++	engine->chain_sw.last = last;
++	/*
++	 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
++	 * the last element of the current chain.
++	 */
++	if (last->flags & CESA_TDMA_BREAK_CHAIN) {
++		engine->chain_sw.first = NULL;
++		engine->chain_sw.last = NULL;
+ 	}
+ }
+ 
+@@ -127,7 +138,7 @@ int mv_cesa_tdma_process(struct mv_cesa_
+ 
+ 	tdma_cur = readl(engine->regs + CESA_TDMA_CUR);
+ 
+-	for (tdma = engine->chain.first; tdma; tdma = next) {
++	for (tdma = engine->chain_hw.first; tdma; tdma = next) {
+ 		spin_lock_bh(&engine->lock);
+ 		next = tdma->next;
+ 		spin_unlock_bh(&engine->lock);
+@@ -149,12 +160,12 @@ int mv_cesa_tdma_process(struct mv_cesa_
+ 								 &backlog);
+ 
+ 			/* Re-chaining to the next request */
+-			engine->chain.first = tdma->next;
++			engine->chain_hw.first = tdma->next;
+ 			tdma->next = NULL;
+ 
+ 			/* If this is the last request, clear the chain */
+-			if (engine->chain.first == NULL)
+-				engine->chain.last  = NULL;
++			if (engine->chain_hw.first == NULL)
++				engine->chain_hw.last  = NULL;
+ 			spin_unlock_bh(&engine->lock);
+ 
+ 			ctx = crypto_tfm_ctx(req->tfm);
 
 
 
