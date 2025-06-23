@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156458-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C957AE53EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192FDAE4FAC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A041B67D5F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E01231B61420
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE67223335;
-	Mon, 23 Jun 2025 21:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42888221727;
+	Mon, 23 Jun 2025 21:17:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCqbwKGd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2AoDsNK6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2621FF2B;
-	Mon, 23 Jun 2025 21:57:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D1938DE1;
+	Mon, 23 Jun 2025 21:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715824; cv=none; b=EQ+sPaKhma3qRUeQAVszVuxyiiha1Rcwl6BQf+FGlsO/OB2NsiaYDhanfp51SDF5+GYihRoTso1G6kgbyADOhwJNlUawvJcDshCICOq5hMtHEW4c5rPu8XMZZi+XhMUgturjbaZiNSJiKr+bc+QUipss3RamusA7lYB2Dg0AARY=
+	t=1750713461; cv=none; b=YqhXuzjsA+TcWSfe3bffYG/E/vVvHbstNXk9SqUwTg5rvyVfSa5nZQrOEp+9ARMpvor5f3sidasm1cN68LQ/Qo06ViPGXhDNqU4+j/6JFcVcGjMCMyO+46gOl83hDv8+shfbps/QD7pirt1zx3vNMDsDMAhYZXy19l5fAoRbzBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715824; c=relaxed/simple;
-	bh=e9/ZiQBbvZ9yeQPMeh3+F0f2ksoI3IimYlMr98W8pqc=;
+	s=arc-20240116; t=1750713461; c=relaxed/simple;
+	bh=5QnARNm0LE5W72WlCh0WNncYh9ZLlES1eoRyhGgVuFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlD2GP7sOn9OM/Fdrs4NDfflr0qp+AGoh94NwQGMypn3Y31Feuh5tu0UnCrzsQ5sKBAC++ZbvRg1tk54uSt6Wu2Le/w2VNiRaVHolmvJDqyj8hN1ur3byITocDT9taf5N+qUBlKSK3Z8iEhAUjWZ0SOD5unoXjkUaWNdoBarUzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCqbwKGd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CC0C4CEEA;
-	Mon, 23 Jun 2025 21:57:04 +0000 (UTC)
+	 MIME-Version; b=eIKcgXVzLdmPw0ABKwoXYl86pRJA/bE8tfFu/RYhKrdNWDSDie9iKzZHWcLy+xc1ydnfxgHKKJD4WMq6m9VWhTUZAUZhbnYMUfV9RpQcWq2X+AGCYQvmky29b5cPcBx11tdhdAU0NO2nGHAGkb1ylSMPOoGkDes+Vlb9UUI4WDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2AoDsNK6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8500AC4CEEA;
+	Mon, 23 Jun 2025 21:17:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715824;
-	bh=e9/ZiQBbvZ9yeQPMeh3+F0f2ksoI3IimYlMr98W8pqc=;
+	s=korg; t=1750713460;
+	bh=5QnARNm0LE5W72WlCh0WNncYh9ZLlES1eoRyhGgVuFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCqbwKGdcKsj4eany9betNgRNB6X92cgbrrrHWXEDhMNR5k2nI+6TywDfXdIkyiZ1
-	 H3hr2pQQMksSx3hl/nCy76FMdqGgJvP1y19SLJzFVg3VL+UEl5JVPHd3WmAYkS+SCH
-	 SEiQk8mxtx7vKiQ19esdOwMoeV6S7F7Y2bSdYdHw=
+	b=2AoDsNK6k6xpSNerQgVJQrMf5Av3VlNyfdkReX38jI1MtbjmLWl9fiXqOF4CMmQa5
+	 0YUtudM57j3i7SxuIGicRa9UVXamg41bgB2Bm1LqCbrBy6iv1Eh9KVoYKBzrsuOwCh
+	 8+fTCayJ8rlOV8uzNZuvSPUDwDU4hFrT/AnPaL0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 231/414] libbpf: Check bpf_map_skeleton link for NULL
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 167/355] nfsd: nfsd4_spo_must_allow() must check this is a v4 compound request
 Date: Mon, 23 Jun 2025 15:06:08 +0200
-Message-ID: <20250623130647.812645893@linuxfoundation.org>
+Message-ID: <20250623130631.724461134@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit d0445d7dd3fd9b15af7564c38d7aa3cbc29778ee ]
+commit 1244f0b2c3cecd3f349a877006e67c9492b41807 upstream.
 
-Avoid dereferencing bpf_map_skeleton's link field if it's NULL.
-If BPF map skeleton is created with the size, that indicates containing
-link field, but the field was not actually initialized with valid
-bpf_link pointer, libbpf crashes. This may happen when using libbpf-rs
-skeleton.
-Skeleton loading may still progress, but user needs to attach struct_ops
-map separately.
+If the request being processed is not a v4 compound request, then
+examining the cstate can have undefined results.
 
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250514113220.219095-1-mykyta.yatsenko5@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds a check that the rpc procedure being executed
+(rq_procinfo) is the NFSPROC4_COMPOUND procedure.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/libbpf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/nfs4proc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index bb24f6bac2073..1290314da6761 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -13971,6 +13971,12 @@ int bpf_object__attach_skeleton(struct bpf_object_skeleton *s)
- 		}
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -3537,7 +3537,8 @@ bool nfsd4_spo_must_allow(struct svc_rqs
+ 	struct nfs4_op_map *allow = &cstate->clp->cl_spo_must_allow;
+ 	u32 opiter;
  
- 		link = map_skel->link;
-+		if (!link) {
-+			pr_warn("map '%s': BPF map skeleton link is uninitialized\n",
-+				bpf_map__name(map));
-+			continue;
-+		}
-+
- 		if (*link)
- 			continue;
+-	if (!cstate->minorversion)
++	if (rqstp->rq_procinfo != &nfsd_version4.vs_proc[NFSPROC4_COMPOUND] ||
++	    cstate->minorversion == 0)
+ 		return false;
  
--- 
-2.39.5
-
+ 	if (cstate->spo_must_allowed)
 
 
 
