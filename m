@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-157706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50D63AE553F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F3EFAE56AD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA094A1ACE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E68021C22723
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DABF225A3E;
-	Mon, 23 Jun 2025 22:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D86223DF0;
+	Mon, 23 Jun 2025 22:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUTxcPm5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBftWpOr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453CC2236FB;
-	Mon, 23 Jun 2025 22:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1154A15ADB4;
+	Mon, 23 Jun 2025 22:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716525; cv=none; b=HK6/XSv+GaeXiwvSSt9jp6bJhZHP/LwuZbO7Qj8UuvGCk5WkhkrzY1qWDRmRbhuO++X12CxmOQRlS61n3fJNajqeKldGnO+MAbOvo+gZrjp4dsfjfJk63UWMzZkXPUfDgjnMnvfVseoFOj+PAcqgeBanxS0zTb41ILKHnRRmato=
+	t=1750717336; cv=none; b=BXdT/6BnvFIVTLWe/RTBsWl+0O4vbaRBzcy6M0QLMslbAgh+ZfmQWHeR29w/piEaV/44t+TdUxoj2dPkMVHgKwN02R2NQQfj6aictX7+2/tzKQla5u4DGCCj/eGA7+WhndytbXOVHEF4s96avPBTpur2tfXXY20+wz6zwOwPtzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716525; c=relaxed/simple;
-	bh=Fyf18v+0il09TXhE3W5XXJUa2s+z1wqr3JX2AtLTpsw=;
+	s=arc-20240116; t=1750717336; c=relaxed/simple;
+	bh=tVfa/lib875ZIA9+a5JE7d2ZWUGmxUOcar3OQMDGDcc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ThHctebRG0zjSe08IwPwDzfGW9C9wIUD6J7vvDABi/sqvrp3/0AHezUraZExW6KobzexJmFeAPzK4PLUAftzOFf/CGmHfMPtr4BCUMI+3axOkDNjPkhmICrKlwXoTsK7ydGIDo7vGp3hBqnSAg6ViGFNxDyTXz/8b8wdxO2t7JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUTxcPm5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84297C4CEEA;
-	Mon, 23 Jun 2025 22:08:44 +0000 (UTC)
+	 MIME-Version; b=amBLAvAIPq11Rxu/FjV17fITVHZ2mkm+Fwp26h3Fp4vIaAsSVq2KjJOxppH2+G6RSoEjqQ4Ozu3A+KyKZ544evBj0MVLM2u6w9OiDWSuclMSEkq9ieDzU3dO955/gqpnAlwqWWpJKYcjiVlilVK6RuPR4O6d2nlxYNsmVpRR8Bw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBftWpOr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EED8C4CEEA;
+	Mon, 23 Jun 2025 22:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716524;
-	bh=Fyf18v+0il09TXhE3W5XXJUa2s+z1wqr3JX2AtLTpsw=;
+	s=korg; t=1750717335;
+	bh=tVfa/lib875ZIA9+a5JE7d2ZWUGmxUOcar3OQMDGDcc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WUTxcPm5hNYwQ1h+F9HdBZvaAEevlCG11BCV1YcBrcuQtrQ7dHeFbXhJjz4QIHHcA
-	 sizCqWdLhq3d3ICu86QMQwfzW8yr48LElNJzVLxt1zrxZT2wSw+KJJPM7I6QypE1en
-	 qzW1G2/d8ZDPThyafkX68KBmaCvCL0LEOYQTR/Cg=
+	b=GBftWpOrz1xnKpegcwpmX3a879wDHsPftSkpYdp8y9T42NmMZ7eoux+/U53V1apD6
+	 LVHB088WTBXImuqysuO0ZTWWq+3c4nVM+Ek6AzPUW0m+ut8PsYsUwCv0rp5CGRBejF
+	 szr9jD4VaMI0a4UUM26loX0CV+8tmsaP9bbfNC7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 361/411] iio: accel: fxls8962af: Fix temperature calculation
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.12 368/414] ice: fix eswitch code memory leak in reset scenario
 Date: Mon, 23 Jun 2025 15:08:25 +0200
-Message-ID: <20250623130642.729666134@linuxfoundation.org>
+Message-ID: <20250623130651.159219736@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +65,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-commit 16038474e3a0263572f36326ef85057aaf341814 upstream.
+[ Upstream commit 48c8b214974dc55283bd5f12e3a483b27c403bbc ]
 
-According to spec temperature should be returned in milli degrees Celsius.
-Add in_temp_scale to calculate from Celsius to milli Celsius.
+Add simple eswitch mode checker in attaching VF procedure and allocate
+required port representor memory structures only in switchdev mode.
+The reset flows triggers VF (if present) detach/attach procedure.
+It might involve VF port representor(s) re-creation if the device is
+configured is switchdev mode (not legacy one).
+The memory was blindly allocated in current implementation,
+regardless of the mode and not freed if in legacy mode.
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250505-fxls-v4-1-a38652e21738@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Kmemeleak trace:
+unreferenced object (percpu) 0x7e3bce5b888458 (size 40):
+  comm "bash", pid 1784, jiffies 4295743894
+  hex dump (first 32 bytes on cpu 45):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    pcpu_alloc_noprof+0x4c4/0x7c0
+    ice_repr_create+0x66/0x130 [ice]
+    ice_repr_create_vf+0x22/0x70 [ice]
+    ice_eswitch_attach_vf+0x1b/0xa0 [ice]
+    ice_reset_all_vfs+0x1dd/0x2f0 [ice]
+    ice_pci_err_resume+0x3b/0xb0 [ice]
+    pci_reset_function+0x8f/0x120
+    reset_store+0x56/0xa0
+    kernfs_fop_write_iter+0x120/0x1b0
+    vfs_write+0x31c/0x430
+    ksys_write+0x61/0xd0
+    do_syscall_64+0x5b/0x180
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Testing hints (ethX is PF netdev):
+- create at least one VF
+    echo 1 > /sys/class/net/ethX/device/sriov_numvfs
+- trigger the reset
+    echo 1 > /sys/class/net/ethX/device/reset
+
+Fixes: 415db8399d06 ("ice: make representor code generic")
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_eswitch.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -20,6 +20,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
-+#include <linux/units.h>
+diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+index ed21d7f55ac11..5b9a7ee278f17 100644
+--- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
++++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+@@ -502,10 +502,14 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_repr *repr, unsigned long *id)
+  */
+ int ice_eswitch_attach_vf(struct ice_pf *pf, struct ice_vf *vf)
+ {
+-	struct ice_repr *repr = ice_repr_create_vf(vf);
+ 	struct devlink *devlink = priv_to_devlink(pf);
++	struct ice_repr *repr;
+ 	int err;
  
- #include <linux/iio/buffer.h>
- #include <linux/iio/iio.h>
-@@ -416,8 +417,16 @@ static int fxls8962af_read_raw(struct ii
- 		*val = FXLS8962AF_TEMP_CENTER_VAL;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		*val = 0;
--		return fxls8962af_read_full_scale(data, val2);
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			*val = MILLIDEGREE_PER_DEGREE;
-+			return IIO_VAL_INT;
-+		case IIO_ACCEL:
-+			*val = 0;
-+			return fxls8962af_read_full_scale(data, val2);
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return fxls8962af_read_samp_freq(data, val, val2);
- 	default:
-@@ -494,6 +503,7 @@ static int fxls8962af_set_watermark(stru
- 	.type = IIO_TEMP, \
- 	.address = FXLS8962AF_TEMP_OUT, \
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-+			      BIT(IIO_CHAN_INFO_SCALE) | \
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
++	if (!ice_is_eswitch_mode_switchdev(pf))
++		return 0;
++
++	repr = ice_repr_create_vf(vf);
+ 	if (IS_ERR(repr))
+ 		return PTR_ERR(repr);
+ 
+-- 
+2.39.5
+
 
 
 
