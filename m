@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-158101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED51AE5735
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD04AE555A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEDB44A14AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 085561BC47C8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DD4223DCC;
-	Mon, 23 Jun 2025 22:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D426C2236FB;
+	Mon, 23 Jun 2025 22:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpiCgyKJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x54EiVNV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4728222581;
-	Mon, 23 Jun 2025 22:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 921A8226D1B;
+	Mon, 23 Jun 2025 22:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717487; cv=none; b=ncem8vJ/JRvqbPDrln3ErXS2jYGc/N+UcCXvarEWbCTfdsaZSs3tu+oWh+bim2Zdhrba04iL1LfBpWMS5aD7OC5Wd0zSPlBrxOPQv+3nN8vRqLll7TiedAgCMIAFRWjtcAVf/kAJZS/DvCey12g3qZPmSn4eXBNm2j6cnYpVJjc=
+	t=1750716588; cv=none; b=NNY5joSzCwNMDrak1kmz6EA1BrrZmg4ydJC9k/77l+p0ir9PXYkpWFdOz6ep3mTN97GmVnoIwFSqD3VwQVplj/+Gd/4IjLjoYWSXJr+QW7EGFvGQqXMiNwiJCEGESgw2uCQOXIBN5rCGaJCBxHvbeWbnmNXcfNEfVXoPQbvpBpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717487; c=relaxed/simple;
-	bh=E3osXNSCG9flPccWiXvNdwIBhH4/8KHUDde5Rm4Ttxc=;
+	s=arc-20240116; t=1750716588; c=relaxed/simple;
+	bh=TwvqcN9mA6pKxJUZzRWTJraETLtXh3RHlsH/QaejCwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRa9AO4Bj996HZFZFeKmu/Fs6QUtmbcGtEin8vbOT1D1nyzTJTeZvdLO39UhvqzlMp395BQqISDwPOulE4a8AFz0hNDlI2/V9ZAPM5xxCXge4NxZqWD6vmUck+ESUPOZT5eeREAwjDFOMOeq+7FGWfDB7lHfux9P96UpEfK/xmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpiCgyKJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA3AC4CEEA;
-	Mon, 23 Jun 2025 22:24:46 +0000 (UTC)
+	 MIME-Version; b=Z/6W09ijAPTIjlCvjx4DCKrc+1L9TiqeC8Eixqj58JShdGwf8qmsCZK72MfgktHNMuom5rtRChUFoFShVQygoMBt/JZvdO6PJDXp3D0ovw5Bd4JDUIokLe+AMqogi3tgJso66ZPPPU8VhFvyqLL5LGlbdlZAH3aiZILp1KoRyQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x54EiVNV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E031C4CEF2;
+	Mon, 23 Jun 2025 22:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717486;
-	bh=E3osXNSCG9flPccWiXvNdwIBhH4/8KHUDde5Rm4Ttxc=;
+	s=korg; t=1750716588;
+	bh=TwvqcN9mA6pKxJUZzRWTJraETLtXh3RHlsH/QaejCwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpiCgyKJR/2qFJJO9exTpleK7hB4AXE7uhtvwla5olltkuShi5Uu8nho3zWIFOvpg
-	 ZZt1AWpWnXLIVVNbSiEm7yf1gF/+g1boDZXfoFYwCvxBAuHplOHWFxkj1FueauLzfM
-	 4oFIC7K7Zv/8UJrrj2zMhHd9TtysfCiE70etx96E=
+	b=x54EiVNVwHHsx5QWNqGwkscLj33HmOBCKvUD2C51szK4Yw1Ts5dOjC6zCyMuz+qxK
+	 EpMEmfdMak1/9CSet8KGgTB9rU97Gtez4/IUTSBB71cC6olQxBZi3/9oknqrFSy36c
+	 z6zRUb3r3oK0DRXHIyr3SH13fX3c+qSa37AnVpNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Eric Wheeler <netdev@lists.ewheeler.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 360/414] drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
-Date: Mon, 23 Jun 2025 15:08:17 +0200
-Message-ID: <20250623130650.967949888@linuxfoundation.org>
+Subject: [PATCH 6.15 540/592] tcp: fix tcp_packet_delayed() for tcp_is_non_sack_preventing_reopen() behavior
+Date: Mon, 23 Jun 2025 15:08:18 +0200
+Message-ID: <20250623130713.283434093@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit a7137b1825b535eb7258b25beeb0d5425e0037d2 ]
+[ Upstream commit d0fa59897e049e84432600e86df82aab3dce7aa5 ]
 
-i915_pmu.c may fail to build with GCOV and AutoFDO enabled.
+After the following commit from 2024:
 
-../drivers/gpu/drm/i915/i915_pmu.c:116:3: error: call to '__compiletime_assert_487' declared with 'error' attribute: BUILD_BUG_ON failed: bit > BITS_PER_TYPE(typeof_member(struct i915_pmu, enable)) - 1
-  116 |                 BUILD_BUG_ON(bit >
-      |                 ^
+commit e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
 
-Here is a way to reproduce the issue:
-$ git checkout v6.15
-$ mkdir build
-$ ./scripts/kconfig/merge_config.sh -O build -n -m <(cat <<EOF
-CONFIG_DRM=y
-CONFIG_PCI=y
-CONFIG_DRM_I915=y
+...there was buggy behavior where TCP connections without SACK support
+could easily see erroneous undo events at the end of fast recovery or
+RTO recovery episodes. The erroneous undo events could cause those
+connections to suffer repeated loss recovery episodes and high
+retransmit rates.
 
-CONFIG_PERF_EVENTS=y
+The problem was an interaction between the non-SACK behavior on these
+connections and the undo logic. The problem is that, for non-SACK
+connections at the end of a loss recovery episode, if snd_una ==
+high_seq, then tcp_is_non_sack_preventing_reopen() holds steady in
+CA_Recovery or CA_Loss, but clears tp->retrans_stamp to 0. Then upon
+the next ACK the "tcp: fix to allow timestamp undo if no retransmits
+were sent" logic saw the tp->retrans_stamp at 0 and erroneously
+concluded that no data was retransmitted, and erroneously performed an
+undo of the cwnd reduction, restoring cwnd immediately to the value it
+had before loss recovery.  This caused an immediate burst of traffic
+and build-up of queues and likely another immediate loss recovery
+episode.
 
-CONFIG_DEBUG_FS=y
-CONFIG_GCOV_KERNEL=y
-CONFIG_GCOV_PROFILE_ALL=y
+This commit fixes tcp_packet_delayed() to ignore zero retrans_stamp
+values for non-SACK connections when snd_una is at or above high_seq,
+because tcp_is_non_sack_preventing_reopen() clears retrans_stamp in
+this case, so it's not a valid signal that we can undo.
 
-CONFIG_AUTOFDO_CLANG=y
-EOF
-)
-$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
-       olddefconfig
-$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
-       CLANG_AUTOFDO_PROFILE=...PATH_TO_SOME_AFDO_PROFILE... \
-       drivers/gpu/drm/i915/i915_pmu.o
+Note that the commit named in the Fixes footer restored long-present
+behavior from roughly 2005-2019, so apparently this bug was present
+for a while during that era, and this was simply not caught.
 
-Although not super sure what happened, by reviewing the code, it should
-depend on `__builtin_constant_p(bit)` directly instead of assuming
-`__builtin_constant_p(config)` makes `bit` a builtin constant.
-
-Also fix a nit, to reuse the `bit` local variable.
-
-Fixes: a644fde77ff7 ("drm/i915/pmu: Change bitmask of enabled events to u32")
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20250612083023.562585-1-tzungbi@kernel.org
-(cherry picked from commit 686d773186bf72b739bab7e12eb8665d914676ee)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Fixes: e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+Reported-by: Eric Wheeler <netdev@lists.ewheeler.net>
+Closes: https://lore.kernel.org/netdev/64ea9333-e7f9-0df-b0f2-8d566143acab@ewheeler.net/
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Co-developed-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
-index 21eb0c5b320d5..c43223916a1b1 100644
---- a/drivers/gpu/drm/i915/i915_pmu.c
-+++ b/drivers/gpu/drm/i915/i915_pmu.c
-@@ -115,7 +115,7 @@ static u32 config_mask(const u64 config)
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 49adcbd73074d..bce2a111cc9e0 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2480,20 +2480,33 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
  {
- 	unsigned int bit = config_bit(config);
+ 	const struct sock *sk = (const struct sock *)tp;
  
--	if (__builtin_constant_p(config))
-+	if (__builtin_constant_p(bit))
- 		BUILD_BUG_ON(bit >
- 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
- 							 enable)) - 1);
-@@ -124,7 +124,7 @@ static u32 config_mask(const u64 config)
- 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
- 							 enable)) - 1);
+-	if (tp->retrans_stamp &&
+-	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
+-		return true;  /* got echoed TS before first retransmission */
+-
+-	/* Check if nothing was retransmitted (retrans_stamp==0), which may
+-	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
+-	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
+-	 * retrans_stamp even if we had retransmitted the SYN.
++	/* Received an echoed timestamp before the first retransmission? */
++	if (tp->retrans_stamp)
++		return tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
++
++	/* We set tp->retrans_stamp upon the first retransmission of a loss
++	 * recovery episode, so normally if tp->retrans_stamp is 0 then no
++	 * retransmission has happened yet (likely due to TSQ, which can cause
++	 * fast retransmits to be delayed). So if snd_una advanced while
++	 * (tp->retrans_stamp is 0 then apparently a packet was merely delayed,
++	 * not lost. But there are exceptions where we retransmit but then
++	 * clear tp->retrans_stamp, so we check for those exceptions.
+ 	 */
+-	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
+-	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
+-		return true;  /* nothing was retransmitted */
  
--	return BIT(config_bit(config));
-+	return BIT(bit);
+-	return false;
++	/* (1) For non-SACK connections, tcp_is_non_sack_preventing_reopen()
++	 * clears tp->retrans_stamp when snd_una == high_seq.
++	 */
++	if (!tcp_is_sack(tp) && !before(tp->snd_una, tp->high_seq))
++		return false;
++
++	/* (2) In TCP_SYN_SENT tcp_clean_rtx_queue() clears tp->retrans_stamp
++	 * when setting FLAG_SYN_ACKED is set, even if the SYN was
++	 * retransmitted.
++	 */
++	if (sk->sk_state == TCP_SYN_SENT)
++		return false;
++
++	return true;	/* tp->retrans_stamp is zero; no retransmit yet */
  }
  
- static bool is_engine_event(struct perf_event *event)
+ /* Undo procedures. */
 -- 
 2.39.5
 
