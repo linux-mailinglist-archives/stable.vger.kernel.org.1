@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20107AE42DA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD91AE42E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7C5C189ED8F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DEF73B49C6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B0C23BF9F;
-	Mon, 23 Jun 2025 13:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CE4239E63;
+	Mon, 23 Jun 2025 13:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L25nHSAs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzaTnSCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B089724E019;
-	Mon, 23 Jun 2025 13:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ECB1253949;
+	Mon, 23 Jun 2025 13:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684879; cv=none; b=DAAW2To5IVNfdXqIcJUdW/DddZUr4qV9SB/5k4HcsgzdlmfcatFWum4tNX2bf08YGPmwZA/3og3Z8T6kgoE1t5MEnEaY9k/6dUsYa/fu6ZgHzksO3AFyDMKg+ve02RrxoImCSx9i2ExaSVYijJVxQjr6A+koAq8YwlXzPu5a+fY=
+	t=1750684887; cv=none; b=PJ+lA1472e9bZPZEzriIJwnZjWVOyLzQqYVE0mmemW0yn9s+FRXhNx29kWv+RSJEp8VeLCSdXdx/F/shHO9V5fi25YTlIisCdA+yAWlFDQqkc6UCX51J8gluJYJKiVDSzP91XBSxY7+y1/ZDXQLDdziGexvrLQBIPcKT7ajTPTE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684879; c=relaxed/simple;
-	bh=jOVyoJspjLrw2isnVgjLgdZk7KhF0xh/GzcQIdk8vL4=;
+	s=arc-20240116; t=1750684887; c=relaxed/simple;
+	bh=z853euJEUcEQGBfLGRbMnZ1kvJuaPI02ImKga58lh34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ByktU16dlNNoYMvymffMPddxh1Pq97jFSGKE4Rko9GoxNRQHAs8ac0u1r8mL047JxwshytBhtwUP6tbFxSIXSHvqa6nQAcZ+nEM+1WWi89BWWNQ+pwRu4LAFS5HWkA4DMdU0/eRkvd6ib6jfBwykcmGLTxLXt5e+VvzZXXIm2v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L25nHSAs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463EFC4CEEA;
-	Mon, 23 Jun 2025 13:21:19 +0000 (UTC)
+	 MIME-Version; b=txap8MLR/9wK1uZfISTcwSHjGAcDbRJmHVh6girTjxLmQGJS3NiQLuq/sQn9iTWGQ2hsT9NhRjo+BsfcrEVFsGf67ItzOFAAjY+tcCmrzTL/A+baAVet5xgajHMgnDvtiSz6ZlrC+DlXj81yHu5SsqbIlDB0qFsnW6ftU1mwsJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzaTnSCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8661C4CEF1;
+	Mon, 23 Jun 2025 13:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684879;
-	bh=jOVyoJspjLrw2isnVgjLgdZk7KhF0xh/GzcQIdk8vL4=;
+	s=korg; t=1750684887;
+	bh=z853euJEUcEQGBfLGRbMnZ1kvJuaPI02ImKga58lh34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L25nHSAs1rl3AQ/Ynis1ojnNoQHcxwjHMjGkJkA0f0M9xEH/yejJEGaMN1F7n44kf
-	 zoZJHmyV5Locuw/nbdknsGFevkQUGrmR9pq3Ysby1ODsRoQAUj6kJAKZ/dCz7Y5EEg
-	 /NWTe6oOD9iy/nIm3sNoxlPknoD/8RB21KQkXOIs=
+	b=xzaTnSCVZImSNT2iKNdpiRnD+XpxTh8y8XFcHAJdyAPPPRq/Ha3ixHk0SN3MZaZJ9
+	 FxbtppdsMS+rguoEXxCM7bIf4iZEpFa+Z6M7xkj6DNlVB4TJFb3ETedMDi3xRKgzMt
+	 pi7p0S8SrU3YPlFVm0SQeiLEbGaT7NHI8QjXLxt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 042/222] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
-Date: Mon, 23 Jun 2025 15:06:17 +0200
-Message-ID: <20250623130613.169567144@linuxfoundation.org>
+Subject: [PATCH 5.4 043/222] ARM: dts: at91: at91sam9263: fix NAND chip selects
+Date: Mon, 23 Jun 2025 15:06:18 +0200
+Message-ID: <20250623130613.205684133@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -68,35 +69,63 @@ Content-Transfer-Encoding: 8bit
 
 From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
+[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
 
-Dataflash did not work on my board. After checking schematics and using
-the proper GPIO, it works now. Also, make it active low to avoid:
+NAND did not work on my USB-A9263. I discovered that the offending
+commit converted the PIO bank for chip selects wrongly, so all A9263
+boards need to be fixed.
 
-flash@0 enforce active low on GPIO handle
-
-Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
+Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
 Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
 Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/usb_a9263.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/at91sam9263ek.dts | 2 +-
+ arch/arm/boot/dts/tny_a9263.dts     | 2 +-
+ arch/arm/boot/dts/usb_a9263.dts     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
+diff --git a/arch/arm/boot/dts/at91sam9263ek.dts b/arch/arm/boot/dts/at91sam9263ek.dts
+index 62d218542a480..64e4a56b30e07 100644
+--- a/arch/arm/boot/dts/at91sam9263ek.dts
++++ b/arch/arm/boot/dts/at91sam9263ek.dts
+@@ -147,7 +147,7 @@
+ 				nand@3 {
+ 					reg = <0x3 0x0 0x800000>;
+ 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
+-					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
++					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
+ 					nand-bus-width = <8>;
+ 					nand-ecc-mode = "soft";
+ 					nand-on-flash-bbt;
+diff --git a/arch/arm/boot/dts/tny_a9263.dts b/arch/arm/boot/dts/tny_a9263.dts
+index 2820635952e33..f31bacf641b4a 100644
+--- a/arch/arm/boot/dts/tny_a9263.dts
++++ b/arch/arm/boot/dts/tny_a9263.dts
+@@ -64,7 +64,7 @@
+ 				nand@3 {
+ 					reg = <0x3 0x0 0x800000>;
+ 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
+-					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
++					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
+ 					nand-bus-width = <8>;
+ 					nand-ecc-mode = "soft";
+ 					nand-on-flash-bbt;
 diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index e7a705fddda95..937adf3ed3611 100644
+index 937adf3ed3611..a22c7628e2b58 100644
 --- a/arch/arm/boot/dts/usb_a9263.dts
 +++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -58,7 +58,7 @@
- 			};
- 
- 			spi0: spi@fffa4000 {
--				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
-+				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
- 				status = "okay";
- 				mtd_dataflash@0 {
- 					compatible = "atmel,at45", "atmel,dataflash";
+@@ -84,7 +84,7 @@
+ 				nand@3 {
+ 					reg = <0x3 0x0 0x800000>;
+ 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
+-					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
++					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
+ 					nand-bus-width = <8>;
+ 					nand-ecc-mode = "soft";
+ 					nand-on-flash-bbt;
 -- 
 2.39.5
 
