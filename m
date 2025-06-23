@@ -1,200 +1,156 @@
-Return-Path: <stable+bounces-156149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156150-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FCFAE4BA1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 19:13:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1176BAE4BF1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 19:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D7A53A332E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 17:12:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95964189E3EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 17:31:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9933025BF13;
-	Mon, 23 Jun 2025 17:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 629142BD03C;
+	Mon, 23 Jun 2025 17:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b="XlbTvCNW"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cJfiveFu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E6218B0F
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 17:13:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555F92BCF6F;
+	Mon, 23 Jun 2025 17:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750698787; cv=none; b=Ho4mhdA50cgQVKI6G8fJHoFfqGJE+FjGjwd+YmVHwSYNTNugG6zDw6Ztwo9WC0k7gUB8bUpXrwZU8lSAiPNDh/l1ClHtkvuRNcuCFB51SKtzh1BIzP1v/UPdI2n9PJQBQiHC/L1zkyJUddv32kvV2npMmq+xqU5CJMhb5nx3A9A=
+	t=1750699847; cv=none; b=pezFE9ZOIo8TCrnYKk72No2Oc+ADtWAcON51DO9YlvUMuKN8P0WjFgxl/acEI+lwSEjwCyHT+EOctY02Z1Q+Faih7PlXnbl+2IhHCNbNdH+UTbqDEKost9A8wrb5HQ8QwtLZx+ubOX6o8YqCwJTotWvv5d1s5Sb97Q30MVdp82I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750698787; c=relaxed/simple;
-	bh=wv9r1Nau37bZDlcKTni8vX3dpCtckh8QUn8ksWrvjzc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=kJkS8QvsDk7ckjsEBOBttbt0z/jrZXaJHFJWss60HN5AAI4jMIMoO/rxPfwiKdWH7V3JKRzIeaFAXsij2F6We77pWmjLBAMEZfNuHortKzr4DOwgvruLTKYyK05C63RwKh5J6TbeOaHB2BCIDawyIjT2DEELrn/HY2m9kQWNyJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de; spf=pass smtp.mailfrom=innosonix.de; dkim=pass (2048-bit key) header.d=innosonix.de header.i=@innosonix.de header.b=XlbTvCNW; arc=none smtp.client-ip=209.85.221.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=innosonix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=innosonix.de
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-3a4eb4dfd8eso630978f8f.2
-        for <stable@vger.kernel.org>; Mon, 23 Jun 2025 10:13:04 -0700 (PDT)
+	s=arc-20240116; t=1750699847; c=relaxed/simple;
+	bh=2BesTu0wNz7KZJSu07Q9JK+U9yK47g4valN5QlTVKo0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bRK8T3xwXmGZui9wS5FEAcY7CjvhL8dNNBQd57odtcdh7mlDZyYqCtI6+QJowvso1nByTCoADZXDeUBIy2hx649m89pejq6ytIKarPjVkkJEbFiVHhOt9T6A7plqXsIk4NFgk3OfsPg2VmfH5RP7HvGCRzjMm/vahFyWqWU7mwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cJfiveFu; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-3a536ecbf6fso2505218f8f.2;
+        Mon, 23 Jun 2025 10:30:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=innosonix.de; s=google; t=1750698783; x=1751303583; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fFVerlv1rup6mF5IH5Ew1KKnD+3iU06ke4X3UNXN3IU=;
-        b=XlbTvCNWP9sxrhEyqZdkwkzBAJ5IfMr2HDAC6vLqUiJhCOq6/ggza35dZU8AadHb1M
-         O25xSG6UoxE8uHXQhQgPje7q3AyKGrM/F8gZeR3fHIciwXctD7d1xXL3HJGSDTImaxEM
-         tJ5Hu1T3mGkeAdvxeUQn3os3VaP402tNrHtBPnz8VpA5ebMlmt+aaCwXvGXrHTvFT1hq
-         tQ4wT5bLImPntWE4LTAcVbRZlcGeAC6on6kPEFigEhWpgVHUwtn8CSMYqYM3wg2N1qgz
-         Di/V8qzu4CJsHllODDOayJAzzccR8Zr+Cj7ulL842b8L1kmMYvJR1Af3wlitTSl1rC7g
-         NoYQ==
+        d=gmail.com; s=20230601; t=1750699842; x=1751304642; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WXQZ1cIwev/BQqGGXRhlocv0p9SFoF8/dusQc6F0a2A=;
+        b=cJfiveFuwVL/iQQ5n+mt8z5Gguh3YT5L5K1mxIQy386Qy/Va0ysYdEmUnQANYnn7HE
+         eMfcXWxc+IGp7U5PN55ZsMDAoNoxEkBib2BZ8YIoG96RMK3W/z4SZdJM4LlST61dR5hc
+         oR0q+aLCNYrwPnWaniCHkeucwmG7eOOM7kG8GduqhD0Ebf5cUhdrBiqw/7roxflfvX4s
+         L4bqzCjYV8npjy8OMCBQP9JsV/kx41BlXxAqeaxCzuKwlk391gnSs5cMFO1o0kPQWhNR
+         ilo0GBxc0lEBS+z4/b6GUpGba0jhHF+Ej7o3mL9rcRxblwsaJUEyZLrpyCvItaKCGf+v
+         TC3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750698783; x=1751303583;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fFVerlv1rup6mF5IH5Ew1KKnD+3iU06ke4X3UNXN3IU=;
-        b=OMFKPCK4IXRWPmY9azz6FDccTwxVE8trZU/tXkYxYF6StzRvXFCA8vgBiwbnc7cLDJ
-         PtfoTqu4nLfIKcm/VYh1NUjRT3jQCKJxExS/AUE41DPpwKT66hoyKoUZNl8htq5l+8eY
-         dfvfqe/PQJIM8bcsXGIGFBWDLQZRf9tN8jQFl2PUsg/2Gz8UPAkZXtShjkq7c/FDzViT
-         3Rs3PjdzyGY0DsCrDjOFNcuxS+NPxq7SbNdd+byU96B9CgpzW3RhOSM3y6yHDZBvyMlK
-         OEN9KWjEo3RwKsP90lO+Da9dA7FHm70/B9KpekuUgjAyYy97XW9YFkcokNxPqghBeQT5
-         3/wg==
-X-Forwarded-Encrypted: i=1; AJvYcCUU4inKF43MqubnMQsJe59aceUQqZQWljRDO3wR4op956UmqQ2Ue1l1VG9vI/uJ3M1aT+ovcTQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbHccAss5bL2w02YaHFRE2smAQYjrHK8vvoXBzaF2esesfsSZi
-	1sLDJBlQedRyhT/CZx5zSmg8KVK2qslwKS3iA1k2QgnXJR/aTVfu5MjYJB3Lbvqa7UFygDB0AXN
-	7Ku13KoKjTRuwU/wH+UUIUPqzxJn2r6FPNnLQi+Wm6X5AZwTyk8o=
-X-Gm-Gg: ASbGnctL4PBfv5xFrrArJGoSuisYivhXg8HY90BdcddTpMFBot/EShFsp63DcKSKYLa
-	KulrU1l3PPmLHMhlJLCu9Lv4tILe9xlz1PgnkSO8JSKOiwKcwKPyA8rMkztt6wZGgOgVtv8Leob
-	csDJug0C7wKzng3wjO3fP00r+JykgfYKAuW9XmC+EChQxJax3mIh/o13AuiEiId4ncw4R94ltlZ
-	xcsvB08pHPwJ/Gdyi3RMu05iVC2qwKLexq+Eyou+/iU7p2vkJz5Pzu04TztU2fLYnPKauNE0NMm
-	Q3DnBuYhCYJNLWChk6RTPaIq5Udu5PJ+kFAZi0OAJx8XaqMdLCt+yu4xsf+ZQSF/du8=
-X-Google-Smtp-Source: AGHT+IErer93kOXokwq6+DGSfC4ugUszBo78NJco3EFwM9G1wiRi3El8E+vg0RKm5OXQE67tFwgtNQ==
-X-Received: by 2002:a05:600c:5494:b0:453:590b:d392 with SMTP id 5b1f17b1804b1-453657bf79cmr45941935e9.2.1750698783204;
-        Mon, 23 Jun 2025 10:13:03 -0700 (PDT)
-Received: from steffen-linux.. ([24.134.20.169])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-453646cb57fsm118001245e9.1.2025.06.23.10.13.01
+        d=1e100.net; s=20230601; t=1750699842; x=1751304642;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=WXQZ1cIwev/BQqGGXRhlocv0p9SFoF8/dusQc6F0a2A=;
+        b=gEo467hkhUTxovUeEIsoXCr4i83ADsKfD4eSmiQyfqJ3MWl81ijO2Y8X0Fiut0Ryy4
+         ZC0vi/1We1qncfV8ebFK7WiAY8WZyWJscGZhazfEj0nWY6524WkG3XLxypy1fNRfe/H6
+         JmyBU218yAGmSI9sNcHsfvkXEJw0PfsL2fP6xU0BgDS008dQRepDPPlw4/GjORSIA5lv
+         nreribtYN4/40VIbWBwWwjEzh2rSNNrfRsUfhxNbRG2/DP6R293CxYvTGaIwawsgJ9cz
+         3OtgVc0F4SZEj8nND5sFX3pcAfgg+HLKOi9bdutrud4Nx0r2YgKe4V0kLPWeaZQYt22E
+         gGwA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNBxji2wO9hr4/CdHd7dTbZcGf8v7vr0W0T17vshGoFZHCqJHI6hKooOnsO+Pj+6RGgyt+wNGXhUk=@vger.kernel.org, AJvYcCUjqOsGXLTQFjuHEs//I8HDo8u8l0+Cgo6S0Kbl8kUd2A9dvWvQGOTZpuJbsD0ymVCJ+/9bmYZY@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7vG1AhXWr2hMY544gOQBXSTZRtaALtZblRhHBf7gH3jJF//n/
+	MfCYEglay+OwTjk/ST6sfFP3a7e16k++zQn1/I4zqN/ydX4Qw1z4jX59
+X-Gm-Gg: ASbGncvSO1Tt6Vy5RJD+nEL7H8XPo8WsffhvlyffcTrO0Dev7Y3OSwbOiWmdl0n4TE9
+	hJbkEEPhEcEFzH5TMz0z+zqn/4fyC5y/oOr7bWq1N/+wmmoV6kmSulDvmNzRuxVg9RZ1qfpTZi8
+	ThuWNP6UQhE9D+kqouwxXL3aBzHIbYyapxQWtAVn/4C2HxtMReiYZnWOWWjOBLNzNy/3YkSgxAX
+	M56RQ9EBx06XuTErr/cIxz2Hed8onWOxa07kCoWbaC4rvoFPIUXCEwNLqwbZcAHoSJH751sDspM
+	pNY+DPPDTxJXaylK0O6S01lUEWjurnTCcJAQpWLlBMHsgY++GPm9odVeuC5xHwKpoCXUd8uBpdc
+	k0Q0nozSgWgv1DnHRj159Lqr/EmNfiQ==
+X-Google-Smtp-Source: AGHT+IEs1XjUK+7RdkSK9C+mWF0kQF29FZVxtmG0QAQoTQntyWVyT19lNoq/l9WZJeQpLq/vI6uOZg==
+X-Received: by 2002:a5d:5f8d:0:b0:3a4:dd8e:e16b with SMTP id ffacd0b85a97d-3a6d1301ffemr10136431f8f.20.1750699842006;
+        Mon, 23 Jun 2025 10:30:42 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d1188c6esm9692456f8f.81.2025.06.23.10.30.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Jun 2025 10:13:02 -0700 (PDT)
-From: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>
-To: 
-Cc: =?UTF-8?q?Steffen=20B=C3=A4tz?= <steffen@innosonix.de>,
-	stable@vger.kernel.org,
-	Srinivas Kandagatla <srini@kernel.org>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Fabio Estevam <festevam@gmail.com>,
-	Dmitry Baryshkov <lumag@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3] nvmem: imx-ocotp: fix MAC address byte length
-Date: Mon, 23 Jun 2025 19:09:55 +0200
-Message-ID: <20250623171003.1875027-1-steffen@innosonix.de>
-X-Mailer: git-send-email 2.43.0
+        Mon, 23 Jun 2025 10:30:41 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 20CA4BE2DE0; Mon, 23 Jun 2025 19:30:40 +0200 (CEST)
+Date: Mon, 23 Jun 2025 19:30:40 +0200
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Shawn Lin <shawn.lin@rock-chips.com>,
+	Jeremy Lincicome <w0jrl1@gmail.com>
+Cc: regressions@lists.linux.dev, Ulf Hansson <ulf.hansson@linaro.org>,
+	linux-mmc@vger.kernel.org, 1108065@bugs.debian.org,
+	stable@vger.kernel.org, net147@gmail.com
+Subject: Re: [regression v6.12.30..v6.12.32] mmc1: mmc_select_hs400 failed,
+ error -110 / boot regression on Lenovo IdeaPad 1 15ADA7
+Message-ID: <aFmPQL3mzTag5OxY@eldamar.lan>
+References: <aFW0ia8Jj4PQtFkS@eldamar.lan>
+ <aFXCv50hth-mafOR@eldamar.lan>
+ <004c6e95-7c1b-4a7f-ab68-1774ce5a51d7@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <004c6e95-7c1b-4a7f-ab68-1774ce5a51d7@rock-chips.com>
 
-The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
-extension of the "mac-address" cell from 6 to 8 bytes due to word_size
-of 4 bytes.
+On Mon, Jun 23, 2025 at 05:13:38PM +0800, Shawn Lin wrote:
+> + Jonathan Liu
+> 
+> 在 2025/06/21 星期六 4:21, Salvatore Bonaccorso 写道:
+> > On Fri, Jun 20, 2025 at 09:20:41PM +0200, Salvatore Bonaccorso wrote:
+> > > Hi
+> > > 
+> > > In Debian we got a regression report booting on a Lenovo IdeaPad 1
+> > > 15ADA7 dropping finally into the initramfs shell after updating from
+> > > 6.12.30 to 6.12.32 with messages before dropping into the intiramfs
+> > > shell:
+> > > 
+> > > mmc1: mmc_select_hs400 failed, error -110
+> > > mmc1: error -110 whilst initialising MMC card
+> > > 
+> > > The original report is at https://bugs.debian.org/1107979 and the
+> > > reporter tested as well kernel up to 6.15.3 which still fails to boot.
+> > > 
+> > > Another similar report landed with after the same version update as
+> > > https://bugs.debian.org/1107979 .
+> > > 
+> > > I only see three commits touching drivers/mmc between
+> > > 6.12.30..6.12.32:
+> > > 
+> > > 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing parameters")
+> > > 38828e0dc771 ("mmc: dw_mmc: add exynos7870 DW MMC support")
+> > > 67bb2175095e ("mmc: host: Wait for Vdd to settle on card power off")
+> > > 
+> > > I have found a potential similar issue reported in ArchLinux at
+> > > https://bbs.archlinux.org/viewtopic.php?id=306024
+> > > 
+> > > I have asked if we can get more information out of the boot, but maybe
+> > > this regression report already rings  bell for you?
+> 
+> Jonathan reported a similar failure regarding to hs400 on RK3399
+> platform.
+> https://lkml.org/lkml/2025/6/19/145
+> 
+> Maybe you could try to revert :
+> 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing
+> parameters")
 
-Thus, the required byte swap for the mac-address of the full buffer length,
-caused an trucation of the read mac-address.
-From the original address 70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14
+Thanks.
 
-After swapping only the first 6 bytes, the mac-address is correctly passed
-to the upper layers.
+Jeremy, could you test the (unofficial!) packages at
+https://people.debian.org/~carnil/tmp/linux/1108065/ which consist of
+6.12.33-1 with the revert patch applied on top?
 
-Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
-Cc: stable@vger.kernel.org
-Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
----
-v3:
-- replace magic number 6 with ETH_ALEN
-- Fix misleading indentation and properly group 'mac-address' statements
-v2:
-- Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
- drivers/nvmem/imx-ocotp-ele.c | 6 +++++-
- drivers/nvmem/imx-ocotp.c     | 6 +++++-
- 2 files changed, 10 insertions(+), 2 deletions(-)
+I have put a sha256sum file and signed it with my key in the Debian
+keyring for verification.
 
-diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
-index ca6dd71d8a2e..9ef01c91dfa6 100644
---- a/drivers/nvmem/imx-ocotp-ele.c
-+++ b/drivers/nvmem/imx-ocotp-ele.c
-@@ -12,6 +12,7 @@
- #include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/slab.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
-=20
- enum fuse_type {
- 	FUSE_FSB =3D BIT(0),
-@@ -118,9 +119,12 @@ static int imx_ocotp_cell_pp(void *context, const char=
- *id, int index,
- 	int i;
-=20
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		if (bytes > ETH_ALEN)
-+			bytes =3D ETH_ALEN;
- 		for (i =3D 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
-=20
- 	return 0;
- }
-diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
-index 79dd4fda0329..1343cafc37cc 100644
---- a/drivers/nvmem/imx-ocotp.c
-+++ b/drivers/nvmem/imx-ocotp.c
-@@ -23,6 +23,7 @@
- #include <linux/platform_device.h>
- #include <linux/slab.h>
- #include <linux/delay.h>
-+#include <linux/if_ether.h>	/* ETH_ALEN */
-=20
- #define IMX_OCOTP_OFFSET_B0W0		0x400 /* Offset from base address of the
- 					       * OTP Bank0 Word0
-@@ -227,9 +228,12 @@ static int imx_ocotp_cell_pp(void *context, const char=
- *id, int index,
- 	int i;
-=20
- 	/* Deal with some post processing of nvmem cell data */
--	if (id && !strcmp(id, "mac-address"))
-+	if (id && !strcmp(id, "mac-address")) {
-+		if (bytes > ETH_ALEN)
-+			bytes =3D ETH_ALEN;
- 		for (i =3D 0; i < bytes / 2; i++)
- 			swap(buf[i], buf[bytes - i - 1]);
-+	}
-=20
- 	return 0;
- }
---=20
-2.43.0
-
-
---=20
-
-
-*innosonix GmbH*
-Hauptstr. 35
-96482 Ahorn
-central: +49 9561 7459980
-www.innosonix.de <http://www.innosonix.de>
-
-innosonix GmbH
-Gesch=C3=A4ftsf=C3=BChrer:=20
-Markus B=C3=A4tz, Steffen B=C3=A4tz
-USt.-IdNr / VAT-Nr.: DE266020313
-EORI-Nr.:=20
-DE240121536680271
-HRB 5192 Coburg
-WEEE-Reg.-Nr. DE88021242
+Regards,
+Salvatore
 
