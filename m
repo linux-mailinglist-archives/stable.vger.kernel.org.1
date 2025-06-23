@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-157389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1F7AE53B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58BA6AE53D6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AAF74A85CE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAE021894E6B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B700E222576;
-	Mon, 23 Jun 2025 21:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41F9223714;
+	Mon, 23 Jun 2025 21:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4NTJOwo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoSexVac"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757EF3FB1B;
-	Mon, 23 Jun 2025 21:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8326B223316;
+	Mon, 23 Jun 2025 21:56:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715746; cv=none; b=Cyhe5aCDwwHYuQ2PKWJLTyp1I4Pakn4/EYhtCSwZ9i0vb2gwEyH8CgMJ+HDSKxgtoVIkb5YdD1sMcqVHy9VOmYg0Y3uz0qSgm6N6M/UZZvvKH/2n1O01e322TzZt4tCOXjCZmIQSeHRGYwnlpTVkX2A/IPpSvd1r/KzlwpP4Myw=
+	t=1750715763; cv=none; b=Q00Xv0CmdTTYYy6Csorh3bFsSF6c2+dgxDRbAxkisrjpVVZuMxJUoyy+/75vQ3B8Um8rSXRfNmpOoWgY6oLx2WpwXphpA6b74eEDyFsz1XmVVJfZ8YEL+YyX4Hwxg/Vm/ja9EuO1w/PUkEZ4GB1U4A3RzLVBJM4478aclf+WdkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715746; c=relaxed/simple;
-	bh=jy3hTWsIwzmXN4dQulGp4mb4oIrMWJ8R98RY2fvBQag=;
+	s=arc-20240116; t=1750715763; c=relaxed/simple;
+	bh=wTerhwoUCUbwz7qaGl5ACG3z3A0iBMoZH53LEtSEn2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKqMnl34r6GLykr5U5CX/pahWtuxngjlrnWJz6uBf2ufhttSj57Jx12BNEwWn2yG6qR+CwH8WfLztyuB8mm3rbu/EN88GYX7W1h2VChk2H/qHBAsmQlobzzTVYvF+9Aai/zMcaXxf9SXFpQD6KOQQqYrQU/AhI5+gDpN/7YCKI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4NTJOwo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6E6C4CEEA;
-	Mon, 23 Jun 2025 21:55:45 +0000 (UTC)
+	 MIME-Version; b=pMTQXcdGZl6uSN/dgmZwxCZHE97YrKeZEvS8a65W6OIW03f8CMpoz0XImKMQhPsQF7D8Pbj/DrpuASSGT1YJZmBMRO0NXpUkqMi0njlde6LJxXHIsYolH8QTV4iNt9kQxq/wFGWBwrvqpRMAKwND3fo9vmjrtZJQ4NK2kIzyOcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoSexVac; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B168C4CEEA;
+	Mon, 23 Jun 2025 21:56:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715746;
-	bh=jy3hTWsIwzmXN4dQulGp4mb4oIrMWJ8R98RY2fvBQag=;
+	s=korg; t=1750715763;
+	bh=wTerhwoUCUbwz7qaGl5ACG3z3A0iBMoZH53LEtSEn2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v4NTJOwo3uB3hPsOn6DueBg/iXdkk5hWFJNfaEW3So83HkSb4eCKScLWCPkGWhkDv
-	 M+L3g0KY+N31dw+gmjAz0VXyqVTzbL1d4Oou9FG00tM/Ezfo4z952+eKJjN/KKDtfT
-	 wFhUnX4yQgrWRff+er0qp7Z9WeV+pkykbS05350g=
+	b=AoSexVacZj6NwbB+1ZS2mChgsAro/xVqxQgPRhbICRgmvUH+7+T8To3tldpEkjGXF
+	 wn1EyhBRcGN4pNdoJc22XCa6SIoI+ozl6cQ2fj2Ku4DdrAiExfIt0G4sYrq3OIFMFx
+	 LAHZJAJoksvvy8yQC7KuNMQtJtjWEeXxWYdEF424=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
 	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 294/355] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
-Date: Mon, 23 Jun 2025 15:08:15 +0200
-Message-ID: <20250623130635.615214763@linuxfoundation.org>
+Subject: [PATCH 5.10 295/355] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+Date: Mon, 23 Jun 2025 15:08:16 +0200
+Message-ID: <20250623130635.644679921@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -65,50 +64,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
+commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
 
-PCM1 not in Pulseaudio's control list; standardize control to
-"Speaker" and "Headphone".
+Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
+noises after runtime-PM suspend.  Disable the codec runtime PM as a
+workaround.
 
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
 Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
+Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/mixer_maps.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/usb/mixer_maps.c
-+++ b/sound/usb/mixer_maps.c
-@@ -367,6 +367,13 @@ static const struct usbmix_name_map cors
- 	{ 0 }
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2295,6 +2295,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
+ 	/* Dell ALC3271 */
+ 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
++	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
++	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
+ 	{}
  };
- 
-+/* KTMicro USB */
-+static struct usbmix_name_map s31b2_0022_map[] = {
-+	{ 23, "Speaker Playback" },
-+	{ 18, "Headphone Playback" },
-+	{ 0 }
-+};
-+
- /* ASUS ROG Zenith II with Realtek ALC1220-VB */
- static const struct usbmix_name_map asus_zenith_ii_map[] = {
- 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
-@@ -649,6 +656,11 @@ static const struct usbmix_ctl_map usbmi
- 		.id = USB_ID(0x1395, 0x0025),
- 		.map = sennheiser_pc8_map,
- 	},
-+	{
-+		/* KTMicro USB */
-+		.id = USB_ID(0X31b2, 0x0022),
-+		.map = s31b2_0022_map,
-+	},
- 	{ 0 } /* terminator */
- };
- 
+ #endif /* CONFIG_PM */
 
 
 
