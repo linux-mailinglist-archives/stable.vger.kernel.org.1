@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-156568-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D13EAE501A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 78DB1AE5269
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CB1A1B6209B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CD201B651F3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B1D21B9C9;
-	Mon, 23 Jun 2025 21:22:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1EA021D3DD;
+	Mon, 23 Jun 2025 21:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAZRrD8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMc3qFZK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13CF219E0;
-	Mon, 23 Jun 2025 21:22:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6452AEE4;
+	Mon, 23 Jun 2025 21:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713734; cv=none; b=q7EnS513wwQ2srPMCTklvM9HsFbT7I+DiygWIyoMX6T3PU2Z1XnRBCbJGjKpR8+URCRCESImQ4Qou+QDauonNkbSejl7Vjeh24NjS8QTWWTWv/xQdIk9PLJjC/dHid6Zttk46X8DE3WMO76xHZWcRTc1ordXEmL/nvh3svAwrns=
+	t=1750715014; cv=none; b=PqTC79dd4c9WjZfOMJAe/nlwlPsjF/8oA0YoSjG1HrNi6tBl4EPhGw3LpVlQnZ6dodOIIILSyMfLWG6THIQ9PBarDXHX8oKhwcXMihto4UQvUwlrNtQUQp7s08O1yNMp203DJid3NRQjkSouWoaXmD/O/Ae3upv2FeTR0KL+0ew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713734; c=relaxed/simple;
-	bh=C16I3p1m9TEsTC1m7BROwU6di9qLeHwqHs3bqJ9ROP8=;
+	s=arc-20240116; t=1750715014; c=relaxed/simple;
+	bh=0MfK6WPFvizMaT3Q8mRIM82cdzkw7bKTOXlMuz69Fas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GwNuUG2BCHw6MQiYPO1HNQ7Cfdg3VPt4LWVW2dGv7RqvxVPCiKg42EThxY4bwg6OPg8YyXcRRJvFo8nkBFDJizKNW8EPzu5yZaFp9kKo3rKgx6Znj6PZfUpxcRnopUKBVLNdt9eaWcXBbecY27oc6PFRFAxGoxbkxgJ14s9B1eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAZRrD8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38850C4CEEA;
-	Mon, 23 Jun 2025 21:22:11 +0000 (UTC)
+	 MIME-Version; b=hLF+KjqKFDzXG16J1poYod60keF4UJJjr5/VtX37PfemVSufza6GrGBZHi9H82j0gUmaiTgwz/KJZ6lvTOQaYt3Iq/J1ZM+bJdE5loKY5pIiFpFx8ip4AVP3D3AJ+Y5l2/uUFI5SoZWsc5XnGImBz4VilLRYRhuAfZYuDTyKEZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMc3qFZK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9BCC4CEEA;
+	Mon, 23 Jun 2025 21:43:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713731;
-	bh=C16I3p1m9TEsTC1m7BROwU6di9qLeHwqHs3bqJ9ROP8=;
+	s=korg; t=1750715014;
+	bh=0MfK6WPFvizMaT3Q8mRIM82cdzkw7bKTOXlMuz69Fas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aAZRrD8K6hhF+qI5LodhdCPQWu8x4T8+66FioIHMwNmC4qFQMG+2EryPMSO//bUQH
-	 uvfPYzzxduzvKR7A6VHFBKlF7OI7H2lKPVqByNMixx6v7whTOA966e4q2hDnpqKjKF
-	 J1oWEDtoXSVqk6qIh4mYgS74I/fIMDSFBAqm3SuY=
+	b=kMc3qFZKZDI0/xlRt21aQl1bwOfkhyBrU/co1okXqUyz1vDgf2ck+dQBxgZqPVRw9
+	 76qhYluLGijWpQLc7Bauqz8LM2SRaQ6K2LGUBFwDORkMb2GtR5txcpKgjXMaoCrSR6
+	 yA55qGVHIQKRMAKGPZXGmWHdOyy4gV86giLQdHWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 143/411] net_sched: sch_sfq: fix a potential crash on gso_skb handling
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.12 150/414] PCI: cadence-ep: Correct PBA offset in .set_msix() callback
 Date: Mon, 23 Jun 2025 15:04:47 +0200
-Message-ID: <20250623130637.205946387@linuxfoundation.org>
+Message-ID: <20250623130645.797099665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +62,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
+commit c8bcb01352a86bc5592403904109c22b66bd916e upstream.
 
-SFQ has an assumption of always being able to queue at least one packet.
+While cdns_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
+the calculation of the PBA offset is wrong because it calculates space for
+(N-1) entries instead of N.
 
-However, after the blamed commit, sch->q.len can be inflated by packets
-in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
-by an immediate drop.
+This results in the following QEMU error when using PCI passthrough on a
+device which relies on the PCI endpoint subsystem:
 
-Fix sfq_drop() to properly clear q->tail in this situation.
+  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
 
-Tested:
+Fix the calculation of PBA offset in the MSI-X capability.
 
-ip netns add lb
-ip link add dev to-lb type veth peer name in-lb netns lb
-ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
-ip netns exec lb ethtool -K in-lb gro on # enable NAPI
-ip link set dev to-lb up
-ip -netns lb link set dev in-lb up
-ip addr add dev to-lb 192.168.20.1/24
-ip -netns lb addr add dev in-lb 192.168.20.2/24
-tc qdisc replace dev to-lb root sfq limit 100
+[bhelgaas: more specific subject and commit log]
 
-ip netns exec lb netserver
-
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-
-Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3ef5d16f50f8 ("PCI: cadence: Add MSI-X support to Endpoint driver")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250514074313.283156-10-cassel@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_sfq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pci/controller/cadence/pcie-cadence-ep.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index f8e569f79f136..8cd4e663575c6 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -317,7 +317,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
- 		x = q->tail->next;
- 		slot = &q->slots[x];
--		q->tail->next = slot->next;
-+		if (slot->next == x)
-+			q->tail = NULL; /* no more active slots */
-+		else
-+			q->tail->next = slot->next;
- 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
- 		goto drop;
- 	}
--- 
-2.39.5
-
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -292,13 +292,14 @@ static int cdns_pcie_ep_set_msix(struct
+ 	struct cdns_pcie *pcie = &ep->pcie;
+ 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
+ 
+ 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
+ 
+ 	reg = cap + PCI_MSIX_FLAGS;
+ 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
+ 
+ 	/* Set MSIX BAR and offset */
+@@ -308,7 +309,7 @@ static int cdns_pcie_ep_set_msix(struct
+ 
+ 	/* Set PBA BAR and offset.  BAR must match MSIX BAR */
+ 	reg = cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
+ 
+ 	return 0;
 
 
 
