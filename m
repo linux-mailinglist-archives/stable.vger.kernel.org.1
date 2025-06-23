@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0700FAE51CB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C9E4AE5184
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9796D4A4843
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2E927AC762
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8026136;
-	Mon, 23 Jun 2025 21:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D7F22156B;
+	Mon, 23 Jun 2025 21:34:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXyYvVZ/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5PwGb5X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2DC19CC11;
-	Mon, 23 Jun 2025 21:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F2E1EE7C6;
+	Mon, 23 Jun 2025 21:34:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714647; cv=none; b=uB8KCHE78gtQd2EczWDx+PlPWmr4fdgDm2OlmsJgFR4qzNf5el6Q7mft/5RnOvr51OPLrb+UeWdOZo78GEz0mqvztghLerkmrexhnVvFDKHVWa17PGFT5XxUypQtd/KOkQNR+SNk1d1gWMlt2KFfM8CwGlOCyxyZdHTxZfGgiNI=
+	t=1750714497; cv=none; b=o8WiXJ4st8aT62UAPaa60MMlDS4nx3mSyyJbcY5kyxJXuUvbr9vYsZQeTEkQn5xPklpsx15EYZRWcLEtsFJbuhTqrjDKoC8zQYlIzbIKP+RX5GrzxcqG4aIUmRBNkuNWWYVQk94PRMCQ4bml37HEhSnXKM2LfvvYq5a3Z7x/sl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714647; c=relaxed/simple;
-	bh=cpbNPYuJFq6rJMXYLNHt/u4YJkDc4mRLvTplvfL+s6A=;
+	s=arc-20240116; t=1750714497; c=relaxed/simple;
+	bh=y0baPU/lU8cF33AExgyS14LyXL27I8F6l96tx5XKKsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPBwrGPkRFZINTDfZa/bcVujrEKpaCL/8thkNNonpHtJ3120a/vng0+RkN1GoTqFwg0JK5X7wXrQH0qFWyxw9OLvzNOZFqJb0hC9CHVrekLeZNlRFxm1Z3jcvwD5uYACFbVaXO8UPDG/W9YHB5xAL3szYrqqqS0oxnJcdMzDEds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXyYvVZ/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C82C4CEEA;
-	Mon, 23 Jun 2025 21:37:26 +0000 (UTC)
+	 MIME-Version; b=FidaaIVoqzQR1ZaeE78EPr7y0dNIAnJXh7KfwQYQjcLCRVhGdzV0oZz+eRMj3X2a4S073uzPF6z0GvpXk1Y9p+J+cZm3Rrq0/qE08jjtE3XE3F/0Zn3XSbdA2ThraU8UaMQRIi+k1HVmP1tjSVaHlsPDyLRef1YgEWMej7o01/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5PwGb5X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3215C4CEEA;
+	Mon, 23 Jun 2025 21:34:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714647;
-	bh=cpbNPYuJFq6rJMXYLNHt/u4YJkDc4mRLvTplvfL+s6A=;
+	s=korg; t=1750714497;
+	bh=y0baPU/lU8cF33AExgyS14LyXL27I8F6l96tx5XKKsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXyYvVZ/Y9Z+w42xNg1E+ahn6nw+oJpLoAQuCkucYlzNyg5qP4g0w19M2OXdp8JbR
-	 mzaERIgwEw0GeBJOqVL5Zn6KP+0bTcsapSa9wQS/66j9Jf3TM0/x0rsON11qU7kHV3
-	 S6rM4P+mtHk7ssPy8QodHlunylk1H5kARzEcln4s=
+	b=E5PwGb5XHYmJ0Fg2919/tw9V7n4LTttEwXEFeUiqb/rYfA5XXlf8V4kn325OC0z2v
+	 zDP9T1pqFoZHLwwi/4ybnOlwF/w6+eFyvJdqxmglGTJ0Aiy8Dx03w5IO869RhqftSd
+	 Dosw8zjt57LxIuIvZXd7VNFhbfZSQarSOcEMxn1o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 398/592] wifi: ath12k: using msdu end descriptor to check for rx multicast packets
+	Ma Ke <make24@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 212/411] media: v4l2-dev: fix error handling in __video_register_device()
 Date: Mon, 23 Jun 2025 15:05:56 +0200
-Message-ID: <20250623130709.910486001@linuxfoundation.org>
+Message-ID: <20250623130639.006795561@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit cb7433cc5cd4d07175dbc41f5a19966e9fae48be ]
+commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
 
-Currently, the RX multicast broadcast packet check is performed using
-bit 15 from the info6 field of the MPDU start descriptor. This check
-can also be done using bit 9 from the info5 field of the MSDU end
-descriptor. However, in some scenarios multicast bit is not set when
-fetched from MPDU start descriptor.
-Therefore, checking the RX multicast broadcast packet from the MSDU
-end descriptor is more reliable as it is per MSDU.
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
+And move callback function v4l2_device_release() and v4l2_device_get()
+before put_device().
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
 
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250411061523.859387-2-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/hal.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index 49b4c5648aed3..faf74b5459410 100644
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -449,8 +449,8 @@ static u8 *ath12k_hw_qcn9274_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1032,25 +1032,25 @@ int __video_register_device(struct video
+ 	vdev->dev.class = &video_class;
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
++	vdev->dev.release = v4l2_device_release;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++
++	/* Increase v4l2_device refcount */
++	v4l2_device_get(vdev->v4l2_dev);
++
+ 	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
+ 		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+-		goto cleanup;
++		put_device(&vdev->dev);
++		return ret;
+ 	}
+-	/* Register the release callback that will be called when the last
+-	   reference to the device goes away. */
+-	vdev->dev.release = v4l2_device_release;
  
- static bool ath12k_hw_qcn9274_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
- {
--	return __le32_to_cpu(desc->u.qcn9274.mpdu_start.info6) &
--	       RX_MPDU_START_INFO6_MCAST_BCAST;
-+	return __le16_to_cpu(desc->u.qcn9274.msdu_end.info5) &
-+	       RX_MSDU_END_INFO5_DA_IS_MCBC;
- }
+ 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+ 		pr_warn("%s: requested %s%d, got %s\n", __func__,
+ 			name_base, nr, video_device_node_name(vdev));
  
- static void ath12k_hw_qcn9274_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
-@@ -902,8 +902,8 @@ static u8 *ath12k_hw_qcn9274_compact_rx_desc_mpdu_start_addr2(struct hal_rx_desc
+-	/* Increase v4l2_device refcount */
+-	v4l2_device_get(vdev->v4l2_dev);
+-
+ 	/* Part 5: Register the entity. */
+ 	ret = video_register_media_controller(vdev);
  
- static bool ath12k_hw_qcn9274_compact_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
- {
--	return __le32_to_cpu(desc->u.qcn9274_compact.mpdu_start.info6) &
--	       RX_MPDU_START_INFO6_MCAST_BCAST;
-+	return __le16_to_cpu(desc->u.qcn9274_compact.msdu_end.info5) &
-+	       RX_MSDU_END_INFO5_DA_IS_MCBC;
- }
- 
- static void ath12k_hw_qcn9274_compact_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
--- 
-2.39.5
-
 
 
 
