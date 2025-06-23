@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-157845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 941E5AE55E5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A22F9AE55EA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0148F17368B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6AE017B5DF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A21F223DF0;
-	Mon, 23 Jun 2025 22:14:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13920225A38;
+	Mon, 23 Jun 2025 22:14:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZqGcdgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gwxHtY0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4874F21B8F6;
-	Mon, 23 Jun 2025 22:14:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42D81F7580;
+	Mon, 23 Jun 2025 22:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716860; cv=none; b=pogTAiaeMbdZGkVT4gLDSYYpM5EXUex85ejohjaSn+lZLTKm/WgzUj9rZh7a7qyrH3rjYhJ7MCacxKXbaWKvL1h+Xh8X5bADdoHMuu81Bf5Gt7n9ydUTfYfYUBLm8K1LFU13mNNDiqKzp8tR/6tTuebie9sFH2NRIgyBlD98b90=
+	t=1750716869; cv=none; b=XoxJwyc000fK8HL5XglLipSWu/r5pr+fNbon35rxQLS3L5kurIB7eqGLDwmNjyIN+E/3MiO8/9K4e58gh2oHYrnUXHx/UFO/IZ3JmSxRxxVg0M1u9BsjwF88xAV2OZONx0aHbs541jSP9OihlZGPcNpZRsgberMKg/WuJWH39m8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716860; c=relaxed/simple;
-	bh=PCsHjhSSbUY/grINkEo112OKh7rFVQQyEU8Lffu/J1Y=;
+	s=arc-20240116; t=1750716869; c=relaxed/simple;
+	bh=WI3S48aVSDtfhJCvgH6pzX+OfiPqWNEhAaig44ePloU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z9e4m27lFuxm2UjNtRynlK196BGZ1/U6VdnvuW+qhUy0XJK9gAZ1ubntsTyOr0YRoE1EAGwhOpdr4oFfgEfto5xKhhzngoSLFuRUa2ps+s79sLO4G7buy15XwFDWjpyi+awvmdDX+jdHJcFjWtIqL733yPritgdar0IQ1EknBis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZqGcdgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E488C4CEEA;
-	Mon, 23 Jun 2025 22:14:19 +0000 (UTC)
+	 MIME-Version; b=E5r9uj2y9NMRoRYvc0i1mwV6JaMSBR/3j31yW2mOQnhRxKJtLPdG963EWADNpFRqiE/d5+ICFpSchu6W9WPydgDs0jSg+vmqCC9qUkEAf/zLmMbno/HMIT/KCkSPXJEgqS79jPbPg3ZrjqONKyKNCfv4Ne8VHnmxZbnk7dkxLzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gwxHtY0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55812C4CEEA;
+	Mon, 23 Jun 2025 22:14:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716859;
-	bh=PCsHjhSSbUY/grINkEo112OKh7rFVQQyEU8Lffu/J1Y=;
+	s=korg; t=1750716869;
+	bh=WI3S48aVSDtfhJCvgH6pzX+OfiPqWNEhAaig44ePloU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EZqGcdgtZFH/+fzdESvpF94CwwOXOFJvWsRBee8kgrNK/omC7FBRa2CoW/Igd5ycT
-	 FdHyv2Z99y54GVuqcSDXr+G/cG62WfKEyT0dRrcSoWpminmRvSqRJHTRFFWo9W82q5
-	 52VPbsBrkDJcx4yMYCUpxEZTFQKm75JA94PyMvfA=
+	b=1gwxHtY0iP6xKa1sXHiNcjC5dCuQZcIY52zn98/ZG61wtwo6wtHPTgrTh7Fkukacu
+	 8ug7y4fY4tGPyjJEXyzCSNAyiR94ZqjRole8q9Xhd9gd7CACJcAe1loyYzsnzwilSD
+	 reUL+ELGmlD2drHvYjdgjBpm7fohdmwMku/7f1/4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayes <stuart.w.hayes@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 292/414] platform/x86: dell_rbu: Stop overwriting data buffer
-Date: Mon, 23 Jun 2025 15:07:09 +0200
-Message-ID: <20250623130649.311829444@linuxfoundation.org>
+Subject: [PATCH 6.12 293/414] powerpc/vdso: Fix build of VDSO32 with pcrel
+Date: Mon, 23 Jun 2025 15:07:10 +0200
+Message-ID: <20250623130649.336277638@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -60,57 +60,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayes <stuart.w.hayes@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
+[ Upstream commit b93755f408325170edb2156c6a894ed1cae5f4f6 ]
 
-The dell_rbu driver will use memset() to clear the data held by each
-packet when it is no longer needed (when the driver is unloaded, the
-packet size is changed, etc).
+Building vdso32 on power10 with pcrel leads to following errors:
 
-The amount of memory that is cleared (before this patch) is the normal
-packet size. However, the last packet in the list may be smaller.
+	  VDSO32A arch/powerpc/kernel/vdso/gettimeofday-32.o
+	arch/powerpc/kernel/vdso/gettimeofday.S: Assembler messages:
+	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: syntax error; found `@', expected `,'
+	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
+	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: junk at end of line: `@notoc'
+	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
+	 ...
+	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/gettimeofday-32.o] Error 1
+	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
 
-Fix this to only clear the memory actually used by each packet, to prevent
-it from writing past the end of data buffer.
+Once the above is fixed, the following happens:
 
-Because the packet data buffers are allocated with __get_free_pages() (in
-page-sized increments), this bug could only result in a buffer being
-overwritten when a packet size larger than one page is used. The only user
-of the dell_rbu module should be the Dell BIOS update program, which uses
-a packet size of 4096, so no issues should be seen without the patch, it
-just blocks the possiblity.
+	  VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
+	cc1: error: '-mpcrel' requires '-mcmodel=medium'
+	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:89: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
+	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
+	make: *** [Makefile:251: __sub-make] Error 2
 
-Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
-Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Make sure pcrel version of CFUNC() macro is used only for powerpc64
+builds and remove -mpcrel for powerpc32 builds.
+
+Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/1fa3453f07d42a50a70114da9905bf7b73304fca.1747073669.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/ppc_asm.h | 2 +-
+ arch/powerpc/kernel/vdso/Makefile  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index 4d2b5f6dd513f..fee20866b41e4 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -322,7 +322,7 @@ static void packet_empty_list(void)
- 		 * zero out the RBU packet memory before freeing
- 		 * to make sure there are no stale RBU packets left in memory
- 		 */
--		memset(newpacket->data, 0, rbu_data.packetsize);
-+		memset(newpacket->data, 0, newpacket->length);
- 		set_memory_wb((unsigned long)newpacket->data,
- 			1 << newpacket->ordernum);
- 		free_pages((unsigned long) newpacket->data,
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index 02897f4b0dbf8..b891910fce8a6 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -183,7 +183,7 @@
+ /*
+  * Used to name C functions called from asm
+  */
+-#ifdef CONFIG_PPC_KERNEL_PCREL
++#if defined(__powerpc64__) && defined(CONFIG_PPC_KERNEL_PCREL)
+ #define CFUNC(name) name@notoc
+ #else
+ #define CFUNC(name) name
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index c568cad6a22e6..6ba68b28ed870 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -53,7 +53,7 @@ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WAR
+ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
+ 
+ CC32FLAGS := -m32
+-CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
++CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc -mpcrel
+ ifdef CONFIG_CC_IS_CLANG
+ # This flag is supported by clang for 64-bit but not 32-bit so it will cause
+ # an unused command line flag warning for this file.
 -- 
 2.39.5
 
