@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E3BCAE4237
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30E7BAE4353
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 19CE0189418F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 250AF3BCBCD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 250D12522B1;
-	Mon, 23 Jun 2025 13:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A38902367B0;
+	Mon, 23 Jun 2025 13:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDNEd58B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E/1o0WeE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5203251793;
-	Mon, 23 Jun 2025 13:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 620DF23A9BE;
+	Mon, 23 Jun 2025 13:24:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684504; cv=none; b=FBwCubErHRcts8xeKAHRKS0hMR7+idRhNQXjCgg9fxwpZ7P5Wndj8H+PHfyXvMApAVeb/mRNuqIaHcMkyW+Z+9VT43Q0Ah8t0ddXBztHUgCVE+v2rX0qZJNZMuq/6g5EPzkubR/pVuXu77DxCL/p9mXJZK+NtlYoThIXqTAYvuk=
+	t=1750685090; cv=none; b=DQ12nITBmBbc76WTSUM91NQlTXZWOkjWnbnSqYoGhQ2TwuPHwt7xnKzjTj/5kuQuwZUkr7c/9PduD93GVddOAWr/tC/PiGmxTzFBF3TZYJqEpKaZyZJ/eUypIkqvJPqoTorpVXrSiO6++h3yvyIlp6pVkeJCX0S8zMVQu3uCN/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684504; c=relaxed/simple;
-	bh=umIh7b7NJdAOZ+djeQdX7M7gJGR3phhQ1NtOUgqIwwM=;
+	s=arc-20240116; t=1750685090; c=relaxed/simple;
+	bh=KCCMsxCi/ZH2ct8NE2l4UwKcnQXgU1FOsEan3koPNr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KbDKA9/r5uTRGe0EXovH0f73u6A1G9iWW4aZhNCwCME7kTB36yiEqXVWGxAPNgz5cwfVmexBAeCT0DlZYD1EzCsUHC1aoIoMH7kVO2617V2hrsyssZSLfGca6tYdT1sZesfOwlddmkjmYTrukjGpyrPunj/dQgw+3zOHmeEvJvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDNEd58B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68AE7C4CEEA;
-	Mon, 23 Jun 2025 13:15:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=SHnCSJ2pMqDalJomzMUwOcx+InnfAvrAKjWWJWaVhKV8JceoUlVfiea+NOMCONBl4a8EwTBkAnyAvsLHME4L/NqqvN5G75QL/dpJXWW7+ePsiIlT52/8+EQiEq/JrF8HNvHK6Jovlj217iDC6pyU/BeMq02zVpRglW0yz6yTHdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E/1o0WeE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDEBC4CEEA;
+	Mon, 23 Jun 2025 13:24:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684504;
-	bh=umIh7b7NJdAOZ+djeQdX7M7gJGR3phhQ1NtOUgqIwwM=;
+	s=korg; t=1750685090;
+	bh=KCCMsxCi/ZH2ct8NE2l4UwKcnQXgU1FOsEan3koPNr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDNEd58BWWI+9hB+M47qgkgW/DcJHVFATOlbcI7mgpC1lH86aZkeDX9Y4ZxDso+C/
-	 Oy7iORfcZi28tAKu4De9CTiRAaoIFPu3hVG1FxFavyDFSvxK1P86qYWwZVOl837YtC
-	 qvMsNfMMiXpl4PYf50OPfIoJipCWQ5QngoB00lxE=
+	b=E/1o0WeEQNlDxEF2ADOEyGIV7L1bqTGZRk9Isw6CjwxrG9pPG726fyjjEXEREHMup
+	 Jq3wzSFGp5yyI6QRgmOg7fvWwBxpTPdvWCmx0RFhInVRFY1FXAeVhBxIJLERQVI0YU
+	 4Gtw4QrVIC1AXJfkC4/SSbfNtIkaB9rAnSzXRf8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.15 094/592] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.1 007/508] rtc: Fix offset calculation for .start_secs < 0
 Date: Mon, 23 Jun 2025 15:00:52 +0200
-Message-ID: <20250623130702.515693579@linuxfoundation.org>
+Message-ID: <20250623130645.436620345@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 7397daf1029d5bfd3415ec8622f5179603d5702d upstream.
+commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
 
-The late init call just writes to omap4 registers as soon as
-CONFIG_MFD_CPCAP is enabled without checking whether the
-cpcap driver is actually there or the SoC is indeed an
-OMAP4.
-Rather do these things only with the right device combination.
+The comparison
 
-Fixes booting the BT200 with said configuration enabled and non-factory
-X-Loader and probably also some surprising behavior on other devices.
+        rtc->start_secs > rtc->range_max
 
-Fixes: c145649bf262 ("ARM: OMAP2+: Configure voltage controller for cpcap to low-speed")
-CC: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reivewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20250331144439.769697-1-andreas@kemnade.info
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap2/pmic-cpcap.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/rtc/class.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/mach-omap2/pmic-cpcap.c
-+++ b/arch/arm/mach-omap2/pmic-cpcap.c
-@@ -264,7 +264,11 @@ int __init omap4_cpcap_init(void)
- 
- static int __init cpcap_late_init(void)
- {
--	omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
-+	if (!of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-+		return 0;
-+
-+	if (soc_is_omap443x() || soc_is_omap446x() || soc_is_omap447x())
-+		omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
- 
- 	return 0;
- }
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -323,7 +323,7 @@ static void rtc_device_get_offset(struct
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
 
 
 
