@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A66AE561F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AD6EFAE5558
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD4A93AF5EB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEC484A0ED4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3EE5226D00;
-	Mon, 23 Jun 2025 22:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926C921FF2B;
+	Mon, 23 Jun 2025 22:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZdfO/SWF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TylPsCDw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33D1F7580;
-	Mon, 23 Jun 2025 22:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2147080E;
+	Mon, 23 Jun 2025 22:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716884; cv=none; b=Yli8q5nRQOIID/K0+7SycPszRMVWXsrzkyxs2BMtZTRRkWl9nlhNVAMb4OVz/oKyxP0SCC1QlXfcgaRfmEtI7ix4F4X/Qka7uwKpzKsqXE5uYuvnmPKCsKRAxSIXL8RNPg0h+eCppRsfLyeuTpeffKw7mcCF2EEOL+VAMsOxbV8=
+	t=1750716554; cv=none; b=SxMj5kdZbCqCHXh4kjB53QFkpybg1YIH0QZp17tG+EvVpWvUWpCEK8S79W3fduwXg4NJlJm5IOH5akQjSL+krqxVOO/8kjmcesJb29rr7IWHkg05Y97pmfVudkXacNpczlQZa8h/eS+wXTgW9YmPGpTZRG39bH1hMzjBHNkaDe4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716884; c=relaxed/simple;
-	bh=2hYZDC8eSnmMHF2eYPyOjEwddZ6ViNS36kZF0LS7TOk=;
+	s=arc-20240116; t=1750716554; c=relaxed/simple;
+	bh=dQ9okW+kjNXGwlIW2xQySm/RHqum9EW6qzrHOvgXQdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SnrIVTQri6bGot97VqJg0KEetr3YErU08naEaSw0reUllT3edYPaiX2Pu5Vrjp6OWV5pL7ah2L4fwONIsyFboh7ODtgHZR6Mo6dOR/RHidrWuNtOoBM8wViSLIa66vzQPDlnWbiJlAbsOxdLf4JpRQ0uOLL8tTPBRFjYCmFaf9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZdfO/SWF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04F23C4CEEA;
-	Mon, 23 Jun 2025 22:14:43 +0000 (UTC)
+	 MIME-Version; b=JZtZCrzim+KpTJqv9LBFeN2VvdtsWAkwKKc5DGvaOrgtOmkluAjd7eB8kFvmYQ6k0vNFKs+0aIzZISERCnhUK4kz2OTyuHziZ0H6MR+hWGKsh7j249boZv+nd7MUo9C82ecPo1WX92yP5gdEgcKSCWrxI16C43I6F1vS/SS548w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TylPsCDw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6C5C4CEEA;
+	Mon, 23 Jun 2025 22:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716884;
-	bh=2hYZDC8eSnmMHF2eYPyOjEwddZ6ViNS36kZF0LS7TOk=;
+	s=korg; t=1750716554;
+	bh=dQ9okW+kjNXGwlIW2xQySm/RHqum9EW6qzrHOvgXQdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZdfO/SWF/1SPGgrLqEMMxNVBfZL2TJAgqQOzFQ0yOI8y5d4a685SIdurTdnoNcBak
-	 5qqpDmOGMQMq1+QZCfrmYrlC1MEKcOmxW3zmitmQGJktvDe12ITbVmNV3DnujH8tKf
-	 5eDk22SIJ6CIlfwxzDyYvq2jsatLmDDaPklNckqg=
+	b=TylPsCDwBDJSHm3Qv5+wuhciEENvHEaVb7kjMqP4leqUob2EP/apuZlanfkXGVH8u
+	 5dn74CxKotd43+1Q9WWsOIy3malI+rGGUNM7R3CqQUe3YWBDCfuEhEe9oQEDaKIm05
+	 zr5HeFG0Z7Nh7lmBzLcExyd8gfzQxDvEGj4ML9G0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 375/411] wifi: carl9170: do not ping device which has failed to load firmware
+	Paul Aurich <paul@darkrain42.org>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Ruben Devos <rdevos@oxya.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.15 561/592] smb: Log an error when close_all_cached_dirs fails
 Date: Mon, 23 Jun 2025 15:08:39 +0200
-Message-ID: <20250623130643.081616710@linuxfoundation.org>
+Message-ID: <20250623130713.786907842@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Paul Aurich <paul@darkrain42.org>
 
-[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
+commit a2182743a8b4969481f64aec4908ff162e8a206c upstream.
 
-Syzkaller reports [1, 2] crashes caused by an attempts to ping
-the device which has failed to load firmware. Since such a device
-doesn't pass 'ieee80211_register_hw()', an internal workqueue
-managed by 'ieee80211_queue_work()' is not yet created and an
-attempt to queue work on it causes null-ptr-deref.
+Under low-memory conditions, close_all_cached_dirs() can't move the
+dentries to a separate list to dput() them once the locks are dropped.
+This will result in a "Dentry still in use" error, so add an error
+message that makes it clear this is what happened:
 
-[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
-[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
+[  495.281119] CIFS: VFS: \\otters.example.com\share Out of memory while dropping dentries
+[  495.281595] ------------[ cut here ]------------
+[  495.281887] BUG: Dentry ffff888115531138{i=78,n=/}  still in use (2) [unmount of cifs cifs]
+[  495.282391] WARNING: CPU: 1 PID: 2329 at fs/dcache.c:1536 umount_check+0xc8/0xf0
 
-Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also, bail out of looping through all tcons as soon as a single
+allocation fails, since we're already in trouble, and kmalloc() attempts
+for subseqeuent tcons are likely to fail just like the first one did.
+
+Signed-off-by: Paul Aurich <paul@darkrain42.org>
+Acked-by: Bharath SM <bharathsm@microsoft.com>
+Suggested-by: Ruben Devos <rdevos@oxya.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ fs/smb/client/cached_dir.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index a5265997b5767..debac4699687e 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -486,8 +486,17 @@ void close_all_cached_dirs(struct cifs_s
+ 		spin_lock(&cfids->cfid_list_lock);
+ 		list_for_each_entry(cfid, &cfids->entries, entry) {
+ 			tmp_list = kmalloc(sizeof(*tmp_list), GFP_ATOMIC);
+-			if (tmp_list == NULL)
+-				break;
++			if (tmp_list == NULL) {
++				/*
++				 * If the malloc() fails, we won't drop all
++				 * dentries, and unmounting is likely to trigger
++				 * a 'Dentry still in use' error.
++				 */
++				cifs_tcon_dbg(VFS, "Out of memory while dropping dentries\n");
++				spin_unlock(&cfids->cfid_list_lock);
++				spin_unlock(&cifs_sb->tlink_tree_lock);
++				goto done;
++			}
+ 			spin_lock(&cfid->fid_lock);
+ 			tmp_list->dentry = cfid->dentry;
+ 			cfid->dentry = NULL;
+@@ -499,6 +508,7 @@ void close_all_cached_dirs(struct cifs_s
+ 	}
+ 	spin_unlock(&cifs_sb->tlink_tree_lock);
  
- 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
- 			/*
--			 * The system is too slow to cope with
--			 * the enormous workload. We have simply
--			 * run out of active rx urbs and this
--			 * unfortunately leads to an unpredictable
--			 * device.
-+			 * At this point, either the system is too slow to
-+			 * cope with the enormous workload (so we have simply
-+			 * run out of active rx urbs and this unfortunately
-+			 * leads to an unpredictable device), or the device
-+			 * is not fully functional after an unsuccessful
-+			 * firmware loading attempts (so it doesn't pass
-+			 * ieee80211_register_hw() and there is no internal
-+			 * workqueue at all).
- 			 */
- 
--			ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			if (ar->registered)
-+				ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			else
-+				pr_warn_once("device %s is not registered\n",
-+					     dev_name(&ar->udev->dev));
- 		}
- 	} else {
- 		/*
--- 
-2.39.5
-
++done:
+ 	list_for_each_entry_safe(tmp_list, q, &entry, entry) {
+ 		list_del(&tmp_list->entry);
+ 		dput(tmp_list->dentry);
 
 
 
