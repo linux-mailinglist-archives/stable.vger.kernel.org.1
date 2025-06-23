@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-156068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E635AE44E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1236AE4490
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40D3C188DAB1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C624A1F71
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD8C2472A2;
-	Mon, 23 Jun 2025 13:40:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE073253953;
+	Mon, 23 Jun 2025 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vetXUeKj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMJh6G8w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF2A016419;
-	Mon, 23 Jun 2025 13:40:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB87224728E;
+	Mon, 23 Jun 2025 13:37:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686058; cv=none; b=FowG+EFA7Mx5jBiNZK/G2WtyraetsfIZ8c4BQ6zsvFrLmDFmymhHaLn0zYHfVQHAQfRmLZP35ntxoyoXxmmsOABBsm8sCBMmkuf42TGBgZEftwcJ2KrY3pP9P1v6bmZ89aBwBtvX4ab23bBM5/cajIW1Y2zrOF7y98mwbn0a2YU=
+	t=1750685823; cv=none; b=V7opXnc2LAval8S4NlbDlPEhRceQW9ca5i39WSu76klTYYBMYJ4eqapElWdT6fDRXjhrGQ56FrwCvlTks/lUNW6QGzP8ow5PWnVOtRIfUHO0gK5JsXhjnlGRqvQXIIQSRyxbHix6+Lv8BAiOzKpCsQw0ZE3p+7l6mprrXfwlOc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686058; c=relaxed/simple;
-	bh=eBW6pC8FycgUSplev3FfGUNWr49lRd9Ba1SYBOrRLyA=;
+	s=arc-20240116; t=1750685823; c=relaxed/simple;
+	bh=4/qWnu61CqyL8p9dEeY6Jducu6/pGaX8aGpPq9ljuSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bz+E8kzo3KdJVJ5wHrmhAts2m6dt7Zf5i+qLrmmF3aFccneUwrV8m2xiTmwmf/CSyBS4qBG97mfLUVq5yWBtaBgs2lL0cTHWbbbIRL230x4XJWliXp0+eNR+pFjNRygNaHA9Lgs1HkoWuqywZO7a/fHYcHViKtwBHf0g0T8PRsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vetXUeKj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82A13C4CEEA;
-	Mon, 23 Jun 2025 13:40:57 +0000 (UTC)
+	 MIME-Version; b=hv4C+DhH8RY+TCpovJ8lh7xp1A0ywmEQkfVkHX9U8+KhPitWOvyRu2i6DYLuMRLB4QdEkqKC2bVczsFrp5I//HpSVRNH0z11jTXAre1m2m2mB4wFy/qZKqXChQ7O9PzxZru9mxCNWsyJ5i3NjTAD37e9oVlPLUL1bv8xoGAYWKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMJh6G8w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410F2C4CEEA;
+	Mon, 23 Jun 2025 13:37:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686057;
-	bh=eBW6pC8FycgUSplev3FfGUNWr49lRd9Ba1SYBOrRLyA=;
+	s=korg; t=1750685823;
+	bh=4/qWnu61CqyL8p9dEeY6Jducu6/pGaX8aGpPq9ljuSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vetXUeKjTzc0hg1ZO+2nkL5nlPANoO3IRITSu4MhjmPu/ed1ZubXZbzD/owrq3NuY
-	 5PMb5r943Oyd/TsOwaTEzuf1Z7bnInwrnMcJnhkgaIaDYjSrHiwkQyxo6URNWEyY+9
-	 hAJtTEHib6K0UzSEYBlHSi6FaF9cY/5QX0tLLj/w=
+	b=nMJh6G8wZB1OWsy6N+DWzk38bq+wNkwAc0k0mcE8gXwooUb0fASPOBhDF8759dxis
+	 nE4q3awYu3hM5ZOtD8Q8HSfi2am57Fehg51BctnjTcxYLs0w6Xve6TpyYUOU9Kz/P/
+	 xQVfJFdAVDZEmyIC3V1y5magvOf28bKtRqKvwYAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/355] PCI/DPC: Initialize aer_err_info before using it
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 028/290] media: ccs-pll: Start VT pre-PLL multiplier search from correct value
 Date: Mon, 23 Jun 2025 15:04:49 +0200
-Message-ID: <20250623130629.448729306@linuxfoundation.org>
+Message-ID: <20250623130627.832518179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
+commit 06d2d478b09e6764fb6161d1621fc10d9f0f2860 upstream.
 
-Previously the struct aer_err_info "info" was allocated on the stack
-without being initialized, so it contained junk except for the fields we
-explicitly set later.
+The ccs_pll_calculate_vt_tree() function does a search over possible VT
+PLL configurations to find the "best" one. If the sensor does not support
+odd pre-PLL divisors and the minimum value (with constraints) isn't 1,
+other odd values could be errorneously searched (and selected) for the
+pre-PLL divisor. Fix this.
 
-Initialize "info" at declaration so it starts as all zeros.
-
-Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pcie/dpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ccs-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
-index ab83f78f3eb1d..cabbaacdb6e61 100644
---- a/drivers/pci/pcie/dpc.c
-+++ b/drivers/pci/pcie/dpc.c
-@@ -263,7 +263,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
- void dpc_process_error(struct pci_dev *pdev)
- {
- 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
--	struct aer_err_info info;
-+	struct aer_err_info info = {};
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -397,6 +397,8 @@ static int ccs_pll_calculate_vt_tree(str
+ 	min_pre_pll_clk_div = max_t(u16, min_pre_pll_clk_div,
+ 				    pll->ext_clk_freq_hz /
+ 				    lim_fr->max_pll_ip_clk_freq_hz);
++	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
++		min_pre_pll_clk_div = clk_div_even(min_pre_pll_clk_div);
  
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
- 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
--- 
-2.39.5
-
+ 	dev_dbg(dev, "vt min/max_pre_pll_clk_div: %u,%u\n",
+ 		min_pre_pll_clk_div, max_pre_pll_clk_div);
 
 
 
