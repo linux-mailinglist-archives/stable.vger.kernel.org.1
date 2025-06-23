@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-156236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DFF3AE4EBD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65AD9AE5047
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41FB3189FE38
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEAD93BFB13
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9271A70838;
-	Mon, 23 Jun 2025 21:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C663D2628C;
+	Mon, 23 Jun 2025 21:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPG+50v1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1FAZGym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9F51ACEDA;
-	Mon, 23 Jun 2025 21:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825CA1EDA0F;
+	Mon, 23 Jun 2025 21:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712916; cv=none; b=M0u9qTVr29T7s+PeP3RLwyLLCjm5BbU/qLZOcsRV/h1QG6abvwVbOgoaLtDQxou54KFX4TWduKpRltrjfTlxaLLxvm1QPpIISUwl5GealPe9sJIkqaUPyUKTCvcs7sqNkw9Qgt/BG1hOX2OmhjxeaV+gXd7fDBKRN/1msSbIlvY=
+	t=1750713820; cv=none; b=XEKMOWloFH3ODD5JZ6kCzdlg7Ws3kA6j+PaBbdEnKXgcNE6/atWe/XNU7d00I2cHgniAMOXnhdWzHEs7O+QE4T6SYYWD9LFM8FuZ1lAQMFlqOv7ucW1+P/gJB5NVobc0zgPl1uop3K9tMnt0cDwDCzehopKveBP8XZpDrtIuvrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712916; c=relaxed/simple;
-	bh=oHBHhDDgJLIwNP0T4wX9BmFRBUwLSXwQsSmH2bkLD3U=;
+	s=arc-20240116; t=1750713820; c=relaxed/simple;
+	bh=u2I54/01iM1pA+7C5OSSdFrZQwDn4FhfD0H/8optDE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkApF7lJxlz8+ZChn8xyvyY3vmFAimThXKUmiiPkeLmfjBNrO6I1gIVxlZMM6mukC/P4XO2Qy2sdyWVHtUk0xwo218gjR6ObpYHdkQgs+eVtUFLUE6IOn8D0IncYwXudfQFsKe23VIJU7L7NgW4pqf6ax5XXObaHgAusDrWGxss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPG+50v1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15E8C4CEEA;
-	Mon, 23 Jun 2025 21:08:35 +0000 (UTC)
+	 MIME-Version; b=OtXakO9ZWrNVdKcVjkVN14U2U8wOKs3KG0IYfreG6wPgPFidHyZUa1TtT7QHPk4nm64nCZaTj0/QsVYb9ErTQ794Ul8Bv+cjBGBGkjsEe2xbxjE+9/cXH2YsGjuK/X+2i/l8TNammWhl3eLHAeHlmFmoZu86kUU2DkulRG2YP6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1FAZGym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B491C4CEEA;
+	Mon, 23 Jun 2025 21:23:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712916;
-	bh=oHBHhDDgJLIwNP0T4wX9BmFRBUwLSXwQsSmH2bkLD3U=;
+	s=korg; t=1750713820;
+	bh=u2I54/01iM1pA+7C5OSSdFrZQwDn4FhfD0H/8optDE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WPG+50v1bsajxJz4eZ3HV1bvSrWePIWlZf8iw4ex3YxXkqFEkbAsAbx8DBhBJ7N7H
-	 ZQhI602FCarJl68/vdFK8+RdhLK5XeZ3xpoQmWpfesvVvq3n4I0NxE5xDHWkiIsVCN
-	 YjwuLw/7lq8Ksyu5s5DtP+nCC1vCcPyHvnDvIp74=
+	b=m1FAZGymZ55PyUmfe4ZQiS44lgVfuXzFO5p5Gj0NtICg2qY5HsV6EwTiR+z0uLt62
+	 0marTvbdKfwWYLGuHSt1xVAUoupXRoMBRs44zX9u2oPUpOm7u/UrqCYv8ZYlxfYOJj
+	 iz5qY1EE15v+LIFQzFZs4Dp49dCEhDhCDS6D2sI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Moteen Shah <m-shah@ti.com>,
-	Nishanth Menon <nm@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 112/355] arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.15 169/411] MIPS: Move -Wa,-msoft-float check from as-option to cc-option
 Date: Mon, 23 Jun 2025 15:05:13 +0200
-Message-ID: <20250623130630.130894371@linuxfoundation.org>
+Message-ID: <20250623130637.949923111@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit f55c9f087cc2e2252d44ffd9d58def2066fc176e ]
+This patch is for linux-6.1.y and earlier, it has no direct mainline
+equivalent.
 
-For am65x, add missing ITAPDLYSEL values for Default Speed and High
-Speed SDR modes to sdhci0 node according to the device datasheet [0].
+In order to backport commit d5c8d6e0fa61 ("kbuild: Update assembler
+calls to use proper flags and language target") to resolve a separate
+issue regarding PowerPC, the problem noticed and fixed by
+commit 80a20d2f8288 ("MIPS: Always use -Wa,-msoft-float and eliminate
+GAS_HAS_SET_HARDFLOAT") needs to be addressed. Unfortunately, 6.1 and
+earlier do not contain commit e4412739472b ("Documentation: raise
+minimum supported version of binutils to 2.25"), so it cannot be assumed
+that all supported versions of GNU as have support for -msoft-float.
 
-[0] https://www.ti.com/lit/gpn/am6548
+In order to switch from KBUILD_CFLAGS to KBUILD_AFLAGS in as-option
+without consequence, move the '-Wa,-msoft-float' check to cc-option,
+including '$(cflags-y)' directly to avoid the issue mentioned in
+commit 80a20d2f8288 ("MIPS: Always use -Wa,-msoft-float and eliminate
+GAS_HAS_SET_HARDFLOAT").
 
-Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
-Cc: stable@vger.kernel.org
-Signed-off-by: Judith Mendez <jm@ti.com>
-Reviewed-by: Moteen Shah <m-shah@ti.com>
-Link: https://lore.kernel.org/r/20250429173009.33994-1-jm@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/mips/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-index ec7b22fae7fd3..ec7d444b228d1 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -280,6 +280,8 @@ sdhci0: sdhci@4f80000 {
- 		ti,otap-del-sel-ddr50 = <0x5>;
- 		ti,otap-del-sel-ddr52 = <0x5>;
- 		ti,otap-del-sel-hs200 = <0x5>;
-+		ti,itap-del-sel-legacy = <0xa>;
-+		ti,itap-del-sel-mmc-hs = <0x1>;
- 		ti,itap-del-sel-ddr52 = <0x0>;
- 		dma-coherent;
- 	};
--- 
-2.39.5
-
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -110,7 +110,7 @@ endif
+ # (specifically newer than 2.24.51.20140728) we then also need to explicitly
+ # set ".set hardfloat" in all files which manipulate floating point registers.
+ #
+-ifneq ($(call as-option,-Wa$(comma)-msoft-float,),)
++ifneq ($(call cc-option,$(cflags-y) -Wa$(comma)-msoft-float,),)
+ 	cflags-y		+= -DGAS_HAS_SET_HARDFLOAT -Wa,-msoft-float
+ endif
+ 
 
 
 
