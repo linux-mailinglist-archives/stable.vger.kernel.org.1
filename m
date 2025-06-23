@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B11CFAE56BB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B831EAE5542
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C07BE4A64E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9A624A1B9C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA1092192EC;
-	Mon, 23 Jun 2025 22:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692792264BF;
+	Mon, 23 Jun 2025 22:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QyPykw3G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCG1fE4j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9722719F120;
-	Mon, 23 Jun 2025 22:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FE0223316;
+	Mon, 23 Jun 2025 22:08:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717192; cv=none; b=Hx2OFDopuogjKSHBUcS5+g4iilGKSgTeg5B4mw4UF1ZM6v2roBnvsMgJONHaRl756ibahL3vAe2iLO7+ipb6s3dPw2OIseLCun8t0Y8yd58bSq45vaGI9mK58NA+HBgHOpOIBwbZMS5pZfTCRl6KwEj4c1+lmrTELSV6PY6pPDw=
+	t=1750716530; cv=none; b=q+inXewkDCuCGT4tLkQ2N+LnyNUNg9UEZ+ucWZotL6rgWAeVe3f/ksFyvdmXFtvKQJLOMMKuXYPJTfxMHzivjlAx4E5ZWlunEL2fenLibcyyjXzbHRT+QYpFBboic4WRXd7oxJxPSg1FriJvJkX/oarmjyi7jsQfnb7+yaFWYlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717192; c=relaxed/simple;
-	bh=0jaoNjVdzKAFMox+pFkzXd+RwhGWtel2TScXp6f4pRM=;
+	s=arc-20240116; t=1750716530; c=relaxed/simple;
+	bh=8bnccDJNxtxuQGcfmh/74rZwbBu1NNu/1drhb4Qcaig=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxeLX2g/6juMaQkkRTe7t6/xB6m8eM2/D363oGv8215SEDGokPLFEG2GLr22RoPo9QL6mtJbpqbiUdqy6KxJ5sh69WVxa1YAfD2Aq7gqXtnOGOpKPTTEtP22CIBPpn6DVWinbsnqfDiBo/IZliItQM/Vf8oIXm0YWTwEHzNN2tA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QyPykw3G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E898C4CEEA;
-	Mon, 23 Jun 2025 22:19:52 +0000 (UTC)
+	 MIME-Version; b=kd2viHsqWa/Fhdv/OF2jRfL832e38hdtU1YgqTT+nOs+4KzsPWDBMM8JEXBPl0rXlSOrtYdn9rGAD1uE7dom2zvGL58egzh5FegmaJczjXIQiToynqRljYeAL6VhUqMSBlyLUzSAR2xDwmiTcI2++elWp0K4AtsN691EyTYz1gk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCG1fE4j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE9DC4CEEA;
+	Mon, 23 Jun 2025 22:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717192;
-	bh=0jaoNjVdzKAFMox+pFkzXd+RwhGWtel2TScXp6f4pRM=;
+	s=korg; t=1750716529;
+	bh=8bnccDJNxtxuQGcfmh/74rZwbBu1NNu/1drhb4Qcaig=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QyPykw3G/cfVzXgSghIVCOvq91vqU7VzWUeuMUCNgHMOhJ84yPrq5RGw5FHKsspyA
-	 A3jUbXitCqXMW1PjSZSACjv3ktcTscXrNiokpir1hMwZXTsbH+M/3/AB+tRIDeyFmd
-	 dvT1hAYY9KKflGptnErPwQ3xlqnxdqF9/29fAIUo=
+	b=mCG1fE4j9EDsISoGm/2QMdyhnLjwz3icbpfQoIx231bDUBP6152c2zJUTxQa7PZcv
+	 0In865XzPANcq+9hbxA1lN/oC3hFX8tMUPAH1xHFlBsHGbT8obIs7/qlbcFzQCinqt
+	 IC4leIjxVmxq+pR8mQ+8/45QWzvMLf+6dou7PKnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jann Horn <jannh@google.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 378/508] ACPICA: Avoid sequence overread in call to strncmp()
+Subject: [PATCH 6.12 286/414] tee: Prevent size calculation wraparound on 32-bit kernels
 Date: Mon, 23 Jun 2025 15:07:03 +0200
-Message-ID: <20250623130654.616891665@linuxfoundation.org>
+Message-ID: <20250623130649.166297662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
+32-bit kernels: Multiplying a user-provided 32-bit value with the
+size of a structure can wrap around on such platforms.
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
+Fix it by using saturating arithmetic for the size calculation.
 
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
+This has no security consequences because, in all users of
+TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
+for wrapping.
 
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tee/tee_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 3491e454b2abf..680586f885a8c 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index d113679b1e2d7..acc7998758ad8 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -10,6 +10,7 @@
+ #include <linux/fs.h>
+ #include <linux/idr.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/tee_core.h>
+ #include <linux/uaccess.h>
+@@ -19,7 +20,7 @@
  
- /* Support for the special RSDP signature (8 characters) */
+ #define TEE_NUM_DEVICES	32
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
+-#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
++#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
  
- /* Support for OEMx signature (x can be any character) */
+ #define TEE_UUID_NS_NAME_SIZE	128
+ 
+@@ -487,7 +488,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -565,7 +566,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -699,7 +700,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
+ 	if (get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+@@ -798,7 +799,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
+ 	    get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
 -- 
 2.39.5
 
