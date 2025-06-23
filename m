@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3315AE50A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C541AE548A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 625F51B626EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D77C54C132F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA14223DE1;
-	Mon, 23 Jun 2025 21:26:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DEE19DF4A;
+	Mon, 23 Jun 2025 22:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HKPrJe+W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVWXA6nN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCB01EDA0F;
-	Mon, 23 Jun 2025 21:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A3F4C74;
+	Mon, 23 Jun 2025 22:02:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713977; cv=none; b=KY7hEbUOJTfIWpOiL/hpSyn2BawjHu3Z0GKWVvN+wRacauISOt2MRq3LnqU1bMDA0m7hhXvqB3gtRFGb9/n50RotBXsA2JUzrp5peAGwJf0ysJGwbO9bnASyAzUUVO1W37Adq2Z3qeVEVp2+KB9jWtrnckxSbPwIB+b4SRXbpP8=
+	t=1750716144; cv=none; b=o6WlLszOBijVv/c7NIEOXWSf1+FE2wXa/aonhcytBCWu/yvbHotGTdt0n6bqYDaJQBdpfQctzb6Vg5RQcDJsTsCKeWr8lQibxqEbZ/9y24Njnb/HKw1NYacDIkKO4+Q5LLXeY0vxYP5pAy5TiBPXI+tOlMR9nVqmZRsZtXpRS2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713977; c=relaxed/simple;
-	bh=PcDUpuD4Jj6oUug3jz61saeaRPcNecGYU4Ui1L79q/c=;
+	s=arc-20240116; t=1750716144; c=relaxed/simple;
+	bh=e4ZVeYXCfNd9euVnuAnsKdLdSKzzquo8eJ6zAJAZk5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qYZ3+x8chb9qgg4J9Nd3+c1kEva7aVIUbJrJwcENYglTN3WiMkGDw8PBiRVTAHxgOf8M09eTusJ1Q5PmRvv0KxRp8v4rgd548oMWNhmy8owKqIiQw1GX1kui1ZIVtAFUAMre2wDP05QS6Yg6S8zdOnAN0NaP4x02z2ecw6N9LUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HKPrJe+W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87EDCC4CEEA;
-	Mon, 23 Jun 2025 21:26:16 +0000 (UTC)
+	 MIME-Version; b=bFxcCp11dCtvSbZhCaeQAwDmNY9CKw1nlEAmV2+M0qiCeydq1PxEoIOO4Qhu86D4NwuWlOOYnBfO4kSRMPdrDd3+S6dkoGYHitL9yMNHDQ14IgLjem0lMU9oa8d7W0lgSImGjwKciSH38eXozR2phNIfMh4P032y5/YVDB7nbcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVWXA6nN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E58C4CEEA;
+	Mon, 23 Jun 2025 22:02:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713976;
-	bh=PcDUpuD4Jj6oUug3jz61saeaRPcNecGYU4Ui1L79q/c=;
+	s=korg; t=1750716144;
+	bh=e4ZVeYXCfNd9euVnuAnsKdLdSKzzquo8eJ6zAJAZk5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HKPrJe+W1Tysi8OeLQpE8trFYEZKI8L/0WUuXCm4Hiv4tsCs3R2v0kLtuZVhXdB6j
-	 k8uAX5B2EXQzOBPFkZgXfwOgUuC3YBQKVat88fe2iTdqp2X/TJK/3zPtlQyPkl64W+
-	 MOdvpqP8U8rf8QZPveZIWTFM7toJB6zo1UqJxUTs=
+	b=vVWXA6nNvqaF3Wct/2UHeHXA2SHi8Hi2j/SfBjpvY07Kk+RZ7ICeNCc/VhoQO+amT
+	 +bLwVHQZn1YZ8Uekljtv+vgBj1jQ5L2lbGlMpAE+/1xy7PDSqWxzMNzdeKsiYVVz5y
+	 CTRZ5VVngT9RgsFGftRWkMpdNaNvkBICyVZ6zClg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.6 106/290] Drivers: hv: Allocate interrupt and monitor pages aligned to system page boundary
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 230/414] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
 Date: Mon, 23 Jun 2025 15:06:07 +0200
-Message-ID: <20250623130630.142114300@linuxfoundation.org>
+Message-ID: <20250623130647.787938211@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +64,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 09eea7ad0b8e973dcf5ed49902838e5d68177f8e upstream.
+[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
 
-There are use cases that interrupt and monitor pages are mapped to
-user-mode through UIO, so they need to be system page aligned. Some
-Hyper-V allocation APIs introduced earlier broke those requirements.
+The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
+propagate their error values back to the stack instead of silently
+ignoring those.
 
-Fix this by using page allocation functions directly for interrupt
-and monitor pages.
-
-Cc: stable@vger.kernel.org
-Fixes: ca48739e59df ("Drivers: hv: vmbus: Move Hyper-V page allocator to arch neutral code")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1746492997-4599-2-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1746492997-4599-2-git-send-email-longli@linuxonhyperv.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/connection.c |   23 +++++++++++++++++------
- 1 file changed, 17 insertions(+), 6 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/hv/connection.c
-+++ b/drivers/hv/connection.c
-@@ -207,10 +207,19 @@ int vmbus_connect(void)
- 	mutex_init(&vmbus_connection.channel_mutex);
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index c8437d45a3135..f242d24d72b8d 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -472,16 +472,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+ {
+ 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
+ 	struct gpio_chip *chip = range->gc;
++	int ret;
  
- 	/*
-+	 * The following Hyper-V interrupt and monitor pages can be used by
-+	 * UIO for mapping to user-space, so they should always be allocated on
-+	 * system page boundaries. The system page size must be >= the Hyper-V
-+	 * page size.
-+	 */
-+	BUILD_BUG_ON(PAGE_SIZE < HV_HYP_PAGE_SIZE);
-+
-+	/*
- 	 * Setup the vmbus event connection for channel interrupt
- 	 * abstraction stuff
- 	 */
--	vmbus_connection.int_page = hv_alloc_hyperv_zeroed_page();
-+	vmbus_connection.int_page =
-+		(void *)__get_free_page(GFP_KERNEL | __GFP_ZERO);
- 	if (vmbus_connection.int_page == NULL) {
- 		ret = -ENOMEM;
- 		goto cleanup;
-@@ -225,8 +234,8 @@ int vmbus_connect(void)
- 	 * Setup the monitor notification facility. The 1st page for
- 	 * parent->child and the 2nd page for child->parent
- 	 */
--	vmbus_connection.monitor_pages[0] = hv_alloc_hyperv_page();
--	vmbus_connection.monitor_pages[1] = hv_alloc_hyperv_page();
-+	vmbus_connection.monitor_pages[0] = (void *)__get_free_page(GFP_KERNEL);
-+	vmbus_connection.monitor_pages[1] = (void *)__get_free_page(GFP_KERNEL);
- 	if ((vmbus_connection.monitor_pages[0] == NULL) ||
- 	    (vmbus_connection.monitor_pages[1] == NULL)) {
- 		ret = -ENOMEM;
-@@ -342,21 +351,23 @@ void vmbus_disconnect(void)
- 		destroy_workqueue(vmbus_connection.work_queue);
+ 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
+ 		offset, range->name, offset, input ? "input" : "output");
  
- 	if (vmbus_connection.int_page) {
--		hv_free_hyperv_page(vmbus_connection.int_page);
-+		free_page((unsigned long)vmbus_connection.int_page);
- 		vmbus_connection.int_page = NULL;
- 	}
+ 	if (input)
+-		armada_37xx_gpio_direction_input(chip, offset);
++		ret = armada_37xx_gpio_direction_input(chip, offset);
+ 	else
+-		armada_37xx_gpio_direction_output(chip, offset, 0);
++		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
  
- 	if (vmbus_connection.monitor_pages[0]) {
- 		if (!set_memory_encrypted(
- 			(unsigned long)vmbus_connection.monitor_pages[0], 1))
--			hv_free_hyperv_page(vmbus_connection.monitor_pages[0]);
-+			free_page((unsigned long)
-+				vmbus_connection.monitor_pages[0]);
- 		vmbus_connection.monitor_pages[0] = NULL;
- 	}
- 
- 	if (vmbus_connection.monitor_pages[1]) {
- 		if (!set_memory_encrypted(
- 			(unsigned long)vmbus_connection.monitor_pages[1], 1))
--			hv_free_hyperv_page(vmbus_connection.monitor_pages[1]);
-+			free_page((unsigned long)
-+				vmbus_connection.monitor_pages[1]);
- 		vmbus_connection.monitor_pages[1] = NULL;
- 	}
+-	return 0;
++	return ret;
  }
+ 
+ static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
+-- 
+2.39.5
+
 
 
 
