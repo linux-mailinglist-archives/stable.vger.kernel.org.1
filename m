@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-155953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 750D7AE450E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7319AE42D8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACD6D440584
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45A56189ED22
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EFCF2550D2;
-	Mon, 23 Jun 2025 13:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41943252910;
+	Mon, 23 Jun 2025 13:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkypOYRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EXkV+Tz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6D02505AF;
-	Mon, 23 Jun 2025 13:36:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F266224A06D;
+	Mon, 23 Jun 2025 13:21:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685766; cv=none; b=P/vnjVISKK8Ls/ikWOR6T5MbZye5Gp3qaL1iAArey2rLVhPbH8i4KgjAY6qTTXKQGvDdP79SJ9w4Eqdd7MLr87atKsgVGAIk9vn/LY6GAdFxHjWJLhJDKnjoeeSvjreqJsUWnJjaspVbqcM5cXnC3eYEZ2+lE7acnuyV6M01HGI=
+	t=1750684875; cv=none; b=ufgzSECjA7i+Ou1W3RbdxS1tnNWEBYVBK94CmEH9CJT670nMB/ONdOKQAXdC03ZN66sBRwRYhD1dCE3JyHXUifOX//MXSMaZxlW9BQoFgRbNS/c5n57qy/OjZyOfjEBfVGlgMBRb7fTBcm7S8ExsR9m5SGcILIuitrb+xhsJtPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685766; c=relaxed/simple;
-	bh=+LBf8P+JDBBXcYLktiGnZ6DEHWVsRlwBigHEfXwSxAI=;
+	s=arc-20240116; t=1750684875; c=relaxed/simple;
+	bh=7245eW1OC9nn+JrM6ci2t7RVCVX4ekgfhnQVbIz+ejA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JB/hiaxxG3orCK48HlHfaGCX0cB8PKoNvTBp/1zRRkKkkoAIxZ8Ktpss8Dgz5BjR2lqG/DN5wJiF5d8MU11O34vtKwe/UtevSZwudO035Ih20kgGqP3eN2ekRbzWtbAyLjqC/+AK/E21aaR8VbXxJdy0EN2bukArEidJ00yieP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkypOYRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47B5FC4CEEA;
-	Mon, 23 Jun 2025 13:36:06 +0000 (UTC)
+	 MIME-Version; b=NGnPW90svWVJwD1VFITEB6bFncz+Pnx7LhKrNAAkeqHDoIHqbGWuZXT4/HAtcfIyaHkYlacHKB4x5/vEynMfAxt0T6nFh63Zk3uekcVCBgumwneXgnrTsOoJcDFSLWB1rVZUfdPjyFPpAs2UeH7h7MVflnshJvNiQUSkElggCEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EXkV+Tz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E266C4CEEA;
+	Mon, 23 Jun 2025 13:21:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685766;
-	bh=+LBf8P+JDBBXcYLktiGnZ6DEHWVsRlwBigHEfXwSxAI=;
+	s=korg; t=1750684874;
+	bh=7245eW1OC9nn+JrM6ci2t7RVCVX4ekgfhnQVbIz+ejA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LkypOYRsXC1ouyM99Wzx+bOY5y71WadkfcC1LXcD9sOlBQg+R5RTFTfRbe/FWjfPs
-	 G9LJwrn/UawHWppggSSNhKQE3KMR481h8smyJqEpXNx/RzuXBBCtBraEV6r88GVHvP
-	 AAvgHK7YeM0MLpqPhVwgCal0esL7AQWULrmADYpo=
+	b=EXkV+Tz8nof6WnVfLBDSNZBLlkuuuzKPJAJZ5dR+qrNaMWXWmLgoTkqyy8HEHtF6I
+	 9FIPOu3cJRgpP+Y2z4SCdPGcYoeFuGRY3RiuQR60ka/frtzlvPESB3Tqb8cIEUh7jV
+	 L15Aqof+ggGLwk3st6qhRP0N1tFKByWqcwyeBha0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Wright <rwright@hpe.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 006/414] crypto: qat - add shutdown handler to qat_4xxx
+	Janne Grunau <j@jannau.net>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+	Marc Zyngier <maz@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>
+Subject: [PATCH 6.15 185/592] PCI: apple: Set only available ports up
 Date: Mon, 23 Jun 2025 15:02:23 +0200
-Message-ID: <20250623130642.182484717@linuxfoundation.org>
+Message-ID: <20250623130704.683039565@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Janne Grunau <j@jannau.net>
 
-commit 845bc952024dbf482c7434daeac66f764642d52d upstream.
+commit 751bec089c4eed486578994abd2c5395f08d0302 upstream.
 
-During a warm reset via kexec, the system bypasses the driver removal
-sequence, meaning that the remove() callback is not invoked.
-If a QAT device is not shutdown properly, the device driver will fail to
-load in a newly rebooted kernel.
+Iterating over disabled ports results in of_irq_parse_raw() parsing
+the wrong "interrupt-map" entries, as it takes the status of the node
+into account.
 
-This might result in output like the following after the kexec reboot:
+This became apparent after disabling unused PCIe ports in the Apple
+Silicon device trees instead of deleting them.
 
-    4xxx 0000:01:00.0: Failed to power up the device
-    4xxx 0000:01:00.0: Failed to initialize device
-    4xxx 0000:01:00.0: Resetting device qat_dev0
-    4xxx 0000:01:00.0: probe with driver 4xxx failed with error -14
+Switching from for_each_child_of_node_scoped() to
+for_each_available_child_of_node_scoped() solves this issue.
 
-Implement the shutdown() handler that hooks into the reboot notifier
-list. This brings down the QAT device and ensures it is shut down
-properly.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 8c8268166e83 ("crypto: qat - add qat_4xxx driver")
-Link: https://lore.kernel.org/all/Z-DGQrhRj9niR9iZ@gondor.apana.org.au/
-Reported-by: Randy Wright <rwright@hpe.com>
-Closes: https://issues.redhat.com/browse/RHEL-84366
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 1e33888fbe44 ("PCI: apple: Add initial hardware bring-up")
+Fixes: a0189fdfb73d ("arm64: dts: apple: t8103: Disable unused PCIe ports")
+Signed-off-by: Janne Grunau <j@jannau.net>
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Marc Zyngier <maz@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Tested-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Acked-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/asahi/20230214-apple_dts_pcie_disable_unused-v1-0-5ea0d3ddcde3@jannau.net/
+Link: https://lore.kernel.org/asahi/1ea2107a-bb86-8c22-0bbc-82c453ab08ce@linaro.org/
+Link: https://patch.msgid.link/20250401091713.2765724-2-maz@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_4xxx/adf_drv.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/pci/controller/pcie-apple.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_4xxx/adf_drv.c
-@@ -183,11 +183,19 @@ static void adf_remove(struct pci_dev *p
- 	adf_cleanup_accel(accel_dev);
- }
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -754,7 +754,7 @@ static int apple_pcie_init(struct pci_co
+ 	if (ret)
+ 		return ret;
  
-+static void adf_shutdown(struct pci_dev *pdev)
-+{
-+	struct adf_accel_dev *accel_dev = adf_devmgr_pci_to_accel_dev(pdev);
-+
-+	adf_dev_down(accel_dev);
-+}
-+
- static struct pci_driver adf_driver = {
- 	.id_table = adf_pci_tbl,
- 	.name = ADF_4XXX_DEVICE_NAME,
- 	.probe = adf_probe,
- 	.remove = adf_remove,
-+	.shutdown = adf_shutdown,
- 	.sriov_configure = adf_sriov_configure,
- 	.err_handler = &adf_err_handler,
- };
+-	for_each_child_of_node_scoped(dev->of_node, of_port) {
++	for_each_available_child_of_node_scoped(dev->of_node, of_port) {
+ 		ret = apple_pcie_setup_port(pcie, of_port);
+ 		if (ret) {
+ 			dev_err(pcie->dev, "Port %pOF setup fail: %d\n", of_port, ret);
 
 
 
