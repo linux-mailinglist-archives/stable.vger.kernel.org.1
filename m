@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-158128-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56EF1AE5715
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43338AE56D9
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35EFB1C23B9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16A4C18808F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CF152253B0;
-	Mon, 23 Jun 2025 22:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F0C1223DE5;
+	Mon, 23 Jun 2025 22:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRNQ6D74"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeGhVfkZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3993F2222B2;
-	Mon, 23 Jun 2025 22:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0C3221543;
+	Mon, 23 Jun 2025 22:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717553; cv=none; b=WWLbFilqSfAerkc/tni1optyb38GucqzQQ8u8HYDPP6JxJIXK/09e2crqe3Ci0jXTEH6jrJmFyS8+6C3ao/UM61ElYPTFme8HWJDmZWy5oyHiMG928lrWamrIFb/Tbkgd+iLcxiy+BP0ZymHfKBdYX/ChKSZP/kflDy8L3tmPkU=
+	t=1750717431; cv=none; b=C6kajx56DTXNl5jLPGLeYPkMVW/rvJIeQUN57FDwGqvyJd3tWfREDsl4gTHg1sWOewJWBMHUMe4sKrzhQFKg4/08u1rwgl/+gSWg0XreIhcfSo4wVK44VV/GOefmudtpHLyGEWz1fCfVAJJVH8vLPy0qrdg3CbKsDxRKttJiFQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717553; c=relaxed/simple;
-	bh=EdLve4xF+QHhhK78KzdqlIiANbY4+DX53vCynhh6FHw=;
+	s=arc-20240116; t=1750717431; c=relaxed/simple;
+	bh=6nU9jNeD4DjaZNb1zGsRKMW0+Z+dJ/9rdhyc+S+Unn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LlpS3yQsdjxqQ0HOKZY5Xj1SaXVIgK0fhxLLrXfP9v23SyiGZqbtkYmk/MdMJ3zO7Y8d2t/BOCECaTPpwf7KhpnIvWUc3lL9aI5QIyRYVnKYL/z7h6MuekXX/gwBGc4jfzLQJYkNIVL/TgUCg+oImo12kF99A1PNa1+SGnS7538=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRNQ6D74; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6259C4CEEA;
-	Mon, 23 Jun 2025 22:25:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HdcGUtP0TyWNsxRdnbLtwLsmGx5VvvTLfvDxKsuw6cF8uWRGhdxdJ7LGj7dNXIyYgE7G5X43Py8HnlfE2jSIeg74ULDSEX8rsFXcCuA4Xd6uN7OCiRVkqiJzks2isby2/VLODPzWfYJSAe4VZ3ZELuBU4IzvSYpaKx/zZS4hsK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeGhVfkZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6988C4CEEA;
+	Mon, 23 Jun 2025 22:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717553;
-	bh=EdLve4xF+QHhhK78KzdqlIiANbY4+DX53vCynhh6FHw=;
+	s=korg; t=1750717431;
+	bh=6nU9jNeD4DjaZNb1zGsRKMW0+Z+dJ/9rdhyc+S+Unn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aRNQ6D74QBHlqwvzuuikX+UfTe4lDJwqscm87EiZiDdQ5szLaMJBWNHxrCkbNBaVF
-	 e+Odr6ZCwEVCtH8AZrcNtEmCgCjyCx5+/jOw1LV5R5kfDlO/+v5KrLEIXYh0qJfzbu
-	 3DlYJ03Pn72gMzjEZJXEM6O/4TpesEcbRCWU1C/c=
+	b=PeGhVfkZEHpDw4hK0oEDLQTM7PC7b8IvSZhO9g4k072BsioY4Awwxm8aNCOQKXkMz
+	 2cA5mUFg04L3APKuIVGOKcKvMn4hR62a5/k8WkYzUnvwLfZ9AaFrKr8LIF+8GcNNzB
+	 ojjMzf+k1IXLWbBiS9cvaQl0eSi4F854kNDYIBTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 451/508] net_sched: sch_sfq: reject invalid perturb period
+	kernel test robot <lkp@intel.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 359/414] drm/nouveau/bl: increase buffer size to avoid truncate warning
 Date: Mon, 23 Jun 2025 15:08:16 +0200
-Message-ID: <20250623130656.243753333@linuxfoundation.org>
+Message-ID: <20250623130650.944068210@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
+[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+The nouveau_get_backlight_name() function generates a unique name for the
+backlight interface, appending an id from 1 to 99 for all backlight devices
+after the first.
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
+GCC 15 (and likely other compilers) produce the following
+-Wformat-truncation warning:
 
-Tested:
+nouveau_backlight.c: In function ‘nouveau_backlight_init’:
+nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                                     ^~
+In function ‘nouveau_get_backlight_name’,
+    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
+nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                        ^~~~~~~~~~~~~~~~
+nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
+The warning started appearing after commit ab244be47a8f ("drm/nouveau:
+Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
+for the ida usage removed the explicit value check for ids larger than 99.
+The compiler is unable to intuit that the ida_alloc_max() limits the
+returned value range between 0 and 99.
 
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
+Because the compiler can no longer infer that the number ranges from 0 to
+99, it thinks that it could use as many as 11 digits (10 + the potential -
+sign for negative numbers).
 
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
+The warning has gone unfixed for some time, with at least one kernel test
+robot report. The code breaks W=1 builds, which is especially frustrating
+with the introduction of CONFIG_WERROR.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The string is stored temporarily on the stack and then copied into the
+device name. Its not a big deal to use 11 more bytes of stack rounding out
+to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
+warning. This fixes the W=1 builds that include this driver.
+
+Compile tested only.
+
+Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
+Suggested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
- 	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index d47442125fa18..9aae26eb7d8fb 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -42,7 +42,7 @@
+ #include "nouveau_acpi.h"
  
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+ static struct ida bl_ida;
+-#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
++#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
+ 
+ static bool
+ nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
+-- 
+2.39.5
+
 
 
 
