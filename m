@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB432AE547B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF696AE532D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22DA03AA9BB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5BB331B66931
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C46A199FBA;
-	Mon, 23 Jun 2025 22:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA03F223316;
+	Mon, 23 Jun 2025 21:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXJrHvZf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SpflxJ80"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9CF4409;
-	Mon, 23 Jun 2025 22:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42B2221FBE;
+	Mon, 23 Jun 2025 21:50:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716088; cv=none; b=ePf1t2/49D+YbQe18svDtKDcqcUx5mPhvece+VnhGaqDONM8Zw/olpMYjDh6SM4cnoFmFLMKR6QreIXtcZ/qaLOi7NM94iI8Kf63hQ+PqH1gp0j1nMI4ygcRJD3ewBujAU4NmgMxCnFkFdDbGarub5tnfRiK5ZfqYOijCXgMG8U=
+	t=1750715423; cv=none; b=amKwS9RuO5a3AWYl1MG79v+EJEZ4RMuAviZGwBIObf9NkIH9oyCghedJld+5oy8zvZjSQVS6FcI2HBsdC/6RlAZXzeWS0GhmTytyGF+ZCcjp0lAgCK/IFXiFxMBa/g18ENdU0xwClBTXQwLo5J9rnFgbH7Qq7E/ErlSY8oG2pJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716088; c=relaxed/simple;
-	bh=WiW5Ufm8pSUYAMsAPpGhqIfg8R/konNei49QuoRPKNU=;
+	s=arc-20240116; t=1750715423; c=relaxed/simple;
+	bh=dTbqIC7qytD2R3Ei3W96XwzA99r2sz9LgIFLr+64M1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEatzWLKO7IqGk7Z/6kgNemwUGgS93Zx3F+Xl4yLm/k48JdLm2lP6cgyx+1O0dYJAXaMdDwu5Wi0roPB4MKIsjPlNf6AKL6m/IXmu/9FVgp296wT6jO2Jm6WA1/qwbB3lkNjqILXdHXX08MjV6vFmW3UXkAlafeeSIp1HVGcLBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXJrHvZf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AAAC4CEEA;
-	Mon, 23 Jun 2025 22:01:27 +0000 (UTC)
+	 MIME-Version; b=rurnL2eND/b3Nti8dsyduwaAoA7PjGtJbGJ3KVIkmt98V/ibuUBo+e1HHrXbNXUeu+POfPu8W20C/UK9vVFvIVqlYCEyun8zpPkpSmx279u69W5lAQG4jctHbmy0KvJ/sRY+77sPAl0r65P/2ucHDkkj1eKKLQYtxQoqwLTBtHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SpflxJ80; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADCCC4CEF2;
+	Mon, 23 Jun 2025 21:50:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716088;
-	bh=WiW5Ufm8pSUYAMsAPpGhqIfg8R/konNei49QuoRPKNU=;
+	s=korg; t=1750715423;
+	bh=dTbqIC7qytD2R3Ei3W96XwzA99r2sz9LgIFLr+64M1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vXJrHvZfQ8BOLqLkyMQz/ryK2BEKyNPfueZT4qGzA/1blopLkmgsVbnoXd5JpZTT2
-	 Yjl6kKdRkkjlZfs6yC96GdLl3ztJ3xz7OkJOG3kJdysiJGqe6QgMtKkBfoxeVTLA4y
-	 gUQG7LP5eqqiH0nxSlO8ZaU7UIGWvT0iHshPYcUI=
+	b=SpflxJ807qh7bngTEAIR7ZboF+EeM1WulxTgrI8PTh1kx6k4uNtE1qoj03Hr5PhXz
+	 UKLxerrok3DsMWkwQxn232Tcr0936HseAU7mM4F68BjnEr5cTLZIf3MyIJfI7Xuiah
+	 B122RbZ2ZMp1VMPevOhW7ABRM4ph/GejsG7y7qRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Roy Tang (ErgoniaTrading)" <royonia@ergonia.io>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 501/592] io_uring/net: always use current transfer count for buffer put
+	Jann Horn <jannh@google.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 198/290] tee: Prevent size calculation wraparound on 32-bit kernels
 Date: Mon, 23 Jun 2025 15:07:39 +0200
-Message-ID: <20250623130712.348932906@linuxfoundation.org>
+Message-ID: <20250623130632.802960354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Jann Horn <jannh@google.com>
 
-commit 51a4598ad5d9eb6be4ec9ba65bbfdf0ac302eb2e upstream.
+[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
 
-A previous fix corrected the retry condition for when to continue a
-current bundle, but it missed that the current (not the total) transfer
-count also applies to the buffer put. If not, then for incrementally
-consumed buffer rings repeated completions on the same request may end
-up over consuming.
+The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
+32-bit kernels: Multiplying a user-provided 32-bit value with the
+size of a structure can wrap around on such platforms.
 
-Reported-by: Roy Tang (ErgoniaTrading) <royonia@ergonia.io>
-Cc: stable@vger.kernel.org
-Fixes: 3a08988123c8 ("io_uring/net: only retry recv bundle for a full transfer")
-Link: https://github.com/axboe/liburing/issues/1423
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by using saturating arithmetic for the size calculation.
+
+This has no security consequences because, in all users of
+TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
+for wrapping.
+
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tee/tee_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -829,7 +829,7 @@ static inline bool io_recv_finish(struct
- 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
- 		size_t this_ret = *ret - sr->done_io;
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 0eb342de0b001..d7ad16f262b2e 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -10,6 +10,7 @@
+ #include <linux/fs.h>
+ #include <linux/idr.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/tee_drv.h>
+ #include <linux/uaccess.h>
+@@ -19,7 +20,7 @@
  
--		cflags |= io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, this_ret),
-+		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
- 				      issue_flags);
- 		if (sr->retry)
- 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
+ #define TEE_NUM_DEVICES	32
+ 
+-#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
++#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
+ 
+ #define TEE_UUID_NS_NAME_SIZE	128
+ 
+@@ -487,7 +488,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -565,7 +566,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -699,7 +700,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
+ 	if (get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+@@ -798,7 +799,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
+ 	    get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+-- 
+2.39.5
+
 
 
 
