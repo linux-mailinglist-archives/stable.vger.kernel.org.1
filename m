@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-157014-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 730EAAE5219
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B4EBAE5461
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89D70442F5E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 725EB447174
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3142222C2;
-	Mon, 23 Jun 2025 21:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 844CB19DF4A;
+	Mon, 23 Jun 2025 22:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfIB8TKS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ae1Gy4NE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD1819D084;
-	Mon, 23 Jun 2025 21:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AA94409;
+	Mon, 23 Jun 2025 22:01:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714824; cv=none; b=KHqZwGrnSnKC+XXEFbB/3jf1sNJfNHge2KjTtO9Bd/Rzms/CyUqJrRaEuDMtgCEKoqu19oDtoXR95IFcEB02LuVOylYZ0MankOux3ox+GeBc/WDRNsw8SF1/z6yZwZs8nWp6LlEcGg1cnBqxRmcKMDemfv/WaGxpkmyzaGEuewM=
+	t=1750716061; cv=none; b=IcLGH4X3QCh3BX7oyqCFVR/jerazpH+q1hf0YsQmjna6GVUOrKil1pLlE/N5ujnk5YPnLSF57KGAh6V/zvLO9kGO4A3VBL006hi0nBDp7KlLl5AFcHDqRncmmEMS1nOsQZGUbRO1CEnPjBZ/cljNv1zlO8xbLdkL0gKPdjnWZoM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714824; c=relaxed/simple;
-	bh=qECiqUSZ7hN7zS7wTTnTp7qeXjGT/Y7o9+a44kAlSzs=;
+	s=arc-20240116; t=1750716061; c=relaxed/simple;
+	bh=AfcH3J8OMY6A1P/3ZssPem7TmE43P27wttjjcvhOf4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bgu/THSfBRN5eOZ0ozMW/x007TfhmrfM86uShbssmZ40jHVIFRM0T7WVhyYTq3QWwHkUv/Q1EaR+Vi0FZO3udBqqQZSpdTW6ohiwcqYwixli8WB9er0Nt+QEfUwqwuh4hCbPSTsLEDEw7f4CX8urpKhOmbeNNseU6iMGG1RJ2GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfIB8TKS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B945DC4CEEA;
-	Mon, 23 Jun 2025 21:40:23 +0000 (UTC)
+	 MIME-Version; b=iHcCQ6yvdoZQcNX8oBoAypxn12IByz0b3kQ68Vv9MGjupAOg0Z9sdRfU+ZcaXg5jcu8hCVFc2Onzeealc49yAR57ejGND0LQb8viBj9rCnGVlf6R2b4MTM6H3GifdChl2FVn6g+am8tpzW3KrAzlvq9P8R+Ekv7BB2MAkGkdPE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ae1Gy4NE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAFC0C4CEEA;
+	Mon, 23 Jun 2025 22:01:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714824;
-	bh=qECiqUSZ7hN7zS7wTTnTp7qeXjGT/Y7o9+a44kAlSzs=;
+	s=korg; t=1750716061;
+	bh=AfcH3J8OMY6A1P/3ZssPem7TmE43P27wttjjcvhOf4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfIB8TKSlTwXV8ZjuQ2oO7VVCUJZ8039B9XraPIUi6Xhmo76dOFD7DGl6h8XrtSqK
-	 4TgByv3OZKEM31fSNlQrF9xwnPvtCCrgUYmfsAe1AWNtENmO/orPgBM6Nn+hDzhvwU
-	 DqfWoU2guDtDct6eD4n9dSChNWnDJCksKFrRI9fU=
+	b=Ae1Gy4NEr8L3sy7N0Ie1wa4JWICPb0AcGVfeD8kTdtt+WozeyqmAzfbYkP0PJsqn7
+	 N1ojFCnTYrN+4+eKBXcyWFRh8xHUz1TnWxw12pheL7fvowz4Qqhjhwmzn0Dyy2c+cl
+	 yz/nHxrptJfJO6WGajvalmDlvzkul3Bf14yzyoUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyungwook Boo <bookyungwook@gmail.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.6 183/290] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
+	Shravan Chippa <shravan.chippa@microchip.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 300/411] media: i2c: imx334: update mode_3840x2160_regs array
 Date: Mon, 23 Jun 2025 15:07:24 +0200
-Message-ID: <20250623130632.377399704@linuxfoundation.org>
+Message-ID: <20250623130641.199602273@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,50 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyungwook Boo <bookyungwook@gmail.com>
+From: Shravan Chippa <shravan.chippa@microchip.com>
 
-[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
+[ Upstream commit 35132d039c566b0e9d8e53f76f512b22607c2405 ]
 
-When the device sends a specific input, an integer underflow can occur, leading
-to MMIO write access to an invalid page.
+The 3840x2160 mode operates with the imx334 reset values.
+If we switch to other modes and then return to the 3840x2160 mode,
+it should function correctly. so updated the mode_3840x2160_regs
+array with the imx334 reset values.
 
-Prevent the integer underflow by changing the type of related variables.
-
-Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
-Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Shravan Chippa <shravan.chippa@microchip.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/i2c/imx334.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 4d7caa1199719..5d46a8e5376da 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -1067,10 +1067,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
- void i40e_clear_hw(struct i40e_hw *hw)
- {
- 	u32 num_queues, base_queue;
--	u32 num_pf_int;
--	u32 num_vf_int;
-+	s32 num_pf_int;
-+	s32 num_vf_int;
- 	u32 num_vfs;
--	u32 i, j;
-+	s32 i;
-+	u32 j;
- 	u32 val;
- 	u32 eol = 0x7ff;
- 
+diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
+index af09aafeddf78..88ce5ec9c1822 100644
+--- a/drivers/media/i2c/imx334.c
++++ b/drivers/media/i2c/imx334.c
+@@ -168,6 +168,12 @@ static const struct imx334_reg mode_3840x2160_regs[] = {
+ 	{0x302c, 0x3c},
+ 	{0x302e, 0x00},
+ 	{0x302f, 0x0f},
++	{0x3074, 0xb0},
++	{0x3075, 0x00},
++	{0x308e, 0xb1},
++	{0x308f, 0x00},
++	{0x30d8, 0x20},
++	{0x30d9, 0x12},
+ 	{0x3076, 0x70},
+ 	{0x3077, 0x08},
+ 	{0x3090, 0x70},
 -- 
 2.39.5
 
