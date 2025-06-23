@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157473-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8E49AE541C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F9BAE53B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56609446856
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFEF418973F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D99F222422F;
-	Mon, 23 Jun 2025 21:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02437224244;
+	Mon, 23 Jun 2025 21:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju5jbiqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBqm4mMX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9425770838;
-	Mon, 23 Jun 2025 21:59:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B42A31AD3FA;
+	Mon, 23 Jun 2025 21:55:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715951; cv=none; b=p3F04mWSvi4KT8oH0Ca8F8FkZtcPog469kRJKa5D4FLkJrEPpRzQfV7QU7gOKoXIz4Lv//D0ZV/eLkOtEyDpPh8adxL7xH1Qu0dPApzZlTF9X5AXxf7pweBELHY0OoKA/J02iCDCmqsse5HNSX0soinP2rly8iD1uhuI/3E3ejU=
+	t=1750715714; cv=none; b=WqzA0xGVqLNH1M0Xamv66RBthFyvCcncQE3GjDA9VCmM2OIuhvXg4wGLngkuvNyNxxiwjiHICPIxDkyuks5AJ/C6fSafqTSh1dGOBo0vW8fb1sxk73pgUq301oufRGB1qBCGqETzkOuzvmXWXlDNlXL7KXj88vpArY+0oZGttR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715951; c=relaxed/simple;
-	bh=nNI5BkSwe3sKYjGsWOPzKnzWWLck64JopXx+/2dKxUg=;
+	s=arc-20240116; t=1750715714; c=relaxed/simple;
+	bh=Mj3g3x42kQKMsPmSVtHgDFlMKGvLSEgo0ywF0/W0Sc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dblHelqrBXLV2Qce1ua3izmGRe/UW8Eq828jDNn60AXeNq6ZW/ln/cQ7D24r9P9GpIptmNdqOTHBS5yP93xIMoM8mrCVhmWGVnIZIYL2kWT0CqLgeq1cLEO2hLNC51uj8LNSFeusRvR4D9Ak++WidUbZBmKBzuTnxz8Q0tKkU9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju5jbiqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC82C4CEF2;
-	Mon, 23 Jun 2025 21:59:11 +0000 (UTC)
+	 MIME-Version; b=FSu2DPguabgxz6R57ognltnlSZJOcIe4ErNoe43S0FeNEzL9BdxWmXhBcoJmRQhgdlQp/s9x/F42/9OM4pIWXCPcdfZscyEwlqannG0kdzqHPQ6PG8aB0kd7rHZA0sRa2LQrV/GXpOzJISd27U+LzJ42vAKpEBPSJZPCjzyW2zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBqm4mMX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C0CAC4CEEA;
+	Mon, 23 Jun 2025 21:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715951;
-	bh=nNI5BkSwe3sKYjGsWOPzKnzWWLck64JopXx+/2dKxUg=;
+	s=korg; t=1750715714;
+	bh=Mj3g3x42kQKMsPmSVtHgDFlMKGvLSEgo0ywF0/W0Sc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ju5jbiqL8mdcAesMiv0P2EKk38Ox4NVo6cU37wr7TRZVc4Am2XQGUYbifQ4YYSPYp
-	 Y0FzkGnCVCLVNtG8rKOYaDCHwNnG/0DkysFEtwVoSgRYP7+kTkbkZnLCV52D5nZF8P
-	 Xgnw3aS5SaSpMMBFrp/dTYJ/HyGC1B2lUi5O/UHI=
+	b=MBqm4mMXGWt5wMafRd9nTX+p+M3dCwqc5A6uEQOojiYeZKIgQeeYYzzM5lEKcFl/E
+	 CSRPFV3DwYOPV5nql7g0CbcDJE8KQRbb8nmfCF+uRkGuqb59HbQ/KHlZF1AxRs2ljV
+	 BecqxX3l2YHaK0bQl6QSrSR+WaKS0U1hNyKR3+6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chin-Yen Lee <timlee@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Zenm Chen <zenmchen@gmail.com>
-Subject: [PATCH 6.6 231/290] wifi: rtw89: pci: use DBI function for 8852AE/8852BE/8851BE
-Date: Mon, 23 Jun 2025 15:08:12 +0200
-Message-ID: <20250623130633.876550929@linuxfoundation.org>
+	syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com,
+	Terry Junge <linuxhid@cosmicgizmosystems.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.10 292/355] HID: usbhid: Eliminate recurrent out-of-bounds bug in usbhid_parse()
+Date: Mon, 23 Jun 2025 15:08:13 +0200
+Message-ID: <20250623130635.553558470@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,134 +63,172 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chin-Yen Lee <timlee@realtek.com>
+From: Terry Junge <linuxhid@cosmicgizmosystems.com>
 
-commit 9496d62f3877bc0f97b415bc04af98d092878026 upstream.
+commit fe7f7ac8e0c708446ff017453add769ffc15deed upstream.
 
-Sometimes driver can't use kernel API pci_read/write_config_byte
-to access the PCI config space of above address 0x100 due to
-the negotiated PCI setting. 8852AE/8852BE/8851BE provide another
-way called DBI function, which belongs to WiFi mac and could
-access all PCI config space for this case.
+Update struct hid_descriptor to better reflect the mandatory and
+optional parts of the HID Descriptor as per USB HID 1.11 specification.
+Note: the kernel currently does not parse any optional HID class
+descriptors, only the mandatory report descriptor.
 
-Link: https://lore.kernel.org/linux-wireless/79fe81b7db7148b9a7da2353c16d70fb@realtek.com/T/#t
-Signed-off-by: Chin-Yen Lee <timlee@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://msgid.link/20240103012346.6822-1-pkshih@realtek.com
-Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Update all references to member element desc[0] to rpt_desc.
+
+Add test to verify bLength and bNumDescriptors values are valid.
+
+Replace the for loop with direct access to the mandatory HID class
+descriptor member for the report descriptor. This eliminates the
+possibility of getting an out-of-bounds fault.
+
+Add a warning message if the HID descriptor contains any unsupported
+optional HID class descriptors.
+
+Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
+Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
+Cc: stable@vger.kernel.org
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/pci.c |   69 ++++++++++++++++++++++++++++++-
- drivers/net/wireless/realtek/rtw89/pci.h |    1 
- 2 files changed, 68 insertions(+), 2 deletions(-)
+ drivers/hid/hid-hyperv.c            |    5 +++--
+ drivers/hid/usbhid/hid-core.c       |   25 ++++++++++++++-----------
+ drivers/usb/gadget/function/f_hid.c |   12 ++++++------
+ include/linux/hid.h                 |    3 ++-
+ 4 files changed, 25 insertions(+), 20 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw89/pci.c
-+++ b/drivers/net/wireless/realtek/rtw89/pci.c
-@@ -1822,22 +1822,87 @@ static int rtw89_write16_mdio_clr(struct
+--- a/drivers/hid/hid-hyperv.c
++++ b/drivers/hid/hid-hyperv.c
+@@ -199,7 +199,8 @@ static void mousevsc_on_receive_device_i
+ 	if (!input_device->hid_desc)
+ 		goto cleanup;
+ 
+-	input_device->report_desc_size = desc->desc[0].wDescriptorLength;
++	input_device->report_desc_size = le16_to_cpu(
++					desc->rpt_desc.wDescriptorLength);
+ 	if (input_device->report_desc_size == 0) {
+ 		input_device->dev_info_status = -EINVAL;
+ 		goto cleanup;
+@@ -217,7 +218,7 @@ static void mousevsc_on_receive_device_i
+ 
+ 	memcpy(input_device->report_desc,
+ 	       ((unsigned char *)desc) + desc->bLength,
+-	       desc->desc[0].wDescriptorLength);
++	       le16_to_cpu(desc->rpt_desc.wDescriptorLength));
+ 
+ 	/* Send the ack */
+ 	memset(&ack, 0, sizeof(struct mousevsc_prt_msg));
+--- a/drivers/hid/usbhid/hid-core.c
++++ b/drivers/hid/usbhid/hid-core.c
+@@ -984,12 +984,11 @@ static int usbhid_parse(struct hid_devic
+ 	struct usb_host_interface *interface = intf->cur_altsetting;
+ 	struct usb_device *dev = interface_to_usbdev (intf);
+ 	struct hid_descriptor *hdesc;
++	struct hid_class_descriptor *hcdesc;
+ 	u32 quirks = 0;
+ 	unsigned int rsize = 0;
+ 	char *rdesc;
+-	int ret, n;
+-	int num_descriptors;
+-	size_t offset = offsetof(struct hid_descriptor, desc);
++	int ret;
+ 
+ 	quirks = hid_lookup_quirk(hid);
+ 
+@@ -1011,20 +1010,19 @@ static int usbhid_parse(struct hid_devic
+ 		return -ENODEV;
+ 	}
+ 
+-	if (hdesc->bLength < sizeof(struct hid_descriptor)) {
+-		dbg_hid("hid descriptor is too short\n");
++	if (!hdesc->bNumDescriptors ||
++	    hdesc->bLength != sizeof(*hdesc) +
++			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
++		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
++			hdesc->bLength, hdesc->bNumDescriptors);
+ 		return -EINVAL;
+ 	}
+ 
+ 	hid->version = le16_to_cpu(hdesc->bcdHID);
+ 	hid->country = hdesc->bCountryCode;
+ 
+-	num_descriptors = min_t(int, hdesc->bNumDescriptors,
+-	       (hdesc->bLength - offset) / sizeof(struct hid_class_descriptor));
+-
+-	for (n = 0; n < num_descriptors; n++)
+-		if (hdesc->desc[n].bDescriptorType == HID_DT_REPORT)
+-			rsize = le16_to_cpu(hdesc->desc[n].wDescriptorLength);
++	if (hdesc->rpt_desc.bDescriptorType == HID_DT_REPORT)
++		rsize = le16_to_cpu(hdesc->rpt_desc.wDescriptorLength);
+ 
+ 	if (!rsize || rsize > HID_MAX_DESCRIPTOR_SIZE) {
+ 		dbg_hid("weird size of report descriptor (%u)\n", rsize);
+@@ -1052,6 +1050,11 @@ static int usbhid_parse(struct hid_devic
+ 		goto err;
+ 	}
+ 
++	if (hdesc->bNumDescriptors > 1)
++		hid_warn(intf,
++			"%u unsupported optional hid class descriptors\n",
++			(int)(hdesc->bNumDescriptors - 1));
++
+ 	hid->quirks |= quirks;
+ 
  	return 0;
- }
+--- a/drivers/usb/gadget/function/f_hid.c
++++ b/drivers/usb/gadget/function/f_hid.c
+@@ -114,8 +114,8 @@ static struct hid_descriptor hidg_desc =
+ 	.bcdHID				= cpu_to_le16(0x0101),
+ 	.bCountryCode			= 0x00,
+ 	.bNumDescriptors		= 0x1,
+-	/*.desc[0].bDescriptorType	= DYNAMIC */
+-	/*.desc[0].wDescriptorLenght	= DYNAMIC */
++	/*.rpt_desc.bDescriptorType	= DYNAMIC */
++	/*.rpt_desc.wDescriptorLength	= DYNAMIC */
+ };
  
-+static int rtw89_dbi_write8(struct rtw89_dev *rtwdev, u16 addr, u8 data)
-+{
-+	u16 addr_2lsb = addr & B_AX_DBI_2LSB;
-+	u16 write_addr;
-+	u8 flag;
-+	int ret;
-+
-+	write_addr = addr & B_AX_DBI_ADDR_MSK;
-+	write_addr |= u16_encode_bits(BIT(addr_2lsb), B_AX_DBI_WREN_MSK);
-+	rtw89_write8(rtwdev, R_AX_DBI_WDATA + addr_2lsb, data);
-+	rtw89_write16(rtwdev, R_AX_DBI_FLAG, write_addr);
-+	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_WFLAG >> 16);
-+
-+	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
-+				       10 * RTW89_PCI_WR_RETRY_CNT, false,
-+				       rtwdev, R_AX_DBI_FLAG + 2);
-+	if (ret)
-+		rtw89_err(rtwdev, "failed to write DBI register, addr=0x%X\n",
-+			  addr);
-+
-+	return ret;
-+}
-+
-+static int rtw89_dbi_read8(struct rtw89_dev *rtwdev, u16 addr, u8 *value)
-+{
-+	u16 read_addr = addr & B_AX_DBI_ADDR_MSK;
-+	u8 flag;
-+	int ret;
-+
-+	rtw89_write16(rtwdev, R_AX_DBI_FLAG, read_addr);
-+	rtw89_write8(rtwdev, R_AX_DBI_FLAG + 2, B_AX_DBI_RFLAG >> 16);
-+
-+	ret = read_poll_timeout_atomic(rtw89_read8, flag, !flag, 10,
-+				       10 * RTW89_PCI_WR_RETRY_CNT, false,
-+				       rtwdev, R_AX_DBI_FLAG + 2);
-+	if (ret) {
-+		rtw89_err(rtwdev, "failed to read DBI register, addr=0x%X\n",
-+			  addr);
-+		return ret;
-+	}
-+
-+	read_addr = R_AX_DBI_RDATA + (addr & 3);
-+	*value = rtw89_read8(rtwdev, read_addr);
-+
-+	return 0;
-+}
-+
- static int rtw89_pci_write_config_byte(struct rtw89_dev *rtwdev, u16 addr,
- 				       u8 data)
- {
- 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
- 	struct pci_dev *pdev = rtwpci->pdev;
-+	int ret;
+ /* Super-Speed Support */
+@@ -724,8 +724,8 @@ static int hidg_setup(struct usb_functio
+ 			struct hid_descriptor hidg_desc_copy = hidg_desc;
  
--	return pci_write_config_byte(pdev, addr, data);
-+	ret = pci_write_config_byte(pdev, addr, data);
-+	if (!ret)
-+		return 0;
-+
-+	if (chip_id == RTL8852A || chip_id == RTL8852B || chip_id == RTL8851B)
-+		ret = rtw89_dbi_write8(rtwdev, addr, data);
-+
-+	return ret;
- }
+ 			VDBG(cdev, "USB_REQ_GET_DESCRIPTOR: HID\n");
+-			hidg_desc_copy.desc[0].bDescriptorType = HID_DT_REPORT;
+-			hidg_desc_copy.desc[0].wDescriptorLength =
++			hidg_desc_copy.rpt_desc.bDescriptorType = HID_DT_REPORT;
++			hidg_desc_copy.rpt_desc.wDescriptorLength =
+ 				cpu_to_le16(hidg->report_desc_length);
  
- static int rtw89_pci_read_config_byte(struct rtw89_dev *rtwdev, u16 addr,
- 				      u8 *value)
- {
- 	struct rtw89_pci *rtwpci = (struct rtw89_pci *)rtwdev->priv;
-+	enum rtw89_core_chip_id chip_id = rtwdev->chip->chip_id;
- 	struct pci_dev *pdev = rtwpci->pdev;
-+	int ret;
-+
-+	ret = pci_read_config_byte(pdev, addr, value);
-+	if (!ret)
-+		return 0;
-+
-+	if (chip_id == RTL8852A || chip_id == RTL8852B || chip_id == RTL8851B)
-+		ret = rtw89_dbi_read8(rtwdev, addr, value);
+ 			length = min_t(unsigned short, length,
+@@ -966,8 +966,8 @@ static int hidg_bind(struct usb_configur
+ 	 * We can use hidg_desc struct here but we should not relay
+ 	 * that its content won't change after returning from this function.
+ 	 */
+-	hidg_desc.desc[0].bDescriptorType = HID_DT_REPORT;
+-	hidg_desc.desc[0].wDescriptorLength =
++	hidg_desc.rpt_desc.bDescriptorType = HID_DT_REPORT;
++	hidg_desc.rpt_desc.wDescriptorLength =
+ 		cpu_to_le16(hidg->report_desc_length);
  
--	return pci_read_config_byte(pdev, addr, value);
-+	return ret;
- }
+ 	hidg_hs_in_ep_desc.bEndpointAddress =
+--- a/include/linux/hid.h
++++ b/include/linux/hid.h
+@@ -674,8 +674,9 @@ struct hid_descriptor {
+ 	__le16 bcdHID;
+ 	__u8  bCountryCode;
+ 	__u8  bNumDescriptors;
++	struct hid_class_descriptor rpt_desc;
  
- static int rtw89_pci_config_byte_set(struct rtw89_dev *rtwdev, u16 addr,
---- a/drivers/net/wireless/realtek/rtw89/pci.h
-+++ b/drivers/net/wireless/realtek/rtw89/pci.h
-@@ -42,6 +42,7 @@
- #define B_AX_DBI_WFLAG			BIT(16)
- #define B_AX_DBI_WREN_MSK		GENMASK(15, 12)
- #define B_AX_DBI_ADDR_MSK		GENMASK(11, 2)
-+#define B_AX_DBI_2LSB			GENMASK(1, 0)
- #define R_AX_DBI_WDATA			0x1094
- #define R_AX_DBI_RDATA			0x1098
+-	struct hid_class_descriptor desc[1];
++	struct hid_class_descriptor opt_descs[];
+ } __attribute__ ((packed));
  
+ #define HID_DEVICE(b, g, ven, prod)					\
 
 
 
