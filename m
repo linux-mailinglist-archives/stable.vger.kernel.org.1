@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-158105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DC57AE573A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B6D12AE5653
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18824A1D0C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEB1C3A3BF5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E90223DCC;
-	Mon, 23 Jun 2025 22:24:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A9F21FF2B;
+	Mon, 23 Jun 2025 22:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6GwxQSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFjlUZ31"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56F52192EC;
-	Mon, 23 Jun 2025 22:24:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0201B17BD9;
+	Mon, 23 Jun 2025 22:16:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717496; cv=none; b=sYH/fvm9/JmAI0O5r7yfnHagBL5tIbW0gnSxO+I59qqVq/8Qv6sqsNGf3c0E0QgnKByn0ldK+FYL83T3E9E4i6DjU714eo2GmR4245629TQC6SwInaUEdXTvPnu6XRlyVoSxM+EpsZ8Ey7TrSECRG//MqogHwHt8wJJgQkSQgZI=
+	t=1750717003; cv=none; b=NhttUnCejYLCWqHppW36yXP9auLj7913pQArewra5FKqSTK0sNZsIGis7y7diEHIIKaCd5EFKoyyvcXTBFkxxVGic5r8J0ZRkAfn1CD4mIxCXVqym+d7qVLKFsEKmPashQfn6b5l5KOTgPtxIk11Ayh+7JeXMqtga2QyYDBEGo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717496; c=relaxed/simple;
-	bh=dwK/xSTVu+zxu4hBCXGAEAJ9yXSAdSZc2Nyp5QjIXfI=;
+	s=arc-20240116; t=1750717003; c=relaxed/simple;
+	bh=0Tw5rJth4unKe0D0aB4uQSFDkS+pCWGx/cgBEg8HT5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UoZo+S7mzw7l8qlj0ouSoGwuZ+IgHNRGx75STPjWeNxk+XDfYBRml6gwSY4fGsCdfd53OaiOWCa/dpH/LCO0Dzjki2bQrmmqY8Y4BOPhaEEQc+/OQx7g+m3tM1AfDx97uZMfdPzaPYIzxMmOP41NQzPC/4iItyT4TPkhTc6TyJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6GwxQSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB51C4CEEA;
-	Mon, 23 Jun 2025 22:24:56 +0000 (UTC)
+	 MIME-Version; b=UqK2YmHthHlQvkczHnAZ3cgDcWs45G1nBfxhKoDxOrBhvG6UtP+vlNTdpDfxuNFVAt4R+aljG0nLBRk4GppvCUTqdQSAFw8JiCGk9r/8zjFLkTonRHdTAlaoRm0VWoQtpiPSEh7jDsDOt3JjBqbym3fRpYWjNHT/jjNhk4V84NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFjlUZ31; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACFFC4CEF1;
+	Mon, 23 Jun 2025 22:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717496;
-	bh=dwK/xSTVu+zxu4hBCXGAEAJ9yXSAdSZc2Nyp5QjIXfI=;
+	s=korg; t=1750717001;
+	bh=0Tw5rJth4unKe0D0aB4uQSFDkS+pCWGx/cgBEg8HT5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n6GwxQSp4NjfEB9eAhWZVRSzJx3ww6NhXVuV9IRuFjdRnb89Kjee1FRdM1Tu7/ohF
-	 j2ySSlH1qvHJg71+g8ZaJohRdmau0wzHUaQIwtQ0J2IBBHVEgwxiV1KKhuFdykzfZz
-	 KdyYAtkeq4YCoo/foXs6/PAaizAB7UXfrxHi0j3U=
+	b=NFjlUZ31vE673Wwz8NezvReeOAyZnlFyJdEGh8JxuNB4PVod7Rfjo7kKtKq334zYa
+	 BgpLla/L89t4bHQ+UwxnWutpLEZeYIX6v/pAtww2iSatoM/jjHmmvPFi/tcoAlLFn2
+	 Zu6F+9X+ydVwXMy7t/3rt5a449Kd73weojYm073Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Aurich <paul@darkrain42.org>,
-	Bharath SM <bharathsm@microsoft.com>,
-	Ruben Devos <rdevos@oxya.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 397/414] smb: Log an error when close_all_cached_dirs fails
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 576/592] RISC-V: KVM: Fix the size parameter check in SBI SFENCE calls
 Date: Mon, 23 Jun 2025 15:08:54 +0200
-Message-ID: <20250623130651.865202733@linuxfoundation.org>
+Message-ID: <20250623130714.139197562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Aurich <paul@darkrain42.org>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit a2182743a8b4969481f64aec4908ff162e8a206c upstream.
+[ Upstream commit 6aba0cb5bba6141158d5449f2cf53187b7f755f9 ]
 
-Under low-memory conditions, close_all_cached_dirs() can't move the
-dentries to a separate list to dput() them once the locks are dropped.
-This will result in a "Dentry still in use" error, so add an error
-message that makes it clear this is what happened:
+As-per the SBI specification, an SBI remote fence operation applies
+to the entire address space if either:
+1) start_addr and size are both 0
+2) size is equal to 2^XLEN-1
 
-[  495.281119] CIFS: VFS: \\otters.example.com\share Out of memory while dropping dentries
-[  495.281595] ------------[ cut here ]------------
-[  495.281887] BUG: Dentry ffff888115531138{i=78,n=/}  still in use (2) [unmount of cifs cifs]
-[  495.282391] WARNING: CPU: 1 PID: 2329 at fs/dcache.c:1536 umount_check+0xc8/0xf0
+>From the above, only #1 is checked by SBI SFENCE calls so fix the
+size parameter check in SBI SFENCE calls to cover #2 as well.
 
-Also, bail out of looping through all tcons as soon as a single
-allocation fails, since we're already in trouble, and kmalloc() attempts
-for subseqeuent tcons are likely to fail just like the first one did.
-
-Signed-off-by: Paul Aurich <paul@darkrain42.org>
-Acked-by: Bharath SM <bharathsm@microsoft.com>
-Suggested-by: Ruben Devos <rdevos@oxya.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250605061458.196003-2-apatel@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cached_dir.c
-+++ b/fs/smb/client/cached_dir.c
-@@ -484,8 +484,17 @@ void close_all_cached_dirs(struct cifs_s
- 		spin_lock(&cfids->cfid_list_lock);
- 		list_for_each_entry(cfid, &cfids->entries, entry) {
- 			tmp_list = kmalloc(sizeof(*tmp_list), GFP_ATOMIC);
--			if (tmp_list == NULL)
--				break;
-+			if (tmp_list == NULL) {
-+				/*
-+				 * If the malloc() fails, we won't drop all
-+				 * dentries, and unmounting is likely to trigger
-+				 * a 'Dentry still in use' error.
-+				 */
-+				cifs_tcon_dbg(VFS, "Out of memory while dropping dentries\n");
-+				spin_unlock(&cfids->cfid_list_lock);
-+				spin_unlock(&cifs_sb->tlink_tree_lock);
-+				goto done;
-+			}
- 			spin_lock(&cfid->fid_lock);
- 			tmp_list->dentry = cfid->dentry;
- 			cfid->dentry = NULL;
-@@ -497,6 +506,7 @@ void close_all_cached_dirs(struct cifs_s
- 	}
- 	spin_unlock(&cifs_sb->tlink_tree_lock);
- 
-+done:
- 	list_for_each_entry_safe(tmp_list, q, &entry, entry) {
- 		list_del(&tmp_list->entry);
- 		dput(tmp_list->dentry);
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 5fbf3f94f1e85..9752d2ffff683 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -103,7 +103,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_FENCE_I_SENT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_all(vcpu->kvm, hbase, hmask);
+ 		else
+ 			kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbase, hmask,
+@@ -111,7 +111,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_HFENCE_VVMA_SENT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,
+ 						       hbase, hmask, cp->a4);
+ 		else
+-- 
+2.39.5
+
 
 
 
