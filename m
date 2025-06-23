@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99798AE56A3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67F55AE55E4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0497C7B3076
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC7CA4A36E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93C2222599;
-	Mon, 23 Jun 2025 22:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C748224B1F;
+	Mon, 23 Jun 2025 22:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyVACwLZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjdoXL9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A6915ADB4;
-	Mon, 23 Jun 2025 22:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37484B676;
+	Mon, 23 Jun 2025 22:13:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717321; cv=none; b=lsCH61YI+UKoY9kmU1og3LQzndGucYPUWS6LhnrYJVnqqRKqpwF4/e6K+8xkjI91k15opgjo7GtZ/wcPh07NbROrYhNPgjXoSD1zPs2BThO/Gi480tAT6UgsyzAKJsadBZzzUB6Vbwm1unGT5qgRjvJJFFMhPGKWX8GMxe3BKnE=
+	t=1750716801; cv=none; b=mMI9Wt+slXgv16o5rHu2NzONRwUNax2Le0vQk4uYTvRKKxk43K4xx4TG1nWC0tHzZXuKXGP0x8PI5xxA08ZiUmDU5X0o22EGFCUDSxnCxeyA0tCVPQZWXJ39VERh9tQC2SHvUcm5Mwt/136VMLLqevrEOdtXTetpovHSYfsNVvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717321; c=relaxed/simple;
-	bh=HeItyzJhSukG4FuwIbyofLOOjRtwRtTyNlfVktW2fgE=;
+	s=arc-20240116; t=1750716801; c=relaxed/simple;
+	bh=qo18TUAgU6jybluAnKu/2Ym745gZOWHS0lMnoP90WWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lm4IpIBef9uJprLr+HdfQ8kA002Sf79dt4PxnwNsnYufsctaQ4XyfQPkZ1y20DKoU2dnZs9Psprf5UdijLVeHwad+VwgUsl1xhuZ7YH2Aclqw5AHgEzWSbzxEa4cyAVhT6IOSOqpRfMCeym5pH7TzxkGcYMS3WHD7mvAoSHFCsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyVACwLZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1772C4CEEA;
-	Mon, 23 Jun 2025 22:22:00 +0000 (UTC)
+	 MIME-Version; b=s+O26+BZTL3tgAbICmzx72WL4trJNnaAum8i0k/dmD94CTjuHMvJ6XYshK/0Px06E1l6e6b5H+hL2TarlInji9VPjdV4zqNRhYXn4aIUtJsPdK2nC5gWZI6hHSk+uN0LUjmSGx7HOhdFKdyyYBjO8SU9ulpAjnZKeWup9sMTOsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjdoXL9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5E8C4CEEA;
+	Mon, 23 Jun 2025 22:13:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717321;
-	bh=HeItyzJhSukG4FuwIbyofLOOjRtwRtTyNlfVktW2fgE=;
+	s=korg; t=1750716801;
+	bh=qo18TUAgU6jybluAnKu/2Ym745gZOWHS0lMnoP90WWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JyVACwLZofPb/eeZhosqii4IQVjH6qS5cEwdqOxcm43XbU1GDNZ5t/sPZNtseHhV3
-	 taii6mNwJhBdwE3k2IVoR/Mr3ICOfbySzU44zdXK4/RfsMsowFdo0dpYE+BPxwdkbH
-	 QV8eCpfqDQGm6roV9nPM6XXv+31xKkDPnqe1nQbU=
+	b=fjdoXL9XCLO1dADpQDIwavKFmKKXp57xnQIPAhMYY2fyeCJGZZDdH8U42/3Anl5vh
+	 /hWTqHgcYz5puaoEMTla9Bxz0lOvsF0xTi8pXGcVRUMV4Fhnd5d4ZMzDZaqV6mdKIO
+	 nfo/f2V0DRkNX8ddT7uTejqTh9ZHY++/jIyT34qo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 404/508] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
-Date: Mon, 23 Jun 2025 15:07:29 +0200
-Message-ID: <20250623130655.179822277@linuxfoundation.org>
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 313/414] net_sched: sch_sfq: reject invalid perturb period
+Date: Mon, 23 Jun 2025 15:07:30 +0200
+Message-ID: <20250623130649.824395829@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 1c0829788a6e6e165846b9bedd0b908ef16260b6 ]
+commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
 
-The statistics are incremented with raw_cpu_inc() assuming it always
-happens with bottom half disabled. Without per-CPU locking in
-local_bh_disable() on PREEMPT_RT this is no longer true.
+Gerrard Tai reported that SFQ perturb_period has no range check yet,
+and this can be used to trigger a race condition fixed in a separate patch.
 
-Use this_cpu_inc() on PREEMPT_RT for the increment to not worry about
-preemption.
+We want to make sure ctl->perturb_period * HZ will not overflow
+and is positive.
 
-Cc: David Ahern <dsahern@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250512092736.229935-4-bigeasy@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Tested:
+
+tc qd add dev lo root sfq perturb -10   # negative value : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 1000000000 # too big : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 2000000 # acceptable value
+tc -s -d qd sh dev lo
+qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/sched/sch_sfq.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 4574dcba9f193..8701081010173 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -192,7 +192,11 @@ const __u8 ip_tos2prio[16] = {
- EXPORT_SYMBOL(ip_tos2prio);
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+ 		return -EINVAL;
+ 	}
++
++	if (ctl->perturb_period < 0 ||
++	    ctl->perturb_period > INT_MAX / HZ) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++		return -EINVAL;
++	}
++	perturb_period = ctl->perturb_period * HZ;
++
+ 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
+ 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
+ 		return -EINVAL;
+@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
+ 	headdrop = q->headdrop;
+ 	maxdepth = q->maxdepth;
+ 	maxflows = q->maxflows;
+-	perturb_period = q->perturb_period;
+ 	quantum = q->quantum;
+ 	flags = q->flags;
  
- static DEFINE_PER_CPU(struct rt_cache_stat, rt_cache_stat);
-+#ifndef CONFIG_PREEMPT_RT
- #define RT_CACHE_STAT_INC(field) raw_cpu_inc(rt_cache_stat.field)
-+#else
-+#define RT_CACHE_STAT_INC(field) this_cpu_inc(rt_cache_stat.field)
-+#endif
- 
- #ifdef CONFIG_PROC_FS
- static void *rt_cache_seq_start(struct seq_file *seq, loff_t *pos)
--- 
-2.39.5
-
+ 	/* update and validate configuration */
+ 	if (ctl->quantum)
+ 		quantum = ctl->quantum;
+-	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+ 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
 
 
 
