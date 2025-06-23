@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157906-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD55AAE5627
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E060EAE56E9
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319BB188D163
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 683A71C20577
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B80C22333B;
-	Mon, 23 Jun 2025 22:16:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F1622370A;
+	Mon, 23 Jun 2025 22:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ebg3U3AN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G2Oaii6w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260421FF2B;
-	Mon, 23 Jun 2025 22:16:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203B32192EC;
+	Mon, 23 Jun 2025 22:24:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717011; cv=none; b=bOsrAlqBQDGE1DNIlBUI5BYxuu36aTIEEdutKuU1U3Vrt2J5l8oDKa+qhRn0ru9oee4kMljHluUYyV1qQjAFXU/wNn8xcHsoWDWk5CeZ7MhRG1N9pihjans9jF1uwH3V+OZwme3b2/ucuYTXKr4lfVvtSyrN4IzRh1P99uAPy9k=
+	t=1750717458; cv=none; b=Nqup+MeeiwxBSK82dTeJw4O3j7T/aqFyh5Rj6STnM4tpLndEZfhRw4xr+D/WIfpJai99gtsXHqk+gizU7XeqBVRwH56opNuhZk41SrunYE6r597/NsNz75n2WS83U4PdfVy5gIoFykF2ImD4lNPe3kKB36dyPbGuVW7Sz7tUt3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717011; c=relaxed/simple;
-	bh=ON22bM1KqggAPa7Xf4r40gg96wa4ab2P25TNmaoXpgs=;
+	s=arc-20240116; t=1750717458; c=relaxed/simple;
+	bh=eXyCLuWJo6ITotZYHEZihRxduPcwhUdV83NG/Blju5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qbo5dhEzlCu4w/Q8vtYI9gd4JDU4BodwResBRrmUQWbkemXuJCbeMF9AHdrMTpzIV9Eox3uBzV42Yv/jEFw8rp2JnPAH/b7HGp+hdTV0DA5zPowryGBhPn9lDCECtG2t0G+SCrZIni8tkDosLr/uJzsNGlIOj2WCtqAtpJB23hY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ebg3U3AN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0A5C4CEEA;
-	Mon, 23 Jun 2025 22:16:48 +0000 (UTC)
+	 MIME-Version; b=XWsEHOUc1TSZ5iyGpPrn0KSfcRQ7/WT6tgB+E8gpGdnfvDF/BLtdSSmG1sCi46BpB4VPtdElGAezX5KEGfbsTJ76s6qm0lwEIClsCFuEnnjSsE/rziu8AV/rYHAS6X5+nX5XZBMPWcxi2v207E4e/CRkdYb8PqxyWfYX2MS2tgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G2Oaii6w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC8AC4CEEA;
+	Mon, 23 Jun 2025 22:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717008;
-	bh=ON22bM1KqggAPa7Xf4r40gg96wa4ab2P25TNmaoXpgs=;
+	s=korg; t=1750717458;
+	bh=eXyCLuWJo6ITotZYHEZihRxduPcwhUdV83NG/Blju5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ebg3U3ANWofhSn8fkz/dttDg+ET+Wmcq5J2wJoPOrzU5qBmcZ2q3GI8Gh3BD8Jert
-	 b5Psi7jbtSmOzJKIwoHZebiA38/koBCy1HZITTrHKtBRyHVjHDxuTfH4QdL/++WMca
-	 4U82UUHbUYDAfCL+7oVC9GIWe96ChlxFQzGiVjkY=
+	b=G2Oaii6wtn2NUuo3tQiXwxVc4fgjSwOzOHQh7MQnQyIiMNy30pJ258tZ3lm55nwbX
+	 RshBApsVN8YNU12E94HlzY9yQd1bxzJ6DZ4Trpyh8PB84b9A5UfcSrrrMG/nRXRLc8
+	 3Y8lBEqe0VNFri9flY21PysB+SsGq+aP1dd5yrLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 306/414] cifs: deal with the channel loading lag while picking channels
+	Tali Perry <tali.perry1@gmail.com>,
+	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
+	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 398/508] i2c: npcm: Add clock toggle recovery
 Date: Mon, 23 Jun 2025 15:07:23 +0200
-Message-ID: <20250623130649.652581965@linuxfoundation.org>
+Message-ID: <20250623130655.049185106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Tali Perry <tali.perry1@gmail.com>
 
-commit 66d590b828b1fd9fa337047ae58fe1c4c6f43609 upstream.
+[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
 
-Our current approach to select a channel for sending requests is this:
-1. iterate all channels to find the min and max queue depth
-2. if min and max are not the same, pick the channel with min depth
-3. if min and max are same, round robin, as all channels are equally loaded
+During init of the bus, the module checks that the bus is idle.
+If one of the lines are stuck try to recover them first before failing.
+Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
 
-The problem with this approach is that there's a lag between selecting
-a channel and sending the request (that increases the queue depth on the channel).
-While these numbers will eventually catch up, there could be a skew in the
-channel usage, depending on the application's I/O parallelism and the server's
-speed of handling requests.
-
-With sufficient parallelism, this lag can artificially increase the queue depth,
-thereby impacting the performance negatively.
-
-This change will change the step 1 above to start the iteration from the last
-selected channel. This is to reduce the skew in channel usage even in the presence
-of this lag.
-
-Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tali Perry <tali.perry1@gmail.com>
+Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
+Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
+Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1029,14 +1029,16 @@ struct TCP_Server_Info *cifs_pick_channe
- 	uint index = 0;
- 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
- 	struct TCP_Server_Info *server = NULL;
--	int i;
-+	int i, start, cur;
+diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
+index 0947e3d155c56..828234d1ee477 100644
+--- a/drivers/i2c/busses/i2c-npcm7xx.c
++++ b/drivers/i2c/busses/i2c-npcm7xx.c
+@@ -1973,10 +1973,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
  
- 	if (!ses)
- 		return NULL;
- 
- 	spin_lock(&ses->chan_lock);
-+	start = atomic_inc_return(&ses->chan_seq);
- 	for (i = 0; i < ses->chan_count; i++) {
--		server = ses->chans[i].server;
-+		cur = (start + i) % ses->chan_count;
-+		server = ses->chans[cur].server;
- 		if (!server || server->terminate)
- 			continue;
- 
-@@ -1053,17 +1055,15 @@ struct TCP_Server_Info *cifs_pick_channe
- 		 */
- 		if (server->in_flight < min_in_flight) {
- 			min_in_flight = server->in_flight;
--			index = i;
-+			index = cur;
- 		}
- 		if (server->in_flight > max_in_flight)
- 			max_in_flight = server->in_flight;
+ 	/* Check HW is OK: SDA and SCL should be high at this point. */
+ 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
+-		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
+-		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
+-			npcm_i2c_get_SCL(&bus->adap));
+-		return -ENXIO;
++		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
++				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
++		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
++			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
++				bus->num, npcm_i2c_get_SDA(&bus->adap),
++				npcm_i2c_get_SCL(&bus->adap));
++			return -ENXIO;
++		}
  	}
  
- 	/* if all channels are equally loaded, fall back to round-robin */
--	if (min_in_flight == max_in_flight) {
--		index = (uint)atomic_inc_return(&ses->chan_seq);
--		index %= ses->chan_count;
--	}
-+	if (min_in_flight == max_in_flight)
-+		index = (uint)start % ses->chan_count;
- 
- 	server = ses->chans[index].server;
- 	spin_unlock(&ses->chan_lock);
+ 	npcm_i2c_int_enable(bus, true);
+-- 
+2.39.5
+
 
 
 
