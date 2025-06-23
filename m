@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156619-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EEFFAE5273
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4D66AE5067
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E34847A3283
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A0C4D1B626BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ECC51F5820;
-	Mon, 23 Jun 2025 21:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18069221F0F;
+	Mon, 23 Jun 2025 21:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SU0NTCya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q1TQOvu4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5752AEE4;
-	Mon, 23 Jun 2025 21:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8698221545;
+	Mon, 23 Jun 2025 21:24:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715036; cv=none; b=OzRZFnPiE95NS1FcOlhC7CJa7KwI0dGtdil1BoOg3dTFHfwSjP3IgHqOdBoaNjCyU/mLSZ+LL514QfMN942wJEIyBX4cmx4puFensIGJhT5EobRoEqPeYcFf96BmpF16EtraqBx8wF4k05jrkxQAJpsxEHTabzxGFI2BBT2U+xQ=
+	t=1750713854; cv=none; b=G+HAPgmnfePpKpHTooPvE+rtRcoaF1BNB+WkqZ5QpQLwOlm0KxZShG8SNYBtdjHjWNEHVu7wAEJ8qlUSZVWMk8yw1ApG5CJDcoiSk3CVD0LTm4zA1kA8FGs9dmlp6BHdQpTd9vbtvRY17S0iek30yQrHhgo1++WRbDrqZ8SQggE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715036; c=relaxed/simple;
-	bh=8zVzo7yyuneFUKi2J075NCpnO8zWoTBkG8bfgmNNVP4=;
+	s=arc-20240116; t=1750713854; c=relaxed/simple;
+	bh=avVWpvHB7P3k10xqp0tgZ4i6UzlM2dF0smNA5SyuEZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GcsisY+h6VGu1FXUo3iC/ckDHubdQ5gj9A1LvYfy3jHFpo1EMoi2eFtbaC3fGZpDXA6ciS33hRmU8/L+WQIb8ggwEWbY6vg+pOgpk+KR0A9ZBn1vaCaa/AZnwmCrWIsw+xOPkPYs5Ra0Q06qiZ/L4qSNUFFLyuMarSkYgswvcxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SU0NTCya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B84FCC4CEEA;
-	Mon, 23 Jun 2025 21:43:55 +0000 (UTC)
+	 MIME-Version; b=cqgQF4Kv3RQa55XlU6ah2v3jHpx9fYUSg7DP9pFgvHKtSkXaRyYoNuzyhdV6dHBK1KRfCoii1tyd0CRHxNox2tl8rYxzNsLCDfwMEMLYTjHRCne0mzyOeewafUNqqYW8BKbrYhXZmYceRpS8yoNCLzr6wbWnYwWrfaxYZziu5LY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q1TQOvu4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5629EC4CEEA;
+	Mon, 23 Jun 2025 21:24:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715036;
-	bh=8zVzo7yyuneFUKi2J075NCpnO8zWoTBkG8bfgmNNVP4=;
+	s=korg; t=1750713854;
+	bh=avVWpvHB7P3k10xqp0tgZ4i6UzlM2dF0smNA5SyuEZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SU0NTCyaTHR2vBMe7CQjeIXzOqhf16iP9xlxMX38q9N14QCiPLsYegqX0AGkYyqsA
-	 1O/5zHJEJ18IpfOVterMBcQHEEAtrlANR880t7jpla38wDtcnTYqm+sw7ItIUwb/99
-	 eRHsrMt6yz/vz23goOuDYrhsSB7U/iVRuhSQ5N4U=
+	b=q1TQOvu4vMxA3zG+1BDYAR0h3j1esYnT2TZsGFmBoDIIeshS1Bp6uNYODDMW2uYBw
+	 YIW2MBUTks8RfES4e3nB9rLcF+XKfsqWjTWkhFEp0IBIvIegJP0YGdznt6bNYeIwh6
+	 b/m+fR/UGKN1x/mf3WHdGOme109n8p5wdfQMe/jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Lindgren <tony@atomide.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Andreas Kemnade <andreas@kemnade.info>
-Subject: [PATCH 6.15 433/592] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.10 190/355] f2fs: fix to do sanity check on sit_bitmap_size
 Date: Mon, 23 Jun 2025 15:06:31 +0200
-Message-ID: <20250623130710.736634822@linuxfoundation.org>
+Message-ID: <20250623130632.391556726@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,116 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 36305857b1ead8f6ca033a913162ebc09bee0b43 ]
+commit 5db0d252c64e91ba1929c70112352e85dc5751e7 upstream.
 
-This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
+w/ below testcase, resize will generate a corrupted image which
+contains inconsistent metadata, so when mounting such image, it
+will trigger kernel panic:
 
-It breaks target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
-when minimally-configured system tries to network-boot:
+touch img
+truncate -s $((512*1024*1024*1024)) img
+mkfs.f2fs -f img $((256*1024*1024))
+resize.f2fs -s -i img -t $((1024*1024*1024))
+mount img /mnt/f2fs
 
-[    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
-[   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
-[   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
-[   26.878471] Waiting up to 100 more seconds for network.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.h:863!
+Oops: invalid opcode: 0000 [#1] SMP PTI
+CPU: 11 UID: 0 PID: 3922 Comm: mount Not tainted 6.15.0-rc1+ #191 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:f2fs_ra_meta_pages+0x47c/0x490
 
-There are minimal configurations possible when the deferred device is not
-being probed any more (because everything else has been successfully
-probed) and deferral lists are not processed any more.
+Call Trace:
+ f2fs_build_segment_manager+0x11c3/0x2600
+ f2fs_fill_super+0xe97/0x2840
+ mount_bdev+0xf4/0x140
+ legacy_get_tree+0x2b/0x50
+ vfs_get_tree+0x29/0xd0
+ path_mount+0x487/0xaf0
+ __x64_sys_mount+0x116/0x150
+ do_syscall_64+0x82/0x190
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fdbfde1bcfe
 
-Stable mmc enumeration can be achieved by filling /aliases node properly
-(4700a00755fb commit's rationale).
+The reaseon is:
 
-After revert:
+sit_i->bitmap_size is 192, so size of sit bitmap is 192*8=1536, at maximum
+there are 1536 sit blocks, however MAIN_SEGS is 261893, so that sit_blk_cnt
+is 4762, build_sit_entries() -> current_sit_addr() tries to access
+out-of-boundary in sit_bitmap at offset from [1536, 4762), once sit_bitmap
+and sit_bitmap_mirror is not the same, it will trigger f2fs_bug_on().
 
-[    9.006816] IP-Config: Complete:
-[    9.010058]      device=lan0, ...
+Let's add sanity check in f2fs_sanity_check_ckpt() to avoid panic.
 
-Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04, Panda, BT200
-Reviewed-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://lore.kernel.org/r/20250401090643.2776793-1-alexander.sverdlin@siemens.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/ti-sysc.c | 49 -------------------------------------------
- 1 file changed, 49 deletions(-)
+ fs/f2fs/super.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index f67b927ae4caa..e5c02e950f2c1 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -677,51 +677,6 @@ static int sysc_parse_and_check_child_range(struct sysc *ddata)
- 	return 0;
- }
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3017,6 +3017,7 @@ int f2fs_sanity_check_ckpt(struct f2fs_s
+ 	block_t user_block_count, valid_user_blocks;
+ 	block_t avail_node_count, valid_node_count;
+ 	unsigned int nat_blocks, nat_bits_bytes, nat_bits_blocks;
++	unsigned int sit_blk_cnt;
+ 	int i, j;
  
--/* Interconnect instances to probe before l4_per instances */
--static struct resource early_bus_ranges[] = {
--	/* am3/4 l4_wkup */
--	{ .start = 0x44c00000, .end = 0x44c00000 + 0x300000, },
--	/* omap4/5 and dra7 l4_cfg */
--	{ .start = 0x4a000000, .end = 0x4a000000 + 0x300000, },
--	/* omap4 l4_wkup */
--	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
--	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
--	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
--};
--
--static atomic_t sysc_defer = ATOMIC_INIT(10);
--
--/**
-- * sysc_defer_non_critical - defer non_critical interconnect probing
-- * @ddata: device driver data
-- *
-- * We want to probe l4_cfg and l4_wkup interconnect instances before any
-- * l4_per instances as l4_per instances depend on resources on l4_cfg and
-- * l4_wkup interconnects.
-- */
--static int sysc_defer_non_critical(struct sysc *ddata)
--{
--	struct resource *res;
--	int i;
--
--	if (!atomic_read(&sysc_defer))
--		return 0;
--
--	for (i = 0; i < ARRAY_SIZE(early_bus_ranges); i++) {
--		res = &early_bus_ranges[i];
--		if (ddata->module_pa >= res->start &&
--		    ddata->module_pa <= res->end) {
--			atomic_set(&sysc_defer, 0);
--
--			return 0;
--		}
--	}
--
--	atomic_dec_if_positive(&sysc_defer);
--
--	return -EPROBE_DEFER;
--}
--
- static struct device_node *stdout_path;
+ 	total = le32_to_cpu(raw_super->segment_count);
+@@ -3118,6 +3119,13 @@ int f2fs_sanity_check_ckpt(struct f2fs_s
+ 		return 1;
+ 	}
  
- static void sysc_init_stdout_path(struct sysc *ddata)
-@@ -947,10 +902,6 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
- 	if (error)
- 		return error;
- 
--	error = sysc_defer_non_critical(ddata);
--	if (error)
--		return error;
--
- 	sysc_check_children(ddata);
- 
- 	if (!of_property_present(np, "reg"))
--- 
-2.39.5
-
++	sit_blk_cnt = DIV_ROUND_UP(main_segs, SIT_ENTRY_PER_BLOCK);
++	if (sit_bitmap_size * 8 < sit_blk_cnt) {
++		f2fs_err(sbi, "Wrong bitmap size: sit: %u, sit_blk_cnt:%u",
++			 sit_bitmap_size, sit_blk_cnt);
++		return 1;
++	}
++
+ 	cp_pack_start_sum = __start_sum_addr(sbi);
+ 	cp_payload = __cp_payload(sbi);
+ 	if (cp_pack_start_sum < cp_payload + 1 ||
 
 
 
