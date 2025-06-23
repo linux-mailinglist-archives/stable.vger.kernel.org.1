@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85CB4AE4EBF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB1DAE4EC8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 34B7B16D129
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C0A33BE736
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C138B21FF2B;
-	Mon, 23 Jun 2025 21:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5963C21638A;
+	Mon, 23 Jun 2025 21:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNdP9l+Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkksCuUW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD511F582A;
-	Mon, 23 Jun 2025 21:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163B870838;
+	Mon, 23 Jun 2025 21:09:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712922; cv=none; b=eol+rQeZ3pFOHBHndGYjiYoeoXKOhgANQMArvplruCN18V/A+pIgWp6v3l3sKR5UieLKkoDY4vOk23Z7iWz7WZ9MS+5RyG/TZPGO4YfC21GLqjXAsoRbwINU4wXmvXSKrQosDtp3mLBPqsgkWI5Y9S8JBXkL3AxMIPmuHBRVzTw=
+	t=1750712941; cv=none; b=kboRHMx6HMVkiABKeKnSvnPZbEyKhMLVVy9vvoOcVB5IYBZfVIKguC2tOKvszkmkrVEFxnsePNDBG/0YmFT2FeLoyH/k5T8vMy5EV/6LgbO2AH+zm9WaMayi9fHE0/VMXXJhf3jHkC2TOAUqsfIBKaoTw1gxmmpksPhCe+57qno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712922; c=relaxed/simple;
-	bh=DFywUB0T52X3R+zkztBRPC7APlM4xRwJbZX/Zz2L738=;
+	s=arc-20240116; t=1750712941; c=relaxed/simple;
+	bh=2BXSKfsDd9UFTR2IRqCFAgigfTx5xLCi52B4sYlmRDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PvA44So27NYMbgV8+cZW/u1Cm00SIOvRzlQxQw9RMIdaBr6gsj5sL29fON+AiBJb5WyD4VlO1uT55DkKecNvfxxPynK6h2m2gnSxgr42zjOklSjnWqZWBlQEmVjF6QVqWwg5GG21u8BPFenGz5f4NaPdEhUpHb9qkgcw1IjbfXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNdP9l+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFF7DC4CEEA;
-	Mon, 23 Jun 2025 21:08:40 +0000 (UTC)
+	 MIME-Version; b=GIhrVTfY7ECI3HIYUWIDgxT/G56QCCfkI2aiSD3c0BDZ/RC3ABKmQHuZhaOxAFtL8y+A6laJu7JHAnY7KLb3g9ekRpRcnWE5wiA52aGwPMQpWiYTawjiV+P3qGb6L9QkRHfHmtxixL5QRNLFMjaNfneXIQQFopyeY1YdQZuh1HA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkksCuUW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C625C4CEEA;
+	Mon, 23 Jun 2025 21:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712921;
-	bh=DFywUB0T52X3R+zkztBRPC7APlM4xRwJbZX/Zz2L738=;
+	s=korg; t=1750712940;
+	bh=2BXSKfsDd9UFTR2IRqCFAgigfTx5xLCi52B4sYlmRDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XNdP9l+Y6GGdd2Zfcjn+jQmGT91x9wrLpl940kGnvsIG3GZzlgSBhzLpmF5g+Twva
-	 uSVGAxoOYl+ieoZO7PiceQHElg0wguHTYmrEizjdCJiUR3GDHk5taCO4GOSCWHcy2C
-	 FC3MnwZehQ3iVSlhbJnMLVDbvmt/6yGf15sjU1xw=
+	b=XkksCuUWBIYEKA3bD7DLGuu0/efM04qDt8SMkXSaRm3l2hJtSC10Xr2l4j59/HpSj
+	 XoegCD/aZdqheplRML9KMqlW14UWa7kO/F32D+sUTEqLWpbZrvYyLGlrclYup4MY17
+	 k84Mtg5Z7wtnFVpxU8xdFeoFr8G4b+dFMpleo0sQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Huajian Yang <huajianyang@asrmicro.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/508] libbpf: Use proper errno value in linker
-Date: Mon, 23 Jun 2025 15:01:52 +0200
-Message-ID: <20250623130646.889924014@linuxfoundation.org>
+Subject: [PATCH 6.1 068/508] netfilter: bridge: Move specific fragmented packet to slow_path instead of dropping it
+Date: Mon, 23 Jun 2025 15:01:53 +0200
+Message-ID: <20250623130646.914421951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,47 +67,93 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Huajian Yang <huajianyang@asrmicro.com>
 
-[ Upstream commit 358b1c0f56ebb6996fcec7dcdcf6bae5dcbc8b6c ]
+[ Upstream commit aa04c6f45b9224b949aa35d4fa5f8d0ba07b23d4 ]
 
-Return values of the linker_append_sec_data() and the
-linker_append_elf_relos() functions are propagated all the
-way up to users of libbpf API. In some error cases these
-functions return -1 which will be seen as -EPERM from user's
-point of view. Instead, return a more reasonable -EINVAL.
+The config NF_CONNTRACK_BRIDGE will change the bridge forwarding for
+fragmented packets.
 
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250430120820.2262053-1-a.s.protopopov@gmail.com
+The original bridge does not know that it is a fragmented packet and
+forwards it directly, after NF_CONNTRACK_BRIDGE is enabled, function
+nf_br_ip_fragment and br_ip6_fragment will check the headroom.
+
+In original br_forward, insufficient headroom of skb may indeed exist,
+but there's still a way to save the skb in the device driver after
+dev_queue_xmit.So droping the skb will change the original bridge
+forwarding in some cases.
+
+Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
+Signed-off-by: Huajian Yang <huajianyang@asrmicro.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/linker.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/bridge/netfilter/nf_conntrack_bridge.c | 12 ++++++------
+ net/ipv6/netfilter.c                       | 12 ++++++------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index 752ef88c9fd97..0bee018a6a6c0 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -1175,7 +1175,7 @@ static int linker_append_sec_data(struct bpf_linker *linker, struct src_obj *obj
- 		} else {
- 			if (!secs_match(dst_sec, src_sec)) {
- 				pr_warn("ELF sections %s are incompatible\n", src_sec->sec_name);
--				return -1;
-+				return -EINVAL;
- 			}
+diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
+index e60c38670f220..e7df2911d2be7 100644
+--- a/net/bridge/netfilter/nf_conntrack_bridge.c
++++ b/net/bridge/netfilter/nf_conntrack_bridge.c
+@@ -60,19 +60,19 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
+ 		struct ip_fraglist_iter iter;
+ 		struct sk_buff *frag;
  
- 			/* "license" and "version" sections are deduped */
-@@ -2023,7 +2023,7 @@ static int linker_append_elf_relos(struct bpf_linker *linker, struct src_obj *ob
- 			}
- 		} else if (!secs_match(dst_sec, src_sec)) {
- 			pr_warn("sections %s are not compatible\n", src_sec->sec_name);
--			return -1;
-+			return -EINVAL;
+-		if (first_len - hlen > mtu ||
+-		    skb_headroom(skb) < ll_rs)
++		if (first_len - hlen > mtu)
+ 			goto blackhole;
+ 
+-		if (skb_cloned(skb))
++		if (skb_cloned(skb) ||
++		    skb_headroom(skb) < ll_rs)
+ 			goto slow_path;
+ 
+ 		skb_walk_frags(skb, frag) {
+-			if (frag->len > mtu ||
+-			    skb_headroom(frag) < hlen + ll_rs)
++			if (frag->len > mtu)
+ 				goto blackhole;
+ 
+-			if (skb_shared(frag))
++			if (skb_shared(frag) ||
++			    skb_headroom(frag) < hlen + ll_rs)
+ 				goto slow_path;
  		}
  
- 		/* add_dst_sec() above could have invalidated linker->secs */
+diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
+index 857713d7a38a5..d873658fc821f 100644
+--- a/net/ipv6/netfilter.c
++++ b/net/ipv6/netfilter.c
+@@ -163,20 +163,20 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 		struct ip6_fraglist_iter iter;
+ 		struct sk_buff *frag2;
+ 
+-		if (first_len - hlen > mtu ||
+-		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
++		if (first_len - hlen > mtu)
+ 			goto blackhole;
+ 
+-		if (skb_cloned(skb))
++		if (skb_cloned(skb) ||
++		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
+ 			goto slow_path;
+ 
+ 		skb_walk_frags(skb, frag2) {
+-			if (frag2->len > mtu ||
+-			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
++			if (frag2->len > mtu)
+ 				goto blackhole;
+ 
+ 			/* Partially cloned skb? */
+-			if (skb_shared(frag2))
++			if (skb_shared(frag2) ||
++			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
+ 				goto slow_path;
+ 		}
+ 
 -- 
 2.39.5
 
