@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F491AE5342
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B29F6AE5237
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 922341B66A08
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49DC94A54A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7C5C219A7A;
-	Mon, 23 Jun 2025 21:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4172222C2;
+	Mon, 23 Jun 2025 21:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzUoY/LJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhSQEDcQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F5D136348;
-	Mon, 23 Jun 2025 21:51:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED5DD4315A;
+	Mon, 23 Jun 2025 21:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715484; cv=none; b=L8u7OGZDXoe+tlAZfY4ukIVEK+iseGMmmnt1ST/xcbwWx0kojVfxv5rk0N8KIQqyN+3VuQ6zCGt0y9XKihQ0yb+Tb6jvKeIOhCI8pWiwMalM6stNjUouSP5DY4I+jWwyVJrtkOxzHizNtDMRzGi8TS2/WTSdqJZprAlWGX1jYJs=
+	t=1750714890; cv=none; b=GrqXOuW+QaT6HArqMkp9L1Yb4UV1h8ALLJOciHd+oaBaA9W2xcXP26xa08MtRoswQfTzEoKORY5beJneBb/gWnhh0RCcfWDgotta4t3lfHRsjEGKbtsI/0rwLv3j3TxlND34LgW8kmfQ92RcBJ4pjMihxjavi37WPshkaltWRic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715484; c=relaxed/simple;
-	bh=LHsfskMnFBmo/VMPKa7fk9yNsA59gPhVon71kWbiLJg=;
+	s=arc-20240116; t=1750714890; c=relaxed/simple;
+	bh=aXh6kcfjeuZSp7OWuOkaFvRJAVpXPcUiihQeCPbUI5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tMcbF8Mz2UjSPdcyPQzIWVB1KYp7lyArdOoVGF4X851fMBWqmeKT4eNhDOgRKoSGvgDkZ+wChnQbYUN5qecgb91PKCebA7Zckk7gny9s6C1HYsE9/PqFwIlwcZLCAFP2Xs5o8cieslRT0drO2iW0fpSCxP/yfrOqnMjHJta0Hjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzUoY/LJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BFCBC4CEEA;
-	Mon, 23 Jun 2025 21:51:23 +0000 (UTC)
+	 MIME-Version; b=CyKSOKzhgZYnej4NuWRZDi+CjkH4QNMvbUHkGJBlfabJi1oMXbwIA6oFFh4A+ksme7NF/d4+KY2CW5jp3eOYE68UbmcPXAWwlegJa5r2zk7uWgoBiqD0LHg4eeaXmUmXItvEWtRNXxIELV0ajovOgtoNEnyNYsNfN6UzgYo2aOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhSQEDcQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C391C4CEEA;
+	Mon, 23 Jun 2025 21:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715484;
-	bh=LHsfskMnFBmo/VMPKa7fk9yNsA59gPhVon71kWbiLJg=;
+	s=korg; t=1750714889;
+	bh=aXh6kcfjeuZSp7OWuOkaFvRJAVpXPcUiihQeCPbUI5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bzUoY/LJmfS96dyDe50g3YAEu30BS78/Bp2Ah0OxdyJWP3FGcowrQ+s++9aiuLV5m
-	 283oNpHcpjmYKrHcRzEa6RLzqbqQSZ5DtcXQS8hZ1jJ6exYJ7RQHynzCon3rgxCOmQ
-	 nQrxsMcDVFptIB3Q7BXELutJVQkBf9h0ZDnYleMg=
+	b=bhSQEDcQjH78fMcLsbNrd9Y8FOcaRMMY0z93Sn3qjNWWCiHJrVaO4AY1ri3bYt1/i
+	 n4+KBeAbtl49fi26RcViP6Gfo2llgigyXAX1mtgzkqLqPR/en2a0v7Ih47TNA8dEEx
+	 +6ZLupj390AQbLMDmCWkBdUjlde2+eAo9jI++/VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.15 482/592] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 239/355] drm/amdgpu/gfx9: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:07:20 +0200
-Message-ID: <20250623130711.899295666@linuxfoundation.org>
+Message-ID: <20250623130633.935538855@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
+[ Upstream commit a4a4c0ae6742ec7d6bf1548d2c6828de440814a0 ]
 
-We should count the terminating NUL byte as part of the ctx_len.
-Otherwise, UBSAN logs a warning:
-  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
-  index 60 is out of range for type 'char [*]'
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-The allocation itself is correct so there is no actual out of bounds
-indexing, just a warning.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Christian Göttsche <cgzones@googlemail.com>
-Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/xfrm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/security/selinux/xfrm.c
-+++ b/security/selinux/xfrm.c
-@@ -94,7 +94,7 @@ static int selinux_xfrm_alloc_user(struc
- 
- 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
- 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
--	ctx->ctx_len = str_len;
-+	ctx->ctx_len = str_len + 1;
- 	memcpy(ctx->ctx_str, &uctx[1], str_len);
- 	ctx->ctx_str[str_len] = '\0';
- 	rc = security_context_to_sid(ctx->ctx_str, str_len,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+index 432c24f3c7981..5bd1fcd02396d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
+@@ -1741,8 +1741,6 @@ static void gfx_v9_0_get_csb_buffer(struct amdgpu_device *adev,
+ 						PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
+-- 
+2.39.5
+
 
 
 
