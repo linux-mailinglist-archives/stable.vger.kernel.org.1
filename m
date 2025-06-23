@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-155928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1878AE445A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C761AE444B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C6B417811A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6D5381B60C64
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024BC253F1D;
-	Mon, 23 Jun 2025 13:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D5F02550AD;
+	Mon, 23 Jun 2025 13:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVc4cIxA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKBrJzIE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E532F24;
-	Mon, 23 Jun 2025 13:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D771B250C06;
+	Mon, 23 Jun 2025 13:35:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685698; cv=none; b=lAi+MJzafWEjQtkWYD6qXvqWuGvoE50kgBznZXwc4div2JZ4XZQ++EvdD1WDSWOCwj44KUvGSdmxU0TlsshhHZEnV318c4ar/hW/Bb8i9pN4C9yOJvEy0bALO4u8AAgikW5D+icLvetwsS3uCjvjE/ZYo24rNaydY8tXcrSmti8=
+	t=1750685714; cv=none; b=kQZtgb8Z91h1hh4mKLUUib/pUcx3vywD1gM2wj+c/Qp6Xf+QsHb91/xuAgvIAbvUBUaJEvy7E7/3nk7kGlDsspORco2cxBlzMzu5xFzvSb9TmeDDCDUDUTPZ9PpEAQj/Y8HTHomg1MxgJIKU6EEsOcq8xO1qa1c175dO472Sw/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685698; c=relaxed/simple;
-	bh=5h3CFyCvXG7LbFjznuHQ875IQOwr91rqZ5IBuyZaowY=;
+	s=arc-20240116; t=1750685714; c=relaxed/simple;
+	bh=INqqCv9y9C3AxJ3fAS5UL+oqu8smvU40cg/UqsylX6U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dh5STkA0eIpIkULDor5awfR436IKeceq3DzpO3aL6SiBFQje7QsHfr9h0kseVv9F3dXu+sISuiXJ9IGMTfZpAOvciFHp9fZKpjeZvb6+/vfwp6y0L5Oesca51gezjTWVJCpFAF+ZW/1JLS/COKfN5ZuQuR8nnQ3WMnp6rqqpDMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVc4cIxA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA666C4CEEA;
-	Mon, 23 Jun 2025 13:34:57 +0000 (UTC)
+	 MIME-Version; b=e/D0hEqXVzYZ75eruNDHdmib+9eLO2NIwhYT5F7JD6Z2zsEhynrWz85WCvFyaFYg2PQ+WE2llgZIiT1iW55KtVBgtF4zOKcx2u8tu2RKQaOXcX1lDXZ4QvKLKrETBzedwENJar15GhF0uF6IW7zvc8AZPSUms6iAIuDSAfmlkR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKBrJzIE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A6F6C4CEF1;
+	Mon, 23 Jun 2025 13:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685698;
-	bh=5h3CFyCvXG7LbFjznuHQ875IQOwr91rqZ5IBuyZaowY=;
+	s=korg; t=1750685713;
+	bh=INqqCv9y9C3AxJ3fAS5UL+oqu8smvU40cg/UqsylX6U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVc4cIxAdk2kXOQVLvV6MNAP5b31b3lTpwjaeW1VRhR/sTl5lyiozRhWOcj/3nn+L
-	 mQw5jd4Ns5zZoUjPep8X4WHGnGUO/8wGf6k1qmVeK33tesBUkXDPgJg9QKuhp+fkia
-	 55F40g7ch7keV/siWbHgqLap8qSXx1d9XqZkb7F4=
+	b=RKBrJzIENCu5phdXasgqGNy+Ck/H5PiewL09iPjFo7/tKKFCZiGvSiQGAMTVgrBqr
+	 nZPgG33kAgpDygRq893msJK0J1K5D/zhPCGWO6hXoLyF1c3SolcBMxCOrc4ajQgat4
+	 7F89mYBVTle0Xx4h+diwiKoQeRHT3mkvPo6zVGTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Feng Xu <feng.f.xu@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 025/508] ASoC: tas2764: Enable main IRQs
-Date: Mon, 23 Jun 2025 15:01:10 +0200
-Message-ID: <20250623130645.868916583@linuxfoundation.org>
+Subject: [PATCH 6.1 026/508] EDAC/skx_common: Fix general protection fault
+Date: Mon, 23 Jun 2025 15:01:11 +0200
+Message-ID: <20250623130645.892827235@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,39 +67,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit dd50f0e38563f15819059c923bf142200453e003 ]
+[ Upstream commit 20d2d476b3ae18041be423671a8637ed5ffd6958 ]
 
-IRQ handling was added in commit dae191fb957f ("ASoC: tas2764: Add IRQ
-handling") however that same commit masks all interrupts coming from
-the chip. Unmask the "main" interrupts so that we can see and
-deal with a number of errors including clock, voltage, and current.
+After loading i10nm_edac (which automatically loads skx_edac_common), if
+unload only i10nm_edac, then reload it and perform error injection testing,
+a general protection fault may occur:
 
-Fixes: dae191fb957f ("ASoC: tas2764: Add IRQ handling")
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-4-50a00ec850a3@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  mce: [Hardware Error]: Machine check events logged
+  Oops: general protection fault ...
+  ...
+  Workqueue: events mce_gen_pool_process
+  RIP: 0010:string+0x53/0xe0
+  ...
+  Call Trace:
+  <TASK>
+  ? die_addr+0x37/0x90
+  ? exc_general_protection+0x1e7/0x3f0
+  ? asm_exc_general_protection+0x26/0x30
+  ? string+0x53/0xe0
+  vsnprintf+0x23e/0x4c0
+  snprintf+0x4d/0x70
+  skx_adxl_decode+0x16a/0x330 [skx_edac_common]
+  skx_mce_check_error.part.0+0xf8/0x220 [skx_edac_common]
+  skx_mce_check_error+0x17/0x20 [skx_edac_common]
+  ...
+
+The issue arose was because the variable 'adxl_component_count' (inside
+skx_edac_common), which counts the ADXL components, was not reset. During
+the reloading of i10nm_edac, the count was incremented by the actual number
+of ADXL components again, resulting in a count that was double the real
+number of ADXL components. This led to an out-of-bounds reference to the
+ADXL component array, causing the general protection fault above.
+
+Fix this issue by resetting the 'adxl_component_count' in adxl_put(),
+which is called during the unloading of {skx,i10nm}_edac.
+
+Fixes: 123b15863550 ("EDAC, i10nm: make skx_common.o a separate module")
+Reported-by: Feng Xu <feng.f.xu@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Feng Xu <feng.f.xu@intel.com>
+Link: https://lore.kernel.org/r/20250417150724.1170168-2-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2764.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/edac/skx_common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/codecs/tas2764.c b/sound/soc/codecs/tas2764.c
-index 10f0f07b90ff2..8baf92abcf000 100644
---- a/sound/soc/codecs/tas2764.c
-+++ b/sound/soc/codecs/tas2764.c
-@@ -542,7 +542,7 @@ static int tas2764_codec_probe(struct snd_soc_component *component)
- 	tas2764_reset(tas2764);
+diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
+index e218909f9f9e8..c11870ac1b3c7 100644
+--- a/drivers/edac/skx_common.c
++++ b/drivers/edac/skx_common.c
+@@ -114,6 +114,7 @@ EXPORT_SYMBOL_GPL(skx_adxl_get);
  
- 	if (tas2764->irq) {
--		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0xff);
-+		ret = snd_soc_component_write(tas2764->component, TAS2764_INT_MASK0, 0x00);
- 		if (ret < 0)
- 			return ret;
- 
+ void skx_adxl_put(void)
+ {
++	adxl_component_count = 0;
+ 	kfree(adxl_values);
+ 	kfree(adxl_msg);
+ }
 -- 
 2.39.5
 
