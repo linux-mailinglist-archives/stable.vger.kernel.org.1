@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B43DFAE536B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20868AE547A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3CD27A58F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B120D4C1133
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBD9222576;
-	Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A0D2940B;
+	Mon, 23 Jun 2025 22:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYJKfepB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1QAJ5Og"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995D2221FCC;
-	Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 613F84C74;
+	Mon, 23 Jun 2025 22:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715528; cv=none; b=YuV7sUi8zo3pO6cwugOds1e7XPkp59SWAo9dIDINT88NDYTBaiO0YNq6mxBc+oxvXvR4d44FTKLBEfQ7tk1qNX+WWhvGfQ8KTCITGwhLLAuY8h3eIZv+/X9JobNpfQg8raRKk/N2pMtSzCBqpN1/CU/ha29K64EMMHwkoyyR0D8=
+	t=1750716115; cv=none; b=mzBC2kw8FCbReObs6bZm7ijPN3ai6/9u+IKLqfWLes9ZAYTvFmB1FNs63HNYiMFay3My4s/lswdk3HqY2WaTLlMtmZilpUyX99T87PNlzj2034nHijYEY/qls2FqnhAmTyLRUqxMwP7OtIdxOHq0pmmFCIJZynaKvUl4JQD9aLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715528; c=relaxed/simple;
-	bh=JkR8AQcR7j+v5sHAJpst+RBrLKA6hWddJ+oFioL83wA=;
+	s=arc-20240116; t=1750716115; c=relaxed/simple;
+	bh=nWn96qChYQi06BGy8JuRdCRmPnHT5lUbnTnYIIOJeps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KeREWdtv2dcG2JGS+B0veqz7YTK5zhsTXK8Yj1pBBsG/fiIbbBP7XX2fCphY2bCur3JZA/RUEdhtaFj9BbuuNewIFOYrxSnPrgSW1DW+irSpFntqyiNjN4gmcJyadk5HsPliDvGO1WMOWZDrStJSuUkJf6au8XbRPJcBCGh0ZsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYJKfepB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304A2C4CEEA;
-	Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
+	 MIME-Version; b=INbdmfzeXZcUUudtsdO7HtH6A44CngX+ZpeYg4lNst0Z4LDR3H9zh8PL2tNLn1Y5IG6es27LE2/4rJFTyxiqmJbgHpmjQfIIdZHSUmE+woxBWYvHhHjD4Ud/K9DsSUYQAz/P8O3pJFXsYIkZi3cHKqstWBqT+3oKepOGMjQO+1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1QAJ5Og; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2A2C4CEEA;
+	Mon, 23 Jun 2025 22:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715528;
-	bh=JkR8AQcR7j+v5sHAJpst+RBrLKA6hWddJ+oFioL83wA=;
+	s=korg; t=1750716115;
+	bh=nWn96qChYQi06BGy8JuRdCRmPnHT5lUbnTnYIIOJeps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TYJKfepB8JkKCcMTJSPIh3Zqnz5e8qyhgkHOgm+rtxkySmjF36g9OLwo94k5n29vs
-	 seTEyVY1pJQRe7OeFcsz/56cPlhYWfdReNmv/YHWxxeprvgcPRmyDqX1Y91nvFguZG
-	 4/ItuOAJWwisgL0/NiCbzym1P5ekKRDYYJiyuyvg=
+	b=K1QAJ5OgzxObIWDTseDOQ3cGOKp6E5wRfBTyzsfdmCyzQUCm7qiMXVNud9J0K2Ly8
+	 4dfuOd+0/6ITL6V6NKVC40Q9/i2Y+NUdqW25DDRHoBmRPYTszO8t/FwkuuVEVVQ//s
+	 ap+SzISuePDmEEUn7srArCrIQSHc/MEba+xrWmB8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Steven Rostedt <rostedt@goodmis.org>,
 	Hongbo Li <lihongbo22@huawei.com>,
 	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 5.10 301/355] erofs: remove unused trace event erofs_destroy_inode
+Subject: [PATCH 6.6 241/290] erofs: remove unused trace event erofs_destroy_inode
 Date: Mon, 23 Jun 2025 15:08:22 +0200
-Message-ID: <20250623130635.828092454@linuxfoundation.org>
+Message-ID: <20250623130634.177232343@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -87,7 +87,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/include/trace/events/erofs.h
 +++ b/include/trace/events/erofs.h
-@@ -235,24 +235,6 @@ DEFINE_EVENT(erofs__map_blocks_exit, z_e
+@@ -237,24 +237,6 @@ DEFINE_EVENT(erofs__map_blocks_exit, z_e
  	TP_ARGS(inode, map, flags, ret)
  );
  
