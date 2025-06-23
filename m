@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C33AAE42A5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42136AE429A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1F1179AE1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B137D188C745
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2C825178C;
-	Mon, 23 Jun 2025 13:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDDE253B73;
+	Mon, 23 Jun 2025 13:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFcXMIGW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOpz7Cgk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1166219E0;
-	Mon, 23 Jun 2025 13:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0A1253B56;
+	Mon, 23 Jun 2025 13:18:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684725; cv=none; b=QiHEruheS23dZpnN+nQTazY0ABtzBCwrVjslb14Vh5WuIBmpuqRWac7EwQ/0Pu2a+kK4yfIuZJsmdU5DlL52ZPQsQWnsCSXJAnhayh9F6RxHdcrKo/c2Bjvqgg17rgEXh4a3onoK6m21P7EAogfDui8oy+faca8zHeV4hgjVKxI=
+	t=1750684730; cv=none; b=eHnk+ZMjx5hD1lujDDGEkVfQ4eNHGAMbWBdp192X/AdkoNBh+PCU31PGK0QBbrBUUOfm9TRTSh93MQZ0ezO+sRYwJ9GupzczRx+xV425e+GmCV91Ll2GHGYgRFYK/IIxsOxpE/Y/aouCCmXVhZ43BcF5HVDivwG9udEPtqgygWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684725; c=relaxed/simple;
-	bh=IgW28ZByBE1hX0H6jVIs7eA+vQ81JXfS6Tmhlz8DR4E=;
+	s=arc-20240116; t=1750684730; c=relaxed/simple;
+	bh=zedNR3/NHmgljUtZWD9cnbSjUVNSShzktN1hlLiNm/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYe30kCoU5rcD524UFQxEYVdN8JfFp9+HwNwB0fD51EUuG5tyi6bT51LKT3lp9aIuvoHUWU5xA7hktQC9kLPG7ygs5d9twyAe1AaM0XAc6GFk8q3s5+MYn40FyxkwmWl7CrPhxyN/pBiPADisGxgzlL5oBFoJ5uucEESELRAv3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFcXMIGW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2A1C4CEEA;
-	Mon, 23 Jun 2025 13:18:44 +0000 (UTC)
+	 MIME-Version; b=p/v5/NPtFz2so91ftlG5pPTqgExsMUZE33hekWFUzIERQfrc3FpoQSoq0O07ZULBfPNlRK3DF+e8hhrLscQ7coVYMYE5fOz8Vto/x7hmlPskw/NMyeT/+ZCfXvsVp8vbHWoALUoy2eN4WHS37W/c/bLQw1HL6o0XrKBC61nennM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOpz7Cgk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D13EC4CEF3;
+	Mon, 23 Jun 2025 13:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684725;
-	bh=IgW28ZByBE1hX0H6jVIs7eA+vQ81JXfS6Tmhlz8DR4E=;
+	s=korg; t=1750684730;
+	bh=zedNR3/NHmgljUtZWD9cnbSjUVNSShzktN1hlLiNm/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jFcXMIGWsmlIsAg8nsjplPLgJtrjNAORRygbc6hGU6ME38VEXc3qHec6AHJFZ3DGt
-	 J5mX7QO+cuYRWmX1WhwypFl1OKG75TmBHM6c+PxXWZUwnRylhv5hNN9jDLJWjlyvHR
-	 K/z9jes0gmSvLXF6Y3LrztEkERqomYIcots75yfo=
+	b=eOpz7CgkwsMFW6TCwXUtJCqgl2xOqokvPWFQy79y9ajuAVZHRfXaoDAIqc3r20MYV
+	 cJrR1o5deRY/hiR9jTckS/YdynXnA6ndhecaPolMuokN9PMvdY8MVz2ItEMgMFYpfT
+	 2HvM5gb/0Jxi3pbNg7healjxtKwdFT12nLOiHu+A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Armin Wolf <W_Armin@gmx.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 016/222] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
-Date: Mon, 23 Jun 2025 15:05:51 +0200
-Message-ID: <20250623130612.390964915@linuxfoundation.org>
+Subject: [PATCH 5.4 017/222] ACPI: OSI: Stop advertising support for "3.0 _SCP Extensions"
+Date: Mon, 23 Jun 2025 15:05:52 +0200
+Message-ID: <20250623130612.419662182@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,44 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
+[ Upstream commit 8cf4fdac9bdead7bca15fc56fdecdf78d11c3ec6 ]
 
-When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
-to save fixed-range MTRRs.
+As specified in section 5.7.2 of the ACPI specification the feature
+group string "3.0 _SCP Extensions" implies that the operating system
+evaluates the _SCP control method with additional parameters.
 
-On platforms without fixed-range MTRRs like the ACRN hypervisor which
-has removed fixed-range MTRR emulation, accessing these MSRs will
-trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
-supported before access to prevent such error.
+However the ACPI thermal driver evaluates the _SCP control method
+without those additional parameters, conflicting with the above
+feature group string advertised to the firmware thru _OSI.
 
-Since mtrr_state.have_fixed is only set when MTRRs are present and
-enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
-unnecessary.
+Stop advertising support for this feature string to avoid confusing
+the ACPI firmware.
 
-Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
+Fixes: e5f660ebef68 ("ACPI / osi: Collect _OSI handling into one single file")
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20250410165456.4173-2-W_Armin@gmx.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/osi.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index 4ea906fe1c351..d15152126877b 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -350,7 +350,7 @@ static void get_fixed_ranges(mtrr_type *frs)
- 
- void mtrr_save_fixed_ranges(void *info)
- {
--	if (boot_cpu_has(X86_FEATURE_MTRR))
-+	if (mtrr_state.have_fixed)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
- }
- 
+diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
+index bec0bebc7f52b..763d4b8045110 100644
+--- a/drivers/acpi/osi.c
++++ b/drivers/acpi/osi.c
+@@ -42,7 +42,6 @@ static struct acpi_osi_entry
+ osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
+ 	{"Module Device", true},
+ 	{"Processor Device", true},
+-	{"3.0 _SCP Extensions", true},
+ 	{"Processor Aggregator Device", true},
+ 	/*
+ 	 * Linux-Dell-Video is used by BIOS to disable RTD3 for NVidia graphics
 -- 
 2.39.5
 
