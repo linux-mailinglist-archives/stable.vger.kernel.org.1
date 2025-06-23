@@ -1,102 +1,135 @@
-Return-Path: <stable+bounces-155330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D6F4AE39E9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:25:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCCDAE3ACA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:41:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9D1B3B34F5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:24:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A763188521B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:41:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E79523184F;
-	Mon, 23 Jun 2025 09:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A5162192E3;
+	Mon, 23 Jun 2025 09:41:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="l9AhgzrC"
+	dkim=pass (2048-bit key) header.d=tkos.co.il header.i=@tkos.co.il header.b="sLhqgFiZ"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mail.tkos.co.il (wiki.tkos.co.il [84.110.109.230])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0500E1F1522;
-	Mon, 23 Jun 2025 09:24:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5B823B0;
+	Mon, 23 Jun 2025 09:41:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=84.110.109.230
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750670698; cv=none; b=Pcpvu2MDymTyYnoD5JhsRK2hOTk0gaxTFzK/VI/GHeuibijlx5XQNU0OLEYR7YlzQkyLTtkPu0nx4aaPqlmFfEgeG0ao8VqQT9VQSygMo3YuFY1hqQHga0riH8va/AkHnOJHlAa0VQfE4L25jNVNMV7ix7PjlFzWZVbAbPi+V38=
+	t=1750671672; cv=none; b=TZp9OnSSiPlbEuQUdSaj1bLeNU8ldWoBZiS7p+JS1jpFXjv6fmjjNPqWcdTXAFD+1bgO6Nx9t231hOhQtI6GzVeZjO+VEQ+INTawhTlQGXAnX0Dl2oQCmy28ldFnWmqPJIJUpXaajKx5jIYaeRWsjkq3SND6HgUpUSTq6Yr6shE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750670698; c=relaxed/simple;
-	bh=yxximNRZg10fk70Q/eGnQ3KnoNbsSsD9NHTqlJs2ZC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AlvwVVTG67aZqHEPjEJRh5O1DfvWuiDoda4sb4qryrws/eGXzByZBWzSEeKGvlpRrgzGBQ0wo3bza5poX5qFGzGbIMcuJeGHByMcu3zXTHJrtcGaj4AqsvW0og+F+tZ8aDIVMabSO9nueyV3Mtv4pCtrovW/GtF8fj3ga5YkpCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=l9AhgzrC; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=WYO6dUwunWcz7wqIiPUd0m6sJh2n71+M5Cw939+rQ/c=; b=l9AhgzrCOXC/8F7TPB047C1Yzn
-	k8leIX5hUWqLGKBzUTl2CgMFmuO/+PLau/3cGqmFsM0o3nfrA4Y/c3lDJvqZu2zoTbFJ9uprXYokD
-	McBEWZnFs7yheb1sZrk2WNnagX7WrGtIDcA+/DjiPdgtWFCB8Ybta4iG6ScV+5MNB8NKcAq4JaL4c
-	4yD1qQOIEqucvjwevfRNhKAuDA5EvCRIltfWN3/L0HmXy8+Hx5yaX9TPumhH4KJbJ4NPwjWYYd8pu
-	k5FiU8bvFRfmMOeIkG2/eUafbx7SsIhYKYqBCWyc4nKqKuV24VR1cM9krjKZeDCoPoKBJgyuSfzds
-	RVpMzAkg==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1uTdAa-000FeC-2O;
-	Mon, 23 Jun 2025 17:24:50 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 23 Jun 2025 17:24:49 +0800
-Date: Mon, 23 Jun 2025 17:24:49 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: thomas.lendacky@amd.com, john.allen@amd.com, davem@davemloft.net,
-	aik@amd.com, dionnaglaze@google.com, michael.roth@amd.com,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [RESEND PATCH v3] crypto: ccp: Fix SNP panic notifier
- unregistration
-Message-ID: <aFkdYX1tZsESRpne@gondor.apana.org.au>
-References: <20250616215027.68768-1-Ashish.Kalra@amd.com>
+	s=arc-20240116; t=1750671672; c=relaxed/simple;
+	bh=BwJm+0ENa935xRL7dXx302SmtpFL0P2DqD3scehu6WE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=tvcmgig1SdD4c5RRMysOxBdZXogB/V5sELXtRp2N4+fikD8P/SQ0w+/SlJaCcwbK/fiyrdSpgLPpJ2j0r60AEDS94Nr9iUjw45CS6ew2sZdE8PcjfLYYaD2H1etQEGQATCc2ESrj6KCddI2JTUz8SpwvD1a9N59fCkAOWcV0zF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tkos.co.il; spf=pass smtp.mailfrom=tkos.co.il; dkim=pass (2048-bit key) header.d=tkos.co.il header.i=@tkos.co.il header.b=sLhqgFiZ; arc=none smtp.client-ip=84.110.109.230
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=tkos.co.il
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tkos.co.il
+Received: from localhost (unknown [10.0.8.3])
+	by mail.tkos.co.il (Postfix) with ESMTP id D2125440242;
+	Mon, 23 Jun 2025 12:31:55 +0300 (IDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tkos.co.il;
+	s=default; t=1750671115;
+	bh=BwJm+0ENa935xRL7dXx302SmtpFL0P2DqD3scehu6WE=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=sLhqgFiZcJISa68ATcz9tShQKzw7d5hrONv1+tv9N0xSWbwfsYvidBFxdtdILjsGN
+	 owCdjhmCYIRgaNs5D3SA1mylaf20D8gHGmUGorWAjOf5kttKzVBGPkyauEUlE2QJhO
+	 YlL4REHjr0naMXgdoPGzEOsbmyZxkYCB3JYcWDhmEJyr+DFxuN6qNdtJqmt06zrFzK
+	 RUg4UtNhrVhOtu5RSXmN27cIv0aKTDzaJXXnS9feEOR9K3Ksc1A68BSD6Iy0vJPs5k
+	 dwIqxsyoqk2i8ZOfjB61OeuVhCXkIMd4H+Ro3M/6V1VAA02GSXxbZxm+dof55tNtRu
+	 sQV10oFZB1Nyg==
+From: Baruch Siach <baruch@tkos.co.il>
+To: Steffen =?utf-8?Q?B=C3=A4tz?= <steffen@innosonix.de>
+Cc: stable@vger.kernel.org,  Srinivas Kandagatla <srini@kernel.org>,  Shawn
+ Guo <shawnguo@kernel.org>,  Sascha Hauer <s.hauer@pengutronix.de>,
+  Pengutronix Kernel Team <kernel@pengutronix.de>,  Fabio Estevam
+ <festevam@gmail.com>,  Dmitry Baryshkov <lumag@kernel.org>,  Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>,  imx@lists.linux.dev,
+  linux-arm-kernel@lists.infradead.org,  linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] nvmem: imx-ocotp: fix MAC address byte length
+In-Reply-To: <20250623084351.1734037-1-steffen@innosonix.de> ("Steffen
+ =?utf-8?Q?B=C3=A4tz=22's?=
+	message of "Mon, 23 Jun 2025 10:43:45 +0200")
+References: <20250623084351.1734037-1-steffen@innosonix.de>
+User-Agent: mu4e 1.12.9; emacs 30.1
+Date: Mon, 23 Jun 2025 12:33:05 +0300
+Message-ID: <87ldpikdke.fsf@tarshish>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20250616215027.68768-1-Ashish.Kalra@amd.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 16, 2025 at 09:50:27PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> Panic notifiers are invoked with RCU read lock held and when the
-> SNP panic notifier tries to unregister itself from the panic
-> notifier callback itself it causes a deadlock as notifier
-> unregistration does RCU synchronization.
-> 
-> Code flow for SNP panic notifier:
-> snp_shutdown_on_panic() ->
-> __sev_firmware_shutdown() ->
-> __sev_snp_shutdown_locked() ->
-> atomic_notifier_chain_unregister(.., &snp_panic_notifier)
-> 
-> Fix SNP panic notifier to unregister itself during SNP shutdown
-> only if panic is not in progress.
-> 
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Hi Steffen,
+
+On Mon, Jun 23 2025, Steffen B=C3=A4tz wrote:
+> The commit "13bcd440f2ff nvmem: core: verify cell's raw_len" caused an
+> extension of the "mac-address" cell from 6 to 8 bytes due to word_size
+> of 4 bytes.
+>
+> Thus, the required byte swap for the mac-address of the full buffer lengt=
+h,
+> caused an trucation of the read mac-address.
+> From the original address 70:B3:D5:14:E9:0E to 00:00:70:B3:D5:14
+>
+> After swapping only the first 6 bytes, the mac-address is correctly passed
+> to the upper layers.
+>
+> Fixes: 13bcd440f2ff ("nvmem: core: verify cell's raw_len")
 > Cc: stable@vger.kernel.org
-> Fixes: 19860c3274fb ("crypto: ccp - Register SNP panic notifier only if SNP is enabled")
-> Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
+> Signed-off-by: Steffen B=C3=A4tz <steffen@innosonix.de>
 > ---
->  drivers/crypto/ccp/sev-dev.c | 10 ++++++++--
->  1 file changed, 8 insertions(+), 2 deletions(-)
+> v2:
+> - Add Cc: stable@vger.kernel.org as requested by Greg KH's patch bot
+>  drivers/nvmem/imx-ocotp-ele.c | 2 ++
+>  drivers/nvmem/imx-ocotp.c     | 2 ++
+>  2 files changed, 4 insertions(+)
+>
+> diff --git a/drivers/nvmem/imx-ocotp-ele.c b/drivers/nvmem/imx-ocotp-ele.c
+> index ca6dd71d8a2e..3af7968f5a34 100644
+> --- a/drivers/nvmem/imx-ocotp-ele.c
+> +++ b/drivers/nvmem/imx-ocotp-ele.c
+> @@ -119,6 +119,8 @@ static int imx_ocotp_cell_pp(void *context, const cha=
+r *id, int index,
+>=20=20
+>  	/* Deal with some post processing of nvmem cell data */
+>  	if (id && !strcmp(id, "mac-address"))
+> +		if (bytes > 6)
+> +			bytes =3D 6;
 
-Patch applied.  Thanks.
--- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+Maybe better use ETH_ALEN instead of magic number?
+
+baruch
+
+>  		for (i =3D 0; i < bytes / 2; i++)
+>  			swap(buf[i], buf[bytes - i - 1]);
+>=20=20
+> diff --git a/drivers/nvmem/imx-ocotp.c b/drivers/nvmem/imx-ocotp.c
+> index 79dd4fda0329..63e9974d9618 100644
+> --- a/drivers/nvmem/imx-ocotp.c
+> +++ b/drivers/nvmem/imx-ocotp.c
+> @@ -228,6 +228,8 @@ static int imx_ocotp_cell_pp(void *context, const cha=
+r *id, int index,
+>=20=20
+>  	/* Deal with some post processing of nvmem cell data */
+>  	if (id && !strcmp(id, "mac-address"))
+> +		if (bytes > 6)
+> +			bytes =3D 6;
+>  		for (i =3D 0; i < bytes / 2; i++)
+>  			swap(buf[i], buf[bytes - i - 1]);
+
+--=20
+                                                     ~. .~   Tk Open Systems
+=3D}------------------------------------------------ooO--U--Ooo------------=
+{=3D
+   - baruch@tkos.co.il - tel: +972.52.368.4656, http://www.tkos.co.il -
 
