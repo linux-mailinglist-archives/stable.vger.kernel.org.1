@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-158035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1002BAE56A4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D0BF4AE5573
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8CD587B30CD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC317AC9D0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CAF223DE8;
-	Mon, 23 Jun 2025 22:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7BD229B0D;
+	Mon, 23 Jun 2025 22:11:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hxUzSXFt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o11z8B0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D777F22370A;
-	Mon, 23 Jun 2025 22:22:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE64223DEF;
+	Mon, 23 Jun 2025 22:11:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717323; cv=none; b=jXv5sRo1Bky+1c6Df8XhyeJH3Mt9aVGjR+lGIc1aKS9S1UM6o9vfDrjoRwuGk3oSz9v3tKQVCFSdCXAN4RqOXkxkRyDwekmXQ6u/zYhZcIVQ0qlyPMqJdda4CKL1/tXBP/alr33t98Tl+ZdtVQmQ/HIeNpFl6GDWi2sr+naeQTI=
+	t=1750716671; cv=none; b=nxv0gUHMhSekXcyEfcpFsv6rfe7ZSdEZkhOo2ymyiFmRHsbJhHy3s7Zm1yUIcIckwtgZGqC02sngqvHHdOPCRPGrfeV1nYheBywPAVwrmIu53nKsfDIavEH4/hef5JQjptcyxqRfWfahetUIy368mQFEL0dA3T9u9sAlcjR9ir0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717323; c=relaxed/simple;
-	bh=/Ex0yPqQJS8OPxgH1GdT7ODWeAc9ahbslnLU6hddFoQ=;
+	s=arc-20240116; t=1750716671; c=relaxed/simple;
+	bh=+H/icuFlwsUQPzrYjNBP+FeQwMR3XwEwvn+pMa3JIF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FIDt57GwwigDdMBQ7Xz9j+Cu6f93c3N/4ssszzVVIS7rDaevUDSNDrNzsrZuqONXPSlM5TyaOPH0WAjZo8RHTRBiq8tY4SfW+siquA5Rzp2DaIMbZk9Ci1LedG4Im+7CUWtWk94ee5GrklLowzlXcibuPU7/Ugs5zXNHlOu+kfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hxUzSXFt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70981C4CEEA;
-	Mon, 23 Jun 2025 22:22:03 +0000 (UTC)
+	 MIME-Version; b=p0wd70oFNNWIJel6cIF9sYXoSStzrnHJz1HQEeWyEztzW6d88ZIMVTIV0teGllJAN+/P60WnxTmtyLrW+A0JdnBZGf6A2SxFNViANkj6uP0Jpt0fkpDwJlAONwRWcMWV4Z45SlfDE8cazbAh9arvYC1nvsg9sys8nEXiqP1H+5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o11z8B0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455CCC4CEEA;
+	Mon, 23 Jun 2025 22:11:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717323;
-	bh=/Ex0yPqQJS8OPxgH1GdT7ODWeAc9ahbslnLU6hddFoQ=;
+	s=korg; t=1750716671;
+	bh=+H/icuFlwsUQPzrYjNBP+FeQwMR3XwEwvn+pMa3JIF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hxUzSXFt/zEMIyWmbn+DRHnQpKGL8kZmanKcF2TiJl/fDWOz9r8P7qMqzbYkEmDyJ
-	 kpVWFsK8bM6Nsy+OVKwRSwIG1YOfbFMPm4/A+RUuDYi5u9lnzwf84/oP8IfqVGgxq9
-	 H2wLrMUihiNaeX/0utC3A0N6H8NBb14IoarwDrU0=
+	b=o11z8B0xzgPDE5DsmtjHJ2Ek9gss68u1h0ZBal8FC+cbtKGAoipsRkV2AneDymDZy
+	 oIDf+PrUzEXHWetd27hdctjIwU09etQByiehuPJ3Xo7Co2lovtbTNYA5NraD6rsinc
+	 yzraptiLDY/2dFnxe7RHFjBnKGBIi2GnzJC+po8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 356/414] drm/msm/a7xx: Call CP_RESET_CONTEXT_STATE
+	stable@kernel.org,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 349/411] scsi: storvsc: Increase the timeouts to storvsc_timeout
 Date: Mon, 23 Jun 2025 15:08:13 +0200
-Message-ID: <20250623130650.869993348@linuxfoundation.org>
+Message-ID: <20250623130642.432437050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Connor Abbott <cwabbott0@gmail.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 2b520c6104f34e3a548525173c38ebca4402cac3 ]
+commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
 
-Calling this packet is necessary when we switch contexts because there
-are various pieces of state used by userspace to synchronize between BR
-and BV that are persistent across submits and we need to make sure that
-they are in a "safe" state when switching contexts. Otherwise a
-userspace submission in one context could cause another context to
-function incorrectly and hang, effectively a denial of service (although
-without leaking data). This was missed during initial a7xx bringup.
+Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
+5s and 10s are used elsewhere. It turns out that rarely the 5s is not
+enough on Azure, so let's use storvsc_timeout everywhere.
 
-Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
-Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/654924/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In case a timeout happens and storvsc_channel_init() returns an error,
+close the VMBus channel so that any host-to-guest messages in the
+channel's ringbuffer, which might come late, can be safely ignored.
+
+Add a "const" to storvsc_timeout.
+
+Cc: stable@kernel.org
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/scsi/storvsc_drv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-index d2189441aa38a..80c78aff96433 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
-@@ -123,6 +123,20 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
- 		OUT_RING(ring, lower_32_bits(rbmemptr(ring, fence)));
- 		OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
- 		OUT_RING(ring, submit->seqno - 1);
-+
-+		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
-+		OUT_RING(ring, CP_SET_THREAD_BOTH);
-+
-+		/* Reset state used to synchronize BR and BV */
-+		OUT_PKT7(ring, CP_RESET_CONTEXT_STATE, 1);
-+		OUT_RING(ring,
-+			 CP_RESET_CONTEXT_STATE_0_CLEAR_ON_CHIP_TS |
-+			 CP_RESET_CONTEXT_STATE_0_CLEAR_RESOURCE_TABLE |
-+			 CP_RESET_CONTEXT_STATE_0_CLEAR_BV_BR_COUNTER |
-+			 CP_RESET_CONTEXT_STATE_0_RESET_GLOBAL_LOCAL_TS);
-+
-+		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
-+		OUT_RING(ring, CP_SET_THREAD_BR);
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -399,7 +399,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
+ /*
+  * Timeout in seconds for all devices managed by this driver.
+  */
+-static int storvsc_timeout = 180;
++static const int storvsc_timeout = 180;
+ 
+ #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+ static struct scsi_transport_template *fc_transport_template;
+@@ -819,7 +819,7 @@ static void  handle_multichannel_storage
+ 		return;
  	}
  
- 	if (!sysprof) {
--- 
-2.39.5
-
+-	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0) {
+ 		dev_err(dev, "Failed to create sub-channel: timed out\n");
+ 		return;
+@@ -885,7 +885,7 @@ static int storvsc_execute_vstor_op(stru
+ 	if (ret != 0)
+ 		return ret;
+ 
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return -ETIMEDOUT;
+ 
+@@ -1398,6 +1398,8 @@ static int storvsc_connect_to_vsp(struct
+ 		return ret;
+ 
+ 	ret = storvsc_channel_init(device, is_fc);
++	if (ret)
++		vmbus_close(device->channel);
+ 
+ 	return ret;
+ }
+@@ -1719,7 +1721,7 @@ static int storvsc_host_reset_handler(st
+ 	if (ret != 0)
+ 		return FAILED;
+ 
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return TIMEOUT_ERROR;
+ 
 
 
 
