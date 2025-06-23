@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 159BDAE513C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C33F6AE522D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32DF53BF5AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C501B64893
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 150F57080C;
-	Mon, 23 Jun 2025 21:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC7452222A9;
+	Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zfk4jhn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8Li/GkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C77D9C2E0;
-	Mon, 23 Jun 2025 21:32:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99844315A;
+	Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714323; cv=none; b=jD3mScUKQeE2+Ej9YyoSeUbIWX781vvUY9XNoGLqRo969uodotABzgWKYy7cOZTSzZbrU6dJtmntIphLPnK4up6Rl4GCnO+grBoIMde4D2w6WMgEeyg/GjzyHP41VK+X+CWbLavJcZQuQjCl0B3KJ7WOtVHAa7wM1dujL/Vv+60=
+	t=1750714865; cv=none; b=PyyGD+qkXlR/d2WnjhzCX1DVtaOOOTH7ueMZN3reQMqx4wnECaD47cGESPYm8Iv/JWN3J5vx41qRv4Skzqe9BzEL6C+4BI0rWRKgEusnIk7QnQV1dFQMgl64qdtKXo7Gsv4wobqa+d09c4NEXtxYQQdCmi+/xGNu7/2pV7gjwok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714323; c=relaxed/simple;
-	bh=nF+fcyq9WU773IWa0Awgs21XXQqMij/bkFq9Vbwad1o=;
+	s=arc-20240116; t=1750714865; c=relaxed/simple;
+	bh=DxjW80zt/sk0J6mKBJI3VWOkA3zxi8sKVJ2EqgmuMLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ihDX33g/qrq0+0WrWvlS2ljDinYreEn2W7rMnMkGLijDbhC/ZwpdzxYV+wSfi0YfjckAPUDiBi85hWhzrLpIiybsKTpf8QBIrz/BuhE9pMU0KKm/i7tPkJbWK0TsVdHuGsILZd67vN4IKAYZ44IqZ1lkjJaYj8Z5HS+4IlMinpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zfk4jhn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB2FC4CEEA;
-	Mon, 23 Jun 2025 21:32:03 +0000 (UTC)
+	 MIME-Version; b=ivPo4ogFSzTmeqeQc3XVwa2uXNyOjYRAUM0vprWpjeEuC5VdYBqz+sIOpC+vmVATTerXWtEOrHiuk1P29QNk5oywtjbpHjwcjF4suZs9KDlAvz4P/ouWaH1+pMjJTAM6MLOvohfytSUn0WuZleTJ3zeyLE6WVG7rz6XUbmZFo4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8Li/GkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39DB6C4CEEA;
+	Mon, 23 Jun 2025 21:41:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714323;
-	bh=nF+fcyq9WU773IWa0Awgs21XXQqMij/bkFq9Vbwad1o=;
+	s=korg; t=1750714865;
+	bh=DxjW80zt/sk0J6mKBJI3VWOkA3zxi8sKVJ2EqgmuMLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zfk4jhn878lhjPR4s0SwL9f1oMTsOqSeMeJRAAOjF5BNiIMiKaDRa5uLcRrscu0Fh
-	 70UGAkp89N16ZBoEoEL6S8eE52AFtWa7FEwy9y1jxrMoIuv6rlrvMMKItWU/Nd0935
-	 6/1M6Hcmw3eTKh9/f6Dvdnt7OKZt+aP9rY7E+sug=
+	b=h8Li/GkY/KmjJh316MGpXJKWsJijsNUj2eVwzukPMCeNflY4gv/xgZ7Mov76zZgzh
+	 g0mAn4IPdBvmlJAgNRLtySei2HRlZO22KI7UVWDTZSiQg9cltn7nrYXMzrh5QAeWrT
+	 2xDZU+0503u699qdyRRGlmZsiHznHDcRVCBh1LTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 5.10 199/355] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
-Date: Mon, 23 Jun 2025 15:06:40 +0200
-Message-ID: <20250623130632.647567560@linuxfoundation.org>
+	Jan Kara <jack@suse.cz>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Luis Henriques <luis@igalia.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 443/592] fs: drop assert in file_seek_cur_needs_f_lock
+Date: Mon, 23 Jun 2025 15:06:41 +0200
+Message-ID: <20250623130710.968665946@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Luis Henriques <luis@igalia.com>
 
-commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
+[ Upstream commit dd2d6b7f6f519d078a866a36a625b0297d81c5bc ]
 
-The function sunxi_nfc_hw_ecc_write_chunk() calls the
-sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
-function sunxi_nfc_randomizer_config(). Consequently, the randomization
-might not conduct correctly, which will affect the lifespan of NAND flash.
-A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
+The assert in function file_seek_cur_needs_f_lock() can be triggered very
+easily because there are many users of vfs_llseek() (such as overlayfs)
+that do their custom locking around llseek instead of relying on
+fdget_pos(). Just drop the overzealous assertion.
 
-Add the sunxi_nfc_randomizer_config() to config randomizer.
-
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da06e3c51794 ("fs: don't needlessly acquire f_lock")
+Suggested-by: Jan Kara <jack@suse.cz>
+Suggested-by: Mateusz Guzik <mjguzik@gmail.com>
+Signed-off-by: Luis Henriques <luis@igalia.com>
+Link: https://lore.kernel.org/20250613101111.17716-1-luis@igalia.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/file.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1045,6 +1045,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
- 	if (ret)
- 		return ret;
+diff --git a/fs/file.c b/fs/file.c
+index 3a3146664cf37..b6db031545e65 100644
+--- a/fs/file.c
++++ b/fs/file.c
+@@ -1198,8 +1198,12 @@ bool file_seek_cur_needs_f_lock(struct file *file)
+ 	if (!(file->f_mode & FMODE_ATOMIC_POS) && !file->f_op->iterate_shared)
+ 		return false;
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+-	VFS_WARN_ON_ONCE((file_count(file) > 1) &&
+-			 !mutex_is_locked(&file->f_pos_lock));
++	/*
++	 * Note that we are not guaranteed to be called after fdget_pos() on
++	 * this file obj, in which case the caller is expected to provide the
++	 * appropriate locking.
++	 */
++
+ 	return true;
+ }
  
+-- 
+2.39.5
+
 
 
 
