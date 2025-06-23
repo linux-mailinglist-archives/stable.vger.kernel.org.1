@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-157866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5C35AE55D2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70584AE5636
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 586ED7B1197
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3BDF4A238F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA0B22A808;
-	Mon, 23 Jun 2025 22:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C965722A4CC;
+	Mon, 23 Jun 2025 22:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wBnjForF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7FX7Vu3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56CB4229B16;
-	Mon, 23 Jun 2025 22:15:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6F19E7F9;
+	Mon, 23 Jun 2025 22:15:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716911; cv=none; b=cIwzG5+PWkqYgcXHo+6C1AHUQkRgWBGXJiWT90G+OaecJqdkS6eF4KPGd/mEKveKOu1CoCgPw7lYgmRFToUh2aFbItTonSp7OONFemBuxN9KuCNnw+jmev3W+/vn7K/DCiFzk+LxQI7BZrHv7kesjRIStdpIpqM/CFEldQd65zM=
+	t=1750716923; cv=none; b=l16TbzVmWNqBlgNFETRlUuPdRtkoRAL0V2iT0aSk+LFCQpnTHZj6fxxBDxNAVt8VGYhn76GLXA4ZBFJTtdOIVKExpWTXvVJpkoIfFq+66g15xtULmoUhi5p+z7IT12MYposACs1iX8GS09Mmm7OkWTCJ1evNenzYj3Mb94i7tp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716911; c=relaxed/simple;
-	bh=DSw4xSHXGrijznJimWhNJGD5Aa4OAyUQm0+BuWQOGxc=;
+	s=arc-20240116; t=1750716923; c=relaxed/simple;
+	bh=FNA9rsWXSMdEIhLUB6VL8MZgxX/akA5FaVTz6aAC07w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CyjxA7i67iUHdwEGi93ortEzKQJbLaLzxt/OxgSJaYHyCs3e+LzlcB2hBQWHwXXAb0Q5pQYQ1rkF3kpQiD8aNx1FSgyn6hvTanhrJYJD8+rEpWPkRPEyugVPlXp3aycoFCuKIRJJEA9/hm6aYce4K1u+ts0iWcPa4i/jH1NsDT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wBnjForF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3CBDC4CEEA;
-	Mon, 23 Jun 2025 22:15:10 +0000 (UTC)
+	 MIME-Version; b=D0fUW1YKHKLkSjZUAEuxkFxg8lPnh76/OBQNbGQauXhUwvbjWtFu1JBEHXCAPdZ/WeVv5YJCWViehRGG61+aqFeXodV+5I2NlXncVKGUnvkjuqoskXNiU+bBQ8gbF+3e4r/Jz4T0La/f2hA7lGJdXgQUCN/FKSzMmF7p3VkbeJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7FX7Vu3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA8AC4CEEA;
+	Mon, 23 Jun 2025 22:15:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716911;
-	bh=DSw4xSHXGrijznJimWhNJGD5Aa4OAyUQm0+BuWQOGxc=;
+	s=korg; t=1750716923;
+	bh=FNA9rsWXSMdEIhLUB6VL8MZgxX/akA5FaVTz6aAC07w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wBnjForF1+oII41XTmeMMqKRWto2riSN9nFku22Eu9wH+kryf7cEB8FxTsAjI3msa
-	 bmZlMHrTEEy0cee2pP2nqWklNnjqnznOMFVwl1kq0M0GVIRfJiQdy+0hhKAl7eJHSJ
-	 HKCyJlEESXK3FcSMhkDPjYxpwaTFkv2q38PqWIkc=
+	b=q7FX7Vu3Nl8Gk+JsOZWklh1HBcUKNgAYqj0+lJS68sn96QrM+cQzyuizQYKlS7+mB
+	 rmfIFSu/jWCqUiesVT0yS1PA1fh1mgFA2QxTwpwcZDbSSM+qLJjUggdlEG/Jff1uc1
+	 x0WXj/smVS6FGOpku6YMzz6nfJhV0mJFCSCludEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	maher azz <maherazz04@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 297/414] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
-Date: Mon, 23 Jun 2025 15:07:14 +0200
-Message-ID: <20250623130649.434331371@linuxfoundation.org>
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.12 298/414] platform/loongarch: laptop: Get brightness setting from EC on probe
+Date: Mon, 23 Jun 2025 15:07:15 +0200
+Message-ID: <20250623130649.458444624@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -68,48 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Yao Zi <ziyao@disroot.org>
 
-commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
+commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
 
-In
+Previously during driver probe, 1 is unconditionally taken as current
+brightness value and set to props.brightness, which will be considered
+as the brightness before suspend and restored to EC on resume. Since a
+brightness value of 1 almost never matches EC's state on coldboot (my
+laptop's EC defaults to 80), this causes surprising changes of screen
+brightness on the first time of resume after coldboot.
 
-riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
-   -> cm_chan_msg_send()
-      -> riocm_ch_send()
+Let's get brightness from EC and take it as the current brightness on
+probe of the laptop driver to avoid the surprising behavior. Tested on
+TongFang L860-T2 Loongson-3A5000 laptop.
 
-cm_chan_msg_send() checks that userspace didn't send too much data but
-riocm_ch_send() failed to check that userspace sent sufficient data.  The
-result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
-which were outside the bounds of the space which cm_chan_msg_send()
-allocated.
-
-Address this by teaching riocm_ch_send() to check that the entire
-rio_ch_chan_hdr was copied in from userspace.
-
-Reported-by: maher azz <maherazz04@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rapidio/rio_cm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/loongarch/loongson-laptop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/rapidio/rio_cm.c
-+++ b/drivers/rapidio/rio_cm.c
-@@ -789,6 +789,9 @@ static int riocm_ch_send(u16 ch_id, void
- 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
- 		return -EINVAL;
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
+ 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
+ 		return -EIO;
  
-+	if (len < sizeof(struct rio_ch_chan_hdr))
-+		return -EINVAL;		/* insufficient data from user */
-+
- 	ch = riocm_get_channel(ch_id);
- 	if (!ch) {
- 		riocm_error("%s(%d) ch_%d not found", current->comm,
+-	props.brightness = 1;
+ 	props.max_brightness = status;
++	props.brightness = ec_get_brightness();
+ 	props.type = BACKLIGHT_PLATFORM;
+ 
+ 	backlight_device_register("loongson_laptop",
 
 
 
