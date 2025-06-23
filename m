@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-155748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF15BAE4302
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43AF9AE44FA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D15F17A9A16
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF46316CBC1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FCA2522A8;
-	Mon, 23 Jun 2025 13:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB132472AF;
+	Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYJ0yOzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSStsSET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F77024C060;
-	Mon, 23 Jun 2025 13:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288B31E487;
+	Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685234; cv=none; b=nu9HL2kPUFgsVvAh6OX0T+QPoSxWsk7IHtk388qn8nwSryu6cJJVUbyYiUy8siXdAZA7VcPMnnLaQ6YX3lEORR29zBqE6gUH/YKMepi+00sortqDSrdmQyLwgdYEFYhpHx4spn2sUpYyxbP5D9Ia31D30+w6yAovrf/80EL9Zd8=
+	t=1750686107; cv=none; b=Qin3LmzIkMqiZAg+dfnNcBB3LcHslvJnaCVRIkyYaLOwLm/R8Dr+omV7q6dgoWI/WGxHOR0nQEz8r7hzCpAB2ellOPB+YhvBMvWbLjDKQIWDxySMvYdryoIu5A/uk2lvqTeTQeBpdVwHgJ8LrVFElawmEByIFDL1Io2KyDs1V68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685234; c=relaxed/simple;
-	bh=dWI6xyN7Do1+jsMq1GpIYplLOD+WpFMlSMfRhJKRxZI=;
+	s=arc-20240116; t=1750686107; c=relaxed/simple;
+	bh=hhxfObArWSJGG1bppGmi1LCwGA4B6fJfQlER4BOPi3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8gWuUgqNkN0vGwKi/ENWMI05f+SZ1me/63zIlUDp+IUXUkBStmp9RtMyWv8KZ5LaMjOUeDh3Ad5WypxPHNqdD1r9nJ1aIxG6A88OjKFP5vkQqCOeoBsWbV4yQhX/8+QoRWm6CW2Kfb4d6P41+I73eUMkQeBaVyzyc43ppJ4fIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYJ0yOzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6470C4CEEA;
-	Mon, 23 Jun 2025 13:27:13 +0000 (UTC)
+	 MIME-Version; b=gJE4v71bDYfK6uSmVuSpHm+fHhY1bqA5bBqvIZYYLLb0J3FKquXO9nLukqSn20NQpb5kR0cqZSUpP1oWmE2X79tCe+IE/4zdFvb5FF9q5Xk/ElrmYN3FMr46JEilhlMquavEXvgtR7Jt5g+J1JMexDplXP7M8eJHEVMsq2c/QUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSStsSET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3238C4CEEA;
+	Mon, 23 Jun 2025 13:41:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685234;
-	bh=dWI6xyN7Do1+jsMq1GpIYplLOD+WpFMlSMfRhJKRxZI=;
+	s=korg; t=1750686107;
+	bh=hhxfObArWSJGG1bppGmi1LCwGA4B6fJfQlER4BOPi3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYJ0yOzmuvqTcS3JrNatmZlypQjwmrIrTLchK4KqSGzJERE5uRtjJLJYJ7XAyfJlY
-	 L//y7WvV3gRTBzTjPjDDa/EKgtXyz7zuC2hX5DgHD+17k6Zd0cYa4fNSs3WAqRUDjM
-	 TdgF6OdjuaiM28he6LODHknW+uz/H05fnZoU8100=
+	b=fSStsSETcWyB4ljLKM2Fq6QRI4/usbAT32j7jv3VzTddiLWsV3Kpp0E5jK9gUHTK4
+	 uvo59C+MC5id6fUHF6MPNxUsI/95pekAZtbq6Wxz8Xu1W/yl9iPcBndge1Da3Tffrj
+	 Iv2UXp5QfmVgD2VEYjNZ3N8CHMByvNstJ4BUODHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Dmitry Antipov <dmantipov@yandex.ru>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Ovidiu Bunea <Ovidiu.Bunea@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/355] wifi: rtw88: do not ignore hardware read error during DPK
-Date: Mon, 23 Jun 2025 15:03:58 +0200
-Message-ID: <20250623130627.941162715@linuxfoundation.org>
+Subject: [PATCH 6.15 281/592] drm/amd/display: Update IPS sequential_ono requirement checks
+Date: Mon, 23 Jun 2025 15:03:59 +0200
+Message-ID: <20250623130707.028697270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +65,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
 
-[ Upstream commit 20d3c19bd8f9b498173c198eadf54580c8caa336 ]
+[ Upstream commit b4db797117ceba88ba405a080811369418104304 ]
 
-In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
-by 'check_hw_ready()' but issue a warning to denote possible
-DPK issue. Compile tested only.
+[why & how]
+ASICs that require special RCG/PG programming are determined based
+on hw_internal_rev. Update these checks to properly include all such
+ASICs.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
-Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250415090720.194048-1-dmantipov@yandex.ru
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c           | 2 +-
+ drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c | 2 +-
+ drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-index abed17e4c8c7b..a7fc2287521f0 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -3157,7 +3157,8 @@ static void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
- 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
- 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
+diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c
+index 62b7012cda430..f7a373a3d70a5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c
++++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c
+@@ -138,7 +138,7 @@ bool dpp35_construct(
+ 	dpp->base.funcs = &dcn35_dpp_funcs;
  
--	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
-+	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
-+		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
+ 	// w/a for cursor memory stuck in LS by programming DISPCLK_R_GATE_DISABLE, limit w/a to some ASIC revs
+-	if (dpp->base.ctx->asic_id.hw_internal_rev <= 0x10)
++	if (dpp->base.ctx->asic_id.hw_internal_rev < 0x40)
+ 		dpp->dispclk_r_gate_disable = true;
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+index ffd2b816cd02c..8948d44a7a80e 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
+@@ -1903,7 +1903,7 @@ static bool dcn35_resource_construct(
+ 	dc->caps.max_disp_clock_khz_at_vmin = 650000;
  
- 	rtw_write8(rtwdev, 0x1b10, 0x0);
- 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
+ 	/* Sequential ONO is based on ASIC. */
+-	if (dc->ctx->asic_id.hw_internal_rev > 0x10)
++	if (dc->ctx->asic_id.hw_internal_rev >= 0x40)
+ 		dc->caps.sequential_ono = true;
+ 
+ 	/* Use pipe context based otg sync logic */
+diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+index b6468573dc33d..7f19689e976a1 100644
+--- a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
++++ b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
+@@ -1876,7 +1876,7 @@ static bool dcn36_resource_construct(
+ 	dc->caps.max_disp_clock_khz_at_vmin = 650000;
+ 
+ 	/* Sequential ONO is based on ASIC. */
+-	if (dc->ctx->asic_id.hw_internal_rev > 0x10)
++	if (dc->ctx->asic_id.hw_internal_rev >= 0x40)
+ 		dc->caps.sequential_ono = true;
+ 
+ 	/* Use pipe context based otg sync logic */
 -- 
 2.39.5
 
