@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F71AAE54D6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8E6AE4FC6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94D941BC2155
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D4EB7ADCA8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1595218580;
-	Mon, 23 Jun 2025 22:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B89862222C2;
+	Mon, 23 Jun 2025 21:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYrVwf70"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZZRYzcC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F8E61A4F12;
-	Mon, 23 Jun 2025 22:05:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7652A7482;
+	Mon, 23 Jun 2025 21:17:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716304; cv=none; b=juqIRs33Ul8Xw0XpG5+LH48OhQ47c14/szESeFejX2To5OtuO/gwUduoRBeihElRjVmHRt0z/pSW5V2KGfz/L/cA5+MEIHbq6A5OElBM/XSBezudowEdoEvx7QoEBUGoYUiP7ZCsn+l2lDBd1tjMS2F0ikEMjcVNxe5uMUj9KJY=
+	t=1750713441; cv=none; b=lDjP3e/VUqfRFYajSUsP3O8R8ALsD7RA4YYCU6M+5hFt3HByhkIYV0llEYN9YXMVJhWVtMvWGaWiht92vftJ8plFaprBU5/D3+g0jJW2HsAlwXOw1F0rp+wjbgZns4jsg9VAOfL/JQj8enlH2CGmocrIM0cZLYd4kMbDrLuOE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716304; c=relaxed/simple;
-	bh=HH2IKuD4XjzEFlBF1ymLc0MwNyUPIcZ8oTeHEN9jczQ=;
+	s=arc-20240116; t=1750713441; c=relaxed/simple;
+	bh=Ht1iRFPkFeujFPHrAq6ki8kH1nb+MZvBCO0AnkT/1qw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nmruKo6uoF18rqMu1/XorYv314B1lJFBU9HX7KW4dw71CX4E+Ai+DKk7ilqdvCGaaRkvyHI48yjqTdZitF4g2wbbONjMRddsywR+EkMHeWotIZ0WwEcZrE40Myqo3Eohcr8aZf1kKqIGu8ANsSSF2nPgw6G5EVLEpgB9NqprqxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYrVwf70; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C09D2C4CEEA;
-	Mon, 23 Jun 2025 22:05:03 +0000 (UTC)
+	 MIME-Version; b=IN6rWCY9z7nPyFgIdSyT1VCtEB8wjkNUsaDI5tBXIPKjRosOlzw/6JUyqDp0I6d1wBou7vZzyOLLHH3Bw9zlumuIaZJ2YOU80iJVu8rztjF5ALdSvZkMqiNh11BAL4yIef9nUArnb0+akjwIOZIfroXqq7F3VoLT8joQ8WsqCE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZZRYzcC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F046C4CEEA;
+	Mon, 23 Jun 2025 21:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716304;
-	bh=HH2IKuD4XjzEFlBF1ymLc0MwNyUPIcZ8oTeHEN9jczQ=;
+	s=korg; t=1750713441;
+	bh=Ht1iRFPkFeujFPHrAq6ki8kH1nb+MZvBCO0AnkT/1qw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DYrVwf70XeFq1tcoXdjoD4A5HJuAGxC2NIOFW+p64GrIdmTYDgH1koqCMqFjeS8Vl
-	 dPaqZjDfvUQZ5PLzdESzCwG+TutwjW1nDg8ajcfLPbJUXTKZ3wWtjPN+qgJYUH94lF
-	 oOWe43yV0JZN8YJdXG4c/YHowjZvOaUNgF+aSnTA=
+	b=vZZRYzcCgqAJTXtg6Xs7m8Z3sgU277fYLOdClmz1ZlsAIdeeJlBmmAf5MHSJoU2lG
+	 AdQBJqxTdaV3w8sDcXUJ1uWC0TREZ24FReP4pa5YjrH76wp5sBcBe847MwJaTWuzq5
+	 64AcUIv4AQqsSFrGOflozxugtbJrFfQKLnPtNz4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.10 340/355] rtc: Make rtc_time64_to_tm() support dates before 1970
+	Haixia Qu <hxqu@hillstonenet.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 206/222] tipc: fix null-ptr-deref when acquiring remote ip of ethernet bearer
 Date: Mon, 23 Jun 2025 15:09:01 +0200
-Message-ID: <20250623130636.951336632@linuxfoundation.org>
+Message-ID: <20250623130618.499168526@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Mergnat <amergnat@baylibre.com>
+From: Haixia Qu <hxqu@hillstonenet.com>
 
-commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
+[ Upstream commit f82727adcf2992822e12198792af450a76ebd5ef ]
 
-Conversion of dates before 1970 is still relevant today because these
-dates are reused on some hardwares to store dates bigger than the
-maximal date that is representable in the device's native format.
-This prominently and very soon affects the hardware covered by the
-rtc-mt6397 driver that can only natively store dates in the interval
-1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
-to such a device, rtc_time64_to_tm() must do the right thing for
-time=-2208988800.
+The reproduction steps:
+1. create a tun interface
+2. enable l2 bearer
+3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
 
-Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Uwe Kleine-KÃ¶nig <u.kleine-koenig@baylibre.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+tipc: Started in network mode
+tipc: Node identity 8af312d38a21, cluster identity 4711
+tipc: Enabled bearer <eth:syz_tun>, priority 1
+Oops: general protection fault
+KASAN: null-ptr-deref in range
+CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
+Hardware name: QEMU Ubuntu 24.04 PC
+RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
+
+the ub was in fact a struct dev.
+
+when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or
+other media when other thread changes it.
+
+fix this by checking media_id.
+
+Fixes: 832629ca5c313 ("tipc: add UDP remoteip dump to netlink API")
+Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250617055624.2680-1-hxqu@hillstonenet.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/lib.c |   24 +++++++++++++++++++-----
- 1 file changed, 19 insertions(+), 5 deletions(-)
+ net/tipc/udp_media.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/rtc/lib.c
-+++ b/drivers/rtc/lib.c
-@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
-  * rtc_time64_to_tm - converts time64_t to rtc_time.
-  *
-  * @time:	The number of seconds since 01-01-1970 00:00:00.
-- *		(Must be positive.)
-+ *		Works for values since at least 1900
-  * @tm:		Pointer to the struct rtc_time.
-  */
- void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
- {
--	unsigned int secs;
--	int days;
-+	int days, secs;
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index 5f278c25462e2..1cdc9a9103e09 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -483,7 +483,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
  
- 	u64 u64tmp;
- 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
- 		day_of_year, month, day;
- 	bool is_Jan_or_Feb, is_leap_year;
+ 		rtnl_lock();
+ 		b = tipc_bearer_find(net, bname);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+@@ -494,7 +494,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
  
--	/* time must be positive */
-+	/*
-+	 * Get days and seconds while preserving the sign to
-+	 * handle negative time values (dates before 1970-01-01)
-+	 */
- 	days = div_s64_rem(time, 86400, &secs);
- 
-+	/*
-+	 * We need 0 <= secs < 86400 which isn't given for negative
-+	 * values of time. Fixup accordingly.
-+	 */
-+	if (secs < 0) {
-+		days -= 1;
-+		secs += 86400;
-+	}
-+
- 	/* day of the week, 1970-01-01 was a Thursday */
- 	tm->tm_wday = (days + 4) % 7;
-+	/* Ensure tm_wday is always positive */
-+	if (tm->tm_wday < 0)
-+		tm->tm_wday += 7;
- 
- 	/*
- 	 * The following algorithm is, basically, Proposition 6.3 of Neri
-@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
- 	 * thus, is slightly different from [1].
- 	 */
- 
--	udays		= ((u32) days) + 719468;
-+	udays		= days + 719468;
- 
- 	u32tmp		= 4 * udays + 3;
- 	century		= u32tmp / 146097;
+ 		rtnl_lock();
+ 		b = rtnl_dereference(tn->bearer_list[bid]);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+-- 
+2.39.5
+
 
 
 
