@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-156537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA8F6AE5038
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA87FAE4FF6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AEA3C7A46D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 144643BE702
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34A7D1ACEDA;
-	Mon, 23 Jun 2025 21:20:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3B11ACEDA;
+	Mon, 23 Jun 2025 21:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDFmqJnQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cw7JaxuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32947482;
-	Mon, 23 Jun 2025 21:20:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BDA2C9D;
+	Mon, 23 Jun 2025 21:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713656; cv=none; b=Tyf8sFDUAJBAx4wNQ3lI/tvUzkwtT5EnU/X+3c/Y/hGorAmt5dNGOlflWTmYFatrxuJCxjYGg7luvYeP+Igw8Q9r+emQq7BqzSCKcjfk9OEsIY+LLUU7BfZMLBqIXzo6C1ZHsASzs9gyStRyDaLEmIVdnHtnHJdJGhV2M/uyMHg=
+	t=1750713673; cv=none; b=ZjrJ4hPGALVAn65OFLybQLRpIzBfMwDU1KlNVyohBllsVwdUD/p8c3pxWe4mL3gxDBoiZDGcEUmGc9iCP40ISa8XV01rsRY3wLZh4bF0Sxc/raBsEoNMfAOU18BnDfNO7doshOwMd2Bz8D7NFG+Kjc6a4VH0S+CKRT9M8UaAndU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713656; c=relaxed/simple;
-	bh=ZTlgaRRjSoL9UzXJ17XtpdBXA7tzJYVtDh8EtMR0OIE=;
+	s=arc-20240116; t=1750713673; c=relaxed/simple;
+	bh=JM6hnH0O1saCoihOygk0DR0vlZd0QGY8Q8+yFVxFtHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMP7tN2V7V3l0nqfme1ty9qg98CkoSSQz9GsSZv8j9ixne/bR4gRnbDgLm+f1m8JGCscaRh3Hh3yW+ChQqoE40LE+sAn+sklr64rJlSIN8DvjUC9m3dVFrpp6JiaexXhmIZ4rB0zYXod3B8GX2z7X94P7hG/AcJNX/QRBQbA4E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDFmqJnQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73036C4CEEA;
-	Mon, 23 Jun 2025 21:20:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l2a7WvGtr25Zx1GpsUl3XD2MSgoGjKyY+OWNCq4LVgDbPgHsQ9RoFlipwFbDcPZ/mt7+jKBvvfP94VgdxrZdXzyoH1aPmTJ4gVq9GcSAnj0YEQjsHWkWMBEXDPqyJb4IAano8s1ZrPkBGwwbW5mWK8pH/bfUjfsgU9dRvDaDT3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cw7JaxuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B33AC4CEEA;
+	Mon, 23 Jun 2025 21:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713655;
-	bh=ZTlgaRRjSoL9UzXJ17XtpdBXA7tzJYVtDh8EtMR0OIE=;
+	s=korg; t=1750713672;
+	bh=JM6hnH0O1saCoihOygk0DR0vlZd0QGY8Q8+yFVxFtHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDFmqJnQqgKuFK7tBkI/MRYFB/dZiVBYc6ICg63relLjXyo7uTif6Feff2KRoB/YP
-	 mfKMlmd98xHHisHI3H+Go59wx9oP2NLLjzW3CFTLXsxCCa9lsJ72N35bL7o6wZouON
-	 Ea/vlXRJkG/ePFROGwMam0lxuXmvicB2108/7uOI=
+	b=cw7JaxuZBScsPpEkQAEht6Y2a4gZLZ3Q4biDXmWqERSP/1m/baEH7KkHmhKI2OJi8
+	 4SXHc3j8b/bJD3YlphjPmo8eHBa1OpZ9/mb8aELUX4JF1IbHq3Rv1YvEV+KhMZtRYj
+	 VtheIs+C4IcujTEfqfsTTLxjidsl8Ob1n56hrfG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 5.4 198/222] erofs: remove unused trace event erofs_destroy_inode
-Date: Mon, 23 Jun 2025 15:08:53 +0200
-Message-ID: <20250623130618.183092035@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 199/222] drm/nouveau/bl: increase buffer size to avoid truncate warning
+Date: Mon, 23 Jun 2025 15:08:54 +0200
+Message-ID: <20250623130618.213040213@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -60,58 +62,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit 30b58444807c93bffeaba7d776110f2a909d2f9a upstream.
+[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
 
-The trace event `erofs_destroy_inode` was added but remains unused. This
-unused event contributes approximately 5KB to the kernel module size.
+The nouveau_get_backlight_name() function generates a unique name for the
+backlight interface, appending an id from 1 to 99 for all backlight devices
+after the first.
 
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/r/20250612224906.15000244@batman.local.home
-Fixes: 13f06f48f7bf ("staging: erofs: support tracepoint")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250617054056.3232365-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+GCC 15 (and likely other compilers) produce the following
+-Wformat-truncation warning:
+
+nouveau_backlight.c: In function ‘nouveau_backlight_init’:
+nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                                     ^~
+In function ‘nouveau_get_backlight_name’,
+    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
+nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                        ^~~~~~~~~~~~~~~~
+nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The warning started appearing after commit ab244be47a8f ("drm/nouveau:
+Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
+for the ida usage removed the explicit value check for ids larger than 99.
+The compiler is unable to intuit that the ida_alloc_max() limits the
+returned value range between 0 and 99.
+
+Because the compiler can no longer infer that the number ranges from 0 to
+99, it thinks that it could use as many as 11 digits (10 + the potential -
+sign for negative numbers).
+
+The warning has gone unfixed for some time, with at least one kernel test
+robot report. The code breaks W=1 builds, which is especially frustrating
+with the introduction of CONFIG_WERROR.
+
+The string is stored temporarily on the stack and then copied into the
+device name. Its not a big deal to use 11 more bytes of stack rounding out
+to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
+warning. This fixes the W=1 builds that include this driver.
+
+Compile tested only.
+
+Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
+Suggested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/erofs.h |   18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/trace/events/erofs.h
-+++ b/include/trace/events/erofs.h
-@@ -235,24 +235,6 @@ DEFINE_EVENT(erofs__map_blocks_exit, z_e
- 	TP_ARGS(inode, map, flags, ret)
- );
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index f2f3280c3a50e..171cc170c458d 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -40,7 +40,7 @@
+ #include "nouveau_connector.h"
  
--TRACE_EVENT(erofs_destroy_inode,
--	TP_PROTO(struct inode *inode),
--
--	TP_ARGS(inode),
--
--	TP_STRUCT__entry(
--		__field(	dev_t,		dev		)
--		__field(	erofs_nid_t,	nid		)
--	),
--
--	TP_fast_assign(
--		__entry->dev	= inode->i_sb->s_dev;
--		__entry->nid	= EROFS_I(inode)->nid;
--	),
--
--	TP_printk("dev = (%d,%d), nid = %llu", show_dev_nid(__entry))
--);
--
- #endif /* _TRACE_EROFS_H */
+ static struct ida bl_ida;
+-#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
++#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
  
-  /* This part must be outside protection */
+ struct nouveau_backlight {
+ 	struct backlight_device *dev;
+-- 
+2.39.5
+
 
 
 
