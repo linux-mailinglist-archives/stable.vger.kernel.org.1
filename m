@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-158012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EFD6AE568F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5740AE5748
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15A46189B5F8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 871094E3648
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA3F223DE5;
-	Mon, 23 Jun 2025 22:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219AF223DE5;
+	Mon, 23 Jun 2025 22:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNEBvIaw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wk3Or4z1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3564916D9BF;
-	Mon, 23 Jun 2025 22:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAD60B676;
+	Mon, 23 Jun 2025 22:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717270; cv=none; b=JvCfI+YUyab0yIwLS2EmravGbpiTU7cTjQT8r/z0LY82xcBkeuqpSbgFZ15nqK8QwkfIgXzF4ya1ZlVqyiFmZbe3BILRIml/zwiZPEU7t0S533m8BCm92SwBlX37u6iWynxYitQxlSeRfHfjcbHuRNqEwOZ8rI3ujAIMmv0wRV4=
+	t=1750717673; cv=none; b=ChH5EMb9sMRSm765bycqTIRrz47SUkIy6SDGcOBVxPHGJJPw+T7lWK4l8lPsm72KzPxYC/LVQ0IoqkOBoYanXM5g4eEUav1inKmRbnQ94M97ytKTQqza29eEe9oIxt/fXwYSgu9fHSYCFPff7VNIjISv8mUeiBy/y8Vk8rT3qDA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717270; c=relaxed/simple;
-	bh=XfssZx4l4C4SjC133eFYG6NyOJi5w9SGmavTVSxXctw=;
+	s=arc-20240116; t=1750717673; c=relaxed/simple;
+	bh=MoZ0CATRzXeQAqvavfl7BDstpEEfKcxfDdUif2251SU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeblCJSg7eTdmAr+ETLjJFLzykASiq8iIny1oD5jBNJhcGmwZXSQj7gPQfQsjzHkIxBrud0AwOOolPR0gsiYEJMN6HqDdY+jhNO5elMeONVc0aabTdHoGjzVKgol/jgScBRj+KoGZG+4qpWqQ1okf3ZUbHKL4MDBzjP/RxRlOCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNEBvIaw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A59C4CEED;
-	Mon, 23 Jun 2025 22:21:09 +0000 (UTC)
+	 MIME-Version; b=KeyWaxVUB0EpSOPM9keT+v8fQKef6UH3eC4NZ4ZGSqLxk+2/lrt062JLq5R6tyraNa8Ndo/6zwhYCI89d+uWYyjr4Mz1yV/sJ1b2DpcmMbxbeGCkh2jdinxuCpzSKnZcsNbGVh+BXE9kpMqjBeVwz7Vhks0/vvdZi1MQOB8rv34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wk3Or4z1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA28C4CEEA;
+	Mon, 23 Jun 2025 22:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717270;
-	bh=XfssZx4l4C4SjC133eFYG6NyOJi5w9SGmavTVSxXctw=;
+	s=korg; t=1750717673;
+	bh=MoZ0CATRzXeQAqvavfl7BDstpEEfKcxfDdUif2251SU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNEBvIaw+7PegVxMCYMS7wVcXnWTGAS3PRvVUnu/ht9yy8iZYjl/nA5Dgpb0MxGzA
-	 9vXjWwt6aHprr0SFte2TJuPynRDNWmpgN0oenWL4MN2JXAoRFg9Z2CeP85XV3viMt8
-	 FkP9U8W4moIkuWufPiv5McIIDqfVNrF4aU7xWqGM=
+	b=Wk3Or4z1Iv4LU/amfbj8iARBNsLvx8YzJE209g4Uowhnqrc5wkVfixDWJ7DM152oL
+	 otf0HXEJJ5sq3zkawn5ewujB0WUxwhrCjq3hmyTe2Y8gL9w5pMjKYbnuwc+VzPdqog
+	 C60wGs8y+7ocn5nVPoPBMrLa14sT4cOEYkERgOrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Octavian Purdila <tavip@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 399/411] net_sched: sch_sfq: dont allow 1 packet limit
+	Marek Vasut <marex@denx.de>,
+	Frieder Schrempf <frieder.schrempf@kontron.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Francesco Dolcini <francesco.dolcini@toradex.com>
+Subject: [PATCH 6.1 498/508] arm64: dts: imx8mm: Drop sd-vsel-gpios from i.MX8M Mini Verdin SoM
 Date: Mon, 23 Jun 2025 15:09:03 +0200
-Message-ID: <20250623130643.721355966@linuxfoundation.org>
+Message-ID: <20250623130657.272318403@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Marek Vasut <marex@denx.de>
 
-commit 10685681bafce6febb39770f3387621bf5d67d0b upstream.
+commit 8bad8c923f217d238ba4f1a6d19d761e53bfbd26 upstream.
 
-The current implementation does not work correctly with a limit of
-1. iproute2 actually checks for this and this patch adds the check in
-kernel as well.
+The VSELECT pin is configured as MX8MM_IOMUXC_GPIO1_IO04_USDHC2_VSELECT
+and not as a GPIO, drop the bogus sd-vsel-gpios property as the eSDHC
+block handles the VSELECT pin on its own.
 
-This fixes the following syzkaller reported crash:
-
-UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:210:6
-index 65535 is out of range for type 'struct sfq_head[128]'
-CPU: 0 PID: 2569 Comm: syz-executor101 Not tainted 5.10.0-smp-DEV #1
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
-  __dump_stack lib/dump_stack.c:79 [inline]
-  dump_stack+0x125/0x19f lib/dump_stack.c:120
-  ubsan_epilogue lib/ubsan.c:148 [inline]
-  __ubsan_handle_out_of_bounds+0xed/0x120 lib/ubsan.c:347
-  sfq_link net/sched/sch_sfq.c:210 [inline]
-  sfq_dec+0x528/0x600 net/sched/sch_sfq.c:238
-  sfq_dequeue+0x39b/0x9d0 net/sched/sch_sfq.c:500
-  sfq_reset+0x13/0x50 net/sched/sch_sfq.c:525
-  qdisc_reset+0xfe/0x510 net/sched/sch_generic.c:1026
-  tbf_reset+0x3d/0x100 net/sched/sch_tbf.c:319
-  qdisc_reset+0xfe/0x510 net/sched/sch_generic.c:1026
-  dev_reset_queue+0x8c/0x140 net/sched/sch_generic.c:1296
-  netdev_for_each_tx_queue include/linux/netdevice.h:2350 [inline]
-  dev_deactivate_many+0x6dc/0xc20 net/sched/sch_generic.c:1362
-  __dev_close_many+0x214/0x350 net/core/dev.c:1468
-  dev_close_many+0x207/0x510 net/core/dev.c:1506
-  unregister_netdevice_many+0x40f/0x16b0 net/core/dev.c:10738
-  unregister_netdevice_queue+0x2be/0x310 net/core/dev.c:10695
-  unregister_netdevice include/linux/netdevice.h:2893 [inline]
-  __tun_detach+0x6b6/0x1600 drivers/net/tun.c:689
-  tun_detach drivers/net/tun.c:705 [inline]
-  tun_chr_close+0x104/0x1b0 drivers/net/tun.c:3640
-  __fput+0x203/0x840 fs/file_table.c:280
-  task_work_run+0x129/0x1b0 kernel/task_work.c:185
-  exit_task_work include/linux/task_work.h:33 [inline]
-  do_exit+0x5ce/0x2200 kernel/exit.c:931
-  do_group_exit+0x144/0x310 kernel/exit.c:1046
-  __do_sys_exit_group kernel/exit.c:1057 [inline]
-  __se_sys_exit_group kernel/exit.c:1055 [inline]
-  __x64_sys_exit_group+0x3b/0x40 kernel/exit.c:1055
- do_syscall_64+0x6c/0xd0
- entry_SYSCALL_64_after_hwframe+0x61/0xcb
-RIP: 0033:0x7fe5e7b52479
-Code: Unable to access opcode bytes at RIP 0x7fe5e7b5244f.
-RSP: 002b:00007ffd3c800398 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fe5e7b52479
-RDX: 000000000000003c RSI: 00000000000000e7 RDI: 0000000000000000
-RBP: 00007fe5e7bcd2d0 R08: ffffffffffffffb8 R09: 0000000000000014
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe5e7bcd2d0
-R13: 0000000000000000 R14: 00007fe5e7bcdd20 R15: 00007fe5e7b24270
-
-The crash can be also be reproduced with the following (with a tc
-recompiled to allow for sfq limits of 1):
-
-tc qdisc add dev dummy0 handle 1: root tbf rate 1Kbit burst 100b lat 1s
-../iproute2-6.9.0/tc/tc qdisc add dev dummy0 handle 2: parent 1:10 sfq limit 1
-ifconfig dummy0 up
-ping -I dummy0 -f -c2 -W0.1 8.8.8.8
-sleep 1
-
-Scenario that triggers the crash:
-
-* the first packet is sent and queued in TBF and SFQ; qdisc qlen is 1
-
-* TBF dequeues: it peeks from SFQ which moves the packet to the
-  gso_skb list and keeps qdisc qlen set to 1. TBF is out of tokens so
-  it schedules itself for later.
-
-* the second packet is sent and TBF tries to queues it to SFQ. qdisc
-  qlen is now 2 and because the SFQ limit is 1 the packet is dropped
-  by SFQ. At this point qlen is 1, and all of the SFQ slots are empty,
-  however q->tail is not NULL.
-
-At this point, assuming no more packets are queued, when sch_dequeue
-runs again it will decrement the qlen for the current empty slot
-causing an underflow and the subsequent out of bounds access.
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20241204030520.2084663-2-tavip@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Frieder Schrempf <frieder.schrempf@kontron.de>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_sfq.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -652,6 +652,10 @@ static int sfq_change(struct Qdisc *sch,
- 		if (!p)
- 			return -ENOMEM;
- 	}
-+	if (ctl->limit == 1) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
-+		return -EINVAL;
-+	}
- 	sch_tree_lock(sch);
- 	if (ctl->quantum)
- 		q->quantum = ctl->quantum;
+--- a/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-verdin.dtsi
+@@ -372,7 +372,6 @@
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&pinctrl_pmic>;
+ 		reg = <0x25>;
+-		sd-vsel-gpios = <&gpio1 4 GPIO_ACTIVE_HIGH>;
+ 
+ 		/*
+ 		 * The bootloader is expected to switch on the I2C level shifter for the TLA2024 ADC
 
 
 
