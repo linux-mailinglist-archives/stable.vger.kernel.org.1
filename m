@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ADDAAE519C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D48EAAE4FEA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2B03189410E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D6601B618AE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385CE221734;
-	Mon, 23 Jun 2025 21:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C0EE1ACEDA;
+	Mon, 23 Jun 2025 21:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6KzWitB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XXmF1COQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E94971F3B96;
-	Mon, 23 Jun 2025 21:35:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08C352C9D;
+	Mon, 23 Jun 2025 21:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714533; cv=none; b=lqivSr8eozDYIRtBJxE7ZPG0QDkSEaEvU7Lee4iGMqcR/wN3imMOZUyepQ0mxE4n7h3+nFmJ7ysHW3kAJzux9ifi6ubTzg4nNkS9M3U4F4nkoV+KbTi2H/hWK/KQVyY/DJyDv4ViOLda76QiCZGAG8CjZRrqMucNl+oPGiCISJY=
+	t=1750713641; cv=none; b=kDZ6E+rY57rL3z8d+gwaffG90Q6XFdzPPuHO9Ej9x5sfMfRItamg1x6IQhUpau3otrtjVN9uyZFw92u65FGViSlT0uKxAlAjbe3ESy/XNhJ+uAA7CEXlXcN4cMU2xo05dzvf0lTperImZNWNbxoSxV795YmVfRtk5j1NHj0WI28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714533; c=relaxed/simple;
-	bh=L6mZOAfQ2mRmRwK5ae4KN83rtCDnAXAnKGLH5VDibqI=;
+	s=arc-20240116; t=1750713641; c=relaxed/simple;
+	bh=i8kexhNRU58Fyl4mB0IE7CARZMSNVGt2ah90XgS4+tU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rkfWQAAio0C9eV5AQiLbxKvDpVcvxTYXOLcb1anLudNUQ2gVa3D2+SNvtss+bmHu/zWBTl3jlrYELM+FTbcDW1vTizXM0laLIOtLCET9QQewmO+UDn8FBqLXCAdMalu+SoZUkBXoOD5VezF/uFPoAuuGxCq8R73EEHIWZYXzVE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6KzWitB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44869C4CEEA;
-	Mon, 23 Jun 2025 21:35:31 +0000 (UTC)
+	 MIME-Version; b=IiP+tYMHznnzO/VSEr2B/qIQPm+GRkW29raJhidaIMrHCL4Wz8ETuHKW4Y/rIRGzcmWSS4hdMi2I/CJ9Zr2xoIheb63IRdlDmd3G6+A3QBF6Eiq2ferjwp1f9PDncTosDd+jMpe57m/n/JfIgMKGDCpEy20kJczAg3yTIO+snSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XXmF1COQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 976C7C4CEEA;
+	Mon, 23 Jun 2025 21:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714531;
-	bh=L6mZOAfQ2mRmRwK5ae4KN83rtCDnAXAnKGLH5VDibqI=;
+	s=korg; t=1750713640;
+	bh=i8kexhNRU58Fyl4mB0IE7CARZMSNVGt2ah90XgS4+tU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O6KzWitBpCsL9rVrcRkwxLy7+Lpnh7v/j03wAQRStG4oeqTnlGyCqhBB1n61JzmIs
-	 Gnb2mhLXbDAc4GmPVM8C1EHpygFtr5Hx1JbjIk3DdWFbMAbih+zbG4M23GiQz0iKMO
-	 aPrxrrPMEXjiscAQFmUpOaSFIfy39ZzWzUxmZAGU=
+	b=XXmF1COQPd/O/bdksVw9h0bSpyIJOtfyY141RFH1IhNIzO2lzke5pyUIYFuP+vgOE
+	 NPdknCT9KNYKTI6lbl5GhxfWYYSkusHWvpNnbq1Lp1EVYj3EEc4pilYuMDl2thU4Vr
+	 tqxRSWwu5eP1JvMKPR6eH5NSEH6011OQmPH7S+cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 214/411] media: videobuf2: use sgtable-based scatterlist wrappers
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 5.10 157/355] kbuild: hdrcheck: fix cross build with clang
 Date: Mon, 23 Jun 2025 15:05:58 +0200
-Message-ID: <20250623130639.054503324@linuxfoundation.org>
+Message-ID: <20250623130631.424212811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit a704a3c503ae1cfd9de8a2e2d16a0c9430e98162 upstream.
+commit 02e9a22ceef0227175e391902d8760425fa072c6 upstream.
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgt->nents.
+The headercheck tries to call clang with a mix of compiler arguments
+that don't include the target architecture. When building e.g. x86
+headers on arm64, this produces a warning like
 
-Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+   clang: warning: unknown platform, assuming -mfloat-abi=soft
+
+Add in the KBUILD_CPPFLAGS, which contain the target, in order to make it
+build properly.
+
+See also 1b71c2fb04e7 ("kbuild: userprogs: fix bitsize and target
+detection on clang").
+
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/videobuf2/videobuf2-dma-sg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ usr/include/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-@@ -471,7 +471,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(s
- 	struct vb2_dma_sg_buf *buf = dbuf->priv;
- 	struct sg_table *sgt = buf->dma_sgt;
+--- a/usr/include/Makefile
++++ b/usr/include/Makefile
+@@ -10,7 +10,7 @@ UAPI_CFLAGS := -std=c90 -Wall -Werror=im
  
--	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
-+	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
- 	return 0;
- }
+ # In theory, we do not care -m32 or -m64 for header compile tests.
+ # It is here just because CONFIG_CC_CAN_LINK is tested with -m32 or -m64.
+-UAPI_CFLAGS += $(filter -m32 -m64, $(KBUILD_CFLAGS))
++UAPI_CFLAGS += $(filter -m32 -m64, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
-@@ -482,7 +482,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
- 	struct vb2_dma_sg_buf *buf = dbuf->priv;
- 	struct sg_table *sgt = buf->dma_sgt;
- 
--	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
-+	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
- 	return 0;
- }
+ override c_flags = $(UAPI_CFLAGS) -Wp,-MMD,$(depfile) -I$(objtree)/usr/include
  
 
 
