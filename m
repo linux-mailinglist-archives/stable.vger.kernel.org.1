@@ -1,57 +1,71 @@
-Return-Path: <stable+bounces-157726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AABB3AE5556
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B5BCAE564B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B370D3A36C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7E92167569
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76DB223316;
-	Mon, 23 Jun 2025 22:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F7172192EC;
+	Mon, 23 Jun 2025 22:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DccZCozz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fgIXusV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7220421B8F6;
-	Mon, 23 Jun 2025 22:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B646B676;
+	Mon, 23 Jun 2025 22:17:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716571; cv=none; b=hrhfv0tJjg/JopWt8chMB7rLjDnPP5fcVp36L8yG7vHjFDlHRPTuNYqpGzOl2WzRI/vZ9ISp0diFUNiBV9pqWUZJgvzVIBGjvbuHpZuX71s9sju66Bu4AqzAnxEHFvnTyzbvCVNKQh03ZjK/OWvzcbqyWf76zUrLe1xrAYnif74=
+	t=1750717070; cv=none; b=NRmh5tyWqps5HscnYlPYZTSFtL4rshbi+efRJwx1pDWfOXzXczyLlXXZH47am21PZPmbFnOWQohpW37Fy/N/U3/o0bdD3bzYleoqueYGC9HKecSf//6IKmXn/wYIhEqYNFbLqgYfhicuSQPpS5FjukYpRgSBDfZOMhIrT3yNU/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716571; c=relaxed/simple;
-	bh=jHBtBRDzmVT/Rzh9HbsYzgf+fJ9wGaCHWbZztLJ5AC4=;
+	s=arc-20240116; t=1750717070; c=relaxed/simple;
+	bh=w5VP1NNyut4C7ZnWQf0DGSnqOiTDeWQ/5VcRjX2CHZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KckW1uHUiDz7yAQxTW5CXjMKXNL/fpbQqnbnjPiaH7XTuOAKvGLSh9cGy5ryFdshfI/itJ3Fd22yXb9mSD19i4zOzzxcG65wTBeqbn9iUf9R6xXSZ25Erk3nUt5igrDfBy8Ie3b/eOmwcBtJl/O/mkLWpFleBw+F8kIC7SQv4fE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DccZCozz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E60C4CEEA;
-	Mon, 23 Jun 2025 22:09:30 +0000 (UTC)
+	 MIME-Version; b=WVY+F6UQvdv81p3Bk6XwwNsRQu6SvVojq58yO9KBZq+3b8ObBPlDq9QkqIrH6bG6Bm5K1X1lR+homObDcXBlS1uj5Wd5EaKq8jNkrZHf+2oNEdTWBm86NMvZNdhnaa5xJ4ZqoBSzzyKm9CN16iBct3pQ/B7RDgA59NzbMLn6aEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fgIXusV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9144AC4CEEA;
+	Mon, 23 Jun 2025 22:17:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716571;
-	bh=jHBtBRDzmVT/Rzh9HbsYzgf+fJ9wGaCHWbZztLJ5AC4=;
+	s=korg; t=1750717070;
+	bh=w5VP1NNyut4C7ZnWQf0DGSnqOiTDeWQ/5VcRjX2CHZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DccZCozzzGp0qaMA4hK4g/sLFAhRuFf8wEnpkgfCYe7Z+yvHspa5hAxSJfyvilUq1
-	 ncd5KUkQ+qRyOp79PB+cU93PSHspwK6RS2O0nblyAbTx4CLCkX8ta9B2+v2r9L0xwf
-	 yoiMnezJto3HEangLBCMSRyagHz0bZMVTkfWEFSQ=
+	b=fgIXusV6mg5q79PTjqbqYEjv525VQhNZl6pdcr7ZQICgM0lj1veTKkDUypSwMAEZQ
+	 Y3+MUV7bgyDb77GuOEkatU1/IujRJymWk8xtwPSQNlXhbRpIFYuW/fCstxq5tfIQqO
+	 PD6k8xFBt7LlfnC0vnlk00iN3AGsclwAJmvY4x38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 266/414] scsi: lpfc: Use memcpy() for BIOS version
-Date: Mon, 23 Jun 2025 15:06:43 +0200
-Message-ID: <20250623130648.682993973@linuxfoundation.org>
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>,
+	kernel test robot <lkp@intel.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	James Houghton <jthoughton@google.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 359/508] KVM: s390: rename PROT_NONE to PROT_TYPE_DUMMY
+Date: Mon, 23 Jun 2025 15:06:44 +0200
+Message-ID: <20250623130654.197059647@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +77,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit ae82eaf4aeea060bb736c3e20c0568b67c701d7d ]
+commit 15ac613f124e51a6623975efad9657b1f3ee47e7 upstream.
 
-The strlcat() with FORTIFY support is triggering a panic because it
-thinks the target buffer will overflow although the correct target
-buffer size is passed in.
+The enum type prot_type declared in arch/s390/kvm/gaccess.c declares an
+unfortunate identifier within it - PROT_NONE.
 
-Anyway, instead of memset() with 0 followed by a strlcat(), just use
-memcpy() and ensure that the resulting buffer is NULL terminated.
+This clashes with the protection bit define from the uapi for mmap()
+declared in include/uapi/asm-generic/mman-common.h, which is indeed what
+those casually reading this code would assume this to refer to.
 
-BIOSVersion is only used for the lpfc_printf_log() which expects a
-properly terminated string.
+This means that any changes which subsequently alter headers in any way
+which results in the uapi header being imported here will cause build
+errors.
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Link: https://lore.kernel.org/r/20250409-fix-lpfc-bios-str-v1-1-05dac9e51e13@kernel.org
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Resolve the issue by renaming PROT_NONE to PROT_TYPE_DUMMY.
+
+Link: https://lkml.kernel.org/r/20250519145657.178365-1-lorenzo.stoakes@oracle.com
+Fixes: b3cefd6bf16e ("KVM: s390: Pass initialized arg even if unused")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Suggested-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505140943.IgHDa9s7-lkp@intel.com/
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Acked-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+Acked-by: Yang Shi <yang@os.amperecomputing.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kvm/gaccess.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 6748fba48a07e..4dccbaeb63283 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -6020,9 +6020,9 @@ lpfc_sli4_get_ctl_attr(struct lpfc_hba *phba)
- 	phba->sli4_hba.flash_id = bf_get(lpfc_cntl_attr_flash_id, cntl_attr);
- 	phba->sli4_hba.asic_rev = bf_get(lpfc_cntl_attr_asic_rev, cntl_attr);
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -490,7 +490,7 @@ enum prot_type {
+ 	PROT_TYPE_DAT  = 3,
+ 	PROT_TYPE_IEP  = 4,
+ 	/* Dummy value for passing an initialized value when code != PGM_PROTECTION */
+-	PROT_NONE,
++	PROT_TYPE_DUMMY,
+ };
  
--	memset(phba->BIOSVersion, 0, sizeof(phba->BIOSVersion));
--	strlcat(phba->BIOSVersion, (char *)cntl_attr->bios_ver_str,
-+	memcpy(phba->BIOSVersion, cntl_attr->bios_ver_str,
- 		sizeof(phba->BIOSVersion));
-+	phba->BIOSVersion[sizeof(phba->BIOSVersion) - 1] = '\0';
- 
- 	lpfc_printf_log(phba, KERN_INFO, LOG_SLI,
- 			"3086 lnk_type:%d, lnk_numb:%d, bios_ver:%s, "
--- 
-2.39.5
-
+ static int trans_exc_ending(struct kvm_vcpu *vcpu, int code, unsigned long gva, u8 ar,
+@@ -506,7 +506,7 @@ static int trans_exc_ending(struct kvm_v
+ 	switch (code) {
+ 	case PGM_PROTECTION:
+ 		switch (prot) {
+-		case PROT_NONE:
++		case PROT_TYPE_DUMMY:
+ 			/* We should never get here, acts like termination */
+ 			WARN_ON_ONCE(1);
+ 			break;
+@@ -976,7 +976,7 @@ static int guest_range_to_gpas(struct kv
+ 			gpa = kvm_s390_real_to_abs(vcpu, ga);
+ 			if (kvm_is_error_gpa(vcpu->kvm, gpa)) {
+ 				rc = PGM_ADDRESSING;
+-				prot = PROT_NONE;
++				prot = PROT_TYPE_DUMMY;
+ 			}
+ 		}
+ 		if (rc)
+@@ -1134,7 +1134,7 @@ int access_guest_with_key(struct kvm_vcp
+ 		if (rc == PGM_PROTECTION)
+ 			prot = PROT_TYPE_KEYC;
+ 		else
+-			prot = PROT_NONE;
++			prot = PROT_TYPE_DUMMY;
+ 		rc = trans_exc_ending(vcpu, rc, ga, ar, mode, prot, terminate);
+ 	}
+ out_unlock:
 
 
 
