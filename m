@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AECBAE4FE9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F27D7AE50B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7F36F7A33DE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6DA3A6232
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFC21E521E;
-	Mon, 23 Jun 2025 21:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4C8222576;
+	Mon, 23 Jun 2025 21:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7ofWMTE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAjr5YKU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67AF82628C;
-	Mon, 23 Jun 2025 21:18:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F8D1E521E;
+	Mon, 23 Jun 2025 21:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713480; cv=none; b=OkFUpsG0cZAteave1/z5KjVQEPOGFy6tfq2LZxbHxnFt6ZNWXVMz5pcc8gw7Cvu2vE1Dlp7dKE9E9hjmPSYK2zl3zflPa5+w3wWBD1096eek79X7eYzdRe5N5HDTJgeXQz/YqIuZpgVPs5rIIW8S3e9fW0Smbufz+1d2J5k9lPM=
+	t=1750714013; cv=none; b=GPG5ReB9KRs+siWpVSLA1FQd+/jFlzHtzt9IYgJqzuvOFnSqRGVndNMAUoat1Xh/tyhbt5NhPHvjswNJYp+mncMKUyB/Pt+YorIGoB9UwkuWf76TECTZq0xKgnef0jE90MLgBacVzJKswboNlxlxhFZAH575Du9xOg85joFX+Mo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713480; c=relaxed/simple;
-	bh=pFOdZNlm9P28zR+tAXxAxwk7rqn1jk7ac4KfOMLTtKc=;
+	s=arc-20240116; t=1750714013; c=relaxed/simple;
+	bh=xRHKnhPpmsiOP7FL1IP+XJSt8nf7MQIVR4Vlx25N6z4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IVtwvauhnNE56QC2DmJNwZknrum9L/48x28IADNRr//93WpjseRNaQoamy5aqHxtm/od0TBY7oC5eLDMT79dNC848trPUtExQAyzwgjm4EKKSrObZ/lGuPGosLm+/QQsRg6cA42OWqiYdLdjsc6/bkN/rikvQXJT91k0j8uz99k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7ofWMTE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB2DC4CEEA;
-	Mon, 23 Jun 2025 21:17:59 +0000 (UTC)
+	 MIME-Version; b=Hv54yIgk4f7X3Bwy0Q8V6HLw4zeaekfuNYxDhH3fq1gBs8haROnHUadgxbCUJfWJgqjkCodiUxx5wzAZ+A4YctgJN+DKqIA7ja4Alxdw0ohbBeXNQlgK8xyEizdlCp2n7OO9sMB+SqPq8eFtyyPVxKX00E75/IfRh+ed+aZCjCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAjr5YKU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC82C4CEEA;
+	Mon, 23 Jun 2025 21:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713480;
-	bh=pFOdZNlm9P28zR+tAXxAxwk7rqn1jk7ac4KfOMLTtKc=;
+	s=korg; t=1750714013;
+	bh=xRHKnhPpmsiOP7FL1IP+XJSt8nf7MQIVR4Vlx25N6z4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7ofWMTEHUH3/C3II8+tAMHwYatYSoLD2jJRlAMwB5IGyh/n2OkO75mxxyLxA6+EW
-	 9PtE+lrMc6et6zszpa1dkdPkyF5otE4VagI62dg/kbyK4ZbhDZE9p5Bz7k4j6smMOj
-	 ezmGnMn8f8RJsvPAr4IW9L721F4T3OumwsVeriLY=
+	b=PAjr5YKUSXnGsVwxB3JuWDWEfNj13Py4U8a7vjKKxPZUuRRy4thmvQeBmPzoGNqha
+	 s4zwJefkDRpX7tlfoUxVTqVHXJF7P9rEgTwpA9/d36Zr+FQLAQMjvW0/m/mYIRqsPF
+	 1QOn76eo3WznbOP2/Aunyv+GJfw365cApwj1GKWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 168/355] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.6 108/290] PCI: cadence-ep: Correct PBA offset in .set_msix() callback
 Date: Mon, 23 Jun 2025 15:06:09 +0200
-Message-ID: <20250623130631.757653201@linuxfoundation.org>
+Message-ID: <20250623130630.202103870@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
+commit c8bcb01352a86bc5592403904109c22b66bd916e upstream.
 
-In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
-nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
-this can cause NULL pointer dereference.
+While cdns_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
+the calculation of the PBA offset is wrong because it calculates space for
+(N-1) entries instead of N.
 
-Normally the delayed start of laundromat_work allows sufficient time for
-nfsd_ssc initialization to complete. However, when the kernel waits too
-long for userspace responses (e.g. in nfs4_state_start_net ->
-nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
-cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
-delayed work may start before nfsd_ssc initialization finishes.
+This results in the following QEMU error when using PCI passthrough on a
+device which relies on the PCI endpoint subsystem:
 
-Fix this by moving nfsd_ssc initialization before starting laundromat_work.
+  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Fix the calculation of PBA offset in the MSI-X capability.
+
+[bhelgaas: more specific subject and commit log]
+
+Fixes: 3ef5d16f50f8 ("PCI: cadence: Add MSI-X support to Endpoint driver")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Link: https://patch.msgid.link/20250514074313.283156-10-cassel@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfssvc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/controller/cadence/pcie-cadence-ep.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -427,13 +427,13 @@ static int nfsd_startup_net(struct net *
- 	if (ret)
- 		goto out_filecache;
+--- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
++++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
+@@ -294,13 +294,14 @@ static int cdns_pcie_ep_set_msix(struct
+ 	struct cdns_pcie *pcie = &ep->pcie;
+ 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
  
-+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
-+	nfsd4_ssc_init_umount_work(nn);
-+#endif
- 	ret = nfs4_state_start_net(net);
- 	if (ret)
- 		goto out_reply_cache;
+ 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
  
--#ifdef CONFIG_NFSD_V4_2_INTER_SSC
--	nfsd4_ssc_init_umount_work(nn);
--#endif
- 	nn->nfsd_net_up = true;
+ 	reg = cap + PCI_MSIX_FLAGS;
+ 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
+ 
+ 	/* Set MSIX BAR and offset */
+@@ -310,7 +311,7 @@ static int cdns_pcie_ep_set_msix(struct
+ 
+ 	/* Set PBA BAR and offset.  BAR must match MSIX BAR */
+ 	reg = cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
+ 
  	return 0;
- 
 
 
 
