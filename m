@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99EFFAE517A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85A0DAE5085
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 316C04A3B80
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71B1E1B60A9D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0284122068B;
-	Mon, 23 Jun 2025 21:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2AAF1E521E;
+	Mon, 23 Jun 2025 21:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZogVC/C6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xVIzeBFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64984409;
-	Mon, 23 Jun 2025 21:34:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF581E51FA;
+	Mon, 23 Jun 2025 21:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714478; cv=none; b=ktl31Pl1c0+F9JCoBcn6NJwtA5QS5hqkHaxW9X/+ITY3KDpbJU01aRvF4JLOzFctpiLDcWsgbn22w8tHrkgx7cNn+vBv37o3SZGhtqyPqKSwb738wdHPX7u+tqUovRPtwDSCMpQlPFmWByE2+YFlXP+Arw9Ll6OPTnSzJOOaU04=
+	t=1750713942; cv=none; b=ABqPxjZd8zuM85mDvkwlPTAapckaqh5RiwsdUfvRfc6QmZJZaSvY+34F4IBSAFW6qKwca2WplQnhZn1utiMZOQrE9eAILtKmfpDirWf6xHs95QxvSkxAkQ8l8tlFNKmfmunAl79Skhr+iXiuY2gEHSlaBkgeCLzNoIWpc6bPCIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714478; c=relaxed/simple;
-	bh=U16fgCjlUpu3vMx16foi87guJlfLTXHdzNr+CMPjl3s=;
+	s=arc-20240116; t=1750713942; c=relaxed/simple;
+	bh=komZGg09fUwX/2aUW+GmCMfb7cQc1Yv6YifHTQcWlSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DB1hWfds1uln68yaJRMDi7QRFkzfH67ChHpkU7X/zhnT2vwWf0y2VFV8LNkbHVcL81tRxMjuit5nKSfXVDx6f2ErC388r5Dwn9TL+WTXPX/sH/nWve2YNjcKS/rcOU3lDgKjQv34iNJGaXhgr5vYCItIMB6Jak20iXp1bLCXme4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZogVC/C6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAAFEC4CEED;
-	Mon, 23 Jun 2025 21:34:34 +0000 (UTC)
+	 MIME-Version; b=XJ7+dfHQFshfCS71Oz92p0h8TlFLza1DRsCiRNMwpjYKvOeSDiEFdWKvU7aWBp+5hMVwtH9jh8h0+WC6hUyMBt9OITsYOFTPv4diGhEt9OHwTIlQ38oH8TgvKKVYoZuUjHp8teXoiJ12sk5BXSnUuuOT+TO2mB/IGqF4a6IX7sY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xVIzeBFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17387C4CEEA;
+	Mon, 23 Jun 2025 21:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714475;
-	bh=U16fgCjlUpu3vMx16foi87guJlfLTXHdzNr+CMPjl3s=;
+	s=korg; t=1750713942;
+	bh=komZGg09fUwX/2aUW+GmCMfb7cQc1Yv6YifHTQcWlSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZogVC/C6XFhxtJoUDgoFTN1hneIuupAUJq7YcLPJ9jltBqucbxow7Gy404c/fito0
-	 jiL386ZJH6lj3xX5MC/tdpqZ5nqWmlY1aInOLKa+HKwUuhF1dZ0KTODppiQP0fakfg
-	 42nkut+bA1z3Kgisr8kLa8NyfQdKNBBKJJ9kXlDw=
+	b=xVIzeBFBhO6HylLLickJyyUhW6BYWQIZu9K4/tIbI0Ek0d1AjzOU7bxjbjRoq7pis
+	 NLOt+A5v42PU9xPPu4VxoUsYUPat0EHHR+mWBb92eHa6VhEJ3qoa6Bp/sQqk7WqwfR
+	 8W4o6RF4eRqAJsk+3yQnM4NPx4F1u0u1fks0FY30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>,
-	Roopni Devanathan <quic_rdevanat@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 417/592] wifi: ath12k: Fix incorrect rates sent to firmware
-Date: Mon, 23 Jun 2025 15:06:15 +0200
-Message-ID: <20250623130710.356354206@linuxfoundation.org>
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 175/355] media: venus: Fix probe error handling
+Date: Mon, 23 Jun 2025 15:06:16 +0200
+Message-ID: <20250623130631.967691956@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,73 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit cb1790249361ba9396b06b1af2500147e6e42e5e ]
+commit 523cea3a19f0b3b020a4745344c136a636e6ffd7 upstream.
 
-Before firmware assert, if there is a station interface in the device
-which is not associated with an AP, the basic rates are set to zero.
-Following this, during firmware recovery, when basic rates are zero,
-ath12k driver is sending invalid rate codes, which are negative values,
-to firmware. This results in firmware assert.
+Video device registering has been moved earlier in the probe function,
+but the new order has not been propagated to error handling. This means
+we can end with unreleased resources on error (e.g dangling video device
+on missing firmware probe aborting).
 
-Fix this by checking if rate codes are valid, before sending them
-to the firmware.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Pradeep Kumar Chitrapu <quic_pradeepc@quicinc.com>
-Signed-off-by: Roopni Devanathan <quic_rdevanat@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250320112426.1956961-1-quic_rdevanat@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08b1cf474b7f7 ("media: venus: core, venc, vdec: Fix probe dependency error")
+Cc: stable@vger.kernel.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ drivers/media/platform/qcom/venus/core.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index eac4214c48c39..922901bab3e39 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3451,7 +3451,10 @@ static void ath12k_recalculate_mgmt_rate(struct ath12k *ar,
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -290,7 +290,7 @@ static int venus_probe(struct platform_d
+ 
+ 	ret = v4l2_device_register(dev, &core->v4l2_dev);
+ 	if (ret)
+-		goto err_core_deinit;
++		goto err_hfi_destroy;
+ 
+ 	platform_set_drvdata(pdev, core);
+ 
+@@ -322,24 +322,24 @@ static int venus_probe(struct platform_d
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_DEC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_ENC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = pm_runtime_put_sync(dev);
+ 	if (ret) {
+ 		pm_runtime_get_noresume(dev);
+-		goto err_dev_unregister;
++		goto err_core_deinit;
  	}
  
- 	sband = hw->wiphy->bands[def->chan->band];
--	basic_rate_idx = ffs(bss_conf->basic_rates) - 1;
-+	if (bss_conf->basic_rates)
-+		basic_rate_idx = __ffs(bss_conf->basic_rates);
-+	else
-+		basic_rate_idx = 0;
- 	bitrate = sband->bitrates[basic_rate_idx].bitrate;
+ 	venus_dbgfs_init(core);
  
- 	hw_rate_code = ath12k_mac_get_rate_hw_value(bitrate);
-@@ -4015,10 +4018,14 @@ static void ath12k_mac_bss_info_changed(struct ath12k *ar,
- 		band = def.chan->band;
- 		mcast_rate = info->mcast_rate[band];
+ 	return 0;
  
--		if (mcast_rate > 0)
-+		if (mcast_rate > 0) {
- 			rateidx = mcast_rate - 1;
--		else
--			rateidx = ffs(info->basic_rates) - 1;
-+		} else {
-+			if (info->basic_rates)
-+				rateidx = __ffs(info->basic_rates);
-+			else
-+				rateidx = 0;
-+		}
- 
- 		if (ar->pdev->cap.supported_bands & WMI_HOST_WLAN_5GHZ_CAP)
- 			rateidx += ATH12K_MAC_FIRST_OFDM_RATE_IDX;
--- 
-2.39.5
-
+-err_dev_unregister:
+-	v4l2_device_unregister(&core->v4l2_dev);
++err_core_deinit:
++	hfi_core_deinit(core, false);
+ err_venus_shutdown:
+ 	venus_shutdown(core);
+ err_firmware_deinit:
+@@ -350,9 +350,9 @@ err_runtime_disable:
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_suspended(dev);
++	v4l2_device_unregister(&core->v4l2_dev);
++err_hfi_destroy:
+ 	hfi_destroy(core);
+-err_core_deinit:
+-	hfi_core_deinit(core, false);
+ err_core_put:
+ 	if (core->pm_ops->core_put)
+ 		core->pm_ops->core_put(core);
 
 
 
