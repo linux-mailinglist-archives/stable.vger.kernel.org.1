@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D2AAAE51B6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B619AE50E4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1526E1B63C96
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EB90C4A20CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6864F221DA8;
-	Mon, 23 Jun 2025 21:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE7F1F4628;
+	Mon, 23 Jun 2025 21:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DvuEz35o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTbPPSOM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F9219CC11;
-	Mon, 23 Jun 2025 21:36:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777C71E5B71;
+	Mon, 23 Jun 2025 21:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714603; cv=none; b=gSoW2J1FGNakd9mMj8p8Uzu11xqk5kEfrmb/PRx5N8hpEY+4BlEbPyvUU35XIU973br52iQf3lUwBVBqyQMvsKYdQnzm0fBbw5a7ipFKSIQ1feshCiNHJNJd7bmJIqPeFt3V8GlmCuCvhXH9LU6oWCp3iVBnCChlBVCEbp5AL+g=
+	t=1750714123; cv=none; b=UgHq6QzMb1a9Zxl6H+ae97ydV16CNxTI9yxHlj9BV+A0wFHicJ59hdNXdYnqfBxwvlOaOkIl7yvoJa8v4bvHX2DGPz+cuttOGNSZIoK4iX6fVmcv66itWM9T5tvAfShoVV2P1sfTSzGSDNngA87YV60HcAN8ntCZzQn9ym3ygzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714603; c=relaxed/simple;
-	bh=2YPkIJmoVfwdnz37o9jxmLKoacVhT4n/Gi0yULBjqNY=;
+	s=arc-20240116; t=1750714123; c=relaxed/simple;
+	bh=PkpM/9q6dalWyVivmzOmbHNuA1oTrTPC2DaC7M8iDfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ovP78UkPZsTSvRS83ajb35FlYSDzL5llPZVp3Rdoe+yNkBRWeIyvXpQBMVcxVaEe+ccRNE18F8VrRJvI5JQgT/iCrFZUbhGBGTlJ9OUg4JiSd+iqlUKmhSBvzBLkltb5Is59ddtvoiz85IyNaAlI8yb6ahUGWIullmzbqEhmgdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DvuEz35o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1F83C4CEEA;
-	Mon, 23 Jun 2025 21:36:42 +0000 (UTC)
+	 MIME-Version; b=LkQerCG8QDRAjtG3zJ8AV5Zac77lv/1y2z1lqjnACGsyyzgxCwlvbkVbOAd2o3aopK+hVMubGBFFv2+78cpY0IN6S1dLhdM2Ffex1aASP/eHVrOocMfc0nF3rsRfOq/QErCKqLVRKXAhCwa2f2REnJ2MxxUChFu4Oc4pFq40Nuc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTbPPSOM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF3DC4CEEA;
+	Mon, 23 Jun 2025 21:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714603;
-	bh=2YPkIJmoVfwdnz37o9jxmLKoacVhT4n/Gi0yULBjqNY=;
+	s=korg; t=1750714123;
+	bh=PkpM/9q6dalWyVivmzOmbHNuA1oTrTPC2DaC7M8iDfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DvuEz35o5BPGDrcECKJ4ubdb6AIyZ/TR7JYmgfnWKBCcg3k0TtlW6ClcLQznZsf4m
-	 Y4sIas+ODZ1QsUor3SICb7BSi3lHBSS7A9Zo8kki2+iskkjwfdwegur0Dp3syPUNaN
-	 G/aPFWr430lvxdzMW4QlZZTY4UIlyXKh0xe54NJQ=
+	b=uTbPPSOMDblW0HTQbK+r12p11VKsXGg6RbhS10jND3r66P2tB0vCkCqj5lUlRQOl7
+	 ZkjkCqEzfb7KhGrEHnUJgzX41+q83O2nPBZBzHFb+gnmA/QdD9SNeZAG9zEe6/DzL7
+	 6py8pSpyK+S0RHi+tcotNJW3psDvq8ZNx3QOuDxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 147/290] net: dlink: add synchronization for stats update
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 5.10 207/355] uio_hv_generic: Use correct size for interrupt and monitor pages
 Date: Mon, 23 Jun 2025 15:06:48 +0200
-Message-ID: <20250623130631.317638049@linuxfoundation.org>
+Message-ID: <20250623130632.970169137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
+commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
 
-This patch synchronizes code that accesses from both user-space
-and IRQ contexts. The `get_stats()` function can be called from both
-context.
+Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
+This can be different from the system page size.
 
-`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
-in the `tx_errors()` function. Therefore, these fields must also be
-protected by synchronized.
+This size is read and used by the user-mode program to determine the
+mapped data region. An example of such user-mode program is the VMBus
+driver in DPDK.
 
-There is no code that accessses `dev->stats.tx_errors` between the
-previous and updated lines, so the updating point can be moved.
-
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
- drivers/net/ethernet/dlink/dl2k.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ drivers/uio/uio_hv_generic.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index ce46f3ac3b5a1..fad5a72d3b167 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
- 	np->ioaddr = ioaddr;
- 	np->chip_id = chip_idx;
- 	np->pdev = pdev;
-+
-+	spin_lock_init(&np->stats_lock);
- 	spin_lock_init (&np->tx_lock);
- 	spin_lock_init (&np->rx_lock);
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -288,13 +288,13 @@ hv_uio_probe(struct hv_device *dev,
+ 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
+ 	pdata->info.mem[INT_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.int_page;
+-	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
  
-@@ -866,7 +868,6 @@ tx_error (struct net_device *dev, int tx_status)
- 	frame_id = (tx_status & 0xffff0000);
- 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
- 		dev->name, tx_status, frame_id);
--	dev->stats.tx_errors++;
- 	/* Ttransmit Underrun */
- 	if (tx_status & 0x10) {
- 		dev->stats.tx_fifo_errors++;
-@@ -903,9 +904,15 @@ tx_error (struct net_device *dev, int tx_status)
- 		rio_set_led_mode(dev);
- 		/* Let TxStartThresh stay default value */
- 	}
-+
-+	spin_lock(&np->stats_lock);
- 	/* Maximum Collisions */
- 	if (tx_status & 0x08)
- 		dev->stats.collisions++;
-+
-+	dev->stats.tx_errors++;
-+	spin_unlock(&np->stats_lock);
-+
- 	/* Restart the Tx */
- 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
- }
-@@ -1074,7 +1081,9 @@ get_stats (struct net_device *dev)
- 	int i;
- #endif
- 	unsigned int stat_reg;
-+	unsigned long flags;
+ 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
+ 	pdata->info.mem[MON_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.monitor_pages[1];
+-	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
  
-+	spin_lock_irqsave(&np->stats_lock, flags);
- 	/* All statistics registers need to be acknowledged,
- 	   else statistic overflow could cause problems */
- 
-@@ -1124,6 +1133,9 @@ get_stats (struct net_device *dev)
- 	dr16(TCPCheckSumErrors);
- 	dr16(UDPCheckSumErrors);
- 	dr16(IPCheckSumErrors);
-+
-+	spin_unlock_irqrestore(&np->stats_lock, flags);
-+
- 	return &dev->stats;
- }
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae960..56aff2f0bdbfa 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -372,6 +372,8 @@ struct netdev_private {
- 	struct pci_dev *pdev;
- 	void __iomem *ioaddr;
- 	void __iomem *eeprom_addr;
-+	// To ensure synchronization when stats are updated.
-+	spinlock_t stats_lock;
- 	spinlock_t tx_lock;
- 	spinlock_t rx_lock;
- 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
--- 
-2.39.5
-
+ 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
 
 
 
