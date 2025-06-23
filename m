@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-156298-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20F0DAE4EFA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C68FEAE4F03
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 002DE1B6033E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A1FD1B6040F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C0FB21FF2B;
-	Mon, 23 Jun 2025 21:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDEE31F582A;
+	Mon, 23 Jun 2025 21:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xoh27DLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmFwn44U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF75B70838;
-	Mon, 23 Jun 2025 21:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D3B3FB1B;
+	Mon, 23 Jun 2025 21:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713072; cv=none; b=rO1JHTyckswA2HfRU8R6tOvVjinOoQWmAqMF/EjUSw/MktxFdDvp5dQYYVx/wBPKULm7qdg42LA/PHgMFEYs+wAZUdCJZCUW2lZePlQL32s3R4+9HiPMtzG9pTVNM+f+bYm6nf0m3V2ey+RlI4fNlg9UOgZvflcZV7oEDxWBygk=
+	t=1750713091; cv=none; b=BhUwA09lfC3t1Q3MRFgXk8kc/3LAuyk6MUtw/LOeWxNSmtfzNGIBxlIYbOiazMIrqh61edqlK5M9Y5duYDi/A6bvwhmYTDnFfSR+othdZVrQFLVplvFaoZjnL9FVS3HoA0oHuLwiq3Bp/345ib7qsEzfxoOfsG59zhFkqvMJ20o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713072; c=relaxed/simple;
-	bh=3ByHemHtdq9A9OxAmsIj86bv4SiI0CIrHnQEhlcRdtw=;
+	s=arc-20240116; t=1750713091; c=relaxed/simple;
+	bh=1UTF/S6aZpyj6xjMBN08aLda/FR+QfOdqBZ1ZdsOXXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pKTaoLwou+JwpJkDiy3vdbETS+YOanoSquMZT48gq8suxGOYviQVwsOEOa+fXJZ9KknSNCSP2pLsPzHJs7HfaUWjkeDNV4G6sSLU542uwlfQcHBYUlYDTjfjAiM1vxzjox/siu/WhYh3ZHoyzhJ9Xa1JY1le0QYt2plTiLAzhAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xoh27DLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76ED6C4CEEA;
-	Mon, 23 Jun 2025 21:11:11 +0000 (UTC)
+	 MIME-Version; b=OEEHvhBz/U2rfdV4l389dAv2tF4gWp9xnrbtlFxRlxDURGtVSp9EXERE0c/5b31s5e1TAU3lKhAU6tKnj2VGSvDOhiIei08/z2qRDec/A30qm1zX456Ydr9SReJDipFRAwzRplpjwGVka2RV1/wm+YKCyeJzFleaYoBqvOSicNQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmFwn44U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ECDC4CEEA;
+	Mon, 23 Jun 2025 21:11:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713071;
-	bh=3ByHemHtdq9A9OxAmsIj86bv4SiI0CIrHnQEhlcRdtw=;
+	s=korg; t=1750713091;
+	bh=1UTF/S6aZpyj6xjMBN08aLda/FR+QfOdqBZ1ZdsOXXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xoh27DLdkLuazUtuBzueVxIX8V8EmtriPKFNU7PeIxJ51GsnVwKHOSUliMtvqnZkc
-	 AkP9HEGFqBFudrqHLH8nZDOtfZHzCEOcsu5506AipCpWuT2kXWliCJaYucjA3jZtYk
-	 vW9RdJF6bT2sqmBVg1PB2fYryDRkdHMWnyNRLhvk=
+	b=YmFwn44Uf709tfE5dnMJPZ4Y0RSROfYFY8a0mXnsPwRWmWLw9GZUiGFSn0Tjys8s+
+	 qJGLeX7NvnElxPgTqPRF312n6ZVrzngAIJJmwyEgev6m4qarcNnhdP3YXxX52Gw5oU
+	 hw8nkhcVc3VM9DfWTQJZhsIUhriEz6GIPQ/eFf38=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Jack Morgenstein <jackm@nvidia.com>,
+	Feng Liu <feliu@nvidia.com>,
+	Vlad Dumitrescu <vdumitrescu@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Sharath Srinivasan <sharath.srinivasan@oracle.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 096/508] net: usb: aqc111: fix error handling of usbnet read calls
-Date: Mon, 23 Jun 2025 15:02:21 +0200
-Message-ID: <20250623130647.626873019@linuxfoundation.org>
+Subject: [PATCH 6.1 097/508] RDMA/cma: Fix hang when cma_netevent_callback fails to queue_work
+Date: Mon, 23 Jun 2025 15:02:22 +0200
+Message-ID: <20250623130647.655981666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,104 +71,50 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Jack Morgenstein <jackm@nvidia.com>
 
-[ Upstream commit 405b0d610745fb5e84fc2961d9b960abb9f3d107 ]
+[ Upstream commit 92a251c3df8ea1991cd9fe00f1ab0cfce18d7711 ]
 
-Syzkaller, courtesy of syzbot, identified an error (see report [1]) in
-aqc111 driver, caused by incomplete sanitation of usb read calls'
-results. This problem is quite similar to the one fixed in commit
-920a9fa27e78 ("net: asix: add proper error handling of usb read errors").
+The cited commit fixed a crash when cma_netevent_callback was called for
+a cma_id while work on that id from a previous call had not yet started.
+The work item was re-initialized in the second call, which corrupted the
+work item currently in the work queue.
 
-For instance, usbnet_read_cmd() may read fewer than 'size' bytes,
-even if the caller expected the full amount, and aqc111_read_cmd()
-will not check its result properly. As [1] shows, this may lead
-to MAC address in aqc111_bind() being only partly initialized,
-triggering KMSAN warnings.
+However, it left a problem when queue_work fails (because the item is
+still pending in the work queue from a previous call). In this case,
+cma_id_put (which is called in the work handler) is therefore not
+called. This results in a userspace process hang (zombie process).
 
-Fix the issue by verifying that the number of bytes read is
-as expected and not less.
+Fix this by calling cma_id_put() if queue_work fails.
 
-[1] Partial syzbot report:
-BUG: KMSAN: uninit-value in is_valid_ether_addr include/linux/etherdevice.h:208 [inline]
-BUG: KMSAN: uninit-value in usbnet_probe+0x2e57/0x4390 drivers/net/usb/usbnet.c:1830
- is_valid_ether_addr include/linux/etherdevice.h:208 [inline]
- usbnet_probe+0x2e57/0x4390 drivers/net/usb/usbnet.c:1830
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:-1 [inline]
- really_probe+0x4d1/0xd90 drivers/base/dd.c:658
- __driver_probe_device+0x268/0x380 drivers/base/dd.c:800
-...
-
-Uninit was stored to memory at:
- dev_addr_mod+0xb0/0x550 net/core/dev_addr_lists.c:582
- __dev_addr_set include/linux/netdevice.h:4874 [inline]
- eth_hw_addr_set include/linux/etherdevice.h:325 [inline]
- aqc111_bind+0x35f/0x1150 drivers/net/usb/aqc111.c:717
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
-...
-
-Uninit was stored to memory at:
- ether_addr_copy include/linux/etherdevice.h:305 [inline]
- aqc111_read_perm_mac drivers/net/usb/aqc111.c:663 [inline]
- aqc111_bind+0x794/0x1150 drivers/net/usb/aqc111.c:713
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:-1 [inline]
-...
-
-Local variable buf.i created at:
- aqc111_read_perm_mac drivers/net/usb/aqc111.c:656 [inline]
- aqc111_bind+0x221/0x1150 drivers/net/usb/aqc111.c:713
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
-
-Reported-by: syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3b6b9ff7b80430020c7b
-Tested-by: syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com
-Fixes: df2d59a2ab6c ("net: usb: aqc111: Add support for getting and setting of MAC address")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250520113240.2369438-1-n.zhandarovich@fintech.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 45f5dcdd0497 ("RDMA/cma: Fix workqueue crash in cma_netevent_work_handler")
+Link: https://patch.msgid.link/r/4f3640b501e48d0166f312a64fdadf72b059bd04.1747827103.git.leon@kernel.org
+Signed-off-by: Jack Morgenstein <jackm@nvidia.com>
+Signed-off-by: Feng Liu <feliu@nvidia.com>
+Reviewed-by: Vlad Dumitrescu <vdumitrescu@nvidia.com>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Reviewed-by: Sharath Srinivasan <sharath.srinivasan@oracle.com>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/infiniband/core/cma.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index 284375f662f1e..04d5573123bec 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -30,10 +30,13 @@ static int aqc111_read_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
- 	ret = usbnet_read_cmd_nopm(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
- 				   USB_RECIP_DEVICE, value, index, data, size);
- 
--	if (unlikely(ret < 0))
-+	if (unlikely(ret < size)) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+	}
- 
- 	return ret;
- }
-@@ -46,10 +49,13 @@ static int aqc111_read_cmd(struct usbnet *dev, u8 cmd, u16 value,
- 	ret = usbnet_read_cmd(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
- 			      USB_RECIP_DEVICE, value, index, data, size);
- 
--	if (unlikely(ret < 0))
-+	if (unlikely(ret < size)) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+	}
- 
- 	return ret;
- }
+diff --git a/drivers/infiniband/core/cma.c b/drivers/infiniband/core/cma.c
+index bb3c361bd8d45..0b2cb31d0f999 100644
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -5190,7 +5190,8 @@ static int cma_netevent_callback(struct notifier_block *self,
+ 			   neigh->ha, ETH_ALEN))
+ 			continue;
+ 		cma_id_get(current_id);
+-		queue_work(cma_wq, &current_id->id.net_work);
++		if (!queue_work(cma_wq, &current_id->id.net_work))
++			cma_id_put(current_id);
+ 	}
+ out:
+ 	spin_unlock_irqrestore(&id_table_lock, flags);
 -- 
 2.39.5
 
