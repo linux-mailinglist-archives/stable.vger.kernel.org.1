@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-156641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1A78AE506D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D0FAE507E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEB8D440087
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BEBF1B61570
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155981EEA3C;
-	Mon, 23 Jun 2025 21:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75CD1F582A;
+	Mon, 23 Jun 2025 21:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5OUimZb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmkkMvoG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DA81E521E;
-	Mon, 23 Jun 2025 21:25:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964501E51FA;
+	Mon, 23 Jun 2025 21:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713908; cv=none; b=H2+AhQzE55xmJpgizyRvSonY34ZU8QGtO3yAgeWGsju16YTPI7jOYd/5WAuNsNjQbLbiJPdnG+9SGerv2jv6MeDm+6za3qHYIIwUlwbhgbN5kx51incyiSy+r84UIs/KlKi97shLgOXNZHAYUNJEAhFcFqUDWLmVt9LP7BhPSBU=
+	t=1750713930; cv=none; b=VHRFxDE+mtgvAr/UkmgdDh4ogKwtPv5ePYUzq805Z2NkcBSKz9TLCif6PYGJMKYPfEMKOlGTKntfYNyAdbqFeqzvIIbyFPo05wfkDTWgYMJicQIwD91ZBY33sJxaJ1jgtQS+WQsPS4qvhrZ+Z3D+e8ahQcXpjoosM6WMgMop+gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713908; c=relaxed/simple;
-	bh=LCkZz2V/8gm1Sj/0NYaH1TpKREffNt33LOykeZPLBBo=;
+	s=arc-20240116; t=1750713930; c=relaxed/simple;
+	bh=zodM9iz6PHTw/javcP4p5OXU+RI82DZFauqpZjw+yRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkxsIvO/1AMQ1nZGfPBgtUWr9Qx1ElTAs+vI+TgNyOFSCbuho513hURYwLWqdIdmXwHOejW/k97/XIwZLRMqGXECJYj4ilGrpttc6D72dvEXBsUGMHzbvkMByoUiRjX0yA84Oj3G7uITCKL99xzSgyYk+qSMeJckwgi4Y2TiXAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5OUimZb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCF4C4CEEA;
-	Mon, 23 Jun 2025 21:25:07 +0000 (UTC)
+	 MIME-Version; b=htjpnJRB5g/joVB5Fz8h7S578JeKXEYjqhLalpzFjl8A0gbZvz99mlMQaiNe3IzHTenD+fI+1utdTqZz4z/EIeLGfumEUmp0gh+3uAMaSMoQdE2Vbc5phXGwsVOR6Fh3qR+XfDE6NPo0fuv+LAtq648AmmAIZocwBiL+OpyXeK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmkkMvoG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A1AC4CEEA;
+	Mon, 23 Jun 2025 21:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713908;
-	bh=LCkZz2V/8gm1Sj/0NYaH1TpKREffNt33LOykeZPLBBo=;
+	s=korg; t=1750713930;
+	bh=zodM9iz6PHTw/javcP4p5OXU+RI82DZFauqpZjw+yRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5OUimZb2y75zP8hYWsPRjsf+WHH3X8ItOd/zOQmqqOdi4oR9WtNC6zlPKy6KaIWJ
-	 S8l0cdKPI190v5xSlXqDK6sH94J70OpbQxQ4u15DJ4A4h4+Mqlp0MHuq4rjzv9GH+R
-	 jp+QE/M1Ah8vV2b6LZfbot8aRFQmUCbOQ2uZim30=
+	b=FmkkMvoG2PYQtT0AcriOoid5Abh8kx3gnBvUmBrl65si//uMa/yTyqz3y1MVlf0h9
+	 19pCJMG6SqOWb9t3uG4rloewx4tR4QHLH7Rws1kYNKKDRU/7bWaVEEl0p+VBb39pze
+	 6SAH1uZpHUSh57ZQNBWlb2IzOIw/wJTjQZaW/Hj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Benjamin Marzinski <bmarzins@redhat.com>,
 	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 134/508] dm: dont change md if dm_table_set_restrictions() fails
-Date: Mon, 23 Jun 2025 15:02:59 +0200
-Message-ID: <20250623130648.586219826@linuxfoundation.org>
+Subject: [PATCH 6.1 135/508] dm: free table mempools if not used in __bind
+Date: Mon, 23 Jun 2025 15:03:00 +0200
+Message-ID: <20250623130648.610586887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -69,77 +69,50 @@ Content-Transfer-Encoding: 8bit
 
 From: Benjamin Marzinski <bmarzins@redhat.com>
 
-[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
+[ Upstream commit e8819e7f03470c5b468720630d9e4e1d5b99159e ]
 
-__bind was changing the disk capacity, geometry and mempools of the
-mapped device before calling dm_table_set_restrictions() which could
-fail, forcing dm to drop the new table. Failing here would leave the
-device using the old table but with the wrong capacity and mempools.
+With request-based dm, the mempools don't need reloading when switching
+tables, but the unused table mempools are not freed until the active
+table is finally freed. Free them immediately if they are not needed.
 
-Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
-capacity to be set, save the old version and restore it on failure.
-
-Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
+Fixes: 29dec90a0f1d9 ("dm: fix bio_set allocation")
 Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Tested-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
 Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm.c | 22 ++++++++++++----------
- 1 file changed, 12 insertions(+), 10 deletions(-)
+ drivers/md/dm.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 4767265793de7..2b8fe98c515ed 100644
+index 2b8fe98c515ed..cf7520551b63b 100644
 --- a/drivers/md/dm.c
 +++ b/drivers/md/dm.c
-@@ -2165,21 +2165,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 			       struct queue_limits *limits)
- {
- 	struct dm_table *old_map;
--	sector_t size;
-+	sector_t size, old_size;
- 	int ret;
- 
- 	lockdep_assert_held(&md->suspend_lock);
- 
- 	size = dm_table_get_size(t);
- 
-+	old_size = dm_get_size(md);
-+	set_capacity(md->disk, size);
-+
-+	ret = dm_table_set_restrictions(t, md->queue, limits);
-+	if (ret) {
-+		set_capacity(md->disk, old_size);
-+		old_map = ERR_PTR(ret);
-+		goto out;
-+	}
-+
- 	/*
- 	 * Wipe any geometry if the size of the table changed.
- 	 */
--	if (size != dm_get_size(md))
-+	if (size != old_size)
- 		memset(&md->geometry, 0, sizeof(md->geometry));
- 
--	set_capacity(md->disk, size);
--
- 	dm_table_event_callback(t, event_callback, md);
- 
- 	if (dm_table_request_based(t)) {
-@@ -2212,12 +2220,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		t->mempools = NULL;
+@@ -2205,10 +2205,10 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 		 * requests in the queue may refer to bio from the old bioset,
+ 		 * so you must walk through the queue to unprep.
+ 		 */
+-		if (!md->mempools) {
++		if (!md->mempools)
+ 			md->mempools = t->mempools;
+-			t->mempools = NULL;
+-		}
++		else
++			dm_free_md_mempools(t->mempools);
+ 	} else {
+ 		/*
+ 		 * The md may already have mempools that need changing.
+@@ -2217,8 +2217,8 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 		 */
+ 		dm_free_md_mempools(md->mempools);
+ 		md->mempools = t->mempools;
+-		t->mempools = NULL;
  	}
++	t->mempools = NULL;
  
--	ret = dm_table_set_restrictions(t, md->queue, limits);
--	if (ret) {
--		old_map = ERR_PTR(ret);
--		goto out;
--	}
--
  	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
  	rcu_assign_pointer(md->map, (void *)t);
- 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
 -- 
 2.39.5
 
