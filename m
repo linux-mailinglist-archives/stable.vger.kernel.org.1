@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B040AE4FD8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF0ECAE54E3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE6637AE3E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61CC24A09A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08EDC222587;
-	Mon, 23 Jun 2025 21:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C8AA2236E9;
+	Mon, 23 Jun 2025 22:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFlFLBxt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmviQh7u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F651FE46D;
-	Mon, 23 Jun 2025 21:17:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589B421FF2B;
+	Mon, 23 Jun 2025 22:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713458; cv=none; b=T5RaSMHwCvn48dcJ2r54uXjgBoMRsn075piKk8IXWQWy78fCO+d+hMy/mEgABDioz/l4VWcwSvE5kBR8We7TZ7XZYOqtsG7xuM+w9igWYXnwemZ025kDyZnmp7EqDWyO3y8gSHuB7LLbqUUd1az4687BLKVxZPunA3rcX3y+Ezk=
+	t=1750716333; cv=none; b=prvnUCRWWtF/Vh6OPuOQZAoLcsN3O3Ty05S6OsEsOxHDEGIO+HDaMAMJkffXskrzqP3GVhYvToXFYS10MA2d6l2KDxmJRTy0eLz8IxJ8Q5JyhWHImjQ5J9X+Ut9TOXrL9GEKX/Micn0DOo6yQsAKp+pVBxIJDorF7pDRloWxgHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713458; c=relaxed/simple;
-	bh=to++bX/bb5FZXEbFQQcrYlU/zDfU2xYv+z3PiFaUyeA=;
+	s=arc-20240116; t=1750716333; c=relaxed/simple;
+	bh=xMkKGdKluLPJ5HsVxn825G8QnnHYgRqqESll/zAFATA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fIQnc1Akq2YdXW2XdmY5rq4EcV2KQ7CXxEUBQ8JmVn1vSlUJGJbFXIMWo3xI9WaDEvqXpaoJAUjbiqyWVrz4uYsj3eY2i4BdERSHwDbK/B15YzH8oPNyDtbpWt47UgHFopRDlhfAGVlQ6wTXtzzCk549MYl84HAUBnH/IqS78SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFlFLBxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12F76C4CEEA;
-	Mon, 23 Jun 2025 21:17:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jEYpmAwPTfsEzHiTmdYcRgBGCWY3xmy3PbCb+LX5R7qpiXQClI9iXYJJ5cRK3va2E6HCo22/lRFAEdQ1AUtDuQbgJ304yCGd5ZrWEUx3pVr3OeJEHq2T0hq+2QG/ut4AbqOOONzGuqmLscPiTT6WeUlU9OV0QoUtRHWQjNsQXSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmviQh7u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E678FC4CEED;
+	Mon, 23 Jun 2025 22:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713458;
-	bh=to++bX/bb5FZXEbFQQcrYlU/zDfU2xYv+z3PiFaUyeA=;
+	s=korg; t=1750716333;
+	bh=xMkKGdKluLPJ5HsVxn825G8QnnHYgRqqESll/zAFATA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFlFLBxtojeogQHq0BXvQJ9WUYtLCTrRKp11aRiD2g4Piv+agV6jlS7xJ3uzaTrGk
-	 zLnkug5s3dKPsgCd4GUpIQtn4Fb++3kU/QFDksXkgmo2EUijmrC6DPPrw92AD1qiNk
-	 gbI5jqwPUPjmamKtbzF6wyc5j2cCBpa/OtoLQJWc=
+	b=gmviQh7uvT/FXAz0mkxmonHcNRwkQhMbWb40a2QIp58YwbRxffYfUQ1/tVQrk2vlL
+	 6+u49SXqHGejyZ7DfWxgczc4NRb7hXb0cl2pR/Xo2mfxFo5Qan4SjVrJgz2jJrZK0g
+	 fT86/yW1lstBh8iA8aW+kH7O6KpwimK+jUqeWBk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	John Cheung <john.cs.hey@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Paul Moore <paul@paul-moore.com>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=F8iland-J=F8rgensen?= <toke@redhat.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 207/222] calipso: Fix null-ptr-deref in calipso_req_{set,del}attr().
-Date: Mon, 23 Jun 2025 15:09:02 +0200
-Message-ID: <20250623130618.527343820@linuxfoundation.org>
+	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.10 342/355] net_sched: sch_sfq: handle bigger packets
+Date: Mon, 23 Jun 2025 15:09:03 +0200
+Message-ID: <20250623130637.007788137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,203 +61,167 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 10876da918fa1aec0227fb4c67647513447f53a9 ]
+[ Upstream commit e4650d7ae4252f67e997a632adfae0dd74d3a99a ]
 
-syzkaller reported a null-ptr-deref in sock_omalloc() while allocating
-a CALIPSO option.  [0]
+SFQ has an assumption on dealing with packets smaller than 64KB.
 
-The NULL is of struct sock, which was fetched by sk_to_full_sk() in
-calipso_req_setattr().
+Even before BIG TCP, TCA_STAB can provide arbitrary big values
+in qdisc_pkt_len(skb)
 
-Since commit a1a5344ddbe8 ("tcp: avoid two atomic ops for syncookies"),
-reqsk->rsk_listener could be NULL when SYN Cookie is returned to its
-client, as hinted by the leading SYN Cookie log.
+It is time to switch (struct sfq_slot)->allot to a 32bit field.
 
-Here are 3 options to fix the bug:
+sizeof(struct sfq_slot) is now 64 bytes, giving better cache locality.
 
-  1) Return 0 in calipso_req_setattr()
-  2) Return an error in calipso_req_setattr()
-  3) Alaways set rsk_listener
-
-1) is no go as it bypasses LSM, but 2) effectively disables SYN Cookie
-for CALIPSO.  3) is also no go as there have been many efforts to reduce
-atomic ops and make TCP robust against DDoS.  See also commit 3b24d854cb35
-("tcp/dccp: do not touch listener sk_refcnt under synflood").
-
-As of the blamed commit, SYN Cookie already did not need refcounting,
-and no one has stumbled on the bug for 9 years, so no CALIPSO user will
-care about SYN Cookie.
-
-Let's return an error in calipso_req_setattr() and calipso_req_delattr()
-in the SYN Cookie case.
-
-This can be reproduced by [1] on Fedora and now connect() of nc times out.
-
-[0]:
-TCP: request_sock_TCPv6: Possible SYN flooding on port [::]:20002. Sending cookies.
-Oops: general protection fault, probably for non-canonical address 0xdffffc0000000006: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000030-0x0000000000000037]
-CPU: 3 UID: 0 PID: 12262 Comm: syz.1.2611 Not tainted 6.14.0 #2
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:read_pnet include/net/net_namespace.h:406 [inline]
-RIP: 0010:sock_net include/net/sock.h:655 [inline]
-RIP: 0010:sock_kmalloc+0x35/0x170 net/core/sock.c:2806
-Code: 89 d5 41 54 55 89 f5 53 48 89 fb e8 25 e3 c6 fd e8 f0 91 e3 00 48 8d 7b 30 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 26 01 00 00 48 b8 00 00 00 00 00 fc ff df 4c 8b
-RSP: 0018:ffff88811af89038 EFLAGS: 00010216
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: ffff888105266400
-RDX: 0000000000000006 RSI: ffff88800c890000 RDI: 0000000000000030
-RBP: 0000000000000050 R08: 0000000000000000 R09: ffff88810526640e
-R10: ffffed1020a4cc81 R11: ffff88810526640f R12: 0000000000000000
-R13: 0000000000000820 R14: ffff888105266400 R15: 0000000000000050
-FS:  00007f0653a07640(0000) GS:ffff88811af80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f863ba096f4 CR3: 00000000163c0005 CR4: 0000000000770ef0
-PKRU: 80000000
-Call Trace:
- <IRQ>
- ipv6_renew_options+0x279/0x950 net/ipv6/exthdrs.c:1288
- calipso_req_setattr+0x181/0x340 net/ipv6/calipso.c:1204
- calipso_req_setattr+0x56/0x80 net/netlabel/netlabel_calipso.c:597
- netlbl_req_setattr+0x18a/0x440 net/netlabel/netlabel_kapi.c:1249
- selinux_netlbl_inet_conn_request+0x1fb/0x320 security/selinux/netlabel.c:342
- selinux_inet_conn_request+0x1eb/0x2c0 security/selinux/hooks.c:5551
- security_inet_conn_request+0x50/0xa0 security/security.c:4945
- tcp_v6_route_req+0x22c/0x550 net/ipv6/tcp_ipv6.c:825
- tcp_conn_request+0xec8/0x2b70 net/ipv4/tcp_input.c:7275
- tcp_v6_conn_request+0x1e3/0x440 net/ipv6/tcp_ipv6.c:1328
- tcp_rcv_state_process+0xafa/0x52b0 net/ipv4/tcp_input.c:6781
- tcp_v6_do_rcv+0x8a6/0x1a40 net/ipv6/tcp_ipv6.c:1667
- tcp_v6_rcv+0x505e/0x5b50 net/ipv6/tcp_ipv6.c:1904
- ip6_protocol_deliver_rcu+0x17c/0x1da0 net/ipv6/ip6_input.c:436
- ip6_input_finish+0x103/0x180 net/ipv6/ip6_input.c:480
- NF_HOOK include/linux/netfilter.h:314 [inline]
- NF_HOOK include/linux/netfilter.h:308 [inline]
- ip6_input+0x13c/0x6b0 net/ipv6/ip6_input.c:491
- dst_input include/net/dst.h:469 [inline]
- ip6_rcv_finish net/ipv6/ip6_input.c:79 [inline]
- ip6_rcv_finish+0xb6/0x490 net/ipv6/ip6_input.c:69
- NF_HOOK include/linux/netfilter.h:314 [inline]
- NF_HOOK include/linux/netfilter.h:308 [inline]
- ipv6_rcv+0xf9/0x490 net/ipv6/ip6_input.c:309
- __netif_receive_skb_one_core+0x12e/0x1f0 net/core/dev.c:5896
- __netif_receive_skb+0x1d/0x170 net/core/dev.c:6009
- process_backlog+0x41e/0x13b0 net/core/dev.c:6357
- __napi_poll+0xbd/0x710 net/core/dev.c:7191
- napi_poll net/core/dev.c:7260 [inline]
- net_rx_action+0x9de/0xde0 net/core/dev.c:7382
- handle_softirqs+0x19a/0x770 kernel/softirq.c:561
- do_softirq.part.0+0x36/0x70 kernel/softirq.c:462
- </IRQ>
- <TASK>
- do_softirq arch/x86/include/asm/preempt.h:26 [inline]
- __local_bh_enable_ip+0xf1/0x110 kernel/softirq.c:389
- local_bh_enable include/linux/bottom_half.h:33 [inline]
- rcu_read_unlock_bh include/linux/rcupdate.h:919 [inline]
- __dev_queue_xmit+0xc2a/0x3c40 net/core/dev.c:4679
- dev_queue_xmit include/linux/netdevice.h:3313 [inline]
- neigh_hh_output include/net/neighbour.h:523 [inline]
- neigh_output include/net/neighbour.h:537 [inline]
- ip6_finish_output2+0xd69/0x1f80 net/ipv6/ip6_output.c:141
- __ip6_finish_output net/ipv6/ip6_output.c:215 [inline]
- ip6_finish_output+0x5dc/0xd60 net/ipv6/ip6_output.c:226
- NF_HOOK_COND include/linux/netfilter.h:303 [inline]
- ip6_output+0x24b/0x8d0 net/ipv6/ip6_output.c:247
- dst_output include/net/dst.h:459 [inline]
- NF_HOOK include/linux/netfilter.h:314 [inline]
- NF_HOOK include/linux/netfilter.h:308 [inline]
- ip6_xmit+0xbbc/0x20d0 net/ipv6/ip6_output.c:366
- inet6_csk_xmit+0x39a/0x720 net/ipv6/inet6_connection_sock.c:135
- __tcp_transmit_skb+0x1a7b/0x3b40 net/ipv4/tcp_output.c:1471
- tcp_transmit_skb net/ipv4/tcp_output.c:1489 [inline]
- tcp_send_syn_data net/ipv4/tcp_output.c:4059 [inline]
- tcp_connect+0x1c0c/0x4510 net/ipv4/tcp_output.c:4148
- tcp_v6_connect+0x156c/0x2080 net/ipv6/tcp_ipv6.c:333
- __inet_stream_connect+0x3a7/0xed0 net/ipv4/af_inet.c:677
- tcp_sendmsg_fastopen+0x3e2/0x710 net/ipv4/tcp.c:1039
- tcp_sendmsg_locked+0x1e82/0x3570 net/ipv4/tcp.c:1091
- tcp_sendmsg+0x2f/0x50 net/ipv4/tcp.c:1358
- inet6_sendmsg+0xb9/0x150 net/ipv6/af_inet6.c:659
- sock_sendmsg_nosec net/socket.c:718 [inline]
- __sock_sendmsg+0xf4/0x2a0 net/socket.c:733
- __sys_sendto+0x29a/0x390 net/socket.c:2187
- __do_sys_sendto net/socket.c:2194 [inline]
- __se_sys_sendto net/socket.c:2190 [inline]
- __x64_sys_sendto+0xe1/0x1c0 net/socket.c:2190
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xc3/0x1d0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f06553c47ed
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0653a06fc8 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-RAX: ffffffffffffffda RBX: 00007f0655605fa0 RCX: 00007f06553c47ed
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 000000000000000b
-RBP: 00007f065545db38 R08: 0000200000000140 R09: 000000000000001c
-R10: f7384d4ea84b01bd R11: 0000000000000246 R12: 0000000000000000
-R13: 00007f0655605fac R14: 00007f0655606038 R15: 00007f06539e7000
- </TASK>
-Modules linked in:
-
-[1]:
-dnf install -y selinux-policy-targeted policycoreutils netlabel_tools procps-ng nmap-ncat
-mount -t selinuxfs none /sys/fs/selinux
-load_policy
-netlabelctl calipso add pass doi:1
-netlabelctl map del default
-netlabelctl map add default address:::1 protocol:calipso,1
-sysctl net.ipv4.tcp_syncookies=2
-nc -l ::1 80 &
-nc ::1 80
-
-Fixes: e1adea927080 ("calipso: Allow request sockets to be relabelled by the lsm.")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: John Cheung <john.cs.hey@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAP=Rh=MvfhrGADy+-WJiftV2_WzMH4VEhEFmeT28qY+4yxNu4w@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20250617224125.17299-1-kuni1840@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20241008111603.653140-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/calipso.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/sched/sch_sfq.c |   39 +++++++++++++--------------------------
+ 1 file changed, 13 insertions(+), 26 deletions(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index 9bc612b3f8340..332c25bc9dd5e 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1210,6 +1210,10 @@ static int calipso_req_setattr(struct request_sock *req,
- 	struct ipv6_opt_hdr *old, *new;
- 	struct sock *sk = sk_to_full_sk(req_to_sk(req));
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -77,12 +77,6 @@
+ #define SFQ_EMPTY_SLOT		0xffff
+ #define SFQ_DEFAULT_HASH_DIVISOR 1024
  
-+	/* sk is NULL for SYN+ACK w/ SYN Cookie */
-+	if (!sk)
-+		return -ENOMEM;
-+
- 	if (req_inet->ipv6_opt && req_inet->ipv6_opt->hopopt)
- 		old = req_inet->ipv6_opt->hopopt;
- 	else
-@@ -1250,6 +1254,10 @@ static void calipso_req_delattr(struct request_sock *req)
- 	struct ipv6_txoptions *txopts;
- 	struct sock *sk = sk_to_full_sk(req_to_sk(req));
+-/* We use 16 bits to store allot, and want to handle packets up to 64K
+- * Scale allot by 8 (1<<3) so that no overflow occurs.
+- */
+-#define SFQ_ALLOT_SHIFT		3
+-#define SFQ_ALLOT_SIZE(X)	DIV_ROUND_UP(X, 1 << SFQ_ALLOT_SHIFT)
+-
+ /* This type should contain at least SFQ_MAX_DEPTH + 1 + SFQ_MAX_FLOWS values */
+ typedef u16 sfq_index;
  
-+	/* sk is NULL for SYN+ACK w/ SYN Cookie */
-+	if (!sk)
-+		return;
-+
- 	if (!req_inet->ipv6_opt || !req_inet->ipv6_opt->hopopt)
- 		return;
+@@ -104,7 +98,7 @@ struct sfq_slot {
+ 	sfq_index	next; /* next slot in sfq RR chain */
+ 	struct sfq_head dep; /* anchor in dep[] chains */
+ 	unsigned short	hash; /* hash value (index in ht[]) */
+-	short		allot; /* credit for this slot */
++	int		allot; /* credit for this slot */
  
--- 
-2.39.5
-
+ 	unsigned int    backlog;
+ 	struct red_vars vars;
+@@ -120,7 +114,6 @@ struct sfq_sched_data {
+ 	siphash_key_t 	perturbation;
+ 	u8		cur_depth;	/* depth of longest slot */
+ 	u8		flags;
+-	unsigned short  scaled_quantum; /* SFQ_ALLOT_SIZE(quantum) */
+ 	struct tcf_proto __rcu *filter_list;
+ 	struct tcf_block *block;
+ 	sfq_index	*ht;		/* Hash table ('divisor' slots) */
+@@ -459,7 +452,7 @@ enqueue:
+ 		 */
+ 		q->tail = slot;
+ 		/* We could use a bigger initial quantum for new flows */
+-		slot->allot = q->scaled_quantum;
++		slot->allot = q->quantum;
+ 	}
+ 	if (++sch->q.qlen <= q->limit)
+ 		return NET_XMIT_SUCCESS;
+@@ -496,7 +489,7 @@ next_slot:
+ 	slot = &q->slots[a];
+ 	if (slot->allot <= 0) {
+ 		q->tail = slot;
+-		slot->allot += q->scaled_quantum;
++		slot->allot += q->quantum;
+ 		goto next_slot;
+ 	}
+ 	skb = slot_dequeue_head(slot);
+@@ -515,7 +508,7 @@ next_slot:
+ 		}
+ 		q->tail->next = next_a;
+ 	} else {
+-		slot->allot -= SFQ_ALLOT_SIZE(qdisc_pkt_len(skb));
++		slot->allot -= qdisc_pkt_len(skb);
+ 	}
+ 	return skb;
+ }
+@@ -598,7 +591,7 @@ drop:
+ 				q->tail->next = x;
+ 			}
+ 			q->tail = slot;
+-			slot->allot = q->scaled_quantum;
++			slot->allot = q->quantum;
+ 		}
+ 	}
+ 	sch->q.qlen -= dropped;
+@@ -628,7 +621,8 @@ static void sfq_perturbation(struct time
+ 		mod_timer(&q->perturb_timer, jiffies + period);
+ }
+ 
+-static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
++static int sfq_change(struct Qdisc *sch, struct nlattr *opt,
++		      struct netlink_ext_ack *extack)
+ {
+ 	struct sfq_sched_data *q = qdisc_priv(sch);
+ 	struct tc_sfq_qopt *ctl = nla_data(opt);
+@@ -646,14 +640,10 @@ static int sfq_change(struct Qdisc *sch,
+ 	    (!is_power_of_2(ctl->divisor) || ctl->divisor > 65536))
+ 		return -EINVAL;
+ 
+-	/* slot->allot is a short, make sure quantum is not too big. */
+-	if (ctl->quantum) {
+-		unsigned int scaled = SFQ_ALLOT_SIZE(ctl->quantum);
+-
+-		if (scaled <= 0 || scaled > SHRT_MAX)
+-			return -EINVAL;
++	if ((int)ctl->quantum < 0) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
++		return -EINVAL;
+ 	}
+-
+ 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
+ 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
+ 		return -EINVAL;
+@@ -663,10 +653,8 @@ static int sfq_change(struct Qdisc *sch,
+ 			return -ENOMEM;
+ 	}
+ 	sch_tree_lock(sch);
+-	if (ctl->quantum) {
++	if (ctl->quantum)
+ 		q->quantum = ctl->quantum;
+-		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
+-	}
+ 	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
+ 	if (ctl->flows)
+ 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+@@ -762,12 +750,11 @@ static int sfq_init(struct Qdisc *sch, s
+ 	q->divisor = SFQ_DEFAULT_HASH_DIVISOR;
+ 	q->maxflows = SFQ_DEFAULT_FLOWS;
+ 	q->quantum = psched_mtu(qdisc_dev(sch));
+-	q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
+ 	q->perturb_period = 0;
+ 	get_random_bytes(&q->perturbation, sizeof(q->perturbation));
+ 
+ 	if (opt) {
+-		int err = sfq_change(sch, opt);
++		int err = sfq_change(sch, opt, extack);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -878,7 +865,7 @@ static int sfq_dump_class_stats(struct Q
+ 	if (idx != SFQ_EMPTY_SLOT) {
+ 		const struct sfq_slot *slot = &q->slots[idx];
+ 
+-		xstats.allot = slot->allot << SFQ_ALLOT_SHIFT;
++		xstats.allot = slot->allot;
+ 		qs.qlen = slot->qlen;
+ 		qs.backlog = slot->backlog;
+ 	}
 
 
 
