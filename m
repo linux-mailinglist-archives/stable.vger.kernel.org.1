@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 813C2AE5018
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79D18AE51DC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BF243ADB41
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E3E1C7A329A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A99A1F582A;
-	Mon, 23 Jun 2025 21:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ED33221FD2;
+	Mon, 23 Jun 2025 21:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTBL1G4x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEfE3AVI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2D91E521E;
-	Mon, 23 Jun 2025 21:22:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4992C19CC11;
+	Mon, 23 Jun 2025 21:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713722; cv=none; b=c9FNKYI7YlKATZaG6zZqPxw602a4ZkYOLUnI+uSMrV5yo8+Ej7J7HrEn3xwdJg6m1eslqCvyStDOdiZ2FCoTZiL8Nkng0Tt1DR0ktUBYaRd8IYzB5VcE6diFsWxXQkmWDbnwiWnkqulvNSdztrxMQrWL+cVuM8GHr1KjxqG40LI=
+	t=1750714689; cv=none; b=O+uclTclLNgnLvXn7p9ah5Piird6IBiQCz3eooJCq6wTSSmJmQLejN3pvNAnfVLgWdUUdf6jRcPGqKGOwNySy2jYTqBxVYhXkzyEouLVzqp5bYJlzuwVbOqZkOLTu8ICl2+rsFr/72N9CMebIZ1M/BdclP8e1eZJ96KC5TV1Fjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713722; c=relaxed/simple;
-	bh=N8d2yAYXFVmlslXEuHfsFEhBpsTJFvIAPslhc9cP2+E=;
+	s=arc-20240116; t=1750714689; c=relaxed/simple;
+	bh=QSBDVoOo3u9M92rWCpvxy7LGZKTW2nmYPgomlAGBMUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOe00Rwuj2UBK+GlsKBgcXrBPKyeG8Ts5OTfwzia5wauRV1iBNWPaqZOJOWc82bmJgbaP7q9TKVE3nzDcspdM+fYRB0D8ZcSqrAbxBmDVVMPGeqQ7kOiQ++ld1WFuEDtiaGrx3vU3DcHk8OOMVtLvRijDbsMS55t6fha9HipHrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTBL1G4x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72892C4CEEA;
-	Mon, 23 Jun 2025 21:22:01 +0000 (UTC)
+	 MIME-Version; b=UK2vi2K9UDSsFiG2+DZLvXRbva/Q2TrcvdrwHCGKyvta92PCMkyzoSS1IHs4wLQHG82vd9g8AoGwpv35pyC+w3IMV1VhcUeu1BkxPrD905xIG4O8maWhHJuEd18KKuok2DhiVJueNRwKkK9qX9l5vji4asFzAewgbX5KhKvZNFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEfE3AVI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CEFC4CEED;
+	Mon, 23 Jun 2025 21:38:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713721;
-	bh=N8d2yAYXFVmlslXEuHfsFEhBpsTJFvIAPslhc9cP2+E=;
+	s=korg; t=1750714689;
+	bh=QSBDVoOo3u9M92rWCpvxy7LGZKTW2nmYPgomlAGBMUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTBL1G4xwmDjvV0cEVuoDpJYis45ZuPwgD61RSsKkkkhSHFpSDq67s18+pILcbc3l
-	 sRKLTB26JE1QE0mKQ4BIaMItgXYAGClcM5UDCZpciOyxIPa2XFWkcwz+5XIq/kx8gz
-	 B5SpG27O2LO2TJjvoxa57rN9M5xMqKCEsZfA9tHk=
+	b=zEfE3AVIJ22KMeagCdt8z+7ALmqAJtlATAgMw5nutWVFF/nk5tC56j22g0qVf/FWy
+	 xsNOhmG1cImC40vFprU6XtU/Nu5wZ5hREcEvahUH3GJGQRhWD/lPsM2oA5FA+Ml/nn
+	 gudcl085bvJKrloxk9SWCQAw7/+RRVrgYu866KWw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.6 086/290] mtd: nand: sunxi: Add randomizer configuration before randomizer enable
+	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.15 203/411] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
 Date: Mon, 23 Jun 2025 15:05:47 +0200
-Message-ID: <20250623130629.569489725@linuxfoundation.org>
+Message-ID: <20250623130638.784047191@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 4a5a99bc79cdc4be63933653682b0261a67a0c9f upstream.
+commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
 
-In sunxi_nfc_hw_ecc_read_chunk(), the sunxi_nfc_randomizer_enable() is
-called without the config of randomizer. A proper implementation can be
-found in sunxi_nfc_hw_ecc_read_chunks_dma().
+Since handle->h_transaction may be a NULL pointer, so we should change it
+to call is_handle_aborted(handle) first before dereferencing it.
 
-Add sunxi_nfc_randomizer_config() before the start of randomization.
+And the following data-race was reported in my fuzzer:
 
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+==================================================================
+BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
+
+write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
+ jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
+
+read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
+ jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
+
+value changed: 0x00000000 -> 0x00000001
+==================================================================
+
+This issue is caused by missing data-race annotation for jh->b_modified.
+Therefore, the missing annotation needs to be added.
+
+Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
+Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/jbd2/transaction.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -817,6 +817,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(s
- 	if (ret)
- 		return ret;
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1519,7 +1519,7 @@ int jbd2_journal_dirty_metadata(handle_t
+ 				jh->b_next_transaction == transaction);
+ 		spin_unlock(&jh->b_state_lock);
+ 	}
+-	if (jh->b_modified == 1) {
++	if (data_race(jh->b_modified == 1)) {
+ 		/* If it's in our transaction it must be in BJ_Metadata list. */
+ 		if (data_race(jh->b_transaction == transaction &&
+ 		    jh->b_jlist != BJ_Metadata)) {
+@@ -1538,7 +1538,6 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out;
+ 	}
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD | NFC_ECC_OP,
- 	       nfc->regs + NFC_REG_CMD);
+-	journal = transaction->t_journal;
+ 	spin_lock(&jh->b_state_lock);
+ 
+ 	if (is_handle_aborted(handle)) {
+@@ -1553,6 +1552,8 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out_unlock_bh;
+ 	}
+ 
++	journal = transaction->t_journal;
++
+ 	if (jh->b_modified == 0) {
+ 		/*
+ 		 * This buffer's got modified and becoming part
 
 
 
