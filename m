@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F22AE51A2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B896FAE4FF0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D9A481B62C72
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D383BE0CF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081231F3B96;
-	Mon, 23 Jun 2025 21:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0FC2628C;
+	Mon, 23 Jun 2025 21:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkx5bJ7P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6vBYzwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAAB7221F17;
-	Mon, 23 Jun 2025 21:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF187482;
+	Mon, 23 Jun 2025 21:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714548; cv=none; b=E3bbP3R2YQy3opa/RFx5OASyVxNOla7ZdW5EmbtCZMhVXVHbwFFZ269bEqdtWC1PaEOhxSQ+RIa9MRD/TeGgnp14y9XdoUtSaug0tbyhO4SUSz6et+LdksD0f/wpU0/tvLMLGBmCPQAMp1xr+8HNFa6JoTiErdH8D8LJJTR5AVw=
+	t=1750713660; cv=none; b=dD+MyzjkwitUCnWkFLkE1+vF7Fn3ROsBujboVaagLx/oss7+XxSR1NLQ5/B46qICL9fjCH/+CCv40kbaeQf84FqKw+groMGQnPQOMHeaikNrgHvWOCWLsU/0ugLP/qPP3fsgtd2TQxkiJcveLcnNwek8GCvNrJpIaYCwThEVch0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714548; c=relaxed/simple;
-	bh=JSG8Tk6O6w+neYjd9JMfV7cziZMFY50YjYpXj2wFDO4=;
+	s=arc-20240116; t=1750713660; c=relaxed/simple;
+	bh=vT16eT+vnTG8T51Bq7862a8ly9EWdLHzGvxOXkBzq04=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ggqvzr3ddtSA/KxXuHNMlYsdM9GK5IlXB6OqcFhhWkrWs5PNFJjQbDYDxdhoAelm/FquSJfgkgbP6iruLSztw5QAQ8Bk5UkGk9hah3dBvVt6wAMLZUekHz8vF+7PPaZ8p3pNhFSSGMvVZcxKc9gVVTVzRjhflRsH6Nav52MHxQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkx5bJ7P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 511A1C4CEEA;
-	Mon, 23 Jun 2025 21:35:48 +0000 (UTC)
+	 MIME-Version; b=El/bxe9ddpPwuUXZ5ZyOwF/T3I3FBK5SAeVlgQc7DWTLPRMrwPX+wH1IsbtXHFxjaHFgu6AtbpSMTnp6GEqC35R/XfPTuarUMDmTjQgXFeUs6gvQLeShsYRGHNOKyxyRaLQDbSVL2eUi3JOOHuEE1btkhQbCPxpCXfpqbEO3oyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6vBYzwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56623C4CEEA;
+	Mon, 23 Jun 2025 21:21:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714548;
-	bh=JSG8Tk6O6w+neYjd9JMfV7cziZMFY50YjYpXj2wFDO4=;
+	s=korg; t=1750713660;
+	bh=vT16eT+vnTG8T51Bq7862a8ly9EWdLHzGvxOXkBzq04=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkx5bJ7PHzUYCDMThySbuzeklYvPKB5lvdNzWLdUv1AJZ5brGwtWknBWyvPbwY+JZ
-	 VuJoJ0SeAP/iGuwvPVSNYAgSatkSMGss+8nuWagrDI/4AyG//sORLnw0Z24VmKYoFS
-	 zCiA88B3IOLO/wOHC3CGyDts7FB6rCU2ZQCILEdE=
+	b=g6vBYzwBw8eB6staF/SE9wxX7m0M+AHpkkPm1jq8R+LBkgMiZ6vw6z/UJyNYmZGsj
+	 +SyUZFeYhKAvFCTnaYMdd6qf/Glcnh44m4iLH/h5rj4Pvfh/Bm/WrIGlZIGXfLGQpF
+	 rxWV3Eix3iERGYAOMFbegjyVIFGcXtZwdaEi8ekU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 401/592] wifi: ath12k: make assoc link associate first
+	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
+	Arjun Roy <arjunroy@google.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 158/355] tcp: tcp_data_ready() must look at SOCK_DONE
 Date: Mon, 23 Jun 2025 15:05:59 +0200
-Message-ID: <20250623130709.980130769@linuxfoundation.org>
+Message-ID: <20250623130631.453370482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,86 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ead6d41116b81098061c878d9bfc0b1a6c629090 ]
+commit 39354eb29f597aa01b3d51ccc8169cf183c4367f upstream.
 
-In MLO scenario WCN7850 firmware requests the assoc link to associate
-before any other links. However currently in
-ath12k_mac_op_vif_cfg_changed() we are doing association in an ascending
-order of link id. If the assoc link does not get assigned the smallest
-id, a non-assoc link gets associated first and firmware crashes.
+My prior cleanup missed that tcp_data_ready() has to look at SOCK_DONE.
+Otherwise, an application using SO_RCVLOWAT will not get EPOLLIN event
+if a FIN is received in the middle of expected payload.
 
-Change to do association for the assoc link first.
+The reason SOCK_DONE is not examined in tcp_epollin_ready()
+is that tcp_poll() catches the FIN because tcp_fin()
+is also setting RCV_SHUTDOWN into sk->sk_shutdown
 
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.1.c5-00284-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00209-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250409-ath12k-wcn7850-mlo-support-v2-5-3801132ca2c3@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 05dc72aba364 ("tcp: factorize logic into tcp_epollin_ready()")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: Wei Wang <weiwan@google.com>
+Cc: Arjun Roy <arjunroy@google.com>
+Reviewed-by: Wei Wang <weiwan@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/mac.c | 31 +++++++++++++++++++++++++++
- 1 file changed, 31 insertions(+)
+ net/ipv4/tcp_input.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
-index 331bcf5e6c4cc..eac4214c48c39 100644
---- a/drivers/net/wireless/ath/ath12k/mac.c
-+++ b/drivers/net/wireless/ath/ath12k/mac.c
-@@ -3703,6 +3703,8 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
- 	unsigned long links = ahvif->links_map;
- 	struct ieee80211_bss_conf *info;
- 	struct ath12k_link_vif *arvif;
-+	struct ieee80211_sta *sta;
-+	struct ath12k_sta *ahsta;
- 	struct ath12k *ar;
- 	u8 link_id;
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5028,7 +5028,7 @@ err:
  
-@@ -3715,6 +3717,35 @@ static void ath12k_mac_op_vif_cfg_changed(struct ieee80211_hw *hw,
- 	}
+ void tcp_data_ready(struct sock *sk)
+ {
+-	if (tcp_epollin_ready(sk, sk->sk_rcvlowat))
++	if (tcp_epollin_ready(sk, sk->sk_rcvlowat) || sock_flag(sk, SOCK_DONE))
+ 		sk->sk_data_ready(sk);
+ }
  
- 	if (changed & BSS_CHANGED_ASSOC) {
-+		if (vif->cfg.assoc) {
-+			/* only in station mode we can get here, so it's safe
-+			 * to use ap_addr
-+			 */
-+			rcu_read_lock();
-+			sta = ieee80211_find_sta(vif, vif->cfg.ap_addr);
-+			if (!sta) {
-+				rcu_read_unlock();
-+				WARN_ONCE(1, "failed to find sta with addr %pM\n",
-+					  vif->cfg.ap_addr);
-+				return;
-+			}
-+
-+			ahsta = ath12k_sta_to_ahsta(sta);
-+			arvif = wiphy_dereference(hw->wiphy,
-+						  ahvif->link[ahsta->assoc_link_id]);
-+			rcu_read_unlock();
-+
-+			ar = arvif->ar;
-+			/* there is no reason for which an assoc link's
-+			 * bss info does not exist
-+			 */
-+			info = ath12k_mac_get_link_bss_conf(arvif);
-+			ath12k_bss_assoc(ar, arvif, info);
-+
-+			/* exclude assoc link as it is done above */
-+			links &= ~BIT(ahsta->assoc_link_id);
-+		}
-+
- 		for_each_set_bit(link_id, &links, IEEE80211_MLD_MAX_NUM_LINKS) {
- 			arvif = wiphy_dereference(hw->wiphy, ahvif->link[link_id]);
- 			if (!arvif || !arvif->ar)
--- 
-2.39.5
-
 
 
 
