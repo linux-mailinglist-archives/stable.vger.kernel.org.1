@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157402-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76150AE4FAE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F0BAE53C5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D8AB3A2F3F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27294A877F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4776221DAE;
-	Mon, 23 Jun 2025 21:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB7E222576;
+	Mon, 23 Jun 2025 21:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="naeyzlEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtD3hPA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C561F3B96;
-	Mon, 23 Jun 2025 21:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5F53FB1B;
+	Mon, 23 Jun 2025 21:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713463; cv=none; b=uJkalobPN6HBG4xGkpyIGp6UWslGTmwZ8tEHaQKnQEL0a6gbs2yUV/8Dt3X7a/JGa/1SBtMDtN/X0lZ+9JRGMuizCTUdDMfG3znokjTdUlN8QhBNKYiPtOi4jPSpe//pLHVe9tnX8JO3UZhiI5BtF2y+E3flj1azeSY3gD0eMLI=
+	t=1750715778; cv=none; b=ndmYEVFCCquSvKlSGdBWLlPbSguw+kDGElLlwE7S1nwQGlbGI7xlhfw6Af0lNuXBymA+8/sjbkbHVR22x+7EOWuQcdjk9cNNywge1mEq9HCHkniF+goVd6Vka6OcETaUJmGNb+PmxEcXc634P3HwsuQ05sKfFSzRQrwSyY0Rfzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713463; c=relaxed/simple;
-	bh=GljUwZqF+99DJmZGgYQ9bFi8fmPE1vbLgugBcj5HF9I=;
+	s=arc-20240116; t=1750715778; c=relaxed/simple;
+	bh=8syInTtwUiqZ1BWSnBuoySG6bcjqDVbOAi8wqPMl78Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kR3ARZhZd0rDl4Th2xnWM3aMhq6yOz/rmd3O/XI+4BIG9eQQPQB8tTrxv9xORBdFuZlIWh9SJOcc/1Y3PtMclyGLdrSVJsSDirUJWucbrrdDARGYsuppx8hxvwjGKPjSR4gTX886wjv+aNgMoRfHliVl1oSnzK/8FrNo73GcSvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=naeyzlEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E04C4CEEA;
-	Mon, 23 Jun 2025 21:17:42 +0000 (UTC)
+	 MIME-Version; b=QItejo/ny+SBtjQV1rdgaxKsZ1Y5keSuRskegcsp/PYe7NrBq2Okz5lkZqGBR0gMAtsmw/+Yj39+61OBu9NSU6/d+5tpLQthrqpCer4tNN2p64oFH7sdx6naW+isOzhGsNt+lJ7K9Ghlj+Xs2vXfmgnozyJyPjuQtolts2Qaguc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtD3hPA0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F0EC4CEEA;
+	Mon, 23 Jun 2025 21:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713463;
-	bh=GljUwZqF+99DJmZGgYQ9bFi8fmPE1vbLgugBcj5HF9I=;
+	s=korg; t=1750715778;
+	bh=8syInTtwUiqZ1BWSnBuoySG6bcjqDVbOAi8wqPMl78Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=naeyzlEwHdQifB/jwlfJ8BS1pV/hMRHutFR1kKEo9lwfL9rzJY7Y6uwOgoFBA11o0
-	 gWLjzN1B+fB23FnSOg2UTAmgrDF4ZeRv6sLwHIy14XG7tYiDex9aLuaFCH/NWyszJY
-	 7AeuDsIJd5IyO/BqQxb9KQtSH8XlR6Wy2lC8Gea4=
+	b=DtD3hPA0E7bpre69XiRWjIg+tgJW3VTiaZeag9GqOMA230+a6OdZ22LWl1V0GTnOb
+	 i5vRfQysD2H2s3DpWO3OBZbnGZhVgbSxwKT11aV9JIPHkv7399qjzrjjn5iVuA2Nxa
+	 ArzqxzXtiLmKK4m4Dw+TE5P7Z+gsSxOEue1DS5iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Xu Lu <luxu.kernel@bytedance.com>,
+	Yunhui Cui <cuiyunhui@bytedance.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 148/411] drm/meson: use vclk_freq instead of pixel_freq in debug print
+Subject: [PATCH 6.1 247/508] ACPI: CPPC: Fix NULL pointer dereference when nosmp is used
 Date: Mon, 23 Jun 2025 15:04:52 +0200
-Message-ID: <20250623130637.347173601@linuxfoundation.org>
+Message-ID: <20250623130651.328952395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Yunhui Cui <cuiyunhui@bytedance.com>
 
-[ Upstream commit faf2f8382088e8c74bd6eeb236c8c9190e61615e ]
+[ Upstream commit 15eece6c5b05e5f9db0711978c3e3b7f1a2cfe12 ]
 
-meson_vclk_vic_supported_freq() has a debug print which includes the
-pixel freq. However, within the whole function the pixel freq is
-irrelevant, other than checking the end of the params array. Switch to
-printing the vclk_freq which is being compared / matched against the
-inputs to the function to avoid confusion when analyzing error reports
-from users.
+With nosmp in cmdline, other CPUs are not brought up, leaving
+their cpc_desc_ptr NULL. CPU0's iteration via for_each_possible_cpu()
+dereferences these NULL pointers, causing panic.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606221031.3419353-1-martin.blumenstingl@googlemail.com
+Panic backtrace:
+
+[    0.401123] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000b8
+...
+[    0.403255] [<ffffffff809a5818>] cppc_allow_fast_switch+0x6a/0xd4
+...
+Kernel panic - not syncing: Attempted to kill init!
+
+Fixes: 3cc30dd00a58 ("cpufreq: CPPC: Enable fast_switch")
+Reported-by: Xu Lu <luxu.kernel@bytedance.com>
+Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
+Link: https://patch.msgid.link/20250604023036.99553-1-cuiyunhui@bytedance.com
+[ rjw: New subject ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_vclk.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/acpi/cppc_acpi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_vclk.c b/drivers/gpu/drm/meson/meson_vclk.c
-index 3325580d885d0..c4123bb958e4c 100644
---- a/drivers/gpu/drm/meson/meson_vclk.c
-+++ b/drivers/gpu/drm/meson/meson_vclk.c
-@@ -790,9 +790,9 @@ meson_vclk_vic_supported_freq(struct meson_drm *priv,
- 	}
+diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
+index 0e1fb97d5d763..504fe14c566e3 100644
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -456,7 +456,7 @@ bool cppc_allow_fast_switch(void)
+ 	struct cpc_desc *cpc_ptr;
+ 	int cpu;
  
- 	for (i = 0 ; params[i].pixel_freq ; ++i) {
--		DRM_DEBUG_DRIVER("i = %d pixel_freq = %lluHz alt = %lluHz\n",
--				 i, params[i].pixel_freq,
--				 PIXEL_FREQ_1000_1001(params[i].pixel_freq));
-+		DRM_DEBUG_DRIVER("i = %d vclk_freq = %lluHz alt = %lluHz\n",
-+				 i, params[i].vclk_freq,
-+				 PIXEL_FREQ_1000_1001(params[i].vclk_freq));
- 		DRM_DEBUG_DRIVER("i = %d phy_freq = %lluHz alt = %lluHz\n",
- 				 i, params[i].phy_freq,
- 				 PHY_FREQ_1000_1001(params[i].phy_freq));
+-	for_each_possible_cpu(cpu) {
++	for_each_present_cpu(cpu) {
+ 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
+ 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
+ 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
 -- 
 2.39.5
 
