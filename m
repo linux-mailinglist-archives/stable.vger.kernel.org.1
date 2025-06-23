@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00BB1AE4E82
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35A73AE52DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 042957AAAF6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:05:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49FC77B0191
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDD3217668;
-	Mon, 23 Jun 2025 21:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F407E1FC0E3;
+	Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaHhg7zf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBoNIlX2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC03219E0;
-	Mon, 23 Jun 2025 21:06:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206316D9BF;
+	Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712784; cv=none; b=G0+htnwizPHKiLCV+nBmwXyzmy54TPF4Iaz4Akn73c4XWPqvllQmH4Sn9dY14/Wl1SlPsWJUXyDlcYff2kwm+pBPA15ohdpA+0QMNJxMmDPKpIWhrZIzshsAf/R+USa/xC8yZz1kFEmXq8IkCPe3c369i5N1z04WnX1MhQywvDg=
+	t=1750715215; cv=none; b=BZqk1lTnfsb97YX0gNGQmpGEIznwqhIIpWGmSrxG0WgugqniLNep4TbjShPWcd79IkWapwp5BZnG+wVxdhIQLfScLnaJuVEMAkqPeiDoJrVQqLzB17lgM8WcN/kYSeqdgBLsQx6TeZ4H+GlKmRhC31AfPOrG4V4SRgRzan92Kdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712784; c=relaxed/simple;
-	bh=xtooUyOPRY/TJ5kASzT2uml8zWG6QT96xA1yQEUXQsc=;
+	s=arc-20240116; t=1750715215; c=relaxed/simple;
+	bh=uofOEWx31lhEo0pP4KVzTr1vI2HqY7HnODuwVrlqtIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HnBBUgUceYL/5jh2TeIi63dvn0QJ6heZIZIpuWFbQ8jorraxSdIb+RyvaxjUF0TPTe1qHS1boVoqzOTEqT/F+TkBPgkodYYN6zM0pOeIKdnrLP40GVkZTt2dB40KEgXStrlpFlY3B1t3KEple/leQEK5gGnfWUslVzJygtEGOZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaHhg7zf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029F2C4CEED;
-	Mon, 23 Jun 2025 21:06:23 +0000 (UTC)
+	 MIME-Version; b=rhPlm49bL8xruXJL5SBwEIhKVScLoMwspK8f6FtTbzqNGcpEOKrx4UugwsjK1XlvKajdS5sOBHO7ITjWvjn6w1MLACRM0Omuoi9ss6+NefNWLAbRyqakRikXIN5ey0lzN99JYKqEDB6jICR71qeQuaRpkXx8/zs2aGQnoMVS3Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBoNIlX2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44969C4CEEA;
+	Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712784;
-	bh=xtooUyOPRY/TJ5kASzT2uml8zWG6QT96xA1yQEUXQsc=;
+	s=korg; t=1750715215;
+	bh=uofOEWx31lhEo0pP4KVzTr1vI2HqY7HnODuwVrlqtIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TaHhg7zfInrvx8wsf6BQkSQ8A46cejoFT6iqva+C+smqOyho3EUBdqk75QZXQ6hqY
-	 z9ugoV+jqRqXvFAF+5hXn6nqwxt6Kh0tUkEQ0B+FeygFpAHAMUJ8IoS6RQd+tGtNfN
-	 70yeIxY0LPZHdkI+plP6K7Sn1o50ftLnrRW6/6K4=
+	b=iBoNIlX2Te5f9zstdxErMnuz03dBO3mZDdgHT6CwVA2xCrmFmrxN2FsAEPLltn4hz
+	 aDhwiIHXyk4s0Rxj9CtkegLdvfr2+rJaYyxeXREBlH8iW/XN/cjqj0CybiG8A9US9i
+	 WAluOz8Q0niEhVQ3dsz5cm1dsLVHIFXa2VfeHd1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Narayana Murty N <nnmlinux@linux.ibm.com>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Ganesh Goudar <ganeshgr@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 148/222] drm/amdgpu/gfx10: fix CSIB handling
+Subject: [PATCH 5.10 282/355] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
 Date: Mon, 23 Jun 2025 15:08:03 +0200
-Message-ID: <20250623130616.539431148@linuxfoundation.org>
+Message-ID: <20250623130635.259192292@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-[ Upstream commit 683308af030cd9b8d3f1de5cbc1ee51788878feb ]
+[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
 
-We shouldn't return after the last section.
-We need to update the rest of the CSIB.
+VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
+platforms due to missing host-side PE bridge reconfiguration. In the
+current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
+bridge reconfiguration for native host devices, but skips it entirely for
+PEs managed through VFIO in guest passthrough scenarios.
 
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This leads to incomplete EEH recovery when a PCI error affects a
+passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
+EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
+bridge reconfiguration step is silently bypassed. As a result, the PE's
+config space is not fully restored, causing subsequent config space access
+failures or EEH freeze-on-access errors inside the guest.
+
+This patch fixes the issue by ensuring that eeh_pe_configure() always
+invokes the platform's configure_bridge() callback (e.g.,
+pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
+that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
+on the host side, restoring the PE's configuration space after an EEH
+event.
+
+This fix is essential for reliable EEH recovery in QEMU/KVM guests using
+VFIO PCI passthrough on PowerNV and pseries systems.
+
+Tested with:
+- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
+- Injected EEH errors with pseries EEH errinjct tool on host, recovery
+  verified on qemu guest.
+- Verified successful config space access and CAP_EXP DevCtl restoration
+  after recovery
+
+Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/powerpc/kernel/eeh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index a84deb3c79a30..44380923b01c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -944,8 +944,6 @@ static void gfx_v10_0_get_csb_buffer(struct amdgpu_device *adev,
- 						PACKET3_SET_CONTEXT_REG_START);
- 				for (i = 0; i < ext->reg_count; i++)
- 					buffer[count++] = cpu_to_le32(ext->extent[i]);
--			} else {
--				return;
- 			}
- 		}
- 	}
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index 20c417ad9c6de..fbc6eaaf10e1f 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1525,6 +1525,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
+ 	/* Invalid PE ? */
+ 	if (!pe)
+ 		return -ENODEV;
++	else
++		ret = eeh_ops->configure_bridge(pe);
+ 
+ 	return ret;
+ }
 -- 
 2.39.5
 
