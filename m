@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156511-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27992AE4FD1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 965C4AE4FBE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2D1917F600
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4BA31189FE4F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9983038DE1;
-	Mon, 23 Jun 2025 21:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBBE4222581;
+	Mon, 23 Jun 2025 21:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tU/Wx6S5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OY3D7Fgd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 581897482;
-	Mon, 23 Jun 2025 21:19:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4391EFFA6;
+	Mon, 23 Jun 2025 21:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713592; cv=none; b=VlYy9wPHAS88nYSNY/3Xx8zgXSdpFeIWDdQopm954PdSSC5hiBEJdeaAKYFAoFpX5MX3rI8o1eC/vRUmj+9qJWtbOZujXVLxtURrABOv/VbmqmWdpjKaZZ0Iej6+/An8y2Ot7nnOuNmZJqVpA0AVXZv9gLBJdHtFLMaK2ByqrMg=
+	t=1750713499; cv=none; b=efrCgFZ9Q+3GzmgzX1KURgS+G18DDtjCvU8smKj3dAeLT+8f4x3lCBHZyrt3TK8ugc2W6XMMCVQxHdIULjy1VRXVFOvdqba45ou5CIkzEpkh+dK8uye+/OIx3WUkFgGvi03oGv7aNuMTXhJgN3FLLgC304vWh2z7ge097qkZ2H8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713592; c=relaxed/simple;
-	bh=k3rOPfotZi65lFnmV0B+om8IxC95Gt2xoXtju/xjbSg=;
+	s=arc-20240116; t=1750713499; c=relaxed/simple;
+	bh=Pe0/pIhNdBD0ILoZb1sB1a4WQQ+ZbpU4oRLH0nRnKsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eZpRCT9OosLiZrbqt+s31tngRlgbC9xSjlb1ZyzNLdRZIpJB2O5MRjBDqifBlb/1d0vYOBU4i6z1nkZDP1CPZS/RuKwr+lgrW4LEzGC6gijjbIoTUg/4tmUV/NHe3gj69zik7APHnPiEKy1SgQr4SH9aI1vT1848KUt2ZJZR0mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tU/Wx6S5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4890C4CEEA;
-	Mon, 23 Jun 2025 21:19:51 +0000 (UTC)
+	 MIME-Version; b=ki1QbRCaj6GFNHyD9i42iM/Gknn5gLQQvs84Ix0hNV1VnBBTlcLzpcg9Z0v3e5J9TXdQj3NqGoaCDa5hJnTEGu8urLNVm7muIkHxJR6TrGMzuwsEhWecLktRa6kiaxK6geCOvQ9ao1AxrhDeVQqPk8cb+HoIA4BXw8Tq5u6mGfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OY3D7Fgd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0EAC4CEEA;
+	Mon, 23 Jun 2025 21:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713592;
-	bh=k3rOPfotZi65lFnmV0B+om8IxC95Gt2xoXtju/xjbSg=;
+	s=korg; t=1750713499;
+	bh=Pe0/pIhNdBD0ILoZb1sB1a4WQQ+ZbpU4oRLH0nRnKsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tU/Wx6S5kFJ0D5oFgqx6ZZg639HF1Qr9vc1cX/BTfqll0WIeiFHEhoS2gS1Ok9vsg
-	 lU+DQ7rfMI1+2rEtaTpaEquwg/QjKHVj27gjhzHxrLHMUg+tX9L4/zJulYZebi4Qrc
-	 XfS2YIr23akp0ulRd1MBnLbdLwxHdbHiUct2IXB8=
+	b=OY3D7Fgdm4l0gpS74xDwC7pbWxVigFiuullLP8hTBvec5zYaTdexfpf7cBq+Gfx0t
+	 TZJIl7kTEp51K8hHTuxQqwcbPCdTWyZKQnPVab5xPZyYctUQ46hsGeMHLT7MBuLd1T
+	 Y1MkVL96RXrPf3UHELmv7BQRYWHaOZJW3vC8zJow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Robert Malz <robert.malz@canonical.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 336/592] clk: qcom: gcc: Set FORCE_MEM_CORE_ON for gcc_ufs_axi_clk for 8650/8750
+Subject: [PATCH 5.15 150/411] i40e: return false from i40e_reset_vf if reset is in progress
 Date: Mon, 23 Jun 2025 15:04:54 +0200
-Message-ID: <20250623130708.445250478@linuxfoundation.org>
+Message-ID: <20250623130637.401763034@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit da94a81ea6c6f1cd2f389c5631e33c145ac7b35b ]
+[ Upstream commit a2c90d63b71223d69a813333c1abf4fdacddbbe5 ]
 
-Update the force mem core bit for UFS AXI clock to force the core on
-signal to remain active during halt state of the clk. If force mem
-core bit of the clock is not set, the memories of the subsystem will
-not retain the logic across power states. This is required for the MCQ
-feature of the UFS driver.
+The function i40e_vc_reset_vf attempts, up to 20 times, to handle a
+VF reset request, using the return value of i40e_reset_vf as an indicator
+of whether the reset was successfully triggered. Currently, i40e_reset_vf
+always returns true, which causes new reset requests to be ignored if a
+different VF reset is already in progress.
 
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Link: https://lore.kernel.org/r/20250414-gcc_ufs_mem_core-v1-1-67b5529b9b5d@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+This patch updates the return value of i40e_reset_vf to reflect when
+another VF reset is in progress, allowing the caller to properly use
+the retry mechanism.
+
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8650.c | 2 ++
- drivers/clk/qcom/gcc-sm8750.c | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sm8650.c b/drivers/clk/qcom/gcc-sm8650.c
-index fa1672c4e7d81..24f98062b9dd5 100644
---- a/drivers/clk/qcom/gcc-sm8650.c
-+++ b/drivers/clk/qcom/gcc-sm8650.c
-@@ -3817,7 +3817,9 @@ static int gcc_sm8650_probe(struct platform_device *pdev)
- 	qcom_branch_set_clk_en(regmap, 0x32004); /* GCC_VIDEO_AHB_CLK */
- 	qcom_branch_set_clk_en(regmap, 0x32030); /* GCC_VIDEO_XO_CLK */
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 65a29f955d9c4..a5265b1a7184a 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1548,8 +1548,8 @@ static void i40e_cleanup_reset_vf(struct i40e_vf *vf)
+  * @vf: pointer to the VF structure
+  * @flr: VFLR was issued or not
+  *
+- * Returns true if the VF is in reset, resets successfully, or resets
+- * are disabled and false otherwise.
++ * Return: True if reset was performed successfully or if resets are disabled.
++ * False if reset is already in progress.
+  **/
+ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+ {
+@@ -1568,7 +1568,7 @@ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
  
-+	/* FORCE_MEM_CORE_ON for ufs phy ice core and gcc ufs phy axi clocks  */
- 	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_axi_clk, true);
+ 	/* If VF is being reset already we don't need to continue. */
+ 	if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+-		return true;
++		return false;
  
- 	/* Clear GDSC_SLEEP_ENA_VOTE to stop votes being auto-removed in sleep. */
- 	regmap_write(regmap, 0x52150, 0x0);
-diff --git a/drivers/clk/qcom/gcc-sm8750.c b/drivers/clk/qcom/gcc-sm8750.c
-index b36d709760958..8092dd6b37b56 100644
---- a/drivers/clk/qcom/gcc-sm8750.c
-+++ b/drivers/clk/qcom/gcc-sm8750.c
-@@ -3244,8 +3244,9 @@ static int gcc_sm8750_probe(struct platform_device *pdev)
- 	regmap_update_bits(regmap, 0x52010, BIT(20), BIT(20));
- 	regmap_update_bits(regmap, 0x52010, BIT(21), BIT(21));
+ 	i40e_trigger_vf_reset(vf, flr);
  
--	/* FORCE_MEM_CORE_ON for ufs phy ice core clocks */
-+	/* FORCE_MEM_CORE_ON for ufs phy ice core and gcc ufs phy axi clocks  */
- 	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_axi_clk, true);
- 
- 	return qcom_cc_really_probe(&pdev->dev, &gcc_sm8750_desc, regmap);
- }
 -- 
 2.39.5
 
