@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62B4AAE5328
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5947CAE530C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 092217AD629
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A67FD440CA3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F006E21B9C9;
-	Mon, 23 Jun 2025 21:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346C2219A7A;
+	Mon, 23 Jun 2025 21:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Puy3jobW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bXczB4qv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3BB1A00F0;
-	Mon, 23 Jun 2025 21:49:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44C51A00F0;
+	Mon, 23 Jun 2025 21:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715371; cv=none; b=ZsLuRHor5rBI0+lTKcKMQ/yLqz7yd66UW0W3e26hIUKqPEqTVGYMByB5mwRAvmUrkwuyKGdKr+lYISGtImHBgHye1J2FY3w6EhlFwC/cmazIWvirYIOLxeYd/DucIBarFu1dktjkrNfuAYMD7X4l5Cb/8+ENu8dniQeFf3Aiato=
+	t=1750715389; cv=none; b=P45KoN+oWVO9DXTcD+r4RYj65+TIS8cdaUWyhJSoprFuYEAdEJZdSuyMzrTOH2/Bba35uN4IcFDgaSgk+w2hFeBLsw26NbkplkK8QNl40eCexiRhlSSxaSVPxtg9+KNvdQ0S7ZUsU5bpxO8hEimw9aAvus9YO38Rp+jfeLegJUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715371; c=relaxed/simple;
-	bh=AeTwDqoMDujZCM9P+O9HLW2S1dA0Tw0fC7FKNiKIQqk=;
+	s=arc-20240116; t=1750715389; c=relaxed/simple;
+	bh=5PKhaEgRy51tNomVjb+VG0zNBFKQ/fgzLaWicPTxMaU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sn9es/8601Ow6/sgz8dlip2xgB6GjCs5uiXtxtpSPcQNDVHui/t+uPGWOP1ZNBJo3Srm6fG46c7QI5fVhZ7j8mC0yTONQ/tvK08j63mXYUiu19/SvnFwG+Jpb8QVqCDnqjaysGtoVWnjdlMbkH8D0pOfnbTrrAZUn/w/2Di5w+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Puy3jobW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430A1C4CEEA;
-	Mon, 23 Jun 2025 21:49:31 +0000 (UTC)
+	 MIME-Version; b=Q9V03eZLr6kdFsZxFU68+W1wLp5utaFqediOnTfIygocY992/kEZ1s78aI13R0oeMnPzxkGbk1Sru68+2I0ihi4ir4LuqWnxAmnq9Me26NFhGPNgM9k3Aw3qSYgfCDv3PEzNp5Q2u+4MPl+t03c5TlkAbCRwLk/uqxl8sSXNVB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bXczB4qv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C90BC4CEEA;
+	Mon, 23 Jun 2025 21:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715371;
-	bh=AeTwDqoMDujZCM9P+O9HLW2S1dA0Tw0fC7FKNiKIQqk=;
+	s=korg; t=1750715388;
+	bh=5PKhaEgRy51tNomVjb+VG0zNBFKQ/fgzLaWicPTxMaU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Puy3jobW3zbG3sPe5KUDPEdjsIugpLl5ej2eUuAOUgZ0PYQ1O65Jz5IBoul6MhOum
-	 XVDKSE3MB9mZ5M9UbjtabcqEyeoMf3lo82Kc63SDynXvncUfCLApPL7btiNt8jtHTd
-	 9NW9wHukHxJikWa+Ds/iQwj7PoE7mr8CJAlc/yyI=
+	b=bXczB4qvKnjgSAc1U0veO8wGEE62dWAwihQ7QmZJtbGUdwSuLS6vwI/dstuz1Ah/O
+	 kZfjizBASWJTn+VETuJsY83WkPzaNxO9623F9skCXH8fgfIWnrWd3r4CbNe03x++97
+	 bKzvEAyskezg+/VkA7S3w52orwfjAmo87h8htBIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -48,9 +48,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@opensource.cirrus.com,
 	Jaroslav Kysela <perex@perex.cz>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 454/592] firmware: cs_dsp: Fix OOB memory read access in KUnit test (ctl cache)
-Date: Mon, 23 Jun 2025 15:06:52 +0200
-Message-ID: <20250623130711.228112239@linuxfoundation.org>
+Subject: [PATCH 6.15 455/592] firmware: cs_dsp: Fix OOB memory read access in KUnit test (wmfw info)
+Date: Mon, 23 Jun 2025 15:06:53 +0200
+Message-ID: <20250623130711.252960322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -71,15 +71,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Jaroslav Kysela <perex@perex.cz>
 
-commit f4ba2ea57da51d616b689c4b8826c517ff5a8523 upstream.
+commit d979b783d61f7f1f95664031b71a33afc74627b2 upstream.
 
-KASAN reported out of bounds access - cs_dsp_ctl_cache_init_multiple_offsets().
-The code uses mock_coeff_template.length_bytes (4 bytes) for register value
-allocations. But later, this length is set to 8 bytes which causes
-test code failures.
-
-As fix, just remove the lenght override, keeping the original value 4
-for all operations.
+KASAN reported out of bounds access - cs_dsp_mock_wmfw_add_info(),
+because the source string length was rounded up to the allocation size.
 
 Cc: Simon Trimmer <simont@opensource.cirrus.com>
 Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
@@ -88,23 +83,28 @@ Cc: patches@opensource.cirrus.com
 Cc: stable@vger.kernel.org
 Signed-off-by: Jaroslav Kysela <perex@perex.cz>
 Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Link: https://patch.msgid.link/20250523154151.1252585-1-perex@perex.cz
+Link: https://patch.msgid.link/20250523155814.1256762-1-perex@perex.cz
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/firmware/cirrus/test/cs_dsp_mock_wmfw.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
-+++ b/drivers/firmware/cirrus/test/cs_dsp_test_control_cache.c
-@@ -776,7 +776,6 @@ static void cs_dsp_ctl_cache_init_multip
- 					      "dummyalg", NULL);
+--- a/drivers/firmware/cirrus/test/cs_dsp_mock_wmfw.c
++++ b/drivers/firmware/cirrus/test/cs_dsp_mock_wmfw.c
+@@ -133,10 +133,11 @@ void cs_dsp_mock_wmfw_add_info(struct cs
  
- 	/* Create controls identical except for offset */
--	def.length_bytes = 8;
- 	def.offset_dsp_words = 0;
- 	def.shortname = "CtlA";
- 	cs_dsp_mock_wmfw_add_coeff_desc(local->wmfw_builder, &def);
+ 	if (info_len % 4) {
+ 		/* Create a padded string with length a multiple of 4 */
++		size_t copy_len = info_len;
+ 		info_len = round_up(info_len, 4);
+ 		tmp = kunit_kzalloc(builder->test_priv->test, info_len, GFP_KERNEL);
+ 		KUNIT_ASSERT_NOT_ERR_OR_NULL(builder->test_priv->test, tmp);
+-		memcpy(tmp, info, info_len);
++		memcpy(tmp, info, copy_len);
+ 		info = tmp;
+ 	}
+ 
 
 
 
