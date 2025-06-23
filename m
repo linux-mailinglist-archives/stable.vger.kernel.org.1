@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F785AE44F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF15BAE4302
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE4E1889D79
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D15F17A9A16
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BE416419;
-	Mon, 23 Jun 2025 13:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0FCA2522A8;
+	Mon, 23 Jun 2025 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvlOEztp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYJ0yOzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457151E487;
-	Mon, 23 Jun 2025 13:41:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F77024C060;
+	Mon, 23 Jun 2025 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686089; cv=none; b=sSL9xND11szpJVrQ3wQ+As/xS9q/IRZSeHVXQ6i8RnegjZ4XmHtPt0igB5xWwOd5RnGPZHhBKanz+lE/trE2c6VGWPwqJwGHkudCp9GkMiGUt+d/Z7aQoTPc7LfJLSj6JzOtXfWovj6m1AfuRT0TcnEZSYgvkzevJgD4wZOAZoA=
+	t=1750685234; cv=none; b=nu9HL2kPUFgsVvAh6OX0T+QPoSxWsk7IHtk388qn8nwSryu6cJJVUbyYiUy8siXdAZA7VcPMnnLaQ6YX3lEORR29zBqE6gUH/YKMepi+00sortqDSrdmQyLwgdYEFYhpHx4spn2sUpYyxbP5D9Ia31D30+w6yAovrf/80EL9Zd8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686089; c=relaxed/simple;
-	bh=PU9ByO6dO/doDZKDkKU5lNMnZ5JWaBXXMhzn3cnxuOE=;
+	s=arc-20240116; t=1750685234; c=relaxed/simple;
+	bh=dWI6xyN7Do1+jsMq1GpIYplLOD+WpFMlSMfRhJKRxZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbcG09bPV2aDex5T41wv+kptyF4cE0PTUPgx8CiDkN6nTu8t6g3aYfNO2mYsVFDuNxwzqtPOiQwsGJRuE/RCZqDd8uX/91/yYa34AXKjgRSdWdkiNlX9AnIn2zw1FMUP6n8yfy3pAbLi5UqVUPYZDD6FKvqLrhWK8p03E7IDly4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvlOEztp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD98BC4CEEA;
-	Mon, 23 Jun 2025 13:41:28 +0000 (UTC)
+	 MIME-Version; b=L8gWuUgqNkN0vGwKi/ENWMI05f+SZ1me/63zIlUDp+IUXUkBStmp9RtMyWv8KZ5LaMjOUeDh3Ad5WypxPHNqdD1r9nJ1aIxG6A88OjKFP5vkQqCOeoBsWbV4yQhX/8+QoRWm6CW2Kfb4d6P41+I73eUMkQeBaVyzyc43ppJ4fIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYJ0yOzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6470C4CEEA;
+	Mon, 23 Jun 2025 13:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686089;
-	bh=PU9ByO6dO/doDZKDkKU5lNMnZ5JWaBXXMhzn3cnxuOE=;
+	s=korg; t=1750685234;
+	bh=dWI6xyN7Do1+jsMq1GpIYplLOD+WpFMlSMfRhJKRxZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OvlOEztpcW7HG3Qu500NG120AdnhhkSNTm9E+S5ZwoTPBkJjRDuYyofWiYuIxWUBe
-	 zIINYb/xqnSALD7lkC+cgWGv08emoNzNnOJ8OK+EUajE4+/9igtAi9FoTCZSR2thzV
-	 H2ldN6XncURgJ+HiOa6JDgH01s9k6BmulyOcQ9YA=
+	b=qYJ0yOzmuvqTcS3JrNatmZlypQjwmrIrTLchK4KqSGzJERE5uRtjJLJYJ7XAyfJlY
+	 L//y7WvV3gRTBzTjPjDDa/EKgtXyz7zuC2hX5DgHD+17k6Zd0cYa4fNSs3WAqRUDjM
+	 TdgF6OdjuaiM28he6LODHknW+uz/H05fnZoU8100=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
-	Michal Wajdeczko <michal.wajdeczko@intel.com>,
-	Lukasz Laguna <lukasz.laguna@intel.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 280/592] drm/xe/vf: Fix guc_info debugfs for VFs
+Subject: [PATCH 5.10 037/355] wifi: rtw88: do not ignore hardware read error during DPK
 Date: Mon, 23 Jun 2025 15:03:58 +0200
-Message-ID: <20250623130707.002905832@linuxfoundation.org>
+Message-ID: <20250623130627.941162715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit dba7d17d50b4488c697e991d18a0e55669d9fa59 ]
+[ Upstream commit 20d3c19bd8f9b498173c198eadf54580c8caa336 ]
 
-The guc_info debugfs attempts to read a bunch of registers that the VFs
-doesn't have access to, so fix it by skipping the reads.
+In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
+by 'check_hw_ready()' but issue a warning to denote possible
+DPK issue. Compile tested only.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4775
-Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
-Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
-Cc: Lukasz Laguna <lukasz.laguna@intel.com>
-Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
-Link: https://lore.kernel.org/r/20250423173908.1571412-1-daniele.ceraolospurio@intel.com
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250415090720.194048-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_guc.c | 44 +++++++++++++++++++------------------
- 1 file changed, 23 insertions(+), 21 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
-index bc5714a5b36b2..f082be4af4cff 100644
---- a/drivers/gpu/drm/xe/xe_guc.c
-+++ b/drivers/gpu/drm/xe/xe_guc.c
-@@ -1508,30 +1508,32 @@ void xe_guc_print_info(struct xe_guc *guc, struct drm_printer *p)
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index abed17e4c8c7b..a7fc2287521f0 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -3157,7 +3157,8 @@ static void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
  
- 	xe_uc_fw_print(&guc->fw, p);
+-	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
++	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
++		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
  
--	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
--	if (!fw_ref)
--		return;
-+	if (!IS_SRIOV_VF(gt_to_xe(gt))) {
-+		fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
-+		if (!fw_ref)
-+			return;
-+
-+		status = xe_mmio_read32(&gt->mmio, GUC_STATUS);
-+
-+		drm_printf(p, "\nGuC status 0x%08x:\n", status);
-+		drm_printf(p, "\tBootrom status = 0x%x\n",
-+			   REG_FIELD_GET(GS_BOOTROM_MASK, status));
-+		drm_printf(p, "\tuKernel status = 0x%x\n",
-+			   REG_FIELD_GET(GS_UKERNEL_MASK, status));
-+		drm_printf(p, "\tMIA Core status = 0x%x\n",
-+			   REG_FIELD_GET(GS_MIA_MASK, status));
-+		drm_printf(p, "\tLog level = %d\n",
-+			   xe_guc_log_get_level(&guc->log));
-+
-+		drm_puts(p, "\nScratch registers:\n");
-+		for (i = 0; i < SOFT_SCRATCH_COUNT; i++) {
-+			drm_printf(p, "\t%2d: \t0x%x\n",
-+				   i, xe_mmio_read32(&gt->mmio, SOFT_SCRATCH(i)));
-+		}
- 
--	status = xe_mmio_read32(&gt->mmio, GUC_STATUS);
--
--	drm_printf(p, "\nGuC status 0x%08x:\n", status);
--	drm_printf(p, "\tBootrom status = 0x%x\n",
--		   REG_FIELD_GET(GS_BOOTROM_MASK, status));
--	drm_printf(p, "\tuKernel status = 0x%x\n",
--		   REG_FIELD_GET(GS_UKERNEL_MASK, status));
--	drm_printf(p, "\tMIA Core status = 0x%x\n",
--		   REG_FIELD_GET(GS_MIA_MASK, status));
--	drm_printf(p, "\tLog level = %d\n",
--		   xe_guc_log_get_level(&guc->log));
--
--	drm_puts(p, "\nScratch registers:\n");
--	for (i = 0; i < SOFT_SCRATCH_COUNT; i++) {
--		drm_printf(p, "\t%2d: \t0x%x\n",
--			   i, xe_mmio_read32(&gt->mmio, SOFT_SCRATCH(i)));
-+		xe_force_wake_put(gt_to_fw(gt), fw_ref);
- 	}
- 
--	xe_force_wake_put(gt_to_fw(gt), fw_ref);
--
- 	drm_puts(p, "\n");
- 	xe_guc_ct_print(&guc->ct, p, false);
- 
+ 	rtw_write8(rtwdev, 0x1b10, 0x0);
+ 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
 -- 
 2.39.5
 
