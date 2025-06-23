@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156721-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BD96AE516A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBDF8AE50DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4419E441DE7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254E54A20D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A841F5820;
-	Mon, 23 Jun 2025 21:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A235222562;
+	Mon, 23 Jun 2025 21:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfF6yN67"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0c45g1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71A31DDC04;
-	Mon, 23 Jun 2025 21:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5FD221723;
+	Mon, 23 Jun 2025 21:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714433; cv=none; b=p1dXTyo4/UTDAT/gsMuC6v+OxrsSyGYulmYWSZI5glJD2L06IGg4NbGqMBlGtGA1dOPjoEsmW1zcG6wLNa/VI7tNDymY5iDrhEZR9s9M2szYTQSv6ewHKDnKAeN+Lel/AVyRazjjYcEzaiL5PetpH65ADBAHKqW3ykwIpSeVg7k=
+	t=1750714103; cv=none; b=GWTBPwhiBiLrK4P8RtHEL0ZIDlL7U7/4tuk3ShAepS12mPP4ziACptF7ieKJGTJhsSoMs55qtdNXLKu4poEmt5mJsdunt0S7X6s3mciJiGDrUJzQiaOOfKOikvSIgcrg/r9SO5SxGyFGbUrIJ0AG3O1iGlSxrpLrbO8hI5qfHHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714433; c=relaxed/simple;
-	bh=JVNNcEkRlrX/M0UV4Y0wvQ9EqjEDYMeZPU6BauaEgbs=;
+	s=arc-20240116; t=1750714103; c=relaxed/simple;
+	bh=96r9Qg84fJDPhXJTDS9Snb0Q11QUGOSw0aLGxubq4wI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=codUpWSrn87eaAQYgNzt/l7vJHvSaEEt+/hxxCfFkOmvbGhEWswV2iD4oE2JCuOe6VM24Jm+Mvo98M43S/7WMl3NQ6Qw04An8tTn6rEqx4X2x4cHL4hLYbXJaJL9KeyWPHR6oNnM+cb8DjLn9nM/QMIfQYjix0jxRqaPK5LzEKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfF6yN67; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CDCC4CEEA;
-	Mon, 23 Jun 2025 21:33:53 +0000 (UTC)
+	 MIME-Version; b=MUuC+yR2Ma5WPBVeApppzwQfUA7NN7NsaFJIXIbcKl8isjd0M2MfcX0feLh1Wax/mNtdyjhMt9fU3wGO7cKkKn+MP6g/qDeAqgy+CCbRqYsDeSiS4dKZdzgzsZps/OL165tP+kr8UpShZXUL+DUqBJ7NDT+/HJr4X0vOQ0hV8H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0c45g1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730BEC4CEEA;
+	Mon, 23 Jun 2025 21:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714433;
-	bh=JVNNcEkRlrX/M0UV4Y0wvQ9EqjEDYMeZPU6BauaEgbs=;
+	s=korg; t=1750714103;
+	bh=96r9Qg84fJDPhXJTDS9Snb0Q11QUGOSw0aLGxubq4wI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfF6yN67ftxlmV7VTY836hla9VYPxX/b3jSSV1BYOR4n0ViRZId15mg0FEnFB19z7
-	 9ZLT3fNt+V9fHOtM09Tcxz3nzpT7X2J0urpH7tI+JEGFq+Mz50//y0Hj1GKb15veiw
-	 GIvYIGVy64hlTAFo+Nd+5ytF7aPRE0q8eCKSOt+0=
+	b=T0c45g1Fq2IsDmopvF3FhZUfXZwbk8w2lgwpU5W4fbNiruq4HpNc2D9LugM/ody4P
+	 qEI2GqCUjuLDDnOI3nQJQ4zv6NRlnLPtDtWgfBwj8vtziNV8rq+AawynkPA/ZgHNLh
+	 5UiZ9Z+XbR1I47vWJGtBfS2DH9gvlP2kzZenfIpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/508] net: lan966x: Make sure to insert the vlan tags also in host mode
-Date: Mon, 23 Jun 2025 15:03:37 +0200
-Message-ID: <20250623130649.505861969@linuxfoundation.org>
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.12 081/414] can: kvaser_pciefd: refine error prone echo_skb_max handling logic
+Date: Mon, 23 Jun 2025 15:03:38 +0200
+Message-ID: <20250623130644.106725203@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,116 +61,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 27eab4c644236a9324084a70fe79e511cbd07393 ]
+commit 54ec8b08216f3be2cc98b33633d3c8ea79749895 upstream.
 
-When running these commands on DUT (and similar at the other end)
-ip link set dev eth0 up
-ip link add link eth0 name eth0.10 type vlan id 10
-ip addr add 10.0.0.1/24 dev eth0.10
-ip link set dev eth0.10 up
-ping 10.0.0.2
+echo_skb_max should define the supported upper limit of echo_skb[]
+allocated inside the netdevice's priv. The corresponding size value
+provided by this driver to alloc_candev() is KVASER_PCIEFD_CAN_TX_MAX_COUNT
+which is 17.
 
-The ping will fail.
+But later echo_skb_max is rounded up to the nearest power of two (for the
+max case, that would be 32) and the tx/ack indices calculated further
+during tx/rx may exceed the upper array boundary. Kasan reported this for
+the ack case inside kvaser_pciefd_handle_ack_packet(), though the xmit
+function has actually caught the same thing earlier.
 
-The reason why is failing is because, the network interfaces for lan966x
-have a flag saying that the HW can insert the vlan tags into the
-frames(NETIF_F_HW_VLAN_CTAG_TX). Meaning that the frames that are
-transmitted don't have the vlan tag inside the skb data, but they have
-it inside the skb. We already get that vlan tag and put it in the IFH
-but the problem is that we don't configure the HW to rewrite the frame
-when the interface is in host mode.
-The fix consists in actually configuring the HW to insert the vlan tag
-if it is different than 0.
+ BUG: KASAN: slab-out-of-bounds in kvaser_pciefd_handle_ack_packet+0x2d7/0x92a drivers/net/can/kvaser_pciefd.c:1528
+ Read of size 8 at addr ffff888105e4f078 by task swapper/4/0
 
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Fixes: 6d2c186afa5d ("net: lan966x: Add vlan support.")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250528093619.3738998-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 6.15.0 #12 PREEMPT(voluntary)
+ Call Trace:
+  <IRQ>
+ dump_stack_lvl lib/dump_stack.c:122
+ print_report mm/kasan/report.c:521
+ kasan_report mm/kasan/report.c:634
+ kvaser_pciefd_handle_ack_packet drivers/net/can/kvaser_pciefd.c:1528
+ kvaser_pciefd_read_packet drivers/net/can/kvaser_pciefd.c:1605
+ kvaser_pciefd_read_buffer drivers/net/can/kvaser_pciefd.c:1656
+ kvaser_pciefd_receive_irq drivers/net/can/kvaser_pciefd.c:1684
+ kvaser_pciefd_irq_handler drivers/net/can/kvaser_pciefd.c:1733
+ __handle_irq_event_percpu kernel/irq/handle.c:158
+ handle_irq_event kernel/irq/handle.c:210
+ handle_edge_irq kernel/irq/chip.c:833
+ __common_interrupt arch/x86/kernel/irq.c:296
+ common_interrupt arch/x86/kernel/irq.c:286
+  </IRQ>
+
+Tx max count definitely matters for kvaser_pciefd_tx_avail(), but for seq
+numbers' generation that's not the case - we're free to calculate them as
+would be more convenient, not taking tx max count into account. The only
+downside is that the size of echo_skb[] should correspond to the max seq
+number (not tx max count), so in some situations a bit more memory would
+be consumed than could be.
+
+Thus make the size of the underlying echo_skb[] sufficient for the rounded
+max tx value.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8256e0ca6010 ("can: kvaser_pciefd: Fix echo_skb race")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Link: https://patch.msgid.link/20250528192713.63894-1-pchelkin@ispras.ru
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../ethernet/microchip/lan966x/lan966x_main.c |  1 +
- .../ethernet/microchip/lan966x/lan966x_main.h |  1 +
- .../microchip/lan966x/lan966x_switchdev.c     |  1 +
- .../ethernet/microchip/lan966x/lan966x_vlan.c | 21 +++++++++++++++++++
- 4 files changed, 24 insertions(+)
+ drivers/net/can/kvaser_pciefd.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-index 9ce46588aaf03..8c048ffde23d6 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
-@@ -811,6 +811,7 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
- 	lan966x_vlan_port_set_vlan_aware(port, 0);
- 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
- 	lan966x_vlan_port_apply(port);
-+	lan966x_vlan_port_rew_host(port);
+diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
+index 7d3066691d5d..52301511ed1b 100644
+--- a/drivers/net/can/kvaser_pciefd.c
++++ b/drivers/net/can/kvaser_pciefd.c
+@@ -966,7 +966,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		u32 status, tx_nr_packets_max;
  
- 	return 0;
- }
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-index 4ec33999e4df6..ff5736d2c7a6b 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
-@@ -388,6 +388,7 @@ void lan966x_vlan_port_apply(struct lan966x_port *port);
- bool lan966x_vlan_cpu_member_cpu_vlan_mask(struct lan966x *lan966x, u16 vid);
- void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
- 				      bool vlan_aware);
-+void lan966x_vlan_port_rew_host(struct lan966x_port *port);
- int lan966x_vlan_port_set_vid(struct lan966x_port *port,
- 			      u16 vid,
- 			      bool pvid,
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
-index 1c88120eb291a..bcb4db76b75cd 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
-@@ -297,6 +297,7 @@ static void lan966x_port_bridge_leave(struct lan966x_port *port,
- 	lan966x_vlan_port_set_vlan_aware(port, false);
- 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
- 	lan966x_vlan_port_apply(port);
-+	lan966x_vlan_port_rew_host(port);
- }
+ 		netdev = alloc_candev(sizeof(struct kvaser_pciefd_can),
+-				      KVASER_PCIEFD_CAN_TX_MAX_COUNT);
++				      roundup_pow_of_two(KVASER_PCIEFD_CAN_TX_MAX_COUNT));
+ 		if (!netdev)
+ 			return -ENOMEM;
  
- int lan966x_port_changeupper(struct net_device *dev,
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
-index 3c44660128dae..ffb245fb7d678 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
-@@ -149,6 +149,27 @@ void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
- 	port->vlan_aware = vlan_aware;
- }
+@@ -995,7 +995,6 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
+ 		can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
  
-+/* When the interface is in host mode, the interface should not be vlan aware
-+ * but it should insert all the tags that it gets from the network stack.
-+ * The tags are not in the data of the frame but actually in the skb and the ifh
-+ * is configured already to get this tag. So what we need to do is to update the
-+ * rewriter to insert the vlan tag for all frames which have a vlan tag
-+ * different than 0.
-+ */
-+void lan966x_vlan_port_rew_host(struct lan966x_port *port)
-+{
-+	struct lan966x *lan966x = port->lan966x;
-+	u32 val;
-+
-+	/* Tag all frames except when VID=0*/
-+	val = REW_TAG_CFG_TAG_CFG_SET(2);
-+
-+	/* Update only some bits in the register */
-+	lan_rmw(val,
-+		REW_TAG_CFG_TAG_CFG,
-+		lan966x, REW_TAG_CFG(port->chip_port));
-+}
-+
- void lan966x_vlan_port_apply(struct lan966x_port *port)
- {
- 	struct lan966x *lan966x = port->lan966x;
+ 		can->can.clock.freq = pcie->freq;
+-		can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
+ 		spin_lock_init(&can->lock);
+ 
+ 		can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
 -- 
-2.39.5
+2.50.0
 
 
 
