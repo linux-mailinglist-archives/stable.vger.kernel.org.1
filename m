@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156100-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 952A8AE4515
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D56AAE435F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83DAF17A5CD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49F0B17F696
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD3D252900;
-	Mon, 23 Jun 2025 13:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8C212522A8;
+	Mon, 23 Jun 2025 13:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FzG1AkOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RhwhgSe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E18A82522A8;
-	Mon, 23 Jun 2025 13:42:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9657A24678E;
+	Mon, 23 Jun 2025 13:23:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686150; cv=none; b=iZb26tl0hg5pFvJONuxdU6TYL+8Qz/cfQ4aHtuDcp57p4OY6ypk0W8YwYOYt3NbdbClPinGqe+a1Pyl95OgacxFAj/lcmO0TvU7/kbt/ABUiF94bN8KEdClj0g8mqIpxCq12Q+fg3B2UY/m5HusBQEwhebJ59cyBh1rRg4XK8LY=
+	t=1750685026; cv=none; b=swuyvjXc0eLiKBG7xSio6+5ucl+jEh1dg1MmSWr49pBFSClARaN9FgfBRHLf/A7Cd/uA8I95wa+etRReYhTYJD9Bc/NEZUerRfoI6k1yJDY4pVJM/+xlBr6WuBbv9vCET5UHapwvAEtUx1JRJJ1IE0rHiuhm8DWGWSA9NrSqvus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686150; c=relaxed/simple;
-	bh=nVeBcWXAdORTwMTdDejYNBRNQxOI33wIRaeuEV1oYOI=;
+	s=arc-20240116; t=1750685026; c=relaxed/simple;
+	bh=55fnX2XtS+vfdMxD3qoZ8gBLrYup7p8/G7IIZ3E/YHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ToNQP8jnI02M0L3kuiDDP0F/CETCzN2zoDHqlV1rvDK7fnyPYclze76zIF2juxUgcjyRj1oczxG79NL6BvBtxUxAJ8gkapZ6MnSMNxjZEftARFwvRQvjP6NiFd8OKZcGQWPrcQ4i152Dx8KZN1nJ6CihEhy+P1DzK3GdqtGOvHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FzG1AkOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755C0C4CEF0;
-	Mon, 23 Jun 2025 13:42:29 +0000 (UTC)
+	 MIME-Version; b=Qo6d72AbrlIuMQ3h0Jx15hlnLhPE4T8CkT7k7Hhdl2t4MUm5LeIM7u2p5F4LQmUU+0lUqnf7yKHMaTLRsaQkdxWIE5NMHSXasplfjzgIgMFh91cy7aHYfLOY+rbrNwrW+Qgg1NcHNEuNzFNJhybW9IAskbsamGUmtNN75g0A9Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RhwhgSe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22350C4CEEA;
+	Mon, 23 Jun 2025 13:23:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686149;
-	bh=nVeBcWXAdORTwMTdDejYNBRNQxOI33wIRaeuEV1oYOI=;
+	s=korg; t=1750685026;
+	bh=55fnX2XtS+vfdMxD3qoZ8gBLrYup7p8/G7IIZ3E/YHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FzG1AkOKzWefWheAF2L5Ufw/QvKdTcpyMonGIgYzdJ/Kp3opRHbeYj9j04Untb6C6
-	 ZNrTHpkATqZckqbQ2utPSTCF1SyuYIu8gaarwyQzCHWe4lZhoEGBThTblSJ+xrSGt5
-	 u1MvKLrJr9jy/tMHO5MN6mDTO1J2Hc4ruE//8l90=
+	b=RhwhgSe1qCAZqO61GvT2m3omty6l9sakdBa3aMRp0X1xEA9M4LWjRYosbqYGVIn4r
+	 zmnoqgnQ9E9UxStbMCq2KjW60NlHmSH30gy/PNtxbs1inXE851uamWOYkT9jUt0yEp
+	 gg0U9n4TroAhG5Q4WqYwkiJm6kqUwQMKc1k1A3oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Lo <michael.lo@mediatek.com>,
-	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.12 024/414] wifi: mt76: mt7925: fix host interrupt register initialization
+	David Lechner <dlechner@baylibre.com>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 203/592] iio: adc: ad7606_spi: fix reg write value mask
 Date: Mon, 23 Jun 2025 15:02:41 +0200
-Message-ID: <20250623130642.630171179@linuxfoundation.org>
+Message-ID: <20250623130705.117413223@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Lo <michael.lo@mediatek.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit ca872e0ad97159375da8f3d05cac1f48239e01d7 upstream.
+commit 89944d88f8795c6c89b9514cb365998145511cd4 upstream.
 
-ensure proper interrupt handling and aligns with the hardware spec by
-updating the register offset for MT_WFDMA0_HOST_INT_ENA.
+Fix incorrect value mask for register write. Register values are 8-bit,
+not 9. If this function was called with a value > 0xFF and an even addr,
+it would cause writing to the next register.
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20250509083512.455095-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7925/pci.c  |    3 ---
- drivers/net/wireless/mediatek/mt76/mt7925/regs.h |    2 +-
- 2 files changed, 1 insertion(+), 4 deletions(-)
+ drivers/iio/adc/ad7606_spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -482,9 +482,6 @@ static int mt7925_pci_suspend(struct dev
+--- a/drivers/iio/adc/ad7606_spi.c
++++ b/drivers/iio/adc/ad7606_spi.c
+@@ -155,7 +155,7 @@ static int ad7606_spi_reg_write(struct a
+ 	struct spi_device *spi = to_spi_device(st->dev);
  
- 	/* disable interrupt */
- 	mt76_wr(dev, dev->irq_map->host_irq_enable, 0);
--	mt76_wr(dev, MT_WFDMA0_HOST_INT_DIS,
--		dev->irq_map->tx.all_complete_mask |
--		MT_INT_RX_DONE_ALL | MT_INT_MCU_CMD);
+ 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
+-				  (val & 0x1FF));
++				  (val & 0xFF));
  
- 	mt76_wr(dev, MT_PCIE_MAC_INT_ENABLE, 0x0);
- 
---- a/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/regs.h
-@@ -28,7 +28,7 @@
- #define MT_MDP_TO_HIF			0
- #define MT_MDP_TO_WM			1
- 
--#define MT_WFDMA0_HOST_INT_ENA		MT_WFDMA0(0x228)
-+#define MT_WFDMA0_HOST_INT_ENA		MT_WFDMA0(0x204)
- #define MT_WFDMA0_HOST_INT_DIS		MT_WFDMA0(0x22c)
- #define HOST_RX_DONE_INT_ENA4		BIT(12)
- #define HOST_RX_DONE_INT_ENA5		BIT(13)
+ 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
+ }
 
 
 
