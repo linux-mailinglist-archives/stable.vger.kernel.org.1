@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40763AE4F1B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D67ACAE53DB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E13E1B60650
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FA844A8A2B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C3221FDD;
-	Mon, 23 Jun 2025 21:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082952222C2;
+	Mon, 23 Jun 2025 21:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuI4qaRs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1HXvGzPY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787611ACEDA;
-	Mon, 23 Jun 2025 21:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90A23FB1B;
+	Mon, 23 Jun 2025 21:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713143; cv=none; b=SAiVQUsmt5rZxz/Sw5G1H0qK9EsFq8RFKBn37YZl+tCS/8jX600owMcFKqpgCXZbuG8l6P+j/QQaSX2+kAYxAFtAG55zOh6+FFhnM/+VGs8aTi/fMgqVmquodC5h4ltNQPBH63kIo/msocd80vqI3dq50Pk5VFuvw1OPVcKqkp4=
+	t=1750715819; cv=none; b=FzS/BStCUDHXRxAa5uxAdPD2Q1F4HmLg6B8YFjGXQ3NKQXsPqZWTC8dz5eCiUBAn6L12cVGiyU1QoqbvrkQssZDeAye3cCoK2+FPqSoeaXXdgryMk0fmDkhtsncZ9kVpnq2ZlpghLk0lYr2PC/xxvZdWf4OUnkiqtV0LzqEHAAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713143; c=relaxed/simple;
-	bh=DrjwLZcnicdte8Ps+ED/tV4AbMT52oGvE7dLof2yZxc=;
+	s=arc-20240116; t=1750715819; c=relaxed/simple;
+	bh=Kli21YFHwbV5KspaCWhSyPckI1DiiBvLexh8MNPJsbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nI6iibTQNb4Wz5ZyiahTvFtaiGY1PNhPwnMhSX53RLfO8tVJJYEE2zVx3x6zp50WrY1/yglAsGjw/mqFHsuhB5HgqBRxKtUBE7bPBDD8geZ/Dqtno7fWZoX1RDxvMuQ7cxjRaeZaDqDE040ce6TmVtMeJAhQ65Zts8TsJNzmrMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuI4qaRs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD965C4CEEA;
-	Mon, 23 Jun 2025 21:12:22 +0000 (UTC)
+	 MIME-Version; b=RQo73FDeRQhH4oShUQp0IlQEaD5UQGZdJmRmDswufzOUAShI7EpAhPiVd1KgigKYNAA86XTs/VX809KERwQ8vDYY5BJKsRJf9XhLNdwpEHDC+BGsgO/M2TKvkg3BuXVdwNSVySj0ylfFHBfLlSAJnEPLb8/eoo5MbV7ePyZFTGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1HXvGzPY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E65BC4CEEA;
+	Mon, 23 Jun 2025 21:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713143;
-	bh=DrjwLZcnicdte8Ps+ED/tV4AbMT52oGvE7dLof2yZxc=;
+	s=korg; t=1750715819;
+	bh=Kli21YFHwbV5KspaCWhSyPckI1DiiBvLexh8MNPJsbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zuI4qaRsoLV/ALYtvdlLdWf4Q3wBf7cY124hBDCXAalfSV5MKz9LKQ5orJTuIzRYT
-	 tuH5WnmOekC5gDnOolxqOG3P2/LXNHK5BbbdV/9cvysSdJNcACgHnWhjnO7s76PGA3
-	 ZVZ0v/sCgce0CmF2QEki89PEX9nbqVEWjkp3WDbA=
+	b=1HXvGzPY3iu26C2/R5jlrX6F795ylyCXtDyegzlo0ieKaO01iciozzYHrNR7f60Rh
+	 lgWhKBEP6veCM42gRbSiuiT83Ckuage2RjQO+RqDlrhnAcxuLchdbIJU7WG0HKnaix
+	 /0RR8aaAGUtIXUL+EXq56mrMv/HXIZoCQqgY/0ls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.4 190/222] scsi: storvsc: Increase the timeouts to storvsc_timeout
+	Hou Tao <houtao1@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.10 324/355] arm64: insn: add encoders for atomic operations
 Date: Mon, 23 Jun 2025 15:08:45 +0200
-Message-ID: <20250623130617.946393537@linuxfoundation.org>
+Message-ID: <20250623130636.497997351@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,406 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Hou Tao <houtao1@huawei.com>
 
-commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
+[ Upstream commit fa1114d9eba5087ba5e81aab4c56f546995e6cd3 ]
 
-Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
-5s and 10s are used elsewhere. It turns out that rarely the 5s is not
-enough on Azure, so let's use storvsc_timeout everywhere.
+It is a preparation patch for eBPF atomic supports under arm64. eBPF
+needs support atomic[64]_fetch_add, atomic[64]_[fetch_]{and,or,xor} and
+atomic[64]_{xchg|cmpxchg}. The ordering semantics of eBPF atomics are
+the same with the implementations in linux kernel.
 
-In case a timeout happens and storvsc_channel_init() returns an error,
-close the VMBus channel so that any host-to-guest messages in the
-channel's ringbuffer, which might come late, can be safely ignored.
+Add three helpers to support LDCLR/LDEOR/LDSET/SWP, CAS and DMB
+instructions. STADD/STCLR/STEOR/STSET are simply encoded as aliases for
+LDADD/LDCLR/LDEOR/LDSET with XZR as the destination register, so no extra
+helper is added. atomic_fetch_add() and other atomic ops needs support for
+STLXR instruction, so extend enum aarch64_insn_ldst_type to do that.
 
-Add a "const" to storvsc_timeout.
+LDADD/LDEOR/LDSET/SWP and CAS instructions are only available when LSE
+atomics is enabled, so just return AARCH64_BREAK_FAULT directly in
+these newly-added helpers if CONFIG_ARM64_LSE_ATOMICS is disabled.
 
-Cc: stable@kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20220217072232.1186625-3-houtao1@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/storvsc_drv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm64/include/asm/insn.h |   80 ++++++++++++++++--
+ arch/arm64/kernel/insn.c      |  185 ++++++++++++++++++++++++++++++++++++++----
+ arch/arm64/net/bpf_jit.h      |   11 ++
+ 3 files changed, 253 insertions(+), 23 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -393,7 +393,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
- /*
-  * Timeout in seconds for all devices managed by this driver.
-  */
--static int storvsc_timeout = 180;
-+static const int storvsc_timeout = 180;
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -218,7 +218,9 @@ enum aarch64_insn_ldst_type {
+ 	AARCH64_INSN_LDST_LOAD_PAIR_POST_INDEX,
+ 	AARCH64_INSN_LDST_STORE_PAIR_POST_INDEX,
+ 	AARCH64_INSN_LDST_LOAD_EX,
++	AARCH64_INSN_LDST_LOAD_ACQ_EX,
+ 	AARCH64_INSN_LDST_STORE_EX,
++	AARCH64_INSN_LDST_STORE_REL_EX,
+ };
  
- #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
- static struct scsi_transport_template *fc_transport_template;
-@@ -707,7 +707,7 @@ static void  handle_multichannel_storage
- 		return;
- 	}
+ enum aarch64_insn_adsb_type {
+@@ -293,6 +295,36 @@ enum aarch64_insn_adr_type {
+ 	AARCH64_INSN_ADR_TYPE_ADR,
+ };
  
--	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0) {
- 		dev_err(dev, "Failed to create sub-channel: timed out\n");
- 		return;
-@@ -768,7 +768,7 @@ static int storvsc_execute_vstor_op(stru
- 	if (ret != 0)
- 		return ret;
++enum aarch64_insn_mem_atomic_op {
++	AARCH64_INSN_MEM_ATOMIC_ADD,
++	AARCH64_INSN_MEM_ATOMIC_CLR,
++	AARCH64_INSN_MEM_ATOMIC_EOR,
++	AARCH64_INSN_MEM_ATOMIC_SET,
++	AARCH64_INSN_MEM_ATOMIC_SWP,
++};
++
++enum aarch64_insn_mem_order_type {
++	AARCH64_INSN_MEM_ORDER_NONE,
++	AARCH64_INSN_MEM_ORDER_ACQ,
++	AARCH64_INSN_MEM_ORDER_REL,
++	AARCH64_INSN_MEM_ORDER_ACQREL,
++};
++
++enum aarch64_insn_mb_type {
++	AARCH64_INSN_MB_SY,
++	AARCH64_INSN_MB_ST,
++	AARCH64_INSN_MB_LD,
++	AARCH64_INSN_MB_ISH,
++	AARCH64_INSN_MB_ISHST,
++	AARCH64_INSN_MB_ISHLD,
++	AARCH64_INSN_MB_NSH,
++	AARCH64_INSN_MB_NSHST,
++	AARCH64_INSN_MB_NSHLD,
++	AARCH64_INSN_MB_OSH,
++	AARCH64_INSN_MB_OSHST,
++	AARCH64_INSN_MB_OSHLD,
++};
++
+ #define	__AARCH64_INSN_FUNCS(abbr, mask, val)				\
+ static __always_inline bool aarch64_insn_is_##abbr(u32 code)		\
+ {									\
+@@ -310,6 +342,11 @@ __AARCH64_INSN_FUNCS(prfm,	0x3FC00000, 0
+ __AARCH64_INSN_FUNCS(prfm_lit,	0xFF000000, 0xD8000000)
+ __AARCH64_INSN_FUNCS(str_reg,	0x3FE0EC00, 0x38206800)
+ __AARCH64_INSN_FUNCS(ldadd,	0x3F20FC00, 0x38200000)
++__AARCH64_INSN_FUNCS(ldclr,	0x3F20FC00, 0x38201000)
++__AARCH64_INSN_FUNCS(ldeor,	0x3F20FC00, 0x38202000)
++__AARCH64_INSN_FUNCS(ldset,	0x3F20FC00, 0x38203000)
++__AARCH64_INSN_FUNCS(swp,	0x3F20FC00, 0x38208000)
++__AARCH64_INSN_FUNCS(cas,	0x3FA07C00, 0x08A07C00)
+ __AARCH64_INSN_FUNCS(ldr_reg,	0x3FE0EC00, 0x38606800)
+ __AARCH64_INSN_FUNCS(ldr_lit,	0xBF000000, 0x18000000)
+ __AARCH64_INSN_FUNCS(ldrsw_lit,	0xFF000000, 0x98000000)
+@@ -452,13 +489,6 @@ u32 aarch64_insn_gen_load_store_ex(enum
+ 				   enum aarch64_insn_register state,
+ 				   enum aarch64_insn_size_type size,
+ 				   enum aarch64_insn_ldst_type type);
+-u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register result,
+-			   enum aarch64_insn_register address,
+-			   enum aarch64_insn_register value,
+-			   enum aarch64_insn_size_type size);
+-u32 aarch64_insn_gen_stadd(enum aarch64_insn_register address,
+-			   enum aarch64_insn_register value,
+-			   enum aarch64_insn_size_type size);
+ u32 aarch64_insn_gen_add_sub_imm(enum aarch64_insn_register dst,
+ 				 enum aarch64_insn_register src,
+ 				 int imm, enum aarch64_insn_variant variant,
+@@ -519,6 +549,42 @@ u32 aarch64_insn_gen_prefetch(enum aarch
+ 			      enum aarch64_insn_prfm_type type,
+ 			      enum aarch64_insn_prfm_target target,
+ 			      enum aarch64_insn_prfm_policy policy);
++#ifdef CONFIG_ARM64_LSE_ATOMICS
++u32 aarch64_insn_gen_atomic_ld_op(enum aarch64_insn_register result,
++				  enum aarch64_insn_register address,
++				  enum aarch64_insn_register value,
++				  enum aarch64_insn_size_type size,
++				  enum aarch64_insn_mem_atomic_op op,
++				  enum aarch64_insn_mem_order_type order);
++u32 aarch64_insn_gen_cas(enum aarch64_insn_register result,
++			 enum aarch64_insn_register address,
++			 enum aarch64_insn_register value,
++			 enum aarch64_insn_size_type size,
++			 enum aarch64_insn_mem_order_type order);
++#else
++static inline
++u32 aarch64_insn_gen_atomic_ld_op(enum aarch64_insn_register result,
++				  enum aarch64_insn_register address,
++				  enum aarch64_insn_register value,
++				  enum aarch64_insn_size_type size,
++				  enum aarch64_insn_mem_atomic_op op,
++				  enum aarch64_insn_mem_order_type order)
++{
++	return AARCH64_BREAK_FAULT;
++}
++
++static inline
++u32 aarch64_insn_gen_cas(enum aarch64_insn_register result,
++			 enum aarch64_insn_register address,
++			 enum aarch64_insn_register value,
++			 enum aarch64_insn_size_type size,
++			 enum aarch64_insn_mem_order_type order)
++{
++	return AARCH64_BREAK_FAULT;
++}
++#endif
++u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type);
++
+ s32 aarch64_get_branch_offset(u32 insn);
+ u32 aarch64_set_branch_offset(u32 insn, s32 offset);
  
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return -ETIMEDOUT;
+--- a/arch/arm64/kernel/insn.c
++++ b/arch/arm64/kernel/insn.c
+@@ -721,10 +721,16 @@ u32 aarch64_insn_gen_load_store_ex(enum
  
-@@ -1200,6 +1200,8 @@ static int storvsc_connect_to_vsp(struct
- 		return ret;
- 
- 	ret = storvsc_channel_init(device, is_fc);
-+	if (ret)
-+		vmbus_close(device->channel);
- 
- 	return ret;
+ 	switch (type) {
+ 	case AARCH64_INSN_LDST_LOAD_EX:
++	case AARCH64_INSN_LDST_LOAD_ACQ_EX:
+ 		insn = aarch64_insn_get_load_ex_value();
++		if (type == AARCH64_INSN_LDST_LOAD_ACQ_EX)
++			insn |= BIT(15);
+ 		break;
+ 	case AARCH64_INSN_LDST_STORE_EX:
++	case AARCH64_INSN_LDST_STORE_REL_EX:
+ 		insn = aarch64_insn_get_store_ex_value();
++		if (type == AARCH64_INSN_LDST_STORE_REL_EX)
++			insn |= BIT(15);
+ 		break;
+ 	default:
+ 		pr_err("%s: unknown load/store exclusive encoding %d\n", __func__, type);
+@@ -746,12 +752,65 @@ u32 aarch64_insn_gen_load_store_ex(enum
+ 					    state);
  }
-@@ -1503,7 +1505,7 @@ static int storvsc_host_reset_handler(st
- 	if (ret != 0)
- 		return FAILED;
  
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return TIMEOUT_ERROR;
+-u32 aarch64_insn_gen_ldadd(enum aarch64_insn_register result,
+-			   enum aarch64_insn_register address,
+-			   enum aarch64_insn_register value,
+-			   enum aarch64_insn_size_type size)
++#ifdef CONFIG_ARM64_LSE_ATOMICS
++static u32 aarch64_insn_encode_ldst_order(enum aarch64_insn_mem_order_type type,
++					  u32 insn)
+ {
+-	u32 insn = aarch64_insn_get_ldadd_value();
++	u32 order;
++
++	switch (type) {
++	case AARCH64_INSN_MEM_ORDER_NONE:
++		order = 0;
++		break;
++	case AARCH64_INSN_MEM_ORDER_ACQ:
++		order = 2;
++		break;
++	case AARCH64_INSN_MEM_ORDER_REL:
++		order = 1;
++		break;
++	case AARCH64_INSN_MEM_ORDER_ACQREL:
++		order = 3;
++		break;
++	default:
++		pr_err("%s: unknown mem order %d\n", __func__, type);
++		return AARCH64_BREAK_FAULT;
++	}
++
++	insn &= ~GENMASK(23, 22);
++	insn |= order << 22;
++
++	return insn;
++}
++
++u32 aarch64_insn_gen_atomic_ld_op(enum aarch64_insn_register result,
++				  enum aarch64_insn_register address,
++				  enum aarch64_insn_register value,
++				  enum aarch64_insn_size_type size,
++				  enum aarch64_insn_mem_atomic_op op,
++				  enum aarch64_insn_mem_order_type order)
++{
++	u32 insn;
++
++	switch (op) {
++	case AARCH64_INSN_MEM_ATOMIC_ADD:
++		insn = aarch64_insn_get_ldadd_value();
++		break;
++	case AARCH64_INSN_MEM_ATOMIC_CLR:
++		insn = aarch64_insn_get_ldclr_value();
++		break;
++	case AARCH64_INSN_MEM_ATOMIC_EOR:
++		insn = aarch64_insn_get_ldeor_value();
++		break;
++	case AARCH64_INSN_MEM_ATOMIC_SET:
++		insn = aarch64_insn_get_ldset_value();
++		break;
++	case AARCH64_INSN_MEM_ATOMIC_SWP:
++		insn = aarch64_insn_get_swp_value();
++		break;
++	default:
++		pr_err("%s: unimplemented mem atomic op %d\n", __func__, op);
++		return AARCH64_BREAK_FAULT;
++	}
  
+ 	switch (size) {
+ 	case AARCH64_INSN_SIZE_32:
+@@ -764,6 +823,8 @@ u32 aarch64_insn_gen_ldadd(enum aarch64_
+ 
+ 	insn = aarch64_insn_encode_ldst_size(size, insn);
+ 
++	insn = aarch64_insn_encode_ldst_order(order, insn);
++
+ 	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RT, insn,
+ 					    result);
+ 
+@@ -774,18 +835,69 @@ u32 aarch64_insn_gen_ldadd(enum aarch64_
+ 					    value);
+ }
+ 
+-u32 aarch64_insn_gen_stadd(enum aarch64_insn_register address,
+-			   enum aarch64_insn_register value,
+-			   enum aarch64_insn_size_type size)
++static u32 aarch64_insn_encode_cas_order(enum aarch64_insn_mem_order_type type,
++					 u32 insn)
+ {
+-	/*
+-	 * STADD is simply encoded as an alias for LDADD with XZR as
+-	 * the destination register.
+-	 */
+-	return aarch64_insn_gen_ldadd(AARCH64_INSN_REG_ZR, address,
+-				      value, size);
++	u32 order;
++
++	switch (type) {
++	case AARCH64_INSN_MEM_ORDER_NONE:
++		order = 0;
++		break;
++	case AARCH64_INSN_MEM_ORDER_ACQ:
++		order = BIT(22);
++		break;
++	case AARCH64_INSN_MEM_ORDER_REL:
++		order = BIT(15);
++		break;
++	case AARCH64_INSN_MEM_ORDER_ACQREL:
++		order = BIT(15) | BIT(22);
++		break;
++	default:
++		pr_err("%s: unknown mem order %d\n", __func__, type);
++		return AARCH64_BREAK_FAULT;
++	}
++
++	insn &= ~(BIT(15) | BIT(22));
++	insn |= order;
++
++	return insn;
+ }
+ 
++u32 aarch64_insn_gen_cas(enum aarch64_insn_register result,
++			 enum aarch64_insn_register address,
++			 enum aarch64_insn_register value,
++			 enum aarch64_insn_size_type size,
++			 enum aarch64_insn_mem_order_type order)
++{
++	u32 insn;
++
++	switch (size) {
++	case AARCH64_INSN_SIZE_32:
++	case AARCH64_INSN_SIZE_64:
++		break;
++	default:
++		pr_err("%s: unimplemented size encoding %d\n", __func__, size);
++		return AARCH64_BREAK_FAULT;
++	}
++
++	insn = aarch64_insn_get_cas_value();
++
++	insn = aarch64_insn_encode_ldst_size(size, insn);
++
++	insn = aarch64_insn_encode_cas_order(order, insn);
++
++	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RT, insn,
++					    result);
++
++	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RN, insn,
++					    address);
++
++	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RS, insn,
++					    value);
++}
++#endif
++
+ static u32 aarch64_insn_encode_prfm_imm(enum aarch64_insn_prfm_type type,
+ 					enum aarch64_insn_prfm_target target,
+ 					enum aarch64_insn_prfm_policy policy,
+@@ -1697,3 +1809,48 @@ u32 aarch64_insn_gen_extr(enum aarch64_i
+ 	insn = aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RN, insn, Rn);
+ 	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
+ }
++
++u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
++{
++	u32 opt;
++	u32 insn;
++
++	switch (type) {
++	case AARCH64_INSN_MB_SY:
++		opt = 0xf;
++		break;
++	case AARCH64_INSN_MB_ST:
++		opt = 0xe;
++		break;
++	case AARCH64_INSN_MB_LD:
++		opt = 0xd;
++		break;
++	case AARCH64_INSN_MB_ISH:
++		opt = 0xb;
++		break;
++	case AARCH64_INSN_MB_ISHST:
++		opt = 0xa;
++		break;
++	case AARCH64_INSN_MB_ISHLD:
++		opt = 0x9;
++		break;
++	case AARCH64_INSN_MB_NSH:
++		opt = 0x7;
++		break;
++	case AARCH64_INSN_MB_NSHST:
++		opt = 0x6;
++		break;
++	case AARCH64_INSN_MB_NSHLD:
++		opt = 0x5;
++		break;
++	default:
++		pr_err("%s: unknown dmb type %d\n", __func__, type);
++		return AARCH64_BREAK_FAULT;
++	}
++
++	insn = aarch64_insn_get_dmb_value();
++	insn &= ~GENMASK(11, 8);
++	insn |= (opt << 8);
++
++	return insn;
++}
+--- a/arch/arm64/net/bpf_jit.h
++++ b/arch/arm64/net/bpf_jit.h
+@@ -89,9 +89,16 @@
+ #define A64_STXR(sf, Rt, Rn, Rs) \
+ 	A64_LSX(sf, Rt, Rn, Rs, STORE_EX)
+ 
+-/* LSE atomics */
++/*
++ * LSE atomics
++ *
++ * STADD is simply encoded as an alias for LDADD with XZR as
++ * the destination register.
++ */
+ #define A64_STADD(sf, Rn, Rs) \
+-	aarch64_insn_gen_stadd(Rn, Rs, A64_SIZE(sf))
++	aarch64_insn_gen_atomic_ld_op(A64_ZR, Rn, Rs, \
++		A64_SIZE(sf), AARCH64_INSN_MEM_ATOMIC_ADD, \
++		AARCH64_INSN_MEM_ORDER_NONE)
+ 
+ /* Add/subtract (immediate) */
+ #define A64_ADDSUB_IMM(sf, Rd, Rn, imm12, type) \
 
 
 
