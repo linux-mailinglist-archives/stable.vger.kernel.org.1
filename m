@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51FE2AE528D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F2DAE4EC2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0D41B6520E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9F98179D5E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA4C223DE1;
-	Mon, 23 Jun 2025 21:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C236C1ACEDA;
+	Mon, 23 Jun 2025 21:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izxr0ORW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSlHCK+8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9DC4315A;
-	Mon, 23 Jun 2025 21:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1BA70838;
+	Mon, 23 Jun 2025 21:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715087; cv=none; b=aB/2V0UN/qd4ZEoR6DIOGGEzCkst1/XIhcma3syFhYkG+6O5P3MuGRAZ9OfMjnICbYBdxIiLFsLDdMI6V5H2K/80VCxmtSoUfre8GsfsPLLYli9DpEvL0nNuiPR1JZRtfRhtSHWXwvPACmQcqz/ggACS0W6jp6W1s1frvCgxBkg=
+	t=1750712928; cv=none; b=FBMfQ8SQeXGeG9izpPThphEO+3AOVpcrbQlblF8sbBqakRDX/jR2QIOY5cPEGhJauDdIg2+a3sPOej+XpZ4jCX2FsZspjUCM5NnGi2FmJ1WxjQPuupcgspQNYomwO+GmDSZtuHKrxtc6HF3s+37xr995pHPOZgv7WAQ6Mu3d3rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715087; c=relaxed/simple;
-	bh=KGL41m6LdOWif1arAKzZxeNWfI+O+uw/B6aqXiA0y6Y=;
+	s=arc-20240116; t=1750712928; c=relaxed/simple;
+	bh=xczFiNmuqP7KkCjFgLsbzRcvh+aeVHLvY+zNIBAou7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eoSlAdbrmQdmk0IpgtECZ3wcvpL4dNExB1B89dPBqUoLuGDxBJQSnQAQwgV3vg9du4NstkVitfN/uqFWPD1jlCyH7FvFlEgo4MKN6/3R2VDX3dV67s7fbHyBuGvckdzKRjT5TnZD4MdfXhQGERkNjDDL4otoHwbYoXWhvWCWSdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izxr0ORW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16354C4CEEA;
-	Mon, 23 Jun 2025 21:44:46 +0000 (UTC)
+	 MIME-Version; b=e9TTXPdBL8noUBw8L2ctCUkk+WX77qH0YwZc9IgbixwUkNJQjX0yNgX32CiUl3Dqcav0vw6FZeaBMq6AgCJJvAxAeBVVE/4lcdxVJmJ9pXcjtXcIZkEZ1mJDSSuQvhABm2PL4R5FY/ahxUuUJTaSM9DCXx2kj5KOLVjQtEEpEqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSlHCK+8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18310C4CEEA;
+	Mon, 23 Jun 2025 21:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715087;
-	bh=KGL41m6LdOWif1arAKzZxeNWfI+O+uw/B6aqXiA0y6Y=;
+	s=korg; t=1750712928;
+	bh=xczFiNmuqP7KkCjFgLsbzRcvh+aeVHLvY+zNIBAou7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=izxr0ORWnTlUn25a9VXUXRyGue+SsBWhsnop0sxNcze/MHlTDuxyenCbyzymnOjBq
-	 U+C/AQw0XgTtLXOrw0pjzXJdSA31o6R3Ac0bJLv0ssefSxz3LNWjbc3zotV1MV5KH1
-	 p/Fpizgfhlg0oaq/NJHLXcRRyL6Xo2Che3JBHyP8=
+	b=vSlHCK+8VrEAPTNrB27UQQaLXjGsmuUKUYynHUacCS7bHUT39SkU1P2wkTvO7lgb/
+	 XoqOynfv9gFsTMUhwA6xswKNBAfEcw6QuKpKAEB1BcST8OW0zPjaNpdu9CZYQUIsBb
+	 ADmdwe+abTXHOi5jQy5LMRCzKGZ5qt8nwlzxCrjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Maxime Ripard <mripard@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 214/508] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
+Subject: [PATCH 6.15 301/592] media: tc358743: ignore video while HPD is low
 Date: Mon, 23 Jun 2025 15:04:19 +0200
-Message-ID: <20250623130650.529604001@linuxfoundation.org>
+Message-ID: <20250623130707.553673341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
+[ Upstream commit 6829c5b5d26b1be31880d74ec24cb32d2d75f1ae ]
 
-The error checking for of_count_phandle_with_args() does not handle
-negative error codes correctly.  The problem is that "index" is a u32 so
-in the condition "if (index >= num_domains)" negative error codes stored
-in "num_domains" are type promoted to very high positive values and
-"index" is always going to be valid.
+If the HPD is low (happens if there is no EDID or the
+EDID is being updated), then return -ENOLINK in
+tc358743_get_detected_timings() instead of detecting video.
 
-Test for negative error codes first and then test if "index" is valid.
+This avoids userspace thinking that it can start streaming when
+the HPD is low.
 
-Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240628-stoic-bettong-of-fortitude-e25611@houat/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index 3c44b0313a10e..a19a1f70adb2a 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2840,7 +2840,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
- 	/* Verify that the index is within a valid range. */
- 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
- 						 "#power-domain-cells");
--	if (index >= num_domains)
-+	if (num_domains < 0 || index >= num_domains)
- 		return NULL;
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 2d5f42f111583..dcef93e1a3bcd 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -313,6 +313,10 @@ static int tc358743_get_detected_timings(struct v4l2_subdev *sd,
  
- 	/* Allocate and register device on the genpd bus. */
+ 	memset(timings, 0, sizeof(struct v4l2_dv_timings));
+ 
++	/* if HPD is low, ignore any video */
++	if (!(i2c_rd8(sd, HPD_CTL) & MASK_HPD_OUT0))
++		return -ENOLINK;
++
+ 	if (no_signal(sd)) {
+ 		v4l2_dbg(1, debug, sd, "%s: no valid signal\n", __func__);
+ 		return -ENOLINK;
 -- 
 2.39.5
 
