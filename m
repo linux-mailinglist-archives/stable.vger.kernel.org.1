@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0FABAE4E75
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A871AE4F1E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE414189E740
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46BA7AC360
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2462206BB;
-	Mon, 23 Jun 2025 21:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C5221F24;
+	Mon, 23 Jun 2025 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC9QuebX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjNSCRIC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19AB21CA07;
-	Mon, 23 Jun 2025 21:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E22D1DF98B;
+	Mon, 23 Jun 2025 21:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712758; cv=none; b=u3lX2WXKW1QPDTi7x98biAapOAlDB4bY8bqxXc+UYTxLSO/3zx7JWf07gPsZqQDI/rVSdKOT4d2Z+I92T0gt5F1Ew5JBTSDKw2QqYn8IMkXGNOnBXvOlV+gIL39A1BbXt790anXl9qzRvUkmU63Yo16972gpuz4xq0hcqK3Qmf0=
+	t=1750713133; cv=none; b=UQG/5Wovu6pGntRr3H14mpoxKS1995NBUzEUsW4hJQq+Gct17JuH78Y5CB4bWohRA3iFawOyHOXSClncZvxkaKUJj2nAvv/UUJz4frgvoyeYa+lCBIHWwc7JgNjlRxP7On4yMN6/gcBqTpKQz3Q8dX9P8Jun+HMNtZQCEZjloYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712758; c=relaxed/simple;
-	bh=L5MJPlykFgrdaaNI97hdO/0crEf7fIkE0+z3TfRaP6o=;
+	s=arc-20240116; t=1750713133; c=relaxed/simple;
+	bh=FT0awCTakRRQBGP6BvFuJLPJfTYZWAK8fBr4LFBpIgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MhwMmrDpl1pzeLOs21QrummGSW7KNiR/gxj0fpgcaNelIUJa/yuJZ7HQhOHXf04jAixa4YsUYUNpC7ZWjAn8xcrcYy7WpxX6UabWYKXllshl/ViZLYvjcxtJxO5Lls+nxesX/TjWBGVbOAt8/kJ3e5MPr8GcWs8a5Fa7ssXuny4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC9QuebX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07853C4CEEA;
-	Mon, 23 Jun 2025 21:05:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WJweL5dNTgJzLoRf7xwdzFT1kx+xPvcj93UEBVUirI1LyiRk6E1kuC/bg87afo5VGdV9l8wK1iu5av/L35QNGVvw2hD4dRQYjN6+Np3NUy280xzMaFSlez/GquaLMQc7gFKhrc6GlMWeWjvllzRHDp6j4vWZOrDB24wn4x4xV14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjNSCRIC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0853FC4CEEA;
+	Mon, 23 Jun 2025 21:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712758;
-	bh=L5MJPlykFgrdaaNI97hdO/0crEf7fIkE0+z3TfRaP6o=;
+	s=korg; t=1750713133;
+	bh=FT0awCTakRRQBGP6BvFuJLPJfTYZWAK8fBr4LFBpIgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SC9QuebXBCfTG7DApt0OPV9KLXRFd9hpbGKZ81w+SBiTF+waY26pqS2GtM/GNBWNK
-	 SANyrvuowfEx9g6LQG4aHFqge2eO/8/2ln69eYcG5iS+BvQNUduP+CR465Mc7+yEki
-	 0pxWqr+2Mz1kOqbHpIooRLBgQA/YXbbMdrkdAOK0=
+	b=NjNSCRICQGtfdfODMZ2htv5q73mm2igx0sloeahpUVxDeL2JY3QHLAHIyk6iuxPWs
+	 QS+7Ap9YkWJDFCChZ2O6nNvDLOtvnoK2RYmlLzl8BdDVfpYejpPlK5gddOseDvuiA2
+	 sIywqYJ4/BuTNkc1GRdoB6tgcYGH9Au9Sf34mQ+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergio Perez Gonzalez <sperezglz@gmail.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Mirco Barone <mirco.barone@polito.it>,
+	"Jason A. Donenfeld" <Jason@zx2c4.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 311/592] net: macb: Check return value of dma_set_mask_and_coherent()
-Date: Mon, 23 Jun 2025 15:04:29 +0200
-Message-ID: <20250623130707.811498408@linuxfoundation.org>
+Subject: [PATCH 5.15 126/411] wireguard: device: enable threaded NAPI
+Date: Mon, 23 Jun 2025 15:04:30 +0200
+Message-ID: <20250623130636.733840357@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergio Perez Gonzalez <sperezglz@gmail.com>
+From: Mirco Barone <mirco.barone@polito.it>
 
-[ Upstream commit 3920a758800762917177a6b5ab39707d8e376fe6 ]
+[ Upstream commit db9ae3b6b43c79b1ba87eea849fd65efa05b4b2e ]
 
-Issue flagged by coverity. Add a safety check for the return value
-of dma_set_mask_and_coherent, go to a safe exit if it returns error.
+Enable threaded NAPI by default for WireGuard devices in response to low
+performance behavior that we observed when multiple tunnels (and thus
+multiple wg devices) are deployed on a single host.  This affects any
+kind of multi-tunnel deployment, regardless of whether the tunnels share
+the same endpoints or not (i.e., a VPN concentrator type of gateway
+would also be affected).
 
-Link: https://scan7.scan.coverity.com/#/project-view/53936/11354?selectedIssue=1643754
-Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
-Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Link: https://patch.msgid.link/20250526032034.84900-1-sperezglz@gmail.com
+The problem is caused by the fact that, in case of a traffic surge that
+involves multiple tunnels at the same time, the polling of the NAPI
+instance of all these wg devices tends to converge onto the same core,
+causing underutilization of the CPU and bottlenecking performance.
+
+This happens because NAPI polling is hosted by default in softirq
+context, but the WireGuard driver only raises this softirq after the rx
+peer queue has been drained, which doesn't happen during high traffic.
+In this case, the softirq already active on a core is reused instead of
+raising a new one.
+
+As a result, once two or more tunnel softirqs have been scheduled on
+the same core, they remain pinned there until the surge ends.
+
+In our experiments, this almost always leads to all tunnel NAPIs being
+handled on a single core shortly after a surge begins, limiting
+scalability to less than 3× the performance of a single tunnel, despite
+plenty of unused CPU cores being available.
+
+The proposed mitigation is to enable threaded NAPI for all WireGuard
+devices. This moves the NAPI polling context to a dedicated per-device
+kernel thread, allowing the scheduler to balance the load across all
+available cores.
+
+On our 32-core gateways, enabling threaded NAPI yields a ~4× performance
+improvement with 16 tunnels, increasing throughput from ~13 Gbps to
+~48 Gbps. Meanwhile, CPU usage on the receiver (which is the bottleneck)
+jumps from 20% to 100%.
+
+We have found no performance regressions in any scenario we tested.
+Single-tunnel throughput remains unchanged.
+
+More details are available in our Netdev paper.
+
+Link: https://netdevconf.info/0x18/docs/netdev-0x18-paper23-talk-paper.pdf
+Signed-off-by: Mirco Barone <mirco.barone@polito.it>
+Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
+Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
+Link: https://patch.msgid.link/20250605120616.2808744-1-Jason@zx2c4.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireguard/device.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
-index e1e8bd2ec155b..d1f1ae5ea161c 100644
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -5283,7 +5283,11 @@ static int macb_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
+index e5e344af34237..7bf1ec4ccaa98 100644
+--- a/drivers/net/wireguard/device.c
++++ b/drivers/net/wireguard/device.c
+@@ -352,6 +352,7 @@ static int wg_newlink(struct net *src_net, struct net_device *dev,
+ 	if (ret < 0)
+ 		goto err_free_handshake_queue;
  
- #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
- 	if (GEM_BFEXT(DAW64, gem_readl(bp, DCFG6))) {
--		dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
-+		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
-+		if (err) {
-+			dev_err(&pdev->dev, "failed to set DMA mask\n");
-+			goto err_out_free_netdev;
-+		}
- 		bp->hw_dma_cap |= HW_DMA_CAP_64B;
- 	}
- #endif
++	dev_set_threaded(dev, true);
+ 	ret = register_netdevice(dev);
+ 	if (ret < 0)
+ 		goto err_uninit_ratelimiter;
 -- 
 2.39.5
 
