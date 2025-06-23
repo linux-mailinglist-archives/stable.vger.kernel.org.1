@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-157614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA26AE54D3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4C1AE5196
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1F99188A521
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49ACA4422EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92732222C2;
-	Mon, 23 Jun 2025 22:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938D5221734;
+	Mon, 23 Jun 2025 21:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S0Lkw1NI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le0VC0Bh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 969DB19049B;
-	Mon, 23 Jun 2025 22:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516821EE7C6;
+	Mon, 23 Jun 2025 21:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716299; cv=none; b=LoKbbLPXjy8knU72ECW7xQB9v++ULc184E8O9KUXo0pZ4/gzPSUNezpxHx0FWKt8Thc7Nms21KnxiwpMd3cSeKOg+WCbgFKGuXQ+A6y2GQhiu6I/QSEReycuZHwrDazQmf78wIHmyTml96VZOX+FUnrjxRm5twDj4spU6LSYW68=
+	t=1750714539; cv=none; b=WqPn4DcdFiwHrZAbnaywarQsrPjmkysiGOP6xBYajx60BrWUqo2jgQ6O3VZL3SILQfAfr6fQ/CMJ4Vcvr/uc+BmKqlIMtDP3hhbxNSFTyyjspC2NH/ioHfbg+VBtvV8GgczX7D3qpHwniXDtvjFAc8GlLwWpFUPSgDGKyAxDe80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716299; c=relaxed/simple;
-	bh=IWm8dFZh58WSDLe/qjzxlSLgAgO//575LLbptiDaDv4=;
+	s=arc-20240116; t=1750714539; c=relaxed/simple;
+	bh=WwXGbE7IIb9Y3RGPt9jcRG5JxZfRzzoemDYcaRr1zbI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j9Ju0ozDd8UBMXtEkTi6g6jw1Qpwi+qLBjDksY+zmWmSEoL2HjJ4FNWT3gEnvx+F5gJ92qP4dH+8aBYbhcazCtxUsCjJMyccdtkwTQdcFEQUUsF5k6ZK9G53pJ8uDEqN7czeGVcMYtqYMVVaG1ij4+iMHYMqqVXUqlvNKNMEVCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S0Lkw1NI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B29C4CEEA;
-	Mon, 23 Jun 2025 22:04:58 +0000 (UTC)
+	 MIME-Version; b=h/lKnNJQvydVuPyqhsy6r+y0xfFrz9eS6scq5PTnN7EIrJAq8QdZ9Dz0n+nwrMu5ositR+vCz8YeaheqlfoTV4RwlizsDRXMN1851ok0eRtGRrvdJ9uuM8Z1OQhft+W313rEOC4s5Ku8Fn15dfgSzI87bOhjMP4wW6wIESRlhVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le0VC0Bh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AD2C4CEEA;
+	Mon, 23 Jun 2025 21:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716299;
-	bh=IWm8dFZh58WSDLe/qjzxlSLgAgO//575LLbptiDaDv4=;
+	s=korg; t=1750714538;
+	bh=WwXGbE7IIb9Y3RGPt9jcRG5JxZfRzzoemDYcaRr1zbI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S0Lkw1NIvS9qx5oQOrH5lRawktkHRITqRUAE4hk70DSEUh2NRJIufA0KV9l/c3jKM
-	 h21mx+nG0YSPu3utM8rVgbUnDkjcm7JPW8W8uQa+w4pKa+L/Fnht9uTtoIWpvCCclJ
-	 I9gGO4gIJNHwAr0wVCbMufKN78/xB/amTSmNb5k8=
+	b=Le0VC0BhJOsNIYGkK/66w2ZY1Y6I3JHBoI7MpmwtJIqtVAe34spoup5unk4LBzSdG
+	 avAzcH6lnAe8FSzs9kzGu4vng07s6U7PK37pk7DZj+h7sOteh2USYPmj1OwIjQcvqZ
+	 aDovN2+r0PU+cn6kG7Ojm+L5OIYpP57XjH3MJ768=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Hari Chandrakanthan <quic_haric@quicinc.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 242/414] netfilter: nft_set_pipapo: clamp maximum map bucket size to INT_MAX
+Subject: [PATCH 6.15 421/592] wifi: ath12k: fix link valid field initialization in the monitor Rx
 Date: Mon, 23 Jun 2025 15:06:19 +0200
-Message-ID: <20250623130648.098389214@linuxfoundation.org>
+Message-ID: <20250623130710.450384528@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +65,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-[ Upstream commit b85e3367a5716ed3662a4fe266525190d2af76df ]
+[ Upstream commit 2826139f9295821fe2b049318a1cc057ec003131 ]
 
-Otherwise, it is possible to hit WARN_ON_ONCE in __kvmalloc_node_noprof()
-when resizing hashtable because __GFP_NOWARN is unset.
+Currently, the link_valid field is not initialized in the monitor Rx path.
+This can result in random values for the link_valid and link_id leads to
+undefined behaviour in mac80211. Therefore, initialize the link_valid
+field in the monitor Rx path.
 
-Similar to:
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-  b541ba7d1f5a ("netfilter: conntrack: clamp maximum hashtable size to INT_MAX")
-
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Link: https://patch.msgid.link/20250324062518.2752822-2-quic_periyasa@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 0529e4ef75207..c5855069bdaba 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -663,6 +663,9 @@ static int pipapo_realloc_mt(struct nft_pipapo_field *f,
- 	    check_add_overflow(rules, extra, &rules_alloc))
- 		return -EOVERFLOW;
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index 600d97169f241..826c9723a7a68 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -2097,6 +2097,8 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
+ 	bool is_mcbc = rxcb->is_mcbc;
+ 	bool is_eapol_tkip = rxcb->is_eapol;
  
-+	if (rules_alloc > (INT_MAX / sizeof(*new_mt)))
-+		return -ENOMEM;
++	status->link_valid = 0;
 +
- 	new_mt = kvmalloc_array(rules_alloc, sizeof(*new_mt), GFP_KERNEL_ACCOUNT);
- 	if (!new_mt)
- 		return -ENOMEM;
-@@ -1499,6 +1502,9 @@ static struct nft_pipapo_match *pipapo_clone(struct nft_pipapo_match *old)
- 		       src->groups * NFT_PIPAPO_BUCKETS(src->bb));
- 
- 		if (src->rules > 0) {
-+			if (src->rules_alloc > (INT_MAX / sizeof(*src->mt)))
-+				goto out_mt;
-+
- 			dst->mt = kvmalloc_array(src->rules_alloc,
- 						 sizeof(*src->mt),
- 						 GFP_KERNEL_ACCOUNT);
+ 	if ((status->encoding == RX_ENC_HE) && !(status->flag & RX_FLAG_RADIOTAP_HE) &&
+ 	    !(status->flag & RX_FLAG_SKIP_MONITOR)) {
+ 		he = skb_push(msdu, sizeof(known));
 -- 
 2.39.5
 
