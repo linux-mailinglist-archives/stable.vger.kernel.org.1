@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ADC7AE55EC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F12AE56BA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9792A4A390C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 225024E0987
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE5622577C;
-	Mon, 23 Jun 2025 22:13:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E900722422F;
+	Mon, 23 Jun 2025 22:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsRyIEEK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ygeXML2i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB165C2E0;
-	Mon, 23 Jun 2025 22:13:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C2A42192EC;
+	Mon, 23 Jun 2025 22:22:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716811; cv=none; b=TXuimasW6zlorDD7Paez/o60b0smi4nzcuueXKEAgncwmVARcsKjtCgVr4qke7rkebfCG5veawAy/8c/XI258f77T4Q4qMeAf1CpU9+rfYaoZ8QXYeYAxxqn2j7WDxzDnok1dVafeqCxTql+16PmQde+yJ7p18RbTleY1kQycQ0=
+	t=1750717333; cv=none; b=QdoRPwqdyIvcnfOr9v6EokcaqbzXsW33X2qCMjI6thUa/aFqLgzibisGNIdsRXXmRyx2mNWPHQXySPEv3hCWTMfndNgjK0LhR5BLhN6+VtUTeWyKnNdN07p/3SAveFksue1/GA8oZvl1tLhKyUQ11wmQeXTRjykZK+O4i1K4Yz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716811; c=relaxed/simple;
-	bh=mQ4ontXbZNuaiqfooqkYZqpet/s/fW+X1nZ7gJi2WUU=;
+	s=arc-20240116; t=1750717333; c=relaxed/simple;
+	bh=F5BbltBzIkmpBWyY3S6h7ZelDgjUfDBBiYW9b9xOpy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s2iIOMqJIykJWpZc9RE2hy/KHZAq8Ez8yyJ6yMxJaNVqgLu34eRezbD0ugi9uPNDJL+XJzc4ymUrWKsJCJyvHe9ML9JlxjQ5lFC5TF1NEmMPoSrhAmEsEiBKp+Qqtim/WzTfsY1Da4KgdaSR52YTSAXCiotBl1+/K/xOTuNXgHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsRyIEEK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84057C4CEEA;
-	Mon, 23 Jun 2025 22:13:30 +0000 (UTC)
+	 MIME-Version; b=j/XPRPOHmcX6PArHP2xAddQ/+qe9ESz4T9jizksE6oo6gNHQe8/pA8w0depJ/9p7Fgf5LZpt8VWx/zwEqRnE1XJVH+TBzMo6SjBgKLkSOU43p7lHOlcr5SfsfAmaNJy7mamdOF7TNW7bnRfkbaiZgUkKgRldSRpp6RNMGbLfj/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ygeXML2i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36129C4CEEA;
+	Mon, 23 Jun 2025 22:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716810;
-	bh=mQ4ontXbZNuaiqfooqkYZqpet/s/fW+X1nZ7gJi2WUU=;
+	s=korg; t=1750717333;
+	bh=F5BbltBzIkmpBWyY3S6h7ZelDgjUfDBBiYW9b9xOpy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NsRyIEEKv/okx6SXuhlbFUSjsNSEjDSSCGrN07bmaecGP+ONvwyvipxFyikrOFI7y
-	 yI1zbTxRPTlE37AidBUamSkTxAv47Hq6cUp9j4+aaRZ6Tc75OMGijn9IWIvPD7Dseo
-	 B2kWXHia1YL05DHdQbqutFWXreMrJA75Ruy4YhvQ=
+	b=ygeXML2ioseT0WEBS1xeBLMsYI+RRSSUIydtPBldeih2AJRvMgI4hkMaaFEBu8vfD
+	 0RnL0a+mhzFsTMIvlQ/b6/NIUQb39Yovoz0GjXW7zq0OqKXkQjY6IX+fLET3BE125E
+	 Yu9+nKkFFRlrMij0fynTrgSaJrmYEZY2I8hgqRAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 314/414] net: clear the dst when changing skb protocol
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 406/508] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
 Date: Mon, 23 Jun 2025 15:07:31 +0200
-Message-ID: <20250623130649.848918753@linuxfoundation.org>
+Message-ID: <20250623130655.223349907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,123 +62,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 upstream.
+[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
 
-A not-so-careful NAT46 BPF program can crash the kernel
-if it indiscriminately flips ingress packets from v4 to v6:
+The regmap_update_bits() function can fail, so propagate its error
+up to the stack instead of silently ignoring that.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
-    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
-    process_backlog (net/core/dev.c:6186:4)
-    napi_poll (net/core/dev.c:6906:9)
-    net_rx_action (net/core/dev.c:7028:13)
-    do_softirq (kernel/softirq.c:462:3)
-    netif_rx (net/core/dev.c:5326:3)
-    dev_loopback_xmit (net/core/dev.c:4015:2)
-    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
-    NF_HOOK (./include/linux/netfilter.h:314:9)
-    ip_mc_output (net/ipv4/ip_output.c:400:5)
-    dst_output (./include/net/dst.h:459:9)
-    ip_local_out (net/ipv4/ip_output.c:130:9)
-    ip_send_skb (net/ipv4/ip_output.c:1496:8)
-    udp_send_skb (net/ipv4/udp.c:1040:8)
-    udp_sendmsg (net/ipv4/udp.c:1328:10)
-
-The output interface has a 4->6 program attached at ingress.
-We try to loop the multicast skb back to the sending socket.
-Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
-and changes skb->protocol to v6. We enter ip6_rcv_core which
-tries to use skb_dst(). But the dst is still an IPv4 one left
-after IPv4 mcast output.
-
-Clear the dst in all BPF helpers which change the protocol.
-Try to preserve metadata dsts, those may carry non-routing
-metadata.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
-Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
-Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3249,6 +3249,13 @@ static const struct bpf_func_proto bpf_s
- 	.arg1_type      = ARG_PTR_TO_CTX,
- };
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index eb6043d6c499c..7483ffa2a409c 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -360,9 +360,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
  
-+static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
-+{
-+	skb->protocol = htons(proto);
-+	if (skb_valid_dst(skb))
-+		skb_dst_drop(skb);
-+}
-+
- static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
- {
- 	/* Caller already did skb_cow() with len as headroom,
-@@ -3345,7 +3352,7 @@ static int bpf_skb_proto_4_to_6(struct s
- 		}
- 	}
+ 	val = grp->val[func];
  
--	skb->protocol = htons(ETH_P_IPV6);
-+	bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 	skb_clear_hash(skb);
+-	regmap_update_bits(info->regmap, reg, mask, val);
+-
+-	return 0;
++	return regmap_update_bits(info->regmap, reg, mask, val);
+ }
  
- 	return 0;
-@@ -3375,7 +3382,7 @@ static int bpf_skb_proto_6_to_4(struct s
- 		}
- 	}
- 
--	skb->protocol = htons(ETH_P_IP);
-+	bpf_skb_change_protocol(skb, ETH_P_IP);
- 	skb_clear_hash(skb);
- 
- 	return 0;
-@@ -3566,10 +3573,10 @@ static int bpf_skb_net_grow(struct sk_bu
- 		/* Match skb->protocol to new outer l3 protocol */
- 		if (skb->protocol == htons(ETH_P_IP) &&
- 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
--			skb->protocol = htons(ETH_P_IPV6);
-+			bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 		else if (skb->protocol == htons(ETH_P_IPV6) &&
- 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
--			skb->protocol = htons(ETH_P_IP);
-+			bpf_skb_change_protocol(skb, ETH_P_IP);
- 	}
- 
- 	if (skb_is_gso(skb)) {
-@@ -3622,10 +3629,10 @@ static int bpf_skb_net_shrink(struct sk_
- 	/* Match skb->protocol to new outer l3 protocol */
- 	if (skb->protocol == htons(ETH_P_IP) &&
- 	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
--		skb->protocol = htons(ETH_P_IPV6);
-+		bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 	else if (skb->protocol == htons(ETH_P_IPV6) &&
- 		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
--		skb->protocol = htons(ETH_P_IP);
-+		bpf_skb_change_protocol(skb, ETH_P_IP);
- 
- 	if (skb_is_gso(skb)) {
- 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+ static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
+-- 
+2.39.5
+
 
 
 
