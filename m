@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4117FAE4E95
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27F30AE4FAB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CCF9317C014
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF6CF1B613E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 613352153C1;
-	Mon, 23 Jun 2025 21:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78076223714;
+	Mon, 23 Jun 2025 21:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nG3JTEkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1w1elyE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4F570838;
-	Mon, 23 Jun 2025 21:07:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365AC2236EF;
+	Mon, 23 Jun 2025 21:17:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712837; cv=none; b=XuD9+//YNSfggKsG3Cg3haHFPqVuqgc6Dz1iQdzN/octv/+yOfUV71ikji5Sqykb8AZiOrwuICJh3LtHJ3CXyJeVFReouivrivb/rY/pkdi7cC7CGs0xcRrLIf8KsysSvVRsW1Bfua1cobzKPzR+OHFvO7iPNqfZfqDCLs4w5bo=
+	t=1750713451; cv=none; b=RtM+0TX8XL++nlKcbZWluQukX7gDQ4SvE0uUcgimozFP8zvXmmZlTBYI6AszvAdHW+4fjYpaXOaW8JFVafksEly2gaPazBWuitbhjteWHlPEz/zjQP/IMrni1pHYPK9nx22vIltFco8GRN3dFNjKXw8cer/r79Fh1wmIw4OiDWo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712837; c=relaxed/simple;
-	bh=oI2l6eOMYe6sHG/KADsrbaK3kdg4Za6Ng42HsV0joP0=;
+	s=arc-20240116; t=1750713451; c=relaxed/simple;
+	bh=fo+n+TjGy5iiJi1VuasNT7ro8+v3VoLjXcu4hfsuJB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtTQxGFECqgwiRbwdcK/lD/Eecj6kobaWjUk/z64/BVQ1xjMTMe3O/Ili+HVwcmDJ6qbJSHMSxi1g3CvuynXC0ibsTCnxcymWXSQ8r3XBtTahJnToLucJ8LcwCkWv0eix0YYRtdN/qz2XaqwDzGNPmyOvlM080mO12vdZYfMae4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nG3JTEkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9E9C4CEEA;
-	Mon, 23 Jun 2025 21:07:16 +0000 (UTC)
+	 MIME-Version; b=d9BCl5QqpC9nOvNKT90zF82NQlR32LgUimt1jxz5K9enR058OZoxAjFKjfpakGtFTcNG4QAmvLvouoF70z+v10fFD8D4AAZdC9fx5BTKJV0evumt2FBMCUplVQdXQjJxcoJnJJI+aRMg0vYSZIYPkVORh3yQAq9yeGlLGyuId/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1w1elyE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B4CC4CEEA;
+	Mon, 23 Jun 2025 21:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712837;
-	bh=oI2l6eOMYe6sHG/KADsrbaK3kdg4Za6Ng42HsV0joP0=;
+	s=korg; t=1750713451;
+	bh=fo+n+TjGy5iiJi1VuasNT7ro8+v3VoLjXcu4hfsuJB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nG3JTEkd2h5vuy0Sg3iEiblyX/7NovYH2xSomQ6VT+hs0CsiQZ/mu9ZwVB6rV4oPy
-	 zruy3Fy8Vmeqte479u4sgLpxb4pt5TeD0mt3aeIhnUxlCGRys4z6DRueNhZxqKSvoi
-	 GoncbOz6mkGtEecd9PwB/imZEMmREmP5j/jBNsTc=
+	b=b1w1elyE9Zgaav/PlUW36FGOFmKJ/juy9lZS/vwoI6vquY43AiKOhXxWXrRfJ4CEw
+	 9n1jOFprgtmKdqu+GeB/3m5q9RloTVKj+v8WrL0ZCPXS58XE9JxbuEmb7/7GROn+Kl
+	 3YmmxuwKICUyjZBn7m6Zu1V61XF0iCgdUNOV/ol0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.12 014/414] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
-Date: Mon, 23 Jun 2025 15:02:31 +0200
-Message-ID: <20250623130642.381178451@linuxfoundation.org>
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 107/508] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
+Date: Mon, 23 Jun 2025 15:02:32 +0200
+Message-ID: <20250623130647.913608666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 9cc0eafd28c7faef300822992bb08d79cab2a36c upstream.
+[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
 
-When a system is being suspended to RAM, the PCI devices are also
-suspended and the PPC code ends up calling pseries_msi_compose_msg() and
-this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
-this point is in reduced power state. In reduced power state, the memory
-mapped registers of the PCI device are not accessible.
+Dataflash did not work on my board. After checking schematics and using
+the proper GPIO, it works now. Also, make it active low to avoid:
 
-To replicate the bug:
-1. Make sure deep sleep is selected
-	# cat /sys/power/mem_sleep
-	s2idle [deep]
+flash@0 enforce active low on GPIO handle
 
-2. Make sure console is not suspended (so that dmesg logs are visible)
-	echo N > /sys/module/printk/parameters/console_suspend
-
-3. Suspend the system
-	echo mem > /sys/power/state
-
-To fix this behaviour, read the cached msi message of the device when the
-device is not in PCI_D0 power state instead of touching the hardware.
-
-Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250305090237.294633-1-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/msi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/usb_a9263.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -524,7 +524,12 @@ static struct msi_domain_info pseries_ms
+diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
+index b6cb9cdf81973..c9d0058e90813 100644
+--- a/arch/arm/boot/dts/usb_a9263.dts
++++ b/arch/arm/boot/dts/usb_a9263.dts
+@@ -58,7 +58,7 @@
+ 			};
  
- static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
- {
--	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
-+
-+	if (dev->current_state == PCI_D0)
-+		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	else
-+		get_cached_msi_msg(data->irq, msg);
- }
- 
- static struct irq_chip pseries_msi_irq_chip = {
+ 			spi0: spi@fffa4000 {
+-				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
++				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
+ 				status = "okay";
+ 				flash@0 {
+ 					compatible = "atmel,at45", "atmel,dataflash";
+-- 
+2.39.5
+
 
 
 
