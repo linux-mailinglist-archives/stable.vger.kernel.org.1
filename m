@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2375AE4F17
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0803AE5487
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B37167AC5CE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41DF34C12FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C25B9222582;
-	Mon, 23 Jun 2025 21:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12A6F1A4F12;
+	Mon, 23 Jun 2025 22:02:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppr6+smm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ca933SLy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D0C52222DA;
-	Mon, 23 Jun 2025 21:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBAB14C74;
+	Mon, 23 Jun 2025 22:02:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713123; cv=none; b=RGVNezCbX134lJZJomaF8y+GEte6Qgbs/WgroD6Mv6Cv6eosVy/JUVHIzKhNeUOanpvPcwt4gAVBbpRvNsDQi1QDAfdyRguMQnwEW92giqzD9RF0uQrEwqXYwYLkbqwRVV87kJ5xe46XUaGkhvzsWJ/tBszinKCFZJufOoYjGLo=
+	t=1750716139; cv=none; b=AnRbDmtCTwmijHXJSzzdL6qJyLH0jvj9JyunQo0WJo+uVLo0MSdgLpZxR2gOPdNA5wRON+aixjBzbuyk6f/VU1YbLPoS6qeUKXFsUMOApMfhg/fPZa170z0IB+CJlTuSRleBqtKkgFe4jVju2BnObKUfAveE53BEDnnB30KHIgE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713123; c=relaxed/simple;
-	bh=zDo9SkfoNGF03dC2mtxqiEhfsei2HhH9S6ylTIAHa1k=;
+	s=arc-20240116; t=1750716139; c=relaxed/simple;
+	bh=1uz4gfJBC/lelKQL1QBAZjeeZdbcBoUFn3hJZ6XTApM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pi3G9SeOUFmIoX+0ibaWmOlVrPRxZrIYNqfGYDRL3rDDe6RiVsB1+p0SwFKxqsTlSgirekBwQbh3khGhUbrVnDZlIi3/rkRb8mvjNbZyJvxLirTY9ZoiwdWtxniAUTlYJbuhOzLdzVTUbLQd1GE+NmgBgHmXe+tPpUl30wvNyso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppr6+smm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0964EC4CEEA;
-	Mon, 23 Jun 2025 21:12:02 +0000 (UTC)
+	 MIME-Version; b=DDV451x7960vOkSy3f54yUOtOmyUBC8sbtAr5xlVP5u6JvEMAPY8Z+o6px3G7mWfJtdF/aX+m9Ipu6JclpqBGkNz+t/F2NBEhgNzw6WfG2jZwxaMHNLkEb9HjL8AvhDsKPfjKXXF9WE2ltbjxkVlXF5GAQvD+SE5/bB1+nNyItI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ca933SLy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC1AC4CEEA;
+	Mon, 23 Jun 2025 22:02:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713123;
-	bh=zDo9SkfoNGF03dC2mtxqiEhfsei2HhH9S6ylTIAHa1k=;
+	s=korg; t=1750716139;
+	bh=1uz4gfJBC/lelKQL1QBAZjeeZdbcBoUFn3hJZ6XTApM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ppr6+smmOJcZmu6og2w6PXjCjooDLD4zltH43qLPQXOVmL+g9rxUfj6GjKOmcDFAM
-	 N+jz2L99QDRzSrFm+nlovP5GGcmhuRbQeTR3yYa9yEydInTPQPEVCIgVTC4S+eEFwy
-	 Fdh8BLq4Rzy9m9JiTvcvP319xC4loh0OxscPINE4=
+	b=Ca933SLybrKWkl9/u8t/HY/luEJCCBkHiLsdUqmFsPXCq3MIEQyl9NtSB/UZ22Tuz
+	 pzXZl+nzNQp4+OxmxLFmgMcn5LPPzBrvK+N3/B/0Ox3W1HszlXWTtNm5fgWxBtR22H
+	 MVY4Xz6I+NUA+uZmnVLGitwpIIKBAeyLvXM2Fwac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.4 189/222] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
+	Hou Tao <houtao1@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.10 323/355] arm64: move AARCH64_BREAK_FAULT into insn-def.h
 Date: Mon, 23 Jun 2025 15:08:44 +0200
-Message-ID: <20250623130617.916207420@linuxfoundation.org>
+Message-ID: <20250623130636.471359981@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
+[ Upstream commit 97e58e395e9c074fd096dad13c54e9f4112cf71d ]
 
-Fuzzing hit another invalid pointer dereference due to the lack of
-checking whether jffs2_prealloc_raw_node_refs() completed successfully.
-Subsequent logic implies that the node refs have been allocated.
+If CONFIG_ARM64_LSE_ATOMICS is off, encoders for LSE-related instructions
+can return AARCH64_BREAK_FAULT directly in insn.h. In order to access
+AARCH64_BREAK_FAULT in insn.h, we can not include debug-monitors.h in
+insn.h, because debug-monitors.h has already depends on insn.h, so just
+move AARCH64_BREAK_FAULT into insn-def.h.
 
-Handle that. The code is ready for propagating the error upwards.
+It will be used by the following patch to eliminate unnecessary LSE-related
+encoders when CONFIG_ARM64_LSE_ATOMICS is off.
 
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
-Call Trace:
- jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
- jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
- jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
- jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
- jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
- jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
- generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
- __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
- generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
- call_write_iter include/linux/fs.h:2039 [inline]
- do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
- do_iter_write+0x18c/0x710 fs/read_write.c:866
- vfs_writev+0x1db/0x6a0 fs/read_write.c:939
- do_pwritev fs/read_write.c:1036 [inline]
- __do_sys_pwritev fs/read_write.c:1083 [inline]
- __se_sys_pwritev fs/read_write.c:1078 [inline]
- __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
-Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20220217072232.1186625-2-houtao1@huawei.com
+Signed-off-by: Will Deacon <will@kernel.org>
+[not exist insn-def.h file, move to insn.h]
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jffs2/erase.c |    4 +++-
- fs/jffs2/scan.c  |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/debug-monitors.h |   12 ------------
+ arch/arm64/include/asm/insn.h           |   12 ++++++++++++
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -427,7 +427,9 @@ static void jffs2_mark_erased_block(stru
- 			.totlen =	cpu_to_je32(c->cleanmarker_size)
- 		};
+--- a/arch/arm64/include/asm/debug-monitors.h
++++ b/arch/arm64/include/asm/debug-monitors.h
+@@ -34,18 +34,6 @@
+  */
+ #define BREAK_INSTR_SIZE		AARCH64_INSN_SIZE
  
--		jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		if (ret)
-+			goto filebad;
+-/*
+- * BRK instruction encoding
+- * The #imm16 value should be placed at bits[20:5] within BRK ins
+- */
+-#define AARCH64_BREAK_MON	0xd4200000
+-
+-/*
+- * BRK instruction for provoking a fault on purpose
+- * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
+- */
+-#define AARCH64_BREAK_FAULT	(AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
+-
+ #define AARCH64_BREAK_KGDB_DYN_DBG	\
+ 	(AARCH64_BREAK_MON | (KGDB_DYN_DBG_BRK_IMM << 5))
  
- 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -13,6 +13,18 @@
+ /* A64 instructions are always 32 bits. */
+ #define	AARCH64_INSN_SIZE		4
  
---- a/fs/jffs2/scan.c
-+++ b/fs/jffs2/scan.c
-@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
- 
- 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
- 			  __func__, skip);
--		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		if (ret)
-+			goto out;
- 		jffs2_scan_dirty_space(c, c->nextblock, skip);
- 	}
- #endif
++/*
++ * BRK instruction encoding
++ * The #imm16 value should be placed at bits[20:5] within BRK ins
++ */
++#define AARCH64_BREAK_MON      0xd4200000
++
++/*
++ * BRK instruction for provoking a fault on purpose
++ * Unlike kgdb, #imm16 value with unallocated handler is used for faulting.
++ */
++#define AARCH64_BREAK_FAULT    (AARCH64_BREAK_MON | (FAULT_BRK_IMM << 5))
++
+ #ifndef __ASSEMBLY__
+ /*
+  * ARM Architecture Reference Manual for ARMv8 Profile-A, Issue A.a
 
 
 
