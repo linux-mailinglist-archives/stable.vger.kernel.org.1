@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-158098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B83AAE56F0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 152BFAE5502
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AD1D1C23496
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFC441B683EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3CFC222599;
-	Mon, 23 Jun 2025 22:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58276221DAE;
+	Mon, 23 Jun 2025 22:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FuKItXPG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mk6EKgeT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2DE2192EC;
-	Mon, 23 Jun 2025 22:24:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132543597E;
+	Mon, 23 Jun 2025 22:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717477; cv=none; b=tzgpOVbW/b8qXzYgsHP9Lj88jIjbvortDV+6UANlHDe2UqFjT3NAoSeNPp6VFG5fXYVtjoky32ZpuDzBdOHGUu9RZuwuXfMCNh1vpCZEpmnz3tc+n1UJ5WS31oY1onNnQOZOgYJCqI1sql6UTAHT9tc3J2ncbYZAo8PpQXco48s=
+	t=1750716422; cv=none; b=L3aFky65Ru4RiW2DIpSqhHHF7JOf/FnHnAGp8KoNvSsYYbYJRCeyD62CFfnhcyGYowFCgL0URXp2e4vkxcMEbqSbNqWqsvt/x63GVW6or7MJGrN8GOCiUz592C8MV1WLCvVTMhkgyIdtVIjQnFKXI4+aa4wf1vCCh7mQvjCE4JM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717477; c=relaxed/simple;
-	bh=DvJYFpKKg3K/x7UTimirTh5wQoKGfQf6R91+4fGqxDU=;
+	s=arc-20240116; t=1750716422; c=relaxed/simple;
+	bh=SycDFfXPKHM9cGmAO6QBdra9BCA7CNJSeTD6TVRSRDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kf/eoyUycxii1ZhF7kVm21MA2vVxK1iYRVs2KsafXd3x7Mx1hlML2LLUJRtjBi3htUDPuyBNlmNkO7EJhISvEHRBw0idiG0GiF3v12C4GdludTMT8gW4xdA85mP0oE4XsBy3xaycNRUsxJQ+NLCwQamhNzoH0Nq3HztNUP++eHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FuKItXPG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3579DC4CEEA;
-	Mon, 23 Jun 2025 22:24:37 +0000 (UTC)
+	 MIME-Version; b=H+TgbZyI0vOr/r0QieDncFdzzP7tCgRhHLmuNLOkl314p/lRYUhl8QkNVsXdzey8uKgA53gO+zaVL8CAmBBeqZ56PBqJdveCgX+m6TNepA+hZbW4BLdLJFhnjVK/12pjVEouSVzMYKyx6wjcjwfS+uj3tnvXimmNj5afBmh3yyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mk6EKgeT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9776AC4CEEA;
+	Mon, 23 Jun 2025 22:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717477;
-	bh=DvJYFpKKg3K/x7UTimirTh5wQoKGfQf6R91+4fGqxDU=;
+	s=korg; t=1750716421;
+	bh=SycDFfXPKHM9cGmAO6QBdra9BCA7CNJSeTD6TVRSRDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FuKItXPG+Xz623EOssimaTfaL4tU5kvVzzqBDpWoUVeElwUTIoQol6MCDkO8BT/we
-	 Gn5KSFBYgrHWBdR2WSxDgaZc4vkBzY314sHFOMDSOW3yIzO6J28JeVT9Fbwvrt+3Qt
-	 82kKUmWv/WX77P4jPjlftxuekyyR+6YwU2oi40ro=
+	b=mk6EKgeTm8tJS5PSPczMFlERUzJaK1XOtr5OGvMpPSnNf9mlLxt/ju8+YrdP6t/Oc
+	 tpjDz5GWcz4/Lnh7wLhwX7BQ0FRfRUdUB1bySINhrintxPnDuCXoLK+Q8gkumChgX6
+	 bUN/m/g87az+JJ4sYqh6b+3L3UrnpZqpKZwQivJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 434/508] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
-Date: Mon, 23 Jun 2025 15:07:59 +0200
-Message-ID: <20250623130655.846679643@linuxfoundation.org>
+Subject: [PATCH 6.15 522/592] pldmfw: Select CRC32 when PLDMFW is selected
+Date: Mon, 23 Jun 2025 15:08:00 +0200
+Message-ID: <20250623130712.852739223@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 23d060136841c58c2f9ee8c08ad945d1879ead4b ]
+[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
 
-In case the MC firmware runs in debug mode with extensive prints pushed
-to the console, the current timeout of 500ms is not enough.
-Increase the timeout value so that we don't have any chance of wrongly
-assuming that the firmware is not responding when it's just taking more
-time.
+pldmfw calls crc32 code and depends on it being enabled, else
+there is a link error as follows. So PLDMFW should select CRC32.
 
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20250408105814.2837951-7-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
+  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
+
+This problem was introduced by commit b8265621f488 ("Add pldmfw library
+for PLDM firmware update").
+
+It manifests as of commit d69ea414c9b4 ("ice: implement device flash
+update via devlink").
+
+And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
+unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
+
+Found by chance while exercising builds based on tinyconfig.
+
+Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/mc-sys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
-index f2052cd0a0517..b22c59d57c8f0 100644
---- a/drivers/bus/fsl-mc/mc-sys.c
-+++ b/drivers/bus/fsl-mc/mc-sys.c
-@@ -19,7 +19,7 @@
- /*
-  * Timeout in milliseconds to wait for the completion of an MC command
-  */
--#define MC_CMD_COMPLETION_TIMEOUT_MS	500
-+#define MC_CMD_COMPLETION_TIMEOUT_MS	15000
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 6c1b8f1842678..37db228f70a99 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -716,6 +716,7 @@ config GENERIC_LIB_DEVMEM_IS_ALLOWED
  
- /*
-  * usleep_range() min and max values used to throttle down polling
+ config PLDMFW
+ 	bool
++	select CRC32
+ 	default n
+ 
+ config ASN1_ENCODER
 -- 
 2.39.5
 
