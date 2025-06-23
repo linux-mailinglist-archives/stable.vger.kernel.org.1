@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-157414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C535DAE53D7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56060AE543B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4306A7A4DBF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 475AB1BC0C8B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21612222CC;
-	Mon, 23 Jun 2025 21:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6419223DD0;
+	Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxC6OIf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSDutfWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601511AD3FA;
-	Mon, 23 Jun 2025 21:56:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35CA222576;
+	Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715807; cv=none; b=fDQB/hUHTdrVoiL8WZp9dctwt59azTD2Wp7LZWxxoa1XB86NyyQ9G4hzAUXHMybQQ+ZbmT9uFpQlWqQVwwnlAM7k3PlqWbQELRXh2ZAVKENHO4x9f74fcs4nDabYo4HIkTdQgLj1Df38O9NYxXjazRC72TqJ3SsUg5ilQ7p6gIc=
+	t=1750715958; cv=none; b=q3qWx8lbbP5MuDxa7ImACnu0sDb2RcCfQNyXTw0MDK3unWA5ujNuadBGEXX8x0CFtfwn/BamOQFgTHHpHH8CqFEMM/JCgM0NpWr3gkKGDsiBKbdovOp7kIiq/RBlOxrQ/3HuOT8EjRoW1cINrphtJ+b8+EiZUdpudVXkF7G70kE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715807; c=relaxed/simple;
-	bh=DpTXsGOY8YcZoPv+/aD4FF8I9T/638ihWlTQdmpITdE=;
+	s=arc-20240116; t=1750715958; c=relaxed/simple;
+	bh=1BD0GDfymz6TFYnv5lk1eGAHL2UbBInQMn1VJUUrzhE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jXAnqcBHNg2SP4SH4vH3btstNZaw6TI2P0usCV6OHJWjBncFkwvkhA/akpzreilz4lDAnIi9wdFunkJX4S51u08xwKFNrdMKLQgcis+Mme3RGeyXYZCPGR/5y8+i9gqbdAgVvhHl+awEkzfG0zdBUsDeKEvPoQjHyRoxxqnsZ4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxC6OIf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFAAC4CEEA;
-	Mon, 23 Jun 2025 21:56:46 +0000 (UTC)
+	 MIME-Version; b=ujYopJb1lUHaO6INZ1+A2AYno/YKzc6/iD9lK11QMYge2kZ3gL9IKp8B3zOlFJB+rpKEEEn2PN4QqBbfmsRZGLLvRDz+HpI3xQ57T/em/Q1y+jEbLzEn/E52YsNAyMSV1z+nEngRpKJjzxZ8m+6R77SK+VKDjwdKqdhz8ef324w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSDutfWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B66C4CEEA;
+	Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715807;
-	bh=DpTXsGOY8YcZoPv+/aD4FF8I9T/638ihWlTQdmpITdE=;
+	s=korg; t=1750715958;
+	bh=1BD0GDfymz6TFYnv5lk1eGAHL2UbBInQMn1VJUUrzhE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fxC6OIf0phDrMO/8xOihUUjozHbOY9+6DcyS6ctWrw3XyttdPrtDsOd4GXaK6Bxlt
-	 DDlNukZr07xYfNrn8c+yUYajHZNkl3czi66u+yJe/js2vxX0fIIX7dNurJXK8P7t9d
-	 /QM2yrtS4ueeiavD7RlCTlOrmHMmIguydwym7zac=
+	b=vSDutfWXuNgezyDIVHq+g1u1FgScGjRk5hfNUNnpkTcKJLXMoYXeaG7GtVXw0hsVZ
+	 L0+JIYXLbIwQjP0QAzYni/JVLPo81kAMKwO82S0ul12Hu45ShlbLLn0q6rQ/JdP/te
+	 d2a+bv8Mn+s7n43kCuFaVPvUv+Wznb1UlelBsjnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 286/411] drm/amdgpu/gfx7: fix CSIB handling
-Date: Mon, 23 Jun 2025 15:07:10 +0200
-Message-ID: <20250623130640.847515289@linuxfoundation.org>
+Subject: [PATCH 5.15 287/411] ext4: ext4: unify EXT4_EX_NOCACHE|NOFAIL flags in ext4_ext_remove_space()
+Date: Mon, 23 Jun 2025 15:07:11 +0200
+Message-ID: <20250623130640.872880497@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -66,33 +66,105 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit be7652c23d833d1ab2c67b16e173b1a4e69d1ae6 ]
+[ Upstream commit 53ce42accd2002cc490fc86000ac532530507a74 ]
 
-We shouldn't return after the last section.
-We need to update the rest of the CSIB.
+When removing space, we should use EXT4_EX_NOCACHE because we don't
+need to cache extents, and we should also use EXT4_EX_NOFAIL to prevent
+metadata inconsistencies that may arise from memory allocation failures.
+While ext4_ext_remove_space() already uses these two flags in most
+places, they are missing in ext4_ext_search_right() and
+read_extent_tree_block() calls. Unify the flags to ensure consistent
+behavior throughout the extent removal process.
 
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250423085257.122685-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/ext4/extents.c | 19 ++++++++++---------
+ 1 file changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
-index 37b4a3db63602..b6e5599c8b3cd 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
-@@ -4005,8 +4005,6 @@ static void gfx_v7_0_get_csb_buffer(struct amdgpu_device *adev,
- 				buffer[count++] = cpu_to_le32(ext->reg_index - PACKET3_SET_CONTEXT_REG_START);
- 				for (i = 0; i < ext->reg_count; i++)
- 					buffer[count++] = cpu_to_le32(ext->extent[i]);
--			} else {
--				return;
- 			}
- 		}
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index 461a698794d22..e41a6d642472b 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -1531,7 +1531,7 @@ static int ext4_ext_search_left(struct inode *inode,
+ static int ext4_ext_search_right(struct inode *inode,
+ 				 struct ext4_ext_path *path,
+ 				 ext4_lblk_t *logical, ext4_fsblk_t *phys,
+-				 struct ext4_extent *ret_ex)
++				 struct ext4_extent *ret_ex, int flags)
+ {
+ 	struct buffer_head *bh = NULL;
+ 	struct ext4_extent_header *eh;
+@@ -1605,7 +1605,8 @@ static int ext4_ext_search_right(struct inode *inode,
+ 	ix++;
+ 	while (++depth < path->p_depth) {
+ 		/* subtract from p_depth to get proper eh_depth */
+-		bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
++		bh = read_extent_tree_block(inode, ix, path->p_depth - depth,
++					    flags);
+ 		if (IS_ERR(bh))
+ 			return PTR_ERR(bh);
+ 		eh = ext_block_hdr(bh);
+@@ -1613,7 +1614,7 @@ static int ext4_ext_search_right(struct inode *inode,
+ 		put_bh(bh);
  	}
+ 
+-	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
++	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, flags);
+ 	if (IS_ERR(bh))
+ 		return PTR_ERR(bh);
+ 	eh = ext_block_hdr(bh);
+@@ -2799,6 +2800,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 	struct partial_cluster partial;
+ 	handle_t *handle;
+ 	int i = 0, err = 0;
++	int flags = EXT4_EX_NOCACHE | EXT4_EX_NOFAIL;
+ 
+ 	partial.pclu = 0;
+ 	partial.lblk = 0;
+@@ -2829,8 +2831,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 		ext4_fsblk_t pblk;
+ 
+ 		/* find extent for or closest extent to this block */
+-		path = ext4_find_extent(inode, end, NULL,
+-					EXT4_EX_NOCACHE | EXT4_EX_NOFAIL);
++		path = ext4_find_extent(inode, end, NULL, flags);
+ 		if (IS_ERR(path)) {
+ 			ext4_journal_stop(handle);
+ 			return PTR_ERR(path);
+@@ -2895,7 +2896,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 			 */
+ 			lblk = ex_end + 1;
+ 			err = ext4_ext_search_right(inode, path, &lblk, &pblk,
+-						    NULL);
++						    NULL, flags);
+ 			if (err < 0)
+ 				goto out;
+ 			if (pblk) {
+@@ -2972,8 +2973,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
+ 				  i + 1, ext4_idx_pblock(path[i].p_idx));
+ 			memset(path + i + 1, 0, sizeof(*path));
+ 			bh = read_extent_tree_block(inode, path[i].p_idx,
+-						    depth - i - 1,
+-						    EXT4_EX_NOCACHE);
++						    depth - i - 1, flags);
+ 			if (IS_ERR(bh)) {
+ 				/* should we reset i_size? */
+ 				err = PTR_ERR(bh);
+@@ -4276,7 +4276,8 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
+ 	if (err)
+ 		goto out;
+ 	ar.lright = map->m_lblk;
+-	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright, &ex2);
++	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright,
++				    &ex2, 0);
+ 	if (err < 0)
+ 		goto out;
+ 
 -- 
 2.39.5
 
