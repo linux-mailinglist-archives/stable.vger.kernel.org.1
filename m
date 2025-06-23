@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42F9FAE435D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A193AE4306
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FABB3BD7EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 881BD3B9FE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29730248176;
-	Mon, 23 Jun 2025 13:25:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 497862F24;
+	Mon, 23 Jun 2025 13:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nLO4AFEu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MpPAMCGS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC4DA4C7F;
-	Mon, 23 Jun 2025 13:25:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0626F254844;
+	Mon, 23 Jun 2025 13:21:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685128; cv=none; b=MXlgSpku5ZVnqxcXWF6ta9CoH31qI+5aPWH119nVIGbcdIfutTN+CFHwev+hv9XG5Rb3dnzO3a58qFNtlro+2/6vS9C6rPhdUwOQ3SmQHJadaTU0h5HWu64OXukujwL+DN1FSgFaSpm4GK9Gw8Wigi4uIWUbbuJmmpbZbAN6Ifw=
+	t=1750684917; cv=none; b=OJV8WL5cmiW5221USXtwOvimcXRb2+4+JM4K8hrRVuwhZLey4RuzsiQSmuR5v++JS4Lg+5Yebqft62P/nVh+azYdouHxypPTzZMZdB8lXNLHVCDwlhjNzpS1BSj6YHhv1Lq0cbHy/YiCKZubfjejXhqhqabxPo0YVE8wT4Je81g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685128; c=relaxed/simple;
-	bh=FRRJtSvkQHaUP5QuF081791/MVFwsRweFKgm0gliD58=;
+	s=arc-20240116; t=1750684917; c=relaxed/simple;
+	bh=XZcfl35K7Qt5gwX9t8iRJ4x82FS+xN0NVc3K7sw46vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GGGad+HGkpcRqKYmmubaVS+gwfhARVkQMwDxANbVMRH0WuWdqJnoaTOb4HU4rpOGG9gTqvfWnRiWK9dvyPYzY4wuUYLsgOU/wXJGec1sPzvqQUn5uO8RG4wmcX8eLkgoNovPpKVD8rnEQdfLbIJpBej0F/C5IXb69VY77Og1+4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nLO4AFEu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D6BAC4CEEA;
-	Mon, 23 Jun 2025 13:25:28 +0000 (UTC)
+	 MIME-Version; b=cShgwWT0yZf+baK8neRFQkJF5HMSwkEd/rjSi4bxorbPeWbw1B50m5K8TE7KlC+/DRNNYjCp4Y1hP0o2eAq911XX9HfcolIdgLmnDDJZTZpiRNRw8hYoexTbvW1ULut4mzuyLeFQshx46oV6UX5nrQlsKMOti56Caq7y8q8P1jc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MpPAMCGS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C916C4CEEA;
+	Mon, 23 Jun 2025 13:21:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685128;
-	bh=FRRJtSvkQHaUP5QuF081791/MVFwsRweFKgm0gliD58=;
+	s=korg; t=1750684916;
+	bh=XZcfl35K7Qt5gwX9t8iRJ4x82FS+xN0NVc3K7sw46vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nLO4AFEu1cqGDjKQ8T9n7m0UAwXFPU+6iEZQxkg9ZMzDsSOqd5fP6vH6KRfGZEOpH
-	 LibnJgdwK/IjQ2W0OwhwSB/J3dsucBllI+0ER/osYMEPWi+ck1At8rzuTkFdxow15S
-	 4cJVJM+hXEznq79VsIOIaTyYR0lMDe5c/jqV1ZoM=
+	b=MpPAMCGSf6yPmNQxYYacOtVtziqNN8VFn3QjJ/zIXcVJUEeGPfjGRLPPRGbuRKECA
+	 sCH+HQAb+AbUqTmSCYF3C91Yygr299+B5WK4FDabLCuc8T9sWZ5E2AoS+FUEOFGE80
+	 AlJg7HUy14c+XxJwWAup0+Jw3X+lrxQgW6q0HHTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manu Bretelle <chantr4@gmail.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.15 004/411] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Lizhi Hou <lizhi.hou@amd.com>,
+	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Subject: [PATCH 6.15 190/592] accel/ivpu: Improve buffer object logging
 Date: Mon, 23 Jun 2025 15:02:28 +0200
-Message-ID: <20250623130633.123430081@linuxfoundation.org>
+Message-ID: <20250623130704.803095236@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +62,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
 
-commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
+commit a01e93ee44f7ed76f872d0ede82f8d31bf0a048a upstream.
 
-commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-modified get_max_boost_ratio() to return the nominal_freq advertised
-in the _CPC object. This was for the purposes of computing the maximum
-frequency. The frequencies advertised in _CPC objects are in
-MHz. However, cpufreq expects the frequency to be in KHz. Since the
-nominal_freq returned by get_max_boost_ratio() was not in KHz but
-instead in MHz,the cpuinfo_max_frequency that was computed using this
-nominal_freq was incorrect and an invalid value which resulted in
-cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
+- Fix missing alloc log when drm_gem_handle_create() fails in
+  drm_vma_node_allow() and open callback is not called
+- Add ivpu_bo->ctx_id that enables to log the actual context
+  id instead of using 0 as default
+- Add couple WARNs and errors so we can catch more memory
+  corruption issues
 
-Fix this by converting the nominal_freq to KHz before returning the
-same from get_max_boost_ratio().
-
-Reported-by: Manu Bretelle <chantr4@gmail.com>
-Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
-Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
-Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 37dee2a2f433 ("accel/ivpu: Improve buffer object debug logs")
+Cc: stable@vger.kernel.org # v6.8+
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
+Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+Link: https://lore.kernel.org/r/20250506091303.262034-1-jacek.lawrynowicz@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/acpi-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/accel/ivpu/ivpu_gem.c |   25 +++++++++++++++++--------
+ drivers/accel/ivpu/ivpu_gem.h |    1 +
+ 2 files changed, 18 insertions(+), 8 deletions(-)
 
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -661,7 +661,7 @@ static u64 get_max_boost_ratio(unsigned
- 	nominal_perf = perf_caps.nominal_perf;
+--- a/drivers/accel/ivpu/ivpu_gem.c
++++ b/drivers/accel/ivpu/ivpu_gem.c
+@@ -28,7 +28,7 @@ static inline void ivpu_dbg_bo(struct iv
+ {
+ 	ivpu_dbg(vdev, BO,
+ 		 "%6s: bo %8p vpu_addr %9llx size %8zu ctx %d has_pages %d dma_mapped %d mmu_mapped %d wc %d imported %d\n",
+-		 action, bo, bo->vpu_addr, ivpu_bo_size(bo), bo->ctx ? bo->ctx->id : 0,
++		 action, bo, bo->vpu_addr, ivpu_bo_size(bo), bo->ctx_id,
+ 		 (bool)bo->base.pages, (bool)bo->base.sgt, bo->mmu_mapped, bo->base.map_wc,
+ 		 (bool)bo->base.base.import_attach);
+ }
+@@ -94,8 +94,6 @@ ivpu_bo_alloc_vpu_addr(struct ivpu_bo *b
+ 		ivpu_err(vdev, "Failed to add BO to context %u: %d\n", ctx->id, ret);
+ 	}
  
- 	if (nominal_freq)
--		*nominal_freq = perf_caps.nominal_freq;
-+		*nominal_freq = perf_caps.nominal_freq * 1000;
+-	ivpu_dbg_bo(vdev, bo, "alloc");
+-
+ 	mutex_unlock(&bo->lock);
  
- 	if (!highest_perf || !nominal_perf) {
- 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
+ 	drm_dev_exit(idx);
+@@ -215,7 +213,7 @@ fail_detach:
+ 	return ERR_PTR(ret);
+ }
+ 
+-static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 flags)
++static struct ivpu_bo *ivpu_bo_alloc(struct ivpu_device *vdev, u64 size, u32 flags, u32 ctx_id)
+ {
+ 	struct drm_gem_shmem_object *shmem;
+ 	struct ivpu_bo *bo;
+@@ -233,6 +231,7 @@ static struct ivpu_bo *ivpu_bo_alloc(str
+ 		return ERR_CAST(shmem);
+ 
+ 	bo = to_ivpu_bo(&shmem->base);
++	bo->ctx_id = ctx_id;
+ 	bo->base.map_wc = flags & DRM_IVPU_BO_WC;
+ 	bo->flags = flags;
+ 
+@@ -240,6 +239,8 @@ static struct ivpu_bo *ivpu_bo_alloc(str
+ 	list_add_tail(&bo->bo_list_node, &vdev->bo_list);
+ 	mutex_unlock(&vdev->bo_list_lock);
+ 
++	ivpu_dbg_bo(vdev, bo, "alloc");
++
+ 	return bo;
+ }
+ 
+@@ -278,8 +279,13 @@ static void ivpu_gem_bo_free(struct drm_
+ 	mutex_unlock(&vdev->bo_list_lock);
+ 
+ 	drm_WARN_ON(&vdev->drm, !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
++	drm_WARN_ON(&vdev->drm, ivpu_bo_size(bo) == 0);
++	drm_WARN_ON(&vdev->drm, bo->base.vaddr);
+ 
+ 	ivpu_bo_unbind_locked(bo);
++	drm_WARN_ON(&vdev->drm, bo->mmu_mapped);
++	drm_WARN_ON(&vdev->drm, bo->ctx);
++
+ 	mutex_destroy(&bo->lock);
+ 
+ 	drm_WARN_ON(obj->dev, bo->base.pages_use_count > 1);
+@@ -314,7 +320,7 @@ int ivpu_bo_create_ioctl(struct drm_devi
+ 	if (size == 0)
+ 		return -EINVAL;
+ 
+-	bo = ivpu_bo_alloc(vdev, size, args->flags);
++	bo = ivpu_bo_alloc(vdev, size, args->flags, file_priv->ctx.id);
+ 	if (IS_ERR(bo)) {
+ 		ivpu_err(vdev, "Failed to allocate BO: %pe (ctx %u size %llu flags 0x%x)",
+ 			 bo, file_priv->ctx.id, args->size, args->flags);
+@@ -322,7 +328,10 @@ int ivpu_bo_create_ioctl(struct drm_devi
+ 	}
+ 
+ 	ret = drm_gem_handle_create(file, &bo->base.base, &args->handle);
+-	if (!ret)
++	if (ret)
++		ivpu_err(vdev, "Failed to create handle for BO: %pe (ctx %u size %llu flags 0x%x)",
++			 bo, file_priv->ctx.id, args->size, args->flags);
++	else
+ 		args->vpu_addr = bo->vpu_addr;
+ 
+ 	drm_gem_object_put(&bo->base.base);
+@@ -345,7 +354,7 @@ ivpu_bo_create(struct ivpu_device *vdev,
+ 	drm_WARN_ON(&vdev->drm, !PAGE_ALIGNED(range->end));
+ 	drm_WARN_ON(&vdev->drm, !PAGE_ALIGNED(size));
+ 
+-	bo = ivpu_bo_alloc(vdev, size, flags);
++	bo = ivpu_bo_alloc(vdev, size, flags, IVPU_GLOBAL_CONTEXT_MMU_SSID);
+ 	if (IS_ERR(bo)) {
+ 		ivpu_err(vdev, "Failed to allocate BO: %pe (vpu_addr 0x%llx size %llu flags 0x%x)",
+ 			 bo, range->start, size, flags);
+@@ -452,7 +461,7 @@ static void ivpu_bo_print_info(struct iv
+ 	mutex_lock(&bo->lock);
+ 
+ 	drm_printf(p, "%-9p %-3u 0x%-12llx %-10lu 0x%-8x %-4u",
+-		   bo, bo->ctx ? bo->ctx->id : 0, bo->vpu_addr, bo->base.base.size,
++		   bo, bo->ctx_id, bo->vpu_addr, bo->base.base.size,
+ 		   bo->flags, kref_read(&bo->base.base.refcount));
+ 
+ 	if (bo->base.pages)
+--- a/drivers/accel/ivpu/ivpu_gem.h
++++ b/drivers/accel/ivpu/ivpu_gem.h
+@@ -21,6 +21,7 @@ struct ivpu_bo {
+ 	u64 vpu_addr;
+ 	u32 flags;
+ 	u32 job_status; /* Valid only for command buffer */
++	u32 ctx_id;
+ 	bool mmu_mapped;
+ };
+ 
 
 
 
