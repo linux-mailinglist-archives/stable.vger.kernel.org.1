@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 91B51AE4FBA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5A1AE54B8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E6F017F124
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187311887765
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 096C22236EF;
-	Mon, 23 Jun 2025 21:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C34C21D3F6;
+	Mon, 23 Jun 2025 22:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8ClJdXJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seHmAaM9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC32122257E;
-	Mon, 23 Jun 2025 21:18:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3123FB1B;
+	Mon, 23 Jun 2025 22:03:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713511; cv=none; b=XdScZv+/OQkpVM2uT5tIwykM/Y6slKsy+3A0iSI+EHAkW58jPrnPGhXm5bDphrAByVgB9nCjrp4+MdZx9wIfef3SuceNC+vi0hiiFAy/g84h670vYndp6yq+Skh9zZXRVo44VRbt+zYKYSnLZlnM8fM/OMlnpMxMtwVCYKEflOE=
+	t=1750716235; cv=none; b=EmQCw3k/aumgLBkOJIlFkproKJntYHb53lJRmkFMqlCchohbfGWCAkFFZwvuRCiHY9hUnhAkDcDePVOayGR/BNv0d+EC6exwJsRikvyAA2VzycGnPv5/AUd41zmEW8KlBbj5FaUczu2kCuoooP/9RLMSKtJ79DnguuhYc5nmH+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713511; c=relaxed/simple;
-	bh=bGqxe9SFQBHbCXXc44uvdgIHc+0hjSdPKMTwuYL7EWI=;
+	s=arc-20240116; t=1750716235; c=relaxed/simple;
+	bh=ktGDq5kn2XO8NdzT88OOwE/eQa2Na6LbXYb9C7miVfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obw3kZLSpqlhDqBTMHMeZNyMpGWeaKCutZ/UzRINxj+HxrfqnjW7KcoUtVez5T4nPVJjo4d919lHZU5/mWQfcE1mQOknTWHAo/pLRJLgYZlf31CbRj8+9AQBemPymLd2FW6TLCcU/P3w1EFMROiuReqYczE3c6ez1Sn7ijsMSNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8ClJdXJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 541E5C4CEEA;
-	Mon, 23 Jun 2025 21:18:31 +0000 (UTC)
+	 MIME-Version; b=PklYBGAj2elrsSe5XSAy5wH4Rs82GibSXy3OeK1Xox97T+hBSCn0zBji2zCT97ABsRLRqMNSSYoUPhzpLeuJ1vOiNqOy+sxCodSlYSEEgyFr34bMIiXUaHB08ADIh0ZGp3JibFYSbWpyQKbs27rKfKfp7xwx8kT+T/cRm8eBNPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seHmAaM9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B01AC4CEEA;
+	Mon, 23 Jun 2025 22:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713511;
-	bh=bGqxe9SFQBHbCXXc44uvdgIHc+0hjSdPKMTwuYL7EWI=;
+	s=korg; t=1750716235;
+	bh=ktGDq5kn2XO8NdzT88OOwE/eQa2Na6LbXYb9C7miVfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8ClJdXJIssPLXk494iZZK/kXpmjwqhoGQOElvx2CNyezCp79QIo68LfZdsdONpR0
-	 HR8QX93fCKpA1s/J2vnpddkdnzMUj7LYdCADdvSPi7EbTKXGt+scK7aoY2S38f/hcl
-	 S57m8YSU7PiTAT8WOd4k4quegcD+5mgLsOQXJRuQ=
+	b=seHmAaM9D/1R1vn5cT9oJXewF52eGyT8xrjHThSM8IVyG9wsOjFgRqWgqUb+8qgBL
+	 qsPsnaXkHWC05Jad2ITFb4wmMj34AB2cHq7qENUdC4YnGVgTHQ9NCMkcuuxOF3BFw7
+	 94a8LYDqtPN1GcMjCIo2/kgz/OIoSlQWQUPYCKvs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 094/290] net: ch9200: fix uninitialised access during mii_nway_restart
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.1 310/508] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
 Date: Mon, 23 Jun 2025 15:05:55 +0200
-Message-ID: <20250623130629.798138487@linuxfoundation.org>
+Message-ID: <20250623130652.941356864@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 9ad0452c0277b816a435433cca601304cfac7c21 upstream.
+commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
 
-In mii_nway_restart() the code attempts to call
-mii->mdio_read which is ch9200_mdio_read(). ch9200_mdio_read()
-utilises a local buffer called "buff", which is initialised
-with control_read(). However "buff" is conditionally
-initialised inside control_read():
+The PLL calculator does a search of the PLL configuration space for all
+valid OP pre-PLL clock dividers. The maximum did not take into account the
+CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
+dividers (other than 1) are valid. Do that now.
 
-        if (err == size) {
-                memcpy(data, buf, size);
-        }
-
-If the condition of "err == size" is not met, then
-"buff" remains uninitialised. Once this happens the
-uninitialised "buff" is accessed and returned during
-ch9200_mdio_read():
-
-        return (buff[0] | buff[1] << 8);
-
-The problem stems from the fact that ch9200_mdio_read()
-ignores the return value of control_read(), leading to
-uinit-access of "buff".
-
-To fix this we should check the return value of
-control_read() and return early on error.
-
-Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
-Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
+Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
 Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patch.msgid.link/20250526183607.66527-1-qasdev00@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/ch9200.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ccs-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/usb/ch9200.c
-+++ b/drivers/net/usb/ch9200.c
-@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_d
- {
- 	struct usbnet *dev = netdev_priv(netdev);
- 	unsigned char buff[2];
-+	int ret;
- 
- 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
- 		   __func__, phy_id, loc);
-@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_d
- 	if (phy_id != 0)
- 		return -ENODEV;
- 
--	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
--		     CONTROL_TIMEOUT_MS);
-+	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-+			   CONTROL_TIMEOUT_MS);
-+	if (ret < 0)
-+		return ret;
- 
- 	return (buff[0] | buff[1] << 8);
- }
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
+ 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
+ 	max_op_pre_pll_clk_div =
+ 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
+-		      clk_div_even(pll->ext_clk_freq_hz /
++		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
+ 				   op_lim_fr->min_pll_ip_clk_freq_hz));
+ 	min_op_pre_pll_clk_div =
+ 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
 
 
 
