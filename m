@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29F6CAE55FF
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1B8AE55B4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12859188C561
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EAFB1BC623E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85675223DCC;
-	Mon, 23 Jun 2025 22:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BACC227B8E;
+	Mon, 23 Jun 2025 22:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wcgPifJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMawNYyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED72222AF;
-	Mon, 23 Jun 2025 22:15:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97931F7580;
+	Mon, 23 Jun 2025 22:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716916; cv=none; b=CsLGt8Snt1pmH7o7KoCxrfAAdoJFyWqVjZ1L+jtTnP7NNcRFyWMl6w+OxwdCnGq1sGkH6yzYM0rAA2fLZdKptQDpu6G/Ogm5tglw1QxlmLxY7NsOQ08zHSw73XtxE2qR6UMXUqCNJexN0p0YIjwOWgGTK1V/9AKuS4I4WWqesk8=
+	t=1750716776; cv=none; b=gVKB1SdM8nHVYnlAn9ne3I5lReGBP1ruuIYSpbAkGOolnzwtzkwGLIJkDhJ4n5VDeuigjYnBf3Ns5YoYYl492BFH4F9qcPjGIb9cmDNndUhWTa6iuq+MvgCjSRMTxt7M0kSEXAbANp4mlZY8ZdWw9nHvQGLv1FQgzXnBR/46IH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716916; c=relaxed/simple;
-	bh=Vo0TCtqkjiZyWcEo2i2JwJ+ykQ+DLjn08lt0LakBrXU=;
+	s=arc-20240116; t=1750716776; c=relaxed/simple;
+	bh=jMlw41lLDcswCLEqK3SebUSfoDc0GU5F5pT7MamoEzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ey0tE/wxEY0a31+vTTVaiZWo/8sHe+adEQp1Pd/xAFtf1RYpg1Ya7YGZoI23zK4h2P+MVRcSB+StyoJCMH4AyhrQvEek3FDKx6NjZUlqaRZCxhKE/GOW4HiSEmcOz2ynpc0dv8n3Hin+UYo17NwrtdTbcRWebarOB3QmjnDzxtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wcgPifJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B34C4CEEA;
-	Mon, 23 Jun 2025 22:15:15 +0000 (UTC)
+	 MIME-Version; b=PGK+OOf5Q9kKhaf7j4B0gvRUCoQyKaM0H2pcEI1sY2dm/AHoAs6aM1Fno3MBs/xXMPns5AipqiXjpq/IaWXT1j2tNAepn+ejeTAcQDbbK7l+IshpPkW73YgspPHkZaqUwClwC6YWkpV7R0bgINQS11PTSr27OFhJvZ1w8flviGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMawNYyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51839C4CEEA;
+	Mon, 23 Jun 2025 22:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716916;
-	bh=Vo0TCtqkjiZyWcEo2i2JwJ+ykQ+DLjn08lt0LakBrXU=;
+	s=korg; t=1750716776;
+	bh=jMlw41lLDcswCLEqK3SebUSfoDc0GU5F5pT7MamoEzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wcgPifJMuQt4sB+HjqVFNpiUNbsNV2yQf8M/nQwisJl1+Nx/I0OhnnoXdGelJJBE
-	 2N/uq0gYAU+wXYw22icunk9aMTnD4NNUlNZflZJbVyJGvFSo2PfcHqf011FyVYPzbh
-	 KlItjiYQnKDzUzvSJ4jZO0VRSovhuovpa39quXVQ=
+	b=JMawNYyUiF4xVUiP4oPjpUDE07Bd1U1xJYvof/9VDA0kjXMjUHlznL1LCR1yqBgj+
+	 trNk9TzCn6tMA/r11+WqbQIGLGecBbd9cPGTzs2QI66AWYlHQ8w0Udl2eXhUk7cP6K
+	 wlHZ7It3JV8/TnwK573yRVLvB3uqGMA4YjairAO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eddie James <eajames@linux.ibm.com>,
-	Joel Stanley <joel@jms.id.au>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Donald Hunter <donald.hunter@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 368/411] hwmon: (occ) Add soft minimum power cap attribute
+Subject: [PATCH 6.15 554/592] tools: ynl: parse extack for sub-messages
 Date: Mon, 23 Jun 2025 15:08:32 +0200
-Message-ID: <20250623130642.905314603@linuxfoundation.org>
+Message-ID: <20250623130713.622772590@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,137 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: Donald Hunter <donald.hunter@gmail.com>
 
-[ Upstream commit 84dc9e8a7eec2cdff00728baedf0fb35fc7c11e8 ]
+[ Upstream commit 09d7ff0694ea133c50ad905fd6e548c13f8af458 ]
 
-Export the power caps data for the soft minimum power cap through hwmon.
+Extend the Python YNL extack decoding to handle sub-messages in the same
+way that YNL C does. This involves retaining the input values so that
+they are available during extack decoding.
 
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Reviewed-by: Joel Stanley <joel@jms.id.au>
-Link: https://lore.kernel.org/r/20220215151022.7498-5-eajames@linux.ibm.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 744c2fe950e9 ("hwmon: (occ) Rework attribute registration for stack usage")
+./tools/net/ynl/pyynl/cli.py --family rt-link --do newlink --create \
+    --json '{
+        "linkinfo": {"kind": "netkit", "data": {"policy": 10} }
+    }'
+Netlink error: Invalid argument
+nl_len = 92 (76) nl_flags = 0x300 nl_type = 2
+	error: -22
+	extack: {'msg': 'Provided default xmit policy not supported', 'bad-attr': '.linkinfo.data(netkit).policy'}
+
+Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
+Link: https://patch.msgid.link/20250523103031.80236-1-donald.hunter@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 9738280aae59 ("tools: ynl: fix mixing ops and notifications on one socket")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/occ/common.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ tools/net/ynl/pyynl/lib/ynl.py | 39 ++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index bbe5e4ef4113c..1757f3ab842e1 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -675,6 +675,9 @@ static ssize_t occ_show_caps_3(struct device *dev,
- 	case 7:
- 		val = caps->user_source;
- 		break;
-+	case 8:
-+		val = get_unaligned_be16(&caps->soft_min) * 1000000ULL;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -836,12 +839,13 @@ static int occ_setup_sensor_attrs(struct occ *occ)
- 	case 1:
- 		num_attrs += (sensors->caps.num_sensors * 7);
- 		break;
--	case 3:
--		show_caps = occ_show_caps_3;
--		fallthrough;
- 	case 2:
- 		num_attrs += (sensors->caps.num_sensors * 8);
- 		break;
-+	case 3:
-+		show_caps = occ_show_caps_3;
-+		num_attrs += (sensors->caps.num_sensors * 9);
-+		break;
- 	default:
- 		sensors->caps.num_sensors = 0;
- 	}
-@@ -1048,6 +1052,15 @@ static int occ_setup_sensor_attrs(struct occ *occ)
- 			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
- 						     show_caps, NULL, 7, 0);
- 			attr++;
-+
-+			if (sensors->caps.version > 2) {
-+				snprintf(attr->name, sizeof(attr->name),
-+					 "power%d_cap_min_soft", s);
-+				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
-+							     show_caps, NULL,
-+							     8, 0);
-+				attr++;
-+			}
- 		}
- 	}
+diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
+index dcc2c6b298d60..55b59f6c79b89 100644
+--- a/tools/net/ynl/pyynl/lib/ynl.py
++++ b/tools/net/ynl/pyynl/lib/ynl.py
+@@ -594,7 +594,7 @@ class YnlFamily(SpecFamily):
+             scalar_selector = self._get_scalar(attr, value["selector"])
+             attr_payload = struct.pack("II", scalar_value, scalar_selector)
+         elif attr['type'] == 'sub-message':
+-            msg_format = self._resolve_selector(attr, search_attrs)
++            msg_format, _ = self._resolve_selector(attr, search_attrs)
+             attr_payload = b''
+             if msg_format.fixed_header:
+                 attr_payload += self._encode_struct(msg_format.fixed_header, value)
+@@ -712,10 +712,10 @@ class YnlFamily(SpecFamily):
+             raise Exception(f"No message format for '{value}' in sub-message spec '{sub_msg}'")
  
+         spec = sub_msg_spec.formats[value]
+-        return spec
++        return spec, value
+ 
+     def _decode_sub_msg(self, attr, attr_spec, search_attrs):
+-        msg_format = self._resolve_selector(attr_spec, search_attrs)
++        msg_format, _ = self._resolve_selector(attr_spec, search_attrs)
+         decoded = {}
+         offset = 0
+         if msg_format.fixed_header:
+@@ -787,7 +787,7 @@ class YnlFamily(SpecFamily):
+ 
+         return rsp
+ 
+-    def _decode_extack_path(self, attrs, attr_set, offset, target):
++    def _decode_extack_path(self, attrs, attr_set, offset, target, search_attrs):
+         for attr in attrs:
+             try:
+                 attr_spec = attr_set.attrs_by_val[attr.type]
+@@ -801,26 +801,37 @@ class YnlFamily(SpecFamily):
+             if offset + attr.full_len <= target:
+                 offset += attr.full_len
+                 continue
+-            if attr_spec['type'] != 'nest':
++
++            pathname = attr_spec.name
++            if attr_spec['type'] == 'nest':
++                sub_attrs = self.attr_sets[attr_spec['nested-attributes']]
++                search_attrs = SpaceAttrs(sub_attrs, search_attrs.lookup(attr_spec['name']))
++            elif attr_spec['type'] == 'sub-message':
++                msg_format, value = self._resolve_selector(attr_spec, search_attrs)
++                if msg_format is None:
++                    raise Exception(f"Can't resolve sub-message of {attr_spec['name']} for extack")
++                sub_attrs = self.attr_sets[msg_format.attr_set]
++                pathname += f"({value})"
++            else:
+                 raise Exception(f"Can't dive into {attr.type} ({attr_spec['name']}) for extack")
+             offset += 4
+-            subpath = self._decode_extack_path(NlAttrs(attr.raw),
+-                                               self.attr_sets[attr_spec['nested-attributes']],
+-                                               offset, target)
++            subpath = self._decode_extack_path(NlAttrs(attr.raw), sub_attrs,
++                                               offset, target, search_attrs)
+             if subpath is None:
+                 return None
+-            return '.' + attr_spec.name + subpath
++            return '.' + pathname + subpath
+ 
+         return None
+ 
+-    def _decode_extack(self, request, op, extack):
++    def _decode_extack(self, request, op, extack, vals):
+         if 'bad-attr-offs' not in extack:
+             return
+ 
+         msg = self.nlproto.decode(self, NlMsg(request, 0, op.attr_set), op)
+         offset = self.nlproto.msghdr_size() + self._struct_size(op.fixed_header)
++        search_attrs = SpaceAttrs(op.attr_set, vals)
+         path = self._decode_extack_path(msg.raw_attrs, op.attr_set, offset,
+-                                        extack['bad-attr-offs'])
++                                        extack['bad-attr-offs'], search_attrs)
+         if path:
+             del extack['bad-attr-offs']
+             extack['bad-attr'] = path
+@@ -1012,7 +1023,7 @@ class YnlFamily(SpecFamily):
+         for (method, vals, flags) in ops:
+             op = self.ops[method]
+             msg = self._encode_message(op, vals, flags, req_seq)
+-            reqs_by_seq[req_seq] = (op, msg, flags)
++            reqs_by_seq[req_seq] = (op, vals, msg, flags)
+             payload += msg
+             req_seq += 1
+ 
+@@ -1027,9 +1038,9 @@ class YnlFamily(SpecFamily):
+             self._recv_dbg_print(reply, nms)
+             for nl_msg in nms:
+                 if nl_msg.nl_seq in reqs_by_seq:
+-                    (op, req_msg, req_flags) = reqs_by_seq[nl_msg.nl_seq]
++                    (op, vals, req_msg, req_flags) = reqs_by_seq[nl_msg.nl_seq]
+                     if nl_msg.extack:
+-                        self._decode_extack(req_msg, op, nl_msg.extack)
++                        self._decode_extack(req_msg, op, nl_msg.extack, vals)
+                 else:
+                     op = None
+                     req_flags = []
 -- 
 2.39.5
 
