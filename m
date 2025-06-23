@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-155599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD9AE42D7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A162AE42FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C92973A7776
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA6D717401F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6067254AF0;
-	Mon, 23 Jun 2025 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0405124BD00;
+	Mon, 23 Jun 2025 13:21:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yeFK7iJ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wCZwiK6I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EE0525393A;
-	Mon, 23 Jun 2025 13:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB3D124BBE4;
+	Mon, 23 Jun 2025 13:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684846; cv=none; b=HDireLpeEdNZ6FILwZ33fTPS/ZlQ2jpEBOIaoToWWBsfIBnBhVBBFfr+s/D3XK7Qp6ezv0q8PW2yKgw1k3asD+U5/V5+QUR+sY/R1AbDad5rK5vM/+MVbdjbKk4iYR5/m7OFhc1+lfNZX3uidNEU+B3QeO8VIhwuFaLTatbNKz4=
+	t=1750684859; cv=none; b=k5BUyMHqN8sL0hQhODD8oIHqipYeBAtPYOad/l74CUGzj5CyQoubG2q1+QZ7KoaSSioFpa51/MI5CTqZ18lAGx/YBSAebD1w+CYOzGZj/tI2bxlStrrJ0/bV0M/qtyjJfFVe6v2xCjBgjEOBfILkvvwOnKAcI9DukXnuhRq+dsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684846; c=relaxed/simple;
-	bh=X4pVduWutHn7imbZ1skNqvLn5N3cP9nnEy+z2Hw0ces=;
+	s=arc-20240116; t=1750684859; c=relaxed/simple;
+	bh=qxObiOjVLEbe7HopXL9RuYnz1JrPR+HomhiV5H1Kd1M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B6Ah16MEGV/vSKvv8wJpLyNVgGkXGCcuk3T0ocBqlNXUCRKDfPUwEuo+i7wTx8+jUbg8xZCNIG1Quj3bqFCyPKJFKaCioQy3dAr8tQuLkPYTJvdC8xKy3P5OKA2JFu1osuyWieXg7+xnHgWvurJqUi9sWA8aR0JzLwthmXs6N2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yeFK7iJ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22C62C4CEEA;
-	Mon, 23 Jun 2025 13:20:45 +0000 (UTC)
+	 MIME-Version; b=o3SwwyquBslNIViEthV+Mpr7wJsZY2Tv6aTZi5BIojDx55thURjE/ITFqecNDC+r2skFqMokYLZHchW4+jKaBYVaLDwlL8zY4xr8zsnpTgL1/F8ygF0/XauoL1Liam9F7IKKeaI+PvMVHArqVuerfXyNLd50zRJoQdJiLz5sFiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wCZwiK6I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC1EC4CEF0;
+	Mon, 23 Jun 2025 13:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684846;
-	bh=X4pVduWutHn7imbZ1skNqvLn5N3cP9nnEy+z2Hw0ces=;
+	s=korg; t=1750684859;
+	bh=qxObiOjVLEbe7HopXL9RuYnz1JrPR+HomhiV5H1Kd1M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yeFK7iJ51ruIOkm1qhZnyzGG+G7ilqswxHeMEo4KAgvsOV961vDT7MwZm0/fepYkN
-	 oG0roc4WuivAN+yigP0r/INInqqSbSdftGn76g66zTYi/7Gmt6Ol2vzwKZ5/0ypStv
-	 Uq5vvNxFkFEjBR2IaWQRNAcEiRoXPPEl6o0BsSk4=
+	b=wCZwiK6Ia9lpepscR9PdLUV6ZD4rpZbbhyTqAKVxU22kggYEbn5Y+sz9uri4GprD9
+	 yRPBDceEoFi7781favDP8fATsquX8oG5bdqPj/UR8p2q+Q56Lrdofb9Ot+Gc0iG+M3
+	 5LE/xA+2bZNKGT2Mrd/MhXFWZJ+t2tquy+ZlamyM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	John Cheung <john.cs.hey@gmail.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Paul Moore <paul@paul-moore.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 039/222] calipso: Dont call calipso functions for AF_INET sk.
-Date: Mon, 23 Jun 2025 15:06:14 +0200
-Message-ID: <20250623130613.076971533@linuxfoundation.org>
+Subject: [PATCH 5.4 040/222] f2fs: use d_inode(dentry) cleanup dentry->d_inode
+Date: Mon, 23 Jun 2025 15:06:15 +0200
+Message-ID: <20250623130613.108160386@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -69,106 +67,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 6e9f2df1c550ead7cecb3e450af1105735020c92 ]
+[ Upstream commit a6c397a31f58a1d577c2c8d04b624e9baa31951c ]
 
-syzkaller reported a null-ptr-deref in txopt_get(). [0]
+no logic changes.
 
-The offset 0x70 was of struct ipv6_txoptions in struct ipv6_pinfo,
-so struct ipv6_pinfo was NULL there.
-
-However, this never happens for IPv6 sockets as inet_sk(sk)->pinet6
-is always set in inet6_create(), meaning the socket was not IPv6 one.
-
-The root cause is missing validation in netlbl_conn_setattr().
-
-netlbl_conn_setattr() switches branches based on struct
-sockaddr.sa_family, which is passed from userspace.  However,
-netlbl_conn_setattr() does not check if the address family matches
-the socket.
-
-The syzkaller must have called connect() for an IPv6 address on
-an IPv4 socket.
-
-We have a proper validation in tcp_v[46]_connect(), but
-security_socket_connect() is called in the earlier stage.
-
-Let's copy the validation to netlbl_conn_setattr().
-
-[0]:
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-CPU: 2 UID: 0 PID: 12928 Comm: syz.9.1677 Not tainted 6.12.0 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-RIP: 0010:txopt_get include/net/ipv6.h:390 [inline]
-RIP: 0010:
-Code: 02 00 00 49 8b ac 24 f8 02 00 00 e8 84 69 2a fd e8 ff 00 16 fd 48 8d 7d 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 53 02 00 00 48 8b 6d 70 48 85 ed 0f 84 ab 01 00
-RSP: 0018:ffff88811b8afc48 EFLAGS: 00010212
-RAX: dffffc0000000000 RBX: 1ffff11023715f8a RCX: ffffffff841ab00c
-RDX: 000000000000000e RSI: ffffc90007d9e000 RDI: 0000000000000070
-RBP: 0000000000000000 R08: ffffed1023715f9d R09: ffffed1023715f9e
-R10: ffffed1023715f9d R11: 0000000000000003 R12: ffff888123075f00
-R13: ffff88810245bd80 R14: ffff888113646780 R15: ffff888100578a80
-FS:  00007f9019bd7640(0000) GS:ffff8882d2d00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007f901b927bac CR3: 0000000104788003 CR4: 0000000000770ef0
-PKRU: 80000000
-Call Trace:
- <TASK>
- calipso_sock_setattr+0x56/0x80 net/netlabel/netlabel_calipso.c:557
- netlbl_conn_setattr+0x10c/0x280 net/netlabel/netlabel_kapi.c:1177
- selinux_netlbl_socket_connect_helper+0xd3/0x1b0 security/selinux/netlabel.c:569
- selinux_netlbl_socket_connect_locked security/selinux/netlabel.c:597 [inline]
- selinux_netlbl_socket_connect+0xb6/0x100 security/selinux/netlabel.c:615
- selinux_socket_connect+0x5f/0x80 security/selinux/hooks.c:4931
- security_socket_connect+0x50/0xa0 security/security.c:4598
- __sys_connect_file+0xa4/0x190 net/socket.c:2067
- __sys_connect+0x12c/0x170 net/socket.c:2088
- __do_sys_connect net/socket.c:2098 [inline]
- __se_sys_connect net/socket.c:2095 [inline]
- __x64_sys_connect+0x73/0xb0 net/socket.c:2095
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xaa/0x1b0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f901b61a12d
-Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f9019bd6fa8 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 00007f901b925fa0 RCX: 00007f901b61a12d
-RDX: 000000000000001c RSI: 0000200000000140 RDI: 0000000000000003
-RBP: 00007f901b701505 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f901b5b62a0 R15: 00007f9019bb7000
- </TASK>
-Modules linked in:
-
-Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Reported-by: John Cheung <john.cs.hey@gmail.com>
-Closes: https://lore.kernel.org/netdev/CAP=Rh=M1LzunrcQB1fSGauMrJrhL6GGps5cPAKzHJXj6GQV+-g@mail.gmail.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20250522221858.91240-1-kuniyu@amazon.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netlabel/netlabel_kapi.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/namei.c | 8 ++++----
+ fs/f2fs/super.c | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
-index 96059c99b915e..2e9344b3c657c 100644
---- a/net/netlabel/netlabel_kapi.c
-+++ b/net/netlabel/netlabel_kapi.c
-@@ -1140,6 +1140,9 @@ int netlbl_conn_setattr(struct sock *sk,
- 		break;
- #if IS_ENABLED(CONFIG_IPV6)
- 	case AF_INET6:
-+		if (sk->sk_family != AF_INET6)
-+			return -EAFNOSUPPORT;
-+
- 		addr6 = (struct sockaddr_in6 *)addr;
- 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
- 						   &addr6->sin6_addr);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 99a91c746b399..e74e5d2570ef6 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -329,7 +329,7 @@ static int f2fs_link(struct dentry *old_dentry, struct inode *dir,
+ 
+ 	if (is_inode_flag_set(dir, FI_PROJ_INHERIT) &&
+ 			(!projid_eq(F2FS_I(dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)))
++			F2FS_I(inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	err = dquot_initialize(dir);
+@@ -869,7 +869,7 @@ static int f2fs_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 
+ 	if (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			(!projid_eq(F2FS_I(new_dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)))
++			F2FS_I(old_inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	if (flags & RENAME_WHITEOUT) {
+@@ -1066,10 +1066,10 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 
+ 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(new_dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)) ||
++			F2FS_I(old_inode)->i_projid)) ||
+ 	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(old_dir)->i_projid,
+-			F2FS_I(new_dentry->d_inode)->i_projid)))
++			F2FS_I(new_inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	err = dquot_initialize(old_dir);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index da51474596eff..d4ba9ad16a137 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1342,9 +1342,9 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	buf->f_fsid.val[1] = (u32)(id >> 32);
+ 
+ #ifdef CONFIG_QUOTA
+-	if (is_inode_flag_set(dentry->d_inode, FI_PROJ_INHERIT) &&
++	if (is_inode_flag_set(d_inode(dentry), FI_PROJ_INHERIT) &&
+ 			sb_has_quota_limits_enabled(sb, PRJQUOTA)) {
+-		f2fs_statfs_project(sb, F2FS_I(dentry->d_inode)->i_projid, buf);
++		f2fs_statfs_project(sb, F2FS_I(d_inode(dentry))->i_projid, buf);
+ 	}
+ #endif
+ 	return 0;
 -- 
 2.39.5
 
