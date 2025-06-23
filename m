@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 559CFAE4FD3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7503EAE4ED3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0EE017F68E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48266189FE50
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A31F219E0;
-	Mon, 23 Jun 2025 21:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F8E621FF2B;
+	Mon, 23 Jun 2025 21:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pVzP/1p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pGJ4Ii6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386DC2628C;
-	Mon, 23 Jun 2025 21:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5170838;
+	Mon, 23 Jun 2025 21:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713597; cv=none; b=a13DQwc6Hgm2TZxrkcjfW/6IbN2qsKlzzd9AsS+bKVa9zN7oOYvZtUW8KupOM0fti09EeQ63SRVHvsSEMHMfxEMfvjt3Lnb+0nf+eZw8AEl0dGKxpiFiAvcYFhMIag6KgS0Bj+aQDhNZanYndEbEIKWJk/aKXMvPWwk8X8LWqU8=
+	t=1750712970; cv=none; b=iVSUTu8EmxUarvqQ6oU3hP7EXedmkLSx1gBB6M9rwOJvz515e07Gx5v6PLcmSW8yITLd/6QTT1zEUaaa323cau3QVNWF3KZJLoT3CYD+xpCQtso+t+ye2WqlxRPriw4QwVjYBBXSQxLf9DV7fTThgyV6a/0eH+wrLp9ajCeiCGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713597; c=relaxed/simple;
-	bh=EWOOqxPZRcfJISl/hHmmbhmXRA8sdFEw03/510R7sQY=;
+	s=arc-20240116; t=1750712970; c=relaxed/simple;
+	bh=E5AXWAWLerNpqnzexy9TYICWvrtRksoJd0MLE1QpXK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ntb8ja1+A88GaMGozuc87jvTzgKAdhYgEmyZ8TlcDUu3ri20VBsjN8zR4NzgJPlT8Kj2DXLy+fHS7X/05qvbeUIA9lX+lWjt4Avir3RfgRwzqhjUdpwWgDbfa2Obndgbe34JEoZRkCDbvny5OrUlrYWiGT8vfyOrB0xByNy5gA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pVzP/1p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EDBC4CEEA;
-	Mon, 23 Jun 2025 21:19:56 +0000 (UTC)
+	 MIME-Version; b=Cofveo/aE+uS0EmVFJw2pAK0u+esvuvQtdisclT8gTXpXZ3NUrIBq51z2n+WVRcL45xppk/++7DAYzd7Fadbiu7xHLiaNzzARuHB4KmulFqE6CKnzIUUXOwLkrbJNPO+OXZAVHrwwcjSa3WD1ntuDbkh7xHlUJ2e7OR6x4yW/Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pGJ4Ii6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6A8DC4CEEA;
+	Mon, 23 Jun 2025 21:09:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713597;
-	bh=EWOOqxPZRcfJISl/hHmmbhmXRA8sdFEw03/510R7sQY=;
+	s=korg; t=1750712970;
+	bh=E5AXWAWLerNpqnzexy9TYICWvrtRksoJd0MLE1QpXK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2pVzP/1pdtVzQM09CpyiURU8YOq4LhjmMijt5N80U0IkNy7jpEUZJ77wo128xL1/l
-	 yr+FQjHngnpdIcRSDG7H/EWzgrtCV2BtcXjq6aWAPfkv3EzUPjk84mDNSjpkuRZUqn
-	 HQ7nEWAPeIjteGluOd2M495OL8mmiEtqMyk7QxRU=
+	b=pGJ4Ii6TFEirfawCon5tLWWgiG/DQre5/fSJ1O8HQS6PVzASM2p+fiHnlp2Xrll37
+	 V7+2jg3bguTnjPOdOGy3y3E0itVAayTB0UWmxyl/jx2kJy8YvQPwIdVd0wudkqr6GU
+	 ZqzPu8lR5gs67WitVCZAC6LMsiNE3EyIpWow0sNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/508] arm64: dts: imx8mn-beacon: Fix RTC capacitive load
-Date: Mon, 23 Jun 2025 15:02:37 +0200
-Message-ID: <20250623130648.051904062@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.12 021/414] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
+Date: Mon, 23 Jun 2025 15:02:38 +0200
+Message-ID: <20250623130642.556024941@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit c3f03bec30efd5082b55876846d57b5d17dae7b9 ]
+commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
 
-Although not noticeable when used every day, the RTC appears to drift when
-left to sit over time.  This is due to the capacitive load not being
-properly set. Fix RTC drift by correcting the capacitive load setting
-from 7000 to 12500, which matches the actual hardware configuration.
+The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
+mlx5_query_nic_vport_context() but does not check its return value. This
+could lead to undefined behavior if the query fails. A proper
+implementation can be found in mlx5_nic_vport_query_local_lb().
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
+
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-index 1133cded9be2f..c4b1c6029c9a9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-@@ -240,6 +240,7 @@
- 	rtc: rtc@51 {
- 		compatible = "nxp,pcf85263";
- 		reg = <0x51>;
-+		quartz-load-femtofarads = <12500>;
- 	};
- };
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -519,19 +519,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
+ {
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
  
--- 
-2.39.5
-
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
+ 				   nic_vport_context.qkey_violation_counter);
+-
++out:
+ 	kvfree(out);
+ 
+-	return 0;
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
+ 
 
 
 
