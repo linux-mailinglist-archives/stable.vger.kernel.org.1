@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6D12AE5653
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 425F0AE5638
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEB1C3A3BF5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9C0F4C7B4D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44A9F21FF2B;
-	Mon, 23 Jun 2025 22:16:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 011982288CB;
+	Mon, 23 Jun 2025 22:17:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NFjlUZ31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CI28ET+L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0201B17BD9;
-	Mon, 23 Jun 2025 22:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B22F022422F;
+	Mon, 23 Jun 2025 22:17:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717003; cv=none; b=NhttUnCejYLCWqHppW36yXP9auLj7913pQArewra5FKqSTK0sNZsIGis7y7diEHIIKaCd5EFKoyyvcXTBFkxxVGic5r8J0ZRkAfn1CD4mIxCXVqym+d7qVLKFsEKmPashQfn6b5l5KOTgPtxIk11Ayh+7JeXMqtga2QyYDBEGo8=
+	t=1750717045; cv=none; b=t+JGoBxSS44YZt+fNR4ufrhVlNI9Wzj0t3FLOkUkG/jwZZzTtTL1pFjQ0iF2qQH3oTqGp0iwGL5FPrl45c/duaCg1EfisZmU4xWMab750GldHi1edY+6cAFMXsoY20EWK/2sVBhBPOcwtrGT3zkcaFkhavxXnRW0mkfJvHMBZ8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717003; c=relaxed/simple;
-	bh=0Tw5rJth4unKe0D0aB4uQSFDkS+pCWGx/cgBEg8HT5U=;
+	s=arc-20240116; t=1750717045; c=relaxed/simple;
+	bh=e+y9yb/oocb4UhzBwf4EiZho+GUVm4z2+9BylXc1nWo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UqK2YmHthHlQvkczHnAZ3cgDcWs45G1nBfxhKoDxOrBhvG6UtP+vlNTdpDfxuNFVAt4R+aljG0nLBRk4GppvCUTqdQSAFw8JiCGk9r/8zjFLkTonRHdTAlaoRm0VWoQtpiPSEh7jDsDOt3JjBqbym3fRpYWjNHT/jjNhk4V84NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NFjlUZ31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ACFFC4CEF1;
-	Mon, 23 Jun 2025 22:16:41 +0000 (UTC)
+	 MIME-Version; b=PSaUpDMjJe5eFFN5iPvkyjK3u8zzPrP+3slCAz2pHkbz27JXEivd9wmST4jx1gZvabPnlmdQ3F5eF+whF04RmY5uKpquvPhMd6gp6marLaxJdvnEWBoc8i6B/Pj3aPYItEotxLpBk0+2febv3XjJL/iTF9tVSbMqY3KngO4JGvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CI28ET+L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438F3C4CEF1;
+	Mon, 23 Jun 2025 22:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717001;
-	bh=0Tw5rJth4unKe0D0aB4uQSFDkS+pCWGx/cgBEg8HT5U=;
+	s=korg; t=1750717045;
+	bh=e+y9yb/oocb4UhzBwf4EiZho+GUVm4z2+9BylXc1nWo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NFjlUZ31vE673Wwz8NezvReeOAyZnlFyJdEGh8JxuNB4PVod7Rfjo7kKtKq334zYa
-	 BgpLla/L89t4bHQ+UwxnWutpLEZeYIX6v/pAtww2iSatoM/jjHmmvPFi/tcoAlLFn2
-	 Zu6F+9X+ydVwXMy7t/3rt5a449Kd73weojYm073Y=
+	b=CI28ET+LRjYO1DyLRnXpbtKtYB3qFhB5WDxImoFIEmExHumo4Os7qo1s2rATXBChK
+	 ezVcq4dLRPBPbA9tPjRTQmYQs951JWnfRICPnE2eSwtQXx2A+KkqFkRzxsBJ2Pjx44
+	 ZM9D/dLyOZztFaOY2+MGF1+ItJnuHpHM5XSyjSUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 576/592] RISC-V: KVM: Fix the size parameter check in SBI SFENCE calls
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 390/411] arm64: insn: Add support for encoding DSB
 Date: Mon, 23 Jun 2025 15:08:54 +0200
-Message-ID: <20250623130714.139197562@linuxfoundation.org>
+Message-ID: <20250623130643.490191443@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: James Morse <james.morse@arm.com>
 
-[ Upstream commit 6aba0cb5bba6141158d5449f2cf53187b7f755f9 ]
+[ Upstream commit 63de8abd97ddb9b758bd8f915ecbd18e1f1a87a0 ]
 
-As-per the SBI specification, an SBI remote fence operation applies
-to the entire address space if either:
-1) start_addr and size are both 0
-2) size is equal to 2^XLEN-1
+To generate code in the eBPF epilogue that uses the DSB instruction,
+insn.c needs a heler to encode the type and domain.
 
->From the above, only #1 is checked by SBI SFENCE calls so fix the
-size parameter check in SBI SFENCE calls to cover #2 as well.
+Re-use the crm encoding logic from the DMB instruction.
 
-Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250605061458.196003-2-apatel@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/insn.h |    1 
+ arch/arm64/lib/insn.c         |   60 +++++++++++++++++++++++++-----------------
+ 2 files changed, 38 insertions(+), 23 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
-index 5fbf3f94f1e85..9752d2ffff683 100644
---- a/arch/riscv/kvm/vcpu_sbi_replace.c
-+++ b/arch/riscv/kvm/vcpu_sbi_replace.c
-@@ -103,7 +103,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
- 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_FENCE_I_SENT);
- 		break;
- 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA:
--		if (cp->a2 == 0 && cp->a3 == 0)
-+		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
- 			kvm_riscv_hfence_vvma_all(vcpu->kvm, hbase, hmask);
- 		else
- 			kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbase, hmask,
-@@ -111,7 +111,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
- 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_HFENCE_VVMA_SENT);
- 		break;
- 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID:
--		if (cp->a2 == 0 && cp->a3 == 0)
-+		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
- 			kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,
- 						       hbase, hmask, cp->a4);
- 		else
--- 
-2.39.5
-
+--- a/arch/arm64/include/asm/insn.h
++++ b/arch/arm64/include/asm/insn.h
+@@ -607,6 +607,7 @@ u32 aarch64_insn_gen_cas(enum aarch64_in
+ }
+ #endif
+ u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type);
++u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type);
+ 
+ s32 aarch64_get_branch_offset(u32 insn);
+ u32 aarch64_set_branch_offset(u32 insn, s32 offset);
+--- a/arch/arm64/lib/insn.c
++++ b/arch/arm64/lib/insn.c
+@@ -5,6 +5,7 @@
+  *
+  * Copyright (C) 2014-2016 Zi Shen Lim <zlim.lnx@gmail.com>
+  */
++#include <linux/bitfield.h>
+ #include <linux/bitops.h>
+ #include <linux/bug.h>
+ #include <linux/printk.h>
+@@ -1569,47 +1570,60 @@ u32 aarch64_insn_gen_extr(enum aarch64_i
+ 	return aarch64_insn_encode_register(AARCH64_INSN_REGTYPE_RM, insn, Rm);
+ }
+ 
+-u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
++static u32 __get_barrier_crm_val(enum aarch64_insn_mb_type type)
+ {
+-	u32 opt;
+-	u32 insn;
+-
+ 	switch (type) {
+ 	case AARCH64_INSN_MB_SY:
+-		opt = 0xf;
+-		break;
++		return 0xf;
+ 	case AARCH64_INSN_MB_ST:
+-		opt = 0xe;
+-		break;
++		return 0xe;
+ 	case AARCH64_INSN_MB_LD:
+-		opt = 0xd;
+-		break;
++		return 0xd;
+ 	case AARCH64_INSN_MB_ISH:
+-		opt = 0xb;
+-		break;
++		return 0xb;
+ 	case AARCH64_INSN_MB_ISHST:
+-		opt = 0xa;
+-		break;
++		return 0xa;
+ 	case AARCH64_INSN_MB_ISHLD:
+-		opt = 0x9;
+-		break;
++		return 0x9;
+ 	case AARCH64_INSN_MB_NSH:
+-		opt = 0x7;
+-		break;
++		return 0x7;
+ 	case AARCH64_INSN_MB_NSHST:
+-		opt = 0x6;
+-		break;
++		return 0x6;
+ 	case AARCH64_INSN_MB_NSHLD:
+-		opt = 0x5;
+-		break;
++		return 0x5;
+ 	default:
+-		pr_err("%s: unknown dmb type %d\n", __func__, type);
++		pr_err("%s: unknown barrier type %d\n", __func__, type);
+ 		return AARCH64_BREAK_FAULT;
+ 	}
++}
++
++u32 aarch64_insn_gen_dmb(enum aarch64_insn_mb_type type)
++{
++	u32 opt;
++	u32 insn;
++
++	opt = __get_barrier_crm_val(type);
++	if (opt == AARCH64_BREAK_FAULT)
++		return AARCH64_BREAK_FAULT;
+ 
+ 	insn = aarch64_insn_get_dmb_value();
+ 	insn &= ~GENMASK(11, 8);
+ 	insn |= (opt << 8);
+ 
++	return insn;
++}
++
++u32 aarch64_insn_gen_dsb(enum aarch64_insn_mb_type type)
++{
++	u32 opt, insn;
++
++	opt = __get_barrier_crm_val(type);
++	if (opt == AARCH64_BREAK_FAULT)
++		return AARCH64_BREAK_FAULT;
++
++	insn = aarch64_insn_get_dsb_base_value();
++	insn &= ~GENMASK(11, 8);
++	insn |= (opt << 8);
++
+ 	return insn;
+ }
 
 
 
