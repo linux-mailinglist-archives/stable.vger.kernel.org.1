@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158080-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE437AE5606
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E258AE56E3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E683168B64
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 308574E1916
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0BF229B36;
-	Mon, 23 Jun 2025 22:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2E6223DE8;
+	Mon, 23 Jun 2025 22:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7M2Pa/Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYOj2hXA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB919E7F9;
-	Mon, 23 Jun 2025 22:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB647221543;
+	Mon, 23 Jun 2025 22:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716928; cv=none; b=Hl9dQY+7bB6cFO365+iw+Xh22TFI2yUkZljIkqaeCoZ3C7UH/iqqQ1nct7ud7OdLyI8PwnynZ/cbFwFMiuwmf4sRCMJ++QLUh4aAc0MO5nkeHa2P38az5SpoRiC79ng/KvqnLyVGXuFmQ1tgMO6sOyCNmLZZy50E27PEfVL8nkU=
+	t=1750717433; cv=none; b=OUJyfK+odJFbw0ulPbx5/IJKP91kPDWO086p0haojvrqvPILwYU6zISmH9uJp371QIeZ6M4hvS3fP7X1Vj5GGk+48kJUBne0E94cMKgD0NbDF+tNYxZ3FZ2tmX+wzxvpYSbC5G++xedIhLK8pGPNz+NbZ5EctFPwJW614idMk+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716928; c=relaxed/simple;
-	bh=0yFeCD5KQ9uVcO5QY7ejuIA3uufVrQiSGyBId9NCYaE=;
+	s=arc-20240116; t=1750717433; c=relaxed/simple;
+	bh=L93Opi6YnP9t+TJNZym9UZUui/9d4qc566iJUy0Nc6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hzeCLxlpD7fGc3G0euGP5jPQ0NdmeT8p+X3dKuvy8qmc4/1kP/qHM1yearxRoDndiFda2o4yzc7D4508h7BZQ9CiFhjiLuXMH19WUB0iGUf0acfvbCCi9Vq/svdGphVO3p247ymrBHvSp7M5/uhMR4dXl8iXabSV5da0tvth5i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7M2Pa/Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055D6C4CEEA;
-	Mon, 23 Jun 2025 22:15:27 +0000 (UTC)
+	 MIME-Version; b=AOHi5xshUSZptlzLcKn/6Zed0shB6lgnjHepBj/MjDz64sRvsauFlf83XUt1OIXqqY5ywgpbKKi1b95slEoFaUgK4l/Wu+BHAJSkvge7n0TawtIp1t/vXrMezMhVP8F61bDwUAvz2EN4T9NBET5sAtxkD/2q5FS9dk9b1rfc/gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYOj2hXA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45CBCC4CEEA;
+	Mon, 23 Jun 2025 22:23:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716928;
-	bh=0yFeCD5KQ9uVcO5QY7ejuIA3uufVrQiSGyBId9NCYaE=;
+	s=korg; t=1750717433;
+	bh=L93Opi6YnP9t+TJNZym9UZUui/9d4qc566iJUy0Nc6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H7M2Pa/Z8PoI+1Vw7t6puNc5EZHSiMqndocQiztGbJLyrbegzektLAXBxHK9kPMGu
-	 fEaxH1cJDsYaEkKYaRpn6KTLBVJeMr357tjs9XCtlzwhZSPE5mFiSaMNyoyWH8W6iy
-	 M2fDPkjSCmy1HXGQ/gqSB8ak7I8wCIxzGlrD7g7w=
+	b=XYOj2hXAiZrLuoQiAJWe2Z9A1tiRAbC7Er1aAPvYebpgk2Vfc5WcfKSRLnqwejW33
+	 miioo0zsxlvQayy90GrJ0/loXGXfDQUISvbchudGxjIzKakJ8ALBdnj0osCSyA/zcF
+	 7SMQ8aTEw8daHqjLgvTlMswkft+In+5p79deO2bo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haixia Qu <hxqu@hillstonenet.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 379/411] tipc: fix null-ptr-deref when acquiring remote ip of ethernet bearer
+Subject: [PATCH 6.12 386/414] net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()
 Date: Mon, 23 Jun 2025 15:08:43 +0200
-Message-ID: <20250623130643.184096979@linuxfoundation.org>
+Message-ID: <20250623130651.598804782@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haixia Qu <hxqu@hillstonenet.com>
+From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
 
-[ Upstream commit f82727adcf2992822e12198792af450a76ebd5ef ]
+[ Upstream commit e353b0854d3a1a31cb061df8d022fbfea53a0f24 ]
 
-The reproduction steps:
-1. create a tun interface
-2. enable l2 bearer
-3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
+Before calling lan743x_ptp_io_event_clock_get(), the 'channel' value
+is checked against the maximum value of PCI11X1X_PTP_IO_MAX_CHANNELS(8).
+This seems correct and aligns with the PTP interrupt status register
+(PTP_INT_STS) specifications.
 
-tipc: Started in network mode
-tipc: Node identity 8af312d38a21, cluster identity 4711
-tipc: Enabled bearer <eth:syz_tun>, priority 1
-Oops: general protection fault
-KASAN: null-ptr-deref in range
-CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
-Hardware name: QEMU Ubuntu 24.04 PC
-RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
+However, lan743x_ptp_io_event_clock_get() writes to ptp->extts[] with
+only LAN743X_PTP_N_EXTTS(4) elements, using channel as an index:
 
-the ub was in fact a struct dev.
+    lan743x_ptp_io_event_clock_get(..., u8 channel,...)
+    {
+        ...
+        /* Update Local timestamp */
+        extts = &ptp->extts[channel];
+        extts->ts.tv_sec = sec;
+        ...
+    }
 
-when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or
-other media when other thread changes it.
+To avoid an out-of-bounds write and utilize all the supported GPIO
+inputs, set LAN743X_PTP_N_EXTTS to 8.
 
-fix this by checking media_id.
-
-Fixes: 832629ca5c313 ("tipc: add UDP remoteip dump to netlink API")
-Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250617055624.2680-1-hxqu@hillstonenet.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Detected using the static analysis tool - Svace.
+Fixes: 60942c397af6 ("net: lan743x: Add support for PTP-IO Event Input External Timestamp (extts)")
+Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Acked-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://patch.msgid.link/20250616113743.36284-1-aleksei.kodanev@bell-sw.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 4 ++--
+ drivers/net/ethernet/microchip/lan743x_ptp.h | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index f5bd75d931c1b..e1305d159834b 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -489,7 +489,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
+index 0d29914cd4606..225e8232474d7 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ptp.h
++++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
+@@ -18,9 +18,9 @@
+  */
+ #define LAN743X_PTP_N_EVENT_CHAN	2
+ #define LAN743X_PTP_N_PEROUT		LAN743X_PTP_N_EVENT_CHAN
+-#define LAN743X_PTP_N_EXTTS		4
+-#define LAN743X_PTP_N_PPS		0
+ #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
++#define LAN743X_PTP_N_EXTTS		PCI11X1X_PTP_IO_MAX_CHANNELS
++#define LAN743X_PTP_N_PPS		0
+ #define PTP_CMD_CTL_TIMEOUT_CNT		50
  
- 		rtnl_lock();
- 		b = tipc_bearer_find(net, bname);
--		if (!b) {
-+		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
- 			rtnl_unlock();
- 			return -EINVAL;
- 		}
-@@ -500,7 +500,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
- 
- 		rtnl_lock();
- 		b = rtnl_dereference(tn->bearer_list[bid]);
--		if (!b) {
-+		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
- 			rtnl_unlock();
- 			return -EINVAL;
- 		}
+ struct lan743x_adapter;
 -- 
 2.39.5
 
