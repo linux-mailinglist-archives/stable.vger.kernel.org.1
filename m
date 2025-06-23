@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E1E3AE4456
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D920AAE446F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E95E1BC00F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59BD1174C8D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AA1E2472AF;
-	Mon, 23 Jun 2025 13:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DAC0256C9B;
+	Mon, 23 Jun 2025 13:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlaG3zzz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="scTbO/JG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07F51253F20;
-	Mon, 23 Jun 2025 13:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8F1252903;
+	Mon, 23 Jun 2025 13:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685747; cv=none; b=DGPXwlGlFE672Md9Smtpizx+0V+f+ADNV8jFxoUJROW975t4mao8C+cNDOtQCL70aZpPq+rMfrDzJkBGqnlopgB4iZzAl/w83xWQHQgKKM0ygBuh0hGs4dEO1Kg0BVh91QxJ0fBHMZhtsOVkFI9MHqDuWfR22a4udZdr586rNsI=
+	t=1750685769; cv=none; b=j5VqpL4CvQun74cQFKQRY7op3th3h90OYjDWLh1QLV9nMIQo537qc7kRL5gzTLjvG6rLRpm6Xa2lpSsFBt80eMbqloj1tnearxrvn+y/OZBqhgsr7N6pUorTFE0rU1CDhbAWX+J4T+6Hq+3WQMfnuLz5cpq1Ov/t9QQaDkuV9Es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685747; c=relaxed/simple;
-	bh=RRCXfEprhEVtcpATvkLNC2zN7MM/jznvAmeCaX10BsI=;
+	s=arc-20240116; t=1750685769; c=relaxed/simple;
+	bh=3HOG8ig37Oo1mgHlShFD0aE5WpHKfaeW9YcuF5WvOFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ek0N19s8SlxxkzS3zVJOUsl67cpWFC/cYoryFP1h8uhRdNrBSV2cxVCFL0q7rWxXZ2ideAe4sXBVCpqeEKPgUsFebFFm/lPNiNhd6BoJS6695yns5SWUpxsqfHPjm53WOBiBDbW8kbhXpUML5CCHLS+Qx5OoleA2y/ijFc/p4Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlaG3zzz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED60C4CEEA;
-	Mon, 23 Jun 2025 13:35:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZI5kq0m39x8gfjq1mETWhc7boezzIG8/EmsgWvWmeRo9n42caO3RFdWzcKl0xuvZBNGkQixQWdmnXAJ9TsylZJJ5vn9AOvcWRNRl8MKrllxBxtCPuFBNcfELwU0sVFbcszp8bWHPJ55MUkqPStne8xzBTcoNJA0hBlMxiI3K4XU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=scTbO/JG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3D28C4CEEA;
+	Mon, 23 Jun 2025 13:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685746;
-	bh=RRCXfEprhEVtcpATvkLNC2zN7MM/jznvAmeCaX10BsI=;
+	s=korg; t=1750685769;
+	bh=3HOG8ig37Oo1mgHlShFD0aE5WpHKfaeW9YcuF5WvOFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OlaG3zzzIJjc/9ta8ezEGXHujZYhIuGkcQYZ90QVprcXTHgZrwsQ1XDJoslcqOxp4
-	 FSKpISHsEDE5jOKvcc6p1lxmPaROpKs21F+0a8jB1+NgzX/InDacH58GgUUMU2KR6z
-	 Qb5z2oAghonFz2Zocnl8FkInVKBrdPZzYcHiYquw=
+	b=scTbO/JGd/yTB/9OVpcSMkxPqUincpp12Q81MbBfuf8Mo47ZLf1mYEda8qMDXiOtT
+	 WP5IjGm/M9EWOFfvjyMdRCs51ezAKpMINuwIOju4SYHaIBhMJSMTMpsk4UIykeUSnq
+	 W7RLGkefNXim4thvBUF+YbMOlx+xDB44D0Hvo0P0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/355] iio: adc: ad7124: Fix 3dB filter frequency reading
-Date: Mon, 23 Jun 2025 15:04:53 +0200
-Message-ID: <20250623130629.563496455@linuxfoundation.org>
+Subject: [PATCH 5.10 093/355] MIPS: Loongson64: Add missing #interrupt-cells for loongson64c_ls7a
+Date: Mon, 23 Jun 2025 15:04:54 +0200
+Message-ID: <20250623130629.591893826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -68,40 +68,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 8712e4986e7ce42a14c762c4c350f290989986a5 ]
+[ Upstream commit 6d223b8ffcd1593d032b71875def2daa71c53111 ]
 
-The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
-and for sinc3 the factor is 0.272 according to the data sheets for
-ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
+Similar to commit 98a9e2ac3755 ("MIPS: Loongson64: DTS: Fix msi node for ls7a").
 
-Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://patch.msgid.link/20250317115247.3735016-6-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fix follow warnings:
+  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts:28.31-36.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
+  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
+
+Fixes: 24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
+Tested-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 99d1288e66828..503814fca4dc0 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -320,9 +320,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
- 
- 	switch (st->channel_config[channel].filter_type) {
- 	case AD7124_SINC3_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
- 	case AD7124_SINC4_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
- 	default:
- 		return -EINVAL;
- 	}
+diff --git a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
+index c7ea4f1c0bb21..6c277ab83d4b9 100644
+--- a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
++++ b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
+@@ -29,6 +29,7 @@
+ 		compatible = "loongson,pch-msi-1.0";
+ 		reg = <0 0x2ff00000 0 0x8>;
+ 		interrupt-controller;
++		#interrupt-cells = <1>;
+ 		msi-controller;
+ 		loongson,msi-base-vec = <64>;
+ 		loongson,msi-num-vecs = <64>;
 -- 
 2.39.5
 
