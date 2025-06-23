@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9E62AE550F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9256CAE561B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 63B583AF291
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 000F53ACA43
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE1D1223DEF;
-	Mon, 23 Jun 2025 22:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B7321B8F6;
+	Mon, 23 Jun 2025 22:14:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqpthWWx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uy/4v6xa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC56B218580;
-	Mon, 23 Jun 2025 22:06:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 900251F7580;
+	Mon, 23 Jun 2025 22:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716409; cv=none; b=E6B7I43rJVgH3UI8Nqv6c5X9rq/hHbQpX0JsI9OrJmgVbIFu0MybWQnPwixpstyufFy3P8Ro5oTJvHjZvwxeHIImmh2PZ0TsI7LZCpckusTed+2V14Z6/xG3jJrZG5PaSZx0Pz14fwv8NpVqUnjW3xaGbrF9GGUfUJf0xAOL2cU=
+	t=1750716878; cv=none; b=MPbR9PflQEn2hXr7UtJLNyMTM/r0NGAXLfOlEfuLgHWBrhTThpIP4NU/yVdsWrDWME47IzcHGWnBbEow0jlAt2HNXZ3kF3A+3dHeBD4sDZEtz4rNIci6tu8MyOGpLQYVyvrDRZbXXwAv1oTbR7XeAmqJ2Fii3KQFe7aBYGk3RIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716409; c=relaxed/simple;
-	bh=4MxAW4MeKyKWlPTpyfJR4hKfpQqcofEev8TME8YUE4g=;
+	s=arc-20240116; t=1750716878; c=relaxed/simple;
+	bh=I45C3qjn0yrhPWC6PWNd9hcAcK1ik5gOrjPwcGGzN3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IiOYhEov6LT76aQJT874xX8DPk06evx/G8vz2eZHMG80W1IpwHtQhLyoS9anCSPQvr4LXqHzdkJBTkjoijQB1LFUpv0jh9RetOODsivCwDaoD/WeiPPOwM1TliGHw50C4ba9/zZ24LKVpIFzOv9rpYmuGlYXj0CcW1uf1E5wL4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqpthWWx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455E9C4CEEA;
-	Mon, 23 Jun 2025 22:06:49 +0000 (UTC)
+	 MIME-Version; b=nU4DhgyS5J5IfHCtw6uTH1slpSECF7YRHs3V4ZnTdWhx8gLZNcEZEJdX/b24BS4JWGKlTIS3ENpFe0zTvnwuf9Ijy9vc+NJl5UUadT1SMvjofvPPhcjySbUKR4KLTL1oJxyAeUIMw8vtPwiaQgY6Pb6PxUJ3Lfoh0yM2HprBONg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uy/4v6xa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3CEEC4CEED;
+	Mon, 23 Jun 2025 22:14:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716409;
-	bh=4MxAW4MeKyKWlPTpyfJR4hKfpQqcofEev8TME8YUE4g=;
+	s=korg; t=1750716877;
+	bh=I45C3qjn0yrhPWC6PWNd9hcAcK1ik5gOrjPwcGGzN3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqpthWWxIxBzdJ2pnDIwwZKIBSjGA68460HL6rUBKSVvWGjyZ9NPnIh1eIr5ocwO6
-	 HHAh4LH9pTA+QCqTprDig3NktkuBKmPoC714qAb8Ye28846F8hkJ+D2p5BzWL2KzOO
-	 fQ3gmUbw3AhpcoRKg3Mf1yyPyrpfsvRHgA+9yfJE=
+	b=uy/4v6xaI8NNnb1z2am6qeVaqK6Oy+WGzFyZ0ZElHSDRasYJBi6KbLqlU0w3117qv
+	 4SMsb0jFW1v51BDF/Okpfi3yHml3n/7KKHkKlnNG8HA0AMub6o0wQSmyRT06ymrL4X
+	 tjhtzR5uGdjnvDxEMAdSul+mk9IYgFTXysI3khb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 249/414] wifi: mac80211_hwsim: Prevent tsf from setting if beacon is disabled
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.1 341/508] f2fs: fix to do sanity check on sit_bitmap_size
 Date: Mon, 23 Jun 2025 15:06:26 +0200
-Message-ID: <20250623130648.272700955@linuxfoundation.org>
+Message-ID: <20250623130653.729715407@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit c575f5374be7a5c4be4acb9fe6be3a4669d94674 ]
+commit 5db0d252c64e91ba1929c70112352e85dc5751e7 upstream.
 
-Setting tsf is meaningless if beacon is disabled, so check that beacon
-is enabled before setting tsf.
+w/ below testcase, resize will generate a corrupted image which
+contains inconsistent metadata, so when mounting such image, it
+will trigger kernel panic:
 
-Reported-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=064815c6cd721082a52a
-Tested-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://patch.msgid.link/tencent_3609AC2EFAAED68CA5A7E3C6D212D1C67806@qq.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+touch img
+truncate -s $((512*1024*1024*1024)) img
+mkfs.f2fs -f img $((256*1024*1024))
+resize.f2fs -s -i img -t $((1024*1024*1024))
+mount img /mnt/f2fs
+
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.h:863!
+Oops: invalid opcode: 0000 [#1] SMP PTI
+CPU: 11 UID: 0 PID: 3922 Comm: mount Not tainted 6.15.0-rc1+ #191 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:f2fs_ra_meta_pages+0x47c/0x490
+
+Call Trace:
+ f2fs_build_segment_manager+0x11c3/0x2600
+ f2fs_fill_super+0xe97/0x2840
+ mount_bdev+0xf4/0x140
+ legacy_get_tree+0x2b/0x50
+ vfs_get_tree+0x29/0xd0
+ path_mount+0x487/0xaf0
+ __x64_sys_mount+0x116/0x150
+ do_syscall_64+0x82/0x190
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fdbfde1bcfe
+
+The reaseon is:
+
+sit_i->bitmap_size is 192, so size of sit bitmap is 192*8=1536, at maximum
+there are 1536 sit blocks, however MAIN_SEGS is 261893, so that sit_blk_cnt
+is 4762, build_sit_entries() -> current_sit_addr() tries to access
+out-of-boundary in sit_bitmap at offset from [1536, 4762), once sit_bitmap
+and sit_bitmap_mirror is not the same, it will trigger f2fs_bug_on().
+
+Let's add sanity check in f2fs_sanity_check_ckpt() to avoid panic.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/f2fs/super.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 4a2b7c9921bc6..6fcc21f596ea7 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -1229,6 +1229,11 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
- 	/* MLD not supported here */
- 	u32 bcn_int = data->link_data[0].beacon_int;
- 	u64 delta = abs(tsf - now);
-+	struct ieee80211_bss_conf *conf;
-+
-+	conf = link_conf_dereference_protected(vif, data->link_data[0].link_id);
-+	if (conf && !conf->enable_beacon)
-+		return;
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3499,6 +3499,7 @@ int f2fs_sanity_check_ckpt(struct f2fs_s
+ 	block_t user_block_count, valid_user_blocks;
+ 	block_t avail_node_count, valid_node_count;
+ 	unsigned int nat_blocks, nat_bits_bytes, nat_bits_blocks;
++	unsigned int sit_blk_cnt;
+ 	int i, j;
  
- 	/* adjust after beaconing with new timestamp at old TBTT */
- 	if (tsf > now) {
--- 
-2.39.5
-
+ 	total = le32_to_cpu(raw_super->segment_count);
+@@ -3610,6 +3611,13 @@ skip_cross:
+ 		return 1;
+ 	}
+ 
++	sit_blk_cnt = DIV_ROUND_UP(main_segs, SIT_ENTRY_PER_BLOCK);
++	if (sit_bitmap_size * 8 < sit_blk_cnt) {
++		f2fs_err(sbi, "Wrong bitmap size: sit: %u, sit_blk_cnt:%u",
++			 sit_bitmap_size, sit_blk_cnt);
++		return 1;
++	}
++
+ 	cp_pack_start_sum = __start_sum_addr(sbi);
+ 	cp_payload = __cp_payload(sbi);
+ 	if (cp_pack_start_sum < cp_payload + 1 ||
 
 
 
