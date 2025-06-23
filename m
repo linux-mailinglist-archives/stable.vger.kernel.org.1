@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F51EAE5648
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE26AE558C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F341C20C70
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 896604C4D14
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97268222599;
-	Mon, 23 Jun 2025 22:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC73229B2E;
+	Mon, 23 Jun 2025 22:11:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubLvcY7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ytwoc6WL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B7719E7F9;
-	Mon, 23 Jun 2025 22:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CA48229B16;
+	Mon, 23 Jun 2025 22:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717099; cv=none; b=UFCCIQANgmALiIEr6xbWyfNhqqGdSyr/eawejFWY6yTYdef5wl5gUKjzkI2J5PE5yiJTVvg2ShiIjRqg9yiT0Tnv/k+Ew/ck5alfVdvWTK5p6tm74NrnsQ9R5KGc2rrJs1SJNUimaaoBhxfq2iH2k+iH7NIKtD+MMsNazQjuyKo=
+	t=1750716680; cv=none; b=rPBMiszKOphPqAWG2mbD+8qzXPuYwRfzadUEfQ/GvzW0+9p12/XslnB6mSJJ1Q1Yuw7J/QlZpHWQX1M/+jQzBzTnj7/ThGAlwqhEXCRcHR7pmIjlUMBgCSDMqzcAPMF1ucIUQTt2FWHTTy/7MjtLD57cUzfiBtfJ0f6F9tzWP6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717099; c=relaxed/simple;
-	bh=i/QyOYSVnipiEwZeJijeZdCrYY2QACzG4hXSa2+TCIE=;
+	s=arc-20240116; t=1750716680; c=relaxed/simple;
+	bh=2celsTrBJb+YiZ/ur1JSJXMSgaola/dCv5loiiBKGzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UyGxcLUnQpIYau777ZWA258TklaD8pBe2XQYhFdbN55D5DqNhWnEoK039/Uujdkvc7K9NZiRhtV9jvdY/UKXaC9sZPT3YyjtKRouFPmNTivYG4CBwEO8NuzFx0qNt6PTd+79/5ZefMpQ7Tthj3iLJLgSkGZh6ZN9giNIH/EtG9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubLvcY7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF239C4CEEA;
-	Mon, 23 Jun 2025 22:18:18 +0000 (UTC)
+	 MIME-Version; b=UC8wnwJN57bgRoEgKy1o21Hrrzn7Fm82phQFmeRMzU58lkDspZB4dyMIqsfAV4LJm3mA6xJLML20CxI81EEA7ohrISTl3MuttRiNNDF2yWjtH0AnHMsW4qSWgTUrn2+DN0yMyRNWbHUQ/iN6RgwMpP7tEPoJJUFXoCe/xwa1TIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ytwoc6WL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97929C4CEF2;
+	Mon, 23 Jun 2025 22:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717099;
-	bh=i/QyOYSVnipiEwZeJijeZdCrYY2QACzG4hXSa2+TCIE=;
+	s=korg; t=1750716678;
+	bh=2celsTrBJb+YiZ/ur1JSJXMSgaola/dCv5loiiBKGzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ubLvcY7vUikLN/276uzT0mdU4bLBnGRAlJ9i5LeR4IonkftglwwRZ/rApdopmn0lK
-	 hAYBGP/UudH+PCgt2cHC4gYu8WA7gfYCSCdTEi5thY8LUQ+Hz8EkwJIx6sMevJ7F01
-	 WOoQlWNRaBleAExnE5nEBCBalbt2TKIogigZlxhA=
+	b=Ytwoc6WLLRd1eWshBAhRvHHrR0xtOzcEASwuEvshi1PWNeubIs2yw6VqSc3nxCekt
+	 6It1sWc77lYJmMAV1+eeB1xIEfQWfC+x+qnRHBUd5KJi6tN+20/Kmjtc4+VQeJMyOT
+	 blRaF8lQL8uo1kPTQMJs3iEr1x4938GzsWCnYgNI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.1 366/508] uio_hv_generic: Use correct size for interrupt and monitor pages
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 274/414] bpf, sockmap: Fix data lost during EAGAIN retries
 Date: Mon, 23 Jun 2025 15:06:51 +0200
-Message-ID: <20250623130654.361979074@linuxfoundation.org>
+Message-ID: <20250623130648.875954833@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
+[ Upstream commit 7683167196bd727ad5f3c3fc6a9ca70f54520a81 ]
 
-Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
-This can be different from the system page size.
+We call skb_bpf_redirect_clear() to clean _sk_redir before handling skb in
+backlog, but when sk_psock_handle_skb() return EAGAIN due to sk_rcvbuf
+limit, the redirect info in _sk_redir is not recovered.
 
-This size is read and used by the user-mode program to determine the
-mapped data region. An example of such user-mode program is the VMBus
-driver in DPDK.
+Fix skb redir loss during EAGAIN retries by restoring _sk_redir
+information using skb_bpf_set_redir().
 
-Cc: stable@vger.kernel.org
-Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before this patch:
+'''
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
+Setting up benchmark 'sockmap'...
+create socket fd c1:13 p1:14 c2:15 p2:16
+Benchmark 'sockmap' started.
+Send Speed 1343.172 MB/s, BPF Speed 1343.238 MB/s, Rcv Speed   65.271 MB/s
+Send Speed 1352.022 MB/s, BPF Speed 1352.088 MB/s, Rcv Speed   0 MB/s
+Send Speed 1354.105 MB/s, BPF Speed 1354.105 MB/s, Rcv Speed   0 MB/s
+Send Speed 1355.018 MB/s, BPF Speed 1354.887 MB/s, Rcv Speed   0 MB/s
+'''
+Due to the high send rate, the RX processing path may frequently hit the
+sk_rcvbuf limit. Once triggered, incorrect _sk_redir will cause the flow
+to mistakenly enter the "!ingress" path, leading to send failures.
+(The Rcv speed depends on tcp_rmem).
+
+After this patch:
+'''
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
+Setting up benchmark 'sockmap'...
+create socket fd c1:13 p1:14 c2:15 p2:16
+Benchmark 'sockmap' started.
+Send Speed 1347.236 MB/s, BPF Speed 1347.367 MB/s, Rcv Speed   65.402 MB/s
+Send Speed 1353.320 MB/s, BPF Speed 1353.320 MB/s, Rcv Speed   65.536 MB/s
+Send Speed 1353.186 MB/s, BPF Speed 1353.121 MB/s, Rcv Speed   65.536 MB/s
+'''
+
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20250407142234.47591-2-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/core/skmsg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -288,13 +288,13 @@ hv_uio_probe(struct hv_device *dev,
- 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
- 	pdata->info.mem[INT_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.int_page;
--	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
- 
- 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
- 	pdata->info.mem[MON_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.monitor_pages[1];
--	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
- 
- 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index a8d238dd982af..97f52394d1eb1 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -689,7 +689,8 @@ static void sk_psock_backlog(struct work_struct *work)
+ 			if (ret <= 0) {
+ 				if (ret == -EAGAIN) {
+ 					sk_psock_skb_state(psock, state, len, off);
+-
++					/* Restore redir info we cleared before */
++					skb_bpf_set_redir(skb, psock->sk, ingress);
+ 					/* Delay slightly to prioritize any
+ 					 * other work that might be here.
+ 					 */
+-- 
+2.39.5
+
 
 
 
