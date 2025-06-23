@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7134CAE438C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 646A3AE43A5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BC137AC264
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D66F7A9B0F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEAB254B03;
-	Mon, 23 Jun 2025 13:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71D54255F39;
+	Mon, 23 Jun 2025 13:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGL9wZMM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TnnOFkTC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFE02528F7;
-	Mon, 23 Jun 2025 13:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2B2257436;
+	Mon, 23 Jun 2025 13:30:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685410; cv=none; b=CZl9YexO+CxOHhFmDtHnUYy/oNcCwrjMTPmSQafx288Oe+kCVPb7e36D8aphY+2ncUQuhumEqD/QZ53wNDJJxHc+sosdKO7/XyPcTKJnYhvnZBOC6alXyIUmb75kE9FNq9kyeZK9genme6U9mQsC0Oa9VBssBQ7OleSiqhXbL8Y=
+	t=1750685428; cv=none; b=dly/9x3n2paUbWJUGQQjVNfGeUwwx0NZVAE1LInOUiWcy80YqhbKcFnZDU3T/VXAZoTWgemqtam1kipYpN3YVtoE4zXZXKdidbmeOEKCZ3wW2iY0X9u9M+jbWJVOE4XPOpHQXcjNjM1gTJA75rBhgYvVEYzf9ovrANNFo/J4xes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685410; c=relaxed/simple;
-	bh=JrpR7PGDLhnfykZQWD6GAzXR4bJQFtbQ1gNtn1s9v+4=;
+	s=arc-20240116; t=1750685428; c=relaxed/simple;
+	bh=uSOAXLVfux347zgSN9mNysJF1TEndxCTFh1dN5r+B0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tatLB0VhBZDHL0NOIk4lwvR7pjn6M1wbskReLNJBGq40YZ/oY/irJarbuyDMTbV+mB3TzOJ3A8h5HFdTvFc3Uiv5UZ6sYQ8Z+DIlXHg2DOyuhWL7hzjjWhAG4HOZEjpHgh/SWz9SNniSGo3W9NvP0jtOctywSSHMZCbqREafA4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGL9wZMM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40FFC4CEEA;
-	Mon, 23 Jun 2025 13:30:09 +0000 (UTC)
+	 MIME-Version; b=icSaa7sDt/762qgKEGa3pOCXqgQ0BA1KV1dKFEbP04Oh9cPpAufGB70nLq5AwwBoaTtxIx2CXSIjdWdeiIdvdJQXqqKdEGdR6yeWY1VPj4DbmR/4cbEYM5Ipc+rxLNJTiOIgEm6T1oJMYAbQ68Juu+M+TKmguqhcYHVa4uSahPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TnnOFkTC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A41AFC4CEF1;
+	Mon, 23 Jun 2025 13:30:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685410;
-	bh=JrpR7PGDLhnfykZQWD6GAzXR4bJQFtbQ1gNtn1s9v+4=;
+	s=korg; t=1750685428;
+	bh=uSOAXLVfux347zgSN9mNysJF1TEndxCTFh1dN5r+B0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGL9wZMM3+IwFBiau0HmxXDhMx6YD1iq5qmclejYJ4lZpNqZ737eYVoRR0zG2AW9R
-	 WkLAV8eqpR2tVGz1EVSmjtMXYdn53gx8cLoZesEHOd9ZI0cAUsNAnWMmwkt+iZbnCl
-	 jby3JdKjotUMXORcIhaBKbJyz9y3osuGifTHpCrc=
+	b=TnnOFkTCZzIVsWTVIGmp5tCm10MLNwUaiOm/HeHWbvYjmopQgzjG7sgWZnP8SX8jg
+	 1/7+0L8K2Vm6aHQ/+JcVP2lSDlMmDXx47r6gRhJaIkLGJGBFWUqfjGbXUqy+8XoqwU
+	 QVs0zH9NvlbGYyiBZq5DT8AtHYut6/jiMbFWe8Fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Shiyan <eagle.alexander923@gmail.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 030/508] power: reset: at91-reset: Optimize at91_reset()
-Date: Mon, 23 Jun 2025 15:01:15 +0200
-Message-ID: <20250623130645.988630758@linuxfoundation.org>
+Subject: [PATCH 6.1 031/508] PM: wakeup: Delete space in the end of string shown by pm_show_wakelocks()
+Date: Mon, 23 Jun 2025 15:01:16 +0200
+Message-ID: <20250623130646.012624827@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,54 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 62d48983f215bf1dd48665913318101fa3414dcf ]
+[ Upstream commit f0050a3e214aa941b78ad4caf122a735a24d81a6 ]
 
-This patch adds a small optimization to the low-level at91_reset()
-function, which includes:
-- Removes the extra branch, since the following store operations
-  already have proper condition checks.
-- Removes the definition of the clobber register r4, since it is
-  no longer used in the code.
+pm_show_wakelocks() is called to generate a string when showing
+attributes /sys/power/wake_(lock|unlock), but the string ends
+with an unwanted space that was added back by mistake by commit
+c9d967b2ce40 ("PM: wakeup: simplify the output logic of
+pm_show_wakelocks()").
 
-Fixes: fcd0532fac2a ("power: reset: at91-reset: make at91sam9g45_restart() generic")
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250307053809.20245-1-eagle.alexander923@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Remove the unwanted space.
+
+Fixes: c9d967b2ce40 ("PM: wakeup: simplify the output logic of pm_show_wakelocks()")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://patch.msgid.link/20250505-fix_power-v1-1-0f7f2c2f338c@quicinc.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/reset/at91-reset.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/power/wakelock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/power/reset/at91-reset.c b/drivers/power/reset/at91-reset.c
-index 741e44a017c3f..f47346a0f099f 100644
---- a/drivers/power/reset/at91-reset.c
-+++ b/drivers/power/reset/at91-reset.c
-@@ -128,12 +128,11 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
- 		"	str	%4, [%0, %6]\n\t"
- 		/* Disable SDRAM1 accesses */
- 		"1:	tst	%1, #0\n\t"
--		"	beq	2f\n\t"
- 		"	strne	%3, [%1, #" __stringify(AT91_DDRSDRC_RTR) "]\n\t"
- 		/* Power down SDRAM1 */
- 		"	strne	%4, [%1, %6]\n\t"
- 		/* Reset CPU */
--		"2:	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
-+		"	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
+diff --git a/kernel/power/wakelock.c b/kernel/power/wakelock.c
+index 52571dcad768b..4e941999a53ba 100644
+--- a/kernel/power/wakelock.c
++++ b/kernel/power/wakelock.c
+@@ -49,6 +49,9 @@ ssize_t pm_show_wakelocks(char *buf, bool show_active)
+ 			len += sysfs_emit_at(buf, len, "%s ", wl->name);
+ 	}
  
- 		"	b	.\n\t"
- 		:
-@@ -144,7 +143,7 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
- 		  "r" cpu_to_le32(AT91_DDRSDRC_LPCB_POWER_DOWN),
- 		  "r" (reset->data->reset_args),
- 		  "r" (reset->ramc_lpr)
--		: "r4");
-+	);
++	if (len > 0)
++		--len;
++
+ 	len += sysfs_emit_at(buf, len, "\n");
  
- 	return NOTIFY_DONE;
- }
+ 	mutex_unlock(&wakelocks_lock);
 -- 
 2.39.5
 
