@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-157055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFCB7AE5245
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E81FAAE52E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC6AF3BF187
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323573BB652
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C41E4221FCC;
-	Mon, 23 Jun 2025 21:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39E1EEA3C;
+	Mon, 23 Jun 2025 21:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ALXlSD1b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onxaT244"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8049119D084;
-	Mon, 23 Jun 2025 21:42:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8193FD4;
+	Mon, 23 Jun 2025 21:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714924; cv=none; b=XgX4rEECXxHBJccJoTlcH4dJ69tvnLjVRzusvPPftb+B0AyC4fnFQth9mzJIpP6jpBSALWS6QFGeWRUI7Owns9IQ8okTGSUOODUO5boPh7pleArcR+lsP0wtglviQjA2YBzQcrL6XFo1hKa8l9oKJuBDV+o/JCgaD3NOunN8emA=
+	t=1750715235; cv=none; b=cc48DHSbBIyS1/x8fM3NG/xWHypL/VL1M9aZQnFDQObrBAa6V2uGcD7pev0IFEMSzr5psdYHf1Y0Nqlctyme0XmPw8+FJ5aoHPvtsqezqBREpVHtuiYWSGYhytgzikHXE8FdfMaO6Uo2ecDv4iJatvJAChvcfoWhdfmSnLF2nGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714924; c=relaxed/simple;
-	bh=kZf3SKoKzEgRUkfdKXxL48LWIK2vL/c1OVI2zE++OpE=;
+	s=arc-20240116; t=1750715235; c=relaxed/simple;
+	bh=7QCIAh3fvlk+yX8a9jTzWORE8AQGyO0D9YlVo+xYBkU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYD/OxTRFXicy7SC3rs92F6sYw1V2ilfGaTMhuN3xsFAFX9GaA9Kt66lqYei+2OfnRDuV+Qmb8pY6AEVZcIhUVCRvLNJtJzte4Y+v6j981hUVDb+5ai2WAFVQbJtsDrwAN+apYiRoyfSYeM+8qLDG2gPGo5UU94X2v7TCpGkxkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ALXlSD1b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB597C4CEEA;
-	Mon, 23 Jun 2025 21:42:03 +0000 (UTC)
+	 MIME-Version; b=AoWgDTgpjKsVnlRUdCoGFXY7pB/NIRwZ/MMVzXFSZMv2ztn2VKF4ghm/fTgkFSEkmioZNVMpHWSTr39REN8W3Cbo8GEnCWk/vhLE3ZecxgeaWm7WwiBhWjo58y4ib9g+JNBRQg7TPwZzY0cDQxtdrThwIzIIX4xND4StYVchL94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onxaT244; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C62C4CEEA;
+	Mon, 23 Jun 2025 21:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714924;
-	bh=kZf3SKoKzEgRUkfdKXxL48LWIK2vL/c1OVI2zE++OpE=;
+	s=korg; t=1750715235;
+	bh=7QCIAh3fvlk+yX8a9jTzWORE8AQGyO0D9YlVo+xYBkU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ALXlSD1bSlfEe8MWiRHhwKMQI7ilWukq9tPRVD3mYmri4hYn2QgGcZYbjyJRiwblr
-	 TupeCiNoXCxL1Irnr6mPffwVA/zIT39WlW81WeMSTQ4VPcDKoqjp1+ZCOogvj3UzIr
-	 aYFVfHzy5koJhc771PZELVGZyHE771G3jL9KDJRk=
+	b=onxaT244F4g1bSu7MIxnysU1SP6pFmF2crjMYZLXW3h5L5xCxZxIKQZq1orm9DNIp
+	 sU3bIkEwjCirnhtG0zpK0zBmQd6Shp5306GzmxNMKkLQgLkI8CDvgJn//tgI+FfN4j
+	 prK7bKaaMp/h/+4VTKTRoujMsoFZ9aJhXrUyay3s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 426/592] wifi: iwlwifi: mld: Work around Clang loop unrolling bug
+	Jeongjun Park <aha310510@gmail.com>,
+	syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Vasiliy Kulikov <segoon@openwall.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 240/411] ipc: fix to protect IPCS lookups using RCU
 Date: Mon, 23 Jun 2025 15:06:24 +0200
-Message-ID: <20250623130710.567963820@linuxfoundation.org>
+Message-ID: <20250623130639.697106544@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +66,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 368556dd234dc4a506a35a0c99c0eee2ab475c77 ]
+commit d66adabe91803ef34a8b90613c81267b5ded1472 upstream.
 
-The nested loop in iwl_mld_send_proto_offload() confuses Clang into
-thinking there could be a final loop iteration past the end of the
-"nsc" array (which is only 4 entries). The FORTIFY checking in memcmp()
-(via ipv6_addr_cmp()) notices this (due to the available bytes in the
-out-of-bounds position of &nsc[4] being 0), and errors out, failing
-the build. For some reason (likely due to architectural loop unrolling
-configurations), this is only exposed on ARM builds currently. Due to
-Clang's lack of inline tracking[1], the warning is not very helpful:
+syzbot reported that it discovered a use-after-free vulnerability, [0]
 
-include/linux/fortify-string.h:719:4: error: call to '__read_overflow' declared with 'error' attribute: detected read beyond size of object (1st parameter)
-  719 |                         __read_overflow();
-      |                         ^
-1 error generated.
+[0]: https://lore.kernel.org/all/67af13f8.050a0220.21dd3.0038.GAE@google.com/
 
-But this was tracked down to iwl_mld_send_proto_offload()'s
-ipv6_addr_cmp() call.
+idr_for_each() is protected by rwsem, but this is not enough.  If it is
+not protected by RCU read-critical region, when idr_for_each() calls
+radix_tree_node_free() through call_rcu() to free the radix_tree_node
+structure, the node will be freed immediately, and when reading the next
+node in radix_tree_for_each_slot(), the already freed memory may be read.
 
-An upstream Clang bug has been filed[2] to track this. For now fix the
-build by explicitly bounding the inner loop by "n_nsc", which is what
-"c" is already limited to.
+Therefore, we need to add code to make sure that idr_for_each() is
+protected within the RCU read-critical region when we call it in
+shm_destroy_orphaned().
 
-Reported-by: Nathan Chancellor <nathan@kernel.org>
-Closes: https://github.com/ClangBuiltLinux/linux/issues/2076
-Link: https://github.com/llvm/llvm-project/pull/73552 [1]
-Link: https://github.com/llvm/llvm-project/issues/136603 [2]
-Link: https://lore.kernel.org/r/20250421204153.work.935-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250424143322.18830-1-aha310510@gmail.com
+Fixes: b34a6b1da371 ("ipc: introduce shm_rmid_forced sysctl")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com
+Cc: Jeongjun Park <aha310510@gmail.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Vasiliy Kulikov <segoon@openwall.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/d3.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ ipc/shm.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/d3.c b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-index ee99298eebf59..7ce01ad3608e1 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/d3.c
-@@ -1757,7 +1757,7 @@ iwl_mld_send_proto_offload(struct iwl_mld *mld,
+--- a/ipc/shm.c
++++ b/ipc/shm.c
+@@ -417,8 +417,11 @@ static int shm_try_destroy_orphaned(int
+ void shm_destroy_orphaned(struct ipc_namespace *ns)
+ {
+ 	down_write(&shm_ids(ns).rwsem);
+-	if (shm_ids(ns).in_use)
++	if (shm_ids(ns).in_use) {
++		rcu_read_lock();
+ 		idr_for_each(&shm_ids(ns).ipcs_idr, &shm_try_destroy_orphaned, ns);
++		rcu_read_unlock();
++	}
+ 	up_write(&shm_ids(ns).rwsem);
+ }
  
- 		addrconf_addr_solict_mult(&wowlan_data->target_ipv6_addrs[i],
- 					  &solicited_addr);
--		for (j = 0; j < c; j++)
-+		for (j = 0; j < n_nsc && j < c; j++)
- 			if (ipv6_addr_cmp(&nsc[j].dest_ipv6_addr,
- 					  &solicited_addr) == 0)
- 				break;
--- 
-2.39.5
-
 
 
 
