@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-157900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87165AE55F6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB0DAAE5565
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29E907A9070
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D72A1BC46C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20AC221FC7;
-	Mon, 23 Jun 2025 22:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA859225A59;
+	Mon, 23 Jun 2025 22:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjjWEVhI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upmZEPMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFAFB676;
-	Mon, 23 Jun 2025 22:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8A49222576;
+	Mon, 23 Jun 2025 22:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716994; cv=none; b=iz1WdTHzS4XWF6hv5MVYV3bTl/oQlj8lOCR616pTKMZkQWaQPWMDlCXUzUogpLLXV04Dq9HRWYqWYxqy7rf1tXdJnzC9G8KHjRrRex8f0kplK1Ugt9eJ9P/saCANHny/Y5Z04z72pZf3Vt3UxcXLB35cTHbAsEwVEBccOhG4HIA=
+	t=1750716600; cv=none; b=Ks5wcrbsqc+xaBXEYAcRt/FGBWSiNy75v+1bkLX8tgagopQ28riOlzMlOgKsyAOGGzRolUSEbNegle26v2aB9VmLJ4RZIcK1fNllgpdA73wEOKSKydMJCto+uXDpdkAYX+UtLo3LN8OqR9BXji2LjXy+85mN/0WxxIyCcBmb6c0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716994; c=relaxed/simple;
-	bh=lozMX9lZh+9eAUYETsVkkWBqPXvWtq+Kl3cl5rltwAQ=;
+	s=arc-20240116; t=1750716600; c=relaxed/simple;
+	bh=0mLVcLswd6V7AI7LzOMJeWl50AGq/tJQprEEimoGruo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQTeM9xq/RWjjTnmtQ07kYXi4zXmoM65nLv75Od3rvxseRONTBKPBffkWKM9FduPb3j8keNcuP7rLjtP+A+0F/cjh+bgFHLLl+BTwfaxjcLlhUDqG33lNwr91bbYhRlRg7DN3KacdVJU6FtZ0/nByR2jkm4rvWhBr6zzlkCK2TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjjWEVhI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC04C4CEEA;
-	Mon, 23 Jun 2025 22:16:33 +0000 (UTC)
+	 MIME-Version; b=NjzIDRFWwKNqe3PV1oiiuCR9A0ZMtP2C4FPzn954EG9Ko4vwo/5paGoBshpqCUs3BpaQU5TLiTZaILq3iboBAb0sH6rxAKwI6P3SvBcNn1Lp9imoVlzgEWjVe4/VMGKWCYQ8ou0yrEyclfipLtvD+/y+qOPRP5J69Gvh8gyjx6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upmZEPMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424FBC4CEEA;
+	Mon, 23 Jun 2025 22:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716994;
-	bh=lozMX9lZh+9eAUYETsVkkWBqPXvWtq+Kl3cl5rltwAQ=;
+	s=korg; t=1750716600;
+	bh=0mLVcLswd6V7AI7LzOMJeWl50AGq/tJQprEEimoGruo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mjjWEVhIqR/SOCu+UghfKpgBnAXTPYJUM+J45gXJKTMs98hcvMuefwYb/i4ixlKXt
-	 RnriZP+llDclLY3I0QD1gIFNWWjC873fe7XyJLH5WHqlpJrtvwOgiWgsoY1NIHcavs
-	 95clDF2KX6FAJTECt9TwdtA0+P9wDtcb4lkMXQCs=
+	b=upmZEPMMHex+SbSX825nkP/prYBnG55mUrS4SwnraZUXqxFd8/OVm2Ob5cdaz5YXk
+	 ovAp3lGkP7lSE5WZa79BCXUhtVbuFV6/i91j3/j0DgU383u63ZMUJA1BO3zpwTHM8F
+	 jbc0Bu0NuhPncNEDSpejKdSstMu/RaO9e5lP13JY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	MengEn Sun <mengensun@tencent.com>,
-	Andrea Righi <andrea@betterlinux.com>,
-	Fenggaung Wu <fengguang.wu@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 352/508] mm: fix ratelimit_pages update error in dirty_ratio_handler()
-Date: Mon, 23 Jun 2025 15:06:37 +0200
-Message-ID: <20250623130654.015784084@linuxfoundation.org>
+	Michael Walle <mwalle@kernel.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 261/414] net: ethernet: ti: am65-cpsw: handle -EPROBE_DEFER
+Date: Mon, 23 Jun 2025 15:06:38 +0200
+Message-ID: <20250623130648.562206831@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+From: Michael Walle <mwalle@kernel.org>
 
-commit f83f362d40ccceb647f7d80eb92206733d76a36b upstream.
+[ Upstream commit 09737cb80b8686ffca4ed1805fee745d5c85604d ]
 
-In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
-calling writeback_set_ratelimit(), as global_dirty_limits() always
-prioritizes the value of vm_dirty_bytes.
+of_get_mac_address() might fetch the MAC address from NVMEM and that
+driver might not have been loaded. In that case, -EPROBE_DEFER is
+returned. Right now, this will trigger an immediate fallback to
+am65_cpsw_am654_get_efuse_macid() possibly resulting in a random MAC
+address although the MAC address is stored in the referenced NVMEM.
 
-It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
+Fix it by handling the -EPROBE_DEFER return code correctly. This also
+means that the creation of the MDIO device has to be moved to a later
+stage as -EPROBE_DEFER must not be returned after child devices are
+created.
 
-  dirty_ratio_handler
-    writeback_set_ratelimit
-      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
-        domain_dirty_limits
-          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
-            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
-          else                                                                        |
-            thresh = f2(ratio)                                                        |
-      ratelimit_pages = f3(dirty_thresh)                                              |
-    vm_dirty_bytes = 0                             <- it's late! ---------------------+
-
-This causes ratelimit_pages to still use the value calculated based on
-vm_dirty_bytes, which is wrong now.
-
-
-The impact visible to userspace is difficult to capture directly because
-there is no procfs/sysfs interface exported to user space.  However, it
-will have a real impact on the balance of dirty pages.
-
-For example:
-
-1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
-
-2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
-   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
-   vm_dirty_bytes now.
-
-3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
-   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
-   domain_dirty_limits() is called, reallimit_pages is still calculated
-   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
-   conform to the actual intent of the user.
-
-Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
-Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Reviewed-by: MengEn Sun <mengensun@tencent.com>
-Cc: Andrea Righi <andrea@betterlinux.com>
-Cc: Fenggaung Wu <fengguang.wu@intel.com>
-Cc: Jinliang Zheng <alexjlzheng@tencent.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Walle <mwalle@kernel.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250414084336.4017237-3-mwalle@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/ti/am65-cpsw-nuss.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -540,8 +540,8 @@ static int dirty_ratio_handler(struct ct
+diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+index 61788a43cb861..393cc5192e90d 100644
+--- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
++++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
+@@ -2693,7 +2693,9 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
+ 			goto of_node_put;
  
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
--		writeback_set_ratelimit();
- 		vm_dirty_bytes = 0;
-+		writeback_set_ratelimit();
+ 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
+-		if (ret) {
++		if (ret == -EPROBE_DEFER) {
++			goto of_node_put;
++		} else if (ret) {
+ 			am65_cpsw_am654_get_efuse_macid(port_np,
+ 							port->port_id,
+ 							port->slave.mac_addr);
+@@ -3586,6 +3588,16 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
+ 		return ret;
  	}
- 	return ret;
- }
+ 
++	am65_cpsw_nuss_get_ver(common);
++
++	ret = am65_cpsw_nuss_init_host_p(common);
++	if (ret)
++		goto err_pm_clear;
++
++	ret = am65_cpsw_nuss_init_slave_ports(common);
++	if (ret)
++		goto err_pm_clear;
++
+ 	node = of_get_child_by_name(dev->of_node, "mdio");
+ 	if (!node) {
+ 		dev_warn(dev, "MDIO node not found\n");
+@@ -3602,16 +3614,6 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
+ 	}
+ 	of_node_put(node);
+ 
+-	am65_cpsw_nuss_get_ver(common);
+-
+-	ret = am65_cpsw_nuss_init_host_p(common);
+-	if (ret)
+-		goto err_of_clear;
+-
+-	ret = am65_cpsw_nuss_init_slave_ports(common);
+-	if (ret)
+-		goto err_of_clear;
+-
+ 	/* init common data */
+ 	ale_params.dev = dev;
+ 	ale_params.ale_ageout = AM65_CPSW_ALE_AGEOUT_DEFAULT;
+-- 
+2.39.5
+
 
 
 
