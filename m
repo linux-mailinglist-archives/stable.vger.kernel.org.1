@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A226BAE54DC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70518AE4FFD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D59D177645
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42F801B61DA6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB08218580;
-	Mon, 23 Jun 2025 22:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A18B338DE1;
+	Mon, 23 Jun 2025 21:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+wUohlk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWnNTdiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0440D1A4F12;
-	Mon, 23 Jun 2025 22:05:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F01C7482;
+	Mon, 23 Jun 2025 21:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716320; cv=none; b=cd97AwZCCXB0NJR8s0xoQmXtO5LE1rlPYxXeq2p9oy0Aj0i00mwMuFn/i7xQ2MNINYXWsw8GVgT/TxVFoHzZiOzNxcj7UXs+aEVm6KXjps/gjrJr4qma7yau1+nUq9iokaFrrUx9bnPNNwjkn2hwnKDyUhu+X4hsYPd9P/XJhr4=
+	t=1750713690; cv=none; b=hlvGdJaXxKy8XMmB1urSU+srqdBmK+bgugv0H2zH55KAiJGF0yaWxgMuDrXkuaXIE6qiwqXV7fBsXPEq2OpczTyi4bX+dlJsUAiSygovshcwRhy2J3GBA81liuW3Ds1ye1zxLJ+8nPK7yC8nYrnQ3RSDRjCWA56Iw6obz0QDpHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716320; c=relaxed/simple;
-	bh=FTUJJlof0FIiHk3DVIKScD5IWhRBJ45jERKihAYeAO4=;
+	s=arc-20240116; t=1750713690; c=relaxed/simple;
+	bh=gLBYuoPIsXxr4CixhdyhqCKrSc2TEk/5lCg8lF15cSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hIDX/wp8YoCokpEEMPJTlUUm5yo4T9mKuDMIijeO+498U6X58PfwP5Rc59VaUZScGFVmMQ1WbCjUomU/6lOoaS8yxz1OkIwGEFehMoNu2Z/BcMXucBD76oX7L7a89256Yk5m9Y6lNtElbPKIN56uyrvMczXEoF2iWvprwvmgr7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+wUohlk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492CCC4CEEA;
-	Mon, 23 Jun 2025 22:05:18 +0000 (UTC)
+	 MIME-Version; b=eLBY18xpjQc/qIlV+IzrYlTeTAppepp0BiRKZiQhsyMtix3MDj5j/CAIha1clgsGQ3JdiapApEacgBzrUqkYhN5eTqo4cZl1KG/2B+BC9GGEQDNEcMQQFlxL1uztkXpv63YCLQAp14PFnETW7zeXqyx3XK41B2Jejo52YjWa0Rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWnNTdiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F698C4CEEA;
+	Mon, 23 Jun 2025 21:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716318;
-	bh=FTUJJlof0FIiHk3DVIKScD5IWhRBJ45jERKihAYeAO4=;
+	s=korg; t=1750713689;
+	bh=gLBYuoPIsXxr4CixhdyhqCKrSc2TEk/5lCg8lF15cSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+wUohlklgiSE1BilipffeyLRhhm3pGdB1DF5mSGfjP5KKjyKoMyKTGZ8VL6qzUhd
-	 AUzelP502JbtfXgxcfKwQTjMNQf1qtL41NOURLWXC1Cc92Ty+oVt9kCt0KphzbGEpX
-	 trUqs6e5YpwiqqYfxmNj1kQDV2QGrDzU95OSZFm0=
+	b=qWnNTdiHWD6iC3WEuHSzCmj6qIIaLpONH3oiPDCzI4rGpWbEcaUficCPWUcwBJx7G
+	 jImiwzvhbV9B6U4iZM6mHcbpEiSrXBeFfs35qiWYED0MVMrOr6k8aVkUDJFN64t/lA
+	 ZthNl4Ew+Jb7k1IcKdzYiX0n/g/pFy6hv3Yp2zkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.10 333/355] arm64: bpf: Add BHB mitigation to the epilogue for cBPF programs
-Date: Mon, 23 Jun 2025 15:08:54 +0200
-Message-ID: <20250623130636.751653715@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 200/222] hwmon: (occ) fix unaligned accesses
+Date: Mon, 23 Jun 2025 15:08:55 +0200
+Message-ID: <20250623130618.242751145@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 0dfefc2ea2f29ced2416017d7e5b1253a54c2735 ]
+[ Upstream commit 2c021b45c154958566aad0cae9f74ab26a2d5732 ]
 
-A malicious BPF program may manipulate the branch history to influence
-what the hardware speculates will happen next.
+Passing a pointer to an unaligned integer as a function argument is
+undefined behavior:
 
-On exit from a BPF program, emit the BHB mititgation sequence.
+drivers/hwmon/occ/common.c:492:27: warning: taking address of packed member 'accumulator' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  492 |   val = occ_get_powr_avg(&power->accumulator,
+      |                           ^~~~~~~~~~~~~~~~~~
+drivers/hwmon/occ/common.c:493:13: warning: taking address of packed member 'update_tag' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  493 |            &power->update_tag);
+      |             ^~~~~~~~~~~~~~~~~
 
-This is only applied for 'classic' cBPF programs that are loaded by
-seccomp.
+Move the get_unaligned() calls out of the function and pass these
+through argument registers instead.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250610092553.2641094-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/spectre.h |    1 
- arch/arm64/kernel/proton-pack.c  |    2 -
- arch/arm64/net/bpf_jit_comp.c    |   55 ++++++++++++++++++++++++++++++++++++---
- 3 files changed, 53 insertions(+), 5 deletions(-)
+ drivers/hwmon/occ/common.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -32,6 +32,7 @@ void spectre_v4_enable_task_mitigation(s
- 
- enum mitigation_state arm64_get_spectre_bhb_state(void);
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
-+extern bool __nospectre_bhb;
- u8 get_spectre_bhb_loop_value(void);
- bool is_spectre_bhb_fw_mitigated(void);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -1088,7 +1088,7 @@ static void kvm_setup_bhb_slot(const cha
- #endif /* CONFIG_KVM */
- 
- static bool spectre_bhb_fw_mitigated;
--static bool __read_mostly __nospectre_bhb;
-+bool __read_mostly __nospectre_bhb;
- static int __init parse_spectre_bhb_param(char *str)
- {
- 	__nospectre_bhb = true;
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -7,14 +7,17 @@
- 
- #define pr_fmt(fmt) "bpf_jit: " fmt
- 
-+#include <linux/arm-smccc.h>
- #include <linux/bitfield.h>
- #include <linux/bpf.h>
-+#include <linux/cpu.h>
- #include <linux/filter.h>
- #include <linux/printk.h>
- #include <linux/slab.h>
- 
- #include <asm/byteorder.h>
- #include <asm/cacheflush.h>
-+#include <asm/cpufeature.h>
- #include <asm/debug-monitors.h>
- #include <asm/set_memory.h>
- 
-@@ -328,7 +331,48 @@ static int emit_bpf_tail_call(struct jit
- #undef jmp_offset
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index 0b689ccbb7935..16fe4bebe2d49 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -406,12 +406,10 @@ static ssize_t occ_show_power_1(struct device *dev,
+ 	return snprintf(buf, PAGE_SIZE - 1, "%llu\n", val);
  }
  
--static void build_epilogue(struct jit_ctx *ctx)
-+/* Clobbers BPF registers 1-4, aka x0-x3 */
-+static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
-+{
-+	const u8 r1 = bpf2a64[BPF_REG_1]; /* aka x0 */
-+	u8 k = get_spectre_bhb_loop_value();
-+
-+	if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY) ||
-+	    cpu_mitigations_off() || __nospectre_bhb ||
-+	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
-+		return;
-+
-+	if (supports_clearbhb(SCOPE_SYSTEM)) {
-+		emit(aarch64_insn_gen_hint(AARCH64_INSN_HINT_CLEARBHB), ctx);
-+		return;
-+	}
-+
-+	if (k) {
-+		emit_a64_mov_i64(r1, k, ctx);
-+		emit(A64_B(1), ctx);
-+		emit(A64_SUBS_I(true, r1, r1, 1), ctx);
-+		emit(A64_B_(A64_COND_NE, -2), ctx);
-+		emit(aarch64_insn_gen_dsb(AARCH64_INSN_MB_ISH), ctx);
-+		emit(aarch64_insn_get_isb_value(), ctx);
-+	}
-+
-+	if (is_spectre_bhb_fw_mitigated()) {
-+		emit(A64_ORR_I(false, r1, AARCH64_INSN_REG_ZR,
-+			       ARM_SMCCC_ARCH_WORKAROUND_3), ctx);
-+		switch (arm_smccc_1_1_get_conduit()) {
-+		case SMCCC_CONDUIT_HVC:
-+			emit(aarch64_insn_get_hvc_value(), ctx);
-+			break;
-+		case SMCCC_CONDUIT_SMC:
-+			emit(aarch64_insn_get_smc_value(), ctx);
-+			break;
-+		default:
-+			pr_err_once("Firmware mitigation enabled with unknown conduit\n");
-+		}
-+	}
-+}
-+
-+static void build_epilogue(struct jit_ctx *ctx, bool was_classic)
+-static u64 occ_get_powr_avg(u64 *accum, u32 *samples)
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
  {
- 	const u8 r0 = bpf2a64[BPF_REG_0];
- 	const u8 r6 = bpf2a64[BPF_REG_6];
-@@ -347,10 +391,13 @@ static void build_epilogue(struct jit_ct
- 	emit(A64_POP(r8, r9, A64_SP), ctx);
- 	emit(A64_POP(r6, r7, A64_SP), ctx);
+-	u64 divisor = get_unaligned_be32(samples);
+-
+-	return (divisor == 0) ? 0 :
+-		div64_u64(get_unaligned_be64(accum) * 1000000ULL, divisor);
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
+ }
  
-+	if (was_classic)
-+		build_bhb_mitigation(ctx);
-+
- 	/* Restore FP/LR registers */
- 	emit(A64_POP(A64_FP, A64_LR, A64_SP), ctx);
- 
--	/* Set return value */
-+	/* Move the return value from bpf:r0 (aka x7) to x0 */
- 	emit(A64_MOV(1, A64_R(0), r0), ctx);
- 
- 	emit(A64_RET(A64_LR), ctx);
-@@ -1057,7 +1104,7 @@ struct bpf_prog *bpf_int_jit_compile(str
- 	}
- 
- 	ctx.epilogue_offset = ctx.idx;
--	build_epilogue(&ctx);
-+	build_epilogue(&ctx, was_classic);
- 
- 	extable_size = prog->aux->num_exentries *
- 		sizeof(struct exception_table_entry);
-@@ -1089,7 +1136,7 @@ skip_init_ctx:
- 		goto out_off;
- 	}
- 
--	build_epilogue(&ctx);
-+	build_epilogue(&ctx, was_classic);
- 
- 	/* 3. Extra pass to validate JITed code. */
- 	if (validate_code(&ctx)) {
+ static ssize_t occ_show_power_2(struct device *dev,
+@@ -436,8 +434,8 @@ static ssize_t occ_show_power_2(struct device *dev,
+ 				get_unaligned_be32(&power->sensor_id),
+ 				power->function_id, power->apss_channel);
+ 	case 1:
+-		val = occ_get_powr_avg(&power->accumulator,
+-				       &power->update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -474,8 +472,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return snprintf(buf, PAGE_SIZE - 1, "%u_system\n",
+ 				get_unaligned_be32(&power->sensor_id));
+ 	case 1:
+-		val = occ_get_powr_avg(&power->system.accumulator,
+-				       &power->system.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->system.accumulator),
++				       get_unaligned_be32(&power->system.update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->system.update_tag) *
+@@ -488,8 +486,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return snprintf(buf, PAGE_SIZE - 1, "%u_proc\n",
+ 				get_unaligned_be32(&power->sensor_id));
+ 	case 5:
+-		val = occ_get_powr_avg(&power->proc.accumulator,
+-				       &power->proc.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->proc.accumulator),
++				       get_unaligned_be32(&power->proc.update_tag));
+ 		break;
+ 	case 6:
+ 		val = (u64)get_unaligned_be32(&power->proc.update_tag) *
+@@ -502,8 +500,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return snprintf(buf, PAGE_SIZE - 1, "%u_vdd\n",
+ 				get_unaligned_be32(&power->sensor_id));
+ 	case 9:
+-		val = occ_get_powr_avg(&power->vdd.accumulator,
+-				       &power->vdd.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdd.accumulator),
++				       get_unaligned_be32(&power->vdd.update_tag));
+ 		break;
+ 	case 10:
+ 		val = (u64)get_unaligned_be32(&power->vdd.update_tag) *
+@@ -516,8 +514,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return snprintf(buf, PAGE_SIZE - 1, "%u_vdn\n",
+ 				get_unaligned_be32(&power->sensor_id));
+ 	case 13:
+-		val = occ_get_powr_avg(&power->vdn.accumulator,
+-				       &power->vdn.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdn.accumulator),
++				       get_unaligned_be32(&power->vdn.update_tag));
+ 		break;
+ 	case 14:
+ 		val = (u64)get_unaligned_be32(&power->vdn.update_tag) *
+-- 
+2.39.5
+
 
 
 
