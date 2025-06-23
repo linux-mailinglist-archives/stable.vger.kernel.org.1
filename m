@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CE7BAE437D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA7F4AE4525
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE52B177C16
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD7D4411AA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A03CC23A9BE;
-	Mon, 23 Jun 2025 13:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687AC253953;
+	Mon, 23 Jun 2025 13:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2BwMlKN3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSx0CY9z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E44B239E63;
-	Mon, 23 Jun 2025 13:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2572B16419;
+	Mon, 23 Jun 2025 13:38:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685113; cv=none; b=Up38k5POUPcLcwxr9ATZ+yjSGr3kgUnozZJ4yFRIXsWrAbb8UUMq1A4/4eoi6TnhpBTSLFc4Fao64fgUUFVTm/6Rij8OGcfcVrV9II+H1Xc4jBFxey1qnsZQg46rCUpcwwczd28Uh3VDzdEF9IVMAl0CvtVMrrq2GHxLvdn+1CA=
+	t=1750685911; cv=none; b=JyA+pcWOLDZt5canvZDTjiuG7B6j2FxZpfTZrWa720tT3DlXCHpJYyv3Dd+e0czFLaqCxHmn10qOSfllUjBPrUHdTu2Ye66fqDSL/XsLr8TFO7XaTAsWqEdXz3KdXctKubeti8NyY5tpF9p7woNNV+jKctjBu8JTFwEu2wergNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685113; c=relaxed/simple;
-	bh=bYe+f5qioUYQRiEcLbSGu0yOzXcWudECFwjPzQ12zng=;
+	s=arc-20240116; t=1750685911; c=relaxed/simple;
+	bh=h+JjM/rEjFVIdTsO9l/6WJMoMnUmL+V+rn+LtVrgNNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YDWe5fLf04zE0X5Tf/6TPvxxz9ZLwrCgNR+5B+XFfTOSKkUIvv+ElRoiGpJ6la4FxSgmpHr2DfpnFcKXLf2WeFci8EUI6KdeVqSQRZb6l/YqjEWQ7/RB9ERuuCzpEzdbqa5T64r5R8MEamKFMDjoM0qcsAIG2K5ER7trKcUankc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2BwMlKN3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E669BC4CEEA;
-	Mon, 23 Jun 2025 13:25:12 +0000 (UTC)
+	 MIME-Version; b=F++fm6VLwOx+nzaMzzT30I2XxSEkfnSiGRgLRAu0WMBB2IjmTf7U9Yw7GRib1NVGmt289cFyVkTU4hOvsIrLzZp3vtr9AR4XAZ9nt+pc8WKciIMV9sVbmYM1V0ih2mT6dJf8dti1hhhhizua6DyKQkfM42r3GSwaiiqeOmZBJG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSx0CY9z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A136C4CEEA;
+	Mon, 23 Jun 2025 13:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685113;
-	bh=bYe+f5qioUYQRiEcLbSGu0yOzXcWudECFwjPzQ12zng=;
+	s=korg; t=1750685910;
+	bh=h+JjM/rEjFVIdTsO9l/6WJMoMnUmL+V+rn+LtVrgNNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2BwMlKN3FjkH7USl8iDc7mcqkpPpQpROEuBiolrkMxVnUDZi4Wml+lE3RLEFcRaKk
-	 WcOK0hfNwPCS4AhL6hrbYIa8e2R+67pyWpHF0YmcvmqJg6fD3KPAJKi5dssFyBIDdE
-	 SC/RYiPraSl7fCb8eNH4gcC4h9ZwgHMNcgXw0x4Q=
+	b=WSx0CY9zTKbOpOyb/469d+eqvxap33dkTylaQAwoQOvNAUYJ+La42gOgHo6693a19
+	 51GiiN//EZBFaPepNLfWJwbS3q86tjUpWe+OX6+NJHNpeemeW8S0Leo+DUkP3f2i98
+	 cN/NHrQgxkBMPfTlngqgIWyHsSYYwXAywGqAP22Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Thompson <funaho@jurai.org>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Vicki Pfau <vi@endrift.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 027/355] m68k: mac: Fix macintosh_config for Mac II
+Subject: [PATCH 6.15 270/592] drm: panel-orientation-quirks: Add ZOTAC Gaming Zone
 Date: Mon, 23 Jun 2025 15:03:48 +0200
-Message-ID: <20250623130627.624408840@linuxfoundation.org>
+Message-ID: <20250623130706.744866711@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Vicki Pfau <vi@endrift.com>
 
-[ Upstream commit 52ae3f5da7e5adbe3d1319573b55dac470abb83c ]
+[ Upstream commit 96c85e428ebaeacd2c640eba075479ab92072ccd ]
 
-When booted on my Mac II, the kernel prints this:
+Add a panel orientation quirk for the ZOTAC Gaming Zone handheld gaming device.
 
-    Detected Macintosh model: 6
-    Apple Macintosh Unknown
-
-The catch-all entry ("Unknown") is mac_data_table[0] which is only needed
-in the unlikely event that the bootinfo model ID can't be matched.
-When model ID is 6, the search should begin and end at mac_data_table[1].
-Fix the off-by-one error that causes this problem.
-
-Cc: Joshua Thompson <funaho@jurai.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d0f30a551064ca4810b1c48d5a90954be80634a9.1745453246.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Vicki Pfau <vi@endrift.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250313211643.860786-2-vi@endrift.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
-index 2bea1799b8de7..856042fecd81f 100644
---- a/arch/m68k/mac/config.c
-+++ b/arch/m68k/mac/config.c
-@@ -800,7 +800,7 @@ static void __init mac_identify(void)
- 	}
- 
- 	macintosh_config = mac_data_table;
--	for (m = macintosh_config; m->ident != -1; m++) {
-+	for (m = &mac_data_table[1]; m->ident != -1; m++) {
- 		if (m->ident == model) {
- 			macintosh_config = m;
- 			break;
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index c554ad8f246b6..7ac0fd5391fea 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -517,6 +517,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "LTH17"),
+ 		},
+ 		.driver_data = (void *)&lcd800x1280_rightside_up,
++	}, {	/* ZOTAC Gaming Zone */
++		.matches = {
++		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ZOTAC"),
++		  DMI_EXACT_MATCH(DMI_BOARD_NAME, "G0A1W"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* One Mix 2S (generic strings, also match on bios date) */
+ 		.matches = {
+ 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Default string"),
 -- 
 2.39.5
 
