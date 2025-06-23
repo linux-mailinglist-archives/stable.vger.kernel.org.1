@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155579-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0B63AE42A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E653AAE42DB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6CCC33BA00A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 561C517D390
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC2F23BF9F;
-	Mon, 23 Jun 2025 13:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 819532550DD;
+	Mon, 23 Jun 2025 13:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lcrCIeYB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYkcamr4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A920219E0;
-	Mon, 23 Jun 2025 13:19:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C45A255222;
+	Mon, 23 Jun 2025 13:19:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684787; cv=none; b=pELBM4fc9VeTFWQ//wwBVZbr0ZbLzJzzJ3CwaTtMIAC8qTd/6An0vrc4i+0bbsXYbdqwFDQVANEdEVSlr0fdk2aMZTSjeGOjSqWRe4sKddnuYwf+bcBPJQU8Q4NAevKkgv8p1185DgrJ6BYJneOLu7Ui7XFobLhlycpfDDgmqLc=
+	t=1750684792; cv=none; b=uTkJ/DbgCpG51NWhBjHkTW7zpJohKJqWNb9G9pv8LO9O2nBVroORZwbXUHKpU7qZ1jPVRSid6jggpZChcOsHslUJqdFVntYzkZy5TZ2w9+zfoS5thBzrxI7TtDfg82rnK1MHV8IdVF4SzVvpRvXVxQpJuj+wUux/7ubdSeA9Xmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684787; c=relaxed/simple;
-	bh=XOfP00PdTQYjFqeNsF1SwhhNjLKsiU4Fj7f4fbh4+k0=;
+	s=arc-20240116; t=1750684792; c=relaxed/simple;
+	bh=W/M3JQAPDEBDNgkgDvaCR+4QOLZu48dST1qfte/NK44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOSaWesTuU+i3437qk15fH4LqlwwvDT+xKZYkLjhB2Y4cWttgKXcH2uNHjz2QL3W2dUsfzLdt9tGRM0hKP4o/7IvoGpvnGcB4TYHwpMIgSX2qhFizdwsWGi16pA4rC7UvJmj6MxPb5kiYr8eobbw6ND+t6UNFdRrQNvw58FqBXk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lcrCIeYB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B36E6C4CEEA;
-	Mon, 23 Jun 2025 13:19:46 +0000 (UTC)
+	 MIME-Version; b=Df74jNPXjABmsP3WtwZEhcHWa2ME8KxRwqFHXeGpAZnHc2kGnCwtaFmMEk0ALQ+xYHV5BKrzDjhUlZ+Moho//jkxnEAu+/jtnnMVTUWVzNMsa0KAjKJvBlL9FdSiETs3Trv1CXZs5R9iuCTdF2zJJmTa43IZfC6SdC7Han+yr6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYkcamr4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE728C4CEF0;
+	Mon, 23 Jun 2025 13:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684787;
-	bh=XOfP00PdTQYjFqeNsF1SwhhNjLKsiU4Fj7f4fbh4+k0=;
+	s=korg; t=1750684792;
+	bh=W/M3JQAPDEBDNgkgDvaCR+4QOLZu48dST1qfte/NK44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lcrCIeYBtypWrOV6eIVtwIh8TtiP0EcO5rrU+umnNIxzUjaCcy/YxNVkmq8UM1tD2
-	 ukqw+rg8WpEG2vG56xwwYShsLYz+BoF+l3WHbqdS7mQPzXHPnyWIK2BqOoKAoOmgqC
-	 We/mKUAIigXPKWi8HLOipOkL9HJXqFalkomIDRgo=
+	b=WYkcamr4SyMdxmk2jTUC/t8eHUDyjSxMuuroy2N81FvXEX+I0kwFZegHZHGUu9tcg
+	 L1i5nFyvLd0Cf7LhHEgCqwACKgKyGAs5gdLMQ8k6YG21Ee267cKbAavbhIXuAsS1m+
+	 w/jIyF4CIMix3OrzVKvypaZV41+4tBvA4e/jliNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/222] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
-Date: Mon, 23 Jun 2025 15:06:04 +0200
-Message-ID: <20250623130612.772793773@linuxfoundation.org>
+Subject: [PATCH 5.4 030/222] f2fs: clean up w/ fscrypt_is_bounce_page()
+Date: Mon, 23 Jun 2025 15:06:05 +0200
+Message-ID: <20250623130612.801594344@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,65 +66,32 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
+[ Upstream commit 0c708e35cf26449ca317fcbfc274704660b6d269 ]
 
-hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
-inline function hns_roce_write64(), but it doesn't include this
-header currently. This leads to that files including
-hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
-errors, even if they themselves don't really rely on hnae3.h.
-This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
-directly.
+Just cleanup, no logic changes.
 
-Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
- drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
- drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
- 3 files changed, 1 insertion(+), 2 deletions(-)
+ fs/f2fs/data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 28bbc4708fd48..f494a571c7a54 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -41,7 +41,6 @@
- #include <rdma/ib_umem.h>
- #include <rdma/uverbs_ioctl.h>
+diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
+index 8f78050c935d7..e7aa23f098470 100644
+--- a/fs/f2fs/data.c
++++ b/fs/f2fs/data.c
+@@ -37,7 +37,7 @@ static bool __is_cp_guaranteed(struct page *page)
+ 	struct inode *inode;
+ 	struct f2fs_sb_info *sbi;
  
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_cmd.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-index b9ab3ca3079c7..45eac5db33145 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-@@ -34,6 +34,7 @@
- #define _HNS_ROCE_HW_V2_H
+-	if (!mapping)
++	if (fscrypt_is_bounce_page(page))
+ 		return false;
  
- #include <linux/bitops.h>
-+#include "hnae3.h"
- 
- #define HNS_ROCE_VF_QPC_BT_NUM			256
- #define HNS_ROCE_VF_SCCC_BT_NUM			64
-diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-index 39c08217e861a..2ac0359a647b1 100644
---- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-@@ -4,7 +4,6 @@
- #include <rdma/rdma_cm.h>
- #include <rdma/restrack.h>
- #include <uapi/rdma/rdma_netlink.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hw_v2.h"
+ 	inode = mapping->host;
 -- 
 2.39.5
 
