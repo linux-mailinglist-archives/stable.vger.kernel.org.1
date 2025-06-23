@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EEC0AE4418
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0ED2AE455E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C49C189B0DB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CD13443C4E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86760252903;
-	Mon, 23 Jun 2025 13:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99668254874;
+	Mon, 23 Jun 2025 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbw5W7WW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eBxQTqIj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434A2253B47;
-	Mon, 23 Jun 2025 13:33:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5794B254844;
+	Mon, 23 Jun 2025 13:42:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685603; cv=none; b=XQ04myXxuhP5xjjDssgJPOLRFULHr19pAKOjP2UpCnNcE1hlV/FfASXn6DwltSSPVswQf6pskrrs33fJvCO7TbBgrMCBf/BpFT290wXKCOKvEG72tm6g5hxyp3kxiCd0b5LHO00JNIzzBLBf9fM6Uv4ZrTLwdenaP2a9lwdaomU=
+	t=1750686147; cv=none; b=W89ufDs/ZPFktKfjuTC4k6W7iHpswDCiCOCkgDYyjBlek5v1k1fDlZhUt0JqCMeVwbrv5EkLNF1FmlJTW2BOoC+Y57xaa/1Y41T1N0udrTyNO56MlR/5j/eCZ4OvtFzopMm7MIlrWT4YEZLXz0YApR6BDpxkCeEJkwvDQc4ZFIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685603; c=relaxed/simple;
-	bh=pMTp9b5q8/g0GLzZ2e2G32bYnljWUAKxh5+Uk8ha/ck=;
+	s=arc-20240116; t=1750686147; c=relaxed/simple;
+	bh=FiqfMiQYL1gmSsxFLHAY06GHpyjzwQkwYSjtcv07Yks=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l85jVygFSSQUrCKzzY/uuj35RTynnMPnPHMebdMiPfkyRIxNQW/JBrQxqVad4aLfuMcuZc4YUICVbKW2rD4DpQG51JM5gWscwXZ33bRZxjQhKAEmqa9PVxan7yw5mQoaxu85WVD/6wiJEIVUbL85lqSVxYha5p1unJWJ/J00hYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbw5W7WW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB529C4CEEA;
-	Mon, 23 Jun 2025 13:33:22 +0000 (UTC)
+	 MIME-Version; b=ofAT62n7i1VQ5rtnCbrfJwpyBaKd+Du+ANrsVfgd3Tl12I88gVQSHjR8XMvPYmgEv3OHZKRB2mkMT8eyWNmh8bmjoxJWdTok8ksUYOeKGNqnx1Yrzf+Ika+WzKWyP/01k3XXMjzRMBBlPtu9OTgiC0gUgUSO6TfxdLVWTE1ykHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eBxQTqIj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2477C4CEF0;
+	Mon, 23 Jun 2025 13:42:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685603;
-	bh=pMTp9b5q8/g0GLzZ2e2G32bYnljWUAKxh5+Uk8ha/ck=;
+	s=korg; t=1750686147;
+	bh=FiqfMiQYL1gmSsxFLHAY06GHpyjzwQkwYSjtcv07Yks=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbw5W7WWR3aZAZiL/85E2s5aIIDaECCHZpCernQI57ud+5CUOjSQA1wts5uIpFK21
-	 hG5UPr3ni2/LPrJiR7ghzrqqT6RQSQMdHq//1nWHgC/UE3x/YB3b6QlwtBD7QVIDd/
-	 ipQ8W4yLdZpLUeBS+qPRrikOIGqkyVmr5zFNcGaE=
+	b=eBxQTqIjCyYXd5+zW+zbVCd2WiebxPY9kjrOORx/UFf/0GbA0/Ijd1bkxPafYnQ9K
+	 sKB4Y5sF+ZqS9zzzhRu63CaVUbnYPismTMgvKIXy9COl4/6zi1Fp7beNj5iF5ciz35
+	 qFw26pTAnNbQiML4ft5fS/KHzpCC014UtthUnjl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/355] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
-Date: Mon, 23 Jun 2025 15:04:23 +0200
-Message-ID: <20250623130628.694603367@linuxfoundation.org>
+Subject: [PATCH 6.15 306/592] drm/rockchip: vop2: Make overlay layer select register configuration take effect by vsync
+Date: Mon, 23 Jun 2025 15:04:24 +0200
+Message-ID: <20250623130707.681313552@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
+[ Upstream commit c5996e4ab109c8bb5541453b20647eaaf9350f41 ]
 
-Although not noticeable when used every day, the RTC appears to drift when
-left to sit over time.  This is due to the capacitive load not being
-properly set. Fix RTC drift by correcting the capacitive load setting
-from 7000 to 12500, which matches the actual hardware configuration.
+Because the layer/window enable/disable is take effect by vsync, if the
+overlay configuration of these layers does not follow vsync and
+takes effect immediately instead, when multiple layers are dynamically
+enable/disable, inconsistent display contents may be seen on the screen.
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250318062024.4555-1-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/rockchip/rockchip_drm_vop2.h | 1 +
+ drivers/gpu/drm/rockchip/rockchip_vop2_reg.c | 5 ++++-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index b88c3c99b007e..34b2e862b7083 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -194,6 +194,7 @@
- 	rtc@51 {
- 		compatible = "nxp,pcf85263";
- 		reg = <0x51>;
-+		quartz-load-femtofarads = <12500>;
- 	};
- };
+diff --git a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
+index 680bedbb770e6..fc3ecb9fcd957 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
++++ b/drivers/gpu/drm/rockchip/rockchip_drm_vop2.h
+@@ -710,6 +710,7 @@ enum dst_factor_mode {
  
+ #define VOP2_COLOR_KEY_MASK				BIT(31)
+ 
++#define RK3568_OVL_CTRL__LAYERSEL_REGDONE_SEL		GENMASK(31, 30)
+ #define RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD		BIT(28)
+ #define RK3568_OVL_CTRL__YUV_MODE(vp)			BIT(vp)
+ 
+diff --git a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
+index 0a2840cbe8e22..32c4ed6857395 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
++++ b/drivers/gpu/drm/rockchip/rockchip_vop2_reg.c
+@@ -2070,7 +2070,10 @@ static void rk3568_vop2_setup_layer_mixer(struct vop2_video_port *vp)
+ 	struct rockchip_crtc_state *vcstate = to_rockchip_crtc_state(vp->crtc.state);
+ 
+ 	ovl_ctrl = vop2_readl(vop2, RK3568_OVL_CTRL);
+-	ovl_ctrl |= RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD;
++	ovl_ctrl &= ~RK3568_OVL_CTRL__LAYERSEL_REGDONE_IMD;
++	ovl_ctrl &= ~RK3568_OVL_CTRL__LAYERSEL_REGDONE_SEL;
++	ovl_ctrl |= FIELD_PREP(RK3568_OVL_CTRL__LAYERSEL_REGDONE_SEL, vp->id);
++
+ 	if (vcstate->yuv_overlay)
+ 		ovl_ctrl |= RK3568_OVL_CTRL__YUV_MODE(vp->id);
+ 	else
 -- 
 2.39.5
 
