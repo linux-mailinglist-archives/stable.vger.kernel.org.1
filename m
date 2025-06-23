@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE1C2AE4F60
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FFBDAE4FC4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E18877AC66C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E9E51B617F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FA31E8324;
-	Mon, 23 Jun 2025 21:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7466222257E;
+	Mon, 23 Jun 2025 21:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MrB1mQRL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbK+apAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7250C1DF98B;
-	Mon, 23 Jun 2025 21:14:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303BA22173D;
+	Mon, 23 Jun 2025 21:18:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713265; cv=none; b=HUoIa+qJSy/8CKbi9yA6XlQxSfECw/tO2mBZr1HAw10pE0dMiOPC3D+QeYxPgjjYKI0GmNAPTCA7Rf9FQecubs9b7Z21Ss8r4J1YZYA/+tvpKE6eSWLCJVCfffksM88crkS2Rgpr7g/F9MI89QlOs0sd25wjlHSlMIgy3BUWog4=
+	t=1750713514; cv=none; b=L7wTjABbmiNixdNFU80GBx4kMGQzwLl9fjRKIdO0rh3AHdVUgcuTk6R0yUKijCXkyGnGt+snLEFtj7+Jk3tqKbYy8WG0LTJJKkKO7NwipjxNgYkTBi86E4B+opkQuneZq3UxhFIbR+g4+KIw4g+Fjy5huuxrV6KjuFT9rx008Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713265; c=relaxed/simple;
-	bh=RNlWxsLPaWjFUznLhNEXP5XXfuCOVe7dnPMf3HIDZpw=;
+	s=arc-20240116; t=1750713514; c=relaxed/simple;
+	bh=uildalYhA6I8yMkn3phzxAkSzo53SvK1dxLta/RidfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjaEqjbHt7sfb8FpVG/KtloXsf2vwkr3RjZ+WbWpctdIYw0CfOlvYMNG/9/U19B7AVsKTSBPa3ry34pJjYMDdLR3lO8pQRwQflKH3nYKwTIN3K7cIovPsCezGB/ULM3mW6TlIplIBbQgcQW639xYQJStPlVQJc8cH4YLSx+D2Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MrB1mQRL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A808C4CEEA;
-	Mon, 23 Jun 2025 21:14:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Cur2KfDqWYSZAphrlkheDC6ASCCBZH2HUqIQALYUdJl27WFlJSuJBFyZklnc2Xdxr+znkhcVeianSQEUJFoOXpNE5m8QMpidh9DxM4D73G942ObGj53c/JsZtZKi0dFpTcXgZeTRW6x0BXRstXeZMP4r6s1xs0DHqapweTtNIYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbK+apAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA6FC4CEEA;
+	Mon, 23 Jun 2025 21:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713265;
-	bh=RNlWxsLPaWjFUznLhNEXP5XXfuCOVe7dnPMf3HIDZpw=;
+	s=korg; t=1750713514;
+	bh=uildalYhA6I8yMkn3phzxAkSzo53SvK1dxLta/RidfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MrB1mQRLclGx9u11YqLn/78g8GJOZH6H6rzzgaZjz/AvCCRJLrbXgLrQp/yBmI5m9
-	 XFhjMmjpnX+5Dgr3q2D+pX1C0CuFaoaL6YZdU4USe94ZX3uUMtQov60NjjiWRlTLTk
-	 BYKYndncI5dJCRrmqr5lsVtrrzDt0pZbefCUUju0=
+	b=gbK+apAS65FWdJRtX8BWWfSXJHTD7eRXLBMcFnLyKz9TsRXereFtvTUjA5R1XQ1ZW
+	 lMxgf+HUwqjugG5LXOpVnFupd/2W/oTPlrD5JCeIasJgyN3oD/kyO/r/sSNYSfo021
+	 8UrXGNVALaldEuhAbgqn58mcqT9j8uy+1ViBmcEA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Max Kellermann <max.kellermann@ionos.com>,
-	Dave Wysochanski <dwysocha@redhat.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>
-Subject: [PATCH 6.12 035/414] fs/nfs/read: fix double-unlock bug in nfs_return_empty_folio()
+	Su Hui <suhui@nfschina.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 127/508] soc: aspeed: lpc: Fix impossible judgment condition
 Date: Mon, 23 Jun 2025 15:02:52 +0200
-Message-ID: <20250623130642.905524437@linuxfoundation.org>
+Message-ID: <20250623130648.418463983@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,77 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Max Kellermann <max.kellermann@ionos.com>
+From: Su Hui <suhui@nfschina.com>
 
-commit 4c10fa44bc5f700e2ea21de2fbae520ba21f19d9 upstream.
+[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
 
-Sometimes, when a file was read while it was being truncated by
-another NFS client, the kernel could deadlock because folio_unlock()
-was called twice, and the second call would XOR back the `PG_locked`
-flag.
+smatch error：
+drivers/soc/aspeed/aspeed-lpc-snoop.c:169
+aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
 
-Most of the time (depending on the timing of the truncation), nobody
-notices the problem because folio_unlock() gets called three times,
-which flips `PG_locked` back off:
+platform_get_irq() return non-zero IRQ number or negative error code,
+change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
 
- 1. vfs_read, nfs_read_folio, ... nfs_read_add_folio,
-    nfs_return_empty_folio
- 2. vfs_read, nfs_read_folio, ... netfs_read_collection,
-    netfs_unlock_abandoned_read_pages
- 3. vfs_read, ... nfs_do_read_folio, nfs_read_add_folio,
-    nfs_return_empty_folio
-
-The problem is that nfs_read_add_folio() is not supposed to unlock the
-folio if fscache is enabled, and a nfs_netfs_folio_unlock() check is
-missing in nfs_return_empty_folio().
-
-Rarely this leads to a warning in netfs_read_collection():
-
- ------------[ cut here ]------------
- R=0000031c: folio 10 is not locked
- WARNING: CPU: 0 PID: 29 at fs/netfs/read_collect.c:133 netfs_read_collection+0x7c0/0xf00
- [...]
- Workqueue: events_unbound netfs_read_collection_worker
- RIP: 0010:netfs_read_collection+0x7c0/0xf00
- [...]
- Call Trace:
-  <TASK>
-  netfs_read_collection_worker+0x67/0x80
-  process_one_work+0x12e/0x2c0
-  worker_thread+0x295/0x3a0
-
-Most of the time, however, processes just get stuck forever in
-folio_wait_bit_common(), waiting for `PG_locked` to disappear, which
-never happens because nobody is really holding the folio lock.
-
-Fixes: 000dbe0bec05 ("NFS: Convert buffered read paths to use netfs when fscache is enabled")
-Cc: stable@vger.kernel.org
-Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
-Reviewed-by: Dave Wysochanski <dwysocha@redhat.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/read.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfs/read.c
-+++ b/fs/nfs/read.c
-@@ -56,7 +56,8 @@ static int nfs_return_empty_folio(struct
- {
- 	folio_zero_segment(folio, 0, folio_size(folio));
- 	folio_mark_uptodate(folio);
--	folio_unlock(folio);
-+	if (nfs_netfs_folio_unlock(folio))
-+		folio_unlock(folio);
- 	return 0;
- }
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index eceeaf8dfbeba..d9bdc2e084086 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -167,7 +167,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
+ 	int rc;
  
+ 	lpc_snoop->irq = platform_get_irq(pdev, 0);
+-	if (!lpc_snoop->irq)
++	if (lpc_snoop->irq < 0)
+ 		return -ENODEV;
+ 
+ 	rc = devm_request_irq(dev, lpc_snoop->irq,
+-- 
+2.39.5
+
 
 
 
