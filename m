@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FC13AE4498
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2686DAE449E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 423EC17EED7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A642B17F142
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55A482550DD;
-	Mon, 23 Jun 2025 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB6C7255F5C;
+	Mon, 23 Jun 2025 13:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aUTZDtfp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vxqNxX0Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E97254AFF;
-	Mon, 23 Jun 2025 13:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682484C6E;
+	Mon, 23 Jun 2025 13:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685839; cv=none; b=a210d37UqEjVaaBihSGNVdQ1eKZpWq/4yyI01XZefptTr1n9p/E+6HNymuG2QBesf8qrMhpUZo723hyrhpN8OLQp4wtpL7HAO5hLD8w0Et5RAmTkVMaDKlw7AwTjTm7icUNjBAANhzesFaaTGaEBcrzyVGMWbqAK9i890MIH6wI=
+	t=1750685862; cv=none; b=qa7CFtGjWlECxGcDToZP+078DHVU6H4fZMLVjkcGYWNAPptvrKdjhm2zsYZCmDhjdWVqFbpIyqbBoLZ/Wkml1LNuloWz06J1l/+nsst0WpnDV+5xivYFuHN3KTWcI9fDOEQln13dtgnAqjxSkYi3i68Jsi/HB0MGsA1QxmF9CQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685839; c=relaxed/simple;
-	bh=SDZPsabRaW9jIlauavQQoQAPW19GGcmWyzSxo0Dj4Mo=;
+	s=arc-20240116; t=1750685862; c=relaxed/simple;
+	bh=zTcruN7qKVo66XTe50CGetfVBLWVpNHw5nIQt6CInUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KxOFTDucGhGwjYfc37+0tCUhOyLbYitI4hnyfh8tqf0+kBRtRI/CDXIUERmtDJFUXgkKavViLYUQI/oA/XSoZpE2u/BUNK8ALt9L25Lidete1y9YcHPpbhNNu694nL3cB/Ax07QxbGabVLoxqt3wbMSHVkEEcWV1A6LEJ9OR8aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aUTZDtfp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C739C4CEEA;
-	Mon, 23 Jun 2025 13:37:18 +0000 (UTC)
+	 MIME-Version; b=bIz71eFYgYfI+i9fOpxhQBzsPqywdnjdmDt3IPdiRE9M3OREKp/t+xKkW0BUFTfDJXqZCsBdKGy/GtFUVXdRm+Cg7+dcPiL5M0mgeUWBenmIT3AwF73VhvqEz8d7h8maRNSr+5BxzZY0a7rIZ0YTXrmsyHrUgT9+AUEKszuETVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vxqNxX0Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04D6C4CEEA;
+	Mon, 23 Jun 2025 13:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685839;
-	bh=SDZPsabRaW9jIlauavQQoQAPW19GGcmWyzSxo0Dj4Mo=;
+	s=korg; t=1750685862;
+	bh=zTcruN7qKVo66XTe50CGetfVBLWVpNHw5nIQt6CInUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aUTZDtfpYivgsxr8aHX2NpRWQfDkJ0qTy3fRNa+FtUSu+6losL1bXnNVJvwAPpgHb
-	 xDb1ZkeZOWlD0QSFUtdnGQWkT1vK9/SxNE5nBnDoX5e7X9vgBj/Hzh6ER9TMgCKpwG
-	 Qxuuy6v1NEkgiYJWqlFRakvwmiJ60wo0kNsgcCUs=
+	b=vxqNxX0QtS5/X15PFXlyEB+9+0DxdVORZUN+6DrjIEywZczgFaDRM46yS4NEdBXM4
+	 t5n1PPbEdNbhjI32Ai5S1+wEJorH0y+CFzBt6xntJ1pVUbeJ4v2xGK5lGhAFo0wmCD
+	 APY5OiP5F8zU+8UgWnjFZFfKdX0KdFJMTSCEwY5Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 144/222] drm/msm/hdmi: add runtime PM calls to DDC transfer function
-Date: Mon, 23 Jun 2025 15:07:59 +0200
-Message-ID: <20250623130616.418088108@linuxfoundation.org>
+Subject: [PATCH 5.4 145/222] media: uapi: v4l: Fix V4L2_TYPE_IS_OUTPUT condition
+Date: Mon, 23 Jun 2025 15:08:00 +0200
+Message-ID: <20250623130616.448019095@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,68 +67,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Nas Chung <nas.chung@chipsnmedia.com>
 
-[ Upstream commit 531b4e2c206e5f7dead04d9da84dfa693ac57481 ]
+[ Upstream commit f81f69a0e3da141bdd73a16b8676f4e542533d87 ]
 
-We must be sure that the HDMI controller is powered on, while performing
-the DDC transfer. Add corresponding runtime PM calls to
-msm_hdmi_i2c_xfer().
+V4L2_TYPE_IS_OUTPUT() returns true for V4L2_BUF_TYPE_VIDEO_OVERLAY
+which definitely belongs to CAPTURE.
 
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/651727/
-Link: https://lore.kernel.org/r/20250505-fd-hdmi-hpd-v5-8-48541f76318c@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/hdmi/hdmi_i2c.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ include/uapi/linux/videodev2.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
-index de182c0048434..9c78c6c528bea 100644
---- a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
-+++ b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
-@@ -107,11 +107,15 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
- 	if (num == 0)
- 		return num;
- 
-+	ret = pm_runtime_resume_and_get(&hdmi->pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	init_ddc(hdmi_i2c);
- 
- 	ret = ddc_clear_irq(hdmi_i2c);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	for (i = 0; i < num; i++) {
- 		struct i2c_msg *p = &msgs[i];
-@@ -169,7 +173,7 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
- 				hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS),
- 				hdmi_read(hdmi, REG_HDMI_DDC_HW_STATUS),
- 				hdmi_read(hdmi, REG_HDMI_DDC_INT_CTRL));
--		return ret;
-+		goto fail;
- 	}
- 
- 	ddc_status = hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS);
-@@ -202,7 +206,13 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
- 		}
- 	}
- 
-+	pm_runtime_put(&hdmi->pdev->dev);
-+
- 	return i;
-+
-+fail:
-+	pm_runtime_put(&hdmi->pdev->dev);
-+	return ret;
- }
- 
- static u32 msm_hdmi_i2c_func(struct i2c_adapter *adapter)
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index 895c5ba8b6ac2..5384c9d61d510 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -164,7 +164,6 @@ enum v4l2_buf_type {
+ #define V4L2_TYPE_IS_OUTPUT(type)				\
+ 	((type) == V4L2_BUF_TYPE_VIDEO_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE		\
+-	 || (type) == V4L2_BUF_TYPE_VIDEO_OVERLAY		\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY	\
+ 	 || (type) == V4L2_BUF_TYPE_VBI_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_SLICED_VBI_OUTPUT		\
 -- 
 2.39.5
 
