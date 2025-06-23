@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156495-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73BB3AE4FCF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9152AAE5408
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67A7C189FD54
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7052B1BC0373
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 863742206BB;
-	Mon, 23 Jun 2025 21:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B060222581;
+	Mon, 23 Jun 2025 21:58:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="czP0AnfO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5JQVEjf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41CF3155C87;
-	Mon, 23 Jun 2025 21:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29897220686;
+	Mon, 23 Jun 2025 21:58:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713553; cv=none; b=RRaH8Dpl8+/iuu+GAzeH+YC4r37mbpGqTeoxFClZ5Fcry+sdE/QXktcIoCClhG7RHVNYHRBpWs8ewrVu0g3r92AtMGC/tkpii9UxaF7Scavp8bswYNDKU9hlqYmuPZEGtmH5TyIMHcS6VLf9UCIOmXmO816n5j3osbUYXa0/vzM=
+	t=1750715920; cv=none; b=YovkIV2n+vf76xOwHr02uwZRY5Y7aTGPw3rUZvEyfrMn1u+TbhFWQHzFCaUGVSR6TgJIrHKUBnZXvgqdFpF5K2yfgkVTrociTTp3vigGZeZsHRqk6rceHf+uRsg8fJ4owr9G8TjjkElKXpIPa3BlHPQ0e3ZE1nJqONvAXllDMpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713553; c=relaxed/simple;
-	bh=doi6gA+HOKRuQxlMdxITaRbIJKD/CiMWoo27siW2z7w=;
+	s=arc-20240116; t=1750715920; c=relaxed/simple;
+	bh=OZjRjBDvH5XRxa2QOtf+dxkTpbGBLSZz8KCMO78Gzgc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4oIHWjzj14SbJ00ikjYtqVaSDpKQR2BiDl8Qk2TvG+iTeT9JFIoj65JfFidu1+7QoHY4aazFzUqS9F/bkboB5EeD4wFSJ/u/1K11fad7oHLCwr4djm7KHzOoxUruVxmXShCh71pz8bR4XGHPnj3mUvZyh79t1mNkBSWw6r6b8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=czP0AnfO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFA6FC4CEEA;
-	Mon, 23 Jun 2025 21:19:12 +0000 (UTC)
+	 MIME-Version; b=bPQpZLvz1dE0LvvZEWP54fLTcRdigvi7NZuB5jhVEsdA4smW69p4vfYyCG7IIw5l6Mr2hRV/3o6DImoyrchA5TkKCbb741pW4cRjtaen2XJBH8Dq1p83SX0IURrEYME1UtqY7KzDyTJ09lwWbI3H+wCXBqU0i8IofgMd4u2QAFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5JQVEjf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CDBC4CEED;
+	Mon, 23 Jun 2025 21:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713553;
-	bh=doi6gA+HOKRuQxlMdxITaRbIJKD/CiMWoo27siW2z7w=;
+	s=korg; t=1750715919;
+	bh=OZjRjBDvH5XRxa2QOtf+dxkTpbGBLSZz8KCMO78Gzgc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=czP0AnfOYr8YbdUwbIPz6l+Q4u+3spXM8m6hYXnYh5F1iWe4QubLs26lsC5O/7ypu
-	 DJDCu3wHbWUqJl7IStz9IVxC1T82kMy4eHIm0vav8KDOSlsVgxI1IDlBs9+ycM4lbk
-	 6++NdzmQqv16H6M1LslNy3fYUsNU3aY2P1Gm1Q3E=
+	b=b5JQVEjf/YYHfEo2TTIXcEKFSmOQ0lAjoPHkHB+H5pgk9r30skGNcq5v+ekVg46HG
+	 kI6OyVGUlMMGv+HkY45LpsxWJNwgtgy0+tU/O1lmuRqTn8M64gpV4zs1Tfxn11FhA7
+	 hKB94aIei+FyIQZ+8iCpr2OuZ8f50f8tSOxhb5Ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Stefano Stabellini <stefano.stabellini@amd.com>,
-	Juergen Gross <jgross@suse.com>
-Subject: [PATCH 5.10 152/355] xen/arm: call uaccess_ttbr0_enable for dm_op hypercall
+	Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 216/414] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
 Date: Mon, 23 Jun 2025 15:05:53 +0200
-Message-ID: <20250623130631.274015046@linuxfoundation.org>
+Message-ID: <20250623130647.415260776@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefano Stabellini <stefano.stabellini@amd.com>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-commit 7f9bbc1140ff8796230bc2634055763e271fd692 upstream.
+[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
 
-dm_op hypercalls might come from userspace and pass memory addresses as
-parameters. The memory addresses typically correspond to buffers
-allocated in userspace to hold extra hypercall parameters.
+Due to mac80211 triggering the hardware to enter idle mode, it fails
+to install WEP key causing connected station can't ping successfully.
+Currently, it forces the hardware to leave idle mode before driver
+adding WEP keys.
 
-On ARM, when CONFIG_ARM64_SW_TTBR0_PAN is enabled, they might not be
-accessible by Xen, as a result ioreq hypercalls might fail. See the
-existing comment in arch/arm64/xen/hypercall.S regarding privcmd_call
-for reference.
-
-For privcmd_call, Linux calls uaccess_ttbr0_enable before issuing the
-hypercall thanks to commit 9cf09d68b89a. We need to do the same for
-dm_op. This resolves the problem.
-
-Cc: stable@kernel.org
-Fixes: 9cf09d68b89a ("arm64: xen: Enable user access before a privcmd hvc call")
-Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
-Reviewed-by: Juergen Gross <jgross@suse.com>
-Message-ID: <alpine.DEB.2.22.394.2505121446370.8380@ubuntu-linux-20-04-desktop>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/xen/hypercall.S |   21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/arm64/xen/hypercall.S
-+++ b/arch/arm64/xen/hypercall.S
-@@ -84,7 +84,26 @@ HYPERCALL1(tmem_op);
- HYPERCALL1(platform_op_raw);
- HYPERCALL2(multicall);
- HYPERCALL2(vm_assist);
--HYPERCALL3(dm_op);
-+
-+SYM_FUNC_START(HYPERVISOR_dm_op)
-+	mov x16, #__HYPERVISOR_dm_op;	\
-+	/*
-+	 * dm_op hypercalls are issued by the userspace. The kernel needs to
-+	 * enable access to TTBR0_EL1 as the hypervisor would issue stage 1
-+	 * translations to user memory via AT instructions. Since AT
-+	 * instructions are not affected by the PAN bit (ARMv8.1), we only
-+	 * need the explicit uaccess_enable/disable if the TTBR0 PAN emulation
-+	 * is enabled (it implies that hardware UAO and PAN disabled).
-+	 */
-+	uaccess_ttbr0_enable x6, x7, x8
-+	hvc XEN_IMM
-+
-+	/*
-+	 * Disable userspace access from kernel once the hyp call completed.
-+	 */
-+	uaccess_ttbr0_disable x6, x7
-+	ret
-+SYM_FUNC_END(HYPERVISOR_dm_op);
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index 8d140b94cb440..0c8ea5e629e6a 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -6,6 +6,7 @@
+ #include "debug.h"
+ #include "fw.h"
+ #include "mac.h"
++#include "ps.h"
  
- SYM_FUNC_START(privcmd_call)
- 	mov x16, x0
+ static struct sk_buff *
+ rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
+@@ -447,9 +448,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
+ 
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_WEP40:
++		rtw89_leave_ips_by_hwflags(rtwdev);
+ 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
+ 		break;
+ 	case WLAN_CIPHER_SUITE_WEP104:
++		rtw89_leave_ips_by_hwflags(rtwdev);
+ 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
+ 		break;
+ 	case WLAN_CIPHER_SUITE_CCMP:
+-- 
+2.39.5
+
 
 
 
