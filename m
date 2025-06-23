@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-158046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52ADFAE5705
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F612AE5595
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C313D3B226E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17F544C4FBF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EE5222599;
-	Mon, 23 Jun 2025 22:22:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E296E226CE6;
+	Mon, 23 Jun 2025 22:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT6PQSz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt3TkT3U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B589C2222B2;
-	Mon, 23 Jun 2025 22:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB462236FB;
+	Mon, 23 Jun 2025 22:11:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717350; cv=none; b=QYGjorikhPHRj2oauu5lgwvs8osyGsgQp1wBuS/KEC1SK8OSurvaQ1LqR57T+sCwl/8uRhWolkXOpUrQ1ZqiV2IbwzryuVVUbe9gTO7uHkeDjm38+nYfvLJNAuZOg9pvQawrx7I0z/Xiw+Gdr5NQH9F0naue1oo/bJhb6MTZ72U=
+	t=1750716686; cv=none; b=NeJezFHOP3qRzf6d+SYoY4ZaCxhLGJOHOQqD6eEKMSAtmcrns4z8sdMuJG8rI7qWkK68n/aQ8wK6ERN2H9izfQNvQG8Ij+xZFh/tR86dVrjyCNQhfdfpkDt5VanKgWPcqgwL5BtCJjcgeWeJpdwMLjNzJiLRNymbln3gVhJwgFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717350; c=relaxed/simple;
-	bh=m54C/IO5by1M4vBNOb0jLH1Ndact6q94lVfRKouMSXY=;
+	s=arc-20240116; t=1750716686; c=relaxed/simple;
+	bh=fxzLZfa1EUf//OFPlY/X3oUAb/G33jfVSCAHW0/sFn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KG/pZBAKWAJzJpSc4qd6XC7lPVn8qW0BxgSp0TZGjJCRo0wkP5CBUSrqIcESnhcYTjcObzi+1xUeN8VrVdFQSOvKkuUxS17GrpI41c6YdS5U6sVEraW8kAhqsAQOSQvq2FWrM4wnwTD/rMWDpgx8q8xMqwiTTOgXPf9pM1u9POI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT6PQSz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDE4C4CEEA;
-	Mon, 23 Jun 2025 22:22:30 +0000 (UTC)
+	 MIME-Version; b=nQZ0HlGk8ZbxxgUA12Q0qw/RcA9jnbLYM8DB3WPFll4YDtf5K9wQLDKh7tPrmKKTIy06bRbRayh2EwuFpy0lV6+zG3HUnvwncjv0BWVe4iVs4TqLF4DkRHD/2osc+vYIhmMeANXZh+sFGHBFj5qG6p/VXJLvvsO1bBIFxOuVpnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt3TkT3U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E082BC4CEEA;
+	Mon, 23 Jun 2025 22:11:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717350;
-	bh=m54C/IO5by1M4vBNOb0jLH1Ndact6q94lVfRKouMSXY=;
+	s=korg; t=1750716686;
+	bh=fxzLZfa1EUf//OFPlY/X3oUAb/G33jfVSCAHW0/sFn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JT6PQSz5pG8a/Up9l7P0RF57q/wh+tw3OQ1gRyRhObRLWXG5MjXEiwhuzERvS/NVd
-	 aVkbZr/9Sx0wD1Fe/UtKe8o9a9qoUzPuhnAy4IR4J4YDwRKw5cvnQGUUUjOfKZX2Qn
-	 Gvm8374D9OrVOSQ4Gg991JZhnNksWCrjtzKeWWSU=
+	b=Qt3TkT3UegB0ue9n5fCTUQzFVVpq80OtiEmU8eYlA8IgoGcWuowrTNKAT5tajYL7j
+	 LIJd679nubEY1+DaC9Ol2ahcpbV1bXJs9mCyuEg/fkhS0PfRg4wmblgPC1kJPG6hBL
+	 hAkKjukzwEear8mztfDzNwRO6S6NwnS3RV6FoCNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Keeping <jkeeping@inmusicbrands.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 357/414] drm/ssd130x: fix ssd132x_clear_screen() columns
+	M Nikhil <nikh1092@linux.ibm.com>,
+	Nihar Panda <niharp@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 350/411] scsi: s390: zfcp: Ensure synchronous unit_add
 Date: Mon, 23 Jun 2025 15:08:14 +0200
-Message-ID: <20250623130650.892883331@linuxfoundation.org>
+Message-ID: <20250623130642.456999188@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Keeping <jkeeping@inmusicbrands.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit e479da4054875c4cc53a7fb956ebff03d2dac939 ]
+commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
 
-The number of columns relates to the width, not the height.  Use the
-correct variable.
+Improve the usability of the unit_add sysfs attribute by ensuring that
+the associated FCP LUN scan processing is completed synchronously.  This
+enables configuration tooling to consistently determine the end of the
+scan process to allow for serialization of follow-on actions.
 
-Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: fdd591e00a9c ("drm/ssd130x: Add support for the SSD132x OLED controller family")
-Link: https://lore.kernel.org/r/20250611111307.1814876-1-jkeeping@inmusicbrands.com
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While the scan process associated with unit_add typically completes
+synchronously, it is deferred to an asynchronous background process if
+unit_add is used before initial remote port scanning has completed.  This
+occurs when unit_add is used immediately after setting the associated FCP
+device online.
+
+To ensure synchronous unit_add processing, wait for remote port scanning
+to complete before initiating the FCP LUN scan.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
+Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/solomon/ssd130x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/s390/scsi/zfcp_sysfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
-index 06f5057690bd8..e0fc12d514d76 100644
---- a/drivers/gpu/drm/solomon/ssd130x.c
-+++ b/drivers/gpu/drm/solomon/ssd130x.c
-@@ -974,7 +974,7 @@ static void ssd130x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
+--- a/drivers/s390/scsi/zfcp_sysfs.c
++++ b/drivers/s390/scsi/zfcp_sysfs.c
+@@ -450,6 +450,8 @@ static ssize_t zfcp_sysfs_unit_add_store
+ 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
+ 		return -EINVAL;
  
- static void ssd132x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
- {
--	unsigned int columns = DIV_ROUND_UP(ssd130x->height, SSD132X_SEGMENT_WIDTH);
-+	unsigned int columns = DIV_ROUND_UP(ssd130x->width, SSD132X_SEGMENT_WIDTH);
- 	unsigned int height = ssd130x->height;
- 
- 	memset(data_array, 0, columns * height);
--- 
-2.39.5
-
++	flush_work(&port->rport_work);
++
+ 	retval = zfcp_unit_add(port, fcp_lun);
+ 	if (retval)
+ 		return retval;
 
 
 
