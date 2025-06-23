@@ -1,61 +1,53 @@
-Return-Path: <stable+bounces-156594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DF29AE503A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8932BAE5044
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 514A11B62243
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323863BFB0E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7168A1EF397;
-	Mon, 23 Jun 2025 21:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F8C81F582A;
+	Mon, 23 Jun 2025 21:23:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J8OWSZuc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BnAzhdrR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305632628C;
-	Mon, 23 Jun 2025 21:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF57F2628C;
+	Mon, 23 Jun 2025 21:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713796; cv=none; b=LRT452NVdT4t6R3WGe34Tv2lgPAIvaoOgE0sZ3YvTr8Mi5zUKlruS6tarTs6ulFRh48q/M2SbvXPfSBn2kmzJd0+RBkV++IiksGtChprOtSFiq1illUmT/6uIO+nyLZBVpAZNKM5QW0O6KPjQ4DyhCbMf7ybmJaNCMxzwd31zbc=
+	t=1750713810; cv=none; b=b4Tda1PrLk/kehG1XaBCTv/8Fzys8nJM+Ub/vkQe4VBTQG7EO5kbgE2PGeuNV6cLva2KZu09QzWhtargIQQdkH+Gs5/6Lllkdr1qrtZulZ8cCBUPASs4NJ1hZWQR6zFpMBGVWX9PkVl5Go+itcC/yGBcBkmVRYzQ5i0Lts37Vas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713796; c=relaxed/simple;
-	bh=BvMUtMuE1HURSGe6a8hUemWuS0F86mq8qFJSr0c/r8g=;
+	s=arc-20240116; t=1750713810; c=relaxed/simple;
+	bh=HOrS7F7Azy1zM6nA6iFI0Xl0fMxbPE9P9ulc3Rm3sNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YjGKcmqfB4/pq/43DcxTpXEpKr5w6hF05K2X+UIH/0SRR21P0kjWdFc1MgChe0jeWVb6Tv6QksOE6i/LAW+hSnMZCzkyM9qwqHKAuYSkewHdVtVhcV9svKe/pEarmrYIRcYZEYAGpf+tdpHAY6PFDiXF8ieBct0uJsG3vPU7OAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J8OWSZuc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91846C4CEEA;
-	Mon, 23 Jun 2025 21:23:15 +0000 (UTC)
+	 MIME-Version; b=LQPbMLd5u8rE20bi+X+XE6dbjZT/TSaMBsQ0eUi7HMkuLatxsISNDlggxkGm8brVzp+CdO6ba5+E3EEA5UxGanwAco8Di9+Sb9KtT1tVqdHft3vS6gC9/rGq5laW4RJJVHFMn7XEp9ZQ/BEzPtrmCf//ve9WTC6KxqgS4ehGHtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BnAzhdrR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56755C4CEED;
+	Mon, 23 Jun 2025 21:23:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713796;
-	bh=BvMUtMuE1HURSGe6a8hUemWuS0F86mq8qFJSr0c/r8g=;
+	s=korg; t=1750713810;
+	bh=HOrS7F7Azy1zM6nA6iFI0Xl0fMxbPE9P9ulc3Rm3sNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J8OWSZuc9zWE/E+upAsGOUIWm6ZX1PMi9M2lqfhFoXcxQYNEkS+aiMT4vvQ8auXOA
-	 81D8oTXD4q1J0w7N0XH6UiHVccc8PrFIbCknOdDBkT5OemM2X049zXJe73WNKjP3GG
-	 DQIaJ6EiRLH0FYAE2qPR67C0Q1iRLkd9gzSXysgI=
+	b=BnAzhdrR/ti3cYFnw4Lpgqha3NvDb9n4Igd3JXuGV7wWS1aZxz9Bm2vDVgnxzYtmn
+	 XxQq61qgze8nTGmDk3pu4RMSkoRtd6WHNRo5lwDldKRRyKr32CQZo2WDVhTbPfkEDZ
+	 k16czTH7z69PBiLhRGOXU9jVfi013MItEG6wXF7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 147/508] perf record: Fix incorrect --user-regs comments
-Date: Mon, 23 Jun 2025 15:03:12 +0200
-Message-ID: <20250623130648.900607120@linuxfoundation.org>
+Subject: [PATCH 6.1 148/508] nfs: clear SB_RDONLY before getting superblock
+Date: Mon, 23 Jun 2025 15:03:13 +0200
+Message-ID: <20250623130648.924946859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -74,44 +66,66 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit a4a859eb6704a8aa46aa1cec5396c8d41383a26b ]
+[ Upstream commit 8cd9b785943c57a136536250da80ba1eb6f8eb18 ]
 
-The comment of "--user-regs" option is not correct, fix it.
+As described in the link, commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when
+mounting nfs") removed the check for the ro flag when determining whether
+to share the superblock, which caused issues when mounting different
+subdirectories under the same export directory via NFSv3. However, this
+change did not affect NFSv4.
 
-"on interrupt," -> "in user space,"
+For NFSv3:
+1) A single superblock is created for the initial mount.
+2) When mounted read-only, this superblock carries the SB_RDONLY flag.
+3) Before commit 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs"):
+Subsequent rw mounts would not share the existing ro superblock due to
+flag mismatch, creating a new superblock without SB_RDONLY.
+After the commit:
+  The SB_RDONLY flag is ignored during superblock comparison, and this leads
+  to sharing the existing superblock even for rw mounts.
+  Ultimately results in write operations being rejected at the VFS layer.
 
-Fixes: 84c417422798c897 ("perf record: Support direct --user-regs arguments")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403060810.196028-1-dapeng1.mi@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+For NFSv4:
+1) Multiple superblocks are created and the last one will be kept.
+2) The actually used superblock for ro mounts doesn't carry SB_RDONLY flag.
+Therefore, commit 52cb7f8f1778 doesn't affect NFSv4 mounts.
+
+Clear SB_RDONLY before getting superblock when NFS_MOUNT_UNSHARED is not
+set to fix it.
+
+Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
+Closes: https://lore.kernel.org/all/12d7ea53-1202-4e21-a7ef-431c94758ce5@app.fastmail.com/T/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/super.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index ee3a5c4b8251e..a257a30a42efd 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -3438,7 +3438,7 @@ static struct option __record_options[] = {
- 		    "sample selected machine registers on interrupt,"
- 		    " use '-I?' to list register names", parse_intr_regs),
- 	OPT_CALLBACK_OPTARG(0, "user-regs", &record.opts.sample_user_regs, NULL, "any register",
--		    "sample selected machine registers on interrupt,"
-+		    "sample selected machine registers in user space,"
- 		    " use '--user-regs=?' to list register names", parse_user_regs),
- 	OPT_BOOLEAN(0, "running-time", &record.opts.running_time,
- 		    "Record running/enabled time of read (:S) events"),
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 3dffeb1d17b9c..a4679cd75f70a 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1273,8 +1273,17 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 	if (IS_ERR(server))
+ 		return PTR_ERR(server);
+ 
++	/*
++	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
++	 * superblock among each filesystem that mounts sub-directories
++	 * belonging to a single exported root path.
++	 * To prevent interference between different filesystems, the
++	 * SB_RDONLY flag should be removed from the superblock.
++	 */
+ 	if (server->flags & NFS_MOUNT_UNSHARED)
+ 		compare_super = NULL;
++	else
++		fc->sb_flags &= ~SB_RDONLY;
+ 
+ 	/* -o noac implies -o sync */
+ 	if (server->flags & NFS_MOUNT_NOAC)
 -- 
 2.39.5
 
