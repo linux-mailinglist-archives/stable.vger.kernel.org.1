@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-158107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 095CEAE56FC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FE7AE5745
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CBDB7AEF94
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0705D7B41A9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06315222581;
-	Mon, 23 Jun 2025 22:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E492253B0;
+	Mon, 23 Jun 2025 22:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOcQmt8e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icT//SV6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B820E2192EC;
-	Mon, 23 Jun 2025 22:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D37D1F463B;
+	Mon, 23 Jun 2025 22:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717501; cv=none; b=GC6VWywFC9aQvs6HHOzUD5j9XO52khMQ+Hd6frmc4zqHcszNgNNsm8WfLFWD5AqUQS+Q6KQwrz4klsLLiIdvIKS13+CZVkguF2BrQwquIZIBeb3HybcJPKQUyz8Yefdm8H1qWXhM+DX31gikTckMRneJcun+faLIpiodEN+4q4I=
+	t=1750717661; cv=none; b=VlRxY5iziT8BqKCqYonMrN1HqgoawaNP7voKe+AUm3inrRKSk12ZesVIiZQ3fHTw9ZP6Z4DK7BX+FOOEq8iOUlrR48/hyhwndrSd8ScQD/8wuqlwUAxB4nOUdsDqqRDzVYhfQNZVy0h9y67I9pp5iHPebAerzMAnBpvpNGsobIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717501; c=relaxed/simple;
-	bh=0GS3LpZmle9W6DeCO1kWnta89DeX/UdzoD7BG+uNxgE=;
+	s=arc-20240116; t=1750717661; c=relaxed/simple;
+	bh=J5v6ZxmxrudQhQEyYQtARxWAncyL/rJuWBVvyOLv5sU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KFhTnieUFHwFoNNId1jCT/uuYSCqJRVhN7NrOpfOTZ+ag1i8IvWnFZdnpwKE8mq+jEHhG+nSmhBc8pNRrKsD+ktkgVQwg619Zdqtq+UtkwgU3J4JrbvlczZnkNQ63TQoANfbp1QiuLzviIORR7ZTDE0XB5ygFSCaea87OZ25vao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOcQmt8e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457ABC4CEEA;
-	Mon, 23 Jun 2025 22:25:01 +0000 (UTC)
+	 MIME-Version; b=hQFqDEKj06RKI4WteeMEO0RCjoAKK/8+ZRcLvhkR86qd90HXQZfdGBzzXHx0tCsIb7HWhRbSQzJBo02SrdemtZYntqlGk9sAT4Hcd5sKPE3KJC9ylXhz29BRmtbujducRd43w5RPsHDncuT8IwtnclEVmPEl29y7i+MtYIjJtqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icT//SV6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046D5C4CEEA;
+	Mon, 23 Jun 2025 22:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717501;
-	bh=0GS3LpZmle9W6DeCO1kWnta89DeX/UdzoD7BG+uNxgE=;
+	s=korg; t=1750717661;
+	bh=J5v6ZxmxrudQhQEyYQtARxWAncyL/rJuWBVvyOLv5sU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOcQmt8eIdKDjwsEK2KUm25bhPBcJ6CGCTE1KtAVKC6bbNLgu/6y2nBNeIFsxfs4K
-	 FRvtolqFjT3ynGDUmF00L1nAVsn/QG6UrmzQklE1L6vtF2keUBhwD/LKCmDRxEvSSA
-	 do20VzZ4U6+yavp+S5qhQvheCHDf2rq6RZDpqnk0=
+	b=icT//SV6ApJpbc0A42Sm54dOTAQDsbO5OUpXlmjLTTqSQW8Mvwz9rW1yvr4GNIc8E
+	 6WLvae1atMLmU60N7S3Jm6gBz7MUxmMhEMSvzvAIlnRkIq7TUcasbJ5t4PdJD1P3Z9
+	 bBAg2Ck5YN+MRbq3AtGEb+ZxXsW7Wa6Oi4METuJg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12 402/414] s390/pci: Fix __pcilg_mio_inuser() inline assembly
+	Robert Nelson <robertcnelson@gmail.com>,
+	Shengyu Qu <wiagn233@outlook.com>,
+	Tony Lindgren <tony@atomide.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 6.1 494/508] ARM: dts: am335x-bone-common: Add GPIO PHY reset on revision C3 board
 Date: Mon, 23 Jun 2025 15:08:59 +0200
-Message-ID: <20250623130651.989298555@linuxfoundation.org>
+Message-ID: <20250623130657.185568709@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Shengyu Qu <wiagn233@outlook.com>
 
-commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
+commit 623cef652768860bd5f205fb7b741be278585fba upstream.
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+This patch adds ethernet PHY reset GPIO config for Beaglebone Black
+series boards with revision C3. This fixes a random phy startup failure
+bug discussed at [1]. The GPIO pin used for reset is not used on older
+revisions, so it is ok to apply to all board revisions. The reset timing
+was discussed and tested at [2].
 
-If register zero is used this my result in incorrect code generation:
+[1] https://forum.digikey.com/t/ethernet-device-is-not-detecting-on-ubuntu-20-04-lts-on-bbg/19948
+[2] https://forum.beagleboard.org/t/recognizing-a-beaglebone-black-rev-c3-board/31249/
 
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
-
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
-
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+Message-ID: <TY3P286MB26113797A3B2EC7E0348BBB2980FA@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_mmio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/am335x-bone-common.dtsi |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -228,7 +228,7 @@ static inline int __pcilg_mio_inuser(
- 		[ioaddr_len] "+&d" (ioaddr_len.pair),
- 		[cc] "+d" (cc), [val] "=d" (val),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:: "cc", "memory");
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -145,6 +145,8 @@
+ 			/* MDIO */
+ 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
++			/* Added to support GPIO controlled PHY reset */
++			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE7)
+ 		>;
+ 	};
  
- 	/* did we write everything to the user space buffer? */
+@@ -153,6 +155,8 @@
+ 			/* MDIO reset value */
+ 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
+ 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			/* Added to support GPIO controlled PHY reset */
++			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7)
+ 		>;
+ 	};
+ 
+@@ -377,6 +381,10 @@
+ 
+ 	ethphy0: ethernet-phy@0 {
+ 		reg = <0>;
++		/* Support GPIO reset on revision C3 boards */
++		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <300>;
++		reset-deassert-us = <6500>;
+ 	};
+ };
+ 
 
 
 
