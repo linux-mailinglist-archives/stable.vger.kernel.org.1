@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-156072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A191AE44EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BE32EAE44F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7D7741888D1B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29C0618834CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AAED248891;
-	Mon, 23 Jun 2025 13:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A9724728E;
+	Mon, 23 Jun 2025 13:41:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BR3qKsH4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0GQrPo7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 358D5230BC2;
-	Mon, 23 Jun 2025 13:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5334F16419;
+	Mon, 23 Jun 2025 13:41:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686079; cv=none; b=rVkgFU7D01h3P+DbC1SyO8e4FEAIENAbfPzF4MqGeIR95iu2cxCn6mirEvEb+AEGlhjHyuihJ7JSYJNPPycPsogukxd35WXPLm1v36d4Av6GnaR7cy7e0ZEdru+MnrabUzwI5aCO37RT7ogStI+28MIKaogiKdjtTdYDJpcYsA0=
+	t=1750686098; cv=none; b=X73+Z7fWwux6fi4r53h0lwYS5EWTpq6OT1DaQz3CfS6VsIlMbNgIZyL4Q+ecpyYwH/LOAgTFR5XsVfTMDCooeTARo424zgasqYIeYWSNaAJLzNGcPeWL04EsC8qiE8AVvgtUGsZGJ+M83SzGZZUhFFnN/spN9F5zlA1qwXU7V+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686079; c=relaxed/simple;
-	bh=2GigGKsf0FsqaWHCRhyagZ93SyfYtbTzg7Ja4p3fPMY=;
+	s=arc-20240116; t=1750686098; c=relaxed/simple;
+	bh=SNLycSAsaMVzcJld3wvIR1nBoP78HUGWOMEbqj/NBAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N3aGWplfpIK232OMGe0HXoQAV//XAt5yz3UwkZkh88nwII5dZBiE/E33VmDFWxRyqoCsoirzxwqX2xB8BGtggGxc4HwxgJzlobu4P/IYfkenTae+ZnInjdYpUTQ47z6ckjg5VuLVDEJ4tS4KnUZu+J5LymC1f1hdSS3HhahPItI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BR3qKsH4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C923C4CEEA;
-	Mon, 23 Jun 2025 13:41:18 +0000 (UTC)
+	 MIME-Version; b=koJi8bd+7v318VQbowRu6lcSGJB0H7e0iU2Vq8eCmnzgNGHJ0lT36YJt2CQapaFnf13tQR0hfoaZaeBURTP47kE3du8iA4KK1hz7Pi+C95TuaAyqMeOfgFPJIUeF2dl96qSoQ7DGQ//ZOr3jpgAUVsdFCkhLo/xfLM/BrlyfR/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0GQrPo7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77752C4CEEA;
+	Mon, 23 Jun 2025 13:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686079;
-	bh=2GigGKsf0FsqaWHCRhyagZ93SyfYtbTzg7Ja4p3fPMY=;
+	s=korg; t=1750686096;
+	bh=SNLycSAsaMVzcJld3wvIR1nBoP78HUGWOMEbqj/NBAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BR3qKsH4SOWbS4GT7PyzqGDMXgjhmcC4W9YBCfTplVaOFSIfiNvRtJCHCNJrB77/v
-	 59Z7GgJ/KN41S0IYBPHxbo5bKL7gB5Z+dPQF+hpOIfMzM4vkTrVxCycY6Xmto8cl1e
-	 d21JbWSU5BQBQ/Tjx2qP3PRbOfugS0FG4wpKEeRg=
+	b=Y0GQrPo7opl5452OYfXFsuGklluwjFn5H/X0eINPS13JRkvmA87+4XAiObuWXNlNL
+	 +SwJpRsuKWwvq/MIHbb1awN13PnFPfRD+E0dgWfbnrlTn77K/7JkMR0weaeJZ1F/kI
+	 9DtiN5F8q/n3rcCDzyuthS0lKL2noEUPpCqgLIhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
+	Phillip Lougher <phillip@squashfs.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 078/411] arm64: dts: imx8mn-beacon: Fix RTC capacitive load
-Date: Mon, 23 Jun 2025 15:03:42 +0200
-Message-ID: <20250623130635.343863675@linuxfoundation.org>
+Subject: [PATCH 5.15 079/411] Squashfs: check return result of sb_min_blocksize
+Date: Mon, 23 Jun 2025 15:03:43 +0200
+Message-ID: <20250623130635.374335677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -67,36 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Phillip Lougher <phillip@squashfs.org.uk>
 
-[ Upstream commit c3f03bec30efd5082b55876846d57b5d17dae7b9 ]
+[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
 
-Although not noticeable when used every day, the RTC appears to drift when
-left to sit over time.  This is due to the capacitive load not being
-properly set. Fix RTC drift by correcting the capacitive load setting
-from 7000 to 12500, which matches the actual hardware configuration.
+Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
 
-Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Syzkaller forks multiple processes which after mounting the Squashfs
+filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
+Now if this ioctl occurs at the same time another process is in the
+process of mounting a Squashfs filesystem on /dev/loop0, the failure
+occurs.  When this happens the following code in squashfs_fill_super()
+fails.
+
+----
+msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
+msblk->devblksize_log2 = ffz(~msblk->devblksize);
+----
+
+sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
+
+As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
+is set to 64.
+
+This subsequently causes the
+
+UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
+shift exponent 64 is too large for 64-bit type 'u64' (aka
+'unsigned long long')
+
+This commit adds a check for a 0 return by sb_min_blocksize().
+
+Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
+Fixes: 0aa666190509 ("Squashfs: super block operations")
+Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
+Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ fs/squashfs/super.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-index 3b2d627a03428..4c339b06c87e5 100644
---- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
-@@ -240,6 +240,7 @@
- 	rtc: rtc@51 {
- 		compatible = "nxp,pcf85263";
- 		reg = <0x51>;
-+		quartz-load-femtofarads = <12500>;
- 	};
- };
+diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
+index 60d6951915f44..5108740f9653c 100644
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -136,6 +136,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
+ 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
  
+ 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
++	if (!msblk->devblksize) {
++		errorf(fc, "squashfs: unable to set blocksize\n");
++		return -EINVAL;
++	}
++
+ 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
+ 
+ 	mutex_init(&msblk->meta_index_mutex);
 -- 
 2.39.5
 
