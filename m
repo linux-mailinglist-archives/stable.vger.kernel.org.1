@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57619AE5375
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C878EAE5199
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB38B7AF473
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68F497ADF8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DB8221FBE;
-	Mon, 23 Jun 2025 21:52:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCEF21D3DD;
+	Mon, 23 Jun 2025 21:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7AOXyFR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs4ZxhMt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FCF72624;
-	Mon, 23 Jun 2025 21:52:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790EC1EE7C6;
+	Mon, 23 Jun 2025 21:35:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715575; cv=none; b=RRMs0KUWrRRTv7Pusxz9WtOQTW4YPxV7l+fuqOAiag/fwiQy65cq4pawRm/WRVzGXgSF/uWfH6Ql0kBJfrc+xFUnB8gyBCiB8YTNPjs1bN87pk6nGScxbDrl6Zjpj/tmi3zZj0zjOaKRymaGNLDBRNMycOT2O9Lr8hJYRVNrU14=
+	t=1750714541; cv=none; b=MSHMxqS4Jsx4FKX8ZRgkmqYF8Tw5Ujl6WHLa5SLXLTbqyoEtf608KHv4Ae18pN3ejhYOjoSqi8gJ8SE+ZdzYs3I9yLSTOsMvyLPlTvA4nfYD8KU3bIsa8GAQpi9G2H7eaGpfKw+0q2x9t2UNofYotcZEuZ2bAxgJUiBhdRPe2ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715575; c=relaxed/simple;
-	bh=JmFqn0LcSslupBG5kjHKdw+b50Gp7n7lg0uiPP+/W6k=;
+	s=arc-20240116; t=1750714541; c=relaxed/simple;
+	bh=RmML+VZvR3FMdFbM5DQ1Udyvj0fPV185WCM9f4GxJ+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Nqnxs/jb89T8BvEhRnKk77tBQ5d+NCVhK7UECGar8s4r2yWNSwJVFyTVi2UC9u7x55CDX8H044QZSpXCrioYZlw0LoqdiW9RwthCKADvxEZohW0fkDnSJt4cBYARaZSZ8auVZjuaRVKbDT8AH2JIV6Rj+/OGqfcLxu0RB2VJeOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7AOXyFR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0F4C4CEEA;
-	Mon, 23 Jun 2025 21:52:54 +0000 (UTC)
+	 MIME-Version; b=fHayP91Xp2iFLll6EpPbIjrYm2jCSZi2cLhUvnKAql/p38Pfphqu/67bh/uup9uaAsJXQggE3Oj1GL5s9h2N2hviz0Z7DJ76GwK5pRPtsAoNP7B/Ex5IvmtEZR/QJ6ag0w7BCzOelEORDyOqkjpLICKvfM+jNsDneAV+0qZAUD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs4ZxhMt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1264EC4CEEA;
+	Mon, 23 Jun 2025 21:35:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715574;
-	bh=JmFqn0LcSslupBG5kjHKdw+b50Gp7n7lg0uiPP+/W6k=;
+	s=korg; t=1750714541;
+	bh=RmML+VZvR3FMdFbM5DQ1Udyvj0fPV185WCM9f4GxJ+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7AOXyFRDGVLjdHC2MXRn2XNTBSMTU+6Pk/1HoM7S64XaoL6rwE3ooLHKFfdzOrIb
-	 GfiO86Ru//DJHsV6txnI4ZHGdVBBqDBhVQV5ApR4Sz1XgttT66mCAwYwYfB71jGJKd
-	 7XQSy1qAGEYMExnrhIWUfooXKxW81M6n6411ZsIw=
+	b=Bs4ZxhMtEarvv+FdAN1AzhwM7i6y6DogsMDUZ8l0XHrIl/fxOOxU5odAgruB6WgvI
+	 9Q3QtQ4dFdgeLnNNv4IqGj1+9NLHJPPLvRtxDLBq9mG5F9K1bQkHgZPF0nnrMnpQMB
+	 uXujUOsFIG61q5dsliKcYwJwnDz4WKUJ/wdIDlAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 467/592] net: clear the dst when changing skb protocol
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Rouven Czerwinski <rouven@czerwinskis.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 164/290] wifi: mac80211: do not offer a mesh path if forwarding is disabled
 Date: Mon, 23 Jun 2025 15:07:05 +0200
-Message-ID: <20250623130711.538590230@linuxfoundation.org>
+Message-ID: <20250623130631.831614835@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,123 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 upstream.
+[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
 
-A not-so-careful NAT46 BPF program can crash the kernel
-if it indiscriminately flips ingress packets from v4 to v6:
+When processing a PREQ the code would always check whether we have a
+mesh path locally and reply accordingly. However, when forwarding is
+disabled then we should not reply with this information as we will not
+forward data packets down that path.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
-    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
-    process_backlog (net/core/dev.c:6186:4)
-    napi_poll (net/core/dev.c:6906:9)
-    net_rx_action (net/core/dev.c:7028:13)
-    do_softirq (kernel/softirq.c:462:3)
-    netif_rx (net/core/dev.c:5326:3)
-    dev_loopback_xmit (net/core/dev.c:4015:2)
-    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
-    NF_HOOK (./include/linux/netfilter.h:314:9)
-    ip_mc_output (net/ipv4/ip_output.c:400:5)
-    dst_output (./include/net/dst.h:459:9)
-    ip_local_out (net/ipv4/ip_output.c:130:9)
-    ip_send_skb (net/ipv4/ip_output.c:1496:8)
-    udp_send_skb (net/ipv4/udp.c:1040:8)
-    udp_sendmsg (net/ipv4/udp.c:1328:10)
+Move the check for dot11MeshForwarding up in the function and skip the
+mesh path lookup in that case. In the else block, set forward to false
+so that the rest of the function becomes a no-op and the
+dot11MeshForwarding check does not need to be duplicated.
 
-The output interface has a 4->6 program attached at ingress.
-We try to loop the multicast skb back to the sending socket.
-Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
-and changes skb->protocol to v6. We enter ip6_rcv_core which
-tries to use skb_dst(). But the dst is still an IPv4 one left
-after IPv4 mcast output.
+This explains an effect observed in the Freifunk community where mesh
+forwarding is disabled. In that case a mesh with three STAs and only bad
+links in between them, individual STAs would occionally have indirect
+mpath entries. This should not have happened.
 
-Clear the dst in all BPF helpers which change the protocol.
-Try to preserve metadata dsts, those may carry non-routing
-metadata.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
-Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
-Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
+Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ net/mac80211/mesh_hwmp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3233,6 +3233,13 @@ static const struct bpf_func_proto bpf_s
- 	.arg1_type      = ARG_PTR_TO_CTX,
- };
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index c6395551f5df0..54930b06c3a4a 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -634,7 +634,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 				mesh_path_add_gate(mpath);
+ 		}
+ 		rcu_read_unlock();
+-	} else {
++	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
+ 		rcu_read_lock();
+ 		mpath = mesh_path_lookup(sdata, target_addr);
+ 		if (mpath) {
+@@ -652,6 +652,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 		rcu_read_unlock();
++	} else {
++		forward = false;
+ 	}
  
-+static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
-+{
-+	skb->protocol = htons(proto);
-+	if (skb_valid_dst(skb))
-+		skb_dst_drop(skb);
-+}
-+
- static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
- {
- 	/* Caller already did skb_cow() with len as headroom,
-@@ -3329,7 +3336,7 @@ static int bpf_skb_proto_4_to_6(struct s
+ 	if (reply) {
+@@ -669,7 +671,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
  		}
  	}
  
--	skb->protocol = htons(ETH_P_IPV6);
-+	bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 	skb_clear_hash(skb);
+-	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
++	if (forward) {
+ 		u32 preq_id;
+ 		u8 hopcount;
  
- 	return 0;
-@@ -3359,7 +3366,7 @@ static int bpf_skb_proto_6_to_4(struct s
- 		}
- 	}
- 
--	skb->protocol = htons(ETH_P_IP);
-+	bpf_skb_change_protocol(skb, ETH_P_IP);
- 	skb_clear_hash(skb);
- 
- 	return 0;
-@@ -3550,10 +3557,10 @@ static int bpf_skb_net_grow(struct sk_bu
- 		/* Match skb->protocol to new outer l3 protocol */
- 		if (skb->protocol == htons(ETH_P_IP) &&
- 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
--			skb->protocol = htons(ETH_P_IPV6);
-+			bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 		else if (skb->protocol == htons(ETH_P_IPV6) &&
- 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
--			skb->protocol = htons(ETH_P_IP);
-+			bpf_skb_change_protocol(skb, ETH_P_IP);
- 	}
- 
- 	if (skb_is_gso(skb)) {
-@@ -3606,10 +3613,10 @@ static int bpf_skb_net_shrink(struct sk_
- 	/* Match skb->protocol to new outer l3 protocol */
- 	if (skb->protocol == htons(ETH_P_IP) &&
- 	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
--		skb->protocol = htons(ETH_P_IPV6);
-+		bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 	else if (skb->protocol == htons(ETH_P_IPV6) &&
- 		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
--		skb->protocol = htons(ETH_P_IP);
-+		bpf_skb_change_protocol(skb, ETH_P_IP);
- 
- 	if (skb_is_gso(skb)) {
- 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+-- 
+2.39.5
+
 
 
 
