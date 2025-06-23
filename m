@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78EA9AE5035
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10A0DAE52EB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24CE51B62232
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE14F442C80
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 879D01EF397;
-	Mon, 23 Jun 2025 21:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F2B70838;
+	Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1nlav6Lc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r79HXxzb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4591E2628C;
-	Mon, 23 Jun 2025 21:23:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0C213FD4;
+	Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713791; cv=none; b=T16PvJIMZ/YLzxaQ3JvfSZmSmeYYTQnuYV7TxF+AD7UWx22XBE/hwe2vgXFs92mtd3M+DJ4j/UutQ6ut7JxOBf20ZohUzRuHqAz+0Tfc7Tcjbm0J6WBpOWWkO3unAc1WXhGfSEkE/klYGcnWufeeU0vC/SoDljBhv5l/iWchr5I=
+	t=1750715284; cv=none; b=LMz6zp5fUqfkdc3AHjJXrBNFA9N93IJqDyfhPK+DtuLM8rrxhBDKKXkWY3AKhQafBHr4SD4kY5RnxaFDHKr31LUDft2dzX3MnBn54ChcKBvhPpAcp4lnGiypwXSISmjB057/R5ha0O6ar4Deb97zHavEvGyIzS4LE+5+tk2wAsQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713791; c=relaxed/simple;
-	bh=l1t6PtNURAqc1xIvhQ96ekBYiLto6lPwrU8zOJ0d9HY=;
+	s=arc-20240116; t=1750715284; c=relaxed/simple;
+	bh=u3eKzRRqEjmiLbqOzGsFDmKoQ058RwK3dfRhrMswoHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEt2ZCAx6Z+nEUq55K1/uNzl5OPphvjo5fnWiSb/nKd+CWwt7nhIbCZPqtanr9XvhbK6KfDMfY3NsA6yJZPVBzDVoNPyp9hey8zAdA9CB0xG15kllPU9NKT9NISlyeK21pB6jk6+VvwjvWt1Jntd0bYRmmELZ3qmREOgUohxsnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1nlav6Lc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D063CC4CEEA;
-	Mon, 23 Jun 2025 21:23:10 +0000 (UTC)
+	 MIME-Version; b=cU+NsyS56aBj8A1G8e+lpiivKczDoSaxEI1PYxU/JRBGv+2A4ijZ1JgpmEggnTmL/5nR/2KjMVjG8n2nLpw9nnybHJTF1Z1GTjfFt0gEEEEyiKS1a9juSywnuNVXUZ2TynWoaBggkA6yOVCfs7Ai06CBHS7eChvcugwA1FX2ZEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r79HXxzb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3863EC4CEEA;
+	Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713791;
-	bh=l1t6PtNURAqc1xIvhQ96ekBYiLto6lPwrU8zOJ0d9HY=;
+	s=korg; t=1750715284;
+	bh=u3eKzRRqEjmiLbqOzGsFDmKoQ058RwK3dfRhrMswoHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1nlav6LcUcMyi1K0uvZ6IRjVigXFy9d1EOrJWFNQM6KkJ7rjPJF4J9hshEEFctISG
-	 rdzwcBtXPOkEu950ct6JbOYyqXuuY0xX6ZDJL6LRERiRQfjbS3hp03z2Db3xmWsgik
-	 X7SpKC0kffKeMgwdbqtgjvgnmRJPYuy8fg58nbSo=
+	b=r79HXxzbcEMD03zTXyIRjWSsArlFy96Prtv9ieiolZUAyow9jYoCZ2RLEgMDDcgtQ
+	 7BpI+otal0CPMKTNA+2me50tZzdoiUgX116rhWBnPGOWxkVweQ+N/MV2/x7XaN4Ig7
+	 FeAZoWFjIzmiMEYdUMXXknEzVniT0ZEJnpUTg3ns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 186/355] ext4: factor out ext4_get_maxbytes()
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 243/411] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
 Date: Mon, 23 Jun 2025 15:06:27 +0200
-Message-ID: <20250623130632.276199479@linuxfoundation.org>
+Message-ID: <20250623130639.769076971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit dbe27f06fa38b9bfc598f8864ae1c5d5831d9992 upstream.
+commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
 
-There are several locations that get the correct maxbytes value based on
-the inode's block type. It would be beneficial to extract a common
-helper function to make the code more clear.
+The function sunxi_nfc_hw_ecc_write_chunk() calls the
+sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
+function sunxi_nfc_randomizer_config(). Consequently, the randomization
+might not conduct correctly, which will affect the lifespan of NAND flash.
+A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-3-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Add the sunxi_nfc_randomizer_config() to config randomizer.
+
+Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+Cc: stable@vger.kernel.org # v4.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h    |    7 +++++++
- fs/ext4/extents.c |    7 +------
- fs/ext4/file.c    |    7 +------
- 3 files changed, 9 insertions(+), 12 deletions(-)
+ drivers/mtd/nand/raw/sunxi_nand.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3229,6 +3229,13 @@ static inline unsigned int ext4_flex_bg_
- 	return 1 << sbi->s_log_groups_per_flex;
- }
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1061,6 +1061,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
+ 	if (ret)
+ 		return ret;
  
-+static inline loff_t ext4_get_maxbytes(struct inode *inode)
-+{
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		return inode->i_sb->s_maxbytes;
-+	return EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+}
-+
- #define ext4_std_error(sb, errno)				\
- do {								\
- 	if ((errno))						\
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4970,12 +4970,7 @@ static const struct iomap_ops ext4_iomap
++	sunxi_nfc_randomizer_config(nand, page, false);
+ 	sunxi_nfc_randomizer_enable(nand);
+ 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
  
- static int ext4_fiemap_check_ranges(struct inode *inode, u64 start, u64 *len)
- {
--	u64 maxbytes;
--
--	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
--		maxbytes = inode->i_sb->s_maxbytes;
--	else
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+	u64 maxbytes = ext4_get_maxbytes(inode);
- 
- 	if (*len == 0)
- 		return -EINVAL;
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -858,12 +858,7 @@ static int ext4_file_open(struct inode *
- loff_t ext4_llseek(struct file *file, loff_t offset, int whence)
- {
- 	struct inode *inode = file->f_mapping->host;
--	loff_t maxbytes;
--
--	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
--	else
--		maxbytes = inode->i_sb->s_maxbytes;
-+	loff_t maxbytes = ext4_get_maxbytes(inode);
- 
- 	switch (whence) {
- 	default:
 
 
 
