@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158088-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A55BAE5618
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DFD3AE56E6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 106A84C71F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA641BC80A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48692253B0;
-	Mon, 23 Jun 2025 22:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C71223DE5;
+	Mon, 23 Jun 2025 22:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jpfGzzu2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+fzYFAx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CF319E7F9;
-	Mon, 23 Jun 2025 22:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465382192EC;
+	Mon, 23 Jun 2025 22:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716972; cv=none; b=AGUb6YQcv3LeXgekjhxJiqHEEclEUSesAOgtZWrZvmv9NWMFmX65F/smf7zCqByREW/ZwdFv+z+bH+IP8T9D8Id/smNO4WjPh1I41dpf1H1mU/eBfUJemB1BSWrFmCYGrptGG+oV6xRKegKfMwc5nVIlohopg1uoi+/HzMRK9rs=
+	t=1750717453; cv=none; b=fJxYCUCEGJV8gGELTwu/kDSc40zZumfgqXAfsdc8kGvl4FbbzvaGEEy+4l/jLBpyFfqia/SbWxlZP5REBwUgVEHCvoD7igYppSVSDrP96vUaMYkFfckAZ110745bHsNXMm0eQxYvzH4G47EYNWBF+eouyzdT20D4hQx1qOkokDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716972; c=relaxed/simple;
-	bh=ZaEciqh00ZJWQY6Fj6O/UnyjkUAMvLWhMJSkl3XAZZY=;
+	s=arc-20240116; t=1750717453; c=relaxed/simple;
+	bh=CC7jNw0J767dTgjthMI6sPU0jSsHD0sVESN13eDLCTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t/AFE3KP3ciN4mzYI3pXNP/IjqswovaJ5UvHK9HPNpz4KPQEpw38ol+E62DKOOgtjJBrATHHmiuYc5DHjXfHrsTnroY8yaqA6ncdYycSVXf6QlywYbH28kNLq8j0dHZMXaxQ0cMkkbQPxwhHPeRPs19zwXmOq8h0O+GV11pvh2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jpfGzzu2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF34FC4CEEA;
-	Mon, 23 Jun 2025 22:16:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r8sG7yerbXvvy/kzk0atVTfUk6t8McFjGiH9zqvV31fWDzYDKXgBrlgME2fOZ8lN3TSRBJtBPD7AGr9ICdeghda0hj999mdZguKUJdmBLoLwtNfUX1+cQoWQgD8+x2Xtwopjw0bDHFNpwudVMy98au5/Nz03oAsK0o+c4zY5S+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+fzYFAx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E66C4CEEA;
+	Mon, 23 Jun 2025 22:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716972;
-	bh=ZaEciqh00ZJWQY6Fj6O/UnyjkUAMvLWhMJSkl3XAZZY=;
+	s=korg; t=1750717453;
+	bh=CC7jNw0J767dTgjthMI6sPU0jSsHD0sVESN13eDLCTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jpfGzzu2gQ8uU1enN7/x3nUqsBLOj0Ff9HK954LCe59MoOQZLOMLIWMIALrCMYdns
-	 9TZE9V/B2C7foslza4HX8nIcjrGQqpCQJv//8hX/bMWTVeqBMbmPk9MY5zxkEMaOz5
-	 clPZVWUf+LVPp8+luj1VGjCuJXGmunAf5/KSsAL4=
+	b=M+fzYFAx5nYv9DtaQvx9GV4PGX5M9cwD6vcS7j35KTVM6i8Apxw1oO/OFKyqPNOwo
+	 lhP2Q0F02H5TCzBfbbQbAn68eIFCNfBn6d1/aeUFSp5TuOjymCgHjGwulf/fXM09zr
+	 /VbdFesqht6GpPzb85vJtxcJGHEMdWpBAVKoaWMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Nelson <robertcnelson@gmail.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Tony Lindgren <tony@atomide.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 5.15 383/411] ARM: dts: am335x-bone-common: Add GPIO PHY reset on revision C3 board
+	Matthew Auld <matthew.auld@intel.com>,
+	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 390/414] drm/xe/bmg: Update Wa_16023588340
 Date: Mon, 23 Jun 2025 15:08:47 +0200
-Message-ID: <20250623130643.290550699@linuxfoundation.org>
+Message-ID: <20250623130651.694804352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
 
-commit 623cef652768860bd5f205fb7b741be278585fba upstream.
+[ Upstream commit 16c1241b08751a67cd7a0221ea9f82b0b02806f4 ]
 
-This patch adds ethernet PHY reset GPIO config for Beaglebone Black
-series boards with revision C3. This fixes a random phy startup failure
-bug discussed at [1]. The GPIO pin used for reset is not used on older
-revisions, so it is ok to apply to all board revisions. The reset timing
-was discussed and tested at [2].
+This allows for additional L2 caching modes.
 
-[1] https://forum.digikey.com/t/ethernet-device-is-not-detecting-on-ubuntu-20-04-lts-on-bbg/19948
-[2] https://forum.beagleboard.org/t/recognizing-a-beaglebone-black-rev-c3-board/31249/
-
-Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Message-ID: <TY3P286MB26113797A3B2EC7E0348BBB2980FA@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
+Cc: Matthew Auld <matthew.auld@intel.com>
+Reviewed-by: Matthew Auld <matthew.auld@intel.com>
+Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+Link: https://lore.kernel.org/r/20250612-wa-14022085890-v4-2-94ba5dcc1e30@intel.com
+Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
+(cherry picked from commit 6ab42fa03d4c88a0ddf5e56e62794853b198e7bf)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am335x-bone-common.dtsi |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/xe/xe_gt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -145,6 +145,8 @@
- 			/* MDIO */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE7)
- 		>;
- 	};
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 335548e3b6b9c..231ed53cf907c 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -114,7 +114,7 @@ static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
+ 		xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
+ 	}
  
-@@ -153,6 +155,8 @@
- 			/* MDIO reset value */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 		>;
- 	};
+-	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0x3);
++	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0xF);
+ 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ }
  
-@@ -377,6 +381,10 @@
- 
- 	ethphy0: ethernet-phy@0 {
- 		reg = <0>;
-+		/* Support GPIO reset on revision C3 boards */
-+		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <300>;
-+		reset-deassert-us = <6500>;
- 	};
- };
- 
+-- 
+2.39.5
+
 
 
 
