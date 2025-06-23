@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-155830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B4A2AE43E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 460D6AE441E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDE8188AFC7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D6D117AEE9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B9A2561A2;
-	Mon, 23 Jun 2025 13:30:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9243825486D;
+	Mon, 23 Jun 2025 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbT7dlQ8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WLPDPfoE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54BE253B47;
-	Mon, 23 Jun 2025 13:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E054253358;
+	Mon, 23 Jun 2025 13:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685438; cv=none; b=PXY/SbkRviw7L6rFi6njG/8y2U4LRRbiTbix9I0R2CzTq83v7QfygkaXLTCR48kWOND8NW4hApJS395rIP2xZKPrN6QSwSCQ9kMtFiJ6UkahTUYxffklmiReogt5V/P7Eor3iR2/Ci6qwMfN4tJ9IAForwsGrkoCEDhNnTPsSvk=
+	t=1750685580; cv=none; b=Recc6Hfhce7ksxzK0jsgbX10M0KE63AMNi+cZ9bmTwTDldL8xvpLCGVQUL58NyyMGTNaSpzL2zwcLuEC8s/wKRQDB1yuslB6lFpgadm+PXgwbuPb6Vn/9yr37oIkh/m8zi8Jd1OjjAL/AadBeltNstm6gUhcaa9g4M9raq5wAXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685438; c=relaxed/simple;
-	bh=9bwwbRu6CklhZOMvpfaCq44R8evY4e3W5mOzjQfrsFc=;
+	s=arc-20240116; t=1750685580; c=relaxed/simple;
+	bh=96YlGFluljy9DlVc1102v3C7SzxRcFIpQhIwX7iOMd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mYgGSib3xsdtQ19sLDy7h4g1scA2Zt0jVaZUKKUM0hTc9RcluV+Gn8JHHouPSsqpjCxbC/UFoBsstsBMOzGeWWYs9MMnW8buA/00kIQLyXDHHMH5QVE+Dhqq3HtN0abhgoRiLVcksIdM1z1hlSgUc/Yrb22rKUidCU2TI5twm8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbT7dlQ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0343C4CEEA;
-	Mon, 23 Jun 2025 13:30:37 +0000 (UTC)
+	 MIME-Version; b=Ef2LdS+jyoWQLuicP86ZWCjmhyCp6xO7QEUm/hfOib6gt7FAvq2hzUh9cpiugXxtWmFqJj9EMPjHk2rYjn+M6f3AoJqYK/HjcyEXn49qGWmK2xYSxjMF6WAj9hJ81fZ3FWjK1M/ltIf6hzGhsEWD218waB1XfIYIcOQkgJQSUKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WLPDPfoE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65FDC4CEEA;
+	Mon, 23 Jun 2025 13:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685438;
-	bh=9bwwbRu6CklhZOMvpfaCq44R8evY4e3W5mOzjQfrsFc=;
+	s=korg; t=1750685580;
+	bh=96YlGFluljy9DlVc1102v3C7SzxRcFIpQhIwX7iOMd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbT7dlQ8v6zokrqEN+ucEy7r+6q3gZw7FIN63KlHV5XOr7wBGRV/U7s7/AlwTwEoH
-	 t1vGRxGWGLObrcxJjleKRYegGKf7NdHpbjb1emHmu8u+6Nxk1GIPVfuzH1fnEibDLz
-	 oMz825ibFEbtKzrwI2ReO/Xjpf/QMO6vqfmPCnfI=
+	b=WLPDPfoEqjkGSXA+mYzcwOgE5bsaUI2cF00Asgq81Uh9+wTRqJoyKQsrxKp8aRRsh
+	 CwS2JYkfWQ7BZ7eJXgGFCjm7jIHRjAeuPhZsteHhLwYHV/74dXSxQQG6CXOdg8a54j
+	 NPaHT8NE7z4jRPVmNSdv8VeAtF+xk9LOL2XOudAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan@gerhold.net>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-	Vincent Knecht <vincent.knecht@mailoo.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	syzbot+01affb1491750534256d@syzkaller.appspotmail.com,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/411] clk: qcom: gcc-msm8939: Fix mclk0 & mclk1 for 24 MHz
+Subject: [PATCH 6.15 245/592] workqueue: Fix race condition in wq->stats incrementation
 Date: Mon, 23 Jun 2025 15:03:23 +0200
-Message-ID: <20250623130634.761528308@linuxfoundation.org>
+Message-ID: <20250623130706.119801453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vincent Knecht <vincent.knecht@mailoo.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit 9e7acf70cf6aa7b22f67d911f50a8cd510e8fb00 ]
+[ Upstream commit 70e1683ca3a6474360af1d3a020a9a98c8492cc0 ]
 
-Fix mclk0 & mclk1 parent map to use correct GPLL6 configuration and
-freq_tbl to use GPLL6 instead of GPLL0 so that they tick at 24 MHz.
+Fixed a race condition in incrementing wq->stats[PWQ_STAT_COMPLETED] by
+moving the operation under pool->lock.
 
-Fixes: 1664014e4679 ("clk: qcom: gcc-msm8939: Add MSM8939 Generic Clock Controller")
-Suggested-by: Stephan Gerhold <stephan@gerhold.net>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
-Link: https://lore.kernel.org/r/20250414-gcc-msm8939-fixes-mclk-v2-resend2-v2-1-5ddcf572a6de@mailoo.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: syzbot+01affb1491750534256d@syzkaller.appspotmail.com
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-msm8939.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/workqueue.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-msm8939.c b/drivers/clk/qcom/gcc-msm8939.c
-index de0022e5450de..81db8877acc2c 100644
---- a/drivers/clk/qcom/gcc-msm8939.c
-+++ b/drivers/clk/qcom/gcc-msm8939.c
-@@ -433,7 +433,7 @@ static const struct parent_map gcc_xo_gpll0_gpll1a_gpll6_sleep_map[] = {
- 	{ P_XO, 0 },
- 	{ P_GPLL0, 1 },
- 	{ P_GPLL1_AUX, 2 },
--	{ P_GPLL6, 2 },
-+	{ P_GPLL6, 3 },
- 	{ P_SLEEP_CLK, 6 },
- };
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index cf62032827375..1ea62b8c76b32 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -3241,7 +3241,7 @@ __acquires(&pool->lock)
+ 	 * point will only record its address.
+ 	 */
+ 	trace_workqueue_execute_end(work, worker->current_func);
+-	pwq->stats[PWQ_STAT_COMPLETED]++;
++
+ 	lock_map_release(&lockdep_map);
+ 	if (!bh_draining)
+ 		lock_map_release(pwq->wq->lockdep_map);
+@@ -3272,6 +3272,8 @@ __acquires(&pool->lock)
  
-@@ -1087,7 +1087,7 @@ static struct clk_rcg2 jpeg0_clk_src = {
- };
+ 	raw_spin_lock_irq(&pool->lock);
  
- static const struct freq_tbl ftbl_gcc_camss_mclk0_1_clk[] = {
--	F(24000000, P_GPLL0, 1, 1, 45),
-+	F(24000000, P_GPLL6, 1, 1, 45),
- 	F(66670000, P_GPLL0, 12, 0, 0),
- 	{ }
- };
++	pwq->stats[PWQ_STAT_COMPLETED]++;
++
+ 	/*
+ 	 * In addition to %WQ_CPU_INTENSIVE, @worker may also have been marked
+ 	 * CPU intensive by wq_worker_tick() if @work hogged CPU longer than
+-- 
+2.39.5
+
+
+
+w_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -42,7 +42,6 @@
+ #include <rdma/ib_umem.h>
+ #include <rdma/uverbs_ioctl.h>
+ 
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_cmd.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index a03dfde796ca4..07ea5fe4a59bb 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -34,6 +34,7 @@
+ #define _HNS_ROCE_HW_V2_H
+ 
+ #include <linux/bitops.h>
++#include "hnae3.h"
+ 
+ #define HNS_ROCE_VF_QPC_BT_NUM			256
+ #define HNS_ROCE_VF_SCCC_BT_NUM			64
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 4fc8e0c8b7ab0..5bafd451ca8da 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -38,7 +38,6 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hem.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+index 259444c0a6301..8acab99f7ea6a 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
++++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+@@ -4,7 +4,6 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/restrack.h>
+ #include <uapi/rdma/rdma_netlink.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
 -- 
 2.39.5
 
