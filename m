@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-156323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A871AE4F1E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DEB8AE5194
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B46BA7AC360
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BC721899392
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C5221F24;
-	Mon, 23 Jun 2025 21:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4920221FCA;
+	Mon, 23 Jun 2025 21:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NjNSCRIC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ipet5aNW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E22D1DF98B;
-	Mon, 23 Jun 2025 21:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913171EEA5D;
+	Mon, 23 Jun 2025 21:35:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713133; cv=none; b=UQG/5Wovu6pGntRr3H14mpoxKS1995NBUzEUsW4hJQq+Gct17JuH78Y5CB4bWohRA3iFawOyHOXSClncZvxkaKUJj2nAvv/UUJz4frgvoyeYa+lCBIHWwc7JgNjlRxP7On4yMN6/gcBqTpKQz3Q8dX9P8Jun+HMNtZQCEZjloYk=
+	t=1750714502; cv=none; b=n1fRw0GIh73NI+pkFQTM4iUPMgrrJsHhBS6aYOhBxPMBsPwpN4lAjWLqp+1n9ITK6yO9YpH59Z3kkaQ9USYm59gFhOjmxrNtIuLJopUE0NZgknkwPhl68TslYfJnRpKdXeUeHVxsKRqij+8V85OibY3ndMMkxIFTydD7S+F33/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713133; c=relaxed/simple;
-	bh=FT0awCTakRRQBGP6BvFuJLPJfTYZWAK8fBr4LFBpIgQ=;
+	s=arc-20240116; t=1750714502; c=relaxed/simple;
+	bh=95jLmIR3rXf61Lfovkb/5fy96gRjmh8kmn6Xvnae6bs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WJweL5dNTgJzLoRf7xwdzFT1kx+xPvcj93UEBVUirI1LyiRk6E1kuC/bg87afo5VGdV9l8wK1iu5av/L35QNGVvw2hD4dRQYjN6+Np3NUy280xzMaFSlez/GquaLMQc7gFKhrc6GlMWeWjvllzRHDp6j4vWZOrDB24wn4x4xV14=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NjNSCRIC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0853FC4CEEA;
-	Mon, 23 Jun 2025 21:12:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=elfRJjxOA/3RWg1NrMDki0eu2t0rOwEQ26BqB86DXJmdbBKdUAztTi8L0gKShc03r5M+ASjr+GGSuhVdhqfz3kRKnF6QP3Pnz/LYy+uNxgPhxVn0npUMeMVArHV8qzfwPM+mkn4msGfIZ4vIlv3dDYt5pYaC75BiOyboM4omRuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ipet5aNW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B21C4CEEA;
+	Mon, 23 Jun 2025 21:35:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713133;
-	bh=FT0awCTakRRQBGP6BvFuJLPJfTYZWAK8fBr4LFBpIgQ=;
+	s=korg; t=1750714502;
+	bh=95jLmIR3rXf61Lfovkb/5fy96gRjmh8kmn6Xvnae6bs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NjNSCRICQGtfdfODMZ2htv5q73mm2igx0sloeahpUVxDeL2JY3QHLAHIyk6iuxPWs
-	 QS+7Ap9YkWJDFCChZ2O6nNvDLOtvnoK2RYmlLzl8BdDVfpYejpPlK5gddOseDvuiA2
-	 sIywqYJ4/BuTNkc1GRdoB6tgcYGH9Au9Sf34mQ+4=
+	b=Ipet5aNWRiD6511k+p3Qs0mQ8voCqlt7QuBjShDoHu4sx7YKvHu9gq8k7asjdtKT7
+	 xdzN8rad6xyS2nXSxEvX380vHOPljM1w2Kp88fKa4S/GL151yhOoZt5p+3ncgQje3Q
+	 kVRi6Ak6a+EesQYodQ1f2RJzuJkaXR6/jYqkaN3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mirco Barone <mirco.barone@polito.it>,
-	"Jason A. Donenfeld" <Jason@zx2c4.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 126/411] wireguard: device: enable threaded NAPI
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Zsolt Kajtar <soci@c64.rulez.org>
+Subject: [PATCH 6.12 133/414] sysfb: Fix screen_info type check for VGA
 Date: Mon, 23 Jun 2025 15:04:30 +0200
-Message-ID: <20250623130636.733840357@linuxfoundation.org>
+Message-ID: <20250623130645.380091165@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +67,93 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirco Barone <mirco.barone@polito.it>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit db9ae3b6b43c79b1ba87eea849fd65efa05b4b2e ]
+commit f670b50ef5e4a69bf4d2ec5ac6a9228d93b13a7a upstream.
 
-Enable threaded NAPI by default for WireGuard devices in response to low
-performance behavior that we observed when multiple tunnels (and thus
-multiple wg devices) are deployed on a single host.  This affects any
-kind of multi-tunnel deployment, regardless of whether the tunnels share
-the same endpoints or not (i.e., a VPN concentrator type of gateway
-would also be affected).
+Use the helper screen_info_video_type() to get the framebuffer
+type from struct screen_info. Handle supported values in sorted
+switch statement.
 
-The problem is caused by the fact that, in case of a traffic surge that
-involves multiple tunnels at the same time, the polling of the NAPI
-instance of all these wg devices tends to converge onto the same core,
-causing underutilization of the CPU and bottlenecking performance.
+Reading orig_video_isVGA is unreliable. On most systems it is a
+VIDEO_TYPE_ constant. On some systems with VGA it is simply set
+to 1 to signal the presence of a VGA output. See vga_probe() for
+an example. Retrieving the screen_info type with the helper
+screen_info_video_type() detects these cases and returns the
+appropriate VIDEO_TYPE_ constant. For VGA, sysfb creates a device
+named "vga-framebuffer".
 
-This happens because NAPI polling is hosted by default in softirq
-context, but the WireGuard driver only raises this softirq after the rx
-peer queue has been drained, which doesn't happen during high traffic.
-In this case, the softirq already active on a core is reused instead of
-raising a new one.
+The sysfb code has been taken from vga16fb, where it likely didn't
+work correctly either. With this bugfix applied, vga16fb loads for
+compatible vga-framebuffer devices.
 
-As a result, once two or more tunnel softirqs have been scheduled on
-the same core, they remain pinned there until the surge ends.
-
-In our experiments, this almost always leads to all tunnel NAPIs being
-handled on a single core shortly after a surge begins, limiting
-scalability to less than 3× the performance of a single tunnel, despite
-plenty of unused CPU cores being available.
-
-The proposed mitigation is to enable threaded NAPI for all WireGuard
-devices. This moves the NAPI polling context to a dedicated per-device
-kernel thread, allowing the scheduler to balance the load across all
-available cores.
-
-On our 32-core gateways, enabling threaded NAPI yields a ~4× performance
-improvement with 16 tunnels, increasing throughput from ~13 Gbps to
-~48 Gbps. Meanwhile, CPU usage on the receiver (which is the bottleneck)
-jumps from 20% to 100%.
-
-We have found no performance regressions in any scenario we tested.
-Single-tunnel throughput remains unchanged.
-
-More details are available in our Netdev paper.
-
-Link: https://netdevconf.info/0x18/docs/netdev-0x18-paper23-talk-paper.pdf
-Signed-off-by: Mirco Barone <mirco.barone@polito.it>
-Fixes: e7096c131e51 ("net: WireGuard secure network tunnel")
-Signed-off-by: Jason A. Donenfeld <Jason@zx2c4.com>
-Link: https://patch.msgid.link/20250605120616.2808744-1-Jason@zx2c4.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0db5b61e0dc0 ("fbdev/vga16fb: Create EGA/VGA devices in sysfb code")
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Javier Martinez Canillas <javierm@redhat.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Tzung-Bi Shih <tzungbi@kernel.org>
+Cc: Helge Deller <deller@gmx.de>
+Cc: "Uwe Kleine-König" <u.kleine-koenig@baylibre.com>
+Cc: Zsolt Kajtar <soci@c64.rulez.org>
+Cc: <stable@vger.kernel.org> # v6.1+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://lore.kernel.org/r/20250603154838.401882-1-tzimmermann@suse.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireguard/device.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/sysfb.c |   26 ++++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireguard/device.c b/drivers/net/wireguard/device.c
-index e5e344af34237..7bf1ec4ccaa98 100644
---- a/drivers/net/wireguard/device.c
-+++ b/drivers/net/wireguard/device.c
-@@ -352,6 +352,7 @@ static int wg_newlink(struct net *src_net, struct net_device *dev,
- 	if (ret < 0)
- 		goto err_free_handshake_queue;
+--- a/drivers/firmware/sysfb.c
++++ b/drivers/firmware/sysfb.c
+@@ -124,6 +124,7 @@ static __init int sysfb_init(void)
+ {
+ 	struct screen_info *si = &screen_info;
+ 	struct device *parent;
++	unsigned int type;
+ 	struct simplefb_platform_data mode;
+ 	const char *name;
+ 	bool compatible;
+@@ -151,17 +152,26 @@ static __init int sysfb_init(void)
+ 			goto put_device;
+ 	}
  
-+	dev_set_threaded(dev, true);
- 	ret = register_netdevice(dev);
- 	if (ret < 0)
- 		goto err_uninit_ratelimiter;
--- 
-2.39.5
-
++	type = screen_info_video_type(si);
++
+ 	/* if the FB is incompatible, create a legacy framebuffer device */
+-	if (si->orig_video_isVGA == VIDEO_TYPE_EFI)
+-		name = "efi-framebuffer";
+-	else if (si->orig_video_isVGA == VIDEO_TYPE_VLFB)
+-		name = "vesa-framebuffer";
+-	else if (si->orig_video_isVGA == VIDEO_TYPE_VGAC)
+-		name = "vga-framebuffer";
+-	else if (si->orig_video_isVGA == VIDEO_TYPE_EGAC)
++	switch (type) {
++	case VIDEO_TYPE_EGAC:
+ 		name = "ega-framebuffer";
+-	else
++		break;
++	case VIDEO_TYPE_VGAC:
++		name = "vga-framebuffer";
++		break;
++	case VIDEO_TYPE_VLFB:
++		name = "vesa-framebuffer";
++		break;
++	case VIDEO_TYPE_EFI:
++		name = "efi-framebuffer";
++		break;
++	default:
+ 		name = "platform-framebuffer";
++		break;
++	}
+ 
+ 	pd = platform_device_alloc(name, 0);
+ 	if (!pd) {
 
 
 
