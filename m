@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43356AE563C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13804AE56E5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11D084A5C3F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2CE94E1A0B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD96226888;
-	Mon, 23 Jun 2025 22:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F14222599;
+	Mon, 23 Jun 2025 22:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EB4UyQzV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dF/UK9po"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6BBB676;
-	Mon, 23 Jun 2025 22:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731D62192EC;
+	Mon, 23 Jun 2025 22:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716950; cv=none; b=gjpakA3sWy8JPZJfWP1noRyqNEmuX5VScO9x2H/GeaYv9K/icpfKTneL64nOLpqMQz/sHRhG7AEy47dAVW7tBrYuxdYcmuM+pV/JN+gcFcfjjsKLv3rJrXisbzeXF5GtJq2/zyFwCAeDz3kPY80cWBu2Pqr14+np1dCtPR8p3y8=
+	t=1750717443; cv=none; b=DkYfBzyZ/tvFW0N2to1+UcmyhlLMapjATVI/YZh22y/Xi1glwCmS8+AuFzmvG7UJshjKpwQzC4Yy3hs2t+tAKylvwwbm1EDrpjMb0y6gxnAnrCVFXSbAhNT3OuHiACLPwyXMJSmeelf7b1ISRPlGmVbBZVT1x6xQEcNuzUKRjLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716950; c=relaxed/simple;
-	bh=fzUuhfOL4gFuzirkjEiHvHn02oKsDjUwTX449t5caRI=;
+	s=arc-20240116; t=1750717443; c=relaxed/simple;
+	bh=EE0OltR5gzMSUy/N21p/y+idEdYnqjBgT3x0Vg6H04I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RoK39f3pyb8uBVstDhiVWJaW+PMUHpkwxkLYfaxEBCdzQz1iy9bXnoTm/4iI5wO5Wd8i+mxxxachLKbrjz3w2cZNrA6xH0SfNZBZKLetz5rbslfJwAzGRK3CUDIEodBgKIvyIfZOkiexxinSZ6tgPX09kc3vsmButoV4Ol1PbFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EB4UyQzV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92EEC4CEEA;
-	Mon, 23 Jun 2025 22:15:49 +0000 (UTC)
+	 MIME-Version; b=d97C2ciFn917L3tQd9VcBHYtShhgGnu6qM0HXYHlzq8/rApdG8SRdlAAQbP6hx8WAS//ZkxXCg18xJdVprpjhNTNxGhJdupcta16id+a6EtOzQhktb8lutrnGW15JV9kPf/zviD5GMzr7tCxvrMkCfNAh9LXi55vcOBBYrZMd2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dF/UK9po; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0ADC4CEED;
+	Mon, 23 Jun 2025 22:24:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716950;
-	bh=fzUuhfOL4gFuzirkjEiHvHn02oKsDjUwTX449t5caRI=;
+	s=korg; t=1750717443;
+	bh=EE0OltR5gzMSUy/N21p/y+idEdYnqjBgT3x0Vg6H04I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EB4UyQzVS2F0f7jGAPdd4iX5nY7KfX5uSX6avL4Kln6fkHFjbv+I+oE3gP4a3w6Vn
-	 RewUxcdcgfm58U9ynWUViVYeypB0wCsmyFXsDLvoTjcBEXu3ax4heuWboJKjNDEAhq
-	 gywSdFepP6FjjLqHssfc9JnL+O8ucx6N65PAapV8=
+	b=dF/UK9poT616RkD0h3aWZMNyzhIfL/HjFwx+5ND+LUpwkFrFDB5s6LMeVKXC4mvXe
+	 myKm1hfQggJAExAp65w1k1+mDsiaUt44QiZIG3LjYB1Og/RqIwQXPZcdD2F5v+/wVt
+	 BeBTPpmbBm3y6VqMbnPTabFShWiZp9kmS8zaKNdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b64dec3affaed7b3af5@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 381/411] net: atm: add lec_mutex
+Subject: [PATCH 6.12 388/414] drm/xe: Wire up device shutdown handler
 Date: Mon, 23 Jun 2025 15:08:45 +0200
-Message-ID: <20250623130643.237512404@linuxfoundation.org>
+Message-ID: <20250623130651.645124773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,163 +62,229 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
 
-[ Upstream commit d13a3824bfd2b4774b671a75cf766a16637a0e67 ]
+[ Upstream commit 501d799a47e2b83b4e41d5306c2266ea5c100a08 ]
 
-syzbot found its way in net/atm/lec.c, and found an error path
-in lecd_attach() could leave a dangling pointer in dev_lec[].
+The system is turning off, and we should probably put the device
+in a safe power state. We don't need to evict VRAM or suspend running
+jobs to a safe state, as the device is rebooted anyway.
 
-Add a mutex to protect dev_lecp[] uses from lecd_attach(),
-lec_vcc_attach() and lec_mcast_attach().
+This does not imply the system is necessarily reset, as we can
+kexec into a new kernel. Without shutting down, things like
+USB Type-C may mysteriously start failing.
 
-Following patch will use this mutex for /proc/net/atm/lec.
-
-BUG: KASAN: slab-use-after-free in lecd_attach net/atm/lec.c:751 [inline]
-BUG: KASAN: slab-use-after-free in lane_ioctl+0x2224/0x23e0 net/atm/lec.c:1008
-Read of size 8 at addr ffff88807c7b8e68 by task syz.1.17/6142
-
-CPU: 1 UID: 0 PID: 6142 Comm: syz.1.17 Not tainted 6.16.0-rc1-syzkaller-00239-g08215f5486ec #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:408 [inline]
-  print_report+0xcd/0x680 mm/kasan/report.c:521
-  kasan_report+0xe0/0x110 mm/kasan/report.c:634
-  lecd_attach net/atm/lec.c:751 [inline]
-  lane_ioctl+0x2224/0x23e0 net/atm/lec.c:1008
-  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
-  sock_do_ioctl+0x118/0x280 net/socket.c:1190
-  sock_ioctl+0x227/0x6b0 net/socket.c:1311
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
-
-Allocated by task 6132:
-  kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-  poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-  __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
-  kasan_kmalloc include/linux/kasan.h:260 [inline]
-  __do_kmalloc_node mm/slub.c:4328 [inline]
-  __kvmalloc_node_noprof+0x27b/0x620 mm/slub.c:5015
-  alloc_netdev_mqs+0xd2/0x1570 net/core/dev.c:11711
-  lecd_attach net/atm/lec.c:737 [inline]
-  lane_ioctl+0x17db/0x23e0 net/atm/lec.c:1008
-  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
-  sock_do_ioctl+0x118/0x280 net/socket.c:1190
-  sock_ioctl+0x227/0x6b0 net/socket.c:1311
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Freed by task 6132:
-  kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-  kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
-  poison_slab_object mm/kasan/common.c:247 [inline]
-  __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
-  kasan_slab_free include/linux/kasan.h:233 [inline]
-  slab_free_hook mm/slub.c:2381 [inline]
-  slab_free mm/slub.c:4643 [inline]
-  kfree+0x2b4/0x4d0 mm/slub.c:4842
-  free_netdev+0x6c5/0x910 net/core/dev.c:11892
-  lecd_attach net/atm/lec.c:744 [inline]
-  lane_ioctl+0x1ce8/0x23e0 net/atm/lec.c:1008
-  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
-  sock_do_ioctl+0x118/0x280 net/socket.c:1190
-  sock_ioctl+0x227/0x6b0 net/socket.c:1311
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+8b64dec3affaed7b3af5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6852c6f6.050a0220.216029.0018.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250618140844.1686882-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+References: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/3500
+Signed-off-by: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+[mlankhorst: Add !xe_driver_flr_disabled assert]
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240905150052.174895-4-maarten.lankhorst@linux.intel.com
+Stable-dep-of: 16c1241b0875 ("drm/xe/bmg: Update Wa_16023588340")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/xe/display/xe_display.c | 43 +++++++++++++++++++++++++
+ drivers/gpu/drm/xe/display/xe_display.h |  4 +++
+ drivers/gpu/drm/xe/xe_device.c          | 40 +++++++++++++++++++----
+ drivers/gpu/drm/xe/xe_gt.c              |  7 ++++
+ drivers/gpu/drm/xe/xe_gt.h              |  1 +
+ 5 files changed, 89 insertions(+), 6 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index ca9952c52fb5c..3f67b84c8f1c9 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -124,6 +124,7 @@ static unsigned char bus_mac[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+diff --git a/drivers/gpu/drm/xe/display/xe_display.c b/drivers/gpu/drm/xe/display/xe_display.c
+index c6e0c8d77a70f..a1928cedc7ddf 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.c
++++ b/drivers/gpu/drm/xe/display/xe_display.c
+@@ -352,6 +352,36 @@ void xe_display_pm_suspend(struct xe_device *xe)
+ 	__xe_display_pm_suspend(xe, false);
+ }
  
- /* Device structures */
- static struct net_device *dev_lec[MAX_LEC_ITF];
-+static DEFINE_MUTEX(lec_mutex);
- 
- #if IS_ENABLED(CONFIG_BRIDGE)
- static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
-@@ -687,6 +688,7 @@ static int lec_vcc_attach(struct atm_vcc *vcc, void __user *arg)
- 	int bytes_left;
- 	struct atmlec_ioc ioc_data;
- 
-+	lockdep_assert_held(&lec_mutex);
- 	/* Lecd must be up in this case */
- 	bytes_left = copy_from_user(&ioc_data, arg, sizeof(struct atmlec_ioc));
- 	if (bytes_left != 0)
-@@ -712,6 +714,7 @@ static int lec_vcc_attach(struct atm_vcc *vcc, void __user *arg)
- 
- static int lec_mcast_attach(struct atm_vcc *vcc, int arg)
++void xe_display_pm_shutdown(struct xe_device *xe)
++{
++	struct intel_display *display = &xe->display;
++
++	if (!xe->info.probe_display)
++		return;
++
++	intel_power_domains_disable(xe);
++	intel_fbdev_set_suspend(&xe->drm, FBINFO_STATE_SUSPENDED, true);
++	if (has_display(xe)) {
++		drm_kms_helper_poll_disable(&xe->drm);
++		intel_display_driver_disable_user_access(xe);
++		intel_display_driver_suspend(xe);
++	}
++
++	xe_display_flush_cleanup_work(xe);
++	intel_dp_mst_suspend(xe);
++	intel_hpd_cancel_work(xe);
++
++	if (has_display(xe))
++		intel_display_driver_suspend_access(xe);
++
++	intel_encoder_suspend_all(display);
++	intel_encoder_shutdown_all(display);
++
++	intel_opregion_suspend(display, PCI_D3cold);
++
++	intel_dmc_suspend(xe);
++}
++
+ void xe_display_pm_runtime_suspend(struct xe_device *xe)
  {
-+	lockdep_assert_held(&lec_mutex);
- 	if (arg < 0 || arg >= MAX_LEC_ITF)
- 		return -EINVAL;
- 	arg = array_index_nospec(arg, MAX_LEC_ITF);
-@@ -727,6 +730,7 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
- 	int i;
- 	struct lec_priv *priv;
+ 	if (!xe->info.probe_display)
+@@ -376,6 +406,19 @@ void xe_display_pm_suspend_late(struct xe_device *xe)
+ 	intel_display_power_suspend_late(xe);
+ }
  
-+	lockdep_assert_held(&lec_mutex);
- 	if (arg < 0)
- 		arg = 0;
- 	if (arg >= MAX_LEC_ITF)
-@@ -744,6 +748,7 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
- 		snprintf(dev_lec[i]->name, IFNAMSIZ, "lec%d", i);
- 		if (register_netdev(dev_lec[i])) {
- 			free_netdev(dev_lec[i]);
-+			dev_lec[i] = NULL;
- 			return -EINVAL;
- 		}
++void xe_display_pm_shutdown_late(struct xe_device *xe)
++{
++	if (!xe->info.probe_display)
++		return;
++
++	/*
++	 * The only requirement is to reboot with display DC states disabled,
++	 * for now leaving all display power wells in the INIT power domain
++	 * enabled.
++	 */
++	intel_power_domains_driver_remove(xe);
++}
++
+ void xe_display_pm_resume_early(struct xe_device *xe)
+ {
+ 	if (!xe->info.probe_display)
+diff --git a/drivers/gpu/drm/xe/display/xe_display.h b/drivers/gpu/drm/xe/display/xe_display.h
+index bed55fd26f304..17afa537aee50 100644
+--- a/drivers/gpu/drm/xe/display/xe_display.h
++++ b/drivers/gpu/drm/xe/display/xe_display.h
+@@ -35,7 +35,9 @@ void xe_display_irq_reset(struct xe_device *xe);
+ void xe_display_irq_postinstall(struct xe_device *xe, struct xe_gt *gt);
  
-@@ -1005,6 +1010,7 @@ static int lane_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		return -ENOIOCTLCMD;
- 	}
+ void xe_display_pm_suspend(struct xe_device *xe);
++void xe_display_pm_shutdown(struct xe_device *xe);
+ void xe_display_pm_suspend_late(struct xe_device *xe);
++void xe_display_pm_shutdown_late(struct xe_device *xe);
+ void xe_display_pm_resume_early(struct xe_device *xe);
+ void xe_display_pm_resume(struct xe_device *xe);
+ void xe_display_pm_runtime_suspend(struct xe_device *xe);
+@@ -66,7 +68,9 @@ static inline void xe_display_irq_reset(struct xe_device *xe) {}
+ static inline void xe_display_irq_postinstall(struct xe_device *xe, struct xe_gt *gt) {}
  
-+	mutex_lock(&lec_mutex);
- 	switch (cmd) {
- 	case ATMLEC_CTRL:
- 		err = lecd_attach(vcc, (int)arg);
-@@ -1019,6 +1025,7 @@ static int lane_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		break;
- 	}
+ static inline void xe_display_pm_suspend(struct xe_device *xe) {}
++static inline void xe_display_pm_shutdown(struct xe_device *xe) {}
+ static inline void xe_display_pm_suspend_late(struct xe_device *xe) {}
++static inline void xe_display_pm_shutdown_late(struct xe_device *xe) {}
+ static inline void xe_display_pm_resume_early(struct xe_device *xe) {}
+ static inline void xe_display_pm_resume(struct xe_device *xe) {}
+ static inline void xe_display_pm_runtime_suspend(struct xe_device *xe) {}
+diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
+index 23e02372a49db..0c3db53b93d8a 100644
+--- a/drivers/gpu/drm/xe/xe_device.c
++++ b/drivers/gpu/drm/xe/xe_device.c
+@@ -374,6 +374,11 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
+ 	return ERR_PTR(err);
+ }
  
-+	mutex_unlock(&lec_mutex);
++static bool xe_driver_flr_disabled(struct xe_device *xe)
++{
++	return xe_mmio_read32(xe_root_mmio_gt(xe), GU_CNTL_PROTECTED) & DRIVERINT_FLR_DIS;
++}
++
+ /*
+  * The driver-initiated FLR is the highest level of reset that we can trigger
+  * from within the driver. It is different from the PCI FLR in that it doesn't
+@@ -387,17 +392,12 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
+  * if/when a new instance of i915 is bound to the device it will do a full
+  * re-init anyway.
+  */
+-static void xe_driver_flr(struct xe_device *xe)
++static void __xe_driver_flr(struct xe_device *xe)
+ {
+ 	const unsigned int flr_timeout = 3 * MICRO; /* specs recommend a 3s wait */
+ 	struct xe_gt *gt = xe_root_mmio_gt(xe);
+ 	int ret;
+ 
+-	if (xe_mmio_read32(gt, GU_CNTL_PROTECTED) & DRIVERINT_FLR_DIS) {
+-		drm_info_once(&xe->drm, "BIOS Disabled Driver-FLR\n");
+-		return;
+-	}
+-
+ 	drm_dbg(&xe->drm, "Triggering Driver-FLR\n");
+ 
+ 	/*
+@@ -438,6 +438,16 @@ static void xe_driver_flr(struct xe_device *xe)
+ 	xe_mmio_write32(gt, GU_DEBUG, DRIVERFLR_STATUS);
+ }
+ 
++static void xe_driver_flr(struct xe_device *xe)
++{
++	if (xe_driver_flr_disabled(xe)) {
++		drm_info_once(&xe->drm, "BIOS Disabled Driver-FLR\n");
++		return;
++	}
++
++	__xe_driver_flr(xe);
++}
++
+ static void xe_driver_flr_fini(void *arg)
+ {
+ 	struct xe_device *xe = arg;
+@@ -797,6 +807,24 @@ void xe_device_remove(struct xe_device *xe)
+ 
+ void xe_device_shutdown(struct xe_device *xe)
+ {
++	struct xe_gt *gt;
++	u8 id;
++
++	drm_dbg(&xe->drm, "Shutting down device\n");
++
++	if (xe_driver_flr_disabled(xe)) {
++		xe_display_pm_shutdown(xe);
++
++		xe_irq_suspend(xe);
++
++		for_each_gt(gt, xe, id)
++			xe_gt_shutdown(gt);
++
++		xe_display_pm_shutdown_late(xe);
++	} else {
++		/* BOOM! */
++		__xe_driver_flr(xe);
++	}
+ }
+ 
+ /**
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 3a7628fb5ad32..258a6d6715679 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -865,6 +865,13 @@ int xe_gt_suspend(struct xe_gt *gt)
  	return err;
  }
  
++void xe_gt_shutdown(struct xe_gt *gt)
++{
++	xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	do_gt_reset(gt);
++	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++}
++
+ /**
+  * xe_gt_sanitize_freq() - Restore saved frequencies if necessary.
+  * @gt: the GT object
+diff --git a/drivers/gpu/drm/xe/xe_gt.h b/drivers/gpu/drm/xe/xe_gt.h
+index ee138e9768a23..881f1cbc2c491 100644
+--- a/drivers/gpu/drm/xe/xe_gt.h
++++ b/drivers/gpu/drm/xe/xe_gt.h
+@@ -48,6 +48,7 @@ void xe_gt_record_user_engines(struct xe_gt *gt);
+ 
+ void xe_gt_suspend_prepare(struct xe_gt *gt);
+ int xe_gt_suspend(struct xe_gt *gt);
++void xe_gt_shutdown(struct xe_gt *gt);
+ int xe_gt_resume(struct xe_gt *gt);
+ void xe_gt_reset_async(struct xe_gt *gt);
+ void xe_gt_sanitize(struct xe_gt *gt);
 -- 
 2.39.5
 
