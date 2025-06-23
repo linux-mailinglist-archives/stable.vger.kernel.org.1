@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82E26AE5641
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70399AE5739
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 512F64A351E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F4491C244B1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C958D224B1F;
-	Mon, 23 Jun 2025 22:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A20223DE5;
+	Mon, 23 Jun 2025 22:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkcpuYaj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRjic8R6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8530719E7F9;
-	Mon, 23 Jun 2025 22:16:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113CB2222B2;
+	Mon, 23 Jun 2025 22:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716967; cv=none; b=i5z5R34J1QrISlYhIelx7BTku5/9FaHSiO7FcVTCHPPtTlCLz0R5rjWEj1aRYYiWm1917VFYDbu0G1SEddcl733oVAwebg3wYBM+i1Eyc2o25lBIv0bQIUodrUXM4TBP4E1U1OxPj6gTxUHRxu77Zgjr4od2QUNqSsrJmcAssEE=
+	t=1750717644; cv=none; b=BW62i14X9hKo5d9hJecYgT6LFNk2xQdkZXQZIMnapXTUOYLcl7/xA5qNbAr4FidbzsM3jIhAHGWTVSo1dKziXcw7hMxrGCgbLyj80QAUmV7MPHpIe5Ksqa8leN4d9Opif0BXNK3F1Li2cUxpdVXzuZ0BhGfKlceWRIZNXH3HI/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716967; c=relaxed/simple;
-	bh=HFQXwEzwombFa14hN0OE2wclHECRvlyv6SX5Pahi3w4=;
+	s=arc-20240116; t=1750717644; c=relaxed/simple;
+	bh=DMvegwdKA8XfNcY3qHhRvBC+fy/7kTSbsJTc5Uhpq4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdznk5XjgIu3FQbUKyrAJGEwf9B6d9IXCbCJ00ifY1FYZaFGn0DAVQPqO/olOnDFRMnJN35pkuKxheE4OAWO4UUK4qfOf6aZNzQWTMyeQDXpNTh7HoQ0l4qKqqIatDeUo/OzqSVp8//5XhMfeeP571bMg4+zXkJCVdDQHA30jPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkcpuYaj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 174E9C4CEEA;
-	Mon, 23 Jun 2025 22:16:06 +0000 (UTC)
+	 MIME-Version; b=cMLwmps2c4T4Q7bLT2tS7g/n61n0Slikrm1IeDvgs+lp9dMR2fyfqJVu9vwfayHXZxKaZiHqOZzrhRM/CC3MV5xZGD/OICy1Mg+hP2b2Hvrs/qfn100zJbrb6OS3uZ/vRKF2dZR0Q4wKTiugfvbGOZ3kJIVEvnJ6M9Y3FvvbBqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRjic8R6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E484C4CEEA;
+	Mon, 23 Jun 2025 22:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716967;
-	bh=HFQXwEzwombFa14hN0OE2wclHECRvlyv6SX5Pahi3w4=;
+	s=korg; t=1750717643;
+	bh=DMvegwdKA8XfNcY3qHhRvBC+fy/7kTSbsJTc5Uhpq4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkcpuYajdZq+IjET6VzMPd206MEsiEyYm+N078N/cJRWZ2SeA2v/c3s9zn4mvkgQn
-	 E9dqZb7ONZH87DAPpT8Hzt0/RceDWa3niMc/frGu9KNhwNJn5bt/i26hIuuyopBYSN
-	 7otXpxCc/pPEVrptQsE0E5GbysQvu7kRJaAte1OU=
+	b=fRjic8R6A1isKEjBaLTztQZK7wNkQTFEJ5Saf13H4T7jmpfmGbUoXC71kPUKhovq6
+	 OMhBch0v/REeJLJ5Fetuq0MsZfVvFC+8B/BLyg1BzQQ0rZ/QYqeGXO2oVIj8SlfYWp
+	 ppMnOll9yqsFDngYmidsZ3DzjafpW+kFL/Em6eU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 573/592] perf/core: Fix WARN in perf_cgroup_switch()
-Date: Mon, 23 Jun 2025 15:08:51 +0200
-Message-ID: <20250623130714.068270284@linuxfoundation.org>
+Subject: [PATCH 6.1 487/508] net: microchip: lan743x: Reduce PTP timeout on HW failure
+Date: Mon, 23 Jun 2025 15:08:52 +0200
+Message-ID: <20250623130657.031455133@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,106 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-[ Upstream commit 3172fb986666dfb71bf483b6d3539e1e587fa197 ]
+[ Upstream commit b1de3c0df7abc41dc41862c0b08386411f2799d7 ]
 
-There may be concurrency between perf_cgroup_switch and
-perf_cgroup_event_disable. Consider the following scenario: after a new
-perf cgroup event is created on CPU0, the new event may not trigger
-a reprogramming, causing ctx->is_active to be 0. In this case, when CPU1
-disables this perf event, it executes __perf_remove_from_context->
-list _del_event->perf_cgroup_event_disable on CPU1, which causes a race
-with perf_cgroup_switch running on CPU0.
+The PTP_CMD_CTL is a self clearing register which controls the PTP clock
+values. In the current implementation driver waits for a duration of 20
+sec in case of HW failure to clear the PTP_CMD_CTL register bit. This
+timeout of 20 sec is very long to recognize a HW failure, as it is
+typically cleared in one clock(<16ns). Hence reducing the timeout to 1 sec
+would be sufficient to conclude if there is any HW failure observed. The
+usleep_range will sleep somewhere between 1 msec to 20 msec for each
+iteration. By setting the PTP_CMD_CTL_TIMEOUT_CNT to 50 the max timeout
+is extended to 1 sec.
 
-The following describes the details of this concurrency scenario:
-
-CPU0						CPU1
-
-perf_cgroup_switch:
-   ...
-   # cpuctx->cgrp is not NULL here
-   if (READ_ONCE(cpuctx->cgrp) == NULL)
-   	return;
-
-						perf_remove_from_context:
-						   ...
-						   raw_spin_lock_irq(&ctx->lock);
-						   ...
-						   # ctx->is_active == 0 because reprogramm is not
-						   # tigger, so CPU1 can do __perf_remove_from_context
-						   # for CPU0
-						   __perf_remove_from_context:
-						         perf_cgroup_event_disable:
-							    ...
-							    if (--ctx->nr_cgroups)
-							    ...
-
-   # this warning will happened because CPU1 changed
-   # ctx.nr_cgroups to 0.
-   WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
-
-[peterz: use guard instead of goto unlock]
-Fixes: db4a835601b7 ("perf/core: Set cgroup in CPU contexts for new cgroup events")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250604033924.3914647-3-luogengkun@huaweicloud.com
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240502050300.38689-1-rengarajan.s@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: e353b0854d3a ("net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_ptp.c | 2 +-
+ drivers/net/ethernet/microchip/lan743x_ptp.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index d2b548ef075f4..2d1131e2cfc02 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -207,6 +207,19 @@ static void perf_ctx_unlock(struct perf_cpu_context *cpuctx,
- 	__perf_ctx_unlock(&cpuctx->ctx);
- }
+diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.c b/drivers/net/ethernet/microchip/lan743x_ptp.c
+index da3ea905adbb8..7ace578551a09 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ptp.c
++++ b/drivers/net/ethernet/microchip/lan743x_ptp.c
+@@ -58,7 +58,7 @@ int lan743x_gpio_init(struct lan743x_adapter *adapter)
+ static void lan743x_ptp_wait_till_cmd_done(struct lan743x_adapter *adapter,
+ 					   u32 bit_mask)
+ {
+-	int timeout = 1000;
++	int timeout = PTP_CMD_CTL_TIMEOUT_CNT;
+ 	u32 data = 0;
  
-+typedef struct {
-+	struct perf_cpu_context *cpuctx;
-+	struct perf_event_context *ctx;
-+} class_perf_ctx_lock_t;
-+
-+static inline void class_perf_ctx_lock_destructor(class_perf_ctx_lock_t *_T)
-+{ perf_ctx_unlock(_T->cpuctx, _T->ctx); }
-+
-+static inline class_perf_ctx_lock_t
-+class_perf_ctx_lock_constructor(struct perf_cpu_context *cpuctx,
-+				struct perf_event_context *ctx)
-+{ perf_ctx_lock(cpuctx, ctx); return (class_perf_ctx_lock_t){ cpuctx, ctx }; }
-+
- #define TASK_TOMBSTONE ((void *)-1L)
+ 	while (timeout &&
+diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
+index e26d4eff71336..0d29914cd4606 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ptp.h
++++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
+@@ -21,6 +21,7 @@
+ #define LAN743X_PTP_N_EXTTS		4
+ #define LAN743X_PTP_N_PPS		0
+ #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
++#define PTP_CMD_CTL_TIMEOUT_CNT		50
  
- static bool is_kernel_event(struct perf_event *event)
-@@ -944,7 +957,13 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	if (READ_ONCE(cpuctx->cgrp) == cgrp)
- 		return;
+ struct lan743x_adapter;
  
--	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
-+	guard(perf_ctx_lock)(cpuctx, cpuctx->task_ctx);
-+	/*
-+	 * Re-check, could've raced vs perf_remove_from_context().
-+	 */
-+	if (READ_ONCE(cpuctx->cgrp) == NULL)
-+		return;
-+
- 	perf_ctx_disable(&cpuctx->ctx, true);
- 
- 	ctx_sched_out(&cpuctx->ctx, NULL, EVENT_ALL|EVENT_CGROUP);
-@@ -962,7 +981,6 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	ctx_sched_in(&cpuctx->ctx, NULL, EVENT_ALL|EVENT_CGROUP);
- 
- 	perf_ctx_enable(&cpuctx->ctx, true);
--	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
- }
- 
- static int perf_cgroup_ensure_storage(struct perf_event *event,
 -- 
 2.39.5
 
