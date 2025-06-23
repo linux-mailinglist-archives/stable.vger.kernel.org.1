@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A2FACAE53D2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE07AE4F99
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEF231B68026
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CDF217EF23
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E291224B1F;
-	Mon, 23 Jun 2025 21:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF11225A23;
+	Mon, 23 Jun 2025 21:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Et6THAsf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xgsgf0pP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07DD222576;
-	Mon, 23 Jun 2025 21:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882A42248B5;
+	Mon, 23 Jun 2025 21:16:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715744; cv=none; b=qoKZysWYJn4JPdhzFKNG9MZDLtrlPrvepQ/zWJ2IZSk/pVM3/CYb5C4qj6yrgZKX/nj9tP82pE4yyEVdSNwgU2T6iamweIwpuZT8peS9zBWGJgn7RxyE2cp71W3xPWBKxZ9jn2RGHZxNkTQWloiSmWKBpbPCroz1lK+mGivYyc4=
+	t=1750713414; cv=none; b=bOT6y0nCrxxK4yFqXhWcpPhhdNjX/OpkmMksaw9gEiJYTm0dEIwKQ64DRP/z8SDrBj4UH+6PZJ4QAV1Dzxz52gCHLaHAAxrdivpNbEukYUMjKjgtqt5IccPoHH+sL/u1SBDjJewRl/p6gXX9hzx9enmXt5hu3BmrSCsNzti0VQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715744; c=relaxed/simple;
-	bh=xE/Yu6ZOrUSBD/0v+68ff11Pk0iR5a91hEsnv8J3hGw=;
+	s=arc-20240116; t=1750713414; c=relaxed/simple;
+	bh=o36r7+0CyjjffX+Q68pCVAECiBXLa6sxm7S1atlZqoQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NXI4ZKQicjdPEZtVrcl3CgmPIPtTvFPSEkWGKgiWL8IrH42weYq7vz7dFkRjNnXWqD5/cA6Ta34SMQWWRqf7JtqoMAi63F+W5RXkdWOw+/1hHkHoQYeSBHoLCMIcWSAqoqruHdrF4rGX7nWrjBCFekv9T0zpBZwotprXYC1JpQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Et6THAsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87905C4CEEA;
-	Mon, 23 Jun 2025 21:55:43 +0000 (UTC)
+	 MIME-Version; b=VROSS2wQJJraQGYoLnX6AUs/RUZ9GR/v2X9Jq+q9+XNDcldz+Wbz6tKrdwYinaEGKMzNgFqjTKF6+CBOHvBbklKZhsovR76teSUV1GgqYhbARRJb6l/F/PsG1nBLH70+v9rMTw+bw25amIVmgnCU780SryzV2rBgbToxtmAnSIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xgsgf0pP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F199C4CEEA;
+	Mon, 23 Jun 2025 21:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715743;
-	bh=xE/Yu6ZOrUSBD/0v+68ff11Pk0iR5a91hEsnv8J3hGw=;
+	s=korg; t=1750713414;
+	bh=o36r7+0CyjjffX+Q68pCVAECiBXLa6sxm7S1atlZqoQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Et6THAsfZH38dAzqd/e8DGhVfXVkX6AxkyjbHObflAHry8AegcpJapt2EsYCFPF1x
-	 /3No6g1flNZ8CLO51FL0z7KWtdfNU0m+F/7imto/KdYsmNZFZi47me6TS0qLjJGGg9
-	 DMV/WtMIFd/KGtt+VlHNk01FN/ELXTwkN2rOJdN4=
+	b=Xgsgf0pPoIhoW2gZbDAxgmixB9ACXSrA1oMOWtK8P5vH0dLMkhvOSuAHbdY2zU+Ih
+	 Hw+lGNsLMGKZq3zWqEcw/DfchHMmIAvvTaCPbrKwNGSP37dHVbG1/NhRLpDpGxMXcB
+	 E4GvPikyEk4hn/cmMNu6ZJ1+HkIY6lLEJzUtNczo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
 	Eric Dumazet <edumazet@google.com>,
+	Wei Wang <weiwan@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 259/508] net_sched: red: fix a race in __red_change()
+Subject: [PATCH 6.15 346/592] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
 Date: Mon, 23 Jun 2025 15:05:04 +0200
-Message-ID: <20250623130651.622415620@linuxfoundation.org>
+Message-ID: <20250623130708.678600663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 85a3e0ede38450ea3053b8c45d28cf55208409b8 ]
+[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
 
-Gerrard Tai reported a race condition in RED, whenever SFQ perturb timer
-fires at the wrong time.
+tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
+before the call to tcp_init_transfer() / tcp_init_buffer_space().
 
-The race is as follows:
+Otherwise tp->rcvq_space.space is off by 120 bytes
+(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 0c8d13ac9607 ("net: sched: red: delay destroying child qdisc on replace")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
 Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-3-edumazet@google.com
+Reviewed-by: Wei Wang <weiwan@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_red.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index 16277b6a0238d..3c6b4460cf2c0 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -283,7 +283,7 @@ static int __red_change(struct Qdisc *sch, struct nlattr **tb,
- 	q->userbits = userbits;
- 	q->limit = ctl->limit;
- 	if (child) {
--		qdisc_tree_flush_backlog(q->qdisc);
-+		qdisc_purge_queue(q->qdisc);
- 		old_child = q->qdisc;
- 		q->qdisc = child;
- 	}
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 4dfdde48ab503..ed5f0ffab60dc 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -6867,6 +6867,9 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		if (!tp->srtt_us)
+ 			tcp_synack_rtt_meas(sk, req);
+ 
++		if (tp->rx_opt.tstamp_ok)
++			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
++
+ 		if (req) {
+ 			tcp_rcv_synrecv_state_fastopen(sk);
+ 		} else {
+@@ -6892,9 +6895,6 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
+ 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
+ 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
+ 
+-		if (tp->rx_opt.tstamp_ok)
+-			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
+-
+ 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
+ 			tcp_update_pacing_rate(sk);
+ 
 -- 
 2.39.5
 
