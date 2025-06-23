@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830D9AE543C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8860CAE5300
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2B34C0916
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 85F434447A3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3079E22538F;
-	Mon, 23 Jun 2025 22:00:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE3C1223335;
+	Mon, 23 Jun 2025 21:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpYCUgFK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mfzQjJZ7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E333B28EA;
-	Mon, 23 Jun 2025 22:00:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACB7E1E5206;
+	Mon, 23 Jun 2025 21:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716005; cv=none; b=Ur2BJ4GZOb3oLzUYIsratiRjEl0shwAdtBqzOemYzvNZ2oEb4VYgP4Jiu4VPOhrk/+ONAMiiO8bYBQP5HDzi4p7s6Rtp0k70sV76BI7kSVoqpp7G0Z06ru3CrzHmSQ0bN88oxKlgx9+Gnxr0JmnlFH5Pe1//TbuDSWaq0jLGr2E=
+	t=1750715341; cv=none; b=KKxVyKxfr2nxfQUgC9JQggUo15POm4uLiEyVWNQDAbDWXqrgAnRGpaSr8tkPtJ3nciFeU0htDoUkaE33DZi9eP19kJcA5ThGaN023jIUR9gULn1r2mseaWdmaBMHbLbVLlVJiSzyZDMmPBXoafiZ+UEDuGt6VvdsQpe3FWiQJOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716005; c=relaxed/simple;
-	bh=DH4vLjwxisBURJVDlrAvUFC0xQt4RmJ3dgt94fItDyk=;
+	s=arc-20240116; t=1750715341; c=relaxed/simple;
+	bh=jVo35ozL7J+SSPglZkDvFBiBwtCtrqqLQ/R6GaMSUAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K3E7R8IuN2gSRYAmzSnN1pqrGEFdGis59+dc+inMgaH9eyqofTFRMcpGFn0TgVcP6iXDwMz9uvMpl+OS7F25KSnPu9pIPS1wqaW2HToMxvz3xYdGf9PH3vfZwUTSaxNwindpd/YPmy8Iugx9OmIXSgktniXxeoqHSSQxn8lmGL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpYCUgFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8DCC4CEEA;
-	Mon, 23 Jun 2025 22:00:04 +0000 (UTC)
+	 MIME-Version; b=mQ9WYqF2V2B/TPHmQyAJ0+xivLPGk9BTvhLXA897rpiuRtAsdYmJAlxuWyVw35btNtiednWc/5v7dLXE3uJ+lkvSRjjp0RNa8vlTtgN6LiFrVCsiqxqpQX+2Pklvd6D1bQQFkDkJ2BBZE6GQBUggpH651LJMgoRl9Au0VdnDeyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mfzQjJZ7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A48CC4CEEA;
+	Mon, 23 Jun 2025 21:49:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716004;
-	bh=DH4vLjwxisBURJVDlrAvUFC0xQt4RmJ3dgt94fItDyk=;
+	s=korg; t=1750715341;
+	bh=jVo35ozL7J+SSPglZkDvFBiBwtCtrqqLQ/R6GaMSUAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CpYCUgFKMB2Sl8s879mqQYdi7IQxE1F4ZBtoSI6UHtGXf/Rda7q51niGHHB/NzMjJ
-	 isk21z6dxcrHLxD+jm1KhWNNBwjb5SsKuc4pBu1rRpP+Gyd5xh1yyJijFAxWzAQTSC
-	 EUjBHjksm4+NNtsBwgvIO2+VWb/Z4aB8s2Zh3QFE=
+	b=mfzQjJZ76MMkDvzIkWNaj7OVX2gr5PfGex37s0Vj2DMp0+/t5Tqs9z+t2qq26MRhx
+	 PxTfFCBLNaN/XbzArek1bcYAr29NixiNwWukemNLrDEwy+67QN9OAafw0TvkRxpgPG
+	 8c0mQIh7Ccn2k+QJ4eu6uoqyuHZRTAErCb/G2sRM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Garg <gargaditya08@live.com>,
-	Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Subject: [PATCH 6.15 496/592] drm/appletbdrm: Make appletbdrm depend on X86
+	Suraj P Kizhakkethil <quic_surapk@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 193/290] wifi: ath12k: Pass correct values of center freq1 and center freq2 for 160 MHz
 Date: Mon, 23 Jun 2025 15:07:34 +0200
-Message-ID: <20250623130712.231194395@linuxfoundation.org>
+Message-ID: <20250623130632.662528414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Garg <gargaditya08@live.com>
+From: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
 
-commit de5fbbe1531f645c8b56098be8d1faf31e46f7f0 upstream.
+[ Upstream commit b1b01e46a3db5ad44d1e4691ba37c1e0832cd5cf ]
 
-The appletbdrm driver is exclusively for Touch Bars on x86 Intel Macs.
-The M1 Macs have a separate driver. So, lets avoid compiling it for
-other architectures.
+Currently, for 160 MHz bandwidth, center frequency1 and
+center frequency2 are not passed correctly to the firmware.
+Set center frequency1 as the center frequency
+of the primary 80 MHz channel segment and center frequency2 as
+the center frequency of the 160 MHz channel and pass the values
+to the firmware.
 
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Link: https://lore.kernel.org/r/PN3PR01MB95970778982F28E4A3751392B8B72@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
-Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250304095315.3050325-2-quic_surapk@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tiny/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath12k/wmi.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/tiny/Kconfig
-+++ b/drivers/gpu/drm/tiny/Kconfig
-@@ -3,6 +3,7 @@
- config DRM_APPLETBDRM
- 	tristate "DRM support for Apple Touch Bars"
- 	depends on DRM && USB && MMU
-+	depends on X86 || COMPILE_TEST
- 	select DRM_GEM_SHMEM_HELPER
- 	select DRM_KMS_HELPER
- 	help
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 31af940bc5722..958ac4ed5c349 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -951,14 +951,24 @@ int ath12k_wmi_vdev_down(struct ath12k *ar, u8 vdev_id)
+ static void ath12k_wmi_put_wmi_channel(struct ath12k_wmi_channel_params *chan,
+ 				       struct wmi_vdev_start_req_arg *arg)
+ {
++	u32 center_freq1 = arg->band_center_freq1;
++
+ 	memset(chan, 0, sizeof(*chan));
+ 
+ 	chan->mhz = cpu_to_le32(arg->freq);
+-	chan->band_center_freq1 = cpu_to_le32(arg->band_center_freq1);
+-	if (arg->mode == MODE_11AC_VHT80_80)
++	chan->band_center_freq1 = cpu_to_le32(center_freq1);
++	if (arg->mode == MODE_11BE_EHT160) {
++		if (arg->freq > center_freq1)
++			chan->band_center_freq1 = cpu_to_le32(center_freq1 + 40);
++		else
++			chan->band_center_freq1 = cpu_to_le32(center_freq1 - 40);
++
++		chan->band_center_freq2 = cpu_to_le32(center_freq1);
++	} else if (arg->mode == MODE_11BE_EHT80_80) {
+ 		chan->band_center_freq2 = cpu_to_le32(arg->band_center_freq2);
+-	else
++	} else {
+ 		chan->band_center_freq2 = 0;
++	}
+ 
+ 	chan->info |= le32_encode_bits(arg->mode, WMI_CHAN_INFO_MODE);
+ 	if (arg->passive)
+-- 
+2.39.5
+
 
 
 
