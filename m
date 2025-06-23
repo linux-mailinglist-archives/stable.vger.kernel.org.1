@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157136-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CCF9AE5013
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C53FAE52A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC8031B61E8B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85FC4A647E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A78431EDA0F;
-	Mon, 23 Jun 2025 21:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E91225397;
+	Mon, 23 Jun 2025 21:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvghKf/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7+1rPwf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F0E1EEA3C;
-	Mon, 23 Jun 2025 21:21:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11E0B676;
+	Mon, 23 Jun 2025 21:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713719; cv=none; b=cypMiq1gpOTLRjqw68EZl2uqVoDb8flGFd/meSChnLg18siAzcjlQhgZfvzCnDfyg25ttRtkAyKC0Q2wf/iyGgfhm6wGvub96rG/8lqtilhJAdj9XN2IELs4kzbB/ciMc0iubn+ArpqaR7QHz02eFYiT/uYJGuRcM0pzV+TzaJ4=
+	t=1750715122; cv=none; b=B/ScI1svgmG4tD0N/wwLN7Zalu/OWBt6eCqRMomglLp5LKI/rLyW65fkDAau/0cUDxrrPakkTbiZHH/KyvPi11EUm3u9YBTROA1Q4dd58xdm0f7C4Mq2aMOhlJCvlOLpM30y4b3OHP9VIgbG0lPyF82sB+kW/YbCQE7nOBscVf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713719; c=relaxed/simple;
-	bh=VQR7TkmWa8GoMvx1FDk0k1t+wKA8ux731QKlviIl9ss=;
+	s=arc-20240116; t=1750715122; c=relaxed/simple;
+	bh=Z4QnY2OfqE9vTkT0ecP35VYB2/gpTzPyUI4s9Fp27Ws=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LgaVToQpjVG+3iscdKkdeTWLUtGqERDW41mEJBptxKsRr3Mqs0N7onr6asrOora9C1P0wACe3pC8uNDediAoIxdcSvN7kgkyMJ3EqMyPu2l/rfxDM8XNV+f8W7X2ebptKy+x/Vu9kInDlNajO761sFf/2q8BqS5M+wBKi1RAxuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvghKf/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF1B6C4CEEA;
-	Mon, 23 Jun 2025 21:21:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ATHwxdUrPHSwv8whSjz6ni8BZnNSLAe/zSvplNWkmK+ttgK1th8ajDPbwf05nyUi4lN/e1KQ9mNt/SFqH5xNEUOll6oCqJykVg6sni+oHHbpmDQ88kEcZvYTNlh/uqun68rQVaBiKAiueEJw+TY+UO2lAHKLdKUTHM2DPmHYlpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7+1rPwf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4803DC4CEEA;
+	Mon, 23 Jun 2025 21:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713719;
-	bh=VQR7TkmWa8GoMvx1FDk0k1t+wKA8ux731QKlviIl9ss=;
+	s=korg; t=1750715122;
+	bh=Z4QnY2OfqE9vTkT0ecP35VYB2/gpTzPyUI4s9Fp27Ws=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gvghKf/cvxyF1yJOmL+WU1o4qTFjJxt4l7zblboBG2bst4fhJMfyQvXz9ogyM7N9Q
-	 DAfaTzzbUnC+XaHAkpqOZ3HXMT7E+0zkpFQrkUw/zo4HopmYQrE84nTTlaARoixgP7
-	 9MqmvbBDprTklBV9tU/TokLmGsffuSv1Fp9wKP0A=
+	b=t7+1rPwfBlX0fXQ/EOFc3R7jfw3ybWipfZNWZIOTzAZSPQKfLo9pg286gPG5sqf25
+	 gCdn1NW5tuurA6RLWzPxkggJeqbuGc4eQuyM9CiFz6KJ2Vphx/LxKbJ6X79ii9aypc
+	 Jx/Ckx9/J3nJlBpEbLpvRm/eoUwWpV51nbn4jVAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dian-Syuan Yang <dian_syuan0116@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 343/592] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 164/414] iio: adc: ad7944: mask high bits on direct read
 Date: Mon, 23 Jun 2025 15:05:01 +0200
-Message-ID: <20250623130708.609488486@linuxfoundation.org>
+Message-ID: <20250623130646.135410398@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
+commit 7cdfbc0113d087348b8e65dd79276d0f57b89a10 upstream.
 
-Due to mac80211 triggering the hardware to enter idle mode, it fails
-to install WEP key causing connected station can't ping successfully.
-Currently, it forces the hardware to leave idle mode before driver
-adding WEP keys.
+Apply a mask to the raw value received over the SPI bus for unsigned
+direct reads. As we found recently, SPI controllers may not set unused
+bits to 0 when reading with bits_per_word != {8,16,32}. The ad7944 uses
+bits_per_word of 14 and 18, so we need to mask the value to be sure we
+returning the correct value to userspace during a direct read.
 
-Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d1efcf8871db ("iio: adc: ad7944: add driver for AD7944/AD7985/AD7986")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Nuno Sá <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20250505-iio-adc-ad7944-max-high-bits-on-direct-read-v1-1-b173facceefe@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/ad7944.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index eca3d767ff603..bc6f799e291e8 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -6,6 +6,7 @@
- #include "debug.h"
- #include "fw.h"
- #include "mac.h"
-+#include "ps.h"
+--- a/drivers/iio/adc/ad7944.c
++++ b/drivers/iio/adc/ad7944.c
+@@ -290,6 +290,8 @@ static int ad7944_single_conversion(stru
  
- static struct sk_buff *
- rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
-@@ -471,9 +472,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
+ 	if (chan->scan_type.sign == 's')
+ 		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
++	else
++		*val &= GENMASK(chan->scan_type.realbits - 1, 0);
  
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
- 		break;
- 	case WLAN_CIPHER_SUITE_TKIP:
--- 
-2.39.5
-
+ 	return IIO_VAL_INT;
+ }
 
 
 
