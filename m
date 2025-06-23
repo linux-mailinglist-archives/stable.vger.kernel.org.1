@@ -1,60 +1,59 @@
-Return-Path: <stable+bounces-156585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5F4FAE5051
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 76B05AE52EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 710EE7AEA80
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4065C7B0665
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1180A1E5B71;
-	Mon, 23 Jun 2025 21:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D011C84A0;
+	Mon, 23 Jun 2025 21:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ANWsQjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CaRfKzEN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEAF219E0;
-	Mon, 23 Jun 2025 21:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282F93FD4;
+	Mon, 23 Jun 2025 21:47:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713773; cv=none; b=o0wiGCvyHzwUkazedkMq+HwbEpZ1jqm0IDCqctk+tkywtlEvaiLxLTCFm617eSBGrcuYvvvGOre+GB9EVgvU3+9dm8anzuRGvp2KmrpCOpru0XlwhcU3RL95ijSxv/k7R0gEzrqysu6PFNbnZr4haw9mmHcARW1QIp7SGJ34Cc0=
+	t=1750715267; cv=none; b=LnUnrCDfW2HvY6IJyF6ZmQzVB3frfUewx48hcXM7CrMlP2FWq+JBkwqc/QNSJj+i5q9uHjF63/9ZLRetH6+3QDdM9D0boOAfxM6ezucdz4tRwLyZgCWWhVDNRRQLi2kM541jHQDW/+CC7z+JxGG7pVGK6IuewMEVMVpW9cyCnK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713773; c=relaxed/simple;
-	bh=1G+GRYsZ3X5d3a0E1zyl6iH0+rmhNY6Qxs7oc30iI48=;
+	s=arc-20240116; t=1750715267; c=relaxed/simple;
+	bh=tsTxpbkua1dis2UO7r07S+wcJd91kJa7/huLbMiuVdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KN+txZHW3sxYPNfi1hbgWEs0u8sjHH6EsHL79jwUau4xFLGmfSVeXlGqMNgzNhhCEWemgnPGBQhkTMSujeAmKvS2snB+0CNzbwsr0yMTRSJDGuTb/sFpfPWlGjk/wqVkegR4dkynrJ+8LbA5gL1gc/c94WP6PSXTx1QQcus9A7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ANWsQjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57313C4CEEA;
-	Mon, 23 Jun 2025 21:22:53 +0000 (UTC)
+	 MIME-Version; b=FcVBOIp8S2VWcZbLfPLhrm4tB22jtUK9wdk1JuTzXZCnzAZ/bn+afhRcEuQjd25nfI9r/VwcUD/fSf3t9NLF2Zy4SFcDyH6VZFO9/tWIU7D5DQsElzx0KryZnktMPEqUiZ4LYqjb+bMQ9xPbiXaFaLZTQ6Ufw1ToI9LpNEir4pc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CaRfKzEN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B257AC4CEEA;
+	Mon, 23 Jun 2025 21:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713773;
-	bh=1G+GRYsZ3X5d3a0E1zyl6iH0+rmhNY6Qxs7oc30iI48=;
+	s=korg; t=1750715267;
+	bh=tsTxpbkua1dis2UO7r07S+wcJd91kJa7/huLbMiuVdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ANWsQjgV1tcKX2KRNLTECrjqu1c+fw7FdzR4LzSHlaCk157KWx2XWxEul5CV9ybb
-	 xeXS15exyzNJkt3sD9o4dKCqXSyTGJ/PdwP7awVL0Z0E4G9DrMqVNEBK7qIEkJPJvt
-	 tXvpMXjI1bwMtIcEgF9ueKmhcVqVOihHHMUDkUxY=
+	b=CaRfKzENt5TEIKdsL3KJFI/2vu9gM0q0RuB0osjNw8i0yK/vyhCM6L/SI8UT6srDC
+	 p46WiJzg2zObpzmneUKJRTLStyENCq4m1XYzCNWrR88ATrFU7rIuxRjMpembYJ/OvW
+	 rJZkH1QwVY7J/tdCx4FD819mml7cbrBRUVf19P3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	kdevops@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 185/355] ext4: fix calculation of credits for extent tree modification
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	MengEn Sun <mengensun@tencent.com>,
+	Andrea Righi <andrea@betterlinux.com>,
+	Fenggaung Wu <fengguang.wu@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 242/411] mm: fix ratelimit_pages update error in dirty_ratio_handler()
 Date: Mon, 23 Jun 2025 15:06:26 +0200
-Message-ID: <20250623130632.246468701@linuxfoundation.org>
+Message-ID: <20250623130639.745106004@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,69 +65,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-commit 32a93f5bc9b9812fc710f43a4d8a6830f91e4988 upstream.
+commit f83f362d40ccceb647f7d80eb92206733d76a36b upstream.
 
-Luis and David are reporting that after running generic/750 test for 90+
-hours on 2k ext4 filesystem, they are able to trigger a warning in
-jbd2_journal_dirty_metadata() complaining that there are not enough
-credits in the running transaction started in ext4_do_writepages().
+In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
+calling writeback_set_ratelimit(), as global_dirty_limits() always
+prioritizes the value of vm_dirty_bytes.
 
-Indeed the code in ext4_do_writepages() is racy and the extent tree can
-change between the time we compute credits necessary for extent tree
-computation and the time we actually modify the extent tree. Thus it may
-happen that the number of credits actually needed is higher. Modify
-ext4_ext_index_trans_blocks() to count with the worst case of maximum
-tree depth. This can reduce the possible number of writers that can
-operate in the system in parallel (because the credit estimates now won't
-fit in one transaction) but for reasonably sized journals this shouldn't
-really be an issue. So just go with a safe and simple fix.
+It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
 
-Link: https://lore.kernel.org/all/20250415013641.f2ppw6wov4kn4wq2@offworld
-Reported-by: Davidlohr Bueso <dave@stgolabs.net>
-Reported-by: Luis Chamberlain <mcgrof@kernel.org>
-Tested-by: kdevops@lists.linux.dev
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250429175535.23125-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+  dirty_ratio_handler
+    writeback_set_ratelimit
+      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
+        domain_dirty_limits
+          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
+            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
+          else                                                                        |
+            thresh = f2(ratio)                                                        |
+      ratelimit_pages = f3(dirty_thresh)                                              |
+    vm_dirty_bytes = 0                             <- it's late! ---------------------+
+
+This causes ratelimit_pages to still use the value calculated based on
+vm_dirty_bytes, which is wrong now.
+
+
+The impact visible to userspace is difficult to capture directly because
+there is no procfs/sysfs interface exported to user space.  However, it
+will have a real impact on the balance of dirty pages.
+
+For example:
+
+1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
+
+2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
+   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
+   vm_dirty_bytes now.
+
+3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
+   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
+   domain_dirty_limits() is called, reallimit_pages is still calculated
+   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
+   conform to the actual intent of the user.
+
+Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
+Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Reviewed-by: MengEn Sun <mengensun@tencent.com>
+Cc: Andrea Righi <andrea@betterlinux.com>
+Cc: Fenggaung Wu <fengguang.wu@intel.com>
+Cc: Jinliang Zheng <alexjlzheng@tencent.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2367,18 +2367,19 @@ int ext4_ext_calc_credits_for_single_ext
- int ext4_ext_index_trans_blocks(struct inode *inode, int extents)
- {
- 	int index;
--	int depth;
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -551,8 +551,8 @@ int dirty_ratio_handler(struct ctl_table
  
- 	/* If we are converting the inline data, only one is needed here. */
- 	if (ext4_has_inline_data(inode))
- 		return 1;
- 
--	depth = ext_depth(inode);
--
-+	/*
-+	 * Extent tree can change between the time we estimate credits and
-+	 * the time we actually modify the tree. Assume the worst case.
-+	 */
- 	if (extents <= 1)
--		index = depth * 2;
-+		index = EXT4_MAX_EXTENT_DEPTH * 2;
- 	else
--		index = depth * 3;
-+		index = EXT4_MAX_EXTENT_DEPTH * 3;
- 
- 	return index;
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
+-		writeback_set_ratelimit();
+ 		vm_dirty_bytes = 0;
++		writeback_set_ratelimit();
+ 	}
+ 	return ret;
  }
 
 
