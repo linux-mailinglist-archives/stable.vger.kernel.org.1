@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8C36AE5396
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5334EAE5326
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5293F4A8016
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D3D14A73E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F5742222C2;
-	Mon, 23 Jun 2025 21:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC0A221FBE;
+	Mon, 23 Jun 2025 21:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kjernp2y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKdQTctl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0303219049B;
-	Mon, 23 Jun 2025 21:54:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D461219A7A;
+	Mon, 23 Jun 2025 21:50:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715678; cv=none; b=VSL1IJVfaBw4iaEvaPvD2br7DKL4Z9mU59sGVKW9xaFtg0Q+hDpM+juN0kPMuN7SsolnuJ3fvSZQmkWl+IKl96CuHfiDa2iR32VY9nIEx2jMN8T+5gsPe//p8A7iIAIybxfOvKV1I+0IqBVIpO5FHlCXTyzTW7Zbu6mEfHED9H8=
+	t=1750715426; cv=none; b=o9ItRpdAe+BKLloZMtfDxuU/xNTWN62GL/Km9yGvYV/GOL7pGNyuY5QRbxfb8NFdRWaPW5F6AikwZI8kEr3DhMk9YZ5T3/dH9U9e1NjfwZ0QRAv698cT2jKID1Xu4s6FBiAklq2yIj2vXvXVoKceiWTQperqJSwtsGHta/dBJ6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715678; c=relaxed/simple;
-	bh=kwJ38WAGzrtUtUkZQrWdJHN0SjX7UHGw500ozZyzNw8=;
+	s=arc-20240116; t=1750715426; c=relaxed/simple;
+	bh=j7b0CpFzGgPMk9RTLPUoS3EJHOWRlaqYjMKMvjhgO7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B4nxh35s+585UFh7jmn/HcYs8hW9sr61Y35nrKOYRDgxUWZiPJwVNeFeVyJarPQqfpNDzUmIabdMoDVcSlwkF8QJefyAeMgoNoDUvw3YrG0CGLmunhHB+JQWQEVhX/S+vAYtObfU5HX9DLLJQFL5JD5rfgDANaXNvss16HBNLhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kjernp2y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8B0C4CEEA;
-	Mon, 23 Jun 2025 21:54:37 +0000 (UTC)
+	 MIME-Version; b=V0EfLmNRlWPeCRe2M+ZlYMrVJoDmrD+SalFPDiQd7RBzzTxowRavcIrs70w7t2GETfsLErBljoOKx/EtfU+IqVZoX8pz06PBtnGrB3O4kby8+qZuPB5UEISfzP0chWG1RngbWbEq6vhscF2G3WzjXN/2iwJHs1ageOmEBrZPBac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKdQTctl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF6DC4CEF2;
+	Mon, 23 Jun 2025 21:50:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715677;
-	bh=kwJ38WAGzrtUtUkZQrWdJHN0SjX7UHGw500ozZyzNw8=;
+	s=korg; t=1750715426;
+	bh=j7b0CpFzGgPMk9RTLPUoS3EJHOWRlaqYjMKMvjhgO7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kjernp2y7BAeLsx+syAyVVEgQ4OpP++us3idA42hG91x4waIlQHXyUlbmsI02FIK4
-	 Uf1Q9MBZihBnhBMorRdMyagfaox8lHvjq0A4j2rzGmi/yIBWqOTRJfocx1reGcm5wo
-	 m0CUHqV3Z/4vHA/6sdu68GZ3rOUX7F3CRufpripo=
+	b=KKdQTctly3QvUwtU11yoA5hO6/k86+K77NynG6ZF4yae+7ljg6qq0jNoi8L1l2KDS
+	 sCZL4A6kdTfWKYVdCIrIbf+ke5JuV5kjeXhvr3ZeU2adSaeJm/GkkWdYHg2L6eYCm+
+	 d29GBY+Mpzv9eK5fmSvOAKjeVnb9mpN7RAvUyjxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.6 214/290] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 274/355] watchdog: da9052_wdt: respect TWDMIN
 Date: Mon, 23 Jun 2025 15:07:55 +0200
-Message-ID: <20250623130633.369409650@linuxfoundation.org>
+Message-ID: <20250623130635.009276473@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
+[ Upstream commit 325f510fcd9cda5a44bcb662b74ba4e3dabaca10 ]
 
-Fuzzing hit another invalid pointer dereference due to the lack of
-checking whether jffs2_prealloc_raw_node_refs() completed successfully.
-Subsequent logic implies that the node refs have been allocated.
+We have to wait at least the minimium time for the watchdog window
+(TWDMIN) before writings to the wdt register after the
+watchdog is activated.
+Otherwise the chip will assert TWD_ERROR and power down to reset mode.
 
-Handle that. The code is ready for propagating the error upwards.
-
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
-Call Trace:
- jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
- jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
- jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
- jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
- jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
- jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
- generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
- __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
- generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
- call_write_iter include/linux/fs.h:2039 [inline]
- do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
- do_iter_write+0x18c/0x710 fs/read_write.c:866
- vfs_writev+0x1db/0x6a0 fs/read_write.c:939
- do_pwritev fs/read_write.c:1036 [inline]
- __do_sys_pwritev fs/read_write.c:1083 [inline]
- __se_sys_pwritev fs/read_write.c:1078 [inline]
- __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
-Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250326-da9052-fixes-v3-4-a38a560fef0e@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/erase.c |    4 +++-
- fs/jffs2/scan.c  |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/watchdog/da9052_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(stru
- 			.totlen =	cpu_to_je32(c->cleanmarker_size)
- 		};
+diff --git a/drivers/watchdog/da9052_wdt.c b/drivers/watchdog/da9052_wdt.c
+index d708c091bf1b1..180526220d8c4 100644
+--- a/drivers/watchdog/da9052_wdt.c
++++ b/drivers/watchdog/da9052_wdt.c
+@@ -164,6 +164,7 @@ static int da9052_wdt_probe(struct platform_device *pdev)
+ 	da9052_wdt = &driver_data->wdt;
  
--		jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		if (ret)
-+			goto filebad;
- 
- 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
- 
---- a/fs/jffs2/scan.c
-+++ b/fs/jffs2/scan.c
-@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
- 
- 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
- 			  __func__, skip);
--		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		if (ret)
-+			goto out;
- 		jffs2_scan_dirty_space(c, c->nextblock, skip);
- 	}
- #endif
+ 	da9052_wdt->timeout = DA9052_DEF_TIMEOUT;
++	da9052_wdt->min_hw_heartbeat_ms = DA9052_TWDMIN;
+ 	da9052_wdt->info = &da9052_wdt_info;
+ 	da9052_wdt->ops = &da9052_wdt_ops;
+ 	da9052_wdt->parent = dev;
+-- 
+2.39.5
+
 
 
 
