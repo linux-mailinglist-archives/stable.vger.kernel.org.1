@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BB1DAE4EC8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2792AE4ECE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C0A33BE736
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D4ED179711
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5963C21638A;
-	Mon, 23 Jun 2025 21:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 774641ACEDA;
+	Mon, 23 Jun 2025 21:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XkksCuUW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wH/0+KQX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 163B870838;
-	Mon, 23 Jun 2025 21:09:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3618270838;
+	Mon, 23 Jun 2025 21:09:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712941; cv=none; b=kboRHMx6HMVkiABKeKnSvnPZbEyKhMLVVy9vvoOcVB5IYBZfVIKguC2tOKvszkmkrVEFxnsePNDBG/0YmFT2FeLoyH/k5T8vMy5EV/6LgbO2AH+zm9WaMayi9fHE0/VMXXJhf3jHkC2TOAUqsfIBKaoTw1gxmmpksPhCe+57qno=
+	t=1750712958; cv=none; b=c5PDAlQtJjAyMbjnsbYs0nqZXPnxdXPcaf1kho4Z/VIaclcw9arrq0QuyXrjMdRtrzxrLoLb78WrHWvMv1KJA/hZWG0KovQzpk/58GSz6U05BF3ktOnYLvakEFYAwypo+7YuZvvDbXCaYdbHSs2Oclc0o5weyYURN8m5sbprX4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712941; c=relaxed/simple;
-	bh=2BXSKfsDd9UFTR2IRqCFAgigfTx5xLCi52B4sYlmRDk=;
+	s=arc-20240116; t=1750712958; c=relaxed/simple;
+	bh=lXFfx4zykrtgSkOegppgEwMWje1Rwtkk4RCS0dWUGcw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GIhrVTfY7ECI3HIYUWIDgxT/G56QCCfkI2aiSD3c0BDZ/RC3ABKmQHuZhaOxAFtL8y+A6laJu7JHAnY7KLb3g9ekRpRcnWE5wiA52aGwPMQpWiYTawjiV+P3qGb6L9QkRHfHmtxixL5QRNLFMjaNfneXIQQFopyeY1YdQZuh1HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XkksCuUW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C625C4CEEA;
-	Mon, 23 Jun 2025 21:09:00 +0000 (UTC)
+	 MIME-Version; b=euDTxJUPsvwWsEZYgSiR9lvc/9XGUY3HClIk+3MQ4vgaaUyzE0jIGvMT0sktu9lnKDUEYlrMfOrp4qAQOERVTDhnZrMAQGZXthCwkrCNPKy1gycf06YEzNJCsO1/BOh1fQpmTUrGgL5/X6dd19hsP4NsMxVVA700Hb9vrM/dVGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wH/0+KQX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CCFC4CEEA;
+	Mon, 23 Jun 2025 21:09:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712940;
-	bh=2BXSKfsDd9UFTR2IRqCFAgigfTx5xLCi52B4sYlmRDk=;
+	s=korg; t=1750712958;
+	bh=lXFfx4zykrtgSkOegppgEwMWje1Rwtkk4RCS0dWUGcw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XkksCuUWBIYEKA3bD7DLGuu0/efM04qDt8SMkXSaRm3l2hJtSC10Xr2l4j59/HpSj
-	 XoegCD/aZdqheplRML9KMqlW14UWa7kO/F32D+sUTEqLWpbZrvYyLGlrclYup4MY17
-	 k84Mtg5Z7wtnFVpxU8xdFeoFr8G4b+dFMpleo0sQ=
+	b=wH/0+KQX2JjLClwktXgeqPEKyYjZS1gCbDhboN8vTGDEq7vRR40q1b48YDhD8y2FZ
+	 nVNOvKZsVRnsk8vD4cvAlUdF7joseClT1wD2gryyVjsRCTz5JUIHDFE1AYuse48QWg
+	 gIg10RK5ePTodadDMNSDhYXmCuTgnQSb9k7RXxos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Huajian Yang <huajianyang@asrmicro.com>,
-	Florian Westphal <fw@strlen.de>,
+	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 068/508] netfilter: bridge: Move specific fragmented packet to slow_path instead of dropping it
-Date: Mon, 23 Jun 2025 15:01:53 +0200
-Message-ID: <20250623130646.914421951@linuxfoundation.org>
+Subject: [PATCH 6.1 069/508] netfilter: nft_quota: match correctly when the quota just depleted
+Date: Mon, 23 Jun 2025 15:01:54 +0200
+Message-ID: <20250623130646.938689354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,93 +66,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huajian Yang <huajianyang@asrmicro.com>
+From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 
-[ Upstream commit aa04c6f45b9224b949aa35d4fa5f8d0ba07b23d4 ]
+[ Upstream commit bfe7cfb65c753952735c3eed703eba9a8b96a18d ]
 
-The config NF_CONNTRACK_BRIDGE will change the bridge forwarding for
-fragmented packets.
+The xt_quota compares skb length with remaining quota, but the nft_quota
+compares it with consumed bytes.
 
-The original bridge does not know that it is a fragmented packet and
-forwards it directly, after NF_CONNTRACK_BRIDGE is enabled, function
-nf_br_ip_fragment and br_ip6_fragment will check the headroom.
+The xt_quota can match consumed bytes up to quota at maximum. But the
+nft_quota break match when consumed bytes equal to quota.
 
-In original br_forward, insufficient headroom of skb may indeed exist,
-but there's still a way to save the skb in the device driver after
-dev_queue_xmit.So droping the skb will change the original bridge
-forwarding in some cases.
+i.e., nft_quota match consumed bytes in [0, quota - 1], not [0, quota].
 
-Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
-Signed-off-by: Huajian Yang <huajianyang@asrmicro.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
+Fixes: 795595f68d6c ("netfilter: nft_quota: dump consumed quota")
+Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/netfilter/nf_conntrack_bridge.c | 12 ++++++------
- net/ipv6/netfilter.c                       | 12 ++++++------
- 2 files changed, 12 insertions(+), 12 deletions(-)
+ net/netfilter/nft_quota.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
-index e60c38670f220..e7df2911d2be7 100644
---- a/net/bridge/netfilter/nf_conntrack_bridge.c
-+++ b/net/bridge/netfilter/nf_conntrack_bridge.c
-@@ -60,19 +60,19 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
- 		struct ip_fraglist_iter iter;
- 		struct sk_buff *frag;
+diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
+index ef8e7cdbd0e6a..60e6d0c5f04ec 100644
+--- a/net/netfilter/nft_quota.c
++++ b/net/netfilter/nft_quota.c
+@@ -19,10 +19,16 @@ struct nft_quota {
+ };
  
--		if (first_len - hlen > mtu ||
--		    skb_headroom(skb) < ll_rs)
-+		if (first_len - hlen > mtu)
- 			goto blackhole;
+ static inline bool nft_overquota(struct nft_quota *priv,
+-				 const struct sk_buff *skb)
++				 const struct sk_buff *skb,
++				 bool *report)
+ {
+-	return atomic64_add_return(skb->len, priv->consumed) >=
+-	       atomic64_read(&priv->quota);
++	u64 consumed = atomic64_add_return(skb->len, priv->consumed);
++	u64 quota = atomic64_read(&priv->quota);
++
++	if (report)
++		*report = consumed >= quota;
++
++	return consumed > quota;
+ }
  
--		if (skb_cloned(skb))
-+		if (skb_cloned(skb) ||
-+		    skb_headroom(skb) < ll_rs)
- 			goto slow_path;
+ static inline bool nft_quota_invert(struct nft_quota *priv)
+@@ -34,7 +40,7 @@ static inline void nft_quota_do_eval(struct nft_quota *priv,
+ 				     struct nft_regs *regs,
+ 				     const struct nft_pktinfo *pkt)
+ {
+-	if (nft_overquota(priv, pkt->skb) ^ nft_quota_invert(priv))
++	if (nft_overquota(priv, pkt->skb, NULL) ^ nft_quota_invert(priv))
+ 		regs->verdict.code = NFT_BREAK;
+ }
  
- 		skb_walk_frags(skb, frag) {
--			if (frag->len > mtu ||
--			    skb_headroom(frag) < hlen + ll_rs)
-+			if (frag->len > mtu)
- 				goto blackhole;
+@@ -51,13 +57,13 @@ static void nft_quota_obj_eval(struct nft_object *obj,
+ 			       const struct nft_pktinfo *pkt)
+ {
+ 	struct nft_quota *priv = nft_obj_data(obj);
+-	bool overquota;
++	bool overquota, report;
  
--			if (skb_shared(frag))
-+			if (skb_shared(frag) ||
-+			    skb_headroom(frag) < hlen + ll_rs)
- 				goto slow_path;
- 		}
+-	overquota = nft_overquota(priv, pkt->skb);
++	overquota = nft_overquota(priv, pkt->skb, &report);
+ 	if (overquota ^ nft_quota_invert(priv))
+ 		regs->verdict.code = NFT_BREAK;
  
-diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
-index 857713d7a38a5..d873658fc821f 100644
---- a/net/ipv6/netfilter.c
-+++ b/net/ipv6/netfilter.c
-@@ -163,20 +163,20 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
- 		struct ip6_fraglist_iter iter;
- 		struct sk_buff *frag2;
- 
--		if (first_len - hlen > mtu ||
--		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
-+		if (first_len - hlen > mtu)
- 			goto blackhole;
- 
--		if (skb_cloned(skb))
-+		if (skb_cloned(skb) ||
-+		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
- 			goto slow_path;
- 
- 		skb_walk_frags(skb, frag2) {
--			if (frag2->len > mtu ||
--			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
-+			if (frag2->len > mtu)
- 				goto blackhole;
- 
- 			/* Partially cloned skb? */
--			if (skb_shared(frag2))
-+			if (skb_shared(frag2) ||
-+			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
- 				goto slow_path;
- 		}
- 
+-	if (overquota &&
++	if (report &&
+ 	    !test_and_set_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags))
+ 		nft_obj_notify(nft_net(pkt), obj->key.table, obj, 0, 0,
+ 			       NFT_MSG_NEWOBJ, 0, nft_pf(pkt), 0, GFP_ATOMIC);
 -- 
 2.39.5
 
