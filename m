@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156658-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A673AE4EB6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8BEEAE5093
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 640973BBD37
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406E74A1341
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCE2221739;
-	Mon, 23 Jun 2025 21:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78752222B7;
+	Mon, 23 Jun 2025 21:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ncv4jMO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvS2J9ib"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B67170838;
-	Mon, 23 Jun 2025 21:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C521E51FA;
+	Mon, 23 Jun 2025 21:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712896; cv=none; b=mFa5PsmLQi7w6B5fqutvF2UeXrTvJuTJ+vkf4HRiiDkwl6+4RBMhejedlmYHq4Ew1y0jXGOlpAUopMMwft807dRBOO+IDWaQnPaigRqpQo9zMJJdGNebFuq+lotW37mH5BYEuWkf186DTl9u6HbiFvrQXTWw21UZa5X4mKrRCT8=
+	t=1750713952; cv=none; b=l3+g9PJKjxFGAdHG/zYf3yj5Zd6NRutPXkKWpUbp1k5/B9daVenDiuenX5E49CUmcaf76qPbQ+ueo38m8HZ1iu4emWlfCx0K0auR5jNogFOpaITxav+vT7YUvQ9jdVbnGw/eX+rQZ5BvvGnIYXY3uff58JqxAriG9WRb/EsukfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712896; c=relaxed/simple;
-	bh=pyNq0+A2MBcMPRsPSFMK/38RiKK+myFDnrsF4nB5NCU=;
+	s=arc-20240116; t=1750713952; c=relaxed/simple;
+	bh=TtG+AvkbL8DZ+J38Wj2YoVCC3NaNUzXvmo6CTwZh9c0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H/9oZ5QAfzA9TSqZLk5vqk1+IfWuSvlHQPK8BW+7VUFuqsyRPzsdy0k5ScBV/NXViwfpbyG1U60kriAQogCUpXc7aA1mE54lcIT+j1yQr3ZfsGdE8dW6zbVU0hBqj9fyWfMLWYcSvWbrETFjTEzDLyGOhEWsTfMi9rImYdVKciw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ncv4jMO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B6CC4CEEA;
-	Mon, 23 Jun 2025 21:08:15 +0000 (UTC)
+	 MIME-Version; b=mowyLeV+2G+ukbfBc4oflBmPjNNGBeQHCWS4HMHOJ0encoKJqUXubc5YNS+1qtQzvrS2yliisgylvNbc5eoFE5fqAEL+2CyunVhssYRUBj/b6GV/Z1EeSFyjvGvkzkEDfDLUMkJdtOmZAM59fmkGQPzs0S/4RC3/SojlTbDfH6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvS2J9ib; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF93C4CEEA;
+	Mon, 23 Jun 2025 21:25:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712896;
-	bh=pyNq0+A2MBcMPRsPSFMK/38RiKK+myFDnrsF4nB5NCU=;
+	s=korg; t=1750713952;
+	bh=TtG+AvkbL8DZ+J38Wj2YoVCC3NaNUzXvmo6CTwZh9c0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ncv4jMO9+FrO7E9cxrUnRWHQhGS2nk1JSJaXdvGmA8Y1dt4DOoAIPrJbR8050te5s
-	 kgTquPGGoIIMYJf9tbtcwEP7ONXnnzuFWD7Tk5jj74HYriUkbYuE8oUznQlggKLZfC
-	 axTmle+N6FhIkqWM4tfaN5Mm5FYzxCU84cTsIZF0=
+	b=mvS2J9ib1Hph7Zh/+WWuBZ7YQWvNUBwb2/w6Ej/Vrx9LaF8ywAbvIc2U3ALykGPi5
+	 G0iz8NMbvtF9OSkGu7wAWkxlBp2FEIJLFs/V04UFXusF0TwzVguVCsGiZa9pRqblSW
+	 xVgCL2hb+E3GymIqQcQqTgx/bRkQMy6njmlrC86Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 111/355] arm64: dts: ti: k3-am65-main: Fix sdhci node properties
-Date: Mon, 23 Jun 2025 15:05:12 +0200
-Message-ID: <20250623130630.103070068@linuxfoundation.org>
+Subject: [PATCH 6.15 355/592] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get_direction()
+Date: Mon, 23 Jun 2025 15:05:13 +0200
+Message-ID: <20250623130708.886240783@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 8ffe9cb889f2b831a9d5bbb1f7ad42d30e31170f ]
+[ Upstream commit 6481c0a83367b0672951ccc876fbae7ee37b594b ]
 
-Update otap-del-sel properties as per datasheet [0].
+The regmap_read() function can fail, so propagate its error up to
+the stack instead of silently ignoring that.
 
-Add missing clkbuf-sel and itap-del-sel values also as per
-datasheet [0].
-
-Move clkbuf-sel and ti,trm-icp above the otap-del-sel properties
-so the sdhci nodes could be more uniform across platforms.
-
-[0] https://www.ti.com/lit/ds/symlink/am6548.pdf
-
-Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
-Fixes: d7600d070fb0 ("arm64: dts: ti: k3-am65-main: Add support for sdhci1")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20240423151732.3541894-2-jm@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Stable-dep-of: f55c9f087cc2 ("arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0")
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-6-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-index a4d35bc66f0b7..ec7b22fae7fd3 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -268,6 +268,8 @@ sdhci0: sdhci@4f80000 {
- 		interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
- 		mmc-ddr-1_8v;
- 		mmc-hs200-1_8v;
-+		ti,clkbuf-sel = <0x7>;
-+		ti,trm-icp = <0x8>;
- 		ti,otap-del-sel-legacy = <0x0>;
- 		ti,otap-del-sel-mmc-hs = <0x0>;
- 		ti,otap-del-sel-sd-hs = <0x0>;
-@@ -278,8 +280,7 @@ sdhci0: sdhci@4f80000 {
- 		ti,otap-del-sel-ddr50 = <0x5>;
- 		ti,otap-del-sel-ddr52 = <0x5>;
- 		ti,otap-del-sel-hs200 = <0x5>;
--		ti,otap-del-sel-hs400 = <0x0>;
--		ti,trm-icp = <0x8>;
-+		ti,itap-del-sel-ddr52 = <0x0>;
- 		dma-coherent;
- 	};
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index 072bdd0d153ed..4ac514cfd8884 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -400,10 +400,13 @@ static int armada_37xx_gpio_get_direction(struct gpio_chip *chip,
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
+ 	unsigned int reg = OUTPUT_EN;
+ 	unsigned int val, mask;
++	int ret;
  
-@@ -290,18 +291,22 @@ sdhci1: sdhci@4fa0000 {
- 		clocks = <&k3_clks 48 0>, <&k3_clks 48 1>;
- 		clock-names = "clk_ahb", "clk_xin";
- 		interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
-+		ti,clkbuf-sel = <0x7>;
-+		ti,trm-icp = <0x8>;
- 		ti,otap-del-sel-legacy = <0x0>;
- 		ti,otap-del-sel-mmc-hs = <0x0>;
- 		ti,otap-del-sel-sd-hs = <0x0>;
--		ti,otap-del-sel-sdr12 = <0x0>;
--		ti,otap-del-sel-sdr25 = <0x0>;
-+		ti,otap-del-sel-sdr12 = <0xf>;
-+		ti,otap-del-sel-sdr25 = <0xf>;
- 		ti,otap-del-sel-sdr50 = <0x8>;
- 		ti,otap-del-sel-sdr104 = <0x7>;
- 		ti,otap-del-sel-ddr50 = <0x4>;
- 		ti,otap-del-sel-ddr52 = <0x4>;
- 		ti,otap-del-sel-hs200 = <0x7>;
--		ti,clkbuf-sel = <0x7>;
--		ti,trm-icp = <0x8>;
-+		ti,itap-del-sel-legacy = <0xa>;
-+		ti,itap-del-sel-sd-hs = <0x1>;
-+		ti,itap-del-sel-sdr12 = <0xa>;
-+		ti,itap-del-sel-sdr25 = <0x1>;
- 		dma-coherent;
- 		no-1-8-v;
- 	};
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
+-	regmap_read(info->regmap, reg, &val);
++	ret = regmap_read(info->regmap, reg, &val);
++	if (ret)
++		return ret;
+ 
+ 	if (val & mask)
+ 		return GPIO_LINE_DIRECTION_OUT;
 -- 
 2.39.5
 
