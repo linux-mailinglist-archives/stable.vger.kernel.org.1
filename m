@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21241AE50C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D2432AE546D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 487931B62ADE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C001BC1091
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A4B1EFFA6;
-	Mon, 23 Jun 2025 21:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF842940B;
+	Mon, 23 Jun 2025 22:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J+jSWTO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff7R7K08"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B8419C554;
-	Mon, 23 Jun 2025 21:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D53A4C74;
+	Mon, 23 Jun 2025 22:00:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714079; cv=none; b=JzRvLiZXsEOo2WJ5NP1utGUJOlEWRDKBnEQpLW4CU+DK5n6kG1QQ0xPMpmPn3qAFOAohaLiG1XA65jD989AkbU1LG7AY1hB10YuIasu7V59a1FJO+U34uMsW7w4huxVmyGBqCLHSHWGWAwnhqlaDNmXoEPKVpn9ZyNIPdcuAo6g=
+	t=1750716034; cv=none; b=tX+EMFiqKIA1ESy5ol1HPzFnZK+g9gkitusBO4AFCdtYlYGEBy08R1tbh85AOas5lZtUtwFv4sUKeDWyOv1WH/+5Df9xPkKgloDQDbxryCsz3ObMAPPu9buT7IVdK60DJ9h/HxuvoPE4KD6ROVrt6l42Yq2Rs4QqO03XQ5l2588=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714079; c=relaxed/simple;
-	bh=1wzJasK7Nc1nd1kblmjJXC6F0IcVS8ap+RvKoiRR7oM=;
+	s=arc-20240116; t=1750716034; c=relaxed/simple;
+	bh=N293jCppDIKTE6EW8HLA2gO9tnZ7lALoaDnfErZ5l2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g7gqCP48P5wUkicbCbH9OQepGJwKTgvnH66gRsfsr5epa5n3PPGbm+6Jg8UathEycF6f3bpBr6WF0uuvRkng+Azx3eabppmBPsYVICFKa7Kc6HdlrjZ9BWTuceO8qi6QBMjsVhWIxHoR7k4YFTj+eEMTwzvLDxIJ9QBq3Q3eYEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J+jSWTO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7ECC4CEEA;
-	Mon, 23 Jun 2025 21:27:58 +0000 (UTC)
+	 MIME-Version; b=CEHsrQIR0PucQ/tbR9h4OaFhKqynISUfv9gZp0leSmcPUSvZj9ZTSaBqVQsiadGM72PljlOlxQCIxwyMUv4fb7VQGWuzmB////coL/uSIOlkxFhrZShJvbEHKITkZY3dcHWUrSTv/6qr51q6ptR6qt3WLZ2OuZfC9WNgSEgpodU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff7R7K08; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA3EC4CEEA;
+	Mon, 23 Jun 2025 22:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714079;
-	bh=1wzJasK7Nc1nd1kblmjJXC6F0IcVS8ap+RvKoiRR7oM=;
+	s=korg; t=1750716034;
+	bh=N293jCppDIKTE6EW8HLA2gO9tnZ7lALoaDnfErZ5l2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J+jSWTO8U1Qi/C8NqNJP7fQVZ5Y4mExVql2E42nVYBcILHx6bKb9b+lzLG3jLT5gm
-	 GLFZxv7KHu81FIS6EP+rrkFg3mTrMHIpyHShQzoH1S5eSCs9MBNI1SkZ8FBRKRSTVT
-	 qBrLfuYIXn54IyJW0eJpEEdlSZjWTI9OsLwtWIZc=
+	b=Ff7R7K08MFnW9tYs1sXphP9cALFWUByRlKtpkt0gv9aJJcksjGetxpcHsWaV6oZTt
+	 YrBcGufOXMO26UK3eLGbjO6Dpy1QCq1yXeinPzFMEKYGQ728ve3DnPP2TT8J/8aZ+h
+	 UMPSKWRiefKVVG2T+ub+x4mcvpDXJ7Rsw+NihFTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.6 099/290] regulator: max14577: Add error check for max14577_read_reg()
+	Jesper Dangaard Brouer <hawk@kernel.org>,
+	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 223/414] net: page_pool: Dont recycle into cache on PREEMPT_RT
 Date: Mon, 23 Jun 2025 15:06:00 +0200
-Message-ID: <20250623130629.945782090@linuxfoundation.org>
+Message-ID: <20250623130647.602002171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 65271f868cb1dca709ff69e45939bbef8d6d0b70 upstream.
+[ Upstream commit 32471b2f481dea8624f27669d36ffd131d24b732 ]
 
-The function max14577_reg_get_current_limit() calls the function
-max14577_read_reg(), but does not check its return value. A proper
-implementation can be found in max14577_get_online().
+With preemptible softirq and no per-CPU locking in local_bh_disable() on
+PREEMPT_RT the consumer can be preempted while a skb is returned.
 
-Add a error check for the max14577_read_reg() and return error code
-if the function fails.
+Avoid the race by disabling the recycle into the cache on PREEMPT_RT.
 
-Fixes: b0902bbeb768 ("regulator: max14577: Add regulator driver for Maxim 14577")
-Cc: stable@vger.kernel.org # v3.14
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20250526025627.407-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jesper Dangaard Brouer <hawk@kernel.org>
+Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20250512092736.229935-2-bigeasy@linutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max14577-regulator.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/core/page_pool.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/regulator/max14577-regulator.c
-+++ b/drivers/regulator/max14577-regulator.c
-@@ -40,11 +40,14 @@ static int max14577_reg_get_current_limi
- 	struct max14577 *max14577 = rdev_get_drvdata(rdev);
- 	const struct maxim_charger_current *limits =
- 		&maxim_charger_currents[max14577->dev_type];
-+	int ret;
+diff --git a/net/core/page_pool.c b/net/core/page_pool.c
+index 0f23b3126bdaf..b1c3e0ad6dbf4 100644
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -829,6 +829,10 @@ static bool page_pool_napi_local(const struct page_pool *pool)
+ 	const struct napi_struct *napi;
+ 	u32 cpuid;
  
- 	if (rdev_get_id(rdev) != MAX14577_CHARGER)
- 		return -EINVAL;
++	/* On PREEMPT_RT the softirq can be preempted by the consumer */
++	if (IS_ENABLED(CONFIG_PREEMPT_RT))
++		return false;
++
+ 	if (unlikely(!in_softirq()))
+ 		return false;
  
--	max14577_read_reg(rmap, MAX14577_CHG_REG_CHG_CTRL4, &reg_data);
-+	ret = max14577_read_reg(rmap, MAX14577_CHG_REG_CHG_CTRL4, &reg_data);
-+	if (ret < 0)
-+		return ret;
- 
- 	if ((reg_data & CHGCTRL4_MBCICHWRCL_MASK) == 0)
- 		return limits->min;
+-- 
+2.39.5
+
 
 
 
