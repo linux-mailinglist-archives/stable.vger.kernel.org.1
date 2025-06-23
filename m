@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4FF9DAE54BE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039E6AE4F56
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98572189A730
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5EE57189F71A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C4121D3F6;
-	Mon, 23 Jun 2025 22:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B73A621ADB5;
+	Mon, 23 Jun 2025 21:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4LOnDnA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dUa5OWgO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6458A3FB1B;
-	Mon, 23 Jun 2025 22:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DF41DF98B;
+	Mon, 23 Jun 2025 21:14:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716250; cv=none; b=TvpHS3ifuxOgPpti0zOm15z7JvdKkKfruxR/yX4tLDHln8nIeDTByXj7omRnAXMbcutQVoXsyeIIXjL1ogfYlZ22f2gdShzkm464wc3UVZdupCdayjSy0k0kAyzhA6tD97qXtVynrVoYwnZM8Mk2AjMVn1si9bD5+yDCGKBXkjk=
+	t=1750713280; cv=none; b=QgGOEKqUje/6SU4iUwlnjqeOcsgqAEgr2wBcrLTo1E4eCfFvFmn1aRjze2BL8eR/T86TObQ2L491e7ILfCDWiNOfVBMK9iQnlnuWyz5ZsSOb0otfgsnLnXCVHr4a3JQnu5clgoRkiKwIlGXURp/MvGYZVlGbKnsUtu6uxB4RFIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716250; c=relaxed/simple;
-	bh=2I9R353c3y2b9muIzCSeZuBSXMPihe+FbHcLeWpGk64=;
+	s=arc-20240116; t=1750713280; c=relaxed/simple;
+	bh=cY+Tmf/dsEw/3PXviXji90TysoUrG1Mgut1ihr3DRB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iB4UBF61IRKZmBSoVW4N9/5j3lLK6NcLsHKEKFXB0P7PKxoB9J3fsGa0ApG04fDJri0tR1mQS27fATErtXp7o7aGR0PgXZ7bS0pMCMtuzJPrxWu65n76GftBVcZJjQ1j40X4ENNzqH1neK7j9mVJficjxDvSK388Cwvn1khMgpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4LOnDnA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1D9C4CEEA;
-	Mon, 23 Jun 2025 22:04:09 +0000 (UTC)
+	 MIME-Version; b=RlijkqwejmzG+awSynT3d3/not/8Xp/aJjK3/rsqO2zK6DhQo2gKDup2axXSeFs+RSK7L53iaycnjvtuPABcdgE/G0vaoxg1RDjvTwexYUQYOqTEsRYBk3FeFvdhrljIngs3E5KSP4C6mqarv3YkpaeHdar8xKztAC+CyrzSF7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dUa5OWgO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE17C4CEEA;
+	Mon, 23 Jun 2025 21:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716250;
-	bh=2I9R353c3y2b9muIzCSeZuBSXMPihe+FbHcLeWpGk64=;
+	s=korg; t=1750713280;
+	bh=cY+Tmf/dsEw/3PXviXji90TysoUrG1Mgut1ihr3DRB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4LOnDnALuC2CNftNO3KmjreGYDWmdU7UAln8BgTlFec3Fsy05Qo/tZ+dmWU2W3iu
-	 /Nhl4idXshoCqpERpSMioaNLRkI5qViEdQgmXLqP6/Xu+OJJ5DqTM0Lu3eABpgz6u6
-	 TdI/FuM/ra0+mU/2j/dMav0vdX+lkxcXwFeHLdV4=
+	b=dUa5OWgOq1+xcWQj75v44TiSaT45xEZnzt56emEBa0wD3FOmwy2/PvjgJm0VMBtO4
+	 LMdM7Az06C//YF0RYRx1zuldQZPtFOCD06f2bSsVMOtSa4Y0+YipTbijrb1wUP8o4j
+	 hwd9AlW0RtLyguaP4Nji+Mz265rhw0YJzEUgT9YQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/290] pldmfw: Select CRC32 when PLDMFW is selected
-Date: Mon, 23 Jun 2025 15:08:32 +0200
-Message-ID: <20250623130634.476337223@linuxfoundation.org>
+Subject: [PATCH 5.4 178/222] watchdog: da9052_wdt: respect TWDMIN
+Date: Mon, 23 Jun 2025 15:08:33 +0200
+Message-ID: <20250623130617.518995812@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
+[ Upstream commit 325f510fcd9cda5a44bcb662b74ba4e3dabaca10 ]
 
-pldmfw calls crc32 code and depends on it being enabled, else
-there is a link error as follows. So PLDMFW should select CRC32.
+We have to wait at least the minimium time for the watchdog window
+(TWDMIN) before writings to the wdt register after the
+watchdog is activated.
+Otherwise the chip will assert TWD_ERROR and power down to reset mode.
 
-  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
-  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
-
-This problem was introduced by commit b8265621f488 ("Add pldmfw library
-for PLDM firmware update").
-
-It manifests as of commit d69ea414c9b4 ("ice: implement device flash
-update via devlink").
-
-And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
-unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
-
-Found by chance while exercising builds based on tinyconfig.
-
-Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250326-da9052-fixes-v3-4-a38a560fef0e@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/Kconfig | 1 +
+ drivers/watchdog/da9052_wdt.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index ee365b7402f19..43d69669465af 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -751,6 +751,7 @@ config GENERIC_LIB_DEVMEM_IS_ALLOWED
+diff --git a/drivers/watchdog/da9052_wdt.c b/drivers/watchdog/da9052_wdt.c
+index d708c091bf1b1..180526220d8c4 100644
+--- a/drivers/watchdog/da9052_wdt.c
++++ b/drivers/watchdog/da9052_wdt.c
+@@ -164,6 +164,7 @@ static int da9052_wdt_probe(struct platform_device *pdev)
+ 	da9052_wdt = &driver_data->wdt;
  
- config PLDMFW
- 	bool
-+	select CRC32
- 	default n
- 
- config ASN1_ENCODER
+ 	da9052_wdt->timeout = DA9052_DEF_TIMEOUT;
++	da9052_wdt->min_hw_heartbeat_ms = DA9052_TWDMIN;
+ 	da9052_wdt->info = &da9052_wdt_info;
+ 	da9052_wdt->ops = &da9052_wdt_ops;
+ 	da9052_wdt->parent = dev;
 -- 
 2.39.5
 
