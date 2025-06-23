@@ -1,159 +1,164 @@
-Return-Path: <stable+bounces-156054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27053AE451F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54CB6AE451B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 852B83BD8AA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D688189C4DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF9B4250BEC;
-	Mon, 23 Jun 2025 13:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153902475E3;
+	Mon, 23 Jun 2025 13:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cJZRaQdI"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="VEw91Ptb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91ABE2F24;
-	Mon, 23 Jun 2025 13:40:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B412472A2
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686023; cv=none; b=tLaNi/yB6dM42EDWWCJamTOJScou9GiZP8jiKrpiqrWwpYtR/nJ+AgYlUYwaektkSe5Vjx+kyHtGeMd+nPkiTvn4TtYcBj8pFI+YIQiuWxPEWrO87ZqhkO99f9be++M94t1R/ojqzDSewAD3SxQyY0LDckhhPnkhyI4BrW0OVRQ=
+	t=1750686165; cv=none; b=E6QbM1Agm/x7Kkx+KYQipdFEpl9j8/YF3nR/7EkhLbHQPYutEHk+LwPb0kL+hJNxQ9nFDBAmHQdtSf/jPUKSpxMQkGlQwHGCI6fdXTZUezmuOHOaMEPMmOU0leE1bOjD2zWe2tjl/uswvv6iKJZoNibJeL/kgg7ZevFy7s3SB40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686023; c=relaxed/simple;
-	bh=dbjPAMx8T9HxwW7MbkH8UuPi8UHN/esm65OzT/5uzNg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=r5FkM2/UFS3qU4oGZuSOLJKBZHkT8Rcxx+/wMe/FU8UUe2zXv+sRwgUBEevoflvpVJazjIMyxvMwkah8k5so9ptUMprAbpc2KglnsHnxh82TcjKY7jXHnNtf6XdYLafJPa6Z3gSjNMW5J0NIF4raE6u2T/LS/MTj41OyslmRyhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cJZRaQdI; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750686022; x=1782222022;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=dbjPAMx8T9HxwW7MbkH8UuPi8UHN/esm65OzT/5uzNg=;
-  b=cJZRaQdIqqTYgsLIMCDsW65tSNeSf222ZXoeWAIkslzyu9LlUNT1cwv1
-   r9GBhgOrkAim/D8reYIgvfRCycIMfv1039NP5h+kuWvYYCRG+lwQp9uVc
-   7mJNjMv+YKl6P1ra/nrDxzDr1lqCf/pXA8GPoa0wLK18tsngHGk9HLFFV
-   B+py503bkeX0nd/TqbTNNbQzjzp5gT9cNULTHgeQLomtx/tnAwnNeFyH/
-   qnLq7oGM5IaGoDz0aDQ9NpO/4wDoZJx7Dw54SxUPLVbzk+K0c35lgGHqv
-   9CS6loCpzKMqPYTSRM8gOZGjKKhr54Uw8ql78KQA1TGW0dEKKptGqtdRD
-   A==;
-X-CSE-ConnectionGUID: YVbH18PZTFOpNN/zsCbaIg==
-X-CSE-MsgGUID: LfgfzRQvRw2TUmJR4j1zOw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="70320566"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="70320566"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 06:40:21 -0700
-X-CSE-ConnectionGUID: nq6zh+X0RKmTkXOZ8FrkWA==
-X-CSE-MsgGUID: IthY0cp2R8CIp83Qx2c2Pg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="182650970"
-Received: from unknown (HELO mnyman-desk.fi.intel.com) ([10.237.72.199])
-  by orviesa002.jf.intel.com with ESMTP; 23 Jun 2025 06:40:19 -0700
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-To: <gregkh@linuxfoundation.org>
-Cc: <linux-usb@vger.kernel.org>,
-	<stern@rowland.harvard.edu>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	stable@vger.kernel.org,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>
-Subject: [PATCH] usb: hub: Don't try to recover devices lost during warm reset.
-Date: Mon, 23 Jun 2025 16:39:47 +0300
-Message-ID: <20250623133947.3144608-1-mathias.nyman@linux.intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1750686165; c=relaxed/simple;
+	bh=qdg+EM3mbIekM+thba+QaUCgMAyoog061H5vK+udLrY=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=M0+QrSofsf9pE7+wckjeYukYCzi7e8s1VCbNKuE+acXhBDRXs2FGrVmrJFDFRxSxaUKcGCjrOSU2jcKzY0niIRXcUbIXgbXafQ0iIvWtnMuzI40GiB8CjwhJbHH8buCe5h7OG6bxIK4BdwvIvBIDmxX1tYG0OumKCbvKGz60UlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=VEw91Ptb; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 55NBJV1B010884
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=qOUb6rVnC9PRVGI3ps4c4HopqKEHYZGdgSEqxlR3k
+	OM=; b=VEw91PtbVdPtsCmiq8iuovP4UM+RcZftTZYPDtiJNXHU6BpncksUzfzCL
+	/Wh3RSV2qizi0koQvonly6YZyvF9Z9h/lem+Rq19KSl2QULIo36Yr+F5BVkhL+Aj
+	m62iXLW60Eo3aBIGI6dU/6zagG4JJV3mgt7qrbwqQ1SswJdo96CMn1jWR1zxBIQa
+	n8Nk50PfO0vYVFjotY5m/mYCvBGVeU1xOChruoYNhmoha9VVJMJ1a+jXA20oEAkR
+	3faSBeA9+gOEiIWQ5gcUgBYDQrU5b+fkjJtyN/i98Wr3/cLnZO11iRCZgZDIu76/
+	fVtYD4Szc/Hh0AFafnMkxJ2MAOBgw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 47dme12a9c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:43 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 55NCb9Tc014748
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:42 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 47e9s26p0j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:42 +0000
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 55NDgeH758392878
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK)
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9A2382004B
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7D77B20043
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 +0000 (GMT)
+Received: from tuxmaker.lnxne.boe (unknown [9.152.85.9])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:42:40 +0000 (GMT)
+From: Heiko Carstens <hca@linux.ibm.com>
+To: stable@vger.kernel.org
+Subject: [PATCH 5.10.y] s390: Add '-std=gnu11' to decompressor and purgatory CFLAGS
+Date: Mon, 23 Jun 2025 15:42:40 +0200
+Message-ID: <20250623134240.1107347-1-hca@linux.ibm.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=Tc6WtQQh c=1 sm=1 tr=0 ts=685959d3 cx=c_pps a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17 a=6IFa9wvqVegA:10 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=O4dmbfcdmyx46WCdPC8A:9
+X-Proofpoint-GUID: N7Og9YBi4hwsWg7lMrIj-aoEkotGBrH8
+X-Proofpoint-ORIG-GUID: N7Og9YBi4hwsWg7lMrIj-aoEkotGBrH8
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA4MCBTYWx0ZWRfX5D0MnKcmkeZC A0li4bGmfJCszyNAqRGT1qqCj3oWG+92Le0WNbwj0NRqc2Nn/PuM5ED2/6qURMs7+WGIcHsjeJR scqyqsyJaV+wHqyHUs8IpyvdzG8vdwebfjSHksGSAawaSN8yZJEkp3chsF47BpHDG27qub9PNt8
+ czgv6XkcXZkrNI6kl14NpN1bwzoyBDhQtDTBZqRVgQsm6nPr0j58wlX/7MsTPOvTlIELGh6EZ7a pGQF85rlQT9ksl/KAXfeFn/wYlYEuTx6d0fkcPSkVxJuRTv77MJuLN1Tsc941NR7Wtph0FiK5H6 23j3o1up7Mo6eQfi6xonM7EWNDY4Qyf6+YOkXwjy/6AF7BnKemvRJhS8PLZraSbTfG4Fpte5oQQ
+ QzONrNvcPr4WvnB1QKnzHxMy1366P/VtREGB1W3VQQZZzmrc9LoiiX4jlmAuqvAqe+IyI2Q6
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
+ definitions=2025-06-23_03,2025-06-23_03,2025-03-28_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ priorityscore=1501 mlxscore=0 mlxlogscore=839 phishscore=0 spamscore=0
+ malwarescore=0 suspectscore=0 impostorscore=0 clxscore=1015 adultscore=0
+ bulkscore=0 classifier=spam authscore=0 authtc=n/a authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.19.0-2505280000
+ definitions=main-2506230080
 
-Hub driver warm-resets ports in SS.Inactive or Compliance mode to
-recover a possible connected device. The port reset code correctly
-detects if a connection is lost during reset, but hub driver
-port_event() fails to take this into account in some cases.
-port_event() ends up using stale values and assumes there is a
-connected device, and will try all means to recover it, including
-power-cycling the port.
+From: Nathan Chancellor <nathan@kernel.org>
 
-Details:
-This case was triggered when xHC host was suspended with DbC (Debug
-Capability) enabled and connected. DbC turns one xHC port into a simple
-usb debug device, allowing debugging a system with an A-to-A USB debug
-cable.
+commit 3b8b80e993766dc96d1a1c01c62f5d15fafc79b9 upstream.
 
-xhci DbC code disables DbC when xHC is system suspended to D3, and
-enables it back during resume.
-We essentially end up with two hosts connected to each other during
-suspend, and, for a short while during resume, until DbC is enabled back.
-The suspended xHC host notices some activity on the roothub port, but
-can't train the link due to being suspended, so xHC hardware sets a CAS
-(Cold Attach Status) flag for this port to inform xhci host driver that
-the port needs to be warm reset once xHC resumes.
+GCC changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, there are certain
+places in the s390 code that use their own CFLAGS without a '-std='
+value, which break with this dialect change because of the kernel's own
+definitions of bool, false, and true conflicting with the C23 reserved
+keywords.
 
-CAS is xHCI specific, and not part of USB specification, so xhci driver
-tells usb core that the port has a connection and link is in compliance
-mode. Recovery from complinace mode is similar to CAS recovery.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-xhci CAS driver support that fakes a compliance mode connection was added
-in commit 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-
-Once xHCI resumes and DbC is enabled back, all activity on the xHC
-roothub host side port disappears. The hub driver will anyway think
-port has a connection and link is in compliance mode, and hub driver
-will try to recover it.
-
-The port power-cycle during recovery seems to cause issues to the active
-DbC connection.
-
-Fix this by clearing connect_change flag if hub_port_reset() returns
--ENOTCONN, thus avoiding the whole unnecessary port recovery and
-initialization attempt.
+Add '-std=gnu11' to the decompressor and purgatory CFLAGS to eliminate
+these errors and make the C standard version of these areas match the
+rest of the kernel.
 
 Cc: stable@vger.kernel.org
-Fixes: 8bea2bd37df0 ("usb: Add support for root hub port status CAS")
-Tested-by: Łukasz Bartosik <ukaszb@chromium.org>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Heiko Carstens <hca@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250122-s390-fix-std-for-gcc-15-v1-1-8b00cadee083@kernel.org
+Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 ---
- drivers/usb/core/hub.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ arch/s390/Makefile           | 2 +-
+ arch/s390/purgatory/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 6bb6e92cb0a4..f981e365be36 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -5754,6 +5754,7 @@ static void port_event(struct usb_hub *hub, int port1)
- 	struct usb_device *hdev = hub->hdev;
- 	u16 portstatus, portchange;
- 	int i = 0;
-+	int err;
+diff --git a/arch/s390/Makefile b/arch/s390/Makefile
+index 39ffcd4389f1..92f2426d8797 100644
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -23,7 +23,7 @@ endif
+ aflags_dwarf	:= -Wa,-gdwarf-2
+ KBUILD_AFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -D__ASSEMBLY__
+ KBUILD_AFLAGS_DECOMPRESSOR += $(if $(CONFIG_DEBUG_INFO),$(aflags_dwarf))
+-KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2
++KBUILD_CFLAGS_DECOMPRESSOR := $(CLANG_FLAGS) -m64 -O2 -std=gnu11
+ KBUILD_CFLAGS_DECOMPRESSOR += -DDISABLE_BRANCH_PROFILING -D__NO_FORTIFY
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-delete-null-pointer-checks -msoft-float
+ KBUILD_CFLAGS_DECOMPRESSOR += -fno-asynchronous-unwind-tables
+diff --git a/arch/s390/purgatory/Makefile b/arch/s390/purgatory/Makefile
+index a93c9aba834b..955f113cf320 100644
+--- a/arch/s390/purgatory/Makefile
++++ b/arch/s390/purgatory/Makefile
+@@ -20,7 +20,7 @@ GCOV_PROFILE := n
+ UBSAN_SANITIZE := n
+ KASAN_SANITIZE := n
  
- 	connect_change = test_bit(port1, hub->change_bits);
- 	clear_bit(port1, hub->event_bits);
-@@ -5850,8 +5851,11 @@ static void port_event(struct usb_hub *hub, int port1)
- 		} else if (!udev || !(portstatus & USB_PORT_STAT_CONNECTION)
- 				|| udev->state == USB_STATE_NOTATTACHED) {
- 			dev_dbg(&port_dev->dev, "do warm reset, port only\n");
--			if (hub_port_reset(hub, port1, NULL,
--					HUB_BH_RESET_TIME, true) < 0)
-+			err = hub_port_reset(hub, port1, NULL,
-+					     HUB_BH_RESET_TIME, true);
-+			if (!udev && err == -ENOTCONN)
-+				connect_change = 0;
-+			else if (err < 0)
- 				hub_port_disable(hub, port1, 1);
- 		} else {
- 			dev_dbg(&port_dev->dev, "do warm reset, full device\n");
+-KBUILD_CFLAGS := -fno-strict-aliasing -Wall -Wstrict-prototypes
++KBUILD_CFLAGS := -std=gnu11 -fno-strict-aliasing -Wall -Wstrict-prototypes
+ KBUILD_CFLAGS += -Wno-pointer-sign -Wno-sign-compare
+ KBUILD_CFLAGS += -fno-zero-initialized-in-bss -fno-builtin -ffreestanding
+ KBUILD_CFLAGS += -c -MD -Os -m64 -msoft-float -fno-common
 -- 
-2.43.0
+2.48.1
 
 
