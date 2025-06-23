@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-156795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42CE4AE512D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA51AAE51C5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFBFE3ADCFF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3D36A7A8FE6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56BD1DDC04;
-	Mon, 23 Jun 2025 21:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCA3221FD2;
+	Mon, 23 Jun 2025 21:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tlEFusw/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KYHmDr3o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99CEFC2E0;
-	Mon, 23 Jun 2025 21:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5E64409;
+	Mon, 23 Jun 2025 21:37:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714284; cv=none; b=BuB0osq3XXIkbJ464+yINxMKoq94MBwdoumiUCgBM02FudtWPyTlB4w+Wte0flmbHZep1dBVsw805cBd/CUTtky4zo/7D69Pdtpp/YTN3scT79fkHef7/DbvUsNvOiy919r/0wKTPjt7YcocZ0vxhgPNEwuws9hyDmd0tiDKjh4=
+	t=1750714637; cv=none; b=hOoWvzmAv8sFy+ku5JQXejW9N7RdzIsdNzVknqby2hASQtLobk9QTKml8IAas3GsIbFIuamJATAo3k/uO+q3wqJQxPUHM96zRo0mjG5wTZC72HR0X+1jN14XfzwOo863pbqHjFnHK8mfawcClIejXQPVw0Fpo+0LYf/K4yh53zM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714284; c=relaxed/simple;
-	bh=ZA72sWKoSfJnj8Wt9kGvgn0NpgX/cch4s/6zkII8xCc=;
+	s=arc-20240116; t=1750714637; c=relaxed/simple;
+	bh=qRgSTkSRJi1Ce8/x6ZY9SXafpVUEdev6tAkoNJi2BkE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niUkVhAA7oe5p85sMQrbA83joOnbX8vGObRwajhcSE7UYc3XsLMQKniaXl8H9NY5b9WvwpJEU4vQ3vhb5iWUIr8D1GeOXGlXVF5DHHwX0O51mpjdi3I8K2ewvgWL2RUZuMDozrlagTz6FglX2f4XKKoq63+vOVZp4cf8aIEMTVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tlEFusw/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29675C4CEEA;
-	Mon, 23 Jun 2025 21:31:24 +0000 (UTC)
+	 MIME-Version; b=fDpzAeo7301WJe2I9KJnChHssle6l0Wwt+29w8OJX29LAWfOS3/GiFarifONmj81dMakjW2K3eb9u2PCGgZk481vGVxWY5Vil57iQxLv1WB/jkO0PrMeZIh4SmblrFxz/0kcqwRWW3S5EsfWs2ZNrHX/OPB0GYFjzSgPyBLZDmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KYHmDr3o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24E31C4CEED;
+	Mon, 23 Jun 2025 21:37:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714284;
-	bh=ZA72sWKoSfJnj8Wt9kGvgn0NpgX/cch4s/6zkII8xCc=;
+	s=korg; t=1750714637;
+	bh=qRgSTkSRJi1Ce8/x6ZY9SXafpVUEdev6tAkoNJi2BkE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tlEFusw/GP0L2t1JKp+RDr0FWkEvAMrcqnVs1zDG0QeMg0D7tOELX14tepqIJx+8u
-	 zmcICYq1trGtkxr9bcuu0sqzrkY43rN7dNR1RtUc9VGbg28IEJygcIof0jnPFeyYnX
-	 FGHDHuW18QI/CjrRaFPyaU9rtAgb5IAdp2C/edwg=
+	b=KYHmDr3oW0teNOeIbGgqiptZWysM0VQxSYCsLlQ5Y9RseIHgjq/zlUxg/Es7noPaw
+	 7/JMP+LuWHs1X9TlNPeNnMcZWI/nVb210l/+tfOS+kNbnTWOk1R7dbqE46/zlU8Xln
+	 zxQJuL0dZ6ZMTruBFDM4YD6N6Gpdx2nTC+tFC0xM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	kdevops@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.12 093/414] ext4: fix calculation of credits for extent tree modification
-Date: Mon, 23 Jun 2025 15:03:50 +0200
-Message-ID: <20250623130644.416255647@linuxfoundation.org>
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 186/508] seg6: Fix validation of nexthop addresses
+Date: Mon, 23 Jun 2025 15:03:51 +0200
+Message-ID: <20250623130649.849204199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 32a93f5bc9b9812fc710f43a4d8a6830f91e4988 upstream.
+[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
 
-Luis and David are reporting that after running generic/750 test for 90+
-hours on 2k ext4 filesystem, they are able to trigger a warning in
-jbd2_journal_dirty_metadata() complaining that there are not enough
-credits in the running transaction started in ext4_do_writepages().
+The kernel currently validates that the length of the provided nexthop
+address does not exceed the specified length. This can lead to the
+kernel reading uninitialized memory if user space provided a shorter
+length than the specified one.
 
-Indeed the code in ext4_do_writepages() is racy and the extent tree can
-change between the time we compute credits necessary for extent tree
-computation and the time we actually modify the extent tree. Thus it may
-happen that the number of credits actually needed is higher. Modify
-ext4_ext_index_trans_blocks() to count with the worst case of maximum
-tree depth. This can reduce the possible number of writers that can
-operate in the system in parallel (because the credit estimates now won't
-fit in one transaction) but for reasonably sized journals this shouldn't
-really be an issue. So just go with a safe and simple fix.
+Fix by validating that the provided length exactly matches the specified
+one.
 
-Link: https://lore.kernel.org/all/20250415013641.f2ppw6wov4kn4wq2@offworld
-Reported-by: Davidlohr Bueso <dave@stgolabs.net>
-Reported-by: Luis Chamberlain <mcgrof@kernel.org>
-Tested-by: kdevops@lists.linux.dev
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250429175535.23125-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ net/ipv6/seg6_local.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2396,18 +2396,19 @@ int ext4_ext_calc_credits_for_single_ext
- int ext4_ext_index_trans_blocks(struct inode *inode, int extents)
- {
- 	int index;
--	int depth;
- 
- 	/* If we are converting the inline data, only one is needed here. */
- 	if (ext4_has_inline_data(inode))
- 		return 1;
- 
--	depth = ext_depth(inode);
--
-+	/*
-+	 * Extent tree can change between the time we estimate credits and
-+	 * the time we actually modify the tree. Assume the worst case.
-+	 */
- 	if (extents <= 1)
--		index = depth * 2;
-+		index = EXT4_MAX_EXTENT_DEPTH * 2;
- 	else
--		index = depth * 3;
-+		index = EXT4_MAX_EXTENT_DEPTH * 3;
- 
- 	return index;
- }
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 33cb0381b5749..b7d9a68a265d7 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1250,10 +1250,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
+ 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
+-	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in_addr) },
+-	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in6_addr) },
++	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
+-- 
+2.39.5
+
 
 
 
