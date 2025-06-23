@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1FF1AE507D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8300BAE502A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78ED51B6107B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA643BC71E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F361EFFA6;
-	Mon, 23 Jun 2025 21:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C561E5B71;
+	Mon, 23 Jun 2025 21:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHmmYrdk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sia4ttqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 999DC1E521E;
-	Mon, 23 Jun 2025 21:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43C0219E0;
+	Mon, 23 Jun 2025 21:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713925; cv=none; b=cYBa35Uo3FzjkRbOqEHqDPtu5L59xdbMm2Bl3YkugiUG+JVtkeTvBDHqXnomuMX6W9M78na3MZN8P8lbzzdCE8HR8J/WBv8VabpxMwdGPFTjHEXOFeC6V5anmpKU5PZltkNO8glC5xS/j0PYsbvQbhgSuHGvMGSGhVxDyYgiKO0=
+	t=1750713768; cv=none; b=q59osckpDPaPpM2bQEDKNPw+xynyPPrr+SYzCkeqOZguELpAkKPjexhLxmg0dLYaC4rpRoFtvMQtR7HmMXx9kBKUfnqx6hwEhZJjtOk0y+2TTY5FaCP1QcHO6k7YTmK00+W/9W1NQrV/rX1h8DrpreTnlVktad6GxdS8acJD9fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713925; c=relaxed/simple;
-	bh=eaeM/VRFVun/gKEs+SUc1gC9qQku+nqY5CHwFfGXxTg=;
+	s=arc-20240116; t=1750713768; c=relaxed/simple;
+	bh=PssDxJ/HftaUASlRDgS7UHSr5EBRuyZ2RVOO9im6f7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ei6hsjGGOTc2BhB8o+YChetBIzyChVuT9x4I5/RhBjciwbOMvetWYvw0xgeu0zuRa6jhGzsafYMoFg3XZkV9geHThmfM+MAHpvgQfxkf53kJEGHq0Ro5Wi0EN1EuOqgePUfGvRdP4grmmc84YmdDf83TzQEBQrjoEMM6y4564Wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHmmYrdk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D912BC4CEEA;
-	Mon, 23 Jun 2025 21:25:24 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pq68hDxkzpKXcizILWsZ04nKLKBZvXxkLmxn8gDMA3JZFm7HbjDOjQM74tQPaAihjQblrVG5jS3TJRM/OAj0I4FSBS0+TIGBdHXywUHoqPiK6GDOGQR4v2b4LOVTJHEyoz7sHkGXhBXs1skCMfQQldd0ZoyTalxp73op+nCTsOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sia4ttqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E58BC4CEEA;
+	Mon, 23 Jun 2025 21:22:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713925;
-	bh=eaeM/VRFVun/gKEs+SUc1gC9qQku+nqY5CHwFfGXxTg=;
+	s=korg; t=1750713768;
+	bh=PssDxJ/HftaUASlRDgS7UHSr5EBRuyZ2RVOO9im6f7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHmmYrdkc1jhv+6zqNHruuDTHz69wNLYTJbXLfzgdoIoGKqIpbOhVVme8Tk6xRRfS
-	 nQkIlDyWNvlhkljA1lRMsKloA5bv8Ejhp8W1D19/oMygmMgFnRPwhjvpXAXganRcEK
-	 Jl9lo0xQvsZ5l6bZgjvpI8Y+xzH17ybzQ/JC6K5c=
+	b=Sia4ttqc6I7hOturmuLPZiMyKZvpW+eeLjYkXy6oEpQNpyYVVB70ouuAHOIO1Q1Rz
+	 Fm49+we7ISdUod1cJxvgYW5O2plktBqWNI40XaFKaBBdfcVx+252jqZVSFagWuo/w2
+	 g0zYDwqCjexpePB98E/RrsA/7ytA4Zyw7EB75rH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 174/355] media: v4l2-dev: fix error handling in __video_register_device()
+	Sean Nyekjaer <sean@geanix.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 114/290] iio: imu: inv_icm42600: Fix temperature calculation
 Date: Mon, 23 Jun 2025 15:06:15 +0200
-Message-ID: <20250623130631.937941891@linuxfoundation.org>
+Message-ID: <20250623130630.378348186@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,73 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
+commit e2f820014239df9360064079ae93f838ff3b7f8c upstream.
 
-Once device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-And move callback function v4l2_device_release() and v4l2_device_get()
-before put_device().
+>From the documentation:
+"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
+Offset should be applied before multiplying scale, so divide offset by
+scale to make this correct.
 
-As comment of device_register() says, 'NOTE: _Never_ directly free
-@dev after calling this function, even if it returned an error! Always
-use put_device() to give up the reference initialized in this function
-instead.'
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-dev.c
-+++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -1029,25 +1029,25 @@ int __video_register_device(struct video
- 	vdev->dev.class = &video_class;
- 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
- 	vdev->dev.parent = vdev->dev_parent;
-+	vdev->dev.release = v4l2_device_release;
- 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
-+
-+	/* Increase v4l2_device refcount */
-+	v4l2_device_get(vdev->v4l2_dev);
-+
- 	mutex_lock(&videodev_lock);
- 	ret = device_register(&vdev->dev);
- 	if (ret < 0) {
- 		mutex_unlock(&videodev_lock);
- 		pr_err("%s: device_register failed\n", __func__);
--		goto cleanup;
-+		put_device(&vdev->dev);
-+		return ret;
- 	}
--	/* Register the release callback that will be called when the last
--	   reference to the device goes away. */
--	vdev->dev.release = v4l2_device_release;
- 
- 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
- 		pr_warn("%s: requested %s%d, got %s\n", __func__,
- 			name_base, nr, video_device_node_name(vdev));
- 
--	/* Increase v4l2_device refcount */
--	v4l2_device_get(vdev->v4l2_dev);
--
- 	/* Part 5: Register the entity. */
- 	ret = video_register_media_controller(vdev);
- 
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct ii
+ 		return IIO_VAL_INT;
+ 	/*
+ 	 * T°C = (temp / 132.48) + 25
+-	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
++	 * Tm°C = 1000 * ((temp / 132.48) + 25)
++	 * Tm°C = 7.548309 * temp + 25000
++	 * Tm°C = (temp + 3312) * 7.548309
+ 	 * scale: 100000 / 13248 ~= 7.548309
+-	 * offset: 25000
++	 * offset: 3312
+ 	 */
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 7;
+ 		*val2 = 548309;
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = 25000;
++		*val = 3312;
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 
 
 
