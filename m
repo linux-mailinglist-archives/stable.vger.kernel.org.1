@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DDE7AE5769
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB1C2AE551C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1343B400C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87818444926
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD387223DF0;
-	Mon, 23 Jun 2025 22:27:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7CEE21FF2B;
+	Mon, 23 Jun 2025 22:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soHOS2ce"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTN/wv1d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1552222B2;
-	Mon, 23 Jun 2025 22:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652A33597E;
+	Mon, 23 Jun 2025 22:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717635; cv=none; b=SxAZm6B9IZtkWF7D/uQjLy9HjREzsNxHDKoeD/Par8BwYzdBSKnYWuFzKdUE6lHeMHLog/m6P4tmbSgPNK40MXAqzx1WSsOc9mBC8PdnhJ6FvuS/gMScrE9jhHCRWzZmsFtOQ0Jlbyl4xyKNropzc0HPE7kW2PCrt8aqYsIFDRo=
+	t=1750716456; cv=none; b=YtuC3pXZve8iMWm+ZE9RmGjsYp8le4KcgpPgnDaSapPJAVK0UGnvehI41O/pLYZ1WH7nWxPbG3W1WQ/dsxh7A6mYayk9JhDJY+SBsFNGXHG9gVIYU8n0K5OndMcS+CcxabtS0jWi30TZMugDIRuZ9f0lYoc7yXxeHm6TPXUrqPk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717635; c=relaxed/simple;
-	bh=8IqO2LFtkkDDtLMUfVdkifmVaY2E1cWR/oVSt39ILo4=;
+	s=arc-20240116; t=1750716456; c=relaxed/simple;
+	bh=s5WuLT907lH4PvpM/Ip/DULVHQafPJoiDahFO1MBKFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZsfSuQt8DoJ+KHJ9N6oFBV8+v7fHPNJ4K8GB6LlWwZ/oYh0ljO35ed8icdQBQXCOBsj2O557scchKnscinq5Eu9chQp9VZjitosaWyZrmTnxJoI4iZU+UFi45uvxk/0faSHN2Hbqkv+PF/8hJ8JYuXIS7KrlwFfMZXZulaW0ZwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soHOS2ce; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE946C4CEEA;
-	Mon, 23 Jun 2025 22:27:13 +0000 (UTC)
+	 MIME-Version; b=sw10kaTcLP3I7yjAA9zJsO29gvo/XxadaREMWTmSotQz3NoeBGbSb+YWa1pp3DmefyBUTpJNUTGVXQJ0QEL6tFVgbzujNNJhRn+cK4mVRxjOmcLgPOlvMm9cCNWHg/aeUYZ2O19JuOlgRzgWYzzl9ZWt3mJTt34XB3KLEYmjlIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTN/wv1d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D48C4CEEA;
+	Mon, 23 Jun 2025 22:07:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717634;
-	bh=8IqO2LFtkkDDtLMUfVdkifmVaY2E1cWR/oVSt39ILo4=;
+	s=korg; t=1750716456;
+	bh=s5WuLT907lH4PvpM/Ip/DULVHQafPJoiDahFO1MBKFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=soHOS2ce6BL0Ww0u/UDxB4hIGlbc3482DMsJvO9+ijwzrJLRcmC6pDgcwZG35xBjN
-	 UsToJWxmx/I8jxehQM3ByzVN405AT4FGtCcQUA7W+8pRKrZAq3Bp1sIa9E95ls9I9e
-	 7rS59GZQd19jgisTs74Ha/GpfnNvr0u84eHk3jmo=
+	b=CTN/wv1d8renrPvD1fbz9CrY/QtRctL7I32dvIEmwtbkll7jo6MerU3MVS8EQZK0S
+	 2DeaL5D41qJb+9mv+TYRqeNlXMLRBpT7xwXBEs+FS74kGpeSSr1B6chJvUUJlXIzVv
+	 gKsK6mC2WuxL8pqAQjMqXThP95hVC+BwK7UojlKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
+	syzbot+763e12bbf004fb1062e4@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 436/508] tee: Prevent size calculation wraparound on 32-bit kernels
-Date: Mon, 23 Jun 2025 15:08:01 +0200
-Message-ID: <20250623130655.891698677@linuxfoundation.org>
+Subject: [PATCH 6.15 524/592] io_uring/sqpoll: dont put task_struct on tctx setup failure
+Date: Mon, 23 Jun 2025 15:08:02 +0200
+Message-ID: <20250623130712.899472658@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
+[ Upstream commit f2320f1dd6f6f82cb2c7aff23a12bab537bdea89 ]
 
-The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
-32-bit kernels: Multiplying a user-provided 32-bit value with the
-size of a structure can wrap around on such platforms.
+A recent commit moved the error handling of sqpoll thread and tctx
+failures into the thread itself, as part of fixing an issue. However, it
+missed that tctx allocation may also fail, and that
+io_sq_offload_create() does its own error handling for the task_struct
+in that case.
 
-Fix it by using saturating arithmetic for the size calculation.
+Remove the manual task putting in io_sq_offload_create(), as
+io_sq_thread() will notice that the tctx did not get setup and hence it
+should put itself and exit.
 
-This has no security consequences because, in all users of
-TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
-for wrapping.
-
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Reported-by: syzbot+763e12bbf004fb1062e4@syzkaller.appspotmail.com
+Fixes: ac0b8b327a56 ("io_uring: fix use-after-free of sq->thread in __io_uring_show_fdinfo()")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/tee_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ io_uring/sqpoll.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index 98da206cd7615..a9a893bc19fa4 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -10,6 +10,7 @@
- #include <linux/fs.h>
- #include <linux/idr.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/tee_drv.h>
- #include <linux/uaccess.h>
-@@ -19,7 +20,7 @@
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 268d2fbe6160c..d3a94cd0f5e65 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -419,7 +419,6 @@ void io_sqpoll_wait_sq(struct io_ring_ctx *ctx)
+ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 				struct io_uring_params *p)
+ {
+-	struct task_struct *task_to_put = NULL;
+ 	int ret;
  
- #define TEE_NUM_DEVICES	32
+ 	/* Retain compatibility with failing for an invalid attach attempt */
+@@ -498,7 +497,7 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 		rcu_assign_pointer(sqd->thread, tsk);
+ 		mutex_unlock(&sqd->lock);
  
--#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
-+#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
+-		task_to_put = get_task_struct(tsk);
++		get_task_struct(tsk);
+ 		ret = io_uring_alloc_task_context(tsk, ctx);
+ 		wake_up_new_task(tsk);
+ 		if (ret)
+@@ -513,8 +512,6 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 	complete(&ctx->sq_data->exited);
+ err:
+ 	io_sq_thread_finish(ctx);
+-	if (task_to_put)
+-		put_task_struct(task_to_put);
+ 	return ret;
+ }
  
- #define TEE_UUID_NS_NAME_SIZE	128
- 
-@@ -487,7 +488,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
- 	if (copy_from_user(&arg, uarg, sizeof(arg)))
- 		return -EFAULT;
- 
--	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	if (arg.num_params) {
-@@ -565,7 +566,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
- 	if (copy_from_user(&arg, uarg, sizeof(arg)))
- 		return -EFAULT;
- 
--	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	if (arg.num_params) {
-@@ -699,7 +700,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
- 	if (get_user(num_params, &uarg->num_params))
- 		return -EFAULT;
- 
--	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
-+	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
-@@ -798,7 +799,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
- 	    get_user(num_params, &uarg->num_params))
- 		return -EFAULT;
- 
--	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
-+	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
- 		return -EINVAL;
- 
- 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
 -- 
 2.39.5
 
