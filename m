@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F531AE52BC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED8BDAE53CA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA681B65D0C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C1FB7B11D8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDC170838;
-	Mon, 23 Jun 2025 21:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C35922258C;
+	Mon, 23 Jun 2025 21:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftJoYCP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S+9JOlzn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EB72253B0;
-	Mon, 23 Jun 2025 21:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A8D03FB1B;
+	Mon, 23 Jun 2025 21:56:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715193; cv=none; b=qQqEb9xHOg1Mfltfs3pEEJllC9atR5VDFnh51UA3vdVlvKC96hN3p6NP4C3Sn8WAk76ZvwDLc44ft05sK2rLUzbDto5J/8VBao2IHr4jY3oPQZbCx1zX35zgzdVEIit8C+ITiIdXuSa2VGcs6Z761tnZIYhuCVKkkQ/2RpI1DEg=
+	t=1750715783; cv=none; b=gektLYdVKmVaMGp3lamneQGnLrrGAa0W0mqNCqQcqMlON25oOQxvI7TWFkRTm4HmkoId7GAfVDlqcVukkV9ndtvyEswE49cEIPT/z51nTidCk4xv4RKKtHlMn6BvNUZ95LppgkOA2LxZCvSPhWJm8JE4hMWV8xn4J2OhfaI2Z0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715193; c=relaxed/simple;
-	bh=Ml12dc+ib7BucN+WZnDE8emFO1KpI1AshJmthd7KEhQ=;
+	s=arc-20240116; t=1750715783; c=relaxed/simple;
+	bh=WNAGhlW6jy4Qh2mWdCNGz5xUbcGjfArRLLh7ERKVrIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WysPU5676N6dOVAsD0aJPHLebfwjOrCG7D/bRUlJ75BcK6aNnCe4uAHqYX4hJOaoUQRhmHm/BVNizqxy5wTSeNs0lBwc4Ct9YZGp8kgMgxknDCCJ18I/uEEgAu0kd9TnFVjpXTX4P3dclNG1ab3ogYLwstWh0Gmd6iW940nd7rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftJoYCP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFFDC4CEEA;
-	Mon, 23 Jun 2025 21:46:32 +0000 (UTC)
+	 MIME-Version; b=qmkC1CopOjBGREXsn0lxEQTpUt2uhuASEKTONdcM4/psXpMNTMY3TNo9n7a5+hq0fBrZTNGPrdEGE0nF4AVjzu9nQU4EWMgYJU+iGtoujum+x+kO5NQjh2qRwGi5QgqNgJ96rGv4mXZShms4QSl3jxauXAwWq+Jo2OkNQRuTX0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S+9JOlzn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97891C4CEEA;
+	Mon, 23 Jun 2025 21:56:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715193;
-	bh=Ml12dc+ib7BucN+WZnDE8emFO1KpI1AshJmthd7KEhQ=;
+	s=korg; t=1750715782;
+	bh=WNAGhlW6jy4Qh2mWdCNGz5xUbcGjfArRLLh7ERKVrIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ftJoYCP85tD+re5Xse1aFv7lr4SCkOUXUUo6YXsz6Yz2jo1gIesfYbqfwYE/s0Tb/
-	 YVoWc5DmC3NkZnaRtRrpkxWi7cz+X9HfTpUm2t/iU4fEON94IjDA0Zfyz+EU052CTk
-	 T5puRIt3NBA8LoJY4KKmtX06HdApNUXZ6Eabg+lE=
+	b=S+9JOlznkHUB7lluuwIHFC6tJoZrLfu9Q4c1+epp6NS229YJG9GQlhazRON1vSUfg
+	 Pw41W+paJrnwnd+aFPw/xWlrKiNa2jC20gsZfB7Ygo+eiP8xm4l1sEio8E7QmRObhu
+	 7SdTGe/a4XyyWgJWDkBKirBcyhUoh9dphLNcMrWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	M Nikhil <nikh1092@linux.ibm.com>,
-	Nihar Panda <niharp@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.15 464/592] scsi: s390: zfcp: Ensure synchronous unit_add
+	Jessica Zhang <quic_jesszhan@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 278/411] drm/msm/hdmi: add runtime PM calls to DDC transfer function
 Date: Mon, 23 Jun 2025 15:07:02 +0200
-Message-ID: <20250623130711.465168480@linuxfoundation.org>
+Message-ID: <20250623130640.649495220@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,51 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
+[ Upstream commit 531b4e2c206e5f7dead04d9da84dfa693ac57481 ]
 
-Improve the usability of the unit_add sysfs attribute by ensuring that
-the associated FCP LUN scan processing is completed synchronously.  This
-enables configuration tooling to consistently determine the end of the
-scan process to allow for serialization of follow-on actions.
+We must be sure that the HDMI controller is powered on, while performing
+the DDC transfer. Add corresponding runtime PM calls to
+msm_hdmi_i2c_xfer().
 
-While the scan process associated with unit_add typically completes
-synchronously, it is deferred to an asynchronous background process if
-unit_add is used before initial remote port scanning has completed.  This
-occurs when unit_add is used immediately after setting the associated FCP
-device online.
-
-To ensure synchronous unit_add processing, wait for remote port scanning
-to complete before initiating the FCP LUN scan.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
-Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/651727/
+Link: https://lore.kernel.org/r/20250505-fd-hdmi-hpd-v5-8-48541f76318c@oss.qualcomm.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/scsi/zfcp_sysfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/hdmi/hdmi_i2c.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/drivers/s390/scsi/zfcp_sysfs.c
-+++ b/drivers/s390/scsi/zfcp_sysfs.c
-@@ -449,6 +449,8 @@ static ssize_t zfcp_sysfs_unit_add_store
- 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
+index de182c0048434..9c78c6c528bea 100644
+--- a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
++++ b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
+@@ -107,11 +107,15 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
+ 	if (num == 0)
+ 		return num;
  
-+	flush_work(&port->rport_work);
++	ret = pm_runtime_resume_and_get(&hdmi->pdev->dev);
++	if (ret)
++		return ret;
 +
- 	retval = zfcp_unit_add(port, fcp_lun);
- 	if (retval)
- 		return retval;
+ 	init_ddc(hdmi_i2c);
+ 
+ 	ret = ddc_clear_irq(hdmi_i2c);
+ 	if (ret)
+-		return ret;
++		goto fail;
+ 
+ 	for (i = 0; i < num; i++) {
+ 		struct i2c_msg *p = &msgs[i];
+@@ -169,7 +173,7 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
+ 				hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS),
+ 				hdmi_read(hdmi, REG_HDMI_DDC_HW_STATUS),
+ 				hdmi_read(hdmi, REG_HDMI_DDC_INT_CTRL));
+-		return ret;
++		goto fail;
+ 	}
+ 
+ 	ddc_status = hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS);
+@@ -202,7 +206,13 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
+ 		}
+ 	}
+ 
++	pm_runtime_put(&hdmi->pdev->dev);
++
+ 	return i;
++
++fail:
++	pm_runtime_put(&hdmi->pdev->dev);
++	return ret;
+ }
+ 
+ static u32 msm_hdmi_i2c_func(struct i2c_adapter *adapter)
+-- 
+2.39.5
+
 
 
 
