@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-156083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43AF9AE44FA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B04EAE43A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF46316CBC1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F418B3B9257
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AB132472AF;
-	Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA02A25392D;
+	Mon, 23 Jun 2025 13:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSStsSET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvfCJmdS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288B31E487;
-	Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EC9254869;
+	Mon, 23 Jun 2025 13:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686107; cv=none; b=Qin3LmzIkMqiZAg+dfnNcBB3LcHslvJnaCVRIkyYaLOwLm/R8Dr+omV7q6dgoWI/WGxHOR0nQEz8r7hzCpAB2ellOPB+YhvBMvWbLjDKQIWDxySMvYdryoIu5A/uk2lvqTeTQeBpdVwHgJ8LrVFElawmEByIFDL1Io2KyDs1V68=
+	t=1750685244; cv=none; b=AZeXWy2wBs07q4MzT+M1TOpkOc/IxkyP2rm/QgrbBCjPc382q7vmmp+/QnywaojaQpiPU0OxgxVGnpttMM1smzuept2Vi9CmD1UIjbQlwGmQQnao9KboVhDjLVC+QX1b6zvoCiFOfx6/9vhEmWgGfHd1qb/1fmSpmyrWz467+hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686107; c=relaxed/simple;
-	bh=hhxfObArWSJGG1bppGmi1LCwGA4B6fJfQlER4BOPi3Y=;
+	s=arc-20240116; t=1750685244; c=relaxed/simple;
+	bh=HBXEaJKB7AiYNRAieSXYGwti5OHU0rGeuFqteoZ/Rr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gJE4v71bDYfK6uSmVuSpHm+fHhY1bqA5bBqvIZYYLLb0J3FKquXO9nLukqSn20NQpb5kR0cqZSUpP1oWmE2X79tCe+IE/4zdFvb5FF9q5Xk/ElrmYN3FMr46JEilhlMquavEXvgtR7Jt5g+J1JMexDplXP7M8eJHEVMsq2c/QUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSStsSET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3238C4CEEA;
-	Mon, 23 Jun 2025 13:41:46 +0000 (UTC)
+	 MIME-Version; b=cQKaqcpA6HgpqrkPbgozJeG8mFks5x3Rq4hdOz8AwlsWKKjAy/v75c4tBd7FQxac+bd7jiSTNVydd/UgUz7UkL6LOxLvUjFFknvDkI3vS7wLe9p/Fnzh/K0EMDk9RaXK3V6atwq+32fbXYuiwEGdD3ycnNK7ptVDBoeyAVhAY2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvfCJmdS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A396C4CEF0;
+	Mon, 23 Jun 2025 13:27:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686107;
-	bh=hhxfObArWSJGG1bppGmi1LCwGA4B6fJfQlER4BOPi3Y=;
+	s=korg; t=1750685244;
+	bh=HBXEaJKB7AiYNRAieSXYGwti5OHU0rGeuFqteoZ/Rr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSStsSETcWyB4ljLKM2Fq6QRI4/usbAT32j7jv3VzTddiLWsV3Kpp0E5jK9gUHTK4
-	 uvo59C+MC5id6fUHF6MPNxUsI/95pekAZtbq6Wxz8Xu1W/yl9iPcBndge1Da3Tffrj
-	 Iv2UXp5QfmVgD2VEYjNZ3N8CHMByvNstJ4BUODHo=
+	b=cvfCJmdSrlp5YxK0MlvUuf4bawrOnwNQBTXa6d8eTcCVQ2kJTkbP4MFqAx9C/oufE
+	 O6T2IpAFW0Qnm2BIahWHyROVsOv7zyQdrHC5+sr9/YMlQxv30CocWC9/Vb4o/BQNCD
+	 s9he+O+FrxvckZarloBPkR4RoPcrZtaKGpQT/Ts4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Ovidiu Bunea <Ovidiu.Bunea@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 281/592] drm/amd/display: Update IPS sequential_ono requirement checks
+Subject: [PATCH 5.10 038/355] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
 Date: Mon, 23 Jun 2025 15:03:59 +0200
-Message-ID: <20250623130707.028697270@linuxfoundation.org>
+Message-ID: <20250623130627.970447775@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,70 +62,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit b4db797117ceba88ba405a080811369418104304 ]
+[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
 
-[why & how]
-ASICs that require special RCG/PG programming are determined based
-on hw_internal_rev. Update these checks to properly include all such
-ASICs.
+hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
+inline function hns_roce_write64(), but it doesn't include this
+header currently. This leads to that files including
+hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
+errors, even if they themselves don't really rely on hnae3.h.
+This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
+directly.
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Ovidiu Bunea <Ovidiu.Bunea@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c           | 2 +-
- drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c | 2 +-
- drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
+ drivers/infiniband/hw/hns/hns_roce_main.c     | 1 -
+ drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
+ 4 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c b/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c
-index 62b7012cda430..f7a373a3d70a5 100644
---- a/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c
-+++ b/drivers/gpu/drm/amd/display/dc/dpp/dcn35/dcn35_dpp.c
-@@ -138,7 +138,7 @@ bool dpp35_construct(
- 	dpp->base.funcs = &dcn35_dpp_funcs;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 13aa8dd42f7d6..bb744ba155e2b 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -42,7 +42,6 @@
+ #include <rdma/ib_umem.h>
+ #include <rdma/uverbs_ioctl.h>
  
- 	// w/a for cursor memory stuck in LS by programming DISPCLK_R_GATE_DISABLE, limit w/a to some ASIC revs
--	if (dpp->base.ctx->asic_id.hw_internal_rev <= 0x10)
-+	if (dpp->base.ctx->asic_id.hw_internal_rev < 0x40)
- 		dpp->dispclk_r_gate_disable = true;
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-index ffd2b816cd02c..8948d44a7a80e 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -1903,7 +1903,7 @@ static bool dcn35_resource_construct(
- 	dc->caps.max_disp_clock_khz_at_vmin = 650000;
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_cmd.h"
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+index 8948d2b5577d5..80d14261cc4e1 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
+@@ -34,6 +34,7 @@
+ #define _HNS_ROCE_HW_V2_H
  
- 	/* Sequential ONO is based on ASIC. */
--	if (dc->ctx->asic_id.hw_internal_rev > 0x10)
-+	if (dc->ctx->asic_id.hw_internal_rev >= 0x40)
- 		dc->caps.sequential_ono = true;
+ #include <linux/bitops.h>
++#include "hnae3.h"
  
- 	/* Use pipe context based otg sync logic */
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
-index b6468573dc33d..7f19689e976a1 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn36/dcn36_resource.c
-@@ -1876,7 +1876,7 @@ static bool dcn36_resource_construct(
- 	dc->caps.max_disp_clock_khz_at_vmin = 650000;
- 
- 	/* Sequential ONO is based on ASIC. */
--	if (dc->ctx->asic_id.hw_internal_rev > 0x10)
-+	if (dc->ctx->asic_id.hw_internal_rev >= 0x40)
- 		dc->caps.sequential_ono = true;
- 
- 	/* Use pipe context based otg sync logic */
+ #define HNS_ROCE_VF_QPC_BT_NUM			256
+ #define HNS_ROCE_VF_SCCC_BT_NUM			64
+diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
+index 3c79668c6b3b5..9078855aad184 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_main.c
++++ b/drivers/infiniband/hw/hns/hns_roce_main.c
+@@ -37,7 +37,6 @@
+ #include <rdma/ib_smi.h>
+ #include <rdma/ib_user_verbs.h>
+ #include <rdma/ib_cache.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include <rdma/hns-abi.h>
+diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+index 259444c0a6301..8acab99f7ea6a 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
++++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
+@@ -4,7 +4,6 @@
+ #include <rdma/rdma_cm.h>
+ #include <rdma/restrack.h>
+ #include <uapi/rdma/rdma_netlink.h>
+-#include "hnae3.h"
+ #include "hns_roce_common.h"
+ #include "hns_roce_device.h"
+ #include "hns_roce_hw_v2.h"
 -- 
 2.39.5
 
