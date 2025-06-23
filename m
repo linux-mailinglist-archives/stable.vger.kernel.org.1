@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-157626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72AACAE54E0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD2AAE531F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 506CC4A6146
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F8661B665D8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61C322425B;
-	Mon, 23 Jun 2025 22:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110AC19049B;
+	Mon, 23 Jun 2025 21:50:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRLHIZxs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qK4LC6VT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726DA222590;
-	Mon, 23 Jun 2025 22:05:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C25711FECBA;
+	Mon, 23 Jun 2025 21:50:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716328; cv=none; b=hvZXf1fjYsCVnkSZ7SpUahIz9S4AFpiROVk0JpDfTSbrjfsWPvC7NuTvNiUO0zQqWYv6B3bPaiuQMT/QwAzinpXE7GcTHmBBrEcvIFo3Oun82+EkgJBnU1YndbWQ/lDBrS0OA7ZKVh+r/67NvsfAkEvCc1tT+8f0mSF8YYXHkuk=
+	t=1750715408; cv=none; b=ZhZJhN8R3b7scUe4GTc8JmYY+MSjP7xLgSDnGgnQD+L6520r4FXncHc0N7LMkOCiNQbjOU2/4uwGnePXXUiIkSwxgVAbxDEa9wktd6uUxno+NT1YXyF0wgOdOyVRqgjk4iKj741puBiui1o96REWUCP1k3V9h8DkbI0K2wMO9E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716328; c=relaxed/simple;
-	bh=kleeZwu5N572GPYu6SKm21BQQU9VATMkDs4XVpfhC1U=;
+	s=arc-20240116; t=1750715408; c=relaxed/simple;
+	bh=oeosfllot4M7zWmF4OVqy8krrz1OMlAe+QYtYe/nWh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BfqoMy54Z2597E8G891kyJgiTjnspWxs4VZMFXMCVsT7jthPZHYs94QU7zZQ4GLkMKnhQZpDwsCGkKa46+o94YJRh12EVAwhg1GEK6Rjejnkd9HGk+QHlRE3ZulPGYN0XACxXKydX6oWLZmgYpMR8IIUdykvCiT7NE4BhayMWUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRLHIZxs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AC5EC4CEEA;
-	Mon, 23 Jun 2025 22:05:27 +0000 (UTC)
+	 MIME-Version; b=qiRDX10ypfL77zCFtKyum/5it6h5zoGdBkHGoErTF+yMwwJnwh2VRiV6SUJ+FrFaAmao/WEwlSjRYkmhBXU3quEBL2slpjJk0UDBTWjGgmBPpHsDSe2Enrx0gZxEDCPb6AHdXBmKpcMR/Pjxa96DGvHWlsCRTQl5e1WB2DUN/VU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qK4LC6VT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9D3C4CEEA;
+	Mon, 23 Jun 2025 21:50:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716328;
-	bh=kleeZwu5N572GPYu6SKm21BQQU9VATMkDs4XVpfhC1U=;
+	s=korg; t=1750715408;
+	bh=oeosfllot4M7zWmF4OVqy8krrz1OMlAe+QYtYe/nWh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MRLHIZxseN/Zrvd8iUNscG13B57ZR+l/ZtIGXQr+lD66IKiXwx8WQ/7+Lw7ey6C4W
-	 ie1l1P5xZKZvwlm4ScY0bObPJrITOu5Z63ekz+iBiEcc4eQDpIi4jqfofR0eT+0Uim
-	 lP+OVyQ+B92eTEN5YEObT42j1afWwxuRLJ5sh+IM=
+	b=qK4LC6VTbT25FVdETJIx6uGxyxmvrzh0lqjesWjf6sE2TN5Vz3wEk4apT4Zq5ITM/
+	 x5pY9czrrAzICoGtrvW+9UEPkKAnz1DtKcDfdzrJSkoilQE6yXV8wnHtuJEy2i5L4e
+	 BBZJdvzJUew8UpSsnJKgdOJbky3dxIaM1SDD1XIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Joel Fernandes <joelagnelf@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 516/592] rust: devres: implement Devres::access()
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 5.10 273/355] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
 Date: Mon, 23 Jun 2025 15:07:54 +0200
-Message-ID: <20250623130712.710172536@linuxfoundation.org>
+Message-ID: <20250623130634.980042950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danilo Krummrich <dakr@kernel.org>
+From: Kyungwook Boo <bookyungwook@gmail.com>
 
-[ Upstream commit f301cb978c068faa8fcd630be2cb317a2d0ec063 ]
+[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
 
-Implement a direct accessor for the data stored within the Devres for
-cases where we can prove that we own a reference to a Device<Bound>
-(i.e. a bound device) of the same device that was used to create the
-corresponding Devres container.
+When the device sends a specific input, an integer underflow can occur, leading
+to MMIO write access to an invalid page.
 
-Usually, when accessing the data stored within a Devres container, it is
-not clear whether the data has been revoked already due to the device
-being unbound and, hence, we have to try whether the access is possible
-and subsequently keep holding the RCU read lock for the duration of the
-access.
+Prevent the integer underflow by changing the type of related variables.
 
-However, when we can prove that we hold a reference to Device<Bound>
-matching the device the Devres container has been created with, we can
-guarantee that the device is not unbound for the duration of the
-lifetime of the Device<Bound> reference and, hence, it is not possible
-for the data within the Devres container to be revoked.
-
-Therefore, in this case, we can bypass the atomic check and the RCU read
-lock, which is a great optimization and simplification for drivers.
-
-Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-Reviewed-by: Alexandre Courbot <acourbot@nvidia.com>
-Acked-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Joel Fernandes <joelagnelf@nvidia.com>
-Link: https://lore.kernel.org/r/20250428140137.468709-3-dakr@kernel.org
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Stable-dep-of: 20c96ed278e3 ("rust: devres: do not dereference to the internal Revocable")
+Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
+Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- rust/kernel/devres.rs | 38 ++++++++++++++++++++++++++++++++++++++
- 1 file changed, 38 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
-index f3a4e3383b8d2..acb8e1d13ddd9 100644
---- a/rust/kernel/devres.rs
-+++ b/rust/kernel/devres.rs
-@@ -196,6 +196,44 @@ pub fn new_foreign_owned(dev: &Device, data: T, flags: Flags) -> Result {
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index 59a467f7aba3f..430f236be6538 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -1320,10 +1320,11 @@ i40e_status i40e_pf_reset(struct i40e_hw *hw)
+ void i40e_clear_hw(struct i40e_hw *hw)
+ {
+ 	u32 num_queues, base_queue;
+-	u32 num_pf_int;
+-	u32 num_vf_int;
++	s32 num_pf_int;
++	s32 num_vf_int;
+ 	u32 num_vfs;
+-	u32 i, j;
++	s32 i;
++	u32 j;
+ 	u32 val;
+ 	u32 eol = 0x7ff;
  
-         Ok(())
-     }
-+
-+    /// Obtain `&'a T`, bypassing the [`Revocable`].
-+    ///
-+    /// This method allows to directly obtain a `&'a T`, bypassing the [`Revocable`], by presenting
-+    /// a `&'a Device<Bound>` of the same [`Device`] this [`Devres`] instance has been created with.
-+    ///
-+    /// # Errors
-+    ///
-+    /// An error is returned if `dev` does not match the same [`Device`] this [`Devres`] instance
-+    /// has been created with.
-+    ///
-+    /// # Example
-+    ///
-+    /// ```no_run
-+    /// # use kernel::{device::Core, devres::Devres, pci};
-+    ///
-+    /// fn from_core(dev: &pci::Device<Core>, devres: Devres<pci::Bar<0x4>>) -> Result {
-+    ///     let bar = devres.access(dev.as_ref())?;
-+    ///
-+    ///     let _ = bar.read32(0x0);
-+    ///
-+    ///     // might_sleep()
-+    ///
-+    ///     bar.write32(0x42, 0x0);
-+    ///
-+    ///     Ok(())
-+    /// }
-+    /// ```
-+    pub fn access<'a>(&'a self, dev: &'a Device<Bound>) -> Result<&'a T> {
-+        if self.0.dev.as_raw() != dev.as_raw() {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: `dev` being the same device as the device this `Devres` has been created for
-+        // proves that `self.0.data` hasn't been revoked and is guaranteed to not be revoked as
-+        // long as `dev` lives; `dev` lives at least as long as `self`.
-+        Ok(unsafe { self.deref().access() })
-+    }
- }
- 
- impl<T> Deref for Devres<T> {
 -- 
 2.39.5
 
