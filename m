@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-156069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45C9AE44E7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F785AE44F0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 17B8217DE18
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE4E1889D79
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D9C246BC9;
-	Mon, 23 Jun 2025 13:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89BE416419;
+	Mon, 23 Jun 2025 13:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnV7Hojj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OvlOEztp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6922F24;
-	Mon, 23 Jun 2025 13:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457151E487;
+	Mon, 23 Jun 2025 13:41:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686061; cv=none; b=nrb+V9WwySPU4irmIRJCKfSy/ZTNxnsGdB9Fjpr2mZuhdbUXiilt3txaskW2Wp1KcBVL5XQls+pPoZL/FH0+DWQxUrtcYXafndGWJVaMy0pzPwtuNQS9Z3q6Ym87O8F4tNto+xL4FNVeeChtpg6dzlU9OFWS2dsfpKU30rEET0g=
+	t=1750686089; cv=none; b=sSL9xND11szpJVrQ3wQ+As/xS9q/IRZSeHVXQ6i8RnegjZ4XmHtPt0igB5xWwOd5RnGPZHhBKanz+lE/trE2c6VGWPwqJwGHkudCp9GkMiGUt+d/Z7aQoTPc7LfJLSj6JzOtXfWovj6m1AfuRT0TcnEZSYgvkzevJgD4wZOAZoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686061; c=relaxed/simple;
-	bh=3XmBoRokdptO0Vy+EZYZ66+Nu/HRKMKk5RmzoIjwuWE=;
+	s=arc-20240116; t=1750686089; c=relaxed/simple;
+	bh=PU9ByO6dO/doDZKDkKU5lNMnZ5JWaBXXMhzn3cnxuOE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+kGLOSRG4YXat3hWHaCqE7X0Mji85ZY4vw6SWk1zVzizvVN8g/bn/xVsOx0PhjrZuekgmewbtTsRKhNlWtdt3C7vxaBTS02yfM/J4QS347aH0oZSXbH3uADBimWv24blb3uaDJS377fhTs3T3QmdUe7gGr0TI7+YfK8JRkLNu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnV7Hojj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D8F8C4CEEA;
-	Mon, 23 Jun 2025 13:40:59 +0000 (UTC)
+	 MIME-Version; b=UbcG09bPV2aDex5T41wv+kptyF4cE0PTUPgx8CiDkN6nTu8t6g3aYfNO2mYsVFDuNxwzqtPOiQwsGJRuE/RCZqDd8uX/91/yYa34AXKjgRSdWdkiNlX9AnIn2zw1FMUP6n8yfy3pAbLi5UqVUPYZDD6FKvqLrhWK8p03E7IDly4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OvlOEztp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD98BC4CEEA;
+	Mon, 23 Jun 2025 13:41:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686060;
-	bh=3XmBoRokdptO0Vy+EZYZ66+Nu/HRKMKk5RmzoIjwuWE=;
+	s=korg; t=1750686089;
+	bh=PU9ByO6dO/doDZKDkKU5lNMnZ5JWaBXXMhzn3cnxuOE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WnV7HojjFYwMdQP6mhtxMCXAnQqGy1ObQVjie6PjxpMT1jLdRGNz7J2eQhn6HH9ma
-	 G0AqSvk/QxxccAE0JdqTzHbOYhxye1SEZrT7D5RLSvKUOv1UH01SWPqyso9pCzRES3
-	 imNUjjPgMgiZooNQFulSPEFJQ15xBDeDegaH084U=
+	b=OvlOEztpcW7HG3Qu500NG120AdnhhkSNTm9E+S5ZwoTPBkJjRDuYyofWiYuIxWUBe
+	 zIINYb/xqnSALD7lkC+cgWGv08emoNzNnOJ8OK+EUajE4+/9igtAi9FoTCZSR2thzV
+	 H2ldN6XncURgJ+HiOa6JDgH01s9k6BmulyOcQ9YA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kieran Bingham <kieran.bingham@ideasonboard.com>,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Michal Wajdeczko <michal.wajdeczko@intel.com>,
+	Lukasz Laguna <lukasz.laguna@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 279/592] media: ti: cal: Fix wrong goto on error path
-Date: Mon, 23 Jun 2025 15:03:57 +0200
-Message-ID: <20250623130706.975189325@linuxfoundation.org>
+Subject: [PATCH 6.15 280/592] drm/xe/vf: Fix guc_info debugfs for VFs
+Date: Mon, 23 Jun 2025 15:03:58 +0200
+Message-ID: <20250623130707.002905832@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -68,45 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-[ Upstream commit a5b18fd769b7dc2e77a9e6a390844cbf50626ae8 ]
+[ Upstream commit dba7d17d50b4488c697e991d18a0e55669d9fa59 ]
 
-If pm_runtime_resume_and_get() fails, we should unprepare the context,
-but currently we skip that as we goto to a later line.
+The guc_info debugfs attempts to read a bunch of registers that the VFs
+doesn't have access to, so fix it by skipping the reads.
 
-Reviewed-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4775
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Michal Wajdeczko <michal.wajdeczko@intel.com>
+Cc: Lukasz Laguna <lukasz.laguna@intel.com>
+Reviewed-by: Lukasz Laguna <lukasz.laguna@intel.com>
+Link: https://lore.kernel.org/r/20250423173908.1571412-1-daniele.ceraolospurio@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/ti/cal/cal-video.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_guc.c | 44 +++++++++++++++++++------------------
+ 1 file changed, 23 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/media/platform/ti/cal/cal-video.c b/drivers/media/platform/ti/cal/cal-video.c
-index e29743ae61e27..c16754c136ca0 100644
---- a/drivers/media/platform/ti/cal/cal-video.c
-+++ b/drivers/media/platform/ti/cal/cal-video.c
-@@ -758,7 +758,7 @@ static int cal_start_streaming(struct vb2_queue *vq, unsigned int count)
+diff --git a/drivers/gpu/drm/xe/xe_guc.c b/drivers/gpu/drm/xe/xe_guc.c
+index bc5714a5b36b2..f082be4af4cff 100644
+--- a/drivers/gpu/drm/xe/xe_guc.c
++++ b/drivers/gpu/drm/xe/xe_guc.c
+@@ -1508,30 +1508,32 @@ void xe_guc_print_info(struct xe_guc *guc, struct drm_printer *p)
  
- 	ret = pm_runtime_resume_and_get(ctx->cal->dev);
- 	if (ret < 0)
--		goto error_pipeline;
-+		goto error_unprepare;
+ 	xe_uc_fw_print(&guc->fw, p);
  
- 	cal_ctx_set_dma_addr(ctx, addr);
- 	cal_ctx_start(ctx);
-@@ -775,8 +775,8 @@ static int cal_start_streaming(struct vb2_queue *vq, unsigned int count)
- error_stop:
- 	cal_ctx_stop(ctx);
- 	pm_runtime_put_sync(ctx->cal->dev);
-+error_unprepare:
- 	cal_ctx_unprepare(ctx);
+-	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	if (!fw_ref)
+-		return;
++	if (!IS_SRIOV_VF(gt_to_xe(gt))) {
++		fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++		if (!fw_ref)
++			return;
++
++		status = xe_mmio_read32(&gt->mmio, GUC_STATUS);
++
++		drm_printf(p, "\nGuC status 0x%08x:\n", status);
++		drm_printf(p, "\tBootrom status = 0x%x\n",
++			   REG_FIELD_GET(GS_BOOTROM_MASK, status));
++		drm_printf(p, "\tuKernel status = 0x%x\n",
++			   REG_FIELD_GET(GS_UKERNEL_MASK, status));
++		drm_printf(p, "\tMIA Core status = 0x%x\n",
++			   REG_FIELD_GET(GS_MIA_MASK, status));
++		drm_printf(p, "\tLog level = %d\n",
++			   xe_guc_log_get_level(&guc->log));
++
++		drm_puts(p, "\nScratch registers:\n");
++		for (i = 0; i < SOFT_SCRATCH_COUNT; i++) {
++			drm_printf(p, "\t%2d: \t0x%x\n",
++				   i, xe_mmio_read32(&gt->mmio, SOFT_SCRATCH(i)));
++		}
+ 
+-	status = xe_mmio_read32(&gt->mmio, GUC_STATUS);
 -
- error_pipeline:
- 	video_device_pipeline_stop(&ctx->vdev);
- error_release_buffers:
+-	drm_printf(p, "\nGuC status 0x%08x:\n", status);
+-	drm_printf(p, "\tBootrom status = 0x%x\n",
+-		   REG_FIELD_GET(GS_BOOTROM_MASK, status));
+-	drm_printf(p, "\tuKernel status = 0x%x\n",
+-		   REG_FIELD_GET(GS_UKERNEL_MASK, status));
+-	drm_printf(p, "\tMIA Core status = 0x%x\n",
+-		   REG_FIELD_GET(GS_MIA_MASK, status));
+-	drm_printf(p, "\tLog level = %d\n",
+-		   xe_guc_log_get_level(&guc->log));
+-
+-	drm_puts(p, "\nScratch registers:\n");
+-	for (i = 0; i < SOFT_SCRATCH_COUNT; i++) {
+-		drm_printf(p, "\t%2d: \t0x%x\n",
+-			   i, xe_mmio_read32(&gt->mmio, SOFT_SCRATCH(i)));
++		xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	}
+ 
+-	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+-
+ 	drm_puts(p, "\n");
+ 	xe_guc_ct_print(&guc->ct, p, false);
+ 
 -- 
 2.39.5
 
