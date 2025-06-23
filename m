@@ -1,160 +1,142 @@
-Return-Path: <stable+bounces-155307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9140BAE3645
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 08:51:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56381AE3752
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:48:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6545E1892C1F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 06:51:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13E517A26DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 07:47:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CC361F1906;
-	Mon, 23 Jun 2025 06:51:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Vr8wGqDU"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84881223DEA;
+	Mon, 23 Jun 2025 07:47:06 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f42.google.com (mail-ot1-f42.google.com [209.85.210.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from szxga06-in.huawei.com (szxga06-in.huawei.com [45.249.212.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10161EFFA6
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 06:51:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26BFD20298D;
+	Mon, 23 Jun 2025 07:47:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750661472; cv=none; b=R4LQgKkqi5kurHWlApe6nOlhlxeJDfJ/L4kanYZGSI1i9GoZoo7YXvIPzEQHnHf1Cu8pz1/V+ElHPQSrGMp5lDKr5jnO+mta7TgB2DwACjPAOWEgdcFY9zWybwvD58K1ItdmNdYOMg1rPsmegm8PgxwynOCP6CgpI/nsZemTjfs=
+	t=1750664826; cv=none; b=XQmajQA5wiibVPUqTu9vGauRVMbh7rmKPQ48G4Esc1IpHHEjsSu4cmj/0NnW6I/aO/czusra+s0hVPQHwyuJ17af59rUS5NzRgU1KY1Fv8fYbpzRe7WeXzZYB5q9dKjDVRWt2wU/YgDp5ghtxeg4/2jbVM+cC6LAiypnrNwxncE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750661472; c=relaxed/simple;
-	bh=lhQGL65mh+Pd502kBKUo7LWS+tonpAtFK6baX7q3Z5I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ClO9BS7v9iqM7ptJQmpX+GOFR6SA5IHD8iD9ePIMvpjbvycrqmHudpcTIajKFY+o2uamc2YIIjTeXi926KPpRZB/2raVHES5LRjHR/CEQQzVJPsgcTp+1Kk4sJ+4R3QBtbEjIODtVC8JWL9a5m2+95SuAThbiIFwTEfdzcXXzeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Vr8wGqDU; arc=none smtp.client-ip=209.85.210.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
-Received: by mail-ot1-f42.google.com with SMTP id 46e09a7af769-73a5c3e1b7aso2802713a34.3
-        for <stable@vger.kernel.org>; Sun, 22 Jun 2025 23:51:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1750661469; x=1751266269; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2XN2FIHGyxKqo7Vxe/X+1qL03gs1S2ayoffuSd1pCQs=;
-        b=Vr8wGqDUyMqeW7KaVNJRMSnLNkIHSHFe819PUVQSrtCVn5Ax8UfKWYOtEiz0oxKq/t
-         PiAsApIE06VkTof4CygWY/ZJ4lIGHMYQbKSwq8sYJHNN58WjK+PZUE9gr2A4LI6feLZk
-         nCY/PaQUkfYI1AuIGB9lEd+PWymnMHfc5H2DMwvs+ug0HII1W8/SSZQEsBeKU/SmvFjB
-         7PBTFBgccErNUUP4SY2F3MR1f87D7FEWyFmrWmgFc6+FD/riCiSZh9plC+bIJ/tNApNn
-         7wSJZNJEejjf75o633HwKkPJqxsg3zBAYuA0e7oOSGlSyRTcQ0+Td0vVPfZeeS8mWmWn
-         dKXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750661469; x=1751266269;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2XN2FIHGyxKqo7Vxe/X+1qL03gs1S2ayoffuSd1pCQs=;
-        b=HFcMCiVNGcTiUHbi1JdybqgDK6QJi/ZTYNxP2H4sgn+PHioR3WhTXgExQ8thN/5PkA
-         fNYSxLDY57BlUE4mP9go+SvDPD9zZ6YyvRoB2FAO1eyGGvv/aj6YbbgPTdxB9S8IAKEz
-         r1yeTkRiMSA3S0I97KV05o5JEDkbL+Ma/qLaT7TBIsdIXwjU9pgn9Nf0KtQ+JjBQpqoh
-         Tq14cevk+NFMX5RfnVTfcGnhuXIq6xDPb9xcEgYlNDCpaLyKtunLQ/ibdoLutxS7CU79
-         3zfQ1Wz5o5cKeRbqSSmjBYwCT+6S7b6LdnRAU+xnmVB8EE4WNMAT+fw2ctdSH7jiLbAV
-         0WjA==
-X-Gm-Message-State: AOJu0YwDazuqlGHL8ZCnJFVVJVbf6VOz1t6hYS3hI35qPn43w9Zl6uUE
-	x8Ew9Lf0PVwNWH8V2PJ0GBZL5k4DN7kx/UTq/jCkCXVuyeHvlEXnKN1sStAaHKjeY4b4rxeqwkl
-	Lsx4wDo/Nu4P2ZcadBmp5ukC0qCfWHFyT83Wrq36O5w==
-X-Gm-Gg: ASbGnctaqNA7D5OVFaTSPDP3fRKR3b+Qh3EICVyNIqmRQ5x60FddMs26JY+SPnxVF32
-	R8zjQ0ZfxALa0Cn4qgt0vi1CqtQEojgufvXOG4+gsCkP2xg23JJo8HEkX5GT9fqCYLZwoUbGpEa
-	BsvWgyyCY56prO3cEGkHUBpU1yOiVZu0ewLyAzy9QzxHnWbQ==
-X-Google-Smtp-Source: AGHT+IGOV6fpgwYZJ6XEnF4sLNCaNQGSB5sJXkVwP+WXMIFKWHOnQMzCU+ZxWDVUQTD+jKi2/yjYIRUi5SZhE5W361M=
-X-Received: by 2002:a05:6871:4385:b0:2c2:b85b:71ff with SMTP id
- 586e51a60fabf-2eeda503740mr7793669fac.8.1750661468781; Sun, 22 Jun 2025
- 23:51:08 -0700 (PDT)
+	s=arc-20240116; t=1750664826; c=relaxed/simple;
+	bh=hSJ7W6iMQ4xKe7LZ1zPyhGNnD5O5rE8E3Ff+PUcoFOs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=c+mGQJUwD3S4a7QJDRXqvoBkWE9eugOCwsKt4fpnMfgRHjPASYwSuE/r4Yx1ILxjwWXOYAwbXoZO/Al0+jgAHKCPJ5NNs8PDBV1ZyhTbLm38lZh6cX25gqo5EDpBJZuZI+F/LaWepnRZjLGB2yKrn+N8UuAeJ28Bq1qqcZP4FTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.88.163])
+	by szxga06-in.huawei.com (SkyGuard) with ESMTP id 4bQgDF0gRhz2QVJ9;
+	Mon, 23 Jun 2025 15:47:57 +0800 (CST)
+Received: from dggpemf500013.china.huawei.com (unknown [7.185.36.188])
+	by mail.maildlp.com (Postfix) with ESMTPS id 526CB18005F;
+	Mon, 23 Jun 2025 15:47:02 +0800 (CST)
+Received: from huawei.com (10.175.112.188) by dggpemf500013.china.huawei.com
+ (7.185.36.188) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 23 Jun
+ 2025 15:47:01 +0800
+From: Baokun Li <libaokun1@huawei.com>
+To: <linux-ext4@vger.kernel.org>
+CC: <tytso@mit.edu>, <jack@suse.cz>, <adilger.kernel@dilger.ca>,
+	<ojaswin@linux.ibm.com>, <linux-kernel@vger.kernel.org>,
+	<yi.zhang@huawei.com>, <yangerkun@huawei.com>, <libaokun1@huawei.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v2 09/16] ext4: fix zombie groups in average fragment size lists
+Date: Mon, 23 Jun 2025 15:32:57 +0800
+Message-ID: <20250623073304.3275702-10-libaokun1@huawei.com>
+X-Mailer: git-send-email 2.46.1
+In-Reply-To: <20250623073304.3275702-1-libaokun1@huawei.com>
+References: <20250623073304.3275702-1-libaokun1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250610092135.28738-1-cuiyunhui@bytedance.com> <20250610092135.28738-3-cuiyunhui@bytedance.com>
-In-Reply-To: <20250610092135.28738-3-cuiyunhui@bytedance.com>
-From: yunhui cui <cuiyunhui@bytedance.com>
-Date: Mon, 23 Jun 2025 14:50:57 +0800
-X-Gm-Features: AX0GCFt1d6G5MQ0HyOTZZcpXJqXia_qBDrWAurYF7bjFv7DaYN68DdS9hFxackc
-Message-ID: <CAEEQ3w=pUPEVOM4fG6wr06eOD_uO6_ZBzORaG1zhtPswD8HLNQ@mail.gmail.com>
-Subject: Re: [PATCH v9 2/4] serial: 8250_dw: fix PSLVERR on RX_TIMEOUT
-To: arnd@arndb.de, andriy.shevchenko@linux.intel.com, 
-	benjamin.larsson@genexis.eu, cuiyunhui@bytedance.com, 
-	gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com, 
-	ilpo.jarvinen@linux.intel.com, jirislaby@kernel.org, 
-	jkeeping@inmusicbrands.com, john.ogness@linutronix.de, 
-	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
-	markus.mayer@linaro.org, matt.porter@linaro.org, namcao@linutronix.de, 
-	paulmck@kernel.org, pmladek@suse.com, schnelle@linux.ibm.com, 
-	sunilvl@ventanamicro.com, tim.kryger@linaro.org
-Cc: stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
+ dggpemf500013.china.huawei.com (7.185.36.188)
 
-Hi John,
+Groups with no free blocks shouldn't be in any average fragment size list.
+However, when all blocks in a group are allocated(i.e., bb_fragments or
+bb_free is 0), we currently skip updating the average fragment size, which
+means the group isn't removed from its previous s_mb_avg_fragment_size[old]
+list.
 
+This created "zombie" groups that were always skipped during traversal as
+they couldn't satisfy any block allocation requests, negatively impacting
+traversal efficiency.
 
-On Tue, Jun 10, 2025 at 5:22=E2=80=AFPM Yunhui Cui <cuiyunhui@bytedance.com=
-> wrote:
->
-> The DW UART may trigger the RX_TIMEOUT interrupt without data
-> present and remain stuck in this state indefinitely. The
-> dw8250_handle_irq() function detects this condition by checking
-> if the UART_LSR_DR bit is not set when RX_TIMEOUT occurs. When
-> detected, it performs a "dummy read" to recover the DW UART from
-> this state.
->
-> When the PSLVERR_RESP_EN parameter is set to 1, reading the UART_RX
-> while the FIFO is enabled and UART_LSR_DR is not set will generate a
-> PSLVERR error, which may lead to a system panic. There are two methods
-> to prevent PSLVERR: one is to check if UART_LSR_DR is set before reading
-> UART_RX when the FIFO is enabled, and the other is to read UART_RX when
-> the FIFO is disabled.
->
-> Given these two scenarios, the FIFO must be disabled before the
-> "dummy read" operation and re-enabled afterward to maintain normal
-> UART functionality.
->
-> Fixes: 424d79183af0 ("serial: 8250_dw: Avoid "too much work" from bogus r=
-x timeout interrupt")
-> Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-> Cc: stable@vger.kernel.org
-> ---
->  drivers/tty/serial/8250/8250_dw.c | 10 +++++++++-
->  1 file changed, 9 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/tty/serial/8250/8250_dw.c b/drivers/tty/serial/8250/=
-8250_dw.c
-> index 1902f29444a1c..082b7fcf251db 100644
-> --- a/drivers/tty/serial/8250/8250_dw.c
-> +++ b/drivers/tty/serial/8250/8250_dw.c
-> @@ -297,9 +297,17 @@ static int dw8250_handle_irq(struct uart_port *p)
->                 uart_port_lock_irqsave(p, &flags);
->                 status =3D serial_lsr_in(up);
->
-> -               if (!(status & (UART_LSR_DR | UART_LSR_BI)))
-> +               if (!(status & (UART_LSR_DR | UART_LSR_BI))) {
-> +                       /* To avoid PSLVERR, disable the FIFO first. */
-> +                       if (up->fcr & UART_FCR_ENABLE_FIFO)
-> +                               serial_out(up, UART_FCR, 0);
-> +
->                         serial_port_in(p, UART_RX);
->
-> +                       if (up->fcr & UART_FCR_ENABLE_FIFO)
-> +                               serial_out(up, UART_FCR, up->fcr);
-> +               }
-> +
->                 uart_port_unlock_irqrestore(p, flags);
->         }
->
-> --
-> 2.39.5
->
+Therefore, when a group becomes completely free, bb_avg_fragment_size_order
+is now set to -1. If the old order was not -1, a removal operation is
+performed; if the new order is not -1, an insertion is performed.
 
-Any comments on this patch?
+Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
+CC: stable@vger.kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+---
+ fs/ext4/mballoc.c | 36 ++++++++++++++++++------------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-Thanks,
-Yunhui
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 94950b07a577..e6d6c2da3c6e 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -841,30 +841,30 @@ static void
+ mb_update_avg_fragment_size(struct super_block *sb, struct ext4_group_info *grp)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	int new_order;
++	int new, old;
+ 
+-	if (!test_opt2(sb, MB_OPTIMIZE_SCAN) || grp->bb_fragments == 0)
++	if (!test_opt2(sb, MB_OPTIMIZE_SCAN))
+ 		return;
+ 
+-	new_order = mb_avg_fragment_size_order(sb,
+-					grp->bb_free / grp->bb_fragments);
+-	if (new_order == grp->bb_avg_fragment_size_order)
++	old = grp->bb_avg_fragment_size_order;
++	new = grp->bb_fragments == 0 ? -1 :
++	      mb_avg_fragment_size_order(sb, grp->bb_free / grp->bb_fragments);
++	if (new == old)
+ 		return;
+ 
+-	if (grp->bb_avg_fragment_size_order != -1) {
+-		write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++	if (old >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[old]);
+ 		list_del(&grp->bb_avg_fragment_size_node);
+-		write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+-	}
+-	grp->bb_avg_fragment_size_order = new_order;
+-	write_lock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
+-	list_add_tail(&grp->bb_avg_fragment_size_node,
+-		&sbi->s_mb_avg_fragment_size[grp->bb_avg_fragment_size_order]);
+-	write_unlock(&sbi->s_mb_avg_fragment_size_locks[
+-					grp->bb_avg_fragment_size_order]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[old]);
++	}
++
++	grp->bb_avg_fragment_size_order = new;
++	if (new >= 0) {
++		write_lock(&sbi->s_mb_avg_fragment_size_locks[new]);
++		list_add_tail(&grp->bb_avg_fragment_size_node,
++				&sbi->s_mb_avg_fragment_size[new]);
++		write_unlock(&sbi->s_mb_avg_fragment_size_locks[new]);
++	}
+ }
+ 
+ /*
+-- 
+2.46.1
+
 
