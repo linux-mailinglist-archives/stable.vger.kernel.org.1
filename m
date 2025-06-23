@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461CFAE43ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91C7AE4285
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:21:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32CBB1897CA5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A8F771884ABA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1810224C060;
-	Mon, 23 Jun 2025 13:31:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5427F253924;
+	Mon, 23 Jun 2025 13:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P007TQcT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dabSgta9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C54DC253351;
-	Mon, 23 Jun 2025 13:31:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134C625393A;
+	Mon, 23 Jun 2025 13:18:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685485; cv=none; b=ZR4jOz7nh2CM1Iwv5Sc92HZZv+3Yty9S0mffNkuhgwnuAQuBbnumIHTjrlvvX20XdQb2lyGISi2d+JU5VJCV3gIOwcftGnzPsOjzpPSA9ECwWmodDaFHcaxMbOc+sZO5zZ9KJ11q/Ul3VgZGgvgWpVX7B0IKcpMqGFLzqtbls68=
+	t=1750684705; cv=none; b=rCoyY7PrWpb2oBfJq4r//kVR0lsdStvloW1+J+PHIHDfbneauG29fqUHOqEy3vTmEOETp1ZnvVHaOFmKsrEy3fGywVvLNanpCz7OHihLh0LGRPEtqfawGsO8ZHrpYIC3q/Y7X3xOJtNt5qEaqq9MQZUWMuapKHOYc1JaoVZTc7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685485; c=relaxed/simple;
-	bh=2vNYascTlrp662ncwH2Q+lKUW2Jnn6wexM1Ol4NCxT4=;
+	s=arc-20240116; t=1750684705; c=relaxed/simple;
+	bh=djDNtJX7wYBiyycg3iXQMl0gO21oJ4R4icFB+iPlDFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=urHxf0+vTld0wGELY9RH0CZzICQ7cMFiPw95l9kqGA9doqnkri9sevPR3hwHBPK1I7CGRGps8kUtYHK9NHngpe6FjtI1/cV0V6VuQvhJCRpL2bjmZKSkyYFdhlM9KRwDj5pHeeIGXptQB61H0x4HKCTuEOhEoMi+cBqm8dD6Gng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P007TQcT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55417C4CEEA;
-	Mon, 23 Jun 2025 13:31:25 +0000 (UTC)
+	 MIME-Version; b=I7BbtbfCe5fdqgla7Sr+81GPaNyv1+xTeKf8QlvsRPp2++SLB7RVL+cvKoO66ppVxgGMYDwUA2lU6vO7GOxwaIztktnOJII0SVv7HRwaVtFo7Axvk4gnLpv2G1wZAiv3PWSD+qLm3CDHG/v953p6OiM3TxSB8X3M8sy4mPzDgeA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dabSgta9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA4AC4CEF9;
+	Mon, 23 Jun 2025 13:18:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685485;
-	bh=2vNYascTlrp662ncwH2Q+lKUW2Jnn6wexM1Ol4NCxT4=;
+	s=korg; t=1750684704;
+	bh=djDNtJX7wYBiyycg3iXQMl0gO21oJ4R4icFB+iPlDFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P007TQcTzpF2wPfvirTgDBREuYxANALpocVdtqZDBE+0k138ZlhC7kitIMsarropx
-	 A5akFnG1dHshy8V0b/RSUX9q/2qm+ih05cwkPk6BX+qame+N4YfSBddJ8z7pmDbjxI
-	 BR8G+XauR8w4JJeEAsS+7HVC9zszgb57FkDqpP2A=
+	b=dabSgta9mrgn8djhXj23xHZv+h88TWjShVeerYf1QFhy7sPqrisat//k3vP5y5AuG
+	 Qh2+ECtz8W7gXsyGS+VisIEUMm/930v29vU6lP07QN4pxwH9DW4Eg8AKXcJRZYnvGb
+	 hzPfUSG6T9l04Xx8de8zEE5HTj0yRu4zyLO2BsoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/508] spi: sh-msiof: Fix maximum DMA transfer size
-Date: Mon, 23 Jun 2025 15:01:19 +0200
-Message-ID: <20250623130646.086432097@linuxfoundation.org>
+	syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.15 122/592] f2fs: fix to do sanity check on ino and xnid
+Date: Mon, 23 Jun 2025 15:01:20 +0200
+Message-ID: <20250623130703.171802538@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,76 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
+commit 061cf3a84bde038708eb0f1d065b31b7c2456533 upstream.
 
-The maximum amount of data to transfer in a single DMA request is
-calculated from the FIFO sizes (which is technically not 100% correct,
-but a simplification, as it is limited by the maximum word count values
-in the Transmit and Control Data Registers).  However, in case there is
-both data to transmit and to receive, the transmit limit is overwritten
-by the receive limit.
+syzbot reported a f2fs bug as below:
 
-Fix this by using the minimum applicable FIFO size instead.  Move the
-calculation outside the loop, so it is not repeated for each individual
-DMA transfer.
+INFO: task syz-executor140:5308 blocked for more than 143 seconds.
+      Not tainted 6.14.0-rc7-syzkaller-00069-g81e4f8d68c66 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor140 state:D stack:24016 pid:5308  tgid:5308  ppid:5306   task_flags:0x400140 flags:0x00000006
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5378 [inline]
+ __schedule+0x190e/0x4c90 kernel/sched/core.c:6765
+ __schedule_loop kernel/sched/core.c:6842 [inline]
+ schedule+0x14b/0x320 kernel/sched/core.c:6857
+ io_schedule+0x8d/0x110 kernel/sched/core.c:7690
+ folio_wait_bit_common+0x839/0xee0 mm/filemap.c:1317
+ __folio_lock mm/filemap.c:1664 [inline]
+ folio_lock include/linux/pagemap.h:1163 [inline]
+ __filemap_get_folio+0x147/0xb40 mm/filemap.c:1917
+ pagecache_get_page+0x2c/0x130 mm/folio-compat.c:87
+ find_get_page_flags include/linux/pagemap.h:842 [inline]
+ f2fs_grab_cache_page+0x2b/0x320 fs/f2fs/f2fs.h:2776
+ __get_node_page+0x131/0x11b0 fs/f2fs/node.c:1463
+ read_xattr_block+0xfb/0x190 fs/f2fs/xattr.c:306
+ lookup_all_xattrs fs/f2fs/xattr.c:355 [inline]
+ f2fs_getxattr+0x676/0xf70 fs/f2fs/xattr.c:533
+ __f2fs_get_acl+0x52/0x870 fs/f2fs/acl.c:179
+ f2fs_acl_create fs/f2fs/acl.c:375 [inline]
+ f2fs_init_acl+0xd7/0x9b0 fs/f2fs/acl.c:418
+ f2fs_init_inode_metadata+0xa0f/0x1050 fs/f2fs/dir.c:539
+ f2fs_add_inline_entry+0x448/0x860 fs/f2fs/inline.c:666
+ f2fs_add_dentry+0xba/0x1e0 fs/f2fs/dir.c:765
+ f2fs_do_add_link+0x28c/0x3a0 fs/f2fs/dir.c:808
+ f2fs_add_link fs/f2fs/f2fs.h:3616 [inline]
+ f2fs_mknod+0x2e8/0x5b0 fs/f2fs/namei.c:766
+ vfs_mknod+0x36d/0x3b0 fs/namei.c:4191
+ unix_bind_bsd net/unix/af_unix.c:1286 [inline]
+ unix_bind+0x563/0xe30 net/unix/af_unix.c:1379
+ __sys_bind_socket net/socket.c:1817 [inline]
+ __sys_bind+0x1e4/0x290 net/socket.c:1848
+ __do_sys_bind net/socket.c:1853 [inline]
+ __se_sys_bind net/socket.c:1851 [inline]
+ __x64_sys_bind+0x7a/0x90 net/socket.c:1851
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
-no real impact.
+Let's dump and check metadata of corrupted inode, it shows its xattr_nid
+is the same to its i_ino.
 
-Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+dump.f2fs -i 3 chaseyu.img.raw
+i_xattr_nid                             [0x       3 : 3]
+
+So that, during mknod in the corrupted directory, it tries to get and
+lock inode page twice, result in deadlock.
+
+- f2fs_mknod
+ - f2fs_add_inline_entry
+  - f2fs_get_inode_page --- lock dir's inode page
+   - f2fs_init_acl
+    - f2fs_acl_create(dir,..)
+     - __f2fs_get_acl
+      - f2fs_getxattr
+       - lookup_all_xattrs
+        - __get_node_page --- try to lock dir's inode page
+
+In order to fix this, let's add sanity check on ino and xnid.
+
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/67e06150.050a0220.21942d.0005.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-sh-msiof.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/f2fs/inode.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index ec3a4939ee984..374697b2d6061 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -919,6 +919,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	void *rx_buf = t->rx_buf;
- 	unsigned int len = t->len;
- 	unsigned int bits = t->bits_per_word;
-+	unsigned int max_wdlen = 256;
- 	unsigned int bytes_per_word;
- 	unsigned int words;
- 	int n;
-@@ -932,17 +933,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	if (!spi_controller_is_slave(p->ctlr))
- 		sh_msiof_spi_set_clk_regs(p, t);
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -286,6 +286,12 @@ static bool sanity_check_inode(struct in
+ 		return false;
+ 	}
  
-+	if (tx_buf)
-+		max_wdlen = min(max_wdlen, p->tx_fifo_size);
-+	if (rx_buf)
-+		max_wdlen = min(max_wdlen, p->rx_fifo_size);
++	if (ino_of_node(node_page) == fi->i_xattr_nid) {
++		f2fs_warn(sbi, "%s: corrupted inode i_ino=%lx, xnid=%x, run fsck to fix.",
++			  __func__, inode->i_ino, fi->i_xattr_nid);
++		return false;
++	}
 +
- 	while (ctlr->dma_tx && len > 15) {
- 		/*
- 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
- 		 *  words, with byte resp. word swapping.
- 		 */
--		unsigned int l = 0;
--
--		if (tx_buf)
--			l = min(round_down(len, 4), p->tx_fifo_size * 4);
--		if (rx_buf)
--			l = min(round_down(len, 4), p->rx_fifo_size * 4);
-+		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
- 
- 		if (bits <= 8) {
- 			copy32 = copy_bswap32;
--- 
-2.39.5
-
+ 	if (f2fs_has_extra_attr(inode)) {
+ 		if (!f2fs_sb_has_extra_attr(sbi)) {
+ 			f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
 
 
 
