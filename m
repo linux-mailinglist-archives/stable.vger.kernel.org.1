@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-156764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60593AE5108
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE81AE54D8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E75D77AB813
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1813B1BC21E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230E321A433;
-	Mon, 23 Jun 2025 21:30:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ED6222576;
+	Mon, 23 Jun 2025 22:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2gLvZGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiFPTDS1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B1544C77;
-	Mon, 23 Jun 2025 21:30:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C2B19049B;
+	Mon, 23 Jun 2025 22:05:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714208; cv=none; b=pN/Y7bAAKI0lDPPCLa08kVrurTBgYMaBVUUA7116jNt//RrDJVelWKUMPR9PrNhMBtS6759aUtY6PSGSu8atq0A2inxoRY1iVgt4bFQZmoLLpEa4ucnH1L1EgZTSWk5O11xiKxJOtRSGd9H0twr7f3buWviYrHPz58BZeNsSdQ8=
+	t=1750716309; cv=none; b=FDFs3w30rbZsUdtn4xYZPhyBgwV9wF08qw6eYvCO5sUP+7k3shgR941GP/hMjCEFrAKUTbUWs6NIW+whCGW0GnZVcUyHMm+2+26uH60I/ZKl25a4mZxKRY+ddeLAgikZPawsXVu/uon8Xes4PB2PsDs2h//mI/UFjBcEwX3IaT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714208; c=relaxed/simple;
-	bh=c9DJiNpzdc4bkPEdmk93HJZmKUdJ1aiCGEvEDn9JWwE=;
+	s=arc-20240116; t=1750716309; c=relaxed/simple;
+	bh=2xYohnZv0S2BG9OUEXS2t1e4z9HMQsIQ7/HPI75UpTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jkDTxxEugYXQkzBmlX1pGs8CG4RfZ45K26g3jkotC1xn6bL3xlBFluTQxIVW7fiO1kqVAVWZkNNi5WBWxF8A3wkuAUKWAfF24oS9uczXljr7dJvCxvU2x+/T6wJt4cmSN3sASe3KnuHxUbliNKTuDNzxiqcdqDnGuNMMAVb18XU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2gLvZGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 665A9C4CEEA;
-	Mon, 23 Jun 2025 21:30:08 +0000 (UTC)
+	 MIME-Version; b=IfuIp1qTZGvFOcqzBenTUIlKd89LYx/W6Xq4NiGWBNoO9QpMD5tZ+sup7Zz4skRF7geN0sC3X0oRU3gxmtfX39uweMV0VRLUqzORbD3Ix2EMiZvTMpca3Bm78bIr46IaQEbXaPcSvqGoIusrGyVvvfTC3nR2IOuwPXBmAXrfocs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiFPTDS1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CB2C4CEEA;
+	Mon, 23 Jun 2025 22:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714208;
-	bh=c9DJiNpzdc4bkPEdmk93HJZmKUdJ1aiCGEvEDn9JWwE=;
+	s=korg; t=1750716309;
+	bh=2xYohnZv0S2BG9OUEXS2t1e4z9HMQsIQ7/HPI75UpTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2gLvZGfsmxlGIoMr1l1BKX8Fed/aMS3dabotSnh1AB2srWjQmM4KEBmGZCxKMfu+
-	 edjYbBOKK6jn/UObJMXze4sg3xkY7gX0Jgn7/xVOrzJMVsyfy67RU2mRXq8SpnBxw8
-	 6E8iCUjdYALQ+soZ2zxsi5SH0tK2Al9d0sTzX2hM=
+	b=EiFPTDS1sAQrO1kEqueKw4h/A4Xw1TOkVKBOT7D3qxq1tg0J4B7kNs+aYpPp8Msrg
+	 1RZV+qBtJeM5iTEOxhV+KyUDpS4CsPrbSiB+0gYkk413loBZPj9zwGJWuHS72Rulb0
+	 S45IogSis3VIhAiZb/UV3EKJ84YnX+ujN1u9xz50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Alexander Aring <aahringo@redhat.com>
-Subject: [PATCH 5.15 194/411] gfs2: move msleep to sleepable context
-Date: Mon, 23 Jun 2025 15:05:38 +0200
-Message-ID: <20250623130638.561837264@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 294/508] io_uring: account drain memory to cgroup
+Date: Mon, 23 Jun 2025 15:05:39 +0200
+Message-ID: <20250623130652.516075126@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit ac5ee087d31ed93b6e45d2968a66828c6f621d8c upstream.
+commit f979c20547e72568e3c793bc92c7522bc3166246 upstream.
 
-This patch moves the msleep_interruptible() out of the non-sleepable
-context by moving the ls->ls_recover_spin spinlock around so
-msleep_interruptible() will be called in a sleepable context.
+Account drain allocations against memcg. It's not a big problem as each
+such allocation is paired with a request, which is accounted, but it's
+nicer to follow the limits more closely.
 
-Cc: stable@vger.kernel.org
-Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
-Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/f8dfdbd755c41fd9c75d12b858af07dfba5bbb68.1746788718.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/lock_dlm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -942,14 +942,15 @@ locks_done:
- 		if (sdp->sd_args.ar_spectator) {
- 			fs_info(sdp, "Recovery is required. Waiting for a "
- 				"non-spectator to mount.\n");
-+			spin_unlock(&ls->ls_recover_spin);
- 			msleep_interruptible(1000);
- 		} else {
- 			fs_info(sdp, "control_mount wait1 block %u start %u "
- 				"mount %u lvb %u flags %lx\n", block_gen,
- 				start_gen, mount_gen, lvb_gen,
- 				ls->ls_recover_flags);
-+			spin_unlock(&ls->ls_recover_spin);
- 		}
--		spin_unlock(&ls->ls_recover_spin);
- 		goto restart;
- 	}
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1654,7 +1654,7 @@ queue:
+ 	spin_unlock(&ctx->completion_lock);
  
+ 	io_prep_async_link(req);
+-	de = kmalloc(sizeof(*de), GFP_KERNEL);
++	de = kmalloc(sizeof(*de), GFP_KERNEL_ACCOUNT);
+ 	if (!de) {
+ 		ret = -ENOMEM;
+ 		io_req_complete_failed(req, ret);
 
 
 
