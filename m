@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 401D7AE5401
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5972AE54A2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 471421BC0043
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EF4447F26
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 807DA1FECBA;
-	Mon, 23 Jun 2025 21:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4041B221543;
+	Mon, 23 Jun 2025 22:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RgYdTFpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asOzydUo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C7F41E5206;
-	Mon, 23 Jun 2025 21:58:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13103FB1B;
+	Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715900; cv=none; b=dd3cFrHravYWwpKqcdjU6VsQqQVXLU/B+zq31Gn1SVOiAZwy7lKdvtiQQRYm/mHNEBF6Qeuh4LshAIY4KuAidpuC8TQ+NZ4Z6nbR0ZORfNK8qZptLqJmOoXz3B1g2ec+048jzCd992ck/rU9kQL2WS7WeLVq2JK8ehidVTcIi/Y=
+	t=1750716201; cv=none; b=WWjCAkmoeX5ccBt11MBInwrbJDt+iMqkKKYgdOC5Mk3AOhYCXFYpYKC/pJqapcpSDfL/zxUcIfwgCUtolZ4M1zminrfGeAxxtnHN2kFaNzG0VblL7x2bFdagkmbMPfQDQdEMSL9NygC5JiY7gMcUNsP4zzh2O+H3P1mg85u1sO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715900; c=relaxed/simple;
-	bh=HLZ2W1wO1P9EZV0nCUvPZm8dwJqmDqyFejq55Yw/k2Y=;
+	s=arc-20240116; t=1750716201; c=relaxed/simple;
+	bh=eu0QKKpzEzV8IoYkraRC9xVozvtltxbeEoG5LdJRi+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ow28e3jMkajgc5wWRz/i6GU74vfMlUjoV2PKAaOMQIjfgiiKocWnWozQJLlL7mRpWl7Z7a2ypHPmNbnwF824rb0U3YWBOoOU3cg0rrtCpRRrh7x5EuXwy/AgFR1DODlR+XYQNsWR6bTaWpc2aC8vUURqKewClhk5+YcfJlkFHIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RgYdTFpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA5CCC4CEEA;
-	Mon, 23 Jun 2025 21:58:19 +0000 (UTC)
+	 MIME-Version; b=T3SX25msmptZDh/f5q8PP5xgzI1luMyRa37MHelQLPH9NNnjD3SrcObjf4KynADVKS0fsLjdIWF8lMDr2ctXTx0ojbFhwEh0WbJrsCbICXYhRpRkVFQrgf8ToaxoXRW/X+xFT4PgpWsQAbS3+NwwMdVOEV+8QrqAOYkg74ifr1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asOzydUo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890B3C4CEEA;
+	Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715900;
-	bh=HLZ2W1wO1P9EZV0nCUvPZm8dwJqmDqyFejq55Yw/k2Y=;
+	s=korg; t=1750716200;
+	bh=eu0QKKpzEzV8IoYkraRC9xVozvtltxbeEoG5LdJRi+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RgYdTFpwGy+WZKR+iXI92ilii405nSm0p3vMQ/5LlYD3U659vl1jDm/7lqyDEfdC9
-	 iWwDSwsYK+IqsR5+qTyn8Z3JQJNmhduAjNBBBhynROYwZK0E825oSOplcXabM8roTc
-	 zQENeS8kWcxnvjr8RwJRPW7dYg+t139nLrHVRBnE=
+	b=asOzydUokwYFXT9tWGnqdGMp0i896sNavQ0JA4kuO+YZeF9g+byFW3LCgm1l54UyC
+	 hLlqjJH3q8o5Zy9H/R1Ml1IIzR4MhcL2CWsSPWBYNyqCA0PMY9mXYdZcM1d8hl+dXU
+	 G2Z1rqNBK2bpae79JGd2ksC7M6Qf2qzcsk081WFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.10 329/355] arm64: errata: Add newer ARM cores to the spectre_bhb_loop_affected() lists
+	reox <mailinglist@reox.at>,
+	Avadhut Naik <avadhut.naik@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	stable@kernel.org
+Subject: [PATCH 6.6 269/290] EDAC/amd64: Correct number of UMCs for family 19h models 70h-7fh
 Date: Mon, 23 Jun 2025 15:08:50 +0200
-Message-ID: <20250623130636.638691483@linuxfoundation.org>
+Message-ID: <20250623130635.009294286@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Douglas Anderson <dianders@chromium.org>
+From: Avadhut Naik <avadhut.naik@amd.com>
 
-[ Upstream commit a5951389e58d2e816eed3dbec5877de9327fd881 ]
+commit b2e673ae53ef4b943f68585207a5f21cfc9a0714 upstream.
 
-When comparing to the ARM list [1], it appears that several ARM cores
-were missing from the lists in spectre_bhb_loop_affected(). Add them.
+AMD's Family 19h-based Models 70h-7fh support 4 unified memory controllers
+(UMC) per processor die.
 
-NOTE: for some of these cores it may not matter since other ways of
-clearing the BHB may be used (like the CLRBHB instruction or ECBHB),
-but it still seems good to have all the info from ARM's whitepaper
-included.
+The amd64_edac driver, however, assumes only 2 UMCs are supported since
+max_mcs variable for the models has not been explicitly set to 4. The same
+results in incomplete or incorrect memory information being logged to dmesg by
+the module during initialization in some instances.
 
-[1] https://developer.arm.com/Arm%20Security%20Center/Spectre-BHB
-
-Fixes: 558c303c9734 ("arm64: Mitigate spectre style branch history side channels")
-Cc: stable@vger.kernel.org
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: James Morse <james.morse@arm.com>
-Link: https://lore.kernel.org/r/20250107120555.v4.5.I4a9a527e03f663040721c5401c41de587d015c82@changeid
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Fixes: 6c79e42169fe ("EDAC/amd64: Add support for ECC on family 19h model 60h-7Fh")
+Closes: https://lore.kernel.org/all/27dc093f-ce27-4c71-9e81-786150a040b6@reox.at/
+Reported-by: reox <mailinglist@reox.at>
+Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250613005233.2330627-1-avadhut.naik@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kernel/proton-pack.c |   15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/edac/amd64_edac.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -884,6 +884,14 @@ static u8 spectre_bhb_loop_affected(void
- {
- 	u8 k = 0;
- 
-+	static const struct midr_range spectre_bhb_k132_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X3),
-+		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_V2),
-+	};
-+	static const struct midr_range spectre_bhb_k38_list[] = {
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A715),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A720),
-+	};
- 	static const struct midr_range spectre_bhb_k32_list[] = {
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
-@@ -897,6 +905,7 @@ static u8 spectre_bhb_loop_affected(void
- 	};
- 	static const struct midr_range spectre_bhb_k24_list[] = {
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_A76AE),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A77),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N1),
- 		MIDR_ALL_VERSIONS(MIDR_QCOM_KRYO_4XX_GOLD),
-@@ -912,7 +921,11 @@ static u8 spectre_bhb_loop_affected(void
- 		{},
- 	};
- 
--	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
-+	if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k132_list))
-+		k = 132;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k38_list))
-+		k = 38;
-+	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k32_list))
- 		k = 32;
- 	else if (is_midr_in_range_list(read_cpuid_id(), spectre_bhb_k24_list))
- 		k = 24;
+--- a/drivers/edac/amd64_edac.c
++++ b/drivers/edac/amd64_edac.c
+@@ -4130,6 +4130,7 @@ static int per_family_init(struct amd64_
+ 			break;
+ 		case 0x70 ... 0x7f:
+ 			pvt->ctl_name			= "F19h_M70h";
++			pvt->max_mcs			= 4;
+ 			pvt->flags.zn_regs_v2		= 1;
+ 			break;
+ 		case 0xa0 ... 0xaf:
 
 
 
