@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-155617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1F5AE42DE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88F93AE44DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42A62189EF07
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBF4416BFAA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F55F254869;
-	Mon, 23 Jun 2025 13:21:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8FC238C19;
+	Mon, 23 Jun 2025 13:40:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nexKXbhB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgCAGLFP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDB4253B47;
-	Mon, 23 Jun 2025 13:21:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E854B347DD;
+	Mon, 23 Jun 2025 13:40:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684897; cv=none; b=pr+/nFWkMx9eB5juiTbNbtXHtNvTEaLfOQkCDphLoFtmtvmQX45g18RSa/FzWASUYUBjm77qC0fPNY8pFlU/m4ICtu8ANt6PJNX2gIa7UyaSSaa8Dih1UFpkTJDledAxiFjvkaMK+cNnNLurLcwuXQmf5HM/hlwSKFbeTIeD5QU=
+	t=1750686043; cv=none; b=HCH4Fhdm+kTff6+JL5EPiiFxtZI8iqZ4s5KM+M+qYCV8BXLI7uG2myKQYo7YP8TCqH442kOG5C+6X6VTa1rOqOpvqAlb/WYgS16j0D3PInl+mtiCQ5lly1yM59+Rl6tIWSSxidklrC669EsypKAC4FLdncoVxpAKHSmdu5NpCc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684897; c=relaxed/simple;
-	bh=ukGayRdj0enmx+UFFXdsd/JY5w6/uVfZf8veEDx+3mU=;
+	s=arc-20240116; t=1750686043; c=relaxed/simple;
+	bh=WknJks64u5+257tj33r3kuT8C6tnansvb0WCtqEM3SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OCH+pZChj0MD06itxHSgNDmLg+hOxY5LvEkms90tE7ctrn42rZpyBP6M78p559B0kRCoNI9gStZ42ZP/j6J9P8etGqKGp309pksnSKkLTrbOLVqQtTHP80AxRkrc/cJn+A8LpOCPrfYOM4zfZuUDwneU9K179RMx8bi3O2EniDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nexKXbhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757D7C4CEEA;
-	Mon, 23 Jun 2025 13:21:36 +0000 (UTC)
+	 MIME-Version; b=b433+gMxs7l10dB5Ckyg/Ya0ZliB9Oezd3Iccv9uLn/U+xje8ZROCh+pyOl5Ubnc+uUsQ9mvDGrI/EOBX+86TfOc0Epx63a2aNf+0mCiMl3KQo58MAm/UrIdpXnRfaz7CKi39Fnje//HujRkQYZYkloweRy77dDFMf6bE0a5fgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgCAGLFP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3FAC4CEF0;
+	Mon, 23 Jun 2025 13:40:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684896;
-	bh=ukGayRdj0enmx+UFFXdsd/JY5w6/uVfZf8veEDx+3mU=;
+	s=korg; t=1750686042;
+	bh=WknJks64u5+257tj33r3kuT8C6tnansvb0WCtqEM3SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nexKXbhBOMGw5ONCczOqkeTrNJ47oHjV0x+wMIe4dtowkDKCwjvOefnX5iEOnbvwM
-	 Hhxsi5yO3Bmf2rMEnSwCocrxtsR2RSJKL6phXd8RlxBme0528Fd9k1XSIeKL1ry/A4
-	 ITTUEOD8iHfUydvKzZlc6JjKyQAl+Ig7VkGqOCKM=
+	b=wgCAGLFPG7ULwkVZEOd+5IBX2MCBOQC4l88W3yDDNrKacBPwXLqhQI9nJ69y+2Ezc
+	 TXEYJqHgjpkHusY4Aj9U8vwH89hBFwOYN3sFoRGklX9KekqC9nQqa1iK47wpkEZNFr
+	 uE4Yw1AEJxEAQ84I19qa0q9YA8kQ1wPH94Maf8Yw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.10 008/355] thunderbolt: Do not double dequeue a configuration request
+	Michal Luczaj <mhal@rbox.co>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 065/411] bpf, sockmap: Avoid using sk_socket after free when sending
 Date: Mon, 23 Jun 2025 15:03:29 +0200
-Message-ID: <20250623130626.990118838@linuxfoundation.org>
+Message-ID: <20250623130634.952378026@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +64,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
+[ Upstream commit 8259eb0e06d8f64c700f5fbdb28a5c18e10de291 ]
 
-Some of our devices crash in tb_cfg_request_dequeue():
+The sk->sk_socket is not locked or referenced in backlog thread, and
+during the call to skb_send_sock(), there is a race condition with
+the release of sk_socket. All types of sockets(tcp/udp/unix/vsock)
+will be affected.
 
- general protection fault, probably for non-canonical address 0xdead000000000122
+Race conditions:
+'''
+CPU0                               CPU1
 
- CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
- RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
- Call Trace:
+backlog::skb_send_sock
+  sendmsg_unlocked
+    sock_sendmsg
+      sock_sendmsg_nosec
+                                   close(fd):
+                                     ...
+                                     ops->release() -> sock_map_close()
+                                     sk_socket->ops = NULL
+                                     free(socket)
+      sock->ops->sendmsg
+            ^
+            panic here
+'''
+
+The ref of psock become 0 after sock_map_close() executed.
+'''
+void sock_map_close()
+{
+    ...
+    if (likely(psock)) {
+    ...
+    // !! here we remove psock and the ref of psock become 0
+    sock_map_remove_links(sk, psock)
+    psock = sk_psock_get(sk);
+    if (unlikely(!psock))
+        goto no_psock; <=== Control jumps here via goto
+        ...
+        cancel_delayed_work_sync(&psock->work); <=== not executed
+        sk_psock_put(sk, psock);
+        ...
+}
+'''
+
+Based on the fact that we already wait for the workqueue to finish in
+sock_map_close() if psock is held, we simply increase the psock
+reference count to avoid race conditions.
+
+With this patch, if the backlog thread is running, sock_map_close() will
+wait for the backlog thread to complete and cancel all pending work.
+
+If no backlog running, any pending work that hasn't started by then will
+fail when invoked by sk_psock_get(), as the psock reference count have
+been zeroed, and sk_psock_drop() will cancel all jobs via
+cancel_delayed_work_sync().
+
+In summary, we require synchronization to coordinate the backlog thread
+and close() thread.
+
+The panic I catched:
+'''
+Workqueue: events sk_psock_backlog
+RIP: 0010:sock_sendmsg+0x21d/0x440
+RAX: 0000000000000000 RBX: ffffc9000521fad8 RCX: 0000000000000001
+...
+Call Trace:
  <TASK>
- ? tb_cfg_request_dequeue+0x2d/0xa0
- tb_cfg_request_work+0x33/0x80
- worker_thread+0x386/0x8f0
- kthread+0xed/0x110
- ret_from_fork+0x38/0x50
- ret_from_fork_asm+0x1b/0x30
+ ? die_addr+0x40/0xa0
+ ? exc_general_protection+0x14c/0x230
+ ? asm_exc_general_protection+0x26/0x30
+ ? sock_sendmsg+0x21d/0x440
+ ? sock_sendmsg+0x3e0/0x440
+ ? __pfx_sock_sendmsg+0x10/0x10
+ __skb_send_sock+0x543/0xb70
+ sk_psock_backlog+0x247/0xb80
+...
+'''
 
-The circumstances are unclear, however, the theory is that
-tb_cfg_request_work() can be scheduled twice for a request:
-first time via frame.callback from ring_work() and second
-time from tb_cfg_request().  Both times kworkers will execute
-tb_cfg_request_dequeue(), which results in double list_del()
-from the ctl->request_queue (the list poison deference hints
-at it: 0xdead000000000122).
-
-Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
-bit set.
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4b4647add7d3 ("sock_map: avoid race between sock_map_close and sk_psock_put")
+Reported-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Reviewed-by: John Fastabend <john.fastabend@gmail.com>
+Link: https://lore.kernel.org/r/20250516141713.291150-1-jiayuan.chen@linux.dev
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thunderbolt/ctl.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/core/skmsg.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/thunderbolt/ctl.c
-+++ b/drivers/thunderbolt/ctl.c
-@@ -131,6 +131,11 @@ static void tb_cfg_request_dequeue(struc
- 	struct tb_ctl *ctl = req->ctl;
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index f4186d4980b92..8a0a23079d902 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -638,6 +638,13 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	bool ingress;
+ 	int ret;
  
- 	mutex_lock(&ctl->request_queue_lock);
-+	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
-+		mutex_unlock(&ctl->request_queue_lock);
++	/* Increment the psock refcnt to synchronize with close(fd) path in
++	 * sock_map_close(), ensuring we wait for backlog thread completion
++	 * before sk_socket freed. If refcnt increment fails, it indicates
++	 * sock_map_close() completed with sk_socket potentially already freed.
++	 */
++	if (!sk_psock_get(psock->sk))
 +		return;
-+	}
-+
- 	list_del(&req->list);
- 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
- 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
+ 	mutex_lock(&psock->work_mutex);
+ 	while ((skb = skb_peek(&psock->ingress_skb))) {
+ 		len = skb->len;
+@@ -691,6 +698,7 @@ static void sk_psock_backlog(struct work_struct *work)
+ 	}
+ end:
+ 	mutex_unlock(&psock->work_mutex);
++	sk_psock_put(psock->sk, psock);
+ }
+ 
+ struct sk_psock *sk_psock_init(struct sock *sk, int node)
+-- 
+2.39.5
+
 
 
 
