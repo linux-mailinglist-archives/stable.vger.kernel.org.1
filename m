@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155950-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A624BAE44B3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1451AAE4465
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9480A444E6C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 198B1189CA36
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D6A256C83;
-	Mon, 23 Jun 2025 13:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B98192571DC;
+	Mon, 23 Jun 2025 13:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwnBxrIV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQiSjzhH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7554324DCFD;
-	Mon, 23 Jun 2025 13:35:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791522571C7;
+	Mon, 23 Jun 2025 13:36:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685755; cv=none; b=WA8L7Ydj2T1gZIzlBGv029Rl4+IOG0zWK81wJQ4wGdJw7hlepSMvskSpzJr3G+OEF9aNShG3LPDyu3kij0HUAoc9ihiLkYky8o9bFRhAdJjR+x2zhXkVYxDRRZ7V90w8HBkOEfffcoxsh+nF3lCaLIxrfCFKd32676wKJMoAMYM=
+	t=1750685779; cv=none; b=Ltd5RnPJtZY/m+hf9h3AbPQ2UBxMTW1BDs2hlNmYbpH3rk+ySo/6/ENmRtQWbh34UqziySAzeqvcCmRcMp7zUShUfqUJlKZ23V3TJ3SiTniSJ+aOouzro9Fqm4bWNeXmWn0coJu6FVa4yaXmzx96Ig7Edn3vLvqYGIfgRzCHOfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685755; c=relaxed/simple;
-	bh=LJYoa++gsuQw0NmD6/aHhzSKLXx8IK6ikfbxcgBDGmc=;
+	s=arc-20240116; t=1750685779; c=relaxed/simple;
+	bh=y54MY31lJJrf4MWyDIgqb68yhj+IGeSRkpZJb3+WSrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjXY6ctCFBDf7Ntn9MQ+FqdUVGH/lv4585BSs2L+dkvePxKyzjhoMzHpq4GIlQgNnzvztId7EbhGOLubDyCXO06xd+nLjLCGdWhTdtZ9aMyIKNnrqygWazJbUFAc376Fb0yTcSIJuiGqIp2Evqh0OwplcFuxg7tZEvH70yw+HAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwnBxrIV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05DEC4CEEA;
-	Mon, 23 Jun 2025 13:35:54 +0000 (UTC)
+	 MIME-Version; b=DzXt4b9zKf378L77f+nKk1LpLbsbGBQ17t0v0/+bBLkkOcJHsz57bob2qOjOcKgmWe/CXdJ6Z45OW7sVn2FrNC/M9B07eK9+V8gMyClhlP3Tfy0n3UqeIHAZbVbgsHFQdawON58kb6pEaSFZrusxcCDyUSCcxp+gnSWkVk3qxtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQiSjzhH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CB0C4CEEA;
+	Mon, 23 Jun 2025 13:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685755;
-	bh=LJYoa++gsuQw0NmD6/aHhzSKLXx8IK6ikfbxcgBDGmc=;
+	s=korg; t=1750685779;
+	bh=y54MY31lJJrf4MWyDIgqb68yhj+IGeSRkpZJb3+WSrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwnBxrIV8uckCKiauoKYxMS5EYR0KmT3GIkwFeAY4LI8rZlgc0mrEaK0Sf8bWIVsi
-	 tGyD0LIvMdGnn1BGLOB78E9hGPiwQ46dSCUfFdSD2jgTHnd+H2fkXtRevE8GHBBjWf
-	 aZUoBUdHfVnUs6gMp3N1ON98hvt3AlhIEJlM3Ork=
+	b=SQiSjzhHwZP9B7lxgwbBONHxBVhE8K9eN9+tqHmRV9nTILOzjGH57YFEf07f92zuZ
+	 YSjKY/aqon8giZ4TW6bJ3c+b2r1yYmETxrSZTVO+GiP6URrt2a09Kv4j+068KIg/Ia
+	 8nBxmmNYbamG2BPlgtXzEg1K0EXRXq7UGOjb5CVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Marheine <pmarheine@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 140/222] ACPI: battery: negate current when discharging
-Date: Mon, 23 Jun 2025 15:07:55 +0200
-Message-ID: <20250623130616.302223882@linuxfoundation.org>
+Subject: [PATCH 5.4 141/222] drm/amdgpu/gfx6: fix CSIB handling
+Date: Mon, 23 Jun 2025 15:07:56 +0200
+Message-ID: <20250623130616.330663363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,61 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Marheine <pmarheine@chromium.org>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+[ Upstream commit 8307ebc15c1ea98a8a0b7837af1faa6c01514577 ]
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
-
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index cf853e985d6d9..a5e120eca7f33 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -266,10 +266,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
-+
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+index 7f0a63628c43a..eac329fe27902 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+@@ -2901,8 +2901,6 @@ static void gfx_v6_0_get_csb_buffer(struct amdgpu_device *adev,
+ 				buffer[count++] = cpu_to_le32(ext->reg_index - 0xa000);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.39.5
 
