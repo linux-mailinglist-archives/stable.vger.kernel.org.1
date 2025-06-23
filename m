@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4045DAE41AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:09:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74966AE444D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62C083A5E2E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:09:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4D3A13B6105
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E99251792;
-	Mon, 23 Jun 2025 13:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C078255E2F;
+	Mon, 23 Jun 2025 13:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3taF5Li"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M/k+pHGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A8E2512F1;
-	Mon, 23 Jun 2025 13:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9182F24;
+	Mon, 23 Jun 2025 13:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684176; cv=none; b=ttr7tPG0w0/CVEZNVdiMAm8TIhYBOlXn8hrEp6kSdnuK8TzSYxWI8Tswg2T0sgAERZcpN583dWkflYZVz1XU9hOIGG9R0NfpXqDzvnugg5c8ytODd23/YwfrsTWcE0xWBcK9ZD6u+yiaO9KN5lxFjx4wzbj6pHS7eR/fwkp+EuY=
+	t=1750685588; cv=none; b=rR4C6yQmedoZG4XNlwIEtQbCU/w5yvmbnWx8S92h7SuEBfe8kDzpMH5Ue7ZL2zJnmO9VMvpZ5Cf+0mQjw/WKfGevoutm024WgxU2ZG5ZwSYqbyIA4BW9mEan8EAWAe5zCqw6KTCHxPjWQSb9j72yziYuWR3FwfDqBRD0nRgANNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684176; c=relaxed/simple;
-	bh=5LNitT7uTvJIghn8cMCpoKfx5bWoc5a8vHq+N2A38B4=;
+	s=arc-20240116; t=1750685588; c=relaxed/simple;
+	bh=5BvW2IopkqCdqc10UhTARxn9uFoqDy+IfddEQDF/vU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3GQY7/H3qcs83HToPwcsHyIVX6ut9j7O4RoG0fVf/PcvcICtka/qTndjmOehW6N6Ma2isZqObxiUiudvlnDD+TeHfT0/z0Tm0CsBcmEjoXJUoTybINuvRyqA6FxaqzHFE5ZD+y2lVxAk8XvmpT4VYBEqBv9twefQMBWI1xsxwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3taF5Li; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ED4C4CEEA;
-	Mon, 23 Jun 2025 13:09:35 +0000 (UTC)
+	 MIME-Version; b=MvolkICVc6XWoglJJ3Zxe4g4poXqqhbr0GgCAIXrnqWQoRBuzojVDZLD1KdUbIOo6irsuukz4xqeB3Ss0ziXp6obYaiaTIxVJxneIXaxW70Z452Fg7iBJciIHo4HMDNvnovgV7fD9OF0SVjOABmEbBLCGChr5i5MNSFgA9B/CAE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M/k+pHGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68041C4CEEA;
+	Mon, 23 Jun 2025 13:33:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684176;
-	bh=5LNitT7uTvJIghn8cMCpoKfx5bWoc5a8vHq+N2A38B4=;
+	s=korg; t=1750685587;
+	bh=5BvW2IopkqCdqc10UhTARxn9uFoqDy+IfddEQDF/vU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D3taF5LiVS4QqsmT8ZYkBH+avXg6bhqoozNU7EvK/BvCzvinniNCewAl9+HUSo+y+
-	 ByDRWlAgHR0L6Km4u2Q+kdj9nCNrUjXJacuu1n6abI/fa0u0caEDJvpRt2Wr0ySTQq
-	 iR+B8LGM1F5oPvzLwuTLLA9s4JuLa8nYx2xfl3fs=
+	b=M/k+pHGdhpHmlNFcUMXUx1ccCnxgKb8NMJThjZOPAzlXQU1Krhe53/YcdkfMHa37q
+	 icn57HH8VijrFe3EurtZ3i9+to7ul8hMRjiyWnZxg7mgriuh6E0oD2xNDR9CPvkgsh
+	 o0/7tNeWCzoKXepASCofd3mmNQgeVap6rwuLvAQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Becker <jlbec@evilplan.org>,
-	Breno Leitao <leitao@debian.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH 6.6 001/290] configfs: Do not override creating attribute file failure in populate_attrs()
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 061/355] ARM: dts: at91: at91sam9263: fix NAND chip selects
 Date: Mon, 23 Jun 2025 15:04:22 +0200
-Message-ID: <20250623130626.966214997@linuxfoundation.org>
+Message-ID: <20250623130628.661350455@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit f830edbae247b89228c3e09294151b21e0dc849c upstream.
+[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
 
-populate_attrs() may override failure for creating attribute files
-by success for creating subsequent bin attribute files, and have
-wrong return value.
+NAND did not work on my USB-A9263. I discovered that the offending
+commit converted the PIO bank for chip selects wrongly, so all A9263
+boards need to be fixed.
 
-Fix by creating bin attribute files under successfully creating
-attribute files.
-
-Fixes: 03607ace807b ("configfs: implement binary attributes")
-Cc: stable@vger.kernel.org
-Reviewed-by: Joel Becker <jlbec@evilplan.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250507-fix_configfs-v3-2-fe2d96de8dc4@quicinc.com
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/configfs/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/at91sam9263ek.dts | 2 +-
+ arch/arm/boot/dts/tny_a9263.dts     | 2 +-
+ arch/arm/boot/dts/usb_a9263.dts     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -593,7 +593,7 @@ static int populate_attrs(struct config_
- 				break;
- 		}
- 	}
--	if (t->ct_bin_attrs) {
-+	if (!error && t->ct_bin_attrs) {
- 		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
- 			error = configfs_create_bin_file(item, bin_attr);
- 			if (error)
+diff --git a/arch/arm/boot/dts/at91sam9263ek.dts b/arch/arm/boot/dts/at91sam9263ek.dts
+index 71f60576761a0..df206bdb67883 100644
+--- a/arch/arm/boot/dts/at91sam9263ek.dts
++++ b/arch/arm/boot/dts/at91sam9263ek.dts
+@@ -148,7 +148,7 @@
+ 				nand@3 {
+ 					reg = <0x3 0x0 0x800000>;
+ 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
+-					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
++					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
+ 					nand-bus-width = <8>;
+ 					nand-ecc-mode = "soft";
+ 					nand-on-flash-bbt;
+diff --git a/arch/arm/boot/dts/tny_a9263.dts b/arch/arm/boot/dts/tny_a9263.dts
+index 62b7d9f9a926c..c8b6318aaa838 100644
+--- a/arch/arm/boot/dts/tny_a9263.dts
++++ b/arch/arm/boot/dts/tny_a9263.dts
+@@ -64,7 +64,7 @@
+ 				nand@3 {
+ 					reg = <0x3 0x0 0x800000>;
+ 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
+-					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
++					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
+ 					nand-bus-width = <8>;
+ 					nand-ecc-mode = "soft";
+ 					nand-on-flash-bbt;
+diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
+index d1c07503ff76f..87a5f96014e01 100644
+--- a/arch/arm/boot/dts/usb_a9263.dts
++++ b/arch/arm/boot/dts/usb_a9263.dts
+@@ -84,7 +84,7 @@
+ 				nand@3 {
+ 					reg = <0x3 0x0 0x800000>;
+ 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
+-					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
++					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
+ 					nand-bus-width = <8>;
+ 					nand-ecc-mode = "soft";
+ 					nand-on-flash-bbt;
+-- 
+2.39.5
+
 
 
 
