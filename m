@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-157056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09BC9AE5246
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0256DAE51BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1ADA1B64C5E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 940414A458E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE70E2222A9;
-	Mon, 23 Jun 2025 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B44F34409;
+	Mon, 23 Jun 2025 21:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W3ZQwCLA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="my3R+AQt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B4E84315A;
-	Mon, 23 Jun 2025 21:42:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 712446136;
+	Mon, 23 Jun 2025 21:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714926; cv=none; b=ej5N1lnQikg1XVmqROhs7Vxkv9I/ySTKciPeWtDFV/YNlx489vndfaUpCT+Bj35//bUjuguIHhtMAwZmCFrRLfprvMeGbynUteX1HJ1X9G4HTa2KOB4EAA48MbSTtZVJ+u3y9UxVHG89qYw6l66+Q6NsFlt8SN4Evc+OxzEbthg=
+	t=1750714620; cv=none; b=fUa1JUysHxRYpAdV9rZOrP0I4Vg2OqqoOJF3N4AN3pJGkWXpQLZ7IGcRKZvuKgo/tQeGjIBJ2iM9xppYYR5fg6kK8KmXRYVlpdNXGda1TiMntQrmAcJlmI3P6gdGCn3nZCt0ZjEPgVpPuBx2ZHdqHVGjG9GtUxG9WjM7usk4DKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714926; c=relaxed/simple;
-	bh=auGH6DEU4t4YbKYEs9VNFe7xe7VPPVpEoJDEBzo/qVI=;
+	s=arc-20240116; t=1750714620; c=relaxed/simple;
+	bh=AI87afpOE3k6NF9EdDO868TCooyUiFBF6/9qnVD27DQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GAb+dJVXgRI7q3YSk4kcnAKREZfVujgnxnL6/TQfEmBXsPHZ+l77XIwMEC5C2atkMa0MVUY4yXUyRZfdqx/RTLkcLoDdtKDH2gqW0YdDwpGsdAp9me+Y0HWY7+vrj8UDdg32CbF7EMqm9n8Smyd4z6XTCrkNfo8uXDTOvMHYheU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W3ZQwCLA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30AC7C4CEEA;
-	Mon, 23 Jun 2025 21:42:06 +0000 (UTC)
+	 MIME-Version; b=L0DXgMZeuuV9hFOF5EvTe711wqV8UJMSmGVWh4l/XGfhBW7vM6rYTtwCG5W1iwnN/vVKiPQeAtlehFyV9yO9EUsM3HKioPiuAAyhK2FTXVy1bJyQV0kysVs1T1ooa+BIPXySn/cg8/XhyuQEprj0ykHBawJGEtELD6D3KPat6FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=my3R+AQt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09EE4C4CEEA;
+	Mon, 23 Jun 2025 21:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714926;
-	bh=auGH6DEU4t4YbKYEs9VNFe7xe7VPPVpEoJDEBzo/qVI=;
+	s=korg; t=1750714620;
+	bh=AI87afpOE3k6NF9EdDO868TCooyUiFBF6/9qnVD27DQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W3ZQwCLA0W0jPitFRHTXoqb2u1ZIoBs9W4ncJIPU1EAsjCn4ILSMootSf9H9CS0cP
-	 On4bCsaA7LLt2u9ze3JAZooaXOZgUGd/eYeUG2PS9tNMIu/l0hs4siYolZQn3RZaPJ
-	 n1EwbUhGKWf1SkK4FGPlXwwSLCDjR0mbGXr4Ln0M=
+	b=my3R+AQtBDyLSnVNnIRRHTPrruSoPrd2V6ARQaXynsJGZnzNQN6dmr1zxwuS1Vgp5
+	 DSwQuJiS/7O/rJP7bsIOGQbk3/Y+Ac3vmUbUjvwRowcjIFvXJXN/gE9gXGo2NjRHBz
+	 s24PXqYOwtrxUmU62q9A/px/hWtql0gi9nBiioTA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Christoph Hellwig <hch@lst.de>
-Subject: [PATCH 6.1 204/508] xfs: Fix xfs_flush_unmap_range() range for RT
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 112/414] parisc: fix building with gcc-15
 Date: Mon, 23 Jun 2025 15:04:09 +0200
-Message-ID: <20250623130650.287862193@linuxfoundation.org>
+Message-ID: <20250623130644.890402284@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit d3b689d7c711a9f36d3e48db9eaa75784a892f4c ]
+commit 7cbb015e2d3d6f180256cde0c908eab21268e7b9 upstream.
 
-Currently xfs_flush_unmap_range() does unmap for a full RT extent range,
-which we also want to ensure is clean and idle.
+The decompressor is built with the default C dialect, which is now gnu23
+on gcc-15, and this clashes with the kernel's bool type definition:
 
-This code change is originally from Dave Chinner.
+In file included from include/uapi/linux/posix_types.h:5,
+                 from arch/parisc/boot/compressed/misc.c:7:
+include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+   11 |         false   = 0,
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>4
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add the -std=gnu11 argument here, as we do for all other architectures.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_bmap_util.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ arch/parisc/boot/compressed/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index 62b92e92a685d..dabae6323c503 100644
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -963,14 +963,18 @@ xfs_flush_unmap_range(
- 	xfs_off_t		offset,
- 	xfs_off_t		len)
- {
--	struct xfs_mount	*mp = ip->i_mount;
- 	struct inode		*inode = VFS_I(ip);
- 	xfs_off_t		rounding, start, end;
- 	int			error;
+--- a/arch/parisc/boot/compressed/Makefile
++++ b/arch/parisc/boot/compressed/Makefile
+@@ -18,6 +18,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
+ ifndef CONFIG_64BIT
+ KBUILD_CFLAGS += -mfast-indirect-calls
+ endif
++KBUILD_CFLAGS += -std=gnu11
  
--	rounding = max_t(xfs_off_t, mp->m_sb.sb_blocksize, PAGE_SIZE);
--	start = round_down(offset, rounding);
--	end = round_up(offset + len, rounding) - 1;
-+	/*
-+	 * Make sure we extend the flush out to extent alignment
-+	 * boundaries so any extent range overlapping the start/end
-+	 * of the modification we are about to do is clean and idle.
-+	 */
-+	rounding = max_t(xfs_off_t, xfs_inode_alloc_unitsize(ip), PAGE_SIZE);
-+	start = rounddown_64(offset, rounding);
-+	end = roundup_64(offset + len, rounding) - 1;
- 
- 	error = filemap_write_and_wait_range(inode->i_mapping, start, end);
- 	if (error)
--- 
-2.39.5
-
+ LDFLAGS_vmlinux := -X -e startup --as-needed -T
+ $(obj)/vmlinux: $(obj)/vmlinux.lds $(addprefix $(obj)/, $(OBJECTS)) $(LIBGCC) FORCE
 
 
 
