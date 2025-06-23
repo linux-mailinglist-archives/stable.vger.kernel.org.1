@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-155637-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A828AE4304
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92211AE4330
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474CB189912A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 92F843BA397
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1962253F1D;
-	Mon, 23 Jun 2025 13:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43981253958;
+	Mon, 23 Jun 2025 13:23:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISDb+6W1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0OzWaz1n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDD9253F1A;
-	Mon, 23 Jun 2025 13:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E602517AF;
+	Mon, 23 Jun 2025 13:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684947; cv=none; b=qCa19uY33JJUtb598dLvo82sNEbmj39I+8CBqGwk60pDbw7j+KZhbYYddJJBpzOdDeXEatLXDouX7s10wtAo37ABC/grEpaNBQ7Gm1mELLMFkSRTOTBldY5GQFD2VpE/JO28jCB0lbn4i/ySBU8cBoNBz1s11IkMJ2wfeQU4ZDw=
+	t=1750685004; cv=none; b=esmnKX5iavyCEkRmw8/C0Iy3q0XWOAqliW1SqBzPikIrPmNbbQFD+qLj48Qg09yyL4ucN+hKXjRwGVggk1EmUBMbA8HzP8N5/lMa2fwfRlCA146wL7ySR5fqZMNoYSuSIOWuPoNqmdXVUGfJjzrAcfUZw+rPeEOjtuinFpWnSz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684947; c=relaxed/simple;
-	bh=Fd9ldUHq2fWRF9X+NPd5TP9YcEjyLgo/jHPLhCwSa0o=;
+	s=arc-20240116; t=1750685004; c=relaxed/simple;
+	bh=U2Bbx8UB5UKB65zPsQtfMC1Jz+OcO317cTB6whwlcIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BHEZ5EBIiRNi1hJwQbQ+2qLZ5p0mqPNRY74mSgCCDy2LDr3Ydfo8l1v0rnd/Cdixi0rb1vunZNTBHyZYigzIT7RtHaBxGiTnQKB8qc4k6hR+GTdDHyxDm06TCV0fYoXwaZ25JTb+p/9iWBwzBbvYncsw+oSObMv022s5N9CmV6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISDb+6W1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45986C4CEEA;
-	Mon, 23 Jun 2025 13:22:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ZMw0ePbqHCyprztiNXqEYZj4RcYWIV283ALDLY/fn/a258G8vBA9xW7mR5czCcPfsHcEhIBssWsvxDRbSsbeSOwCKvzVVrAEGo4CW9BRBmp+L6Qc7DArR8dz7f1/W7PaJHhf4stMpEOsYxxCZyIuw2F7tyc/fct2mJDj75vIRwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0OzWaz1n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29917C4CEF0;
+	Mon, 23 Jun 2025 13:23:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684947;
-	bh=Fd9ldUHq2fWRF9X+NPd5TP9YcEjyLgo/jHPLhCwSa0o=;
+	s=korg; t=1750685003;
+	bh=U2Bbx8UB5UKB65zPsQtfMC1Jz+OcO317cTB6whwlcIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISDb+6W1lYfmrBwb/Lx4ad562+zMjDIL2PNOEyuLlbV4ocOBANtf5BoAut/MU0L3u
-	 q4x3pj2Rd40RiQKK3XLSzFfRDZ/ytf5pNVFjVZ2T8Byc5C+Ci8VjXyX0vC/S42C7GD
-	 9RZwrCecrDzw6NVspr4t3vRj9MyMPnrEOx5W4iZo=
+	b=0OzWaz1nmnMTzrYU09gTGRk6rVECnFNoz6H2tqLc7B+N3q2l22pVSQIVRXyOliVPu
+	 HYNPGnExTtAZa1A6M7UHvIzdELJQlvVf1PR+KvkGFYjMPBAUamIw3xZOJh4+dUsVKs
+	 u8ydyB32RqqHFQ7qElcKxCKHPLmMVEVyMo4CsGc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khem Raj <raj.khem@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.15 167/592] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
-Date: Mon, 23 Jun 2025 15:02:05 +0200
-Message-ID: <20250623130704.251450081@linuxfoundation.org>
+	John Schoenick <johns@valvesoftware.com>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.15 168/592] ovl: Fix nested backing file paths
+Date: Mon, 23 Jun 2025 15:02:06 +0200
+Message-ID: <20250623130704.275055519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -59,54 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khem Raj <raj.khem@gmail.com>
+From: André Almeida <andrealmeid@igalia.com>
 
-commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
+commit 924577e4f6ca473de1528953a0e13505fae61d7b upstream.
 
-GCC 15 changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, mips/vdso code uses
-its own CFLAGS without a '-std=' value, which break with this dialect
-change because of the kernel's own definitions of bool, false, and true
-conflicting with the C23 reserved keywords.
+When the lowerdir of an overlayfs is a merged directory of another
+overlayfs, ovl_open_realfile() will fail to open the real file and point
+to a lower dentry copy, without the proper parent path. After this,
+d_path() will then display the path incorrectly as if the file is placed
+in the root directory.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+This bug can be triggered with the following setup:
 
-Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
-CFLAGS to eliminate these errors and make the C standard version of these
-areas match the rest of the kernel.
+ mkdir -p ovl-A/lower ovl-A/upper ovl-A/merge ovl-A/work
+ mkdir -p ovl-B/upper ovl-B/merge ovl-B/work
 
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+ cp /bin/cat ovl-A/lower/
+
+ mount -t overlay overlay -o \
+ lowerdir=ovl-A/lower,upperdir=ovl-A/upper,workdir=ovl-A/work \
+ ovl-A/merge
+
+ mount -t overlay overlay -o \
+ lowerdir=ovl-A/merge,upperdir=ovl-B/upper,workdir=ovl-B/work \
+ ovl-B/merge
+
+ ovl-A/merge/cat /proc/self/maps | grep --color cat
+ ovl-B/merge/cat /proc/self/maps | grep --color cat
+
+The first cat will correctly show `/ovl-A/merge/cat`, while the second
+one shows just `/cat`.
+
+To fix that, uses file_user_path() inside of backing_file_open() to get
+the correct file path for the dentry.
+
+Co-developed-by: John Schoenick <johns@valvesoftware.com>
+Signed-off-by: John Schoenick <johns@valvesoftware.com>
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+Fixes: def3ae83da02 ("fs: store real path instead of fake path in backing file f_path")
+Cc: <stable@vger.kernel.org> # v6.7
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/vdso/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ fs/overlayfs/file.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -27,6 +27,7 @@ endif
- # offsets.
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	$(filter -std=%,$(KBUILD_CFLAGS)) \
- 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
- 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -48,8 +48,8 @@ static struct file *ovl_open_realfile(co
+ 		if (!inode_owner_or_capable(real_idmap, realinode))
+ 			flags &= ~O_NOATIME;
+ 
+-		realfile = backing_file_open(&file->f_path, flags, realpath,
+-					     current_cred());
++		realfile = backing_file_open(file_user_path((struct file *) file),
++					     flags, realpath, current_cred());
+ 	}
+ 	ovl_revert_creds(old_cred);
+ 
 
 
 
