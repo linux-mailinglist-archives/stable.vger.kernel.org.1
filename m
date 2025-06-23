@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47B4AAE505C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C6AAAE50B7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8C523BFF6D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CEF7E1B62BF4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D0C1EDA0F;
-	Mon, 23 Jun 2025 21:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9DD2222CA;
+	Mon, 23 Jun 2025 21:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YLn0u4D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0zJQmfor"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8475C1ACEDA;
-	Mon, 23 Jun 2025 21:24:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC5581EEA3C;
+	Mon, 23 Jun 2025 21:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713864; cv=none; b=ekP1ouILO5+EJJ2WVsZgwK4u1VkXpRkI4p79h4/MP3XQk17ra11z77QFqBa4bPE9YrzCpOe6jzREJl8XLepfUOHRF4Ftifwo+4CDd3uNj35J7qxNB8FI8IQycjyvZJv0VUuOmcUIulGgliNB7NxmyzuF9ZJfQjatkWbbPZ9sHyM=
+	t=1750714038; cv=none; b=TvLY0G4c6oBfbJ2NW1p71w8Pk06KAGJxQPhZqGuuaONK7YMiXOmtQ16z1c5m1V2DPs2LMuS6r2SROORVyKRjL3PwgyLrwzwfmOxApRD62eIIYXb/hUcfwvY6K0mLy3KLsXk6Sa6Lt1o+yzdmgxBbbplgPd4sLYDOriyfjzL5rVk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713864; c=relaxed/simple;
-	bh=3TlEnTNGwM+REEYtfs0cgc49b8FdTmGGY5198hZR9A0=;
+	s=arc-20240116; t=1750714038; c=relaxed/simple;
+	bh=A8yb5dAfip8sRgAkLXAPmpmjEyARjsf7w1YHXdKxwXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GuHEwtfEMYoxc7roXyrD1K4VKzG+kUMD9BIijS0zA++Niw0h5Gm7B7mgc5Kc+VAd71VMqsScd3e2GZKd6XKxgRLl4wokDvcySitxS3U6r00wNSFdSET6fxBhqWcU2IlTb1xcGBWglW6whroPT16Oyw1b+sJvaorfSylQYbH4XsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YLn0u4D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5F9C4CEEA;
-	Mon, 23 Jun 2025 21:24:23 +0000 (UTC)
+	 MIME-Version; b=FTHda0Ec4gaERKtb/lNrAiP3GUyZ1jb7RUah2Z2hcsufk/FPoyO0oT2f/Y6f86kQAA6Mui/l3Yb5rsvvEc2HR9n9qwSzLlRFG0+258LHCk+iNdp8j15MKamiWEcU1xn4njxuUnmKt9NmBwqIQpwLY8z8ZJc5SwXPKmLpe5xKSeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0zJQmfor; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8272BC4CEEA;
+	Mon, 23 Jun 2025 21:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713864;
-	bh=3TlEnTNGwM+REEYtfs0cgc49b8FdTmGGY5198hZR9A0=;
+	s=korg; t=1750714037;
+	bh=A8yb5dAfip8sRgAkLXAPmpmjEyARjsf7w1YHXdKxwXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YLn0u4DkwBh+qM1+3gBCrnxhgMJEGAd5+HI6gviCXoZNywCMDQaP3XSbwyJBXtUr
-	 KKysIdWXFEQuupHBSGR3vPWJB8VaMT/p1tsCP2yQdITWNuYAJ4YQ828tZMWafJMSqj
-	 0mb9PnJ3C0ggl6QNu6XTvxRu5QXbpacS2Q2YQqdU=
+	b=0zJQmforNssf5Adu8JJ8fy37/NYIQ+4m8Zg4eZe2vYWci2nW5XnKvrBhSeUBoKRAx
+	 XhGvOoYT8KfVDHzcWMQUmO5CFu6n6XJeXlF6xHupCpZPSo9lbo59eMO7PhAcdnBXNC
+	 3xyJWiby1n56dh+P1g4DlHE9qeH7qJlhvpHukgzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 120/290] mmc: Add quirk to disable DDR50 tuning
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 5.10 180/355] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
 Date: Mon, 23 Jun 2025 15:06:21 +0200
-Message-ID: <20250623130630.547095593@linuxfoundation.org>
+Message-ID: <20250623130632.106351272@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Shepherd <erick.shepherd@ni.com>
+From: Andreas Kemnade <andreas@kemnade.info>
 
-[ Upstream commit 9510b38dc0ba358c93cbf5ee7c28820afb85937b ]
+commit 7397daf1029d5bfd3415ec8622f5179603d5702d upstream.
 
-Adds the MMC_QUIRK_NO_UHS_DDR50_TUNING quirk and updates
-mmc_execute_tuning() to return 0 if that quirk is set. This fixes an
-issue on certain Swissbit SD cards that do not support DDR50 tuning
-where tuning requests caused I/O errors to be thrown.
+The late init call just writes to omap4 registers as soon as
+CONFIG_MFD_CPCAP is enabled without checking whether the
+cpcap driver is actually there or the SoC is indeed an
+OMAP4.
+Rather do these things only with the right device combination.
 
-Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250331221337.1414534-1-erick.shepherd@ni.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes booting the BT200 with said configuration enabled and non-factory
+X-Loader and probably also some surprising behavior on other devices.
+
+Fixes: c145649bf262 ("ARM: OMAP2+: Configure voltage controller for cpcap to low-speed")
+CC: stable@vger.kernel.org
+Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+Reivewed-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20250331144439.769697-1-andreas@kemnade.info
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/card.h   |  6 ++++++
- drivers/mmc/core/quirks.h | 10 ++++++++++
- drivers/mmc/core/sd.c     | 32 ++++++++++++++++++++++++--------
- include/linux/mmc/card.h  |  1 +
- 4 files changed, 41 insertions(+), 8 deletions(-)
+ arch/arm/mach-omap2/pmic-cpcap.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index 8476754b1b170..fe0b2fa3bb89d 100644
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -86,6 +86,7 @@ struct mmc_fixup {
- #define CID_MANFID_MICRON       0x13
- #define CID_MANFID_SAMSUNG      0x15
- #define CID_MANFID_APACER       0x27
-+#define CID_MANFID_SWISSBIT     0x5D
- #define CID_MANFID_KINGSTON     0x70
- #define CID_MANFID_HYNIX	0x90
- #define CID_MANFID_KINGSTON_SD	0x9F
-@@ -291,4 +292,9 @@ static inline int mmc_card_broken_sd_poweroff_notify(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY;
- }
+--- a/arch/arm/mach-omap2/pmic-cpcap.c
++++ b/arch/arm/mach-omap2/pmic-cpcap.c
+@@ -264,7 +264,11 @@ int __init omap4_cpcap_init(void)
  
-+static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
-+}
+ static int __init cpcap_late_init(void)
+ {
+-	omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
++	if (!of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
++		return 0;
 +
- #endif
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 89b512905be14..7f893bafaa607 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -34,6 +34,16 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
- 		   MMC_QUIRK_BROKEN_SD_CACHE | MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY,
- 		   EXT_CSD_REV_ANY),
++	if (soc_is_omap443x() || soc_is_omap446x() || soc_is_omap447x())
++		omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
  
-+	/*
-+	 * Swissbit series S46-u cards throw I/O errors during tuning requests
-+	 * after the initial tuning request expectedly times out. This has
-+	 * only been observed on cards manufactured on 01/2019 that are using
-+	 * Bay Trail host controllers.
-+	 */
-+	_FIXUP_EXT("0016G", CID_MANFID_SWISSBIT, 0x5342, 2019, 1,
-+		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
-+		   MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
-+
- 	END_FIXUP
- };
- 
-diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-index f02c3e5eb5c85..a06f3011e2b58 100644
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -618,6 +618,29 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
  	return 0;
  }
- 
-+/*
-+ * Determine if the card should tune or not.
-+ */
-+static bool mmc_sd_use_tuning(struct mmc_card *card)
-+{
-+	/*
-+	 * SPI mode doesn't define CMD19 and tuning is only valid for SDR50 and
-+	 * SDR104 mode SD-cards. Note that tuning is mandatory for SDR104.
-+	 */
-+	if (mmc_host_is_spi(card->host))
-+		return false;
-+
-+	switch (card->host->ios.timing) {
-+	case MMC_TIMING_UHS_SDR50:
-+	case MMC_TIMING_UHS_SDR104:
-+		return true;
-+	case MMC_TIMING_UHS_DDR50:
-+		return !mmc_card_no_uhs_ddr50_tuning(card);
-+	}
-+
-+	return false;
-+}
-+
- /*
-  * UHS-I specific initialization procedure
-  */
-@@ -661,14 +684,7 @@ static int mmc_sd_init_uhs_card(struct mmc_card *card)
- 	if (err)
- 		goto out;
- 
--	/*
--	 * SPI mode doesn't define CMD19 and tuning is only valid for SDR50 and
--	 * SDR104 mode SD-cards. Note that tuning is mandatory for SDR104.
--	 */
--	if (!mmc_host_is_spi(card->host) &&
--		(card->host->ios.timing == MMC_TIMING_UHS_SDR50 ||
--		 card->host->ios.timing == MMC_TIMING_UHS_DDR50 ||
--		 card->host->ios.timing == MMC_TIMING_UHS_SDR104)) {
-+	if (mmc_sd_use_tuning(card)) {
- 		err = mmc_execute_tuning(card);
- 
- 		/*
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index afa575e362a47..7c6da19fff9f0 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -297,6 +297,7 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
- #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
-+#define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
- 
- 	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
--- 
-2.39.5
-
 
 
 
