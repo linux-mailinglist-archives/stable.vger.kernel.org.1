@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-155827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74C4AAE442A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 41FE8AE44B4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 867AE3BDE95
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36653B7C15
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F244B255F4C;
-	Mon, 23 Jun 2025 13:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F2E252906;
+	Mon, 23 Jun 2025 13:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LP41pKhX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZAQDoSg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF7B5239E63;
-	Mon, 23 Jun 2025 13:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8E930E84D;
+	Mon, 23 Jun 2025 13:34:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685430; cv=none; b=QxLzilQ336+DfPJYIH9Ha2seBtW2sIcYETnLAhqqBMBlbcNSfAfByd7RvsfbX5RLRdjXRaoCVBpbz9ALZyN6UNH7ccSMC++IZqb4EF5tPNDO9nHOGekEQzmVxNJxV6KLWG0YXZt94cOnL1mGgsc574svvkuncF89hhYo2c/xE58=
+	t=1750685672; cv=none; b=kNk1h/LFgq6FuA8esAuudsgdwndqgRZMlmr0NnSQGzb3u4YFirq6ewDCXaDNtleQaKGiJQNyq3OZVTvK0tS2Jo70LRvXZxCEK6DOMlyW6S6wTJRetZKFzszyaGPN6AJYYENxR3FdF0BYhI9vPz/rPh8QxOLYZHwskfPfXVSklJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685430; c=relaxed/simple;
-	bh=5HC79Q3vnBWcO5uXX11McV3jaw5I91P0tExuTXiEjAQ=;
+	s=arc-20240116; t=1750685672; c=relaxed/simple;
+	bh=RRmkdQy/gZqKnjyostdrtQHKYJa+W4AR1adofNgv1fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QR4EfnLISFo3dUwQlilAEJCsMeMtRsWiBGwPwNKWsxJMheNve/VbvbTGkwydg/l92m4mCIKXp08xR2RCpmGihy1FuJL5WVlMkVo46WpsmGUEmXSrg3usS6lG4STfONUKOZTgvw2QS8PrsQ+W6kblPSdlhlemMyUox3wBVmqjsrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LP41pKhX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B114C4CEEA;
-	Mon, 23 Jun 2025 13:30:30 +0000 (UTC)
+	 MIME-Version; b=W/FKoThQfd9X9R3eL5UCogzj0PBokg8KQtUDVahQE8i5nETbNqAMEoPDRKDAiisBMxOPx8JPiAOJOeAFDYa5IvaPyBtvgT8x1K8v8pImjdde3i1MDMO21Cgd9r0OD9T/n9LoRFfONKKTqBKtzjRkq0xan2vYocozJHZZVjbTu74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZAQDoSg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1014C4CEEA;
+	Mon, 23 Jun 2025 13:34:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685430;
-	bh=5HC79Q3vnBWcO5uXX11McV3jaw5I91P0tExuTXiEjAQ=;
+	s=korg; t=1750685672;
+	bh=RRmkdQy/gZqKnjyostdrtQHKYJa+W4AR1adofNgv1fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LP41pKhXkqiACzWmjszudvT5vngYhBPM2OJ1Qt37oDaPaM8/rKzCATzEhZKIhxomn
-	 3C96ffWxpzm4FgoPTG0auOgg/4QwrP2+Y00oMSUvKjg1oSFrOOgPhuqvDViBRt6jHk
-	 yPOlqpnxLAa0VMRKhwz22O/zzunuxStbqk+VPdVE=
+	b=0ZAQDoSgzoqRFm3O6wlpiJlg0QkszWHJlEW0F3GtC6H1OfCLBSzsAYgF95IhND450
+	 8y1jIJd8q3W6MSyu+sQGC6uDkeJOdjVLTNDCivWQeRJ4oq/FAZ4hkC8XRNnTDNC+9W
+	 QYoPNcQ3aUAvWVMezTpgnkfQbxlBl+5ZU3wRq8XA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 007/290] io_uring/kbuf: account ring io_buffer_list memory
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 067/355] ARM: dts: qcom: apq8064 merge hw splinlock into corresponding syscon device
 Date: Mon, 23 Jun 2025 15:04:28 +0200
-Message-ID: <20250623130627.180005109@linuxfoundation.org>
+Message-ID: <20250623130628.845053508@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-commit 475a8d30371604a6363da8e304a608a5959afc40 upstream.
+[ Upstream commit 325c6a441ae1f8fcb1db9bb945b8bdbd3142141e ]
 
-Follow the non-ringed pbuf struct io_buffer_list allocations and account
-it against the memcg. There is low chance of that being an actual
-problem as ring provided buffer should either pin user memory or
-allocate it, which is already accounted.
+Follow up the expected way of describing the SFPB hwspinlock and merge
+hwspinlock node into corresponding syscon node, fixing several dt-schema
+warnings.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/3985218b50d341273cafff7234e1a7e6d0db9808.1747150490.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24a9baf933dc ("ARM: dts: qcom: apq8064: Add hwmutex and SMEM nodes")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-7-bcedd1406790@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/qcom-apq8064.dtsi | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -560,7 +560,7 @@ int io_register_pbuf_ring(struct io_ring
- 		io_destroy_bl(ctx, bl);
- 	}
+diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
+index 3f1002c34446c..ba6cc81684c86 100644
+--- a/arch/arm/boot/dts/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
+@@ -211,12 +211,6 @@
+ 		};
+ 	};
  
--	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
-+	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL_ACCOUNT);
- 	if (!bl)
- 		return -ENOMEM;
+-	sfpb_mutex: hwmutex {
+-		compatible = "qcom,sfpb-mutex";
+-		syscon = <&sfpb_wrapper_mutex 0x604 0x4>;
+-		#hwlock-cells = <1>;
+-	};
+-
+ 	smem {
+ 		compatible = "qcom,smem";
+ 		memory-region = <&smem_region>;
+@@ -360,9 +354,10 @@
+ 			pinctrl-0 = <&ps_hold>;
+ 		};
  
+-		sfpb_wrapper_mutex: syscon@1200000 {
+-			compatible = "syscon";
+-			reg = <0x01200000 0x8000>;
++		sfpb_mutex: hwmutex@1200600 {
++			compatible = "qcom,sfpb-mutex";
++			reg = <0x01200600 0x100>;
++			#hwlock-cells = <1>;
+ 		};
+ 
+ 		intc: interrupt-controller@2000000 {
+-- 
+2.39.5
+
 
 
 
