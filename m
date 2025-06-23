@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE38EAE54F5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC963AE5557
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 558724C24BB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60DD64A149F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E68B42222C2;
-	Mon, 23 Jun 2025 22:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7281C21FF2B;
+	Mon, 23 Jun 2025 22:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgBqh93Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHm9dNzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C4A218580;
-	Mon, 23 Jun 2025 22:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF371F7580;
+	Mon, 23 Jun 2025 22:09:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716372; cv=none; b=WLqnPHOysAUQ65OOeKIb3end3fXcMI+h04alIZsWGijscZBRbkwYd6dGdYUplAnEN4O+OrxFRUV2AX6YAz7yCYP5cGrRLrgy55JAxAwmKwiMo2O0gfUEjp7973r4MRHUfhhAhWySkmsEBuKMCbWG+a4+8gpTD8l3Vln2ceiUnNc=
+	t=1750716581; cv=none; b=u0D+dxcp+BQk7XH19/rU8rFvN/uemTtVJ67Z7Plwa5dNzyCNLU4pBzw95ZqInPEtXsBBwjqswkHO+bygX6CUYQOFNpNyBwac9CoF2CP4cTLikbuPzT9QUTwlqm0WixdAlAG+y1kSFRpylIw/uwl5nD7STRljDddZfWyztAiEiPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716372; c=relaxed/simple;
-	bh=JbJjTL+kjGmY42PNGrHg+UjNWH2PvkBZHGyfrmwcfDg=;
+	s=arc-20240116; t=1750716581; c=relaxed/simple;
+	bh=ncpcgd/TrZv6YascrINiJ928OIXC4jN+DHYQgw5c1Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BU0t59y6QUnsav107fIEl0M8nPbT0V4iGGLleEoDXxt+tyXV/4lgn2JI3Zv28kHtuBZA9eLF2qiJxpGNv3/jusqBLKW0Rw8i1beN/Sqo34GE7RZhmPfS4IA58SKAxYZrWEGBd748stXR9LYnKwgmA7fumaZD62GioR8/s3Dk5i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgBqh93Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DB05C4CEED;
-	Mon, 23 Jun 2025 22:06:12 +0000 (UTC)
+	 MIME-Version; b=RVPdw+dV45pBdOxjLOctesVyYTvRZqHSu1Vl9y9lcWB1qzisuACE1KDUco2ZI6GKqu1KfHExP2gGju83k0FIeZhiyyrBO1/UGOiNZzfztcVlIC42JOZlxv3ze+20o6r/nHnY33z0aHonvYTbgsE3tc8zEXo37CU/RiOUvL0OPPk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHm9dNzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB4DC4CEEA;
+	Mon, 23 Jun 2025 22:09:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716372;
-	bh=JbJjTL+kjGmY42PNGrHg+UjNWH2PvkBZHGyfrmwcfDg=;
+	s=korg; t=1750716581;
+	bh=ncpcgd/TrZv6YascrINiJ928OIXC4jN+DHYQgw5c1Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vgBqh93ZacEXo/ZqpOVoH7vWKg7H+Wl/PxD9vCVsgSwvR4nzzytKXTb8HKypx0Mix
-	 5L4T7Y8pOq9m05xe2bpCKSY3gox8i3CmpfnTbcR0rKrfIobeqHB5SdYNenhs8T5of5
-	 3U85f6sROeOjLognJNlRr054laiHUYFebOu36mkw=
+	b=UHm9dNzW3x3i2xkkwmQ1D1J4vui/thSSuW6OJc742DTBkF+vAxd3R76MwbdMrjsZs
+	 BGn7HPr942pbPnJb6KVaUpS7rdoG2pcOwKrHg42hZ3oGj17A91AfibGfSiztDzbG6d
+	 lKq2NI8UDuZVzV/QqO5A+TDD/VJSh0p2qoITNiU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.10 334/355] arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users
+	Renato Caldas <renato@calgera.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.6 274/290] platform/x86: ideapad-laptop: add missing Ideapad Pro 5 fn keys
 Date: Mon, 23 Jun 2025 15:08:55 +0200
-Message-ID: <20250623130636.779662404@linuxfoundation.org>
+Message-ID: <20250623130635.166484558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Renato Caldas <renato@calgera.com>
 
-[ Upstream commit f300769ead032513a68e4a02e806393402e626f8 ]
+commit 36e66be874a7ea9d28fb9757629899a8449b8748 upstream.
 
-Support for eBPF programs loaded by unprivileged users is typically
-disabled. This means only cBPF programs need to be mitigated for BHB.
+The scancodes for the Mic Mute and Airplane keys on the Ideapad Pro 5
+(14AHP9 at least, probably the other variants too) are different and
+were not being picked up by the driver. This adds them to the keymap.
 
-In addition, only mitigate cBPF programs that were loaded by an
-unprivileged user. Privileged users can also load the same program
-via eBPF, making the mitigation pointless.
+Apart from what is already supported, the remaining fn keys are
+unfortunately producing windows-specific key-combos.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Renato Caldas <renato@calgera.com>
+Link: https://lore.kernel.org/r/20241102183116.30142-1-renato@calgera.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/net/bpf_jit_comp.c |    3 +++
+ drivers/platform/x86/ideapad-laptop.c |    3 +++
  1 file changed, 3 insertions(+)
 
---- a/arch/arm64/net/bpf_jit_comp.c
-+++ b/arch/arm64/net/bpf_jit_comp.c
-@@ -342,6 +342,9 @@ static void __maybe_unused build_bhb_mit
- 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
- 		return;
+--- a/drivers/platform/x86/ideapad-laptop.c
++++ b/drivers/platform/x86/ideapad-laptop.c
+@@ -1101,6 +1101,9 @@ static const struct key_entry ideapad_ke
+ 	{ KE_KEY,	0x27 | IDEAPAD_WMI_KEY, { KEY_HELP } },
+ 	/* Refresh Rate Toggle */
+ 	{ KE_KEY,	0x0a | IDEAPAD_WMI_KEY, { KEY_DISPLAYTOGGLE } },
++	/* Specific to some newer models */
++	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
++	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
  
-+	if (capable(CAP_SYS_ADMIN))
-+		return;
-+
- 	if (supports_clearbhb(SCOPE_SYSTEM)) {
- 		emit(aarch64_insn_gen_hint(AARCH64_INSN_HINT_CLEARBHB), ctx);
- 		return;
+ 	{ KE_END },
+ };
 
 
 
