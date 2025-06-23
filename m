@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-158010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D1E5AE56D6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AE24AE56FD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A754A3B6C3E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54BC4E2096
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BBA9224B07;
-	Mon, 23 Jun 2025 22:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68219223DCC;
+	Mon, 23 Jun 2025 22:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eRbcmQxO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCDKr+HS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B7B15ADB4;
-	Mon, 23 Jun 2025 22:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CB32192EC;
+	Mon, 23 Jun 2025 22:25:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717265; cv=none; b=OSaq+qo/kM/UmLguBKfiexUSZ9eOhGo54LZl2/k/KZmanloCZyOccCf2p9xWtVz3l86b0rbg/5+WQI2YQV6eUQiEUdcEc0g0F+rC1mjrBNzySUBWteZMz+1iaRJF4FCOTSY9MfSwDEqQheYWZWimRsYz4vMvrnvWsMcMid15Upk=
+	t=1750717504; cv=none; b=SEeRQXNEKE4BTyCp9MmXmagYAABzWHzMEnJnR5C4BOu1O2Sm4r05rqo1PJLFrJpaS96gTlkTlhSVw1uCRG7QhWYuzKnJK1a0sYDDWdMBbuZ0tN2oEoqBy4YfEz9QdBt1C1ooc+E22iHSWLayC4kc+YFA9f3ezrW38dSTjwPuL0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717265; c=relaxed/simple;
-	bh=Z5W6CuHPVPV05Qi5cBvVC30PTJPD8Dqb/5HRn3eUB0s=;
+	s=arc-20240116; t=1750717504; c=relaxed/simple;
+	bh=tgln7OInEwZBmgXD5Va/iFQK6n4R5Lhboq4r/nfUzJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WC9HJBoLRdU3lEA2h6TbyVaGOC6S7xXX7gtCTclNfQ2L9mF3f9DStIALjR6jUtzhLTnlkrKoIfwKwo46frboV11Tx8BjIvSL1eoYiz3yXNYk4dEtf4vT1xBnQSysIUhsHTH8J1xcq/aTmPI150AceOOmjhnkp2yjDrpIjNWX7h8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eRbcmQxO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4550C4CEEA;
-	Mon, 23 Jun 2025 22:21:04 +0000 (UTC)
+	 MIME-Version; b=Iupog9tKi00vWVflHzxzLmbX8mIetc+bQsrI6lNTX3fa0EFkPO/Pw7y+Zc+nWWK/8fDFRetLLaCW0LQUUTy9T+Fs4Lwagon24Xt6BEp7b3y17q2kP7ap8G8I2a8sLJs+HuP1YI8tbD4Qic3EXm8i6cmzb5g22k+WarbpU5AVVDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCDKr+HS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A16C4CEEA;
+	Mon, 23 Jun 2025 22:25:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717265;
-	bh=Z5W6CuHPVPV05Qi5cBvVC30PTJPD8Dqb/5HRn3eUB0s=;
+	s=korg; t=1750717504;
+	bh=tgln7OInEwZBmgXD5Va/iFQK6n4R5Lhboq4r/nfUzJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eRbcmQxOy8AmOyaH6D4A4/dmK/KY/u9CwpSbuS/DHX5svG58jpF3V9m8ngMATjA9B
-	 UJSEYGhAErAKVf/qZfdYMd0n2Ysrs4lYI4gjOJwUm8riqj3wF5fNFpxhLGiTaHZJDp
-	 sYgzLOM3OskNfeN7oy3pXfhN0eE8cyjTrmcwJBH0=
+	b=bCDKr+HSru5ll5JDKGNlh1qy/EfhLbQWjlg9g/rnqesVy4GaYXMIXIyHMi9N+gUSt
+	 vIDCWoJqr448OFMl4jBcwQy2V8RWRupzoV7LqXbsbd/R2/943Zo7BHTF1u83pr0Lyc
+	 0XWPD4Qs8QhCFp/rLWHHXc+Or66y3lfI1hwMCOiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Ingo Molnar <mingo@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH 6.12 349/414] x86/tools: Drop duplicate unlikely() definition in insn_decoder_test.c
-Date: Mon, 23 Jun 2025 15:08:06 +0200
-Message-ID: <20250623130650.700321132@linuxfoundation.org>
+	maher azz <maherazz04@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 442/508] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+Date: Mon, 23 Jun 2025 15:08:07 +0200
+Message-ID: <20250623130656.038279118@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit f710202b2a45addea3dcdcd862770ecbaf6597ef upstream.
+commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
 
-After commit c104c16073b7 ("Kunit to check the longest symbol length"),
-there is a warning when building with clang because there is now a
-definition of unlikely from compiler.h in tools/include/linux, which
-conflicts with the one in the instruction decoder selftest:
+In
 
-  arch/x86/tools/insn_decoder_test.c:15:9: warning: 'unlikely' macro redefined [-Wmacro-redefined]
+riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
+   -> cm_chan_msg_send()
+      -> riocm_ch_send()
 
-Remove the second unlikely() definition, as it is no longer necessary,
-clearing up the warning.
+cm_chan_msg_send() checks that userspace didn't send too much data but
+riocm_ch_send() failed to check that userspace sent sufficient data.  The
+result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
+which were outside the bounds of the space which cm_chan_msg_send()
+allocated.
 
-Fixes: c104c16073b7 ("Kunit to check the longest symbol length")
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
-Link: https://lore.kernel.org/r/20250318-x86-decoder-test-fix-unlikely-redef-v1-1-74c84a7bf05b@kernel.org
+Address this by teaching riocm_ch_send() to check that the entire
+rio_ch_chan_hdr was copied in from userspace.
+
+Reported-by: maher azz <maherazz04@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/tools/insn_decoder_test.c |    2 --
- 1 file changed, 2 deletions(-)
+ drivers/rapidio/rio_cm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -12,8 +12,6 @@
- #include <stdarg.h>
- #include <linux/kallsyms.h>
+--- a/drivers/rapidio/rio_cm.c
++++ b/drivers/rapidio/rio_cm.c
+@@ -787,6 +787,9 @@ static int riocm_ch_send(u16 ch_id, void
+ 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
+ 		return -EINVAL;
  
--#define unlikely(cond) (cond)
--
- #include <asm/insn.h>
- #include <inat.c>
- #include <insn.c>
++	if (len < sizeof(struct rio_ch_chan_hdr))
++		return -EINVAL;		/* insufficient data from user */
++
+ 	ch = riocm_get_channel(ch_id);
+ 	if (!ch) {
+ 		riocm_error("%s(%d) ch_%d not found", current->comm,
 
 
 
