@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A13DAE4322
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC77EAE4361
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1211892163
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1095817A376
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A706A254B1F;
-	Mon, 23 Jun 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E98224DCE8;
+	Mon, 23 Jun 2025 13:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SP+2Xqgo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GT/5FcVx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62051253F2D;
-	Mon, 23 Jun 2025 13:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080C82505A9;
+	Mon, 23 Jun 2025 13:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685016; cv=none; b=cEMjd1RbVSfvGgwSoTaj2gVhft0sDmU6wZ5NYv8DaZow5J6T+Ntm/mp7f70uzRbT7k81RCCMEYmy9ectOQUPbBKV1fRA32wrsrS0z9Lc1GwHaDxzEDfoDcP83na9K7ahnqW57Srx+IOobP7ZBV27TweZpLW4Oi3bb5UtHoPQkSY=
+	t=1750685024; cv=none; b=EIrOX28rndbOwryq9VvQ3yMrRCHV3GTETY9rPmhvj/JQJynWBYyzotGlS0OtGVXw5arSiB/fDezLHYEaHyh1S7+J4F7nAqcfxEkWrIEb7oq10E3qc9CgeKAcUqWNKoJEDdZiKozapKfW+ZeAaRpV5R5uXkxMkLVlYPLogKExsJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685016; c=relaxed/simple;
-	bh=zsNAi8/jHhbvscy6HbldMBiWUUnLtMQbx+ntGUTB3QM=;
+	s=arc-20240116; t=1750685024; c=relaxed/simple;
+	bh=FzinTkye06jx3GD+q835tKfvjQ6hubgE91dEJ/Do/H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G4iIQBuwJmeRha0dCFhh1Qrf4b5ufhzwLhDQNZeD7fP+rxmqgfR4zKC9d/416T4dyqmFzf3XLRNNP6+QjxiToS0PnYVpnF8n93lYWX+NzfkblEuchDeUYtKMvcUcMzwCEyGhKXOh4WtkUCSBAGdjPzD29bLqwP2UtW0C8JRncnA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SP+2Xqgo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6CC3C4CEEA;
-	Mon, 23 Jun 2025 13:23:35 +0000 (UTC)
+	 MIME-Version; b=ULnluHrqXHMjyajvr33a5vXwL85Ki+MOH2zwXJGiDhUy/kCvsG79seGleWOdKnIiONiJwGdP2iadpP9efII3BYL3Iha9xQqPFZ4ptGrgNp8mwlDEv7Sw003JKF4X25aTm1ybiP2QMmOOYiuffK9+Vo36E8vmpth7tMF0rvDvn0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GT/5FcVx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F8AAC4CEF0;
+	Mon, 23 Jun 2025 13:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685016;
-	bh=zsNAi8/jHhbvscy6HbldMBiWUUnLtMQbx+ntGUTB3QM=;
+	s=korg; t=1750685023;
+	bh=FzinTkye06jx3GD+q835tKfvjQ6hubgE91dEJ/Do/H4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SP+2XqgoCdFVz19P3sv0L5R3q+lmSxb+IODE9SvoJl2isCJMDaYdP7jLQmBDBT4J9
-	 loRaclu5LgGAuROH8AhmxRB/SnSasNSVlIYPhePJDyrUNdQlMMUytrfE8WNldyzpuM
-	 l7YcFAQ1xgPHQMRgLwIqBjcQRbTE0D6F/PoKKCFg=
+	b=GT/5FcVxpprQ4xSbfibc35HW40lCu1/mg4rdWFA+8ZW/F7beqWukB1wrNEgA3yrar
+	 ZEvqxfcu0pnMUTQm/Vx5YLIvxOJLQuQzVibuMux7tBHwHrocP8rOjhJUF/iRFXIB+L
+	 s2/Sn2ZhYnHytZoY3GxyHHh7uu1R0JINC3yiU7l4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Alexey Gladkov <legion@kernel.org>,
 	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 058/222] mfd: exynos-lpass: Avoid calling exynos_lpass_disable() twice in exynos_lpass_remove()
-Date: Mon, 23 Jun 2025 15:06:33 +0200
-Message-ID: <20250623130613.857672777@linuxfoundation.org>
+Subject: [PATCH 5.4 059/222] mfd: stmpe-spi: Correct the name used in MODULE_DEVICE_TABLE
+Date: Mon, 23 Jun 2025 15:06:34 +0200
+Message-ID: <20250623130613.887872479@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,35 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Alexey Gladkov <legion@kernel.org>
 
-[ Upstream commit b70b84556eeca5262d290e8619fe0af5b7664a52 ]
+[ Upstream commit 59d60c16ed41475f3b5f7b605e75fbf8e3628720 ]
 
-exynos_lpass_disable() is called twice in the remove function. Remove
-one of these calls.
+The name used in the macro does not exist.
 
-Fixes: 90f447170c6f ("mfd: exynos-lpass: Add runtime PM support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+drivers/mfd/stmpe-spi.c:132:26: error: use of undeclared identifier 'stmpe_id'
+  132 | MODULE_DEVICE_TABLE(spi, stmpe_id);
+
+Fixes: e789995d5c61 ("mfd: Add support for STMPE SPI interface")
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
 Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/74d69e8de10308c9855db6d54155a3de4b11abfd.1745247209.git.christophe.jaillet@wanadoo.fr
+Link: https://lore.kernel.org/r/79d5a847303e45a46098f2d827d3d8a249a32be3.1745591072.git.legion@kernel.org
 Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/exynos-lpass.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/mfd/stmpe-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
-index 99bd0e73c19c3..ffda3445d1c0f 100644
---- a/drivers/mfd/exynos-lpass.c
-+++ b/drivers/mfd/exynos-lpass.c
-@@ -144,7 +144,6 @@ static int exynos_lpass_remove(struct platform_device *pdev)
- {
- 	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
+diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
+index 7351734f75938..07fa56e5337d1 100644
+--- a/drivers/mfd/stmpe-spi.c
++++ b/drivers/mfd/stmpe-spi.c
+@@ -129,7 +129,7 @@ static const struct spi_device_id stmpe_spi_id[] = {
+ 	{ "stmpe2403", STMPE2403 },
+ 	{ }
+ };
+-MODULE_DEVICE_TABLE(spi, stmpe_id);
++MODULE_DEVICE_TABLE(spi, stmpe_spi_id);
  
--	exynos_lpass_disable(lpass);
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		exynos_lpass_disable(lpass);
+ static struct spi_driver stmpe_spi_driver = {
+ 	.driver = {
 -- 
 2.39.5
 
