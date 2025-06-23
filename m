@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-155737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE1F4AE438E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65867AE4326
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A9E23AB63E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7A865189643F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BFA2517AF;
-	Mon, 23 Jun 2025 13:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 168991EDA14;
+	Mon, 23 Jun 2025 13:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUZNBpjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+5cDTTG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C71FE471;
-	Mon, 23 Jun 2025 13:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8397253B60;
+	Mon, 23 Jun 2025 13:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685206; cv=none; b=mYHk212Nvau7TXFOc3FQZfw4ssGNw2xt568d2L/EMHVw+aWqNSS+z2G10QCY1s82QVuznB1kaoIxR+WIRIo1j+sRcHk1+UZTgUpFyn/5q4EGK9L4CYbi7otOb/NtmDL0gXYfaAXXlcSwt61l3+Etf+yDRX9qNlqUgBjlnnzofZY=
+	t=1750685022; cv=none; b=tncEIVYWIoxMdVohCgn2AeIekPH0caySMxtrXHB1BtGSxxhLdRxhTO3gqaxrx3qAiP5mHlvHrfycx6v+yu9RxDSMYvl4b1h2grz1fsla5OCdWT2z81DCG64OCq0DX5k3906nKoDD6MIvpePzxMW5T0MwaFagzlrPMXATbaGJHLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685206; c=relaxed/simple;
-	bh=8OYFSUadody3n17+mRkyPo63rzSoKyGFTQVIUMA+99s=;
+	s=arc-20240116; t=1750685022; c=relaxed/simple;
+	bh=wZMgIkYyvJwtOTzPxDl01RNBzHz/Alf2Ng0n2t9tXjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FT/cdfZLcqmYc0Gglb/rS0qX2roPtcfrS7qjsDV+1LMhfp5jmKslBhYLn1PEXdRmAAi1lM0WVIkEh4JF6z5vlcKB3dOcDabXlhbtvBTGLilifGzxzIfqXljK46bbE4eVjhKIsMtO00CTTM8Wt0uLBHkA+2xktXhMvMOxfmmL82o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUZNBpjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC08FC4CEEA;
-	Mon, 23 Jun 2025 13:26:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XztbAO51bc9Rpbm9yPYJnOJY8fcraNe8g+sFg7CtmCS1aGo0BDz2MVhmTfd6songzeE6KxQ+kettlrsBIofn57pnFcwBg1ciWDBRyTYk42eGa6h0baFVdbjFRVXCWqRx79Hy5yvE6DV0BvLe1goZHJW+nEQ3lU6VVYZGMu6l1Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+5cDTTG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0188AC4CEEA;
+	Mon, 23 Jun 2025 13:23:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685206;
-	bh=8OYFSUadody3n17+mRkyPo63rzSoKyGFTQVIUMA+99s=;
+	s=korg; t=1750685021;
+	bh=wZMgIkYyvJwtOTzPxDl01RNBzHz/Alf2Ng0n2t9tXjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XUZNBpjEjbAgKGqieiGWSKT87HopnZpGQmWpcoloB561AbGG8ijTHYcQ/23zcrcx5
-	 euIQZtXJ0xkog99Acc1LMgdIZZfa3hzyJKi1qdwZwE0Ee7uh+YhJ+w0QhnCe/DDOXX
-	 Eae8htNKHH8QMVlP94xz1MIlGOs7AUPw2WFWbvZ8=
+	b=M+5cDTTGFym9tiJpV0stJvmiXi1bDpgsWLNqlbW/Ljg64YSWaHhljcjPVEXZS7hRB
+	 iuGF00Cuy87Ebuh6Pv8+Joc86H5xf3i0s2f0UbsgFf/ykr2DG5KZmwBe6Mr8RyhjYr
+	 ruUCfQlv0KxRk3CtX5sHvLlME3yeXCtxvsjxxVvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 016/411] crypto: marvell/cesa - Handle zero-length skcipher requests
+	Arthur-Prince <r2.arthur.prince@gmail.com>,
+	=?UTF-8?q?Mariana=20Val=C3=A9rio?= <mariana.valerio2@hotmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 202/592] iio: adc: ti-ads1298: Kconfig: add kfifo dependency to fix module build
 Date: Mon, 23 Jun 2025 15:02:40 +0200
-Message-ID: <20250623130633.480005043@linuxfoundation.org>
+Message-ID: <20250623130705.094001630@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Arthur-Prince <r2.arthur.prince@gmail.com>
 
-[ Upstream commit 8a4e047c6cc07676f637608a9dd675349b5de0a7 ]
+commit 3c5dfea39a245b2dad869db24e2830aa299b1cf2 upstream.
 
-Do not access random memory for zero-length skcipher requests.
-Just return 0.
+Add dependency to Kconfig’s ti-ads1298 because compiling it as a module
+failed with an undefined kfifo symbol.
 
-Fixes: f63601fd616a ("crypto: marvell/cesa - add a new driver for Marvell's CESA")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 00ef7708fa60 ("iio: adc: ti-ads1298: Add driver")
+Signed-off-by: Arthur-Prince <r2.arthur.prince@gmail.com>
+Co-developed-by: Mariana Valério <mariana.valerio2@hotmail.com>
+Signed-off-by: Mariana Valério <mariana.valerio2@hotmail.com>
+Link: https://patch.msgid.link/20250430191131.120831-1-r2.arthur.prince@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/marvell/cesa/cipher.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iio/adc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
-index 0f37dfd42d850..3876e3ce822f4 100644
---- a/drivers/crypto/marvell/cesa/cipher.c
-+++ b/drivers/crypto/marvell/cesa/cipher.c
-@@ -459,6 +459,9 @@ static int mv_cesa_skcipher_queue_req(struct skcipher_request *req,
- 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
- 	struct mv_cesa_engine *engine;
- 
-+	if (!req->cryptlen)
-+		return 0;
-+
- 	ret = mv_cesa_skcipher_req_init(req, tmpl);
- 	if (ret)
- 		return ret;
--- 
-2.39.5
-
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1546,6 +1546,7 @@ config TI_ADS1298
+ 	tristate "Texas Instruments ADS1298"
+ 	depends on SPI
+ 	select IIO_BUFFER
++	select IIO_KFIFO_BUF
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS1298
+ 	  medical ADC chips
 
 
 
