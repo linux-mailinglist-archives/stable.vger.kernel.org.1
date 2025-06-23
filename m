@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C096AE511D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48EA2AE5337
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D469C441402
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 156C11B66A3B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E33A21A433;
-	Mon, 23 Jun 2025 21:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF61219A7A;
+	Mon, 23 Jun 2025 21:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QSfkbdYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KoFpn7ZE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFA2B44C77;
-	Mon, 23 Jun 2025 21:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D081AD3FA;
+	Mon, 23 Jun 2025 21:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714247; cv=none; b=GYUR/N6YMihphGEClaxLb3EAEmLYKvxAD17AAb29RGaQIvJoHrIDKVzi9TKv+fxAapHoNN4nplwq+cdqQsFgSoniHNzLL985Day9Oa1Ltme7yv9V/SVGRntJyocknGyhfddBtCcaV0hwCJpDvBJ/ypPrSwHYT9K3DZFW6eajAIg=
+	t=1750715450; cv=none; b=M6wDWy/M2MqhckIQZHI63FtSTqzuwOXkkKkVywT+4TiljXrYBuRPM33jnocUbsIzLSG5NwcM9XUiQOmiFg2MXpAGqhT16uGmJgz0jTDbannXeUBLeG3wx2UKYFLdRWrQcBrdoXv8qml1Q3Lay3J25j0aYeW/vgc1nrh8bpPCTMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714247; c=relaxed/simple;
-	bh=nnIbA4wBeN8GCTGZN8KsAqfXLGfkT4WQGq2QRsblePI=;
+	s=arc-20240116; t=1750715450; c=relaxed/simple;
+	bh=CcB0//16VI6GeGcMt9pfYetZwlD0a26JqMdNZ4HrMnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SqGHpnH+az/VnEqZPPZLGH0CYTXJko4DYBMZVTp66h5HB+8TgwsiEhXpcp+q7pX2R4B376kTp05UdTZvBBvYlAV5or0e9KbetZ9usHqUBYhuXnFC3PpE6tV1VoHXEGRxbrdYAfb6YZiy+IHuYteAX0XJyd3bkKJwbFw9rfV3biM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QSfkbdYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A04C4CEEA;
-	Mon, 23 Jun 2025 21:30:47 +0000 (UTC)
+	 MIME-Version; b=t+3yZNMasQ08oeM3qCMtOhhuzJpSiCE4ACJrUx2t/hSvHWbzWZrWVFVsbMe0KmzknNDuZxrLq6ijxVeOb1JISMVI9fZuPqO+Ag/DSEjoH2hkifAMVUf+hvZNTirRXxbaYworrCMAo4QISTwIprLqw+eEbPIa649uWnqJVvY7ViI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KoFpn7ZE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0306FC4CEEA;
+	Mon, 23 Jun 2025 21:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714247;
-	bh=nnIbA4wBeN8GCTGZN8KsAqfXLGfkT4WQGq2QRsblePI=;
+	s=korg; t=1750715450;
+	bh=CcB0//16VI6GeGcMt9pfYetZwlD0a26JqMdNZ4HrMnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QSfkbdYcZYCHKppoOyRVJGr+vtzBUyi1eK0+OAtfnNM7LFB8UXae7ptLcl1r/3l0a
-	 YCrl2KNKwQHdn06sbmn8T0XWrWg2wMc4DNEPmedZeLT/RNqVbDhvRqPp3DcLiREP+J
-	 VwVO5WznMYeNiBu52qUpRqorh8jfIRuHbeAvjpe8=
+	b=KoFpn7ZEFF6u1drCEQXvZgPpXTyZKfrBNqrpLfZyWRBwt8VDxD6QNRRYFrfs0eHhF
+	 +cGXoZ1HWX8joV2687DA0vzCo6/s07qsz9F3lB/I6GKagYBicHt69vkh3oARZu/sHv
+	 exH+rXU9t5Waa3YKHjqJM09CIe1UuwRUuCuph1g4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.15 176/411] kbuild: Add KBUILD_CPPFLAGS to as-option invocation
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	gldrk <me@rarity.fan>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 183/414] ACPICA: utilities: Fix overflow check in vsnprintf()
 Date: Mon, 23 Jun 2025 15:05:20 +0200
-Message-ID: <20250623130638.118981099@linuxfoundation.org>
+Message-ID: <20250623130646.598334158@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: gldrk <me@rarity.fan>
 
-commit 43fc0a99906e04792786edf8534d8d58d1e9de0c upstream.
+[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
 
-After commit feb843a469fb ("kbuild: add $(CLANG_FLAGS) to
-KBUILD_CPPFLAGS"), there is an error while building certain PowerPC
-assembly files with clang:
+ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
 
-  arch/powerpc/lib/copypage_power7.S: Assembler messages:
-  arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000'
-  arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010'
-  arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000'
-  arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010'
-  arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010'
-  clang: error: assembler command failed with exit code 1 (use -v to see invocation)
+The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX].
 
-as-option only uses KBUILD_AFLAGS, so after removing CLANG_FLAGS from
-KBUILD_AFLAGS, there is no more '--target=' or '--prefix=' flags. As a
-result of those missing flags, the host target
-will be tested during as-option calls and likely fail, meaning necessary
-flags may not get added when building assembly files, resulting in
-errors like seen above.
-
-Add KBUILD_CPPFLAGS to as-option invocations to clear up the errors.
-This should have been done in commit d5c8d6e0fa61 ("kbuild: Update
-assembler calls to use proper flags and language target"), which
-switched from using the assembler target to the assembler-with-cpp
-target, so flags that affect preprocessing are passed along in all
-relevant tests. as-option now mirrors cc-option.
-
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/CA+G9fYs=koW9WardsTtora+nMgLR3raHz-LSLr58tgX4T5Mxag@mail.gmail.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://github.com/acpica/acpica/commit/d9d59b79
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: gldrk <me@rarity.fan>
+[ rjw: Added the tag from gldrk ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.compiler |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/utprint.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -32,7 +32,7 @@ try-run = $(shell set -e;		\
- # Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index 42b30b9f93128..7fad03c5252c3 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
  
- as-option = $(call try-run,\
--	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+ 	pos = string;
  
- # as-instr
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
+-	if (size != ACPI_UINT32_MAX) {
+-		end = string + size;
+-	} else {
+-		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
+-	}
++	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
++	end = string + size;
+ 
+ 	for (; *format; ++format) {
+ 		if (*format != '%') {
+-- 
+2.39.5
+
 
 
 
