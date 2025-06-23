@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E9D5AE4F27
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23EA2AE53F5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7B441641B1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93AF818868C9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B32221F34;
-	Mon, 23 Jun 2025 21:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECAE5222576;
+	Mon, 23 Jun 2025 21:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QPEEcI7v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcADnLHu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34C8322069F;
-	Mon, 23 Jun 2025 21:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9E013FB1B;
+	Mon, 23 Jun 2025 21:57:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713170; cv=none; b=KMw/u7VDMz96FH++PrmTdpnMbICzgAJfSIgz7s6LTNcs5PZgSIzywXhvtiB4dLeNY4vSaHheUyvDAzvVDTWyADqDitPmBJtcv4SDszzetSYeZp3G9gufVJIZXxp+wGJBR6si3BKcl+k4ft6rlJMjmaQ6zwCaTGJwN6aFN+JnTWg=
+	t=1750715858; cv=none; b=FdpIQW2f098j57TmtDd0MVb/r6WgmBUoXINl9hVLFWak9u8xrEA5iQ5h6fviRa3AGVatHqDz55xgDYF8XySnJYWyFf+85deeE3Yy3YxjXw+oiV7kJ4++YN3B1mGydG3xNy0VHHt36YmYTmIi0jjSBQX199O+keSOYloBdPlmzuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713170; c=relaxed/simple;
-	bh=6y7R+yHZ0NuIFWKnAPjycc/3CX4GM1DIIGWFtTPYTY4=;
+	s=arc-20240116; t=1750715858; c=relaxed/simple;
+	bh=g+npIdFhLzKX4lCG6y3wUhqZ7pLKtCMUCxtBBL4Tbj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRcjZ7TY/fYIXzLm0/haYwz55qT1MlLD5pOP0V9q4YYbn+vn3jB7v3By/Bc8BJ062H+x5CGBr66fCX0dqYZ29j4/FyjrKpYt70/7Z/mYDpZmKcm7ZsOPJRxWKXf+E9Gszc5gYYtONnGQYfd8/jDOuIHFMpMUyr7Le86pY6RprsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QPEEcI7v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1367C4CEEA;
-	Mon, 23 Jun 2025 21:12:49 +0000 (UTC)
+	 MIME-Version; b=t9osNO11MvbHgsoDM0/JoUilxgWxhy6GqkIxFERShNx/r40VdgOQw5Az60etWo4GZGqIHHSBCDyUG/kWcg7run1g+9k3czpC/3+ofAQ5Qe88dziA/QqMD8ukXpAFkXVlQImGJEz6HAZiTx+6nwjhAou2wTloTEbo9a9iwSnawEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcADnLHu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C5DCC4CEEA;
+	Mon, 23 Jun 2025 21:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713170;
-	bh=6y7R+yHZ0NuIFWKnAPjycc/3CX4GM1DIIGWFtTPYTY4=;
+	s=korg; t=1750715858;
+	bh=g+npIdFhLzKX4lCG6y3wUhqZ7pLKtCMUCxtBBL4Tbj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QPEEcI7vs1qi5Hy6T91ECPYA/ajSK/qLvkwOOOfKiQHhVP9T/NTn3VBtnsl287Six
-	 hbO3yyqHgoeMhIpdoGGJ1gGxPrwmlqEmMh7BKBjkHmygYHoT3Ifj/snyQL3yL4/jb2
-	 RyrgLrxAZJ4A+YxlzpkOqNj08jLuS+qGT9csKqik=
+	b=IcADnLHunz8O0dc4encM+q20C/4gCDfEw3myv9kzdlB6h7gk8IwqnXdgJCIiFZAZ4
+	 p+VFCsOFhwQ9muFH8NPVDKHruf44G3pg71xfFNKsrMm1F8j9N0EcW/3V+9Q8M7CTen
+	 qfSYcFEHa2y9chsJ4tZc00IJlY17KhHrRhCXZZ0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Brett Creeley <brett.creeley@amd.com>,
+	Shannon Nelson <shannon.nelson@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 172/222] wifi: mac80211: do not offer a mesh path if forwarding is disabled
+Subject: [PATCH 6.6 246/290] ionic: Prevent driver/fw getting out of sync on devcmd(s)
 Date: Mon, 23 Jun 2025 15:08:27 +0200
-Message-ID: <20250623130617.243478433@linuxfoundation.org>
+Message-ID: <20250623130634.325639620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Brett Creeley <brett.creeley@amd.com>
 
-[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
+[ Upstream commit 5466491c9e3309ed5c7adbb8fad6e93fcc9a8fe9 ]
 
-When processing a PREQ the code would always check whether we have a
-mesh path locally and reply accordingly. However, when forwarding is
-disabled then we should not reply with this information as we will not
-forward data packets down that path.
+Some stress/negative firmware testing around devcmd(s) returning
+EAGAIN found that the done bit could get out of sync in the
+firmware when it wasn't cleared in a retry case.
 
-Move the check for dot11MeshForwarding up in the function and skip the
-mesh path lookup in that case. In the else block, set forward to false
-so that the rest of the function becomes a no-op and the
-dot11MeshForwarding check does not need to be duplicated.
+While here, change the type of the local done variable to a bool
+to match the return type from ionic_dev_cmd_done().
 
-This explains an effect observed in the Freifunk community where mesh
-forwarding is disabled. In that case a mesh with three STAs and only bad
-links in between them, individual STAs would occionally have indirect
-mpath entries. This should not have happened.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: ec8ee714736e ("ionic: stretch heartbeat detection")
+Signed-off-by: Brett Creeley <brett.creeley@amd.com>
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20250609212827.53842-1-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_hwmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/pensando/ionic/ionic_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 295f98b4502e0..ae1c700dc82e8 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -620,7 +620,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 				mesh_path_add_gate(mpath);
- 		}
- 		rcu_read_unlock();
--	} else {
-+	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
- 		rcu_read_lock();
- 		mpath = mesh_path_lookup(sdata, target_addr);
- 		if (mpath) {
-@@ -638,6 +638,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 		rcu_read_unlock();
-+	} else {
-+		forward = false;
- 	}
+diff --git a/drivers/net/ethernet/pensando/ionic/ionic_main.c b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+index 3ca6893d1bf26..2869922cffe2e 100644
+--- a/drivers/net/ethernet/pensando/ionic/ionic_main.c
++++ b/drivers/net/ethernet/pensando/ionic/ionic_main.c
+@@ -464,9 +464,9 @@ static int __ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds,
+ 	unsigned long start_time;
+ 	unsigned long max_wait;
+ 	unsigned long duration;
+-	int done = 0;
+ 	bool fw_up;
+ 	int opcode;
++	bool done;
+ 	int err;
  
- 	if (reply) {
-@@ -655,7 +657,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
- 
--	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
-+	if (forward) {
- 		u32 preq_id;
- 		u8 hopcount;
- 
+ 	/* Wait for dev cmd to complete, retrying if we get EAGAIN,
+@@ -474,6 +474,7 @@ static int __ionic_dev_cmd_wait(struct ionic *ionic, unsigned long max_seconds,
+ 	 */
+ 	max_wait = jiffies + (max_seconds * HZ);
+ try_again:
++	done = false;
+ 	opcode = idev->opcode;
+ 	start_time = jiffies;
+ 	for (fw_up = ionic_is_fw_running(idev);
 -- 
 2.39.5
 
