@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-156703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7EF84AE50C2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62B63AE5443
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA9A1B62C70
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FDF0446ECE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94ACF1EEA3C;
-	Mon, 23 Jun 2025 21:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C775224AED;
+	Mon, 23 Jun 2025 22:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4DO7uVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVqjdhPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5147F19C554;
-	Mon, 23 Jun 2025 21:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCB8A1D86DC;
+	Mon, 23 Jun 2025 22:00:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714062; cv=none; b=l25+7CW9fp1JHdhK5OwgggI8xk+SCFjhNi6smu8PxT/GohwJ8faTe+tPu4bRs1kSq/dcYRIHrsWEDkiveCF9w44+daQiKaqCLigG6XqBV2mzO1XXBkOYJ+vtxen32054NZmM3podk6i+vJeG48DYvKSUShFZGdY9C3bj+qy4+OQ=
+	t=1750716007; cv=none; b=MPFsA7O59LxC4n2OFDot2p25xWdwE05mk+K/AhiqZU9iWrEa5lzSA4R0Cg4mW3P2Leq4haou7PdBydzHNfq2YTwzS6N0druIqY1JuTvkK/Sih6G3Favfp2efUV4rnjwpNdTMdh8ELQ9xY2aI2zuWsL6GpntvZzr/Wp9htyl+v1c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714062; c=relaxed/simple;
-	bh=rjTqYtR6t9kcTXcwXjGihMn4i61bjaI5b+7L4iPyHXo=;
+	s=arc-20240116; t=1750716007; c=relaxed/simple;
+	bh=0EMVsIMbvzbaBG+twu5th4sRVusv1KBg9E9Hx+zLwZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dQ2dkBmO94IYdAt9bf7ttxrn9xdciaJ5yNKct/1bEN0NktrYi+Kul6Ytt+3OvUJq+Oz324WlNEh8oR36SmDLFlfknxam3IPuSb8tNDjNfwEN2slY+O7c9u7xlvMwpSrMUUe57i1tT9fFe99i83jeDS2IlzBk9bBsML7G4Md7T8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4DO7uVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF119C4CEEA;
-	Mon, 23 Jun 2025 21:27:41 +0000 (UTC)
+	 MIME-Version; b=E+PC8H4Tu8acXKem3KTqqJEeqww49KIb62IJBZ2sOLhQDF2+OLWOt79zgIVK4TbLIzKxehBXRogvXo1VGfrZHZObcChHMi9V6UKYyWtX+mr3USVdby66FYlv+jGkkqgYmW6UtVbedSK+Xgv7IOl0yQms/SAkbRZEapPZHOwgswA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVqjdhPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E354BC4CEF1;
+	Mon, 23 Jun 2025 22:00:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714062;
-	bh=rjTqYtR6t9kcTXcwXjGihMn4i61bjaI5b+7L4iPyHXo=;
+	s=korg; t=1750716007;
+	bh=0EMVsIMbvzbaBG+twu5th4sRVusv1KBg9E9Hx+zLwZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4DO7uViGTOj3GSWS90Pf12Nm0+5rzqSxu7WJn7fWV/+5Aj2kWWeB5U/9YyfaIV0n
-	 3O1CdbEXcK3IRmhIocFypHfa4SX68soCTDqt0FT7HzDpJlLUqNB/ggbgOGNJi0JdEL
-	 HfUYdiuX0rnez6Sc6sInLeR0wMFD2DFZ3vwNEuvk=
+	b=tVqjdhPBMmth3Av6Wts/Ms8h1y26HpnRVmRt2nOm4lNLlk961jtg2HbC0wrN+KRTw
+	 Eh8N9MBzdNdiJNMiYzKxMJBQI9piec1cDXzJGsIfbjm10gbiTFS6W1X6vfTcy8lIbP
+	 JZw2FGP8Nb1VIU06KqEj6hNrATIn9rCpGP1/vZhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vlad Dogaru <vdogaru@nvidia.com>,
-	Yevgeny Kliteynik <kliteyn@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 361/592] net/mlx5: HWS, fix counting of rules in the matcher
+	Tom Rini <trini@konsulko.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1 274/508] kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS
 Date: Mon, 23 Jun 2025 15:05:19 +0200
-Message-ID: <20250623130709.030368136@linuxfoundation.org>
+Message-ID: <20250623130651.989915796@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,102 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yevgeny Kliteynik <kliteyn@nvidia.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 4c56b5cbc323a10ebb6595500fb78fd8a4762efd ]
+commit feb843a469fb0ab00d2d23cfb9bcc379791011bb upstream.
 
-Currently the counter that counts number of rules in a matcher is
-increased only when rule insertion is completed. In a multi-threaded
-usecase this can lead to a scenario that many rules can be in process
-of insertion in the same matcher, while none of them has completed
-the insertion and the rule counter is not updated. This results in
-a rule insertion failure for many of them at first attempt, which
-leads to all of them requiring rehash and requiring locking of all
-the queue locks.
+When preprocessing arch/*/kernel/vmlinux.lds.S, the target triple is
+not passed to $(CPP) because we add it only to KBUILD_{C,A}FLAGS.
 
-This patch fixes the case by increasing the rule counter in the
-beginning of insertion process and decreasing in case of any failure.
+As a result, the linker script is preprocessed with predefined macros
+for the build host instead of the target.
 
-Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
-Signed-off-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
-Reviewed-by: Mark Bloch <mbloch@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1746992290-568936-8-git-send-email-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assuming you use an x86 build machine, compare the following:
+
+ $ clang -dM -E -x c /dev/null
+ $ clang -dM -E -x c /dev/null -target aarch64-linux-gnu
+
+There is no actual problem presumably because our linker scripts do not
+rely on such predefined macros, but it is better to define correct ones.
+
+Move $(CLANG_FLAGS) to KBUILD_CPPFLAGS, so that all *.c, *.S, *.lds.S
+will be processed with the proper target triple.
+
+[Note]
+After the patch submission, we got an actual problem that needs this
+commit. (CBL issue 1859)
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1859
+Reported-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ scripts/Makefile.clang |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-index 32de8bfc7644f..3f8f4306d90b3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/bwc.c
-@@ -329,16 +329,12 @@ static void hws_bwc_rule_list_add(struct mlx5hws_bwc_rule *bwc_rule, u16 idx)
- {
- 	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
- 
--	atomic_inc(&bwc_matcher->num_of_rules);
- 	bwc_rule->bwc_queue_idx = idx;
- 	list_add(&bwc_rule->list_node, &bwc_matcher->rules[idx]);
- }
- 
- static void hws_bwc_rule_list_remove(struct mlx5hws_bwc_rule *bwc_rule)
- {
--	struct mlx5hws_bwc_matcher *bwc_matcher = bwc_rule->bwc_matcher;
--
--	atomic_dec(&bwc_matcher->num_of_rules);
- 	list_del_init(&bwc_rule->list_node);
- }
- 
-@@ -391,6 +387,7 @@ int mlx5hws_bwc_rule_destroy_simple(struct mlx5hws_bwc_rule *bwc_rule)
- 	mutex_lock(queue_lock);
- 
- 	ret = hws_bwc_rule_destroy_hws_sync(bwc_rule, &attr);
-+	atomic_dec(&bwc_matcher->num_of_rules);
- 	hws_bwc_rule_list_remove(bwc_rule);
- 
- 	mutex_unlock(queue_lock);
-@@ -860,7 +857,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
- 	}
- 
- 	/* check if number of rules require rehash */
--	num_of_rules = atomic_read(&bwc_matcher->num_of_rules);
-+	num_of_rules = atomic_inc_return(&bwc_matcher->num_of_rules);
- 
- 	if (unlikely(hws_bwc_matcher_rehash_size_needed(bwc_matcher, num_of_rules))) {
- 		mutex_unlock(queue_lock);
-@@ -874,6 +871,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
- 				    bwc_matcher->size_log - MLX5HWS_BWC_MATCHER_SIZE_LOG_STEP,
- 				    bwc_matcher->size_log,
- 				    ret);
-+			atomic_dec(&bwc_matcher->num_of_rules);
- 			return ret;
- 		}
- 
-@@ -906,6 +904,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
- 
- 	if (ret) {
- 		mlx5hws_err(ctx, "BWC rule insertion: rehash failed (%d)\n", ret);
-+		atomic_dec(&bwc_matcher->num_of_rules);
- 		return ret;
- 	}
- 
-@@ -921,6 +920,7 @@ int mlx5hws_bwc_rule_create_simple(struct mlx5hws_bwc_rule *bwc_rule,
- 	if (unlikely(ret)) {
- 		mutex_unlock(queue_lock);
- 		mlx5hws_err(ctx, "BWC rule insertion failed (%d)\n", ret);
-+		atomic_dec(&bwc_matcher->num_of_rules);
- 		return ret;
- 	}
- 
--- 
-2.39.5
-
+--- a/scripts/Makefile.clang
++++ b/scripts/Makefile.clang
+@@ -36,6 +36,5 @@ endif
+ # so they can be implemented or wrapped in cc-option.
+ CLANG_FLAGS	+= -Werror=unknown-warning-option
+ CLANG_FLAGS	+= -Werror=ignored-optimization-argument
+-KBUILD_CFLAGS	+= $(CLANG_FLAGS)
+-KBUILD_AFLAGS	+= $(CLANG_FLAGS)
++KBUILD_CPPFLAGS	+= $(CLANG_FLAGS)
+ export CLANG_FLAGS
 
 
 
