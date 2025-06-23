@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B85DAAE4528
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA33AAE443F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07D4117E672
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E42D189D2A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151CB252910;
-	Mon, 23 Jun 2025 13:43:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C196259CA8;
+	Mon, 23 Jun 2025 13:34:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVRsgEMh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkIgQ7Ub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4B552472A2;
-	Mon, 23 Jun 2025 13:43:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE4E02505A9;
+	Mon, 23 Jun 2025 13:34:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686205; cv=none; b=qs6kIoafkoRvTpLltJZeFL/8M5yFk+FvFLE41wVz+zJtzDU98gqJFKC4V4IbcKc9fEwqTAV/0LP9dNKU7+dw03x3yAL0rkxZp2qcH7DxFzcFdlpw3YFMAN5fixFinpjddv0CIGFDlyX3X5463UO97No7ySBptmx6ndwlWWopG5M=
+	t=1750685659; cv=none; b=XnYjIqQP5Pfr76nEdT4lJnz6rbsf9MLm+w3sdTF3qtcqAal0kbfKJj0cSXE5goN8OquUsXeYQee9DcIjW+h28zaAsbY2R0bTo+J+70JIcRxnxJACmj+hV6mT5118alFzC7CSxVvbvJewMxP5w/S8dcKlZnZvh4yZfsP1VIXTE2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686205; c=relaxed/simple;
-	bh=5GnFsoZ6zKVOvEvInc74nLiYMhEg5mgixQ4GyWMEMDc=;
+	s=arc-20240116; t=1750685659; c=relaxed/simple;
+	bh=5vyrZdVMDQsy04zO2iLUaZx52pVuFNgZ9NHkJVmKMPU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h+9C+22EI/OyW41eaLLjQXe9RWodDSJCH7knFXNSv4OvmZYh9j0vQNTS8TE/YhJBgXy5SLyB1pN5OE06lWAe6UF59UownE6RIJxeVXKvIa1hofZi7YIHJoY8lNSLwiAmrHzkdcv/2MaycKdrzU6wsQGtD1eRZT37CU8q/YgpZp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVRsgEMh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11318C4CEEA;
-	Mon, 23 Jun 2025 13:43:24 +0000 (UTC)
+	 MIME-Version; b=fabWzuyW4q36Z+cSeQ6A3M+43ALciwfDtxmtR0lTySIfD7IO+QjWdt6lB1IAJ7Hywz5B2tkRC5BsLnm5sSIXPgWJzm5wbZNBcdyq2ViC7rgZM12kCNGRmZM2GA0/OlJB//v40pjUyWjR6IaAtX6ghVWHmtPBJ8cZPGe/lUuHVyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkIgQ7Ub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04B6C4CEEA;
+	Mon, 23 Jun 2025 13:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686205;
-	bh=5GnFsoZ6zKVOvEvInc74nLiYMhEg5mgixQ4GyWMEMDc=;
+	s=korg; t=1750685659;
+	bh=5vyrZdVMDQsy04zO2iLUaZx52pVuFNgZ9NHkJVmKMPU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PVRsgEMhc07qnf7OCxpm0aDYQ9dCpD6lNh72PCfmIwUA+ttCF1avdfWpYnF5Vdj6w
-	 N2FhwPqIjlhDSCDaqeEtlAiBcaEGFcwG2XlgBq2HUcaEgcFJG2k5MM1EclmJ+1JcTd
-	 VS45bEcK77++o6y446tDu86QI8ogHm929PLRgVpo=
+	b=wkIgQ7Ub0j3W+884Wb22wc3o8bNCIgE1eU2pv/5MS1xI4DyK7h7LyoY7amVDu9wNo
+	 a95W+JmfQO5JBb8PapkO8XubYsEMHZobw7Vgin9KXnqvoTUUG29pv/+XbzlOV7Glbb
+	 Ttk5OJW6Pdx8/tps0QUPa0Y8Ey/AfCVWRd+pYnKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 309/592] media: qcom: venus: Fix uninitialized variable warning
+Subject: [PATCH 5.10 066/355] bus: fsl-mc: fix double-free on mc_dev
 Date: Mon, 23 Jun 2025 15:04:27 +0200
-Message-ID: <20250623130707.759875648@linuxfoundation.org>
+Message-ID: <20250623130628.812089038@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nas Chung <nas.chung@chipsnmedia.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-[ Upstream commit 8e172e38a623ce284baf2514f963b29e4d47c62e ]
+[ Upstream commit d694bf8a9acdbd061596f3e7549bc8cb70750a60 ]
 
-Avoid uninitialized variable when both V4L2_TYPE_IS_OUTPUT() and
-V4L2_TYPE_IS_CAPTURE() return false.
+The blamed commit tried to simplify how the deallocations are done but,
+in the process, introduced a double-free on the mc_dev variable.
 
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+In case the MC device is a DPRC, a new mc_bus is allocated and the
+mc_dev variable is just a reference to one of its fields. In this
+circumstance, on the error path only the mc_bus should be freed.
+
+This commit introduces back the following checkpatch warning which is a
+false-positive.
+
+WARNING: kfree(NULL) is safe and this check is probably not required
++       if (mc_bus)
++               kfree(mc_bus);
+
+Fixes: a042fbed0290 ("staging: fsl-mc: simplify couple of deallocations")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-2-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/venus/vdec.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bus/fsl-mc/fsl-mc-bus.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/venus/vdec.c b/drivers/media/platform/qcom/venus/vdec.c
-index 9f82882b77bcc..39d0556d7237d 100644
---- a/drivers/media/platform/qcom/venus/vdec.c
-+++ b/drivers/media/platform/qcom/venus/vdec.c
-@@ -154,14 +154,14 @@ find_format_by_index(struct venus_inst *inst, unsigned int index, u32 type)
- 		return NULL;
+diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
+index e329cdd7156c9..9c207f1c19fbd 100644
+--- a/drivers/bus/fsl-mc/fsl-mc-bus.c
++++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
+@@ -800,8 +800,10 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
  
- 	for (i = 0; i < size; i++) {
--		bool valid;
-+		bool valid = false;
+ error_cleanup_dev:
+ 	kfree(mc_dev->regions);
+-	kfree(mc_bus);
+-	kfree(mc_dev);
++	if (mc_bus)
++		kfree(mc_bus);
++	else
++		kfree(mc_dev);
  
- 		if (fmt[i].type != type)
- 			continue;
- 
- 		if (V4L2_TYPE_IS_OUTPUT(type)) {
- 			valid = venus_helper_check_codec(inst, fmt[i].pixfmt);
--		} else if (V4L2_TYPE_IS_CAPTURE(type)) {
-+		} else {
- 			valid = venus_helper_check_format(inst, fmt[i].pixfmt);
- 
- 			if (fmt[i].pixfmt == V4L2_PIX_FMT_QC10C &&
+ 	return error;
+ }
 -- 
 2.39.5
 
