@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA7F4AE4525
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3A4FAE4483
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD7D4411AA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4395617A312
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687AC253953;
-	Mon, 23 Jun 2025 13:38:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A92252900;
+	Mon, 23 Jun 2025 13:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSx0CY9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHbD9SSq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2572B16419;
-	Mon, 23 Jun 2025 13:38:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836C7347DD;
+	Mon, 23 Jun 2025 13:36:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685911; cv=none; b=JyA+pcWOLDZt5canvZDTjiuG7B6j2FxZpfTZrWa720tT3DlXCHpJYyv3Dd+e0czFLaqCxHmn10qOSfllUjBPrUHdTu2Ye66fqDSL/XsLr8TFO7XaTAsWqEdXz3KdXctKubeti8NyY5tpF9p7woNNV+jKctjBu8JTFwEu2wergNs=
+	t=1750685802; cv=none; b=atDHsh1RoXqmuwbUPAys0ReZG+MYcQjGDuBTzvrtIF0LQt5ApZYbMTc0S0miwqS28Gh55zBqA9sSPKXNnWpnQ6pHRBEM2ROIHmrPvFoS2Cc/v/dy0fAS6PA9VCdu/ERpTX1d7CDq0oq7lKjQ0uLy1mT4Ukm7kELImVwG0ZJAg1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685911; c=relaxed/simple;
-	bh=h+JjM/rEjFVIdTsO9l/6WJMoMnUmL+V+rn+LtVrgNNE=;
+	s=arc-20240116; t=1750685802; c=relaxed/simple;
+	bh=Vkz45OexMB28NveXkSAs6zn3OmPcn2SweWwZqJ2CoCQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F++fm6VLwOx+nzaMzzT30I2XxSEkfnSiGRgLRAu0WMBB2IjmTf7U9Yw7GRib1NVGmt289cFyVkTU4hOvsIrLzZp3vtr9AR4XAZ9nt+pc8WKciIMV9sVbmYM1V0ih2mT6dJf8dti1hhhhizua6DyKQkfM42r3GSwaiiqeOmZBJG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSx0CY9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A136C4CEEA;
-	Mon, 23 Jun 2025 13:38:30 +0000 (UTC)
+	 MIME-Version; b=sm/nmOEMUiqvstanRzJlZZeo4o+zw4ZI7SsrSYiUX6lIYf0FxokFpVNK14N5ywAPG/KSQZVZMH5UDHij7VrPzAek16PNxObgmEna7nLyHpnUztGq94Qv9vFJwr5PFZza2Q0U2be+qiFd4B96yDOAT7iAAyuaUrUJ6x/m4WNTq2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHbD9SSq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16390C4CEEA;
+	Mon, 23 Jun 2025 13:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685910;
-	bh=h+JjM/rEjFVIdTsO9l/6WJMoMnUmL+V+rn+LtVrgNNE=;
+	s=korg; t=1750685802;
+	bh=Vkz45OexMB28NveXkSAs6zn3OmPcn2SweWwZqJ2CoCQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSx0CY9zTKbOpOyb/469d+eqvxap33dkTylaQAwoQOvNAUYJ+La42gOgHo6693a19
-	 51GiiN//EZBFaPepNLfWJwbS3q86tjUpWe+OX6+NJHNpeemeW8S0Leo+DUkP3f2i98
-	 cN/NHrQgxkBMPfTlngqgIWyHsSYYwXAywGqAP22Q=
+	b=SHbD9SSq3pjcpIE5YhbyYcQDOZr64zPI4ZgD2+7drkre7/FzLQSIaE9WgtD4gJ2PG
+	 Ue+2M1WcXGEbLpXqheIB1+IIUzhAYsQ6co4/YtjBz7qpyOQucR2uBOhX0EHgvzZ5eQ
+	 lCVbzN5KLCO8/cXPv95b8Hhaau/kmxoAD0746Bxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vicki Pfau <vi@endrift.com>,
-	Hans de Goede <hdegoede@redhat.com>,
 	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 270/592] drm: panel-orientation-quirks: Add ZOTAC Gaming Zone
+Subject: [PATCH 5.15 084/411] ARM: dts: qcom: apq8064 merge hw splinlock into corresponding syscon device
 Date: Mon, 23 Jun 2025 15:03:48 +0200
-Message-ID: <20250623130706.744866711@linuxfoundation.org>
+Message-ID: <20250623130635.526139269@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vicki Pfau <vi@endrift.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 96c85e428ebaeacd2c640eba075479ab92072ccd ]
+[ Upstream commit 325c6a441ae1f8fcb1db9bb945b8bdbd3142141e ]
 
-Add a panel orientation quirk for the ZOTAC Gaming Zone handheld gaming device.
+Follow up the expected way of describing the SFPB hwspinlock and merge
+hwspinlock node into corresponding syscon node, fixing several dt-schema
+warnings.
 
-Signed-off-by: Vicki Pfau <vi@endrift.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250313211643.860786-2-vi@endrift.com
+Fixes: 24a9baf933dc ("ARM: dts: qcom: apq8064: Add hwmutex and SMEM nodes")
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-7-bcedd1406790@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/boot/dts/qcom-apq8064.dtsi | 13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index c554ad8f246b6..7ac0fd5391fea 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -517,6 +517,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "LTH17"),
- 		},
- 		.driver_data = (void *)&lcd800x1280_rightside_up,
-+	}, {	/* ZOTAC Gaming Zone */
-+		.matches = {
-+		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ZOTAC"),
-+		  DMI_EXACT_MATCH(DMI_BOARD_NAME, "G0A1W"),
-+		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {	/* One Mix 2S (generic strings, also match on bios date) */
- 		.matches = {
- 		  DMI_EXACT_MATCH(DMI_SYS_VENDOR, "Default string"),
+diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
+index d70f071fd8304..50436197fff4a 100644
+--- a/arch/arm/boot/dts/qcom-apq8064.dtsi
++++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
+@@ -211,12 +211,6 @@
+ 		};
+ 	};
+ 
+-	sfpb_mutex: hwmutex {
+-		compatible = "qcom,sfpb-mutex";
+-		syscon = <&sfpb_wrapper_mutex 0x604 0x4>;
+-		#hwlock-cells = <1>;
+-	};
+-
+ 	smem {
+ 		compatible = "qcom,smem";
+ 		memory-region = <&smem_region>;
+@@ -360,9 +354,10 @@
+ 			pinctrl-0 = <&ps_hold>;
+ 		};
+ 
+-		sfpb_wrapper_mutex: syscon@1200000 {
+-			compatible = "syscon";
+-			reg = <0x01200000 0x8000>;
++		sfpb_mutex: hwmutex@1200600 {
++			compatible = "qcom,sfpb-mutex";
++			reg = <0x01200600 0x100>;
++			#hwlock-cells = <1>;
+ 		};
+ 
+ 		intc: interrupt-controller@2000000 {
 -- 
 2.39.5
 
