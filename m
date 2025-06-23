@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156130-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41FE8AE44B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 004C8AE4546
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E36653B7C15
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D5AB63B9CC1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0F2E252906;
-	Mon, 23 Jun 2025 13:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B47424728E;
+	Mon, 23 Jun 2025 13:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0ZAQDoSg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDDhkz7+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8E930E84D;
-	Mon, 23 Jun 2025 13:34:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3A6242D90;
+	Mon, 23 Jun 2025 13:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685672; cv=none; b=kNk1h/LFgq6FuA8esAuudsgdwndqgRZMlmr0NnSQGzb3u4YFirq6ewDCXaDNtleQaKGiJQNyq3OZVTvK0tS2Jo70LRvXZxCEK6DOMlyW6S6wTJRetZKFzszyaGPN6AJYYENxR3FdF0BYhI9vPz/rPh8QxOLYZHwskfPfXVSklJo=
+	t=1750686223; cv=none; b=uTWnBsHJbfHVI5KMXY2Iym2kcOlZXByxnf9RmiuDROpGqKH+tLCznpl1vi3dgbDHG7zvALjgOrlVlIUpyTrkdL0AEZ+BDyCbiNnG0SDpZPnXnLpDys8U1sPXa3O5ZBU155D1dVA45GuZneIjBoLk71vJbxwITltiHeaQqOKRoP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685672; c=relaxed/simple;
-	bh=RRmkdQy/gZqKnjyostdrtQHKYJa+W4AR1adofNgv1fA=;
+	s=arc-20240116; t=1750686223; c=relaxed/simple;
+	bh=Y5HcotSkw7AM11lMpZ0akUOFk9UN1ILNAZj19BbWjNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W/FKoThQfd9X9R3eL5UCogzj0PBokg8KQtUDVahQE8i5nETbNqAMEoPDRKDAiisBMxOPx8JPiAOJOeAFDYa5IvaPyBtvgT8x1K8v8pImjdde3i1MDMO21Cgd9r0OD9T/n9LoRFfONKKTqBKtzjRkq0xan2vYocozJHZZVjbTu74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0ZAQDoSg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1014C4CEEA;
-	Mon, 23 Jun 2025 13:34:31 +0000 (UTC)
+	 MIME-Version; b=OuMdB8bx9+4iLwnasMi8BtCdu+CxWnbU+wAOGL3s/UJrpnO9PRYn6dma59TciYx5szHcCDfhpUXrwZ3/4NZfroeStglAT0fKYjH+kFpw/xC/KcenlHzhTTDeTDCZ48t6KXromotUz4j8gnlMjuIG5kKZmE+39+EXbwZpu7U1x+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDDhkz7+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CABFC4CEEA;
+	Mon, 23 Jun 2025 13:43:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685672;
-	bh=RRmkdQy/gZqKnjyostdrtQHKYJa+W4AR1adofNgv1fA=;
+	s=korg; t=1750686223;
+	bh=Y5HcotSkw7AM11lMpZ0akUOFk9UN1ILNAZj19BbWjNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0ZAQDoSgzoqRFm3O6wlpiJlg0QkszWHJlEW0F3GtC6H1OfCLBSzsAYgF95IhND450
-	 8y1jIJd8q3W6MSyu+sQGC6uDkeJOdjVLTNDCivWQeRJ4oq/FAZ4hkC8XRNnTDNC+9W
-	 QYoPNcQ3aUAvWVMezTpgnkfQbxlBl+5ZU3wRq8XA=
+	b=wDDhkz7+i8hVo6gfmVkmPZrUflGtoi42puMTKumJRttPlPo5RTC3ikDJ+BrXj3GRe
+	 PSae4SrZV3Ntuo4WHt5AuGNgpM4XH/SuEHuKdRG3n3j10UxS3pFKMLYfHv2KWhr+Sv
+	 sHg0ttfsDhYltkfPfUA7zSixzigwugtEaj+kojPw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Antonin Godard <antonin.godard@bootlin.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Louis Chauvet <louis.chauvet@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 067/355] ARM: dts: qcom: apq8064 merge hw splinlock into corresponding syscon device
+Subject: [PATCH 6.15 310/592] drm/panel: simple: Add POWERTIP PH128800T004-ZZA01 panel entry
 Date: Mon, 23 Jun 2025 15:04:28 +0200
-Message-ID: <20250623130628.845053508@linuxfoundation.org>
+Message-ID: <20250623130707.785519519@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Antonin Godard <antonin.godard@bootlin.com>
 
-[ Upstream commit 325c6a441ae1f8fcb1db9bb945b8bdbd3142141e ]
+[ Upstream commit 6374a1005f20c1c2f7bbcc1bc735c2be4910a685 ]
 
-Follow up the expected way of describing the SFPB hwspinlock and merge
-hwspinlock node into corresponding syscon node, fixing several dt-schema
-warnings.
+Add support for the POWERTIP PH128800T004-ZZA01 10.1" (1280x800)
+LCD-TFT panel. Its panel description is very much like the POWERTIP
+PH128800T006-ZHC01 configured below this one, only its timings are
+different.
 
-Fixes: 24a9baf933dc ("ARM: dts: qcom: apq8064: Add hwmutex and SMEM nodes")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-7-bcedd1406790@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Antonin Godard <antonin.godard@bootlin.com>
+Reviewed-by: Dmitry Baryshkov <lumag@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250311-add-powertip-ph128800t004-v1-2-7f95e6984cea@bootlin.com
+Signed-off-by: Louis Chauvet <louis.chauvet@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-apq8064.dtsi | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 29 ++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
-index 3f1002c34446c..ba6cc81684c86 100644
---- a/arch/arm/boot/dts/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
-@@ -211,12 +211,6 @@
- 		};
- 	};
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 3aaac96c0bfbf..53211b5eaa09b 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -3798,6 +3798,32 @@ static const struct panel_desc pda_91_00156_a0  = {
+ 	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+ };
  
--	sfpb_mutex: hwmutex {
--		compatible = "qcom,sfpb-mutex";
--		syscon = <&sfpb_wrapper_mutex 0x604 0x4>;
--		#hwlock-cells = <1>;
--	};
--
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
-@@ -360,9 +354,10 @@
- 			pinctrl-0 = <&ps_hold>;
- 		};
- 
--		sfpb_wrapper_mutex: syscon@1200000 {
--			compatible = "syscon";
--			reg = <0x01200000 0x8000>;
-+		sfpb_mutex: hwmutex@1200600 {
-+			compatible = "qcom,sfpb-mutex";
-+			reg = <0x01200600 0x100>;
-+			#hwlock-cells = <1>;
- 		};
- 
- 		intc: interrupt-controller@2000000 {
++static const struct drm_display_mode powertip_ph128800t004_zza01_mode = {
++	.clock = 71150,
++	.hdisplay = 1280,
++	.hsync_start = 1280 + 48,
++	.hsync_end = 1280 + 48 + 32,
++	.htotal = 1280 + 48 + 32 + 80,
++	.vdisplay = 800,
++	.vsync_start = 800 + 9,
++	.vsync_end = 800 + 9 + 8,
++	.vtotal = 800 + 9 + 8 + 6,
++	.flags = DRM_MODE_FLAG_PHSYNC | DRM_MODE_FLAG_PVSYNC,
++};
++
++static const struct panel_desc powertip_ph128800t004_zza01 = {
++	.modes = &powertip_ph128800t004_zza01_mode,
++	.num_modes = 1,
++	.bpc = 8,
++	.size = {
++		.width = 216,
++		.height = 135,
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++	.bus_flags = DRM_BUS_FLAG_DE_HIGH,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
++};
++
+ static const struct drm_display_mode powertip_ph128800t006_zhc01_mode = {
+ 	.clock = 66500,
+ 	.hdisplay = 1280,
+@@ -5155,6 +5181,9 @@ static const struct of_device_id platform_of_match[] = {
+ 	}, {
+ 		.compatible = "pda,91-00156-a0",
+ 		.data = &pda_91_00156_a0,
++	}, {
++		.compatible = "powertip,ph128800t004-zza01",
++		.data = &powertip_ph128800t004_zza01,
+ 	}, {
+ 		.compatible = "powertip,ph128800t006-zhc01",
+ 		.data = &powertip_ph128800t006_zhc01,
 -- 
 2.39.5
 
