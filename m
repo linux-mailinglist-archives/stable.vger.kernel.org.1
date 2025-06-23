@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419F1AE44C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED1F5AE42DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2567417D714
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42A62189EF07
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91422472AF;
-	Mon, 23 Jun 2025 13:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F55F254869;
+	Mon, 23 Jun 2025 13:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oysd/dcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nexKXbhB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A0416419;
-	Mon, 23 Jun 2025 13:39:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDB4253B47;
+	Mon, 23 Jun 2025 13:21:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685986; cv=none; b=Bno3EeiClmJGjcIj0xQmzBLjYjbuQvAzMl90mdYXCoY6TnwdrFrIyhBjnoNWPLaokdqKyzCIjKxKLmbE9UXAeu7CFGGIzRMoF7JjOezqhwQt6NuKd8lrDvugoce7BgS+kLI7f4pO4yhQ4fPdGE/LFdEpljcrE+5dv0ZTv2Av+vY=
+	t=1750684897; cv=none; b=pr+/nFWkMx9eB5juiTbNbtXHtNvTEaLfOQkCDphLoFtmtvmQX45g18RSa/FzWASUYUBjm77qC0fPNY8pFlU/m4ICtu8ANt6PJNX2gIa7UyaSSaa8Dih1UFpkTJDledAxiFjvkaMK+cNnNLurLcwuXQmf5HM/hlwSKFbeTIeD5QU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685986; c=relaxed/simple;
-	bh=Lj7QYC67anznBAgT7PNaChcPOtF+N0pCEtuYE3qLt9I=;
+	s=arc-20240116; t=1750684897; c=relaxed/simple;
+	bh=ukGayRdj0enmx+UFFXdsd/JY5w6/uVfZf8veEDx+3mU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u8y9ekyZqz1ci48w9NBtsLym1WwVScDeaoAyG7MDzh3suFKn1WIrY5fh7VwSnsdS6x327HUbnD8P1EYwhltw3Aeh5Ip3wVY5kFRQwQlG6XsQRhDvY9ZJDkPBTdvqXjavg4Y7tYEAtD8d0ZkUW/B5u06oGnyzyGCvLU31hms1DLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oysd/dcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B5AC4CEEA;
-	Mon, 23 Jun 2025 13:39:46 +0000 (UTC)
+	 MIME-Version; b=OCH+pZChj0MD06itxHSgNDmLg+hOxY5LvEkms90tE7ctrn42rZpyBP6M78p559B0kRCoNI9gStZ42ZP/j6J9P8etGqKGp309pksnSKkLTrbOLVqQtTHP80AxRkrc/cJn+A8LpOCPrfYOM4zfZuUDwneU9K179RMx8bi3O2EniDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nexKXbhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757D7C4CEEA;
+	Mon, 23 Jun 2025 13:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685986;
-	bh=Lj7QYC67anznBAgT7PNaChcPOtF+N0pCEtuYE3qLt9I=;
+	s=korg; t=1750684896;
+	bh=ukGayRdj0enmx+UFFXdsd/JY5w6/uVfZf8veEDx+3mU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oysd/dcWA+KoJ38b8uO0MUqczSF9DMyu5SucxrDmUzdiH8XbBDmB2CiK3HxEQun39
-	 424Sw9xrbVfU6Il5riXt9J4WDg4IkxBw657DsM20xoqyQr+lNk1VvNdzy7l04kRNRo
-	 muG13NhcM3i8iMLDuOI7wiehlaomj7dzB+qJzOkg=
+	b=nexKXbhBOMGw5ONCczOqkeTrNJ47oHjV0x+wMIe4dtowkDKCwjvOefnX5iEOnbvwM
+	 Hhxsi5yO3Bmf2rMEnSwCocrxtsR2RSJKL6phXd8RlxBme0528Fd9k1XSIeKL1ry/A4
+	 ITTUEOD8iHfUydvKzZlc6JjKyQAl+Ig7VkGqOCKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li RongQing <lirongqing@baidu.com>,
-	Alex Williamson <alex.williamson@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 064/411] vfio/type1: Fix error unwind in migration dirty bitmap allocation
-Date: Mon, 23 Jun 2025 15:03:28 +0200
-Message-ID: <20250623130634.922621630@linuxfoundation.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.10 008/355] thunderbolt: Do not double dequeue a configuration request
+Date: Mon, 23 Jun 2025 15:03:29 +0200
+Message-ID: <20250623130626.990118838@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li RongQing <lirongqing@baidu.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-[ Upstream commit 4518e5a60c7fbf0cdff393c2681db39d77b4f87e ]
+commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
 
-When setting up dirty page tracking at the vfio IOMMU backend for
-device migration, if an error is encountered allocating a tracking
-bitmap, the unwind loop fails to free previously allocated tracking
-bitmaps.  This occurs because the wrong loop index is used to
-generate the tracking object.  This results in unintended memory
-usage for the life of the current DMA mappings where bitmaps were
-successfully allocated.
+Some of our devices crash in tb_cfg_request_dequeue():
 
-Use the correct loop index to derive the tracking object for
-freeing during unwind.
+ general protection fault, probably for non-canonical address 0xdead000000000122
 
-Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
-Signed-off-by: Li RongQing <lirongqing@baidu.com>
-Link: https://lore.kernel.org/r/20250521034647.2877-1-lirongqing@baidu.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+ RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+ Call Trace:
+ <TASK>
+ ? tb_cfg_request_dequeue+0x2d/0xa0
+ tb_cfg_request_work+0x33/0x80
+ worker_thread+0x386/0x8f0
+ kthread+0xed/0x110
+ ret_from_fork+0x38/0x50
+ ret_from_fork_asm+0x1b/0x30
+
+The circumstances are unclear, however, the theory is that
+tb_cfg_request_work() can be scheduled twice for a request:
+first time via frame.callback from ring_work() and second
+time from tb_cfg_request().  Both times kworkers will execute
+tb_cfg_request_dequeue(), which results in double list_del()
+from the ctl->request_queue (the list poison deference hints
+at it: 0xdead000000000122).
+
+Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+bit set.
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/thunderbolt/ctl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index 66bbb125d7615..6a89bbec738f6 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -303,7 +303,7 @@ static int vfio_dma_bitmap_alloc_all(struct vfio_iommu *iommu, size_t pgsize)
- 			struct rb_node *p;
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -131,6 +131,11 @@ static void tb_cfg_request_dequeue(struc
+ 	struct tb_ctl *ctl = req->ctl;
  
- 			for (p = rb_prev(n); p; p = rb_prev(p)) {
--				struct vfio_dma *dma = rb_entry(n,
-+				struct vfio_dma *dma = rb_entry(p,
- 							struct vfio_dma, node);
- 
- 				vfio_dma_bitmap_free(dma);
--- 
-2.39.5
-
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
++
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
 
 
 
