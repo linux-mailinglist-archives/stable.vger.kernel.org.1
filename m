@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 361C8AE43DA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18310AE43AA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BD84404E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33FD01736FF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094F42550BA;
-	Mon, 23 Jun 2025 13:29:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71DFB24E4C3;
+	Mon, 23 Jun 2025 13:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQW0LckJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGs2kkjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98BE2550A3;
-	Mon, 23 Jun 2025 13:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3054E248191;
+	Mon, 23 Jun 2025 13:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685356; cv=none; b=W822YSqO/Nd3r4oBWtNgcxV8OmRzU1RZlva7sh+x8RHvgaUwuaWkwSv1HEMZ4xHIhkflwjEjCH5w0SibBmQUFs/OnCEc+sjW2YiwF9gisWSzBIPirapyp+lZB69u62sk2BV/VJdB6kXmvNQ4BCs6bdpjXwKfE8ZKwfDLCVpc2fU=
+	t=1750685232; cv=none; b=EP3f7aPKKutYXn+flJQXz/iPUHuvT8kyhmslxfEfrD+CLljfRa7wSMwlmiCLjCwnVMY+CmJFeJwmPzBQxgQ/LGOuV0bq6tuiJhctu3u7yklXvb3S0JDA5Y5cM4zc5HqjbGGaEMsaYck8FSXqSzv01TwpCjOp9F/cwVp7s/nl4/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685356; c=relaxed/simple;
-	bh=lxB82SZhNeH9KzzV+vZFvyUqBpptXoV5K2rfc3AoXkg=;
+	s=arc-20240116; t=1750685232; c=relaxed/simple;
+	bh=ugY5IlcSoeCQBpSVeJJF70+bwcIE/GaHAPwtwBvSkKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sxc4Ph0NrfzICztuUreq5Hr2dQxycK/yvh3UvGyCScs81Giwibd66sKNYtMYzlf83D0RtN1isFuspjxiMLL+dsIWwmv7UJB75A+slcuMerQjdzQTYrdkzXY+em0PgPDfPXdBS6qHe8GUL+McdIfRkSPRxV3NbScAqvJvBV1IH5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQW0LckJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4541FC4CEEA;
-	Mon, 23 Jun 2025 13:29:16 +0000 (UTC)
+	 MIME-Version; b=iaM3jH8QQdQcQHshiIyrdneGv/vnm6yRYC93l78GGZ6pDR8SmOc5l1W6YFjDsttYs+UHrUBRKq1Ygx0OMABQU5ZwgMHmZVDdXXWNBiRfuo5FkC//AVral4A+TjftprEJOjFRmk1UrZ9zd05+X2bMdfhBauF1btkJXVXZWXbCo+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGs2kkjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65F7AC4CEEA;
+	Mon, 23 Jun 2025 13:27:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685356;
-	bh=lxB82SZhNeH9KzzV+vZFvyUqBpptXoV5K2rfc3AoXkg=;
+	s=korg; t=1750685231;
+	bh=ugY5IlcSoeCQBpSVeJJF70+bwcIE/GaHAPwtwBvSkKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JQW0LckJzAhwXWO3bRGYExw83peOdH69EFC72X1M2uV5cADC7U0eFaGyOljYRB89A
-	 SvWYNcfAVFLywvmEVk3uWuhz6eub/MOL17J3PfvcQnnl8/kFCDs7OUHnxoRGfqUmbp
-	 8XzWVC7kbO+eKhbRCXxQD6NuY7B15sNy5Q89KSRk=
+	b=ZGs2kkjyS+wbKtA+uIjpSPoJ1ZTUygZlKb0MJdXE0jQA8DWUX4A+JkAJCSJ2fRB2c
+	 Wwnm9nuuCyXMtcABMBvNxIsvz+3tW1n29pgOw5WC7PE03Dgl1DrLngIkEAqDwOwX8c
+	 89Ju6gn9oXI2pgH2OmABpew68mu7AUKa99pdpbbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Thompson <funaho@jurai.org>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	I Hsin Cheng <richard120310@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/411] m68k: mac: Fix macintosh_config for Mac II
+Subject: [PATCH 6.15 216/592] ASoC: intel/sdw_utils: Assign initial value in asoc_sdw_rt_amp_spk_rtd_init()
 Date: Mon, 23 Jun 2025 15:02:54 +0200
-Message-ID: <20250623130633.903393596@linuxfoundation.org>
+Message-ID: <20250623130705.422423548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: I Hsin Cheng <richard120310@gmail.com>
 
-[ Upstream commit 52ae3f5da7e5adbe3d1319573b55dac470abb83c ]
+[ Upstream commit 5fb3878216aece471af030b33a9fbef3babd8617 ]
 
-When booted on my Mac II, the kernel prints this:
+Initialize "ret" with "-EINVAL" to handle cases where "strstr()" for
+"codec_dai->component->name_prefix" doesn't find "-1" nor "-2". In that
+case "name_prefix" is invalid because for current implementation it's
+expected to have either "-1" or "-2" in it. (Maybe "-3", "-4" and so on
+in the future.)
 
-    Detected Macintosh model: 6
-    Apple Macintosh Unknown
-
-The catch-all entry ("Unknown") is mac_data_table[0] which is only needed
-in the unlikely event that the bootinfo model ID can't be matched.
-When model ID is 6, the search should begin and end at mac_data_table[1].
-Fix the off-by-one error that causes this problem.
-
-Cc: Joshua Thompson <funaho@jurai.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d0f30a551064ca4810b1c48d5a90954be80634a9.1745453246.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://scan5.scan.coverity.com/#/project-view/36179/10063?selectedIssue=1627120
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+Link: https://patch.msgid.link/20250505185423.680608-1-richard120310@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/config.c | 2 +-
+ sound/soc/sdw_utils/soc_sdw_rt_amp.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
-index 5d16f9b47aa90..75a5dd778d882 100644
---- a/arch/m68k/mac/config.c
-+++ b/arch/m68k/mac/config.c
-@@ -798,7 +798,7 @@ static void __init mac_identify(void)
- 	}
+diff --git a/sound/soc/sdw_utils/soc_sdw_rt_amp.c b/sound/soc/sdw_utils/soc_sdw_rt_amp.c
+index 0538c252ba69b..83c2368170cb5 100644
+--- a/sound/soc/sdw_utils/soc_sdw_rt_amp.c
++++ b/sound/soc/sdw_utils/soc_sdw_rt_amp.c
+@@ -190,7 +190,7 @@ int asoc_sdw_rt_amp_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc
+ 	const struct snd_soc_dapm_route *rt_amp_map;
+ 	char codec_name[CODEC_NAME_SIZE];
+ 	struct snd_soc_dai *codec_dai;
+-	int ret;
++	int ret = -EINVAL;
+ 	int i;
  
- 	macintosh_config = mac_data_table;
--	for (m = macintosh_config; m->ident != -1; m++) {
-+	for (m = &mac_data_table[1]; m->ident != -1; m++) {
- 		if (m->ident == model) {
- 			macintosh_config = m;
- 			break;
+ 	rt_amp_map = get_codec_name_and_route(dai, codec_name);
 -- 
 2.39.5
 
