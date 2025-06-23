@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B271FAE4F8C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10287AE5138
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 865811B6106C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A116E4A31F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFB02253F9;
-	Mon, 23 Jun 2025 21:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584041DDC04;
+	Mon, 23 Jun 2025 21:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YyK9ddor"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay4YS30O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C22F221FDC;
-	Mon, 23 Jun 2025 21:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DF5C2E0;
+	Mon, 23 Jun 2025 21:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713383; cv=none; b=sC4PEzfcxHefX6EXFfVuTSa22aHU/N4Gtl+t2BTQvUvDgFysjYSVKHmoYCxRqcD37QpuQad4x6bTyAsx6JSRmowW14b9K/AmQAwagmKY0knZtU4Y96BKwspEzNta4x/IjRhHOshcMKrY9oaVf3EZhp//BbeKxaPBmV+UhIh30/g=
+	t=1750714314; cv=none; b=bIsgo4ugqyvYWCsJcFEvvwt671uW3zj2Q17tclVzjFPBx6zcMSgQP/nlj/EmsbxULnojb0gkICXq/h8OV3TuQvnjDL3NqDCbhtFy/TpNcLH7cLnZe2AMj8lCYbn5RVU7a4InIDiG4HGkQZMEaKPX2el/pVHMQJv//QKTkjyHnp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713383; c=relaxed/simple;
-	bh=pxJMxhLxYTSzgSFO4LKvgO1VNDkysLnysbuWt5tfhyY=;
+	s=arc-20240116; t=1750714314; c=relaxed/simple;
+	bh=O3zN4yi4ORNAgt8Gqq3QzNWLUhQ3Im4eY5/Pgag6cWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dXUSqhjUYVlUGviGPwK6BLPRcleTbQBVvbW3ksJSSzA2nqZJVY8kDasr68CPkzOp/l8bZxjd8XUfqMKMt4ZxU7L1nd6fGqluuQann7KdRbpNhYUcFL5gy0Zy5hXbBHCRMiY1niFhfpCFPB4x0B8CSRnbkLCPt5m0FcK1Eu2h1R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YyK9ddor; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BFFC4CEEA;
-	Mon, 23 Jun 2025 21:16:22 +0000 (UTC)
+	 MIME-Version; b=Gp3BTjH+dMex2gS0Rzioqa89HnaMrZULVQ28fdHwtAJ10PBaXgPPwxzUkRr3KxRC5t5Ac47Cgmh84J+j7QpRC7zS8csVQs1Bm0r1Izk4PYxI5DLl0pOoB9TXoic/VC8gGNool37bPazoff6GoZHY9lB98u76UhUtbkDg3nqLJVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay4YS30O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A38C4CEEA;
+	Mon, 23 Jun 2025 21:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713382;
-	bh=pxJMxhLxYTSzgSFO4LKvgO1VNDkysLnysbuWt5tfhyY=;
+	s=korg; t=1750714313;
+	bh=O3zN4yi4ORNAgt8Gqq3QzNWLUhQ3Im4eY5/Pgag6cWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YyK9ddor0EG6X/CsmwBeEt0NAdT9tFjtikq1c73ylU5WlikUXW/QGUF2knqyyr0UI
-	 OFaUzI5xZOE3JDTDSZrSItJjgGxENc+ER3FgbxicQpq7bRma5cn+2S2zpkb48nOc9m
-	 iid33++tksbhuFTKRtjKTGSvKWSbJTkfHR3O5fU0=
+	b=Ay4YS30OsoNg2HTMrut+aEc46quf4RqFV7dheKrGi7+4nPThXKLhdNbm27QWa8PT6
+	 G3LazlMtCInIHTPw710xyNfHTCBavfeiflsBzmyz2pB+82qp5ABTOKsv6Ea/LJtJjo
+	 JBcvJmbEm814LgXkCeLkYeij4JZalyJiruHxKVsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 063/290] ext4: ensure i_size is smaller than maxbytes
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 5.15 180/411] usb: cdnsp: Fix issue with detecting command completion event
 Date: Mon, 23 Jun 2025 15:05:24 +0200
-Message-ID: <20250623130628.900335405@linuxfoundation.org>
+Message-ID: <20250623130638.216185769@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit 1a77a028a392fab66dd637cdfac3f888450d00af upstream.
+commit f4ecdc352646f7d23f348e5c544dbe3212c94fc8 upstream.
 
-The inode i_size cannot be larger than maxbytes, check it while loading
-inode from the disk.
+In some cases, there is a small-time gap in which CMD_RING_BUSY can be
+cleared by controller but adding command completion event to event ring
+will be delayed. As the result driver will return error code.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+This behavior has been detected on usbtest driver (test 9) with
+configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
+endpoint.
+
+Probably this gap occurred because controller was busy with adding some
+other events to event ring.
+
+The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
+executed and not when command completion event has been added to event
+ring.
+
+To fix this issue for this test the small delay is sufficient less than
+10us) but to make sure the problem doesn't happen again in the future
+the patch introduces 10 retries to check with delay about 20us before
+returning error code.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-gadget.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4939,7 +4939,8 @@ struct inode *__ext4_iget(struct super_b
- 		ei->i_file_acl |=
- 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
- 	inode->i_size = ext4_isize(sb, raw_inode);
--	if ((size = i_size_read(inode)) < 0) {
-+	size = i_size_read(inode);
-+	if (size < 0 || size > ext4_get_maxbytes(inode)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "iget: bad i_size value: %lld", size);
- 		ret = -EFSCORRUPTED;
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -546,6 +546,7 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 	dma_addr_t cmd_deq_dma;
+ 	union cdnsp_trb *event;
+ 	u32 cycle_state;
++	u32 retry = 10;
+ 	int ret, val;
+ 	u64 cmd_dma;
+ 	u32  flags;
+@@ -577,8 +578,23 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 		flags = le32_to_cpu(event->event_cmd.flags);
+ 
+ 		/* Check the owner of the TRB. */
+-		if ((flags & TRB_CYCLE) != cycle_state)
++		if ((flags & TRB_CYCLE) != cycle_state) {
++			/*
++			 * Give some extra time to get chance controller
++			 * to finish command before returning error code.
++			 * Checking CMD_RING_BUSY is not sufficient because
++			 * this bit is cleared to '0' when the Command
++			 * Descriptor has been executed by controller
++			 * and not when command completion event has
++			 * be added to event ring.
++			 */
++			if (retry--) {
++				udelay(20);
++				continue;
++			}
++
+ 			return -EINVAL;
++		}
+ 
+ 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
+ 
 
 
 
