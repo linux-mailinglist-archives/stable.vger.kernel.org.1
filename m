@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-156987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB22AE51FC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40584AE5225
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59651442DE0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75991B647E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52701222581;
-	Mon, 23 Jun 2025 21:39:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EE3221FDC;
+	Mon, 23 Jun 2025 21:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jlau/LcN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGV8D1PS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EA712222A9;
-	Mon, 23 Jun 2025 21:39:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C99519D084;
+	Mon, 23 Jun 2025 21:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714760; cv=none; b=qguSCXL9QCYLCH5yPi1CO2HOEz0W1Qeq3SNDX+5xjqNAi1PKG/e4D0D+tTbm7GkIw1Wiz/0tbO+qfoUI32x/S+Ft4URPV9Rztu3QEZJuWmKmj7IIyDVTEcYTmTLkskhCvirm+eU+q8qADX3GgXq1AJIyi5GbgLcSCcnbS5d1cRo=
+	t=1750714853; cv=none; b=NKfYXc5INQFSLhjVlepLWgi0RcCFXKWkKGsaBqPxRXbF0v+egU7fVaWcGjuvmweGHJRmwHpuRcO6VYWDxyzUYMLERnx1y86kCPiN62LyOj1Ahpu87rxCsGd/qMgAiA34nBYIaIE+zCvdgEAl9TUSv90IcKbH7HXC//fBfvEk5ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714760; c=relaxed/simple;
-	bh=mWkzf4+R4/o/ho+4NcSS+XodDoS0aolqDB+7fOZK8sI=;
+	s=arc-20240116; t=1750714853; c=relaxed/simple;
+	bh=8HdFSrtkt7nfxVr04OWKaaEAxjiX2W7XuPlXXRwI4Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7JlaaMTCMhyRzPUlkUa8xQTCE5kXli0Q0xddOQMBioySo94Fyl0eaJhVnhVEsHBhzpaAzjNQM/lZLzexWd1zSHpCwXMYqA1NvupIgfj01F/A6AUL64neLxcTAlEU30h11GpWPuQORO54aOTNkQKlAPbzZaw+UDwRRdkxmGjlaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jlau/LcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46B62C4CEF0;
-	Mon, 23 Jun 2025 21:39:17 +0000 (UTC)
+	 MIME-Version; b=D9LJLPhhuWalt7ZwZ6aWRHb04XWuzuR64M6aFqVgvWHBlQwmba47HRwzVgyptYRgUKUFQ21CFQH7N6/X0t4Y2X0Fa0WQqpRvgNMQQ9oF9VNK83O4ZP33ZBxX5Cck7biGcinyfCb1AQtOVvJqaV970Qt67xY1Rb/9MpvMausCWho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGV8D1PS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1292BC4CEEA;
+	Mon, 23 Jun 2025 21:40:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714757;
-	bh=mWkzf4+R4/o/ho+4NcSS+XodDoS0aolqDB+7fOZK8sI=;
+	s=korg; t=1750714853;
+	bh=8HdFSrtkt7nfxVr04OWKaaEAxjiX2W7XuPlXXRwI4Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jlau/LcN4yg0HkjZaIpWD2cVRBFs+fDoft6wR2/nm3kRqZihq+n3/BlHZPho7izqp
-	 8HZcrzZqT4Cwlg5gEYpqJlDrAKTM6/6Avim4nMsPmomI/hA7e7oAPqgVRmjWtHriMd
-	 wYrWczCNJFm7OLMUgaU610pgHaFBhu00Qk/TTOaA=
+	b=RGV8D1PSfYdNtFzYaP/ZxXd4L/jSwsksbeQMq6MKIpw5tgWdwaWBD4aHvSmwE6mng
+	 iWzVQiKZ+gG6yZC2xMy2Q6R7bNx64h+XSj9cdTYzB1BC+bkHU6a96vxica9jOjVNe1
+	 3XpMF08z/gJcycWMINrTbgRgKIkhLvOF/tbyUhMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.12 128/414] ftrace: Fix UAF when lookup kallsym after ftrace disabled
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 220/508] serial: sh-sci: Check if TX data was written to device in .tx_empty()
 Date: Mon, 23 Jun 2025 15:04:25 +0200
-Message-ID: <20250623130645.260207771@linuxfoundation.org>
+Message-ID: <20250623130650.676281137@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,117 +61,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit f914b52c379c12288b7623bb814d0508dbe7481d upstream.
+commit 7cc0e0a43a91052477c2921f924a37d9c3891f0c upstream.
 
-The following issue happens with a buggy module:
+On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
+is called. The uart_suspend_port() calls 3 times the
+struct uart_port::ops::tx_empty() before shutting down the port.
 
-BUG: unable to handle page fault for address: ffffffffc05d0218
-PGD 1bd66f067 P4D 1bd66f067 PUD 1bd671067 PMD 101808067 PTE 0
-Oops: Oops: 0000 [#1] SMP KASAN PTI
-Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-RIP: 0010:sized_strscpy+0x81/0x2f0
-RSP: 0018:ffff88812d76fa08 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffffffc0601010 RCX: dffffc0000000000
-RDX: 0000000000000038 RSI: dffffc0000000000 RDI: ffff88812608da2d
-RBP: 8080808080808080 R08: ffff88812608da2d R09: ffff88812608da68
-R10: ffff88812608d82d R11: ffff88812608d810 R12: 0000000000000038
-R13: ffff88812608da2d R14: ffffffffc05d0218 R15: fefefefefefefeff
-FS:  00007fef552de740(0000) GS:ffff8884251c7000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffc05d0218 CR3: 00000001146f0000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ftrace_mod_get_kallsym+0x1ac/0x590
- update_iter_mod+0x239/0x5b0
- s_next+0x5b/0xa0
- seq_read_iter+0x8c9/0x1070
- seq_read+0x249/0x3b0
- proc_reg_read+0x1b0/0x280
- vfs_read+0x17f/0x920
- ksys_read+0xf3/0x1c0
- do_syscall_64+0x5f/0x2e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+According to the documentation, the struct uart_port::ops::tx_empty()
+API tests whether the transmitter FIFO and shifter for the port is
+empty.
 
-The above issue may happen as follows:
-(1) Add kprobe tracepoint;
-(2) insmod test.ko;
-(3)  Module triggers ftrace disabled;
-(4) rmmod test.ko;
-(5) cat /proc/kallsyms; --> Will trigger UAF as test.ko already removed;
-ftrace_mod_get_kallsym()
-...
-strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
-...
+The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
+transmit FIFO through the FDR (FIFO Data Count Register). The data units
+in the FIFOs are written in the shift register and transmitted from there.
+The TEND bit in the Serial Status Register reports if the data was
+transmitted from the shift register.
 
-The problem is when a module triggers an issue with ftrace and
-sets ftrace_disable. The ftrace_disable is set when an anomaly is
-discovered and to prevent any more damage, ftrace stops all text
-modification. The issue that happened was that the ftrace_disable stops
-more than just the text modification.
+In the previous code, in the tx_empty() API implemented by the sh-sci
+driver, it is considered that the TX is empty if the hardware reports the
+TEND bit set and the number of data units in the FIFO is zero.
 
-When a module is loaded, its init functions can also be traced. Because
-kallsyms deletes the init functions after a module has loaded, ftrace
-saves them when the module is loaded and function tracing is enabled. This
-allows the output of the function trace to show the init function names
-instead of just their raw memory addresses.
+According to the HW manual, the TEND bit has the following meaning:
 
-When a module is removed, ftrace_release_mod() is called, and if
-ftrace_disable is set, it just returns without doing anything more. The
-problem here is that it leaves the mod_list still around and if kallsyms
-is called, it will call into this code and access the module memory that
-has already been freed as it will return:
+0: Transmission is in the waiting state or in progress.
+1: Transmission is completed.
 
-  strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+It has been noticed that when opening the serial device w/o using it and
+then switch to a power saving mode, the tx_empty() call in the
+uart_port_suspend() function fails, leading to the "Unable to drain
+transmitter" message being printed on the console. This is because the
+TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
+TEND=0 has double meaning (waiting state, in progress) we can't
+determined the scenario described above.
 
-Where the "mod" no longer exists and triggers a UAF bug.
+Add a software workaround for this. This sets a variable if any data has
+been sent on the serial console (when using PIO) or if the DMA callback has
+been called (meaning something has been transmitted). In the tx_empty()
+API the status of the DMA transaction is also checked and if it is
+completed or in progress the code falls back in checking the hardware
+registers instead of relying on the software variable.
 
-Link: https://lore.kernel.org/all/20250523135452.626d8dcd@gandalf.local.home/
-
+Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
 Cc: stable@vger.kernel.org
-Fixes: aba4b5c22cba ("ftrace: Save module init functions kallsyms symbols for tracing")
-Link: https://lore.kernel.org/20250529111955.2349189-2-yebin@huaweicloud.com
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20241125115856.513642-1-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[claudiu.beznea: fixed conflict by:
+ - keeping serial_port_out() instead of sci_port_out() in
+   sci_transmit_chars()
+ - keeping !uart_circ_empty(xmit) condition in sci_dma_tx_complete(),
+   after s->tx_occurred = true; assignement]
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ftrace.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/tty/serial/sh-sci.c | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7295,9 +7295,10 @@ void ftrace_release_mod(struct module *m
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index ed468b676f0b9..f8f301db84339 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -175,6 +175,7 @@ struct sci_port {
  
- 	mutex_lock(&ftrace_lock);
+ 	bool has_rtscts;
+ 	bool autorts;
++	bool tx_occurred;
+ };
  
--	if (ftrace_disabled)
--		goto out_unlock;
--
-+	/*
-+	 * To avoid the UAF problem after the module is unloaded, the
-+	 * 'mod_map' resource needs to be released unconditionally.
-+	 */
- 	list_for_each_entry_safe(mod_map, n, &ftrace_mod_maps, list) {
- 		if (mod_map->mod == mod) {
- 			list_del_rcu(&mod_map->list);
-@@ -7306,6 +7307,9 @@ void ftrace_release_mod(struct module *m
+ #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
+@@ -825,6 +826,7 @@ static void sci_transmit_chars(struct uart_port *port)
+ {
+ 	struct circ_buf *xmit = &port->state->xmit;
+ 	unsigned int stopped = uart_tx_stopped(port);
++	struct sci_port *s = to_sci_port(port);
+ 	unsigned short status;
+ 	unsigned short ctrl;
+ 	int count;
+@@ -856,6 +858,7 @@ static void sci_transmit_chars(struct uart_port *port)
  		}
- 	}
  
-+	if (ftrace_disabled)
-+		goto out_unlock;
+ 		serial_port_out(port, SCxTDR, c);
++		s->tx_occurred = true;
+ 
+ 		port->icount.tx++;
+ 	} while (--count > 0);
+@@ -1208,6 +1211,8 @@ static void sci_dma_tx_complete(void *arg)
+ 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
+ 		uart_write_wakeup(port);
+ 
++	s->tx_occurred = true;
 +
- 	/*
- 	 * Each module has its own ftrace_pages, remove
- 	 * them from the list.
+ 	if (!uart_circ_empty(xmit)) {
+ 		s->cookie_tx = 0;
+ 		schedule_work(&s->work_tx);
+@@ -1688,6 +1693,19 @@ static void sci_flush_buffer(struct uart_port *port)
+ 		s->cookie_tx = -EINVAL;
+ 	}
+ }
++
++static void sci_dma_check_tx_occurred(struct sci_port *s)
++{
++	struct dma_tx_state state;
++	enum dma_status status;
++
++	if (!s->chan_tx)
++		return;
++
++	status = dmaengine_tx_status(s->chan_tx, s->cookie_tx, &state);
++	if (status == DMA_COMPLETE || status == DMA_IN_PROGRESS)
++		s->tx_occurred = true;
++}
+ #else /* !CONFIG_SERIAL_SH_SCI_DMA */
+ static inline void sci_request_dma(struct uart_port *port)
+ {
+@@ -1697,6 +1715,10 @@ static inline void sci_free_dma(struct uart_port *port)
+ {
+ }
+ 
++static void sci_dma_check_tx_occurred(struct sci_port *s)
++{
++}
++
+ #define sci_flush_buffer	NULL
+ #endif /* !CONFIG_SERIAL_SH_SCI_DMA */
+ 
+@@ -2009,6 +2031,12 @@ static unsigned int sci_tx_empty(struct uart_port *port)
+ {
+ 	unsigned short status = serial_port_in(port, SCxSR);
+ 	unsigned short in_tx_fifo = sci_txfill(port);
++	struct sci_port *s = to_sci_port(port);
++
++	sci_dma_check_tx_occurred(s);
++
++	if (!s->tx_occurred)
++		return TIOCSER_TEMT;
+ 
+ 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
+ }
+@@ -2179,6 +2207,7 @@ static int sci_startup(struct uart_port *port)
+ 
+ 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
+ 
++	s->tx_occurred = false;
+ 	sci_request_dma(port);
+ 
+ 	ret = sci_request_irq(s);
+-- 
+2.39.5
+
 
 
 
