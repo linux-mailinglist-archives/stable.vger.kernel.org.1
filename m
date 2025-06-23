@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155772-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA09AAE439D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32456AE43BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5CD11B60742
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D50D3BB910
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C972517AF;
-	Mon, 23 Jun 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9180F254B1F;
+	Mon, 23 Jun 2025 13:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7WGWApM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuqam2qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FA413A265;
-	Mon, 23 Jun 2025 13:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0CC25291F;
+	Mon, 23 Jun 2025 13:28:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685283; cv=none; b=Suy9aJHecUlPaUG1YIYjyzJxz5wtxPwnsFjfLve5U086MnAo4IoN2D5x+H1iuVWXpi5w6Pv6cP07vRU0UEwx477azmyRj4CECLbnHCDvSRm1rdXRLsSbfb/O0qkGYsd+tC0Co5eXslpr//BYIUoJzSJv5fqanxvVzuU6GKz0yok=
+	t=1750685293; cv=none; b=FMOgCtryRrs4u7Jmexj0TpsJClyn7uzh2OjYg2rqHPccHD0USfAgCO6wN0wwboz5Znq8K9AIToiVwhslZmeg11xqRugE08BMmx4OT37ixSyER/CL3+6q56UdSxbq1ekKjH5MVrbqfDKcIvebf/65bVHnSP/knkHVZL1zHGI/fzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685283; c=relaxed/simple;
-	bh=sg4wzNKAwcI1hENiA1BV7KxAln116WX+3c/FqFrdibE=;
+	s=arc-20240116; t=1750685293; c=relaxed/simple;
+	bh=ewsYCTPS5uR3Ci6VVUMPy1bOM6ZBBmIqO+R8KPNBGQM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f5W/W/i7+9zwSB6ePA0Fy0hn8f3aky34G1NMX6IFbcal2lE9r437e5mNpfzWNGj2qOiAMczc8LdThQGc9UGDevhMrLVzVGD+CDE1RZfkVoJ1sJuc2zwOuau78IHTahMBy2dKfq1hkEF+hAIDBeN444fNVmv4BKq4XacLPIjU0fQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7WGWApM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2C1C4CEEA;
-	Mon, 23 Jun 2025 13:28:02 +0000 (UTC)
+	 MIME-Version; b=ADgmdeASU4i8aNJsHyMBhuATPQRiDkXzG51knCqsbbsHivnWShpcICNLajj0L/6DaiT5cp0upPmL3JxH1Onq9E1oolbfQBCKlPcAUZd7Mspn62thDeVZEGwIRtlSgF7qyD8oXRoqojb30CZ8rzrzrMdzho0GEL+G3/sQjifATjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuqam2qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E2EC4CEEA;
+	Mon, 23 Jun 2025 13:28:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685283;
-	bh=sg4wzNKAwcI1hENiA1BV7KxAln116WX+3c/FqFrdibE=;
+	s=korg; t=1750685293;
+	bh=ewsYCTPS5uR3Ci6VVUMPy1bOM6ZBBmIqO+R8KPNBGQM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7WGWApMohmnIk+OBytK1ogGEZ7PbGMPhTkzMsXUgKioM5xthYDOlNgoD6WwgAPSR
-	 w5OXROuq8/7bXaeBe7U7yDY7ylYt2pCCsgW6vTMxBctPqMOoxhJm3eAH7RSV8zsAx8
-	 JZdht5A/y6ths6sn+XBomF+mnIuupFcNykZyH2VU=
+	b=kuqam2qw6W2+EAugXE0JYtKzUp6g5yE0vtSeTw8pKr8aW2hEsBZJqlX1zsWUOlktq
+	 r7SP45g9Y1B/isdBomxwM6gGcPreqsVG8kA6R8tWKolnXi5ldpBYFjq6cTdOuott6N
+	 P7hEmPb0hC7P8bTpQ9QbLeWWiNSmvOL4yjB4DnzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Blakey <paulb@mellanox.com>,
-	Roi Dayan <roid@mellanox.com>,
-	Mark Bloch <markb@mellanox.com>,
-	Maor Gottlieb <maorg@mellanox.com>,
-	Saeed Mahameed <saeedm@mellanox.com>,
+	Gavi Teitz <gavi@nvidia.com>,
+	Roi Dayan <roid@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 081/222] net/mlx5: Wait for inactive autogroups
-Date: Mon, 23 Jun 2025 15:06:56 +0200
-Message-ID: <20250623130614.533467026@linuxfoundation.org>
+Subject: [PATCH 5.4 082/222] net/mlx5: Fix return value when searching for existing flow group
+Date: Mon, 23 Jun 2025 15:06:57 +0200
+Message-ID: <20250623130614.565146160@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -69,49 +70,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Paul Blakey <paulb@mellanox.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 49c0355d301b4e0e01e0f19ddbb023bd7d0ee48c ]
+[ Upstream commit 8ec40e3f1f72bf8f8accf18020d487caa99f46a4 ]
 
-Currently, if one thread tries to add an entry to an autogrouped table
-with no free matching group, while another thread is in the process of
-creating a new matching autogroup, it doesn't wait for the new group
-creation, and creates an unnecessary new autogroup.
+When attempting to add a rule to an existing flow group, if a matching
+flow group exists but is not active, the error code returned should be
+EAGAIN, so that the rule can be added to the matching flow group once
+it is active, rather than ENOENT, which indicates that no matching
+flow group was found.
 
-Instead of skipping inactive, wait on the write lock of those groups.
-
-Signed-off-by: Paul Blakey <paulb@mellanox.com>
-Reviewed-by: Roi Dayan <roid@mellanox.com>
-Reviewed-by: Mark Bloch <markb@mellanox.com>
-Reviewed-by: Maor Gottlieb <maorg@mellanox.com>
-Signed-off-by: Saeed Mahameed <saeedm@mellanox.com>
-Stable-dep-of: 8ec40e3f1f72 ("net/mlx5: Fix return value when searching for existing flow group")
+Fixes: bd71b08ec2ee ("net/mlx5: Support multiple updates of steering rules in parallel")
+Signed-off-by: Gavi Teitz <gavi@nvidia.com>
+Signed-off-by: Roi Dayan <roid@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-4-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-index 30d5b7f52a2a0..25f9185d5a15e 100644
+index 25f9185d5a15e..22318edff5514 100644
 --- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
-@@ -1768,11 +1768,13 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
- 	list_for_each_entry(iter, match_head, list) {
- 		g = iter->g;
- 
--		if (!g->node.active)
--			continue;
--
+@@ -1716,6 +1716,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 	struct mlx5_flow_handle *rule;
+ 	struct match_list *iter;
+ 	bool take_write = false;
++	bool try_again = false;
+ 	struct fs_fte *fte;
+ 	u64  version;
+ 	int err;
+@@ -1771,6 +1772,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
  		nested_down_write_ref_node(&g->node, FS_LOCK_PARENT);
  
-+		if (!g->node.active) {
-+			up_write_ref_node(&g->node, false);
-+			continue;
-+		}
-+
- 		err = insert_fte(g, fte);
- 		if (err) {
+ 		if (!g->node.active) {
++			try_again = true;
  			up_write_ref_node(&g->node, false);
+ 			continue;
+ 		}
+@@ -1792,7 +1794,8 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 			tree_put_node(&fte->node, false);
+ 		return rule;
+ 	}
+-	rule = ERR_PTR(-ENOENT);
++	err = try_again ? -EAGAIN : -ENOENT;
++	rule = ERR_PTR(err);
+ out:
+ 	kmem_cache_free(steering->ftes_cache, fte);
+ 	return rule;
 -- 
 2.39.5
 
