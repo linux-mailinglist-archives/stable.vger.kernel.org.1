@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-157099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156962-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7EE9AE5271
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01FCAAE51E0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1CBD4439E7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427B61B6439C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D958121D3DD;
-	Mon, 23 Jun 2025 21:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D925721D3DD;
+	Mon, 23 Jun 2025 21:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RANXwysO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tAQheolH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981802AEE4;
-	Mon, 23 Jun 2025 21:43:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94AC74409;
+	Mon, 23 Jun 2025 21:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715031; cv=none; b=qlhcOHdMXe7wIEoFn7+ioxi7i9gondZoCBhBWWPnqKnHTJMS/R1aOn2RAf1N3qHgNvJKZbk1CVP8si8YB5SGd3EMgdsOnvrgNZX/zjpcve9+i+UGHqd5wkcPUer2G5RyynSLTCK+la5XR5xOTO5xCg39zxt3qu7XsylfdwITGFk=
+	t=1750714696; cv=none; b=RG1CipsC5OB8qKvlucxF75KagIUR7abRHaeA392CoDBHwrHWp5zc2dvPkT9G2uoL2iS/KS6NpYTTusFFwzRgpUU1pFEF8B9J/i11m5SP0NeniSdPE273FtpT4/bzTvFXc2uD8Rb05mvDNFTeA6APlG8icSa2uR2eEtr3DuxWcJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715031; c=relaxed/simple;
-	bh=6zdhMO3u9+DQXA+RSOQEteOD2CkSM8lhRXgU0xj0hRc=;
+	s=arc-20240116; t=1750714696; c=relaxed/simple;
+	bh=OJim4HgVlGXI69sl/jWutH5LqDD2yGshMvxMskYHNHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvViA9DG1/EnrCmpVXszNalMM1xaHB6ft/SFNfFzFIISpyXbsuLtnvJoK2pLB1S/A6BW3PHohMD7ZR9YljoZOYOFL692QFIPOcoHbIeYC2ZbFNYS0XQsK5BzcjT7LO3wPGRN9FEondq9l+nwcKIRFaKxoFZwWLS2fI+NE/U3EO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RANXwysO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6DCC4CEEA;
-	Mon, 23 Jun 2025 21:43:50 +0000 (UTC)
+	 MIME-Version; b=uyz492c+fnnaPvLEWOTUit2oKLKSzOXIvKfo+/f5qki3eAlZrvTLvcJaJowudsHPCKKiDw6Hw4Jdy7IvlE68Aw4qUoU83+tZuXTjDnxhHbttUnrAd0cmolZhsfRrd8G6YdA0LpugwBEwEZLXnAmsuIuhNhHnggPXUG9n6Fvoa7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tAQheolH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF14C4CEEA;
+	Mon, 23 Jun 2025 21:38:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715031;
-	bh=6zdhMO3u9+DQXA+RSOQEteOD2CkSM8lhRXgU0xj0hRc=;
+	s=korg; t=1750714696;
+	bh=OJim4HgVlGXI69sl/jWutH5LqDD2yGshMvxMskYHNHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RANXwysO5BNq3l4+7Xf85cJWX7m7gJo/LbPJKd8nxuVY9L8X0MHSHiJDbj/h/LTFt
-	 Nu41mnPy+mFhiIzSaC0NyUTSg6p6L/MelPc2YThmhdENPgKA7JEI0DO0gAI3PN5xDj
-	 8hC7fAb6r5unE9zlDUrymH3D9rRS4+uZ4sJMOo7Y=
+	b=tAQheolHnpHhuDHFYsmok2wr96OQUKMwE2A8Nsf9oFpFpvxwqNBOlAOrqbchlwark
+	 vsY98RdHKTvLR25oThn2J3pzE0gjS0nIbB+UG+NEEHiL8jvRkR6BBQG2nvH/qztjBt
+	 55Tf2mcBXgmtUuOyLHtflN1EeW12ERQhenkVn07A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 5.15 224/411] ata: pata_via: Force PIO for ATAPI devices on VT6415/VT6330
+	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 410/592] ice: fix check for existing switch rule
 Date: Mon, 23 Jun 2025 15:06:08 +0200
-Message-ID: <20250623130639.299023875@linuxfoundation.org>
+Message-ID: <20250623130710.188360887@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +67,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
 
-commit d29fc02caad7f94b62d56ee1b01c954f9c961ba7 upstream.
+[ Upstream commit a808691df39b52cd9db861b118e88e18b63e2299 ]
 
-The controller has a hardware bug that can hard hang the system when
-doing ATAPI DMAs without any trace of what happened. Depending on the
-device attached, it can also prevent the system from booting.
+In case the rule already exists and another VSI wants to subscribe to it
+new VSI list is being created and both VSIs are moved to it.
+Currently, the check for already existing VSI with the same rule is done
+based on fdw_id.hw_vsi_id, which applies only to LOOKUP_RX flag.
+Change it to vsi_handle. This is software VSI ID, but it can be applied
+here, because vsi_map itself is also based on it.
 
-In this case, the system hangs when reading the ATIP from optical media
-with cdrecord -vvv -atip on an _NEC DVD_RW ND-4571A 1-01 and an
-Optiarc DVD RW AD-7200A 1.06 attached to an ASRock 990FX Extreme 4,
-running at UDMA/33.
+Additionally change return status in case the VSI already exists in the
+VSI map to "Already exists". Such case should be handled by the caller.
 
-The issue can be reproduced by running the same command with a cygwin
-build of cdrecord on WinXP, although it requires more attempts to cause
-it. The hang in that case is also resolved by forcing PIO. It doesn't
-appear that VIA has produced any drivers for that OS, thus no known
-workaround exists.
-
-HDDs attached to the controller do not suffer from any DMA issues.
-
-Cc: stable@vger.kernel.org
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/916677
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250519085508.1398701-1-tasos@tasossah.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/pata_via.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/pata_via.c
-+++ b/drivers/ata/pata_via.c
-@@ -368,7 +368,8 @@ static unsigned long via_mode_filter(str
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 4a91e0aaf0a5e..9d9a7edd3618a 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -3146,7 +3146,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+ 		u16 vsi_handle_arr[2];
  
- 	if (dev->class == ATA_DEV_ATAPI &&
--	    dmi_check_system(no_atapi_dma_dmi_table)) {
-+	    (dmi_check_system(no_atapi_dma_dmi_table) ||
-+	     config->id == PCI_DEVICE_ID_VIA_6415)) {
- 		ata_dev_warn(dev, "controller locks up on ATAPI DMA, forcing PIO\n");
- 		mask &= ATA_MASK_PIO;
- 	}
+ 		/* A rule already exists with the new VSI being added */
+-		if (cur_fltr->fwd_id.hw_vsi_id == new_fltr->fwd_id.hw_vsi_id)
++		if (cur_fltr->vsi_handle == new_fltr->vsi_handle)
+ 			return -EEXIST;
+ 
+ 		vsi_handle_arr[0] = cur_fltr->vsi_handle;
+@@ -5978,7 +5978,7 @@ ice_adv_add_update_vsi_list(struct ice_hw *hw,
+ 
+ 		/* A rule already exists with the new VSI being added */
+ 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
+-			return 0;
++			return -EEXIST;
+ 
+ 		/* Update the previously created VSI list set with
+ 		 * the new VSI ID passed in
+-- 
+2.39.5
+
 
 
 
