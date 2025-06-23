@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 493C4AE5361
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2D96AE5380
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8222E7A403E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C134A607C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32CEA223DE5;
-	Mon, 23 Jun 2025 21:51:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFA322222B7;
+	Mon, 23 Jun 2025 21:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lB0/8nFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rvitu4Gh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FB919049B;
-	Mon, 23 Jun 2025 21:51:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A407A72624;
+	Mon, 23 Jun 2025 21:53:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715514; cv=none; b=s6XoVfT6oI6oCbf1Q/DmJHBkD+pqN8o0uv61juEISJ3c83W8vAovZwiMLsbsPHIGbH5murbNFbEMNbsdYADX1ukirhwuRa/QDJ99IXizUIiLGZbSXIMYbkcTZCNbivxIXHrDsN1lG5243y9InP5K3p10t37AmuMJWntmgxCCuww=
+	t=1750715606; cv=none; b=FXJcMu8s67AbiDzOmL+nWYfdMpomf8CVs4UQCm4fWD9nVKCmqgWn+zvx5nGRz6bOqKEcfT+xqCjT96BAxo0MbjqFKmNcfBMaxe7J9WIbM3v5YuX2KSz4uIGXsFj8cxy9XTXoTsqEi5+/IjfM1IZ14RWaLkjMxLX4blDM6L0ra24=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715514; c=relaxed/simple;
-	bh=isD6UlRdCjiO57F6yBt1fVlpyeDjyfSCpkx8W/jj2lE=;
+	s=arc-20240116; t=1750715606; c=relaxed/simple;
+	bh=6z5NIlGkhoEKmwd8GiUqb3HzfP1AdloX3ySw0U+OYPQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=skdjpsIoUa/JPMAzc5onbJRdpZ0xv2W3qCX7WB3Fg1p1sKX47b54upMeE/+GBnyepXOEVTryEye0KeloIaAay3mIuyC1kmDrIKuAW8dxSX8lo27bYdZ2YSER+64j3oMkZbDTgTp7XWfVYszCxaqqM4GcAikmdnXUYQAkMLdn72w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lB0/8nFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF5AC4CEEA;
-	Mon, 23 Jun 2025 21:51:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OkAZ3gK/++QZt/+pQFJh/ISZHQDXj1NaVTPhWGP89DLZLMJZtD/CQXlU4hbZvGiUtZUQwbC4TXvXReQgir+68yp5qOJDlXFotDSpLdHOL7kKPESlDhUh1KBCfJt17E0OqU7dIRCwZowF5RjocGVG2VufVSU7F1MTMclLqFsRuWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rvitu4Gh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CD6EC4CEEA;
+	Mon, 23 Jun 2025 21:53:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715513;
-	bh=isD6UlRdCjiO57F6yBt1fVlpyeDjyfSCpkx8W/jj2lE=;
+	s=korg; t=1750715606;
+	bh=6z5NIlGkhoEKmwd8GiUqb3HzfP1AdloX3ySw0U+OYPQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lB0/8nFaXiYZCpTx6qXtxl/8NH5/WsOMBrFzDXxe6zDbOHs2LIvc6XIANn9WALu2w
-	 DGuy+oMgJb8VEN+anQqvbZlJ7vGSaQyuDWcKSx/FfNuX7loC5csy3XVwSypsFm8PpC
-	 zUNz2q/RM9apdg89wRfOV0crnBsWEQ5azgTe+GZk=
+	b=Rvitu4GhMD7YIugKZSgBQgLp5iTNa1GqCRx/4Be86uEZSNAytInjo1PMgXXt37FpL
+	 UZwKV3EIqMAA3DFhBWU569D7lE8KELSHqCPSLPxzJdzjMeSd7NX+uWZNOcOC19oH+l
+	 7w3PEjdDbbe+T2faIgcOjklh6S7UyTfXxEejkLEI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tarang Raval <tarang.raval@siliconsignals.io>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 282/411] media: i2c: imx334: Fix runtime PM handling in remove function
-Date: Mon, 23 Jun 2025 15:07:06 +0200
-Message-ID: <20250623130640.748563033@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.15 469/592] udmabuf: use sgtable-based scatterlist wrappers
+Date: Mon, 23 Jun 2025 15:07:07 +0200
+Message-ID: <20250623130711.586666961@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tarang Raval <tarang.raval@siliconsignals.io>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit b493cd3c03641f9bbaa9787e43ca92163cb50051 ]
+commit afe382843717d44b24ef5014d57dcbaab75a4052 upstream.
 
-pm_runtime_suspended() only checks the current runtime PM status and does
-not modify it, making it ineffective in this context. This could result in
-improper power management if the device remains active when removed.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgtable's nents.
 
-This patch fixes the issue by introducing a check with
-pm_runtime_status_suspended() to determine if the device is already
-suspended. If it is not, it calls imx334_power_off() to power down the
-device and then uses pm_runtime_set_suspended() to correctly update the
-runtime PM status to suspended.
-
-Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ffe09590121 ("udmabuf: fix dma-buf cpu access")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250507160913.2084079-3-m.szyprowski@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/imx334.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/dma-buf/udmabuf.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
-index 57b7416bbfab3..af09aafeddf78 100644
---- a/drivers/media/i2c/imx334.c
-+++ b/drivers/media/i2c/imx334.c
-@@ -1102,7 +1102,10 @@ static int imx334_remove(struct i2c_client *client)
- 	v4l2_ctrl_handler_free(sd->ctrl_handler);
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -264,8 +264,7 @@ static int begin_cpu_udmabuf(struct dma_
+ 			ubuf->sg = NULL;
+ 		}
+ 	} else {
+-		dma_sync_sg_for_cpu(dev, ubuf->sg->sgl, ubuf->sg->nents,
+-				    direction);
++		dma_sync_sgtable_for_cpu(dev, ubuf->sg, direction);
+ 	}
  
- 	pm_runtime_disable(&client->dev);
--	pm_runtime_suspended(&client->dev);
-+	if (!pm_runtime_status_suspended(&client->dev)) {
-+		imx334_power_off(&client->dev);
-+		pm_runtime_set_suspended(&client->dev);
-+	}
+ 	return ret;
+@@ -280,7 +279,7 @@ static int end_cpu_udmabuf(struct dma_bu
+ 	if (!ubuf->sg)
+ 		return -EINVAL;
  
- 	mutex_destroy(&imx334->mutex);
+-	dma_sync_sg_for_device(dev, ubuf->sg->sgl, ubuf->sg->nents, direction);
++	dma_sync_sgtable_for_device(dev, ubuf->sg, direction);
+ 	return 0;
+ }
  
--- 
-2.39.5
-
 
 
 
