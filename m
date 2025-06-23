@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-157953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AF19AE56A1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECEAAE55BF
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E51934A20C6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A37374428C6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B56226D03;
-	Mon, 23 Jun 2025 22:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBA2225785;
+	Mon, 23 Jun 2025 22:12:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hF1kbXOs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="la3g+fz/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1107222688C;
-	Mon, 23 Jun 2025 22:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DD41C2E0;
+	Mon, 23 Jun 2025 22:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717124; cv=none; b=Dvvl9DoXO+IGxucsW8ruDRVoOw3/lQYn6ZsMXvz390mx0ulC7pjOFgFiwO6K2etwfKJKZy1v1GFVwfY3O5DA4nQ5Rd/qQvQGVKwgsiaRd2eltcFA9bZiDfmIACU1tKl4qJpTkWzaL/3+TZqvYuUhpA51dat2jOEWqQ47trFKHGc=
+	t=1750716733; cv=none; b=fvZPj/gGCkypv0RVEYM5CdgBOvOV4ULXqOY+8Lf66TjFghy3gg4iK3cWBIJAQWk0xEkni451QHBtK3G4cHL9k8ku/S3/ngk8WNNfClv3TPmK/Y7q2YC2tgOEW2h1QQVDmEmojwM+o7PYPwVSkmDwXAZTYT7BIi30HXTC2jDMvQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717124; c=relaxed/simple;
-	bh=i9uB+LT8GTDO6B0E7pNFjrkLXsrT7O/RUFaHKoH7HXI=;
+	s=arc-20240116; t=1750716733; c=relaxed/simple;
+	bh=XReTc8/NXZj3tkRKqiSqfDeCnpSJw2oZ9eOmO1bWcfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bpSqWygg+jbEb+yJlBgM2mEsWbq41grwWS3jW4LxKxtYe/oVYw5RMuNXh0lJ6r/+HrKaMxE43Rttm42fM//iWT9xyiUKGuhMf8jmSRtPW9IbGY/fnAvr8HQFW8Wh4HzGabwKnCg36/wYlHFRpNXG4ghzq36P7d8GACIqz3PCT0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hF1kbXOs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDEBC4CEF6;
-	Mon, 23 Jun 2025 22:18:43 +0000 (UTC)
+	 MIME-Version; b=XL0RwEUXzVFwZKa4fTtnHQsc4CO8ucbF2F4TgzxD3Ar2kmhh/gVI2mbLm2p89359PpwHUZFyY5udws6S9r0aIsf4/hwPCe5EU3mnGa64SjBdw1WDNsQ0QCAZs2Vqq4unm6AJLEjpshPn0/Lif4WDrtIZzd59Gss63LTxvwCPFoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=la3g+fz/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7629AC4CEEA;
+	Mon, 23 Jun 2025 22:12:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717123;
-	bh=i9uB+LT8GTDO6B0E7pNFjrkLXsrT7O/RUFaHKoH7HXI=;
+	s=korg; t=1750716732;
+	bh=XReTc8/NXZj3tkRKqiSqfDeCnpSJw2oZ9eOmO1bWcfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hF1kbXOstsnylr3lgoP4FvI6QDEEPmUsyfkP5aHymQ4gYpDCqF7BYFWUl+/KdGEec
-	 L4g6vcR1yMZHhY2KyLyAKp3eJc3EQpGywM0pzBA2nvm4dMWtnZvfjKdt3IhXFxUsSJ
-	 RZ2vcEJVVZLjH9ozr1VVRsrzCMPfLVVyxgUj/Fng=
+	b=la3g+fz/ckQFu2tUTUIX0ezZNloz4dI0BRNfxR2pPSXUrSjmQid00/Ddu8BdLr7x9
+	 5hLc7BH/mcVEG+JyX7L4IS+ysSuTCm9iE3nfpaW1SNjuZXaWu7bMWupS0uPfEf13Cf
+	 dWuEEqClljkOBgpWByIxE5vAbHy41cMyHPo9wlaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.1 369/508] PCI: Fix lock symmetry in pci_slot_unlock()
-Date: Mon, 23 Jun 2025 15:06:54 +0200
-Message-ID: <20250623130654.425585581@linuxfoundation.org>
+	Hari Chandrakanthan <quic_haric@quicinc.com>,
+	Nicolas Escande <nico.escande@gmail.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 278/414] wifi: ath12k: fix link valid field initialization in the monitor Rx
+Date: Mon, 23 Jun 2025 15:06:55 +0200
+Message-ID: <20250623130648.972239179@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Hari Chandrakanthan <quic_haric@quicinc.com>
 
-commit f3efb9569b4a21354ef2caf7ab0608a3e14cc6e4 upstream.
+[ Upstream commit 2826139f9295821fe2b049318a1cc057ec003131 ]
 
-The commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-made the lock function to call depend on dev->subordinate but left
-pci_slot_unlock() unmodified creating locking asymmetry compared with
-pci_slot_lock().
+Currently, the link_valid field is not initialized in the monitor Rx path.
+This can result in random values for the link_valid and link_id leads to
+undefined behaviour in mac80211. Therefore, initialize the link_valid
+field in the monitor Rx path.
 
-Because of the asymmetric lock handling, the same bridge device is unlocked
-twice. First pci_bus_unlock() unlocks bus->self and then pci_slot_unlock()
-will unconditionally unlock the same bridge device.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Move pci_dev_unlock() inside an else branch to match the logic in
-pci_slot_lock().
-
-Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250505115412.37628-1-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
+Tested-by: Nicolas Escande <nico.escande@gmail.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Link: https://patch.msgid.link/20250324062518.2752822-2-quic_periyasa@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5687,7 +5687,8 @@ static void pci_slot_unlock(struct pci_s
- 			continue;
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
- }
+diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
+index 6a88745369447..7bfd323cdf244 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_mon.c
++++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
+@@ -1080,6 +1080,8 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
+ 	bool is_mcbc = rxcb->is_mcbc;
+ 	bool is_eapol_tkip = rxcb->is_eapol;
  
++	status->link_valid = 0;
++
+ 	if ((status->encoding == RX_ENC_HE) && !(status->flag & RX_FLAG_RADIOTAP_HE) &&
+ 	    !(status->flag & RX_FLAG_SKIP_MONITOR)) {
+ 		he = skb_push(msdu, sizeof(known));
+-- 
+2.39.5
+
 
 
 
