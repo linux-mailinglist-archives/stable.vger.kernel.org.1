@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D419AAE52D2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B453CAE53F3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 716A54A6E92
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A4901B680FD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECAE1C5D46;
-	Mon, 23 Jun 2025 21:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462E5223335;
+	Mon, 23 Jun 2025 21:57:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLJRDqVA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VixAsAVg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE1F3FD4;
-	Mon, 23 Jun 2025 21:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7F31AD3FA;
+	Mon, 23 Jun 2025 21:57:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715265; cv=none; b=pUnN5b7n+TPFdlkeEIP61Jdr35ZKc1MYNfbg6dVqRWbqd7sKO2M3X1k8IQ60l4SlpksnAow4YIXjX8C9ziyabKCf+Qjr2IIA19NrRMXciEcCs4zz1fFMO3NYL+7jyAVkpa60VYKwTtTOPNnp/LDaO8BB8E1KUsS3wN9XZLEksag=
+	t=1750715849; cv=none; b=keNDGaFRLAC+8scOvIuqylsnU6TjUDiLM/AjgQf/mElQutglU946160YQUyJro7umBajdLDCVMfjZF/9eGy+BLGEWZjXnF0453KDhijxKDOG+qHITh7VeUi1Sx4GLP5waivXIKE+xqveWK8acaeeMZX5AWVXIXJsqZGweGhcCFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715265; c=relaxed/simple;
-	bh=DqfDL0V2KYXxoE1XCkWGM0EjWDYeYvfFHjTT6XjOtVo=;
+	s=arc-20240116; t=1750715849; c=relaxed/simple;
+	bh=u4qgDotxFsY4XMMUGrIS5tY+hh/NZpxtqZWxbECgknw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cCgJ+/3roSZC1sb7nSNrdN7Hp/zBSvsqrbFxnHzlVXL+m1gZFxXlD7KlJwzPB2KfhIERuOI0YbncI400lVmi6GrvxhbMEqLIM17vbrCISBZ1HUEqd/3XqvWs/bpFmqBTTUX+LCIedgmuJBwNZehlTRHQMRIZcJYkfM4hz3IgebE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLJRDqVA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A1E7C4CEEA;
-	Mon, 23 Jun 2025 21:47:44 +0000 (UTC)
+	 MIME-Version; b=COj83hWYF1jm+BRHZiVb2ZBDAmiCumBDGrbuYLgjpcU4t8bm50Q6KiOeeoZCwh4zB7Ssud1GqEriFtXYuSc4p5GtAWJEXtL9KP7Y0v5LZ0eqgsXQpSOZgcgTERKnEHYnlQ/yoq8tpbxdeRqgNOtIY9MbHDoSLvat3QZwc8crkfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VixAsAVg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881C3C4CEEA;
+	Mon, 23 Jun 2025 21:57:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715264;
-	bh=DqfDL0V2KYXxoE1XCkWGM0EjWDYeYvfFHjTT6XjOtVo=;
+	s=korg; t=1750715848;
+	bh=u4qgDotxFsY4XMMUGrIS5tY+hh/NZpxtqZWxbECgknw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLJRDqVA5KbGp4mJc6GLscRLdIqTxyiHX/uTd0iRdVptnHnRP6IfhIklDkgXX1xj+
-	 6PHh5ry40E6N2D4es4jTkGXc35Ivg7T84Ht/grZNBgNviVPlNVDUyZ4Yc1LVoDSQ2Q
-	 hWBLSrkpMvDMYBdxYxfxqBIIfN0Bn/jN0EyfctPg=
+	b=VixAsAVgv/7sCD3bfpRPDPMxVqEx3jg6ht6iK+rdr6PgjfaJiokDbP9Lqj43v0NIm
+	 I/lu6v9HCh7QuZnYFuaIduLBvTr19t4bswwjwB75Kdzb28BL50k6ILX6VMYewsmpiK
+	 VMImOZ2nYD8s6r+Nx+oyFjyULKixItl9m3MSR6j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 264/355] net: mlx4: add SOF_TIMESTAMPING_TX_SOFTWARE flag when getting ts info
+Subject: [PATCH 6.15 507/592] drm/msm/dsi/dsi_phy_10nm: Fix missing initial VCO rate
 Date: Mon, 23 Jun 2025 15:07:45 +0200
-Message-ID: <20250623130634.690026401@linuxfoundation.org>
+Message-ID: <20250623130712.496166368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit b86bcfee30576b752302c55693fff97242b35dfd ]
+[ Upstream commit 8a48e35becb214743214f5504e726c3ec131cd6d ]
 
-As mlx4 has implemented skb_tx_timestamp() in mlx4_en_xmit(), the
-SOFTWARE flag is surely needed when users are trying to get timestamp
-information.
+Driver unconditionally saves current state on first init in
+dsi_pll_10nm_init(), but does not save the VCO rate, only some of the
+divider registers.  The state is then restored during probe/enable via
+msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
+dsi_10nm_pll_restore_state().
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250510093442.79711-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Restoring calls dsi_pll_10nm_vco_set_rate() with
+pll_10nm->vco_current_rate=0, which basically overwrites existing rate of
+VCO and messes with clock hierarchy, by setting frequency to 0 to clock
+tree.  This makes anyway little sense - VCO rate was not saved, so
+should not be restored.
+
+If PLL was not configured configure it to minimum rate to avoid glitches
+and configuring entire in clock hierarchy to 0 Hz.
+
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/sz4kbwy5nwsebgf64ia7uq4ee7wbsa5uy3xmlqwcstsbntzcov@ew3dcyjdzmi2/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: a4ccc37693a2 ("drm/msm/dsi_pll_10nm: restore VCO rate during
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/654796/
+Link: https://lore.kernel.org/r/20250520111325.92352-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-index 962851000ace4..7cb4dde12b926 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-@@ -1905,6 +1905,7 @@ static int mlx4_en_get_ts_info(struct net_device *dev,
- 	if (mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_TS) {
- 		info->so_timestamping |=
- 			SOF_TIMESTAMPING_TX_HARDWARE |
-+			SOF_TIMESTAMPING_TX_SOFTWARE |
- 			SOF_TIMESTAMPING_RX_HARDWARE |
- 			SOF_TIMESTAMPING_RAW_HARDWARE;
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+index 9812b4d691979..af2e30f3f842a 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+@@ -704,6 +704,13 @@ static int dsi_pll_10nm_init(struct msm_dsi_phy *phy)
+ 	/* TODO: Remove this when we have proper display handover support */
+ 	msm_dsi_phy_pll_save_state(phy);
+ 
++	/*
++	 * Store also proper vco_current_rate, because its value will be used in
++	 * dsi_10nm_pll_restore_state().
++	 */
++	if (!dsi_pll_10nm_vco_recalc_rate(&pll_10nm->clk_hw, VCO_REF_CLK_RATE))
++		pll_10nm->vco_current_rate = pll_10nm->phy->cfg->min_pll_rate;
++
+ 	return 0;
+ }
  
 -- 
 2.39.5
