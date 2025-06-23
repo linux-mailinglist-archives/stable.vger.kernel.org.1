@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C86AE4F2A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAD8AE4F9F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2F61B60880
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3167A3BE137
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA1022069F;
-	Mon, 23 Jun 2025 21:13:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51031221FDC;
+	Mon, 23 Jun 2025 21:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTyOc05V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvpRRGoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F237B1DF98B;
-	Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBFA1EDA0F;
+	Mon, 23 Jun 2025 21:17:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713190; cv=none; b=m5UtbtSBZZhY1ZV1uCQbareGDL60G5G8uZk5hIX/ZNi3gTd1y9qqyecjYZYIFOgpd9wVnvUQ3r9tDrJAkdsyHzEyJsTlJXMdA6ISoA08qvp2lW72UYWdhVaU2PVuzeP3okHhZRz7X7ny+Ojy9AxxzmbRMYsd4fpB+3oANcZGyvc=
+	t=1750713439; cv=none; b=NnE12VimLkCUkyDYxNFzYoSy2QFhd9QFOrjP68JNreb/m+GWPIq64eHQoWofkHeDDJo+M1tMBsvbx7qABuT2gEJVv+QrFykJuSatc6i49aR/yAWN3DfRUuwBIfzvq4JF3nCRJEte8FbyYCsZcCdeHsax5Ggz08CgnEFR9tEQ418=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713190; c=relaxed/simple;
-	bh=Dect0mPDWo+B5KtR7I9DLdYepVAfpkBy0GBOYInrq1E=;
+	s=arc-20240116; t=1750713439; c=relaxed/simple;
+	bh=fO2qcASyEXtm0u3ir/qxoUPZ6zsl658aWwz8gPWG6fQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ua3sV9Ph3bnBq3VbZqqMvH/NfbZpASxBzUgK9iTl6kmbsIqLHHTm4zb/+rk2ahiAtxJcieEdBrkyrm8y2AQlhNhMuHszgujJIea4prJm29yjDct8OV3g7GV8l5jLc3WDwg4EYabZ91O7m3tB7+FNeU/oEcVifcd00vJw33/t994=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTyOc05V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A555C4CEEA;
-	Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=od54/ulcSLQdEGSJiC+T3wtWLtIXEGFYgzXlEe+gE4InF3BS6cZ+qj9aGxzMIs+IjfJv+GO6SuZeOgE9N0lkbo0ddVA2b9CZM/Q3ZVJ2mLr6cZKwNiaUooWwgpemYOLcOj9aSw+N2QNF+uMpJ87mmJJYh4BymDOVlJHk0KrEIw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvpRRGoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97755C4CEEA;
+	Mon, 23 Jun 2025 21:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713189;
-	bh=Dect0mPDWo+B5KtR7I9DLdYepVAfpkBy0GBOYInrq1E=;
+	s=korg; t=1750713438;
+	bh=fO2qcASyEXtm0u3ir/qxoUPZ6zsl658aWwz8gPWG6fQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MTyOc05VH3viOetjKNLM3O5X7hXgByidU27sQWfZZSc26sprBhROAW19BguLsos4H
-	 aCvMUumMGP1va4iMJygq5DGqqp9e36SI2BxEQsr2zWVGpOR1vICrHYyoI0Okt01knD
-	 p4qvjHUeHgS7AJLo3NIRndU/i5FATokRcukTm6LM=
+	b=XvpRRGojm779VBC+je8ofvzLU591JdQMtOhpeqktPFP8k7noM7q2Re6LThX0JOxqw
+	 PHh/qSH7nccEUpIKYHbilbxnkaY+Z40E26w2OWizL3491kxRe2sLBt5U+wUqgjpjnZ
+	 RKUM983QKmGPTzYyadfBdysr3cHBMp+s3d76Qeqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 031/414] nfsd: nfsd4_spo_must_allow() must check this is a v4 compound request
+	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
+	Vignesh Raman <vignesh.raman@collabora.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 123/508] arm64: defconfig: mediatek: enable PHY drivers
 Date: Mon, 23 Jun 2025 15:02:48 +0200
-Message-ID: <20250623130642.803757931@linuxfoundation.org>
+Message-ID: <20250623130648.322277931@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Vignesh Raman <vignesh.raman@collabora.com>
 
-commit 1244f0b2c3cecd3f349a877006e67c9492b41807 upstream.
+[ Upstream commit f52cd248d844f9451858992f924988ac413fdc7e ]
 
-If the request being processed is not a v4 compound request, then
-examining the cstate can have undefined results.
+The mediatek display driver fails to probe on mt8173-elm-hana and
+mt8183-kukui-jacuzzi-juniper-sku16 in v6.14-rc4 due to missing PHY
+configurations.
 
-This patch adds a check that the rpc procedure being executed
-(rq_procinfo) is the NFSPROC4_COMPOUND procedure.
+Commit 924d66011f24 ("drm/mediatek: stop selecting foreign drivers")
+stopped selecting the MediaTek PHY drivers, requiring them to be
+explicitly enabled in defconfig.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Enable the following PHY drivers for MediaTek platforms:
+CONFIG_PHY_MTK_HDMI=m for HDMI display
+CONFIG_PHY_MTK_MIPI_DSI=m for DSI display
+CONFIG_PHY_MTK_DP=m for DP display
+
+Fixes: 924d66011f24 ("drm/mediatek: stop selecting foreign drivers")
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
+Link: https://lore.kernel.org/r/20250512131933.1247830-1-vignesh.raman@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4proc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/configs/defconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -3658,7 +3658,8 @@ bool nfsd4_spo_must_allow(struct svc_rqs
- 	struct nfs4_op_map *allow = &cstate->clp->cl_spo_must_allow;
- 	u32 opiter;
- 
--	if (!cstate->minorversion)
-+	if (rqstp->rq_procinfo != &nfsd_version4.vs_proc[NFSPROC4_COMPOUND] ||
-+	    cstate->minorversion == 0)
- 		return false;
- 
- 	if (cstate->spo_must_allowed)
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index 623e9f308f38a..4543b292b50b4 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1230,6 +1230,9 @@ CONFIG_PHY_HISTB_COMBPHY=y
+ CONFIG_PHY_HISI_INNO_USB2=y
+ CONFIG_PHY_MVEBU_CP110_COMPHY=y
+ CONFIG_PHY_MTK_TPHY=y
++CONFIG_PHY_MTK_HDMI=m
++CONFIG_PHY_MTK_MIPI_DSI=m
++CONFIG_PHY_MTK_DP=m
+ CONFIG_PHY_QCOM_EDP=m
+ CONFIG_PHY_QCOM_PCIE2=m
+ CONFIG_PHY_QCOM_QMP=m
+-- 
+2.39.5
+
 
 
 
