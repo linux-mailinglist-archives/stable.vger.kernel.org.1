@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157844-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0698AE55EB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1580AE5746
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 64C2F1BC455E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 637CD4E3527
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4AA2226533;
-	Mon, 23 Jun 2025 22:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E13223DCC;
+	Mon, 23 Jun 2025 22:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RN9Z4qb9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdA//ZH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EB9222576;
-	Mon, 23 Jun 2025 22:14:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D91951F463B;
+	Mon, 23 Jun 2025 22:27:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716857; cv=none; b=pJT3a6a/oAoZLjU4BxArllAViwLbLR+xACBmNjbYY5b0svS2E8MH+EpEd3xCZC353eyrn+rS/kMbGp0kPWZqePinTSbE0kTGcj/78xx06ocf6oqT+UToCn9kFxRmHaGYpvuFQqB9IgEtZZVBATozileEba/iiF4UfptLpFA/yno=
+	t=1750717663; cv=none; b=MqfY5ts2GNvXsFRWFVMIzStFrN86ywPG9B0c+tTP22wbuu6Jh8mjOnHT8IEmipG9bogCqnYW/MQLUNBXpX+fnlFCaTu+B/c7yWIakWHp64ywIUYnqsCfeFmpk5nCNQkIolD3hCN1MVVRKzEeiJo5EuhLnAgj6cMxIEDg+dKOOic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716857; c=relaxed/simple;
-	bh=401bkhnEdqCZBTUgD4GpZT9o6NbNWqQWxQNg/28yCD0=;
+	s=arc-20240116; t=1750717663; c=relaxed/simple;
+	bh=iA2TMK5+vdODbBIl+LvPIhoVDTNZvECLoAJiQkAjnm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1XUWPUyOQI1nsMtxX0QlRZVVOaEATvTQWvK8qRV9wJE0jUuexNtB1UCB9eWqpvgbp/hBwTpagKg7CiljE4MZWCQ5Kear1vmU7Fj81+jyQ065EtAExMdPf+g288WOA9huXuYWA7nfn3K2uR7DTvzi82V1PRUdUu8xQCYZ0rnDN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RN9Z4qb9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF7B0C4CEEA;
-	Mon, 23 Jun 2025 22:14:16 +0000 (UTC)
+	 MIME-Version; b=J3zLCRueldtle7PcaIeczRrtPGZbje/2vs3C+pX9JRJ+YZrTY37LHVRlsMBOxvl35s0LPBcgoclzgk+Y3PLDsfWvmmXAduw79fUvcml090D5j0Q2CZW6TQDpluOd7dmiQ4oTiKvabe2cUKDv9jIfxlubd6PV8SBqfl8fhayK7wg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdA//ZH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FB44C4CEEA;
+	Mon, 23 Jun 2025 22:27:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716857;
-	bh=401bkhnEdqCZBTUgD4GpZT9o6NbNWqQWxQNg/28yCD0=;
+	s=korg; t=1750717663;
+	bh=iA2TMK5+vdODbBIl+LvPIhoVDTNZvECLoAJiQkAjnm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RN9Z4qb9bnJRrM+r7qHdHzfUCUOCfnzP0mmOtJhszS2n5eL954EUYAQtAcMjsRWNm
-	 AY6/27K64f5oKl2cv5blKSUiGdwhDFYBWnwMpd5lYwzJuil5eN/ZkOHEGGos+HJLPw
-	 YmS7KlnmEEebGeobtRafUmaqHIpMAmku3aFJcut4=
+	b=pdA//ZH06xwsTaYs7UInyNlrLW1d9dqerRMwAjtKJUzfARzwF5nTd94K27EVoOweU
+	 PQ8wTVKtPDUlDwOnML0SsaFx3aHTdBDyNNYpStLqkxBVoVrUIH21bY22L0ICkUZZn9
+	 tjcoftLNhzsjgtriblp5MI+HDwu9WFWrbaqbo1gQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	zhangjian <zhangjian496@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 563/592] smb: client: fix first command failure during re-negotiation
-Date: Mon, 23 Jun 2025 15:08:41 +0200
-Message-ID: <20250623130713.833420593@linuxfoundation.org>
+	Justin Sanders <jsanders.devel@gmail.com>,
+	Valentin Kleibel <valentin@vrvis.at>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 477/508] aoe: clean device rq_list in aoedev_downdev()
+Date: Mon, 23 Jun 2025 15:08:42 +0200
+Message-ID: <20250623130656.815096591@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhangjian <zhangjian496@huawei.com>
+From: Justin Sanders <jsanders.devel@gmail.com>
 
-commit 34331d7beed7576acfc98e991c39738b96162499 upstream.
+[ Upstream commit 7f90d45e57cb2ef1f0adcaf925ddffdfc5e680ca ]
 
-after fabc4ed200f9, server_unresponsive add a condition to check whether client
-need to reconnect depending on server->lstrp. When client failed to reconnect
-for some time and abort connection, server->lstrp is updated for the last time.
-In the following scene, server->lstrp is too old. This cause next command
-failure in re-negotiation rather than waiting for re-negotiation done.
+An aoe device's rq_list contains accepted block requests that are
+waiting to be transmitted to the aoe target. This queue was added as
+part of the conversion to blk_mq. However, the queue was not cleaned out
+when an aoe device is downed which caused blk_mq_freeze_queue() to sleep
+indefinitely waiting for those requests to complete, causing a hang. This
+fix cleans out the queue before calling blk_mq_freeze_queue().
 
-1. mount -t cifs -o username=Everyone,echo_internal=10 //$server_ip/export /mnt
-2. ssh $server_ip "echo b > /proc/sysrq-trigger &"
-3. ls /mnt
-4. sleep 21s
-5. ssh $server_ip "service firewalld stop"
-6. ls # return EHOSTDOWN
-
-If the interval between 5 and 6 is too small, 6 may trigger sending negotiation
-request. Before backgrounding cifsd thread try to receive negotiation response
-from server in cifs_readv_from_socket, server_unresponsive may trigger
-cifs_reconnect which cause 6 to be failed:
-
-ls thread
-----------------
-  smb2_negotiate
-    server->tcpStatus = CifsInNegotiate
-    compound_send_recv
-      wait_for_compound_request
-
-cifsd thread
-----------------
-  cifs_readv_from_socket
-    server_unresponsive
-      server->tcpStatus == CifsInNegotiate && jiffies > server->lstrp + 20s
-        cifs_reconnect
-          cifs_abort_connection: mid_state = MID_RETRY_NEEDED
-
-ls thread
-----------------
-      cifs_sync_mid_result return EAGAIN
-  smb2_negotiate return EHOSTDOWN
-
-Though server->lstrp means last server response time, it is updated in
-cifs_abort_connection and cifs_get_tcp_session. We can also update server->lstrp
-before switching into CifsInNegotiate state to avoid failure in 6.
-
-Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Acked-by: Meetakshi Setiya <msetiya@microsoft.com>
-Signed-off-by: zhangjian <zhangjian496@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
+Fixes: 3582dd291788 ("aoe: convert aoeblk to blk-mq")
+Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
+Link: https://lore.kernel.org/r/20250610170600.869-1-jsanders.devel@gmail.com
+Tested-By: Valentin Kleibel <valentin@vrvis.at>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/aoe/aoedev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -4193,6 +4193,7 @@ retry:
- 		return 0;
- 	}
+diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
+index 3523dd82d7a00..280679bde3a50 100644
+--- a/drivers/block/aoe/aoedev.c
++++ b/drivers/block/aoe/aoedev.c
+@@ -198,6 +198,7 @@ aoedev_downdev(struct aoedev *d)
+ {
+ 	struct aoetgt *t, **tt, **te;
+ 	struct list_head *head, *pos, *nx;
++	struct request *rq, *rqnext;
+ 	int i;
  
-+	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
- 	spin_unlock(&server->srv_lock);
+ 	d->flags &= ~DEVFL_UP;
+@@ -223,6 +224,13 @@ aoedev_downdev(struct aoedev *d)
+ 	/* clean out the in-process request (if any) */
+ 	aoe_failip(d);
  
++	/* clean out any queued block requests */
++	list_for_each_entry_safe(rq, rqnext, &d->rq_list, queuelist) {
++		list_del_init(&rq->queuelist);
++		blk_mq_start_request(rq);
++		blk_mq_end_request(rq, BLK_STS_IOERR);
++	}
++
+ 	/* fast fail all pending I/O */
+ 	if (d->blkq) {
+ 		/* UP is cleared, freeze+quiesce to insure all are errored */
+-- 
+2.39.5
+
 
 
 
