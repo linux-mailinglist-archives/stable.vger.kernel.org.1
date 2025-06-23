@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470BFAE4510
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A24E2AE4258
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8B73BBF77
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0A10174F6C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF0B253938;
-	Mon, 23 Jun 2025 13:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9BC524BBEB;
+	Mon, 23 Jun 2025 13:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjUP8K38"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rO46IK5q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC55253356;
-	Mon, 23 Jun 2025 13:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8973713B58B;
+	Mon, 23 Jun 2025 13:15:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685685; cv=none; b=IfKgLnmEXRFD2NtR3ZBOFj9crmMKh/pdEsUtKIxsHFHjAyqonrAiSkQl5PvsczQ8HM00A3omLMcZ5VYut/bHlTj8Hj5WOLL6RwQzyIzLuzyzF7fD8TuCNYfUjK/Zow8DJdWF3j/52ploHv9A06JYrKCHSia0SCG0RtIGBuO+K0s=
+	t=1750684555; cv=none; b=jR4NopSrqgFlTEv07O2EUDcjloKvQhQk2u36Wa8rYBZ8kbDSa9FY+TH9SRedXnDcSm3EamLQosVR5IfTtK8Sgv7HSHlGAuyVSuK0xIsHCdnrPe+DvD1f1LRsHgEzdT9CkPupjY+T6Q4tZMrC7abcYyzOl7fwpH5ZyzkRTQYjHE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685685; c=relaxed/simple;
-	bh=myFPOPTbObbwNm63iOF+LVbD7D5BcqL4BpXAEoat1M4=;
+	s=arc-20240116; t=1750684555; c=relaxed/simple;
+	bh=FWHfOCBD84C0+sljnkjtrjKBnOyjfiFzR/+Pu28eDkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3w4bSnzfmFjqbQXJ2Mt0VA7zgBlM8NUDeF/WBW3Q8rh80WTvHlSdy3KUlefVgaIufB8shOx48JArh5eZEUKAa80Tk4CQlVK6e0QYvG5RGPHrYCZmxmb78DBOn4dU87peNVeOKPH1L1O1NetiTJ3u2Rbx4ovgKjnWvhHfCW7KF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjUP8K38; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4480C4CEEA;
-	Mon, 23 Jun 2025 13:34:44 +0000 (UTC)
+	 MIME-Version; b=ZmVez+UlVqRO+3/u+IBXW1Lv5hT9pf9+KdpLGBGloT6sX3mGNUjr/HA3LHeZyPdAakvffQ/08vDbChSag3PXdwSVtOwOgsJ7IX8yVEzggG1rIfaZBsqwCzDuoIjdv+dRHbdq7A0HxeozZH2XaD2QPH7KRtr/Aos036L7gLAZMnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rO46IK5q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5ECC4CEF0;
+	Mon, 23 Jun 2025 13:15:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685685;
-	bh=myFPOPTbObbwNm63iOF+LVbD7D5BcqL4BpXAEoat1M4=;
+	s=korg; t=1750684555;
+	bh=FWHfOCBD84C0+sljnkjtrjKBnOyjfiFzR/+Pu28eDkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QjUP8K38P8MxXKI5JN6jrIAt3vKM0zUxrVPn1hRtE433kTaicxnnfs/kFleIUsHjt
-	 ZwcGZGoV8ZLozpOjt90q7vtkaLsRUF6g1DbHOwMF2/MnA1m1OBTWeNUIuZZfjzNCyl
-	 PBlgtIJxiW30u7R8+p/xS5X34FjEmGAqSnuwre8M=
+	b=rO46IK5qscZOQvCRKZAKMXw9UE09u/83cUBss5RwtwEqtOjx4fTSCHCMXrsYx5PZb
+	 ROrO9ktO4jPvfNrZbQxsuio8p1ftGLZGeKqdt/N1bi4oP9J3Q9jwLYixBPlX79eEbl
+	 bR+fIfucFE0Ikt8NjUdoqaLHMOgIw64EzsLeNuSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/508] crypto: sun8i-ce - move fallback ahash_request to the end of the struct
+	Wan Junjie <junjie.wan@inceptio.ai>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 6.15 111/592] bus: fsl-mc: fix GET/SET_TAILDROP command ids
 Date: Mon, 23 Jun 2025 15:01:09 +0200
-Message-ID: <20250623130645.845133520@linuxfoundation.org>
+Message-ID: <20250623130702.918519508@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
+From: Wan Junjie <junjie.wan@inceptio.ai>
 
-[ Upstream commit c822831b426307a6ca426621504d3c7f99765a39 ]
+commit c78230ad34f82c6c0e0e986865073aeeef1f5d30 upstream.
 
-'struct ahash_request' has a flexible array at the end, so it must be the
-last member in a struct, to avoid overwriting other struct members.
+Command ids for taildrop get/set can not pass the check when they are
+using from the restool user space utility. Correct them according to the
+user manual.
 
-Therefore, move 'fallback_req' to the end of the 'sun8i_ce_hash_reqctx'
-struct.
-
-Fixes: 56f6d5aee88d ("crypto: sun8i-ce - support hash algorithms")
-Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d67cc29e6d1f ("bus: fsl-mc: list more commands as accepted through the ioctl")
+Signed-off-by: Wan Junjie <junjie.wan@inceptio.ai>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-4-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/fsl-mc/fsl-mc-uapi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-index 8177aaba44349..a1658722d886d 100644
---- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-+++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
-@@ -297,8 +297,8 @@ struct sun8i_ce_hash_tfm_ctx {
-  * @flow:	the flow to use for this request
-  */
- struct sun8i_ce_hash_reqctx {
--	struct ahash_request fallback_req;
- 	int flow;
-+	struct ahash_request fallback_req; // keep at the end
- };
- 
- /*
--- 
-2.39.5
-
+--- a/drivers/bus/fsl-mc/fsl-mc-uapi.c
++++ b/drivers/bus/fsl-mc/fsl-mc-uapi.c
+@@ -275,13 +275,13 @@ static struct fsl_mc_cmd_desc fsl_mc_acc
+ 		.size = 8,
+ 	},
+ 	[DPSW_GET_TAILDROP] = {
+-		.cmdid_value = 0x0A80,
++		.cmdid_value = 0x0A90,
+ 		.cmdid_mask = 0xFFF0,
+ 		.token = true,
+ 		.size = 14,
+ 	},
+ 	[DPSW_SET_TAILDROP] = {
+-		.cmdid_value = 0x0A90,
++		.cmdid_value = 0x0A80,
+ 		.cmdid_mask = 0xFFF0,
+ 		.token = true,
+ 		.size = 24,
 
 
 
