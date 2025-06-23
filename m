@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54FA9AE537E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D364AE5301
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12C127AF113
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E54823A88CA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B423223714;
-	Mon, 23 Jun 2025 21:53:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6ADBE223714;
+	Mon, 23 Jun 2025 21:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OLYMNPFz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RYUMxFvL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B972624;
-	Mon, 23 Jun 2025 21:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A1D722258C;
+	Mon, 23 Jun 2025 21:49:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715597; cv=none; b=H6leOdGH4HZYYZlzjRTso/AaoHSXezZddwVbXPq1qywsv+4XSwSEJjsg0CIib8/4RLaiGOcURmXPmd3XRynAzwwT9AZE8xacmxVJRYHJizYzsox2G0E3jDB9rZFVEl4SdbKJ8pgjHoRvnY/dRgOFJutu/EKnjelzofpa4XrgfKY=
+	t=1750715344; cv=none; b=EIhUASNuwkCtoTgWzc5qkJfkM/G5K9/m1LKrn7Jw46KMHzXx5GNGTs5617eK9qNMzeY2Eeng04O/ZzG2OlJvuFOP8JRIAmb4r5bLs5ZtqTeGf9XB9tAsxo9sEb+OU3TNSB6KUdwRJ1RDHTerNOH/omGFHCAn7HsJZsW2JGkG2Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715597; c=relaxed/simple;
-	bh=sF8Fj2WHluooAeFDLW7Oi0Qa13u7UBA7yOEvtzDYXOU=;
+	s=arc-20240116; t=1750715344; c=relaxed/simple;
+	bh=302dYZfIy/oPMRO99HHmYqHuhGLXtqPJDtnXdc7IDuA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8y486jqk2QR3Vdo+aiuIkoudpElehpwwbtatwu1mHJpouI7sBTS6bCxHUrpUDpQ8OcEceDhWD8HENMFLwKM8xQQFOB4slrtC3ffRcSuFJjBXjwAyRfZTU63RbO0Sl45x0Pi1I09rfFMoP1DrY5juxsSJosAsZLB8bKB2WvRPeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OLYMNPFz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8697DC4CEEA;
-	Mon, 23 Jun 2025 21:53:16 +0000 (UTC)
+	 MIME-Version; b=NDWwlwds5LhApxji4vpnCP0IsPixfxVLVydTKiD2ok7zZ3X6Ffadb+tmmcWCmywVRCkshW+VG62ymL33SvZJvsB76clTvDpGSKpl4C3AvDDbT2umDyTP6i8i/Nu2p3ddXffdxKZE7dB1IpjByEWtjARqPd2cBqZa7MGydNDozGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RYUMxFvL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BAAC4CEEA;
+	Mon, 23 Jun 2025 21:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715596;
-	bh=sF8Fj2WHluooAeFDLW7Oi0Qa13u7UBA7yOEvtzDYXOU=;
+	s=korg; t=1750715344;
+	bh=302dYZfIy/oPMRO99HHmYqHuhGLXtqPJDtnXdc7IDuA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OLYMNPFz/jrLRdF9VvQ564tA+Y6ZYLDIlY21N88eFcd6kvlO036woSNyxKbYt7KKK
-	 dqBg+qr4YgiWvXbkMkUWSGmkL/nfnndBJZKyx/8pwSXnkJgsqTZHQRHWgzaSO9XAWI
-	 CzcGn+SqU0oDgCMxiUx4e1SiAGtI7Cv+xteydhmg=
+	b=RYUMxFvLouKCE23nppqy+pwlCaRXfOO627hiyM3NVspxV2ThR7oQ53+qOT7DSfWxG
+	 JrrzvH6wqPNwNCpIKS1sBKNY+FWX668dPghKX7U1HliCA7Nx6mzdmo+HtUMKfHhmuc
+	 p9XB+V6n6hZ61ghLq5l93CdV6Z0gMfcksHOP8PqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 209/290] platform/loongarch: laptop: Get brightness setting from EC on probe
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 269/355] vxlan: Do not treat dst cache initialization errors as fatal
 Date: Mon, 23 Jun 2025 15:07:50 +0200
-Message-ID: <20250623130633.214398175@linuxfoundation.org>
+Message-ID: <20250623130634.841155515@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
+[ Upstream commit 20c76dadc783759fd3819d289c72be590660cc8b ]
 
-Previously during driver probe, 1 is unconditionally taken as current
-brightness value and set to props.brightness, which will be considered
-as the brightness before suspend and restored to EC on resume. Since a
-brightness value of 1 almost never matches EC's state on coldboot (my
-laptop's EC defaults to 80), this causes surprising changes of screen
-brightness on the first time of resume after coldboot.
+FDB entries are allocated in an atomic context as they can be added from
+the data path when learning is enabled.
 
-Let's get brightness from EC and take it as the current brightness on
-probe of the laptop driver to avoid the surprising behavior. Tested on
-TongFang L860-T2 Loongson-3A5000 laptop.
+After converting the FDB hash table to rhashtable, the insertion rate
+will be much higher (*) which will entail a much higher rate of per-CPU
+allocations via dst_cache_init().
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When adding a large number of entries (e.g., 256k) in a batch, a small
+percentage (< 0.02%) of these per-CPU allocations will fail [1]. This
+does not happen with the current code since the insertion rate is low
+enough to give the per-CPU allocator a chance to asynchronously create
+new chunks of per-CPU memory.
+
+Given that:
+
+a. Only a small percentage of these per-CPU allocations fail.
+
+b. The scenario where this happens might not be the most realistic one.
+
+c. The driver can work correctly without dst caches. The dst_cache_*()
+APIs first check that the dst cache was properly initialized.
+
+d. The dst caches are not always used (e.g., 'tos inherit').
+
+It seems reasonable to not treat these allocation failures as fatal.
+
+Therefore, do not bail when dst_cache_init() fails and suppress warnings
+by specifying '__GFP_NOWARN'.
+
+[1] percpu: allocation failed, size=40 align=8 atomic=1, atomic alloc failed, no space left
+
+(*) 97% reduction in average latency of vxlan_fdb_update() when adding
+256k entries in a batch.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250415121143.345227-14-idosch@nvidia.com
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/vxlan/vxlan_core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index 7d7aa7d768804..7973d4070ee3b 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -712,10 +712,10 @@ static int vxlan_fdb_append(struct vxlan_fdb *f,
+ 	if (rd == NULL)
+ 		return -ENOMEM;
  
--	props.brightness = 1;
- 	props.max_brightness = status;
-+	props.brightness = ec_get_brightness();
- 	props.type = BACKLIGHT_PLATFORM;
+-	if (dst_cache_init(&rd->dst_cache, GFP_ATOMIC)) {
+-		kfree(rd);
+-		return -ENOMEM;
+-	}
++	/* The driver can work correctly without a dst cache, so do not treat
++	 * dst cache initialization errors as fatal.
++	 */
++	dst_cache_init(&rd->dst_cache, GFP_ATOMIC | __GFP_NOWARN);
  
- 	backlight_device_register("loongson_laptop",
+ 	rd->remote_ip = *ip;
+ 	rd->remote_port = port;
+-- 
+2.39.5
+
 
 
 
