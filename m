@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC564AE4F3A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6ACEAE4FD5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5847B17C336
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 82B6F7AD8BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A6B22156B;
-	Mon, 23 Jun 2025 21:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F8C223708;
+	Mon, 23 Jun 2025 21:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6QhyzYp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D4wayNxF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1AF221F34;
-	Mon, 23 Jun 2025 21:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13EB82222CA;
+	Mon, 23 Jun 2025 21:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713209; cv=none; b=juh6fgYmfDzKrdS2MG2AA34ZzNTmAQH6oC6CeCV+keMqs9pvzplurSOVjoL5DPJUxgP2EyhI+fbNEecZWnfcMK1zzF8E+83YAgEy3HaWLuhGEnwLIwHuDh31LI5fim8I80uVQR569BZgi8FPZHUGw3ls8Tk4JWmjV3XJCJyrDLQ=
+	t=1750713456; cv=none; b=PeAepDzAB5xol0MRJjCcVXm/g12LOqLNQg/7DvxmnKoXklMk77PxZWHZEVBncrGfk7DnLc8d0jDvN4PIcqwjIfwZEIoU/eMwD8t0I+P5/6o2gXEBzdvwp92vgSUdhf5cNHzqBwFNhdJepSR5jdDTrHqoBvxuavvO9KSMjA63xvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713209; c=relaxed/simple;
-	bh=pCSuUchl7TkKHEy25ai5t6KZ+wpmSks7wF8YXm/v8r8=;
+	s=arc-20240116; t=1750713456; c=relaxed/simple;
+	bh=Trvkxt5lU7Ccqh3r82woi217cR3h+DMmWfjLlM1y68E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=InJRHnGni8sSwkw8x7nndXlscUcmuZc5DwTBkhkCkeMdne1YESjOBRebgA9Y55szoeZg5bbp+LU9Uf8bwnGMh3T6LnMrZyoAvFczwXKcYy9YLe8DRGeN0gSxMeUBtkHlBWRsP5RiIkj4nxGNMj9Zuk9LFycNlTuaDj/HsCJrfdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6QhyzYp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CD4C4CEEA;
-	Mon, 23 Jun 2025 21:13:29 +0000 (UTC)
+	 MIME-Version; b=fu/BEaWqfJDI+7UX07nnI67h3+mlkOUgpyLOPUgFo8ES9x3iBto0XEr+arSlgGRS6l0EuCzhIhCyV054TDMIMOxD5N1dEMrGFy2knBnA2fUlP8Gpn+JeKvrGTIqPSbqNHpHp93klAKR3pJypOtFqxyam5zyMrQH9hyldpmcWQ00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D4wayNxF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1833C4CEEA;
+	Mon, 23 Jun 2025 21:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713209;
-	bh=pCSuUchl7TkKHEy25ai5t6KZ+wpmSks7wF8YXm/v8r8=;
+	s=korg; t=1750713456;
+	bh=Trvkxt5lU7Ccqh3r82woi217cR3h+DMmWfjLlM1y68E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6QhyzYppftl3R2gSGJFmw8siSoH+l0tohNxVxQju1ABhqDoMf1qJGk+DiHZ9FouS
-	 W6NG46F2dNO41EdvqFhuWtkIxoxP2N/pa2iMcu0FhQPwWLB8a7HobLzrqNz6jNQGH4
-	 lpYzzmt5Rm+L5MxGqJBZe1vU+pNQ1mtZNBiIZneI=
+	b=D4wayNxF6y1rm52sv1A/cBnsrgTvzMSQOfY78LBUx0j4Q2g+K0U5jruA5t4Gn4YN8
+	 baPDAf/+eDsvUX+dw87X5NsR+EYoVIfF4vUzn73vDLwxvrExJQ9fjLPIcO2zeTpo9T
+	 Z1N3V6qSgKybMhj0b24E7ZH5NLjJBlLg6buS0Nzw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 032/414] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 124/508] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
 Date: Mon, 23 Jun 2025 15:02:49 +0200
-Message-ID: <20250623130642.829629561@linuxfoundation.org>
+Message-ID: <20250623130648.346375916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
+[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
 
-In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
-nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
-this can cause NULL pointer dereference.
+The u2phy0_host port is the part of the USB PHY0 (namely the
+HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
+controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
+controller (dwc3), which we do use.
 
-Normally the delayed start of laundromat_work allows sufficient time for
-nfsd_ssc initialization to complete. However, when the kernel waits too
-long for userspace responses (e.g. in nfs4_state_start_net ->
-nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
-cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
-delayed work may start before nfsd_ssc initialization finishes.
+The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
+disable the USB2.0 controllers.
 
-Fix this by moving nfsd_ssc initialization before starting laundromat_work.
+USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
+while, one of the recurring issues being that only USB2 is detected and
+not USB3 in host mode. Reading the justification above and seeing that
+we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
+have bothered you since it should be changed to u2phy0_otg. The issue is
+that if it's switched to that, USB OTG on Haikou is entirely broken. I
+have checked the routing in the Gerber file, the lanes are going to the
+expected ball pins (that is, NOT HOST0_DP/DM).
+u2phy0_host is for sure the wrong part of the PHY to use, but it's the
+only one that works at the moment for that board so keep it until we
+figure out what exactly is broken.
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+No intended functional change.
+
+[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
+    Chapter 2 USB2.0 PHY
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -406,13 +406,13 @@ static int nfsd_startup_net(struct net *
- 	if (ret)
- 		goto out_filecache;
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+index 115c14c0a3c68..396a6636073b5 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+@@ -251,14 +251,6 @@
+ 	status = "okay";
+ };
  
-+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
-+	nfsd4_ssc_init_umount_work(nn);
-+#endif
- 	ret = nfs4_state_start_net(net);
- 	if (ret)
- 		goto out_reply_cache;
- 
--#ifdef CONFIG_NFSD_V4_2_INTER_SSC
--	nfsd4_ssc_init_umount_work(nn);
--#endif
- 	nn->nfsd_net_up = true;
- 	return 0;
- 
+-&usb_host0_ehci {
+-	status = "okay";
+-};
+-
+-&usb_host0_ohci {
+-	status = "okay";
+-};
+-
+ &vopb {
+ 	status = "okay";
+ };
+-- 
+2.39.5
+
 
 
 
