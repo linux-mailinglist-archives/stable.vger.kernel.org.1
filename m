@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-157775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99687AE558E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67714AE5593
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06A991BC4C2B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 048531BC519A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF5E22264BF;
-	Mon, 23 Jun 2025 22:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5E97225761;
+	Mon, 23 Jun 2025 22:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yi8sgtQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekmFG+LE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5B8222576;
-	Mon, 23 Jun 2025 22:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D97B676;
+	Mon, 23 Jun 2025 22:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716691; cv=none; b=QBK7snUbaRiB7P1+7iCI05ElsJiivkuxfspPUdXvKjXJcXpDDI1480GA/wnJhqP32fUUU6RPpjxDWi/Llf1yvZ70tF6ZxLJ92+4alGLiO/g1eisfJz4c2jOie38+QRfzxxqQEuwzalmyc7oSo4qCXuAP+m5izP8LBRSQJ1JQsvs=
+	t=1750716703; cv=none; b=XSpqR272l5cwZbrijfSgUpzzAvqzP+I8HkUAOrDBnB0H93Q5pBNr6Z/iAC2DS19QO7MHjAUV7uJs/9BtlE1zxUmXU0BmzpkytEJZBXhSbLtkUiW68qh4v3/cYTs/inSL+NcWoatMdsKxNIG3f2t/DBS5EByvTQhr7ApFsWznq8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716691; c=relaxed/simple;
-	bh=1MHJOeyTuDcvZfDB7kFfun72JrjXM2taxWXZ3j3xI/s=;
+	s=arc-20240116; t=1750716703; c=relaxed/simple;
+	bh=0D7EofhzRGGxv9TWn48E5Tud+4HCjvQrwBBcoLb6/SA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gr8g68lLZ9V3Jt6KZ0nKmJMX4tnhp4R87X6vKXbqY3Z5DYDc8tJT++DK40fdyvM2XI50NTq8EYIfoOiQiIPns4f8pRwZS3v2gHurnt2ZXWYNuuTguI71MKMFWpH8IcJy+qqbNCK8/kDafPC/R+VsTPjsnI57DRzHrYgG29r89wQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yi8sgtQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2AA5C4CEEA;
-	Mon, 23 Jun 2025 22:11:30 +0000 (UTC)
+	 MIME-Version; b=p1NQIr1mrqzW1MsXjv23/JEC4nVc70XgEu8C0Ko4hJ7GkCdtGFQaUZhA52isYLYecuWn9Z36HAqgbQeHCHGlE9+SixuXOxQ5P3AN+BuRlirI9IkbdwGxbe518LvmqK50wLgQK6Uir33UOVRmoCfx1kILiFNf3Wp2r+GGRUl24Wo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekmFG+LE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D17DC4CEEA;
+	Mon, 23 Jun 2025 22:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716691;
-	bh=1MHJOeyTuDcvZfDB7kFfun72JrjXM2taxWXZ3j3xI/s=;
+	s=korg; t=1750716703;
+	bh=0D7EofhzRGGxv9TWn48E5Tud+4HCjvQrwBBcoLb6/SA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yi8sgtQY/xUeKVD56zd9G3pNylQ253k9zOWCSJ+/U9lLBdgHZ2+JGSgyGx6GrMnQS
-	 qA7n+WUT4/FezRG/2/JCwZmAeUPZrsQPyjN1S61VRat1tXEOROKTTOOlQcUoxBW48+
-	 E0IMRF1iK1OUzHEu5NGB2PITTiQBVSFM1LJR3TTA=
+	b=ekmFG+LEwbaTpWKGmKrbv0D7O5d40RtS6wRPi/2FOrU/1kh9hC2mwxHHvpE5O3C9m
+	 gXBIHWb9DZZ9MhC1zV1MOSkV6xJHlKAl5YfayavDr8LBhrLgWQccmoI9GRh/saArpL
+	 EzurVPTzW6TIgaqfpib4WMap7RbYeYbxw+8g0wdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	stable@kernel.org,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 321/508] media: imx-jpeg: Drop the first error frames
-Date: Mon, 23 Jun 2025 15:06:06 +0200
-Message-ID: <20250623130653.225491265@linuxfoundation.org>
+Subject: [PATCH 6.1 322/508] media: uvcvideo: Return the number of processed controls
+Date: Mon, 23 Jun 2025 15:06:07 +0200
+Message-ID: <20250623130653.249731216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,55 +68,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit d52b9b7e2f10d22a49468128540533e8d76910cd upstream.
+commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369 upstream.
 
-When an output buffer contains error frame header,
-v4l2_jpeg_parse_header() will return error, then driver will mark this
-buffer and a capture buffer done with error flag in device_run().
+If we let know our callers that we have not done anything, they will be
+able to optimize their decisions.
 
-But if the error occurs in the first frames, before setup the capture
-queue, there is no chance to schedule device_run(), and there may be no
-capture to mark error.
-
-So we need to drop this buffer with error flag, and make the decoding
-can continue.
-
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -1468,9 +1468,19 @@ static void mxc_jpeg_buf_queue(struct vb
- 	jpeg_src_buf = vb2_to_mxc_buf(vb);
- 	jpeg_src_buf->jpeg_parse_error = false;
- 	ret = mxc_jpeg_parse(ctx, vb);
--	if (ret)
-+	if (ret) {
- 		jpeg_src_buf->jpeg_parse_error = true;
- 
-+		/*
-+		 * if the capture queue is not setup, the device_run() won't be scheduled,
-+		 * need to drop the error buffer, so that the decoding can continue
-+		 */
-+		if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ctx))) {
-+			v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
-+			return;
-+		}
-+	}
-+
- end:
- 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1734,12 +1734,17 @@ int uvc_ctrl_begin(struct uvc_video_chai
+ 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
  }
+ 
++/*
++ * Returns the number of uvc controls that have been correctly set, or a
++ * negative number if there has been an error.
++ */
+ static int uvc_ctrl_commit_entity(struct uvc_device *dev,
+ 				  struct uvc_fh *handle,
+ 				  struct uvc_entity *entity,
+ 				  int rollback,
+ 				  struct uvc_control **err_ctrl)
+ {
++	unsigned int processed_ctrls = 0;
+ 	struct uvc_control *ctrl;
+ 	unsigned int i;
+ 	int ret;
+@@ -1774,6 +1779,9 @@ static int uvc_ctrl_commit_entity(struct
+ 		else
+ 			ret = 0;
+ 
++		if (!ret)
++			processed_ctrls++;
++
+ 		if (rollback || ret < 0)
+ 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
+ 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
+@@ -1792,7 +1800,7 @@ static int uvc_ctrl_commit_entity(struct
+ 			uvc_ctrl_set_handle(handle, ctrl, handle);
+ 	}
+ 
+-	return 0;
++	return processed_ctrls;
+ }
+ 
+ static int uvc_ctrl_find_ctrl_idx(struct uvc_entity *entity,
+@@ -1839,6 +1847,7 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 
+ 	if (!rollback)
+ 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
++	ret = 0;
+ done:
+ 	mutex_unlock(&chain->ctrl_mutex);
+ 	return ret;
 
 
 
