@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2E7AE54EC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90422AE5400
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6668C4C29E7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42961B67433
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4C9222590;
-	Mon, 23 Jun 2025 22:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12E24220686;
+	Mon, 23 Jun 2025 21:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hcPKaQKt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBVptEpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE20A1A4F12;
-	Mon, 23 Jun 2025 22:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1E4B1E5206;
+	Mon, 23 Jun 2025 21:58:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716348; cv=none; b=NafX1TYgPI3+LBnOCF0lVoh41n1M6rtwMCSxiFVVOOq/UAP7BPXB4eYLPxATr615NsGwwsThhd1WzLWJkEwLY8Q/HII3rZ5VKW9dX3WP1bFaZ/riZMf58IrD1mE7gCprH83y4WUX95e85vU+cLZhVl6qKqI1lKf/yIM9e2uxnFU=
+	t=1750715897; cv=none; b=pPtQPTRz/RJR01PPw7YrgugR2jooPW8k+LMRQFYQ688GsNrHkdA40r9KQbjQmgfLZs+uQn91xu2S/mJuBePX5IQkYVj18bZNYouE0XDAlMIh/X69F3aiqETKXL/xNKZalS4R5LiaVrVgWi5S7KQksYN3fJsAzorh5FQ4iXciGBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716348; c=relaxed/simple;
-	bh=pJ8WgIbtX2f4lbVy7oMOYFg8SdC8ra6BnnzQD3Hg+zs=;
+	s=arc-20240116; t=1750715897; c=relaxed/simple;
+	bh=Nj0yrQNyxHX/vhNTn/J9vaqUtk38m5nlfAA8sqbxz2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU7is/1pV2fmDRK4Hl3VJlgogWAGBHoUKZAnABkgJt6r51DJbSjl/98KESS+UPx0wNvUBWhDzJYn3PryWTsntFqy2MKihkINBNj4XWCZq4lDaEmhK1CFH33BwtWwWERi/mnt4f2qcPOKdDy5fm7QYlsNV2Vw60IJAHgUO2FZoZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hcPKaQKt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88119C4CEEA;
-	Mon, 23 Jun 2025 22:05:47 +0000 (UTC)
+	 MIME-Version; b=HDs/gff8Ft3Z1mMDsxFvL43v2EGICQX9+YAfKHe4iWJwmce0vZGTJb3tdqnO/wbbm8+kRDx/ugjArhoP1tlI4ozrLmZQ4t3B7aJc8kk+pMNnVl/4sh65caRJ/U5ZpJSkz2tLdtXG3y7tJK94BlYn49Cxgh4UJCJ48SHM6L0kNgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBVptEpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A902C4CEED;
+	Mon, 23 Jun 2025 21:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716347;
-	bh=pJ8WgIbtX2f4lbVy7oMOYFg8SdC8ra6BnnzQD3Hg+zs=;
+	s=korg; t=1750715897;
+	bh=Nj0yrQNyxHX/vhNTn/J9vaqUtk38m5nlfAA8sqbxz2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hcPKaQKt1Nyd2+lIJcv48PGbkmRLlQ12MZStejNbmdtwfTU7i0HUjPKaAOGseTM1f
-	 /eo7tHnibG3hGERKVgrZIj/wLuvSbEry4OIPi2PZdU1qQdKMmt5O8m5viSMbMhQUGM
-	 6VuN17yjJ0GPVNmMSSmYAkPsrQqkv5QdpOL1ram0=
+	b=jBVptEpXRBzoE9/Til8r5Q1HQowQebIuTjAxF7PSe45QHM3Hh/3Wvhv7dSDeoUUg/
+	 2Aw16TLmJVMaKtetAfP/X+FrNQaZDLJNOfVWIxen07IawaorJ/SXboc6DXuHP0r8KY
+	 zpvUKWzAl5+qRLxASYde3RZmrgj+KUsyLkdEOv3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 323/411] wifi: mac80211: do not offer a mesh path if forwarding is disabled
-Date: Mon, 23 Jun 2025 15:07:47 +0200
-Message-ID: <20250623130641.768873661@linuxfoundation.org>
+Subject: [PATCH 6.15 510/592] drm/ssd130x: fix ssd132x_clear_screen() columns
+Date: Mon, 23 Jun 2025 15:07:48 +0200
+Message-ID: <20250623130712.564887849@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
+[ Upstream commit e479da4054875c4cc53a7fb956ebff03d2dac939 ]
 
-When processing a PREQ the code would always check whether we have a
-mesh path locally and reply accordingly. However, when forwarding is
-disabled then we should not reply with this information as we will not
-forward data packets down that path.
+The number of columns relates to the width, not the height.  Use the
+correct variable.
 
-Move the check for dot11MeshForwarding up in the function and skip the
-mesh path lookup in that case. In the else block, set forward to false
-so that the rest of the function becomes a no-op and the
-dot11MeshForwarding check does not need to be duplicated.
-
-This explains an effect observed in the Freifunk community where mesh
-forwarding is disabled. In that case a mesh with three STAs and only bad
-links in between them, individual STAs would occionally have indirect
-mpath entries. This should not have happened.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: fdd591e00a9c ("drm/ssd130x: Add support for the SSD132x OLED controller family")
+Link: https://lore.kernel.org/r/20250611111307.1814876-1-jkeeping@inmusicbrands.com
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_hwmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/solomon/ssd130x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index e6b6a7508ff1b..8bf238afb5442 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -620,7 +620,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 				mesh_path_add_gate(mpath);
- 		}
- 		rcu_read_unlock();
--	} else {
-+	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
- 		rcu_read_lock();
- 		mpath = mesh_path_lookup(sdata, target_addr);
- 		if (mpath) {
-@@ -638,6 +638,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 		rcu_read_unlock();
-+	} else {
-+		forward = false;
- 	}
+diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
+index dd2006d51c7a2..eec43d1a55951 100644
+--- a/drivers/gpu/drm/solomon/ssd130x.c
++++ b/drivers/gpu/drm/solomon/ssd130x.c
+@@ -974,7 +974,7 @@ static void ssd130x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
  
- 	if (reply) {
-@@ -655,7 +657,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
+ static void ssd132x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
+ {
+-	unsigned int columns = DIV_ROUND_UP(ssd130x->height, SSD132X_SEGMENT_WIDTH);
++	unsigned int columns = DIV_ROUND_UP(ssd130x->width, SSD132X_SEGMENT_WIDTH);
+ 	unsigned int height = ssd130x->height;
  
--	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
-+	if (forward) {
- 		u32 preq_id;
- 		u8 hopcount;
- 
+ 	memset(data_array, 0, columns * height);
 -- 
 2.39.5
 
