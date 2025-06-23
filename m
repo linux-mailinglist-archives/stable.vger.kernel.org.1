@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39291AE4EA3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A3843AE4FC0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F3B593BE131
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCD7A3ABDFC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6547922069F;
-	Mon, 23 Jun 2025 21:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A28A421B9C9;
+	Mon, 23 Jun 2025 21:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="frh1nUyn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FjpGtJkx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CECB70838;
-	Mon, 23 Jun 2025 21:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E7494C62;
+	Mon, 23 Jun 2025 21:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712859; cv=none; b=byiiGvvR1za9ArOpTHRNmz4a891fDtF4afnxdLi/1ohyWvu4ABHUCqlXBJ3HufXS25s308XA87nupiDQEesAA7btxKQTCHzsdFOM773+OM3G3+XeC/W9fbk6RKLWJmINclGERnOiLO5c/GlEvtAwg/FUivhyc2x48dZ/FjFCo0k=
+	t=1750713526; cv=none; b=WtdfPKZ6MqECcGLIYTGdoVM0GfUxlscOk5rOVCq5b7s9A3Sfl7A7kkfeXf84BIYN/qJJf8qezN9P1zbKOl6ag9pDqVWlXgpU0J3/z+5J6E4kFtWlQVEKx5AhScJnLnPlOcHdbLqgGE9G/AEJ4GoAtQZn56gTcgnR0T2Gqctw0gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712859; c=relaxed/simple;
-	bh=bx/RHblzMdk0xCywwnw2WZVD3QnBUO/TstWaDf8fX4w=;
+	s=arc-20240116; t=1750713526; c=relaxed/simple;
+	bh=X61JaxI46L9+I9Ely0ZrLQI2Q1MyTPoIXxHHMCf+jDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QnwHuKz9rge35SGtf6uIaB7J2WHcR8pBKMiYF3C8sODqLpMhFQ00cyg+uL9ENV8CSHr1jhhHajlkQxJe+wktN9j5Tbh0ABfoeQc05o/fOCPr1BRUBsI2GjiaeODJHRDUt9CfOTGRvePM/z1/m6HljdEg950+DfSg0+dbvCADlBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=frh1nUyn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A940DC4CEEA;
-	Mon, 23 Jun 2025 21:07:38 +0000 (UTC)
+	 MIME-Version; b=n48h9qq+kbn6Pyr0A3lIdgDHUOvCr7G0w6ReRzf2HgaR/XTIEKV3A4E8YV2YTtBwBiDm+hLgxvcg6SBVjO8+ZoYt5Wa+Rx0IsTxMvq0/Rk2dE5VzTX3mOURsBKPkEDrYxUUVAdVAcwrG+Qm8TGmmRd3X2MASU7vwV2ljsRxcx4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FjpGtJkx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB362C4CEEA;
+	Mon, 23 Jun 2025 21:18:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712859;
-	bh=bx/RHblzMdk0xCywwnw2WZVD3QnBUO/TstWaDf8fX4w=;
+	s=korg; t=1750713526;
+	bh=X61JaxI46L9+I9Ely0ZrLQI2Q1MyTPoIXxHHMCf+jDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=frh1nUyn4Y5bCdLuuD1eGK7diKL656Ionke8MOGNNf+b41x495dGXK6M7B1a3FmJr
-	 lDcbw+kLY4it3iYMyhtp4+f7DZzwpQFWE0WlIqRxi13q/Y02ag5sAddzLbFwS/pFdT
-	 NzecLmPcLhwZwz8VwOnXTjLP9erjOJegsh34Cpec=
+	b=FjpGtJkxdRnO4RIyuK4PBO6kgtTtNbxQaprjiqKXMdyRrrB1aTBGRXz44CZDy2j3g
+	 a6vYL4NgzhZVlxL+59gWFwbauyoDMaE4rieH86vwai6AJpc5cKtGZqDJKSBc1i/aDG
+	 vpYRZHA/PXYLX5uORECM4HE8VB8rnQuQzKeoUjhI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Hanno=20B=C3=B6ck?= <hanno@hboeck.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Dimitri Fedrau <dima.fedrau@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/355] Input: synaptics-rmi - fix crash with unsupported versions of F34
+Subject: [PATCH 6.15 352/592] net: phy: marvell-88q2xxx: Enable temperature measurement in probe again
 Date: Mon, 23 Jun 2025 15:05:10 +0200
-Message-ID: <20250623130630.046976565@linuxfoundation.org>
+Message-ID: <20250623130708.816494344@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,264 +60,181 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Dimitri Fedrau <dima.fedrau@gmail.com>
 
-[ Upstream commit ca39500f6af9cfe6823dc5aa8fbaed788d6e35b2 ]
+[ Upstream commit 10465365f3b094ba9a9795f212d13dee594bcfe7 ]
 
-Sysfs interface for updating firmware for RMI devices is available even
-when F34 probe fails. The code checks for presence of F34 "container"
-pointer and then tries to use the function data attached to the
-sub-device. F34 assigns the function data early, before it knows if
-probe will succeed, leaving behind a stale pointer.
+Enabling of the temperature sensor was moved from mv88q2xxx_hwmon_probe to
+mv88q222x_config_init with the consequence that the sensor is only
+usable when the PHY is configured. Enable the sensor in
+mv88q2xxx_hwmon_probe as well to fix this.
 
-Fix this by expanding checks to not only test for presence of F34
-"container" but also check if there is driver data assigned to the
-sub-device, and call dev_set_drvdata() only after we are certain that
-probe is successful.
-
-This is not a complete fix, since F34 will be freed during firmware
-update, so there is still a race when fetching and accessing this
-pointer. This race will be addressed in follow-up changes.
-
-Reported-by: Hanno Böck <hanno@hboeck.de>
-Fixes: 29fd0ec2bdbe ("Input: synaptics-rmi4 - add support for F34 device reflash")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBlAl6sGulam-Qcx@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Dimitri Fedrau <dima.fedrau@gmail.com>
+Link: https://patch.msgid.link/20250512-marvell-88q2xxx-hwmon-enable-at-probe-v4-1-9256a5c8f603@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/rmi4/rmi_f34.c | 135 ++++++++++++++++++++---------------
- 1 file changed, 76 insertions(+), 59 deletions(-)
+ drivers/net/phy/marvell-88q2xxx.c | 103 +++++++++++++++++-------------
+ 1 file changed, 57 insertions(+), 46 deletions(-)
 
-diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
-index c26808f10827a..c93a8ccd87c73 100644
---- a/drivers/input/rmi4/rmi_f34.c
-+++ b/drivers/input/rmi4/rmi_f34.c
-@@ -4,6 +4,7 @@
-  * Copyright (C) 2016 Zodiac Inflight Innovations
-  */
+diff --git a/drivers/net/phy/marvell-88q2xxx.c b/drivers/net/phy/marvell-88q2xxx.c
+index 23e1f0521f549..65f31d3c34810 100644
+--- a/drivers/net/phy/marvell-88q2xxx.c
++++ b/drivers/net/phy/marvell-88q2xxx.c
+@@ -119,7 +119,6 @@
+ #define MV88Q2XXX_LED_INDEX_GPIO			1
  
-+#include "linux/device.h"
- #include <linux/kernel.h>
- #include <linux/rmi.h>
- #include <linux/firmware.h>
-@@ -298,39 +299,30 @@ static int rmi_f34_update_firmware(struct f34_data *f34,
- 	return ret;
- }
- 
--static int rmi_f34_status(struct rmi_function *fn)
--{
--	struct f34_data *f34 = dev_get_drvdata(&fn->dev);
--
--	/*
--	 * The status is the percentage complete, or once complete,
--	 * zero for success or a negative return code.
--	 */
--	return f34->update_status;
--}
--
- static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
- 					     struct device_attribute *dattr,
- 					     char *buf)
- {
- 	struct rmi_driver_data *data = dev_get_drvdata(dev);
--	struct rmi_function *fn = data->f34_container;
-+	struct rmi_function *fn;
- 	struct f34_data *f34;
- 
--	if (fn) {
--		f34 = dev_get_drvdata(&fn->dev);
--
--		if (f34->bl_version == 5)
--			return sysfs_emit(buf, "%c%c\n",
--					  f34->bootloader_id[0],
--					  f34->bootloader_id[1]);
--		else
--			return sysfs_emit(buf, "V%d.%d\n",
--					  f34->bootloader_id[1],
--					  f34->bootloader_id[0]);
--	}
-+	fn = data->f34_container;
-+	if (!fn)
-+		return -ENODEV;
- 
--	return 0;
-+	f34 = dev_get_drvdata(&fn->dev);
-+	if (!f34)
-+		return -ENODEV;
-+
-+	if (f34->bl_version == 5)
-+		return sysfs_emit(buf, "%c%c\n",
-+				  f34->bootloader_id[0],
-+				  f34->bootloader_id[1]);
-+	else
-+		return sysfs_emit(buf, "V%d.%d\n",
-+				  f34->bootloader_id[1],
-+				  f34->bootloader_id[0]);
- }
- 
- static DEVICE_ATTR(bootloader_id, 0444, rmi_driver_bootloader_id_show, NULL);
-@@ -343,13 +335,16 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
- 	struct rmi_function *fn = data->f34_container;
- 	struct f34_data *f34;
- 
--	if (fn) {
--		f34 = dev_get_drvdata(&fn->dev);
-+	fn = data->f34_container;
-+	if (!fn)
-+		return -ENODEV;
- 
--		return sysfs_emit(buf, "%s\n", f34->configuration_id);
--	}
-+	f34 = dev_get_drvdata(&fn->dev);
-+	if (!f34)
-+		return -ENODEV;
- 
--	return 0;
-+
-+	return sysfs_emit(buf, "%s\n", f34->configuration_id);
- }
- 
- static DEVICE_ATTR(configuration_id, 0444,
-@@ -365,10 +360,14 @@ static int rmi_firmware_update(struct rmi_driver_data *data,
- 
- 	if (!data->f34_container) {
- 		dev_warn(dev, "%s: No F34 present!\n", __func__);
--		return -EINVAL;
-+		return -ENODEV;
- 	}
- 
- 	f34 = dev_get_drvdata(&data->f34_container->dev);
-+	if (!f34) {
-+		dev_warn(dev, "%s: No valid F34 present!\n", __func__);
-+		return -ENODEV;
-+	}
- 
- 	if (f34->bl_version == 7) {
- 		if (data->pdt_props & HAS_BSR) {
-@@ -494,10 +493,18 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
- 						char *buf)
- {
- 	struct rmi_driver_data *data = dev_get_drvdata(dev);
--	int update_status = 0;
-+	struct f34_data *f34;
-+	int update_status = -ENODEV;
- 
--	if (data->f34_container)
--		update_status = rmi_f34_status(data->f34_container);
-+	/*
-+	 * The status is the percentage complete, or once complete,
-+	 * zero for success or a negative return code.
-+	 */
-+	if (data->f34_container) {
-+		f34 = dev_get_drvdata(&data->f34_container->dev);
-+		if (f34)
-+			update_status = f34->update_status;
-+	}
- 
- 	return sysfs_emit(buf, "%d\n", update_status);
- }
-@@ -517,33 +524,21 @@ static const struct attribute_group rmi_firmware_attr_group = {
- 	.attrs = rmi_firmware_attrs,
+ struct mv88q2xxx_priv {
+-	bool enable_temp;
+ 	bool enable_led0;
  };
  
--static int rmi_f34_probe(struct rmi_function *fn)
-+static int rmi_f34v5_probe(struct f34_data *f34)
- {
--	struct f34_data *f34;
--	unsigned char f34_queries[9];
-+	struct rmi_function *fn = f34->fn;
-+	u8 f34_queries[9];
- 	bool has_config_id;
--	u8 version = fn->fd.function_version;
--	int ret;
--
--	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
--	if (!f34)
--		return -ENOMEM;
--
--	f34->fn = fn;
--	dev_set_drvdata(&fn->dev, f34);
--
--	/* v5 code only supported version 0, try V7 probe */
--	if (version > 0)
--		return rmi_f34v7_probe(f34);
-+	int error;
- 
- 	f34->bl_version = 5;
- 
--	ret = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
--			     f34_queries, sizeof(f34_queries));
--	if (ret) {
-+	error = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
-+			       f34_queries, sizeof(f34_queries));
-+	if (error) {
- 		dev_err(&fn->dev, "%s: Failed to query properties\n",
- 			__func__);
--		return ret;
-+		return error;
- 	}
- 
- 	snprintf(f34->bootloader_id, sizeof(f34->bootloader_id),
-@@ -569,11 +564,11 @@ static int rmi_f34_probe(struct rmi_function *fn)
- 		f34->v5.config_blocks);
- 
- 	if (has_config_id) {
--		ret = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
--				     f34_queries, sizeof(f34_queries));
--		if (ret) {
-+		error = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
-+				       f34_queries, sizeof(f34_queries));
-+		if (error) {
- 			dev_err(&fn->dev, "Failed to read F34 config ID\n");
--			return ret;
-+			return error;
- 		}
- 
- 		snprintf(f34->configuration_id, sizeof(f34->configuration_id),
-@@ -582,12 +577,34 @@ static int rmi_f34_probe(struct rmi_function *fn)
- 			 f34_queries[2], f34_queries[3]);
- 
- 		rmi_dbg(RMI_DEBUG_FN, &fn->dev, "Configuration ID: %s\n",
--			 f34->configuration_id);
-+			f34->configuration_id);
- 	}
- 
- 	return 0;
+@@ -482,49 +481,6 @@ static int mv88q2xxx_config_aneg(struct phy_device *phydev)
+ 	return phydev->drv->soft_reset(phydev);
  }
  
-+static int rmi_f34_probe(struct rmi_function *fn)
+-static int mv88q2xxx_config_init(struct phy_device *phydev)
+-{
+-	struct mv88q2xxx_priv *priv = phydev->priv;
+-	int ret;
+-
+-	/* The 88Q2XXX PHYs do have the extended ability register available, but
+-	 * register MDIO_PMA_EXTABLE where they should signalize it does not
+-	 * work according to specification. Therefore, we force it here.
+-	 */
+-	phydev->pma_extable = MDIO_PMA_EXTABLE_BT1;
+-
+-	/* Configure interrupt with default settings, output is driven low for
+-	 * active interrupt and high for inactive.
+-	 */
+-	if (phy_interrupt_is_valid(phydev)) {
+-		ret = phy_set_bits_mmd(phydev, MDIO_MMD_PCS,
+-				       MDIO_MMD_PCS_MV_GPIO_INT_CTRL,
+-				       MDIO_MMD_PCS_MV_GPIO_INT_CTRL_TRI_DIS);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	/* Enable LED function and disable TX disable feature on LED/TX_ENABLE */
+-	if (priv->enable_led0) {
+-		ret = phy_clear_bits_mmd(phydev, MDIO_MMD_PCS,
+-					 MDIO_MMD_PCS_MV_RESET_CTRL,
+-					 MDIO_MMD_PCS_MV_RESET_CTRL_TX_DISABLE);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	/* Enable temperature sense */
+-	if (priv->enable_temp) {
+-		ret = phy_modify_mmd(phydev, MDIO_MMD_PCS,
+-				     MDIO_MMD_PCS_MV_TEMP_SENSOR2,
+-				     MDIO_MMD_PCS_MV_TEMP_SENSOR2_DIS_MASK, 0);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	return 0;
+-}
+-
+ static int mv88q2xxx_get_sqi(struct phy_device *phydev)
+ {
+ 	int ret;
+@@ -667,6 +623,12 @@ static int mv88q2xxx_resume(struct phy_device *phydev)
+ }
+ 
+ #if IS_ENABLED(CONFIG_HWMON)
++static int mv88q2xxx_enable_temp_sense(struct phy_device *phydev)
 +{
-+	struct f34_data *f34;
-+	u8 version = fn->fd.function_version;
-+	int error;
++	return phy_modify_mmd(phydev, MDIO_MMD_PCS, MDIO_MMD_PCS_MV_TEMP_SENSOR2,
++			      MDIO_MMD_PCS_MV_TEMP_SENSOR2_DIS_MASK, 0);
++}
 +
-+	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
-+	if (!f34)
-+		return -ENOMEM;
+ static const struct hwmon_channel_info * const mv88q2xxx_hwmon_info[] = {
+ 	HWMON_CHANNEL_INFO(temp, HWMON_T_INPUT | HWMON_T_MAX | HWMON_T_ALARM),
+ 	NULL
+@@ -762,11 +724,13 @@ static const struct hwmon_chip_info mv88q2xxx_hwmon_chip_info = {
+ 
+ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+ {
+-	struct mv88q2xxx_priv *priv = phydev->priv;
+ 	struct device *dev = &phydev->mdio.dev;
+ 	struct device *hwmon;
++	int ret;
+ 
+-	priv->enable_temp = true;
++	ret = mv88q2xxx_enable_temp_sense(phydev);
++	if (ret < 0)
++		return ret;
+ 
+ 	hwmon = devm_hwmon_device_register_with_info(dev, NULL, phydev,
+ 						     &mv88q2xxx_hwmon_chip_info,
+@@ -776,6 +740,11 @@ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+ }
+ 
+ #else
++static int mv88q2xxx_enable_temp_sense(struct phy_device *phydev)
++{
++	return 0;
++}
 +
-+	f34->fn = fn;
+ static int mv88q2xxx_hwmon_probe(struct phy_device *phydev)
+ {
+ 	return 0;
+@@ -853,6 +822,48 @@ static int mv88q222x_probe(struct phy_device *phydev)
+ 	return mv88q2xxx_hwmon_probe(phydev);
+ }
+ 
++static int mv88q2xxx_config_init(struct phy_device *phydev)
++{
++	struct mv88q2xxx_priv *priv = phydev->priv;
++	int ret;
 +
-+	/* v5 code only supported version 0 */
-+	error = version == 0 ? rmi_f34v5_probe(f34) : rmi_f34v7_probe(f34);
-+	if (error)
-+		return error;
++	/* The 88Q2XXX PHYs do have the extended ability register available, but
++	 * register MDIO_PMA_EXTABLE where they should signalize it does not
++	 * work according to specification. Therefore, we force it here.
++	 */
++	phydev->pma_extable = MDIO_PMA_EXTABLE_BT1;
 +
-+	dev_set_drvdata(&fn->dev, f34);
++	/* Configure interrupt with default settings, output is driven low for
++	 * active interrupt and high for inactive.
++	 */
++	if (phy_interrupt_is_valid(phydev)) {
++		ret = phy_set_bits_mmd(phydev, MDIO_MMD_PCS,
++				       MDIO_MMD_PCS_MV_GPIO_INT_CTRL,
++				       MDIO_MMD_PCS_MV_GPIO_INT_CTRL_TRI_DIS);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Enable LED function and disable TX disable feature on LED/TX_ENABLE */
++	if (priv->enable_led0) {
++		ret = phy_clear_bits_mmd(phydev, MDIO_MMD_PCS,
++					 MDIO_MMD_PCS_MV_RESET_CTRL,
++					 MDIO_MMD_PCS_MV_RESET_CTRL_TX_DISABLE);
++		if (ret < 0)
++			return ret;
++	}
++
++	/* Enable temperature sense again. There might have been a hard reset
++	 * of the PHY and in this case the register content is restored to
++	 * defaults and we need to enable it again.
++	 */
++	ret = mv88q2xxx_enable_temp_sense(phydev);
++	if (ret < 0)
++		return ret;
 +
 +	return 0;
 +}
 +
- int rmi_f34_create_sysfs(struct rmi_device *rmi_dev)
+ static int mv88q2110_config_init(struct phy_device *phydev)
  {
- 	return sysfs_create_group(&rmi_dev->dev.kobj, &rmi_firmware_attr_group);
+ 	int ret;
 -- 
 2.39.5
 
