@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81AFDAE5262
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDF5FAE51DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D101B65130
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12F817FF1E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCD622257E;
-	Mon, 23 Jun 2025 21:43:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB40221FC7;
+	Mon, 23 Jun 2025 21:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyPPQ8LB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tda4VHv0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7604315A;
-	Mon, 23 Jun 2025 21:43:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9954409;
+	Mon, 23 Jun 2025 21:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714999; cv=none; b=koRXvi/mceX8nyihplBIZMWysrlBdvZcZxl0FffqP0442PA0jigkIyBZiCu/BzFCaKlVbHIEiKGvahZA+wHkWwGsuJ5ZCWj55aFml9nrshoo/MPvMlYmo6P/k2rEsKJKWCvdlQTo5pP8QBk9/ur2eHwsTDPt2jmfTr2il8u7wUw=
+	t=1750714682; cv=none; b=qLak+k6eu7M+iXXMBzyjOgjO0vmYzPX3A24Scy5hocA91jqjkNkw8tyyHfxEYgQ/eBSHBpR2rbe50KObH7pBgcuiwU55QK0rgnt9zoiTOT0DfLM6ijyRN0n7Cxv5+b4ZFq2x1Xi+yyBEoUX69pT2nn/OPyeTt5BRNBSnqS6Ohik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714999; c=relaxed/simple;
-	bh=M4hvD8k1cWsfYP5Uj5hPhfNSgpVOFRdm4YVnn/voxE8=;
+	s=arc-20240116; t=1750714682; c=relaxed/simple;
+	bh=/YGEN6vaLP3OgPJkUOwhJwwFfWZ6xj9+ljOkETDMfTk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utWAHJmLWSfy2L/fZmfZeNLhIZvG9mC6BDebDiiZxfPDLmqpYZip8CJBcb/Ryfe0Ui/EMfvs+9EpTkGtRXtoRBPYSHDVRZhW9YcuQBoGIoQgkRnx0gmdf+BP4EJGzCMopasob5J6teywApaOajsJ64q8DMRqgX1Y1AqjEO0QXMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyPPQ8LB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596A9C4CEED;
-	Mon, 23 Jun 2025 21:43:19 +0000 (UTC)
+	 MIME-Version; b=jwAYg21FSbSsT2Hm5MlJ89uf9B5+uXzWNwnus43SSWCqebmMvhOtZJKwDRfHF8KgP+PfsRPsBc6uLHeQucqEEvVsniFJbQiR4vHT2kU7KYrSo1zl4/vT6OaiyMrIIf17FrrHP68zWgeVJ5Y2pH8BxP8ecRJVIJ3DkoJdHX8tiuQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tda4VHv0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83131C4CEEA;
+	Mon, 23 Jun 2025 21:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714999;
-	bh=M4hvD8k1cWsfYP5Uj5hPhfNSgpVOFRdm4YVnn/voxE8=;
+	s=korg; t=1750714681;
+	bh=/YGEN6vaLP3OgPJkUOwhJwwFfWZ6xj9+ljOkETDMfTk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gyPPQ8LB3KbA1kCHvImG+0NMZrLBx7d86sGdBQgaFQ0LknlpXzzwVk/4jAR/hWe+3
-	 XKTzNdL/s0+wAOGw1QtOOHC2/Qu26rAFZS9NqALLOk/QR+UBvDIhSS6ZonnUBcvFun
-	 n9ba61ipgO/1hVloMZ8qifGUt5mzitDw43d0Afys=
+	b=Tda4VHv0U94ZFcGS6OzeXIpEqBWV6iOdzGjnPaWYazfbZ0k/TkGlQmMEwkxzVHmE3
+	 XP4zuITzLu9K8QkYkHQgmtU8eYnKOJvaogk9I5umuAUNCcYVNkD+PagbgalnS+lhjN
+	 Niu/e0G6+ZK7vHPG8BvCoah0TKxR1rgqBStghoM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Troy Hanson <quic_thanson@quicinc.com>
-Subject: [PATCH 5.15 222/411] bus: mhi: host: Fix conflict between power_up and SYSERR
-Date: Mon, 23 Jun 2025 15:06:06 +0200
-Message-ID: <20250623130639.250609554@linuxfoundation.org>
+	Chen Linxuan <chenlinxuan@uniontech.com>,
+	Winston Wen <wentao@uniontech.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 409/592] RDMA/hns: initialize db in update_srq_db()
+Date: Mon, 23 Jun 2025 15:06:07 +0200
+Message-ID: <20250623130710.165786840@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Hugo <quic_jhugo@quicinc.com>
+From: Chen Linxuan <chenlinxuan@uniontech.com>
 
-commit 4d92e7c5ccadc79764674ffc2c88d329aabbb7e0 upstream.
+[ Upstream commit ffe1cee21f8b533ae27c3a31bfa56b8c1b27fa6e ]
 
-When mhi_async_power_up() enables IRQs, it is possible that we could
-receive a SYSERR notification from the device if the firmware has crashed
-for some reason. Then the SYSERR notification queues a work item that
-cannot execute until the pm_mutex is released by mhi_async_power_up().
+On x86_64 with gcc version 13.3.0, I compile
+drivers/infiniband/hw/hns/hns_roce_hw_v2.c with:
 
-So the SYSERR work item will be pending. If mhi_async_power_up() detects
-the SYSERR, it will handle it. If the device is in PBL, then the PBL state
-transition event will be queued, resulting in a work item after the
-pending SYSERR work item. Once mhi_async_power_up() releases the pm_mutex,
-the SYSERR work item can run. It will blindly attempt to reset the MHI
-state machine, which is the recovery action for SYSERR. PBL/SBL are not
-interrupt driven and will ignore the MHI Reset unless SYSERR is actively
-advertised. This will cause the SYSERR work item to timeout waiting for
-reset to be cleared, and will leave the host state in SYSERR processing.
-The PBL transition work item will then run, and immediately fail because
-SYSERR processing is not a valid state for PBL transition.
+  make defconfig
+  ./scripts/kconfig/merge_config.sh .config <(
+    echo CONFIG_COMPILE_TEST=y
+    echo CONFIG_HNS3=m
+    echo CONFIG_INFINIBAND=m
+    echo CONFIG_INFINIBAND_HNS_HIP08=m
+  )
+  make KCFLAGS="-fno-inline-small-functions -fno-inline-functions-called-once" \
+    drivers/infiniband/hw/hns/hns_roce_hw_v2.o
 
-This leaves the device uninitialized.
+Then I get a compile error:
 
-This issue has a fairly unique signature in the kernel log:
+    CALL    scripts/checksyscalls.sh
+    DESCEND objtool
+    INSTALL libsubcmd_headers
+    CC [M]  drivers/infiniband/hw/hns/hns_roce_hw_v2.o
+  In file included from drivers/infiniband/hw/hns/hns_roce_hw_v2.c:47:
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c: In function 'update_srq_db':
+  drivers/infiniband/hw/hns/hns_roce_common.h:74:17: error: 'db' is used uninitialized [-Werror=uninitialized]
+     74 |                 *((__le32 *)_ptr + (field_h) / 32) &=                          \
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_common.h:90:17: note: in expansion of macro '_hr_reg_clear'
+     90 |                 _hr_reg_clear(ptr, field_type, field_h, field_l);              \
+        |                 ^~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_common.h:95:39: note: in expansion of macro '_hr_reg_write'
+     95 | #define hr_reg_write(ptr, field, val) _hr_reg_write(ptr, field, val)
+        |                                       ^~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:948:9: note: in expansion of macro 'hr_reg_write'
+    948 |         hr_reg_write(&db, DB_TAG, srq->srqn);
+        |         ^~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:946:31: note: 'db' declared here
+    946 |         struct hns_roce_v2_db db;
+        |                               ^~
+  cc1: all warnings being treated as errors
 
-	mhi mhi3: Requested to power ON
-	Qualcomm Cloud AI 100 0000:36:00.0: Fatal error received from
-	device.  Attempting to recover
-	mhi mhi3: Power on setup success
-	mhi mhi3: Device failed to exit MHI Reset state
-	mhi mhi3: Device MHI is not in valid state
-
-We cannot remove the SYSERR handling from mhi_async_power_up() because the
-device may be in the SYSERR state, but we missed the notification as the
-irq was fired before irqs were enabled. We also can't queue the SYSERR work
-item from mhi_async_power_up() if SYSERR is detected because that may
-result in a duplicate work item, and cause the same issue since the
-duplicate item will blindly issue MHI reset even if SYSERR is no longer
-active.
-
-Instead, add a check in the SYSERR work item to make sure that MHI reset is
-only issued if the device is in SYSERR state for PBL or SBL EEs.
-
-Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250328163526.3365497-1-jeff.hugo@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+Co-developed-by: Winston Wen <wentao@uniontech.com>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Link: https://patch.msgid.link/FF922C77946229B6+20250411105459.90782-5-chenlinxuan@uniontech.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pm.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -566,6 +566,7 @@ static void mhi_pm_sys_error_transition(
- 	struct mhi_cmd *mhi_cmd;
- 	struct mhi_event_ctxt *er_ctxt;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-+	bool reset_device = false;
- 	int ret, i;
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 59352d1b62099..bbf6e1983704c 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -942,7 +942,7 @@ static void fill_wqe_idx(struct hns_roce_srq *srq, unsigned int wqe_idx)
+ static void update_srq_db(struct hns_roce_srq *srq)
+ {
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(srq->ibsrq.device);
+-	struct hns_roce_v2_db db;
++	struct hns_roce_v2_db db = {};
  
- 	dev_dbg(dev, "Transitioning from PM state: %s to: %s\n",
-@@ -594,8 +595,23 @@ static void mhi_pm_sys_error_transition(
- 	/* Wake up threads waiting for state transition */
- 	wake_up_all(&mhi_cntrl->state_event);
- 
--	/* Trigger MHI RESET so that the device will not access host memory */
- 	if (MHI_REG_ACCESS_VALID(prev_state)) {
-+		/*
-+		 * If the device is in PBL or SBL, it will only respond to
-+		 * RESET if the device is in SYSERR state. SYSERR might
-+		 * already be cleared at this point.
-+		 */
-+		enum mhi_state cur_state = mhi_get_mhi_state(mhi_cntrl);
-+		enum mhi_ee_type cur_ee = mhi_get_exec_env(mhi_cntrl);
-+
-+		if (cur_state == MHI_STATE_SYS_ERR)
-+			reset_device = true;
-+		else if (cur_ee != MHI_EE_PBL && cur_ee != MHI_EE_SBL)
-+			reset_device = true;
-+	}
-+
-+	/* Trigger MHI RESET so that the device will not access host memory */
-+	if (reset_device) {
- 		u32 in_reset = -1;
- 		unsigned long timeout = msecs_to_jiffies(mhi_cntrl->timeout_ms);
- 
+ 	hr_reg_write(&db, DB_TAG, srq->srqn);
+ 	hr_reg_write(&db, DB_CMD, HNS_ROCE_V2_SRQ_DB);
+-- 
+2.39.5
+
 
 
 
