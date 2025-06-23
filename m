@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2FFCAE4EFE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67773AE51D0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2711B60381
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAED1B64212
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8636C202983;
-	Mon, 23 Jun 2025 21:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8085222582;
+	Mon, 23 Jun 2025 21:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJhTjESI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfqVsIoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D63270838;
-	Mon, 23 Jun 2025 21:11:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7498A21D3DD;
+	Mon, 23 Jun 2025 21:37:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713079; cv=none; b=WOnachATCQBakMQWgYkYqq0WrD6FB/WipDvga7DNQmUKbrFsu0pVpyKFoVfjVEACjOcOMfmISjO+aEV3C+7zEFc0nZSKhqliuxEChWJdUL55V88S1mIdHaKwUVuQxCT50E6Mvh4lASgqEXgZv7gVkHO9uGaxOwCO+GCJvzLu/jc=
+	t=1750714657; cv=none; b=fQ/qOmIQdAtcm6Aef9eSbkNXS/bd5b+IS4ihy1xavuhNtZT9Y6iGn5x1ZyU+5+z8ZOshFEXqSfwfu5oVFpo/X8VbFhfh0oLkEJdBsFAEy5gyaRpWOqKhDbNLHI6yfyACxUGY28mUKSBQAC9gV41qhLuAwUMQD9ymjDKvhqIKK8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713079; c=relaxed/simple;
-	bh=hyUIoXISDd5BspxcGEYnh1ZsCHSprQcBIrpUa2UlTLw=;
+	s=arc-20240116; t=1750714657; c=relaxed/simple;
+	bh=U0G4W0YM15Vm4cVQ7+OrMJM5hhRsAokizpuNpRwmBK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8C6U3gNRqCHT/hUFx7A0r/IRF/5PIeCcvamtFcBhb/Ah35PEAZAy8sWUFEw/FSV4wJnAi4MJQ0+ycM0vDsl1wZmJ8notxHjyUytH9CC39jCObgDdy6Un2hN3/2uQKIU/niL/AoJs5VGArggA2m9yqbTh9TOUD9ZgvygwhJPjeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJhTjESI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B96C4CEEA;
-	Mon, 23 Jun 2025 21:11:18 +0000 (UTC)
+	 MIME-Version; b=es14JJwzWU0hbHzJ4wnAvJZQCJlnfLJ9C4aTALpcq/dqUNRJcOOeUIvOlikg/fjRZheT6d+WVKmUR2bUzYVZhGjNoH7mWuYM9MTG3LQwEbPXAc10UiJndpcIS7LuxmLWmQJE3rw3tg3GXaYgpXztir/MVBOXwLhDf96G9RFobEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfqVsIoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBFCC4CEEA;
+	Mon, 23 Jun 2025 21:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713079;
-	bh=hyUIoXISDd5BspxcGEYnh1ZsCHSprQcBIrpUa2UlTLw=;
+	s=korg; t=1750714657;
+	bh=U0G4W0YM15Vm4cVQ7+OrMJM5hhRsAokizpuNpRwmBK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJhTjESIYFWkJdtqYx4OpqDMDeYJwD3h1VmE/2eU+JKgdzpq2I6S9BungtboOojBS
-	 vrpNsIljkE6zb9UrAaO/kw3XgPy+fPwohb5PtIFEeDiPylH32wgbk4OJrweBgB4KjS
-	 G6/VqchSaAXFboGMwn24Yn+pkolYGDdBk/RYVoH0=
+	b=GfqVsIoJzzfIZJA26f95dVqogCInzADTZQDcg2wGVniPPrnHkvFGtH+UbcuiVSJXv
+	 AELmXQcCrcRNB/FNPSljYJvi9Z+yv3f/t9QQo1PA0leu2tIs8pOJdRL+yYMk+hCD12
+	 q7DrXdUeBN/7Ecd21u27o7UYTmEl3RO7lsMt89WA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 5.10 144/355] kbuild: Update assembler calls to use proper flags and language target
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 201/411] nfsd: nfsd4_spo_must_allow() must check this is a v4 compound request
 Date: Mon, 23 Jun 2025 15:05:45 +0200
-Message-ID: <20250623130631.040649977@linuxfoundation.org>
+Message-ID: <20250623130638.733705686@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: NeilBrown <neil@brown.name>
 
-commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
+commit 1244f0b2c3cecd3f349a877006e67c9492b41807 upstream.
 
-as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
-cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
-clang will emit -Werror,-Wunused-command-line-argument for various -m
-and -f flags in KBUILD_CFLAGS for assembler sources.
+If the request being processed is not a v4 compound request, then
+examining the cstate can have undefined results.
 
-Callers of as-option and as-instr should be adding flags to
-KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
-KBUILD_AFLAGS in all macros to clear up the initial problem.
+This patch adds a check that the rpc procedure being executed
+(rq_procinfo) is the NFSPROC4_COMPOUND procedure.
 
-Unfortunately, -Wunused-command-line-argument can still be triggered
-with clang by the presence of warning flags or macro definitions because
-'-x assembler' is used, instead of '-x assembler-with-cpp', which will
-consume these flags. Switch to '-x assembler-with-cpp' in places where
-'-x assembler' is used, as the compiler is always used as the driver for
-out of line assembler sources in the kernel.
-
-Finally, add -Werror to these macros so that they behave consistently
-whether or not CONFIG_WERROR is set.
-
-[nathan: Reworded and expanded on problems in commit message
-         Use '-x assembler-with-cpp' in a couple more places]
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1699
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/Kbuild.include  |    8 ++++----
- scripts/Kconfig.include |    2 +-
- scripts/as-version.sh   |    2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ fs/nfsd/nfs4proc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -101,16 +101,16 @@ try-run = $(shell set -e;		\
- 	fi)
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -3537,7 +3537,8 @@ bool nfsd4_spo_must_allow(struct svc_rqs
+ 	struct nfs4_op_map *allow = &cstate->clp->cl_spo_must_allow;
+ 	u32 opiter;
  
- # as-option
--# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
-+# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+-	if (!cstate->minorversion)
++	if (rqstp->rq_procinfo != &nfsd_version4.vs_proc[NFSPROC4_COMPOUND] ||
++	    cstate->minorversion == 0)
+ 		return false;
  
- as-option = $(call try-run,\
--	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
- 
- # as-instr
--# Usage: cflags-y += $(call as-instr,instr,option1,option2)
-+# Usage: aflags-y += $(call as-instr,instr,option1,option2)
- 
- as-instr = $(call try-run,\
--	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
-+	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
- 
- # __cc-option
- # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
---- a/scripts/Kconfig.include
-+++ b/scripts/Kconfig.include
-@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
- 
- # $(as-instr,<instr>)
- # Return y if the assembler supports <instr>, n otherwise
--as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
-+as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
- 
- # check if $(CC) and $(LD) exist
- $(error-if,$(failure,command -v $(CC)),compiler '$(CC)' not found)
---- a/scripts/as-version.sh
-+++ b/scripts/as-version.sh
-@@ -45,7 +45,7 @@ orig_args="$@"
- # Get the first line of the --version output.
- IFS='
- '
--set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler /dev/null -o /dev/null 2>/dev/null)
-+set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler-with-cpp /dev/null -o /dev/null 2>/dev/null)
- 
- # Split the line on spaces.
- IFS=' '
+ 	if (cstate->spo_must_allowed)
 
 
 
