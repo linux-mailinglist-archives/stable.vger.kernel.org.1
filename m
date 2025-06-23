@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE121AE5165
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0610AE5135
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E82A0441D23
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E43D7A625F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB84F44C77;
-	Mon, 23 Jun 2025 21:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F711E1A05;
+	Mon, 23 Jun 2025 21:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Us4/8/1c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t98704ka"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893371C5D46;
-	Mon, 23 Jun 2025 21:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F43DC2E0;
+	Mon, 23 Jun 2025 21:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714426; cv=none; b=DH8H+pp/1nDyvX3glyhTj9OJbJJ38dKlQr+WXi7h1FMrYtygJRsxmibnT0XvTbEJaoHZr5nCjz2qs5lycIGGuWDvwV+9nJop+mc6M7DAp4Us93iadG3/9VpO39BqjjNrnxw6GO8T05RmGapQP8+AqBU5q4EeRRF8NHIeRCqp8NI=
+	t=1750714306; cv=none; b=YlO8AHRtq91DphKIyhgzLx3qGKzKWD1wNqtjFsiXsYoc5pDVeXSVqGJfftn9ft0PeqzGKjvOcCeeiB9m2Bc78a+zIWFumqTYdoLXLfviQ/5cXU8H6M0AQo8/TUCG1cchpz9Hu6cIt8ULveVeTyhXJ5ZPhYmC1AInMlDyeK5yapc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714426; c=relaxed/simple;
-	bh=DTdvBDa68+WJMlhWxmppQVYqvlSzvkICmW+UDKo28oQ=;
+	s=arc-20240116; t=1750714306; c=relaxed/simple;
+	bh=sW52VtgbloQ0PmdN/59wBMHQryqpZXWlwkOJ787KEdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s5dPXIefDJJ1IikpL0W4zkk01N89D6V24Xr/Qltwms2NPTBl1vx/EG4yWcPlvG2+Y8FjRA2wzgycZP866VETrg/qD8myGP3Ves7Lv5crtJfBi/xeUSYSFjUSAeoXu1GBB86EYQ+AyHPiQ3B1Fr0YQ7MyTbLQzxTUSCtJ+qx+pGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Us4/8/1c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F5A2C4CEEA;
-	Mon, 23 Jun 2025 21:33:45 +0000 (UTC)
+	 MIME-Version; b=qvm249H9g8rDOoMYQDK/Qz/wd6wHlpfGgj8NYv/d3dDofLvbP9WpXIlxwaHfmoI8wpeHuSJd5l0OmYNr9thMXXIzKPw7+NCI1HvIuoTnZ4CxDez+x/ieqk8HHgu3Mz0W2wvl1WplGgq3Hcs/3YG06iVAJq0Ma0wO+ZxPc+z4pQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t98704ka; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E37C4CEEA;
+	Mon, 23 Jun 2025 21:31:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714426;
-	bh=DTdvBDa68+WJMlhWxmppQVYqvlSzvkICmW+UDKo28oQ=;
+	s=korg; t=1750714306;
+	bh=sW52VtgbloQ0PmdN/59wBMHQryqpZXWlwkOJ787KEdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Us4/8/1c8oL25+wHRtz4/Nk0cc/rn2CmA6FfaB6+csZL2SXdCDuEOR/6Y+PWCz7UK
-	 I+w+simMeczoXW7j/0U0iTVnbTa4KTQ/+CuObAsA98UPf1Mi1qf4gFl+vrEXppuaDx
-	 RZ2hkKJWEYk3LqHy9rnnrPB1Z/czrzYOw9DWaUtI=
+	b=t98704ka58Lj+5WD2mvvfo/uJHtg5o8TxM3DSFq9x3S8ukSK/WoJHh9+QPxqxTs2e
+	 RCuGv91euaaSCrNkP2iAoagSet+nUloeANMlTDXGHx19UMLge8nkcy/zB4uvI+BFqB
+	 aHdseVPoH0xeDEsLwyLOh1cK2tMAeKPd2asRy6sk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 187/411] net: usb: aqc111: debug info before sanitation
+	Johannes Berg <johannes.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 373/592] wifi: iwlwifi: mvm: fix beacon CCK flag
 Date: Mon, 23 Jun 2025 15:05:31 +0200
-Message-ID: <20250623130638.389925921@linuxfoundation.org>
+Message-ID: <20250623130709.312944052@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
+[ Upstream commit 8d7f08922a8cb621aa5d00bdce6a7afe57af1665 ]
 
-If we sanitize error returns, the debug statements need
-to come before that so that we don't lose information.
+The beacon CCK flag should be set for any CCK rate, not
+just for 1 Mbps. Fix that.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Link: https://patch.msgid.link/20250505215513.fe18b7d92d7d.I7bb40a92cea102677b695beb1e2a62a5ea72678b@changeid
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
- 				   USB_RECIP_DEVICE, value, index, data, size);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+index bec18d197f310..83f1ed94ccab9 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
+ /*
+- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
++ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
+  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
+  * Copyright (C) 2015-2017 Intel Deutschland GmbH
+  */
+@@ -941,7 +941,7 @@ u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
+ 	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
+ 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
  
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
- 	}
+-	if (rate_idx <= IWL_FIRST_CCK_RATE)
++	if (rate_idx <= IWL_LAST_CCK_RATE)
+ 		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
+ 			  : IWL_MAC_BEACON_CCK_V1;
  
- 	return ret;
-@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
- 			      USB_RECIP_DEVICE, value, index, data, size);
- 
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
- 	}
- 
- 	return ret;
+-- 
+2.39.5
+
 
 
 
