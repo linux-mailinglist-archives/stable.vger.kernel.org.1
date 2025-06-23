@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-157689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A9B8AE552B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87165AE55F6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D240B1662F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29E907A9070
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E30221FD6;
-	Mon, 23 Jun 2025 22:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A20AC221FC7;
+	Mon, 23 Jun 2025 22:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XD0uhSlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjjWEVhI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57017218580;
-	Mon, 23 Jun 2025 22:08:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFAFB676;
+	Mon, 23 Jun 2025 22:16:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716483; cv=none; b=HBjQr+0dulBc35F8ypDQMpx1rohkWlDZLgxor280wsYBuirVtrF+G+WPPTI7eYWW6AGI/R+8jLVwJnI5NUw4c97YSLpAEPHCGR9/pBmFiKa0OW5ynPQXAGH2jIpdDkWqhLaO1JOMiX02QodjyvkVkITMpZgS+9Q6G0PGW3TY0sM=
+	t=1750716994; cv=none; b=iz1WdTHzS4XWF6hv5MVYV3bTl/oQlj8lOCR616pTKMZkQWaQPWMDlCXUzUogpLLXV04Dq9HRWYqWYxqy7rf1tXdJnzC9G8KHjRrRex8f0kplK1Ugt9eJ9P/saCANHny/Y5Z04z72pZf3Vt3UxcXLB35cTHbAsEwVEBccOhG4HIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716483; c=relaxed/simple;
-	bh=MnqnX1yifK3UYE24x78Iw58VienRtzjPON/aFuQFU3g=;
+	s=arc-20240116; t=1750716994; c=relaxed/simple;
+	bh=lozMX9lZh+9eAUYETsVkkWBqPXvWtq+Kl3cl5rltwAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XLsoU6xDXGMfnePQ5wjd5iNk18C6t4QYbT5fbL15qHUGODiYsN6sL/ifh73KwUvi6yrJKNz78h2hOc6UPdm0NyLHbd6isVUgAoNMKROCk7U0cXI/gQRXWttna8hA1X1Lyoap32WWkkD9kEK8nN5hhLlyNSo2/GSKlP+NgI+5FzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XD0uhSlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3568C4CEEA;
-	Mon, 23 Jun 2025 22:08:02 +0000 (UTC)
+	 MIME-Version; b=OQTeM9xq/RWjjTnmtQ07kYXi4zXmoM65nLv75Od3rvxseRONTBKPBffkWKM9FduPb3j8keNcuP7rLjtP+A+0F/cjh+bgFHLLl+BTwfaxjcLlhUDqG33lNwr91bbYhRlRg7DN3KacdVJU6FtZ0/nByR2jkm4rvWhBr6zzlkCK2TQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjjWEVhI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECC04C4CEEA;
+	Mon, 23 Jun 2025 22:16:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716483;
-	bh=MnqnX1yifK3UYE24x78Iw58VienRtzjPON/aFuQFU3g=;
+	s=korg; t=1750716994;
+	bh=lozMX9lZh+9eAUYETsVkkWBqPXvWtq+Kl3cl5rltwAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XD0uhSlpv1fsZDJX2xjKg3aPrhaf/3eIaMjSaXtafIQKnTiknHuJV56SK6VUVBILz
-	 iUMk6uXhBJeyj/YL7uZoHQwKcL8Iz6ycPlj9H2kJ2tJN/TlG/KbDuZd/RFBYbIka6h
-	 kFfiTD1YFGW75I+gzyYMcxa5wsRhmeAHtEcWYZI0=
+	b=mjjWEVhIqR/SOCu+UghfKpgBnAXTPYJUM+J45gXJKTMs98hcvMuefwYb/i4ixlKXt
+	 RnriZP+llDclLY3I0QD1gIFNWWjC873fe7XyJLH5WHqlpJrtvwOgiWgsoY1NIHcavs
+	 95clDF2KX6FAJTECt9TwdtA0+P9wDtcb4lkMXQCs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarika Sharma <quic_sarishar@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 260/414] wifi: ath12k: using msdu end descriptor to check for rx multicast packets
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	MengEn Sun <mengensun@tencent.com>,
+	Andrea Righi <andrea@betterlinux.com>,
+	Fenggaung Wu <fengguang.wu@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 352/508] mm: fix ratelimit_pages update error in dirty_ratio_handler()
 Date: Mon, 23 Jun 2025 15:06:37 +0200
-Message-ID: <20250623130648.538404923@linuxfoundation.org>
+Message-ID: <20250623130654.015784084@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarika Sharma <quic_sarishar@quicinc.com>
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-[ Upstream commit cb7433cc5cd4d07175dbc41f5a19966e9fae48be ]
+commit f83f362d40ccceb647f7d80eb92206733d76a36b upstream.
 
-Currently, the RX multicast broadcast packet check is performed using
-bit 15 from the info6 field of the MPDU start descriptor. This check
-can also be done using bit 9 from the info5 field of the MSDU end
-descriptor. However, in some scenarios multicast bit is not set when
-fetched from MPDU start descriptor.
-Therefore, checking the RX multicast broadcast packet from the MSDU
-end descriptor is more reliable as it is per MSDU.
+In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
+calling writeback_set_ratelimit(), as global_dirty_limits() always
+prioritizes the value of vm_dirty_bytes.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
 
-Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250411061523.859387-2-quic_sarishar@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  dirty_ratio_handler
+    writeback_set_ratelimit
+      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
+        domain_dirty_limits
+          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
+            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
+          else                                                                        |
+            thresh = f2(ratio)                                                        |
+      ratelimit_pages = f3(dirty_thresh)                                              |
+    vm_dirty_bytes = 0                             <- it's late! ---------------------+
+
+This causes ratelimit_pages to still use the value calculated based on
+vm_dirty_bytes, which is wrong now.
+
+
+The impact visible to userspace is difficult to capture directly because
+there is no procfs/sysfs interface exported to user space.  However, it
+will have a real impact on the balance of dirty pages.
+
+For example:
+
+1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
+
+2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
+   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
+   vm_dirty_bytes now.
+
+3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
+   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
+   domain_dirty_limits() is called, reallimit_pages is still calculated
+   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
+   conform to the actual intent of the user.
+
+Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
+Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Reviewed-by: MengEn Sun <mengensun@tencent.com>
+Cc: Andrea Righi <andrea@betterlinux.com>
+Cc: Fenggaung Wu <fengguang.wu@intel.com>
+Cc: Jinliang Zheng <alexjlzheng@tencent.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/hal.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
-index ae386c6490594..3afb11c7bf18e 100644
---- a/drivers/net/wireless/ath/ath12k/hal.c
-+++ b/drivers/net/wireless/ath/ath12k/hal.c
-@@ -449,8 +449,8 @@ static u8 *ath12k_hw_qcn9274_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -540,8 +540,8 @@ static int dirty_ratio_handler(struct ct
  
- static bool ath12k_hw_qcn9274_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
- {
--	return __le32_to_cpu(desc->u.qcn9274.mpdu_start.info6) &
--	       RX_MPDU_START_INFO6_MCAST_BCAST;
-+	return __le16_to_cpu(desc->u.qcn9274.msdu_end.info5) &
-+	       RX_MSDU_END_INFO5_DA_IS_MCBC;
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
+-		writeback_set_ratelimit();
+ 		vm_dirty_bytes = 0;
++		writeback_set_ratelimit();
+ 	}
+ 	return ret;
  }
- 
- static void ath12k_hw_qcn9274_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
-@@ -902,8 +902,8 @@ static u8 *ath12k_hw_qcn9274_compact_rx_desc_mpdu_start_addr2(struct hal_rx_desc
- 
- static bool ath12k_hw_qcn9274_compact_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
- {
--	return __le32_to_cpu(desc->u.qcn9274_compact.mpdu_start.info6) &
--	       RX_MPDU_START_INFO6_MCAST_BCAST;
-+	return __le16_to_cpu(desc->u.qcn9274_compact.msdu_end.info5) &
-+	       RX_MSDU_END_INFO5_DA_IS_MCBC;
- }
- 
- static void ath12k_hw_qcn9274_compact_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
--- 
-2.39.5
-
 
 
 
