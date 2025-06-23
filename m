@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42081AE5596
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C420AAE55E6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2FB77AF391
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 22F0C173284
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16411225A38;
-	Mon, 23 Jun 2025 22:12:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE032248B5;
+	Mon, 23 Jun 2025 22:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ws9pU7Fk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hN508Y8O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6101C2E0;
-	Mon, 23 Jun 2025 22:12:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0CD21B8F6;
+	Mon, 23 Jun 2025 22:14:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716737; cv=none; b=tVE4FtF7SxTQH+5Qm8rEWQQfPrOrN1+CCo9k9JclfDhfQqynmC+LGc7FZePQyiUnV0lAn8D/vTNG/oxcq8qtV+5VCCFuBR7ihIXRPqkaU8xi2+qfLajgkpkbkaR5MncrDfQuCTwXH0qT8jBO4EiwZ6bWjSWxSa7h/8gr4eOM0EY=
+	t=1750716862; cv=none; b=K0vR4lHgZ+P7YgypoXf32rDMBc61SwL2CnX+ApTN+ybUqoFU1/k+OYKvpcHSDpDEJ7KQioAQJHTZQFjHApru87HOQ1Hf7JNI0tHqEoRyQRMkZYDVJWs9Hjg5L9WYY5/jZCHdSGTtrOTmo9IyFh8woGAwSIMKImltapCki5pfPQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716737; c=relaxed/simple;
-	bh=ukjj3l98DALCm6y+MvEtaTyhRZ0uC/kvh/4baZl36QI=;
+	s=arc-20240116; t=1750716862; c=relaxed/simple;
+	bh=YV0A2fRNCF1/4xBlYeO2iQsSYRodZGQgqKqvHttlDjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DRkgdyZmAyEhNG7VjulROM9z8QvPulsuln6CxUYv6HCzMdszS2NneBn2U3EC7GoGWwl+pmAOXE/sJxo7E3X0vc8Zz9BLVSxL0TzQprEQCZ/9OgzpQDkF4UdqcR6VlwRrZNuV4w3XkFbfN5l6hkc5B80L+wYP+j3YNKbU/ebrWX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ws9pU7Fk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55B1FC4CEEA;
-	Mon, 23 Jun 2025 22:12:17 +0000 (UTC)
+	 MIME-Version; b=bUZO0TyhLVn9aDHs6PaqKmdklnCwUnNG3Pn+zZqFMg6zV1it7kQHu/fgTP3FSolTfo3yKZxacfuBeWaWbxj9ubR49+VXQth90XPtPx1O5d1CaEwocnZn2G26wTiVsLBXb+/6BQ+ax5fTGrl9hOI1aZz0DhjxyQm3Lzsi2jXGy08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hN508Y8O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 041F5C4CEEA;
+	Mon, 23 Jun 2025 22:14:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716737;
-	bh=ukjj3l98DALCm6y+MvEtaTyhRZ0uC/kvh/4baZl36QI=;
+	s=korg; t=1750716862;
+	bh=YV0A2fRNCF1/4xBlYeO2iQsSYRodZGQgqKqvHttlDjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ws9pU7Fk/KtFbyrs4PXk/0fPOaYGvoICZZegS5MFiEwzEuw/f1P7TA5WF3XRwckfn
-	 DLIIQKcaHxjFnW9T6WifmRj7mNkJ0Qyr9JpZD80YnR5zYAc1JsLOd4WXERtjeHAFeH
-	 sDOz0N7/4BRoxP8kvfE7l3MpEWsV2LYrNfkKnCNI=
+	b=hN508Y8OZnj0aV0LJJB3vdPp9je1eZumv8vs3Wuh5Mk5/BdXkdzcnK2rou8yOmiJB
+	 1O9eRnlphKiIopnEO+3yFNLyBq8RiCY9xLf2PZ5LDTwrrPBFbY9mG85CujDLl3G7RR
+	 QumZHPVp875JwFfRPPPzMdjdggAOJztlY6OZnHJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 551/592] mlxbf_gige: return EPROBE_DEFER if PHY IRQ is not available
-Date: Mon, 23 Jun 2025 15:08:29 +0200
-Message-ID: <20250623130713.551324692@linuxfoundation.org>
+Subject: [PATCH 5.15 366/411] drm/msm/dsi/dsi_phy_10nm: Fix missing initial VCO rate
+Date: Mon, 23 Jun 2025 15:08:30 +0200
+Message-ID: <20250623130642.856783653@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit e7ea5f5b1858ddb96b152584d5fe06e6fc623e89 ]
+[ Upstream commit 8a48e35becb214743214f5504e726c3ec131cd6d ]
 
-The message "Error getting PHY irq. Use polling instead"
-is emitted when the mlxbf_gige driver is loaded by the
-kernel before the associated gpio-mlxbf driver, and thus
-the call to get the PHY IRQ fails since it is not yet
-available. The driver probe() must return -EPROBE_DEFER
-if acpi_dev_gpio_irq_get_by() returns the same.
+Driver unconditionally saves current state on first init in
+dsi_pll_10nm_init(), but does not save the VCO rate, only some of the
+divider registers.  The state is then restored during probe/enable via
+msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
+dsi_10nm_pll_restore_state().
 
-Fixes: 6c2a6ddca763 ("net: mellanox: mlxbf_gige: Replace non-standard interrupt handling")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250618135902.346-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Restoring calls dsi_pll_10nm_vco_set_rate() with
+pll_10nm->vco_current_rate=0, which basically overwrites existing rate of
+VCO and messes with clock hierarchy, by setting frequency to 0 to clock
+tree.  This makes anyway little sense - VCO rate was not saved, so
+should not be restored.
+
+If PLL was not configured configure it to minimum rate to avoid glitches
+and configuring entire in clock hierarchy to 0 Hz.
+
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/sz4kbwy5nwsebgf64ia7uq4ee7wbsa5uy3xmlqwcstsbntzcov@ew3dcyjdzmi2/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: a4ccc37693a2 ("drm/msm/dsi_pll_10nm: restore VCO rate during
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/654796/
+Link: https://lore.kernel.org/r/20250520111325.92352-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index fb2e5b844c150..d76d7a945899c 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -447,8 +447,10 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	priv->llu_plu_irq = platform_get_irq(pdev, MLXBF_GIGE_LLU_PLU_INTR_IDX);
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+index 0b782cc18b3f4..e14044d3c95a3 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+@@ -713,6 +713,13 @@ static int dsi_pll_10nm_init(struct msm_dsi_phy *phy)
+ 	/* TODO: Remove this when we have proper display handover support */
+ 	msm_dsi_phy_pll_save_state(phy);
  
- 	phy_irq = acpi_dev_gpio_irq_get_by(ACPI_COMPANION(&pdev->dev), "phy", 0);
--	if (phy_irq < 0) {
--		dev_err(&pdev->dev, "Error getting PHY irq. Use polling instead");
-+	if (phy_irq == -EPROBE_DEFER) {
-+		err = -EPROBE_DEFER;
-+		goto out;
-+	} else if (phy_irq < 0) {
- 		phy_irq = PHY_POLL;
- 	}
++	/*
++	 * Store also proper vco_current_rate, because its value will be used in
++	 * dsi_10nm_pll_restore_state().
++	 */
++	if (!dsi_pll_10nm_vco_recalc_rate(&pll_10nm->clk_hw, VCO_REF_CLK_RATE))
++		pll_10nm->vco_current_rate = pll_10nm->phy->cfg->min_pll_rate;
++
+ 	return 0;
+ }
  
 -- 
 2.39.5
