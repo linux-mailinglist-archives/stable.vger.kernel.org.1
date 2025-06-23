@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157034-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157087-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB1A6AE5230
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD08AE5265
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E31D443223
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68D2A7AF56B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA502222C2;
-	Mon, 23 Jun 2025 21:41:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76BE82222CA;
+	Mon, 23 Jun 2025 21:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPNwmDNy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ml1AZWaI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2AD4315A;
-	Mon, 23 Jun 2025 21:41:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CB84315A;
+	Mon, 23 Jun 2025 21:43:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714873; cv=none; b=pl21VeN9eBSV90O7fLu7jvfKOGlSvFqiAF4Qwn7sW4lhzItMGdOQlvlBrV6hSqnGNzux5unAyr/6yLmfdLlqL20aNj7DXCTgFbYWv98Iisi8E2Q4jv3+7qSxFmg7litqKvTq2UqkliQQz+PnhrQiJnbBI9h6oH7YL1vil/la41Y=
+	t=1750715002; cv=none; b=T0zVl5f/keKBjBnGm8kKEbPuH6q5vn5K4GPZhccq8FWLRgb4f8qtzwHUJRvZJUcTSJ4U6cZuO3PrLVPQPmVockFc49/f2z2L5vSF/wLjDzebz4ffoR3qYDpKBKaRkk4pd88GynIev8FZBnBnGfuOurZDuaw/08WM+rOW5bEPzts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714873; c=relaxed/simple;
-	bh=8Jd+p6XIzYjzojaFSEKwUYl5iTJGcgC5/N2t4yFPckw=;
+	s=arc-20240116; t=1750715002; c=relaxed/simple;
+	bh=aFaIY7F7zZFgQ1bhwqhH/3pMDH36+TxpZyTYmDN5/kA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbszTkR11aLOlsFRthzyq8p7iM5d8pONmzzxv6p5MNiJXkEDLFgVWqkA1LElbCPQ7qwnEkQ7L0Xcwyvbt5L92Vnh0VkQF1UUf24vJYacJpF+PcfaA5fHWF3inlKuaVseEi/lhcQOB5qKfnW1LYYQ0OCYn5BMEBnZYFi1gom8GW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPNwmDNy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 878B3C4CEEA;
-	Mon, 23 Jun 2025 21:41:12 +0000 (UTC)
+	 MIME-Version; b=d3m4TKkD13I4WPIJ50u/xIa1Am0uO2dBG7tgWR3aMR9vvhANoXFp+gW8Q2O+oyBHCe+7SZxS5Az8CicFuCxp0cMKAGcEQLb5vx5aI2yxoFkfUx12C0oYWXRBge/8vWcbgNtXTQCZM55cyqaw3qmaqpvqPcequCaJcAeKTEKImB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ml1AZWaI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B90F8C4CEEA;
+	Mon, 23 Jun 2025 21:43:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714872;
-	bh=8Jd+p6XIzYjzojaFSEKwUYl5iTJGcgC5/N2t4yFPckw=;
+	s=korg; t=1750715002;
+	bh=aFaIY7F7zZFgQ1bhwqhH/3pMDH36+TxpZyTYmDN5/kA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fPNwmDNyFhq7mHrhRC/jrF8sVjArlXFza1jbgCzqKFh8mMyJgOyPStkFG797L1srl
-	 VkYTTM/xYeiUFLi7wQvnSbuo9woM9xVeVRsToWxmX+vIz7a+mWM9hsw3YSvNP9bdgX
-	 6QBcnbRS5Kbs5zeZlBQj6IZDBNLWWObpzxu7PnKE=
+	b=Ml1AZWaIKMBToplj5u8+pzp7PeVfTFP3+qrCGiCyLf2Ovdl/pEEC2jtO3Pc+IYXRE
+	 D3wk/kFxQhKxO/CtZCHrdVeJtYHnNCXHJf6DXwBHLdxEkzMWvJujELBG0sBqcJbqIW
+	 OAwfGRU24PMWT3umo3vES6pyaT1PjlnBEQG8sZ6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daeho Jeong <daehojeong@google.com>,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	George Moussalem <george.moussalem@outlook.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Amit Kucheria <amitk@kernel.org>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/290] f2fs: fix to set atomic write status more clear
+Subject: [PATCH 5.10 246/355] thermal/drivers/qcom/tsens: Update conditions to strictly evaluate for IP v2+
 Date: Mon, 23 Jun 2025 15:07:27 +0200
-Message-ID: <20250623130632.466039049@linuxfoundation.org>
+Message-ID: <20250623130634.144255171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: George Moussalem <george.moussalem@outlook.com>
 
-[ Upstream commit db03c20c0850dc8d2bcabfa54b9438f7d666c863 ]
+[ Upstream commit e3f90f167a49902cda2408f7e91cca0dcfd5040a ]
 
-1. After we start atomic write in a database file, before committing
-all data, we'd better not set inode w/ vfs dirty status to avoid
-redundant updates, instead, we only set inode w/ atomic dirty status.
+TSENS v2.0+ leverage features not available to prior versions such as
+updated interrupts init routine, masked interrupts, and watchdog.
+Currently, the checks in place evaluate whether the IP version is greater
+than v1 which invalidates when updates to v1 or v1 minor versions are
+implemented. As such, update the conditional statements to strictly
+evaluate whether the version is greater than or equal to v2 (inclusive).
 
-2. After we commit all data, before committing metadata, we need to
-clear atomic dirty status, and set vfs dirty status to allow vfs flush
-dirty inode.
-
-Cc: Daeho Jeong <daehojeong@google.com>
-Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Reviewed-by: Daeho Jeong <daehojeong@google.com>
-Reviewed-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: George Moussalem <george.moussalem@outlook.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Amit Kucheria <amitk@kernel.org>
+Link: https://lore.kernel.org/r/DS7PR19MB8883434CAA053648E22AA8AC9DCC2@DS7PR19MB8883.namprd19.prod.outlook.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c   | 4 +++-
- fs/f2fs/segment.c | 6 ++++++
- fs/f2fs/super.c   | 4 +++-
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ drivers/thermal/qcom/tsens.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index 21d3eabe95e00..66721c2093c02 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -35,7 +35,9 @@ void f2fs_mark_inode_dirty_sync(struct inode *inode, bool sync)
- 	if (f2fs_inode_dirtied(inode, sync))
- 		return;
+diff --git a/drivers/thermal/qcom/tsens.c b/drivers/thermal/qcom/tsens.c
+index c73792ca727a1..38492dbd60f3c 100644
+--- a/drivers/thermal/qcom/tsens.c
++++ b/drivers/thermal/qcom/tsens.c
+@@ -264,7 +264,7 @@ static void tsens_set_interrupt(struct tsens_priv *priv, u32 hw_id,
+ 	dev_dbg(priv->dev, "[%u] %s: %s -> %s\n", hw_id, __func__,
+ 		irq_type ? ((irq_type == 1) ? "UP" : "CRITICAL") : "LOW",
+ 		enable ? "en" : "dis");
+-	if (tsens_version(priv) > VER_1_X)
++	if (tsens_version(priv) >= VER_2_X)
+ 		tsens_set_interrupt_v2(priv, hw_id, irq_type, enable);
+ 	else
+ 		tsens_set_interrupt_v1(priv, hw_id, irq_type, enable);
+@@ -316,7 +316,7 @@ static int tsens_read_irq_state(struct tsens_priv *priv, u32 hw_id,
+ 	ret = regmap_field_read(priv->rf[LOW_INT_CLEAR_0 + hw_id], &d->low_irq_clear);
+ 	if (ret)
+ 		return ret;
+-	if (tsens_version(priv) > VER_1_X) {
++	if (tsens_version(priv) >= VER_2_X) {
+ 		ret = regmap_field_read(priv->rf[UP_INT_MASK_0 + hw_id], &d->up_irq_mask);
+ 		if (ret)
+ 			return ret;
+@@ -360,7 +360,7 @@ static int tsens_read_irq_state(struct tsens_priv *priv, u32 hw_id,
  
--	if (f2fs_is_atomic_file(inode))
-+	/* only atomic file w/ FI_ATOMIC_COMMITTED can be set vfs dirty */
-+	if (f2fs_is_atomic_file(inode) &&
-+			!is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
- 		return;
+ static inline u32 masked_irq(u32 hw_id, u32 mask, enum tsens_ver ver)
+ {
+-	if (ver > VER_1_X)
++	if (ver >= VER_2_X)
+ 		return mask & (1 << hw_id);
  
- 	mark_inode_dirty_sync(inode);
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index 156d92b945258..c7714e954cb54 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -372,7 +372,13 @@ static int __f2fs_commit_atomic_write(struct inode *inode)
- 	} else {
- 		sbi->committed_atomic_block += fi->atomic_write_cnt;
- 		set_inode_flag(inode, FI_ATOMIC_COMMITTED);
-+
-+		/*
-+		 * inode may has no FI_ATOMIC_DIRTIED flag due to no write
-+		 * before commit.
-+		 */
- 		if (is_inode_flag_set(inode, FI_ATOMIC_DIRTIED)) {
-+			/* clear atomic dirty status and set vfs dirty status */
- 			clear_inode_flag(inode, FI_ATOMIC_DIRTIED);
- 			f2fs_mark_inode_dirty_sync(inode, true);
+ 	/* v1, v0.1 don't have a irq mask register */
+@@ -560,7 +560,7 @@ static int tsens_set_trips(void *_sensor, int low, int high)
+ static int tsens_enable_irq(struct tsens_priv *priv)
+ {
+ 	int ret;
+-	int val = tsens_version(priv) > VER_1_X ? 7 : 1;
++	int val = tsens_version(priv) >= VER_2_X ? 7 : 1;
+ 
+ 	ret = regmap_field_write(priv->rf[INT_EN], val);
+ 	if (ret < 0)
+@@ -826,7 +826,7 @@ int __init init_common(struct tsens_priv *priv)
  		}
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 50170e7cf3f9b..702137eafaa67 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1500,7 +1500,9 @@ int f2fs_inode_dirtied(struct inode *inode, bool sync)
  	}
- 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
  
--	if (!ret && f2fs_is_atomic_file(inode))
-+	/* if atomic write is not committed, set inode w/ atomic dirty */
-+	if (!ret && f2fs_is_atomic_file(inode) &&
-+			!is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
- 		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
- 
- 	return ret;
+-	if (tsens_version(priv) > VER_1_X &&  ver_minor > 2) {
++	if (tsens_version(priv) >= VER_2_X &&  ver_minor > 2) {
+ 		/* Watchdog is present only on v2.3+ */
+ 		priv->feat->has_watchdog = 1;
+ 		for (i = WDOG_BARK_STATUS; i <= CC_MON_MASK; i++) {
 -- 
 2.39.5
 
