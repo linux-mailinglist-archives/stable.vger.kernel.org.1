@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701D9AE538E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC36DAE4FF3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D1B13AC4CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910441B61895
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BF84221FCC;
-	Mon, 23 Jun 2025 21:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF89B2628C;
+	Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omHmigGL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vghMGVpW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BB2019049B;
-	Mon, 23 Jun 2025 21:53:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF267482;
+	Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715631; cv=none; b=mXIyYNRubIswvFh6Zd9UKDu+SN01O5I1UEMTjU91Xq2tcdP1RzqjNUNqZ0Wkp6KxpxaOUOsYWHSCnXNztH6o3Ho2ZozT8/wPR6FV/eXh89UUE9oZbWh1xYQ8QvvndoclAXW3hXBEyewIw8opsrFy8EOH8gtISzWMABeSNioLKLw=
+	t=1750713665; cv=none; b=Xvg8t5k+13MlrS+B2U35x+zmdDpZGir3DrcVy88e5b/II3sxZQgL9FHouPbn4P75ZMLiixzWbAhAoci16KTruYvZhB0OysOesYfN+9HTwPnSL4hCPyCbyNq5QWEzQySvwp7U79oiVellrWwm2ig4odroELSC5qnSTNE2bDfuZP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715631; c=relaxed/simple;
-	bh=ZwXgt7IlMzR4s6uJv553kRBKcZh6DvY1eCrJflbs6/U=;
+	s=arc-20240116; t=1750713665; c=relaxed/simple;
+	bh=KVnQYg4Bqwo5e157pBVvAup1OvS6FcqwXGYYkJAovk4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cOBWtleaFFhHaO5uG4+yPaNRd5IdOQZtOSj7lOgw3Uhl0PU+45UwPYzS88vAz8bPbB2rmu+pqHHnVEmlZnjnSqeBDUazUbRdvobGjzF6r+BJoKcv7pnqyun5FuhfZSl4zPzXLOiGFy+AilKdgoYDB2kvKLgjYHM4ywPfRbRArJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omHmigGL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4EFBC4CEEA;
-	Mon, 23 Jun 2025 21:53:50 +0000 (UTC)
+	 MIME-Version; b=cxaxVX9RJFItqINogw465vQiU9cmVTbeYzCU205d6wGEVINME55WjLSKhPTwaQxB9iVWTbLYd3Y5ttb+hjeNMmYSgoy8315RWyvbr9/ou4LmIzevx1XldlHxdckzis8GDOTdPPcsY7h+4g69DpEoSbdJyrTUsn/2Rl87jWRFc0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vghMGVpW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C00EC4CEEA;
+	Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715631;
-	bh=ZwXgt7IlMzR4s6uJv553kRBKcZh6DvY1eCrJflbs6/U=;
+	s=korg; t=1750713665;
+	bh=KVnQYg4Bqwo5e157pBVvAup1OvS6FcqwXGYYkJAovk4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omHmigGLaqdpzp3Nl1uqdFAXwpInfJoIWdyp0wsitTy0BR/6w5UGsl44dJj68XNF3
-	 1jGZfxuwI+pOHuQMgm1E6pN2xoCZxmRK9cLAInJdiM1XdW7aFNjRVrrYHU6k3ulrPH
-	 vrX2BQJHA5/MZM6TT6fH7tXNXy8zcN1y2wdqwVmo=
+	b=vghMGVpWZK9lE+IIq32KkSbzptsm6Iree5Rq0cVyR+QjRsyjsmy2gHvg9mBCkcoBy
+	 swzREXYcPLoid1Uwm0RedNCbcDTHaYBRbnOpOVxz1bvHNkPvN7cPd/Z2evoYtokxTQ
+	 GFdToC+bumui/rGBsVEFg9UZHvKdIkxArIsFGbyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/508] Bluetooth: Fix NULL pointer deference on eir_get_service_data
-Date: Mon, 23 Jun 2025 15:04:57 +0200
-Message-ID: <20250623130651.450584185@linuxfoundation.org>
+Subject: [PATCH 6.15 340/592] wifi: ath12k: fix a possible dead lock caused by ab->base_lock
+Date: Mon, 23 Jun 2025 15:04:58 +0200
+Message-ID: <20250623130708.539642560@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-[ Upstream commit 20a2aa01f5aeb6daad9aeaa7c33dd512c58d81eb ]
+[ Upstream commit ef115c265a21e3c11deee7f73bd1061775a7bf20 ]
 
-The len parameter is considered optional so it can be NULL so it cannot
-be used for skipping to next entry of EIR_SERVICE_DATA.
+spin_lock/spin_unlock are used in ath12k_reg_chan_list_event
+to acquire/release ab->base_lock. For now this is safe because
+that function is only called in soft IRQ context.
 
-Fixes: 8f9ae5b3ae80 ("Bluetooth: eir: Add helpers for managing service data")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+But ath12k_reg_chan_list_event() will be called from process
+context in an upcoming patch, and this can result in a deadlock
+if ab->base_lock is acquired in process context and then soft
+IRQ occurs on the same CPU and tries to acquire that lock.
+
+Fix it by using spin_lock_bh and spin_unlock_bh instead.
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250418-ath12k-6g-lp-vlp-v1-1-c869c86cad60@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/eir.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/eir.c b/net/bluetooth/eir.c
-index 1bc51e2b05a34..3e1713673ecc9 100644
---- a/net/bluetooth/eir.c
-+++ b/net/bluetooth/eir.c
-@@ -366,17 +366,19 @@ u8 eir_create_scan_rsp(struct hci_dev *hdev, u8 instance, u8 *ptr)
- 
- void *eir_get_service_data(u8 *eir, size_t eir_len, u16 uuid, size_t *len)
- {
--	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, len))) {
-+	size_t dlen;
-+
-+	while ((eir = eir_get_data(eir, eir_len, EIR_SERVICE_DATA, &dlen))) {
- 		u16 value = get_unaligned_le16(eir);
- 
- 		if (uuid == value) {
- 			if (len)
--				*len -= 2;
-+				*len = dlen - 2;
- 			return &eir[2];
- 		}
- 
--		eir += *len;
--		eir_len -= *len;
-+		eir += dlen;
-+		eir_len -= dlen;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index fe50c3d3cb820..22f21ecc8f235 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -6019,7 +6019,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 		goto fallback;
  	}
  
- 	return NULL;
+-	spin_lock(&ab->base_lock);
++	spin_lock_bh(&ab->base_lock);
+ 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
+ 		/* Once mac is registered, ar is valid and all CC events from
+ 		 * fw is considered to be received due to user requests
+@@ -6043,7 +6043,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 		ab->default_regd[pdev_idx] = regd;
+ 	}
+ 	ab->dfs_region = reg_info->dfs_region;
+-	spin_unlock(&ab->base_lock);
++	spin_unlock_bh(&ab->base_lock);
+ 
+ 	goto mem_free;
+ 
 -- 
 2.39.5
 
