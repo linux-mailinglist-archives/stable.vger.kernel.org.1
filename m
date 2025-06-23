@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-157814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E53B6AE55B6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B16C1AE54FD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3239A1BC62EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 344541BC2B10
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AD7B22839A;
-	Mon, 23 Jun 2025 22:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1434225785;
+	Mon, 23 Jun 2025 22:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ln+gSbhD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c/kuOF9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6FC225A31;
-	Mon, 23 Jun 2025 22:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CF9B225761;
+	Mon, 23 Jun 2025 22:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716784; cv=none; b=hfhwR+rDu8xDPc9KfIa0liaZAYw+LUnfYpfcU/JMrRsLs9uvxEROIajnhEhmiJ3w4Aucvaq7bYLlC+ep0ynkffcLSO7bETgSwr6BTZRmQzUSO/yBrXmkjYiMGgy/LTAKdhSqbiJlwwA2n8ulFcs1CF0TJRk9P8D3DhRuCgGAXnk=
+	t=1750716399; cv=none; b=ivmHKCGkvH5HsvswnV6M1pEi3ZynuyuJ1FZp6FskVL4TvJSGkqI/EYMnBTp1tm49p5tp44i1hb5TfT+C5S6gqrIaEj35ddkjXbIiD4JxZo68bel8EWni8k4xUdYm5wbaeF+pPCE+X2vabYHvhs9oVXxhprMWHgieAiMESZyXdJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716784; c=relaxed/simple;
-	bh=W8GC8xtHH5DDL+SpWSkyL1by4zYGfIsBZPY6eMop+e4=;
+	s=arc-20240116; t=1750716399; c=relaxed/simple;
+	bh=OtSEsnQXK+WXjB2y2gaBxoilzBYvX10eCMXZbelGsh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0kS7JwPaGVWNs1ChphV5960ud2QcwLFscBJfM8SC0V0vscz+i/d6COHs/HJynObRK6wPpIg3SAVASHzPHk6aEEtl260veNOBAdlbJjRkUXtR4GdIDV3aaR0opnZo6feFyjpjaKQ2PDj0vdS5zH6u0B1G2KyQJ4vhO6WTz39o6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ln+gSbhD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DE9C4CEF1;
-	Mon, 23 Jun 2025 22:13:03 +0000 (UTC)
+	 MIME-Version; b=W0IRnQfINADhaZOdEZ1UcrWU0b/ZwWZHYCHswhvgGQebrd+VQDOWxyn5JtIntBTk7t3PMPAZO0cT8OwZGROPUubp82GeQ6G94XlP+mZRXc+43nHMcinK3Oy2usz/J5R/oh/UcXK4MXRKfBAZMILlnJ8sQlUvCFB4aOhKty2bObM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c/kuOF9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35930C4CEED;
+	Mon, 23 Jun 2025 22:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716783;
-	bh=W8GC8xtHH5DDL+SpWSkyL1by4zYGfIsBZPY6eMop+e4=;
+	s=korg; t=1750716399;
+	bh=OtSEsnQXK+WXjB2y2gaBxoilzBYvX10eCMXZbelGsh0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ln+gSbhDMKbRPZAmHFIaknl4+UKsM8yIEfa9fANwYYWDUj0gZ0hfLAHXKYe9Zd/lp
-	 q04jNZrRRNd01y8xqxr9lfRthcGRdJUMf1Dr3be4BVmr6aYlKrY2axTUEmLxtI2Y3N
-	 3+V3xqfV3ZRz/vUqMLsYP5iz2381FeIIBmsggxOo=
+	b=2c/kuOF9QkYh1ezht4BEYMVGkXIxyqRwOw1zcRhL+qKNP6N7K8uc2XFuZCqUyxq81
+	 z9XFdMcFYr9Dmksj+4iHXNaLyPaZfB9bHVxweDfG5gaBQKpM/faYBjuwYVbVyQDWhy
+	 WOg9f7yujfsuLe8O6nuX5QspLdEdC0biyXUCLxDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Werling <brett.werling@garmin.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.1 328/508] can: tcan4x5x: fix power regulator retrieval during probe
-Date: Mon, 23 Jun 2025 15:06:13 +0200
-Message-ID: <20250623130653.393667466@linuxfoundation.org>
+	Quentin Monnet <qmo@kernel.org>,
+	Takshak Chahande <ctakshak@meta.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 237/414] bpftool: Fix cgroup command to only show cgroup bpf programs
+Date: Mon, 23 Jun 2025 15:06:14 +0200
+Message-ID: <20250623130647.964200982@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +65,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Werling <brett.werling@garmin.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-commit db22720545207f734aaa9d9f71637bfc8b0155e0 upstream.
+[ Upstream commit b69d4413aa1961930fbf9ffad8376d577378daf9 ]
 
-Fixes the power regulator retrieval in tcan4x5x_can_probe() by ensuring
-the regulator pointer is not set to NULL in the successful return from
-devm_regulator_get_optional().
+The netkit program is not a cgroup bpf program and should not be shown
+in the output of the "bpftool cgroup show" command.
 
-Fixes: 3814ca3a10be ("can: tcan4x5x: tcan4x5x_can_probe(): turn on the power before parsing the config")
-Signed-off-by: Brett Werling <brett.werling@garmin.com>
-Link: https://patch.msgid.link/20250612191825.3646364-1-brett.werling@garmin.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, if the netkit device happens to have ifindex 3,
+the "bpftool cgroup show" command will output the netkit
+bpf program as well:
+
+> ip -d link show dev nk1
+3: nk1@if2: ...
+    link/ether ...
+    netkit mode ...
+
+> bpftool net show
+tc:
+nk1(3) netkit/peer tw_ns_nk2phy prog_id 469447
+
+> bpftool cgroup show /sys/fs/cgroup/...
+ID       AttachType      AttachFlags     Name
+...      ...                             ...
+469447   netkit_peer                     tw_ns_nk2phy
+
+The reason is that the target_fd (which is the cgroup_fd here) and
+the target_ifindex are in a union in the uapi/linux/bpf.h. The bpftool
+iterates all values in "enum bpf_attach_type" which includes
+non cgroup attach types like netkit. The cgroup_fd is usually 3 here,
+so the bug is triggered when the netkit ifindex just happens
+to be 3 as well.
+
+The bpftool's cgroup.c already has a list of cgroup-only attach type
+defined in "cgroup_attach_types[]". This patch fixes it by iterating
+over "cgroup_attach_types[]" instead of "__MAX_BPF_ATTACH_TYPE".
+
+Cc: Quentin Monnet <qmo@kernel.org>
+Reported-by: Takshak Chahande <ctakshak@meta.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/r/20250507203232.1420762-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/tcan4x5x-core.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ tools/bpf/bpftool/cgroup.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/net/can/m_can/tcan4x5x-core.c
-+++ b/drivers/net/can/m_can/tcan4x5x-core.c
-@@ -310,10 +310,11 @@ static int tcan4x5x_can_probe(struct spi
- 	priv = cdev_to_priv(mcan_class);
+diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
+index afab728468bf6..4189c9d74fb06 100644
+--- a/tools/bpf/bpftool/cgroup.c
++++ b/tools/bpf/bpftool/cgroup.c
+@@ -318,11 +318,11 @@ static int show_bpf_progs(int cgroup_fd, enum bpf_attach_type type,
  
- 	priv->power = devm_regulator_get_optional(&spi->dev, "vsup");
--	if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
--		ret = -EPROBE_DEFER;
--		goto out_m_can_class_free_dev;
--	} else {
-+	if (IS_ERR(priv->power)) {
-+		if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
-+			ret = -EPROBE_DEFER;
-+			goto out_m_can_class_free_dev;
-+		}
- 		priv->power = NULL;
+ static int do_show(int argc, char **argv)
+ {
+-	enum bpf_attach_type type;
+ 	int has_attached_progs;
+ 	const char *path;
+ 	int cgroup_fd;
+ 	int ret = -1;
++	unsigned int i;
+ 
+ 	query_flags = 0;
+ 
+@@ -370,14 +370,14 @@ static int do_show(int argc, char **argv)
+ 		       "AttachFlags", "Name");
+ 
+ 	btf_vmlinux = libbpf_find_kernel_btf();
+-	for (type = 0; type < __MAX_BPF_ATTACH_TYPE; type++) {
++	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++) {
+ 		/*
+ 		 * Not all attach types may be supported, so it's expected,
+ 		 * that some requests will fail.
+ 		 * If we were able to get the show for at least one
+ 		 * attach type, let's return 0.
+ 		 */
+-		if (show_bpf_progs(cgroup_fd, type, 0) == 0)
++		if (show_bpf_progs(cgroup_fd, cgroup_attach_types[i], 0) == 0)
+ 			ret = 0;
  	}
  
+@@ -400,9 +400,9 @@ static int do_show(int argc, char **argv)
+ static int do_show_tree_fn(const char *fpath, const struct stat *sb,
+ 			   int typeflag, struct FTW *ftw)
+ {
+-	enum bpf_attach_type type;
+ 	int has_attached_progs;
+ 	int cgroup_fd;
++	unsigned int i;
+ 
+ 	if (typeflag != FTW_D)
+ 		return 0;
+@@ -434,8 +434,8 @@ static int do_show_tree_fn(const char *fpath, const struct stat *sb,
+ 	}
+ 
+ 	btf_vmlinux = libbpf_find_kernel_btf();
+-	for (type = 0; type < __MAX_BPF_ATTACH_TYPE; type++)
+-		show_bpf_progs(cgroup_fd, type, ftw->level);
++	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++)
++		show_bpf_progs(cgroup_fd, cgroup_attach_types[i], ftw->level);
+ 
+ 	if (errno == EINVAL)
+ 		/* Last attach type does not support query.
+-- 
+2.39.5
+
 
 
 
