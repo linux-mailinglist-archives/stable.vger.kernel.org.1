@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2D2FAE50AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4036DAE4F62
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 845897AA295
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A36A71B60DD2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11BE222258C;
-	Mon, 23 Jun 2025 21:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448861FE46D;
+	Mon, 23 Jun 2025 21:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kMZAHPj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d50AXR04"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AFA1F4628;
-	Mon, 23 Jun 2025 21:27:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FB35FDA7;
+	Mon, 23 Jun 2025 21:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714025; cv=none; b=cKm43/gOCFTgyE6Ik9X65N2nZ1myC68fJO2olAqtiG+pyOngA0+4vPWOlO/7hxxgp1k3e0Br9raniJPhFA+8I30VY/zMbmB7E86Ojc62uk2Ih1CLCeK6z+o8HkAHDcUjokcQoL1YlV8sCccHTzEtkX9jPf0AMnt5H42kVTgrdSU=
+	t=1750713322; cv=none; b=CTG+LBXNyAaVwX4KSbssB2X/rmyluSoywOYmKZeS6dVgScnogSqr9wMjZOwMPfmR8m0o2982ryXDg10CSJiPqKMqQcIAJIB2mavYGQNUt8XVZfNsPDwT+d3qbPflepvZGc0qP/2bDeieOQ4ViP1Pygj7MlTIzlXebogF6iKNqkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714025; c=relaxed/simple;
-	bh=/97abh6ti/SOokddo4xTZZpMWXd6/Qet4mabevqcj+c=;
+	s=arc-20240116; t=1750713322; c=relaxed/simple;
+	bh=uRAMvwiM/jthdPI+0n8+KJSwdy9fGB4i0ekqbklpspE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iJ3FICy2z5NJobs7qiXgbVd2OxWOHejzfOWHUrKLsLQQX+kfT/A8MxjPEUlyWG58ZOPOGi4axRswkd1bPZv8FYlLaFeWCKaUtJY53HEaKqHQ/HZu71JMCIcc32alGNUF84/5aztnL5blq3VPLGyN51l4ecB/qIffLWCHoZlyuR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kMZAHPj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB25C4CEEA;
-	Mon, 23 Jun 2025 21:27:05 +0000 (UTC)
+	 MIME-Version; b=HO0NW3+vFN+T7CnbGKzNFneT2EZviIf+czYvMY830wK1FvaLx4Q187+Q5RE57Rzuyb1WTPzElLVaGDdFCQUnds7eL60u3TVJNcTBnjpQDLE56I0kx/UuP919/TtUvIJZdMan5u8BoOxSjyDHlnH8WrdM48NJWVewNVFf+YkV8zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d50AXR04; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE75C4CEED;
+	Mon, 23 Jun 2025 21:15:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714025;
-	bh=/97abh6ti/SOokddo4xTZZpMWXd6/Qet4mabevqcj+c=;
+	s=korg; t=1750713321;
+	bh=uRAMvwiM/jthdPI+0n8+KJSwdy9fGB4i0ekqbklpspE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2kMZAHPjao8D6upoFUapsoWqhuAzdWuL6oVJ8IQdV91C7mt7qgpkkF6iKieaa+/QC
-	 TfG5wwA/FoGMYRDkUgWizlCSzD9dYSfNANbr76ge1NRtJRWeCBsvFveBsH6pLyhRSK
-	 XiBdTmTV3uyIMpszdTG2A2gQ+1JHw592lXyM6AzY=
+	b=d50AXR04TorxUk++q0sMj5eieucqLNZxNQRWOYqwiCBuUt8iKltmw8J+ZslGR667e
+	 hvbkE2/cmhIujm3Wub3SxCiXYg6+NG/wFYtdQNjI43/uCkxhTHC38eeEwcLC/wL7XL
+	 7FsW+WSSlOIRYd6JToxPAyHMisf7LC9AYKEzvAlE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dr. David Alan Gilbert" <linux@treblig.org>,
-	Mark Brown <broonie@kernel.org>,
-	WangYuli <wangyuli@uniontech.com>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 130/508] randstruct: gcc-plugin: Remove bogus void member
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 038/414] svcrdma: Unregister the device if svc_rdma_accept() fails
 Date: Mon, 23 Jun 2025 15:02:55 +0200
-Message-ID: <20250623130648.491248689@linuxfoundation.org>
+Message-ID: <20250623130642.988647466@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,124 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit e136a4062174a9a8d1c1447ca040ea81accfa6a8 ]
+commit 8ac6fcae5dc0e801f1c82a83f5ae2c0a4db19932 upstream.
 
-When building the randomized replacement tree of struct members, the
-randstruct GCC plugin would insert, as the first member, a 0-sized void
-member. This appears as though it was done to catch non-designated
-("unnamed") static initializers, which wouldn't be stable since they
-depend on the original struct layout order.
+To handle device removal, svc_rdma_accept() requests removal
+notification for the underlying device when accepting a connection.
+However svc_rdma_free() is not invoked if svc_rdma_accept() fails.
+There needs to be a matching "unregister" in that case; otherwise
+the device cannot be removed.
 
-This was accomplished by having the side-effect of the "void member"
-tripping an assert in GCC internals (count_type_elements) if the member
-list ever needed to be counted (e.g. for figuring out the order of members
-during a non-designated initialization), which would catch impossible type
-(void) in the struct:
-
-security/landlock/fs.c: In function ‘hook_file_ioctl_common’:
-security/landlock/fs.c:1745:61: internal compiler error: in count_type_elements, at expr.cc:7075
- 1745 |                         .u.op = &(struct lsm_ioctlop_audit) {
-      |                                                             ^
-
-static HOST_WIDE_INT
-count_type_elements (const_tree type, bool for_ctor_p)
-{
-  switch (TREE_CODE (type))
-...
-    case VOID_TYPE:
-    default:
-      gcc_unreachable ();
-    }
-}
-
-However this is a redundant safety measure since randstruct uses the
-__designated_initializer attribute both internally and within the
-__randomized_layout attribute macro so that this would be enforced
-by the compiler directly even when randstruct was not enabled (via
--Wdesignated-init).
-
-A recent change in Landlock ended up tripping the same member counting
-routine when using a full-struct copy initializer as part of an anonymous
-initializer. This, however, is a false positive as the initializer is
-copying between identical structs (and hence identical layouts). The
-"path" member is "struct path", a randomized struct, and is being copied
-to from another "struct path", the "f_path" member:
-
-        landlock_log_denial(landlock_cred(file->f_cred), &(struct landlock_request) {
-                .type = LANDLOCK_REQUEST_FS_ACCESS,
-                .audit = {
-                        .type = LSM_AUDIT_DATA_IOCTL_OP,
-                        .u.op = &(struct lsm_ioctlop_audit) {
-                                .path = file->f_path,
-                                .cmd = cmd,
-                        },
-                },
-	...
-
-As can be seen with the coming randstruct KUnit test, there appears to
-be no behavioral problems with this kind of initialization when the void
-member is removed from the randstruct GCC plugin, so remove it.
-
-Reported-by: "Dr. David Alan Gilbert" <linux@treblig.org>
-Closes: https://lore.kernel.org/lkml/Z_PRaKx7q70MKgCA@gallifrey/
-Reported-by: Mark Brown <broonie@kernel.org>
-Closes: https://lore.kernel.org/lkml/20250407-kbuild-disable-gcc-plugins-v1-1-5d46ae583f5e@kernel.org/
-Reported-by: WangYuli <wangyuli@uniontech.com>
-Closes: https://lore.kernel.org/lkml/337D5D4887277B27+3c677db3-a8b9-47f0-93a4-7809355f1381@uniontech.com/
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c4de97f7c454 ("svcrdma: Handle device removal outside of the CM event handler")
+Cc: stable@vger.kernel.org
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gcc-plugins/randomize_layout_plugin.c | 18 +-----------------
- 1 file changed, 1 insertion(+), 17 deletions(-)
+ net/sunrpc/xprtrdma/svc_rdma_transport.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index 366395cab490d..2b93dd14bd7b6 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -359,29 +359,13 @@ static int relayout_struct(tree type)
- 
- 	shuffle(type, (tree *)newtree, shuffle_length);
- 
--	/*
--	 * set up a bogus anonymous struct field designed to error out on unnamed struct initializers
--	 * as gcc provides no other way to detect such code
--	 */
--	list = make_node(FIELD_DECL);
--	TREE_CHAIN(list) = newtree[0];
--	TREE_TYPE(list) = void_type_node;
--	DECL_SIZE(list) = bitsize_zero_node;
--	DECL_NONADDRESSABLE_P(list) = 1;
--	DECL_FIELD_BIT_OFFSET(list) = bitsize_zero_node;
--	DECL_SIZE_UNIT(list) = size_zero_node;
--	DECL_FIELD_OFFSET(list) = size_zero_node;
--	DECL_CONTEXT(list) = type;
--	// to satisfy the constify plugin
--	TREE_READONLY(list) = 1;
--
- 	for (i = 0; i < num_fields - 1; i++)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
- 
- 	main_variant = TYPE_MAIN_VARIANT(type);
- 	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_FIELDS(variant) = list;
-+		TYPE_FIELDS(variant) = newtree[0];
- 		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
- 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
- 		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--- 
-2.39.5
-
+--- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
+@@ -577,6 +577,7 @@ static struct svc_xprt *svc_rdma_accept(
+ 	if (newxprt->sc_qp && !IS_ERR(newxprt->sc_qp))
+ 		ib_destroy_qp(newxprt->sc_qp);
+ 	rdma_destroy_id(newxprt->sc_cm_id);
++	rpcrdma_rn_unregister(dev, &newxprt->sc_rn);
+ 	/* This call to put will destroy the transport */
+ 	svc_xprt_put(&newxprt->sc_xprt);
+ 	return NULL;
 
 
 
