@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B243AE5136
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10771AE50DF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28BB94402E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D7DCE1B62EE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6735444C77;
-	Mon, 23 Jun 2025 21:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BD9321FF50;
+	Mon, 23 Jun 2025 21:28:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1zakt1W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hG0Chgov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236F3C2E0;
-	Mon, 23 Jun 2025 21:31:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2051E5B71;
+	Mon, 23 Jun 2025 21:28:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714309; cv=none; b=j3FbExsuy2uXrLYuM+wAqdXDOE/Ud2cKW6NKVHUG4ZhtbrvihJ5TYtL+Ke9DuJqadxXAoYqqg3ekLN10Bh9QOd3crGsqkbshwsloqjKlPrxBG8upblWRK9jyvkjbzfNcZyhgQQr9DTIgNboW6y4CYaZe0T8qjYIqE1Z7Yzqwrno=
+	t=1750714126; cv=none; b=CSaqjudVCvMti+tkoztqx5cNP3rN6kuj4TIbceJ912bR1bQAKEb0nx7ntJUk5ciCC6H9gVFCDJ95cmqVKOehxReVx0iUIHhJgnLa0upeWNE0LxQ+J/or9GBCVJH80pdS6tN2qBJNpam/xI0q68VJbqM4PN+cBKjMcEiUjum0F2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714309; c=relaxed/simple;
-	bh=B0LQdEEkj+mY8Lh0Zi8YlywQTIpGl3GxL2KtSd5aTFs=;
+	s=arc-20240116; t=1750714126; c=relaxed/simple;
+	bh=vprkshYoG2XWcuEgeRJ9UtnQB6/Sr9fjjLipL9+VU1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=paaM9p6DZYWMLSJG+pr6W70toViYgMZzkteCR9ttmlJ1IhD0PZIhcxRQWCxYUgyjRqYuvepn48A3QzeK4jjwxrZhaZqRZyJRM3XHyZRNzW/vycLMVOX7m1p0XVW7CBblf4VWumO2OrmlKtenWUk64zhxKNW7prOQQ3hPqgzad3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1zakt1W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEFAC4CEF0;
-	Mon, 23 Jun 2025 21:31:48 +0000 (UTC)
+	 MIME-Version; b=A8iS/NACFPRAoSr3FRBytG39OotuJGifcbJubM30JadMCWhzyUsI0klaXOChPzousvuL2Lh5dT8BOttEr09lLPhiEH53TDEYp9oVSvnf1/W3yoGS9GuzFAKxzH2SOzOeNrJrbsYEue4DHw9uabK+zjAXmdufusYQt2C9Wc9hERk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hG0Chgov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74598C4CEEA;
+	Mon, 23 Jun 2025 21:28:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714309;
-	bh=B0LQdEEkj+mY8Lh0Zi8YlywQTIpGl3GxL2KtSd5aTFs=;
+	s=korg; t=1750714125;
+	bh=vprkshYoG2XWcuEgeRJ9UtnQB6/Sr9fjjLipL9+VU1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A1zakt1WNLWlgtucoZzU6nz+wM45dY1LEDu4OZ1VfKXGfCBp/KA04Q5+IXZYXg864
-	 MX6/mcRWNivMFpeBlm6446sg3YgLvd88kbA4DJotkxCulkunjpn83/phskO03a9MC4
-	 444bIkehf06ITMVKxz6pNAYUw2fQ0hWKtmMwctRU=
+	b=hG0Chgov/YGl1NbRWg5jKi3Q3IVcOR/7NIAUeoe1jC+jTRzW/QmnfweY/u2AWI/ii
+	 LEtXEPxBvvfsQr4TVtB7ELw/bHQx2Q9G8ZsnFMGwRxaKdsT0Qywkwk3TbH1dr3eULa
+	 ZUvNGF3Sk2QB7kWiQnrf7VbQZkCMwPKoDndBPdLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	MengEn Sun <mengensun@tencent.com>,
-	Andrea Righi <andrea@betterlinux.com>,
-	Fenggaung Wu <fengguang.wu@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 198/355] mm: fix ratelimit_pages update error in dirty_ratio_handler()
+	Tan En De <ende.tan@starfivetech.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 138/290] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:06:39 +0200
-Message-ID: <20250623130632.619786328@linuxfoundation.org>
+Message-ID: <20250623130631.055834371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+From: Tan En De <ende.tan@starfivetech.com>
 
-commit f83f362d40ccceb647f7d80eb92206733d76a36b upstream.
+[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
 
-In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
-calling writeback_set_ratelimit(), as global_dirty_limits() always
-prioritizes the value of vm_dirty_bytes.
+Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
+the runtime suspend is invoked immediately when unregistering a slave.
+This prevents a race condition where suspend was skipped when
+unregistering and registering slave in quick succession.
 
-It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
+For example, consider the rapid sequence of
+`delete_device -> new_device -> delete_device -> new_device`.
+In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
+might not be invoked after `delete_device` operation.
 
-  dirty_ratio_handler
-    writeback_set_ratelimit
-      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
-        domain_dirty_limits
-          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
-            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
-          else                                                                        |
-            thresh = f2(ratio)                                                        |
-      ratelimit_pages = f3(dirty_thresh)                                              |
-    vm_dirty_bytes = 0                             <- it's late! ---------------------+
+This is because after `delete_device` operation, when the
+pm_runtime_put() is about to trigger suspend, the following `new_device`
+operation might race and cancel the suspend.
 
-This causes ratelimit_pages to still use the value calculated based on
-vm_dirty_bytes, which is wrong now.
+If that happens, during the `new_device` operation,
+dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
+means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
+Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
+skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
+the interrupt mask register using devmem, it will show as zero.
 
+Example shell script to reproduce the issue:
+```
+  #!/bin/sh
 
-The impact visible to userspace is difficult to capture directly because
-there is no procfs/sysfs interface exported to user space.  However, it
-will have a real impact on the balance of dirty pages.
+  SLAVE_LADDR=0x1010
+  SLAVE_BUS=13
+  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
+  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
 
-For example:
+  # Create initial device
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  sleep 2
 
-1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
+  # Rapid sequence of
+  # delete_device -> new_device -> delete_device -> new_device
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
 
-2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
-   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
-   vm_dirty_bytes now.
+  # Using devmem to inspect IC_INTR_MASK will show as zero
+```
 
-3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
-   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
-   domain_dirty_limits() is called, reallimit_pages is still calculated
-   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
-   conform to the actual intent of the user.
-
-Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
-Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Reviewed-by: MengEn Sun <mengensun@tencent.com>
-Cc: Andrea Righi <andrea@betterlinux.com>
-Cc: Fenggaung Wu <fengguang.wu@intel.com>
-Cc: Jinliang Zheng <alexjlzheng@tencent.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tan En De <ende.tan@starfivetech.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/page-writeback.c |    2 +-
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -557,8 +557,8 @@ int dirty_ratio_handler(struct ctl_table
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index 345b532a2b455..ea4c4955fe264 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -91,7 +91,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
+ 	i2c_dw_disable(dev);
+ 	synchronize_irq(dev->irq);
+ 	dev->slave = NULL;
+-	pm_runtime_put(dev->dev);
++	pm_runtime_put_sync_suspend(dev->dev);
  
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
--		writeback_set_ratelimit();
- 		vm_dirty_bytes = 0;
-+		writeback_set_ratelimit();
- 	}
- 	return ret;
+ 	return 0;
  }
+-- 
+2.39.5
+
 
 
 
