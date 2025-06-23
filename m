@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEC9BAE54C6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69916AE5186
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EF2E64C1516
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81C69442141
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24FC322577C;
-	Mon, 23 Jun 2025 22:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA8DB22068B;
+	Mon, 23 Jun 2025 21:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bnt8QBeD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHVOYe8P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEB4E221FD6;
-	Mon, 23 Jun 2025 22:04:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E9B21D3DD;
+	Mon, 23 Jun 2025 21:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716272; cv=none; b=ZnHhPxkD3ThR/Z2WN2rrBlRmZfRhxwNo4AKUoOskegm1RD5tnmMqrNAiQ8xAaOai6mF33+vms4+R9CVkzlgI2B/y125VTgElADu6CcydUA8JQZ6lGnbGNwvn+eqfX9UXQ5YbFPnADx+8Sp5M1XE3hom1CH6a/hbny3BinMVxVIg=
+	t=1750714507; cv=none; b=CbyZd+8hYWBmonREurOOHgH9VZrfI2Ydi2a/tKnZdrVS+kasK7dZ7VgWwp9bMDquoEiUtvFAPL9Ca9AWxwcQJsiqXZGivIpoq56XCXMLzpYMEfGNvdjOCGIdmRnAI9lRvgP6Qx59CNlNpc8sMz7DqA7zpgCxQd48f5bJbIcMTS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716272; c=relaxed/simple;
-	bh=sXH0cTzw1PsZzjKXO1lFn0OmJR7boOEAJTC+Xw9IwxY=;
+	s=arc-20240116; t=1750714507; c=relaxed/simple;
+	bh=GVfZN3DzujjFZWlRk2Eok/VXNZewO+70ju66OmuBX58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A3ZaAoRSVbyNgZOqqOJpntQIu8JsbnL2jgcJY6j8q1krYdHK3irtS3pcBkFU5DW77rCcQ3pbeIGSbh3ZRKx0mXaH7TtdPiUP0YNwu+SWV0Ia8w1RtWWNZHNMXribh/unEQ8f/GC140Icw+ACayK7IrWbXPjVU7yptOVJhjrk7ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bnt8QBeD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B045C4CEED;
-	Mon, 23 Jun 2025 22:04:31 +0000 (UTC)
+	 MIME-Version; b=c+gTDGXvxL5XoVkNo73WAMYWzud9mEv1037YGph1GaCfSuRjTMF9F/9Q+kG7eJmnJjnC64bkJL1oeP0SldHD0rowKh4F2YLalr570jVH9hPOoZaZ28xMNrM/+DmCddrwKCIVmWDNDNrbG1XBa3hh4eOGABpkMCNdDSmqE43S8Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHVOYe8P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEA2DC4CEEA;
+	Mon, 23 Jun 2025 21:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716272;
-	bh=sXH0cTzw1PsZzjKXO1lFn0OmJR7boOEAJTC+Xw9IwxY=;
+	s=korg; t=1750714507;
+	bh=GVfZN3DzujjFZWlRk2Eok/VXNZewO+70ju66OmuBX58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bnt8QBeDbnLcZUigElRk5FHULNhVr27pnve9Wiymdz+vtOyHV//rbB8I049dI7pJk
-	 y0d2i89mSzyVFzGrlq5rB/nb7tUfSo3EZW7nvfPtfpw0bvfPdCN73Q8hYlUIAaxOaH
-	 GcrNpjsNm/Krc/7R3at3VOy9Xm6WdxTYTCfF/SmQ=
+	b=UHVOYe8P7nLLAQxNfFihB/HZBVSKanYseFoA6LA3qM4IY48cqpG6mnlQ05GmtXDfF
+	 49Qs5UJ/U4SlAZONIhwNBGVMI79ui5TI4zfRbiBaxp6mnOwgeyqVA0B6+3WcvGb3dG
+	 CV/io7DZAei9D+3bsfVNnSslwO3zecpf57qNeFrw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Berg <johannes.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>,
+	Muna Sinada <muna.sinada@oss.qualcomm.com>,
+	Mahendran P <quic_mahep@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 240/414] wifi: iwlwifi: mvm: fix beacon CCK flag
+Subject: [PATCH 6.15 419/592] wifi: ath12k: Fix memory leak due to multiple rx_stats allocation
 Date: Mon, 23 Jun 2025 15:06:17 +0200
-Message-ID: <20250623130648.047637419@linuxfoundation.org>
+Message-ID: <20250623130710.402442669@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johannes Berg <johannes.berg@intel.com>
+From: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
 
-[ Upstream commit 8d7f08922a8cb621aa5d00bdce6a7afe57af1665 ]
+[ Upstream commit c426497fa2055c8005196922e7d29c41d7e0948a ]
 
-The beacon CCK flag should be set for any CCK rate, not
-just for 1 Mbps. Fix that.
+rx_stats for each arsta is allocated when adding a station.
+arsta->rx_stats will be freed when a station is removed.
 
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Link: https://patch.msgid.link/20250505215513.fe18b7d92d7d.I7bb40a92cea102677b695beb1e2a62a5ea72678b@changeid
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Redundant allocations are occurring when the same station is added
+multiple times. This causes ath12k_mac_station_add() to be called
+multiple times, and rx_stats is allocated each time. As a result there
+is memory leaks.
+
+Prevent multiple allocations of rx_stats when ath12k_mac_station_add()
+is called repeatedly by checking if rx_stats is already allocated
+before allocating again. Allocate arsta->rx_stats if arsta->rx_stats
+is NULL respectively.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Signed-off-by: Sidhanta Sahu <sidhanta.sahu@oss.qualcomm.com>
+Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
+Reviewed-by: Mahendran P <quic_mahep@quicinc.com>
+Link: https://patch.msgid.link/20250326213538.2214194-1-muna.sinada@oss.qualcomm.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/mac.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-index e96ddaeeeeff5..d013de30e7ed6 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac-ctxt.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-3-Clause
- /*
-- * Copyright (C) 2012-2014, 2018-2024 Intel Corporation
-+ * Copyright (C) 2012-2014, 2018-2025 Intel Corporation
-  * Copyright (C) 2013-2014 Intel Mobile Communications GmbH
-  * Copyright (C) 2015-2017 Intel Deutschland GmbH
-  */
-@@ -962,7 +962,7 @@ u16 iwl_mvm_mac_ctxt_get_beacon_flags(const struct iwl_fw *fw, u8 rate_idx)
- 	u16 flags = iwl_mvm_mac80211_idx_to_hwrate(fw, rate_idx);
- 	bool is_new_rate = iwl_fw_lookup_cmd_ver(fw, BEACON_TEMPLATE_CMD, 0) > 10;
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 922901bab3e39..d1d3c9f34372d 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -5560,10 +5560,13 @@ static int ath12k_mac_station_add(struct ath12k *ar,
+ 			    ar->max_num_stations);
+ 		goto exit;
+ 	}
+-	arsta->rx_stats = kzalloc(sizeof(*arsta->rx_stats), GFP_KERNEL);
++
+ 	if (!arsta->rx_stats) {
+-		ret = -ENOMEM;
+-		goto dec_num_station;
++		arsta->rx_stats = kzalloc(sizeof(*arsta->rx_stats), GFP_KERNEL);
++		if (!arsta->rx_stats) {
++			ret = -ENOMEM;
++			goto dec_num_station;
++		}
+ 	}
  
--	if (rate_idx <= IWL_FIRST_CCK_RATE)
-+	if (rate_idx <= IWL_LAST_CCK_RATE)
- 		flags |= is_new_rate ? IWL_MAC_BEACON_CCK
- 			  : IWL_MAC_BEACON_CCK_V1;
- 
+ 	peer_param.vdev_id = arvif->vdev_id;
 -- 
 2.39.5
 
