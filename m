@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6ACD6AE4FA8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF510AE53B8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37C0F7ADEAB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 706EC4A866C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EABFD222582;
-	Mon, 23 Jun 2025 21:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1545220686;
+	Mon, 23 Jun 2025 21:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mYE4h9IX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ONUMpYJR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E63222562;
-	Mon, 23 Jun 2025 21:16:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6B73FB1B;
+	Mon, 23 Jun 2025 21:55:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713387; cv=none; b=GCjvy7ugjVOhSrSfaZ3GSfvykKgNb6Znqi8hW/BSE/62d0CtPKM/AGBQ+/HmJj3soAlLsysxKLfOFUoeWi3O4epaX2UiyDWgqBdEvVxbqEWxYyUtww31WorjWFnw4WNmCcCX5DxwTdhecy2NFxzOdMawQU+YnZCW489Gchh9bFQ=
+	t=1750715756; cv=none; b=spO2X0m1An+TWqKm/5uKwSiYTQyZ0TxoYqAh/cHNU4v87+g3f3/JWA03ysjymW+A5TVTmNSTTK8dV55h4EIEjIiy07XwX5KlylAU86S8yRraI0gH6iVF4pmJjtbB+BrbAdzwSU/9qnMs/dhS9rpY/I0vwEzu/YUU2QWY1C0Zj64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713387; c=relaxed/simple;
-	bh=2PgrAxkl5qvLDnoDEvmy9/9CiD2vZQp9/8QLQRlx7vE=;
+	s=arc-20240116; t=1750715756; c=relaxed/simple;
+	bh=qtbesaYpnjHqh1An9KtbgwI6h8dKoS4DyGuP/upngXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AVgcCXP5i823iT65ggSRyyXOKxhjuVkaR+JgFqBW9lhYmReCOJTSkhIuSh/aA+X3K4FemQ+saXGtqirA71gwGxya+Dj7PcuFs6shok8yGKsS2qRb+dK8vS+806SZ/udTo0bvhjnsbSSaKvwYa1ln7EIBM5vfPRu036qVnbXTUBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mYE4h9IX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F653C4CEEA;
-	Mon, 23 Jun 2025 21:16:27 +0000 (UTC)
+	 MIME-Version; b=QN6yZ8Lejnf0QuQKcyTjiXMIh7At0qrUja87t5U114kyVRE8wZ3L8//3gzaba1iddlO6q10A4kykBL75QnN6jQlplmoIJ/UR5RbQXV+OIedRYPjOlOyM9R3zoqGOIyYo4xHtJ53HHWBis7etrhiNlO5jnqg9sb5Ub5CXv6QSMzk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ONUMpYJR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4C6AC4CEEA;
+	Mon, 23 Jun 2025 21:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713387;
-	bh=2PgrAxkl5qvLDnoDEvmy9/9CiD2vZQp9/8QLQRlx7vE=;
+	s=korg; t=1750715756;
+	bh=qtbesaYpnjHqh1An9KtbgwI6h8dKoS4DyGuP/upngXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mYE4h9IX7vJQXlHPtiHvlpYUkN9k0t/HplAfgGgS7i1Z1sRb2Xg57LqvLv8UoHSjg
-	 k9JwjubCjXSMSaoUPwXPciXgr7B6nSxpR4w6VHEvnE6PZzMVEPIoPzbBZ0Iei9Dhw5
-	 1TW3Zj9BDu3Nr40ljVXpfNMwgjHjhUJOw6+vEGwk=
+	b=ONUMpYJRnU7ygmPGtlgSY3DQe/PMDDYnP3UPkD+HmEdGO6c7vnO0astEndwUC/z4u
+	 tTOed/ZeIePURwHbDv+LGwooo4vYDGIB544u9Lrh7foYK6ay/Ybo3V5jf/gNvdDTwh
+	 Lho2az5cluE6eh1EfOLF0k6Tf1zv0pyCw8MRbkaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 5.10 141/355] x86/boot/compressed: prefer cc-option for CFLAGS additions
+	Petr Malat <oss@malat.biz>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 205/414] sctp: Do not wake readers in __sctp_write_space()
 Date: Mon, 23 Jun 2025 15:05:42 +0200
-Message-ID: <20250623130630.957403633@linuxfoundation.org>
+Message-ID: <20250623130647.131360971@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nick Desaulniers <ndesaulniers@google.com>
+From: Petr Malat <oss@malat.biz>
 
-commit 994f5f7816ff963f49269cfc97f63cb2e4edb84f upstream.
+[ Upstream commit af295892a7abbf05a3c2ba7abc4d81bb448623d6 ]
 
-as-option tests new options using KBUILD_CFLAGS, which causes problems
-when using as-option to update KBUILD_AFLAGS because many compiler
-options are not valid assembler options.
+Function __sctp_write_space() doesn't set poll key, which leads to
+ep_poll_callback() waking up all waiters, not only these waiting
+for the socket being writable. Set the key properly using
+wake_up_interruptible_poll(), which is preferred over the sync
+variant, as writers are not woken up before at least half of the
+queue is available. Also, TCP does the same.
 
-This will be fixed in a follow up patch. Before doing so, move the
-assembler test for -Wa,-mrelax-relocations=no from using as-option to
-cc-option.
-
-Link: https://lore.kernel.org/llvm/CAK7LNATcHt7GcXZ=jMszyH=+M_LC9Qr6yeAGRCBbE6xriLxtUQ@mail.gmail.com/
-Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Petr Malat <oss@malat.biz>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20250516081727.1361451-1-oss@malat.biz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sctp/socket.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/boot/compressed/Makefile
-+++ b/arch/x86/boot/compressed/Makefile
-@@ -49,7 +49,7 @@ KBUILD_CFLAGS += $(call cc-option,-fmacr
- KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
- KBUILD_CFLAGS += -D__DISABLE_EXPORTS
- # Disable relocation relaxation in case the link is not PIE.
--KBUILD_CFLAGS += $(call as-option,-Wa$(comma)-mrelax-relocations=no)
-+KBUILD_CFLAGS += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
- KBUILD_CFLAGS += -include $(srctree)/include/linux/hidden.h
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 53725ee7ba06d..b301d64d9d80f 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -9100,7 +9100,8 @@ static void __sctp_write_space(struct sctp_association *asoc)
+ 		wq = rcu_dereference(sk->sk_wq);
+ 		if (wq) {
+ 			if (waitqueue_active(&wq->wait))
+-				wake_up_interruptible(&wq->wait);
++				wake_up_interruptible_poll(&wq->wait, EPOLLOUT |
++						EPOLLWRNORM | EPOLLWRBAND);
  
- # sev-es.c indirectly inludes inat-table.h which is generated during
+ 			/* Note that we try to include the Async I/O support
+ 			 * here by modeling from the current TCP/UDP code.
+-- 
+2.39.5
+
 
 
 
