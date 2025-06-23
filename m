@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157762-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158119-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F662AE557C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52531AE570C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FDB21BC4B67
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D39137B10D9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE331226D1D;
-	Mon, 23 Jun 2025 22:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568B0223DE5;
+	Mon, 23 Jun 2025 22:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NV7FKQg1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpJ9zY3+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B457226D04;
-	Mon, 23 Jun 2025 22:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13389221543;
+	Mon, 23 Jun 2025 22:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716659; cv=none; b=BvzQe6czU3ScfOdybf3TQy9Lpmr/M39/r3TiTY5lHlQuADrIAFAx4FM1zILZv94Z9aX9ZZmyeXo84Usbx8wxuVgHiOO/d4Fzn9u/G7rBeAZ1/EJiOP3iNWNMwwQ+nUc/jYXWo/Db/ppINo9WEahrEMfccFeVnDWHfF2Wawck5VM=
+	t=1750717531; cv=none; b=RvQn9kUnjEtS25RJMFSRUl79TsPgUdVJMeuHeK3CPljEZ652BA2K/pyxuey5ssUIUCGiAZ8zsxrMoONHiqP1y5VZRqXhA8zvJMbJ6muK/173jqA3HQtK/LBX1JfjKIZJVoOSD3TdHHdXpKpDO76ar1u2yZ1mjPc+JB5sTU8OmWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716659; c=relaxed/simple;
-	bh=Plmg6t/y47uz2+GCa9WbG9DolsKtK+dLddLiPLmQXiE=;
+	s=arc-20240116; t=1750717531; c=relaxed/simple;
+	bh=ZOO5Ump9dVPclXqI2qVr96ZK6iUvG18lGy5/XH7r+LA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=at3ipUdA83ihYLc1fGJ3mxtLcWOY74SH/m/+r7JwhGkYu8sOuBy2Du6JIt2HF9PF6VnZz8NLwva/MTem6UtoZPB8tnD7bXpnOhyDRSuc+wDCv17tND9WV7SH2QvBR2sGtWpyDmSXsR0GvnJayjVQgVZya2ZzdxyDkUGC6W59DTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NV7FKQg1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11484C4CEEA;
-	Mon, 23 Jun 2025 22:10:58 +0000 (UTC)
+	 MIME-Version; b=Cr1KUU7qtuCoCG/7ZzFcdT3qAij/9bw4TLQhExn6aUcodvsTKgaq99Xy51LCAWJSSxOxs76WTU8Z50paIhTk1l+9K4Cl4R6DeE7Y2l1x6tzTqeZSlQjGVXInnKUNzMBmW5eI2cSNMFvxbLknUSmt0rIjfZUJOw7KZLAbPMXSZCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpJ9zY3+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD6C4CEEA;
+	Mon, 23 Jun 2025 22:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716659;
-	bh=Plmg6t/y47uz2+GCa9WbG9DolsKtK+dLddLiPLmQXiE=;
+	s=korg; t=1750717530;
+	bh=ZOO5Ump9dVPclXqI2qVr96ZK6iUvG18lGy5/XH7r+LA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NV7FKQg1Ekj9ZbUNWvY6bSIF/XbiUeztqFqQvxiYX3NoyCFqmrXt3a9SjJ4FhseI9
-	 xuTjXripnZgdVN7FQGOC0kiHcMeWpfgyMkXdBSkIxkprGEbK2a04ZcS28co5rwiNYh
-	 AhiKPx70pUXm+yryljHUFcJbcQqP4b9e7tGg2+uU=
+	b=JpJ9zY3+Q2eU9awag0M2TBScHHF/bvS6reSguzcLVK/87nE8rj+olvYUFo0rjeM3Y
+	 rf7iVo3CjSHDnFM/juqAmdY6bcTsX0MhNJCfmv/kBtA/3J9KF+Ltnh8MVjXy7h6oIz
+	 wd6vxqB7J+4EQAh9LOu3061nBJdMsXzu/Fum/TKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,12 +45,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Fedor Pchelkin <pchelkin@ispras.ru>,
 	Zhihao Cheng <chengzhihao1@huawei.com>,
 	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.15 348/411] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
+Subject: [PATCH 6.1 447/508] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
 Date: Mon, 23 Jun 2025 15:08:12 +0200
-Message-ID: <20250623130642.406659797@linuxfoundation.org>
+Message-ID: <20250623130656.151979080@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,7 +62,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -117,7 +117,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/fs/jffs2/erase.c
 +++ b/fs/jffs2/erase.c
-@@ -427,7 +427,9 @@ static void jffs2_mark_erased_block(stru
+@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(stru
  			.totlen =	cpu_to_je32(c->cleanmarker_size)
  		};
  
