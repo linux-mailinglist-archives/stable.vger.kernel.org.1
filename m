@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA080AE4FC3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75ECFAE4FC8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7733517F374
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81F273AC690
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF5E4315A;
-	Mon, 23 Jun 2025 21:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3694D2C9D;
+	Mon, 23 Jun 2025 21:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V8QZAeSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNH3NlSc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5602222C2;
-	Mon, 23 Jun 2025 21:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40CF4C62;
+	Mon, 23 Jun 2025 21:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713541; cv=none; b=TtGmIIJD3SslamU3GnQ3QFeZqGmzych/uUr9jFUhu1Sg1Q06XISUs06QiXWM8f535+DwqzJXW0n8Ef9GjCHXoxsZGDekvSGs0hJ6pDo6ctFQHQTHAh+/9tgtPhlF4EeQIdSCw/jMM7xFCD+p+rnyGQopoP65omh8Jx1BI3bQcCc=
+	t=1750713568; cv=none; b=dGRIHPtRUjJWAvV4RoT0rEe8rdF0eTFyIb/27PvWEESnQvno0PVpyktCHciRhOMD3TOYDnmYqaO2oEmU8r0HeYzg+IyCxNDhL/k8fnGp2aXN+/YcaIrszuz9yBBmIiwdBvXfN+dSqFKZdAQTtJNsX82/El451/Gv0N8lwpvJRO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713541; c=relaxed/simple;
-	bh=CxoxpfhH3TPDLu+qGojBTUCNmJ3uGDAhE/ywUAy/Ydw=;
+	s=arc-20240116; t=1750713568; c=relaxed/simple;
+	bh=VzWf7hDtdHfDM1VMNj++4w+E5XJ7Lt7gFmEDZoOb7yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PuJMm8QzI1Zy2TKiCqpq12GiP4xV8lSbdjGN+TqWq0lWYG8EYPXjymDU5XvDslyW5Nzkr/HCy1PpOCARhIH0LEaDQKMjX/1GubcIe03J9QnQdEOP+SUCib00DPA1oJwcZzPqs2y3FxBcD//i9ak/ZIeOSmq2yS4B6UEXBHtXRkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V8QZAeSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A52EAC4CEEA;
-	Mon, 23 Jun 2025 21:19:00 +0000 (UTC)
+	 MIME-Version; b=SsV/miZvIqcejy8oxiDZMXsWVWoUwk0ozYvkSk/qurhsS5Oh0o6JrTJlVIPakzD9VABSfjx1uTclP/d0aNmx/bKxTW1gv9eu4KZL1NBiFfYkuUNXzQtKOILqf2F/ToBzTJiO0Q2PVKSmKUXsO1XC2KkhH5boXw0CHqXNrCMT3k4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNH3NlSc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEB4C4CEEA;
+	Mon, 23 Jun 2025 21:19:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713541;
-	bh=CxoxpfhH3TPDLu+qGojBTUCNmJ3uGDAhE/ywUAy/Ydw=;
+	s=korg; t=1750713567;
+	bh=VzWf7hDtdHfDM1VMNj++4w+E5XJ7Lt7gFmEDZoOb7yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V8QZAeSycyz1EnyOZk/Tull9cajVyz7Pd+lrq+btp6RLAKQV0M04CU+WkT5ccpuTo
-	 eTwh4SZfdGYWozdaUcH1vOLZSG2kTPweeZi/UvDvJGObn4j/aYd/Cn31topgniUhNw
-	 wDZitzycNQsIzJMzc8wcH4U+JLOWxDZVpNjTCJJY=
+	b=RNH3NlScc/WgU1JQ8U+OABYMfyor1HNTHtvwVs/bjfX9EPyYDgea5JeIVk20A0Ot/
+	 ON86nTaxUHUeyKY7CJuCcE8y3sntONuRuwS7QO1UYd2t1hmjebpqJ+M0L5mOniIPgA
+	 96WVG0kSokUKG9I+xwg+7UehxS9PSAMb/83d6HZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 103/508] net: phy: mscc: Stop clearing the the UDPv4 checksum for L2 frames
-Date: Mon, 23 Jun 2025 15:02:28 +0200
-Message-ID: <20250623130647.813189455@linuxfoundation.org>
+Subject: [PATCH 6.1 104/508] f2fs: use d_inode(dentry) cleanup dentry->d_inode
+Date: Mon, 23 Jun 2025 15:02:29 +0200
+Message-ID: <20250623130647.838946820@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,45 +67,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 57a92d14659df3e7e7e0052358c8cc68bbbc3b5e ]
+[ Upstream commit a6c397a31f58a1d577c2c8d04b624e9baa31951c ]
 
-We have noticed that when PHY timestamping is enabled, L2 frames seems
-to be modified by changing two 2 bytes with a value of 0. The place were
-these 2 bytes seems to be random(or I couldn't find a pattern).  In most
-of the cases the userspace can ignore these frames but if for example
-those 2 bytes are in the correction field there is nothing to do.  This
-seems to happen when configuring the HW for IPv4 even that the flow is
-not enabled.
-These 2 bytes correspond to the UDPv4 checksum and once we don't enable
-clearing the checksum when using L2 frames then the frame doesn't seem
-to be changed anymore.
+no logic changes.
 
-Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20250523082716.2935895-1-horatiu.vultur@microchip.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_ptp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/namei.c | 8 ++++----
+ fs/f2fs/super.c | 4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
-index af44b01f3d383..7e7ce79eadffb 100644
---- a/drivers/net/phy/mscc/mscc_ptp.c
-+++ b/drivers/net/phy/mscc/mscc_ptp.c
-@@ -943,7 +943,9 @@ static int vsc85xx_ip1_conf(struct phy_device *phydev, enum ts_blk blk,
- 	/* UDP checksum offset in IPv4 packet
- 	 * according to: https://tools.ietf.org/html/rfc768
- 	 */
--	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26) | IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
-+	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26);
-+	if (enable)
-+		val |= IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
- 	vsc85xx_ts_write_csr(phydev, blk, MSCC_ANA_IP1_NXT_PROT_UDP_CHKSUM,
- 			     val);
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 9da104c0743c4..77fa3c639ba38 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -401,7 +401,7 @@ static int f2fs_link(struct dentry *old_dentry, struct inode *dir,
  
+ 	if (is_inode_flag_set(dir, FI_PROJ_INHERIT) &&
+ 			(!projid_eq(F2FS_I(dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)))
++			F2FS_I(inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	err = f2fs_dquot_initialize(dir);
+@@ -896,7 +896,7 @@ static int f2fs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ 
+ 	if (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			(!projid_eq(F2FS_I(new_dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)))
++			F2FS_I(old_inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	/*
+@@ -1085,10 +1085,10 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 
+ 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(new_dir)->i_projid,
+-			F2FS_I(old_dentry->d_inode)->i_projid)) ||
++			F2FS_I(old_inode)->i_projid)) ||
+ 	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(old_dir)->i_projid,
+-			F2FS_I(new_dentry->d_inode)->i_projid)))
++			F2FS_I(new_inode)->i_projid)))
+ 		return -EXDEV;
+ 
+ 	err = f2fs_dquot_initialize(old_dir);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 72160b906f4b3..c1738820a8f0d 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1830,9 +1830,9 @@ static int f2fs_statfs(struct dentry *dentry, struct kstatfs *buf)
+ 	buf->f_fsid    = u64_to_fsid(id);
+ 
+ #ifdef CONFIG_QUOTA
+-	if (is_inode_flag_set(dentry->d_inode, FI_PROJ_INHERIT) &&
++	if (is_inode_flag_set(d_inode(dentry), FI_PROJ_INHERIT) &&
+ 			sb_has_quota_limits_enabled(sb, PRJQUOTA)) {
+-		f2fs_statfs_project(sb, F2FS_I(dentry->d_inode)->i_projid, buf);
++		f2fs_statfs_project(sb, F2FS_I(d_inode(dentry))->i_projid, buf);
+ 	}
+ #endif
+ 	return 0;
 -- 
 2.39.5
 
