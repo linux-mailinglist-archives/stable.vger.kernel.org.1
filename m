@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-158093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DE0AE56EB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E783AAE5760
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8285F1C23329
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BDDD4C6126
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1B70222581;
-	Mon, 23 Jun 2025 22:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B050A224AED;
+	Mon, 23 Jun 2025 22:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yaZCSndL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="if3EO31E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EA3C2192EC;
-	Mon, 23 Jun 2025 22:24:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD31B676;
+	Mon, 23 Jun 2025 22:28:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717465; cv=none; b=C6S4Pa16FPm+wMLuKYct/JbxGH92NRzgWwi8plq8Xirw4r0JdL5HH5SzZQeDFFio8HWJcDbD7pv8Hgj86Ctc+DEIk+HNRE2+xGDzsHFSlnN+cYspPQQiRHQh0GMTw6EoZU9KZIziXejOqYa4qmhyBW/FPFZEYOOmz7l9b/YhCTQ=
+	t=1750717715; cv=none; b=fvM5AXZExsRpfjZJ20idtpovQYNxX6SIPt+6VRJknNNn2vuk/uCDao/tvEIF26WA7gnEeDXBwGiGRD/VPD105MMIdnM3KojkrrOEuS6Jii6iGmckeK0kUlQThahFzeQOqmdaEvsRDCk/tEtjeelPHDIwzFhOYMrnMTrH1opIhdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717465; c=relaxed/simple;
-	bh=2RZr4mdnD2x7eRsQjz9Vb0OjynUPiyyVYnIxk/oEkJQ=;
+	s=arc-20240116; t=1750717715; c=relaxed/simple;
+	bh=U2bO/1eg9zr5/OFIF1lJwF4cZ9aTl6esonxQ2Mwef+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gALgC0LWPh/7X9INySNcM+Z27IQN+fQIrWBlBWwGF7Nb+poYPiH8C6Nf1i3rDSM/qaUb7Z8BtpKfZNAyxF5YI4vkGcWOOLaXUXQHpqY0W5fhpCfUBxN38byCmKL8Y28fQDuZNRcDjH5M4dW9N71OWYEx5kLfSJDDlenYmKvqDRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yaZCSndL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBBB5C4CEEA;
-	Mon, 23 Jun 2025 22:24:24 +0000 (UTC)
+	 MIME-Version; b=YiSboHZYC8ehR8z9Am7DOxnvmmiYwbOuB+BQfGpY6/AsDuZZ4Dvmsc3pHKTCWVhb6H3g9CQ8toy97guu2qDL7YI9pGgaVlfzna8V0ptF7ynLm8XIzz3ZzfwkyWsbyyzS+WX1QxZzBOAIM4wbMytKNEpMlEkqhRibhrzD34a2zFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=if3EO31E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F138AC4CEEA;
+	Mon, 23 Jun 2025 22:28:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717465;
-	bh=2RZr4mdnD2x7eRsQjz9Vb0OjynUPiyyVYnIxk/oEkJQ=;
+	s=korg; t=1750717715;
+	bh=U2bO/1eg9zr5/OFIF1lJwF4cZ9aTl6esonxQ2Mwef+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yaZCSndLei1lJDwqxuMCAK8flGqorrfcthKwafet29y+ZePNqS+3lojdXoM8vvl0z
-	 rckoz4SSh6IGTIqEEQFIOcePAYIFZDxKazKJOI0XpuPhOSGSc7oISa9bomSjsqJ8cB
-	 qXEPaSj0Nit9MGUNe+I8rOXyhWZxcImUPCXI+pdA=
+	b=if3EO31EAoukblGZObr+ERaoeTZ2BVvZoaOjMqKX8hYNdLQN7Fsen7xd5mzvcuxGU
+	 J3ZXhiWjcidaGZO9OAEekq1q1Da3x0sd9kLOEWYxCvbtrhbNZ0hSauxJf2HgAj2fVn
+	 mFjLr3At6S1iGaBhGTIK4e8rOuASzF6scVOieaoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Thompson <davthompson@nvidia.com>,
-	Asmaa Mnebhi <asmaa@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Eric Wheeler <netdev@lists.ewheeler.net>,
+	Neal Cardwell <ncardwell@google.com>,
+	Yuchung Cheng <ycheng@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 392/414] mlxbf_gige: return EPROBE_DEFER if PHY IRQ is not available
+Subject: [PATCH 6.1 484/508] tcp: fix tcp_packet_delayed() for tcp_is_non_sack_preventing_reopen() behavior
 Date: Mon, 23 Jun 2025 15:08:49 +0200
-Message-ID: <20250623130651.742126096@linuxfoundation.org>
+Message-ID: <20250623130656.967740954@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +65,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Thompson <davthompson@nvidia.com>
+From: Neal Cardwell <ncardwell@google.com>
 
-[ Upstream commit e7ea5f5b1858ddb96b152584d5fe06e6fc623e89 ]
+[ Upstream commit d0fa59897e049e84432600e86df82aab3dce7aa5 ]
 
-The message "Error getting PHY irq. Use polling instead"
-is emitted when the mlxbf_gige driver is loaded by the
-kernel before the associated gpio-mlxbf driver, and thus
-the call to get the PHY IRQ fails since it is not yet
-available. The driver probe() must return -EPROBE_DEFER
-if acpi_dev_gpio_irq_get_by() returns the same.
+After the following commit from 2024:
 
-Fixes: 6c2a6ddca763 ("net: mellanox: mlxbf_gige: Replace non-standard interrupt handling")
-Signed-off-by: David Thompson <davthompson@nvidia.com>
-Reviewed-by: Asmaa Mnebhi <asmaa@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250618135902.346-1-davthompson@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+commit e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+
+...there was buggy behavior where TCP connections without SACK support
+could easily see erroneous undo events at the end of fast recovery or
+RTO recovery episodes. The erroneous undo events could cause those
+connections to suffer repeated loss recovery episodes and high
+retransmit rates.
+
+The problem was an interaction between the non-SACK behavior on these
+connections and the undo logic. The problem is that, for non-SACK
+connections at the end of a loss recovery episode, if snd_una ==
+high_seq, then tcp_is_non_sack_preventing_reopen() holds steady in
+CA_Recovery or CA_Loss, but clears tp->retrans_stamp to 0. Then upon
+the next ACK the "tcp: fix to allow timestamp undo if no retransmits
+were sent" logic saw the tp->retrans_stamp at 0 and erroneously
+concluded that no data was retransmitted, and erroneously performed an
+undo of the cwnd reduction, restoring cwnd immediately to the value it
+had before loss recovery.  This caused an immediate burst of traffic
+and build-up of queues and likely another immediate loss recovery
+episode.
+
+This commit fixes tcp_packet_delayed() to ignore zero retrans_stamp
+values for non-SACK connections when snd_una is at or above high_seq,
+because tcp_is_non_sack_preventing_reopen() clears retrans_stamp in
+this case, so it's not a valid signal that we can undo.
+
+Note that the commit named in the Fixes footer restored long-present
+behavior from roughly 2005-2019, so apparently this bug was present
+for a while during that era, and this was simply not caught.
+
+Fixes: e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+Reported-by: Eric Wheeler <netdev@lists.ewheeler.net>
+Closes: https://lore.kernel.org/netdev/64ea9333-e7f9-0df-b0f2-8d566143acab@ewheeler.net/
+Signed-off-by: Neal Cardwell <ncardwell@google.com>
+Co-developed-by: Yuchung Cheng <ycheng@google.com>
+Signed-off-by: Yuchung Cheng <ycheng@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_input.c | 37 +++++++++++++++++++++++++------------
+ 1 file changed, 25 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-index 385a56ac73481..c82254a8ae661 100644
---- a/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-+++ b/drivers/net/ethernet/mellanox/mlxbf_gige/mlxbf_gige_main.c
-@@ -447,8 +447,10 @@ static int mlxbf_gige_probe(struct platform_device *pdev)
- 	priv->llu_plu_irq = platform_get_irq(pdev, MLXBF_GIGE_LLU_PLU_INTR_IDX);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 2888aaae0d76f..222b829f33f42 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -2441,20 +2441,33 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
+ {
+ 	const struct sock *sk = (const struct sock *)tp;
  
- 	phy_irq = acpi_dev_gpio_irq_get_by(ACPI_COMPANION(&pdev->dev), "phy", 0);
--	if (phy_irq < 0) {
--		dev_err(&pdev->dev, "Error getting PHY irq. Use polling instead");
-+	if (phy_irq == -EPROBE_DEFER) {
-+		err = -EPROBE_DEFER;
-+		goto out;
-+	} else if (phy_irq < 0) {
- 		phy_irq = PHY_POLL;
- 	}
+-	if (tp->retrans_stamp &&
+-	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
+-		return true;  /* got echoed TS before first retransmission */
+-
+-	/* Check if nothing was retransmitted (retrans_stamp==0), which may
+-	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
+-	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
+-	 * retrans_stamp even if we had retransmitted the SYN.
++	/* Received an echoed timestamp before the first retransmission? */
++	if (tp->retrans_stamp)
++		return tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
++
++	/* We set tp->retrans_stamp upon the first retransmission of a loss
++	 * recovery episode, so normally if tp->retrans_stamp is 0 then no
++	 * retransmission has happened yet (likely due to TSQ, which can cause
++	 * fast retransmits to be delayed). So if snd_una advanced while
++	 * (tp->retrans_stamp is 0 then apparently a packet was merely delayed,
++	 * not lost. But there are exceptions where we retransmit but then
++	 * clear tp->retrans_stamp, so we check for those exceptions.
+ 	 */
+-	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
+-	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
+-		return true;  /* nothing was retransmitted */
  
+-	return false;
++	/* (1) For non-SACK connections, tcp_is_non_sack_preventing_reopen()
++	 * clears tp->retrans_stamp when snd_una == high_seq.
++	 */
++	if (!tcp_is_sack(tp) && !before(tp->snd_una, tp->high_seq))
++		return false;
++
++	/* (2) In TCP_SYN_SENT tcp_clean_rtx_queue() clears tp->retrans_stamp
++	 * when setting FLAG_SYN_ACKED is set, even if the SYN was
++	 * retransmitted.
++	 */
++	if (sk->sk_state == TCP_SYN_SENT)
++		return false;
++
++	return true;	/* tp->retrans_stamp is zero; no retransmit yet */
+ }
+ 
+ /* Undo procedures. */
 -- 
 2.39.5
 
