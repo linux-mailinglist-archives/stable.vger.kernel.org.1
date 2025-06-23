@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0941BAE5376
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 492BBAE53F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3896A7AF0AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31E9C1B67855
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043CC1AD3FA;
-	Mon, 23 Jun 2025 21:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699B9221DA8;
+	Mon, 23 Jun 2025 21:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JJJ0vAaz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yrCWdQ+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B751D218AC1;
-	Mon, 23 Jun 2025 21:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2661F1AD3FA;
+	Mon, 23 Jun 2025 21:57:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715577; cv=none; b=JXURazY/OKjRZ0WyiITB8RxBzE1jYyDrTFvW7WbkoMio7lqlFXUFxUQTc9ldBRAOZCfF4LMRDyWmDLWS0VQ+Oxv20ij7+uWHCUCW3e39WDtSdH9KhvLQHiEoF4VF6prsXAH1FKBKLe6sJykQNO24k0xzUPPKCzJTatlSomdE/dY=
+	t=1750715861; cv=none; b=jbM5IPCWJd662/VSgzu4A1Fw3jgCZB8qsFDSA8Ym7AsXZDDXyLZ5xv4PD1bE36Ps+7H+f3piEkHZDM+chIXtuaDY2U0oeslqa9ZihPNfNZXNexZKsk7OVGmI9UGhG63XWTNcunaKFw+dIMGYsYwvi2/Fdn3OWo8PkJMWisflkds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715577; c=relaxed/simple;
-	bh=jXD3k/S0RmvrAB1dLO6Y/jFjJbwOIPzPWhDDzy9u9GA=;
+	s=arc-20240116; t=1750715861; c=relaxed/simple;
+	bh=xwp1KuGz6HG3hyissKTcCEki84nVJjuM0A6XFqleOUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QqqMcYc8NqAC3dKgApPtG50cLkzugOd5rGGebkfwsHVkQ62v64mTxbf9yP18Y6YM6KdaXsCtTE3Mij6ZQka2a8yt/NbMo7HCGULByWHhCFf91DWwY/63GrUIQYvEMe9xd6dnO8fqRIesu2Oh+spMVNz2IHsFe6X871KPBkKewZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JJJ0vAaz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0075DC4CEEA;
-	Mon, 23 Jun 2025 21:52:56 +0000 (UTC)
+	 MIME-Version; b=Xt7EYuFV6WqUeM002b/DmC05hmBS+xfE5uHKANvOZdORTD5PYwoFGNs9YkFxF2uiC5Pncd6ZUVREav5xRs0Vjg5iKleUmr20/rSt3GLrfyff/nOtgYEarnMbQ2HdKa4Td0vMJI5O1gbxH/y9CVHk4S8sByCzJOiZuxeEyS4xRUk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yrCWdQ+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF479C4CEEA;
+	Mon, 23 Jun 2025 21:57:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715577;
-	bh=jXD3k/S0RmvrAB1dLO6Y/jFjJbwOIPzPWhDDzy9u9GA=;
+	s=korg; t=1750715861;
+	bh=xwp1KuGz6HG3hyissKTcCEki84nVJjuM0A6XFqleOUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JJJ0vAazjfkx0ZN3Seh/OGN/mONPVnh25wEj65fnLwv1HurFduMh83lEJTVMKo83U
-	 r4GukE00EQ94GJfisCU68aw9qjKJuTu+m2Xo/Dtcnun9f6k8mAZCHZYiPtZXbSQIj6
-	 7Ez+w9Mrw1N3MUIks8/JDksfxYWW5eo8XoJw4Okc=
+	b=yrCWdQ+uUAOQHvn9DdjoroJgtBH4bdf1yMHXuZ2//Qm0cJBkXa6i7goWLg/6l6r/Y
+	 sPpZ9UB/IlZGpLbKZZUKoMnE0PmJ8qHbQ6Owm4iUsoKjmbuAc9wHCNANYeGSbPubEp
+	 PlWE6aqypj7UQWOn+ZuXWZaWaik7Jp/vr7Rwv8pE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 194/414] f2fs: use vmalloc instead of kvmalloc in .init_{,de}compress_ctx
+	I Hsin Cheng <richard120310@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.1 286/508] drm/meson: Use 1000ULL when operating with mode->clock
 Date: Mon, 23 Jun 2025 15:05:31 +0200
-Message-ID: <20250623130646.864925015@linuxfoundation.org>
+Message-ID: <20250623130652.306228557@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,160 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: I Hsin Cheng <richard120310@gmail.com>
 
-[ Upstream commit 70dd07c888451503c3e93b6821e10d1ea1ec9930 ]
+commit eb0851e14432f3b87c77b704c835ac376deda03a upstream.
 
-.init_{,de}compress_ctx uses kvmalloc() to alloc memory, it will try
-to allocate physically continuous page first, it may cause more memory
-allocation pressure, let's use vmalloc instead to mitigate it.
+Coverity scan reported the usage of "mode->clock * 1000" may lead to
+integer overflow. Use "1000ULL" instead of "1000"
+when utilizing it to avoid potential integer overflow issue.
 
-[Test]
-cd /data/local/tmp
-touch file
-f2fs_io setflags compression file
-f2fs_io getflags file
-for i in $(seq 1 10); do sync; echo 3 > /proc/sys/vm/drop_caches;\
-time f2fs_io write 512 0 4096 zero osync file; truncate -s 0 file;\
-done
-
-[Result]
-Before		After		Delta
-21.243		21.694		-2.12%
-
-For compression, we recommend to use ioctl to compress file data in
-background for workaround.
-
-For decompression, only zstd will be affected.
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://scan5.scan.coverity.com/#/project-view/10074/10063?selectedIssue=1646759
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
+Link: https://lore.kernel.org/r/20250505184338.678540-1-richard120310@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/compress.c | 23 ++++++++++-------------
- fs/f2fs/f2fs.h     |  5 +++++
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 7f26440e8595a..b05bb7bfa14c5 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -178,8 +178,7 @@ void f2fs_compress_ctx_add_page(struct compress_ctx *cc, struct folio *folio)
- #ifdef CONFIG_F2FS_FS_LZO
- static int lzo_init_compress_ctx(struct compress_ctx *cc)
- {
--	cc->private = f2fs_kvmalloc(F2FS_I_SB(cc->inode),
--				LZO1X_MEM_COMPRESS, GFP_NOFS);
-+	cc->private = f2fs_vmalloc(LZO1X_MEM_COMPRESS);
- 	if (!cc->private)
- 		return -ENOMEM;
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -73,7 +73,7 @@ static void meson_encoder_hdmi_set_vclk(
+ 	unsigned long long venc_freq;
+ 	unsigned long long hdmi_freq;
  
-@@ -189,7 +188,7 @@ static int lzo_init_compress_ctx(struct compress_ctx *cc)
+-	vclk_freq = mode->clock * 1000;
++	vclk_freq = mode->clock * 1000ULL;
  
- static void lzo_destroy_compress_ctx(struct compress_ctx *cc)
- {
--	kvfree(cc->private);
-+	vfree(cc->private);
- 	cc->private = NULL;
- }
- 
-@@ -246,7 +245,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
- 		size = LZ4HC_MEM_COMPRESS;
- #endif
- 
--	cc->private = f2fs_kvmalloc(F2FS_I_SB(cc->inode), size, GFP_NOFS);
-+	cc->private = f2fs_vmalloc(size);
- 	if (!cc->private)
- 		return -ENOMEM;
- 
-@@ -261,7 +260,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
- 
- static void lz4_destroy_compress_ctx(struct compress_ctx *cc)
- {
--	kvfree(cc->private);
-+	vfree(cc->private);
- 	cc->private = NULL;
- }
- 
-@@ -342,8 +341,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
- 	params = zstd_get_params(level, cc->rlen);
- 	workspace_size = zstd_cstream_workspace_bound(&params.cParams);
- 
--	workspace = f2fs_kvmalloc(F2FS_I_SB(cc->inode),
--					workspace_size, GFP_NOFS);
-+	workspace = f2fs_vmalloc(workspace_size);
- 	if (!workspace)
- 		return -ENOMEM;
- 
-@@ -351,7 +349,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
- 	if (!stream) {
- 		f2fs_err_ratelimited(F2FS_I_SB(cc->inode),
- 				"%s zstd_init_cstream failed", __func__);
--		kvfree(workspace);
-+		vfree(workspace);
- 		return -EIO;
- 	}
- 
-@@ -364,7 +362,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
- 
- static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
- {
--	kvfree(cc->private);
-+	vfree(cc->private);
- 	cc->private = NULL;
- 	cc->private2 = NULL;
- }
-@@ -423,8 +421,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 
- 	workspace_size = zstd_dstream_workspace_bound(max_window_size);
- 
--	workspace = f2fs_kvmalloc(F2FS_I_SB(dic->inode),
--					workspace_size, GFP_NOFS);
-+	workspace = f2fs_vmalloc(workspace_size);
- 	if (!workspace)
- 		return -ENOMEM;
- 
-@@ -432,7 +429,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 	if (!stream) {
- 		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
- 				"%s zstd_init_dstream failed", __func__);
--		kvfree(workspace);
-+		vfree(workspace);
- 		return -EIO;
- 	}
- 
-@@ -444,7 +441,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 
- static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
- {
--	kvfree(dic->private);
-+	vfree(dic->private);
- 	dic->private = NULL;
- 	dic->private2 = NULL;
- }
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 1219e37fa7ad3..61b715cc2e231 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3494,6 +3494,11 @@ static inline void *f2fs_kvzalloc(struct f2fs_sb_info *sbi,
- 	return f2fs_kvmalloc(sbi, size, flags | __GFP_ZERO);
- }
- 
-+static inline void *f2fs_vmalloc(size_t size)
-+{
-+	return vmalloc(size);
-+}
-+
- static inline int get_extra_isize(struct inode *inode)
- {
- 	return F2FS_I(inode)->i_extra_isize / sizeof(__le32);
--- 
-2.39.5
-
+ 	/* For 420, pixel clock is half unlike venc clock */
+ 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
+@@ -121,7 +121,7 @@ static enum drm_mode_status meson_encode
+ 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
+ 	struct meson_drm *priv = encoder_hdmi->priv;
+ 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
+-	unsigned long long clock = mode->clock * 1000;
++	unsigned long long clock = mode->clock * 1000ULL;
+ 	unsigned long long phy_freq;
+ 	unsigned long long vclk_freq;
+ 	unsigned long long venc_freq;
 
 
 
