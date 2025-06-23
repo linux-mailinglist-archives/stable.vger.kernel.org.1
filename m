@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155914-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 278C6AE44EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F9CAE4427
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D2874448A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CFEA17FA65
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF742505CB;
-	Mon, 23 Jun 2025 13:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453ED255F4C;
+	Mon, 23 Jun 2025 13:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpnwG6un"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nvJW3m+3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7664C7F;
-	Mon, 23 Jun 2025 13:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023C42F24;
+	Mon, 23 Jun 2025 13:33:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685662; cv=none; b=hhGwTMbzaOG25d8cRQ6XoSN2mCJvZCfBXVbMuHAOQPAsLklZxAPsDZ4fJBQwpcGTx1gnmIT/7jtpaAuj2xIUEuG9eNZ3PXbKmqWLcpPOZRaprVLiumiFxHdCtUOPwP5hX0GgeVL/eyGzkSqS/hc+Fz8aXtRSF/kU75dWK7UWUZM=
+	t=1750685593; cv=none; b=S/f2JES8Rnhw4/LYJ59gwbez1jgYRugNWLlHD+QmHY/h3OaTWp+/JAWYOEjbBCflFp1eWtMJ0lbic3OU6WDSxQBz4o4JZTZoImPVyCGUp1zijcHsOY+ocNdaUuaoqKx3/A/ZvUIQ1fnrC5w57M8ZIY1nTztknZ7nNqafcwf46KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685662; c=relaxed/simple;
-	bh=6BDss7qZtM7Nt0WLcAdXEuSSjzEQT07QBa6Lu8vZOlg=;
+	s=arc-20240116; t=1750685593; c=relaxed/simple;
+	bh=1U4rVCPky5l1zbURoxAea1/jR+54aE2k3PgWrW0N/4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MAwi1mBPTh1xlxeP2iItHgH53/7D7/Z+h+BtsmCuy4flumNqZz7cCwi8aXJOmO1jzj3sRka1J59iYwimxCeZuFdBT4efiIcblCsblKoCXcA2oHy/yZRdkBUoPsToe/T1hYZ/8SCz5TjV2/RuhWOMqG/o2zyaX2elyJrOWZlZVc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpnwG6un; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F295C4CEEA;
-	Mon, 23 Jun 2025 13:34:21 +0000 (UTC)
+	 MIME-Version; b=HKO2bkJRezJEVl9CGf31zkiAPy+tdh+oPdymIbfOgX5r+M2d8YxfRx+LPguuS94VpRVV3FI4il5nh0IrgcusPIEFt+/gHC7HgKhDHjqj1pE5QgKXMygj80ZGrfxtSl0VDwFyNYFSIWcEGXVPbnC4ocTlbQOANpu+R7hjGNrTNXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nvJW3m+3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B72DC4CEF0;
+	Mon, 23 Jun 2025 13:33:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685661;
-	bh=6BDss7qZtM7Nt0WLcAdXEuSSjzEQT07QBa6Lu8vZOlg=;
+	s=korg; t=1750685592;
+	bh=1U4rVCPky5l1zbURoxAea1/jR+54aE2k3PgWrW0N/4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpnwG6unPAdPXZwNpwEGHtr2vXa6M1d4OgXr0efgbKX8afu8hS6u4cInp3MYK2v+B
-	 BTTollx0seLNggO+hZe0eikjfMmUgR9sU3AqTOU1j+6/6sR6G+EnGE5ZsIKT34geeD
-	 u52FFQ57bI3wJxvxZvvgIXGo/B9RyLPogcnXEuXU=
+	b=nvJW3m+3JitYA00MLTEbgKJpfzdYdyL+2HjbeW6RfqJOq+0wb39p5qbnbSSrsGfUL
+	 AhC8i9ACmNfh2d8Bj349u91AmrdtL+FFntOk+uSQWs/g5ylcsDkBsh4VULGoDFemeB
+	 SzunqxUsuixkQSO5wApagLZ5a3YXaVVXnvQOXm0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 050/411] netfilter: nft_quota: match correctly when the quota just depleted
+Subject: [PATCH 6.15 236/592] drm/amdgpu/gfx6: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:03:14 +0200
-Message-ID: <20250623130634.497027370@linuxfoundation.org>
+Message-ID: <20250623130705.901727001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit bfe7cfb65c753952735c3eed703eba9a8b96a18d ]
+[ Upstream commit 8307ebc15c1ea98a8a0b7837af1faa6c01514577 ]
 
-The xt_quota compares skb length with remaining quota, but the nft_quota
-compares it with consumed bytes.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-The xt_quota can match consumed bytes up to quota at maximum. But the
-nft_quota break match when consumed bytes equal to quota.
-
-i.e., nft_quota match consumed bytes in [0, quota - 1], not [0, quota].
-
-Fixes: 795595f68d6c ("netfilter: nft_quota: dump consumed quota")
-Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_quota.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
-index 586a6df645bcb..c2b5bcc7ac056 100644
---- a/net/netfilter/nft_quota.c
-+++ b/net/netfilter/nft_quota.c
-@@ -19,10 +19,16 @@ struct nft_quota {
- };
- 
- static inline bool nft_overquota(struct nft_quota *priv,
--				 const struct sk_buff *skb)
-+				 const struct sk_buff *skb,
-+				 bool *report)
- {
--	return atomic64_add_return(skb->len, priv->consumed) >=
--	       atomic64_read(&priv->quota);
-+	u64 consumed = atomic64_add_return(skb->len, priv->consumed);
-+	u64 quota = atomic64_read(&priv->quota);
-+
-+	if (report)
-+		*report = consumed >= quota;
-+
-+	return consumed > quota;
- }
- 
- static inline bool nft_quota_invert(struct nft_quota *priv)
-@@ -34,7 +40,7 @@ static inline void nft_quota_do_eval(struct nft_quota *priv,
- 				     struct nft_regs *regs,
- 				     const struct nft_pktinfo *pkt)
- {
--	if (nft_overquota(priv, pkt->skb) ^ nft_quota_invert(priv))
-+	if (nft_overquota(priv, pkt->skb, NULL) ^ nft_quota_invert(priv))
- 		regs->verdict.code = NFT_BREAK;
- }
- 
-@@ -51,13 +57,13 @@ static void nft_quota_obj_eval(struct nft_object *obj,
- 			       const struct nft_pktinfo *pkt)
- {
- 	struct nft_quota *priv = nft_obj_data(obj);
--	bool overquota;
-+	bool overquota, report;
- 
--	overquota = nft_overquota(priv, pkt->skb);
-+	overquota = nft_overquota(priv, pkt->skb, &report);
- 	if (overquota ^ nft_quota_invert(priv))
- 		regs->verdict.code = NFT_BREAK;
- 
--	if (overquota &&
-+	if (report &&
- 	    !test_and_set_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags))
- 		nft_obj_notify(nft_net(pkt), obj->key.table, obj, 0, 0,
- 			       NFT_MSG_NEWOBJ, 0, nft_pf(pkt), 0, GFP_ATOMIC);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+index 13fbee46417af..cee2cf47112c9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+@@ -2874,8 +2874,6 @@ static void gfx_v6_0_get_csb_buffer(struct amdgpu_device *adev,
+ 				buffer[count++] = cpu_to_le32(ext->reg_index - 0xa000);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.39.5
 
