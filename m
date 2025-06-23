@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F4201AE5525
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0A70AE56A5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 001C04A0BA0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 718311C22651
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E1021FF2B;
-	Mon, 23 Jun 2025 22:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91930222599;
+	Mon, 23 Jun 2025 22:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sOzl+8lo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cc8zEDMl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0F973597E;
-	Mon, 23 Jun 2025 22:08:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FD47199FBA;
+	Mon, 23 Jun 2025 22:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716490; cv=none; b=M1kpJRBbZKKiW5LY4w88sk30YbrbxpPpkZorg/9/zWkLSKUH255NMXZ6VDaDkg9Yo34hMbK283jt253dcL/1ldKNFxFSyyMDDwjSAWJfnv18oDiqQmkJi3wsii1GW7PPcyyTZDQc38qS+z3D042GrJt1jddKP61uESSau/WBF1o=
+	t=1750717326; cv=none; b=jLYtraVs2HXndGptXSEu2+CHLeLxGOXj3OWcn6RgzMVPtkEl4JaUAYxMTShclLwWCYy5ec5C+EMTzhV+Fr8+vbCpY0sdUeotE3TQsa+mdWCMaaQmEA1+9xoKjVkP5fEdtFJe8mQbVtWM8/IQsaS99IuR1rb1f572DGKi9yGZtrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716490; c=relaxed/simple;
-	bh=8nCinSH5IiN5C3DlRmG5qEIvSpcdkXd/EHsHV6zDfKc=;
+	s=arc-20240116; t=1750717326; c=relaxed/simple;
+	bh=PbqY/EBSdKIRHsUpJj9egCyBu5tl0+njpr9LxAkle1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YCn16pprV15kznt2CQCnAtipecuwD2U7kUsTfRVjmyfIvvix0uKvluI0nopKjmrFEJlEF8/NmmFSeYkdVbOqIVPxxmdKr+Sz36xu4BFIxBbiEv6yehdHnuzrYSCM47qpoRL3JE7icp3cDH9FjoaQ+OfFZzEvRa0QpPOp7QauTd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sOzl+8lo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F2FC4CEEA;
-	Mon, 23 Jun 2025 22:08:10 +0000 (UTC)
+	 MIME-Version; b=eNyWcBT1S8KLmrdgj7Ks244uppyrWfeN2YnXfEEVfJJ6IsSVh2CD5jckIF5UWDKTIyxs51NqGnBq9MyN/w0fwmcwvQNuNoqhYvofV9eW4zIU9tWrgFnUJ4vnXuQT7B++EA204R5cnqmF2ebbtuIpZXCnVMzduIJrpqcl7COJHxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cc8zEDMl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD220C4CEEA;
+	Mon, 23 Jun 2025 22:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716490;
-	bh=8nCinSH5IiN5C3DlRmG5qEIvSpcdkXd/EHsHV6zDfKc=;
+	s=korg; t=1750717326;
+	bh=PbqY/EBSdKIRHsUpJj9egCyBu5tl0+njpr9LxAkle1w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sOzl+8loUn2Q6m//oGgB8XZOPhmPzqp2Q4Pnc6nrOv+3JUN9dprNB08dhnAANjos9
-	 LEuXanDN2D/Q8R8pAx/7cqJEk9vgzTQB3NIX2CUPI1xOsufYIRgDdhHzsCy4C4W0gX
-	 UNAmlKXQ3skseMapve4Ugd8OJ+JWxg6L47Q8D31E=
+	b=cc8zEDMlwnF5qyyICUMFkpOfl0SK+/qHzWwY44TFJeiOfdrJ9CJUvbNBAIvvY+5gl
+	 3uF7uSD3O1VmEiWz6yJvlGnXcxuNB+2p+sGoUIWAki7O//V9Fycb+VEIuaV60/wh/R
+	 iPvTtVk6EYJNG/tLrSrvDDtCtqEoU3WQ9eJ9WIpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 358/411] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
-Date: Mon, 23 Jun 2025 15:08:22 +0200
-Message-ID: <20250623130642.655329258@linuxfoundation.org>
+	syzbot+763e12bbf004fb1062e4@syzkaller.appspotmail.com,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 366/414] io_uring/sqpoll: dont put task_struct on tctx setup failure
+Date: Mon, 23 Jun 2025 15:08:23 +0200
+Message-ID: <20250623130651.111663741@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
+[ Upstream commit f2320f1dd6f6f82cb2c7aff23a12bab537bdea89 ]
 
-PCM1 not in Pulseaudio's control list; standardize control to
-"Speaker" and "Headphone".
+A recent commit moved the error handling of sqpoll thread and tctx
+failures into the thread itself, as part of fixing an issue. However, it
+missed that tctx allocation may also fail, and that
+io_sq_offload_create() does its own error handling for the task_struct
+in that case.
 
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove the manual task putting in io_sq_offload_create(), as
+io_sq_thread() will notice that the tctx did not get setup and hence it
+should put itself and exit.
+
+Reported-by: syzbot+763e12bbf004fb1062e4@syzkaller.appspotmail.com
+Fixes: ac0b8b327a56 ("io_uring: fix use-after-free of sq->thread in __io_uring_show_fdinfo()")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_maps.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ io_uring/sqpoll.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/sound/usb/mixer_maps.c
-+++ b/sound/usb/mixer_maps.c
-@@ -366,6 +366,13 @@ static const struct usbmix_name_map cors
- 	{ 0 }
- };
+diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+index 9a63068948957..2faa3058b2d0e 100644
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -426,7 +426,6 @@ void io_sqpoll_wait_sq(struct io_ring_ctx *ctx)
+ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 				struct io_uring_params *p)
+ {
+-	struct task_struct *task_to_put = NULL;
+ 	int ret;
  
-+/* KTMicro USB */
-+static struct usbmix_name_map s31b2_0022_map[] = {
-+	{ 23, "Speaker Playback" },
-+	{ 18, "Headphone Playback" },
-+	{ 0 }
-+};
-+
- /* ASUS ROG Zenith II with Realtek ALC1220-VB */
- static const struct usbmix_name_map asus_zenith_ii_map[] = {
- 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
-@@ -701,5 +708,10 @@ static const struct usbmix_ctl_map uac3_
- 		.id = UAC3_FUNCTION_SUBCLASS_SPEAKERPHONE,
- 		.map = uac3_badd_speakerphone_map,
- 	},
-+	{
-+		/* KTMicro USB */
-+		.id = USB_ID(0X31b2, 0x0022),
-+		.map = s31b2_0022_map,
-+	},
- 	{ 0 } /* terminator */
- };
+ 	/* Retain compatibility with failing for an invalid attach attempt */
+@@ -510,7 +509,7 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 		rcu_assign_pointer(sqd->thread, tsk);
+ 		mutex_unlock(&sqd->lock);
+ 
+-		task_to_put = get_task_struct(tsk);
++		get_task_struct(tsk);
+ 		ret = io_uring_alloc_task_context(tsk, ctx);
+ 		wake_up_new_task(tsk);
+ 		if (ret)
+@@ -525,8 +524,6 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+ 	complete(&ctx->sq_data->exited);
+ err:
+ 	io_sq_thread_finish(ctx);
+-	if (task_to_put)
+-		put_task_struct(task_to_put);
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
