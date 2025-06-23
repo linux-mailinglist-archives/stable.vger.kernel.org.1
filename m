@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9295AE51B1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AAAAE5011
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 762764A4425
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98AFB1B61FC9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9E3221DA8;
-	Mon, 23 Jun 2025 21:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1E6221DAE;
+	Mon, 23 Jun 2025 21:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u46jb9O/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQrbYrAM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA52219CC11;
-	Mon, 23 Jun 2025 21:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6C0221545;
+	Mon, 23 Jun 2025 21:21:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714600; cv=none; b=Yw9R+UpIBzCtehsCocrHQkVedar86wSgBJusUYsM7S7hwdn+h79HfPZ4Y3bSI0OONlJ1X7UoG6fbYAJertbO5LfPvDsBpmqmwi/gXe3XZs2OtRKRiZ/7AHLK84CXzCkze+1mNumYY7ZfS0UkM9dCfd4bbBzWOdZrTHPWzg2HK6s=
+	t=1750713712; cv=none; b=RgDTQcF3a51bUzL1Kph+aGfImgw7gZ1ju+p3cioVXDL4j+JPHDrGUZfvNzUS6QcSM+2O+uby0/P8y7wQFlNFSsBaYyjKNfgmIeBsQLPjr81qZCy3WtPZ+Dih/iyygmeTNmcyb5H/ELSgEK6Wy07FefJua8eH0QDfPWALbIi1f5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714600; c=relaxed/simple;
-	bh=wKCcjg7V38yNJSxNvKlPTvzUH9ktGKzjHXNwJFYNyOM=;
+	s=arc-20240116; t=1750713712; c=relaxed/simple;
+	bh=UTE1fsEyvl8FrrXuu8Jk/rt50MZ16wbz5jmeoi48g7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEoWS1eUKHj/MS7nSYDWoc4NpyDUFN0JCdOMNOJrplwpDA+7SHN6lc2dpQ5FY3C0ptOfmrJYTnunDUBQzLIhsBrTW3IU/Mtj94GIP7GNJmxrpUhXD0Y6tXosp127VKWEVCQ4X6unayClv2yE4euscVeNskamwu6LFk07AbY6iTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u46jb9O/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 428B9C4CEEA;
-	Mon, 23 Jun 2025 21:36:40 +0000 (UTC)
+	 MIME-Version; b=nB/53iH0Sd2NDQWfrP5Wt6rAC0giK70Gf/Qj/pO2pOEhelnt3xgUMiTRs+8vTaVacxyDKFRXNAJzEDxgHzZm/1hbPT7jyp3XbwsHhpNxu5N4+KUga4y7jyVs9Y4yihrfvBQ34j/nSj5g+8ecBCAkVuz3AZRsUztZm23s87hjJEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQrbYrAM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A755EC4CEEA;
+	Mon, 23 Jun 2025 21:21:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714600;
-	bh=wKCcjg7V38yNJSxNvKlPTvzUH9ktGKzjHXNwJFYNyOM=;
+	s=korg; t=1750713712;
+	bh=UTE1fsEyvl8FrrXuu8Jk/rt50MZ16wbz5jmeoi48g7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u46jb9O/6wiq8G5sK7ZOOBt5FV2kl0kg+1YvupmddUcypL3EaUJmiYvrkPCRgf2g7
-	 3knaxuWNMl8c2qEGsBAKKvY+7jzylxFWyihNaiCsQ5IFtiFrr5SpAoTNtvT0fZIrzP
-	 qUUT4ALMZXR1LeydzrU74uQbqRlO78N2dc4cL7zM=
+	b=YQrbYrAMx+m6kLsZ80DCvYeivDuuFSCuE0CBdAV9CKHdiC5bHVUz+7J+AXWU1vR65
+	 Z9H0tk3DHkwfiLTMc4d4PzgFzphj1yIBKb9f72tl/YtpksSzeTVQvC9ndq/Qh4zVou
+	 +y3Sw0fRxuHH3AFeIsorVt36AUP2Y6GnuRAPOnF4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 404/592] wifi: ath12k: fix failed to set mhi state error during reboot with hardware grouping
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Alexander Aring <aahringo@redhat.com>
+Subject: [PATCH 5.10 161/355] gfs2: move msleep to sleepable context
 Date: Mon, 23 Jun 2025 15:06:02 +0200
-Message-ID: <20250623130710.048900721@linuxfoundation.org>
+Message-ID: <20250623130631.541795103@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit dce7aec6b1f74b0a46b901ab8de1f7bd0515f733 ]
+commit ac5ee087d31ed93b6e45d2968a66828c6f621d8c upstream.
 
-With hardware grouping, during reboot, whenever a device is removed, it
-powers down itself and all its partner devices in the same group. Now this
-is done by all devices and hence there is multiple power down for devices
-and hence the following error messages can be seen:
+This patch moves the msleep_interruptible() out of the non-sleepable
+context by moving the ls->ls_recover_spin spinlock around so
+msleep_interruptible() will be called in a sleepable context.
 
-ath12k_pci 0002:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0002:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0003:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0003:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0004:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0004:01:00.0: failed to set mhi state: POWER_OFF(3)
-
-To prevent this, check if the ATH12K_PCI_FLAG_INIT_DONE flag is already
-set before powering down. If it is set, it indicates that another partner
-device has already performed the power down, and this device can skip this
-step.
-
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250408-fix_reboot_issues_with_hw_grouping-v4-3-95e7bf048595@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
+Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/gfs2/lock_dlm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 2e7d302ace679..9289910887217 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1491,6 +1491,9 @@ void ath12k_pci_power_down(struct ath12k_base *ab, bool is_suspend)
- {
- 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+--- a/fs/gfs2/lock_dlm.c
++++ b/fs/gfs2/lock_dlm.c
+@@ -939,14 +939,15 @@ locks_done:
+ 		if (sdp->sd_args.ar_spectator) {
+ 			fs_info(sdp, "Recovery is required. Waiting for a "
+ 				"non-spectator to mount.\n");
++			spin_unlock(&ls->ls_recover_spin);
+ 			msleep_interruptible(1000);
+ 		} else {
+ 			fs_info(sdp, "control_mount wait1 block %u start %u "
+ 				"mount %u lvb %u flags %lx\n", block_gen,
+ 				start_gen, mount_gen, lvb_gen,
+ 				ls->ls_recover_flags);
++			spin_unlock(&ls->ls_recover_spin);
+ 		}
+-		spin_unlock(&ls->ls_recover_spin);
+ 		goto restart;
+ 	}
  
-+	if (!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags))
-+		return;
-+
- 	/* restore aspm in case firmware bootup fails */
- 	ath12k_pci_aspm_restore(ab_pci);
- 
--- 
-2.39.5
-
 
 
 
