@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E101AE5594
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D63AE553F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC2754C4F8A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAA094A1ACE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2648F22A804;
-	Mon, 23 Jun 2025 22:11:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DABF225A3E;
+	Mon, 23 Jun 2025 22:08:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q7nmP0sG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUTxcPm5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71C7225417;
-	Mon, 23 Jun 2025 22:11:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453CC2236FB;
+	Mon, 23 Jun 2025 22:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716683; cv=none; b=qZi2Q61ru6cxqS+FcpyVPWvuPP1s7704GbSFNsPfQ27BdyY4sqT5sA80tfx18CiEzB4NxNplrB4FzvLaAxQeG9Ov3NPd5E2eF/vKpSNPjWiOn768mbr/bAJxX//2UQXk4HiHXk5u3OHkDmebs8Lfv0C+pITGFu8fwh5HoPrTSLA=
+	t=1750716525; cv=none; b=HK6/XSv+GaeXiwvSSt9jp6bJhZHP/LwuZbO7Qj8UuvGCk5WkhkrzY1qWDRmRbhuO++X12CxmOQRlS61n3fJNajqeKldGnO+MAbOvo+gZrjp4dsfjfJk63UWMzZkXPUfDgjnMnvfVseoFOj+PAcqgeBanxS0zTb41ILKHnRRmato=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716683; c=relaxed/simple;
-	bh=Ep6RQpVeg8C26Fvv/3TCbG4OURvcxiEFjCjBRLbi6Ok=;
+	s=arc-20240116; t=1750716525; c=relaxed/simple;
+	bh=Fyf18v+0il09TXhE3W5XXJUa2s+z1wqr3JX2AtLTpsw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lh1E2fTf3KZsjimQXWLw/HzmO3xVI7mPOsnvs9PqIfYiH/+CrQW5z2TZ4WmnEfdn3kQ66ZvvOB8q/9ydbRQ8FHQL1azTIUQdsgruiuyNnqx/o1M6RLc8XaqRiFP16zemtahUhyxpxkkiKPyXsr89bHvib77r0OKrEoB6yY6V7IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q7nmP0sG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7071DC4CEEA;
-	Mon, 23 Jun 2025 22:11:23 +0000 (UTC)
+	 MIME-Version; b=ThHctebRG0zjSe08IwPwDzfGW9C9wIUD6J7vvDABi/sqvrp3/0AHezUraZExW6KobzexJmFeAPzK4PLUAftzOFf/CGmHfMPtr4BCUMI+3axOkDNjPkhmICrKlwXoTsK7ydGIDo7vGp3hBqnSAg6ViGFNxDyTXz/8b8wdxO2t7JM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUTxcPm5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84297C4CEEA;
+	Mon, 23 Jun 2025 22:08:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716683;
-	bh=Ep6RQpVeg8C26Fvv/3TCbG4OURvcxiEFjCjBRLbi6Ok=;
+	s=korg; t=1750716524;
+	bh=Fyf18v+0il09TXhE3W5XXJUa2s+z1wqr3JX2AtLTpsw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q7nmP0sGljqb+8sWtjGGYAUMi6uk9f5eKCs+x8HSm0oIv8633V6A3rPxUTDFWi9o+
-	 hvUPSestuNrNWFMe60Kbb1/q0WjY0Z5QGCyZRs75CdlkJEahPbyF5pnfgJeIyjKMrr
-	 Zk7fi4bgz/cc4d+zN3Js9j4FxDdSF85cCIExIccM=
+	b=WUTxcPm5hNYwQ1h+F9HdBZvaAEevlCG11BCV1YcBrcuQtrQ7dHeFbXhJjz4QIHHcA
+	 sizCqWdLhq3d3ICu86QMQwfzW8yr48LElNJzVLxt1zrxZT2wSw+KJJPM7I6QypE1en
+	 qzW1G2/d8ZDPThyafkX68KBmaCvCL0LEOYQTR/Cg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rengarajan S <rengarajan.s@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 547/592] net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 361/411] iio: accel: fxls8962af: Fix temperature calculation
 Date: Mon, 23 Jun 2025 15:08:25 +0200
-Message-ID: <20250623130713.452918674@linuxfoundation.org>
+Message-ID: <20250623130642.729666134@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,65 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit e353b0854d3a1a31cb061df8d022fbfea53a0f24 ]
+commit 16038474e3a0263572f36326ef85057aaf341814 upstream.
 
-Before calling lan743x_ptp_io_event_clock_get(), the 'channel' value
-is checked against the maximum value of PCI11X1X_PTP_IO_MAX_CHANNELS(8).
-This seems correct and aligns with the PTP interrupt status register
-(PTP_INT_STS) specifications.
+According to spec temperature should be returned in milli degrees Celsius.
+Add in_temp_scale to calculate from Celsius to milli Celsius.
 
-However, lan743x_ptp_io_event_clock_get() writes to ptp->extts[] with
-only LAN743X_PTP_N_EXTTS(4) elements, using channel as an index:
-
-    lan743x_ptp_io_event_clock_get(..., u8 channel,...)
-    {
-        ...
-        /* Update Local timestamp */
-        extts = &ptp->extts[channel];
-        extts->ts.tv_sec = sec;
-        ...
-    }
-
-To avoid an out-of-bounds write and utilize all the supported GPIO
-inputs, set LAN743X_PTP_N_EXTTS to 8.
-
-Detected using the static analysis tool - Svace.
-Fixes: 60942c397af6 ("net: lan743x: Add support for PTP-IO Event Input External Timestamp (extts)")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Rengarajan S <rengarajan.s@microchip.com>
-Link: https://patch.msgid.link/20250616113743.36284-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+Cc: stable@vger.kernel.org
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250505-fxls-v4-1-a38652e21738@geanix.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan743x_ptp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/accel/fxls8962af-core.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
-index 0d29914cd4606..225e8232474d7 100644
---- a/drivers/net/ethernet/microchip/lan743x_ptp.h
-+++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
-@@ -18,9 +18,9 @@
-  */
- #define LAN743X_PTP_N_EVENT_CHAN	2
- #define LAN743X_PTP_N_PEROUT		LAN743X_PTP_N_EVENT_CHAN
--#define LAN743X_PTP_N_EXTTS		4
--#define LAN743X_PTP_N_PPS		0
- #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
-+#define LAN743X_PTP_N_EXTTS		PCI11X1X_PTP_IO_MAX_CHANNELS
-+#define LAN743X_PTP_N_PPS		0
- #define PTP_CMD_CTL_TIMEOUT_CNT		50
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -20,6 +20,7 @@
+ #include <linux/pm_runtime.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
++#include <linux/units.h>
  
- struct lan743x_adapter;
--- 
-2.39.5
-
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/iio.h>
+@@ -416,8 +417,16 @@ static int fxls8962af_read_raw(struct ii
+ 		*val = FXLS8962AF_TEMP_CENTER_VAL;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		*val = 0;
+-		return fxls8962af_read_full_scale(data, val2);
++		switch (chan->type) {
++		case IIO_TEMP:
++			*val = MILLIDEGREE_PER_DEGREE;
++			return IIO_VAL_INT;
++		case IIO_ACCEL:
++			*val = 0;
++			return fxls8962af_read_full_scale(data, val2);
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		return fxls8962af_read_samp_freq(data, val, val2);
+ 	default:
+@@ -494,6 +503,7 @@ static int fxls8962af_set_watermark(stru
+ 	.type = IIO_TEMP, \
+ 	.address = FXLS8962AF_TEMP_OUT, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
++			      BIT(IIO_CHAN_INFO_SCALE) | \
+ 			      BIT(IIO_CHAN_INFO_OFFSET),\
+ 	.scan_index = -1, \
+ 	.scan_type = { \
 
 
 
