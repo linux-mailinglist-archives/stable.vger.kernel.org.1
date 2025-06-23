@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBE4AE4359
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 19852AE42E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B80287AA276
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F04407A7250
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 712C7253F03;
-	Mon, 23 Jun 2025 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396AB25392D;
+	Mon, 23 Jun 2025 13:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qu2ye6Yl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DosXHAmB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB67253B60;
-	Mon, 23 Jun 2025 13:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB7924E019;
+	Mon, 23 Jun 2025 13:26:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685316; cv=none; b=kGAy9c/SbaLwE5TQVWnTbpF8K7O9B548Ujl/YAAnYG+uhWnKfLkZApub1QV3wuHeWhU9vFes4SrmuNNZ7n4S1L2egAHuxogjX9NMatQwyc/Sr+qPrwVCZidpVXNo0wcbqaZqexIdRCKXAvniR99TqrFih0TKWqznpdET2VW1/iE=
+	t=1750685186; cv=none; b=PEQQZdXeRL1ODvYFnSRA341sbGpMpdRygz7enirVJOBeXRiuCvvVaLFRN4aND6fecu6HDL1M0xcTlaVg3dpXdAdfbnlG47LaM0xboJQhHFee+pi2qV43tfIFJU5AVrQEEn7c0x8uVlZ/d8N9BZoW4ZSLSSeKSkFGl7jBBvbpiwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685316; c=relaxed/simple;
-	bh=E82peAu0aSz0Phn6LYYzQGu1d4zceDg/ARNWUJy69bg=;
+	s=arc-20240116; t=1750685186; c=relaxed/simple;
+	bh=Ma33aRIIPXND+dAk/1Al2LRDMS3jw8KF0TKg95uprOQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fA+RftjLbLkDahmQkpbbGq7aFE8sozruiSzmtUuBDCUbvcN91GF1AzAEwO8qMnnF2mOt7vhAImPZjm9oWI/NN3QIalxKOzObtzmb+l1ropbUZdRFV2bfg0svMU+jhpcEYgn9eZwVmws6F5v1qb0LrMCCaiUhGVWGYjybe/5wvWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qu2ye6Yl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B53C4CEEA;
-	Mon, 23 Jun 2025 13:28:35 +0000 (UTC)
+	 MIME-Version; b=NMTAj+eGPW8Ncy4DsGD2HhYVTA3qTobaK4esFUYJxdv3AZwBFetJhcf4OqeoXtXkqHNobdiTF4SF4NBUjmYnsjFyVWoL/R4FP/kDZaZk5riktew70DFaNDWFynmvyN5eBwc8raZZYXiFZ//TpyGKAckEdr6Dc04cFZZAQdEnpLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DosXHAmB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8095EC4CEEA;
+	Mon, 23 Jun 2025 13:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685316;
-	bh=E82peAu0aSz0Phn6LYYzQGu1d4zceDg/ARNWUJy69bg=;
+	s=korg; t=1750685185;
+	bh=Ma33aRIIPXND+dAk/1Al2LRDMS3jw8KF0TKg95uprOQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qu2ye6YlYpWCM2Q+b5cjpk8y5v/N8BBJmVhF+IfOgpXCqc0rx0z8EH1373666bW/w
-	 O44KND4mLxH4vCyuTQmIg7nEib/5h0ckpRMTPEjE8w15GeqJCxyXMzNnCk4OnT7YFq
-	 xfGZux0g0dIrq7P2w24dcZ3KleQUBGpiuoihS3+E=
+	b=DosXHAmB257A2P18Q4TW9A/lj/LW/W7R5+UF6gX3bmqNTGXZqReqmTIADfoBOQrO1
+	 3X1u+zraX9am1TjjGI6/SC8vW8oRfFCDtC5yyR+0eejCuB0b8GFe6EDh0sfqeDDDFb
+	 3QLE7ZQgqQwgXKOd+XYJZId5+yssSBUqmPRNOXQ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Ahmed Salem <x0rw3ll@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/411] spi: sh-msiof: Fix maximum DMA transfer size
+Subject: [PATCH 6.15 212/592] ACPICA: Avoid sequence overread in call to strncmp()
 Date: Mon, 23 Jun 2025 15:02:50 +0200
-Message-ID: <20250623130633.786400593@linuxfoundation.org>
+Message-ID: <20250623130705.327456173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
+[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
 
-The maximum amount of data to transfer in a single DMA request is
-calculated from the FIFO sizes (which is technically not 100% correct,
-but a simplification, as it is limited by the maximum word count values
-in the Transmit and Control Data Registers).  However, in case there is
-both data to transmit and to receive, the transmit limit is overwritten
-by the receive limit.
+ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
 
-Fix this by using the minimum applicable FIFO size instead.  Move the
-calculation outside the loop, so it is not repeated for each individual
-DMA transfer.
+ap_get_table_length() checks if tables are valid by
+calling ap_is_valid_header(). The latter then calls
+ACPI_VALIDATE_RSDP_SIG(Table->Signature).
 
-As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
-no real impact.
+ap_is_valid_header() accepts struct acpi_table_header as an argument, so
+the signature size is always fixed to 4 bytes.
 
-Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The problem is when the string comparison is between ACPI-defined table
+signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
+Signature field to be 4 bytes long[1], with the exception of the RSDP
+structure whose signature is 8 bytes long "RSD PTR " (including the
+trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
+then result in a sequence overread[3] as sig would be smaller (4 bytes)
+than the specified bound (8 bytes).
+
+As a workaround, pass the bound conditionally based on the size of the
+signature being passed.
+
+Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
+Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
+Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
+Link: https://github.com/acpica/acpica/commit/8b83a8d8
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ include/acpi/actypes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index b7b3ec76e2cbd..f118dff626d0b 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -919,6 +919,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	void *rx_buf = t->rx_buf;
- 	unsigned int len = t->len;
- 	unsigned int bits = t->bits_per_word;
-+	unsigned int max_wdlen = 256;
- 	unsigned int bytes_per_word;
- 	unsigned int words;
- 	int n;
-@@ -932,17 +933,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	if (!spi_controller_is_slave(p->ctlr))
- 		sh_msiof_spi_set_clk_regs(p, t);
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index f7b3c4a4b7e7c..5b9f9a6125484 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
  
-+	if (tx_buf)
-+		max_wdlen = min(max_wdlen, p->tx_fifo_size);
-+	if (rx_buf)
-+		max_wdlen = min(max_wdlen, p->rx_fifo_size);
-+
- 	while (ctlr->dma_tx && len > 15) {
- 		/*
- 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
- 		 *  words, with byte resp. word swapping.
- 		 */
--		unsigned int l = 0;
--
--		if (tx_buf)
--			l = min(round_down(len, 4), p->tx_fifo_size * 4);
--		if (rx_buf)
--			l = min(round_down(len, 4), p->rx_fifo_size * 4);
-+		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
+ /* Support for the special RSDP signature (8 characters) */
  
- 		if (bits <= 8) {
- 			copy32 = copy_bswap32;
+-#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
++#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
+ #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
+ 
+ /* Support for OEMx signature (x can be any character) */
 -- 
 2.39.5
 
