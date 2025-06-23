@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156279-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157299-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCCD2AE4EE8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B43DFAE536B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E506B3BEAC0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3CD27A58F7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E08B1ACEDA;
-	Mon, 23 Jun 2025 21:10:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBD9222576;
+	Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgkptfCq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TYJKfepB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF67070838;
-	Mon, 23 Jun 2025 21:10:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 995D2221FCC;
+	Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713024; cv=none; b=HLh5yB12+bFinK/8a3pnVIeJkj36v3BeKjil4R7kwUtzeD0erCo06fFqVSHGxs/oe7u9B23mYIz+xW41Px+O3HVVvtl/ADAo1POm9n9G0zU4+PJ+NnMwhVm9Zn+PPIdt908Jvk0qgSiwyPyqPV+sLn5aZ28erEqSOHU7Py7sjBo=
+	t=1750715528; cv=none; b=YuV7sUi8zo3pO6cwugOds1e7XPkp59SWAo9dIDINT88NDYTBaiO0YNq6mxBc+oxvXvR4d44FTKLBEfQ7tk1qNX+WWhvGfQ8KTCITGwhLLAuY8h3eIZv+/X9JobNpfQg8raRKk/N2pMtSzCBqpN1/CU/ha29K64EMMHwkoyyR0D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713024; c=relaxed/simple;
-	bh=x0d6YNegH1rxL2FZCRyIYTR+EA/totKp7ZXv8QbbilU=;
+	s=arc-20240116; t=1750715528; c=relaxed/simple;
+	bh=JkR8AQcR7j+v5sHAJpst+RBrLKA6hWddJ+oFioL83wA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eDLFUINaIZWeCwfzEktBJF0kyiQfSpUZovkYvypAqqti8D6rxQrrLH0TI0kWF6r2wvPLsR3bHXqZ3EbTKt1k0vIOSe0ExkKUf475V1hPPNrkbLKx3PIPB6Wvfzxq69yRxQgAqaVsLNGXAewC8LEeZc2MVMGw9i9K1Iiin/qF8bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgkptfCq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A23C4CEEA;
-	Mon, 23 Jun 2025 21:10:24 +0000 (UTC)
+	 MIME-Version; b=KeREWdtv2dcG2JGS+B0veqz7YTK5zhsTXK8Yj1pBBsG/fiIbbBP7XX2fCphY2bCur3JZA/RUEdhtaFj9BbuuNewIFOYrxSnPrgSW1DW+irSpFntqyiNjN4gmcJyadk5HsPliDvGO1WMOWZDrStJSuUkJf6au8XbRPJcBCGh0ZsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TYJKfepB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 304A2C4CEEA;
+	Mon, 23 Jun 2025 21:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713024;
-	bh=x0d6YNegH1rxL2FZCRyIYTR+EA/totKp7ZXv8QbbilU=;
+	s=korg; t=1750715528;
+	bh=JkR8AQcR7j+v5sHAJpst+RBrLKA6hWddJ+oFioL83wA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AgkptfCqUsaLIF8BmLOjz42bfgBbjE+v/oNBi1pUGvl53/34vNZeSZP+tWvRCWPrT
-	 ck/uhPnPsIXl7N24ZPrGFy8HBLUNOSdOLVNOD5Yf5KSq3DVa6alhErNjNUCLZzc1FM
-	 exxHFSTR6YRvc95NFlWrMR8COChtwDHpoB/nG6JM=
+	b=TYJKfepB8JkKCcMTJSPIh3Zqnz5e8qyhgkHOgm+rtxkySmjF36g9OLwo94k5n29vs
+	 seTEyVY1pJQRe7OeFcsz/56cPlhYWfdReNmv/YHWxxeprvgcPRmyDqX1Y91nvFguZG
+	 4/ItuOAJWwisgL0/NiCbzym1P5ekKRDYYJiyuyvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 167/222] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
+	Steven Rostedt <rostedt@goodmis.org>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 5.10 301/355] erofs: remove unused trace event erofs_destroy_inode
 Date: Mon, 23 Jun 2025 15:08:22 +0200
-Message-ID: <20250623130617.098391452@linuxfoundation.org>
+Message-ID: <20250623130635.828092454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
+commit 30b58444807c93bffeaba7d776110f2a909d2f9a upstream.
 
-The regmap_update_bits() function can fail, so propagate its error
-up to the stack instead of silently ignoring that.
+The trace event `erofs_destroy_inode` was added but remains unused. This
+unused event contributes approximately 5KB to the kernel module size.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/r/20250612224906.15000244@batman.local.home
+Fixes: 13f06f48f7bf ("staging: erofs: support tracepoint")
+Cc: stable@vger.kernel.org
+Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250617054056.3232365-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ include/trace/events/erofs.h |   18 ------------------
+ 1 file changed, 18 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index bee20c97aed41..5e0b04e593dc2 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -353,9 +353,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
+--- a/include/trace/events/erofs.h
++++ b/include/trace/events/erofs.h
+@@ -235,24 +235,6 @@ DEFINE_EVENT(erofs__map_blocks_exit, z_e
+ 	TP_ARGS(inode, map, flags, ret)
+ );
  
- 	val = grp->val[func];
- 
--	regmap_update_bits(info->regmap, reg, mask, val);
+-TRACE_EVENT(erofs_destroy_inode,
+-	TP_PROTO(struct inode *inode),
 -
--	return 0;
-+	return regmap_update_bits(info->regmap, reg, mask, val);
- }
+-	TP_ARGS(inode),
+-
+-	TP_STRUCT__entry(
+-		__field(	dev_t,		dev		)
+-		__field(	erofs_nid_t,	nid		)
+-	),
+-
+-	TP_fast_assign(
+-		__entry->dev	= inode->i_sb->s_dev;
+-		__entry->nid	= EROFS_I(inode)->nid;
+-	),
+-
+-	TP_printk("dev = (%d,%d), nid = %llu", show_dev_nid(__entry))
+-);
+-
+ #endif /* _TRACE_EROFS_H */
  
- static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
--- 
-2.39.5
-
+  /* This part must be outside protection */
 
 
 
