@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157206-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 395FAAE5129
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D043AE52F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5469B188280E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E926444113
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EC41C5D46;
-	Mon, 23 Jun 2025 21:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD1421E22E6;
+	Mon, 23 Jun 2025 21:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vH4z3Yrv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fPdQw5eq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37D112AD04;
-	Mon, 23 Jun 2025 21:31:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3EE3FD4;
+	Mon, 23 Jun 2025 21:48:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714277; cv=none; b=oF6aoBIei7YI8F3N99bDW5z2Wkj3MrHms92qtNAjUMPSZR86HOmldx6fVjR49mDD5PmJc2KvnIJXIvM2vxRCF3L4CxRIn6NbmFW8kGZa5VsYrRFm4cvsGEfo+JQdUXfu+kL3SDhPPni/GCYcRdYW464Hjt3LDJcFk77A2jdrzGk=
+	t=1750715299; cv=none; b=c2ErFHHoxJ9EFg4Eb2lKBDBk62D5p81pjwQPpEJpvfZ+2VrgdGvldBPYmaI2X0bXH8Hmg3fBFi5WfJ2majxQ0ZcDOAr9p0yHTp8ESl+GufzyuM+XGR9D4ULr7Y0810ABhr3nHo4tPNJuetQ6hhKgkIlKt82dWEO0mcXhkkoeQy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714277; c=relaxed/simple;
-	bh=0iNWnCOU3YmM3HNday1VL4pnMHDnYnknhfJc3SKqSe0=;
+	s=arc-20240116; t=1750715299; c=relaxed/simple;
+	bh=KqlS5jY20I5MniU4NRv0+jrp4itH56OON1BIUAqo0is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kbRpR8PPeRch77lMi3fu61FNTtctVz2qg8Ahuo7tSJNZUfsjAXNxJKJ50zUbzbZtax7xoD0VBM33H+ejkZbkIS7yLDjzsrw37lWqvjYNsZBHemBpMt1eMFQGk1hoIs6Cp162kgTgiGv4M5UooesIEm4esYtrdn8DMVFdn/FpK0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vH4z3Yrv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C47CDC4CEEA;
-	Mon, 23 Jun 2025 21:31:16 +0000 (UTC)
+	 MIME-Version; b=rZC/ohSufTo5r035ufJ6BBUYorzTQNGwBHoFUhTq/2ePxCkM/8TA+FmpRovIEeRiFSRDbP+uFkLm5JO8FPPni3mr/DFc2tK9vCSHFr1SZh85Qf+wJU5nnCrhcDwSVxISi8sDvQkmbrFjryr3xgpcqLLNzMzoOZLCMfvuWIauJFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fPdQw5eq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 124DAC4CEEA;
+	Mon, 23 Jun 2025 21:48:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714277;
-	bh=0iNWnCOU3YmM3HNday1VL4pnMHDnYnknhfJc3SKqSe0=;
+	s=korg; t=1750715299;
+	bh=KqlS5jY20I5MniU4NRv0+jrp4itH56OON1BIUAqo0is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vH4z3Yrv+TJRPpGq6baRnsiPWxHPtkhd4o36uYL3in7nligD8OvlFkSj5ZZM/Vozl
-	 gcfAvD30/olOgduAcmrrOEJ6nu7MEBREbFs+4HPyrNQoPmfb6Boql7nfgC7RaLFTxN
-	 LR0JlVPctV1aTgp424fW4W0U0iwG7PGyV8Uo71fc=
+	b=fPdQw5eq0o+TDdlbZ6NmIvmBuv4+rwx43z9F6qT9ZGjaEnpIDxmi1sOcIeAKRF21n
+	 HV8BP8L/ZeupH6Qg+eFy1gMqRKr4ZZi67DQJsWqLQ1MVurcecGaarenwTyhV+R1nD4
+	 aFzAR2a4pFokn3ovusTEdHpITx3DUxN/f2shvaMc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 127/290] power: supply: bq27xxx: Retrieve again when busy
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 5.15 244/411] mtd: nand: sunxi: Add randomizer configuration before randomizer enable
 Date: Mon, 23 Jun 2025 15:06:28 +0200
-Message-ID: <20250623130630.748065745@linuxfoundation.org>
+Message-ID: <20250623130639.796390663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +59,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Lv <Jerry.Lv@axis.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
+commit 4a5a99bc79cdc4be63933653682b0261a67a0c9f upstream.
 
-Multiple applications may access the battery gauge at the same time, so
-the gauge may be busy and EBUSY will be returned. The driver will set a
-flag to record the EBUSY state, and this flag will be kept until the next
-periodic update. When this flag is set, bq27xxx_battery_get_property()
-will just return ENODEV until the flag is updated.
+In sunxi_nfc_hw_ecc_read_chunk(), the sunxi_nfc_randomizer_enable() is
+called without the config of randomizer. A proper implementation can be
+found in sunxi_nfc_hw_ecc_read_chunks_dma().
 
-Even if the gauge was busy during the last accessing attempt, returning
-ENODEV is not ideal, and can cause confusion in the applications layer.
+Add sunxi_nfc_randomizer_config() before the start of randomization.
 
-Instead, retry accessing the I2C to update the flag is as expected, for
-the gauge typically recovers from busy state within a few milliseconds.
-If still failed to access the gauge, the real error code would be returned
-instead of ENODEV (as suggested by Pali Rohár).
-
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
-Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+Cc: stable@vger.kernel.org # v4.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/bq27xxx_battery.c     |  2 +-
- drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/sunxi_nand.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index 23c8736567574..e51fa2c694bc6 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -2044,7 +2044,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
- 	mutex_unlock(&di->lock);
- 
- 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
--		return -ENODEV;
-+		return di->cache.flags;
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_STATUS:
-diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index 886e0a8e2abd1..8877fa333cd02 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -6,6 +6,7 @@
-  *	Andrew F. Davis <afd@ti.com>
-  */
- 
-+#include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -32,6 +33,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
- 	struct i2c_msg msg[2];
- 	u8 data[2];
- 	int ret;
-+	int retry = 0;
- 
- 	if (!client->adapter)
- 		return -ENODEV;
-@@ -48,7 +50,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
- 	else
- 		msg[1].len = 2;
- 
--	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
-+	do {
-+		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
-+		if (ret == -EBUSY && ++retry < 3) {
-+			/* sleep 10 milliseconds when busy */
-+			usleep_range(10000, 11000);
-+			continue;
-+		}
-+		break;
-+	} while (1);
-+
- 	if (ret < 0)
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -829,6 +829,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(s
+ 	if (ret)
  		return ret;
  
--- 
-2.39.5
-
++	sunxi_nfc_randomizer_config(nand, page, false);
+ 	sunxi_nfc_randomizer_enable(nand);
+ 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD | NFC_ECC_OP,
+ 	       nfc->regs + NFC_REG_CMD);
 
 
 
