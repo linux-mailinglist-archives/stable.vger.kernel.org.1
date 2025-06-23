@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AC20AE505A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06A3DAE501C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7910C4A0C93
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC4D61B61EF5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF1C01F3B96;
-	Mon, 23 Jun 2025 21:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AAF222581;
+	Mon, 23 Jun 2025 21:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRBFOpWo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A+DRcQ8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C44A1E521E;
-	Mon, 23 Jun 2025 21:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 237FA1E521E;
+	Mon, 23 Jun 2025 21:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713859; cv=none; b=bD4TN2T+cEnV42n5dZ8kFhQ97AWZzPgGnIzHPe13NZHhHURyBJr6A8hEvUrvafFhd08zyt2B9FU7aRLMxDO3hwPMvLt25Chyighe5HRIetFEKEVzEKZk5lCiqm/zAJfPus6GvzYtQ2hA818YI1HX/oOi2Xy12wafxb2qL+90zD0=
+	t=1750713734; cv=none; b=AMvc1rZkpAr3wNxBMDPR1UxiNCVFzBmRqZ39sDcvaSOZfSAGQbzaTgUFrFG3WCpK9nWdp2B2kTcmxjhz984wHSDlJ9Hv2CeydI1uHsIx9xJGxkvTMA+AHDR6y0wboxA8a/akqXOO9Ck7BfM22+3x+nPdWevvwO1Nqtk4zVJwnqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713859; c=relaxed/simple;
-	bh=i9NpcQM5xOaWT8Qom7lAsNmrdVVI/pgLxdJk8yHzHOM=;
+	s=arc-20240116; t=1750713734; c=relaxed/simple;
+	bh=oINMHMq7jk6+wJtrR/LdZ5qsgd9vimeV9/F4h5LpnMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2DorqDa1NAlSdaPbmXV2vIcFpA46s5YEe1MV7IAXNHOeRhZvCSLzE1y+2nV41f1Pw3ugjJp9CngoJzUImaRr88F2Krq/soQ/KzKudreP2DdWuymIJvS+kupDf7zw5fJeneEb/686GOGyPeqlBI83NutFSQubuZan6AAfCmrltY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRBFOpWo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3443CC4CEEA;
-	Mon, 23 Jun 2025 21:24:19 +0000 (UTC)
+	 MIME-Version; b=b8pfxBxAJ8+uajPuV+jkn1G7P7cetyBLUGKVx9DjfSJjSQNIC5MmY8O5OaWuntoe2tSsPxfSOrAjtafkZFZ5COgw0pEIwkheeFRY+whYm1XNE6jJe6OHxL0mmO18MuSeBTZkbt0B+aUZKNN/1XwOOAolSSxRQXFiTbJDuj7mmd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A+DRcQ8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07E2C4CEED;
+	Mon, 23 Jun 2025 21:22:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713859;
-	bh=i9NpcQM5xOaWT8Qom7lAsNmrdVVI/pgLxdJk8yHzHOM=;
+	s=korg; t=1750713734;
+	bh=oINMHMq7jk6+wJtrR/LdZ5qsgd9vimeV9/F4h5LpnMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRBFOpWoY06u6qg00l8QKbGMCLD4Lv+pn9G9YK9Z2ygVKhTxfkGcj9tCUbv9C5zXW
-	 Tbl+5sl5zyJpSzcsINGVJ0K1ziw260Xv5PcMb3onQeeWgCWpcouNW57cRivCttfFpn
-	 j+HWOhjqqO/0wQ8HZx1Mryrdz5Lr+po+iBAxVlkY=
+	b=A+DRcQ8A0/cS1AD9pmCeNWWABaWiL3LwhA+/E/4i/sPFURSvf2js4j4z7IV3kWJXC
+	 mk/0fSJ+1/dx9gz2i+teQ9fzK1pn4tT8sBQML8m3TX2F32uniw4I/uyScfJG8WOQ41
+	 hbiecn4AS7dOIA+iroVErHt3Fg3uzSXdRTB/WoD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Zhang <18255117159@163.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/508] PCI: cadence: Fix runtime atomic count underflow
-Date: Mon, 23 Jun 2025 15:03:16 +0200
-Message-ID: <20250623130648.996587795@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 060/414] media: v4l2-dev: fix error handling in __video_register_device()
+Date: Mon, 23 Jun 2025 15:03:17 +0200
+Message-ID: <20250623130643.574643080@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Zhang <18255117159@163.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 8805f32a96d3b97cef07999fa6f52112678f7e65 ]
+commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
 
-If the call to pci_host_probe() in cdns_pcie_host_setup() fails, PM
-runtime count is decremented in the error path using pm_runtime_put_sync().
-But the runtime count is not incremented by this driver, but only by the
-callers (cdns_plat_pcie_probe/j721e_pcie_probe). And the callers also
-decrement the runtime PM count in their error path. So this leads to the
-below warning from the PM core:
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
+And move callback function v4l2_device_release() and v4l2_device_get()
+before put_device().
 
-	"runtime PM usage count underflow!"
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
 
-So fix it by getting rid of pm_runtime_put_sync() in the error path and
-directly return the errno.
+Found by code review.
 
-Fixes: 49e427e6bdd1 ("Merge branch 'pci/host-probe-refactor'")
-Signed-off-by: Hans Zhang <18255117159@163.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://patch.msgid.link/20250419133058.162048-1-18255117159@163.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-host.c | 11 +----------
- 1 file changed, 1 insertion(+), 10 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/pci/controller/cadence/pcie-cadence-host.c b/drivers/pci/controller/cadence/pcie-cadence-host.c
-index 5b14f7ee3c798..0a1b11d41a38a 100644
---- a/drivers/pci/controller/cadence/pcie-cadence-host.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-host.c
-@@ -558,14 +558,5 @@ int cdns_pcie_host_setup(struct cdns_pcie_rc *rc)
- 	if (!bridge->ops)
- 		bridge->ops = &cdns_pcie_host_ops;
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1052,25 +1052,25 @@ int __video_register_device(struct video
+ 	vdev->dev.class = &video_class;
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
++	vdev->dev.release = v4l2_device_release;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++
++	/* Increase v4l2_device refcount */
++	v4l2_device_get(vdev->v4l2_dev);
++
+ 	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
+ 		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+-		goto cleanup;
++		put_device(&vdev->dev);
++		return ret;
+ 	}
+-	/* Register the release callback that will be called when the last
+-	   reference to the device goes away. */
+-	vdev->dev.release = v4l2_device_release;
  
--	ret = pci_host_probe(bridge);
--	if (ret < 0)
--		goto err_init;
+ 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+ 		pr_warn("%s: requested %s%d, got %s\n", __func__,
+ 			name_base, nr, video_device_node_name(vdev));
+ 
+-	/* Increase v4l2_device refcount */
+-	v4l2_device_get(vdev->v4l2_dev);
 -
--	return 0;
--
-- err_init:
--	pm_runtime_put_sync(dev);
--
--	return ret;
-+	return pci_host_probe(bridge);
- }
--- 
-2.39.5
-
+ 	/* Part 5: Register the entity. */
+ 	ret = video_register_media_controller(vdev);
+ 
 
 
 
