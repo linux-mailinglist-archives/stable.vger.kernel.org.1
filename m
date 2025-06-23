@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157808-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F9F1AE55DA
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F56EAE5716
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE9A94A2FD8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 10F234E27CF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04834226D04;
-	Mon, 23 Jun 2025 22:12:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2A73223DCC;
+	Mon, 23 Jun 2025 22:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CD+bvNqT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MBEuPMtV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B32B1223DD0;
-	Mon, 23 Jun 2025 22:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB80221543;
+	Mon, 23 Jun 2025 22:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716769; cv=none; b=B94ZDRCe7YWkv2xUGa/wKjQ8vsBxic3uRgDR8rQczNmePF0MR6KMbcsQ6+5rEZmTWOQ1ZyW1vk5E1g0AdakRwtdv0srQg0sUGOC8wvV/+++NUZ0JXellPMKxv78yD/kyAnyYSt8DvKsnmTPiQ4iZH7peITR7p+b/ccAXzhdc2ZQ=
+	t=1750717555; cv=none; b=k3doLxEoKh4dalGvl71PgS8XL0AYrjzWYmQPs6ioyoIVdKljEk0l+JNauoAIZwD84Zm4bm84/rex9B5nCC+FdNkkdk0rJ36KeRsSq8bmDlN+uumKfXGO0cI88khLXSC/Klnfu2xYCGdYn7nJt++Px9efK2yFTcSuBi7IB8BMaKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716769; c=relaxed/simple;
-	bh=Kc4V1Ui+ztWUlcKyKeJCuK/WifF2xy6/WtZo8AdMMCw=;
+	s=arc-20240116; t=1750717555; c=relaxed/simple;
+	bh=O+0b+KHuu/oR3Ucc2A/h20xGhjQco6tgn74ZBqheV0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SdYe8BR7zF8zXEE1VRIp56Ql4vevj7f20cT8fGUjcefyBdkfG5ILlv5JnO5eFbbrzb1HpDHJ3VWMJwQ4dPOsj/kN0Ql7UMJvLx5CKnwx1f4+EUM69fhBOmFqqJaV3dtGbsuNDA02T1+bZ8HGki1Uv8+6YQxHD7/82nm+q/8SHZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CD+bvNqT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE9E1C4CEEA;
-	Mon, 23 Jun 2025 22:12:48 +0000 (UTC)
+	 MIME-Version; b=UnzML8JAA6pzWlaN5Jc4g35N2A40blB5laWdEmJzFFTCYXYCmf6BB4G47VsswCBk7DTFAaQIkquwQylKaxgK1+aOQJX6Uce7Vgqn/FgCEJoa9CXjvnzm4/PDoyDjqD1x7+aX2HP48O2VE/MElNpsH93cUegAE38P8kFMAMd3oHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MBEuPMtV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A4DC4CEEA;
+	Mon, 23 Jun 2025 22:25:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716769;
-	bh=Kc4V1Ui+ztWUlcKyKeJCuK/WifF2xy6/WtZo8AdMMCw=;
+	s=korg; t=1750717555;
+	bh=O+0b+KHuu/oR3Ucc2A/h20xGhjQco6tgn74ZBqheV0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CD+bvNqTNsq5mIqqPKMNgmbv2vqJgIzmtEyvGuNyjNBjP2Cw7eKJxPAo+0vE2Qk72
-	 Nt18IGRgVFgSvToGyoBs2W/Kf8uwlHDTkhgaZ6cK1IQJqndkZhm7TU05qA3v37EsRc
-	 SM7xW0JwXXh/TuF7xjeGB1U/J7koN4YVZAkTI17E=
+	b=MBEuPMtVCeiAmkwCyM5syNfbAteP6yy4Zp4mfdnGPUknU7e6TpZkak7euQaLdW72J
+	 8kPJPnNfatiAxO64MENMMbIOw3PPh3QgDBayH6OvGNbhe74su2MWJkmBVv3Zo/Eg8R
+	 Vpw9RMBy3aAPtgzZj8EZpC4NyNz6EQJnC9InDvoM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -53,17 +53,16 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Mark Rutland <mark.rutland@arm.com>,
 	Michael Petlan <mpetlan@redhat.com>,
 	Namhyung Kim <namhyung@kernel.org>,
-	Namhyung Kim <namhyung.kim@lge.com>,
 	Peter Zijlstra <peterz@infradead.org>,
 	Tiezhu Yang <yangtiezhu@loongson.cn>,
 	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 288/290] perf evsel: Missed close() when probing hybrid core PMUs
+Subject: [PATCH 6.12 412/414] perf test: Directory file descriptor leak
 Date: Mon, 23 Jun 2025 15:09:09 +0200
-Message-ID: <20250623130635.585267859@linuxfoundation.org>
+Message-ID: <20250623130652.251135478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -75,23 +74,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit ebec62bc7ec435b475722a5467d67c720a1ad79f ]
+[ Upstream commit 19f4422d485b2d0a935117a1a16015328f99be25 ]
 
-Add missing close() to avoid leaking perf events.
+Add missed close when iterating over the script directories.
 
-In past perfs this mattered little as the function was just used by 'perf
-list'.
-
-As the function is now used to detect hybrid PMUs leaking the perf event
-is somewhat more painful.
-
-Fixes: b41f1cec91c37eee ("perf list: Skip unsupported events")
+Fixes: f3295f5b067d3c26 ("perf tests: Use scandirat for shell script finding")
 Signed-off-by: Ian Rogers <irogers@google.com>
 Cc: Adrian Hunter <adrian.hunter@intel.com>
 Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
@@ -103,28 +96,27 @@ Cc: Kan Liang <kan.liang@linux.intel.com>
 Cc: Mark Rutland <mark.rutland@arm.com>
 Cc: Michael Petlan <mpetlan@redhat.com>
 Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Namhyung Kim <namhyung.kim@lge.com>
 Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
-Link: https://lore.kernel.org/r/20250614004108.1650988-2-irogers@google.com
+Link: https://lore.kernel.org/r/20250614004108.1650988-1-irogers@google.com
 Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/print-events.c | 1 +
+ tools/perf/tests/tests-scripts.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/print-events.c b/tools/perf/util/print-events.c
-index 9bee082194d5e..fb11a967c450d 100644
---- a/tools/perf/util/print-events.c
-+++ b/tools/perf/util/print-events.c
-@@ -271,6 +271,7 @@ bool is_event_supported(u8 type, u64 config)
- 			ret = evsel__open(evsel, NULL, tmap) >= 0;
- 		}
- 
-+		evsel__close(evsel);
- 		evsel__delete(evsel);
+diff --git a/tools/perf/tests/tests-scripts.c b/tools/perf/tests/tests-scripts.c
+index ed114b0442936..b6986d50dde6c 100644
+--- a/tools/perf/tests/tests-scripts.c
++++ b/tools/perf/tests/tests-scripts.c
+@@ -255,6 +255,7 @@ static void append_scripts_in_dir(int dir_fd,
+ 			continue; /* Skip scripts that have a separate driver. */
+ 		fd = openat(dir_fd, ent->d_name, O_PATH);
+ 		append_scripts_in_dir(fd, result, result_sz);
++		close(fd);
  	}
- 
+ 	for (i = 0; i < n_dirs; i++) /* Clean up */
+ 		zfree(&entlist[i]);
 -- 
 2.39.5
 
