@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-155612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BAEEAE4305
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0497FAE4423
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A8E17E6FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 021101BC11AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBA9253938;
-	Mon, 23 Jun 2025 13:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AA8253F1D;
+	Mon, 23 Jun 2025 13:34:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kS65OSY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f75labO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3D4239E63;
-	Mon, 23 Jun 2025 13:21:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE311253F08;
+	Mon, 23 Jun 2025 13:34:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684884; cv=none; b=GqcUL+bFZJDXj/8JET6BY3GHBgadBCdb9f4PXxZqVKUUDnZL8+qclpDq+lz6YaB/HqmjIE5Vq8NynIX88j/3ap2mCQZnrAXBB05NPC+F0/Zt+7uP0Zhvq/hrqdETVfQNwAbmn7lf2ktsJX8y1hWAFuPg+9JDGv4+zlDheKc4eeg=
+	t=1750685652; cv=none; b=bCpQnY3NfbeyooPArT+qRe6lVOhjm339HcbDXdbZGJrh+/sAEsMqKBut4pyZ74xCypf8GPBdybh8VdtD/C/WEKzSd9Qt00sGe6/MkfTQSZ2NxrBLXlB16CWBDJX0XeOivF9RxOqZ4C1lc/iWR79ZKOdiXWRCzr7gsSTRFFTFyVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684884; c=relaxed/simple;
-	bh=4YVZxTyqutW+SoM7gN3/Fut+dKNJk/JvIVn1zbg5Fbw=;
+	s=arc-20240116; t=1750685652; c=relaxed/simple;
+	bh=VE33V5B1LNjgFEHT2drbtH387GO/VNDWw0HBht60/wk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mqVCyd3vhpij4Y3M9ZJWrtQoHFBfZZoi5Gif3nfkdm6K8Ll1yFwgpG5N/mrFSB2hN+E3XqYVRmzw8qP8YHsuSHEwLRxh9z4ajdqqToe1ENZxpmAQhYYzbt0CC6JwXck0M2un2ATIImNjHh6h2mbnVx9Heoa822LCdeQmYfUUvRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kS65OSY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6512EC4CEEA;
-	Mon, 23 Jun 2025 13:21:24 +0000 (UTC)
+	 MIME-Version; b=IhB/rzbjpSheEkxjFwOOfClx4fZXVTSJBPCCsOMJca0XYtEtV0+JaeS+jKOyFEdUf+gwj4raKVYMjUBbDkq+KKHVcW13rd5q4CB/8pUAtHbdCxUQweR7ziT4OqmcnQzaxtdopKzctAJ2emOJQ9cOzm/WaQGp3ePad8wE7hgozKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f75labO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72930C4CEEA;
+	Mon, 23 Jun 2025 13:34:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684884;
-	bh=4YVZxTyqutW+SoM7gN3/Fut+dKNJk/JvIVn1zbg5Fbw=;
+	s=korg; t=1750685651;
+	bh=VE33V5B1LNjgFEHT2drbtH387GO/VNDWw0HBht60/wk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2kS65OSYBnlYrvc1K2xU6vaoNY036GQz8ZSJ1l5MogiSa7046eGgu7N7Oot/T8FXb
-	 UhBI8kNklB6Y6059kwbpF67EYg51cEjpmO1fufgsA3Zb1w3kLbGshUiAxB6Lxzi8fF
-	 xSJ0iI56lr8I4SGZrLHbo8B2Gpp6BFaMxd1Tbe7c=
+	b=1f75labOjprWabV82/dL+lYLSD+Lj0NurHKAZJbXd+kRxmrS4bCPli0JjZOZzrKlc
+	 ovtlFdLBDeh8Np8GEWaw/BlCsQHu1W33nnbel03Qc75q86R8FvSlDayYxqhDt79Uow
+	 uR2Wt/dFkj43Ldz8gAVO1P77iOYuAT6QEyK+0kfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 5.10 007/355] usb: usbtmc: Fix timeout value in get_stb
+	Ayushi Makhija <quic_amakhija@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 250/592] drm/bridge: anx7625: change the gpiod_set_value API
 Date: Mon, 23 Jun 2025 15:03:28 +0200
-Message-ID: <20250623130626.956145842@linuxfoundation.org>
+Message-ID: <20250623130706.242542553@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Ayushi Makhija <quic_amakhija@quicinc.com>
 
-commit 342e4955a1f1ce28c70a589999b76365082dbf10 upstream.
+[ Upstream commit 50935044e58e563cdcfd556d62f27bc8744dd64e ]
 
-wait_event_interruptible_timeout requires a timeout argument
-in units of jiffies. It was being called in usbtmc_get_stb
-with the usb timeout value which is in units of milliseconds.
+Use gpiod_set_value_cansleep() instead of gpiod_set_value()
+to fix the below call trace in the boot log:
 
-Pass the timeout argument converted to jiffies.
+[    5.690534] Call trace:
+[    5.690536]  gpiod_set_value+0x40/0xa4
+[    5.690540]  anx7625_runtime_pm_resume+0xa0/0x324 [anx7625]
+[    5.690545]  __rpm_callback+0x48/0x1d8
+[    5.690549]  rpm_callback+0x6c/0x78
 
-Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-4-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Certain GPIO controllers require access via message-based buses
+such as I2C or SPI, which may cause the GPIOs to enter a sleep
+state. Therefore, use the gpiod_set_value_cansleep().
+
+Signed-off-by: Ayushi Makhija <quic_amakhija@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250505094245.2660750-7-quic_amakhija@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -486,6 +486,7 @@ static int usbtmc488_ioctl_read_stb(stru
- 	__u8 stb;
- 	int rv;
- 	long wait_rv;
-+	unsigned long expire;
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 99ef3f27ae429..95d5a4e265788 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -1257,10 +1257,10 @@ static void anx7625_power_on(struct anx7625_data *ctx)
+ 	usleep_range(11000, 12000);
  
- 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
- 		data->iin_ep_present);
-@@ -528,10 +529,11 @@ static int usbtmc488_ioctl_read_stb(stru
+ 	/* Power on pin enable */
+-	gpiod_set_value(ctx->pdata.gpio_p_on, 1);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 1);
+ 	usleep_range(10000, 11000);
+ 	/* Power reset pin enable */
+-	gpiod_set_value(ctx->pdata.gpio_reset, 1);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 1);
+ 	usleep_range(10000, 11000);
+ 
+ 	DRM_DEV_DEBUG_DRIVER(dev, "power on !\n");
+@@ -1280,9 +1280,9 @@ static void anx7625_power_standby(struct anx7625_data *ctx)
+ 		return;
  	}
  
- 	if (data->iin_ep_present) {
-+		expire = msecs_to_jiffies(file_data->timeout);
- 		wait_rv = wait_event_interruptible_timeout(
- 			data->waitq,
- 			atomic_read(&data->iin_data_valid) != 0,
--			file_data->timeout);
-+			expire);
- 		if (wait_rv < 0) {
- 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
- 			rv = wait_rv;
+-	gpiod_set_value(ctx->pdata.gpio_reset, 0);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 0);
+ 	usleep_range(1000, 1100);
+-	gpiod_set_value(ctx->pdata.gpio_p_on, 0);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 0);
+ 	usleep_range(1000, 1100);
+ 
+ 	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->pdata.supplies),
+-- 
+2.39.5
+
 
 
 
