@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-155866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67210AE4472
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6741FAE4442
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 696554428AA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75F42442BBA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A30B324728E;
-	Mon, 23 Jun 2025 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A47F624A06D;
+	Mon, 23 Jun 2025 13:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EV3uUzps"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1c1p4KPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60E421E480;
-	Mon, 23 Jun 2025 13:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606962F24;
+	Mon, 23 Jun 2025 13:32:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685539; cv=none; b=IlKkQZ/ObCHoaNKAJQKwtagEwdzaOHFilXsmWm07MCfIafrSdMzxmzWdBTf+qjhcElDt6IAZp7qj25NkQRAVTXHrgiJw+rvbjJxDstnO90+8WMA+ALu0xDDxPbveTIIXO6MMnvgOh+J6aun2YcYxPrdQ6AOomXK1lrcH7Cd6cmg=
+	t=1750685552; cv=none; b=uxcv4mXCwkTwfLMHUhCBRCPO1FVNY/w7l6Bv2FcgM1Gd0e44EZfPhGEP1ayQmW5zAAKvuMVOlPbDjEAMdaz9TTgnnHgIIe6/fDerH/Qesxjn2zp7u5zw+7CerXPyZhM/atZeQtHrDubk4L6Tzj3zJ6T7Q+UDBw3wVQWWdQ12A1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685539; c=relaxed/simple;
-	bh=N1HaJDRkGZOJd7PHCUbNq+VyY0flax8KM6b0/+7GN1w=;
+	s=arc-20240116; t=1750685552; c=relaxed/simple;
+	bh=aC5q5XMEWsBBWzbUZPld4GBMVEPmlmlld/espUbymCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WODj+9veXA3Fh3JTW90e1BxM1Mqx7o8aNOTPAyG/Ncm6CfCFvlb84A7lu1A4+9W1zi4jiWle5kx4pnV0eYlV3ZHvsWkIc4FPoLLQBmPQ4RI1CVogztk4nbccREM6S6uZkm9M1/5i9f/hK5tMCNG76F3ZhnotHNSppZCkxaFTemQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EV3uUzps; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E828FC4CEEA;
-	Mon, 23 Jun 2025 13:32:18 +0000 (UTC)
+	 MIME-Version; b=RaQiFU5Ahp7SIjzv8rcHZIzQMezeUm5DBd9XDzaQjQnT9z8T3+v1y3//Ip0nkN0yV1S7Uy5icEZ8PMECDbT2CTJK3nBL3n9zSHopaDpfPvQUQVSPrCYruQQYzNhx5Qqq5X7QSRabjAkBVWZ4gVoBfwXg01JCXXLYQXfGG6N4JXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1c1p4KPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDF1C4CEEA;
+	Mon, 23 Jun 2025 13:32:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685539;
-	bh=N1HaJDRkGZOJd7PHCUbNq+VyY0flax8KM6b0/+7GN1w=;
+	s=korg; t=1750685552;
+	bh=aC5q5XMEWsBBWzbUZPld4GBMVEPmlmlld/espUbymCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EV3uUzpsGzweI8JHI2VnBfIJZBtQOTVmVu8TVDPS+osNjdOZYhYK65Kx2fRgWx8xD
-	 FSsQGprK/ozb1Vew0uytIFIhc5VFBeUAQKHV703h0hYTugFa5YKU+ZW0aryb9qDsVH
-	 9a5lG7C3HW93PA+biW3kaUoU0w53M8uUSqut11sM=
+	b=1c1p4KPCO6oBRUbk76ZzoG5yyFydsIY0molPe+NkXLtixD7CqTUuoPATY1Scw4dQ0
+	 OYrgg8CqGvom7U+ec9zGalM+AGRXZR47wv0sYkYB4UJuDOSmgGo1AyjPdl71Z9rDDq
+	 tpu/BNDED2rTM/lPwbv5wiCzq+Ir3gaoLIb4/FLU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charlene Liu <charlene.liu@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 242/592] drm/amd/display: DCN32 null data check
-Date: Mon, 23 Jun 2025 15:03:20 +0200
-Message-ID: <20250623130706.046939195@linuxfoundation.org>
+Subject: [PATCH 6.15 243/592] drm/xe: Fix CFI violation when accessing sysfs files
+Date: Mon, 23 Jun 2025 15:03:21 +0200
+Message-ID: <20250623130706.070492303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -69,494 +66,494 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
 
-[ Upstream commit c9646e5a7e01c3ede286ec5edd4fcb2e1e80261d ]
+[ Upstream commit 4ea512714c42c69828b4a2647d206bf404043ad5 ]
 
-[WHY & HOW]
-Avoid null curve data structure used in the cm block for the potential issue.
+When an attribute group is created with sysfs_create_group() or
+sysfs_create_files() the ->sysfs_ops() callback is set to
+kobj_sysfs_ops, which sets the ->show() callback to kobj_attr_show().
+kobj_attr_show() uses container_of() to get the ->show() callback
+from the attribute it was passed, meaning the ->show() callback needs
+to be the same type as the ->show() callback in 'struct kobj_attribute'.
 
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+However, cur_freq_show() has the type of the ->show() callback in
+'struct device_attribute', which causes a CFI violation when opening the
+'id' sysfs node under gtidle/freq/throttle. This happens to work because
+the layout of 'struct kobj_attribute' and 'struct device_attribute' are
+the same, so the container_of() cast happens to allow the ->show()
+callback to still work.
+
+Changed the type of cur_freq_show() and few more functions to match the
+->show() callback in 'struct kobj_attributes' to resolve the CFI
+violation.
+
+CFI failure seen while accessing sysfs files under
+/sys/class/drm/card0/device/tile0/gt*/gtidle/*
+/sys/class/drm/card0/device/tile0/gt*/freq0/*
+/sys/class/drm/card0/device/tile0/gt*/freq0/throttle/*
+
+[ 2599.618075] RIP: 0010:__cfi_cur_freq_show+0xd/0x10 [xe]
+[ 2599.624452] Code: 44 c1 44 89 fa e8 03 95 39 f2 48 98 5b 41 5e 41 5f 5d c3 c9
+[ 2599.646638] RSP: 0018:ffffbe438ead7d10 EFLAGS: 00010286
+[ 2599.652823] RAX: ffff9f7d8b3845d8 RBX: ffff9f7dee8c95d8 RCX: 0000000000000000
+[ 2599.661246] RDX: ffff9f7e6f439000 RSI: ffffffffc13ada30 RDI: ffff9f7d975d4b00
+[ 2599.669669] RBP: ffffbe438ead7d18 R08: 0000000000001000 R09: ffff9f7e6f439000
+[ 2599.678092] R10: 00000000e07304a6 R11: ffffffffc1241ca0 R12: ffffffffb4836ea0
+[ 2599.688435] R13: ffff9f7e45fb1180 R14: ffff9f7d975d4b00 R15: ffff9f7e6f439000
+[ 2599.696860] FS: 000076b02b66cfc0(0000) GS:ffff9f80ef400000(0000) knlGS:00000
+[ 2599.706412] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 2599.713196] CR2: 00005f80d94641a9 CR3: 00000001e44ec006 CR4: 0000000100f72ef0
+[ 2599.721618] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 2599.730041] DR3: 0000000000000000 DR6: 00000000ffff07f0 DR7: 0000000000000400
+[ 2599.738464] PKRU: 55555554
+[ 2599.741655] Call Trace:
+[ 2599.744541] <TASK>
+[ 2599.747017] ? __die_body+0x69/0xb0
+[ 2599.751151] ? die+0xa9/0xd0
+[ 2599.754548] ? do_trap+0x89/0x160
+[ 2599.758476] ? __cfi_cur_freq_show+0xd/0x10 [xe b37985c94829727668bd7c5b33c1]
+[ 2599.768315] ? handle_invalid_op+0x69/0x90
+[ 2599.773167] ? __cfi_cur_freq_show+0xd/0x10 [xe b37985c94829727668bd7c5b33c1]
+[ 2599.783010] ? exc_invalid_op+0x36/0x60
+[ 2599.787552] ? fred_hwexc+0x123/0x1a0
+[ 2599.791873] ? fred_entry_from_kernel+0x7b/0xd0
+[ 2599.797219] ? asm_fred_entrypoint_kernel+0x45/0x70
+[ 2599.802976] ? act_freq_show+0x70/0x70 [xe b37985c94829727668bd7c5b33c1d9998]
+[ 2599.812301] ? __cfi_cur_freq_show+0xd/0x10 [xe b37985c94829727668bd7c5b33c1]
+[ 2599.822137] ? __kmalloc_node_noprof+0x1f3/0x420
+[ 2599.827594] ? __kvmalloc_node_noprof+0xcb/0x180
+[ 2599.833045] ? kobj_attr_show+0x22/0x40
+[ 2599.837571] sysfs_kf_seq_show+0xa8/0x110
+[ 2599.842302] kernfs_seq_show+0x38/0x50
+
+Signed-off-by: Jeevaka Prabu Badrappan <jeevaka.badrappan@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/20250422171852.85558-1-jeevaka.badrappan@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/mpc/dcn32/dcn32_mpc.c  | 380 +++++++++---------
- 1 file changed, 192 insertions(+), 188 deletions(-)
+ drivers/gpu/drm/xe/xe_gt_freq.c     | 82 ++++++++++++++------------
+ drivers/gpu/drm/xe/xe_gt_idle.c     | 28 +++++----
+ drivers/gpu/drm/xe/xe_gt_throttle.c | 90 ++++++++++++++---------------
+ 3 files changed, 107 insertions(+), 93 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/mpc/dcn32/dcn32_mpc.c b/drivers/gpu/drm/amd/display/dc/mpc/dcn32/dcn32_mpc.c
-index a0e9e9f0441a4..b4cea2b8cb2a8 100644
---- a/drivers/gpu/drm/amd/display/dc/mpc/dcn32/dcn32_mpc.c
-+++ b/drivers/gpu/drm/amd/display/dc/mpc/dcn32/dcn32_mpc.c
-@@ -370,275 +370,279 @@ void mpc32_program_shaper_luta_settings(
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].red.custom_float_y);
- 
- 	curve = params->arr_curve_points;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_0_1[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_2_3[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_4_5[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_6_7[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_8_9[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_10_11[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_12_13[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_14_15[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_16_17[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_18_19[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_20_21[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_22_23[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_24_25[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_26_27[mpcc_id], 0,
-+	if (curve) {
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_0_1[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_28_29[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_30_31[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_32_33[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--}
--
--
--void mpc32_program_shaper_lutb_settings(
--		struct mpc *mpc,
--		const struct pwl_params *params,
--		uint32_t mpcc_id)
--{
--	const struct gamma_curve *curve;
--	struct dcn30_mpc *mpc30 = TO_DCN30_MPC(mpc);
--
--	REG_SET_2(MPCC_MCM_SHAPER_RAMB_START_CNTL_B[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_B, params->corner_points[0].blue.custom_float_x,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_SEGMENT_B, 0);
--	REG_SET_2(MPCC_MCM_SHAPER_RAMB_START_CNTL_G[mpcc_id], 0,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_B, params->corner_points[0].green.custom_float_x,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_SEGMENT_B, 0);
--	REG_SET_2(MPCC_MCM_SHAPER_RAMB_START_CNTL_R[mpcc_id], 0,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_B, params->corner_points[0].red.custom_float_x,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_SEGMENT_B, 0);
--
--	REG_SET_2(MPCC_MCM_SHAPER_RAMB_END_CNTL_B[mpcc_id], 0,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_B, params->corner_points[1].blue.custom_float_x,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].blue.custom_float_y);
--	REG_SET_2(MPCC_MCM_SHAPER_RAMB_END_CNTL_G[mpcc_id], 0,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_B, params->corner_points[1].green.custom_float_x,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].green.custom_float_y);
--	REG_SET_2(MPCC_MCM_SHAPER_RAMB_END_CNTL_R[mpcc_id], 0,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_B, params->corner_points[1].red.custom_float_x,
--			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].red.custom_float_y);
--
--	curve = params->arr_curve_points;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_0_1[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_2_3[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_2_3[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_4_5[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_4_5[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_6_7[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_6_7[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_8_9[mpcc_id], 0,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
--		MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_8_9[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_10_11[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_10_11[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_12_13[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_12_13[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_14_15[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_14_15[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_16_17[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_16_17[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_18_19[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_18_19[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_20_21[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_20_21[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_22_23[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_22_23[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_24_25[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_24_25[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_26_27[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_26_27[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_28_29[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_28_29[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_30_31[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_30_31[mpcc_id], 0,
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMA_REGION_32_33[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+	}
-+}
-+
-+
-+void mpc32_program_shaper_lutb_settings(
-+		struct mpc *mpc,
-+		const struct pwl_params *params,
-+		uint32_t mpcc_id)
-+{
-+	const struct gamma_curve *curve;
-+	struct dcn30_mpc *mpc30 = TO_DCN30_MPC(mpc);
-+
-+	REG_SET_2(MPCC_MCM_SHAPER_RAMB_START_CNTL_B[mpcc_id], 0,
-+		MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_B, params->corner_points[0].blue.custom_float_x,
-+		MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_SEGMENT_B, 0);
-+	REG_SET_2(MPCC_MCM_SHAPER_RAMB_START_CNTL_G[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_B, params->corner_points[0].green.custom_float_x,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_SEGMENT_B, 0);
-+	REG_SET_2(MPCC_MCM_SHAPER_RAMB_START_CNTL_R[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_B, params->corner_points[0].red.custom_float_x,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_START_SEGMENT_B, 0);
- 
--	curve += 2;
--	REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_32_33[mpcc_id], 0,
-+	REG_SET_2(MPCC_MCM_SHAPER_RAMB_END_CNTL_B[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_B, params->corner_points[1].blue.custom_float_x,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].blue.custom_float_y);
-+	REG_SET_2(MPCC_MCM_SHAPER_RAMB_END_CNTL_G[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_B, params->corner_points[1].green.custom_float_x,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].green.custom_float_y);
-+	REG_SET_2(MPCC_MCM_SHAPER_RAMB_END_CNTL_R[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_B, params->corner_points[1].red.custom_float_x,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION_END_BASE_B, params->corner_points[1].red.custom_float_y);
-+
-+	curve = params->arr_curve_points;
-+	if (curve) {
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_0_1[mpcc_id], 0,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
- 			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_2_3[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_4_5[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_6_7[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_8_9[mpcc_id], 0,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+			MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_10_11[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_12_13[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_14_15[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_16_17[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_18_19[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_20_21[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_22_23[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_24_25[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_26_27[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_28_29[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_30_31[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+
-+		curve += 2;
-+		REG_SET_4(MPCC_MCM_SHAPER_RAMB_REGION_32_33[mpcc_id], 0,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_LUT_OFFSET, curve[0].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION0_NUM_SEGMENTS, curve[0].segments_num,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_LUT_OFFSET, curve[1].offset,
-+				MPCC_MCM_SHAPER_RAMA_EXP_REGION1_NUM_SEGMENTS, curve[1].segments_num);
-+	}
+diff --git a/drivers/gpu/drm/xe/xe_gt_freq.c b/drivers/gpu/drm/xe/xe_gt_freq.c
+index 552ac92496a40..60d9354e7dbf4 100644
+--- a/drivers/gpu/drm/xe/xe_gt_freq.c
++++ b/drivers/gpu/drm/xe/xe_gt_freq.c
+@@ -61,9 +61,10 @@ dev_to_xe(struct device *dev)
+ 	return gt_to_xe(kobj_to_gt(dev->kobj.parent));
  }
  
+-static ssize_t act_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t act_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 
+@@ -73,11 +74,12 @@ static ssize_t act_freq_show(struct device *dev,
+ 
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+-static DEVICE_ATTR_RO(act_freq);
++static struct kobj_attribute attr_act_freq = __ATTR_RO(act_freq);
+ 
+-static ssize_t cur_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t cur_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 	ssize_t ret;
+@@ -90,11 +92,12 @@ static ssize_t cur_freq_show(struct device *dev,
+ 
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+-static DEVICE_ATTR_RO(cur_freq);
++static struct kobj_attribute attr_cur_freq = __ATTR_RO(cur_freq);
+ 
+-static ssize_t rp0_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t rp0_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 
+@@ -104,11 +107,12 @@ static ssize_t rp0_freq_show(struct device *dev,
+ 
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+-static DEVICE_ATTR_RO(rp0_freq);
++static struct kobj_attribute attr_rp0_freq = __ATTR_RO(rp0_freq);
+ 
+-static ssize_t rpe_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t rpe_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 
+@@ -118,11 +122,12 @@ static ssize_t rpe_freq_show(struct device *dev,
+ 
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+-static DEVICE_ATTR_RO(rpe_freq);
++static struct kobj_attribute attr_rpe_freq = __ATTR_RO(rpe_freq);
+ 
+-static ssize_t rpa_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t rpa_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 
+@@ -132,20 +137,22 @@ static ssize_t rpa_freq_show(struct device *dev,
+ 
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+-static DEVICE_ATTR_RO(rpa_freq);
++static struct kobj_attribute attr_rpa_freq = __ATTR_RO(rpa_freq);
+ 
+-static ssize_t rpn_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t rpn_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 
+ 	return sysfs_emit(buf, "%d\n", xe_guc_pc_get_rpn_freq(pc));
+ }
+-static DEVICE_ATTR_RO(rpn_freq);
++static struct kobj_attribute attr_rpn_freq = __ATTR_RO(rpn_freq);
+ 
+-static ssize_t min_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t min_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 	ssize_t ret;
+@@ -159,9 +166,10 @@ static ssize_t min_freq_show(struct device *dev,
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+ 
+-static ssize_t min_freq_store(struct device *dev, struct device_attribute *attr,
+-			      const char *buff, size_t count)
++static ssize_t min_freq_store(struct kobject *kobj,
++			      struct kobj_attribute *attr, const char *buff, size_t count)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 	ssize_t ret;
+@@ -178,11 +186,12 @@ static ssize_t min_freq_store(struct device *dev, struct device_attribute *attr,
+ 
+ 	return count;
+ }
+-static DEVICE_ATTR_RW(min_freq);
++static struct kobj_attribute attr_min_freq = __ATTR_RW(min_freq);
+ 
+-static ssize_t max_freq_show(struct device *dev,
+-			     struct device_attribute *attr, char *buf)
++static ssize_t max_freq_show(struct kobject *kobj,
++			     struct kobj_attribute *attr, char *buf)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 	ssize_t ret;
+@@ -196,9 +205,10 @@ static ssize_t max_freq_show(struct device *dev,
+ 	return sysfs_emit(buf, "%d\n", freq);
+ }
+ 
+-static ssize_t max_freq_store(struct device *dev, struct device_attribute *attr,
+-			      const char *buff, size_t count)
++static ssize_t max_freq_store(struct kobject *kobj,
++			      struct kobj_attribute *attr, const char *buff, size_t count)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_guc_pc *pc = dev_to_pc(dev);
+ 	u32 freq;
+ 	ssize_t ret;
+@@ -215,17 +225,17 @@ static ssize_t max_freq_store(struct device *dev, struct device_attribute *attr,
+ 
+ 	return count;
+ }
+-static DEVICE_ATTR_RW(max_freq);
++static struct kobj_attribute attr_max_freq = __ATTR_RW(max_freq);
+ 
+ static const struct attribute *freq_attrs[] = {
+-	&dev_attr_act_freq.attr,
+-	&dev_attr_cur_freq.attr,
+-	&dev_attr_rp0_freq.attr,
+-	&dev_attr_rpa_freq.attr,
+-	&dev_attr_rpe_freq.attr,
+-	&dev_attr_rpn_freq.attr,
+-	&dev_attr_min_freq.attr,
+-	&dev_attr_max_freq.attr,
++	&attr_act_freq.attr,
++	&attr_cur_freq.attr,
++	&attr_rp0_freq.attr,
++	&attr_rpa_freq.attr,
++	&attr_rpe_freq.attr,
++	&attr_rpn_freq.attr,
++	&attr_min_freq.attr,
++	&attr_max_freq.attr,
+ 	NULL
+ };
+ 
+diff --git a/drivers/gpu/drm/xe/xe_gt_idle.c b/drivers/gpu/drm/xe/xe_gt_idle.c
+index fbbace7b0b12a..c11206410a4d4 100644
+--- a/drivers/gpu/drm/xe/xe_gt_idle.c
++++ b/drivers/gpu/drm/xe/xe_gt_idle.c
+@@ -249,9 +249,10 @@ int xe_gt_idle_pg_print(struct xe_gt *gt, struct drm_printer *p)
+ 	return 0;
+ }
+ 
+-static ssize_t name_show(struct device *dev,
+-			 struct device_attribute *attr, char *buff)
++static ssize_t name_show(struct kobject *kobj,
++			 struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt_idle *gtidle = dev_to_gtidle(dev);
+ 	struct xe_guc_pc *pc = gtidle_to_pc(gtidle);
+ 	ssize_t ret;
+@@ -262,11 +263,12 @@ static ssize_t name_show(struct device *dev,
+ 
+ 	return ret;
+ }
+-static DEVICE_ATTR_RO(name);
++static struct kobj_attribute name_attr = __ATTR_RO(name);
+ 
+-static ssize_t idle_status_show(struct device *dev,
+-				struct device_attribute *attr, char *buff)
++static ssize_t idle_status_show(struct kobject *kobj,
++				struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt_idle *gtidle = dev_to_gtidle(dev);
+ 	struct xe_guc_pc *pc = gtidle_to_pc(gtidle);
+ 	enum xe_gt_idle_state state;
+@@ -277,6 +279,7 @@ static ssize_t idle_status_show(struct device *dev,
+ 
+ 	return sysfs_emit(buff, "%s\n", gt_idle_state_to_string(state));
+ }
++static struct kobj_attribute idle_status_attr = __ATTR_RO(idle_status);
+ 
+ u64 xe_gt_idle_residency_msec(struct xe_gt_idle *gtidle)
+ {
+@@ -291,10 +294,11 @@ u64 xe_gt_idle_residency_msec(struct xe_gt_idle *gtidle)
+ 	return residency;
+ }
+ 
+-static DEVICE_ATTR_RO(idle_status);
+-static ssize_t idle_residency_ms_show(struct device *dev,
+-				      struct device_attribute *attr, char *buff)
++
++static ssize_t idle_residency_ms_show(struct kobject *kobj,
++				      struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt_idle *gtidle = dev_to_gtidle(dev);
+ 	struct xe_guc_pc *pc = gtidle_to_pc(gtidle);
+ 	u64 residency;
+@@ -305,12 +309,12 @@ static ssize_t idle_residency_ms_show(struct device *dev,
+ 
+ 	return sysfs_emit(buff, "%llu\n", residency);
+ }
+-static DEVICE_ATTR_RO(idle_residency_ms);
++static struct kobj_attribute idle_residency_attr = __ATTR_RO(idle_residency_ms);
+ 
+ static const struct attribute *gt_idle_attrs[] = {
+-	&dev_attr_name.attr,
+-	&dev_attr_idle_status.attr,
+-	&dev_attr_idle_residency_ms.attr,
++	&name_attr.attr,
++	&idle_status_attr.attr,
++	&idle_residency_attr.attr,
+ 	NULL,
+ };
+ 
+diff --git a/drivers/gpu/drm/xe/xe_gt_throttle.c b/drivers/gpu/drm/xe/xe_gt_throttle.c
+index 8db78d616b6f2..aa962c783cdf7 100644
+--- a/drivers/gpu/drm/xe/xe_gt_throttle.c
++++ b/drivers/gpu/drm/xe/xe_gt_throttle.c
+@@ -114,115 +114,115 @@ static u32 read_reason_vr_tdc(struct xe_gt *gt)
+ 	return tdc;
+ }
+ 
+-static ssize_t status_show(struct device *dev,
+-			   struct device_attribute *attr,
+-			   char *buff)
++static ssize_t status_show(struct kobject *kobj,
++			   struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool status = !!read_status(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", status);
+ }
+-static DEVICE_ATTR_RO(status);
++static struct kobj_attribute attr_status = __ATTR_RO(status);
+ 
+-static ssize_t reason_pl1_show(struct device *dev,
+-			       struct device_attribute *attr,
+-			       char *buff)
++static ssize_t reason_pl1_show(struct kobject *kobj,
++			       struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool pl1 = !!read_reason_pl1(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", pl1);
+ }
+-static DEVICE_ATTR_RO(reason_pl1);
++static struct kobj_attribute attr_reason_pl1 = __ATTR_RO(reason_pl1);
+ 
+-static ssize_t reason_pl2_show(struct device *dev,
+-			       struct device_attribute *attr,
+-			       char *buff)
++static ssize_t reason_pl2_show(struct kobject *kobj,
++			       struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool pl2 = !!read_reason_pl2(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", pl2);
+ }
+-static DEVICE_ATTR_RO(reason_pl2);
++static struct kobj_attribute attr_reason_pl2 = __ATTR_RO(reason_pl2);
+ 
+-static ssize_t reason_pl4_show(struct device *dev,
+-			       struct device_attribute *attr,
+-			       char *buff)
++static ssize_t reason_pl4_show(struct kobject *kobj,
++			       struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool pl4 = !!read_reason_pl4(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", pl4);
+ }
+-static DEVICE_ATTR_RO(reason_pl4);
++static struct kobj_attribute attr_reason_pl4 = __ATTR_RO(reason_pl4);
+ 
+-static ssize_t reason_thermal_show(struct device *dev,
+-				   struct device_attribute *attr,
+-				   char *buff)
++static ssize_t reason_thermal_show(struct kobject *kobj,
++				   struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool thermal = !!read_reason_thermal(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", thermal);
+ }
+-static DEVICE_ATTR_RO(reason_thermal);
++static struct kobj_attribute attr_reason_thermal = __ATTR_RO(reason_thermal);
+ 
+-static ssize_t reason_prochot_show(struct device *dev,
+-				   struct device_attribute *attr,
+-				   char *buff)
++static ssize_t reason_prochot_show(struct kobject *kobj,
++				   struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool prochot = !!read_reason_prochot(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", prochot);
+ }
+-static DEVICE_ATTR_RO(reason_prochot);
++static struct kobj_attribute attr_reason_prochot = __ATTR_RO(reason_prochot);
+ 
+-static ssize_t reason_ratl_show(struct device *dev,
+-				struct device_attribute *attr,
+-				char *buff)
++static ssize_t reason_ratl_show(struct kobject *kobj,
++				struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool ratl = !!read_reason_ratl(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", ratl);
+ }
+-static DEVICE_ATTR_RO(reason_ratl);
++static struct kobj_attribute attr_reason_ratl = __ATTR_RO(reason_ratl);
+ 
+-static ssize_t reason_vr_thermalert_show(struct device *dev,
+-					 struct device_attribute *attr,
+-					 char *buff)
++static ssize_t reason_vr_thermalert_show(struct kobject *kobj,
++					 struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool thermalert = !!read_reason_vr_thermalert(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", thermalert);
+ }
+-static DEVICE_ATTR_RO(reason_vr_thermalert);
++static struct kobj_attribute attr_reason_vr_thermalert = __ATTR_RO(reason_vr_thermalert);
+ 
+-static ssize_t reason_vr_tdc_show(struct device *dev,
+-				  struct device_attribute *attr,
+-				  char *buff)
++static ssize_t reason_vr_tdc_show(struct kobject *kobj,
++				  struct kobj_attribute *attr, char *buff)
+ {
++	struct device *dev = kobj_to_dev(kobj);
+ 	struct xe_gt *gt = dev_to_gt(dev);
+ 	bool tdc = !!read_reason_vr_tdc(gt);
+ 
+ 	return sysfs_emit(buff, "%u\n", tdc);
+ }
+-static DEVICE_ATTR_RO(reason_vr_tdc);
++static struct kobj_attribute attr_reason_vr_tdc = __ATTR_RO(reason_vr_tdc);
+ 
+ static struct attribute *throttle_attrs[] = {
+-	&dev_attr_status.attr,
+-	&dev_attr_reason_pl1.attr,
+-	&dev_attr_reason_pl2.attr,
+-	&dev_attr_reason_pl4.attr,
+-	&dev_attr_reason_thermal.attr,
+-	&dev_attr_reason_prochot.attr,
+-	&dev_attr_reason_ratl.attr,
+-	&dev_attr_reason_vr_thermalert.attr,
+-	&dev_attr_reason_vr_tdc.attr,
++	&attr_status.attr,
++	&attr_reason_pl1.attr,
++	&attr_reason_pl2.attr,
++	&attr_reason_pl4.attr,
++	&attr_reason_thermal.attr,
++	&attr_reason_prochot.attr,
++	&attr_reason_ratl.attr,
++	&attr_reason_vr_thermalert.attr,
++	&attr_reason_vr_tdc.attr,
+ 	NULL
+ };
  
 -- 
 2.39.5
