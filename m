@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98245AE50F2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EAB7AE5381
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECB54A25BA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B3D9E7B0BDD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A05221723;
-	Mon, 23 Jun 2025 21:29:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85B2522258C;
+	Mon, 23 Jun 2025 21:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgvhEtfs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gc+68n/O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D510B1EDA0F;
-	Mon, 23 Jun 2025 21:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C827221FCC;
+	Mon, 23 Jun 2025 21:53:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714172; cv=none; b=V4YC/64hMAFrwOPOtSLCjP4oTmEn56IKv+G9UmcJkhtNx7gAWKj2jnWgfh8XK19rqT1VSCEcY9Fb7fyNUui6p10hnQdqX+9wP5QWGzQHYgm0z6U8t4aFVsKSOS9bH0YG6CbwmRKC1EFJ6ZfUnqHgNO+rwDyDM9/qCos8OHkvsU4=
+	t=1750715604; cv=none; b=svg1/c9f6Pj4hHCYutYO5ShRDLziwOPjPmeb8QWD1HaI36EjZg6836wldHW2A4+FaX7tzUD8pVNVh/q4W7fWc5G7p9g7Fih6TBScqJaiPUq+Ky3zWw5hZJD1/V7ftc5hKPpkpo5VxDNrigDh8EuXEQdiCRxup/rImyaHGXwm31U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714172; c=relaxed/simple;
-	bh=cTghTPxNQ9SPFkVIOlJI+dY8kiQXv/eLr2Pguax9inU=;
+	s=arc-20240116; t=1750715604; c=relaxed/simple;
+	bh=wVLwPfj2NtcbJyzZCTX60M6ohw16d2Z9zlUTiMUCJzU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ib3QlgdUc3HIN4xTksudWGotEOJHkW7qDY9Kury2s1FvcNJWBFurV7szmTgT6zGoEja+OIVAMqhTMH2Sud5f6pLQlh4zbOy87SdK2I03Ey9ugz0NdWtPsXe8HWS2RQ3RtPi4lkWxiRWTwzGE/LRF5JhbheUCGQaNezgPhWYY5Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgvhEtfs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C802BC4CEEA;
-	Mon, 23 Jun 2025 21:29:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=K/3DyST+vDCgwHLhXRHNfbXvPJry/xpWPhtwlJtrt9g4ndAiWMURh416U0V20tF2OdV+3+FyZXDV6bO6/e/avq+XaMMlP+uNZXzxW+nKKAIK9VKUtmr2RN5/W6kgr/mvlUHT2f3M/o9qi5yCNuS1vcY8K+/rywWEdgEBcMqtlA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gc+68n/O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C68A4C4CEEA;
+	Mon, 23 Jun 2025 21:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714172;
-	bh=cTghTPxNQ9SPFkVIOlJI+dY8kiQXv/eLr2Pguax9inU=;
+	s=korg; t=1750715604;
+	bh=wVLwPfj2NtcbJyzZCTX60M6ohw16d2Z9zlUTiMUCJzU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lgvhEtfsyt2p0eIi6JutHsQQQdfG0OdpJMjLzIEttVtZgm2IjyUJfemClkE/wyFMt
-	 kmaAHCq1sAWBm2qz1HcyzVOs/GEpPFGtcCZXpcXsvyIADi/rCXfO7ezbfBKS1zjIK1
-	 E/XS6jgrF0kudRijH6WLp1m0uwzyyYiXd0npCmWs=
+	b=gc+68n/OYrOSxV5+yKrT/THeRlI/ansZ99X34YrDN502DJGQVnaUwKOPTLEH60FXd
+	 RRtXliDRBHw8TWZT8+7oulO2MeSMFGYCIpGguoMgxkf8OJaJ3yqGVCloyOIlBadWHV
+	 lfuIM3HvBCA4+N7vVDFctCbfX6eRuwOluv+qJ84c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 210/355] iio: imu: inv_icm42600: Fix temperature calculation
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Jerry Lv <Jerry.Lv@axis.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 267/411] power: supply: bq27xxx: Retrieve again when busy
 Date: Mon, 23 Jun 2025 15:06:51 +0200
-Message-ID: <20250623130633.057498478@linuxfoundation.org>
+Message-ID: <20250623130640.377903554@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,92 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Jerry Lv <Jerry.Lv@axis.com>
 
-commit e2f820014239df9360064079ae93f838ff3b7f8c upstream.
+[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
 
->From the documentation:
-"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
-Offset should be applied before multiplying scale, so divide offset by
-scale to make this correct.
+Multiple applications may access the battery gauge at the same time, so
+the gauge may be busy and EBUSY will be returned. The driver will set a
+flag to record the EBUSY state, and this flag will be kept until the next
+periodic update. When this flag is set, bq27xxx_battery_get_property()
+will just return ENODEV until the flag is updated.
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Even if the gauge was busy during the last accessing attempt, returning
+ENODEV is not ideal, and can cause confusion in the applications layer.
+
+Instead, retry accessing the I2C to update the flag is as expected, for
+the gauge typically recovers from busy state within a few milliseconds.
+If still failed to access the gauge, the real error code would be returned
+instead of ENODEV (as suggested by Pali Rohár).
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
+Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c     |  2 +-
+ drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct ii
- 		return IIO_VAL_INT;
- 	/*
- 	 * T°C = (temp / 132.48) + 25
--	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
-+	 * Tm°C = 1000 * ((temp / 132.48) + 25)
-+	 * Tm°C = 7.548309 * temp + 25000
-+	 * Tm°C = (temp + 3312) * 7.548309
- 	 * scale: 100000 / 13248 ~= 7.548309
--	 * offset: 25000
-+	 * offset: 3312
- 	 */
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 7;
- 		*val2 = 548309;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = 25000;
-+		*val = 3312;
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index b86674df7b3b2..3fb1c912f86a0 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -2044,7 +2044,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
+ 	mutex_unlock(&di->lock);
+ 
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+-		return -ENODEV;
++		return di->cache.flags;
+ 
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 4e5d773b3bf8d..4d64275ecdfc6 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -6,6 +6,7 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
+ 
++#include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -32,6 +33,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	struct i2c_msg msg[2];
+ 	u8 data[2];
+ 	int ret;
++	int retry = 0;
+ 
+ 	if (!client->adapter)
+ 		return -ENODEV;
+@@ -48,7 +50,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	else
+ 		msg[1].len = 2;
+ 
+-	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++	do {
++		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++		if (ret == -EBUSY && ++retry < 3) {
++			/* sleep 10 milliseconds when busy */
++			usleep_range(10000, 11000);
++			continue;
++		}
++		break;
++	} while (1);
++
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.39.5
+
 
 
 
