@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C8FFAE52C0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFC16AE53D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 864E37AFBF7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590A11B6808C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A33412248B0;
-	Mon, 23 Jun 2025 21:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3EE223DEE;
+	Mon, 23 Jun 2025 21:55:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v3bRlKPl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7N8oQ/K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E58E221FBE;
-	Mon, 23 Jun 2025 21:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F93FB1B;
+	Mon, 23 Jun 2025 21:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715159; cv=none; b=Eb/wIpfbs4QPWq6zgLOvOLZPG64snTgyUJdYl0+slw52k5mLNz0UuzRSV/Sz+wZ7zFQVc5UQjKlzmdTyZXgxv4qu7jrL1Q1UyAPkZUCuHcif4yAhzD/f60yQ5cWrfiijOWl0o/U4FM34WFKv+NiueS3EtpE7ocZrL3J50QjrA2Q=
+	t=1750715749; cv=none; b=E41NbctZbm05cBKuN1yM6jfr1nrxBD7lzGROQcLAxR5QMJWdzMOJTI06Uelf+v9SWNxRuokmJCq6L1WQupLgcWtua6WN60JiZ/DgRPFC6mCXazLHrS+LRGM2IXtsbAfhJfuQ3kmIH03OCMlib1I9S2IjJYpecHubf+PwomEZQ/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715159; c=relaxed/simple;
-	bh=k05DgeHj4OmnQgDQr9g2z11ug3mxe8YJgjvOQ/Can6g=;
+	s=arc-20240116; t=1750715749; c=relaxed/simple;
+	bh=YSrzVT/8J4m6/QzMZ0TstMFWd+a88tVfGc90Oi98h2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JluF6VFGGnkU+XaKgXL8SRzGdpblCpwZsbwW83FWkAXyERs0xo3Ulb0DyxQ4f+8swI7zAlwaTm/knu/TXOmAOrT0Fv+u6dK2BTJREZCI7IXevqYHIzLUmHIMThi0FlCgBWuqUQxEwg5zqlX2j3tJLiZgbM0iIt+Sq6NY8yXED4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v3bRlKPl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D20C4CEEA;
-	Mon, 23 Jun 2025 21:45:58 +0000 (UTC)
+	 MIME-Version; b=PDY72hWIBqkP6oir43swsY+OpnEMHab8iDpQLAdB9g3wWior84Y9ZjzZbmuzDG/YVApGs+6xqAmIv6j8vCUeZeEUySGW/qopqMsAkLoPsfg6+NWl29lZ/eK+5djOQZSviRXsGHhRg5rQ97kH7xM4kqitkTup5iIEznyChZVaRg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7N8oQ/K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3D9C4CEEA;
+	Mon, 23 Jun 2025 21:55:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715159;
-	bh=k05DgeHj4OmnQgDQr9g2z11ug3mxe8YJgjvOQ/Can6g=;
+	s=korg; t=1750715748;
+	bh=YSrzVT/8J4m6/QzMZ0TstMFWd+a88tVfGc90Oi98h2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v3bRlKPlIKddNbQcVkh43CoezPj/jXUqBVMjmj2F0diu8NC5jodgjB/yC0/1yrl2G
-	 WY6X6PXayAAKw0hqJiPPT7Bw3ulKOXfWmyhe+ehTBf+8kZtv3iSU6IUAFJTzuwOrML
-	 /rghQ1RKbksmZ2xCPecd4F4bafN529pVTmVMTcWo=
+	b=m7N8oQ/KfxfA/+z9u3PQFUY8STCh/NKNlesWas2PwfkthcJ5IZ2SPW3vqM0Et9j1B
+	 oK1vLmwW0U1jjIzw1N9hraNV6Ep1CGR4fFUHeac6XwN6V82Mgz7VwPkZ4iZWgzLqEs
+	 2/pDC7eNFa4YU+A58Z/kXriMbSIKBL7AUImrJhLs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 462/592] smb: improve directory cache reuse for readdir operations
+	Ayushi Makhija <quic_amakhija@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 276/411] drm/bridge: anx7625: change the gpiod_set_value API
 Date: Mon, 23 Jun 2025 15:07:00 +0200
-Message-ID: <20250623130711.416285152@linuxfoundation.org>
+Message-ID: <20250623130640.600231171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm.hsk@gmail.com>
+From: Ayushi Makhija <quic_amakhija@quicinc.com>
 
-commit 72dd7961a4bb4fa1fc456169a61dd12e68e50645 upstream.
+[ Upstream commit 50935044e58e563cdcfd556d62f27bc8744dd64e ]
 
-Currently, cached directory contents were not reused across subsequent
-'ls' operations because the cache validity check relied on comparing
-the ctx pointer, which changes with each readdir invocation. As a
-result, the cached dir entries was not marked as valid and the cache was
-not utilized for subsequent 'ls' operations.
+Use gpiod_set_value_cansleep() instead of gpiod_set_value()
+to fix the below call trace in the boot log:
 
-This change uses the file pointer, which remains consistent across all
-readdir calls for a given directory instance, to associate and validate
-the cache. As a result, cached directory contents can now be
-correctly reused, improving performance for repeated directory listings.
+[    5.690534] Call trace:
+[    5.690536]  gpiod_set_value+0x40/0xa4
+[    5.690540]  anx7625_runtime_pm_resume+0xa0/0x324 [anx7625]
+[    5.690545]  __rpm_callback+0x48/0x1d8
+[    5.690549]  rpm_callback+0x6c/0x78
 
-Performance gains with local windows SMB server:
+Certain GPIO controllers require access via message-based buses
+such as I2C or SPI, which may cause the GPIOs to enter a sleep
+state. Therefore, use the gpiod_set_value_cansleep().
 
-Without the patch and default actimeo=1:
- 1000 directory enumeration operations on dir with 10k files took 135.0s
-
-With this patch and actimeo=0:
- 1000 directory enumeration operations on dir with 10k files took just 5.1s
-
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ayushi Makhija <quic_amakhija@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20250505094245.2660750-7-quic_amakhija@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cached_dir.h |    8 ++++----
- fs/smb/client/readdir.c    |   28 +++++++++++++++-------------
- 2 files changed, 19 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/cached_dir.h
-+++ b/fs/smb/client/cached_dir.h
-@@ -21,10 +21,10 @@ struct cached_dirent {
- struct cached_dirents {
- 	bool is_valid:1;
- 	bool is_failed:1;
--	struct dir_context *ctx; /*
--				  * Only used to make sure we only take entries
--				  * from a single context. Never dereferenced.
--				  */
-+	struct file *file; /*
-+			    * Used to associate the cache with a single
-+			    * open file instance.
-+			    */
- 	struct mutex de_mutex;
- 	int pos;		 /* Expected ctx->pos */
- 	struct list_head entries;
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -850,9 +850,9 @@ static bool emit_cached_dirents(struct c
- }
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 01612d2c034af..257f69b5e1783 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -920,10 +920,10 @@ static void anx7625_power_on(struct anx7625_data *ctx)
+ 	usleep_range(11000, 12000);
  
- static void update_cached_dirents_count(struct cached_dirents *cde,
--					struct dir_context *ctx)
-+					struct file *file)
- {
--	if (cde->ctx != ctx)
-+	if (cde->file != file)
- 		return;
- 	if (cde->is_valid || cde->is_failed)
- 		return;
-@@ -861,9 +861,9 @@ static void update_cached_dirents_count(
- }
+ 	/* Power on pin enable */
+-	gpiod_set_value(ctx->pdata.gpio_p_on, 1);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 1);
+ 	usleep_range(10000, 11000);
+ 	/* Power reset pin enable */
+-	gpiod_set_value(ctx->pdata.gpio_reset, 1);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 1);
+ 	usleep_range(10000, 11000);
  
- static void finished_cached_dirents_count(struct cached_dirents *cde,
--					struct dir_context *ctx)
-+					struct dir_context *ctx, struct file *file)
- {
--	if (cde->ctx != ctx)
-+	if (cde->file != file)
+ 	DRM_DEV_DEBUG_DRIVER(dev, "power on !\n");
+@@ -943,9 +943,9 @@ static void anx7625_power_standby(struct anx7625_data *ctx)
  		return;
- 	if (cde->is_valid || cde->is_failed)
- 		return;
-@@ -876,11 +876,12 @@ static void finished_cached_dirents_coun
- static void add_cached_dirent(struct cached_dirents *cde,
- 			      struct dir_context *ctx,
- 			      const char *name, int namelen,
--			      struct cifs_fattr *fattr)
-+			      struct cifs_fattr *fattr,
-+				  struct file *file)
- {
- 	struct cached_dirent *de;
- 
--	if (cde->ctx != ctx)
-+	if (cde->file != file)
- 		return;
- 	if (cde->is_valid || cde->is_failed)
- 		return;
-@@ -910,7 +911,8 @@ static void add_cached_dirent(struct cac
- static bool cifs_dir_emit(struct dir_context *ctx,
- 			  const char *name, int namelen,
- 			  struct cifs_fattr *fattr,
--			  struct cached_fid *cfid)
-+			  struct cached_fid *cfid,
-+			  struct file *file)
- {
- 	bool rc;
- 	ino_t ino = cifs_uniqueid_to_ino_t(fattr->cf_uniqueid);
-@@ -922,7 +924,7 @@ static bool cifs_dir_emit(struct dir_con
- 	if (cfid) {
- 		mutex_lock(&cfid->dirents.de_mutex);
- 		add_cached_dirent(&cfid->dirents, ctx, name, namelen,
--				  fattr);
-+				  fattr, file);
- 		mutex_unlock(&cfid->dirents.de_mutex);
  	}
  
-@@ -1022,7 +1024,7 @@ static int cifs_filldir(char *find_entry
- 	cifs_prime_dcache(file_dentry(file), &name, &fattr);
+-	gpiod_set_value(ctx->pdata.gpio_reset, 0);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 0);
+ 	usleep_range(1000, 1100);
+-	gpiod_set_value(ctx->pdata.gpio_p_on, 0);
++	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 0);
+ 	usleep_range(1000, 1100);
  
- 	return !cifs_dir_emit(ctx, name.name, name.len,
--			      &fattr, cfid);
-+			      &fattr, cfid, file);
- }
- 
- 
-@@ -1073,8 +1075,8 @@ int cifs_readdir(struct file *file, stru
- 	 * we need to initialize scanning and storing the
- 	 * directory content.
- 	 */
--	if (ctx->pos == 0 && cfid->dirents.ctx == NULL) {
--		cfid->dirents.ctx = ctx;
-+	if (ctx->pos == 0 && cfid->dirents.file == NULL) {
-+		cfid->dirents.file = file;
- 		cfid->dirents.pos = 2;
- 	}
- 	/*
-@@ -1142,7 +1144,7 @@ int cifs_readdir(struct file *file, stru
- 	} else {
- 		if (cfid) {
- 			mutex_lock(&cfid->dirents.de_mutex);
--			finished_cached_dirents_count(&cfid->dirents, ctx);
-+			finished_cached_dirents_count(&cfid->dirents, ctx, file);
- 			mutex_unlock(&cfid->dirents.de_mutex);
- 		}
- 		cifs_dbg(FYI, "Could not find entry\n");
-@@ -1183,7 +1185,7 @@ int cifs_readdir(struct file *file, stru
- 		ctx->pos++;
- 		if (cfid) {
- 			mutex_lock(&cfid->dirents.de_mutex);
--			update_cached_dirents_count(&cfid->dirents, ctx);
-+			update_cached_dirents_count(&cfid->dirents, file);
- 			mutex_unlock(&cfid->dirents.de_mutex);
- 		}
- 
+ 	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->pdata.supplies),
+-- 
+2.39.5
+
 
 
 
