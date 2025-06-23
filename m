@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-158135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A0D5AE5718
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DF8DAE5578
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C46D4E299B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F9A14A215E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7753223DE5;
-	Mon, 23 Jun 2025 22:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B951A226CF7;
+	Mon, 23 Jun 2025 22:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y7MDzJFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpkVgfEM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74574221543;
-	Mon, 23 Jun 2025 22:26:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7678D223DEE;
+	Mon, 23 Jun 2025 22:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717570; cv=none; b=eRe5YDVpZg+tUHTs9WxQMlL1d7U/vksYxMhiXftXkWB5TIrqCOJHLqfry4p/T4h4NXx+IQ5ZerRBf7CqBEx+PKV7DnMzIhLoek/0MNmoRH0N8rdSpXyWO3NAs/ECeO3+YYHzTxF4CMbzVSgC2Ye5DfY0kcmjpO7LCvepxI/D3EE=
+	t=1750716615; cv=none; b=Mjl78kRbDXkM3Tl+On4tYeYQngJvrdyLz6q7g/3vMf3E0jwC2jAbEfR9CZOWJ0KQ9AmNGSheBGIxyzJePPeTiE8tPOBp2/g+pD3zMVAiTuSxCgy0KpOwtACbC5w+6h6TUPGNL2ZUXu55CBWGeyo8W0QegLDrk8zN2cYdzqEqxAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717570; c=relaxed/simple;
-	bh=t48LviNPo9C1Ha1s3xGEoqRDdyEO8acQFhwRx5KIX1g=;
+	s=arc-20240116; t=1750716615; c=relaxed/simple;
+	bh=Jpn1IvxA10dqvZmKkRkG3bk9x1TtK8qmJbDJA+5LNOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JeMID8PBLoC+5BijDpZYgQQ3CMX37rQ1P4df1WyQdXybUpZPMQ6lX2EL6wLL5gYBwINJhwThI0DhZOgrew4+qhi2ym8wNuQRFwhInzVNU94tATbunoFK4zXOTzz58Dyi1PNidFuIiWoPBDmfrMtHfqPX9xsQM7nzVqEef2jl4RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y7MDzJFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD8AC4CEEA;
-	Mon, 23 Jun 2025 22:26:09 +0000 (UTC)
+	 MIME-Version; b=lK3MWS2MWRASbjrOBurZJ7+E+SnGT1zUFvaIwL/edUnko7Sk8txBYymDwL7cqba1hCfZhYaFY9BNwVGtqOq3LWvOHIIYDLSt+kSgYYWL3q89YuQ85hlHtTHwYGEjptuMsdCE/8gWuI1E95KcCOAfDdwkfPSpTxYJnPgqbc4DIrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpkVgfEM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10805C4CEEA;
+	Mon, 23 Jun 2025 22:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717570;
-	bh=t48LviNPo9C1Ha1s3xGEoqRDdyEO8acQFhwRx5KIX1g=;
+	s=korg; t=1750716615;
+	bh=Jpn1IvxA10dqvZmKkRkG3bk9x1TtK8qmJbDJA+5LNOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y7MDzJFGQyIMSxrVKw5CAu/ZMmYYrwAafOj+eIKk+AWVgeJQlSy5psxuMjhpPx9Gp
-	 fBgiHqUoDM5t8NXvdwfvQFw4U2RyoFY/wjqMsMVwzuMugQgRKDPiBXjxRP927jnBzW
-	 lZu0RcX7iKHEQy2qoiIIz/ixHjfZd8+OxJCpLHFo=
+	b=wpkVgfEMkCcMqFCvaqUnXhkqX2expHABeJoIrvQy0GlUxErDc22kwJCSd6l819mZJ
+	 wJ0Jk9pOKTFjBMJDIzOcCkDBwjYhgK7zczNSA9Y9DJDZOhRpCsavQbB7+7g58XS/0k
+	 JTdWLTc6BUutVAfOX0rkIyXxEvIJDWFXAfr+fHAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 6.1 455/508] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
+	Jonathan Kim <jonathan.kim@amd.com>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 542/592] drm/amdkfd: move SDMA queue reset capability check to node_show
 Date: Mon, 23 Jun 2025 15:08:20 +0200
-Message-ID: <20250623130656.331811168@linuxfoundation.org>
+Message-ID: <20250623130713.332739354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Jesse.Zhang <Jesse.Zhang@amd.com>
 
-commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
+[ Upstream commit a55737dab6ba63eb4241e9c6547629058af31e12 ]
 
-We should count the terminating NUL byte as part of the ctx_len.
-Otherwise, UBSAN logs a warning:
-  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
-  index 60 is out of range for type 'char [*]'
+Relocate the per-SDMA queue reset capability check from
+kfd_topology_set_capabilities() to node_show() to ensure we read the
+latest value of sdma.supported_reset after all IP blocks are initialized.
 
-The allocation itself is correct so there is no actual out of bounds
-indexing, just a warning.
-
-Cc: stable@vger.kernel.org
-Suggested-by: Christian Göttsche <cgzones@googlemail.com>
-Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ceb7114c961b ("drm/amdkfd: flag per-sdma queue reset supported to user space")
+Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit e17df7b086cf908cedd919f448da9e00028419bb)
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/xfrm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/security/selinux/xfrm.c
-+++ b/security/selinux/xfrm.c
-@@ -95,7 +95,7 @@ static int selinux_xfrm_alloc_user(struc
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index 9bbee484d57cc..d6653e39e1477 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -510,6 +510,10 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
+ 			dev->node_props.capability |=
+ 					HSA_CAP_AQL_QUEUE_DOUBLE_MAP;
  
- 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
- 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
--	ctx->ctx_len = str_len;
-+	ctx->ctx_len = str_len + 1;
- 	memcpy(ctx->ctx_str, &uctx[1], str_len);
- 	ctx->ctx_str[str_len] = '\0';
- 	rc = security_context_to_sid(&selinux_state, ctx->ctx_str, str_len,
++		if (KFD_GC_VERSION(dev->gpu) < IP_VERSION(10, 0, 0) &&
++			(dev->gpu->adev->sdma.supported_reset & AMDGPU_RESET_TYPE_PER_QUEUE))
++				dev->node_props.capability2 |= HSA_CAP2_PER_SDMA_QUEUE_RESET_SUPPORTED;
++
+ 		sysfs_show_32bit_prop(buffer, offs, "max_engine_clk_fcompute",
+ 			dev->node_props.max_engine_clk_fcompute);
+ 
+@@ -2001,8 +2005,6 @@ static void kfd_topology_set_capabilities(struct kfd_topology_device *dev)
+ 		if (!amdgpu_sriov_vf(dev->gpu->adev))
+ 			dev->node_props.capability |= HSA_CAP_PER_QUEUE_RESET_SUPPORTED;
+ 
+-		if (dev->gpu->adev->sdma.supported_reset & AMDGPU_RESET_TYPE_PER_QUEUE)
+-			dev->node_props.capability2 |= HSA_CAP2_PER_SDMA_QUEUE_RESET_SUPPORTED;
+ 	} else {
+ 		dev->node_props.debug_prop |= HSA_DBG_WATCH_ADDR_MASK_LO_BIT_GFX10 |
+ 					HSA_DBG_WATCH_ADDR_MASK_HI_BIT;
+-- 
+2.39.5
+
 
 
 
