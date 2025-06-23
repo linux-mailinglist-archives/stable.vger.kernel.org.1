@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4B6AE5232
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B742AE50AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A90B4A5400
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3AB411B62A6F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B2082222C2;
-	Mon, 23 Jun 2025 21:41:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF44121B9C9;
+	Mon, 23 Jun 2025 21:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzE8KkZZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2BqdT+B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCD024315A;
-	Mon, 23 Jun 2025 21:41:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACF11EEA3C;
+	Mon, 23 Jun 2025 21:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714877; cv=none; b=Sn6mfGIRAUdQN2Tbt/QeKR2ulrsosCx3+DshZmXSdxBzj52EkOftHTOBxvSkkdY2I5k9BKuIPkReXAgXFmI2UyfVHPdLTaYgHhEKvKzzeSCtiW90gBaOk6OZG48VoWtRWM3w7eNVeNPn4CDDIPR6vnBB9QUgjm2z7BYFv5rjv10=
+	t=1750714001; cv=none; b=UADiyEBEdshYcJgwSw227RN6+U3Lt2ygxJmfgWbGDAVIk8MPoMn/ye3aZ11nC++sv0BTlvlygvI8ZDb0jS1ZDeAklgBgotvJiEnnutiW1wR7bUBm5GMYh+YG620O0QxB/XrwNmJictFrtonh1Rp6y3fgH0LLICYIFHJhVaWa4Rw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714877; c=relaxed/simple;
-	bh=vPDLesdtCiXjDFmz0pN+3qFR8CFFQ+Y2EDhlmw1WCtQ=;
+	s=arc-20240116; t=1750714001; c=relaxed/simple;
+	bh=pdBDjbCgOEOWyvlQko6vTKKEFW13fTq2sVntxFRK+RY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gTt9/+azfRlKsQZ8lrFgpVmvfXa9pkCJRQyr9GoYPrBIARNHs+VvcQp0kxQr+D4dXk89FDAp+QmPsvZuZjiKGHhSx2r4B/Fx3omq46WhTCi4ObvOpRpQhEB4iDGHbXmwh1w/As5WxfVT7A2v3i3mEPh31yUZGG/rGA4tKf8mdFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzE8KkZZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B43C4CEEA;
-	Mon, 23 Jun 2025 21:41:17 +0000 (UTC)
+	 MIME-Version; b=SoG+jUboHHZX9OKPZbZJhYCIPYE2Ll0HD3bl/vNiL8HFQFqcI9UjnN8JKQaFWClS87Y1FQKiqwshjZ4IWeb68OWd6vGQUUbeJsquNueeM8Gepm1YfA8PBEy7XwZz4HZfZp8xd9Ta6ACjezLz5bALWn3RTV2U1DGCg3eOSdett1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2BqdT+B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00079C4CEEA;
+	Mon, 23 Jun 2025 21:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714877;
-	bh=vPDLesdtCiXjDFmz0pN+3qFR8CFFQ+Y2EDhlmw1WCtQ=;
+	s=korg; t=1750714001;
+	bh=pdBDjbCgOEOWyvlQko6vTKKEFW13fTq2sVntxFRK+RY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzE8KkZZyqrCwrkHl9i48KX8V1NQj0KlSrKNHIwWrrLhL73z0NE4Zgm0gJ+xQikSH
-	 SRRWZAdtwI9Lklp+kN07khcztGCbe9RrOxZ7eyyQpIDqvfoS8PgFwqOJ3kyv0qUD11
-	 MeazrmYYENZXRw+dPWbyuOCdxMeBXvYuuJRNeQMg=
+	b=x2BqdT+BE02nTZA5yzNVC0VWJSgYbX4I07rn//1uZPRAyoZ3ngifznQZBy2Fc+1kj
+	 hKk6Q1rsuDKbkh6CcheAcEMIeEPOUVcf7kKyZkoLSWASN0UZiQJg38t/Uc+NNLnc98
+	 i/RXuLxwkNMLfXuIZs9qjg+5q9BeZcA1ICrjK4Ig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 5.15 235/411] EDAC/altera: Use correct write width with the INTTEST register
+	syzbot+365005005522b70a36f2@syzkaller.appspotmail.com,
+	Denis Arefev <arefev@swemel.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 178/355] media: vivid: Change the siize of the composing
 Date: Mon, 23 Jun 2025 15:06:19 +0200
-Message-ID: <20250623130639.571799860@linuxfoundation.org>
+Message-ID: <20250623130632.052013361@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
+commit f83ac8d30c43fd902af7c84c480f216157b60ef0 upstream.
 
-On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
-A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
+syzkaller found a bug:
 
-  [ bp: AI-massage the commit message. ]
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
 
-Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+ tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+ vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
+ vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
+ vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
+ kthread+0x7a9/0x920 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+The composition size cannot be larger than the size of fmt_cap_rect.
+So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
+
+Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1718,9 +1718,9 @@ altr_edac_a10_device_trig(struct file *f
- 
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	else
--		writel(priv->ce_set_mask, set_addr);
-+		writew(priv->ce_set_mask, set_addr);
- 
- 	/* Ensure the interrupt test bits are set */
- 	wmb();
-@@ -1750,7 +1750,7 @@ altr_edac_a10_device_trig2(struct file *
- 
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	} else {
- 		/* Setup read/write of 4 bytes */
- 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -962,8 +962,8 @@ int vivid_vid_cap_s_selection(struct fil
+ 			if (dev->has_compose_cap) {
+ 				v4l2_rect_set_min_size(compose, &min_rect);
+ 				v4l2_rect_set_max_size(compose, &max_rect);
+-				v4l2_rect_map_inside(compose, &fmt);
+ 			}
++			v4l2_rect_map_inside(compose, &fmt);
+ 			dev->fmt_cap_rect = fmt;
+ 			tpg_s_buf_height(&dev->tpg, fmt.height);
+ 		} else if (dev->has_compose_cap) {
 
 
 
