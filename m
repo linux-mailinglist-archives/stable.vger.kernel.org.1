@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5ADAE5175
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B90AE4EC9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EED637A3F11
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5642C7AA975
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B071EE7C6;
-	Mon, 23 Jun 2025 21:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFF521CA07;
+	Mon, 23 Jun 2025 21:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1J4+hLOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBvJqV2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A7424409;
-	Mon, 23 Jun 2025 21:34:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA0ED70838;
+	Mon, 23 Jun 2025 21:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714463; cv=none; b=YL+fXovbsHzttXlp3XTNRU4MsK47Q9KN/jDip3jeQzyPnuwScvIdG4+6TRXpNhNGxClQkIZV7v8epcrq1qI3hHQt93N13ANZc4sqBh1aN5FKlqwpUMyOHjCrN2RxTVRWnm24M2ZM5acbK1Z6inOSONfdpqHr5i8wvNnb9KVZBag=
+	t=1750712945; cv=none; b=gafo9vlzFqeNdNRhEHtPyDpI3sIj06kaSF7SOe4XxCXGCcqesB4QvoRnaStPmH8SyiUdDyvGOgcGul+LOnOYaKQt+ViNkqH84zliAYWLLwKjXxPN2aNDjiTwKAKJMYXkmXUjklKqSX8qI+IbiIcKoAEOWSXA9SEiEozre4uW/bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714463; c=relaxed/simple;
-	bh=ab86mJcEeloBx5zwdoBg4sAolgIVRgtqTZBZFzezc50=;
+	s=arc-20240116; t=1750712945; c=relaxed/simple;
+	bh=pQh3/2QpcnoDDBnc3gId/NV3MSTvBdfNAS7pE278L6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwRNMv2mPwjvlzXIOuZx2gVHreK5StRIvP6dI/4cSCKzskbN/MJHO4oaC6lStcsexX39LgKfqWT7A+E4Harb14RYq+uMM4ziF+3hQcuqmnUFfYLiIDJqm9mQoYIz5FPFywqsPZURD8HvilGGA96canUKfbQ7UI81djMkgwX0Fvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1J4+hLOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8A2C4CEEA;
-	Mon, 23 Jun 2025 21:34:22 +0000 (UTC)
+	 MIME-Version; b=EKiXdslrFQOhpQ+dD3m1jJCrFGUPA7WLZfycgDy3/56G6YeCVyha639vkaiV3Vvpk7xHJKLWVMYukVoZi6DwQEkkSv3pGqrVMrZ87o0UFOgk5oLpWrVg9ZrCWlMIRbBYj5E8t+6zBIrVPqLQ3zNlayWp1Hc8UbVlCHK7g7r1SWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBvJqV2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440D6C4CEEA;
+	Mon, 23 Jun 2025 21:09:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714463;
-	bh=ab86mJcEeloBx5zwdoBg4sAolgIVRgtqTZBZFzezc50=;
+	s=korg; t=1750712945;
+	bh=pQh3/2QpcnoDDBnc3gId/NV3MSTvBdfNAS7pE278L6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1J4+hLOZOIrFUAeA07E/U/6EeiARTvPBLyKkasn0XI3od7PU8HK6WAwtzA7KRl80J
-	 QazEwKJLbQ7P/41QDd4D3SzXbOLoMEUZaBNhkFV50F5w0Sy+v4u1p2Oqd9rD2cOJNf
-	 sY9iTImQxPSGRjvmI932YdJhI1JN228VM/SiXW+o=
+	b=sBvJqV2zVS6TPzqOmUXuMfLIxivATthpen82ofDJuiJVjZNx9OMHhQx8pKO8M9xrV
+	 E15+F7ehSD9COen2lkqvQ8/fTKD6rTFpA/HycY/IU+cvYvqR/L/xGpowBBYSfnPviz
+	 rvwNolXRxufAMljNhKG600ohFyoxtTkL9Rl1/XNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/508] xfs: validate fsmap offsets specified in the query keys
+Subject: [PATCH 5.15 097/411] mfd: exynos-lpass: Avoid calling exynos_lpass_disable() twice in exynos_lpass_remove()
 Date: Mon, 23 Jun 2025 15:04:01 +0200
-Message-ID: <20250623130650.092802829@linuxfoundation.org>
+Message-ID: <20250623130635.925154937@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,98 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 3ee9351e74907fe3acb0721c315af25b05dc87da ]
+[ Upstream commit b70b84556eeca5262d290e8619fe0af5b7664a52 ]
 
-Improve the validation of the fsmap offset fields in the query keys and
-move the validation to the top of the function now that we have pushed
-the low key adjustment code downwards.
+exynos_lpass_disable() is called twice in the remove function. Remove
+one of these calls.
 
-Also fix some indenting issues that aren't worth a separate patch.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Fixes: 90f447170c6f ("mfd: exynos-lpass: Add runtime PM support")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/74d69e8de10308c9855db6d54155a3de4b11abfd.1745247209.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_fsmap.c | 30 +++++++++++++++++++-----------
- 1 file changed, 19 insertions(+), 11 deletions(-)
+ drivers/mfd/exynos-lpass.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index cdd806d80b7cf..d10f2c719220d 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -802,6 +802,19 @@ xfs_getfsmap_check_keys(
- 	struct xfs_fsmap		*low_key,
- 	struct xfs_fsmap		*high_key)
+diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
+index 99bd0e73c19c3..ffda3445d1c0f 100644
+--- a/drivers/mfd/exynos-lpass.c
++++ b/drivers/mfd/exynos-lpass.c
+@@ -144,7 +144,6 @@ static int exynos_lpass_remove(struct platform_device *pdev)
  {
-+	if (low_key->fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
-+		if (low_key->fmr_offset)
-+			return false;
-+	}
-+	if (high_key->fmr_flags != -1U &&
-+	    (high_key->fmr_flags & (FMR_OF_SPECIAL_OWNER |
-+				    FMR_OF_EXTENT_MAP))) {
-+		if (high_key->fmr_offset && high_key->fmr_offset != -1ULL)
-+			return false;
-+	}
-+	if (high_key->fmr_length && high_key->fmr_length != -1ULL)
-+		return false;
-+
- 	if (low_key->fmr_device > high_key->fmr_device)
- 		return false;
- 	if (low_key->fmr_device < high_key->fmr_device)
-@@ -845,15 +858,15 @@ xfs_getfsmap_check_keys(
-  * ----------------
-  * There are multiple levels of keys and counters at work here:
-  * xfs_fsmap_head.fmh_keys	-- low and high fsmap keys passed in;
-- * 				   these reflect fs-wide sector addrs.
-+ *				   these reflect fs-wide sector addrs.
-  * dkeys			-- fmh_keys used to query each device;
-- * 				   these are fmh_keys but w/ the low key
-- * 				   bumped up by fmr_length.
-+ *				   these are fmh_keys but w/ the low key
-+ *				   bumped up by fmr_length.
-  * xfs_getfsmap_info.next_daddr	-- next disk addr we expect to see; this
-  *				   is how we detect gaps in the fsmap
- 				   records and report them.
-  * xfs_getfsmap_info.low/high	-- per-AG low/high keys computed from
-- * 				   dkeys; used to query the metadata.
-+ *				   dkeys; used to query the metadata.
-  */
- int
- xfs_getfsmap(
-@@ -874,6 +887,8 @@ xfs_getfsmap(
- 	if (!xfs_getfsmap_is_valid_device(mp, &head->fmh_keys[0]) ||
- 	    !xfs_getfsmap_is_valid_device(mp, &head->fmh_keys[1]))
- 		return -EINVAL;
-+	if (!xfs_getfsmap_check_keys(&head->fmh_keys[0], &head->fmh_keys[1]))
-+		return -EINVAL;
+ 	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
  
- 	use_rmap = xfs_has_rmapbt(mp) &&
- 		   has_capability_noaudit(current, CAP_SYS_ADMIN);
-@@ -919,15 +934,8 @@ xfs_getfsmap(
- 	 * other mapping for the same physical block range.
- 	 */
- 	dkeys[0] = head->fmh_keys[0];
--	if (dkeys[0].fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
--		if (dkeys[0].fmr_offset)
--			return -EINVAL;
--	}
- 	memset(&dkeys[1], 0xFF, sizeof(struct xfs_fsmap));
- 
--	if (!xfs_getfsmap_check_keys(dkeys, &head->fmh_keys[1]))
--		return -EINVAL;
--
- 	info.next_daddr = head->fmh_keys[0].fmr_physical +
- 			  head->fmh_keys[0].fmr_length;
- 	info.fsmap_recs = fsmap_recs;
+-	exynos_lpass_disable(lpass);
+ 	pm_runtime_disable(&pdev->dev);
+ 	if (!pm_runtime_status_suspended(&pdev->dev))
+ 		exynos_lpass_disable(lpass);
 -- 
 2.39.5
 
