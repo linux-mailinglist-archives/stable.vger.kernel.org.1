@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD18BAE4F1A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C12C7AE5270
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BEFE1B6058C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 580E44A45EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176E52222B2;
-	Mon, 23 Jun 2025 21:12:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3D221D3DD;
+	Mon, 23 Jun 2025 21:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kqj9yXar"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL6VtYnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FF6221DAE;
-	Mon, 23 Jun 2025 21:12:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7F4315A;
+	Mon, 23 Jun 2025 21:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713140; cv=none; b=gZNQ5xyrSP4rFHmr/52klL2VClSd8AgxMAf6RZu2O9c4IoCx7VuPlJ9k5eCaYg9YsWDFTEed7zIaOBEIlTsfnW30Kwc4oHbBuJ1GbCPck7FPFjv795/qITCLWCMRTJgwVFeIg8AWZvbxxaCfCcpw/S1EYsT/Nj86/PXkdBhsvf0=
+	t=1750715029; cv=none; b=lZ6EatMwr+LkQuJMWn6WtGiN5nJsKl9IgVdAUXaKofZ8hezAon0KcnlJgq+dlT78vDnFAdcFf8zP3J5aW2jRMAOiE6RqXdKLxUKK0Yql/rysLneiFFQjNm+kbkrQjDAfkMCQEsvLR+maxZiAO9HBTsLySAJpXYQCk6YXzZ99awU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713140; c=relaxed/simple;
-	bh=khV5Ry6jbBn/NsR//l57sq+VWajwtv0e908QzaLOnnU=;
+	s=arc-20240116; t=1750715029; c=relaxed/simple;
+	bh=2ifTHBgjENEykLtvJjca10UgWjUAfWm5IreHYF1vGys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GS1CHyNQ+Jc0aA3wTAZuSXtiDAWlHoDIjTptBzF9JUiuWqv5O5wdJzpxEWDTrIEigaLX2WXV0j+JNoGfWTRr2BnGIOsoyHVpscAOIND7YKF6zWHqNhNOK8g2otXkIQZl4kuiEqWBHuIZ+nZByMhSN7o19r6TUwXYFkF9t78NgTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kqj9yXar; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60110C4CEEA;
-	Mon, 23 Jun 2025 21:12:20 +0000 (UTC)
+	 MIME-Version; b=XrjONKqd0XUC69k6Ji+mols9bnXPpNotywXVWdGWwk8sdNUWhLyZcE/DUfEQB9RQC5m4Z1GEv1UbRw2QTy3Aoei/K5sfCiOVnDjps6iXDEtmbUDq/UDgRhGLrhxBrfscjqoqH+L9i/LJtcTrO3HTl4h86YCyEQTZIaXEd0M41us=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QL6VtYnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F70C4CEEA;
+	Mon, 23 Jun 2025 21:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713140;
-	bh=khV5Ry6jbBn/NsR//l57sq+VWajwtv0e908QzaLOnnU=;
+	s=korg; t=1750715028;
+	bh=2ifTHBgjENEykLtvJjca10UgWjUAfWm5IreHYF1vGys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kqj9yXar6DlkPXpbVAvht3rfzpkuBmWPiaR+gk7mcSwCE9+KC0k/GZjMAEoPPQxT3
-	 SbF1r30PXX1N0uonDD4emC5eImXFP8cL/gvvCvVwyoOp5zJWuH0VH+Wl+6z0kXf/A0
-	 OMKKUsKLNnq107DdgzmboXzi1uDGGLh9RIReYvpQ=
+	b=QL6VtYnEVvDKJA0Ptn6T6HvPm8htr+UxaI6K7c1+oImpZvUFCZphKltSDvM12z8R0
+	 vr0jatl+977ROzmOAwTWA1Kb0i3f4O+PBmXkYx3/4GyyCcxTbPm0zYmz/4p2WHXLUI
+	 llkW0OyHXAEdbTM8Mpb+GxRWqPq4+LhnWLWx9SkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 330/592] libbpf/btf: Fix string handling to support multi-split BTF
+	Niklas Cassel <cassel@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
+	Damien Le Moal <dlemoal@kernel.org>
+Subject: [PATCH 6.12 151/414] PCI: dwc: ep: Correct PBA offset in .set_msix() callback
 Date: Mon, 23 Jun 2025 15:04:48 +0200
-Message-ID: <20250623130708.306047124@linuxfoundation.org>
+Message-ID: <20250623130645.819398767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit 4e29128a9acec2a622734844bedee013e2901bdf ]
+commit 810276362bad172d063d1f6be1cc2cb425b90103 upstream.
 
-libbpf handling of split BTF has been written largely with the
-assumption that multiple splits are possible, i.e. split BTF on top of
-split BTF on top of base BTF.  One area where this does not quite work
-is string handling in split BTF; the start string offset should be the
-base BTF string section length + the base BTF string offset.  This
-worked in the past because for a single split BTF with base the start
-string offset was always 0.
+While dw_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
+the calculation of the PBA offset is wrong because it calculates space for
+(N-1) entries instead of N.
 
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250519165935.261614-2-alan.maguire@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This results in the following QEMU error when using PCI passthrough on a
+device which relies on the PCI endpoint subsystem:
+
+  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
+
+Fix the calculation of PBA offset in the MSI-X capability.
+
+[bhelgaas: more specific subject and commit log]
+
+Fixes: 83153d9f36e2 ("PCI: endpoint: Fix ->set_msix() to take BIR and offset as arguments")
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250514074313.283156-9-cassel@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/btf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-designware-ep.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
-index 38bc6b14b0666..8a7650e6480f9 100644
---- a/tools/lib/bpf/btf.c
-+++ b/tools/lib/bpf/btf.c
-@@ -996,7 +996,7 @@ static struct btf *btf_new_empty(struct btf *base_btf)
- 	if (base_btf) {
- 		btf->base_btf = base_btf;
- 		btf->start_id = btf__type_cnt(base_btf);
--		btf->start_str_off = base_btf->hdr->str_len;
-+		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
- 		btf->swapped_endian = base_btf->swapped_endian;
- 	}
+--- a/drivers/pci/controller/dwc/pcie-designware-ep.c
++++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
+@@ -398,6 +398,7 @@ static int dw_pcie_ep_set_msix(struct pc
+ 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
+ 	struct dw_pcie_ep_func *ep_func;
+ 	u32 val, reg;
++	u16 actual_interrupts = interrupts + 1;
  
--- 
-2.39.5
-
+ 	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
+ 	if (!ep_func || !ep_func->msix_cap)
+@@ -408,7 +409,7 @@ static int dw_pcie_ep_set_msix(struct pc
+ 	reg = ep_func->msix_cap + PCI_MSIX_FLAGS;
+ 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
+ 	val &= ~PCI_MSIX_FLAGS_QSIZE;
+-	val |= interrupts;
++	val |= interrupts; /* 0's based value */
+ 	dw_pcie_writew_dbi(pci, reg, val);
+ 
+ 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
+@@ -416,7 +417,7 @@ static int dw_pcie_ep_set_msix(struct pc
+ 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 
+ 	reg = ep_func->msix_cap + PCI_MSIX_PBA;
+-	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
++	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
+ 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
+ 
+ 	dw_pcie_dbi_ro_wr_dis(pci);
 
 
 
