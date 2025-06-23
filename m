@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-157544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157462-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D484AE5483
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27B72AE5413
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8394C11D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40863AFD18
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E351A4F12;
-	Mon, 23 Jun 2025 22:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2B5220686;
+	Mon, 23 Jun 2025 21:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ajpk5IzZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK4q1+1o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A044C74;
-	Mon, 23 Jun 2025 22:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF1270838;
+	Mon, 23 Jun 2025 21:58:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716127; cv=none; b=Jjq38HcqQdll829gBPEXPq6YHSUgamDZB4QmWCZ7AlHZlmFGfn4S9MqTUesARMOegf5irfUiPLIKfi9qWScM9g1x7B3eCd0iec2jCr8XhsdpgpeUdBuUoJCsLYWVybJRm5AnM0JUopkquvqdTB+Hb73oiSSJtdAKaDAjfMMFd8o=
+	t=1750715924; cv=none; b=p/doNTUV1mSTJqszRVuyj0X1JQikxXEfW6gg6F2q7kKzgX/hjanmXc/tHJIW2j44L+8DjsKdBYwAxDgUjjFp5zvhdA5FQLibrAKGVeTaUmWxfuFYK5GSpSMwR/9g1oFVJtVP+fY86J4iJEaPcYouCRRcqXN93o4N/Ra7n4smIOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716127; c=relaxed/simple;
-	bh=wLyWm/I/qQHUpp3eElQTLgbMdnUQg+Fv/gTHcVEQj0E=;
+	s=arc-20240116; t=1750715924; c=relaxed/simple;
+	bh=JDTCA6z+QIQsaIB1vTvpWze+bDRbZMXFkyng3oSvHu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qei7lIlBNgUkz0ghWntoSV8HN9jDqj1eduTl02v40xIvqvrOMyXJnYz6rBtkfYhPLS2z/blOcAn5nsKOqZzFkP6riyLl3kNyv5PtZOVfr0TaG/E2NUFk2h8EiNZx6dvdfy8vf3S5STwkBvYsxLYWWXtY80+l6+BsEmX+oFb8yVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ajpk5IzZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E15C4CEEA;
-	Mon, 23 Jun 2025 22:02:06 +0000 (UTC)
+	 MIME-Version; b=XUODbXlmhzX7rfr1iXmpi6ppZPaD0+0/1OUVXXFipI6dBfbDrAjqmdNpa9JRGvzm53ogUUBtJGzvKbDIT0x0WPj4dbHVE+zvrdvrCw3Jyj0qEXjKiP0BIqwxEIHIkPodCDrD/TJjwzhw6WYRJzs4xRP95LrPBCZ2f2PhhHKCC9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK4q1+1o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4286AC4CEEA;
+	Mon, 23 Jun 2025 21:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716127;
-	bh=wLyWm/I/qQHUpp3eElQTLgbMdnUQg+Fv/gTHcVEQj0E=;
+	s=korg; t=1750715924;
+	bh=JDTCA6z+QIQsaIB1vTvpWze+bDRbZMXFkyng3oSvHu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ajpk5IzZqOnE0/fo+Z/vzD/Yf7MPCPwtQctqASTe4sK2GNqx8789BKGIIC3BnUGbX
-	 /M+5qpXlToXcsztKEYpnuKvOW3h9GGzOZSmehmhcu755FtEhG/mJzWXcOCqOu9lkuj
-	 sBYiuw0fUB9D2AwEjRYvCc9nUajPd1GSMrRWS+8w=
+	b=VK4q1+1oz2T/YIPKR7aQWYG+0z5rblvjjy2/j4xqah0k30svyh9fqQYWC7cegPGYd
+	 9iNB5hgYzBC2XLaK+AOx63NYoxSgRHLXC8Z+XwlARGGG0mGZwFNrWuZCpmn053+YU4
+	 U3LZux6Bu1+1bLYECYe9O/jPAjuuc+VPdMrdXrYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 304/411] cpufreq: Force sync policy boost with global boost on sysfs update
-Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130641.298210330@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.15 491/592] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+Date: Mon, 23 Jun 2025 15:07:29 +0200
+Message-ID: <20250623130712.111369662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 121baab7b88ed865532dadb7ef1aee6e2bea86f5 ]
+commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
 
-If the global boost flag is enabled and policy boost flag is disabled, a
-call to `cpufreq_boost_trigger_state(true)` must enable the policy's
-boost state.
+Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
+noises after runtime-PM suspend.  Disable the codec runtime PM as a
+workaround.
 
-The current code misses that because of an optimization. Fix it.
-
-Suggested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/852ff11c589e6300730d207baac195b2d9d8b95f.1745511526.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/pci/hda/hda_intel.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 2c98ddf2c8db1..bbb0cbb2eb8c2 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2698,8 +2698,10 @@ int cpufreq_boost_trigger_state(int state)
- 	unsigned long flags;
- 	int ret = 0;
+--- a/sound/pci/hda/hda_intel.c
++++ b/sound/pci/hda/hda_intel.c
+@@ -2276,6 +2276,8 @@ static const struct snd_pci_quirk power_
+ 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
+ 	/* Dell ALC3271 */
+ 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
++	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
++	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
+ 	{}
+ };
  
--	if (cpufreq_driver->boost_enabled == state)
--		return 0;
-+	/*
-+	 * Don't compare 'cpufreq_driver->boost_enabled' with 'state' here to
-+	 * make sure all policies are in sync with global boost flag.
-+	 */
- 
- 	write_lock_irqsave(&cpufreq_driver_lock, flags);
- 	cpufreq_driver->boost_enabled = state;
--- 
-2.39.5
-
 
 
 
