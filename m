@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25FC1AE54AD
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAEC8AE509D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92BB171E0A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6C74A1367
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DF621D3F6;
-	Mon, 23 Jun 2025 22:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A491EDA0F;
+	Mon, 23 Jun 2025 21:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfsBuEaX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cDT6VNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626A3FB1B;
-	Mon, 23 Jun 2025 22:03:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42D22206BB;
+	Mon, 23 Jun 2025 21:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716198; cv=none; b=YoziW9gQ6H3sLIY8BPY5ag6i4OTgHHmc03jNPujkj2o07e36n2DONPA/wvXYpZwvBVrnCHHZPOSORHZwK7VaB0EYfUA/gkvoRZfQHBTN8xmKEDU9+2LI+tAlRMESoU4uAimhpN41OPHEGqAY7GaTY+P6cNkzwIhA5+WLLTygQ1Y=
+	t=1750713991; cv=none; b=ZBxxXXBifNWWwGJk/YCFJ68jG3qTUow1+aU6R7hg7WTqzlj7DD5+Gkan1X03W+b+pirN7r+umwDWprEGykEQ/x3h2xWfckF3TOUXALWRQDP3JFvCqRpWGbN2LmC78F+X45rEP/b9k98xpckpeVExNW9FQ5yWlJldHcrV1I5/Pko=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716198; c=relaxed/simple;
-	bh=lA6n5MB+IAjSaC+XOvscROuOwovHHiUnd/lporEQeww=;
+	s=arc-20240116; t=1750713991; c=relaxed/simple;
+	bh=5B9IBNDDCswNfadnffNApNE3KqWLeTo35tffjXRHKI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9j8nypgQi6k9bwg0ItpsqBi9rOtqU7zUz5rPWs0SsAqaQdSCP2icDrs3Vubvt3PUWLP4H67F2e0eF8Uos7XiUAV0t3fq662KRXo2w65BJHMaauB0ZrYQPFbUS1P/jac/NhaGREXfYuefhfbBAptpWBPU36UR/h5DvkRTcFCXF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfsBuEaX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD42C4CEEA;
-	Mon, 23 Jun 2025 22:03:17 +0000 (UTC)
+	 MIME-Version; b=iAVbk2NvSKG3JHxuaKMV8sNvtCy2R1JnToQoynWU9cvyfSjmBff2HuSxzXxP2S2ZQqUU4zEuIj6PCgK7u6pfAaCZvB8KC0n7usM466iUk9y2OafbM92GntUoonvsWcTB/0+z5HdBXnPkTMvJQ/coEAKD72f7JwsfhNO+G7+pS7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cDT6VNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4BBC4CEEA;
+	Mon, 23 Jun 2025 21:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716198;
-	bh=lA6n5MB+IAjSaC+XOvscROuOwovHHiUnd/lporEQeww=;
+	s=korg; t=1750713991;
+	bh=5B9IBNDDCswNfadnffNApNE3KqWLeTo35tffjXRHKI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfsBuEaX7GAZuFPh5mgbvPDGCRnkbE9aT5KaeWN5/vYO69J4duUjzR1UWfEWEane1
-	 voU+Ncyj0XZUKQhSyf8y1FhX4aEb/oK8H+DXyjHQYMfjcw/+MWwrgJU98br7Yj+6A8
-	 MUCxBs+EJEcyhm9zLVt6y197PcGTc8I6M4DFoakY=
+	b=1cDT6VNBGrLU7gD554W2csk4YzjOYZ4VmRVpNg9b2ONireyxjTJ63pEpfrp7FEAcJ
+	 QbdFnnEzKyPj4aphvvhgnFetprL+DfxqLiJMj1KHNGO0Ymy+L15fhpUSzLcjSoMvYi
+	 92b7vMuvaCWXlXKjudaPXw+oU9vscY2chkn4K+/0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baisheng Gao <baisheng.gao@unisoc.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 354/355] perf: Fix sample vs do_exit()
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.4 220/222] s390/pci: Fix __pcilg_mio_inuser() inline assembly
 Date: Mon, 23 Jun 2025 15:09:15 +0200
-Message-ID: <20250623130637.359641556@linuxfoundation.org>
+Message-ID: <20250623130618.913423434@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 4f6fc782128355931527cefe3eb45338abd8ab39 ]
+commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
 
-Baisheng Gao reported an ARM64 crash, which Mark decoded as being a
-synchronous external abort -- most likely due to trying to access
-MMIO in bad ways.
+Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
+assembly. The used "d" constraint allows the compiler to use any general
+purpose register for the shift operand, including register zero.
 
-The crash further shows perf trying to do a user stack sample while in
-exit_mmap()'s tlb_finish_mmu() -- i.e. while tearing down the address
-space it is trying to access.
+If register zero is used this my result in incorrect code generation:
 
-It turns out that we stop perf after we tear down the userspace mm; a
-receipie for disaster, since perf likes to access userspace for
-various reasons.
+ 8f6:   a7 0a ff f8             ahi     %r0,-8
+ 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
 
-Flip this order by moving up where we stop perf in do_exit().
+If register zero is selected to contain the shift value, the srlg
+instruction ignores the contents of the register and always shifts zero
+bits. Therefore use the "a" constraint which does not permit to select
+register zero.
 
-Additionally, harden PERF_SAMPLE_CALLCHAIN and PERF_SAMPLE_STACK_USER
-to abort when the current task does not have an mm (exit_mm() makes
-sure to set current->mm = NULL; before commencing with the actual
-teardown). Such that CPU wide events don't trip on this same problem.
-
-Fixes: c5ebcedb566e ("perf: Add ability to attach user stack dump to sample")
-Reported-by: Baisheng Gao <baisheng.gao@unisoc.com>
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250605110815.GQ39944@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Cc: stable@vger.kernel.org
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |  7 +++++++
- kernel/exit.c        | 17 +++++++++--------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ arch/s390/pci/pci_mmio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 21f56dd6c05a3..b133abe23a4b1 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6628,6 +6628,10 @@ perf_sample_ustack_size(u16 stack_size, u16 header_size,
- 	if (!regs)
- 		return 0;
- 
-+	/* No mm, no stack, no dump. */
-+	if (!current->mm)
-+		return 0;
-+
- 	/*
- 	 * Check if we fit in with the requested stack size into the:
- 	 * - TASK_SIZE
-@@ -7228,6 +7232,9 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
- 	const u32 max_stack = event->attr.sample_max_stack;
- 	struct perf_callchain_entry *callchain;
- 
-+	if (!current->mm)
-+		user = false;
-+
- 	if (!kernel && !user)
- 		return &__empty_callchain;
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index af9c8e794e4d7..cfdf2d275bba8 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -844,6 +844,15 @@ void __noreturn do_exit(long code)
- 	tsk->exit_code = code;
- 	taskstats_exit(tsk, group_dead);
- 
-+	/*
-+	 * Since sampling can touch ->mm, make sure to stop everything before we
-+	 * tear it down.
-+	 *
-+	 * Also flushes inherited counters to the parent - before the parent
-+	 * gets woken up by child-exit notifications.
-+	 */
-+	perf_event_exit_task(tsk);
-+
- 	exit_mm();
- 
- 	if (group_dead)
-@@ -860,14 +869,6 @@ void __noreturn do_exit(long code)
- 	exit_task_work(tsk);
- 	exit_thread(tsk);
- 
--	/*
--	 * Flush inherited counters to the parent - before the parent
--	 * gets woken up by child-exit notifications.
--	 *
--	 * because of cgroup mode, must be called before cgroup_exit()
--	 */
--	perf_event_exit_task(tsk);
--
- 	sched_autogroup_exit_task(tsk);
- 	cgroup_exit(tsk);
- 
--- 
-2.39.5
-
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -227,7 +227,7 @@ static inline int __pcilg_mio_inuser(
+ 		:
+ 		[cc] "+d" (cc), [val] "=d" (val), [len] "+d" (len),
+ 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
+-		[shift] "+d" (shift)
++		[shift] "+a" (shift)
+ 		:
+ 		[ioaddr] "a" (addr)
+ 		: "cc", "memory");
 
 
 
