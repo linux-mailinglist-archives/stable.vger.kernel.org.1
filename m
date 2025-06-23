@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155644-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA214AE43D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3FFBAE4351
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82001BC0346
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D0ED179882
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4946C250BEC;
-	Mon, 23 Jun 2025 13:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD2D255E26;
+	Mon, 23 Jun 2025 13:22:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rxDQ5Y9E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MRXN4Hz7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25FA4C6E;
-	Mon, 23 Jun 2025 13:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8EB23A9BE;
+	Mon, 23 Jun 2025 13:22:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685418; cv=none; b=CLtdR/kKF6fz/BQmgHYIhQRWOZplSJiKyRFNrLViQ/A94TaGxAwg4OKTseodREGm+zZXgDm3ocOzGoi7jvkg+jCDTpASCjgnO9iLe14oRIOdLbj39PO67MJAtNQaf2iLAMEh/7VnWFCtq4+7wPRCnFMMBqEzeID71F1G7MtLZLQ=
+	t=1750684963; cv=none; b=FfRJqH58CrehsChGTPD5m5Fb/38W7PMBHduniek38a77OLoICqzORsI2e0cXXzkyfxBM18bomDSuqWU0Dc/usx7Ja3G7qXmeheZn47XKGm/oUi7OIizTMvmnG1Y/+43BvQHmwim0hnZ+QfQ4agYGACAoqSsCtPCmRKB2vEOf/b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685418; c=relaxed/simple;
-	bh=IOdO3DcOx5wJxwpo7PAW7YZ+a5IR0IClLWeepWaf3LY=;
+	s=arc-20240116; t=1750684963; c=relaxed/simple;
+	bh=kPxxsPloNAZIbsDAv7MT44M99zRONtWkPcJJU6KB7vY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfCkDWRi/ROpF1Y9IpNszuMwwx37lo2Znt29dmlY1eYKTLZyHwI/LVFhteqSe8CvR3DCpojUfJBDTAMz6ACv3NBXeK6xqy+465UdoNrx7WN4Xq/Kgd7IALcIVJdP5kokJ2uvMuEFC/nTzXiOvCkYquC6T0L4FRPbO5zp4F0aHyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rxDQ5Y9E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ACA1C4CEEA;
-	Mon, 23 Jun 2025 13:30:17 +0000 (UTC)
+	 MIME-Version; b=QgxN0Nao+C8g1sF7BfJUb2eZ/HpGTxiQs5fUFKYkpggz7NL3I4iVTlUZkmXM57Zx8b6RsOLkAVk+s16zcQNv68XJBsPyCylFg2yL5qBskMag2/cZr92RUktccJ3l4t57dJ+zSLBdpyL9zAgp9gbFkr6a4cTR3igAeYmiTDAJY08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MRXN4Hz7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEA7C4CEEA;
+	Mon, 23 Jun 2025 13:22:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685417;
-	bh=IOdO3DcOx5wJxwpo7PAW7YZ+a5IR0IClLWeepWaf3LY=;
+	s=korg; t=1750684962;
+	bh=kPxxsPloNAZIbsDAv7MT44M99zRONtWkPcJJU6KB7vY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxDQ5Y9E5UQsBsEBgiOxc8YsEw8hDofVMX5NPVxv7RN+p/ecxF/7Ge/jAKPbuRthB
-	 5ZesYSbGo+CzGr+4Yqk/txauSnOgdtCW42dJ9PXnUMNQPHiS7l8UC1Fk3AdgV0pB9I
-	 Lci1mmifH+4VGZr8a29+YaPGL7KeBpy5TF6Plmb0=
+	b=MRXN4Hz7eDhBib6odtylieRnB7uxG2AdV2pNausivVUMhtqXcshZvUG+jebNIr5jo
+	 USKgHuhSeMb/sBoOgRIKs9tJLYaj+cX1HowpjbcLpCZnnxPLcmqoXRO+8UBRszYPTP
+	 azBAG+7DmPG2UPn/CZ5EKjZDEd8d82UVhOeYKdtY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	kernel test robot <oliver.sang@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 259/592] drm/msm/hdmi: add runtime PM calls to DDC transfer function
+Subject: [PATCH 5.10 016/355] crypto: lrw - Only add ecb if it is not already there
 Date: Mon, 23 Jun 2025 15:03:37 +0200
-Message-ID: <20250623130706.462794249@linuxfoundation.org>
+Message-ID: <20250623130627.267595543@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 531b4e2c206e5f7dead04d9da84dfa693ac57481 ]
+[ Upstream commit 3d73909bddc2ebb3224a8bc2e5ce00e9df70c15d ]
 
-We must be sure that the HDMI controller is powered on, while performing
-the DDC transfer. Add corresponding runtime PM calls to
-msm_hdmi_i2c_xfer().
+Only add ecb to the cipher name if it isn't already ecb.
 
-Reviewed-by: Jessica Zhang <quic_jesszhan@quicinc.com>
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/651727/
-Link: https://lore.kernel.org/r/20250505-fd-hdmi-hpd-v5-8-48541f76318c@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Also use memcmp instead of strncmp since these strings are all
+stored in an array of length CRYPTO_MAX_ALG_NAME.
+
+Fixes: 700cb3f5fe75 ("crypto: lrw - Convert to skcipher")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202505151503.d8a6cf10-lkp@intel.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/hdmi/hdmi_i2c.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ crypto/lrw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
-index 7aa500d24240f..ebefea4fb4085 100644
---- a/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
-+++ b/drivers/gpu/drm/msm/hdmi/hdmi_i2c.c
-@@ -107,11 +107,15 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
- 	if (num == 0)
- 		return num;
+diff --git a/crypto/lrw.c b/crypto/lrw.c
+index 80d9076e42e0b..7adc105c12f71 100644
+--- a/crypto/lrw.c
++++ b/crypto/lrw.c
+@@ -322,7 +322,7 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
  
-+	ret = pm_runtime_resume_and_get(&hdmi->pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	init_ddc(hdmi_i2c);
+ 	err = crypto_grab_skcipher(spawn, skcipher_crypto_instance(inst),
+ 				   cipher_name, 0, mask);
+-	if (err == -ENOENT) {
++	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
+ 		err = -ENAMETOOLONG;
+ 		if (snprintf(ecb_name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
+ 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
+@@ -356,7 +356,7 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 	/* Alas we screwed up the naming so we have to mangle the
+ 	 * cipher name.
+ 	 */
+-	if (!strncmp(cipher_name, "ecb(", 4)) {
++	if (!memcmp(cipher_name, "ecb(", 4)) {
+ 		int len;
  
- 	ret = ddc_clear_irq(hdmi_i2c);
- 	if (ret)
--		return ret;
-+		goto fail;
- 
- 	for (i = 0; i < num; i++) {
- 		struct i2c_msg *p = &msgs[i];
-@@ -169,7 +173,7 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
- 				hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS),
- 				hdmi_read(hdmi, REG_HDMI_DDC_HW_STATUS),
- 				hdmi_read(hdmi, REG_HDMI_DDC_INT_CTRL));
--		return ret;
-+		goto fail;
- 	}
- 
- 	ddc_status = hdmi_read(hdmi, REG_HDMI_DDC_SW_STATUS);
-@@ -202,7 +206,13 @@ static int msm_hdmi_i2c_xfer(struct i2c_adapter *i2c,
- 		}
- 	}
- 
-+	pm_runtime_put(&hdmi->pdev->dev);
-+
- 	return i;
-+
-+fail:
-+	pm_runtime_put(&hdmi->pdev->dev);
-+	return ret;
- }
- 
- static u32 msm_hdmi_i2c_func(struct i2c_adapter *adapter)
+ 		len = strscpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
 -- 
 2.39.5
 
