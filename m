@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-155548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF213AE4290
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AFE5AE4292
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 633A71895293
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7CFE1895BB2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D5C25392C;
-	Mon, 23 Jun 2025 13:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342B824A067;
+	Mon, 23 Jun 2025 13:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ts7Pi9TP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FHg+Ef/u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74F0253359;
-	Mon, 23 Jun 2025 13:18:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5F281E87B;
+	Mon, 23 Jun 2025 13:18:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684712; cv=none; b=dE0s6eTW8nIxdo45gZuQsHWleQe7931wfjXtwBdOKRp13hkiJEgrsJrUMJ5iv1gDctM0cDQhpJknvkogrrcG5luDloTddoFRQmkaUYl3A7Z6zqbLBe01my9AEKgTrKzNQ315SkAB5rfzExPYOeBvens0iypn6jEDCVLMj++c6+M=
+	t=1750684718; cv=none; b=Z6Ct4jlweVRflmlIlxFESzTlaYEa4kdDWkMYntWd6CaV7Zc1ni5iPtaEqX+b2S2E0ebtyKSIYyOr9iJlwNcgpVvyeMK0EK2Mvhlv+94eA+L7HUUYpWHTxFM2v+grT0f5fkF4vm850PIX81YDORmp+wNs7b8wnt2kTFjudcxGv7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684712; c=relaxed/simple;
-	bh=z816RUjwpWza+i4tMAkBFlQZv2ZBMigTUTjrlEyIhH4=;
+	s=arc-20240116; t=1750684718; c=relaxed/simple;
+	bh=09cb2uAtjWM1eUp29M52r/UYpzNDYYTbDIQ2QS8E3Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T09LG8lMkzlCxvR4C47Sd+/gUyTz/shWF/oCpBMwBT2VOvenDiDaD4E0T7NQQYjrokEBAdyrw2ZYH/BAQdvQjJhG5EI4Pfp8cLzBI3lGK+dksZNEfrpGsd4RpSTRkRGityyVYHPqaVWE42eXoZM5X24PYpzI6RUQ2htDtXWInZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ts7Pi9TP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CE8BC4CEEA;
-	Mon, 23 Jun 2025 13:18:32 +0000 (UTC)
+	 MIME-Version; b=KZajPAMXonVrzCAQ0G5k4BFnMwr8aMm8ekraUKJJpRjfrIe/geXje5mXCxeGLXxlqbIPfrdID6ejYZH74uptsZhB32uDzS+iCrlew6ZaUuMPJ3HNiEtGXVW3wyrr+AlxQ/juMxLvx1reGQJYHlhvJ2G3ZTSsIcbvfypVVpRi9uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FHg+Ef/u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723EBC4CEEA;
+	Mon, 23 Jun 2025 13:18:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684712;
-	bh=z816RUjwpWza+i4tMAkBFlQZv2ZBMigTUTjrlEyIhH4=;
+	s=korg; t=1750684717;
+	bh=09cb2uAtjWM1eUp29M52r/UYpzNDYYTbDIQ2QS8E3Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ts7Pi9TP9yUf76tvwtBtKPJ4KK/R7L3HV5qKSvBPywSuf5y73gcSAMYuL7dJg8mzX
-	 DpMboXBtGTwThLAxBgraszRh4RxfuCp+ZludfPs+p331nh0GZi9ep2DL6WsvoOZXSm
-	 UowKyiUi6zMWH+aKCMnRUYCeJLPaFcmRCHCzix4Q=
+	b=FHg+Ef/uoU3UKKv0nztIXYKPlO3PQjMOpc1TCgqu9mHg1x+yqL8zxfCNUaqP/k1RV
+	 rT+kOy2l44HkzLyynjXs1ILiHdS/VRxz3qiTKj8v2AC9AeVL39OT85GGdYGPHJgxTP
+	 3SwO2dXAQXBm/04X+vQ690EKeHA/lEgTDdU/UT1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Garry <john.g.garry@oracle.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.15 158/592] dm-table: Set BLK_FEAT_ATOMIC_WRITES for target queue limits
-Date: Mon, 23 Jun 2025 15:01:56 +0200
-Message-ID: <20250623130704.036613877@linuxfoundation.org>
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.15 159/592] phy: fsl-imx8mq-usb: fix phy_tx_vboost_level_from_property()
+Date: Mon, 23 Jun 2025 15:01:57 +0200
+Message-ID: <20250623130704.060949107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -65,51 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-commit b7c18b17a173087ce97e809cefd55e581121f19e upstream.
+commit b15ee09ddb987a122e74fb0fdf1bd6e864959fd3 upstream.
 
-Feature flag BLK_FEAT_ATOMIC_WRITES is not being properly set for the
-target queue limits, and this means that atomic writes are not being
-enabled for any dm personalities.
+The description of TX_VBOOST_LVL is wrong in register PHY_CTRL3
+bit[31:29].
 
-When calling dm_set_device_limits() -> blk_stack_limits() ->
-... -> blk_stack_atomic_writes_limits(), the bottom device limits
-(which corresponds to intermediate target queue limits) does not have
-BLK_FEAT_ATOMIC_WRITES set, and so atomic writes can never be enabled.
+The updated description as below:
+  011: Corresponds to a launch amplitude of 0.844 V.
+  100: Corresponds to a launch amplitude of 1.008 V.
+  101: Corresponds to a launch amplitude of 1.156 V.
 
-Typically such a flag would be inherited from the stacked device in
-dm_set_device_limits() -> blk_stack_limits() via BLK_FEAT_INHERIT_MASK,
-but BLK_FEAT_ATOMIC_WRITES is not inherited as it's preferred to manually
-enable on a per-personality basis.
+This will fix the parsing function
+phy_tx_vboost_level_from_property() to return correct value.
 
-Set BLK_FEAT_ATOMIC_WRITES manually for the intermediate target queue
-limits from the stacked device to get atomic writes working.
-
-Fixes: 3194e36488e2 ("dm-table: atomic writes support")
-Cc: stable@vger.kernel.org	# v6.14
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20250430094502.2723983-3-xu.yang_2@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-table.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -431,6 +431,12 @@ static int dm_set_device_limits(struct d
- 		return 0;
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -317,12 +317,12 @@ static u32 phy_tx_preemp_amp_tune_from_p
+ static u32 phy_tx_vboost_level_from_property(u32 microvolt)
+ {
+ 	switch (microvolt) {
+-	case 0 ... 960:
+-		return 0;
+-	case 961 ... 1160:
+-		return 2;
+-	default:
++	case 1156:
++		return 5;
++	case 844:
+ 		return 3;
++	default:
++		return 4;
  	}
+ }
  
-+	/*
-+	 * BLK_FEAT_ATOMIC_WRITES is not inherited from the bottom device in
-+	 * blk_stack_limits(), so do it manually.
-+	 */
-+	limits->features |= (q->limits.features & BLK_FEAT_ATOMIC_WRITES);
-+
- 	mutex_lock(&q->limits_lock);
- 	if (blk_stack_limits(limits, &q->limits,
- 			get_start_sect(bdev) + start) < 0)
 
 
 
