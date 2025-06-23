@@ -1,62 +1,59 @@
-Return-Path: <stable+bounces-157520-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 907B1AE5464
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47DA9AE533F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274084C0D61
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 912631B668C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24AA0221543;
-	Mon, 23 Jun 2025 22:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07F9B19049B;
+	Mon, 23 Jun 2025 21:51:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MSfFTxzb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pYzPJnbM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6AB54409;
-	Mon, 23 Jun 2025 22:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9B7E1AD3FA;
+	Mon, 23 Jun 2025 21:51:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716068; cv=none; b=rdOF0Z0Gtzab5cuRj5UE0Yao7zjUISF/kcmBCynl24Ui+cjSdqiTOQsYrsZet67EM0egFKwMTP8tmfYQTEtPw0xOkJq4DJGa5eKYIziJXAZx19AJsIZ8LLii+oJOrtpu9U/JlbGe2iY0FN0HjMzSmJM1AvyfiUo81gmor7zZWFA=
+	t=1750715480; cv=none; b=Aj3hYgVk3Y027hp70ZBPSIANoobDd8uHISWsfFCzW/m5s5UDO1gl48bUdkbKyVoZ2Dkl8CoP2RRIsRXppFlAwuq8cOOuhUVVIcwDl2VxOeBZfWSuQ1lxCyUmeVPY3A1uANPchVzfqg9zvk/LV27NA5xa83EaUlPm+GPFSvjTKCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716068; c=relaxed/simple;
-	bh=SEG+aemVMWbwLN/kobM9AQsrHD/2TNyktbtR9pxiWmE=;
+	s=arc-20240116; t=1750715480; c=relaxed/simple;
+	bh=6FDAyDCIp554DWhpndPLh6t1qcv9CAakDuzdJwuvmUk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XagzBDIDZwJtb9cY5BFmQqjw19/mfKTESR5p9MRSK2dZjTJHt2a+sxuTfUUJFQogonFDgCHGxvsKPiIruUDrVHIYdGvVaO7p2x3PX4HDQ8NPN0ms8PcYfVUt8LnCeC72639BnV6jSV2VGFF6IGusgfpC6CsjatWqBRtlxLpLNe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MSfFTxzb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21627C4CEEA;
-	Mon, 23 Jun 2025 22:01:07 +0000 (UTC)
+	 MIME-Version; b=HQJ8xmqd9xHrnCS3pc+4MWbC4eYkZa5mzzgkGiRyE3G7wWwM51kc+4y8H0biDXFnxoiUYch+jL3qJBzcSl8OAbErnvIzfKU5Hkz5Ca9WFYI07paGExMaEGsjLppGdLhtSozMb1shQJq9tazqctcpvlIPE+VgYltLw/GMd5Zfhzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pYzPJnbM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F9EFC4CEEA;
+	Mon, 23 Jun 2025 21:51:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716068;
-	bh=SEG+aemVMWbwLN/kobM9AQsrHD/2TNyktbtR9pxiWmE=;
+	s=korg; t=1750715479;
+	bh=6FDAyDCIp554DWhpndPLh6t1qcv9CAakDuzdJwuvmUk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MSfFTxzbBKTbrh4yHagkEtdCqUyX/QMSiWt71B9qqfHZbBUks4NMm9eiKZrvQTEly
-	 rIHrdSi/tvJ+APU4PR8MwRnf3foqQ4DI30Mf/OQe2mnQocBg8AMXUWBC/RfLVG+/tw
-	 0hc+hM3hj/lf13tueVna8NLMDw2xx81bgjn8CxGk=
+	b=pYzPJnbMP32s0tn7Cbm0YbKSN6aFLxgWAgk6wehDlZJeU6UlQMpzBdk2dVjJU9z5K
+	 ucWcaA+aepDpTWV59OWYW1UbgcJGGNcXvUuYoBeZLkpFVH6PM3NfKVrr3LV7tfICC9
+	 zA06IGvPA/VVYpLAK1tttw9MsiYgGgHleuakj/Pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Guo <gavinguo@igalia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Florent Revest <revest@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 238/290] mm/huge_memory: fix dereferencing invalid pmd migration entry
+Subject: [PATCH 5.10 298/355] mm/hugetlb: unshare page tables during VMA split, not before
 Date: Mon, 23 Jun 2025 15:08:19 +0200
-Message-ID: <20250623130634.082100330@linuxfoundation.org>
+Message-ID: <20250623130635.733428281@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,105 +65,208 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Guo <gavinguo@igalia.com>
+From: Jann Horn <jannh@google.com>
 
-commit be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 upstream.
+commit 081056dc00a27bccb55ccc3c6f230a3d5fd3f7e0 upstream.
 
-When migrating a THP, concurrent access to the PMD migration entry during
-a deferred split scan can lead to an invalid address access, as
-illustrated below.  To prevent this invalid access, it is necessary to
-check the PMD migration entry and return early.  In this context, there is
-no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-equality of the target folio.  Since the PMD migration entry is locked, it
-cannot be served as the target.
+Currently, __split_vma() triggers hugetlb page table unsharing through
+vm_ops->may_split().  This happens before the VMA lock and rmap locks are
+taken - which is too early, it allows racing VMA-locked page faults in our
+process and racing rmap walks from other processes to cause page tables to
+be shared again before we actually perform the split.
 
-Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
-lookup points to a location which may contain the folio of interest, but
-might instead contain another folio: and weeding out those other folios is
-precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
-replacing the wrong folio" comment a few lines above it) is for."
+Fix it by explicitly calling into the hugetlb unshare logic from
+__split_vma() in the same place where THP splitting also happens.  At that
+point, both the VMA and the rmap(s) are write-locked.
 
-BUG: unable to handle page fault for address: ffffea60001db008
-CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-Call Trace:
-<TASK>
-try_to_migrate_one+0x28c/0x3730
-rmap_walk_anon+0x4f6/0x770
-unmap_folio+0x196/0x1f0
-split_huge_page_to_list_to_order+0x9f6/0x1560
-deferred_split_scan+0xac5/0x12a0
-shrinker_debugfs_scan_write+0x376/0x470
-full_proxy_write+0x15c/0x220
-vfs_write+0x2fc/0xcb0
-ksys_write+0x146/0x250
-do_syscall_64+0x6a/0x120
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
+An annoying detail is that we can now call into the helper
+hugetlb_unshare_pmds() from two different locking contexts:
 
-The bug is found by syzkaller on an internal kernel, then confirmed on
-upstream.
+1. from hugetlb_split(), holding:
+    - mmap lock (exclusively)
+    - VMA lock
+    - file rmap lock (exclusively)
+2. hugetlb_unshare_all_pmds(), which I think is designed to be able to
+   call us with only the mmap lock held (in shared mode), but currently
+   only runs while holding mmap lock (exclusively) and VMA lock
 
-Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
-Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
-Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
+Backporting note:
+This commit fixes a racy protection that was introduced in commit
+b30c14cd6102 ("hugetlb: unshare some PMDs when splitting VMAs"); that
+commit claimed to fix an issue introduced in 5.13, but it should actually
+also go all the way back.
+
+[jannh@google.com: v2]
+  Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-1-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-0-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-1-f4136f5ec58a@google.com
+Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+Signed-off-by: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[b30c14cd6102: hugetlb: unshare some PMDs when splitting VMAs]
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[gavin: backport the migration checking logic to __split_huge_pmd]
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+[stable backport: code got moved around, VMA splitting is in
+__vma_adjust, hugetlb lock wasn't used back then]
+Signed-off-by: Jann Horn <jannh@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/linux/hugetlb.h |    6 +++++
+ mm/hugetlb.c            |   53 ++++++++++++++++++++++++++++++++++++------------
+ mm/mmap.c               |    8 +++++++
+ 3 files changed, 54 insertions(+), 13 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2260,12 +2260,14 @@ void __split_huge_pmd(struct vm_area_str
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -188,6 +188,8 @@ unsigned long hugetlb_change_protection(
+ 		unsigned long address, unsigned long end, pgprot_t newprot);
+ 
+ bool is_hugetlb_entry_migration(pte_t pte);
++void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
++void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
+ 
+ #else /* !CONFIG_HUGETLB_PAGE */
+ 
+@@ -369,6 +371,10 @@ static inline vm_fault_t hugetlb_fault(s
+ 	return 0;
+ }
+ 
++static inline void hugetlb_unshare_all_pmds(struct vm_area_struct *vma) { }
++
++static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
++
+ #endif /* !CONFIG_HUGETLB_PAGE */
+ /*
+  * hugepages at page global directory. If arch support
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -97,7 +97,7 @@ static inline void ClearPageHugeFreed(st
+ /* Forward declaration */
+ static int hugetlb_acct_memory(struct hstate *h, long delta);
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+-		unsigned long start, unsigned long end);
++		unsigned long start, unsigned long end, bool take_locks);
+ 
+ static inline void unlock_or_release_subpool(struct hugepage_subpool *spool)
  {
- 	spinlock_t *ptl;
- 	struct mmu_notifier_range range;
-+	bool pmd_migration;
+@@ -3699,26 +3699,40 @@ static int hugetlb_vm_op_split(struct vm
+ {
+ 	if (addr & ~(huge_page_mask(hstate_vma(vma))))
+ 		return -EINVAL;
++	return 0;
++}
  
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma->vm_mm,
- 				address & HPAGE_PMD_MASK,
- 				(address & HPAGE_PMD_MASK) + HPAGE_PMD_SIZE);
- 	mmu_notifier_invalidate_range_start(&range);
- 	ptl = pmd_lock(vma->vm_mm, pmd);
-+	pmd_migration = is_pmd_migration_entry(*pmd);
- 
++void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
++{
  	/*
- 	 * If caller asks to setup a migration entry, we need a folio to check
-@@ -2274,13 +2276,12 @@ void __split_huge_pmd(struct vm_area_str
- 	VM_BUG_ON(freeze && !folio);
- 	VM_WARN_ON_ONCE(folio && !folio_test_locked(folio));
+ 	 * PMD sharing is only possible for PUD_SIZE-aligned address ranges
+ 	 * in HugeTLB VMAs. If we will lose PUD_SIZE alignment due to this
+ 	 * split, unshare PMDs in the PUD_SIZE interval surrounding addr now.
++	 * This function is called in the middle of a VMA split operation, with
++	 * MM, VMA and rmap all write-locked to prevent concurrent page table
++	 * walks (except hardware and gup_fast()).
+ 	 */
++	mmap_assert_write_locked(vma->vm_mm);
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++
+ 	if (addr & ~PUD_MASK) {
+-		/*
+-		 * hugetlb_vm_op_split is called right before we attempt to
+-		 * split the VMA. We will need to unshare PMDs in the old and
+-		 * new VMAs, so let's unshare before we split.
+-		 */
+ 		unsigned long floor = addr & PUD_MASK;
+ 		unsigned long ceil = floor + PUD_SIZE;
  
--	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) ||
--	    is_pmd_migration_entry(*pmd)) {
-+	if (pmd_trans_huge(*pmd) || pmd_devmap(*pmd) || pmd_migration) {
- 		/*
--		 * It's safe to call pmd_page when folio is set because it's
--		 * guaranteed that pmd is present.
-+		 * Do not apply pmd_folio() to a migration entry; and folio lock
-+		 * guarantees that it must be of the wrong folio anyway.
- 		 */
--		if (folio && folio != page_folio(pmd_page(*pmd)))
-+		if (folio && (pmd_migration || folio != page_folio(pmd_page(*pmd))))
- 			goto out;
- 		__split_huge_pmd_locked(vma, pmd, range.start, freeze);
+-		if (floor >= vma->vm_start && ceil <= vma->vm_end)
+-			hugetlb_unshare_pmds(vma, floor, ceil);
++		if (floor >= vma->vm_start && ceil <= vma->vm_end) {
++			/*
++			 * Locking:
++			 * Use take_locks=false here.
++			 * The file rmap lock is already held.
++			 * The hugetlb VMA lock can't be taken when we already
++			 * hold the file rmap lock, and we don't need it because
++			 * its purpose is to synchronize against concurrent page
++			 * table walks, which are not possible thanks to the
++			 * locks held by our caller.
++			 */
++			hugetlb_unshare_pmds(vma, floor, ceil, /* take_locks = */ false);
++		}
  	}
+-
+-	return 0;
+ }
+ 
+ static unsigned long hugetlb_vm_op_pagesize(struct vm_area_struct *vma)
+@@ -5727,9 +5741,16 @@ void move_hugetlb_state(struct page *old
+ 	}
+ }
+ 
++/*
++ * If @take_locks is false, the caller must ensure that no concurrent page table
++ * access can happen (except for gup_fast() and hardware page walks).
++ * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
++ * concurrent page fault handling) and the file rmap lock.
++ */
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 				   unsigned long start,
+-				   unsigned long end)
++				   unsigned long end,
++				   bool take_locks)
+ {
+ 	struct hstate *h = hstate_vma(vma);
+ 	unsigned long sz = huge_page_size(h);
+@@ -5753,7 +5774,11 @@ static void hugetlb_unshare_pmds(struct
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, mm,
+ 				start, end);
+ 	mmu_notifier_invalidate_range_start(&range);
+-	i_mmap_lock_write(vma->vm_file->f_mapping);
++	if (take_locks) {
++		i_mmap_lock_write(vma->vm_file->f_mapping);
++	} else {
++		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	}
+ 	for (address = start; address < end; address += PUD_SIZE) {
+ 		ptep = huge_pte_offset(mm, address, sz);
+ 		if (!ptep)
+@@ -5763,7 +5788,9 @@ static void hugetlb_unshare_pmds(struct
+ 		spin_unlock(ptl);
+ 	}
+ 	flush_hugetlb_tlb_range(vma, start, end);
+-	i_mmap_unlock_write(vma->vm_file->f_mapping);
++	if (take_locks) {
++		i_mmap_unlock_write(vma->vm_file->f_mapping);
++	}
+ 	/*
+ 	 * No need to call mmu_notifier_invalidate_range(), see
+ 	 * Documentation/mm/mmu_notifier.rst.
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -832,7 +832,15 @@ int __vma_adjust(struct vm_area_struct *
+ 		}
+ 	}
+ again:
++	/*
++	 * Get rid of huge pages and shared page tables straddling the split
++	 * boundary.
++	 */
+ 	vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
++	if (is_vm_hugetlb_page(orig_vma)) {
++		hugetlb_split(orig_vma, start);
++		hugetlb_split(orig_vma, end);
++	}
+ 
+ 	if (file) {
+ 		mapping = file->f_mapping;
 
 
 
