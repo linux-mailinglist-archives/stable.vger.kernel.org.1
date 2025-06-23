@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-157886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF36AE5613
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16337AE56E7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33BEC4C64A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEEAC4C166B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5154223DF0;
-	Mon, 23 Jun 2025 22:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95341224B1F;
+	Mon, 23 Jun 2025 22:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAcYSDkN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="avhhtUFf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832EE19E7F9;
-	Mon, 23 Jun 2025 22:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 501432192EC;
+	Mon, 23 Jun 2025 22:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716960; cv=none; b=ebY6Hw7D+OJneIju4SwuUFnPDYhCAhVRJgHYII78T9FTOOvjziNWpGk2skzH8iGIiW6Zchz9L+Cq9n4cL/8Xhjpmoof7f+r7N/Vdij6980dSlKoZYBOp1cg4XNME8NOHLldaE8HSTRHcAJCulKexlRziao6Uc0fNGChhcGB2tkc=
+	t=1750717448; cv=none; b=cLHZDcOoG5vp1z0GbsOjsdKcPLeUGbmsmJiHa94C0E3f5Nj8+9fzg6Vrbp8OtyPzW9t2sJQEsKv9ORHbBhs26XyxA2HmQM3eW7xBNXugcMup75kmIP/vvMQZ6T6kQUcsZakzdmI8uJ9HIgurcDmYJhwx3khlSTh6rziGeE1M6Jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716960; c=relaxed/simple;
-	bh=dGEeLG0raJhVZVOGOnGiY1eAmJZj1/fbOQZ+tZhivNA=;
+	s=arc-20240116; t=1750717448; c=relaxed/simple;
+	bh=S2tgGUy4GGNMobf3Pp8sGwtEWqLGnRXC7hlvh83QQxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ez6ZTJFzGSmSntpoYiH6tHx9LSby6Rh2o160eU48i0jPq6AiG/KzMEp6YGRDa8QR2TzDB7xgJN7msMp8btOp412qlTWkq4fIN62oEuDTf+kCFS2mTHKfDZwvy7+tEG/POoXmOuP8NOtKwXtW51Da/ZbvPI3Rk2ptk8ekRX4drZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAcYSDkN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20EDC4CEEA;
-	Mon, 23 Jun 2025 22:15:59 +0000 (UTC)
+	 MIME-Version; b=UnPjn1AQVBItc087F0WbD6dWZSdrbzan98zUXBFLYg/z4YmGJSUhlxqk48LimuB4bP7Mlbv6dH+Hi4f1WERX0U9ZB8Fhy41G21UVnlwN4MKtWTRt8LjH6IdxZxO4hKhnod4C7OX1nDfGB/l/k1w1UkRwH1KrfabMCXY1afpzI2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=avhhtUFf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB981C4CEEA;
+	Mon, 23 Jun 2025 22:24:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716960;
-	bh=dGEeLG0raJhVZVOGOnGiY1eAmJZj1/fbOQZ+tZhivNA=;
+	s=korg; t=1750717448;
+	bh=S2tgGUy4GGNMobf3Pp8sGwtEWqLGnRXC7hlvh83QQxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zAcYSDkN6CSVvHzWcdHIkstuZ16KtRsv/bXTFU8IF4hGcN1GWuF+Dw7cmry+aQhoV
-	 TVWA07JvPSDdZklaprX/UB/ma0IzenqK3O0Aeb/jPJx+D/uYGNHTEKLnrF8YQLvjtZ
-	 llVpri3eOPS7ojx1gYm9lsK4J1ULuJjiqaJSUvtg=
+	b=avhhtUFfEBwi0tGFE+RJE9Em42GbaHAXuGc85ySiZIq49J4J4WNLqhVQAmJ16RfKC
+	 oWzxa7kiMIalL89QWavV8aEXKBSPtHRHus/7BjBLB3emzE39mC0zoc5v/oKlkhp5z+
+	 cFKRWGu+pMrK0pqaNwtNFDXo+n/07Vv7En/Lv/KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Francois Romieu <romieu@fr.zoreil.com>
-Subject: [PATCH 5.15 382/411] net: atm: fix /proc/net/atm/lec handling
+	Badal Nilawar <badal.nilawar@intel.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Nirmoy Das <nirmoy.das@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 389/414] drm/xe/gt: Update handling of xe_force_wake_get return
 Date: Mon, 23 Jun 2025 15:08:46 +0200
-Message-ID: <20250623130643.264009250@linuxfoundation.org>
+Message-ID: <20250623130651.670160460@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +66,350 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
 
-[ Upstream commit d03b79f459c7935cff830d98373474f440bd03ae ]
+[ Upstream commit 30d105577a3319094f8ae5ff1ceea670f1931487 ]
 
-/proc/net/atm/lec must ensure safety against dev_lec[] changes.
+xe_force_wake_get() now returns the reference count-incremented domain
+mask. If it fails for individual domains, the return value will always
+be 0. However, for XE_FORCEWAKE_ALL, it may return a non-zero value even
+in the event of failure. Use helper xe_force_wake_ref_has_domain to verify
+all domains are initialized or not. Update the return handling of
+xe_force_wake_get() to reflect this behavior, and ensure that the return
+value is passed as input to xe_force_wake_put().
 
-It appears it had dev_put() calls without prior dev_hold(),
-leading to imbalance and UAF.
+v3
+- return xe_wakeref_t instead of int in xe_force_wake_get()
+- xe_force_wake_put() error doesn't need to be checked. It internally
+WARNS on domain ack failure.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Acked-by: Francois Romieu <romieu@fr.zoreil.com> # Minor atm contributor
-Link: https://patch.msgid.link/20250618140844.1686882-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+v4
+- Rebase fix
+
+v5
+- return unsigned int for xe_force_wake_get()
+- remove redundant XE_WARN_ON()
+
+v6
+- use helper for checking all initialized domains are awake or not.
+
+v7
+- Fix commit message
+
+v9
+- Remove redundant WARN_ON (Badal)
+
+Cc: Badal Nilawar <badal.nilawar@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Signed-off-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Badal Nilawar <badal.nilawar@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20241014075601.2324382-10-himal.prasad.ghimiray@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Stable-dep-of: 16c1241b0875 ("drm/xe/bmg: Update Wa_16023588340")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/atm/lec.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/xe/xe_gt.c | 105 ++++++++++++++++++++-----------------
+ 1 file changed, 58 insertions(+), 47 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index 3f67b84c8f1c9..73078306504c0 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -911,7 +911,6 @@ static void *lec_itf_walk(struct lec_state *state, loff_t *l)
- 	v = (dev && netdev_priv(dev)) ?
- 		lec_priv_walk(state, l, netdev_priv(dev)) : NULL;
- 	if (!v && dev) {
--		dev_put(dev);
- 		/* Partial state reset for the next time we get called */
- 		dev = NULL;
- 	}
-@@ -935,6 +934,7 @@ static void *lec_seq_start(struct seq_file *seq, loff_t *pos)
- {
- 	struct lec_state *state = seq->private;
+diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
+index 258a6d6715679..335548e3b6b9c 100644
+--- a/drivers/gpu/drm/xe/xe_gt.c
++++ b/drivers/gpu/drm/xe/xe_gt.c
+@@ -98,14 +98,14 @@ void xe_gt_sanitize(struct xe_gt *gt)
  
-+	mutex_lock(&lec_mutex);
- 	state->itf = 0;
- 	state->dev = NULL;
- 	state->locked = NULL;
-@@ -952,8 +952,9 @@ static void lec_seq_stop(struct seq_file *seq, void *v)
- 	if (state->dev) {
- 		spin_unlock_irqrestore(&state->locked->lec_arp_lock,
- 				       state->flags);
--		dev_put(state->dev);
-+		state->dev = NULL;
+ static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	u32 reg;
+-	int err;
+ 
+ 	if (!XE_WA(gt, 16023588340))
+ 		return;
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	if (WARN_ON(err))
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	if (!fw_ref)
+ 		return;
+ 
+ 	if (!xe_gt_is_media_type(gt)) {
+@@ -115,13 +115,13 @@ static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
  	}
-+	mutex_unlock(&lec_mutex);
+ 
+ 	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0x3);
+-	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
  }
  
- static void *lec_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+ static void xe_gt_disable_host_l2_vram(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	u32 reg;
+-	int err;
+ 
+ 	if (!XE_WA(gt, 16023588340))
+ 		return;
+@@ -129,15 +129,15 @@ static void xe_gt_disable_host_l2_vram(struct xe_gt *gt)
+ 	if (xe_gt_is_media_type(gt))
+ 		return;
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	if (WARN_ON(err))
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	if (!fw_ref)
+ 		return;
+ 
+ 	reg = xe_gt_mcr_unicast_read_any(gt, XE2_GAMREQSTRM_CTRL);
+ 	reg &= ~CG_DIS_CNTLBUS;
+ 	xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
+ 
+-	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ }
+ 
+ /**
+@@ -405,11 +405,14 @@ static void dump_pat_on_error(struct xe_gt *gt)
+ 
+ static int gt_fw_domain_init(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	int err, i;
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	if (err)
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	if (!fw_ref) {
++		err = -ETIMEDOUT;
+ 		goto err_hw_fence_irq;
++	}
+ 
+ 	if (!xe_gt_is_media_type(gt)) {
+ 		err = xe_ggtt_init(gt_to_tile(gt)->mem.ggtt);
+@@ -444,14 +447,12 @@ static int gt_fw_domain_init(struct xe_gt *gt)
+ 	 */
+ 	gt->info.gmdid = xe_mmio_read32(gt, GMD_ID);
+ 
+-	err = xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
+-	XE_WARN_ON(err);
+-
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	return 0;
+ 
+ err_force_wake:
+ 	dump_pat_on_error(gt);
+-	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ err_hw_fence_irq:
+ 	for (i = 0; i < XE_ENGINE_CLASS_MAX; ++i)
+ 		xe_hw_fence_irq_finish(&gt->fence_irq[i]);
+@@ -461,11 +462,14 @@ static int gt_fw_domain_init(struct xe_gt *gt)
+ 
+ static int all_fw_domain_init(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	int err, i;
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	if (err)
+-		goto err_hw_fence_irq;
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL)) {
++		err = -ETIMEDOUT;
++		goto err_force_wake;
++	}
+ 
+ 	xe_gt_mcr_set_implicit_defaults(gt);
+ 	xe_wa_process_gt(gt);
+@@ -531,14 +535,12 @@ static int all_fw_domain_init(struct xe_gt *gt)
+ 	if (IS_SRIOV_PF(gt_to_xe(gt)))
+ 		xe_gt_sriov_pf_init_hw(gt);
+ 
+-	err = xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	XE_WARN_ON(err);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 
+ 	return 0;
+ 
+ err_force_wake:
+-	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-err_hw_fence_irq:
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	for (i = 0; i < XE_ENGINE_CLASS_MAX; ++i)
+ 		xe_hw_fence_irq_finish(&gt->fence_irq[i]);
+ 
+@@ -551,11 +553,12 @@ static int all_fw_domain_init(struct xe_gt *gt)
+  */
+ int xe_gt_init_hwconfig(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	int err;
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
+-	if (err)
+-		goto out;
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	if (!fw_ref)
++		return -ETIMEDOUT;
+ 
+ 	xe_gt_mcr_init_early(gt);
+ 	xe_pat_init(gt);
+@@ -573,8 +576,7 @@ int xe_gt_init_hwconfig(struct xe_gt *gt)
+ 	xe_gt_enable_host_l2_vram(gt);
+ 
+ out_fw:
+-	xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
+-out:
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	return err;
+ }
+ 
+@@ -744,6 +746,7 @@ static int do_gt_restart(struct xe_gt *gt)
+ 
+ static int gt_reset(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	int err;
+ 
+ 	if (xe_device_wedged(gt_to_xe(gt)))
+@@ -764,9 +767,11 @@ static int gt_reset(struct xe_gt *gt)
+ 
+ 	xe_gt_sanitize(gt);
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	if (err)
+-		goto err_msg;
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL)) {
++		err = -ETIMEDOUT;
++		goto err_out;
++	}
+ 
+ 	xe_uc_gucrc_disable(&gt->uc);
+ 	xe_uc_stop_prepare(&gt->uc);
+@@ -784,8 +789,7 @@ static int gt_reset(struct xe_gt *gt)
+ 	if (err)
+ 		goto err_out;
+ 
+-	err = xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	XE_WARN_ON(err);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	xe_pm_runtime_put(gt_to_xe(gt));
+ 
+ 	xe_gt_info(gt, "reset done\n");
+@@ -793,8 +797,7 @@ static int gt_reset(struct xe_gt *gt)
+ 	return 0;
+ 
+ err_out:
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
+-err_msg:
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	XE_WARN_ON(xe_uc_start(&gt->uc));
+ err_fail:
+ 	xe_gt_err(gt, "reset failed (%pe)\n", ERR_PTR(err));
+@@ -826,22 +829,25 @@ void xe_gt_reset_async(struct xe_gt *gt)
+ 
+ void xe_gt_suspend_prepare(struct xe_gt *gt)
+ {
+-	XE_WARN_ON(xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL));
++	unsigned int fw_ref;
++
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+ 
+ 	xe_uc_suspend_prepare(&gt->uc);
+ 
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ }
+ 
+ int xe_gt_suspend(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	int err;
+ 
+ 	xe_gt_dbg(gt, "suspending\n");
+ 	xe_gt_sanitize(gt);
+ 
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	if (err)
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))
+ 		goto err_msg;
+ 
+ 	err = xe_uc_suspend(&gt->uc);
+@@ -852,14 +858,15 @@ int xe_gt_suspend(struct xe_gt *gt)
+ 
+ 	xe_gt_disable_host_l2_vram(gt);
+ 
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	xe_gt_dbg(gt, "suspended\n");
+ 
+ 	return 0;
+ 
+-err_force_wake:
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
+ err_msg:
++	err = -ETIMEDOUT;
++err_force_wake:
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	xe_gt_err(gt, "suspend failed (%pe)\n", ERR_PTR(err));
+ 
+ 	return err;
+@@ -867,9 +874,11 @@ int xe_gt_suspend(struct xe_gt *gt)
+ 
+ void xe_gt_shutdown(struct xe_gt *gt)
+ {
+-	xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	unsigned int fw_ref;
++
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+ 	do_gt_reset(gt);
+-	xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ }
+ 
+ /**
+@@ -894,11 +903,12 @@ int xe_gt_sanitize_freq(struct xe_gt *gt)
+ 
+ int xe_gt_resume(struct xe_gt *gt)
+ {
++	unsigned int fw_ref;
+ 	int err;
+ 
+ 	xe_gt_dbg(gt, "resuming\n");
+-	err = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	if (err)
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
++	if (!xe_force_wake_ref_has_domain(fw_ref, XE_FORCEWAKE_ALL))
+ 		goto err_msg;
+ 
+ 	err = do_gt_restart(gt);
+@@ -907,14 +917,15 @@ int xe_gt_resume(struct xe_gt *gt)
+ 
+ 	xe_gt_idle_enable_pg(gt);
+ 
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	xe_gt_dbg(gt, "resumed\n");
+ 
+ 	return 0;
+ 
+-err_force_wake:
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
+ err_msg:
++	err = -ETIMEDOUT;
++err_force_wake:
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
+ 	xe_gt_err(gt, "resume failed (%pe)\n", ERR_PTR(err));
+ 
+ 	return err;
 -- 
 2.39.5
 
