@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0981AE4EE2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 276F6AE4FED
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 069223BEA3C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B79DA17FBBD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E2EB21CA07;
-	Mon, 23 Jun 2025 21:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D0A2628C;
+	Mon, 23 Jun 2025 21:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bl9IE+GE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9cZzZxR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFB4A70838;
-	Mon, 23 Jun 2025 21:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DD37482;
+	Mon, 23 Jun 2025 21:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713010; cv=none; b=jUDZyBqiZndQuFudvDWiI6v48elIG6C0nhg/O35wFAikjPJhcOB8pwmMT7mnPhVOYgWHku53ZcKzRfMQWA/CRnisM28Cinzyp6yRTsjbL1bhJItiiKLsLNbm4zK9+iUxnKqRHukbAOtr8j/um5Z3jUGkHH6W3VOdadbVTPnvA+o=
+	t=1750713653; cv=none; b=uC++CvlhQQf7dZNSvfZSP/zjsgJbgelDq5f/dkptf9CDgg2d/RApx/fY3K9J+oXCeqKqyG4s1KPbjW0hLSI+WSRkGWm4Tq7r5k5Q9+A3YjJnv8J9W+y7o930gD3XSMt9+PLtKF/f7SEav0/387rGdYCSAkIQcj+Fgbz00hVOUIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713010; c=relaxed/simple;
-	bh=gP3Llo70KNnZF4RJESCyMUV0PKCLvgul+RkiwNBVTv8=;
+	s=arc-20240116; t=1750713653; c=relaxed/simple;
+	bh=HOa43t17o11a2EEgwMcCBplLZlfKhvdRppoICNu8EV0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RtgSMqxH/Ols34mI1/LXfZu7VhA+Gx9xjr8hLg7P/ZzjAXBXHPf9gFdpKJ2veOJ/YGGvNY0zKvUOUjNosL9T259nx1nbEq0E3htW/+9A7nXXOGByNdKTRxhv095lUv/Yskh9fO4mjRGoLOn5QlfS94WYLuTDX+PvrrM27HCLzmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bl9IE+GE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81E0AC4CEEA;
-	Mon, 23 Jun 2025 21:10:09 +0000 (UTC)
+	 MIME-Version; b=nA9AkyfI4/l7yyV0k/k3xooxHBtrOw+D7SLiwEwCuCVndpmqt+RFPIY2X+HLur9wj+/fFYx06vQ2ZAHeNy9aN2DMLc95EjgSloBMv3Ax0RebpGjRSo08pe2xAn2cl/He5cJ8oEYAQCh856maAWpPnbsqo6aphIG+zULA4ztDxws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9cZzZxR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A87FC4CEEA;
+	Mon, 23 Jun 2025 21:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713009;
-	bh=gP3Llo70KNnZF4RJESCyMUV0PKCLvgul+RkiwNBVTv8=;
+	s=korg; t=1750713653;
+	bh=HOa43t17o11a2EEgwMcCBplLZlfKhvdRppoICNu8EV0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bl9IE+GEJHW4XTLKMbx6K3dYyp5AdJMN8j3x1Zgn3U1t8UgL5fOBGTo1Z8xyISd7G
-	 /cHQ3Y3z2lw9EzviUsy2U/F1GIXWqWSl1z/M1I9fOn0qFaRSPocAqbV2Jxi3K8sX0u
-	 sa6rdhdYwOHDdQZYFUPblg3A5op7tzSw+h956vDU=
+	b=x9cZzZxRD4Nl/Q3l/EWmRCRibfQYBOkTst6bChOPXD1Gc1NpAV0c1OjJTXk0oS15d
+	 Yg0tKGATH2zKUONEy2dDBgnaXwFUwAsILo0Bcp9V0LVqXlKHLNvSIDk9Pmu2myhyjR
+	 iY34YtsJMyE1GslnS3CA+2pwilCZhSdJLDEwohFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Robert Morris <rtm@mit.edu>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 023/414] wifi: p54: prevent buffer-overflow in p54_rx_eeprom_readback()
+	Alexey Minnekhanov <alexeymin@postmarketos.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 115/508] arm64: dts: qcom: sda660-ifc6560: Fix dt-validate warning
 Date: Mon, 23 Jun 2025 15:02:40 +0200
-Message-ID: <20250623130642.606606437@linuxfoundation.org>
+Message-ID: <20250623130648.124623135@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Lamparter <chunkeey@gmail.com>
+From: Alexey Minnekhanov <alexeymin@postmarketos.org>
 
-commit da1b9a55ff116cb040528ef664c70a4eec03ae99 upstream.
+[ Upstream commit f5110806b41eaa0eb0ab1bf2787876a580c6246c ]
 
-Robert Morris reported:
+If you remove clocks property, you should remove clock-names, too.
+Fixes warning with dtbs check:
 
-|If a malicious USB device pretends to be an Intersil p54 wifi
-|interface and generates an eeprom_readback message with a large
-|eeprom->v1.len, p54_rx_eeprom_readback() will copy data from the
-|message beyond the end of priv->eeprom.
-|
-|static void p54_rx_eeprom_readback(struct p54_common *priv,
-|                                   struct sk_buff *skb)
-|{
-|        struct p54_hdr *hdr = (struct p54_hdr *) skb->data;
-|        struct p54_eeprom_lm86 *eeprom = (struct p54_eeprom_lm86 *) hdr->data;
-|
-|        if (priv->fw_var >= 0x509) {
-|                memcpy(priv->eeprom, eeprom->v2.data,
-|                       le16_to_cpu(eeprom->v2.len));
-|        } else {
-|                memcpy(priv->eeprom, eeprom->v1.data,
-|                       le16_to_cpu(eeprom->v1.len));
-|        }
-| [...]
+ 'clocks' is a dependency of 'clock-names'
 
-The eeprom->v{1,2}.len is set by the driver in p54_download_eeprom().
-The device is supposed to provide the same length back to the driver.
-But yes, it's possible (like shown in the report) to alter the value
-to something that causes a crash/panic due to overrun.
-
-This patch addresses the issue by adding the size to the common device
-context, so p54_rx_eeprom_readback no longer relies on possibly tampered
-values... That said, it also checks if the "firmware" altered the value
-and no longer copies them.
-
-The one, small saving grace is: Before the driver tries to read the eeprom,
-it needs to upload >a< firmware. the vendor firmware has a proprietary
-license and as a reason, it is not present on most distributions by
-default.
-
-Cc: <stable@kernel.org>
-Reported-by: Robert Morris <rtm@mit.edu>
-Closes: https://lore.kernel.org/linux-wireless/28782.1747258414@localhost/
-Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250516184107.47794-1-chunkeey@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 34279d6e3f32c ("arm64: dts: qcom: sdm660: Add initial Inforce IFC6560 board support")
+Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250504115120.1432282-4-alexeymin@postmarketos.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intersil/p54/fwio.c |    2 ++
- drivers/net/wireless/intersil/p54/p54.h  |    1 +
- drivers/net/wireless/intersil/p54/txrx.c |   13 +++++++++----
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/intersil/p54/fwio.c
-+++ b/drivers/net/wireless/intersil/p54/fwio.c
-@@ -231,6 +231,7 @@ int p54_download_eeprom(struct p54_commo
- 
- 	mutex_lock(&priv->eeprom_mutex);
- 	priv->eeprom = buf;
-+	priv->eeprom_slice_size = len;
- 	eeprom_hdr = skb_put(skb, eeprom_hdr_size + len);
- 
- 	if (priv->fw_var < 0x509) {
-@@ -253,6 +254,7 @@ int p54_download_eeprom(struct p54_commo
- 		ret = -EBUSY;
- 	}
- 	priv->eeprom = NULL;
-+	priv->eeprom_slice_size = 0;
- 	mutex_unlock(&priv->eeprom_mutex);
- 	return ret;
- }
---- a/drivers/net/wireless/intersil/p54/p54.h
-+++ b/drivers/net/wireless/intersil/p54/p54.h
-@@ -258,6 +258,7 @@ struct p54_common {
- 
- 	/* eeprom handling */
- 	void *eeprom;
-+	size_t eeprom_slice_size;
- 	struct completion eeprom_comp;
- 	struct mutex eeprom_mutex;
+diff --git a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
+index 28050bc5f0813..502a3481ba284 100644
+--- a/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
++++ b/arch/arm64/boot/dts/qcom/sda660-inforce-ifc6560.dts
+@@ -155,6 +155,7 @@
+ 	 * BAM DMA interconnects support is in place.
+ 	 */
+ 	/delete-property/ clocks;
++	/delete-property/ clock-names;
  };
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -496,14 +496,19 @@ static void p54_rx_eeprom_readback(struc
- 		return ;
  
- 	if (priv->fw_var >= 0x509) {
--		memcpy(priv->eeprom, eeprom->v2.data,
--		       le16_to_cpu(eeprom->v2.len));
-+		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
-+			return;
-+
-+		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
- 	} else {
--		memcpy(priv->eeprom, eeprom->v1.data,
--		       le16_to_cpu(eeprom->v1.len));
-+		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
-+			return;
-+
-+		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
- 	}
+ &blsp1_uart2 {
+@@ -167,6 +168,7 @@
+ 	 * BAM DMA interconnects support is in place.
+ 	 */
+ 	/delete-property/ clocks;
++	/delete-property/ clock-names;
+ };
  
- 	priv->eeprom = NULL;
-+	priv->eeprom_slice_size = 0;
- 	tmp = p54_find_and_unlink_skb(priv, hdr->req_id);
- 	dev_kfree_skb_any(tmp);
- 	complete(&priv->eeprom_comp);
+ &blsp2_uart1 {
+-- 
+2.39.5
+
 
 
 
