@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-155839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 574EAAE43B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34F7AAE4251
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A54C7A79DF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769723B5DA5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0BAC251792;
-	Mon, 23 Jun 2025 13:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF2023C4F8;
+	Mon, 23 Jun 2025 13:17:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/hJCqYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iop+hZ15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE0E242D90;
-	Mon, 23 Jun 2025 13:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE321798F;
+	Mon, 23 Jun 2025 13:17:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685465; cv=none; b=LrcXEadd2fK1OWa+eHRwZCmQKL7KHB5oWIlJYxQs/gFb88+biFHq7RdZ1iIS/cQhG3grKbDSs3gT5vH+FhQ8AH80f33Z0BR96KRZv8JH09fiUQkMVdV8e+2bKNQgd0F6M6lL1dyxYO9JqsJmWHNydcJg2p5hLUoqOXQTEZJoxfI=
+	t=1750684648; cv=none; b=BXR9A0L1I74prH6fSsTznq3wAatleJfX7yq+yWsTJYqtkCVoqXQdqclWOsoMhCkRXcoGkuhIZOXmfIgJ8TwbZ1YxBmZpAVVX2Lb59Y1r6dLC/S6uu3BxrvJuTYo1S7sLhhH9rMoOogTbDScEuiOWsNHz0jobh6OFUBtX+qk1fUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685465; c=relaxed/simple;
-	bh=xV6Rq1BPmwALaEKOx7xfx2UhR2QJIiYs686RpJozJHI=;
+	s=arc-20240116; t=1750684648; c=relaxed/simple;
+	bh=fYQ4mvWS5FWxvNkghmg8aPMVF/4DUodzW6PCMjRPUeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RxM4kpyz6TADCR+qU7wOFoae0AtzY2RgMJ6fEBSah4ZqLuKtI2oVO/i7fSSZpwjpoRR4ARkHOYcdodyaK9zPK3NzPO7wYcDI/yVdqOQgRjnWiWpomzXIaQG+ypU7Xxw2+rc2RZ8hKmwTHl2jI1q2Z07tzeQ3Fljh9MFPQqs1r+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/hJCqYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDA18C4CEEA;
-	Mon, 23 Jun 2025 13:31:04 +0000 (UTC)
+	 MIME-Version; b=jeDfT04ckmmoYlRXvo9UCNuBH0GCbzB6BYvLPOmuIWJg5y5VE+av9NQxuMq+OwSdT3afDwOYEiR/76czfRk0a8PR+njQa8kjBezCGQvELmRHxIBXloE9vntjhrs1ZZ8YD7tJscvXryldVqyE/Oc4La5kfwLPXZWsYgi/omSzhis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iop+hZ15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDDFC4CEEA;
+	Mon, 23 Jun 2025 13:17:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685465;
-	bh=xV6Rq1BPmwALaEKOx7xfx2UhR2QJIiYs686RpJozJHI=;
+	s=korg; t=1750684647;
+	bh=fYQ4mvWS5FWxvNkghmg8aPMVF/4DUodzW6PCMjRPUeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/hJCqYfiHY6otcUbDwcNIzxJKuJJZ5c3ErdvL6hZH3Z2A6SBI9ks2NCm3aSBQo3V
-	 EylwRB/T10QpW68wfgxCEaS3qQMyUEslRXoubWFa+e3l1RJr1DXBCLH+OJJyDVs5/z
-	 KwuGG8rHKBpas0ZYX9F/iQbjrKhrN7mQrW87AFfg=
+	b=iop+hZ15sBZCRdNmHSOI1AYkI6henawUteTLSUoOdsS3gJ2KfYOKc7GGtVNinDYub
+	 uFr4zvd7IkssyjL9jybL1WSfA8bCRNSqE/zKCrRyPCe1D8uOuj30G11zQhjZ/zS/0y
+	 pMI8PgVJGRLe7/JTy9FyxAkWYxaYIjHyLJy4t6fg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 033/508] ACPI: OSI: Stop advertising support for "3.0 _SCP Extensions"
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.15 120/592] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
 Date: Mon, 23 Jun 2025 15:01:18 +0200
-Message-ID: <20250623130646.061145708@linuxfoundation.org>
+Message-ID: <20250623130703.124093156@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 8cf4fdac9bdead7bca15fc56fdecdf78d11c3ec6 ]
+commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
 
-As specified in section 5.7.2 of the ACPI specification the feature
-group string "3.0 _SCP Extensions" implies that the operating system
-evaluates the _SCP control method with additional parameters.
+The "len" variable comes from the firmware and we generally do
+trust firmware, but it's always better to double check.  If the "len"
+is too large it could result in memory corruption when we do
+"memcpy(fragment->data, rec->data, len);"
 
-However the ACPI thermal driver evaluates the _SCP control method
-without those additional parameters, conflicting with the above
-feature group string advertised to the firmware thru _OSI.
-
-Stop advertising support for this feature string to avoid confusing
-the ACPI firmware.
-
-Fixes: e5f660ebef68 ("ACPI / osi: Collect _OSI handling into one single file")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20250410165456.4173-2-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/osi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/input/misc/ims-pcu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-index d4405e1ca9b97..ae9620757865b 100644
---- a/drivers/acpi/osi.c
-+++ b/drivers/acpi/osi.c
-@@ -42,7 +42,6 @@ static struct acpi_osi_entry
- osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
- 	{"Module Device", true},
- 	{"Processor Device", true},
--	{"3.0 _SCP Extensions", true},
- 	{"Processor Aggregator Device", true},
- };
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -844,6 +844,12 @@ static int ims_pcu_flash_firmware(struct
+ 		addr = be32_to_cpu(rec->addr) / 2;
+ 		len = be16_to_cpu(rec->len);
  
--- 
-2.39.5
-
++		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
++			dev_err(pcu->dev,
++				"Invalid record length in firmware: %d\n", len);
++			return -EINVAL;
++		}
++
+ 		fragment = (void *)&pcu->cmd_buf[1];
+ 		put_unaligned_le32(addr, &fragment->addr);
+ 		fragment->len = len;
 
 
 
