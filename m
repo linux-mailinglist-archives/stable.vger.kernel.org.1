@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 572F5AE5166
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10889AE52AE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EFB417EB83
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D74021B65A78
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7299122068B;
-	Mon, 23 Jun 2025 21:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7B4227B8E;
+	Mon, 23 Jun 2025 21:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDnbN9q/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wikFzdgP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA8B218580;
-	Mon, 23 Jun 2025 21:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DE7221FBE;
+	Mon, 23 Jun 2025 21:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714414; cv=none; b=iNSB33Lg5e1HaZDT/VYVDuJAOGuaRjx16dKvHqAtiX7f8eMDobhTY7ZBsW+goo0FTpbrGq1e1Y6qsBtHnV7oKNo8c9tgITGq0Egd3PA0LzVOU8qCyhgqRq3MVuXJDp1bPLLRFiC/fz+WRxoLK7LyH9ImM4OzdK/rUMVkLTxvJFs=
+	t=1750715152; cv=none; b=bZJeRj2e9DiWIF4eO+CwzHzuJYFyS3e/WKi2gV0wMEwlrmqul/fsB/lNhMskZJ4DwI1JI5L+fNtTJBSpStvxqsdoQsKnSnDLcJI4bzaYVzTW41OuZt56PyCeeqx/ZM5Bh74I0rms7/bhh8UHB/XbhPrhQXY0avTse0SAS/GRXfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714414; c=relaxed/simple;
-	bh=qGba+cP7sXO2cSWkO6OBQqF4vmaIRoiw7lFtd8EC6QM=;
+	s=arc-20240116; t=1750715152; c=relaxed/simple;
+	bh=VU5EBAqcrpRBVGS/iNd+rTUhbOxJSJiZn8nlVFy5tGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SUkUFVmgpPLIRhkd1ulMcxTdqIFwaZt9Cp8MmMcm6+/4XBoIKu/xQnwMzcai6Xz7rAU3OZaByzX3ivBv0OSUGN3t4kyQdrUWuYV3ccClBftq12oe3+2IB7zAVZn59lVfjybm6I5PCVdg0iglL4fJrNLO2oRe9cqtGLz1LUFEAP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDnbN9q/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC90AC4CEEA;
-	Mon, 23 Jun 2025 21:33:33 +0000 (UTC)
+	 MIME-Version; b=EeWJYAKHN9gzKHo/nnVxmkouefvRQif2luc1zk06ABwBDbmRKhcanuuXKkyX9nv/VRe+heMt4PUY8aa2Wyjc7oSLOsMHFjbXt6gnZE8vfBg1JCtBWSQ9aNWwskK7AdcQ8sCR0WSfysIpN2TCFoqVRnx6fGG13FAbJgWXjfGA+qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wikFzdgP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95D8BC4CEEA;
+	Mon, 23 Jun 2025 21:45:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714414;
-	bh=qGba+cP7sXO2cSWkO6OBQqF4vmaIRoiw7lFtd8EC6QM=;
+	s=korg; t=1750715151;
+	bh=VU5EBAqcrpRBVGS/iNd+rTUhbOxJSJiZn8nlVFy5tGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDnbN9q/ba8esQsuocpr7GEhVjp+DdWj/C5i8skalfnHyG+1cuFJ6AontvthiXFNi
-	 qbCGe0CA7cKOtWkOw313k8PLFaxXQx+Et5CSQQQgrtnAbvmyNfMxFekKpKuCUpVmXP
-	 AniEjgDO3iNPctPg7e787i8qLBu7pdnmszOa/6iw=
+	b=wikFzdgPUgPcN49P7UDtts7Z2Jmr/YbYcW6oCAcc2J3YrR6RYXu026BNW436JLdnk
+	 zWVfK3tPOHP3azl5G5RuQLnx7zeGreBlFmI6JRZWhWJMZD5p99O+8qciz2eb5eHTdb
+	 ui59oRZvrfnmKYXfrMvtWHYVueay0NOVqefGtN4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/290] ACPICA: Avoid sequence overread in call to strncmp()
-Date: Mon, 23 Jun 2025 15:06:22 +0200
-Message-ID: <20250623130630.575934414@linuxfoundation.org>
+	Da Xue <da@libre.computer>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>
+Subject: [PATCH 5.15 239/411] clk: meson-g12a: add missing fclk_div2 to spicc
+Date: Mon, 23 Jun 2025 15:06:23 +0200
+Message-ID: <20250623130639.672031691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+commit daf004f87c3520c414992893e2eadd5db5f86a5a upstream.
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
+are wrong on this clock. This causes the spicc module to output sclk at
+2.5x the expected rate when clock index 3 is picked.
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
+Adding the missing fclk_div2 resolves this.
 
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
-
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[jbrunet: amended commit description]
+Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Da Xue <da@libre.computer>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250512142617.2175291-1-da@libre.computer
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/meson/g12a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 85c2dcf2b7048..0a24200852415 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
- 
- /* Support for the special RSDP signature (8 characters) */
- 
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
- 
- /* Support for OEMx signature (x can be any character) */
--- 
-2.39.5
-
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -3969,6 +3969,7 @@ static const struct clk_parent_data spic
+ 	{ .hw = &g12a_clk81.hw },
+ 	{ .hw = &g12a_fclk_div4.hw },
+ 	{ .hw = &g12a_fclk_div3.hw },
++	{ .hw = &g12a_fclk_div2.hw },
+ 	{ .hw = &g12a_fclk_div5.hw },
+ 	{ .hw = &g12a_fclk_div7.hw },
+ };
 
 
 
