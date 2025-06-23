@@ -1,55 +1,121 @@
-Return-Path: <stable+bounces-156998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADB27AE5209
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9920FAE5312
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0B77D7A631C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47EC61894EB7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F010F1E22E6;
-	Mon, 23 Jun 2025 21:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88743220686;
+	Mon, 23 Jun 2025 21:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nCRttMS+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv6Uiu1T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACCBE1EE7C6;
-	Mon, 23 Jun 2025 21:39:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4573A3FB1B;
+	Mon, 23 Jun 2025 21:49:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714784; cv=none; b=WP5ArU85/mBzflRVYzvRVvvDZy9whptI1RtLgH6pUmv++BHHio2M9eUyGHllDOYIKS10eFRqlpDF5nzmOQrAWWSibzpyPtyIeECZQdp1T2TWdjT6NqcdX4Kg41fEpebK+pL6MifU94E1uSV6bww/uHjnvf2B3cZcftEvx78Lo2k=
+	t=1750715364; cv=none; b=nWGAiLQK+aUbiEyP99cUrafxVPNS1Hq+w/zb+UJZShasjYNg39Ew+k6QIHPnY9kyg/449A9eycjeyFWeMpay561RQ4WWjgaoxzbAjaYpi82piwwvgQoGJXUBZk+9f7FIYgb8J+FMxrGH4ZnF1ELsSuccNAYY2cKazimTsJ2hEag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714784; c=relaxed/simple;
-	bh=7UwPdoB1KqsK03/r9ouVIoJVkRZfcbduaAsdGXBls/A=;
+	s=arc-20240116; t=1750715364; c=relaxed/simple;
+	bh=RLIH11zSMhNgzD5SzWpEqhejBlAAJnUnBIxUDBWIXJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UdtGiS1dxHQ+D50YEueskxGCS9rwi7m1py4TCRfh2du3xs1NRaVDgvI0FSvisAJUswMyLoNKxdms8N5M5Z5VR1GG5eRa+4/gln8kZm3Ybkn8NDbG7mrXrVGDXWZa9KXuWO1pnQwSusUXR+sUg4GXSMt+rXdgfffPCAheuvbh00U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nCRttMS+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4486AC4CEEA;
-	Mon, 23 Jun 2025 21:39:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FUq17Z6eAQzvPOAQHl0ncQfUk9KHONxXq742UnBxihD5459ctg8Os1UMkkYf48OtK07m5WIDfo1v1fBgAVN38a7AnqcXPCbZHG+7GVzOrV6HDSFx1Xq0OHewxSH4hSGScvOE9C+HcHV0RKnPHgsRPbFVsgUgHqBKGdKuJf1+4+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv6Uiu1T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B9CC4CEEA;
+	Mon, 23 Jun 2025 21:49:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714784;
-	bh=7UwPdoB1KqsK03/r9ouVIoJVkRZfcbduaAsdGXBls/A=;
+	s=korg; t=1750715364;
+	bh=RLIH11zSMhNgzD5SzWpEqhejBlAAJnUnBIxUDBWIXJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nCRttMS+e3Uqw4GHimwSI51gdJHaIN+xvuNBoLlIJIV3H1yfuu+OzNN0EzloXYmJY
-	 awumrND3r4B/uCop4k3rCIhm385GSMvZ5iFIkE3V1B3iLzRABfT5gPTu5I1sHR37tj
-	 OEQhiRP+tMxr5L2Zckjdu/egwdvNluuMhrfOcgzE=
+	b=Pv6Uiu1T2nxMuVgi3+p3hcK7puDZVyx/RxW06R5h4Ihy396Jk9KlFzuiQhN1WOhtN
+	 IeJCl6Ql3ljb0Uu+VMkZh1pj4V05Cm8ExmILclopR8ZCkpIRyyjfHF2D7eB6L82Scu
+	 zamfw6M1i7dWzgR8gf83h9QsZAAskph9AF0l6vOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khem Raj <raj.khem@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.12 137/414] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
-Date: Mon, 23 Jun 2025 15:04:34 +0200
-Message-ID: <20250623130645.479384050@linuxfoundation.org>
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Easwar Hariharan <eahariha@linux.microsoft.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Andrew Lunn <andrew+netdev@lunn.ch>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Daniel Mack <daniel@zonque.org>,
+	David Airlie <airlied@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Dick Kennedy <dick.kennedy@broadcom.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Haojian Zhuang <haojian.zhuang@gmail.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Jack Wang <jinpu.wang@cloud.ionos.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	James Bottomley <James.Bottomley@HansenPartnership.com>,
+	James Smart <james.smart@broadcom.com>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Jeff Johnson <jjohnson@kernel.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Jeroen de Borst <jeroendb@google.com>,
+	Jiri Kosina <jikos@kernel.org>,
+	Joe Lawrence <joe.lawrence@redhat.com>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jozsef Kadlecsik <kadlec@netfilter.org>,
+	Julia Lawall <julia.lawall@inria.fr>,
+	Kalle Valo <kvalo@kernel.org>,
+	Louis Peens <louis.peens@corigine.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Miroslav Benes <mbenes@suse.cz>,
+	Naveen N Rao <naveen@kernel.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Nicolas Palix <nicolas.palix@imag.fr>,
+	Oded Gabbay <ogabbay@kernel.org>,
+	Ofir Bitton <obitton@habana.ai>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Petr Mladek <pmladek@suse.com>,
+	Praveen Kaligineedi <pkaligineedi@google.com>,
+	Ray Jui <rjui@broadcom.com>,
+	Robert Jarzmik <robert.jarzmik@free.fr>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
+	Russell King <linux@armlinux.org.uk>,
+	Scott Branden <sbranden@broadcom.com>,
+	Shailend Chand <shailend@google.com>,
+	Simona Vetter <simona@ffwll.ch>,
+	Simon Horman <horms@kernel.org>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Takashi Iwai <tiwai@suse.com>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Xiubo Li <xiubli@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 230/508] wifi: ath11k: convert timeouts to secs_to_jiffies()
+Date: Mon, 23 Jun 2025 15:04:35 +0200
+Message-ID: <20250623130650.918319361@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +125,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khem Raj <raj.khem@gmail.com>
+From: Easwar Hariharan <eahariha@linux.microsoft.com>
 
-commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
+[ Upstream commit b29425972c5234a59b6fb634125420ed74266377 ]
 
-GCC 15 changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, mips/vdso code uses
-its own CFLAGS without a '-std=' value, which break with this dialect
-change because of the kernel's own definitions of bool, false, and true
-conflicting with the C23 reserved keywords.
+Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
+secs_to_jiffies().  As the value here is a multiple of 1000, use
+secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
+the following Coccinelle rules:
 
-Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
-CFLAGS to eliminate these errors and make the C standard version of these
-areas match the rest of the kernel.
+@@ constant C; @@
 
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- msecs_to_jiffies(C * 1000)
++ secs_to_jiffies(C)
+
+@@ constant C; @@
+
+- msecs_to_jiffies(C * MSEC_PER_SEC)
++ secs_to_jiffies(C)
+
+Link: https://lkml.kernel.org/r/20241210-converge-secs-to-jiffies-v3-14-ddfefd7e9f2a@linux.microsoft.com
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Andrew Lunn <andrew+netdev@lunn.ch>
+Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Daniel Mack <daniel@zonque.org>
+Cc: David Airlie <airlied@gmail.com>
+Cc: David S. Miller <davem@davemloft.net>
+Cc: Dick Kennedy <dick.kennedy@broadcom.com>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: Ilya Dryomov <idryomov@gmail.com>
+Cc: Jack Wang <jinpu.wang@cloud.ionos.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
+Cc: James Smart <james.smart@broadcom.com>
+Cc: Jaroslav Kysela <perex@perex.cz>
+Cc: Jeff Johnson <jjohnson@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Jeroen de Borst <jeroendb@google.com>
+Cc: Jiri Kosina <jikos@kernel.org>
+Cc: Joe Lawrence <joe.lawrence@redhat.com>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
+Cc: Julia Lawall <julia.lawall@inria.fr>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: Louis Peens <louis.peens@corigine.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Martin K. Petersen <martin.petersen@oracle.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Miroslav Benes <mbenes@suse.cz>
+Cc: Naveen N Rao <naveen@kernel.org>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Nicolas Palix <nicolas.palix@imag.fr>
+Cc: Oded Gabbay <ogabbay@kernel.org>
+Cc: Ofir Bitton <obitton@habana.ai>
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Praveen Kaligineedi <pkaligineedi@google.com>
+Cc: Ray Jui <rjui@broadcom.com>
+Cc: Robert Jarzmik <robert.jarzmik@free.fr>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: Roger Pau Monné <roger.pau@citrix.com>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Scott Branden <sbranden@broadcom.com>
+Cc: Shailend Chand <shailend@google.com>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Simon Horman <horms@kernel.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Takashi Iwai <tiwai@suse.com>
+Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Cc: Xiubo Li <xiubli@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/vdso/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -27,6 +27,7 @@ endif
- # offsets.
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	$(filter -std=%,$(KBUILD_CFLAGS)) \
- 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
- 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+index 34aa04d27a1d7..a8bd944f76d92 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+@@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
+ 	 * received 'update stats' event, we keep a 3 seconds timeout in case,
+ 	 * fw_stats_done is not marked yet
+ 	 */
+-	timeout = jiffies + msecs_to_jiffies(3 * 1000);
++	timeout = jiffies + secs_to_jiffies(3);
+ 
+ 	ath11k_debugfs_fw_stats_reset(ar);
+ 
+-- 
+2.39.5
+
 
 
 
