@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB84AE5110
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F107AE51A7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C45D51B61D07
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6BE054A4294
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B7FE221F34;
-	Mon, 23 Jun 2025 21:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C572221DA8;
+	Mon, 23 Jun 2025 21:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zjAM85LT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GD3UtM9g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22A8522157E;
-	Mon, 23 Jun 2025 21:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0900B1EE7C6;
+	Mon, 23 Jun 2025 21:36:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714221; cv=none; b=GvFNQli4mg5kWMh6lkYWnToiJNNNjbIXoJ52IG2pP4Uz8wGkgrsu9T1D6xaFfueXOcrXpCOLi/q03pFcvoIVSfkS0d07ZbOHtuRqi53HLo0v7q7ZZnVC81aUz/vlCqhye5YSNJLdIiRqFc+cxinLuNrgu4bUto4f3tzxuzvxMAI=
+	t=1750714573; cv=none; b=kaJwKOq/SBrD4RmAxMCgdULRksy6Bd188tq2/DLep0pawivWuxmppF/o0C5B7i9VVDCPyeACkZMmM/XeJ2H0elUsUgmp+vqcmZFCaNcU1Toj6wUqTu+7xUez1QfoGdlz+9j92a9ZtxCAqTwsqQc9A0qdgK4cDfcNSR9NB0PMjR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714221; c=relaxed/simple;
-	bh=6x7GEenNuSzexhYQDAxrurdiDV5OqE2vRrm7LTP1FNs=;
+	s=arc-20240116; t=1750714573; c=relaxed/simple;
+	bh=ZAfoKxkPgR7Sar8WKslm2DW8+JuR2Xbc8bKncMMLyyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dlmskDsX4FGmYJEFnANt2A03OtFTCtlFzHqWAOIj2GIoiarJbbJaVtNpFlwyfQsCwXRhOmA+uqioqAa8qnw2seOltzp44NWFzqFXvCLVHo9iPoyEuriKLRAFSdu6piUcM3n61FulpVev03pBEKTEVH4RIVneEYrbG2wz65aYwBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zjAM85LT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB1F9C4CEEA;
-	Mon, 23 Jun 2025 21:30:20 +0000 (UTC)
+	 MIME-Version; b=AMoOWgzAzKtLAdrZHNK/wTWfoBF6M7rU4VD5CkUzjxvVYcENW3vww+8FX/KH2XtNGMYNxqeC6xXlmZxShR9gsMth6FMjJSz4gcHGKIeHBmizppeM8dl4svOTo0mPUZ1uLYCZ9+Q/Yr83bRP0zN+gTvarfAhjnI9Cs1IcbNynbh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GD3UtM9g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95543C4CEEA;
+	Mon, 23 Jun 2025 21:36:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714221;
-	bh=6x7GEenNuSzexhYQDAxrurdiDV5OqE2vRrm7LTP1FNs=;
+	s=korg; t=1750714572;
+	bh=ZAfoKxkPgR7Sar8WKslm2DW8+JuR2Xbc8bKncMMLyyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zjAM85LTW+7UXxYH8U6YkJgLFpJ8zJAUeGcnqMhCT3CXgeQ3OPh1O1EFPqgmoBELY
-	 BD4IbG4oWYg0qYVeNoM44tjVbTlYKClukjvTA5S7MKhoO8BiPX2togmTgfL/h+mwLL
-	 pKSEIAWP0dSrhYeLC9grJ7EhdxrOb83MOBof/xos=
+	b=GD3UtM9g7a4aT2oCJXVPF3SAjZDsKp5wRNLwFqQKiJCSKZwgn2FlfdFhRc/QThGd0
+	 gLYOHN/81jAB3MX8Hh9eEQVNWrtpPbM9rBbH8/9l3ieIV/zeRzdBWP8nbjPFCvi1wy
+	 j/OUfT2wqE0ODviJsoN8WKubUewamvt3tpRm+oEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Korhonen <mjkorhon@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.12 089/414] ata: ahci: Disallow LPM for Asus B550-F motherboard
-Date: Mon, 23 Jun 2025 15:03:46 +0200
-Message-ID: <20250623130644.312806577@linuxfoundation.org>
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chris Bainbridge <chris.bainbridge@gmail.com>
+Subject: [PATCH 6.1 182/508] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
+Date: Mon, 23 Jun 2025 15:03:47 +0200
+Message-ID: <20250623130649.752396359@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +63,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Korhonen <mjkorhon@gmail.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit a7b3b77fd111d49f8e25624e4ea1046322a57baf upstream.
+[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
 
-Asus ROG STRIX B550-F GAMING (WI-FI) motherboard has problems on some
-SATA ports with at least one hard drive model (WDC WD20EFAX-68FB5N0)
-when LPM is enabled. Disabling LPM solves the issue.
+Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
+set on errors") caused power.is_suspended to be set for devices with
+power.direct_complete set, but it forgot to ensure the clearing of that
+flag for them in device_resume(), so power.is_suspended is still set for
+them during the next system suspend-resume cycle.
 
-Cc: stable@vger.kernel.org
-Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-Signed-off-by: Mikko Korhonen <mjkorhon@gmail.com>
-Link: https://lore.kernel.org/r/20250617062055.784827-1-mjkorhon@gmail.com
-[cassel: more detailed comment, make single line comments consistent]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If that cycle is aborted in dpm_suspend(), the subsequent invocation of
+dpm_resume() will trigger a device_resume() call for every device and
+because power.is_suspended is set for the devices in question, they will
+not be skipped by device_resume() as expected which causes scary error
+messages to be logged (as appropriate).
+
+To address this issue, move the clearing of power.is_suspended in
+device_resume() immediately after the power.is_suspended check so it
+will be always cleared for all devices processed by that function.
+
+Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
+Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/base/power/main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1458,7 +1458,23 @@ static bool ahci_broken_lpm(struct pci_d
- 				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 				DMI_MATCH(DMI_PRODUCT_VERSION, "ASUSPRO D840MB_M840SA"),
- 			},
--			/* 320 is broken, there is no known good version yet. */
-+			/* 320 is broken, there is no known good version. */
-+		},
-+		{
-+			/*
-+			 * AMD 500 Series Chipset SATA Controller [1022:43eb]
-+			 * on this motherboard timeouts on ports 5 and 6 when
-+			 * LPM is enabled, at least with WDC WD20EFAX-68FB5N0
-+			 * hard drives. LPM with the same drive works fine on
-+			 * all other ports on the same controller.
-+			 */
-+			.matches = {
-+				DMI_MATCH(DMI_BOARD_VENDOR,
-+					  "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_BOARD_NAME,
-+					  "ROG STRIX B550-F GAMING (WI-FI)"),
-+			},
-+			/* 3621 is broken, there is no known good version. */
- 		},
- 		{ }	/* terminate list */
- 	};
+diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
+index 343d3c966e7a7..baa31194cf20d 100644
+--- a/drivers/base/power/main.c
++++ b/drivers/base/power/main.c
+@@ -897,6 +897,8 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 	if (!dev->power.is_suspended)
+ 		goto Complete;
+ 
++	dev->power.is_suspended = false;
++
+ 	if (dev->power.direct_complete) {
+ 		/* Match the pm_runtime_disable() in __device_suspend(). */
+ 		pm_runtime_enable(dev);
+@@ -952,7 +954,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
+ 
+  End:
+ 	error = dpm_run_callback(callback, dev, state, info);
+-	dev->power.is_suspended = false;
+ 
+ 	device_unlock(dev);
+ 	dpm_watchdog_clear(&wd);
+-- 
+2.39.5
+
 
 
 
