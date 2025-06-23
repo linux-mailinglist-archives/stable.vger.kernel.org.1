@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89570AE44B5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 569DCAE42B1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B601BC2951
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A06F2189A1C4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D464416419;
-	Mon, 23 Jun 2025 13:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110042550BA;
+	Mon, 23 Jun 2025 13:19:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmyNDH4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mHSTrOCB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6FA252903;
-	Mon, 23 Jun 2025 13:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3852253358;
+	Mon, 23 Jun 2025 13:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685928; cv=none; b=p3c1iZ4FEAJsbEYW2EJfycVsDzQK/uOBeigMyAOKndjOB82zx7bSUUHBj+fUcP2Yq1OrFevOqNYP7b95xskJfXR/yySEannaGKQQo2h2QMnyzOPfZ6zu9EFCxNOPCxAQgwWG5F9CzosL5uIEq4o8IwtHNSJ1yfNEev10Xsr+h2A=
+	t=1750684753; cv=none; b=Dl4fkz18THmBNwIiZxYchQ9mARIoKV7O9rP6pETvgJr5luz3pDYvkThrQ5GM7hJb0q1SjjkbndYQeITfcxKoNT/Rr0nUZdMi06Y5vJx8z4gQxPwQg4ncN1tiwPn4pdV6yCvb+8X8ZxkZu/4xgjxMo2WKwIIUGEHa6Dr0CDoa8sQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685928; c=relaxed/simple;
-	bh=hgIXNwtVHeJq4G8Sgzvbrd/JfkVf2+MKAfY10VOAWTU=;
+	s=arc-20240116; t=1750684753; c=relaxed/simple;
+	bh=y0Ue1cc0J66Dx1b3Y86cpa4IPqHkEPB6koG76jC273E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UWaHPuXBP5NY0GtCQNpbGVNIF3MJiUXhCQtl6aK+9XCOdRE9hp8c7cgl24IIQmUojF7eYMyPePMhAAFAQfGIGHvy2EiwgIqU0Of/DX17t76m9A1K1AkU4BRGZMaqrPH5FC6FEntgrNJxESNjpLdsRPRAY3zg53wlyfO3d/d5Feg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmyNDH4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173D6C4CEF3;
-	Mon, 23 Jun 2025 13:38:47 +0000 (UTC)
+	 MIME-Version; b=oSI3J2gwyjOZyKLJuzNRuCuLOvcuWi9MDVw0UIoTg+J/6ARIdfNYwJraVVjzVOTlTW2Wk3HUK9xx7y4KNxUfZJU6FQ1MpuKLrMtGeKzD3K7ncroSzcdpeElRm2/nxPBM60ZDBe9m9tDyEjGw8IsYYli0rCKZdFlE8oWeAAy1XCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mHSTrOCB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D8FC4CEEA;
+	Mon, 23 Jun 2025 13:19:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685928;
-	bh=hgIXNwtVHeJq4G8Sgzvbrd/JfkVf2+MKAfY10VOAWTU=;
+	s=korg; t=1750684753;
+	bh=y0Ue1cc0J66Dx1b3Y86cpa4IPqHkEPB6koG76jC273E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmyNDH4up0Y9DzeNMkJKe78MSr6oRVAkFJvGF47jDQC/FZlSvURUE67bBTKbcTVEB
-	 eUdgshVcEhi66XqQ/nUUNRIPJAoehhzZCqZV3mwqIzMANRzHkH1pQlnufS9hv1+Hir
-	 mNdkcooDs78y3/ZY3SgXnzzg6LgXbVPT9uGjK594=
+	b=mHSTrOCB2j6wa92KFc592jP47H2u11bIMm9qauRJzuxEVvNMbyGOmEjnWFoaTeG96
+	 EqeUSyEpHV8uhLRMYdQrM5I3orfa6S7vNGd4FF+lfho4a4cB3QdTdnQ0TanQ/KqYy7
+	 3pTWbpwsP2V6BZAQFtL9HZJDw8Mq1va8ETgu+9H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Bee <knaerzche@gmail.com>,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 038/508] media: rkvdec: Fix frame size enumeration
-Date: Mon, 23 Jun 2025 15:01:23 +0200
-Message-ID: <20250623130646.183144419@linuxfoundation.org>
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.15 126/592] hwmon: (ftsteutates) Fix TOCTOU race in fts_read()
+Date: Mon, 23 Jun 2025 15:01:24 +0200
+Message-ID: <20250623130703.267199551@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +61,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-[ Upstream commit f270005b99fa19fee9a6b4006e8dee37c10f1944 ]
+commit 14c9ede9ca4cd078ad76a6ab9617b81074eb58bf upstream.
 
-The VIDIOC_ENUM_FRAMESIZES ioctl should return all frame sizes (i.e.
-width and height in pixels) that the device supports for the given pixel
-format.
+In the fts_read() function, when handling hwmon_pwm_auto_channels_temp,
+the code accesses the shared variable data->fan_source[channel] twice
+without holding any locks. It is first checked against
+FTS_FAN_SOURCE_INVALID, and if the check passes, it is read again
+when used as an argument to the BIT() macro.
 
-It doesn't make a lot of sense to return the frame-sizes in a stepwise
-manner, which is used to enforce hardware alignments requirements for
-CAPTURE buffers, for coded formats.
+This creates a Time-of-Check to Time-of-Use (TOCTOU) race condition.
+Another thread executing fts_update_device() can modify the value of
+data->fan_source[channel] between the check and its use. If the value
+is changed to FTS_FAN_SOURCE_INVALID (0xff) during this window, the
+BIT() macro will be called with a large shift value (BIT(255)).
+A bit shift by a value greater than or equal to the type width is
+undefined behavior and can lead to a crash or incorrect values being
+returned to userspace.
 
-Instead, applications should receive an indication, about the maximum
-supported frame size for that hardware decoder, via a continuous
-frame-size enumeration.
+Fix this by reading data->fan_source[channel] into a local variable
+once, eliminating the race condition. Additionally, add a bounds check
+to ensure the value is less than BITS_PER_LONG before passing it to
+the BIT() macro, making the code more robust against undefined behavior.
 
-Fixes: cd33c830448b ("media: rkvdec: Add the rkvdec driver")
-Suggested-by: Alex Bee <knaerzche@gmail.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This possible bug was found by an experimental static analysis tool
+developed by our team.
+
+Fixes: 1c5759d8ce05 ("hwmon: (ftsteutates) Replace fanX_source with pwmX_auto_channels_temp")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20250606071640.501262-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/media/rkvdec/rkvdec.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/hwmon/ftsteutates.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
-index d16cf4115d03a..b5847259f4541 100644
---- a/drivers/staging/media/rkvdec/rkvdec.c
-+++ b/drivers/staging/media/rkvdec/rkvdec.c
-@@ -213,8 +213,14 @@ static int rkvdec_enum_framesizes(struct file *file, void *priv,
- 	if (!fmt)
- 		return -EINVAL;
- 
--	fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
--	fsize->stepwise = fmt->frmsize;
-+	fsize->type = V4L2_FRMSIZE_TYPE_CONTINUOUS;
-+	fsize->stepwise.min_width = 1;
-+	fsize->stepwise.max_width = fmt->frmsize.max_width;
-+	fsize->stepwise.step_width = 1;
-+	fsize->stepwise.min_height = 1;
-+	fsize->stepwise.max_height = fmt->frmsize.max_height;
-+	fsize->stepwise.step_height = 1;
+--- a/drivers/hwmon/ftsteutates.c
++++ b/drivers/hwmon/ftsteutates.c
+@@ -423,13 +423,16 @@ static int fts_read(struct device *dev,
+ 		break;
+ 	case hwmon_pwm:
+ 		switch (attr) {
+-		case hwmon_pwm_auto_channels_temp:
+-			if (data->fan_source[channel] == FTS_FAN_SOURCE_INVALID)
++		case hwmon_pwm_auto_channels_temp: {
++			u8 fan_source = data->fan_source[channel];
 +
- 	return 0;
- }
++			if (fan_source == FTS_FAN_SOURCE_INVALID || fan_source >= BITS_PER_LONG)
+ 				*val = 0;
+ 			else
+-				*val = BIT(data->fan_source[channel]);
++				*val = BIT(fan_source);
  
--- 
-2.39.5
-
+ 			return 0;
++		}
+ 		default:
+ 			break;
+ 		}
 
 
 
