@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92BA3AE56F1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B61AE5709
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC893A9454
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B33E41C238E2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16F22422F;
-	Mon, 23 Jun 2025 22:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 769D7225413;
+	Mon, 23 Jun 2025 22:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slf4+Ud1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7+dDD29"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B418223DE8;
-	Mon, 23 Jun 2025 22:21:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343C8221543;
+	Mon, 23 Jun 2025 22:25:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717287; cv=none; b=XOIkBMyYRFRQCk77l4BxxgetoBSUeXyJLF4hSlL9mvW/htECjarKOc2+5ZhlmjKqC4sGHCKevDdZlD4c+yZ6m5G25gM6g0WugJCZtRlLxvEjApvXwy5eDklHntb+TzrELoloyOAxTMaIxo5YZb3OYbYXcNH9A7k4eGVUSZm2Q5M=
+	t=1750717526; cv=none; b=nPSm7X4zsmFnhlCUqhi0gybdzCF+ln6Ydu1ApjLYYzQ0q0oNOe9FYB9/t/ZM9aVCCFYmRhW+rgJkG462F+gTZvw4yqPfcAj9o6+yMHl+aNmoftzrSrzvMwQ6EmCanbrvq3GLVEYsC2bn6Z70GGsG0YPC4Bd8N3WtZPrpZm2fKws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717287; c=relaxed/simple;
-	bh=uNdxtHlNipq62m2W0srn7Blq6fSS4OgsJvmv/XIxJ4I=;
+	s=arc-20240116; t=1750717526; c=relaxed/simple;
+	bh=1xp7WR5EfErOMX+Nfdk+8yDwCsv7jP9Z4EyGtsPrt2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u6GxfFd4FiOOui9nporgiltOFK50WEWhB2a71dIjtS3PYb7BvRoysDGZ1PaaOa0jSF7sst8DWD/xMQDagf8/S0ex2nliBfdSLhNKFaY/ZQo67qToHJulAQ+gwtdrt3eWUKvdNU8Ps5JtGF9Rn4wqR2E4Fky72DWDvkTr3MorsDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slf4+Ud1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A84C4CEEA;
-	Mon, 23 Jun 2025 22:21:26 +0000 (UTC)
+	 MIME-Version; b=tgLceUhi6992nTUYH3taKUK2RYc4pz/eJnBdQ2KHI8FoBRj+4OUJ1TinCIYqTHFWxcfeetb8Tx96+q/DRTGDarubw15rDZq3yc/Ww/HZuOYsqkCpRVnC9r83OrtQCrAwfuHn3EpfA/3WUIJr/Iehnc8PTAHdo8DltYHjYcYoQco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7+dDD29; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27F1C4CEEA;
+	Mon, 23 Jun 2025 22:25:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717287;
-	bh=uNdxtHlNipq62m2W0srn7Blq6fSS4OgsJvmv/XIxJ4I=;
+	s=korg; t=1750717526;
+	bh=1xp7WR5EfErOMX+Nfdk+8yDwCsv7jP9Z4EyGtsPrt2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=slf4+Ud1FPej2q+tTej1Wd6B+HM0amPJuKmsSoIvCPFOmd9dID6EpN5Ua7oqhSFKh
-	 WCDTWpXHo9Zu2TASA3CKqnWEu+hxUYtt1QspiGAkCmb4TSpd/r+4WyZQttVPSvw41H
-	 OOe9PbT60ZjrjE45hDoZ1PNySU84WL4m/foSERkk=
+	b=T7+dDD29CYAGQF/XHfLGWSBTLQW/JDMLErghIUPBh+q5gWvE3vEVlmN5cnhsFZCV/
+	 25y7SMwvo9XNjFBRDsGfHhxW6ry+z/ypFKNOJKLCwN4K4OVItK3LZszZgZ14hCluPN
+	 vyHEhAgpcO/aDlPD3pcxkk6qDM4tSWZme7jcdgdo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"James A. MacInnes" <james.a.macinnes@gmail.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 353/414] drm/msm/disp: Correct porch timing for SDM845
-Date: Mon, 23 Jun 2025 15:08:10 +0200
-Message-ID: <20250623130650.798828979@linuxfoundation.org>
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 6.1 446/508] jffs2: check that raw node were preallocated before writing summary
+Date: Mon, 23 Jun 2025 15:08:11 +0200
+Message-ID: <20250623130656.129983209@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James A. MacInnes <james.a.macinnes@gmail.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit 146e87f3e11de0dfa091ff87e34b4bc6eec761a4 ]
+commit ec9e6f22bce433b260ea226de127ec68042849b0 upstream.
 
-Type-C DisplayPort inoperable due to incorrect porch settings.
-- Re-used wide_bus_en as flag to prevent porch shifting
+Syzkaller detected a kernel bug in jffs2_link_node_ref, caused by fault
+injection in jffs2_prealloc_raw_node_refs. jffs2_sum_write_sumnode doesn't
+check return value of jffs2_prealloc_raw_node_refs and simply lets any
+error propagate into jffs2_sum_write_data, which eventually calls
+jffs2_link_node_ref in order to link the summary to an expectedly allocated
+node.
 
-Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
-Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/636945/
-Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-2-4954e51458f4@gmail.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+kernel BUG at fs/jffs2/nodelist.c:592!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 1 PID: 31277 Comm: syz-executor.7 Not tainted 6.1.128-syzkaller-00139-ge10f83ca10a1 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0x570/0x690 fs/jffs2/nodelist.c:592
+Call Trace:
+ <TASK>
+ jffs2_sum_write_data fs/jffs2/summary.c:841 [inline]
+ jffs2_sum_write_sumnode+0xd1a/0x1da0 fs/jffs2/summary.c:874
+ jffs2_do_reserve_space+0xa18/0xd60 fs/jffs2/nodemgmt.c:388
+ jffs2_reserve_space+0x55f/0xaa0 fs/jffs2/nodemgmt.c:197
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x726/0x15d0 fs/jffs2/file.c:301
+ generic_perform_write+0x314/0x5d0 mm/filemap.c:3856
+ __generic_file_write_iter+0x2ae/0x4d0 mm/filemap.c:3973
+ generic_file_write_iter+0xe3/0x350 mm/filemap.c:4005
+ call_write_iter include/linux/fs.h:2265 [inline]
+ do_iter_readv_writev+0x20f/0x3c0 fs/read_write.c:735
+ do_iter_write+0x186/0x710 fs/read_write.c:861
+ vfs_iter_write+0x70/0xa0 fs/read_write.c:902
+ iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
+ do_splice_from fs/splice.c:763 [inline]
+ direct_splice_actor+0x10c/0x170 fs/splice.c:950
+ splice_direct_to_actor+0x337/0xa10 fs/splice.c:896
+ do_splice_direct+0x1a9/0x280 fs/splice.c:1002
+ do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
+ __do_sys_sendfile64 fs/read_write.c:1323 [inline]
+ __se_sys_sendfile64 fs/read_write.c:1309 [inline]
+ __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Fix this issue by checking return value of jffs2_prealloc_raw_node_refs
+before calling jffs2_sum_write_data.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/jffs2/summary.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index d8a2edebfe8c3..b7699ca89dcc5 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -94,17 +94,21 @@ static void drm_mode_to_intf_timing_params(
- 		timing->vsync_polarity = 0;
- 	}
+--- a/fs/jffs2/summary.c
++++ b/fs/jffs2/summary.c
+@@ -858,7 +858,10 @@ int jffs2_sum_write_sumnode(struct jffs2
+ 	spin_unlock(&c->erase_completion_lock);
  
--	/* for DP/EDP, Shift timings to align it to bottom right */
--	if (phys_enc->hw_intf->cap->type == INTF_DP) {
-+	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
-+	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
+ 	jeb = c->nextblock;
+-	jffs2_prealloc_raw_node_refs(c, jeb, 1);
++	ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
 +
-+	/*
-+	 *  For DP/EDP, Shift timings to align it to bottom right.
-+	 *  wide_bus_en is set for everything excluding SDM845 &
-+	 *  porch changes cause DisplayPort failure and HDMI tearing.
-+	 */
-+	if (phys_enc->hw_intf->cap->type == INTF_DP && timing->wide_bus_en) {
- 		timing->h_back_porch += timing->h_front_porch;
- 		timing->h_front_porch = 0;
- 		timing->v_back_porch += timing->v_front_porch;
- 		timing->v_front_porch = 0;
- 	}
++	if (ret)
++		goto out;
  
--	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
--	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
--
- 	/*
- 	 * for DP, divide the horizonal parameters by 2 when
- 	 * widebus is enabled
--- 
-2.39.5
-
+ 	if (!c->summary->sum_num || !c->summary->sum_list_head) {
+ 		JFFS2_WARNING("Empty summary info!!!\n");
+@@ -872,6 +875,8 @@ int jffs2_sum_write_sumnode(struct jffs2
+ 	datasize += padsize;
+ 
+ 	ret = jffs2_sum_write_data(c, jeb, infosize, datasize, padsize);
++
++out:
+ 	spin_lock(&c->erase_completion_lock);
+ 	return ret;
+ }
 
 
 
