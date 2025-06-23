@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157544-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB25AE5236
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D484AE5483
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94BB4A549B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8394C11D8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F6C221FC7;
-	Mon, 23 Jun 2025 21:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9E351A4F12;
+	Mon, 23 Jun 2025 22:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXMWGinC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ajpk5IzZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788004315A;
-	Mon, 23 Jun 2025 21:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A044C74;
+	Mon, 23 Jun 2025 22:02:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714887; cv=none; b=ZuxxrQvsfAYMYTO30c4xB38a1K22Ae+ptH7Mk6KWD+trHXKvQPbwsNZRSJIhNuXHgX1M4VMkj27cxrLlhpnSrLY4LIhYd9Y+IWI1bZ/UEJOs0DS1Bt8AapL4DXAnQXTdOdCO1GQcD2qHjp6WwdSn6mPcxryGisfnum3hMP+7VUA=
+	t=1750716127; cv=none; b=Jjq38HcqQdll829gBPEXPq6YHSUgamDZB4QmWCZ7AlHZlmFGfn4S9MqTUesARMOegf5irfUiPLIKfi9qWScM9g1x7B3eCd0iec2jCr8XhsdpgpeUdBuUoJCsLYWVybJRm5AnM0JUopkquvqdTB+Hb73oiSSJtdAKaDAjfMMFd8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714887; c=relaxed/simple;
-	bh=FxFiiJSGBjPcdxeQ9jZ1hZx/Y1b2vGj9AYmFHach9kg=;
+	s=arc-20240116; t=1750716127; c=relaxed/simple;
+	bh=wLyWm/I/qQHUpp3eElQTLgbMdnUQg+Fv/gTHcVEQj0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DOP1cbzmR0QP1IiDjbdi0y3oqw/m+6ZWJWCxe3/8wv7R4IHQRnGO9Lv9nJtUNIAvvS4B0FyEM5j6BDuegFcEo8BSzOww+xAGq4JNbHZvh2P+i+q7yV1qhA5ryCPSKs3oo1BWrIuJElufNGyfPVQiWrnSPk+Rwk8n+Rx0q5WMJZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXMWGinC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A7BC4CEEA;
-	Mon, 23 Jun 2025 21:41:26 +0000 (UTC)
+	 MIME-Version; b=qei7lIlBNgUkz0ghWntoSV8HN9jDqj1eduTl02v40xIvqvrOMyXJnYz6rBtkfYhPLS2z/blOcAn5nsKOqZzFkP6riyLl3kNyv5PtZOVfr0TaG/E2NUFk2h8EiNZx6dvdfy8vf3S5STwkBvYsxLYWWXtY80+l6+BsEmX+oFb8yVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ajpk5IzZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22E15C4CEEA;
+	Mon, 23 Jun 2025 22:02:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714887;
-	bh=FxFiiJSGBjPcdxeQ9jZ1hZx/Y1b2vGj9AYmFHach9kg=;
+	s=korg; t=1750716127;
+	bh=wLyWm/I/qQHUpp3eElQTLgbMdnUQg+Fv/gTHcVEQj0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qXMWGinCgIZlOsPiART8u0OrhfhaCG5D4rRqtccd8Q3QnmX4iVEXc7+S+Nc51LPCF
-	 iCUn1CRQLafFAkyxjBFh/vRfSqH46lSHJzYforNrSedLbHRKfEDVYT1dRFnx+rciwW
-	 l+fEmXo7/cJ+GYuYSOtadxnVxNIQ3zNCEpKmoekk=
+	b=Ajpk5IzZqOnE0/fo+Z/vzD/Yf7MPCPwtQctqASTe4sK2GNqx8789BKGIIC3BnUGbX
+	 /M+5qpXlToXcsztKEYpnuKvOW3h9GGzOZSmehmhcu755FtEhG/mJzWXcOCqOu9lkuj
+	 sBYiuw0fUB9D2AwEjRYvCc9nUajPd1GSMrRWS+8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Lifeng Zheng <zhenglifeng1@huawei.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 187/290] bpf, sockmap: Fix data lost during EAGAIN retries
+Subject: [PATCH 5.15 304/411] cpufreq: Force sync policy boost with global boost on sysfs update
 Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130632.493431199@linuxfoundation.org>
+Message-ID: <20250623130641.298210330@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Viresh Kumar <viresh.kumar@linaro.org>
 
-[ Upstream commit 7683167196bd727ad5f3c3fc6a9ca70f54520a81 ]
+[ Upstream commit 121baab7b88ed865532dadb7ef1aee6e2bea86f5 ]
 
-We call skb_bpf_redirect_clear() to clean _sk_redir before handling skb in
-backlog, but when sk_psock_handle_skb() return EAGAIN due to sk_rcvbuf
-limit, the redirect info in _sk_redir is not recovered.
+If the global boost flag is enabled and policy boost flag is disabled, a
+call to `cpufreq_boost_trigger_state(true)` must enable the policy's
+boost state.
 
-Fix skb redir loss during EAGAIN retries by restoring _sk_redir
-information using skb_bpf_set_redir().
+The current code misses that because of an optimization. Fix it.
 
-Before this patch:
-'''
-./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
-Setting up benchmark 'sockmap'...
-create socket fd c1:13 p1:14 c2:15 p2:16
-Benchmark 'sockmap' started.
-Send Speed 1343.172 MB/s, BPF Speed 1343.238 MB/s, Rcv Speed   65.271 MB/s
-Send Speed 1352.022 MB/s, BPF Speed 1352.088 MB/s, Rcv Speed   0 MB/s
-Send Speed 1354.105 MB/s, BPF Speed 1354.105 MB/s, Rcv Speed   0 MB/s
-Send Speed 1355.018 MB/s, BPF Speed 1354.887 MB/s, Rcv Speed   0 MB/s
-'''
-Due to the high send rate, the RX processing path may frequently hit the
-sk_rcvbuf limit. Once triggered, incorrect _sk_redir will cause the flow
-to mistakenly enter the "!ingress" path, leading to send failures.
-(The Rcv speed depends on tcp_rmem).
-
-After this patch:
-'''
-./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
-Setting up benchmark 'sockmap'...
-create socket fd c1:13 p1:14 c2:15 p2:16
-Benchmark 'sockmap' started.
-Send Speed 1347.236 MB/s, BPF Speed 1347.367 MB/s, Rcv Speed   65.402 MB/s
-Send Speed 1353.320 MB/s, BPF Speed 1353.320 MB/s, Rcv Speed   65.536 MB/s
-Send Speed 1353.186 MB/s, BPF Speed 1353.121 MB/s, Rcv Speed   65.536 MB/s
-'''
-
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20250407142234.47591-2-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Suggested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Link: https://patch.msgid.link/852ff11c589e6300730d207baac195b2d9d8b95f.1745511526.git.viresh.kumar@linaro.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 2076db464e936..c3169e1e63524 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -689,7 +689,8 @@ static void sk_psock_backlog(struct work_struct *work)
- 			if (ret <= 0) {
- 				if (ret == -EAGAIN) {
- 					sk_psock_skb_state(psock, state, len, off);
--
-+					/* Restore redir info we cleared before */
-+					skb_bpf_set_redir(skb, psock->sk, ingress);
- 					/* Delay slightly to prioritize any
- 					 * other work that might be here.
- 					 */
+diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
+index 2c98ddf2c8db1..bbb0cbb2eb8c2 100644
+--- a/drivers/cpufreq/cpufreq.c
++++ b/drivers/cpufreq/cpufreq.c
+@@ -2698,8 +2698,10 @@ int cpufreq_boost_trigger_state(int state)
+ 	unsigned long flags;
+ 	int ret = 0;
+ 
+-	if (cpufreq_driver->boost_enabled == state)
+-		return 0;
++	/*
++	 * Don't compare 'cpufreq_driver->boost_enabled' with 'state' here to
++	 * make sure all policies are in sync with global boost flag.
++	 */
+ 
+ 	write_lock_irqsave(&cpufreq_driver_lock, flags);
+ 	cpufreq_driver->boost_enabled = state;
 -- 
 2.39.5
 
