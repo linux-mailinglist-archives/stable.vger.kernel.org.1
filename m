@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155558-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42136AE429A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CB2DAE42C4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B137D188C745
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DD97917ACF4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFDDE253B73;
-	Mon, 23 Jun 2025 13:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22886257AD1;
+	Mon, 23 Jun 2025 13:18:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eOpz7Cgk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqYYiSGb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0A1253B56;
-	Mon, 23 Jun 2025 13:18:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59F3257AC1;
+	Mon, 23 Jun 2025 13:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684730; cv=none; b=eHnk+ZMjx5hD1lujDDGEkVfQ4eNHGAMbWBdp192X/AdkoNBh+PCU31PGK0QBbrBUUOfm9TRTSh93MQZ0ezO+sRYwJ9GupzczRx+xV425e+GmCV91Ll2GHGYgRFYK/IIxsOxpE/Y/aouCCmXVhZ43BcF5HVDivwG9udEPtqgygWw=
+	t=1750684738; cv=none; b=M9WU1S09IagBIP7cpeIoCRzaBYyR9mFquvB5kYmPp9LixdLTYD2eIN4aT2l6mWm4vanQ3X+HiumKr68oto/Wqu/OfGxcsBcFkWKRmVino6jKJKyFv10KYUtpGY4iT6vDQY458TpdGKIAwT4gbuoNqQaZUPnONoGGsMJjJeKG4Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684730; c=relaxed/simple;
-	bh=zedNR3/NHmgljUtZWD9cnbSjUVNSShzktN1hlLiNm/Y=;
+	s=arc-20240116; t=1750684738; c=relaxed/simple;
+	bh=bESmtmmf1HTBwAar1dss4wgQ8mr0KUiREIhYXqC5b/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p/v5/NPtFz2so91ftlG5pPTqgExsMUZE33hekWFUzIERQfrc3FpoQSoq0O07ZULBfPNlRK3DF+e8hhrLscQ7coVYMYE5fOz8Vto/x7hmlPskw/NMyeT/+ZCfXvsVp8vbHWoALUoy2eN4WHS37W/c/bLQw1HL6o0XrKBC61nennM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eOpz7Cgk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D13EC4CEF3;
-	Mon, 23 Jun 2025 13:18:50 +0000 (UTC)
+	 MIME-Version; b=jd7hsGQ1ZM6bzs1FbSXhGCEBlv8lG7quZMWV+wvBW/KfQ/jQ8Ll//Ygv4/d+5J5ikJvZlUty/MNYfyrB+kMwu/FIDqlTZB7S8D9Jpu3lwtxm+ulUnxZxlc7XAG5RsLgP957TE8uhzpN4m9Pe2dVfH6qD2OJxFqvZwkrSadiJHIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqYYiSGb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11034C4CEF2;
+	Mon, 23 Jun 2025 13:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684730;
-	bh=zedNR3/NHmgljUtZWD9cnbSjUVNSShzktN1hlLiNm/Y=;
+	s=korg; t=1750684738;
+	bh=bESmtmmf1HTBwAar1dss4wgQ8mr0KUiREIhYXqC5b/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eOpz7CgkwsMFW6TCwXUtJCqgl2xOqokvPWFQy79y9ajuAVZHRfXaoDAIqc3r20MYV
-	 cJrR1o5deRY/hiR9jTckS/YdynXnA6ndhecaPolMuokN9PMvdY8MVz2ItEMgMFYpfT
-	 2HvM5gb/0Jxi3pbNg7healjxtKwdFT12nLOiHu+A=
+	b=UqYYiSGbfRXne/cjIsQ/7IbpuCBJMz0I4XFHnFTKg4gzlFslTstSc1YQfD1lrY1Ps
+	 30VxcuzfobrxD3tH3h/xOPsdbLHz1057DupR+diwOKm3dykQG/txQtXuX40OcvH4uK
+	 p9k7jq5X24yHZLwFLAxYS43/NjRS2vvlUyl2taog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/222] ACPI: OSI: Stop advertising support for "3.0 _SCP Extensions"
-Date: Mon, 23 Jun 2025 15:05:52 +0200
-Message-ID: <20250623130612.419662182@linuxfoundation.org>
+Subject: [PATCH 5.4 018/222] spi: sh-msiof: Fix maximum DMA transfer size
+Date: Mon, 23 Jun 2025 15:05:53 +0200
+Message-ID: <20250623130612.451684962@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,42 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 8cf4fdac9bdead7bca15fc56fdecdf78d11c3ec6 ]
+[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
 
-As specified in section 5.7.2 of the ACPI specification the feature
-group string "3.0 _SCP Extensions" implies that the operating system
-evaluates the _SCP control method with additional parameters.
+The maximum amount of data to transfer in a single DMA request is
+calculated from the FIFO sizes (which is technically not 100% correct,
+but a simplification, as it is limited by the maximum word count values
+in the Transmit and Control Data Registers).  However, in case there is
+both data to transmit and to receive, the transmit limit is overwritten
+by the receive limit.
 
-However the ACPI thermal driver evaluates the _SCP control method
-without those additional parameters, conflicting with the above
-feature group string advertised to the firmware thru _OSI.
+Fix this by using the minimum applicable FIFO size instead.  Move the
+calculation outside the loop, so it is not repeated for each individual
+DMA transfer.
 
-Stop advertising support for this feature string to avoid confusing
-the ACPI firmware.
+As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
+no real impact.
 
-Fixes: e5f660ebef68 ("ACPI / osi: Collect _OSI handling into one single file")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20250410165456.4173-2-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/osi.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/spi/spi-sh-msiof.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/acpi/osi.c b/drivers/acpi/osi.c
-index bec0bebc7f52b..763d4b8045110 100644
---- a/drivers/acpi/osi.c
-+++ b/drivers/acpi/osi.c
-@@ -42,7 +42,6 @@ static struct acpi_osi_entry
- osi_setup_entries[OSI_STRING_ENTRIES_MAX] __initdata = {
- 	{"Module Device", true},
- 	{"Processor Device", true},
--	{"3.0 _SCP Extensions", true},
- 	{"Processor Aggregator Device", true},
- 	/*
- 	 * Linux-Dell-Video is used by BIOS to disable RTD3 for NVidia graphics
+diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
+index edb26b0857063..80a39424dc1e2 100644
+--- a/drivers/spi/spi-sh-msiof.c
++++ b/drivers/spi/spi-sh-msiof.c
+@@ -918,6 +918,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ 	void *rx_buf = t->rx_buf;
+ 	unsigned int len = t->len;
+ 	unsigned int bits = t->bits_per_word;
++	unsigned int max_wdlen = 256;
+ 	unsigned int bytes_per_word;
+ 	unsigned int words;
+ 	int n;
+@@ -931,17 +932,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
+ 	if (!spi_controller_is_slave(p->ctlr))
+ 		sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
+ 
++	if (tx_buf)
++		max_wdlen = min(max_wdlen, p->tx_fifo_size);
++	if (rx_buf)
++		max_wdlen = min(max_wdlen, p->rx_fifo_size);
++
+ 	while (ctlr->dma_tx && len > 15) {
+ 		/*
+ 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
+ 		 *  words, with byte resp. word swapping.
+ 		 */
+-		unsigned int l = 0;
+-
+-		if (tx_buf)
+-			l = min(round_down(len, 4), p->tx_fifo_size * 4);
+-		if (rx_buf)
+-			l = min(round_down(len, 4), p->rx_fifo_size * 4);
++		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
+ 
+ 		if (bits <= 8) {
+ 			copy32 = copy_bswap32;
 -- 
 2.39.5
 
