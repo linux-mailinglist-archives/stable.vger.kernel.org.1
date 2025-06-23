@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20185AE52A0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 830D9AE543C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84B61B6569B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2B34C0916
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14F3C224B1E;
-	Mon, 23 Jun 2025 21:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3079E22538F;
+	Mon, 23 Jun 2025 22:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nY7sOFz/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CpYCUgFK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4E081E1A05;
-	Mon, 23 Jun 2025 21:45:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E333B28EA;
+	Mon, 23 Jun 2025 22:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715117; cv=none; b=iW39lqwYMNVLsQgTKW5qH1rT9tRkOBsgLtSRwKxqmMI1WsNH7XstRIazM1AJC4x2uOLpxnRr5MKQqG7A5qxuacncTJ4EBW7fiz9eD3/6ca8weyloDSJXv+fm9rWpDGOKO76pzLaZrE1jTn9YKSYnj6RWTQ6i+Rn7NmcDyL6ltMg=
+	t=1750716005; cv=none; b=Ur2BJ4GZOb3oLzUYIsratiRjEl0shwAdtBqzOemYzvNZ2oEb4VYgP4Jiu4VPOhrk/+ONAMiiO8bYBQP5HDzi4p7s6Rtp0k70sV76BI7kSVoqpp7G0Z06ru3CrzHmSQ0bN88oxKlgx9+Gnxr0JmnlFH5Pe1//TbuDSWaq0jLGr2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715117; c=relaxed/simple;
-	bh=S/RnSST8mWOiqg4ik+WJOtxBu9qBGdI2hvZZLIsop+I=;
+	s=arc-20240116; t=1750716005; c=relaxed/simple;
+	bh=DH4vLjwxisBURJVDlrAvUFC0xQt4RmJ3dgt94fItDyk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tYGjYr5Z0a03PzaSx6VZWM50pEHhMYJsClhd9SU/o8JNLJ3yuMfJYt+5CZDylYf/2Ljs01v6E1OcVPPlAm3PXsj4p4gWEWx0vYMGIxscuv/RQ6AytIB+o0oktokxUrlPJOuzk9LA0xbT9f8HeBJxthcrt1dj7obd0Yyd9t/urgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nY7sOFz/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09744C4CEEA;
-	Mon, 23 Jun 2025 21:45:14 +0000 (UTC)
+	 MIME-Version; b=K3E7R8IuN2gSRYAmzSnN1pqrGEFdGis59+dc+inMgaH9eyqofTFRMcpGFn0TgVcP6iXDwMz9uvMpl+OS7F25KSnPu9pIPS1wqaW2HToMxvz3xYdGf9PH3vfZwUTSaxNwindpd/YPmy8Iugx9OmIXSgktniXxeoqHSSQxn8lmGL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CpYCUgFK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A8DCC4CEEA;
+	Mon, 23 Jun 2025 22:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715115;
-	bh=S/RnSST8mWOiqg4ik+WJOtxBu9qBGdI2hvZZLIsop+I=;
+	s=korg; t=1750716004;
+	bh=DH4vLjwxisBURJVDlrAvUFC0xQt4RmJ3dgt94fItDyk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nY7sOFz/DCdtbdBJOSSrBbf6s11jfRUdZe0UTrdD8hCEhv3isQJaEIS/d/mEax9DF
-	 /zEWw90e5Y97WYpLIYlbMLKndNJGaEfX6ICd7ABIa7OMlGkudzd1OqnpPgGM7Fpm/F
-	 zT7RSjhP3CYbOcp/eJvHNB8Qx+uwA5CpES3MuuTU=
+	b=CpYCUgFKMB2Sl8s879mqQYdi7IQxE1F4ZBtoSI6UHtGXf/Rda7q51niGHHB/NzMjJ
+	 isk21z6dxcrHLxD+jm1KhWNNBwjb5SsKuc4pBu1rRpP+Gyd5xh1yyJijFAxWzAQTSC
+	 EUjBHjksm4+NNtsBwgvIO2+VWb/Z4aB8s2Zh3QFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Malat <oss@malat.biz>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 253/355] sctp: Do not wake readers in __sctp_write_space()
+	Aditya Garg <gargaditya08@live.com>,
+	Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Subject: [PATCH 6.15 496/592] drm/appletbdrm: Make appletbdrm depend on X86
 Date: Mon, 23 Jun 2025 15:07:34 +0200
-Message-ID: <20250623130634.357620009@linuxfoundation.org>
+Message-ID: <20250623130712.231194395@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Malat <oss@malat.biz>
+From: Aditya Garg <gargaditya08@live.com>
 
-[ Upstream commit af295892a7abbf05a3c2ba7abc4d81bb448623d6 ]
+commit de5fbbe1531f645c8b56098be8d1faf31e46f7f0 upstream.
 
-Function __sctp_write_space() doesn't set poll key, which leads to
-ep_poll_callback() waking up all waiters, not only these waiting
-for the socket being writable. Set the key properly using
-wake_up_interruptible_poll(), which is preferred over the sync
-variant, as writers are not woken up before at least half of the
-queue is available. Also, TCP does the same.
+The appletbdrm driver is exclusively for Touch Bars on x86 Intel Macs.
+The M1 Macs have a separate driver. So, lets avoid compiling it for
+other architectures.
 
-Signed-off-by: Petr Malat <oss@malat.biz>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250516081727.1361451-1-oss@malat.biz
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Aditya Garg <gargaditya08@live.com>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Link: https://lore.kernel.org/r/PN3PR01MB95970778982F28E4A3751392B8B72@PN3PR01MB9597.INDPRD01.PROD.OUTLOOK.COM
+Signed-off-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sctp/socket.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 3d6c9e35781e9..196196ebe81a9 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -8849,7 +8849,8 @@ static void __sctp_write_space(struct sctp_association *asoc)
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (wq) {
- 			if (waitqueue_active(&wq->wait))
--				wake_up_interruptible(&wq->wait);
-+				wake_up_interruptible_poll(&wq->wait, EPOLLOUT |
-+						EPOLLWRNORM | EPOLLWRBAND);
- 
- 			/* Note that we try to include the Async I/O support
- 			 * here by modeling from the current TCP/UDP code.
--- 
-2.39.5
-
+--- a/drivers/gpu/drm/tiny/Kconfig
++++ b/drivers/gpu/drm/tiny/Kconfig
+@@ -3,6 +3,7 @@
+ config DRM_APPLETBDRM
+ 	tristate "DRM support for Apple Touch Bars"
+ 	depends on DRM && USB && MMU
++	depends on X86 || COMPILE_TEST
+ 	select DRM_GEM_SHMEM_HELPER
+ 	select DRM_KMS_HELPER
+ 	help
 
 
 
