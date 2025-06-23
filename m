@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-156517-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156587-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF5FBAE4FD7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97B4AE5030
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B8C17F780
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B9A41B621E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C7338DE1;
-	Mon, 23 Jun 2025 21:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337351ACEDA;
+	Mon, 23 Jun 2025 21:22:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E3CkJeSB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHggzuQw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08DE12C9D;
-	Mon, 23 Jun 2025 21:20:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5355219E0;
+	Mon, 23 Jun 2025 21:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713607; cv=none; b=oYbyEsgJUY7YLnwbTDRp1+G/UgVS8zPUSv4zNGmw1wDJBEEwcRFVTAAhNcbA7C4vxb8AiKq6EB3HYfkIvkrDVnmpy46ksxNBk/UH+SnB0fiZ9iEXoAzy4HvNW46u9KB1Mqux9BL54wYBriaBWDbha6svQUsvmTPnxnLcD0Lx1TM=
+	t=1750713779; cv=none; b=b9h8U8rJoUt4VD+YuQFCDBnOEjH+dHnZQugCp1BiaGjY3yBSX7asRL+783WFs8a/Uwa7th5MYS41H3lZ3CXnJLYowUoCgaDW23XJZvI8pUMvQZrq9fC1syX8yK82LfWlNr0Un8AsxJSzwVTEJALRtzyxV6Kij5r4eooVzarluEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713607; c=relaxed/simple;
-	bh=ek1IFE7FeHGyDqI1nixQRzN8W5C/tc1sfYHel/k7IMQ=;
+	s=arc-20240116; t=1750713779; c=relaxed/simple;
+	bh=FIxI+W29N8/A/MWDBcJecy8Y6mRSR+3MQ4Kvfxcy8JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pi9I6aPuH46kZH13scD6pxeu88pVAZveeydVB9NfpI+yl5qE8IjN7cmnzohooPzTBQDiUrSIccTUuoTUomABvoB7N4tu9pub1yLQ4kLrWpI0qMjj8JcOvU4tiFNsvy7328M6StC3tz01TyQNdQlhGD3vq82n7oG2Ni6vnMzYR0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E3CkJeSB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B9E3C4CEEA;
-	Mon, 23 Jun 2025 21:20:06 +0000 (UTC)
+	 MIME-Version; b=pr7ToTOAn007Ur22qS8awdGy5q78dR+htfWdsfR9ElJreu7CEfiWC+ZKz8iR9ajYPbOgj4PX7jzn3ZVX5F0mENdEQWr//9Jp7ruYZRlaQWTPSI+4LMGmk7H7ITXd/brZNJCQoT5eEVopfnsHrvGNIUB2l872gilPSoMYs5+l5d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHggzuQw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3625DC4CEEA;
+	Mon, 23 Jun 2025 21:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713606;
-	bh=ek1IFE7FeHGyDqI1nixQRzN8W5C/tc1sfYHel/k7IMQ=;
+	s=korg; t=1750713778;
+	bh=FIxI+W29N8/A/MWDBcJecy8Y6mRSR+3MQ4Kvfxcy8JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E3CkJeSBnzNAEMRuBTxnqek3BZErTbrc9tSZ4UUVQ+oXHdeWBSVT+RUb6yP7SPHhw
-	 vpPFltExq6BvpBi0yUrrpnmvsgMvxVWg7uJIkwIKKKnQrqpa+e8BsSJ8fd1EwqUIbS
-	 8CJMqXWhLrGShXR99muHvr1dA38VEM8UQ6KEMS+A=
+	b=QHggzuQwBYwotcC0wa0zKk61zk6YIp+c7JGHTO+AiIOKKhFR2eqv9wh+imunpFpJz
+	 o4IBtpS4I4wizmWZAahS54+SyUAsbvGqpQK4qjCK2b7suBKWf2YVQdDt4URl1LlYP5
+	 BfvXRx3XZJB+YkPcyWlUURTgiFpUDeVZf+8kf8U0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 053/414] media: gspca: Add error handling for stv06xx_read_sensor()
-Date: Mon, 23 Jun 2025 15:03:10 +0200
-Message-ID: <20250623130643.380617385@linuxfoundation.org>
+	Ian Rogers <irogers@google.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 146/508] perf tests switch-tracking: Fix timestamp comparison
+Date: Mon, 23 Jun 2025 15:03:11 +0200
+Message-ID: <20250623130648.876740360@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +67,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Leo Yan <leo.yan@arm.com>
 
-commit 398a1b33f1479af35ca915c5efc9b00d6204f8fa upstream.
+[ Upstream commit 628e124404b3db5e10e17228e680a2999018ab33 ]
 
-In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
-checked. A proper implementation can be found in vv6410_dump(). Add a
-check in loop condition and propergate error code to fix this issue.
+The test might fail on the Arm64 platform with the error:
 
-Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  # perf test -vvv "Track with sched_switch"
+  Missing sched_switch events
+  #
+
+The issue is caused by incorrect handling of timestamp comparisons. The
+comparison result, a signed 64-bit value, was being directly cast to an
+int, leading to incorrect sorting for sched events.
+
+The case does not fail everytime, usually I can trigger the failure
+after run 20 ~ 30 times:
+
+  # while true; do perf test "Track with sched_switch"; done
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+
+I used cross compiler to build Perf tool on my host machine and tested on
+Debian / Juno board.  Generally, I think this issue is not very specific
+to GCC versions.  As both internal CI and my local env can reproduce the
+issue.
+
+My Host Build compiler:
+
+  # aarch64-linux-gnu-gcc --version
+  aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+
+Juno Board:
+
+  # lsb_release -a
+  No LSB modules are available.
+  Distributor ID: Debian
+  Description:    Debian GNU/Linux 12 (bookworm)
+  Release:        12
+  Codename:       bookworm
+
+Fix this by explicitly returning 0, 1, or -1 based on whether the result
+is zero, positive, or negative.
+
+Fixes: d44bc558297222d9 ("perf tests: Add a test for tracking with sched_switch")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250331172759.115604-1-leo.yan@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ tools/perf/tests/switch-tracking.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-+++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
- static int hdcs_dump(struct sd *sd)
- {
- 	u16 reg, val;
-+	int err = 0;
+diff --git a/tools/perf/tests/switch-tracking.c b/tools/perf/tests/switch-tracking.c
+index 87f565c7f650d..db6c61424badf 100644
+--- a/tools/perf/tests/switch-tracking.c
++++ b/tools/perf/tests/switch-tracking.c
+@@ -257,7 +257,7 @@ static int compar(const void *a, const void *b)
+ 	const struct event_node *nodeb = b;
+ 	s64 cmp = nodea->event_time - nodeb->event_time;
  
- 	pr_info("Dumping sensor registers:\n");
- 
--	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
--		stv06xx_read_sensor(sd, reg, &val);
-+	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
-+		err = stv06xx_read_sensor(sd, reg, &val);
- 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
- 	}
--	return 0;
-+	return (err < 0) ? err : 0;
+-	return cmp;
++	return cmp < 0 ? -1 : (cmp > 0 ? 1 : 0);
  }
+ 
+ static int process_events(struct evlist *evlist,
+-- 
+2.39.5
+
 
 
 
