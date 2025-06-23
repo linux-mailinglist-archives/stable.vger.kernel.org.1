@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFC16AE53D3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33737AE5188
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 590A11B6808C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACC8D1885C31
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3EE223DEE;
-	Mon, 23 Jun 2025 21:55:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B79E1EEA5D;
+	Mon, 23 Jun 2025 21:34:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7N8oQ/K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2nb1Nulm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2F93FB1B;
-	Mon, 23 Jun 2025 21:55:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDFC94409;
+	Mon, 23 Jun 2025 21:34:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715749; cv=none; b=E41NbctZbm05cBKuN1yM6jfr1nrxBD7lzGROQcLAxR5QMJWdzMOJTI06Uelf+v9SWNxRuokmJCq6L1WQupLgcWtua6WN60JiZ/DgRPFC6mCXazLHrS+LRGM2IXtsbAfhJfuQ3kmIH03OCMlib1I9S2IjJYpecHubf+PwomEZQ/4=
+	t=1750714477; cv=none; b=qHngjDg5cmyVZ2o3VgTNrUonVSMFtLtvlXGq7Y5KOMBITDrM6BsAcgE9xTJ9kSIa/kXc3Rs4+cVAgEwiNqjlHj6iCuz+i+6I03Xh2yRwvr4AwvvT2EhpD3pUjqbHmx2EIDOWDr/7yVeMTUfbd5JatIcIRXomSulNdBTYhlBc3Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715749; c=relaxed/simple;
-	bh=YSrzVT/8J4m6/QzMZ0TstMFWd+a88tVfGc90Oi98h2E=;
+	s=arc-20240116; t=1750714477; c=relaxed/simple;
+	bh=ufP02MWaO5uXWOxF9eeMFUTQ49oJtA9z3bqtO5cIbuc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDY72hWIBqkP6oir43swsY+OpnEMHab8iDpQLAdB9g3wWior84Y9ZjzZbmuzDG/YVApGs+6xqAmIv6j8vCUeZeEUySGW/qopqMsAkLoPsfg6+NWl29lZ/eK+5djOQZSviRXsGHhRg5rQ97kH7xM4kqitkTup5iIEznyChZVaRg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7N8oQ/K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3D9C4CEEA;
-	Mon, 23 Jun 2025 21:55:48 +0000 (UTC)
+	 MIME-Version; b=Jv2n5Cx+4CTTen1wF92OoXGy7wSw8UCGEQk23TKl5gT2GIQUa6PbeUHdcxnpBXik5eR8E26UKkelXGDo3RXUsIb89fWG6VqYWbx2sZVTK5RdGjxbUvyqzZhPeQekVwiMBIy+NeFlrqSMKqSV+Q5q28T15QEOhMOoqOKt5voS8jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2nb1Nulm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 662C5C4CEEA;
+	Mon, 23 Jun 2025 21:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715748;
-	bh=YSrzVT/8J4m6/QzMZ0TstMFWd+a88tVfGc90Oi98h2E=;
+	s=korg; t=1750714477;
+	bh=ufP02MWaO5uXWOxF9eeMFUTQ49oJtA9z3bqtO5cIbuc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7N8oQ/KfxfA/+z9u3PQFUY8STCh/NKNlesWas2PwfkthcJ5IZ2SPW3vqM0Et9j1B
-	 oK1vLmwW0U1jjIzw1N9hraNV6Ep1CGR4fFUHeac6XwN6V82Mgz7VwPkZ4iZWgzLqEs
-	 2/pDC7eNFa4YU+A58Z/kXriMbSIKBL7AUImrJhLs=
+	b=2nb1Nulmv6LshyCLAXk9NxaTSrPsfW8Vs7vN0sI4Hob+PhH79Ppckja8VCKaJo3g1
+	 669dT5n8A+YrTfl1aGn5xoyNf2bDEwgcZ2qCKfzrQOoGnvBKMf6RTWaFNAJW+dLr03
+	 f66SilZ5qAbygLnKA3lTJRG9DjOdY56yN7e6QCE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ayushi Makhija <quic_amakhija@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 276/411] drm/bridge: anx7625: change the gpiod_set_value API
-Date: Mon, 23 Jun 2025 15:07:00 +0200
-Message-ID: <20250623130640.600231171@linuxfoundation.org>
+Subject: [PATCH 6.6 160/290] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get()
+Date: Mon, 23 Jun 2025 15:07:01 +0200
+Message-ID: <20250623130631.709587604@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayushi Makhija <quic_amakhija@quicinc.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 50935044e58e563cdcfd556d62f27bc8744dd64e ]
+[ Upstream commit 57273ff8bb16f3842c2597b5bbcd49e7fa12edf7 ]
 
-Use gpiod_set_value_cansleep() instead of gpiod_set_value()
-to fix the below call trace in the boot log:
+The regmap_read() function can fail, so propagate its error up to
+the stack instead of silently ignoring that.
 
-[    5.690534] Call trace:
-[    5.690536]  gpiod_set_value+0x40/0xa4
-[    5.690540]  anx7625_runtime_pm_resume+0xa0/0x324 [anx7625]
-[    5.690545]  __rpm_callback+0x48/0x1d8
-[    5.690549]  rpm_callback+0x6c/0x78
-
-Certain GPIO controllers require access via message-based buses
-such as I2C or SPI, which may cause the GPIOs to enter a sleep
-state. Therefore, use the gpiod_set_value_cansleep().
-
-Signed-off-by: Ayushi Makhija <quic_amakhija@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250505094245.2660750-7-quic_amakhija@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-4-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 01612d2c034af..257f69b5e1783 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -920,10 +920,10 @@ static void anx7625_power_on(struct anx7625_data *ctx)
- 	usleep_range(11000, 12000);
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index a9e665ea0f617..ef87a6045e073 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -443,11 +443,14 @@ static int armada_37xx_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
+ 	unsigned int reg = INPUT_VAL;
+ 	unsigned int val, mask;
++	int ret;
  
- 	/* Power on pin enable */
--	gpiod_set_value(ctx->pdata.gpio_p_on, 1);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 1);
- 	usleep_range(10000, 11000);
- 	/* Power reset pin enable */
--	gpiod_set_value(ctx->pdata.gpio_reset, 1);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 1);
- 	usleep_range(10000, 11000);
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
  
- 	DRM_DEV_DEBUG_DRIVER(dev, "power on !\n");
-@@ -943,9 +943,9 @@ static void anx7625_power_standby(struct anx7625_data *ctx)
- 		return;
- 	}
+-	regmap_read(info->regmap, reg, &val);
++	ret = regmap_read(info->regmap, reg, &val);
++	if (ret)
++		return ret;
  
--	gpiod_set_value(ctx->pdata.gpio_reset, 0);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 0);
- 	usleep_range(1000, 1100);
--	gpiod_set_value(ctx->pdata.gpio_p_on, 0);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 0);
- 	usleep_range(1000, 1100);
- 
- 	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->pdata.supplies),
+ 	return (val & mask) != 0;
+ }
 -- 
 2.39.5
 
