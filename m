@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5C7AE4414
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 278C6AE44EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76968177A7A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D2874448A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D36F24E019;
-	Mon, 23 Jun 2025 13:32:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF742505CB;
+	Mon, 23 Jun 2025 13:34:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAJ+eto+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpnwG6un"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF59A24679C;
-	Mon, 23 Jun 2025 13:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7664C7F;
+	Mon, 23 Jun 2025 13:34:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685536; cv=none; b=OmAp5RCRJFqourNtN3Y8zc7pizvHggcNK9NfXhZDA9wVYNF99V1tTzkYfZlzp4GV4XTadI3rQXQcAtjep5nDnFvFqPOdYQdMnk+O39TOm67JiNKR26F1c1StmaP8+H8zA6JKciPsQ2kuucLgV5jlWHUQ4XQ1wKUzBSJV9Fz4124=
+	t=1750685662; cv=none; b=hhGwTMbzaOG25d8cRQ6XoSN2mCJvZCfBXVbMuHAOQPAsLklZxAPsDZ4fJBQwpcGTx1gnmIT/7jtpaAuj2xIUEuG9eNZ3PXbKmqWLcpPOZRaprVLiumiFxHdCtUOPwP5hX0GgeVL/eyGzkSqS/hc+Fz8aXtRSF/kU75dWK7UWUZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685536; c=relaxed/simple;
-	bh=Nlnx6uZRQvfT8EstEWKHI04g+smHBjdZB2hlXaBKJDU=;
+	s=arc-20240116; t=1750685662; c=relaxed/simple;
+	bh=6BDss7qZtM7Nt0WLcAdXEuSSjzEQT07QBa6Lu8vZOlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uobw63piBdlDfUdN83LKhIsEKt2zLJxQ8m2iDiOhbIK+KWOY/+Coy0fJLCxUfdazUviaLqMKqORTx832F0m6JwHVhijcR7D1Xyhsb2kmeHOas7emUJ9SzHvgKN7kY925QlVuiM4eOz32pNeh+fSJhxUo5d8KxNYIOrlF7MTPd+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAJ+eto+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63D6BC4CEEA;
-	Mon, 23 Jun 2025 13:32:16 +0000 (UTC)
+	 MIME-Version; b=MAwi1mBPTh1xlxeP2iItHgH53/7D7/Z+h+BtsmCuy4flumNqZz7cCwi8aXJOmO1jzj3sRka1J59iYwimxCeZuFdBT4efiIcblCsblKoCXcA2oHy/yZRdkBUoPsToe/T1hYZ/8SCz5TjV2/RuhWOMqG/o2zyaX2elyJrOWZlZVc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpnwG6un; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F295C4CEEA;
+	Mon, 23 Jun 2025 13:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685536;
-	bh=Nlnx6uZRQvfT8EstEWKHI04g+smHBjdZB2hlXaBKJDU=;
+	s=korg; t=1750685661;
+	bh=6BDss7qZtM7Nt0WLcAdXEuSSjzEQT07QBa6Lu8vZOlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAJ+eto+mFHZAc0qRh63WilGk5xP6fdEEXo3//XVJJ6uRCIGye1+KqCU6Zq4g7pD3
-	 07tGvfM0qWECJBFWDoCTdRmvYZVglYVYfWqYHP2ioFBKJZVGSLAwxwONRh1pjTS5f9
-	 YRspPPiAcuG3VgdOZeUb+HrxlVqTDzILmpipZWHg=
+	b=wpnwG6unPAdPXZwNpwEGHtr2vXa6M1d4OgXr0efgbKX8afu8hS6u4cInp3MYK2v+B
+	 BTTollx0seLNggO+hZe0eikjfMmUgR9sU3AqTOU1j+6/6sR6G+EnGE5ZsIKT34geeD
+	 u52FFQ57bI3wJxvxZvvgIXGo/B9RyLPogcnXEuXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Zhongqiu Duan <dzq.aishenghu0@gmail.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 235/592] drm/bridge: select DRM_KMS_HELPER for AUX_BRIDGE
-Date: Mon, 23 Jun 2025 15:03:13 +0200
-Message-ID: <20250623130705.879802284@linuxfoundation.org>
+Subject: [PATCH 5.15 050/411] netfilter: nft_quota: match correctly when the quota just depleted
+Date: Mon, 23 Jun 2025 15:03:14 +0200
+Message-ID: <20250623130634.497027370@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
 
-[ Upstream commit b12fa5e76e1463fc5a196f2717040e4564e184b6 ]
+[ Upstream commit bfe7cfb65c753952735c3eed703eba9a8b96a18d ]
 
-The aux bridge uses devm_drm_of_get_bridge() from the panel bridge (and
-correctly selects DRM_PANEL_BRIDGE). However panel bridge is not a
-separate module, it is compiled into the drm_kms_helper.o. Select
-DRM_KMS_HELPER too to express this dependency.
+The xt_quota compares skb length with remaining quota, but the nft_quota
+compares it with consumed bytes.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250411-aux-select-kms-v1-1-c4276f905a56@oss.qualcomm.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+The xt_quota can match consumed bytes up to quota at maximum. But the
+nft_quota break match when consumed bytes equal to quota.
+
+i.e., nft_quota match consumed bytes in [0, quota - 1], not [0, quota].
+
+Fixes: 795595f68d6c ("netfilter: nft_quota: dump consumed quota")
+Signed-off-by: Zhongqiu Duan <dzq.aishenghu0@gmail.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_quota.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/Kconfig b/drivers/gpu/drm/bridge/Kconfig
-index 09a1be234f717..b9e0ca85226a6 100644
---- a/drivers/gpu/drm/bridge/Kconfig
-+++ b/drivers/gpu/drm/bridge/Kconfig
-@@ -16,6 +16,7 @@ config DRM_AUX_BRIDGE
- 	tristate
- 	depends on DRM_BRIDGE && OF
- 	select AUXILIARY_BUS
-+	select DRM_KMS_HELPER
- 	select DRM_PANEL_BRIDGE
- 	help
- 	  Simple transparent bridge that is used by several non-DRM drivers to
+diff --git a/net/netfilter/nft_quota.c b/net/netfilter/nft_quota.c
+index 586a6df645bcb..c2b5bcc7ac056 100644
+--- a/net/netfilter/nft_quota.c
++++ b/net/netfilter/nft_quota.c
+@@ -19,10 +19,16 @@ struct nft_quota {
+ };
+ 
+ static inline bool nft_overquota(struct nft_quota *priv,
+-				 const struct sk_buff *skb)
++				 const struct sk_buff *skb,
++				 bool *report)
+ {
+-	return atomic64_add_return(skb->len, priv->consumed) >=
+-	       atomic64_read(&priv->quota);
++	u64 consumed = atomic64_add_return(skb->len, priv->consumed);
++	u64 quota = atomic64_read(&priv->quota);
++
++	if (report)
++		*report = consumed >= quota;
++
++	return consumed > quota;
+ }
+ 
+ static inline bool nft_quota_invert(struct nft_quota *priv)
+@@ -34,7 +40,7 @@ static inline void nft_quota_do_eval(struct nft_quota *priv,
+ 				     struct nft_regs *regs,
+ 				     const struct nft_pktinfo *pkt)
+ {
+-	if (nft_overquota(priv, pkt->skb) ^ nft_quota_invert(priv))
++	if (nft_overquota(priv, pkt->skb, NULL) ^ nft_quota_invert(priv))
+ 		regs->verdict.code = NFT_BREAK;
+ }
+ 
+@@ -51,13 +57,13 @@ static void nft_quota_obj_eval(struct nft_object *obj,
+ 			       const struct nft_pktinfo *pkt)
+ {
+ 	struct nft_quota *priv = nft_obj_data(obj);
+-	bool overquota;
++	bool overquota, report;
+ 
+-	overquota = nft_overquota(priv, pkt->skb);
++	overquota = nft_overquota(priv, pkt->skb, &report);
+ 	if (overquota ^ nft_quota_invert(priv))
+ 		regs->verdict.code = NFT_BREAK;
+ 
+-	if (overquota &&
++	if (report &&
+ 	    !test_and_set_bit(NFT_QUOTA_DEPLETED_BIT, &priv->flags))
+ 		nft_obj_notify(nft_net(pkt), obj->key.table, obj, 0, 0,
+ 			       NFT_MSG_NEWOBJ, 0, nft_pf(pkt), 0, GFP_ATOMIC);
 -- 
 2.39.5
 
