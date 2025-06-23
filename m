@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-157818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 327F3AE55B8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6763AAE55E3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E241BC64A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A85361BC2F9C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12731228CBE;
-	Mon, 23 Jun 2025 22:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F63227BB5;
+	Mon, 23 Jun 2025 22:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Snvc0ET4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AxkDCCOt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C463B223DD0;
-	Mon, 23 Jun 2025 22:13:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235E4227581;
+	Mon, 23 Jun 2025 22:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716793; cv=none; b=ZJi/bjX1TjdjtTQ5F9vJvQGhRaxuYALDhBeV0w0Kv1r0G+rNJJSz9bffH6/bvp16D/xHGlHRTb6Cl2/LOK9FUtJJfjqOFNFGaYPxDKOP3wFGgRk8sIldwCAW0yKgl6WvCQF/Vp6gitxifYQ89YEFCw0FWUwPca9YU85R+VMRIP4=
+	t=1750716845; cv=none; b=EOl5IAlcjJzDDI53yPr9maAfAxpDL1h8tEDsDZhEva6lcFagRMcaSJgM0nrle8bgAzViKLDVtDReFZkx82PS3Vw237GQGjnFu5BDM9D7qPZ7vwtycOBXEH5RgiUV45J+La27j6VJmhNvDELbg+84Y5EJKP+g9irXVHiCAtj1Pm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716793; c=relaxed/simple;
-	bh=RjrSo28YDP9qwvrzZO2G1KAzm2VtaJcxaL97Yyvruic=;
+	s=arc-20240116; t=1750716845; c=relaxed/simple;
+	bh=RkSFulmcGF48EdTgnNRvWUymNLCkVvBdUyaKYcJv05M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HNPOwzcypF7K57xgoO7jgjJcbBtYmAipIaAN0my1MvevF9F6nkk5P4vtFH1rw1GzG1AXRPiJ4iDXjzVQ5xFJgVVVKLplAycZzc31GoNUf7ZNDEJ1E9yJsKiZPa7xkxjWAsVcp2aMw5tLwLDk8XSieesy9McVRYHCgPGyXFIhE8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Snvc0ET4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEB3C4CEED;
-	Mon, 23 Jun 2025 22:13:13 +0000 (UTC)
+	 MIME-Version; b=uAQu3JA7YMU9HSPJUf0v28Jf5bR84Bnzme6S1Z+ltybFkEz1i86XzxXfm1k3/fbKN/Uf2kVoXxuzAN5nGJTe49ider+8QxakwKgegIe6j2QiCwVdiOmD3RIbs213sPpNOHL7MoZvueXs+tuXgxBJVsR4BLsyjTX2C2W6AbRkHGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AxkDCCOt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF194C4CEEA;
+	Mon, 23 Jun 2025 22:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716793;
-	bh=RjrSo28YDP9qwvrzZO2G1KAzm2VtaJcxaL97Yyvruic=;
+	s=korg; t=1750716845;
+	bh=RkSFulmcGF48EdTgnNRvWUymNLCkVvBdUyaKYcJv05M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Snvc0ET4emm/V3ilT/1qDhQH9hff0ujO4Sot7UTUXrZZUM2Q1xSY2q0I72gAH/p6y
-	 aHJHVGzYEVSvBmE/VfCBcVTLlMzjDg0M0kolq55jIuXEH1j17RMQmZUsiIZ4ZmSNmT
-	 1d1vmW3wS9Xm9zPF0j8b/JQL27iSsLbwoyiqw+r0=
+	b=AxkDCCOtik7QJvKMOKuvdhSFPGodABjlHyMXe6GXfCa5h0FtXY9NRFqel99JcAa4/
+	 yRZionYbCNuZusVj/OxV2cvSIsoOmMq+3OxlYQWj2vwyryNtObgG3cHf8I7H1KFwgD
+	 OyGlybAJF7vjESrT9K4slkGp1hnPM5pKvek92uVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 337/508] ext4: ensure i_size is smaller than maxbytes
-Date: Mon, 23 Jun 2025 15:06:22 +0200
-Message-ID: <20250623130653.624616797@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 338/508] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
+Date: Mon, 23 Jun 2025 15:06:23 +0200
+Message-ID: <20250623130653.651245951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,36 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 1a77a028a392fab66dd637cdfac3f888450d00af upstream.
+commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
 
-The inode i_size cannot be larger than maxbytes, check it while loading
-inode from the disk.
+The "len" variable comes from the firmware and we generally do
+trust firmware, but it's always better to double check.  If the "len"
+is too large it could result in memory corruption when we do
+"memcpy(fragment->data, rec->data, len);"
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/input/misc/ims-pcu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4968,7 +4968,8 @@ struct inode *__ext4_iget(struct super_b
- 		ei->i_file_acl |=
- 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
- 	inode->i_size = ext4_isize(sb, raw_inode);
--	if ((size = i_size_read(inode)) < 0) {
-+	size = i_size_read(inode);
-+	if (size < 0 || size > ext4_get_maxbytes(inode)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "iget: bad i_size value: %lld", size);
- 		ret = -EFSCORRUPTED;
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
+ 		addr = be32_to_cpu(rec->addr) / 2;
+ 		len = be16_to_cpu(rec->len);
+ 
++		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
++			dev_err(pcu->dev,
++				"Invalid record length in firmware: %d\n", len);
++			return -EINVAL;
++		}
++
+ 		fragment = (void *)&pcu->cmd_buf[1];
+ 		put_unaligned_le32(addr, &fragment->addr);
+ 		fragment->len = len;
 
 
 
