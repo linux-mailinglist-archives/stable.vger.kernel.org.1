@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-157835-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458CAAE55BB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B69C0AE5757
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F7787A9631
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035B01689D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC29422A807;
-	Mon, 23 Jun 2025 22:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056D522422F;
+	Mon, 23 Jun 2025 22:27:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtCNTcMS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ1TiU7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68B1F22A7F9;
-	Mon, 23 Jun 2025 22:13:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E9122370A;
+	Mon, 23 Jun 2025 22:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716835; cv=none; b=mUgr5kfLejMDPDe3/2Ps6HXnJut7aaMaOTId/LlIUYNBpg23/UqZ+ZjaMLY48GjScUR9xzXaVBadVd5DbXS1iYLg4FTJzlXxNQFYmcLppVK6Z1vZNMZoJl6X3XEq47Pf4ObW11FYenvItayzFNowkn0/EuPl87SVr5hJG9x0o9U=
+	t=1750717678; cv=none; b=NgmILE9Bbw5qrL+VxYSFU01pGdLPE3G7fOn0r9lUkLB5T4OdHdTtOT62jm3Yr4BOzbhv4gvh0EZaxyLaoepXy/+I/+t5SI+5YHEL7nWI1kcD0a0lHhmowWev6+3CHyljsrjWnEtMtPz22h1P9QcmmUN3c5OQtPguN6/3Tz0KdGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716835; c=relaxed/simple;
-	bh=eiVLdPcU8capN+bCrpOPg7+/1FM0JQ6rQoZWK0l7Ex0=;
+	s=arc-20240116; t=1750717678; c=relaxed/simple;
+	bh=omfFhS7QX1lR7+bORn1tVTkEVB/TaS7nj3PnJaW8/Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nT2K87VHvKBX9ew4KV/mfQ+4XcU0J1EQKMelnVlb6BnsZTQUeCp6R4N2ogXnn174YiYm6kGu78vQRnPsuIn2pU2t9jEYVYxfUmYC+CxYDhHIjdFw0vWyBRm4Fj2qjW8gbLezNF1o0C2YB+aMgQOCHLhZBIlENVosfTfNddVZTOM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtCNTcMS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF676C4CEEA;
-	Mon, 23 Jun 2025 22:13:54 +0000 (UTC)
+	 MIME-Version; b=BpwPIA/oPoPH+pAI/kE2zHUyjcfLJfIEo9QbRNf1enyzFblL9cioJGmlvFGZrvyff/JRttzHh6zNnZ9YvX8JSFEiJLGFShS+fLNvOTy+eu05mnh53C+GC9b4srzkteQxngUOdrqHutERmNNMKase0g87d9qjf5ETOgX8qcLUUUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ1TiU7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44137C4CEEA;
+	Mon, 23 Jun 2025 22:27:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716835;
-	bh=eiVLdPcU8capN+bCrpOPg7+/1FM0JQ6rQoZWK0l7Ex0=;
+	s=korg; t=1750717678;
+	bh=omfFhS7QX1lR7+bORn1tVTkEVB/TaS7nj3PnJaW8/Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vtCNTcMSPKf74CiMbzJ/Wm3mLGdDe4RspzCn95TuAcOazNHmpYbeisap/Jop1POuI
-	 xHjrdHuiQztPwJMwj8Gtu/I29ST0yc5zLkXMOSBfcx6CjFLnOnB2UhHDU9zzQaI+CA
-	 kFyTml8hp6VPTxtj2FRkw+Pv9GGlWs+q55S9l42U=
+	b=sZ1TiU7xaDyfhqd5Zduri2ZwlVYNJkQ8Uv07fuewPv84Ajda8GyIvYldhQJELvH/o
+	 f8Kgmdhv3QrYpI+FEJ4rm+SenJTbdCsTCxYATSqLiu311a4sPMsh0T1zNQ7MDo8BgD
+	 e12bNVzzgsEatNmw1NPq74fwlZqwDh7/3Uy272F8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 587/592] mtd: spinand: winbond: Prevent unsupported frequencies on dual/quad I/O variants
+	Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.1 500/508] Revert "cpufreq: tegra186: Share policy per cluster"
 Date: Mon, 23 Jun 2025 15:09:05 +0200
-Message-ID: <20250623130714.397427565@linuxfoundation.org>
+Message-ID: <20250623130657.316779217@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit dba90f5a79c13936de4273a19e67908a0c296afe ]
+This reverts commit 89172666228de1cefcacf5bc6f61c6281751d2ed which is
+upstream commit be4ae8c19492cd6d5de61ccb34ffb3f5ede5eec8.
 
-Dual and quad capable chips natively support dual and quad I/O variants
-at up to 104MHz (1-2-2 and 1-4-4 operations). Reaching the maximum speed
-of 166MHz is theoretically possible (while still unsupported in the
-field) by adding a few more dummy cycles. Let's be accurate and clearly
-state this limit.
+This commit is causing a suspend regression on Tegra186 Jetson TX2 with
+Linux v6.12.y kernels. This is not seen with Linux v6.15 that includes
+this change but indicates that there are there changes missing.
+Therefore, revert this change.
 
-Setting a maximum frequency implies adding the frequency parameter to
-the macro, which is done using a variadic argument to avoid impacting
-all the other drivers which already make use of this macro.
-
-Fixes: 1ea808b4d15b ("mtd: spinand: winbond: Update the *JW chip definitions")
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/linux-tegra/bf1dabf7-0337-40e9-8b8e-4e93a0ffd4cc@nvidia.com/
+Fixes: 89172666228d ("cpufreq: tegra186: Share policy per cluster")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/spi/winbond.c |  4 ++--
- include/linux/mtd/spinand.h    | 10 ++++++----
- 2 files changed, 8 insertions(+), 6 deletions(-)
+ drivers/cpufreq/tegra186-cpufreq.c |    7 -------
+ 1 file changed, 7 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index b2297699ff4fa..397c90b745e3a 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -26,11 +26,11 @@
- static SPINAND_OP_VARIANTS(read_cache_dtr_variants,
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_4D_4D_OP(0, 8, NULL, 0, 80 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_4D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
--		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0, 104 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2D_2D_OP(0, 4, NULL, 0, 80 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_2D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
--		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0, 104 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_1D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index 392ea3ef73605..aba653207c0f7 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -113,11 +113,12 @@
- 		   SPI_MEM_DTR_OP_DATA_IN(len, buf, 2),			\
- 		   SPI_MEM_OP_MAX_FREQ(freq))
+--- a/drivers/cpufreq/tegra186-cpufreq.c
++++ b/drivers/cpufreq/tegra186-cpufreq.c
+@@ -73,18 +73,11 @@ static int tegra186_cpufreq_init(struct
+ {
+ 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
+ 	unsigned int cluster = data->cpus[policy->cpu].bpmp_cluster_id;
+-	u32 cpu;
  
--#define SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(addr, ndummy, buf, len) \
-+#define SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(addr, ndummy, buf, len, ...) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xbb, 1),				\
- 		   SPI_MEM_OP_ADDR(2, addr, 2),				\
- 		   SPI_MEM_OP_DUMMY(ndummy, 2),				\
--		   SPI_MEM_OP_DATA_IN(len, buf, 2))
-+		   SPI_MEM_OP_DATA_IN(len, buf, 2),			\
-+		   SPI_MEM_OP_MAX_FREQ(__VA_ARGS__ + 0))
+ 	policy->freq_table = data->clusters[cluster].table;
+ 	policy->cpuinfo.transition_latency = 300 * 1000;
+ 	policy->driver_data = NULL;
  
- #define SPINAND_PAGE_READ_FROM_CACHE_3A_1S_2S_2S_OP(addr, ndummy, buf, len) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xbb, 1),				\
-@@ -151,11 +152,12 @@
- 		   SPI_MEM_DTR_OP_DATA_IN(len, buf, 4),			\
- 		   SPI_MEM_OP_MAX_FREQ(freq))
+-	/* set same policy for all cpus in a cluster */
+-	for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
+-		if (data->cpus[cpu].bpmp_cluster_id == cluster)
+-			cpumask_set_cpu(cpu, policy->cpus);
+-	}
+-
+ 	return 0;
+ }
  
--#define SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(addr, ndummy, buf, len) \
-+#define SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(addr, ndummy, buf, len, ...) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xeb, 1),				\
- 		   SPI_MEM_OP_ADDR(2, addr, 4),				\
- 		   SPI_MEM_OP_DUMMY(ndummy, 4),				\
--		   SPI_MEM_OP_DATA_IN(len, buf, 4))
-+		   SPI_MEM_OP_DATA_IN(len, buf, 4),			\
-+		   SPI_MEM_OP_MAX_FREQ(__VA_ARGS__ + 0))
- 
- #define SPINAND_PAGE_READ_FROM_CACHE_3A_1S_4S_4S_OP(addr, ndummy, buf, len) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xeb, 1),				\
--- 
-2.39.5
-
 
 
 
