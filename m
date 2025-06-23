@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0AFAE55F0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4AEAAE5693
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 89FB84C6861
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 743FC173DA9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE6C229B12;
-	Mon, 23 Jun 2025 22:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D102253B0;
+	Mon, 23 Jun 2025 22:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbyzyzUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="13fgesIR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3C51F7580;
-	Mon, 23 Jun 2025 22:14:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F779199FBA;
+	Mon, 23 Jun 2025 22:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716879; cv=none; b=GzH0Jzt20peRlitrYwKpVRXRwPYz8WOIB420GCYL+UMmkr7SCupU/Ds1r6Asv5yX82DqGVflaEO0oYWhf4aKC12poif5L5Elor3R2gXA2dpyzQ4Jash0qgMFw4MqnbZZDTaz5uICNfiFqznN5ifk9RErjn9inQDKrpoJmCYIk3Y=
+	t=1750717239; cv=none; b=JpOhrz+TPIFNfS61uVY3kyU8E6b92xDqWvvSVIglZowYNNkAOrfsH1zNKC7W9aoneBQE+VdznMub+daIO7nBZCvLhkbBVsr5ngIJR4S5os4TkPD6fg/DnbJYeKsi+AoHIcUMJe+h9sXhFqlP2fHzT3E+7rqt0GXsqBhvvbdKc5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716879; c=relaxed/simple;
-	bh=9r+gqi+K89YsxmJ9qZlNPZ6300rWFobtRQKxipHexvY=;
+	s=arc-20240116; t=1750717239; c=relaxed/simple;
+	bh=aze5XG6hZRpSwVHiixqU/W6c63BVjrG9FAV4Mqg1amM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WBNNGMFS5/OY36XkLq5QRNCvzu6qTT2PEqv2fVV/ptae1z0zCrSAnrpIVMHmfEjhMhIIkMHmHiLqQPUoK4LXFYwBBIJfNUr+Y8SdvIsXWcpNL5A6Jhvi8tGa2ZU94hUwK7tObtVmhazp+RCoxzzEmVj5tBvGE8xH8IH6f4kfW6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbyzyzUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23C01C4CEEA;
-	Mon, 23 Jun 2025 22:14:38 +0000 (UTC)
+	 MIME-Version; b=n8nSZJrhOpyqbT+GeTynd3RgO7UvZBb3F/Yg0kPTCDoIkgJlGtd0C01e3UL5U8050BH9oOodY/cQKfOhQ3MEJ4lBSHx4rHPrGIqEjU9m3zsbPqk8H5sXyeIOdSAsplBl18efL4TTlTwrmFimR0Ofk6FqcR3edS7DT0kWlGtJWf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=13fgesIR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94179C4CEEA;
+	Mon, 23 Jun 2025 22:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716879;
-	bh=9r+gqi+K89YsxmJ9qZlNPZ6300rWFobtRQKxipHexvY=;
+	s=korg; t=1750717238;
+	bh=aze5XG6hZRpSwVHiixqU/W6c63BVjrG9FAV4Mqg1amM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbyzyzUUORFK/TK+iT153MaR5NNfBpb/VtVOE3kTSvmGj2ZSvppR47rsz3sIXRb9j
-	 7NFqml1o1iVmmQ+iJ5J5kpmtZ0Wh6imo0IkY815xieGa2w6y8GCiLYbBWYptQ/oV58
-	 ZAaTAB9TcW/bKuARkQ/eEEu0wyKGCG14wytAla1U=
+	b=13fgesIRWnF0mL9FW8F26ydrjhJfg0BpR47sGuIVu+UYO2uRVsLfrUdPAAi/6Zl24
+	 lAIAkIaTKciYSMvEhtH36O9rptQhqswhFug2DsfVBTvTjazHWbY+5xPRuTWPVN8n09
+	 uZplv58vKSjGiVyCpAoBkzD7y8NXZBgzrZGukVog=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sergio Perez Gonzalez <sperezglz@gmail.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 294/414] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
-Date: Mon, 23 Jun 2025 15:07:11 +0200
-Message-ID: <20250623130649.360190184@linuxfoundation.org>
+Subject: [PATCH 6.1 387/508] net: macb: Check return value of dma_set_mask_and_coherent()
+Date: Mon, 23 Jun 2025 15:07:12 +0200
+Message-ID: <20250623130654.808712237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Sergio Perez Gonzalez <sperezglz@gmail.com>
 
-[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
+[ Upstream commit 3920a758800762917177a6b5ab39707d8e376fe6 ]
 
-VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-platforms due to missing host-side PE bridge reconfiguration. In the
-current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-bridge reconfiguration for native host devices, but skips it entirely for
-PEs managed through VFIO in guest passthrough scenarios.
+Issue flagged by coverity. Add a safety check for the return value
+of dma_set_mask_and_coherent, go to a safe exit if it returns error.
 
-This leads to incomplete EEH recovery when a PCI error affects a
-passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-bridge reconfiguration step is silently bypassed. As a result, the PE's
-config space is not fully restored, causing subsequent config space access
-failures or EEH freeze-on-access errors inside the guest.
-
-This patch fixes the issue by ensuring that eeh_pe_configure() always
-invokes the platform's configure_bridge() callback (e.g.,
-pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
-that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
-on the host side, restoring the PE's configuration space after an EEH
-event.
-
-This fix is essential for reliable EEH recovery in QEMU/KVM guests using
-VFIO PCI passthrough on PowerNV and pseries systems.
-
-Tested with:
-- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
-- Injected EEH errors with pseries EEH errinjct tool on host, recovery
-  verified on qemu guest.
-- Verified successful config space access and CAP_EXP DevCtl restoration
-  after recovery
-
-Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
+Link: https://scan7.scan.coverity.com/#/project-view/53936/11354?selectedIssue=1643754
+Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://patch.msgid.link/20250526032034.84900-1-sperezglz@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 83fe99861eb17..ca7f7bb2b4786 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1509,6 +1509,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
- 	/* Invalid PE ? */
- 	if (!pe)
- 		return -ENODEV;
-+	else
-+		ret = eeh_ops->configure_bridge(pe);
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index d2f4709dee0de..495a1cb0bc183 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -4956,7 +4956,11 @@ static int macb_probe(struct platform_device *pdev)
  
- 	return ret;
- }
+ #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+ 	if (GEM_BFEXT(DAW64, gem_readl(bp, DCFG6))) {
+-		dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
++		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
++		if (err) {
++			dev_err(&pdev->dev, "failed to set DMA mask\n");
++			goto err_out_free_netdev;
++		}
+ 		bp->hw_dma_cap |= HW_DMA_CAP_64B;
+ 	}
+ #endif
 -- 
 2.39.5
 
