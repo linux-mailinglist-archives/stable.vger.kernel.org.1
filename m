@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC83AAE4453
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C92DAE423D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D4D42443177
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A34D31887950
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8974255E30;
-	Mon, 23 Jun 2025 13:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D86AF13A265;
+	Mon, 23 Jun 2025 13:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RjiD6/Vw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPUnMP2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671AD255E26;
-	Mon, 23 Jun 2025 13:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94A4413B58B;
+	Mon, 23 Jun 2025 13:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685585; cv=none; b=YVdhF6oQcfZbAAtJ8SrDVoa1fv03vnrVPSRnQRzNCxpkkfFpZ+ShS2EVwCHODHGMWVcWwC2ZBX1YVPmZamwVqiY/RnAj4QYzfKuQP1p3ZkBwZ/BVhiLWIsMP4lX0BUTda6rN06OgcVnn6E+Pj2DyZcNdrX5IvAAktYAfpGdwe/s=
+	t=1750684537; cv=none; b=lCBYdwkE+dlmgYc6EcSE8cL/qQpnEU6E0+s9yVIIGIETrL8MsbXUptUS4TPdD5zY55QPIrnRAbt6XVS2nkWQi5TLORVDH5LAFq89CJC0i1am2952s7g3daWMz7Ylq+TdG8FjQKmSSq5VXsCJ591S55m99Llr1/SKt9gvjqNxlks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685585; c=relaxed/simple;
-	bh=vkHrIg/3Ttz4qO9C+0F6hhY3K4i3p5wccrhaOpyqKBQ=;
+	s=arc-20240116; t=1750684537; c=relaxed/simple;
+	bh=7TrB+bBJzQvIfraFthDc595Z66NLLDDksHe5nxW6Kbo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QaaFU1X/wK0RwB2beerhEDlSogZM/B9XWBj1lsJcjokKQyC+U1BNy1UKRde0kPiGYY49QqqbrBxccZw7W2gQxVDlXM1pr5gi8IVWgPllT6te9PCTd8QSZwarDB7QZ2OkiaketseC3xCNfSuhe+pShZMALF+8h9YF+BPfhpumWDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RjiD6/Vw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E797AC4CEF0;
-	Mon, 23 Jun 2025 13:33:04 +0000 (UTC)
+	 MIME-Version; b=q62iBMwJ8luKgdXyFfMXM6hmMAPLBZJKYgL/9T7L16QtNTI4HHQLIQlVDRu4KzhsnsCviynw2x1tzMrh+RpHA8vcIbGnDAzmuf+bLF/4MwkyQFJqN4kcCV5vO3hnv1hXaZmNFjrJll6+pP7ZkXTZ4WDSDnaJ+EAepWW5BsOvlE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPUnMP2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 268A0C4CEEA;
+	Mon, 23 Jun 2025 13:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685585;
-	bh=vkHrIg/3Ttz4qO9C+0F6hhY3K4i3p5wccrhaOpyqKBQ=;
+	s=korg; t=1750684537;
+	bh=7TrB+bBJzQvIfraFthDc595Z66NLLDDksHe5nxW6Kbo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RjiD6/VwTkY31BJIEaccXsoWvBkK33GEfqA0O1vFyJtN2hNpsABEbi8K7Q9EcwcIx
-	 38qZEuXMIRHqoUDNRT8FP+qWEXyOGDklXnSbjAV8n+Urc1RXCk99LiI7E5ZvwI5XaC
-	 cdzeOX0uyfM/1IfshgwRv2JWxLOi8EDu7YnbJuik=
+	b=FPUnMP2AsrLOP1JSpXRIxn4pIU2mQr1Kx2UsGzZo3Ad8PKXk4JqPx0EbVzwkt7sV9
+	 wd/IC0rlnFrQi+jhW84DNorA2RSHnVuVbvjgvfFE052CE0TMOZo3Q31Cb1Pzi4ARdj
+	 WzPWb8gcK+ivv4ETF5UT0wmIbD/KVYo8c4KFhOuc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corentin Labbe <clabbe.montjoie@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 017/508] crypto: sun8i-ss - do not use sg_dma_len before calling DMA functions
+	Dennis Marttinen <twelho@welho.tech>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.15 104/592] ceph: set superblock s_magic for IMA fsmagic matching
 Date: Mon, 23 Jun 2025 15:01:02 +0200
-Message-ID: <20250623130645.678024351@linuxfoundation.org>
+Message-ID: <20250623130702.750180145@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corentin Labbe <clabbe.montjoie@gmail.com>
+From: Dennis Marttinen <twelho@welho.tech>
 
-[ Upstream commit 2dfc7cd74a5e062a5405560447517e7aab1c7341 ]
+commit 72386d5245b249f5a0a8fabb881df7ad947b8ea4 upstream.
 
-When testing sun8i-ss with multi_v7_defconfig, all CBC algorithm fail crypto
-selftests.
-This is strange since on sunxi_defconfig, everything was ok.
-The problem was in the IV setup loop which never run because sg_dma_len
-was 0.
+The CephFS kernel driver forgets to set the filesystem magic signature in
+its superblock. As a result, IMA policy rules based on fsmagic matching do
+not apply as intended. This causes a major performance regression in Talos
+Linux [1] when mounting CephFS volumes, such as when deploying Rook Ceph
+[2]. Talos Linux ships a hardened kernel with the following IMA policy
+(irrelevant lines omitted):
 
-Fixes: 359e893e8af4 ("crypto: sun8i-ss - rework handling of IV")
-Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[...]
+dont_measure fsmagic=0xc36400 # CEPH_SUPER_MAGIC
+[...]
+measure func=FILE_CHECK mask=^MAY_READ euid=0
+measure func=FILE_CHECK mask=^MAY_READ uid=0
+[...]
+
+Currently, IMA compares 0xc36400 == 0x0 for CephFS files, resulting in all
+files opened with O_RDONLY or O_RDWR getting measured with SHA512 on every
+open(2):
+
+10 69990c87e8af323d47e2d6ae4... ima-ng sha512:<hash> /data/cephfs/test-file
+
+Since O_WRONLY is rare, this results in an order of magnitude lower
+performance than expected for practically all file operations. Properly
+setting CEPH_SUPER_MAGIC in the CephFS superblock resolves the regression.
+
+Tests performed on a 3x replicated Ceph v19.3.0 cluster across three
+i5-7200U nodes each equipped with one Micron 7400 MAX M.2 disk (BlueStore)
+and Gigabit ethernet, on Talos Linux v1.10.2:
+
+FS-Mark 3.3
+Test: 500 Files, Empty
+Files/s > Higher Is Better
+6.12.27-talos . 16.6  |====
++twelho patch . 208.4 |====================================================
+
+FS-Mark 3.3
+Test: 500 Files, 1KB Size
+Files/s > Higher Is Better
+6.12.27-talos . 15.6  |=======
++twelho patch . 118.6 |====================================================
+
+FS-Mark 3.3
+Test: 500 Files, 32 Sub Dirs, 1MB Size
+Files/s > Higher Is Better
+6.12.27-talos . 12.7 |===============
++twelho patch . 44.7 |=====================================================
+
+IO500 [3] 2fcd6d6 results (benchmarks within variance omitted):
+
+| IO500 benchmark   | 6.12.27-talos  | +twelho patch  | Speedup   |
+|-------------------|----------------|----------------|-----------|
+| mdtest-easy-write | 0.018524 kIOPS | 1.135027 kIOPS | 6027.33 % |
+| mdtest-hard-write | 0.018498 kIOPS | 0.973312 kIOPS | 5161.71 % |
+| ior-easy-read     | 0.064727 GiB/s | 0.155324 GiB/s | 139.97 %  |
+| mdtest-hard-read  | 0.018246 kIOPS | 0.780800 kIOPS | 4179.29 % |
+
+This applies outside of synthetic benchmarks as well, for example, the time
+to rsync a 55 MiB directory with ~12k of mostly small files drops from an
+unusable 10m5s to a reasonable 26s (23x the throughput).
+
+[1]: https://www.talos.dev/
+[2]: https://www.talos.dev/v1.10/kubernetes-guides/configuration/ceph-with-rook/
+[3]: https://github.com/IO500/io500
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Dennis Marttinen <twelho@welho.tech>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ceph/super.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-index e97fb203690ae..5a864a71efa11 100644
---- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-@@ -136,7 +136,7 @@ static int sun8i_ss_setup_ivs(struct skcipher_request *areq)
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1227,6 +1227,7 @@ static int ceph_set_super(struct super_b
+ 	s->s_time_min = 0;
+ 	s->s_time_max = U32_MAX;
+ 	s->s_flags |= SB_NODIRATIME | SB_NOATIME;
++	s->s_magic = CEPH_SUPER_MAGIC;
  
- 	/* we need to copy all IVs from source in case DMA is bi-directionnal */
- 	while (sg && len) {
--		if (sg_dma_len(sg) == 0) {
-+		if (sg->length == 0) {
- 			sg = sg_next(sg);
- 			continue;
- 		}
--- 
-2.39.5
-
+ 	ceph_fscrypt_set_ops(s);
+ 
 
 
 
