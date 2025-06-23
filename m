@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155967-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A4FAE4483
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D90D3AE4502
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4395617A312
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761083AC3F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4A92252900;
-	Mon, 23 Jun 2025 13:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A23725394A;
+	Mon, 23 Jun 2025 13:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SHbD9SSq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlqCzRLK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 836C7347DD;
-	Mon, 23 Jun 2025 13:36:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB28424728E;
+	Mon, 23 Jun 2025 13:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685802; cv=none; b=atDHsh1RoXqmuwbUPAys0ReZG+MYcQjGDuBTzvrtIF0LQt5ApZYbMTc0S0miwqS28Gh55zBqA9sSPKXNnWpnQ6pHRBEM2ROIHmrPvFoS2Cc/v/dy0fAS6PA9VCdu/ERpTX1d7CDq0oq7lKjQ0uLy1mT4Ukm7kELImVwG0ZJAg1k=
+	t=1750685820; cv=none; b=F9zPHkagPm2/lheE6RW3jhx0O11pOzvoi75KVqY9p1nqn/sT3QtLrmxCU96UE8RqEXQ+YnPg0nabIgwFrBE5TdqwTYbNbcJJ5WTU4hDxEkupok1AZybruAXCd82SscsW2oC9Y7Z2sfv2GY/Cjm96vvSon0yLgpN/DprWVnL0XJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685802; c=relaxed/simple;
-	bh=Vkz45OexMB28NveXkSAs6zn3OmPcn2SweWwZqJ2CoCQ=;
+	s=arc-20240116; t=1750685820; c=relaxed/simple;
+	bh=bpO4WG9njeH75gx6K5SiMJAq3tC955uFKu8H+EJT3xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sm/nmOEMUiqvstanRzJlZZeo4o+zw4ZI7SsrSYiUX6lIYf0FxokFpVNK14N5ywAPG/KSQZVZMH5UDHij7VrPzAek16PNxObgmEna7nLyHpnUztGq94Qv9vFJwr5PFZza2Q0U2be+qiFd4B96yDOAT7iAAyuaUrUJ6x/m4WNTq2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SHbD9SSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16390C4CEEA;
-	Mon, 23 Jun 2025 13:36:41 +0000 (UTC)
+	 MIME-Version; b=oltqeEHfdNVCgdBRoTzh45kpwUI6KJc5jQ/2DEi7cL3sQwdVFW4t/Ub/WbKonNURoC2LeZ6L9l62wqJqcV9Lw9uO2Psmd6ebNZ8OkeLVa31aFzkbMxSq4YurrXn6qB+GOryW5C7fNAKpZ91MIhhEdkl0nSP6ZjDab0QkzvhJ1PE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlqCzRLK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E23C4CEEA;
+	Mon, 23 Jun 2025 13:37:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685802;
-	bh=Vkz45OexMB28NveXkSAs6zn3OmPcn2SweWwZqJ2CoCQ=;
+	s=korg; t=1750685820;
+	bh=bpO4WG9njeH75gx6K5SiMJAq3tC955uFKu8H+EJT3xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SHbD9SSq3pjcpIE5YhbyYcQDOZr64zPI4ZgD2+7drkre7/FzLQSIaE9WgtD4gJ2PG
-	 Ue+2M1WcXGEbLpXqheIB1+IIUzhAYsQ6co4/YtjBz7qpyOQucR2uBOhX0EHgvzZ5eQ
-	 lCVbzN5KLCO8/cXPv95b8Hhaau/kmxoAD0746Bxg=
+	b=UlqCzRLK0Yla7CwcnZAIuW1E5djhfixz9JjxG9+zNmFKFJ5IJl6jgtXov6A1Ybl9b
+	 gGUct2gL+mGlpxyyhCpe0lpOlMEwEN9fQX9W6R6VjspdGc38SmIHg4o/oVv9EQKbIp
+	 GMMK0RSqcqCzK5gjxwoSAq9lj3Ljx0sNJhZ4+u78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 084/411] ARM: dts: qcom: apq8064 merge hw splinlock into corresponding syscon device
-Date: Mon, 23 Jun 2025 15:03:48 +0200
-Message-ID: <20250623130635.526139269@linuxfoundation.org>
+Subject: [PATCH 5.15 085/411] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
+Date: Mon, 23 Jun 2025 15:03:49 +0200
+Message-ID: <20250623130635.557598367@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -67,55 +67,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit 325c6a441ae1f8fcb1db9bb945b8bdbd3142141e ]
+[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
 
-Follow up the expected way of describing the SFPB hwspinlock and merge
-hwspinlock node into corresponding syscon node, fixing several dt-schema
-warnings.
+The u2phy0_host port is the part of the USB PHY0 (namely the
+HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
+controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
+controller (dwc3), which we do use.
 
-Fixes: 24a9baf933dc ("ARM: dts: qcom: apq8064: Add hwmutex and SMEM nodes")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-7-bcedd1406790@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
+disable the USB2.0 controllers.
+
+USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
+while, one of the recurring issues being that only USB2 is detected and
+not USB3 in host mode. Reading the justification above and seeing that
+we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
+have bothered you since it should be changed to u2phy0_otg. The issue is
+that if it's switched to that, USB OTG on Haikou is entirely broken. I
+have checked the routing in the Gerber file, the lanes are going to the
+expected ball pins (that is, NOT HOST0_DP/DM).
+u2phy0_host is for sure the wrong part of the PHY to use, but it's the
+only one that works at the moment for that board so keep it until we
+figure out what exactly is broken.
+
+No intended functional change.
+
+[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
+    Chapter 2 USB2.0 PHY
+
+Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
+Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-apq8064.dtsi | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
-index d70f071fd8304..50436197fff4a 100644
---- a/arch/arm/boot/dts/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
-@@ -211,12 +211,6 @@
- 		};
- 	};
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+index f07f4b8231f91..f9f9ff5628ac6 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
+@@ -251,14 +251,6 @@
+ 	status = "okay";
+ };
  
--	sfpb_mutex: hwmutex {
--		compatible = "qcom,sfpb-mutex";
--		syscon = <&sfpb_wrapper_mutex 0x604 0x4>;
--		#hwlock-cells = <1>;
--	};
+-&usb_host0_ehci {
+-	status = "okay";
+-};
 -
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
-@@ -360,9 +354,10 @@
- 			pinctrl-0 = <&ps_hold>;
- 		};
- 
--		sfpb_wrapper_mutex: syscon@1200000 {
--			compatible = "syscon";
--			reg = <0x01200000 0x8000>;
-+		sfpb_mutex: hwmutex@1200600 {
-+			compatible = "qcom,sfpb-mutex";
-+			reg = <0x01200600 0x100>;
-+			#hwlock-cells = <1>;
- 		};
- 
- 		intc: interrupt-controller@2000000 {
+-&usb_host0_ohci {
+-	status = "okay";
+-};
+-
+ &vopb {
+ 	status = "okay";
+ };
 -- 
 2.39.5
 
