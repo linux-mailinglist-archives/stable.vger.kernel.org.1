@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-157522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157528-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 384ABAE5468
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB432AE547B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C344C0DC8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22DA03AA9BB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0665199FBA;
-	Mon, 23 Jun 2025 22:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C46A199FBA;
+	Mon, 23 Jun 2025 22:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uSwxoeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXJrHvZf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4A94409;
-	Mon, 23 Jun 2025 22:01:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A9CF4409;
+	Mon, 23 Jun 2025 22:01:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716073; cv=none; b=VyHB3a7rq1ROq6VbqKMuZY0ZTJG1UNwiZ5rn9sw27dvpdyQ2Fr1hv4nZMceHrbHj8WrLpIEN24At6rS2rfmHLpihEr+N1zvDByVwzZ4UEMbdTM9txkudrpAemXGzRmJpm4dpAJO4/Q4eXxCMrVTeNbvi8iUoRooU7iKpxWj8o7g=
+	t=1750716088; cv=none; b=ePf1t2/49D+YbQe18svDtKDcqcUx5mPhvece+VnhGaqDONM8Zw/olpMYjDh6SM4cnoFmFLMKR6QreIXtcZ/qaLOi7NM94iI8Kf63hQ+PqH1gp0j1nMI4ygcRJD3ewBujAU4NmgMxCnFkFdDbGarub5tnfRiK5ZfqYOijCXgMG8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716073; c=relaxed/simple;
-	bh=BntU0rwWl1a/639FYeruWVy8FKnACTGpBHPw17oZmjI=;
+	s=arc-20240116; t=1750716088; c=relaxed/simple;
+	bh=WiW5Ufm8pSUYAMsAPpGhqIfg8R/konNei49QuoRPKNU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sabenXfgfJt3lHC0OrtSdyBrmyk3Lgj20Xr1yLw1AF/CIwdKdBjPvOrUwHppwY62DRV+R/TzbReZQtGO9uRbSnCMuDc2aPjbOjZRivHUTpjoZQhv2tCr5OHgltJTp0BPL7SSL/Tt9E5XC7dam6FfhMdka5iOJ0vZtAKoj7oi+yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uSwxoeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F6BC4CEEA;
-	Mon, 23 Jun 2025 22:01:12 +0000 (UTC)
+	 MIME-Version; b=JEatzWLKO7IqGk7Z/6kgNemwUGgS93Zx3F+Xl4yLm/k48JdLm2lP6cgyx+1O0dYJAXaMdDwu5Wi0roPB4MKIsjPlNf6AKL6m/IXmu/9FVgp296wT6jO2Jm6WA1/qwbB3lkNjqILXdHXX08MjV6vFmW3UXkAlafeeSIp1HVGcLBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXJrHvZf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5AAAC4CEEA;
+	Mon, 23 Jun 2025 22:01:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716073;
-	bh=BntU0rwWl1a/639FYeruWVy8FKnACTGpBHPw17oZmjI=;
+	s=korg; t=1750716088;
+	bh=WiW5Ufm8pSUYAMsAPpGhqIfg8R/konNei49QuoRPKNU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0uSwxoeb90FsF3lzlLixvVwulxwHTyFYGSsIfloNb2QvHwIrgym2ZqK2h28GV+Ezn
-	 xKs11ZYq5WKY2ZDVSpvvk/0FBuwYsPP9huqt7d/LQT3CEcUCQc6hkBHPHSdv7YuGEY
-	 ck934HRCsYcU54dyAzzHMwLE5zzHYxsVwsc7kHYc=
+	b=vXJrHvZfQ8BOLqLkyMQz/ryK2BEKyNPfueZT4qGzA/1blopLkmgsVbnoXd5JpZTT2
+	 Yjl6kKdRkkjlZfs6yC96GdLl3ztJ3xz7OkJOG3kJdysiJGqe6QgMtKkBfoxeVTLA4y
+	 gUQG7LP5eqqiH0nxSlO8ZaU7UIGWvT0iHshPYcUI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	tianshuo han <hantianshuo233@gmail.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.15 500/592] sunrpc: handle SVC_GARBAGE during svc auth processing as auth error
-Date: Mon, 23 Jun 2025 15:07:38 +0200
-Message-ID: <20250623130712.324662799@linuxfoundation.org>
+	"Roy Tang (ErgoniaTrading)" <royonia@ergonia.io>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 501/592] io_uring/net: always use current transfer count for buffer put
+Date: Mon, 23 Jun 2025 15:07:39 +0200
+Message-ID: <20250623130712.348932906@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,68 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 94d10a4dba0bc482f2b01e39f06d5513d0f75742 upstream.
+commit 51a4598ad5d9eb6be4ec9ba65bbfdf0ac302eb2e upstream.
 
-tianshuo han reported a remotely-triggerable crash if the client sends a
-kernel RPC server a specially crafted packet. If decoding the RPC reply
-fails in such a way that SVC_GARBAGE is returned without setting the
-rq_accept_statp pointer, then that pointer can be dereferenced and a
-value stored there.
+A previous fix corrected the retry condition for when to continue a
+current bundle, but it missed that the current (not the total) transfer
+count also applies to the buffer put. If not, then for incrementally
+consumed buffer rings repeated completions on the same request may end
+up over consuming.
 
-If it's the first time the thread has processed an RPC, then that
-pointer will be set to NULL and the kernel will crash. In other cases,
-it could create a memory scribble.
-
-The server sunrpc code treats a SVC_GARBAGE return from svc_authenticate
-or pg_authenticate as if it should send a GARBAGE_ARGS reply. RFC 5531
-says that if authentication fails that the RPC should be rejected
-instead with a status of AUTH_ERR.
-
-Handle a SVC_GARBAGE return as an AUTH_ERROR, with a reason of
-AUTH_BADCRED instead of returning GARBAGE_ARGS in that case. This
-sidesteps the whole problem of touching the rpc_accept_statp pointer in
-this situation and avoids the crash.
-
-Cc: stable@kernel.org
-Fixes: 29cd2927fb91 ("SUNRPC: Fix encoding of accepted but unsuccessful RPC replies")
-Reported-by: tianshuo han <hantianshuo233@gmail.com>
-Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Roy Tang (ErgoniaTrading) <royonia@ergonia.io>
+Cc: stable@vger.kernel.org
+Fixes: 3a08988123c8 ("io_uring/net: only retry recv bundle for a full transfer")
+Link: https://github.com/axboe/liburing/issues/1423
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/svc.c |   11 ++---------
- 1 file changed, 2 insertions(+), 9 deletions(-)
+ io_uring/net.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -1369,7 +1369,8 @@ svc_process_common(struct svc_rqst *rqst
- 	case SVC_OK:
- 		break;
- 	case SVC_GARBAGE:
--		goto err_garbage_args;
-+		rqstp->rq_auth_stat = rpc_autherr_badcred;
-+		goto err_bad_auth;
- 	case SVC_SYSERR:
- 		goto err_system_err;
- 	case SVC_DENIED:
-@@ -1510,14 +1511,6 @@ err_bad_proc:
- 	*rqstp->rq_accept_statp = rpc_proc_unavail;
- 	goto sendit;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -829,7 +829,7 @@ static inline bool io_recv_finish(struct
+ 	if (sr->flags & IORING_RECVSEND_BUNDLE) {
+ 		size_t this_ret = *ret - sr->done_io;
  
--err_garbage_args:
--	svc_printk(rqstp, "failed to decode RPC header\n");
--
--	if (serv->sv_stats)
--		serv->sv_stats->rpcbadfmt++;
--	*rqstp->rq_accept_statp = rpc_garbage_args;
--	goto sendit;
--
- err_system_err:
- 	if (serv->sv_stats)
- 		serv->sv_stats->rpcbadfmt++;
+-		cflags |= io_put_kbufs(req, *ret, io_bundle_nbufs(kmsg, this_ret),
++		cflags |= io_put_kbufs(req, this_ret, io_bundle_nbufs(kmsg, this_ret),
+ 				      issue_flags);
+ 		if (sr->retry)
+ 			cflags = req->cqe.flags | (cflags & CQE_F_MASK);
 
 
 
