@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158138-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CDD89AE5522
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B99EDAE571D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C191F4A08C1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5ACF64E2AA6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D22321FF2B;
-	Mon, 23 Jun 2025 22:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D662225413;
+	Mon, 23 Jun 2025 22:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZZJHbvI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jWovhyuI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCCF13597E;
-	Mon, 23 Jun 2025 22:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEE65221543;
+	Mon, 23 Jun 2025 22:26:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716485; cv=none; b=k6WGXW4Y4EMmxTimBnEFS4COf0glrg9dFceXHfX+FtSWtm3FnC54HYoSZdZYpjHNr2frgaUjH9cDqvP40g28/Ek42sFTCMsaXyxcZuQP8PpuvNJBfrker6JeTv9VGgxkaTNFUhwewerty2f/aVAEnJ3f2uBR0Yu7Um3+QyjxNgQ=
+	t=1750717577; cv=none; b=Q6vTXWvbsvrvfCNov/qPMagRIqVYBLcIrg7+qNSdaU+YYgTy+aMuDXufMvLlI8uwwh3OSHMIIp0ff1GvL1JHuEAJf0FJay8zbjd74l3RS5M9i1l8q9vIvjYhWkzO22pN26rsA3/tmnCoaHjZ+n0BLu4Tm/+zn7PR3quh1rc1WtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716485; c=relaxed/simple;
-	bh=rBkKtLBv4aaLeOF95XetAiLPj10AmVB6g/JkIDo15U8=;
+	s=arc-20240116; t=1750717577; c=relaxed/simple;
+	bh=Me7mAQ9qb81mDdMQQahWyAl30uh4k4p84pNtpZI2apY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FSsYggAXuNzw5sQaJXgY2VcR1DhA0fchc3AVY8KOjj5M9BppmebJhUkHzHnxjHK7LsmZBKKNDAPbvg5M3reKK1r7M5RAGpxFksaHfY1UexT/WWznpqggytC6GnfvjD3Tz2zeAIpRsk76B8u6xfMNA+gxghzHunN4Ll4K+SpY2k4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZZJHbvI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64E5CC4CEEA;
-	Mon, 23 Jun 2025 22:08:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GIi9Vh2aLG2CpRDheyN7H/HyVkMcOZSNnRVITLLQwoKhqWnD+CL398UYv8hrPHEbGr5Wt1sgpy75RW919mRX02FnPQEThIeNaU/ZIzTEV8yG/vI9JUyTpGW4Ioi8CrWGSn/Nho4JTAtEz17gilRzrRQxXojcJVDws6wcTYYEeKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jWovhyuI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56FD9C4CEEA;
+	Mon, 23 Jun 2025 22:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716485;
-	bh=rBkKtLBv4aaLeOF95XetAiLPj10AmVB6g/JkIDo15U8=;
+	s=korg; t=1750717577;
+	bh=Me7mAQ9qb81mDdMQQahWyAl30uh4k4p84pNtpZI2apY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TZZJHbvIvZ+KzjmbYv+HvQxisvMQxGnYQLgXV/u8ENGxxEat9tJGiKWzmqvE52fLw
-	 Z+oRfKOfhXKGXxE+hbkL3sFQLWQ4SzJrvKYp0YBNBesQOxqISD+cKt8yqjXmjuySyg
-	 gdFCAAbKZPGHKgTxs8Gp0qzwnPVcEl4nK+iM4SqE=
+	b=jWovhyuIpS98BhLj3vieu0Af6gu6BZPEYvGPpZTXVGbDdu6uG7ubJcL7qNTC8J1CO
+	 o4K0yXUsf4A8eHFjfyg1qgjRQM4VaXcLup4rgtaTqEGVV6bR7uMQEGBhkGZQnBTkmL
+	 ic3Ekf4VdiGTSNTzS85rsQ7QjZALiKrpbKBPwMa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sukrut Bellary <sbellary@baylibre.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 339/411] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
+Subject: [PATCH 6.1 438/508] platform/x86: dell_rbu: Fix list usage
 Date: Mon, 23 Jun 2025 15:08:03 +0200
-Message-ID: <20250623130642.181416067@linuxfoundation.org>
+Message-ID: <20250623130655.940360821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sukrut Bellary <sbellary@baylibre.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
+[ Upstream commit 61ce04601e0d8265ec6d2ffa6df5a7e1bce64854 ]
 
-Don't put the l4ls clk domain to sleep in case of standby.
-Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
-upon wake-up, CM3 PM FW fails to wake-up the MPU.
+Pass the correct list head to list_for_each_entry*() when looping through
+the packet list.
 
-[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
+Without this patch, reading the packet data via sysfs will show the data
+incorrectly (because it starts at the wrong packet), and clearing the
+packet list will result in a NULL pointer dereference.
 
-Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: d19f359fbdc6 ("platform/x86: dell_rbu: don't open code list_for_each_entry*()")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-3-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/clockdomain.h           |  1 +
- arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
- arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/platform/x86/dell/dell_rbu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
-index 68550b23c938d..eb6ca2ea80679 100644
---- a/arch/arm/mach-omap2/clockdomain.h
-+++ b/arch/arm/mach-omap2/clockdomain.h
-@@ -48,6 +48,7 @@
- #define CLKDM_NO_AUTODEPS			(1 << 4)
- #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
- #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
-+#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 9f51e0fcab04e..4d2b5f6dd513f 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -292,7 +292,7 @@ static int packet_read_list(char *data, size_t * pread_length)
+ 	remaining_bytes = *pread_length;
+ 	bytes_read = rbu_data.packet_read_count;
  
- #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
- #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
-diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
-index b4d5144df4454..c53df9d42ecf8 100644
---- a/arch/arm/mach-omap2/clockdomains33xx_data.c
-+++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
-@@ -27,7 +27,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
- 	.pwrdm		= { .name = "per_pwrdm" },
- 	.cm_inst	= AM33XX_CM_PER_MOD,
- 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
--	.flags		= CLKDM_CAN_SWSUP,
-+	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
- };
- 
- static struct clockdomain l3s_am33xx_clkdm = {
-diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
-index ac4882ebdca33..be84c6750026e 100644
---- a/arch/arm/mach-omap2/cm33xx.c
-+++ b/arch/arm/mach-omap2/cm33xx.c
-@@ -28,6 +28,9 @@
- #include "cm-regbits-34xx.h"
- #include "cm-regbits-33xx.h"
- #include "prm33xx.h"
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+#include <linux/suspend.h>
-+#endif
- 
- /*
-  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
-@@ -336,8 +339,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
+-	list_for_each_entry(newpacket, (&packet_data_head.list)->next, list) {
++	list_for_each_entry(newpacket, &packet_data_head.list, list) {
+ 		bytes_copied = do_packet_read(pdest, newpacket,
+ 			remaining_bytes, bytes_read, &temp_count);
+ 		remaining_bytes -= bytes_copied;
+@@ -315,7 +315,7 @@ static void packet_empty_list(void)
  {
- 	bool hwsup = false;
+ 	struct packet_data *newpacket, *tmp;
  
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+	/*
-+	 * In case of standby, Don't put the l4ls clk domain to sleep.
-+	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
-+	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
-+	 */
-+	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
-+	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
-+		return 0;
-+#endif
- 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
--
- 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
- 		am33xx_clkdm_sleep(clkdm);
+-	list_for_each_entry_safe(newpacket, tmp, (&packet_data_head.list)->next, list) {
++	list_for_each_entry_safe(newpacket, tmp, &packet_data_head.list, list) {
+ 		list_del(&newpacket->list);
  
+ 		/*
 -- 
 2.39.5
 
