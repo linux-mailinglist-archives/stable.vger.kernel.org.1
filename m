@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157450-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF12AE50D9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 849A3AE53FF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F7D1B62F4D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62B3D1B681EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E3B22173D;
-	Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F65222576;
+	Mon, 23 Jun 2025 21:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yNEDgpP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0tPomyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D621EFFA6;
-	Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5327D2222CC;
+	Mon, 23 Jun 2025 21:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714113; cv=none; b=UJERSozE+CoLeOoueCwksEZaY3CKkIrhFu1W6nMMuAvv6OOSrZhH8ybeUSpQQn+3UkNbNOSt944SRDMy2sOwedT5LhzxauRv1JSB4w3W9w29zNN/E8M7QG8HDljRhC+V+yXCtJMEvQ0IjoySFXq/RmMwxHRRrfEPKsESVyVtGdU=
+	t=1750715895; cv=none; b=J4PmiElxbYqLxefQRyrsK5Owmh95M0XePZZlCi/v2K2B0v8OUsCmv3TLRq8CFTi45ajo2alO+gqAF0ns/0JQHPeeqxfEMeq7+dQi87DwM4QWAohNMdVl0rD4Mhe3Cl0o6Q0IlUxMQXxjBND0ZkyNiGjCZPtlVbX0jr1WrFEfz3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714113; c=relaxed/simple;
-	bh=a06sAdX6PMIXSE+HzOraqgewOJH+fSxop2wwR/9vDM4=;
+	s=arc-20240116; t=1750715895; c=relaxed/simple;
+	bh=siUatG7BR65LAKpqgyxW2zKtWI/xnq9OU4eFQ+le0q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raRQlC5dhnWqrfht/Ou3dg0o/wnuZd7Fxl+h90c9qj80FixSzipZnmHI+E+dAxbwi1MhPVm5nBeZyKxepCeoAUnxybTr1vgdPbvjQBukD4mhL38uoyK5s+qNiXkFKQfBuTAhsYdySLBt7e5F+geu6Cpy8i8465Uezd3agr1F85Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yNEDgpP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB44C4CEEA;
-	Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
+	 MIME-Version; b=rYQHBJxG7VKq7/alNRqUZQzJkHb2s8s69GBVtN8UJ6sk4em1hO29ir8psIWb/iggr58g9MijDz3ZjP3rKO15PrrY43cgNiQWK8My+jScJDVBCOW+28LCbOPDDllBV++5eJBEDgqRl3xe8NxZ4vKMgZvIuENdrj41zIXS2WzXyeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0tPomyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD711C4CEED;
+	Mon, 23 Jun 2025 21:58:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714113;
-	bh=a06sAdX6PMIXSE+HzOraqgewOJH+fSxop2wwR/9vDM4=;
+	s=korg; t=1750715895;
+	bh=siUatG7BR65LAKpqgyxW2zKtWI/xnq9OU4eFQ+le0q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1yNEDgpPRu/DIKlki5dPaEosD10hlo1y/CAlxg1W4VB7/MTI5FWDSnYRQZyf1fUk0
-	 77U351u8AtZHXZfJGC9jwdOYww67WYQ20JZIC+88wTYFZTv7TbVSJGDBy81GK9Qrxe
-	 0LYNFRnvGEAx7PSDL8fihSF9NBBJFN/RFIaI4BKE=
+	b=l0tPomyYkeBmihzUb3+tbIVp9Bljla3gsOCyeO9aVGk7mDjOxfzYq4JrFLXDFXajN
+	 yEXN00OtVCNMO9Zei9FNvRKazKz2CW4b0dT10Whj/axnRsCt8Ro9abVssx3wXQVCmd
+	 DMLQHcI++f7EjSLZLsdT4YIXeaUoI4etO8zYmUtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	I Hsin Cheng <richard120310@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 188/411] drm/meson: Use 1000ULL when operating with mode->clock
-Date: Mon, 23 Jun 2025 15:05:32 +0200
-Message-ID: <20250623130638.412661364@linuxfoundation.org>
+	Nathan Chancellor <nathan@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>
+Subject: [PATCH 6.1 288/508] kbuild: hdrcheck: fix cross build with clang
+Date: Mon, 23 Jun 2025 15:05:33 +0200
+Message-ID: <20250623130652.360201979@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: I Hsin Cheng <richard120310@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit eb0851e14432f3b87c77b704c835ac376deda03a upstream.
+commit 02e9a22ceef0227175e391902d8760425fa072c6 upstream.
 
-Coverity scan reported the usage of "mode->clock * 1000" may lead to
-integer overflow. Use "1000ULL" instead of "1000"
-when utilizing it to avoid potential integer overflow issue.
+The headercheck tries to call clang with a mix of compiler arguments
+that don't include the target architecture. When building e.g. x86
+headers on arm64, this produces a warning like
 
-Link: https://scan5.scan.coverity.com/#/project-view/10074/10063?selectedIssue=1646759
-Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
-Link: https://lore.kernel.org/r/20250505184338.678540-1-richard120310@gmail.com
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+   clang: warning: unknown platform, assuming -mfloat-abi=soft
+
+Add in the KBUILD_CPPFLAGS, which contain the target, in order to make it
+build properly.
+
+See also 1b71c2fb04e7 ("kbuild: userprogs: fix bitsize and target
+detection on clang").
+
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_hdmi.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ usr/include/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -73,7 +73,7 @@ static void meson_encoder_hdmi_set_vclk(
- 	unsigned long long venc_freq;
- 	unsigned long long hdmi_freq;
+--- a/usr/include/Makefile
++++ b/usr/include/Makefile
+@@ -10,7 +10,7 @@ UAPI_CFLAGS := -std=c90 -Wall -Werror=im
  
--	vclk_freq = mode->clock * 1000;
-+	vclk_freq = mode->clock * 1000ULL;
+ # In theory, we do not care -m32 or -m64 for header compile tests.
+ # It is here just because CONFIG_CC_CAN_LINK is tested with -m32 or -m64.
+-UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
++UAPI_CFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
  
- 	/* For 420, pixel clock is half unlike venc clock */
- 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
-@@ -121,7 +121,7 @@ static enum drm_mode_status meson_encode
- 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
- 	struct meson_drm *priv = encoder_hdmi->priv;
- 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
--	unsigned long long clock = mode->clock * 1000;
-+	unsigned long long clock = mode->clock * 1000ULL;
- 	unsigned long long phy_freq;
- 	unsigned long long vclk_freq;
- 	unsigned long long venc_freq;
+ # USERCFLAGS might contain sysroot location for CC.
+ UAPI_CFLAGS += $(USERCFLAGS)
 
 
 
