@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67F55AE55E4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22E1AE56A6
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC7CA4A36E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 95C3F1C22655
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C748224B1F;
-	Mon, 23 Jun 2025 22:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0122F223DE8;
+	Mon, 23 Jun 2025 22:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjdoXL9X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO5uU22c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37484B676;
-	Mon, 23 Jun 2025 22:13:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B60199FBA;
+	Mon, 23 Jun 2025 22:22:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716801; cv=none; b=mMI9Wt+slXgv16o5rHu2NzONRwUNax2Le0vQk4uYTvRKKxk43K4xx4TG1nWC0tHzZXuKXGP0x8PI5xxA08ZiUmDU5X0o22EGFCUDSxnCxeyA0tCVPQZWXJ39VERh9tQC2SHvUcm5Mwt/136VMLLqevrEOdtXTetpovHSYfsNVvc=
+	t=1750717328; cv=none; b=jKqSeHXCSGUPkv7aaHwOjfbmK3wSsEzQDjHcraUnLnXZH+A5gIXXjudFnj10zCBJOv3JyP5aSB5UAVSVh9C4LETUHPiMBoxO6+x/ttntoGzowekqrRuZdoyXZOrsdxoCr6E6d9P42HyQ97iM3ER1deP6ycVd7VHFGi0/vXlHHUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716801; c=relaxed/simple;
-	bh=qo18TUAgU6jybluAnKu/2Ym745gZOWHS0lMnoP90WWs=;
+	s=arc-20240116; t=1750717328; c=relaxed/simple;
+	bh=XFxtQG0lftDgI1elvpPEmOFuH/kRN+5srjxn0ZCxWps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s+O26+BZTL3tgAbICmzx72WL4trJNnaAum8i0k/dmD94CTjuHMvJ6XYshK/0Px06E1l6e6b5H+hL2TarlInji9VPjdV4zqNRhYXn4aIUtJsPdK2nC5gWZI6hHSk+uN0LUjmSGx7HOhdFKdyyYBjO8SU9ulpAjnZKeWup9sMTOsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjdoXL9X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB5E8C4CEEA;
-	Mon, 23 Jun 2025 22:13:20 +0000 (UTC)
+	 MIME-Version; b=bX4oTcY95FXWzSLQ+s6YNOY99QSPG0EI1Nqw6FDMVzUmV3FTyY/2ctdIlp9wOnS70v+i7C7E1a+JCj3J4XmcC1JDqNzoBf2FdUqSLt+S8SvubizshZyMjEmP2o09c/xI8a6NqLnRcnwMCZXaZYNV3LL8zgCEcxuDPEq78xeBvgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO5uU22c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF59C4CEEA;
+	Mon, 23 Jun 2025 22:22:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716801;
-	bh=qo18TUAgU6jybluAnKu/2Ym745gZOWHS0lMnoP90WWs=;
+	s=korg; t=1750717328;
+	bh=XFxtQG0lftDgI1elvpPEmOFuH/kRN+5srjxn0ZCxWps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fjdoXL9XCLO1dADpQDIwavKFmKKXp57xnQIPAhMYY2fyeCJGZZDdH8U42/3Anl5vh
-	 /hWTqHgcYz5puaoEMTla9Bxz0lOvsF0xTi8pXGcVRUMV4Fhnd5d4ZMzDZaqV6mdKIO
-	 nfo/f2V0DRkNX8ddT7uTejqTh9ZHY++/jIyT34qo=
+	b=BO5uU22cyO8gNPSfApByMmsJnRkSOq7OwZNgK/dRcp+5j7bHcoeZ4/6/UInQP3WtT
+	 0sPhN2mDGE/MyYvqyVisUl3l6L1PSxu0lVA6iDR8SFaSHr2lQzcXdSDjlDVylbckmQ
+	 7q4JpZvdHj/fGFMJfPCVHnx3XKOhbp96s3rBRiII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 313/414] net_sched: sch_sfq: reject invalid perturb period
+	Jason Xing <kernelxing@tencent.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 405/508] net: atlantic: generate software timestamp just before the doorbell
 Date: Mon, 23 Jun 2025 15:07:30 +0200
-Message-ID: <20250623130649.824395829@linuxfoundation.org>
+Message-ID: <20250623130655.201286619@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
+[ Upstream commit 285ad7477559b6b5ceed10ba7ecfed9d17c0e7c6 ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+Make sure the call of skb_tx_timestamp is as close as possible to the
+doorbell.
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
-
-Tested:
-
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Link: https://patch.msgid.link/20250510134812.48199-2-kerneljasonxing@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_main.c | 1 -
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c  | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+index 77609dc0a08d6..9d877f436e335 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+@@ -122,7 +122,6 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
  	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
+ #endif
  
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+-	skb_tx_timestamp(skb);
+ 	return aq_nic_xmit(aq_nic, skb);
+ }
+ 
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+index a467c8f91020b..3bfd9027cccac 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+@@ -893,6 +893,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
+ 
+ 	frags = aq_nic_map_skb(self, skb, ring);
+ 
++	skb_tx_timestamp(skb);
++
+ 	if (likely(frags)) {
+ 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
+ 						       ring, frags);
+-- 
+2.39.5
+
 
 
 
