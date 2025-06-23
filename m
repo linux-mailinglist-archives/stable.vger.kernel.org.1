@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B4FAE5094
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C057AE4F02
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25EB84A1466
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B2791B603D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6671D2236FA;
-	Mon, 23 Jun 2025 21:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68C3C220F50;
+	Mon, 23 Jun 2025 21:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrwbNdAF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KxVxonSw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243B41EDA0F;
-	Mon, 23 Jun 2025 21:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F2B70838;
+	Mon, 23 Jun 2025 21:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713967; cv=none; b=NUim0lEICBvdGhLTpNPuStKTe4vSoITwqW+HIkKIuwAv5cjuCslX4VGttIVKovD24mvoEK2rVOw/ripyKopWA22S7tfe9oIn7zEhxgg9fO6s9sEjGdgOEIxeb5Ma15l7PxDl3J44G8Gg8vlTs6Zog1j1AZjTSlKjOQmHI5Au2vw=
+	t=1750713089; cv=none; b=ujX6bx5YpSh5F7yhtRltvmkCg+vQcrPhbizSjbSv3iMgzWQG2IJO1kFVDJAVGfeEjbwIT+DZNJOvmaaVOCF78KzQTVvPpScvwNWr/kHkKsC1aGpgy1RigG+3T/EG309c8wFn1wd2Xwq16x1hNBC1jeoA5uZNNKAUwB/9zkk5vfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713967; c=relaxed/simple;
-	bh=fUI+JvsBevozwK5FPiWLuZu29IFjyRaWqxOvt7ebNEw=;
+	s=arc-20240116; t=1750713089; c=relaxed/simple;
+	bh=qI+T6HAE3rQUQswgEb+dZVGTncuC/qyNUoIt4cSOYUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R1AYkCea5Io0mHmH7E4zTb9xQzh+oQzyIeHFLCZuZSSqctzeruoTJeQvvTVBb+Sena1kSlwIp1d2zTFd733wyZN0IG41rMjbt8g8P6KXs4kr5AXMo6+0TAsmNEmoRuTRxLpGQfHbzMv9Dp2cVqOqM6fjBcf5A/9JDNNFI8BgYxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrwbNdAF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CA0C4CEED;
-	Mon, 23 Jun 2025 21:26:06 +0000 (UTC)
+	 MIME-Version; b=ZYMiprPdfr6sDFwD2FM1M7fERn7Hq5x1hE01BvXJnDtkG5ope+HXiVzHq88ZZ1iIHYJDdESiNOm+u4441bUcE3Gd2Xm1wLhFj1+gXUuU85rANoXtC70jupswIWjkMWRRuAmARxycEY/qa9KrK/QZLrB5w1wX4VqzKmXM3v+gr8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KxVxonSw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2D7FC4CEEA;
+	Mon, 23 Jun 2025 21:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713967;
-	bh=fUI+JvsBevozwK5FPiWLuZu29IFjyRaWqxOvt7ebNEw=;
+	s=korg; t=1750713089;
+	bh=qI+T6HAE3rQUQswgEb+dZVGTncuC/qyNUoIt4cSOYUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrwbNdAF3lOVr1UxokiTXx+MDzPZJOGh4icuPsRo82YoZlAfIN24e+xinnti854R5
-	 SQl3TWFtRCMxwMlfpNySifPUi5d+Q4A6d7Pl2aor21+HltiHdk0mdwSASlRoz6bOZC
-	 8s64AYSm0+MOqt1nyDekTvAo0NWMr4xinLc1WL5Y=
+	b=KxVxonSwdjLZHwWEXst8wQ+c7eteDxqADSDWBDIxbVg1ui2/tfw9TvuFXJ6satF2p
+	 FEkHS0nDpmsqkxIDnDrn/JJE9FuRZatjFh0mfQwDsVHLoUSmhKf0TbdyrigPLH5TD6
+	 PhGsxoKR5Ab/JzQCnJcIvwGq2DzAN2RcWtK7568k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Arkhipov <m.arhipov@rosa.ru>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 137/508] mtd: nand: ecc-mxic: Fix use of uninitialized variable ret
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 045/414] media: i2c: ds90ub913: Fix returned fmt from .set_fmt()
 Date: Mon, 23 Jun 2025 15:03:02 +0200
-Message-ID: <20250623130648.659081708@linuxfoundation.org>
+Message-ID: <20250623130643.165718409@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Arkhipov <m.arhipov@rosa.ru>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-[ Upstream commit d95846350aac72303036a70c4cdc69ae314aa26d ]
+commit ef205273132bdc9bcfa1540eef8105475a453300 upstream.
 
-If ctx->steps is zero, the loop processing ECC steps is skipped,
-and the variable ret remains uninitialized. It is later checked
-and returned, which leads to undefined behavior and may cause
-unpredictable results in user space or kernel crashes.
+When setting the sink pad's stream format, set_fmt accidentally changes
+the returned format's code to 'outcode', while the purpose is to only
+use the 'outcode' for the propagated source stream format.
 
-This scenario can be triggered in edge cases such as misconfigured
-geometry, ECC engine misuse, or if ctx->steps is not validated
-after initialization.
-
-Initialize ret to zero before the loop to ensure correct and safe
-behavior regardless of the ctx->steps value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 48e6633a9fa2 ("mtd: nand: mxic-ecc: Add Macronix external ECC engine support")
-Signed-off-by: Mikhail Arkhipov <m.arhipov@rosa.ru>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c158d0d4ff15 ("media: i2c: add DS90UB913 driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/ecc-mxic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ds90ub913.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/ecc-mxic.c b/drivers/mtd/nand/ecc-mxic.c
-index 6b487ffe2f2dc..e8bbe009c04e8 100644
---- a/drivers/mtd/nand/ecc-mxic.c
-+++ b/drivers/mtd/nand/ecc-mxic.c
-@@ -614,7 +614,7 @@ static int mxic_ecc_finish_io_req_external(struct nand_device *nand,
- {
- 	struct mxic_ecc_engine *mxic = nand_to_mxic(nand);
- 	struct mxic_ecc_ctx *ctx = nand_to_ecc_ctx(nand);
--	int nents, step, ret;
-+	int nents, step, ret = 0;
+--- a/drivers/media/i2c/ds90ub913.c
++++ b/drivers/media/i2c/ds90ub913.c
+@@ -450,10 +450,10 @@ static int ub913_set_fmt(struct v4l2_sub
+ 	if (!fmt)
+ 		return -EINVAL;
  
- 	if (req->mode == MTD_OPS_RAW)
- 		return 0;
--- 
-2.39.5
-
+-	format->format.code = finfo->outcode;
+-
+ 	*fmt = format->format;
+ 
++	fmt->code = finfo->outcode;
++
+ 	return 0;
+ }
+ 
 
 
 
