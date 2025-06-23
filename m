@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9CADAE56AF
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD99AE5756
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573134A415A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C38F87B41D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2721F6667;
-	Mon, 23 Jun 2025 22:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C6C22422F;
+	Mon, 23 Jun 2025 22:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt3o2T4o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpE+snk4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E5819E7F9;
-	Mon, 23 Jun 2025 22:19:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB5DB676;
+	Mon, 23 Jun 2025 22:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717153; cv=none; b=GVpZri8M8LdzhEu/0MQszcQi2RiwAS+mXQZTt8+5/UnkFymtwyPvKfG5DbCoX8TDxVWF0RzFCs6LJRrmhk3wRBQAxnfH8kfn6F98P0M2rFEN5b9JouzHhb8ldJrwKThOHDdhQ1X5qf6RZYF45sfbh6pf7+5DbfmcLvjJgFy/j14=
+	t=1750717698; cv=none; b=oDp+1Q1RyYqwQp8gsxRj9u13mSprHzzbUA0qwaHp/UXVuHL1hMbwTxiQMmMtZPtdyyJ0urKRr3lwjNoGx4eiEt/sdMsD9czxkWjXug2kVe4Tn0cNhgEze1sAQTXdmQPPuvhkDi4x4sgZZh7oOJ7CjriYBnP2UGsHhgaMQ4suQXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717153; c=relaxed/simple;
-	bh=Ps3IOZxc7BuxRu78OTXOLw65DHl664wM5tWPMveIznQ=;
+	s=arc-20240116; t=1750717698; c=relaxed/simple;
+	bh=5ssqsL+je2SoxgnqnumiLzzJB9NgncOCSYsyW4LYf5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BruFKTGDOqUSN7LSp1M6G/wJfd288LJV5YYFvAsiT3fxtx7oFcAXbSOdkLoj3ogMpDrlZajFDH1y7XgxSo3FITyo/pEiCaYGvYvbd+N1TXo8iL2KOb+tbnlCFpuZkNYpdaBMwMH4RbcBALpoYunmu2LdGxKHyy6iF41sV1uJlLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt3o2T4o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DE0C4CEEA;
-	Mon, 23 Jun 2025 22:19:12 +0000 (UTC)
+	 MIME-Version; b=WeUBrzc6wBoVs/jhAV+rkNtMk8d19vM3dJr2av4+KtQG18/hqIZjJPMSVEOFWcAG6D0Yje20F6HEe51n7SYvd00PLxHvb+2NaVWmzn+DVMYmrpztrRJkqesWnLkq1exI24TGOw7NzIpB6YE0vTE8UBTUXKH0mjUE+c3jfbKVmT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpE+snk4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7055C4CEEA;
+	Mon, 23 Jun 2025 22:28:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717153;
-	bh=Ps3IOZxc7BuxRu78OTXOLw65DHl664wM5tWPMveIznQ=;
+	s=korg; t=1750717698;
+	bh=5ssqsL+je2SoxgnqnumiLzzJB9NgncOCSYsyW4LYf5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qt3o2T4oPm+mhCh74iMU++MTeeNIpqgIK8Opoa64RTG5DaeXh8p7om1BL9kTJ1u6+
-	 V6ZH/LGa1GevC4g4J8HuXjd9MOl3iYj586rY+AOxylUlbSqXPFoqvykWnyoW30aoV7
-	 +EkiZExsqSiBlv8LfaLXF8ALWgIUatCdpOUDQ+sU=
+	b=cpE+snk4TL8waAkC9BX2F/47Bm4ggmq6bbMRk6GSHp9FQqkkpKlTXE9ZAYV3Kj2kJ
+	 j+zdOTD4uL45PHjMqM1IhJ2Yq9IIH6BuacPHVrLlDHgU2+G21Vp+GyR5KTguJ6NP8x
+	 LELCs2kA9oQ3zVNT62WnW/DTskiD/hnCP7jMUmWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.15 408/411] s390/pci: Fix __pcilg_mio_inuser() inline assembly
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 507/508] RISC-V: KVM: Fix the size parameter check in SBI SFENCE calls
 Date: Mon, 23 Jun 2025 15:09:12 +0200
-Message-ID: <20250623130643.954344749@linuxfoundation.org>
+Message-ID: <20250623130657.468415305@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
+[ Upstream commit 6aba0cb5bba6141158d5449f2cf53187b7f755f9 ]
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+As-per the SBI specification, an SBI remote fence operation applies
+to the entire address space if either:
+1) start_addr and size are both 0
+2) size is equal to 2^XLEN-1
 
-If register zero is used this my result in incorrect code generation:
+>From the above, only #1 is checked by SBI SFENCE calls so fix the
+size parameter check in SBI SFENCE calls to cover #2 as well.
 
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
-
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
-
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250605061458.196003-2-apatel@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_mmio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -222,7 +222,7 @@ static inline int __pcilg_mio_inuser(
- 		[ioaddr_len] "+&d" (ioaddr_len.pair),
- 		[cc] "+d" (cc), [val] "=d" (val),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:: "cc", "memory");
- 
- 	/* did we write everything to the user space buffer? */
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 4c034d8a606a1..304d29383e6c0 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -91,14 +91,14 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_fence_i(vcpu->kvm, hbase, hmask);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_all(vcpu->kvm, hbase, hmask);
+ 		else
+ 			kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbase, hmask,
+ 						  cp->a2, cp->a3, PAGE_SHIFT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,
+ 						       hbase, hmask, cp->a4);
+ 		else
+-- 
+2.39.5
+
 
 
 
