@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-157774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158178-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ABBAAE55AD
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A82B5AE574F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC48B3B2AB6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 97F65164EBB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E23B225A38;
-	Mon, 23 Jun 2025 22:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E8C223DE5;
+	Mon, 23 Jun 2025 22:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FOnDboJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TAjgrjx3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF35222576;
-	Mon, 23 Jun 2025 22:11:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA53222581;
+	Mon, 23 Jun 2025 22:27:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716689; cv=none; b=WOgX9kgW6fhQ1ova3ZChpGvwYNKhsLgPav6CqKSm7E31EmecdCWDb7MSUOWzk8Ea3kUvYwmf50vLQapK2mXwqbChuVJh4riO7UDiRVYDsTefhj1tpYzgfEtO56YSRs0d+1z9r8XkwUYlzWZVYwoaFrwcGQQocHfZuEdbv06nc0o=
+	t=1750717676; cv=none; b=lDKK6ViDEyrWSIVoA9QP1098xIhpIMyKrtQpiMvcO4P3qPCN5BpP/i1IwgfeBTVBNT7iL6LiI2sggGmlaVx/zhN6aQgxySofSG05/ugZWLXP8rOmRAr++mh4r/Y61f78EUOSBPZp3Us4EWZHpXl99NzwgKmLpuuU9nlBBZghWKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716689; c=relaxed/simple;
-	bh=A1buDsckJr2nx4D7fh4isvrAiC9WJFKd4Q7hBbuvXVc=;
+	s=arc-20240116; t=1750717676; c=relaxed/simple;
+	bh=EQ+WChWP7gVf2t+xRNXis5Z2yQ5kLRBMNsQoZBrP5Xw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aikE5O+graz/co9n2d2V6A1fP8YKbx+QieLcrcpYU3+JhMJ06ZOTPU5CmxRTr7g7ih54+9zQDeX/yGI5IJqJ9IF3btjxXkv93uRJdJn7ItB9/J+XSmFqO6yzhiKI756abGJyAjwot0FcBEm+KRnnmwRFQ2I2vDpmR1lSECbU5bQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FOnDboJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A2B4C4CEEA;
-	Mon, 23 Jun 2025 22:11:28 +0000 (UTC)
+	 MIME-Version; b=If+I+sj0kEQUcTgT+90e4BDZCNV3zGRaU6HkU4EKuOrgEBf7nDBoukxUEDEsEDBkNKbqoF0vo8CPeTSbcOxdrDvZqwfUC9wbOAMBsAsKQCQLSIeVvVR2WVEIA0oAQuFgGDK9kBnzTWsZ5W/f3HEP0uc6ZhF0vFjamecDJUkRDVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TAjgrjx3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7D6C4CEEA;
+	Mon, 23 Jun 2025 22:27:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716688;
-	bh=A1buDsckJr2nx4D7fh4isvrAiC9WJFKd4Q7hBbuvXVc=;
+	s=korg; t=1750717676;
+	bh=EQ+WChWP7gVf2t+xRNXis5Z2yQ5kLRBMNsQoZBrP5Xw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FOnDboJuyKWw9jBhQjlFvqtVm30S92Ue+jf7+Fxks4MviDtNeIJtuEPE0PSTD/q4E
-	 DOkY+wmCnacWIfLf2r9sgJDqgyUsvVmp29Ypn4ZIBme+ly+UvwLJYpB9kSfI5fBGKs
-	 9HNYAakrtDQsZ66ivGZGFc0GlpNonbE6qsizFEPE=
+	b=TAjgrjx3eBqjlt2HGQzr+eNWRFPnoTZ1WKPtJJcQ65bLeQGRzkx8MK7txkGqOBsQ8
+	 YAtmi7HLO+pgP8xrMbNnHcS/coAuBvuNvp3a/M22B9VgPn2aKcyM2DOxZf8QOEn3ss
+	 wVgN57Ki41z7CheTnrsjyxTKkfS7ctwqPeyuJwOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 282/290] perf: Fix cgroup state vs ERROR
-Date: Mon, 23 Jun 2025 15:09:03 +0200
-Message-ID: <20250623130635.403165239@linuxfoundation.org>
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.1 499/508] serial: sh-sci: Increment the runtime usage counter for the earlycon device
+Date: Mon, 23 Jun 2025 15:09:04 +0200
+Message-ID: <20250623130657.294934721@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,137 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 61988e36dc5457cdff7ae7927e8d9ad1419ee998 ]
+commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
 
-While chasing down a missing perf_cgroup_event_disable() elsewhere,
-Leo Yan found that both perf_put_aux_event() and
-perf_remove_sibling_event() were also missing one.
+In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
+with earlycon mapped at index zero.
 
-Specifically, the rule is that events that switch to OFF,ERROR need to
-call perf_cgroup_event_disable().
+The uart_add_one_port() function eventually calls __device_attach(),
+which, in turn, calls pm_request_idle(). The identified code path is as
+follows:
 
-Unify the disable paths to ensure this.
+uart_add_one_port() ->
+  serial_ctrl_register_port() ->
+    serial_core_register_port() ->
+      serial_core_port_device_add() ->
+        serial_base_port_add() ->
+          device_add() ->
+            bus_probe_device() ->
+              device_initial_probe() ->
+                __device_attach() ->
+                  // ...
+                  if (dev->p->dead) {
+                    // ...
+                  } else if (dev->driver) {
+                    // ...
+                  } else {
+                    // ...
+                    pm_request_idle(dev);
+                    // ...
+                  }
 
-Fixes: ab43762ef010 ("perf: Allow normal events to output AUX data")
-Fixes: 9f0c4fa111dc ("perf/core: Add a new PERF_EV_CAP_SIBLING event capability")
-Reported-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250605123343.GD35970@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The earlycon device clocks are enabled by the bootloader. However, the
+pm_request_idle() call in __device_attach() disables the SCI port clocks
+while earlycon is still active.
+
+The earlycon write function, serial_console_write(), calls
+sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
+are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
+remain unset indefinitely, causing the while loop in sci_poll_put_char()
+to never exit. On single-core SoCs, this can result in the system being
+blocked during boot when this issue occurs.
+
+To resolve this, increment the runtime PM usage counter for the earlycon
+SCI device before registering the UART port.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 51 ++++++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 21 deletions(-)
+ drivers/tty/serial/sh-sci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 90577a7a3a51e..e9e785542b9f4 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2067,8 +2067,9 @@ perf_aux_output_match(struct perf_event *event, struct perf_event *aux_event)
- }
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3352,6 +3352,22 @@ static int sci_probe_single(struct platf
  
- static void put_event(struct perf_event *event);
--static void event_sched_out(struct perf_event *event,
--			    struct perf_event_context *ctx);
-+static void __event_disable(struct perf_event *event,
-+			    struct perf_event_context *ctx,
-+			    enum perf_event_state state);
- 
- static void perf_put_aux_event(struct perf_event *event)
- {
-@@ -2101,8 +2102,7 @@ static void perf_put_aux_event(struct perf_event *event)
- 		 * state so that we don't try to schedule it again. Note
- 		 * that perf_event_enable() will clear the ERROR status.
- 		 */
--		event_sched_out(iter, ctx);
--		perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
-+		__event_disable(iter, ctx, PERF_EVENT_STATE_ERROR);
- 	}
- }
- 
-@@ -2156,18 +2156,6 @@ static inline struct list_head *get_event_list(struct perf_event *event)
- 				    &event->pmu_ctx->flexible_active;
- }
- 
--/*
-- * Events that have PERF_EV_CAP_SIBLING require being part of a group and
-- * cannot exist on their own, schedule them out and move them into the ERROR
-- * state. Also see _perf_event_enable(), it will not be able to recover
-- * this ERROR state.
-- */
--static inline void perf_remove_sibling_event(struct perf_event *event)
--{
--	event_sched_out(event, event->ctx);
--	perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
--}
--
- static void perf_group_detach(struct perf_event *event)
- {
- 	struct perf_event *leader = event->group_leader;
-@@ -2203,8 +2191,15 @@ static void perf_group_detach(struct perf_event *event)
- 	 */
- 	list_for_each_entry_safe(sibling, tmp, &event->sibling_list, sibling_list) {
- 
-+		/*
-+		 * Events that have PERF_EV_CAP_SIBLING require being part of
-+		 * a group and cannot exist on their own, schedule them out
-+		 * and move them into the ERROR state. Also see
-+		 * _perf_event_enable(), it will not be able to recover this
-+		 * ERROR state.
+ 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
+ 		/*
++		 * In case:
++		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
++		 * - it now maps to an alias other than zero and
++		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
++		 *   available in bootargs)
++		 *
++		 * we need to avoid disabling clocks and PM domains through the runtime
++		 * PM APIs called in __device_attach(). For this, increment the runtime
++		 * PM reference counter (the clocks and PM domains were already enabled
++		 * by the bootloader). Otherwise the earlycon may access the HW when it
++		 * has no clocks enabled leading to failures (infinite loop in
++		 * sci_poll_put_char()).
 +		 */
- 		if (sibling->event_caps & PERF_EV_CAP_SIBLING)
--			perf_remove_sibling_event(sibling);
-+			__event_disable(sibling, ctx, PERF_EVENT_STATE_ERROR);
- 
- 		sibling->group_leader = sibling;
- 		list_del_init(&sibling->sibling_list);
-@@ -2437,6 +2432,15 @@ static void perf_remove_from_context(struct perf_event *event, unsigned long fla
- 	event_function_call(event, __perf_remove_from_context, (void *)flags);
- }
- 
-+static void __event_disable(struct perf_event *event,
-+			    struct perf_event_context *ctx,
-+			    enum perf_event_state state)
-+{
-+	event_sched_out(event, ctx);
-+	perf_cgroup_event_disable(event, ctx);
-+	perf_event_set_state(event, state);
-+}
++		pm_runtime_get_noresume(&dev->dev);
 +
- /*
-  * Cross CPU call to disable a performance event
-  */
-@@ -2455,13 +2459,18 @@ static void __perf_event_disable(struct perf_event *event,
- 
- 	perf_pmu_disable(event->pmu_ctx->pmu);
- 
-+	/*
-+	 * When disabling a group leader, the whole group becomes ineligible
-+	 * to run, so schedule out the full group.
-+	 */
- 	if (event == event->group_leader)
- 		group_sched_out(event, ctx);
--	else
--		event_sched_out(event, ctx);
- 
--	perf_event_set_state(event, PERF_EVENT_STATE_OFF);
--	perf_cgroup_event_disable(event, ctx);
-+	/*
-+	 * But only mark the leader OFF; the siblings will remain
-+	 * INACTIVE.
-+	 */
-+	__event_disable(event, ctx, PERF_EVENT_STATE_OFF);
- 
- 	perf_pmu_enable(event->pmu_ctx->pmu);
- }
--- 
-2.39.5
-
++		/*
+ 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
+ 		 * port is the same as the earlycon one.
+ 		 */
 
 
 
