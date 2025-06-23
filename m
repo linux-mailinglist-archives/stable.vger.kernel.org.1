@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25382AE54F0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11747AE5303
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EAD3A1692AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7890189B397
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC342218580;
-	Mon, 23 Jun 2025 22:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 237182248B5;
+	Mon, 23 Jun 2025 21:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVCY1q7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBmUnlM/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97D841E87B;
-	Mon, 23 Jun 2025 22:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EC72248B0;
+	Mon, 23 Jun 2025 21:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716362; cv=none; b=lvJMGPZ0bU3NcGAUm4ENBUjjKxZfUwy8C1g/EaPRA7sx2s2nvvz8o6Z4uQiamcXml5+cROHm0mhWdAjLdKZrag6CIy6wVPDGBA/Jcxtpq4lfnD0PXicwnSJ4C3ucmcIRBdFpTchkcXxH2hWtmVHa9/8a+PbX532AuEcO3opEY6g=
+	t=1750715326; cv=none; b=haXdWlLhcwTFWEE1ha25lguUI0BqRIngDschhT+vZMgBEl5jftEpBRx2XX5cSNGZyny27IPEO9a0XrMJNFHMbfJrVN4G7/Lt1OOG+JFfuTlzYlxXneiz+7E7vhlfjpvJoaFH351fzcTkiEfPQw0M2oN37PdOna+BGHtUcR1ViCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716362; c=relaxed/simple;
-	bh=MZCijj2h1HZHabfhy2SLsQvBVpqkoAvWLudxWAZUSS8=;
+	s=arc-20240116; t=1750715326; c=relaxed/simple;
+	bh=UDdOv/MaeoXgA3xu1Gdkl39TWqqngjOTDGCNZ8B/Vz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sJ/YS3G3fU3ylonvf3p0U6HJaDAwkC5fRJvNxgyB1Eq64WFSrwPViwr0Uao47owaGcazlybWDm8OiAyfUOBZq5L4ibPDCDe5FASa1YuAJouwbe1rUQeRXBDILraEKeuSeWEdYXQHUmT5r23rpEjdF8XY0h2iIpjMbYOaZH+l0Fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVCY1q7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D432C4CEEA;
-	Mon, 23 Jun 2025 22:06:02 +0000 (UTC)
+	 MIME-Version; b=XeMh3Zn3zp8+4YAFowQxuA4RYSJ3ZwGDPsnVDn+gmSnNose5QFUn6GCVbmTttcT1Wyq5Sst2RmVFH7tMXfSH1tQf52XOlqEZN8fULBy7iacTOj6rcwv/x8ieS1qeXjmpuPzf48G57JBZc3VEqbcAdf0nAtTvrZ/XciEG/gMoeUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBmUnlM/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680F2C4CEF1;
+	Mon, 23 Jun 2025 21:48:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716362;
-	bh=MZCijj2h1HZHabfhy2SLsQvBVpqkoAvWLudxWAZUSS8=;
+	s=korg; t=1750715326;
+	bh=UDdOv/MaeoXgA3xu1Gdkl39TWqqngjOTDGCNZ8B/Vz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVCY1q7bcSNhIjMB0E4T4VjKQr8dxl1Lew+E8G0+vKUC3HBYEtX5fwOE83cuuXIch
-	 NieydDRLPI2fLAvIWSvGUF3gG7xox/Dq5o/WZXGuT5Wu4r0kEycfCiYghOR2tWSE/S
-	 O8IF5yVp5KzQvFh+xBIc3ZrXXoAolvUUly2dREH4=
+	b=jBmUnlM/zxeZXyJ/IX5mqDkgJWWQZmDv7bXPw2Kni8wji49JXIbh8WFa1MG35XpxA
+	 D6tTnu/rpLpvCcDADJe07KaztL3pWgp57jxWjLhB6DRKBdBxykuzU35rpLQUfKrT21
+	 aE3QrSwbZ4/8nww+548uz2mfi87sOvhq0vHsFDFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
+	Sean Christopherson <seanjc@google.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 324/411] clk: rockchip: rk3036: mark ddrphy as critical
-Date: Mon, 23 Jun 2025 15:07:48 +0200
-Message-ID: <20250623130641.794368142@linuxfoundation.org>
+Subject: [PATCH 5.10 268/355] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
+Date: Mon, 23 Jun 2025 15:07:49 +0200
+Message-ID: <20250623130634.812604035@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 596a977b34a722c00245801a5774aa79cec4e81d ]
+[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
 
-The ddrphy is supplied by the dpll, but due to the limited number of PLLs
-on the rk3036, the dpll also is used for other periperhals, like the GPU.
+Synchronize RCU when unregistering KVM's GA log notifier to ensure all
+in-flight interrupt handlers complete before KVM-the module is unloaded.
 
-So it happened, when the Lima driver turned off the gpu clock, this in
-turn also disabled the dpll and thus the ram.
-
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250503202532.992033-4-heiko@sntech.de
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3036.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/amd/iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3036.c b/drivers/clk/rockchip/clk-rk3036.c
-index d644bc155ec6e..f5f27535087a3 100644
---- a/drivers/clk/rockchip/clk-rk3036.c
-+++ b/drivers/clk/rockchip/clk-rk3036.c
-@@ -431,6 +431,7 @@ static const char *const rk3036_critical_clocks[] __initconst = {
- 	"hclk_peri",
- 	"pclk_peri",
- 	"pclk_ddrupctl",
-+	"ddrphy",
- };
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index a9a3f9c649c7e..334303b1d27bb 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -750,6 +750,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
+ {
+ 	iommu_ga_log_notifier = notifier;
  
- static void __init rk3036_clk_init(struct device_node *np)
++	/*
++	 * Ensure all in-flight IRQ handlers run to completion before returning
++	 * to the caller, e.g. to ensure module code isn't unloaded while it's
++	 * being executed in the IRQ handler.
++	 */
++	if (!notifier)
++		synchronize_rcu();
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
 -- 
 2.39.5
 
