@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3B0AAE501E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 646EAAE4F92
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911F44A036B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 38BEE1B6117F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81ACE1ACEDA;
-	Mon, 23 Jun 2025 21:22:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07EE722370A;
+	Mon, 23 Jun 2025 21:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkNH48Ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CoD6K2HL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39D82221545;
-	Mon, 23 Jun 2025 21:22:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CA718E377;
+	Mon, 23 Jun 2025 21:16:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713742; cv=none; b=U4AqdpE2bKqAlb1W4Rh/L0w+ZiNsMFNGvFCT5DpAaqCucXv8gmLQ71H0aadmPrbrKNsjq3sX6lZ4/7P6UFgjKU8cQsDLsUqyF5Mn0PveqDXbqyI5uB4s8G4F8cpHiJWqtepNjV7GzBipd4ddzlOUV4Ng1Nspppo4edLOssbx0sU=
+	t=1750713403; cv=none; b=A6xMlCs0pI6biky0BouZ9Uy1TWqcVU5v2OiC4gRZ3JrsK4qYMx/ek/3c0TAdPizrOUsg5No+jJJBx1fPf11gU4w1lrqfkMxT4AUd32a+69pS/9gCgpsMFv8qqPPZGkpHHUqboQANuyDWaqToUFaOZIRp/r15DRo/e/l04gh8bec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713742; c=relaxed/simple;
-	bh=IZFlmXPMmhjdm0H0sQF1Np0BpXYwMlMiAjxXmXDAQ+k=;
+	s=arc-20240116; t=1750713403; c=relaxed/simple;
+	bh=wKBPWKo1PljpuQqYepQ/VdQNliuab85jH2Xbj1oUEqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1NFV2+tcwdpPsttGxr6b4Se/p/iKvffkpf9uBJROLf/Po/zqb39VvwyIzh2TVsOuydssEN7jIggXHKjBCRhdNnfZe+fUV2amH6C0TyEBLcHzTcm7ZEsrMcK5OaqdwxtjsyhpfdMSFziMfswhpIH+1boU849PuzpL8DSVY0HcUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkNH48Ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B0B4C4CEEA;
-	Mon, 23 Jun 2025 21:22:21 +0000 (UTC)
+	 MIME-Version; b=lPueoUFPHN5s3zFb7iTVcfONUQUBtEZnDAj/bkyP+swEPLAYKEa63sPVQRsYBfN1WXqRR0ZATCdhlVBXH89ljRqbBCYO1GAu2l69MHMdRM5ygUrwFMx0iGQe1U2eh/+HLw+R+w2PfgmZOk/M3SfuEZolK2AtBG+hMz6swH8BZY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CoD6K2HL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5980C4CEEA;
+	Mon, 23 Jun 2025 21:16:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713741;
-	bh=IZFlmXPMmhjdm0H0sQF1Np0BpXYwMlMiAjxXmXDAQ+k=;
+	s=korg; t=1750713402;
+	bh=wKBPWKo1PljpuQqYepQ/VdQNliuab85jH2Xbj1oUEqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkNH48OkJ2ZAApt5Lzwi2RzszmKrZTQ5RWe4zZr4lqjmwpYhmXV1ZB5eigzYqmmRx
-	 jfCmAxly8U/rtTxNsa3NDSgjZ3qwOdjW6l4Vq1IV8YhoeysLvQ2vjE1AL/37tc/mU9
-	 vMQesvxFhB1RbgQ9ULjqDyflir2dNFswVWWKe358=
+	b=CoD6K2HLBh/HMmt2GjxcjJkPZH2N2RTmEYusJqjZeUJN5NEVPuKQIM0fsS4xZA8rW
+	 pVkVOCTTHOUXDsRpCbJXqwpeP+aGuPK7FyTcQzla2l1J7oZrx8ZJMvHYOnSFcQuQpx
+	 /lIERmLM7lakps97iiHAn9gSEQ1ldV8fRokhOCeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Andre Przywara <andre.przywara@arm.com>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
+	Chen-Yu Tsai <wens@csie.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 120/508] bus: fsl-mc: fix double-free on mc_dev
-Date: Mon, 23 Jun 2025 15:02:45 +0200
-Message-ID: <20250623130648.248747533@linuxfoundation.org>
+Subject: [PATCH 6.1 121/508] dt-bindings: vendor-prefixes: Add Liontron name
+Date: Mon, 23 Jun 2025 15:02:46 +0200
+Message-ID: <20250623130648.272651171@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,50 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Andre Przywara <andre.przywara@arm.com>
 
-[ Upstream commit d694bf8a9acdbd061596f3e7549bc8cb70750a60 ]
+[ Upstream commit 9baa27a2e9fc746143ab686b6dbe2d515284a4c5 ]
 
-The blamed commit tried to simplify how the deallocations are done but,
-in the process, introduced a double-free on the mc_dev variable.
+Liontron is a company based in Shenzen, China, making industrial
+development boards and embedded computers, mostly using Rockchip and
+Allwinner SoCs.
 
-In case the MC device is a DPRC, a new mc_bus is allocated and the
-mc_dev variable is just a reference to one of its fields. In this
-circumstance, on the error path only the mc_bus should be freed.
+Add their name to the list of vendors.
 
-This commit introduces back the following checkpatch warning which is a
-false-positive.
-
-WARNING: kfree(NULL) is safe and this check is probably not required
-+       if (mc_bus)
-+               kfree(mc_bus);
-
-Fixes: a042fbed0290 ("staging: fsl-mc: simplify couple of deallocations")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20250408105814.2837951-2-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Acked-by: Rob Herring (Arm) <robh@kernel.org>
+Link: https://patch.msgid.link/20250505164729.18175-2-andre.przywara@arm.com
+Signed-off-by: Chen-Yu Tsai <wens@csie.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/fsl-mc-bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/vendor-prefixes.yaml | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/bus/fsl-mc/fsl-mc-bus.c b/drivers/bus/fsl-mc/fsl-mc-bus.c
-index 6143dbf31f311..6e4556530df58 100644
---- a/drivers/bus/fsl-mc/fsl-mc-bus.c
-+++ b/drivers/bus/fsl-mc/fsl-mc-bus.c
-@@ -910,8 +910,10 @@ int fsl_mc_device_add(struct fsl_mc_obj_desc *obj_desc,
- 
- error_cleanup_dev:
- 	kfree(mc_dev->regions);
--	kfree(mc_bus);
--	kfree(mc_dev);
-+	if (mc_bus)
-+		kfree(mc_bus);
-+	else
-+		kfree(mc_dev);
- 
- 	return error;
- }
+diff --git a/Documentation/devicetree/bindings/vendor-prefixes.yaml b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+index 77e9413cdee07..f955db429f55a 100644
+--- a/Documentation/devicetree/bindings/vendor-prefixes.yaml
++++ b/Documentation/devicetree/bindings/vendor-prefixes.yaml
+@@ -725,6 +725,8 @@ patternProperties:
+     description: Linux-specific binding
+   "^linx,.*":
+     description: Linx Technologies
++  "^liontron,.*":
++    description: Shenzhen Liontron Technology Co., Ltd
+   "^liteon,.*":
+     description: LITE-ON Technology Corp.
+   "^litex,.*":
 -- 
 2.39.5
 
