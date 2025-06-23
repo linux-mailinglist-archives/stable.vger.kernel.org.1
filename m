@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-157737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A7D7AE556E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE0DAE5569
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9794C4784
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08BBD1BC472F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F09225A3D;
-	Mon, 23 Jun 2025 22:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A50F223DEF;
+	Mon, 23 Jun 2025 22:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxVg751k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ATP12G32"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45666222576;
-	Mon, 23 Jun 2025 22:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26CD41F7580;
+	Mon, 23 Jun 2025 22:10:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716598; cv=none; b=sIVz9PuYIrA1EVHLqQ21qkLaXIDDOtYp6daXK1nrv0/VZLACxLiEtbGukiSOF/J1+ObaeNYXdMxe7M8wqZWpW5XRMHd0tHHeat/OfrnyC54wCcShhjZlY9ysrdYDN/TT7rKtC2TRyR8lzenJp34PEw4n5JbB1WVNzOouzQ7+9rM=
+	t=1750716613; cv=none; b=ckycx8kBRfvtYeB9r/w++I6ptvxMM2NCZIb/CwVgHwa2HX8O+rOevbBihXbj29fbtoJeYSEZaaZ8kTvR6vHeEz8w2vLD2/ftO5Cc76hRt83ZRL5KzVsw2xdsq/i/gzCdOhoBm2DAQhzBz+b3LQ9g+apZ87vjH3/x0nDY4WdMpOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716598; c=relaxed/simple;
-	bh=5frQLmnejkwYjByx8+w/jd5bNtqIW/nJ/GonxwhSADs=;
+	s=arc-20240116; t=1750716613; c=relaxed/simple;
+	bh=Dmds9ooRpbEAM7A9PI+0v3D/DgPbwtpyNiqCjfJoTRY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jByunL9DJ8RiklvUuDYC+rxwDNfSXhlE+YaFUaTZqKW4YR5fADSwo8miUI2T364eFR6pS4VgX/mQ9NzL3aVTrmjkQEa63qCQ9g3PtjEqaJ+Kf2xiiaMtusOGgTGjR0v2BLAb/++PqUqCkqZXNltM1/4HUepIxKd02sSFAPkP7Ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxVg751k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E32C4CEF1;
-	Mon, 23 Jun 2025 22:09:57 +0000 (UTC)
+	 MIME-Version; b=BWIzAQEfDf+EwsEk7oyh0PXvntnNE4txMZfCddOZ+jp0PBftL4fFvtA8qvIfwhcZT1RmBDN/Z94jLB6MiDh8ADKRk7ZztNhG2tvYJDoJo43EIcbyvWtSHbL1PukqR15uzFgVh/+fhf9B8Lr5YmfelFDChLGu4mBXvUxi4O2BKp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ATP12G32; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD66C4CEEA;
+	Mon, 23 Jun 2025 22:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716598;
-	bh=5frQLmnejkwYjByx8+w/jd5bNtqIW/nJ/GonxwhSADs=;
+	s=korg; t=1750716612;
+	bh=Dmds9ooRpbEAM7A9PI+0v3D/DgPbwtpyNiqCjfJoTRY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GxVg751kfg+bZcOzFj5G9uZH2OUVgoLFmZwadOeujqop3MPUjZmNSF/klqWFzHKcm
-	 RxLEbLyUUthZMXIZXtA0Oer+7TVgp8qM7dm1W2KCGGax4hyOHxSJTqX0zZjVKgZues
-	 H/4axgSjfZ4a1jJfOmOoj2m0Tu4MqjDvaNKVDme8=
+	b=ATP12G32hJPhRKdNy/MheZ0CL9mEAZoVYNvhpZXsnZd5ew7u88cc4oYyuOL3qIgcB
+	 XBri3GNRemBC1P7ZCY5WZapiiTkZTJWWz7TqUpSgVHTHOvJ2ogSCq7IXFA2KzTVvjs
+	 pKVxGxEg8G46oZEOyd4QGeHXTu4g8Zigh5JDVIyA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyungwook Boo <bookyungwook@gmail.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Rand Deeb <rand.sec96@gmail.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
 	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.12 268/414] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
-Date: Mon, 23 Jun 2025 15:06:45 +0200
-Message-ID: <20250623130648.731133336@linuxfoundation.org>
+Subject: [PATCH 6.12 269/414] ixgbe: Fix unreachable retry logic in combined and byte I2C write functions
+Date: Mon, 23 Jun 2025 15:06:46 +0200
+Message-ID: <20250623130648.755643756@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -70,45 +67,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kyungwook Boo <bookyungwook@gmail.com>
+From: Rand Deeb <rand.sec96@gmail.com>
 
-[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
+[ Upstream commit cdcb3804eeda24d588348bbab6766cf14fddbeaa ]
 
-When the device sends a specific input, an integer underflow can occur, leading
-to MMIO write access to an invalid page.
+The current implementation of `ixgbe_write_i2c_combined_generic_int` and
+`ixgbe_write_i2c_byte_generic_int` sets `max_retry` to `1`, which makes
+the condition `retry < max_retry` always evaluate to `false`. This renders
+the retry mechanism ineffective, as the debug message and retry logic are
+never executed.
 
-Prevent the integer underflow by changing the type of related variables.
+This patch increases `max_retry` to `3` in both functions, aligning them
+with the retry logic in `ixgbe_read_i2c_combined_generic_int`. This
+ensures that the retry mechanism functions as intended, improving
+robustness in case of I2C write failures.
 
-Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
-Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Signed-off-by: Rand Deeb <rand.sec96@gmail.com>
 Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index e8031f1a9b4fc..2f5a850148676 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -817,10 +817,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
- void i40e_clear_hw(struct i40e_hw *hw)
+diff --git a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+index 07eaa3c3f4d36..530e4319a2e89 100644
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -167,7 +167,7 @@ int ixgbe_write_i2c_combined_generic_int(struct ixgbe_hw *hw, u8 addr,
+ 					 u16 reg, u16 val, bool lock)
  {
- 	u32 num_queues, base_queue;
--	u32 num_pf_int;
--	u32 num_vf_int;
-+	s32 num_pf_int;
-+	s32 num_vf_int;
- 	u32 num_vfs;
--	u32 i, j;
-+	s32 i;
-+	u32 j;
- 	u32 val;
- 	u32 eol = 0x7ff;
+ 	u32 swfw_mask = hw->phy.phy_semaphore_mask;
+-	int max_retry = 1;
++	int max_retry = 3;
+ 	int retry = 0;
+ 	u8 reg_high;
+ 	u8 csum;
+@@ -2284,7 +2284,7 @@ static int ixgbe_write_i2c_byte_generic_int(struct ixgbe_hw *hw, u8 byte_offset,
+ 					    u8 dev_addr, u8 data, bool lock)
+ {
+ 	u32 swfw_mask = hw->phy.phy_semaphore_mask;
+-	u32 max_retry = 1;
++	u32 max_retry = 3;
+ 	u32 retry = 0;
+ 	int status;
  
 -- 
 2.39.5
