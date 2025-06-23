@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4088AE5260
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99FCCAE5419
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF43F16BB70
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EEA04C05CA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68D784315A;
-	Mon, 23 Jun 2025 21:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B7721FF2B;
+	Mon, 23 Jun 2025 21:59:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9pv0SqL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYdRVESh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214A619D084;
-	Mon, 23 Jun 2025 21:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDFF221DA8;
+	Mon, 23 Jun 2025 21:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714985; cv=none; b=Iqo1z8FAqVWCNrPcTUEnXQlIzhmY5AsLEESHhfTM+5UdM9WPtPhxIg/i2KT52ZrMJu/jv77jDF+pN3qidCLl95rM1GLNa6csZkQflC2dhmOKyVCfTiOG0xFd/17sTkrobQ4bzpCPJqyeg19VgSSTcafeoEuvkDiIsmgxso3pP7c=
+	t=1750715946; cv=none; b=LSsxHazHo5E1A9q4PwcDZMzdirim3mtsHpYhfbM+MyVeaee0kbGP2JzI8itprHnCn4Sh+ZnVykdxY43wg5QrmdxLKouH0NmuPZec09r9kR+A0T3DMyWzKP7wdhAhBFSB7PfpcFukE4emXoujSV6r91+HmDlQkDeutihNJPswPZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714985; c=relaxed/simple;
-	bh=6xk8RtvZ789zWBpljEWKA3tiDjnYS+pR0y3FozcTBq8=;
+	s=arc-20240116; t=1750715946; c=relaxed/simple;
+	bh=ZDlrXdeBE5noizLqmN/avXc5w5AqRPyM8Hz06s5a3w8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TQruPO6Fk3d+cdrWeMXu6141eCjgERKI94d9QYpIt6+nUvDBXqeWcxJmjYxl6TCIrhoSj89AyQuSvs6Wir2YLVSNUKQbmT7MvfeGGWu5EHunD9Hl30qGcOrtesyOH0jJo6BODsi2QrgGZiemgdwiVFTQpAPgn0ELmpoi6XQOA7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9pv0SqL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE526C4CEEA;
-	Mon, 23 Jun 2025 21:43:04 +0000 (UTC)
+	 MIME-Version; b=C3LQVMaRIGMqqv6p3PkebiCF5F4A/dJif6J+NpINli0O5sy0HHNVyqcwNIJPUJljPiGbE9G6ytSqrpVdXwZ4KxEd+pAoBRW+KhlhQjhOT4wjnR57tZKC/ldYxoCvM8bTTydp7Kp/NH8DdLuEycwvzAlw7m8E5mUDMLcVFEg+fhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYdRVESh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 465C3C4CEEA;
+	Mon, 23 Jun 2025 21:59:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714985;
-	bh=6xk8RtvZ789zWBpljEWKA3tiDjnYS+pR0y3FozcTBq8=;
+	s=korg; t=1750715946;
+	bh=ZDlrXdeBE5noizLqmN/avXc5w5AqRPyM8Hz06s5a3w8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b9pv0SqLuuWkOU/nhDRV6Vpijq8XwNEQi7N1U78fnyjSjq6oa+oBec3ol11bs/Wxb
-	 29BgOu7jxsyhGHUWxydj0vkStK6vTi9FHUR8C8tgWp4hnra9GIdMq8HLDdCseR9Er+
-	 hsxPV9aLjOws9phW145t2huR5lhVnSXz9J9LlQq0=
+	b=WYdRVEShOBN1Yqte373Tfm03nqrDNaChBox1ICIDrgrG6iqYJGd2ccJvnjPy88VwI
+	 wN4w/wKl37bJy+5olnbvIkkbCDQ5Nh9P/25/aCiwGwVJwoFsDm/0UhHYHOz3MxtFrs
+	 l3enC9PZsrDpyAHO2enurQtxgkEx1GF+YMGCehtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 236/355] sunrpc: fix race in cache cleanup causing stale nextcheck time
+Subject: [PATCH 5.15 293/411] drm/amdgpu/gfx8: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:07:17 +0200
-Message-ID: <20250623130633.846450386@linuxfoundation.org>
+Message-ID: <20250623130641.028027955@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,83 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 2298abcbe11e9b553d03c0f1d084da786f7eff88 ]
+[ Upstream commit c8b8d7a4f1c5cdfbd61d75302fb3e3cdefb1a7ab ]
 
-When cache cleanup runs concurrently with cache entry removal, a race
-condition can occur that leads to incorrect nextcheck times. This can
-delay cache cleanup for the cache_detail by up to 1800 seconds:
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-1. cache_clean() sets nextcheck to current time plus 1800 seconds
-2. While scanning a non-empty bucket, concurrent cache entry removal can
-   empty that bucket
-3. cache_clean() finds no cache entries in the now-empty bucket to update
-   the nextcheck time
-4. This maybe delays the next scan of the cache_detail by up to 1800
-   seconds even when it should be scanned earlier based on remaining
-   entries
-
-Fix this by moving the hash_lock acquisition earlier in cache_clean().
-This ensures bucket emptiness checks and nextcheck updates happen
-atomically, preventing the race between cleanup and entry removal.
-
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sunrpc/cache.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 0a91945db88fe..81a780c1226c9 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -451,24 +451,21 @@ static int cache_clean(void)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+index e0302c23e9a7e..4f54b0cf51336 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
+@@ -1277,8 +1277,6 @@ static void gfx_v8_0_get_csb_buffer(struct amdgpu_device *adev,
+ 						PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
  		}
  	}
- 
-+	spin_lock(&current_detail->hash_lock);
-+
- 	/* find a non-empty bucket in the table */
--	while (current_detail &&
--	       current_index < current_detail->hash_size &&
-+	while (current_index < current_detail->hash_size &&
- 	       hlist_empty(&current_detail->hash_table[current_index]))
- 		current_index++;
- 
- 	/* find a cleanable entry in the bucket and clean it, or set to next bucket */
--
--	if (current_detail && current_index < current_detail->hash_size) {
-+	if (current_index < current_detail->hash_size) {
- 		struct cache_head *ch = NULL;
- 		struct cache_detail *d;
- 		struct hlist_head *head;
- 		struct hlist_node *tmp;
- 
--		spin_lock(&current_detail->hash_lock);
--
- 		/* Ok, now to clean this strand */
--
- 		head = &current_detail->hash_table[current_index];
- 		hlist_for_each_entry_safe(ch, tmp, head, cache_list) {
- 			if (current_detail->nextcheck > ch->expiry_time)
-@@ -489,8 +486,10 @@ static int cache_clean(void)
- 		spin_unlock(&cache_list_lock);
- 		if (ch)
- 			sunrpc_end_cache_remove_entry(ch, d);
--	} else
-+	} else {
-+		spin_unlock(&current_detail->hash_lock);
- 		spin_unlock(&cache_list_lock);
-+	}
- 
- 	return rv;
- }
 -- 
 2.39.5
 
