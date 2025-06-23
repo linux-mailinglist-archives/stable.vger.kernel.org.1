@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC36DAE4FF3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAC73AE5068
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 910441B61895
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 796C14A0E4F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF89B2628C;
-	Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77E0F1EEA3C;
+	Mon, 23 Jun 2025 21:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vghMGVpW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIxCJ1lB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF267482;
-	Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C721E51FA;
+	Mon, 23 Jun 2025 21:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713665; cv=none; b=Xvg8t5k+13MlrS+B2U35x+zmdDpZGir3DrcVy88e5b/II3sxZQgL9FHouPbn4P75ZMLiixzWbAhAoci16KTruYvZhB0OysOesYfN+9HTwPnSL4hCPyCbyNq5QWEzQySvwp7U79oiVellrWwm2ig4odroELSC5qnSTNE2bDfuZP4=
+	t=1750713901; cv=none; b=V76JCAKkKXuolY8WVpTDmJy7gNapqRo0mJCkL7Z2jbcoS4NWOtFbRGLA8Yqhca8eq/HLc/ndtPwkLpAw0gLoWJmA/6bdzIhxAAKMJtWNRaKpXNBa/QpvDZdjkCymdum2k1XSiYe80I9oBxFLWDM+DCopBa9JL2Yru5WsmotpRuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713665; c=relaxed/simple;
-	bh=KVnQYg4Bqwo5e157pBVvAup1OvS6FcqwXGYYkJAovk4=;
+	s=arc-20240116; t=1750713901; c=relaxed/simple;
+	bh=hEjYE1Q3hgw/bT9DCpCbsehvTE2jrJxBDucCcGLLTsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cxaxVX9RJFItqINogw465vQiU9cmVTbeYzCU205d6wGEVINME55WjLSKhPTwaQxB9iVWTbLYd3Y5ttb+hjeNMmYSgoy8315RWyvbr9/ou4LmIzevx1XldlHxdckzis8GDOTdPPcsY7h+4g69DpEoSbdJyrTUsn/2Rl87jWRFc0s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vghMGVpW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C00EC4CEEA;
-	Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
+	 MIME-Version; b=PEve+4Wc+8dnzieAzUamzVncptSFdZiCsWH1alp77FfOC9L/UoJ9x1r5g0hKyMLoLWsD8t572owYZjFKv3HCdD6i/EvTn6s7ZUwJz8PO6D5LS5yQWslmtsYxfKM4k7s2GhloRnyPC7mk0SFbireYgLhitXoUVg9VuM5qqPLt0iE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIxCJ1lB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01FAC4CEEA;
+	Mon, 23 Jun 2025 21:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713665;
-	bh=KVnQYg4Bqwo5e157pBVvAup1OvS6FcqwXGYYkJAovk4=;
+	s=korg; t=1750713901;
+	bh=hEjYE1Q3hgw/bT9DCpCbsehvTE2jrJxBDucCcGLLTsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vghMGVpWZK9lE+IIq32KkSbzptsm6Iree5Rq0cVyR+QjRsyjsmy2gHvg9mBCkcoBy
-	 swzREXYcPLoid1Uwm0RedNCbcDTHaYBRbnOpOVxz1bvHNkPvN7cPd/Z2evoYtokxTQ
-	 GFdToC+bumui/rGBsVEFg9UZHvKdIkxArIsFGbyw=
+	b=DIxCJ1lBa+oq6GnGllAMHtMFR/O6XgdqK6iSbtz9Mtjz+ql0ZE1YHwRYhmYlK/WR3
+	 vuCUaRwSOtzVz6jsH093c/avvh4XtuQjVI4ZHHartjT5TMPuox/O0c46YwDNHe0iC4
+	 9Cl7HNpPvFlwoNnuckavNgP14id7pJxKwbZjfU0M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Michael Walle <michael@walle.cc>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 340/592] wifi: ath12k: fix a possible dead lock caused by ab->base_lock
+Subject: [PATCH 5.15 154/411] net: mdio: C22 is now optional, EOPNOTSUPP if not provided
 Date: Mon, 23 Jun 2025 15:04:58 +0200
-Message-ID: <20250623130708.539642560@linuxfoundation.org>
+Message-ID: <20250623130637.515958665@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit ef115c265a21e3c11deee7f73bd1061775a7bf20 ]
+[ Upstream commit b063b1924fd9bf0bc157cf644764dc2151d04ccc ]
 
-spin_lock/spin_unlock are used in ath12k_reg_chan_list_event
-to acquire/release ab->base_lock. For now this is safe because
-that function is only called in soft IRQ context.
+When performing a C22 operation, check that the bus driver actually
+provides the methods, and return -EOPNOTSUPP if not. C45 only busses
+do exist, and in future their C22 methods will be NULL.
 
-But ath12k_reg_chan_list_event() will be called from process
-context in an upcoming patch, and this can result in a deadlock
-if ab->base_lock is acquired in process context and then soft
-IRQ occurs on the same CPU and tries to acquire that lock.
-
-Fix it by using spin_lock_bh and spin_unlock_bh instead.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250418-ath12k-6g-lp-vlp-v1-1-c869c86cad60@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Michael Walle <michael@walle.cc>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0e629694126c ("net/mdiobus: Fix potential out-of-bounds read/write access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/phy/mdio_bus.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index fe50c3d3cb820..22f21ecc8f235 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -6019,7 +6019,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
- 		goto fallback;
- 	}
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index 5f89828fd9f17..c26f46c06a1b2 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -757,7 +757,10 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
  
--	spin_lock(&ab->base_lock);
-+	spin_lock_bh(&ab->base_lock);
- 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
- 		/* Once mac is registered, ar is valid and all CC events from
- 		 * fw is considered to be received due to user requests
-@@ -6043,7 +6043,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
- 		ab->default_regd[pdev_idx] = regd;
- 	}
- 	ab->dfs_region = reg_info->dfs_region;
--	spin_unlock(&ab->base_lock);
-+	spin_unlock_bh(&ab->base_lock);
+ 	lockdep_assert_held_once(&bus->mdio_lock);
  
- 	goto mem_free;
+-	retval = bus->read(bus, addr, regnum);
++	if (bus->read)
++		retval = bus->read(bus, addr, regnum);
++	else
++		retval = -EOPNOTSUPP;
  
+ 	trace_mdio_access(bus, 1, addr, regnum, retval, retval);
+ 	mdiobus_stats_acct(&bus->stats[addr], true, retval);
+@@ -783,7 +786,10 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
+-	err = bus->write(bus, addr, regnum, val);
++	if (bus->write)
++		err = bus->write(bus, addr, regnum, val);
++	else
++		err = -EOPNOTSUPP;
+ 
+ 	trace_mdio_access(bus, 0, addr, regnum, val, err);
+ 	mdiobus_stats_acct(&bus->stats[addr], false, err);
 -- 
 2.39.5
 
