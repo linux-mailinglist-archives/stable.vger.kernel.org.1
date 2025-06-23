@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FFBDAE4FC4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 092A4AE4F51
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E9E51B617F6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AA8317E6F0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7466222257E;
-	Mon, 23 Jun 2025 21:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BEE322069F;
+	Mon, 23 Jun 2025 21:14:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbK+apAS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B01SYN+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303BA22173D;
-	Mon, 23 Jun 2025 21:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC8D91DF98B;
+	Mon, 23 Jun 2025 21:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713514; cv=none; b=L7wTjABbmiNixdNFU80GBx4kMGQzwLl9fjRKIdO0rh3AHdVUgcuTk6R0yUKijCXkyGnGt+snLEFtj7+Jk3tqKbYy8WG0LTJJKkKO7NwipjxNgYkTBi86E4B+opkQuneZq3UxhFIbR+g4+KIw4g+Fjy5huuxrV6KjuFT9rx008Vc=
+	t=1750713283; cv=none; b=NHxBrzPPcHrrmaGCcavwx2bZAfbOgbCKeNrhnFoA+dh5J9YeNJ5LHZYg2jfNXkGhC49q9S60K92BH1WCnMbuycrTxas5WWZd2BRyCLusuzzHLBTlUFaO2g8Wno3YFZneqfgkE2Ku8zbyEuyqK1BclAG8eaHUWTknh872r5n7O/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713514; c=relaxed/simple;
-	bh=uildalYhA6I8yMkn3phzxAkSzo53SvK1dxLta/RidfY=;
+	s=arc-20240116; t=1750713283; c=relaxed/simple;
+	bh=overGrjYdluEC46GsNnqdGd8TAFQvxToYFWG1EK2u+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Cur2KfDqWYSZAphrlkheDC6ASCCBZH2HUqIQALYUdJl27WFlJSuJBFyZklnc2Xdxr+znkhcVeianSQEUJFoOXpNE5m8QMpidh9DxM4D73G942ObGj53c/JsZtZKi0dFpTcXgZeTRW6x0BXRstXeZMP4r6s1xs0DHqapweTtNIYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbK+apAS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA6FC4CEEA;
-	Mon, 23 Jun 2025 21:18:33 +0000 (UTC)
+	 MIME-Version; b=SekBeBuvTw6L6lGJklfIpGhQNkTarjgpE00H2YKoXezgIP020VPmtAF9SJnUX4TpoaoYbKZZhi0q/lxrz03100Gc+NvBlklbaQkc+b7/V2y8G/Tub/05mQiE8/Ls7AURPNFfhFhSY5pCr83J3RP02WfkT6++GAnOh4hCzsFXAG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B01SYN+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83A75C4CEEA;
+	Mon, 23 Jun 2025 21:14:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713514;
-	bh=uildalYhA6I8yMkn3phzxAkSzo53SvK1dxLta/RidfY=;
+	s=korg; t=1750713282;
+	bh=overGrjYdluEC46GsNnqdGd8TAFQvxToYFWG1EK2u+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbK+apAS65FWdJRtX8BWWfSXJHTD7eRXLBMcFnLyKz9TsRXereFtvTUjA5R1XQ1ZW
-	 lMxgf+HUwqjugG5LXOpVnFupd/2W/oTPlrD5JCeIasJgyN3oD/kyO/r/sSNYSfo021
-	 8UrXGNVALaldEuhAbgqn58mcqT9j8uy+1ViBmcEA=
+	b=B01SYN+GZmDwy3fG52hzbCXq6bKQeScdfAPLeUQbUM90nLRjI8zLJompifXo5MSPa
+	 Cm39RW0afWKrwtzaLjtc5cnw3xucqHeIeNsNQOCUcvZ0u/j9c+kyQ5qIotMIeWSO9R
+	 Z1RCDgsDwn0OfJ+xpM7zZGV8qlk3hvH3jtaSPjLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/508] soc: aspeed: lpc: Fix impossible judgment condition
-Date: Mon, 23 Jun 2025 15:02:52 +0200
-Message-ID: <20250623130648.418463983@linuxfoundation.org>
+	Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.12 036/414] wifi: ath12k: fix ring-buffer corruption
+Date: Mon, 23 Jun 2025 15:02:53 +0200
+Message-ID: <20250623130642.930130378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
+commit 6b67d2cf14ea997061f61e9c8afd4e1c0f22acb9 upstream.
 
-smatch error：
-drivers/soc/aspeed/aspeed-lpc-snoop.c:169
-aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
+Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
+breaks and the log fills up with errors like:
 
-platform_get_irq() return non-zero IRQ number or negative error code,
-change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
 
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which based on a quick look at the ath11k driver seemed to indicate some
+kind of ring-buffer corruption.
+
+Miaoqing Pan tracked it down to the host seeing the updated destination
+ring head pointer before the updated descriptor, and the error handling
+for that in turn leaves the ring buffer in an inconsistent state.
+
+While this has not yet been observed with ath12k, the ring-buffer
+implementation is very similar to the ath11k one and it suffers from the
+same bugs.
+
+Add the missing memory barrier to make sure that the descriptor is read
+after the head pointer to address the root cause of the corruption while
+fixing up the error handling in case there are ever any (ordering) bugs
+on the device side.
+
+Note that the READ_ONCE() are only needed to avoid compiler mischief in
+case the ring-buffer helpers are ever inlined.
+
+Tested-on: WCN7850 hw2.0 WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Cc: stable@vger.kernel.org	# 6.3
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218623
+Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Link: https://patch.msgid.link/20250321095219.19369-1-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/ce.c  |   11 +++++------
+ drivers/net/wireless/ath/ath12k/hal.c |    4 ++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index eceeaf8dfbeba..d9bdc2e084086 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -167,7 +167,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
- 	int rc;
+--- a/drivers/net/wireless/ath/ath12k/ce.c
++++ b/drivers/net/wireless/ath/ath12k/ce.c
+@@ -343,11 +343,10 @@ static int ath12k_ce_completed_recv_next
+ 		goto err;
+ 	}
  
- 	lpc_snoop->irq = platform_get_irq(pdev, 0);
--	if (!lpc_snoop->irq)
-+	if (lpc_snoop->irq < 0)
- 		return -ENODEV;
++	/* Make sure descriptor is read after the head pointer. */
++	dma_rmb();
++
+ 	*nbytes = ath12k_hal_ce_dst_status_get_length(desc);
+-	if (*nbytes == 0) {
+-		ret = -EIO;
+-		goto err;
+-	}
  
- 	rc = devm_request_irq(dev, lpc_snoop->irq,
--- 
-2.39.5
-
+ 	*skb = pipe->dest_ring->skb[sw_index];
+ 	pipe->dest_ring->skb[sw_index] = NULL;
+@@ -380,8 +379,8 @@ static void ath12k_ce_recv_process_cb(st
+ 		dma_unmap_single(ab->dev, ATH12K_SKB_RXCB(skb)->paddr,
+ 				 max_nbytes, DMA_FROM_DEVICE);
+ 
+-		if (unlikely(max_nbytes < nbytes)) {
+-			ath12k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
++		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
++			ath12k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
+ 				    nbytes, max_nbytes);
+ 			dev_kfree_skb_any(skb);
+ 			continue;
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -1943,7 +1943,7 @@ u32 ath12k_hal_ce_dst_status_get_length(
+ {
+ 	u32 len;
+ 
+-	len = le32_get_bits(desc->flags, HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
++	len = le32_get_bits(READ_ONCE(desc->flags), HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
+ 	desc->flags &= ~cpu_to_le32(HAL_CE_DST_STATUS_DESC_FLAGS_LEN);
+ 
+ 	return len;
+@@ -2113,7 +2113,7 @@ void ath12k_hal_srng_access_begin(struct
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+ 	else
+-		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
++		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+ }
+ 
+ /* Update cached ring head/tail pointers to HW. ath12k_hal_srng_access_begin()
 
 
 
