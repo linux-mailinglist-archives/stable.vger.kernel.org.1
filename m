@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-158112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04C7BAE5700
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D5EDAE556A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D80F41C236D6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AF71BC46FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3276122370A;
-	Mon, 23 Jun 2025 22:25:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49697226D04;
+	Mon, 23 Jun 2025 22:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zrwbBU+n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVNCeclN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4FC42192EC;
-	Mon, 23 Jun 2025 22:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32CD2248B5;
+	Mon, 23 Jun 2025 22:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717514; cv=none; b=gaIGe/gFlnojnIxKg4auyYjQoYEPI196vKoqF3YjE2WzyXd3ciAQi3HuQ4brB7NfxDhIFIiE0qVylwWXv5XngTFcEuFAVF1Z9nL2zoN67Rzn3MAWICzZ8qujZnkPePtfg7wnFWP5JynClWOP5G2evoBd5uW7Cfr51b5Lg6x0YZA=
+	t=1750716618; cv=none; b=Xg3AKe4KeGu1pzGeXOHj/v6gi3pCDRumPdfbpWRj9JuPDkDXZx9Ubajf/u6FX5dhK3i1Y+/e8P/cRc7e+XXu8zPgxJyOx2ot52wEeT0+HdpOdftxgn5bYtSbZxlTvfMkPi42Q//5LxRDNfCfrth4VIacZsLXk2iP43QtHmTIrb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717514; c=relaxed/simple;
-	bh=Or2lhJOd2GanAwly+UM7GxxhACDPhj4lJWbOsKa1Q7c=;
+	s=arc-20240116; t=1750716618; c=relaxed/simple;
+	bh=DaMm2dNahzbWe8RjJo3yg5MY6qwHl77uROC0G1BAqJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNrTgFgreq5Zm3YUrHIRtp4h+92PTXxATBj+penMHJFRl1sSL0vqcW41SgRXMpawI/STJSSN8E1hrNkwFjFA9H3ZL7bRZCw/r8PXGPpgHrTO4Hk1U4Lvu8390RcoDWK0Fy9tKTydN2OkUpml2+joRiRn5V7Wil7tn0Lsho3o/Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zrwbBU+n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A955C4CEEA;
-	Mon, 23 Jun 2025 22:25:13 +0000 (UTC)
+	 MIME-Version; b=LQwXpRuWl5q4SvXPUSKOYxWzbEkc2nMZP3zhrp+/deI/Fjp/kzs3FCUfUIBg363QSOvheS3Z5JRf8g1OBNGW7wCYrf5Q1ipjbEhQAfBHHW9GFka5dCKgVD8IoTGJOzFpNv6EGHDxKqzML/KfDHgjzFNF6fsTr/6ksCwn/HTYijo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVNCeclN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E368C4CEEA;
+	Mon, 23 Jun 2025 22:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717513;
-	bh=Or2lhJOd2GanAwly+UM7GxxhACDPhj4lJWbOsKa1Q7c=;
+	s=korg; t=1750716617;
+	bh=DaMm2dNahzbWe8RjJo3yg5MY6qwHl77uROC0G1BAqJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zrwbBU+n2UAfGqd/fL8VAc2VVuVwyfjuJQ7COdMX6XA34cMueuLqDhPJGLzQLycrc
-	 dLxkjRBVTmrPQGQjdc0IobkySYm678cvBcmfXqa2ZP+KxvG/zj2jfCaQ+/EzZeU2dt
-	 4/OFGwG3lKl6+8Q232Gi9menrgUa50RzYc5/oP9M=
+	b=oVNCeclNnoQ3cekMCFP23r/FzJX28AcZ0fOYCXaV0l/Mai+TJuHzZwPQSZsLTpYwZ
+	 HwT9L9u/ZL+e2CziiYQ3zvsgJ38R9FkkQio4Dyio1VWDshu1RCsfa8JpPldLynuzK0
+	 M5VN7kfs2/6M5hVeXCcpTPFi0ZSVAlsKHoSdbaNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 444/508] platform/loongarch: laptop: Unregister generic_sub_drivers on exit
+	David.Kaplan@amd.com,
+	peterz@infradead.org,
+	pawan.kumar.gupta@linux.intel.com,
+	mingo@kernel.org,
+	brad.spengler@opensrcsec.com,
+	Salvatore Bonaccorso <carnil@debian.org>,
+	Breno Leitao <leitao@debian.org>
+Subject: [PATCH 5.15 345/411] Revert "x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2" on v6.6 and older
 Date: Mon, 23 Jun 2025 15:08:09 +0200
-Message-ID: <20250623130656.085776152@linuxfoundation.org>
+Message-ID: <20250623130642.332564164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +66,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Breno Leitao <leitao@debian.org>
 
-commit f78fb2576f22b0ba5297412a9aa7691920666c41 upstream.
+This reverts commit 4fc2d289b3cc4cf23ccabe59cf936d1dc49aeda8 which is
+commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d upstream.
 
-Without correct unregisteration, ACPI notify handlers and the platform
-drivers installed by generic_subdriver_init() will become dangling
-references after removing the loongson_laptop module, triggering various
-kernel faults when a hotkey is sent or at kernel shutdown.
+commit 7adb96687ce8 ("x86/bugs: Make spectre user default depend on
+MITIGATION_SPECTRE_V2") depends on commit 72c70f480a70 ("x86/bugs: Add
+a separate config for Spectre V2"), which introduced
+MITIGATION_SPECTRE_V2.
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+commit 72c70f480a70 ("x86/bugs: Add a separate config for Spectre V2")
+never landed in stable tree, thus, stable tree doesn't have
+MITIGATION_SPECTRE_V2, that said, commit 7adb96687ce8 ("x86/bugs: Make
+spectre user default depend on MITIGATION_SPECTRE_V2") has no value if
+the dependecy was not applied.
+
+Revert commit 7adb96687ce8 ("x86/bugs: Make spectre user default
+depend on MITIGATION_SPECTRE_V2")  in stable kernel which landed in in
+5.4.294, 5.10.238, 5.15.185, 6.1.141 and 6.6.93 stable versions.
+
+Cc: David.Kaplan@amd.com
+Cc: peterz@infradead.org
+Cc: pawan.kumar.gupta@linux.intel.com
+Cc: mingo@kernel.org
+Cc: brad.spengler@opensrcsec.com
+Cc: stable@vger.kernel.org # 6.6 6.1 5.15 5.10 5.4
+Reported-by: Brad Spengler <brad.spengler@opensrcsec.com>
+Reported-by: Salvatore Bonaccorso <carnil@debian.org>
+Signed-off-by: Breno Leitao <leitao@debian.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ Documentation/admin-guide/kernel-parameters.txt |    2 --
+ arch/x86/kernel/cpu/bugs.c                      |   10 +++-------
+ 2 files changed, 3 insertions(+), 9 deletions(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -611,11 +611,17 @@ static int __init generic_acpi_laptop_in
+--- a/Documentation/admin-guide/kernel-parameters.txt
++++ b/Documentation/admin-guide/kernel-parameters.txt
+@@ -5445,8 +5445,6 @@
  
- static void __exit generic_acpi_laptop_exit(void)
+ 			Selecting 'on' will also enable the mitigation
+ 			against user space to user space task attacks.
+-			Selecting specific mitigation does not force enable
+-			user mitigations.
+ 
+ 			Selecting 'off' will disable both the kernel and
+ 			the user space protections.
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -1382,13 +1382,9 @@ static __ro_after_init enum spectre_v2_m
+ static enum spectre_v2_user_cmd __init
+ spectre_v2_parse_user_cmdline(void)
  {
-+	int i;
-+
- 	if (generic_inputdev) {
--		if (input_device_registered)
--			input_unregister_device(generic_inputdev);
--		else
-+		if (!input_device_registered) {
- 			input_free_device(generic_inputdev);
-+		} else {
-+			input_unregister_device(generic_inputdev);
-+
-+			for (i = 0; i < ARRAY_SIZE(generic_sub_drivers); i++)
-+				generic_subdriver_exit(&generic_sub_drivers[i]);
-+		}
+-	enum spectre_v2_user_cmd mode;
+ 	char arg[20];
+ 	int ret, i;
+ 
+-	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
+-		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
+-
+ 	switch (spectre_v2_cmd) {
+ 	case SPECTRE_V2_CMD_NONE:
+ 		return SPECTRE_V2_USER_CMD_NONE;
+@@ -1401,7 +1397,7 @@ spectre_v2_parse_user_cmdline(void)
+ 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
+ 				  arg, sizeof(arg));
+ 	if (ret < 0)
+-		return mode;
++		return SPECTRE_V2_USER_CMD_AUTO;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
+ 		if (match_option(arg, ret, v2_user_options[i].option)) {
+@@ -1411,8 +1407,8 @@ spectre_v2_parse_user_cmdline(void)
+ 		}
  	}
+ 
+-	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
+-	return mode;
++	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
++	return SPECTRE_V2_USER_CMD_AUTO;
  }
  
+ static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
 
 
 
