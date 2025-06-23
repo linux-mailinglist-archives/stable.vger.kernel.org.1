@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155563-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196F6AE42AF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 89570AE44B5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A45FE189A159
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92B601BC2951
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B9002550B3;
-	Mon, 23 Jun 2025 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D464416419;
+	Mon, 23 Jun 2025 13:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQzB80zg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmyNDH4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49F89253358;
-	Mon, 23 Jun 2025 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6FA252903;
+	Mon, 23 Jun 2025 13:38:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684751; cv=none; b=fPICTt349mNsVih14buPe8C/pYWUUMu3YCK/Ar4FUAqYYIK0P6556pZ0/Yfm4UkdqIKZXHulZq57INZ5qL4Prrv4GJaxPYVFcaOFrrvgdBhhpfcHMwC/mKy7LdnwQIDbKhU/bBVnsv62Qv7u9ULriv9wVMBqm00moTkyLs8gMNE=
+	t=1750685928; cv=none; b=p3c1iZ4FEAJsbEYW2EJfycVsDzQK/uOBeigMyAOKndjOB82zx7bSUUHBj+fUcP2Yq1OrFevOqNYP7b95xskJfXR/yySEannaGKQQo2h2QMnyzOPfZ6zu9EFCxNOPCxAQgwWG5F9CzosL5uIEq4o8IwtHNSJ1yfNEev10Xsr+h2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684751; c=relaxed/simple;
-	bh=gnZbk53Lmg+PV2YFpbwCIi3HSzlJBOauhe16DN82lPY=;
+	s=arc-20240116; t=1750685928; c=relaxed/simple;
+	bh=hgIXNwtVHeJq4G8Sgzvbrd/JfkVf2+MKAfY10VOAWTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MLNbb98m70PFMWeNcjNrBtXkIEC09SxSt0cFs7keqAekezXJzDG9nJLhJ5+Yx37g+UtcCpRnmUpHs4TUxn6miIbySl3MnRMiF0N8d7GyCWBSnULuwbvhOvRnuL4xR8ZO8m/uU3WjgDPuIMLEuBIJHvHQRs4mDEe1O4NvTle8Z+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQzB80zg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7482C4CEEA;
-	Mon, 23 Jun 2025 13:19:10 +0000 (UTC)
+	 MIME-Version; b=UWaHPuXBP5NY0GtCQNpbGVNIF3MJiUXhCQtl6aK+9XCOdRE9hp8c7cgl24IIQmUojF7eYMyPePMhAAFAQfGIGHvy2EiwgIqU0Of/DX17t76m9A1K1AkU4BRGZMaqrPH5FC6FEntgrNJxESNjpLdsRPRAY3zg53wlyfO3d/d5Feg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmyNDH4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 173D6C4CEF3;
+	Mon, 23 Jun 2025 13:38:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684751;
-	bh=gnZbk53Lmg+PV2YFpbwCIi3HSzlJBOauhe16DN82lPY=;
+	s=korg; t=1750685928;
+	bh=hgIXNwtVHeJq4G8Sgzvbrd/JfkVf2+MKAfY10VOAWTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dQzB80zg0vsVYIXtMtu+bv5XcDc4muzIKq03GON54U0IjjCEQhhPRYF6I7EuJLEJH
-	 VHNr0n8a/T+J5E5sMjKmngEhYliE+AqK625X+qTv9NF22jGTRfHgmOp/q0XNOa0HT2
-	 tLG0Ijqp3mfi+dgtvICeGv28IKfrcSFPX2HkstVE=
+	b=pmyNDH4up0Y9DzeNMkJKe78MSr6oRVAkFJvGF47jDQC/FZlSvURUE67bBTKbcTVEB
+	 eUdgshVcEhi66XqQ/nUUNRIPJAoehhzZCqZV3mwqIzMANRzHkH1pQlnufS9hv1+Hir
+	 mNdkcooDs78y3/ZY3SgXnzzg6LgXbVPT9uGjK594=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.15 125/592] f2fs: fix to return correct error number in f2fs_sync_node_pages()
+	Alex Bee <knaerzche@gmail.com>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 038/508] media: rkvdec: Fix frame size enumeration
 Date: Mon, 23 Jun 2025 15:01:23 +0200
-Message-ID: <20250623130703.243820410@linuxfoundation.org>
+Message-ID: <20250623130646.183144419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-commit 43ba56a043b14426ca9ecac875ab357e32cb595e upstream.
+[ Upstream commit f270005b99fa19fee9a6b4006e8dee37c10f1944 ]
 
-If __write_node_folio() failed, it will return AOP_WRITEPAGE_ACTIVATE,
-the incorrect return value may be passed to userspace in below path,
-fix it.
+The VIDIOC_ENUM_FRAMESIZES ioctl should return all frame sizes (i.e.
+width and height in pixels) that the device supports for the given pixel
+format.
 
-- sync_filesystem
- - sync_fs
-  - f2fs_issue_checkpoint
-   - block_operations
-    - f2fs_sync_node_pages
-     - __write_node_folio
-     : return AOP_WRITEPAGE_ACTIVATE
+It doesn't make a lot of sense to return the frame-sizes in a stepwise
+manner, which is used to enforce hardware alignments requirements for
+CAPTURE buffers, for coded formats.
 
-Cc: stable@vger.kernel.org
-Reported-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Instead, applications should receive an indication, about the maximum
+supported frame size for that hardware decoder, via a continuous
+frame-size enumeration.
+
+Fixes: cd33c830448b ("media: rkvdec: Add the rkvdec driver")
+Suggested-by: Alex Bee <knaerzche@gmail.com>
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/node.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/staging/media/rkvdec/rkvdec.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/f2fs/node.c
-+++ b/fs/f2fs/node.c
-@@ -2107,10 +2107,14 @@ write_node:
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index d16cf4115d03a..b5847259f4541 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -213,8 +213,14 @@ static int rkvdec_enum_framesizes(struct file *file, void *priv,
+ 	if (!fmt)
+ 		return -EINVAL;
  
- 			ret = __write_node_page(&folio->page, false, &submitted,
- 						wbc, do_balance, io_type, NULL);
--			if (ret)
-+			if (ret) {
- 				folio_unlock(folio);
--			else if (submitted)
-+				folio_batch_release(&fbatch);
-+				ret = -EIO;
-+				goto out;
-+			} else if (submitted) {
- 				nwritten++;
-+			}
+-	fsize->type = V4L2_FRMSIZE_TYPE_STEPWISE;
+-	fsize->stepwise = fmt->frmsize;
++	fsize->type = V4L2_FRMSIZE_TYPE_CONTINUOUS;
++	fsize->stepwise.min_width = 1;
++	fsize->stepwise.max_width = fmt->frmsize.max_width;
++	fsize->stepwise.step_width = 1;
++	fsize->stepwise.min_height = 1;
++	fsize->stepwise.max_height = fmt->frmsize.max_height;
++	fsize->stepwise.step_height = 1;
++
+ 	return 0;
+ }
  
- 			if (--wbc->nr_to_write == 0)
- 				break;
+-- 
+2.39.5
+
 
 
 
