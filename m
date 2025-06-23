@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-155646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2427AAE431B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF9CAE434C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8B4D3B8724
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCACF1888C1E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B4F255F56;
-	Mon, 23 Jun 2025 13:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F316248891;
+	Mon, 23 Jun 2025 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kBnj0vsj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oIyYf/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 113E8255F2B;
-	Mon, 23 Jun 2025 13:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C70A239E63;
+	Mon, 23 Jun 2025 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684968; cv=none; b=KKZ2w/3XehL1ylTtnrYl4ieAb4R01lO6B5l5OCzOSM2HnbH6V+tNJpzRkxnk3MrN8R4xo907fwk18ZsTs+49NKw/tbY3gLRT0BqGj1WXICl5UnREK9iYWGzF0wntkk5Sokg+MdR2qcUyPpp5FszCPya5Mx7PLOcHCv+0zzydIoA=
+	t=1750685144; cv=none; b=jQEIs9l8vHHNww8dtBYns+1dZhoucbA2gRs7G8V6ofohEdqKlNtATID6WbgnGUMqvySwZp4Yjm9mljNSxn0YWKYVIkh2kpnZjfWvxEdJSdib/SrUl8t2EYR4Xw8tilRHa0LKaPBe5xZnDfigvJmyWgRrTBehp7DSI/ZrJERrc4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684968; c=relaxed/simple;
-	bh=gS5eck2fQz2XeCHZZMEW4KqUPtG979GQShpdyd2Pnro=;
+	s=arc-20240116; t=1750685144; c=relaxed/simple;
+	bh=noiEv5yBnXtSssLFuPEwsR9AnFlNeoMZdJ8cZ+mB0XM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mbcUT/zYuIWTCAfoemYmIPKxqElQmekHBZl9DA+igIqMDjZU7xf5PWZ4BB0O6naN7adEasiHPCpbR2VrVd+owTprNEC3/KT4vlj394+QCxytY5dxjl7E87V862K7/tsbhS6HstAMMo51+rnvh6cjXhw2jBsUuZhGaMlj1n3HZyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kBnj0vsj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93D31C4CEEA;
-	Mon, 23 Jun 2025 13:22:47 +0000 (UTC)
+	 MIME-Version; b=WCPaayfNCF/nG3a+3eHRBB3u1fQ3SwbciaSfQZ6dHuqpSeAPOlFjljIOhvKXfLpi3jMPQN66946uw09G0OOBp+KulJoS34n2QuD2uXrhmkT2+yf2rzOnay3g5nyu21RxLOnNJL+8EHP4ZLWkRfGgJpN89jBM9JcKeXZrPaPjmCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oIyYf/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17CBFC4CEEA;
+	Mon, 23 Jun 2025 13:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684967;
-	bh=gS5eck2fQz2XeCHZZMEW4KqUPtG979GQShpdyd2Pnro=;
+	s=korg; t=1750685143;
+	bh=noiEv5yBnXtSssLFuPEwsR9AnFlNeoMZdJ8cZ+mB0XM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kBnj0vsjUK7HZdZ1yZI/nRonrAODKZ2xRm51wpbS81JkqhmHef/zIwJgM0CRPk9Gx
-	 e8TCnLjnaIQV77Me2jD2qpb8N1GwOu0e+OvP6LpWbfRxu8kUxrnyotaLjV2vWz3F2Z
-	 e2bHbGgQJiUWaVMfGgTYXrwE0GDlJlYa08B4XJ9A=
+	b=0oIyYf/A5A0BDzLm2IJrDtLbxHdUSmMHgFcdzXKNzsjCpkCOzcZVbv7WYt2u2yhp9
+	 Z+WZV6MNKPWiAzd7HJky9C+TwBUwI8NKGj0KNJ4fa0C1DNhhesKEW95pS/hKSaN66j
+	 9KCBqzlkZWLGOzoNcL9PgvsYsVevECTPtXqeH4qM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Andrei Borzenkov <arvidjaar@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.15 196/592] dummycon: Trigger redraw when switching consoles with deferred takeover
-Date: Mon, 23 Jun 2025 15:02:34 +0200
-Message-ID: <20250623130704.951858026@linuxfoundation.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.15 011/411] thunderbolt: Do not double dequeue a configuration request
+Date: Mon, 23 Jun 2025 15:02:35 +0200
+Message-ID: <20250623130633.330629415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,95 +61,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit 03bcbbb3995ba5df43af9aba45334e35f2dfe27b upstream.
+commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
 
-Signal vt subsystem to redraw console when switching to dummycon
-with deferred takeover enabled. Makes the console switch to fbcon
-and displays the available output.
+Some of our devices crash in tb_cfg_request_dequeue():
 
-With deferred takeover enabled, dummycon acts as the placeholder
-until the first output to the console happens. At that point, fbcon
-takes over. If the output happens while dummycon is not active, it
-cannot inform fbcon. This is the case if the vt subsystem runs in
-graphics mode.
+ general protection fault, probably for non-canonical address 0xdead000000000122
 
-A typical graphical boot starts plymouth, a display manager and a
-compositor; all while leaving out dummycon. Switching to a text-mode
-console leaves the console with dummycon even if a getty terminal
-has been started.
+ CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+ RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+ Call Trace:
+ <TASK>
+ ? tb_cfg_request_dequeue+0x2d/0xa0
+ tb_cfg_request_work+0x33/0x80
+ worker_thread+0x386/0x8f0
+ kthread+0xed/0x110
+ ret_from_fork+0x38/0x50
+ ret_from_fork_asm+0x1b/0x30
 
-Returning true from dummycon's con_switch helper signals the vt
-subsystem to redraw the screen. If there's output available dummycon's
-con_putc{s} helpers trigger deferred takeover of fbcon, which sets a
-display mode and displays the output. If no output is available,
-dummycon remains active.
+The circumstances are unclear, however, the theory is that
+tb_cfg_request_work() can be scheduled twice for a request:
+first time via frame.callback from ring_work() and second
+time from tb_cfg_request().  Both times kworkers will execute
+tb_cfg_request_dequeue(), which results in double list_del()
+from the ctl->request_queue (the list poison deference hints
+at it: 0xdead000000000122).
 
-v2:
-- make the comment slightly more verbose (Javier)
+Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+bit set.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reported-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1242191
-Tested-by: Andrei Borzenkov <arvidjaar@gmail.com>
-Acked-by: Javier Martinez Canillas <javierm@redhat.com>
-Fixes: 83d83bebf401 ("console/fbcon: Add support for deferred console takeover")
-Cc: Hans de Goede <hdegoede@redhat.com>
-Cc: linux-fbdev@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.19+
-Link: https://lore.kernel.org/r/20250520071418.8462-1-tzimmermann@suse.de
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/console/dummycon.c |   18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/thunderbolt/ctl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -85,6 +85,15 @@ static bool dummycon_blank(struct vc_dat
- 	/* Redraw, so that we get putc(s) for output done while blanked */
- 	return true;
- }
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -143,6 +143,11 @@ static void tb_cfg_request_dequeue(struc
+ 	struct tb_ctl *ctl = req->ctl;
+ 
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
 +
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	/*
-+	 * Redraw, so that we get putc(s) for output done while switched
-+	 * away. Informs deferred consoles to take over the display.
-+	 */
-+	return true;
-+}
- #else
- static void dummycon_putc(struct vc_data *vc, u16 c, unsigned int y,
- 			  unsigned int x) { }
-@@ -95,6 +104,10 @@ static bool dummycon_blank(struct vc_dat
- {
- 	return false;
- }
-+static bool dummycon_switch(struct vc_data *vc)
-+{
-+	return false;
-+}
- #endif
- 
- static const char *dummycon_startup(void)
-@@ -123,11 +136,6 @@ static bool dummycon_scroll(struct vc_da
- {
- 	return false;
- }
--
--static bool dummycon_switch(struct vc_data *vc)
--{
--	return false;
--}
- 
- /*
-  *  The console `switch' structure for the dummy console
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
 
 
 
