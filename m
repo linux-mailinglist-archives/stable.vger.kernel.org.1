@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1078AE561E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE437AE5606
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6422C445D7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E683168B64
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AFB2288CB;
-	Mon, 23 Jun 2025 22:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0BF229B36;
+	Mon, 23 Jun 2025 22:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qD3nK5SU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7M2Pa/Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0704FB676;
-	Mon, 23 Jun 2025 22:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFB919E7F9;
+	Mon, 23 Jun 2025 22:15:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716882; cv=none; b=tDN0AlcU6hLFE133+RDwW64EAteDISTrgOyd0YWs/2J1O+39A5lXSUKPvEymA8XCHNPIK2iW4O3Tl84uPaFK1fxU9rI3X49NBmmoq+LxU5j+IlEXYFxrU+yMLnQKBoKaySSr9AE25nSDhRduaKKPApRo+0z/ROI+8gKWpXhY2+U=
+	t=1750716928; cv=none; b=Hl9dQY+7bB6cFO365+iw+Xh22TFI2yUkZljIkqaeCoZ3C7UH/iqqQ1nct7ud7OdLyI8PwnynZ/cbFwFMiuwmf4sRCMJ++QLUh4aAc0MO5nkeHa2P38az5SpoRiC79ng/KvqnLyVGXuFmQ1tgMO6sOyCNmLZZy50E27PEfVL8nkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716882; c=relaxed/simple;
-	bh=bx/ieRhTPGq2roR1yCK25GB8k1K81Eb1+j0S2VtcpNw=;
+	s=arc-20240116; t=1750716928; c=relaxed/simple;
+	bh=0yFeCD5KQ9uVcO5QY7ejuIA3uufVrQiSGyBId9NCYaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PzwWuXZFFM8TKhVPb/lYEQLT9nVwYEG0TLVfWUqfOyEH/2jyXY+mO/IC8PyhzdCbV4lBRjD//R2VaXtVFYtO63tWZ6NwmcaUH8i7vdmutmxBca8Yk2h4e2U1G914P8yZdpTJx8q1pKQ1FGc5JQ6rmw01DjP5KSEqwEXbdFSyuEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qD3nK5SU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92DDFC4CEEA;
-	Mon, 23 Jun 2025 22:14:41 +0000 (UTC)
+	 MIME-Version; b=hzeCLxlpD7fGc3G0euGP5jPQ0NdmeT8p+X3dKuvy8qmc4/1kP/qHM1yearxRoDndiFda2o4yzc7D4508h7BZQ9CiFhjiLuXMH19WUB0iGUf0acfvbCCi9Vq/svdGphVO3p247ymrBHvSp7M5/uhMR4dXl8iXabSV5da0tvth5i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7M2Pa/Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 055D6C4CEEA;
+	Mon, 23 Jun 2025 22:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716881;
-	bh=bx/ieRhTPGq2roR1yCK25GB8k1K81Eb1+j0S2VtcpNw=;
+	s=korg; t=1750716928;
+	bh=0yFeCD5KQ9uVcO5QY7ejuIA3uufVrQiSGyBId9NCYaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qD3nK5SUqpz0XkZ5t2KdCX2mPD9VFVCl1jJudqOvMdbXa5q/HWKd8uDjKh4+K3Jmd
-	 1sghwmsdPun/lyLeNNowArxBvVZdxMihUKymnV+7OL8QM+BvWkkS4VkHyL0j6BRqKA
-	 ldQ15L0t2kgifOM0bpQI0uMhqAxyUGBZ9wjer2O8=
+	b=H7M2Pa/Z8PoI+1Vw7t6puNc5EZHSiMqndocQiztGbJLyrbegzektLAXBxHK9kPMGu
+	 fEaxH1cJDsYaEkKYaRpn6KTLBVJeMr357tjs9XCtlzwhZSPE5mFiSaMNyoyWH8W6iy
+	 M2fDPkjSCmy1HXGQ/gqSB8ak7I8wCIxzGlrD7g7w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>
-Subject: [PATCH 6.15 565/592] EDAC/igen6: Fix NULL pointer dereference
+	Haixia Qu <hxqu@hillstonenet.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 379/411] tipc: fix null-ptr-deref when acquiring remote ip of ethernet bearer
 Date: Mon, 23 Jun 2025 15:08:43 +0200
-Message-ID: <20250623130713.882391957@linuxfoundation.org>
+Message-ID: <20250623130643.184096979@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,159 +61,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Haixia Qu <hxqu@hillstonenet.com>
 
-commit 88efa0de3285be66969b71ec137d9dab1ee19e52 upstream.
+[ Upstream commit f82727adcf2992822e12198792af450a76ebd5ef ]
 
-A kernel panic was reported with the following kernel log:
+The reproduction steps:
+1. create a tun interface
+2. enable l2 bearer
+3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
 
-  EDAC igen6: Expected 2 mcs, but only 1 detected.
-  BUG: unable to handle page fault for address: 000000000000d570
-  ...
-  Hardware name: Notebook V54x_6x_TU/V54x_6x_TU, BIOS Dasharo (coreboot+UEFI) v0.9.0 07/17/2024
-  RIP: e030:ecclog_handler+0x7e/0xf0 [igen6_edac]
-  ...
-  igen6_probe+0x2a0/0x343 [igen6_edac]
-  ...
-  igen6_init+0xc5/0xff0 [igen6_edac]
-  ...
+tipc: Started in network mode
+tipc: Node identity 8af312d38a21, cluster identity 4711
+tipc: Enabled bearer <eth:syz_tun>, priority 1
+Oops: general protection fault
+KASAN: null-ptr-deref in range
+CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
+Hardware name: QEMU Ubuntu 24.04 PC
+RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
 
-This issue occurred because one memory controller was disabled by
-the BIOS but the igen6_edac driver still checked all the memory
-controllers, including this absent one, to identify the source of
-the error. Accessing the null MMIO for the absent memory controller
-resulted in the oops above.
+the ub was in fact a struct dev.
 
-Fix this issue by reverting the configuration structure to non-const
-and updating the field 'res_cfg->num_imc' to reflect the number of
-detected memory controllers.
+when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or
+other media when other thread changes it.
 
-Fixes: 20e190b1c1fd ("EDAC/igen6: Skip absent memory controllers")
-Reported-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Closes: https://lore.kernel.org/all/aFFN7RlXkaK_loQb@mail-itl/
-Suggested-by: Borislav Petkov <bp@alien8.de>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
-Link: https://lore.kernel.org/r/20250618162307.1523736-1-qiuxu.zhuo@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+fix this by checking media_id.
+
+Fixes: 832629ca5c313 ("tipc: add UDP remoteip dump to netlink API")
+Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250617055624.2680-1-hxqu@hillstonenet.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/igen6_edac.c |   24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ net/tipc/udp_media.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -125,7 +125,7 @@
- #define MEM_SLICE_HASH_MASK(v)		(GET_BITFIELD(v, 6, 19) << 6)
- #define MEM_SLICE_HASH_LSB_MASK_BIT(v)	GET_BITFIELD(v, 24, 26)
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index f5bd75d931c1b..e1305d159834b 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -489,7 +489,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
  
--static const struct res_config {
-+static struct res_config {
- 	bool machine_check;
- 	/* The number of present memory controllers. */
- 	int num_imc;
-@@ -473,7 +473,7 @@ static u64 rpl_p_err_addr(u64 ecclog)
- 	return ECC_ERROR_LOG_ADDR45(ecclog);
- }
+ 		rtnl_lock();
+ 		b = tipc_bearer_find(net, bname);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+@@ -500,7 +500,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
  
--static const struct res_config ehl_cfg = {
-+static struct res_config ehl_cfg = {
- 	.num_imc		= 1,
- 	.imc_base		= 0x5000,
- 	.ibecc_base		= 0xdc00,
-@@ -483,7 +483,7 @@ static const struct res_config ehl_cfg =
- 	.err_addr_to_imc_addr	= ehl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config icl_cfg = {
-+static struct res_config icl_cfg = {
- 	.num_imc		= 1,
- 	.imc_base		= 0x5000,
- 	.ibecc_base		= 0xd800,
-@@ -493,7 +493,7 @@ static const struct res_config icl_cfg =
- 	.err_addr_to_imc_addr	= ehl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config tgl_cfg = {
-+static struct res_config tgl_cfg = {
- 	.machine_check		= true,
- 	.num_imc		= 2,
- 	.imc_base		= 0x5000,
-@@ -507,7 +507,7 @@ static const struct res_config tgl_cfg =
- 	.err_addr_to_imc_addr	= tgl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config adl_cfg = {
-+static struct res_config adl_cfg = {
- 	.machine_check		= true,
- 	.num_imc		= 2,
- 	.imc_base		= 0xd800,
-@@ -518,7 +518,7 @@ static const struct res_config adl_cfg =
- 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config adl_n_cfg = {
-+static struct res_config adl_n_cfg = {
- 	.machine_check		= true,
- 	.num_imc		= 1,
- 	.imc_base		= 0xd800,
-@@ -529,7 +529,7 @@ static const struct res_config adl_n_cfg
- 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config rpl_p_cfg = {
-+static struct res_config rpl_p_cfg = {
- 	.machine_check		= true,
- 	.num_imc		= 2,
- 	.imc_base		= 0xd800,
-@@ -541,7 +541,7 @@ static const struct res_config rpl_p_cfg
- 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config mtl_ps_cfg = {
-+static struct res_config mtl_ps_cfg = {
- 	.machine_check		= true,
- 	.num_imc		= 2,
- 	.imc_base		= 0xd800,
-@@ -552,7 +552,7 @@ static const struct res_config mtl_ps_cf
- 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
- };
- 
--static const struct res_config mtl_p_cfg = {
-+static struct res_config mtl_p_cfg = {
- 	.machine_check		= true,
- 	.num_imc		= 2,
- 	.imc_base		= 0xd800,
-@@ -563,7 +563,7 @@ static const struct res_config mtl_p_cfg
- 	.err_addr_to_imc_addr	= adl_err_addr_to_imc_addr,
- };
- 
--static const struct pci_device_id igen6_pci_tbl[] = {
-+static struct pci_device_id igen6_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, DID_EHL_SKU5), (kernel_ulong_t)&ehl_cfg },
- 	{ PCI_VDEVICE(INTEL, DID_EHL_SKU6), (kernel_ulong_t)&ehl_cfg },
- 	{ PCI_VDEVICE(INTEL, DID_EHL_SKU7), (kernel_ulong_t)&ehl_cfg },
-@@ -1342,9 +1342,11 @@ static int igen6_register_mcis(struct pc
- 		return -ENODEV;
- 	}
- 
--	if (lmc < res_cfg->num_imc)
-+	if (lmc < res_cfg->num_imc) {
- 		igen6_printk(KERN_WARNING, "Expected %d mcs, but only %d detected.",
- 			     res_cfg->num_imc, lmc);
-+		res_cfg->num_imc = lmc;
-+	}
- 
- 	return 0;
- 
+ 		rtnl_lock();
+ 		b = rtnl_dereference(tn->bearer_list[bid]);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+-- 
+2.39.5
+
 
 
 
