@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28837AE4EC7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17413AE5004
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1AB916EE87
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEC4E1B61E62
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832B622069F;
-	Mon, 23 Jun 2025 21:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25CEA18E377;
+	Mon, 23 Jun 2025 21:21:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fvnqvWpt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+wGpSj6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BC270838;
-	Mon, 23 Jun 2025 21:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D58E42C9D;
+	Mon, 23 Jun 2025 21:21:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712943; cv=none; b=lR2IQBcCO91tluWjYvIfY0q/yNJgrQMBtnTV3VGtTwnoEfh5SjiEtZForn36tNeySw9uqd3acJWKVE23tKdwKBAnXFL4fr1AGE1YBgXaLsMjCTG7u96dqjt5ycmQPj+zo5SMGgbaDbMhPObEhfXcD62z7QNgKtOBl/VcMngh8oA=
+	t=1750713699; cv=none; b=PirrTgy8p3Yspf7jYh746oMvPJ7RzL+a6Oc3CmZiW40HAiF151Z4IAP0LwqD0ydP1JCFYA/K4TTjsBVIuRihN2Hv3JbH3UYNjyzL/MIRHHNc1jdQ+jP+rblgPsVkKWRT4PUPPh0msG+kcGEgMwQyJEUyF/m51emrZd1poRIyy6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712943; c=relaxed/simple;
-	bh=7nSMotcLz4l01q6ClHfHjRogpFUVmETrGcTKQFn6QUY=;
+	s=arc-20240116; t=1750713699; c=relaxed/simple;
+	bh=w+aEoiREZE0nQSEIHLCafoCe0PF/UuWwq/b8ZyPRnGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KaIdZrWL698xiQkxF8HZv1iaykJFMYtwg7Uc267FKu81aL3mm9aL4nPEbrz2dKd0MKLMC6LcAvMq5eflMKVBno54zOIbZbZYxk01lWPPaHeXABT6IvTlYarqw9UXft4sDucmvuserei8mA6c06fqvUndC6qnS+dE/3NKHBthA7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fvnqvWpt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC54CC4CEEA;
-	Mon, 23 Jun 2025 21:09:02 +0000 (UTC)
+	 MIME-Version; b=ag9QSQjZX3UjamQQgn1gzQW4uHJNrvW3nim/Zp9v1KMLf1oDd8clt/cqLtrvboMWJW8ADd1KV+/vtIBqjaN4+hgMp2eGa69TfIOsR3nIuZTu11AZMA3zCJ5j74SgaBFzS2rdUwEKx2qbDqjBr68e101Nd872H08L6RvsOXhm6fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+wGpSj6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6992BC4CEEA;
+	Mon, 23 Jun 2025 21:21:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712943;
-	bh=7nSMotcLz4l01q6ClHfHjRogpFUVmETrGcTKQFn6QUY=;
+	s=korg; t=1750713699;
+	bh=w+aEoiREZE0nQSEIHLCafoCe0PF/UuWwq/b8ZyPRnGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fvnqvWpt+WN1jtJ6+IO0lMfsXcP1cyPgkw38nc9c5TyR9pggCemyq+YhzyBFl/gfa
-	 JlkcJtvwHkj7xEtM9eI0KPUO6e+BB6C/iFagYOwjr1R+dsu7/w8Kz2EMQCHsa1CKTt
-	 Js1ay7m5dzy3mO3PFvd3ufDwoX6b/D7fMUNHAh/Q=
+	b=T+wGpSj6gWX7cR36+ZF7lIA5z/K8IoNlW2Vx5MotShDSVG5/9xxyqHM0Yh8c3GwiD
+	 p7e9oSSeyCkRT8canvORChnzo+KVyqAC2hiw7iSEqgBn4d6y+TZxyAkpc24fI/yv/3
+	 MtbciNhG16BUdsqAK8GONsTckBPfJWr93f/18lco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Tomasz Figa <tfiga@chromium.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 039/290] media: videobuf2: use sgtable-based scatterlist wrappers
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 342/592] iommu/amd: Allow matching ACPI HID devices without matching UIDs
 Date: Mon, 23 Jun 2025 15:05:00 +0200
-Message-ID: <20250623130628.179639149@linuxfoundation.org>
+Message-ID: <20250623130708.585545204@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit a704a3c503ae1cfd9de8a2e2d16a0c9430e98162 upstream.
+[ Upstream commit 51c33f333bbf7bdb6aa2a327e3a3e4bbb2591511 ]
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgt->nents.
+A BIOS upgrade has changed the IVRS DTE UID for a device that no
+longer matches the UID in the SSDT. In this case there is only
+one ACPI device on the system with that _HID but the _UID mismatch.
 
-Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Acked-by: Tomasz Figa <tfiga@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+IVRS:
+```
+              Subtable Type : F0 [Device Entry: ACPI HID Named Device]
+                  Device ID : 0060
+Data Setting (decoded below) : 40
+                 INITPass : 0
+                 EIntPass : 0
+                 NMIPass : 0
+                 Reserved : 0
+                 System MGMT : 0
+                 LINT0 Pass : 1
+                 LINT1 Pass : 0
+                   ACPI HID : "MSFT0201"
+                   ACPI CID : 0000000000000000
+                 UID Format : 02
+                 UID Length : 09
+                        UID : "\_SB.MHSP"
+```
+
+SSDT:
+```
+Device (MHSP)
+{
+    Name (_ADR, Zero)  // _ADR: Address
+    Name (_HID, "MSFT0201")  // _HID: Hardware ID
+    Name (_UID, One)  // _UID: Unique ID
+```
+
+To handle this case; while enumerating ACPI devices in
+get_acpihid_device_id() count the number of matching ACPI devices with
+a matching _HID. If there is exactly one _HID match then accept it even
+if the UID doesn't match. Other operating systems allow this, but the
+current IVRS spec leaves some ambiguity whether to allow or disallow it.
+This should be clarified in future revisions of the spec. Output
+'Firmware Bug' for this case to encourage it to be solved in the BIOS.
+
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20250512173129.1274275-1-superm1@kernel.org
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/common/videobuf2/videobuf2-dma-sg.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/iommu.c | 33 ++++++++++++++++++++++++++++-----
+ 1 file changed, 28 insertions(+), 5 deletions(-)
 
---- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
-@@ -469,7 +469,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(s
- 	struct vb2_dma_sg_buf *buf = dbuf->priv;
- 	struct sg_table *sgt = buf->dma_sgt;
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index f34209b08b4c5..a05e0eb1729bf 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -241,7 +241,9 @@ static inline int get_acpihid_device_id(struct device *dev,
+ 					struct acpihid_map_entry **entry)
+ {
+ 	struct acpi_device *adev = ACPI_COMPANION(dev);
+-	struct acpihid_map_entry *p;
++	struct acpihid_map_entry *p, *p1 = NULL;
++	int hid_count = 0;
++	bool fw_bug;
  
--	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
-+	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
- 	return 0;
+ 	if (!adev)
+ 		return -ENODEV;
+@@ -249,12 +251,33 @@ static inline int get_acpihid_device_id(struct device *dev,
+ 	list_for_each_entry(p, &acpihid_map, list) {
+ 		if (acpi_dev_hid_uid_match(adev, p->hid,
+ 					   p->uid[0] ? p->uid : NULL)) {
+-			if (entry)
+-				*entry = p;
+-			return p->devid;
++			p1 = p;
++			fw_bug = false;
++			hid_count = 1;
++			break;
++		}
++
++		/*
++		 * Count HID matches w/o UID, raise FW_BUG but allow exactly one match
++		 */
++		if (acpi_dev_hid_match(adev, p->hid)) {
++			p1 = p;
++			hid_count++;
++			fw_bug = true;
+ 		}
+ 	}
+-	return -EINVAL;
++
++	if (!p1)
++		return -EINVAL;
++	if (fw_bug)
++		dev_err_once(dev, FW_BUG "No ACPI device matched UID, but %d device%s matched HID.\n",
++			     hid_count, hid_count > 1 ? "s" : "");
++	if (hid_count > 1)
++		return -EINVAL;
++	if (entry)
++		*entry = p1;
++
++	return p1->devid;
  }
  
-@@ -480,7 +480,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
- 	struct vb2_dma_sg_buf *buf = dbuf->priv;
- 	struct sg_table *sgt = buf->dma_sgt;
- 
--	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
-+	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
- 	return 0;
- }
- 
+ static inline int get_device_sbdf_id(struct device *dev)
+-- 
+2.39.5
+
 
 
 
