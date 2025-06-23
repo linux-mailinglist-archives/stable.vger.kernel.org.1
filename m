@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157315-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F797AE5201
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF971AE5364
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA9261B645C6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D25A4A7BC4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 247CC223708;
-	Mon, 23 Jun 2025 21:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5167D218AC1;
+	Mon, 23 Jun 2025 21:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1V5QuPOf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH8nCaUj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5282223339;
-	Mon, 23 Jun 2025 21:39:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4619049B;
+	Mon, 23 Jun 2025 21:52:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714752; cv=none; b=qQbu/SjT+NTl53bSu/J76N7iZgustghBg1Bxe8dgsYisce1X1AEAtTR2Gt8PJN0WymScA9O8OYjLvB9kIGUq1qLc3ujteaR3YDltsh+kUlSZmoR0hbGaRMOBYxZKxPHDrI1cQdwDDUoewKQ59Snlb+myCKO3rKMQedR+jlrV6j4=
+	t=1750715568; cv=none; b=gcClmzZHhB6cG97rAo9d+x9oS7W5TLD3vzgPGKn/+/iqirIBgx8duaF4UsZFshILJkQlc2uLZbBbNP1sUT98uFxtz6NVYjro1lSOuRQgmWcOflTktmHoUcmcpDBs2u1UjS/A9+jNkW0jVfn7xXrNrX8oKX/T6F5F/ZKl6oAThwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714752; c=relaxed/simple;
-	bh=NbcncAI/3XDoklTQCCPeTgK0FLZwds0U+rMslPKBje4=;
+	s=arc-20240116; t=1750715568; c=relaxed/simple;
+	bh=jdAPuwwbBkFcoE90aHc3ANe364yKtQBtyYJgmjzssxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJ+AXzzLOIi9sE8C3dqyKR5yns3Yxqsi+Fx5SbuU0mBcMglNtjO0FMY0sPg2vy8Mg3BWt+2kzIReCTWEER7x2MjaUGKoHxOQlkx4aF/dDwfdXzaCzy46DSkq/i4mLlp13nV+wJ5c/kbU+VqRY0hTpIsMTr4jDCIMm9i8J72A8D8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1V5QuPOf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0B4C4CEEA;
-	Mon, 23 Jun 2025 21:39:12 +0000 (UTC)
+	 MIME-Version; b=C4OmGnu7gGT9IJeqFzjiUHbKCFiOX5zcJg8gkd9ahCEGKcZoMhbkxfSu4/zEvgCpoXbjWCVO/rzSf1Bo9/lwRXtF8xoIwPGX/b/T/JW7OFUlQZ5INI1LmUFVFHIU48iUMJc5FH9dZ2DMejL3GDs8awn603sEm/RrPKfqmVqNtK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH8nCaUj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43386C4CEEA;
+	Mon, 23 Jun 2025 21:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714752;
-	bh=NbcncAI/3XDoklTQCCPeTgK0FLZwds0U+rMslPKBje4=;
+	s=korg; t=1750715567;
+	bh=jdAPuwwbBkFcoE90aHc3ANe364yKtQBtyYJgmjzssxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1V5QuPOfuIkgU6zhEdoPVHpG6k41izWIxWXHthJQzGT+SIB8p8rFvsEQvWM5Y0Tsu
-	 xigNPZRx7qe6amRA8caTX7Km6gxI/2MmzT0Ly4z2ySmT5ejQU1rOWi+jltKNmO1i1B
-	 OhaZyglIiti6VSVyb3bSzwVP6K8KrW+K31+LUcYQ=
+	b=mH8nCaUj7KTdsmAFTZBkEUlFwO98LftMGGJ8DOBlKQnDz99mZOyxYTo3LLcBdnSYh
+	 hVSBxYfPGx6eZx3ZbpzGO8Ggu0mn66V5ugsrktI8BmrNcQThYaVY0oFB3uwWZlPixF
+	 niGNfXVMooQlwDDBZqwFh2zC4JbqQuZR3eaHz2js=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 207/411] media: ccs-pll: Start OP pre-PLL multiplier search from correct value
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 214/414] wifi: ath11k: Fix QMI memory reuse logic
 Date: Mon, 23 Jun 2025 15:05:51 +0200
-Message-ID: <20250623130638.883386175@linuxfoundation.org>
+Message-ID: <20250623130647.359834019@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
 
-commit 660e613d05e449766784c549faf5927ffaf281f1 upstream.
+[ Upstream commit cd2e7bae92bd7e65063ab8d04721d2b711ba4cbe ]
 
-The ccs_pll_calculate() function does a search over possible PLL
-configurations to find the "best" one. If the sensor does not support odd
-pre-PLL divisors and the minimum value (with constraints) isn't 1, other
-odd values could be errorneously searched (and selected) for the pre-PLL
-divisor. Fix this.
+Firmware requests 2 segments at first. The first segment is of 6799360
+whose allocation fails due to dma remapping not available. The success
+is returned to firmware. Then firmware asks for 22 smaller segments
+instead of 2 big ones. Those get allocated successfully. At suspend/
+hibernation time, these segments aren't freed as they will be reused
+by firmware after resuming.
 
-Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+After resuming, the firmware asks for the 2 segments again with the
+first segment of 6799360 size. Since chunk->vaddr is not NULL, the
+type and size are compared with the previous type and size to know if
+it can be reused or not. Unfortunately, it is detected that it cannot
+be reused and this first smaller segment is freed. Then we continue to
+allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
+is called which frees the second smaller segment as well. Later success
+is returned to firmware which asks for 22 smaller segments again. But
+as we had freed 2 segments already, we'll allocate the first 2 new
+smaller segments again and reuse the remaining 20. Hence 20 small
+segments are being reused instead of 22.
+
+Add skip logic when vaddr is set, but size/type don't match. Use the
+same skip and success logic as used when dma_alloc_coherent() fails.
+By skipping, the possibility of resume failure due to kernel failing to
+allocate memory for QMI can be avoided.
+
+	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
+	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
+
+Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
+
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250428080242.466901-1-usama.anjum@collabora.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -817,6 +817,8 @@ int ccs_pll_calculate(struct device *dev
- 			      one_or_more(
- 				      DIV_ROUND_UP(op_lim_fr->max_pll_op_clk_freq_hz,
- 						   pll->ext_clk_freq_hz))));
-+	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
-+		min_op_pre_pll_clk_div = clk_div_even(min_op_pre_pll_clk_div);
- 	dev_dbg(dev, "pll_op check: min / max op_pre_pll_clk_div: %u / %u\n",
- 		min_op_pre_pll_clk_div, max_op_pre_pll_clk_div);
+diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
+index 7a22483b35cd9..a5555c959dec9 100644
+--- a/drivers/net/wireless/ath/ath11k/qmi.c
++++ b/drivers/net/wireless/ath/ath11k/qmi.c
+@@ -1989,6 +1989,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
+ 			    chunk->prev_size == chunk->size)
+ 				continue;
  
++			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
++				ath11k_dbg(ab, ATH11K_DBG_QMI,
++					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
++					    chunk->size, chunk->type,
++					    chunk->prev_size, chunk->prev_type);
++				ab->qmi.target_mem_delayed = true;
++				return 0;
++			}
++
+ 			/* cannot reuse the existing chunk */
+ 			dma_free_coherent(ab->dev, chunk->prev_size,
+ 					  chunk->vaddr, chunk->paddr);
+-- 
+2.39.5
+
 
 
 
