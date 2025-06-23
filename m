@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-155531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57AD3AE427C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07AA9AE4273
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C650188F154
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B89563B6275
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EEE25486D;
-	Mon, 23 Jun 2025 13:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7452517AF;
+	Mon, 23 Jun 2025 13:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKhc8y0W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr8p3IeN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A219F13A265;
-	Mon, 23 Jun 2025 13:17:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1579248895;
+	Mon, 23 Jun 2025 13:18:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684674; cv=none; b=nUKOfnOex7EmhbItmJpe0UBE3w0EhpZRimIlS3XrqEKkO8dCP/OX83jDshaH3tuY4Mea5e6ENRSLppNXkOcgfw/gDVcQxk8vg71w2Vk/8KbqxvAOwXDXRtbeqLY4DcE+Sinxzl/uQraB8zN8gq4i1p2GM0HoCXtBVLz4LZXPozA=
+	t=1750684682; cv=none; b=o81ik2Vbjxorojfn1f2mXrAwtHGxQU9M9EUE3BcawS0RStzpa00k4fGATLcYTyR1E5WTDwW1BLx1Vy4Fd6W6ywv42lBiOqdLiA3MjthUZGx0AZdkfAAFeexIsn/taAtYCB5JBaDGHWBHxWW/kMNKuT6F5gGPhuPee9HRGet114k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684674; c=relaxed/simple;
-	bh=4ptBMOAwoTXM116T6qHVFLllOiDf/VT0+Cd29Pd3wsI=;
+	s=arc-20240116; t=1750684682; c=relaxed/simple;
+	bh=n9+PdzRWSJx7wBJ/wPTkv7a5o6NOHK/mdlS3IZgP0pE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NctHwtNLuW1fqChU5E7AraPjdEgtfrP4w9WsvGhYznx5nmSKIEXN4h+vPF4XO+G8cqxS+0QKebShn2n5Y/Z++oruCQ6A/tU8d/sb0WUUoG+9sQhedeIXJYpLzS6pn+Fi6NPfWOm/qTiGcSaTZjbKtjVZ9UUfIfXbOPkalIs07uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKhc8y0W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3399C4CEEA;
-	Mon, 23 Jun 2025 13:17:53 +0000 (UTC)
+	 MIME-Version; b=iTYSD05hI3tlg/cJYDtOwlxJT6O1jTFEyfLABgP/PUadjIHMKMbIsLtTUaTv1I3FGfW4aT8kEhtMXToY2c13XNcbhxI1/VJThuK1WFjEUTn1s6LL8X8DZaq/NsBSlJFDXmu/Q5dfdLzpmmvBrE+mAc+ANGRx7xz+/vTEtG+5cQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr8p3IeN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780EDC4CEEA;
+	Mon, 23 Jun 2025 13:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684674;
-	bh=4ptBMOAwoTXM116T6qHVFLllOiDf/VT0+Cd29Pd3wsI=;
+	s=korg; t=1750684681;
+	bh=n9+PdzRWSJx7wBJ/wPTkv7a5o6NOHK/mdlS3IZgP0pE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VKhc8y0WLGcpzrmZj20ZgBL49jOQFZAqZBovsSN5NPtiP/LuHxQJCqZgBsONaAoWa
-	 qvqL/rdCLDm/cCTPK9iQxuVs2lOWn1T0JZRzoVFyXc6Lu9qper2GDIuYtu9Jn86zY3
-	 bro1QSoanpBM0Fx0kTPAbS2hlGta/lYh6FnbFxcw=
+	b=Sr8p3IeN/BAneYlKRAWttMf4YAoB2IlZZ5yyO1JCw8EdinuA7jAyTKtU8DfSss41P
+	 Lug83QohHWKgXi3Z0AGJ6IaykTcGUWyI4iVfT63aNsWcIt1NYfOq9SyCimuHTMdSDB
+	 0bhNHhstoKE2W7IoqhsHDMeY547h1lni4vPpWDAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>
-Subject: [PATCH 5.4 007/222] thunderbolt: Do not double dequeue a configuration request
-Date: Mon, 23 Jun 2025 15:05:42 +0200
-Message-ID: <20250623130612.120933859@linuxfoundation.org>
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.4 008/222] netfilter: nft_socket: fix sk refcount leaks
+Date: Mon, 23 Jun 2025 15:05:43 +0200
+Message-ID: <20250623130612.150097773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,58 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
+From: Florian Westphal <fw@strlen.de>
 
-commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
+commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
 
-Some of our devices crash in tb_cfg_request_dequeue():
+We must put 'sk' reference before returning.
 
- general protection fault, probably for non-canonical address 0xdead000000000122
-
- CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
- RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
- Call Trace:
- <TASK>
- ? tb_cfg_request_dequeue+0x2d/0xa0
- tb_cfg_request_work+0x33/0x80
- worker_thread+0x386/0x8f0
- kthread+0xed/0x110
- ret_from_fork+0x38/0x50
- ret_from_fork_asm+0x1b/0x30
-
-The circumstances are unclear, however, the theory is that
-tb_cfg_request_work() can be scheduled twice for a request:
-first time via frame.callback from ring_work() and second
-time from tb_cfg_request().  Both times kworkers will execute
-tb_cfg_request_dequeue(), which results in double list_del()
-from the ctl->request_queue (the list poison deference hints
-at it: 0xdead000000000122).
-
-Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
-bit set.
-
-Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
+Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/thunderbolt/ctl.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nft_socket.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/thunderbolt/ctl.c
-+++ b/drivers/thunderbolt/ctl.c
-@@ -131,6 +131,11 @@ static void tb_cfg_request_dequeue(struc
- 	struct tb_ctl *ctl = req->ctl;
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -69,7 +69,7 @@ static void nft_socket_eval(const struct
+ 			*dest = sk->sk_mark;
+ 		} else {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ 	default:
+@@ -77,6 +77,7 @@ static void nft_socket_eval(const struct
+ 		regs->verdict.code = NFT_BREAK;
+ 	}
  
- 	mutex_lock(&ctl->request_queue_lock);
-+	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
-+		mutex_unlock(&ctl->request_queue_lock);
-+		return;
-+	}
-+
- 	list_del(&req->list);
- 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
- 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
++out_put_sk:
+ 	if (sk != skb->sk)
+ 		sock_gen_put(sk);
+ }
 
 
 
