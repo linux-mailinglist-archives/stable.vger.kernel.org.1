@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D90D3AE4502
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66A7AE44B7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 761083AC3F1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB35E17F9D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A23725394A;
-	Mon, 23 Jun 2025 13:37:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C00B254854;
+	Mon, 23 Jun 2025 13:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UlqCzRLK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ex3E4zOO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB28424728E;
-	Mon, 23 Jun 2025 13:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3BE16419;
+	Mon, 23 Jun 2025 13:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685820; cv=none; b=F9zPHkagPm2/lheE6RW3jhx0O11pOzvoi75KVqY9p1nqn/sT3QtLrmxCU96UE8RqEXQ+YnPg0nabIgwFrBE5TdqwTYbNbcJJ5WTU4hDxEkupok1AZybruAXCd82SscsW2oC9Y7Z2sfv2GY/Cjm96vvSon0yLgpN/DprWVnL0XJo=
+	t=1750685926; cv=none; b=LKAZmU83s2SKj6f6w4EPwlan1BNCGFvYGg2ivGS5fqRLU/VEwyoC5d3xQxKb0NYd2WcmHKoOAJjcR4+dXkgFX2PmLoaEifrV583IehWjnBa1Mp97DKV5I39gZvfj87CKRvfH7Ax8Nr2nwLsmq336xkeib1VB+DDBNcESzzhqwHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685820; c=relaxed/simple;
-	bh=bpO4WG9njeH75gx6K5SiMJAq3tC955uFKu8H+EJT3xg=;
+	s=arc-20240116; t=1750685926; c=relaxed/simple;
+	bh=LE3OXNdHFc3vokQSq+ySe3+CZbtFpqXli0dVOj49Qtk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oltqeEHfdNVCgdBRoTzh45kpwUI6KJc5jQ/2DEi7cL3sQwdVFW4t/Ub/WbKonNURoC2LeZ6L9l62wqJqcV9Lw9uO2Psmd6ebNZ8OkeLVa31aFzkbMxSq4YurrXn6qB+GOryW5C7fNAKpZ91MIhhEdkl0nSP6ZjDab0QkzvhJ1PE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UlqCzRLK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48E23C4CEEA;
-	Mon, 23 Jun 2025 13:37:00 +0000 (UTC)
+	 MIME-Version; b=uW3O2fOMNOQZj9MK1yPoWMJToK7jOv3C+ZLLcLgJy+YYzbTrtjZtvltNGkCnY7oIbc5DX9M3sAH4dkJlYKCFaEvU4Npz3hX0+i7DxABPylLrnN7yRskU9sdsSH6dsfTaawKtGmQAdVH5joQZth8bWwp88LJhtbZvbolNogwv9Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ex3E4zOO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E801C4CEEA;
+	Mon, 23 Jun 2025 13:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685820;
-	bh=bpO4WG9njeH75gx6K5SiMJAq3tC955uFKu8H+EJT3xg=;
+	s=korg; t=1750685925;
+	bh=LE3OXNdHFc3vokQSq+ySe3+CZbtFpqXli0dVOj49Qtk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UlqCzRLK0Yla7CwcnZAIuW1E5djhfixz9JjxG9+zNmFKFJ5IJl6jgtXov6A1Ybl9b
-	 gGUct2gL+mGlpxyyhCpe0lpOlMEwEN9fQX9W6R6VjspdGc38SmIHg4o/oVv9EQKbIp
-	 GMMK0RSqcqCzK5gjxwoSAq9lj3Ljx0sNJhZ4+u78=
+	b=ex3E4zOOA1ac1fC+bVVEkeXDlNzWBOUElmDSLFrc0ly5OCwocz2QrhgPcLHrZ2dFW
+	 LSOukCn9snHsZOkpy+x9xhSo5qJ05q9CF6raHd0OH4s+ZfJAlB5De37kbZKZxb5Ere
+	 Gna5QRcfsW3PiL+fP8PKh8opBCJzZy7zC99lN74Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 085/411] arm64: dts: rockchip: disable unrouted USB controllers and PHY on RK3399 Puma with Haikou
+Subject: [PATCH 6.15 271/592] media: ccs-pll: Better validate VT PLL branch
 Date: Mon, 23 Jun 2025 15:03:49 +0200
-Message-ID: <20250623130635.557598367@linuxfoundation.org>
+Message-ID: <20250623130706.772537363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit febd8c6ab52c683b447fe22fc740918c86feae43 ]
+[ Upstream commit cd9cb0313a42ae029cd5af9293b0add984ed252e ]
 
-The u2phy0_host port is the part of the USB PHY0 (namely the
-HOST0_DP/DM lanes) which routes directly to the USB2.0 HOST
-controller[1]. The other lanes of the PHY are routed to the USB3.0 OTG
-controller (dwc3), which we do use.
+Check that the VT PLL dividers are actually found, don't trust they always
+are even though they should be.
 
-The HOST0_DP/DM lanes aren't routed on RK3399 Puma so let's simply
-disable the USB2.0 controllers.
-
-USB3 OTG has been known to be unstable on RK3399 Puma Haikou for a
-while, one of the recurring issues being that only USB2 is detected and
-not USB3 in host mode. Reading the justification above and seeing that
-we are keeping u2phy0_host in the Haikou carrierboard DTS probably may
-have bothered you since it should be changed to u2phy0_otg. The issue is
-that if it's switched to that, USB OTG on Haikou is entirely broken. I
-have checked the routing in the Gerber file, the lanes are going to the
-expected ball pins (that is, NOT HOST0_DP/DM).
-u2phy0_host is for sure the wrong part of the PHY to use, but it's the
-only one that works at the moment for that board so keep it until we
-figure out what exactly is broken.
-
-No intended functional change.
-
-[1] https://rockchip.fr/Rockchip%20RK3399%20TRM%20V1.3%20Part2.pdf
-    Chapter 2 USB2.0 PHY
-
-Fixes: 2c66fc34e945 ("arm64: dts: rockchip: add RK3399-Q7 (Puma) SoM")
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Signed-off-by: Lukasz Czechowski <lukasz.czechowski@thaumatec.com>
-Link: https://lore.kernel.org/r/20250425-onboard_usb_dev-v2-5-4a76a474a010@thaumatec.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts | 8 --------
- 1 file changed, 8 deletions(-)
+ drivers/media/i2c/ccs-pll.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-index f07f4b8231f91..f9f9ff5628ac6 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma-haikou.dts
-@@ -251,14 +251,6 @@
- 	status = "okay";
- };
+diff --git a/drivers/media/i2c/ccs-pll.c b/drivers/media/i2c/ccs-pll.c
+index d985686b0a36b..2051f1f292294 100644
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -442,7 +442,7 @@ static int ccs_pll_calculate_vt_tree(struct device *dev,
+ 	return -EINVAL;
+ }
  
--&usb_host0_ehci {
--	status = "okay";
--};
--
--&usb_host0_ohci {
--	status = "okay";
--};
--
- &vopb {
- 	status = "okay";
- };
+-static void
++static int
+ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
+ 		     const struct ccs_pll_branch_limits_bk *op_lim_bk,
+ 		     struct ccs_pll *pll, struct ccs_pll_branch_fr *pll_fr,
+@@ -565,6 +565,8 @@ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
+ 		if (best_pix_div < SHRT_MAX >> 1)
+ 			break;
+ 	}
++	if (best_pix_div == SHRT_MAX >> 1)
++		return -EINVAL;
+ 
+ 	pll->vt_bk.sys_clk_div = DIV_ROUND_UP(vt_div, best_pix_div);
+ 	pll->vt_bk.pix_clk_div = best_pix_div;
+@@ -577,6 +579,8 @@ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
+ out_calc_pixel_rate:
+ 	pll->pixel_rate_pixel_array =
+ 		pll->vt_bk.pix_clk_freq_hz * pll->vt_lanes;
++
++	return 0;
+ }
+ 
+ /*
+@@ -852,8 +856,10 @@ int ccs_pll_calculate(struct device *dev, const struct ccs_pll_limits *lim,
+ 		if (pll->flags & CCS_PLL_FLAG_DUAL_PLL)
+ 			break;
+ 
+-		ccs_pll_calculate_vt(dev, lim, op_lim_bk, pll, op_pll_fr,
+-				     op_pll_bk, cphy, phy_const);
++		rval = ccs_pll_calculate_vt(dev, lim, op_lim_bk, pll, op_pll_fr,
++					    op_pll_bk, cphy, phy_const);
++		if (rval)
++			continue;
+ 
+ 		rval = check_bk_bounds(dev, lim, pll, PLL_VT);
+ 		if (rval)
 -- 
 2.39.5
 
