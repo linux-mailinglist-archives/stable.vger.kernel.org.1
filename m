@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-157643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 050F5AE54F3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7D9CAE54F8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510FC4C24E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B36974C21C8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA1B21FF2B;
-	Mon, 23 Jun 2025 22:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADAEC21FF2B;
+	Mon, 23 Jun 2025 22:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ma49Jq87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pks1WWB8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77CC71E87B;
-	Mon, 23 Jun 2025 22:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5191E87B;
+	Mon, 23 Jun 2025 22:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716372; cv=none; b=oyCQpkc95XIS972GCO3xn8BOA2GG7VvtGzA7rlhY64iZryXsT91x2DfL2hCjoyxOdvcczduIG8VQf0kCuYFymLMTApMrS+UhRtrwUJhYLqR6Y697B/7IoDIgKzSyHmvRO+/5QmKLdR86z1OP5s6SMvyEpPJoPOd/Ce6jOha9qXM=
+	t=1750716387; cv=none; b=ZE0a+02WYTw/xHunci1n2qTaAiJ9WBgAWCNZQKtp0DF0OQs/XVE6ClRlfKXuonLGoqQWCmHlKJWQHx2rz4WAGe1jMc4uQw04ikmhTeh22kld2rTPEV9gU/Qcgtj6ZQ5MNxO2Ucy4pnn8LqXnDXQhOxfPlOV8ju6GtyRPBZPCgJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716372; c=relaxed/simple;
-	bh=KCF0BPkBVXbImiwHsdgNGG6jmQGfyhszI5o270ymwmU=;
+	s=arc-20240116; t=1750716387; c=relaxed/simple;
+	bh=5k3mo0uacMJWw8ilOx8lhtOORVJlogDENXE8oQEht5A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BK7L638dKo5loB/dZo+olZxVKdPkECuvly49V2kIj7ep9WdsHgbRMW571sd12l0d0lGjwyjTaEYvX0OMz6LfRZlM0NslbpNMIedTMbeGNlGv/Pq/muiQq1L8Gl2uLdowwnSHx9ipQKulLrE1xE46l4nnDhQ1nvgp1lAd6rTsatk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ma49Jq87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EBFC4CEEA;
-	Mon, 23 Jun 2025 22:06:09 +0000 (UTC)
+	 MIME-Version; b=CCGlPkZqh1DZB0fV1RCf1SYQWEFkb9oJyDqrPAX5L1KKqUVuYIQTGyRdtRLMYhGf9TC3lmqnEz7tS4AZYTv2SuFiCp06oCf7ojdvWmUNmcMrLGwFz00H77mNc3c6M66eYTDOucG1XkbNybSQbbgz1Bzf3C/n1RCtvMdv2uVloAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pks1WWB8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 007F6C4CEED;
+	Mon, 23 Jun 2025 22:06:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716370;
-	bh=KCF0BPkBVXbImiwHsdgNGG6jmQGfyhszI5o270ymwmU=;
+	s=korg; t=1750716387;
+	bh=5k3mo0uacMJWw8ilOx8lhtOORVJlogDENXE8oQEht5A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ma49Jq870K8pEXHldp0/4Nz0YDUtkx0fBO5G6tcir9i40Y2tx7PM7bhw5ufResNm9
-	 /e1BOrO/3dF+ndX2y4aUyyaozN4plHT80earhZBE7Gxv8YOqEURy4YU0Fuhb6hXryN
-	 ngMVacYZY/o1lwkwDZMMfpb1NOxN/7v+ZC4Q1EkA=
+	b=pks1WWB8nOX0aRRzDHvm2IOXYyeC6qYLaXpus91X9z4NIkvwHPL7EsmQdddBSxGeO
+	 4SGIc9JhrEmqawnCQoYrX8mUcegTVqky5nulvVuIP0SAvXwtGe+uoFrjaKgo1ex38D
+	 EcxFLzDMkTh4pEwxJH1fQ4Mly30wlvbxisI4sgQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Wentao Liang <vulab@iscas.ac.cn>,
 	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 298/508] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
-Date: Mon, 23 Jun 2025 15:05:43 +0200
-Message-ID: <20250623130652.627601612@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 299/508] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
+Date: Mon, 23 Jun 2025 15:05:44 +0200
+Message-ID: <20250623130652.654291441@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,12 +68,11 @@ Content-Transfer-Encoding: 8bit
 
 From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
+commit c6bb8a21cdad8c975a3a646b9e5c8df01ad29783 upstream.
 
-The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
-mlx5_query_nic_vport_context() but does not check its return value. This
-could lead to undefined behavior if the query fails. A proper
-implementation can be found in mlx5_nic_vport_query_local_lb().
+The function mlx5_query_nic_vport_node_guid() calls the function
+mlx5_query_nic_vport_context() but does not check its return value.
+A proper implementation can be found in mlx5_nic_vport_query_local_lb().
 
 Add error handling for mlx5_query_nic_vport_context(). If it fails, free
 the out buffer via kvfree() and return error code.
@@ -82,8 +81,8 @@ Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport R
 Cc: stable@vger.kernel.org # v4.5
 Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/20250524163425.1695-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
  drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
@@ -91,7 +90,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
 +++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -497,19 +497,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
+@@ -443,19 +443,22 @@ int mlx5_query_nic_vport_node_guid(struc
  {
  	u32 *out;
  	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
@@ -106,8 +105,8 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	if (err)
 +		goto out;
  
- 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
- 				   nic_vport_context.qkey_violation_counter);
+ 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
+ 				nic_vport_context.node_guid);
 -
 +out:
  	kvfree(out);
@@ -115,7 +114,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 -	return 0;
 +	return err;
  }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
  
 
 
