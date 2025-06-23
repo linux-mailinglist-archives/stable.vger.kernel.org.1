@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B58ECAE5169
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF2FFAE5394
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61BE168A36
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C94B3B704A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B20221734;
-	Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A7A224B07;
+	Mon, 23 Jun 2025 21:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLCk2Sfw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqA5/zRj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48321F5820;
-	Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82388224AFA;
+	Mon, 23 Jun 2025 21:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714421; cv=none; b=n37aHl4IbUJbsY3cmwHbeIJDfhLcIDeqUfVdCd5VwFUuFApCwNGbVVqiCwsALZOPl1dzJeiIBHwGDzl4iPIeve22wF2wyA6iWhJSIZbTRYiitSyHW9W7e1y1Y0GSgTMbKxhfpwaTkUsWJZ1va7zWOW+L6laophRS1VJ9/6t+uwQ=
+	t=1750715643; cv=none; b=RitS+FG9omjqewnupzoQv6aTZqQAKY0YsBjfRRmqFPVDH4lmLzXvc9kHuhKFU+ID3Atr9zTTuJDFjxLBL5ALsRl8sb/BU38IxV2mQtsPCdU2NbCNdPoRlpqRlip8VVdCSdrWCI6XRkBufi0I6dHQhsmZPgInUNP+8zRq3nprAX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714421; c=relaxed/simple;
-	bh=/xRqDO7QSZ61RupOW0+3z6+uekjwE6IYM1xFVhGXlho=;
+	s=arc-20240116; t=1750715643; c=relaxed/simple;
+	bh=3kjVySsLvELg5ilfpMZH/lqC57ymWAA71Al1m2uA1hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ctw2KEJtSnRyt69VSNaWbLIrVr0kS1WcrHgLRn+ArehYxwevZ3prT23cbtVgS4R/3QNYOgNJnt/dV9rskOtYvpKE0Oe15MyzEIw5D0Onb32ygHMBkz0Lo+Mj0T0o2OvvOHMy9pwXNskJQZwYR5WpvbDifkMDaFbfIwvw7EwD458=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLCk2Sfw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D433C4CEED;
-	Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
+	 MIME-Version; b=DlLfNHh8jzz+Dg06ztoCUv1YJ47no1mVkHzuuXbskANSOFPbDMRMpWknXmgz8NRBNA3a+h1jvzCycyW6ybtO8hrJvquJvAU5+ekopyy28TExefATAMsEE8hRUsbnF9cTS2S7jJkG5zQWyfS+7u25+dAiFgd5RQ3uO0yoK+GGANY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqA5/zRj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2AFC4CEEA;
+	Mon, 23 Jun 2025 21:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714421;
-	bh=/xRqDO7QSZ61RupOW0+3z6+uekjwE6IYM1xFVhGXlho=;
+	s=korg; t=1750715643;
+	bh=3kjVySsLvELg5ilfpMZH/lqC57ymWAA71Al1m2uA1hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLCk2SfwtcGcG4qsNz5saS6Y9xGuq72wTz573996otCdC56CF0GQyrxo9sPXH93MU
-	 dfWCkMCZZmrKqHx8E7amtU+jj6BVjFMXDFKFCXyEFnbqWoJthY3ftzqhDKrX0NGUQO
-	 l++3iDNrGkWhVz1buymQDbrkWKAgm1tCWKGdjlHg=
+	b=dqA5/zRjS53Y3L44iJLeuLMDfrSj5RgSbk5j8xjDH6LIdqyQg1kQSUTa8EOlE3m6E
+	 0V6do6U8wnko3WSZhzBV/XyiwLTKH85E4wiozkjJ3G4DjGXOnGe5kF7/lzR1fgaIoz
+	 MTEcgUIPjxKo32C6i901Tt6F6+CPYT9UunFbUP2U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khem Raj <raj.khem@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.10 205/355] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 262/411] clocksource: Fix the CPUs choice in the watchdog per CPU verification
 Date: Mon, 23 Jun 2025 15:06:46 +0200
-Message-ID: <20250623130632.817622195@linuxfoundation.org>
+Message-ID: <20250623130640.252407875@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +64,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khem Raj <raj.khem@gmail.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
+[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
 
-GCC 15 changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, mips/vdso code uses
-its own CFLAGS without a '-std=' value, which break with this dialect
-change because of the kernel's own definitions of bool, false, and true
-conflicting with the C23 reserved keywords.
+Right now, if the clocksource watchdog detects a clocksource skew, it might
+perform a per CPU check, for example in the TSC case on x86.  In other
+words: supposing TSC is detected as unstable by the clocksource watchdog
+running at CPU1, as part of marking TSC unstable the kernel will also run a
+check of TSC readings on some CPUs to be sure it is synced between them
+all.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+But that check happens only on some CPUs, not all of them; this choice is
+based on the parameter "verify_n_cpus" and in some random cpumask
+calculation. So, the watchdog runs such per CPU checks on up to
+"verify_n_cpus" random CPUs among all online CPUs, with the risk of
+repeating CPUs (that aren't double checked) in the cpumask random
+calculation.
 
-Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
-CFLAGS to eliminate these errors and make the C standard version of these
-areas match the rest of the kernel.
+But if "verify_n_cpus" > num_online_cpus(), it should skip the random
+calculation and just go ahead and check the clocksource sync between
+all online CPUs, without the risk of skipping some CPUs due to
+duplicity in the random cpumask calculation.
 
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
+CPU verification skipping some CPU even with verify_n_cpus=8, due to the
+duplicity on random cpumask generation. Skipping the randomization when the
+number of online CPUs is smaller than verify_n_cpus, solves that.
+
+Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/vdso/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/clocksource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -29,6 +29,7 @@ endif
- # offsets.
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	$(filter -std=%,$(KBUILD_CFLAGS)) \
- 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
- 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 32efc87c41f20..57575be840c5a 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -279,7 +279,7 @@ static void clocksource_verify_choose_cpus(void)
+ {
+ 	int cpu, i, n = verify_n_cpus;
+ 
+-	if (n < 0) {
++	if (n < 0 || n >= num_online_cpus()) {
+ 		/* Check all of the CPUs. */
+ 		cpumask_copy(&cpus_chosen, cpu_online_mask);
+ 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
+-- 
+2.39.5
+
 
 
 
