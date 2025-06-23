@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157427-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D9A2AE53EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B66FAE5285
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5728F188EC9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FA28188593F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E6F2222CC;
-	Mon, 23 Jun 2025 21:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEAB224882;
+	Mon, 23 Jun 2025 21:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/4FSY5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k8oMIo44"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA521AD3FA;
-	Mon, 23 Jun 2025 21:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1C321D3DD;
+	Mon, 23 Jun 2025 21:44:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715839; cv=none; b=PtsZAJyIhZfXqyTkzoOlIbXRqC+RA2BBKr4Q3NLVdpLE07LpbUwqLQxguW10S7oCjLG8taR59ltoqfOq5gKol14v7YSLXcEx27tddJHY5luZ+8vA3hNDj+KdlOhk12LziySmPLxsOPTcURJdUYSPKZtyq7XNJ8Dll2/uzlgH2Cw=
+	t=1750715068; cv=none; b=Hn500Ink4kjnvC3U1IkNRVXDoGyES4WGuqYNZ+7Md08m4MZUkF+EO7M66qrlyCbi0HHZyoN8FEHSW3VAQnGz1gf3EAi8NKzEYWTG1wmzb1INBTZkd2Mrry3FIZz3aw1VK6lLomWvXutW38zz78FYils7t56G6R4jPvv0gUw7WmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715839; c=relaxed/simple;
-	bh=rFX8YJEGFRruqKJiYJp48tsmFxPoOtCJUvJCabDMUpc=;
+	s=arc-20240116; t=1750715068; c=relaxed/simple;
+	bh=QP992tYqm8ptmjJGEuS63mK2E1lYnE5ESsSpa2fAdLs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Exoezjbsy8nfioxedXsnRN6vP+IFKWhsBsWI8hGiwA+omPnD/TJPrOuC6R9bojYaV5pZZiJNAfd1MM6zlvJ6JDHdHSc5B7XFYq+gS0sebchrlNVF+O1nmsOq3aFCTFMtx6PckOUZEnhcQ/C9VpcxMcB7ISSsDahgJjh/vvc+lRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/4FSY5y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8E2C4CEEA;
-	Mon, 23 Jun 2025 21:57:18 +0000 (UTC)
+	 MIME-Version; b=TRWMia4eqljzOsDq51rmV4eKunHLQAUKVZ7IU+pOuS3ovvJ9gVaUn2gAtzCsbaNqCxdYBTN0me1q+y7gPrXQk5vlkp8dT4ASsALItesgLWnfNhEtMHADBF0CGhsgoZcahu7ND8YmeVQISQ3KucWXNQvEszMXhnsx8U9y6kTFozM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k8oMIo44; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974D6C4CEEA;
+	Mon, 23 Jun 2025 21:44:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715839;
-	bh=rFX8YJEGFRruqKJiYJp48tsmFxPoOtCJUvJCabDMUpc=;
+	s=korg; t=1750715067;
+	bh=QP992tYqm8ptmjJGEuS63mK2E1lYnE5ESsSpa2fAdLs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i/4FSY5ySD0LWCUHOqKu73JyVwUkoI/DsHYuGB9foFnqb8OGfJw+/IM4WyH4UiWet
-	 sNm1oWOaApLj3STn/Svqv92RV63SUuCNQEkbYF8ADiVXKg+oUwh6hqS4TY4Xu5z1+h
-	 SLGpq337wwXKZdwKQfdtB8Hje10n5Vlg6O74h+0Y=
+	b=k8oMIo44tj569OXLAGA5wE3bMT3eEsm+U6OYqreUnCRBtl9X1izz+soUhQ1J+MvuC
+	 TiTD43iVxviEDekVuA0vG0xgJ0Bc7wXh+/iDX92gtoqyU/ZpLcf+GcEuqA7B0zRv93
+	 Qm7fSV7BiG+jX4PA6IpuJo00t7VRkpbXcJg13r9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
 	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 307/411] i2c: designware: Invoke runtime suspend on quick slave re-registration
+Subject: [PATCH 5.10 250/355] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:07:31 +0200
-Message-ID: <20250623130641.372446609@linuxfoundation.org>
+Message-ID: <20250623130634.266487967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
