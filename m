@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156006-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8522AE44AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B2EAE44D6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7B261887C56
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C6F3BC114
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F0024728E;
-	Mon, 23 Jun 2025 13:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587A8255E27;
+	Mon, 23 Jun 2025 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U8LM7kTS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGmi7XMW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95EDD248895;
-	Mon, 23 Jun 2025 13:38:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 138CD238C19;
+	Mon, 23 Jun 2025 13:35:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685905; cv=none; b=gKaWBKbK301YsK7806LXSr5nb5XbWpGZ77wRBHrJQJ5OKWhahGgSbvizwQgy9ug/ebTemSsdXaG/W307q/5DFcXskpqgBvMcU/t2DyEo2W1xHWlkeNJannSMJk+r0+ZvJD+Q0dE01qM4YIopq1aAwS3zoohw1r55iT2noIW5ZqY=
+	t=1750685729; cv=none; b=F4xMVsKJSm835A9dDQMp7M33eOny1PJCUrTlhqUgYnfj6eoEBI+XSTo5tyVslpuJNvVo3a6uece8Hex1Dh3hTpfs5doR7IWqGvuRIw5oPxuUueX3sH2fUDvhM1J3kXzlb6Dysk73x7QonPMFmUWIrBppoE3WA9YdAxeET6so688=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685905; c=relaxed/simple;
-	bh=jjbwyvG8qE/8IlxOD0N8un9CXn4FvHRQDe4cSjO/dF0=;
+	s=arc-20240116; t=1750685729; c=relaxed/simple;
+	bh=gWlCGWusZL2vjY161oldXb7G32q8Y9cYXsHU5chlcbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icCK078BWb1qbfL99Fq4DRIjd0doKwgfd/D/PGj+8wgElVZkG88bd+C806bh8NooGdrAQ7ZeT/cmeQDUuEEJzRXtSG0xBR77/eZql9rLn7Yo+nNLscB5SYcCr+8x8iFxPcJ4h11eS9/3sOqgvDlxsfV7+J0XZAR3m2thwJW1bV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U8LM7kTS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB1CC4CEEA;
-	Mon, 23 Jun 2025 13:38:25 +0000 (UTC)
+	 MIME-Version; b=psK4JgGDJog0r/jQ6pKjvevJRGGZugWsPFH8DXJpg6GvUsNqsq/qevrh76o9oIbqpUbW7knuRj6AmHrfaPRohAhTenWaC/zGUBPkLykRw6Cmq3GnSkgYtWjqwjOO9e5UagQ3Btz1ZaZRKZkWO53ptPFU9XfY4fm5FGtA/Cyf0hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGmi7XMW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0BDC4CEF0;
+	Mon, 23 Jun 2025 13:35:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685905;
-	bh=jjbwyvG8qE/8IlxOD0N8un9CXn4FvHRQDe4cSjO/dF0=;
+	s=korg; t=1750685728;
+	bh=gWlCGWusZL2vjY161oldXb7G32q8Y9cYXsHU5chlcbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U8LM7kTSinb3eue5TxbSvJNGIUOEKInN6pM4DuIa5X/Eh2i/1ZPWozzhJFBzIRD/U
-	 HvRHtGUyvwPPuX2ju9XMwxP3aFMpStTfn+ALSVS8Nqg2aPTLRaXy+Ik2q6i1vvh/+N
-	 mR8BsHQl/8PXSMDtiX/6cuvEM2IPyS9Zg4a2o8Yo=
+	b=QGmi7XMWAG57mLbjIRR2lckmCYTDUvkmax8gPxAQdHTU+6le/WhObnNl+dzbdwkip
+	 yEhqf2eMfLdgpmHqm8XwUdoC4aBt7ZZoVZV8tcRs55sCEciq8Pet2rJJylZcJjYdH5
+	 p1l4FmJwYt0vSN4maVslmbnIEvCXR0oJpL8jthp4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 011/290] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 071/355] fbdev: core: fbcvt: avoid division by 0 in fb_cvt_hperiod()
 Date: Mon, 23 Jun 2025 15:04:32 +0200
-Message-ID: <20250623130627.308787715@linuxfoundation.org>
+Message-ID: <20250623130628.962943880@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
+[ Upstream commit 3f6dae09fc8c306eb70fdfef70726e1f154e173a ]
 
-The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
-mlx5_query_nic_vport_context() but does not check its return value. This
-could lead to undefined behavior if the query fails. A proper
-implementation can be found in mlx5_nic_vport_query_local_lb().
+In fb_find_mode_cvt(), iff mode->refresh somehow happens to be 0x80000000,
+cvt.f_refresh will become 0 when multiplying it by 2 due to overflow. It's
+then passed to fb_cvt_hperiod(), where it's used as a divider -- division
+by 0 will result in kernel oops. Add a sanity check for cvt.f_refresh to
+avoid such overflow...
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 96fe6a2109db ("[PATCH] fbdev: Add VESA Coordinated Video Timings (CVT) support")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/fbcvt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -498,19 +498,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
- {
- 	u32 *out;
- 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int err;
+diff --git a/drivers/video/fbdev/core/fbcvt.c b/drivers/video/fbdev/core/fbcvt.c
+index 64843464c6613..cd3821bd82e56 100644
+--- a/drivers/video/fbdev/core/fbcvt.c
++++ b/drivers/video/fbdev/core/fbcvt.c
+@@ -312,7 +312,7 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
+ 	cvt.f_refresh = cvt.refresh;
+ 	cvt.interlace = 1;
  
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
- 
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	err = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (err)
-+		goto out;
- 
- 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
- 				   nic_vport_context.qkey_violation_counter);
--
-+out:
- 	kvfree(out);
- 
--	return 0;
-+	return err;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
- 
+-	if (!cvt.xres || !cvt.yres || !cvt.refresh) {
++	if (!cvt.xres || !cvt.yres || !cvt.refresh || cvt.f_refresh > INT_MAX) {
+ 		printk(KERN_INFO "fbcvt: Invalid input parameters\n");
+ 		return 1;
+ 	}
+-- 
+2.39.5
+
 
 
 
