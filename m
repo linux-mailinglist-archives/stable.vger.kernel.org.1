@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-156635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03A63AE5076
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECE8AE4EEB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E301D1B613A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5613BEB36
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8771EEA3C;
-	Mon, 23 Jun 2025 21:24:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7565C21FF2B;
+	Mon, 23 Jun 2025 21:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8VLjUmh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvfgJPoS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00381E51FA;
-	Mon, 23 Jun 2025 21:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E8470838;
+	Mon, 23 Jun 2025 21:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713894; cv=none; b=XO80HVwYM2T/AeDS6r6iyEXC1Q+uBEWoAMbp3KtyuuvVCkWkKYkk8XpzANhgEoKHniKu8Uhe5/Ssc2lKD0kAAAjRIWuCuJTHtgHQySnfWSrG4nU0TqNrcHHCq75I2f7P3wYQTrhcFnzC6d8GIp/n6GJqPeD7smBo2uxbYiaYU3g=
+	t=1750713032; cv=none; b=D1ONsUK+YlKX5IdxQMelugKh1cKYHBCq3wNsq3pWszxQw+rY6y/u4VR/8ewz3QSpa0geneEp9DsSAkrSghZXz2AVzolts6uXqVlHIm0GwzweLjkLo8H//2UQpS/XbTs9HBQU9ej9+Bm8EktviSzB6YlbtGNm5e1jEZ52+NUYhgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713894; c=relaxed/simple;
-	bh=SdhCiqURNWeEz+jTcWQsln3/vf5HwTzSYkVz3B5C0Ao=;
+	s=arc-20240116; t=1750713032; c=relaxed/simple;
+	bh=MtKtPTvuUWwmE248WXtRsK/3OsNsCO3wUDfvcvtz2E4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z52Ey2MKoKzfzudbNpdtIr8i07THsNYzO9k8Qw7Mspic/aA809gfQ777njYP7mZ6N1lWWBtIh9nR5lYVcbbwuJHH4kvAijXOzP014nnPJB3FhUx73eWsBHsSAruQgmDcbG3zEkdKj6cysIw0HAJLRhoCtnD8Pq2KycZZ+4rRoQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8VLjUmh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D6EC4CEEA;
-	Mon, 23 Jun 2025 21:24:53 +0000 (UTC)
+	 MIME-Version; b=Q4vO5O6upiTE5fh1eZR05T8IY8jDPgQZLGwrBOCBaLETf+0l62paccO+9A5LP+hhMVby33Qn2X1LRMDHIBQ3LgHZMLNqmy23xJJ41PNcxIdcQYpaVil5ebBpWVsmCyRi8HP2BcdDzgC/mcn69LWPWvftpToTEdH626fnRQ1y3js=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvfgJPoS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34A2C4CEEA;
+	Mon, 23 Jun 2025 21:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713893;
-	bh=SdhCiqURNWeEz+jTcWQsln3/vf5HwTzSYkVz3B5C0Ao=;
+	s=korg; t=1750713032;
+	bh=MtKtPTvuUWwmE248WXtRsK/3OsNsCO3wUDfvcvtz2E4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h8VLjUmhl2H8u50x/blr2ObTH9hqdlZkz9XayTrYH7UZWJPVqpiHMEhUbwQB8Z9xz
-	 wKFcNIRMmv8evK6qfpSHsr0v83Aep3wGUhkbacbDZ8fOsMVN/k50+pEesNispUvMqs
-	 uUPz1zD/L6QxlxYSliSepfQ3h8afO8bAnV/yENUg=
+	b=VvfgJPoSoXdns18EZsDPehR0Lc1yBC6PgrLPJ2CV0/5QSyV3hEzcGqEG3x+31Fn20
+	 lq+D3qFF7uNSeYP+yBv3+ImMMTzm3grbIIFhAt4d3ctdHS/8cVHCPYAOZzcWsHMcZM
+	 +iNsb1PXpC4YqnXlJhPdJFIqcJwahLIVrr5qm6UI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/508] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
-Date: Mon, 23 Jun 2025 15:02:58 +0200
-Message-ID: <20250623130648.561969445@linuxfoundation.org>
+	Johan Hovold <johan+linaro@kernel.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 042/414] media: ov5675: suppress probe deferral errors
+Date: Mon, 23 Jun 2025 15:02:59 +0200
+Message-ID: <20250623130643.087681845@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,66 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
+commit 8268da3c474a43a79a6540fb06c5d3b730a0d5a5 upstream.
 
-In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
-perf_hpp_list") it assumes that act->thread is set prior to calling
-do_zoom_thread().
+Probe deferral should not be logged as an error:
 
-This doesn't happen when we use ESC or the Left arrow key to Zoom out of
-a specific thread, making this operation not to work and we get stuck
-into the thread zoom.
+	ov5675 24-0010: failed to get HW configuration: -517
 
-In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
-pstack_peek()") it says no need to set actions->thread, and at that
-point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
-check was added before the zoom out of thread could kick in.
+Drop the (mostly) redundant dev_err() from sensor probe() to suppress
+it.
 
-We can zoom out using the alternative 't' thread zoom toggle hotkey to
-finally set actions->thread before calling do_zoom_thread() and zoom
-out, but lets also fix the ESC/Zoom out of thread case.
+Note that errors during clock and regulator lookup are already correctly
+logged using dev_err_probe().
 
-Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Ingo Molnar <mingo@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/ui/browsers/hists.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov5675.c |    5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index fd3e67d2c6bdd..a68d3ee1769d6 100644
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -3238,10 +3238,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
- 				/*
- 				 * No need to set actions->dso here since
- 				 * it's just to remove the current filter.
--				 * Ditto for thread below.
- 				 */
- 				do_zoom_dso(browser, actions);
- 			} else if (top == &browser->hists->thread_filter) {
-+				actions->thread = thread;
- 				do_zoom_thread(browser, actions);
- 			} else if (top == &browser->hists->socket_filter) {
- 				do_zoom_socket(browser, actions);
--- 
-2.39.5
-
+--- a/drivers/media/i2c/ov5675.c
++++ b/drivers/media/i2c/ov5675.c
+@@ -1295,11 +1295,8 @@ static int ov5675_probe(struct i2c_clien
+ 		return -ENOMEM;
+ 
+ 	ret = ov5675_get_hwcfg(ov5675, &client->dev);
+-	if (ret) {
+-		dev_err(&client->dev, "failed to get HW configuration: %d",
+-			ret);
++	if (ret)
+ 		return ret;
+-	}
+ 
+ 	v4l2_i2c_subdev_init(&ov5675->sd, client, &ov5675_subdev_ops);
+ 
 
 
 
