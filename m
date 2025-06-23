@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-156858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 701D1AE517B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B243AE5136
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5FC6188642F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28BB94402E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A64021D3DD;
-	Mon, 23 Jun 2025 21:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6735444C77;
+	Mon, 23 Jun 2025 21:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pkZMDGcn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A1zakt1W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDC821EE7C6;
-	Mon, 23 Jun 2025 21:33:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236F3C2E0;
+	Mon, 23 Jun 2025 21:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714438; cv=none; b=SZhHsiEuPZec9Mtz+KC0/7lvbVs1dZcgblj6p2tV7Vu92mZG2GaSCFCPB9UFXqd3DAceF+ZDdbsmz5GijPPvmK9lxPoINGeBlBxqVlRPpSs++Am8MqM1gIKut8lHC2RBHRyvhgqjmnjC6Cm1RYgZ4gn1assh6027L6ghqbQIzMo=
+	t=1750714309; cv=none; b=j3FbExsuy2uXrLYuM+wAqdXDOE/Ud2cKW6NKVHUG4ZhtbrvihJ5TYtL+Ke9DuJqadxXAoYqqg3ekLN10Bh9QOd3crGsqkbshwsloqjKlPrxBG8upblWRK9jyvkjbzfNcZyhgQQr9DTIgNboW6y4CYaZe0T8qjYIqE1Z7Yzqwrno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714438; c=relaxed/simple;
-	bh=6CgBv0VKJokmxeLQ820N4sDc7IjNpy0xY/uPy3wl9dU=;
+	s=arc-20240116; t=1750714309; c=relaxed/simple;
+	bh=B0LQdEEkj+mY8Lh0Zi8YlywQTIpGl3GxL2KtSd5aTFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J7Nw3s/zluw5RH201cgU+31KnfVQTNJNpyCCV+G69SKTERr10DfOYoIGafLzxfx8b2jfnBCbVfJK+c4q3AX826yhWkVSK7JsQbJoADA/qrbZAgUEaUmKGegzUwechoIzXWCayFhItEmzqta3TF3xdw5+kdAl0d6R0mtUgewp03s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pkZMDGcn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E22C4CEEA;
-	Mon, 23 Jun 2025 21:33:58 +0000 (UTC)
+	 MIME-Version; b=paaM9p6DZYWMLSJG+pr6W70toViYgMZzkteCR9ttmlJ1IhD0PZIhcxRQWCxYUgyjRqYuvepn48A3QzeK4jjwxrZhaZqRZyJRM3XHyZRNzW/vycLMVOX7m1p0XVW7CBblf4VWumO2OrmlKtenWUk64zhxKNW7prOQQ3hPqgzad3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A1zakt1W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAEFAC4CEF0;
+	Mon, 23 Jun 2025 21:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714438;
-	bh=6CgBv0VKJokmxeLQ820N4sDc7IjNpy0xY/uPy3wl9dU=;
+	s=korg; t=1750714309;
+	bh=B0LQdEEkj+mY8Lh0Zi8YlywQTIpGl3GxL2KtSd5aTFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pkZMDGcnJZ+4LoGUjlycju6MUjlMQcZ9dvL9ZOE6OkskrqVRSAD+Jj/bADQraL67t
-	 7EYK5GYSakx0cxIj9e1HbYXK+BnqteCmHFm+yqNIkzEYKRyoovU9ipr7kt3L1V3g7h
-	 FrYG9Z8vTl5FRiDt9D4q4zMNo0dawS7aiu4xC7EA=
+	b=A1zakt1WNLWlgtucoZzU6nz+wM45dY1LEDu4OZ1VfKXGfCBp/KA04Q5+IXZYXg864
+	 MX6/mcRWNivMFpeBlm6446sg3YgLvd88kbA4DJotkxCulkunjpn83/phskO03a9MC4
+	 444bIkehf06ITMVKxz6pNAYUw2fQ0hWKtmMwctRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 137/290] bpf: Check rcu_read_lock_trace_held() in bpf_map_lookup_percpu_elem()
-Date: Mon, 23 Jun 2025 15:06:38 +0200
-Message-ID: <20250623130631.027313718@linuxfoundation.org>
+	Jinliang Zheng <alexjlzheng@tencent.com>,
+	MengEn Sun <mengensun@tencent.com>,
+	Andrea Righi <andrea@betterlinux.com>,
+	Fenggaung Wu <fengguang.wu@intel.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 198/355] mm: fix ratelimit_pages update error in dirty_ratio_handler()
+Date: Mon, 23 Jun 2025 15:06:39 +0200
+Message-ID: <20250623130632.619786328@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +65,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Jinliang Zheng <alexjlzheng@tencent.com>
 
-[ Upstream commit d4965578267e2e81f67c86e2608481e77e9c8569 ]
+commit f83f362d40ccceb647f7d80eb92206733d76a36b upstream.
 
-bpf_map_lookup_percpu_elem() helper is also available for sleepable bpf
-program. When BPF JIT is disabled or under 32-bit host,
-bpf_map_lookup_percpu_elem() will not be inlined. Using it in a
-sleepable bpf program will trigger the warning in
-bpf_map_lookup_percpu_elem(), because the bpf program only holds
-rcu_read_lock_trace lock. Therefore, add the missed check.
+In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
+calling writeback_set_ratelimit(), as global_dirty_limits() always
+prioritizes the value of vm_dirty_bytes.
 
-Reported-by: syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/000000000000176a130617420310@google.com/
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20250526062534.1105938-1-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
+
+  dirty_ratio_handler
+    writeback_set_ratelimit
+      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
+        domain_dirty_limits
+          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
+            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
+          else                                                                        |
+            thresh = f2(ratio)                                                        |
+      ratelimit_pages = f3(dirty_thresh)                                              |
+    vm_dirty_bytes = 0                             <- it's late! ---------------------+
+
+This causes ratelimit_pages to still use the value calculated based on
+vm_dirty_bytes, which is wrong now.
+
+
+The impact visible to userspace is difficult to capture directly because
+there is no procfs/sysfs interface exported to user space.  However, it
+will have a real impact on the balance of dirty pages.
+
+For example:
+
+1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
+
+2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
+   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
+   vm_dirty_bytes now.
+
+3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
+   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
+   domain_dirty_limits() is called, reallimit_pages is still calculated
+   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
+   conform to the actual intent of the user.
+
+Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
+Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
+Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
+Reviewed-by: MengEn Sun <mengensun@tencent.com>
+Cc: Andrea Righi <andrea@betterlinux.com>
+Cc: Fenggaung Wu <fengguang.wu@intel.com>
+Cc: Jinliang Zheng <alexjlzheng@tencent.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/helpers.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/page-writeback.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 41d62405c8521..8f0b62b04deeb 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -128,7 +128,8 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
+--- a/mm/page-writeback.c
++++ b/mm/page-writeback.c
+@@ -557,8 +557,8 @@ int dirty_ratio_handler(struct ctl_table
  
- BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
+ 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
+ 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
+-		writeback_set_ratelimit();
+ 		vm_dirty_bytes = 0;
++		writeback_set_ratelimit();
+ 	}
+ 	return ret;
  }
- 
--- 
-2.39.5
-
 
 
 
