@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5638AE54B0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F239AE5388
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D155F1769C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C33FC3ACF03
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C8821FF2B;
-	Mon, 23 Jun 2025 22:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3581119049B;
+	Mon, 23 Jun 2025 21:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkJ4Bbub"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ChxQyxQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9D33FB1B;
-	Mon, 23 Jun 2025 22:03:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2C31E22E6;
+	Mon, 23 Jun 2025 21:53:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716208; cv=none; b=acT8r7LJNwKD1OFCQultBTj+8un4w7vaI2ClByRf8zx9RqpfnrFbAFvK6Pz8fbdW2Z0y/CgIGvUA9n8uli+sGCBdYy36r6Hq6mcaTsDKEzie8AQwQYm+dwJbBVco5sVBDrcti+EJ0142N+/sA0dcGo40Mrwq649Xe/je5YF2LqA=
+	t=1750715619; cv=none; b=ADPkUKA3ZQ6xo+ByasYtNHCrk+joWNeia9+I93usDGcYMYm5AFnJeGr7wlYx9CuqOVx8+3SXc/BLYpAhrVxU4QTEPLOxGUDeJPfTWxCFmGVPVU0ReI57mTcsgW+s2o9i+P0NO/qh4QhUNe2qy4CdVAA8XCyo+SFaaq+LXHJ5yFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716208; c=relaxed/simple;
-	bh=mqr4XFbkZ1tBbr0vy+9WPDwaxLRoXbGDltspGDtLpAk=;
+	s=arc-20240116; t=1750715619; c=relaxed/simple;
+	bh=aPRh7Ds2qo6rWOLLb6fzZRhIF5RFUYf8FShpU2O8fJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/0zmT7PycZkhqXhZhQ1F4dKwVG3bpDy+oZ6X8ppQJPsrCtUuyEYsZrxnYOAl3K4IAq//LY5zePpvXZSFc4PqpTTYHPHhuQN4+PvyT0K009sroOOVNRJfeVKvbxx3qljKVj02eRtuZcOUoeRVMl/NREm5PpAEXFPpL+tPfO2rZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkJ4Bbub; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1313FC4CEEA;
-	Mon, 23 Jun 2025 22:03:27 +0000 (UTC)
+	 MIME-Version; b=n0ce6cFl7/XJlhyiyuVDlOS9gCfUxM/Xrm2Mt40gx30rdngCxy5TL2PtAxlX+clry5RegWAvn1L7DBGH3QWTBu5a+QwYmVrb2eJvvuYzTnseVaRUuhnJBOZk7PgpQTIsZ5YRle2+0hfWcY9sAIWTIZ32244ajlq1E+Y3S9sTHKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ChxQyxQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753C8C4CEEA;
+	Mon, 23 Jun 2025 21:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716208;
-	bh=mqr4XFbkZ1tBbr0vy+9WPDwaxLRoXbGDltspGDtLpAk=;
+	s=korg; t=1750715618;
+	bh=aPRh7Ds2qo6rWOLLb6fzZRhIF5RFUYf8FShpU2O8fJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mkJ4BbubmnW3mZN65+QnAuto773h3kte1Z6Bql4w0VhgzzAx1kMO4gmF8Ljgqh5Kb
-	 kzLBS/zcs9d2SCexjdy/7L8PAaqmFX5Lbg2QdvOWO6yemi/RnCFu9IAAwTuT63QTAp
-	 imb6XAGd0mfE4EjekE2LuqsbuphK2aQBPaOoEaz4=
+	b=ChxQyxQc+WBC+JEWOWaTGGrRTlZ13R7mZtQb4m3IWJ0FnJDriRYFGliV1MXdjYflm
+	 OoJU+k+EMQ/0nrjfCdsUeQR3HVQzXvbS3Y3OPWmSuhk2NJzuRQqPePgjj2zidYTUNx
+	 alT8w6NS8CQJpzb+pHMB4+GJUIAJ/ObzeG+JAWNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 529/592] ksmbd: add free_transport ops in ksmbd connection
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 286/355] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
 Date: Mon, 23 Jun 2025 15:08:07 +0200
-Message-ID: <20250623130713.017800817@linuxfoundation.org>
+Message-ID: <20250623130635.374475730@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit a89f5fae998bdc4d0505306f93844c9ae059d50c ]
+commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
 
-free_transport function for tcp connection can be called from smbdirect.
-It will cause kernel oops. This patch add free_transport ops in ksmbd
-connection, and add each free_transports for tcp and smbdirect.
+Fuzzing hit another invalid pointer dereference due to the lack of
+checking whether jffs2_prealloc_raw_node_refs() completed successfully.
+Subsequent logic implies that the node refs have been allocated.
 
-Fixes: 21a4e47578d4 ("ksmbd: fix use-after-free in __smb2_lease_break_noti()")
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Handle that. The code is ready for propagating the error upwards.
+
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
+Call Trace:
+ jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
+ jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
+ jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
+ jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
+ generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
+ __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
+ generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
+ call_write_iter include/linux/fs.h:2039 [inline]
+ do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
+ do_iter_write+0x18c/0x710 fs/read_write.c:866
+ vfs_writev+0x1db/0x6a0 fs/read_write.c:939
+ do_pwritev fs/read_write.c:1036 [inline]
+ __do_sys_pwritev fs/read_write.c:1083 [inline]
+ __se_sys_pwritev fs/read_write.c:1078 [inline]
+ __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
+ do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c     |  2 +-
- fs/smb/server/connection.h     |  1 +
- fs/smb/server/transport_rdma.c | 10 ++++++++--
- fs/smb/server/transport_tcp.c  |  3 ++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ fs/jffs2/erase.c |    4 +++-
+ fs/jffs2/scan.c  |    4 +++-
+ 2 files changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 83764c230e9d4..3f04a2977ba86 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -40,7 +40,7 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
- 	if (atomic_dec_and_test(&conn->refcnt)) {
--		ksmbd_free_transport(conn->transport);
-+		conn->transport->ops->free_transport(conn->transport);
- 		kfree(conn);
+--- a/fs/jffs2/erase.c
++++ b/fs/jffs2/erase.c
+@@ -427,7 +427,9 @@ static void jffs2_mark_erased_block(stru
+ 			.totlen =	cpu_to_je32(c->cleanmarker_size)
+ 		};
+ 
+-		jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++		if (ret)
++			goto filebad;
+ 
+ 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
+ 
+--- a/fs/jffs2/scan.c
++++ b/fs/jffs2/scan.c
+@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
+ 
+ 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
+ 			  __func__, skip);
+-		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
++		if (ret)
++			goto out;
+ 		jffs2_scan_dirty_space(c, c->nextblock, skip);
  	}
- }
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 14620e147dda5..572102098c108 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -132,6 +132,7 @@ struct ksmbd_transport_ops {
- 			  void *buf, unsigned int len,
- 			  struct smb2_buffer_desc_v1 *desc,
- 			  unsigned int desc_len);
-+	void (*free_transport)(struct ksmbd_transport *kt);
- };
- 
- struct ksmbd_transport {
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 4998df04ab95a..64a428a06ace0 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -159,7 +159,8 @@ struct smb_direct_transport {
- };
- 
- #define KSMBD_TRANS(t) ((struct ksmbd_transport *)&((t)->transport))
--
-+#define SMBD_TRANS(t)	((struct smb_direct_transport *)container_of(t, \
-+				struct smb_direct_transport, transport))
- enum {
- 	SMB_DIRECT_MSG_NEGOTIATE_REQ = 0,
- 	SMB_DIRECT_MSG_DATA_TRANSFER
-@@ -410,6 +411,11 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
- 	return NULL;
- }
- 
-+static void smb_direct_free_transport(struct ksmbd_transport *kt)
-+{
-+	kfree(SMBD_TRANS(kt));
-+}
-+
- static void free_transport(struct smb_direct_transport *t)
- {
- 	struct smb_direct_recvmsg *recvmsg;
-@@ -455,7 +461,6 @@ static void free_transport(struct smb_direct_transport *t)
- 
- 	smb_direct_destroy_pools(t);
- 	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
--	kfree(t);
- }
- 
- static struct smb_direct_sendmsg
-@@ -2281,4 +2286,5 @@ static const struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops = {
- 	.read		= smb_direct_read,
- 	.rdma_read	= smb_direct_rdma_read,
- 	.rdma_write	= smb_direct_rdma_write,
-+	.free_transport = smb_direct_free_transport,
- };
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index abedf510899a7..4e9f98db9ff40 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -93,7 +93,7 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
- 	return t;
- }
- 
--void ksmbd_free_transport(struct ksmbd_transport *kt)
-+static void ksmbd_tcp_free_transport(struct ksmbd_transport *kt)
- {
- 	struct tcp_transport *t = TCP_TRANS(kt);
- 
-@@ -656,4 +656,5 @@ static const struct ksmbd_transport_ops ksmbd_tcp_transport_ops = {
- 	.read		= ksmbd_tcp_read,
- 	.writev		= ksmbd_tcp_writev,
- 	.disconnect	= ksmbd_tcp_disconnect,
-+	.free_transport = ksmbd_tcp_free_transport,
- };
--- 
-2.39.5
-
+ #endif
 
 
 
