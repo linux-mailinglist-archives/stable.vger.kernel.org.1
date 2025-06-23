@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8C2DAE56C8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FE40AE55A5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6D144A6FD6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE0154C52FA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F415419F120;
-	Mon, 23 Jun 2025 22:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8EFD226CE6;
+	Mon, 23 Jun 2025 22:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgzhmDl3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pMRVPIOH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E521E3DCD;
-	Mon, 23 Jun 2025 22:20:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E29225417;
+	Mon, 23 Jun 2025 22:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717214; cv=none; b=lujFvVj2qTjKH8gZ1CCbo5e8F3gXjohQyLsFWxTSdsdBui4pbsQoPYKqquOKavGFV3ejn5Z+h+cnYPyiA8+aOYUo9ZFiD9zVfiSAMe/ldtSnB7tvciGQ6jM4LZwRhCeYmuRpzIBbYI9RU26L2kNlUOqplU7JENJX5NralavFTYI=
+	t=1750716742; cv=none; b=AWgBLqz9RQ1w5runzdEIv+RzJZx4mQmfXN490CGpEcczEtq4+H9CGA7SCSN0q8HYZsvrchZjgfb2EC9yiC+gJBSge+hKDLQcZsRbj0DUS/5SogoR0CFbh0gZE0e4KXx8B6RcVFeufUxeNLqIQ9jAvDsUlVcS83ncbKDtU33zsmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717214; c=relaxed/simple;
-	bh=ey1gsDPF6cok9Hv+VmQtRrl+g4XuXbAI2/JtRHOxyGc=;
+	s=arc-20240116; t=1750716742; c=relaxed/simple;
+	bh=52dUdCstX4jy4hkmPgLN3zzBGC/h+1oT7xQCyaNj8aA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JtTUae2XUlZwMdyQxj+8qkT4xOt/g2XLvPYEdjfOp5ya/HdvwFOU9hkISo7rWzUQKY7t+kXwc67VfBGdFK2nb1X+7sUVo2LjceUldUx5BV1TSScv8Q1YgrVPb+X2UdraM0zkMTIY0cnYxWojZfOvzV5HC440+I5ZwV30bBdGsRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgzhmDl3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4914EC4CEEA;
-	Mon, 23 Jun 2025 22:20:14 +0000 (UTC)
+	 MIME-Version; b=Iib9MxFD7A39WOUY9VNfxiEpbogbG3n7kDJCh/BtCuWaGy+6UYRRCADIN2uNF6VhXtzad739yfT/33fKWscl/6YjSnQIBbfGuu30oJ2V45BoKeQglvLAGAs1cs6YjZVAtnOpf4eb3bGmjeY0DrBc2nz2dc40tKENpaIelNZFp9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pMRVPIOH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E865C4CEEA;
+	Mon, 23 Jun 2025 22:12:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717214;
-	bh=ey1gsDPF6cok9Hv+VmQtRrl+g4XuXbAI2/JtRHOxyGc=;
+	s=korg; t=1750716742;
+	bh=52dUdCstX4jy4hkmPgLN3zzBGC/h+1oT7xQCyaNj8aA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KgzhmDl3akURFEiM1EqdVVqAjAYxwcqk1vksxCIIhE5aVjV11IB4WiSKO2RVaytaQ
-	 I3CvmbbW3r0QapVgZcxlcX1G9ThoXGhQ0jetX/FKl3Wmz9dcrVNK2PNBObB7DmjZiY
-	 DuHqus0VDZjvjX8F+Urjq9sdnvtdswQ2482bWm9s=
+	b=pMRVPIOHaKDA5xPQJZAV8+vcxU5u+U/H+19n+3qxpbz7DtWiSCBHxHkzWB1IFJgL+
+	 RpX8qI0H2tkWS8YRALDylXJovG2PC+ZZAJ90zxZyYoqSDLx20Q30MLNydi48Rfo5YW
+	 WAgyCyhI4WcSwd2vnfmUW61SUepRBZ5FswJRmnIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?L=C6=B0=C6=A1ng=20Vi=E1=BB=87t=20Ho=C3=A0ng?= <tcm4095@gmail.com>,
-	Joel Mathew Thomas <proxy0@tutamail.com>,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 589/592] PCI: pciehp: Ignore belated Presence Detect Changed caused by DPC
+Subject: [PATCH 6.6 286/290] RISC-V: KVM: Fix the size parameter check in SBI SFENCE calls
 Date: Mon, 23 Jun 2025 15:09:07 +0200
-Message-ID: <20250623130714.444311003@linuxfoundation.org>
+Message-ID: <20250623130635.523432709@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +61,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Anup Patel <apatel@ventanamicro.com>
 
-[ Upstream commit bbf10cd686835d5a4b8566dc73a3b00b4cd7932a ]
+[ Upstream commit 6aba0cb5bba6141158d5449f2cf53187b7f755f9 ]
 
-Commit c3be50f7547c ("PCI: pciehp: Ignore Presence Detect Changed caused by
-DPC") sought to ignore Presence Detect Changed events occurring as a side
-effect of Downstream Port Containment.
+As-per the SBI specification, an SBI remote fence operation applies
+to the entire address space if either:
+1) start_addr and size are both 0
+2) size is equal to 2^XLEN-1
 
-The commit awaits recovery from DPC and then clears events which occurred
-in the meantime.  However if the first event seen after DPC is Data Link
-Layer State Changed, only that event is cleared and not Presence Detect
-Changed.  The object of the commit is thus defeated.
+>From the above, only #1 is checked by SBI SFENCE calls so fix the
+size parameter check in SBI SFENCE calls to cover #2 as well.
 
-That's because pciehp_ist() computes the events to clear based on the local
-"events" variable instead of "ctrl->pending_events".  The former contains
-the events that had occurred when pciehp_ist() was entered, whereas the
-latter also contains events that have accumulated while awaiting DPC
-recovery.
-
-In practice, the order of PDC and DLLSC events is arbitrary and the delay
-in-between can be several milliseconds.
-
-So change the logic to always clear PDC events, even if they come after an
-initial DLLSC event.
-
-Fixes: c3be50f7547c ("PCI: pciehp: Ignore Presence Detect Changed caused by DPC")
-Reported-by: Lương Việt Hoàng <tcm4095@gmail.com>
-Reported-by: Joel Mathew Thomas <proxy0@tutamail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219765#c165
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Lương Việt Hoàng <tcm4095@gmail.com>
-Tested-by: Joel Mathew Thomas <proxy0@tutamail.com>
-Link: https://patch.msgid.link/d9c4286a16253af7e93eaf12e076e3ef3546367a.1750257164.git.lukas@wunner.de
+Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250605061458.196003-2-apatel@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pciehp_hpc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
-index ebd342bda235d..91d2d92717d98 100644
---- a/drivers/pci/hotplug/pciehp_hpc.c
-+++ b/drivers/pci/hotplug/pciehp_hpc.c
-@@ -771,7 +771,7 @@ static irqreturn_t pciehp_ist(int irq, void *dev_id)
- 		u16 ignored_events = PCI_EXP_SLTSTA_DLLSC;
- 
- 		if (!ctrl->inband_presence_disabled)
--			ignored_events |= events & PCI_EXP_SLTSTA_PDC;
-+			ignored_events |= PCI_EXP_SLTSTA_PDC;
- 
- 		events &= ~ignored_events;
- 		pciehp_ignore_link_change(ctrl, pdev, irq, ignored_events);
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 87ec68ed52d76..960836e0cac74 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -103,7 +103,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_FENCE_I_SENT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_all(vcpu->kvm, hbase, hmask);
+ 		else
+ 			kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbase, hmask,
+@@ -111,7 +111,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_HFENCE_VVMA_SENT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,
+ 						       hbase, hmask, cp->a4);
+ 		else
 -- 
 2.39.5
 
