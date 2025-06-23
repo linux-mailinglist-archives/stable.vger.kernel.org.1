@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D50AE501B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 390F3AE5320
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 97FEF3B535E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB937A8464
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8059D222576;
-	Mon, 23 Jun 2025 21:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9D73223DCE;
+	Mon, 23 Jun 2025 21:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIqPn+nZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RKRj03yq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0BD1ACEDA;
-	Mon, 23 Jun 2025 21:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B6D221FCC;
+	Mon, 23 Jun 2025 21:49:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713729; cv=none; b=OFSzLrDpXaMaHj6FIMRUYymHYYuBEXHMx6LH3tVI7IBViW707M324m13iaml0TC4AzvFjCnX6paGk0foIp5Q9NRm5miB3b8SmKl848WhT3pX5qsoYBOuk1OPYJ2zUmTqggsIKjxY8pwswmN7Dgw5hOeZJbf5hBvNT5A0L2o65Vk=
+	t=1750715346; cv=none; b=IVGPPbvNsqmQgwwil8GpbkKcMRaB7T2IzVhJVooHjYrOL6j6kXzuEnEARnNcUnIxLNeeXHUJtOJG4G6Azdb8OH8cuPaHGI5jvp5g/J6H4B1w2qcAwIqejH7xfkFp3meVy8UxZwUAwK2R0f9v+1BfaStr+Yl0QrYF5F3DRnNm1+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713729; c=relaxed/simple;
-	bh=OgYjDORQxV1llXdfrZ4ofmli5S5njiTSYl05idCJrtg=;
+	s=arc-20240116; t=1750715346; c=relaxed/simple;
+	bh=ZL5AFCgdyXwIGk4Yb8rB65FH30OnjhI+MW6uy84ZkTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P6siMvlmmiqMIhHfeyFCoAt4Hz/WcC1wtNPubEJBegqgTmyelp6cGxepV+C8PZ/ZF6dt8eWKOKVYE85lomUHTU4wTiW3Nnt/fgfSG4UNjMGF6ypIkOmrjLSfmKjGOl2P+Cus7Dc4ZYGV3NdJS21T0ghmaQV/ef3M20eBJhHr8Ds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIqPn+nZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C57C4CEEA;
-	Mon, 23 Jun 2025 21:22:08 +0000 (UTC)
+	 MIME-Version; b=sm9MT5JKUIh4/MO6eT3ZL8IhV7Xs1VfOQ6x15vX6Lt72hPsE6ylOia8rd10CPmYI9fta6en4/WSSNmMIa1ehrz4fk5m5uEmppdk4660VsTVv5yPAHd/Bq+8hXuHL26p9GTEGiPstCHVsj4/1S2HH1tPwkI0lvA06uw+TS2u1vi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RKRj03yq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30813C4CEEA;
+	Mon, 23 Jun 2025 21:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713729;
-	bh=OgYjDORQxV1llXdfrZ4ofmli5S5njiTSYl05idCJrtg=;
+	s=korg; t=1750715346;
+	bh=ZL5AFCgdyXwIGk4Yb8rB65FH30OnjhI+MW6uy84ZkTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vIqPn+nZ769LFkoIS7IT8WyqkdlYxaSEup43Ew8fEgF5uig7JJlaRH6xHKHdF9Tls
-	 CUcjPACFBkGVCtpsj7umNV+heMaNBW7GaCyNTm+7auAazpqhFnKctE/kHYuVvoW+bV
-	 BziraUdOMBZdOgumr3nR9ttRYWqhiSyrGIH/rncA=
+	b=RKRj03yqBrgCHK1KC/M8ibJ63juktpuZRhAvNjheTEV639rPv8qE945CU0lpyUtgQ
+	 HYl8HyfIgIzbxaFp2gqLVGXCPEu+CUCfvB9TXlJ6t4t3lEnO51WRbz1/hqe1+/6MlO
+	 BFHXnDXLKOt94FJvV9Z5NzzB0eV32yj7OcYdkiwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 130/411] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
+Subject: [PATCH 6.1 229/508] wifi: ath11k: fix soc_dp_stats debugfs file permission
 Date: Mon, 23 Jun 2025 15:04:34 +0200
-Message-ID: <20250623130636.842468519@linuxfoundation.org>
+Message-ID: <20250623130650.893592925@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jeff Johnson <quic_jjohnson@quicinc.com>
 
-[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
+[ Upstream commit fa645e663165d69f05f95a0c3aa3b3d08f4fdeda ]
 
-The error checking for of_count_phandle_with_args() does not handle
-negative error codes correctly.  The problem is that "index" is a u32 so
-in the condition "if (index >= num_domains)" negative error codes stored
-in "num_domains" are type promoted to very high positive values and
-"index" is always going to be valid.
+Currently the soc_dp_stats debugfs file has the following permissions:
 
-Test for negative error codes first and then test if "index" is valid.
+-rw------- 1 root root 0 Mar  4 15:04 /sys/kernel/debug/ath11k/pci-0000:03:00.0/soc_dp_stats
 
-Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+However this file does not actually support write operations -- no .write()
+method is registered. Therefore use the correct permissions when creating
+the file.
+
+After the change:
+
+-r-------- 1 root root 0 Mar  4 15:15 /sys/kernel/debug/ath11k/pci-0000:03:00.0/soc_dp_stats
+
+Tested-on: WCN6855 hw2.1 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+
+Signed-off-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://msgid.link/20240305-fix-soc_dp_stats-permission-v1-1-2ec10b42f755@quicinc.com
+Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/domain.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/debugfs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
-index fda0a5e50a2d9..005ece1a658e5 100644
---- a/drivers/base/power/domain.c
-+++ b/drivers/base/power/domain.c
-@@ -2773,7 +2773,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
- 	/* Verify that the index is within a valid range. */
- 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
- 						 "#power-domain-cells");
--	if (index >= num_domains)
-+	if (num_domains < 0 || index >= num_domains)
- 		return NULL;
+diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
+index 5bb6fd17fdf6f..34aa04d27a1d7 100644
+--- a/drivers/net/wireless/ath/ath11k/debugfs.c
++++ b/drivers/net/wireless/ath/ath11k/debugfs.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2020 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
- 	/* Allocate and register device on the genpd bus. */
+ #include <linux/vmalloc.h>
+@@ -979,7 +980,7 @@ int ath11k_debugfs_pdev_create(struct ath11k_base *ab)
+ 	debugfs_create_file("simulate_fw_crash", 0600, ab->debugfs_soc, ab,
+ 			    &fops_simulate_fw_crash);
+ 
+-	debugfs_create_file("soc_dp_stats", 0600, ab->debugfs_soc, ab,
++	debugfs_create_file("soc_dp_stats", 0400, ab->debugfs_soc, ab,
+ 			    &fops_soc_dp_stats);
+ 
+ 	if (ab->hw_params.sram_dump.start != 0)
 -- 
 2.39.5
 
