@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-157338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C13AAAE5387
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EA85AE523A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 808C94A1772
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BA4CC7ACDFB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83A621E22E6;
-	Mon, 23 Jun 2025 21:53:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ABA12222C2;
+	Mon, 23 Jun 2025 21:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZttIEyRf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WiJXSFGy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4209D1AD3FA;
-	Mon, 23 Jun 2025 21:53:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 377AF21D3DD;
+	Mon, 23 Jun 2025 21:41:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715624; cv=none; b=dY14R1lV+k/ajL2OZwctr+dh8cSJWEYuzZusf0e23cjIzyor4UwtBVPAAF9FAnBjFQdZnU4ctHajQX4Qs2FVcb7nEfy0XP11pWfC9DZDGSrhaUQuWzdqbZtyy0jj9++UM3nJBo9z49qWQ1Te+KKsLEyIw9v2MajVMCfpZWPdFmU=
+	t=1750714897; cv=none; b=qsV9P/kY/bqn5oG4s3xyqoYVUn4fUxP1qGxeWKnLcOo4VLBblvvDDvHGJ7C2xGjBq3lFEKnAFpjYSQ6jG9MOSDj4WbaZX7FsbY34y/3k875YWyHUo170HJ7tOVZGeGgLpT9rMEgZPSwpuWb7NNhlYMPKkYdc7JN+ISabbRt6hsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715624; c=relaxed/simple;
-	bh=7gsZTG8ylbHOBgmqLWPtZ5YXt1ECJ2cs2jYCjoTWjxQ=;
+	s=arc-20240116; t=1750714897; c=relaxed/simple;
+	bh=+2bsT03t3rymu/lmI1KySaAYHC1OQ/9vl7CgFBCoShQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TiVwDQVbuwWbUgogU+W9KHhbC6z0OPkv9jDYQ0sOZH3+3SST4dnFCRJAo64a7rfoKzmuFaXCWtexul8pYtj3Z4Ql7+fsPfknW09eWBTBWfo/A4PVW7hXgd5vUUQxCtL01+8R2mlKnfga3NtURoNGImpbaN6iECDOMHq+UD9WuIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZttIEyRf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 714EFC4CEEA;
-	Mon, 23 Jun 2025 21:53:43 +0000 (UTC)
+	 MIME-Version; b=RjXFaEi/zfeeYmsEOy+JOk7GoaeDXg9KeFtRdbhJBQ/wqYFSpz1bvt8hTZ0lOtZBlKd/JM/+c0Bnwy32ehtvA8TxIIuOpHkaesFRNDOncc6TbfuovEuriQkXDOQI3DRATGzOqQqLKZ1DW7H0jl6SQTFybmeILsqtOs27twkHuUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WiJXSFGy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2D08C4CEEA;
+	Mon, 23 Jun 2025 21:41:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715623;
-	bh=7gsZTG8ylbHOBgmqLWPtZ5YXt1ECJ2cs2jYCjoTWjxQ=;
+	s=korg; t=1750714897;
+	bh=+2bsT03t3rymu/lmI1KySaAYHC1OQ/9vl7CgFBCoShQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZttIEyRfqoEw5/9Xy1QYvSco6gooZzNe3PFDCRx2KnS5Ro4/a+hkWUn6/dniSTQdM
-	 sCHqvC1T7XmGtRvFoyvrCwLhaHYw+EBLoObck/oH4e3mNRJHceUo3Zv9vPPnfrMp+g
-	 kmft3mNxFR4+emhJB2BCMoBHn7m05/UrELM0bPHQ=
+	b=WiJXSFGyPqkeyzNQgZeNZ5+BSeu9LlzdvSPsqqrHFgnTr+IwMmgBy696cpx1qCZvo
+	 7yAKC3sqzs+huDd8nmuD2VdySZSqRzFHHahCvqRHcSHtTolZ08PlrCnE5u/JXaKUeq
+	 adBBXimJiSEK/Amp8gHCuCStP6DKYyYpCV9pmneI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	syzbot+d16409ea9ecc16ed261a@syzkaller.appspotmail.com,
-	Pedro Falcato <pfalcato@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Jann Horn <jannh@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 470/592] mm/vma: reset VMA iterator on commit_merge() OOM failure
+	Alexei Starovoitov <ast@kernel.org>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 167/290] libbpf: Add identical pointer detection to btf_dedup_is_equiv()
 Date: Mon, 23 Jun 2025 15:07:08 +0200
-Message-ID: <20250623130711.612136032@linuxfoundation.org>
+Message-ID: <20250623130631.916181050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,103 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-commit 0cf4b1687a187ba9247c71721d8b064634eda1f7 upstream.
+[ Upstream commit 8e64c387c942229c551d0f23de4d9993d3a2acb6 ]
 
-While an OOM failure in commit_merge() isn't really feasible due to the
-allocation which might fail (a maple tree pre-allocation) being 'too small
-to fail', we do need to handle this case correctly regardless.
+Recently as a side-effect of
 
-In vma_merge_existing_range(), we can theoretically encounter failures
-which result in an OOM error in two ways - firstly dup_anon_vma() might
-fail with an OOM error, and secondly commit_merge() failing, ultimately,
-to pre-allocate a maple tree node.
+commit ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
 
-The abort logic for dup_anon_vma() resets the VMA iterator to the initial
-range, ensuring that any logic looping on this iterator will correctly
-proceed to the next VMA.
+issues were observed in deduplication between modules and kernel BTF
+such that a large number of kernel types were not deduplicated so
+were found in module BTF (task_struct, bpf_prog etc).  The root cause
+appeared to be a failure to dedup struct types, specifically those
+with members that were pointers with __percpu annotations.
 
-However the commit_merge() abort logic does not do the same thing.  This
-resulted in a syzbot report occurring because mlockall() iterates through
-VMAs, is tolerant of errors, but ended up with an incorrect previous VMA
-being specified due to incorrect iterator state.
+The issue in dedup is at the point that we are deduplicating structures,
+we have not yet deduplicated reference types like pointers.  If multiple
+copies of a pointer point at the same (deduplicated) integer as in this
+case, we do not see them as identical.  Special handling already exists
+to deal with structures and arrays, so add pointer handling here too.
 
-While making this change, it became apparent we are duplicating logic -
-the logic introduced in commit 41e6ddcaa0f1 ("mm/vma: add give_up_on_oom
-option on modify/merge, use in uffd release") duplicates the
-vmg->give_up_on_oom check in both abort branches.
-
-Additionally, we observe that we can perform the anon_dup check safely on
-dup_anon_vma() failure, as this will not be modified should this call
-fail.
-
-Finally, we need to reset the iterator in both cases, so now we can simply
-use the exact same code to abort for both.
-
-We remove the VM_WARN_ON(err != -ENOMEM) as it would be silly for this to
-be otherwise and it allows us to implement the abort check more neatly.
-
-Link: https://lkml.kernel.org/r/20250606125032.164249-1-lorenzo.stoakes@oracle.com
-Fixes: 47b16d0462a4 ("mm: abort vma_modify() on merge out of memory failure")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reported-by: syzbot+d16409ea9ecc16ed261a@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-mm/6842cc67.a00a0220.29ac89.003b.GAE@google.com/
-Reviewed-by: Pedro Falcato <pfalcato@suse.de>
-Reviewed-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250429161042.2069678-1-alan.maguire@oracle.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/vma.c |   22 ++++------------------
- 1 file changed, 4 insertions(+), 18 deletions(-)
+ tools/lib/bpf/btf.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/mm/vma.c
-+++ b/mm/vma.c
-@@ -927,26 +927,9 @@ static __must_check struct vm_area_struc
- 		err = dup_anon_vma(next, middle, &anon_dup);
+diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
+index 8484b563b53d0..2e9f28cece3ff 100644
+--- a/tools/lib/bpf/btf.c
++++ b/tools/lib/bpf/btf.c
+@@ -3922,6 +3922,19 @@ static bool btf_dedup_identical_structs(struct btf_dedup *d, __u32 id1, __u32 id
+ 	return true;
+ }
+ 
++static bool btf_dedup_identical_ptrs(struct btf_dedup *d, __u32 id1, __u32 id2)
++{
++	struct btf_type *t1, *t2;
++
++	t1 = btf_type_by_id(d->btf, id1);
++	t2 = btf_type_by_id(d->btf, id2);
++
++	if (!btf_is_ptr(t1) || !btf_is_ptr(t2))
++		return false;
++
++	return t1->type == t2->type;
++}
++
+ /*
+  * Check equivalence of BTF type graph formed by candidate struct/union (we'll
+  * call it "candidate graph" in this description for brevity) to a type graph
+@@ -4054,6 +4067,9 @@ static int btf_dedup_is_equiv(struct btf_dedup *d, __u32 cand_id,
+ 		 */
+ 		if (btf_dedup_identical_structs(d, hypot_type_id, cand_id))
+ 			return 1;
++		/* A similar case is again observed for PTRs. */
++		if (btf_dedup_identical_ptrs(d, hypot_type_id, cand_id))
++			return 1;
+ 		return 0;
  	}
  
--	if (err)
-+	if (err || commit_merge(vmg))
- 		goto abort;
- 
--	err = commit_merge(vmg);
--	if (err) {
--		VM_WARN_ON(err != -ENOMEM);
--
--		if (anon_dup)
--			unlink_anon_vmas(anon_dup);
--
--		/*
--		 * We've cleaned up any cloned anon_vma's, no VMAs have been
--		 * modified, no harm no foul if the user requests that we not
--		 * report this and just give up, leaving the VMAs unmerged.
--		 */
--		if (!vmg->give_up_on_oom)
--			vmg->state = VMA_MERGE_ERROR_NOMEM;
--		return NULL;
--	}
--
- 	khugepaged_enter_vma(vmg->target, vmg->flags);
- 	vmg->state = VMA_MERGE_SUCCESS;
- 	return vmg->target;
-@@ -955,6 +938,9 @@ abort:
- 	vma_iter_set(vmg->vmi, start);
- 	vma_iter_load(vmg->vmi);
- 
-+	if (anon_dup)
-+		unlink_anon_vmas(anon_dup);
-+
- 	/*
- 	 * This means we have failed to clone anon_vma's correctly, but no
- 	 * actual changes to VMAs have occurred, so no harm no foul - if the
+-- 
+2.39.5
+
 
 
 
