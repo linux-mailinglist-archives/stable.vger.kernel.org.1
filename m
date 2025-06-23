@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-156599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8B2AAE5041
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80B00AE50F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B77101B62327
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 98B9F189E24A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992BB2206BB;
-	Mon, 23 Jun 2025 21:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 119D62206BB;
+	Mon, 23 Jun 2025 21:29:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAGWJkWX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lPS338AA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5764E1EFFA6;
-	Mon, 23 Jun 2025 21:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32AC1E5B71;
+	Mon, 23 Jun 2025 21:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713808; cv=none; b=luw6JeBwj1IfSy8IcXOwbg5ufOGeJwC1mzbNNegTMpMWjdstmhA5d/X9G52DIz7jrJMPZLYPW5Ag79I6dfA+eKBsbP8v7oA9J8g2z7VMzr6Rg8Um73170Cce0Rl6snnNH8Uenbhjq5kDUrzSv0aDM1yE7JKcVZ24ngVPDAgfqXY=
+	t=1750714169; cv=none; b=OPJA+vMJPW21IvwXNo5drt/gH7IRQz5kMHadvPWTXAVs895yeXTbBTgFTEO1xtMR3F8zWUQ0nKt+jTk502C4tiEFfldUcsg+cQjofV+V4tYIIVvm5lNyePqbfCA5Y4bqEp/UWJKi6Pq8FEKPCJqhiY2QSAWnjvoecXrxu5+SniI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713808; c=relaxed/simple;
-	bh=9ZvTPONqKfs1PEpm7XlOtM08UgAsdxfV3HJxJhethwY=;
+	s=arc-20240116; t=1750714169; c=relaxed/simple;
+	bh=4KtJ674DQ2EYXE6oK26sJkSzq/vNamm1qIN+kqNs854=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MPME2N+uCPR7KR2bDS5KjyysU+4/AXfPuRUkC1C0HAMK3Y8JvZ9Zdf5JADbkT6Dxf+XvPfwHWFo/lrz8Vf7ICfJQO0ZNIpjNnGkaHIPEUB1Ja14yJfIXoupxY4llRV80xxGS6Wsop+E5WoLfBWvShJ5YTKjEGz9SIdGwMfKy6p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAGWJkWX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4586C4CEEA;
-	Mon, 23 Jun 2025 21:23:27 +0000 (UTC)
+	 MIME-Version; b=CWSutaMFBPU6WyVkLf1BkboBZ8k4HdNcUCP6mS4tDCCt0mDspg22wG8A/qP+8XQQSn2/ZN1ujtAxUviFnsvjZBNTF7e2x6yQiBMksrabxmt2A6Ryr6SfsddEOCw9PayieDwehTjRk4KE4i+HfonC62Qw4esF/fUe1terEGjWn9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lPS338AA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59D55C4CEEA;
+	Mon, 23 Jun 2025 21:29:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713808;
-	bh=9ZvTPONqKfs1PEpm7XlOtM08UgAsdxfV3HJxJhethwY=;
+	s=korg; t=1750714169;
+	bh=4KtJ674DQ2EYXE6oK26sJkSzq/vNamm1qIN+kqNs854=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iAGWJkWXcq+IhRt2zIw5tkANoD+NJHac3aMH5BvI4qWWjQAYXToFlvGGaJz0Inm8q
-	 sMNYA4zRPlWiVA4vrFF5xwFMGUm/ZchuaStQ8H0WS4ubxuFn433s2d1gcV1p5wwWUX
-	 /z64Ksn0JWbj2lISu/fSs8fcM//qdtWH90MQEVhc=
+	b=lPS338AAeVVjbqhzZGizlXGfNfa1asJ6uaYmjPRzCK2eY1VMEv5GhK0TXsmQGNKHc
+	 joCcYOTxLvf1jCGdtHkyPp50gCRyc9/WLtJ5xnrIgdcpoFbOZvdF51c1x/zlc7NtAt
+	 k0qMFxJyYS10knZ7sDYfsVzyAV0lkwEo/QNKyQrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dennis Marttinen <twelho@welho.tech>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 084/414] ceph: set superblock s_magic for IMA fsmagic matching
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Saritha Sanigani <sarithax.sanigani@intel.com>
+Subject: [PATCH 6.1 176/508] ice: create new Tx scheduler nodes for new queues only
 Date: Mon, 23 Jun 2025 15:03:41 +0200
-Message-ID: <20250623130644.185067321@linuxfoundation.org>
+Message-ID: <20250623130649.604827216@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,96 +68,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dennis Marttinen <twelho@welho.tech>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-commit 72386d5245b249f5a0a8fabb881df7ad947b8ea4 upstream.
+[ Upstream commit 6fa2942578472c9cab13a8fc1dae0d830193e0a1 ]
 
-The CephFS kernel driver forgets to set the filesystem magic signature in
-its superblock. As a result, IMA policy rules based on fsmagic matching do
-not apply as intended. This causes a major performance regression in Talos
-Linux [1] when mounting CephFS volumes, such as when deploying Rook Ceph
-[2]. Talos Linux ships a hardened kernel with the following IMA policy
-(irrelevant lines omitted):
+The current implementation of the Tx scheduler tree attempts
+to create nodes for all Tx queues, ignoring the fact that some
+queues may already exist in the tree. For example, if the VSI
+already has 128 Tx queues and the user requests for 16 new queues,
+the Tx scheduler will compute the tree for 272 queues (128 existing
+queues + 144 new queues), instead of 144 queues (128 existing queues
+and 16 new queues).
+Fix that by modifying the node count calculation algorithm to skip
+the queues that already exist in the tree.
 
-[...]
-dont_measure fsmagic=0xc36400 # CEPH_SUPER_MAGIC
-[...]
-measure func=FILE_CHECK mask=^MAY_READ euid=0
-measure func=FILE_CHECK mask=^MAY_READ uid=0
-[...]
-
-Currently, IMA compares 0xc36400 == 0x0 for CephFS files, resulting in all
-files opened with O_RDONLY or O_RDWR getting measured with SHA512 on every
-open(2):
-
-10 69990c87e8af323d47e2d6ae4... ima-ng sha512:<hash> /data/cephfs/test-file
-
-Since O_WRONLY is rare, this results in an order of magnitude lower
-performance than expected for practically all file operations. Properly
-setting CEPH_SUPER_MAGIC in the CephFS superblock resolves the regression.
-
-Tests performed on a 3x replicated Ceph v19.3.0 cluster across three
-i5-7200U nodes each equipped with one Micron 7400 MAX M.2 disk (BlueStore)
-and Gigabit ethernet, on Talos Linux v1.10.2:
-
-FS-Mark 3.3
-Test: 500 Files, Empty
-Files/s > Higher Is Better
-6.12.27-talos . 16.6  |====
-+twelho patch . 208.4 |====================================================
-
-FS-Mark 3.3
-Test: 500 Files, 1KB Size
-Files/s > Higher Is Better
-6.12.27-talos . 15.6  |=======
-+twelho patch . 118.6 |====================================================
-
-FS-Mark 3.3
-Test: 500 Files, 32 Sub Dirs, 1MB Size
-Files/s > Higher Is Better
-6.12.27-talos . 12.7 |===============
-+twelho patch . 44.7 |=====================================================
-
-IO500 [3] 2fcd6d6 results (benchmarks within variance omitted):
-
-| IO500 benchmark   | 6.12.27-talos  | +twelho patch  | Speedup   |
-|-------------------|----------------|----------------|-----------|
-| mdtest-easy-write | 0.018524 kIOPS | 1.135027 kIOPS | 6027.33 % |
-| mdtest-hard-write | 0.018498 kIOPS | 0.973312 kIOPS | 5161.71 % |
-| ior-easy-read     | 0.064727 GiB/s | 0.155324 GiB/s | 139.97 %  |
-| mdtest-hard-read  | 0.018246 kIOPS | 0.780800 kIOPS | 4179.29 % |
-
-This applies outside of synthetic benchmarks as well, for example, the time
-to rsync a 55 MiB directory with ~12k of mostly small files drops from an
-unusable 10m5s to a reasonable 26s (23x the throughput).
-
-[1]: https://www.talos.dev/
-[2]: https://www.talos.dev/v1.10/kubernetes-guides/configuration/ceph-with-rook/
-[3]: https://github.com/IO500/io500
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Dennis Marttinen <twelho@welho.tech>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5513b920a4f7 ("ice: Update Tx scheduler tree for VSI multi-Tx queue support")
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ceph/super.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_sched.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/fs/ceph/super.c
-+++ b/fs/ceph/super.c
-@@ -1227,6 +1227,7 @@ static int ceph_set_super(struct super_b
- 	s->s_time_min = 0;
- 	s->s_time_max = U32_MAX;
- 	s->s_flags |= SB_NODIRATIME | SB_NOATIME;
-+	s->s_magic = CEPH_SUPER_MAGIC;
+diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
+index b07bd0c059f75..3baa9d161a0bf 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sched.c
++++ b/drivers/net/ethernet/intel/ice/ice_sched.c
+@@ -1591,16 +1591,16 @@ ice_sched_get_agg_node(struct ice_port_info *pi, struct ice_sched_node *tc_node,
+ /**
+  * ice_sched_calc_vsi_child_nodes - calculate number of VSI child nodes
+  * @hw: pointer to the HW struct
+- * @num_qs: number of queues
++ * @num_new_qs: number of new queues that will be added to the tree
+  * @num_nodes: num nodes array
+  *
+  * This function calculates the number of VSI child nodes based on the
+  * number of queues.
+  */
+ static void
+-ice_sched_calc_vsi_child_nodes(struct ice_hw *hw, u16 num_qs, u16 *num_nodes)
++ice_sched_calc_vsi_child_nodes(struct ice_hw *hw, u16 num_new_qs, u16 *num_nodes)
+ {
+-	u16 num = num_qs;
++	u16 num = num_new_qs;
+ 	u8 i, qgl, vsil;
  
- 	ceph_fscrypt_set_ops(s);
+ 	qgl = ice_sched_get_qgrp_layer(hw);
+@@ -1848,8 +1848,9 @@ ice_sched_update_vsi_child_nodes(struct ice_port_info *pi, u16 vsi_handle,
+ 			return status;
+ 	}
  
+-	if (new_numqs)
+-		ice_sched_calc_vsi_child_nodes(hw, new_numqs, new_num_nodes);
++	ice_sched_calc_vsi_child_nodes(hw, new_numqs - prev_numqs,
++				       new_num_nodes);
++
+ 	/* Keep the max number of queue configuration all the time. Update the
+ 	 * tree only if number of queues > previous number of queues. This may
+ 	 * leave some extra nodes in the tree if number of queues < previous
+-- 
+2.39.5
+
 
 
 
