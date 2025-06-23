@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2320DAE55D3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48078AE5515
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 840E07AECC8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7A454C3108
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1834D221FC7;
-	Mon, 23 Jun 2025 22:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 750A6221FD6;
+	Mon, 23 Jun 2025 22:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dNqFHrGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXM21QKV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92A5B676;
-	Mon, 23 Jun 2025 22:15:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A1B3597E;
+	Mon, 23 Jun 2025 22:07:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716913; cv=none; b=afLLZ6qe0L1tMMS4WaqCcNdkekmOg48mF6M5m8URi6op7H+MFDox42NHhb2nrdaaIUMksTFdQriM2mvvHrUfEqnG6Vc5QNCXh1QlLVo5xvnPW3q/boEG82RnCSoBlRhI+p1zYOqGLsA7gckg8yxey8K0X4I6ZZ5gXA62etVxSyk=
+	t=1750716466; cv=none; b=AzAhgW10pTPwgTebiB3yQbCBVx9EUNsmLEn5NaqxUNi++yM7eHyvb0Z3diJrmQGWcGS0vyXp0uBPbe+zyG8mcnjDGNtcyzscUbmohPxCQlEXh0bax4oL53ksVy3ov7GFGmMCFw6jYmMavCUPddHkiPGwYbMG1ceTUgQ6Yynbh8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716913; c=relaxed/simple;
-	bh=njdzo8fGBmDKu5xpiPHZBgRDP8W+0ms7z1yon7HeDD0=;
+	s=arc-20240116; t=1750716466; c=relaxed/simple;
+	bh=PBlBPuMpOtfTCaqFq9PTyk6q1o9hvVF4acKqG/1jogo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vEqV+1qZEpO/MYt0UGi01YzaRV6RJJfO1vpwZQIgEA9mYcCc+LGxqcgeLV9GYe9sm+JsjdBIbhrF4bcqEJZyRTNbx6sTZKsn4VjSMzdnTw4dSojF3KZj/7juCTZ8Qko0bA1Ex5PhmOkShtlTRp5+R4hSr2ICfchmypq/ZO7NbVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dNqFHrGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 618E6C4CEF1;
-	Mon, 23 Jun 2025 22:15:13 +0000 (UTC)
+	 MIME-Version; b=M8I9AEYwIPHinWNsExELs73kaBBgn81DqQoHtjQxHGiyEdEwrRftvQ96flaZxzgLE5iWgUFbu8IWisRPF6EM7J77r4GnTbiBKQU4KFL/XbqYU0UGb3nJ1OtBCwGSDUpc1lcufvQ02hby7+z84DqgdgVp7xgR5OB8jPTWAhHs0Ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXM21QKV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDE71C4CEEA;
+	Mon, 23 Jun 2025 22:07:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716913;
-	bh=njdzo8fGBmDKu5xpiPHZBgRDP8W+0ms7z1yon7HeDD0=;
+	s=korg; t=1750716466;
+	bh=PBlBPuMpOtfTCaqFq9PTyk6q1o9hvVF4acKqG/1jogo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dNqFHrGwYfkeXQkQYT644VeJ6luYouh46f42j1SYWUXX7vYxI3GJ9vyX4XcQGXAMI
-	 a8IW7vBb93VqS+ejer4zasd0qkVzJSJHzuglr5hvY8xxMIijORQ778FetJzdgOd18a
-	 BVtCq7hEj6RrXc7T+G/RpJLE1BlBe0lmytxHAy8M=
+	b=QXM21QKVnpU4IAqI14My2luKbgXa/P3sf7iy7OTZpN5/Da7cNyJ/eQKNZnha5fTke
+	 ao2/oz6Ynug+p3PUDTnJkxKGo9QgsX7QCsYVo5D3T5+El/SvW+Xp8crZHL0LI81k62
+	 Oyan2wHp27OVeHNjy1CJMdR5fek4jeGkEEAJPx/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.15 568/592] dm-table: check BLK_FEAT_ATOMIC_WRITES inside limits_lock
+	Ronnie Sahlberg <rsahlberg@whamcloud.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 265/290] ublk: santizize the arguments from userspace when adding a device
 Date: Mon, 23 Jun 2025 15:08:46 +0200
-Message-ID: <20250623130713.952127334@linuxfoundation.org>
+Message-ID: <20250623130634.878848937@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Ronnie Sahlberg <rsahlberg@whamcloud.com>
 
-commit 85f6d5b729eaace1549f1dcc284d9865f2c3ec02 upstream.
+[ Upstream commit 8c8472855884355caf3d8e0c50adf825f83454b2 ]
 
-dm_set_device_limits() should check q->limits.features for
-BLK_FEAT_ATOMIC_WRITES while holding q->limits_lock, like it does for
-the rest of the queue limits.
+Sanity check the values for queue depth and number of queues
+we get from userspace when adding a device.
 
-Fixes: b7c18b17a173 ("dm-table: Set BLK_FEAT_ATOMIC_WRITES for target queue limits")
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ronnie Sahlberg <rsahlberg@whamcloud.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Fixes: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+Fixes: 62fe99cef94a ("ublk: add read()/write() support for ublk char device")
+Link: https://lore.kernel.org/r/20250619021031.181340-1-ronniesahlberg@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/ublk_drv.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -431,13 +431,13 @@ static int dm_set_device_limits(struct d
- 		return 0;
- 	}
+diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+index 95095500f93af..df3e5aab4b5ac 100644
+--- a/drivers/block/ublk_drv.c
++++ b/drivers/block/ublk_drv.c
+@@ -2323,6 +2323,9 @@ static int ublk_ctrl_add_dev(struct io_uring_cmd *cmd)
+ 	if (copy_from_user(&info, argp, sizeof(info)))
+ 		return -EFAULT;
  
-+	mutex_lock(&q->limits_lock);
- 	/*
- 	 * BLK_FEAT_ATOMIC_WRITES is not inherited from the bottom device in
- 	 * blk_stack_limits(), so do it manually.
- 	 */
- 	limits->features |= (q->limits.features & BLK_FEAT_ATOMIC_WRITES);
- 
--	mutex_lock(&q->limits_lock);
- 	if (blk_stack_limits(limits, &q->limits,
- 			get_start_sect(bdev) + start) < 0)
- 		DMWARN("%s: adding target device %pg caused an alignment inconsistency: "
++	if (info.queue_depth > UBLK_MAX_QUEUE_DEPTH || info.nr_hw_queues > UBLK_MAX_NR_QUEUES)
++		return -EINVAL;
++
+ 	if (capable(CAP_SYS_ADMIN))
+ 		info.flags &= ~UBLK_F_UNPRIVILEGED_DEV;
+ 	else if (!(info.flags & UBLK_F_UNPRIVILEGED_DEV))
+-- 
+2.39.5
+
 
 
 
