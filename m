@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155498-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF45AE426A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B980AE4234
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E87181782DB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F08F176D26
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEB3824DCE8;
-	Mon, 23 Jun 2025 13:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B4B824DD0A;
+	Mon, 23 Jun 2025 13:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWSFk8En"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3b9u1Zx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF2D13A265;
-	Mon, 23 Jun 2025 13:16:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A30248F63;
+	Mon, 23 Jun 2025 13:14:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684588; cv=none; b=EedV7lt/9BWjMr60mC+3dadLq8DRG86kUBImkIKkuhsNv5pCsEuCF4uqOzu95eoFm/6uBBgE3sizgXmMBx66koNAUDVXDgfhqdO7alzW6KoTBlaDyO7w/eeldqCBxHMZirmHX6M3XTLIE7HusPU6Y6RvPYUoee9epy9gTJxP2sA=
+	t=1750684469; cv=none; b=mnRxy+/5aNFFLbyUhZ8T31O4ku1EXPzj2T3HjAQoV/SA2SpqJBSLYKFjJrJ0XXGl9OjPORM4Ewzc17uY6e+zPFCWBNYyo/nst/dUhLPX4C3jWsGL+jBwbwQujMgT3EYFyF2xsHSxlrC0Ill8FpUWGW8Ddw+6YSzm0ufj1rAMFm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684588; c=relaxed/simple;
-	bh=IZ91mWhp3D9wcUVmzkCgx+QKEkZ/+crSFhwwfwyGGNQ=;
+	s=arc-20240116; t=1750684469; c=relaxed/simple;
+	bh=QOAaV5ScG7y//eqjG5ltivFVfpBAJ0HtCmuzHXzzYtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fdz1kKppGOyYdrxUonWyWd1sUl6ZPX4yHnH5kodQumHNxsy+/4P+pue3/3wawLQExHVTYPhMWgeTmyQGemZXZ9BXed/AxlFrbD95er+LOLMwQgEuyNUQ50iGFu+ot87NikRF5U9bt0AtKxq74oxxm9NkP2MNlyOh+57ewcjshBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWSFk8En; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08818C4CEEA;
-	Mon, 23 Jun 2025 13:16:27 +0000 (UTC)
+	 MIME-Version; b=AF9zgG45IHjMcmlgvHnj/vJLyB5nXLolwMlhuYRbEMSp+HNIcAUl67lo9R4eSiLi2nzataQRGaulc7OT9w/I1F2iOp4z/F3uw90Ui8lkeCkGjkH30uLbG4ibfmYzFwFAGA+jvXvMmOkhgGze0gXZk7FHFgmkf2a2qdVJ84gZCUo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3b9u1Zx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB99C4CEEA;
+	Mon, 23 Jun 2025 13:14:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684588;
-	bh=IZ91mWhp3D9wcUVmzkCgx+QKEkZ/+crSFhwwfwyGGNQ=;
+	s=korg; t=1750684468;
+	bh=QOAaV5ScG7y//eqjG5ltivFVfpBAJ0HtCmuzHXzzYtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eWSFk8EnMYvAA2g8ZoKCWwsZ54Fflt4l60bk07oKEtWZSwa9781ic7sTkPGdNc4k8
-	 2mwQdeZSL9329+j60t/tJ4CtzwKqsUxSDiohLS5vKigvTTaa5df4RhBfTzF3cjMxni
-	 3WPPG+EowOrnCQlwHPBmIjA66Ko6T8J2FlhKDv34=
+	b=P3b9u1ZxXt4NNDpPOJ70muKSyGELizfaYOGmit1FJ+H7B5sf/tEnbAaC/RY0v0BnT
+	 dbWONl5mIFCyw71La4GUramyFjk9bDFX7tpH7eRgen5dlz2wXPYLbvtOiFTxQJCsFZ
+	 PSDtwdJZfbV5GIJqqUM9j21dm17NSFly3OBGyMWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 072/592] media: ipu6: Remove workaround for Meteor Lake ES2
-Date: Mon, 23 Jun 2025 15:00:30 +0200
-Message-ID: <20250623130701.977086909@linuxfoundation.org>
+Subject: [PATCH 6.15 073/592] media: iris: fix error code in iris_load_fw_to_memory()
+Date: Mon, 23 Jun 2025 15:00:31 +0200
+Message-ID: <20250623130702.000752620@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,43 +67,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hao Yao <hao.yao@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit d471fb06b21ae54bf76464731ae1dcb26ef1ca68 upstream.
+commit e68c3c50a736490d9c07888fe525718d16ff9e9c upstream.
 
-There was a hardware bug which need IPU6 driver to disable the ATS. This
-workaround is not needed anymore as the bug was fixed in hardware level.
+Return -ENOMEM if memremap() fails.  Don't return success.
 
-Additionally, Arrow Lake has the same IPU6 PCI ID and x86 stepping but
-does not have the bug. Removing the Meteor Lake workaround is also
-required for the driver to function on Arrow Lake.
-
-Signed-off-by: Hao Yao <hao.yao@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Fixes: 25fedc021985 ("media: intel/ipu6: add Intel IPU6 PCI device driver")
+Fixes: d19b163356b8 ("media: iris: implement video firmware load/unload")
 Cc: stable@vger.kernel.org
-[Sakari Ailus: Added tags and explanation of what is fixed.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/media/platform/qcom/iris/iris_firmware.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/pci/intel/ipu6/ipu6.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6.c
-@@ -464,11 +464,6 @@ static int ipu6_pci_config_setup(struct
- {
- 	int ret;
+diff --git a/drivers/media/platform/qcom/iris/iris_firmware.c b/drivers/media/platform/qcom/iris/iris_firmware.c
+index 7c493b4a75db..f1b5cd56db32 100644
+--- a/drivers/media/platform/qcom/iris/iris_firmware.c
++++ b/drivers/media/platform/qcom/iris/iris_firmware.c
+@@ -53,8 +53,10 @@ static int iris_load_fw_to_memory(struct iris_core *core, const char *fw_name)
+ 	}
  
--	/* disable IPU6 PCI ATS on mtl ES2 */
--	if (is_ipu6ep_mtl(hw_ver) && boot_cpu_data.x86_stepping == 0x2 &&
--	    pci_ats_supported(dev))
--		pci_disable_ats(dev);
--
- 	/* No PCI msi capability for IPU6EP */
- 	if (is_ipu6ep(hw_ver) || is_ipu6ep_mtl(hw_ver)) {
- 		/* likely do nothing as msi not enabled by default */
+ 	mem_virt = memremap(mem_phys, res_size, MEMREMAP_WC);
+-	if (!mem_virt)
++	if (!mem_virt) {
++		ret = -ENOMEM;
+ 		goto err_release_fw;
++	}
+ 
+ 	ret = qcom_mdt_load(dev, firmware, fw_name,
+ 			    pas_id, mem_virt, mem_phys, res_size, NULL);
+-- 
+2.50.0
+
 
 
 
