@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 512F7AE51C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0FD3AE5156
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EABA87A5B2C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EAD1441B1C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DA83221DA8;
-	Mon, 23 Jun 2025 21:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B62222599;
+	Mon, 23 Jun 2025 21:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQM4XZjx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yEGev9V6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2E419CC11;
-	Mon, 23 Jun 2025 21:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7253C1C5D46;
+	Mon, 23 Jun 2025 21:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714640; cv=none; b=cLfXisPehMu+U+P1Cgw3Y+2nfuLloeN12a6Q5M8UroO94c+esjhl2SxQrad8LW0xKms+HkCj080Fmq7NLpZPqC1gb+sj8GnjJOvF+8Tk2n0nJso1toD7ck48hGRT03XGIBMVuekhQawckY0Z3uXjaWdkEqU7AKyHc+m9NJK8wls=
+	t=1750714382; cv=none; b=KVTVbSSE78ELTfOgO8x4SABf0LPtNPhl5dDRs64gvI/UtwGiE/P1ITXY4CANw9dRVrruXereuRTEc4f/gyjZQWUVmdRtpvYe/M5VmRY9HS6khp5F/rgdGFHFwEFVKFB9d9oyHt1yiOXrNXV+w1j8P+cwb2PdSb+VHw5H59piLTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714640; c=relaxed/simple;
-	bh=BXnIXh6N5lep8fkPJZg392i0Ezt5/u6bYPC1DH4FzzE=;
+	s=arc-20240116; t=1750714382; c=relaxed/simple;
+	bh=4ZVryBueCgyqIErQP+8hTO29/IA7aO9OHUFyB6WGwmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OMCg/3yHKC2AndJnE+cyr0VjI1NHA7dVMQtGEhGl08Vo72SfCLi8HCV8gHuwOSW4RdQLQ0DHFckmVq2EckjBIiJjwmDrruxm9PEHFo4Vt5yih8k1cKGQcl1CDw14jPX3PMgdOI1CqWUQb6f0vpnI9PMXDR+6NO3hLlfartgzPYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQM4XZjx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834EBC4CEEA;
-	Mon, 23 Jun 2025 21:37:19 +0000 (UTC)
+	 MIME-Version; b=I2aeSlpjwc8iuU05hxGE7+vcOsWXWuzLLfVC3c8+vIKWx07mqQJbSbmZl9tZ8judC59DjzuQZQgl4oB7DHdU97u2IePOgaSdMyO2+eNvQRdZkzHwU0FrGULFMqp6/y1G44nAMw66ylQjeAeCrVU2/v6p6ZpudnSqpU0ZtSUpUno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yEGev9V6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09646C4CEEA;
+	Mon, 23 Jun 2025 21:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714640;
-	bh=BXnIXh6N5lep8fkPJZg392i0Ezt5/u6bYPC1DH4FzzE=;
+	s=korg; t=1750714382;
+	bh=4ZVryBueCgyqIErQP+8hTO29/IA7aO9OHUFyB6WGwmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UQM4XZjxE0Ox6BXa0Jq9ycpcIR1qoxs8UTdqrUpgf8o5xAKc2++bHVYYYTgpBDjZK
-	 Y2O09G8TvE5PnaCCfOHjA7bY4nDzoRELWzyajmTYKWQG8sIiq99Y2+HeHVSa2B9/JA
-	 V8WkE99rSmWVch0XB8YXmWJnUgaQEYsEU8ZZXXaw=
+	b=yEGev9V6GMUNzQHEME6I5m1TQPy0U6Xcifc0E4eKY/TlS4bHVFYqQgoN8+LSVLIGn
+	 W50j+r60pTr7fwEsiwUf9QNiDW5en/VbQp3Jc5zLUJAsbkpnbUJJS9/2jBWnQ11jiV
+	 Q8P64bZHrxK78zfVnVbK/ehZhSDHtUr+mPnlyapU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Robert Morris <rtm@mit.edu>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 5.15 200/411] wifi: p54: prevent buffer-overflow in p54_rx_eeprom_readback()
-Date: Mon, 23 Jun 2025 15:05:44 +0200
-Message-ID: <20250623130638.709037148@linuxfoundation.org>
+	Vlad Dogaru <vdogaru@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 387/592] net/mlx5: HWS, Fix IP version decision
+Date: Mon, 23 Jun 2025 15:05:45 +0200
+Message-ID: <20250623130709.646898390@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,119 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Lamparter <chunkeey@gmail.com>
+From: Vlad Dogaru <vdogaru@nvidia.com>
 
-commit da1b9a55ff116cb040528ef664c70a4eec03ae99 upstream.
+[ Upstream commit 5f2f8d8b6800e4fc760c2eccec9b2bd2cacf80cf ]
 
-Robert Morris reported:
+Unify the check for IP version when creating a definer. A given matcher
+is deemed to match on IPv6 if any of the higher order (>31) bits of
+source or destination address mask are set.
 
-|If a malicious USB device pretends to be an Intersil p54 wifi
-|interface and generates an eeprom_readback message with a large
-|eeprom->v1.len, p54_rx_eeprom_readback() will copy data from the
-|message beyond the end of priv->eeprom.
-|
-|static void p54_rx_eeprom_readback(struct p54_common *priv,
-|                                   struct sk_buff *skb)
-|{
-|        struct p54_hdr *hdr = (struct p54_hdr *) skb->data;
-|        struct p54_eeprom_lm86 *eeprom = (struct p54_eeprom_lm86 *) hdr->data;
-|
-|        if (priv->fw_var >= 0x509) {
-|                memcpy(priv->eeprom, eeprom->v2.data,
-|                       le16_to_cpu(eeprom->v2.len));
-|        } else {
-|                memcpy(priv->eeprom, eeprom->v1.data,
-|                       le16_to_cpu(eeprom->v1.len));
-|        }
-| [...]
+A single packet cannot mix IP versions between source and destination
+addresses, so it makes no sense that they would be decided on
+independently.
 
-The eeprom->v{1,2}.len is set by the driver in p54_download_eeprom().
-The device is supposed to provide the same length back to the driver.
-But yes, it's possible (like shown in the report) to alter the value
-to something that causes a crash/panic due to overrun.
-
-This patch addresses the issue by adding the size to the common device
-context, so p54_rx_eeprom_readback no longer relies on possibly tampered
-values... That said, it also checks if the "firmware" altered the value
-and no longer copies them.
-
-The one, small saving grace is: Before the driver tries to read the eeprom,
-it needs to upload >a< firmware. the vendor firmware has a proprietary
-license and as a reason, it is not present on most distributions by
-default.
-
-Cc: <stable@kernel.org>
-Reported-by: Robert Morris <rtm@mit.edu>
-Closes: https://lore.kernel.org/linux-wireless/28782.1747258414@localhost/
-Fixes: 7cb770729ba8 ("p54: move eeprom code into common library")
-Signed-off-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250516184107.47794-1-chunkeey@gmail.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250422092540.182091-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intersil/p54/fwio.c |    2 ++
- drivers/net/wireless/intersil/p54/p54.h  |    1 +
- drivers/net/wireless/intersil/p54/txrx.c |   13 +++++++++----
- 3 files changed, 12 insertions(+), 4 deletions(-)
+ .../mellanox/mlx5/core/steering/hws/definer.c | 38 ++++++++-----------
+ 1 file changed, 16 insertions(+), 22 deletions(-)
 
---- a/drivers/net/wireless/intersil/p54/fwio.c
-+++ b/drivers/net/wireless/intersil/p54/fwio.c
-@@ -233,6 +233,7 @@ int p54_download_eeprom(struct p54_commo
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
+index 293459458cc5f..7dc6d8cd744e1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/definer.c
+@@ -509,9 +509,9 @@ static int
+ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 		       u32 *match_param)
+ {
+-	bool is_s_ipv6, is_d_ipv6, smac_set, dmac_set;
+ 	struct mlx5hws_definer_fc *fc = cd->fc;
+ 	struct mlx5hws_definer_fc *curr_fc;
++	bool is_ipv6, smac_set, dmac_set;
+ 	u32 *s_ipv6, *d_ipv6;
  
- 	mutex_lock(&priv->eeprom_mutex);
- 	priv->eeprom = buf;
-+	priv->eeprom_slice_size = len;
- 	eeprom_hdr = skb_put(skb, eeprom_hdr_size + len);
+ 	if (HWS_IS_FLD_SET_SZ(match_param, outer_headers.l4_type, 0x2) ||
+@@ -573,10 +573,10 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 			      outer_headers.dst_ipv4_dst_ipv6.ipv6_layout);
  
- 	if (priv->fw_var < 0x509) {
-@@ -255,6 +256,7 @@ int p54_download_eeprom(struct p54_commo
- 		ret = -EBUSY;
- 	}
- 	priv->eeprom = NULL;
-+	priv->eeprom_slice_size = 0;
- 	mutex_unlock(&priv->eeprom_mutex);
- 	return ret;
- }
---- a/drivers/net/wireless/intersil/p54/p54.h
-+++ b/drivers/net/wireless/intersil/p54/p54.h
-@@ -258,6 +258,7 @@ struct p54_common {
+ 	/* Assume IPv6 is used if ipv6 bits are set */
+-	is_s_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2];
+-	is_d_ipv6 = d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
++	is_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2] ||
++		  d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
  
- 	/* eeprom handling */
- 	void *eeprom;
-+	size_t eeprom_slice_size;
- 	struct completion eeprom_comp;
- 	struct mutex eeprom_mutex;
- };
---- a/drivers/net/wireless/intersil/p54/txrx.c
-+++ b/drivers/net/wireless/intersil/p54/txrx.c
-@@ -500,14 +500,19 @@ static void p54_rx_eeprom_readback(struc
- 		return ;
- 
- 	if (priv->fw_var >= 0x509) {
--		memcpy(priv->eeprom, eeprom->v2.data,
--		       le16_to_cpu(eeprom->v2.len));
-+		if (le16_to_cpu(eeprom->v2.len) != priv->eeprom_slice_size)
-+			return;
-+
-+		memcpy(priv->eeprom, eeprom->v2.data, priv->eeprom_slice_size);
+-	if (is_s_ipv6) {
++	if (is_ipv6) {
+ 		/* Handle IPv6 source address */
+ 		HWS_SET_HDR(fc, match_param, IPV6_SRC_127_96_O,
+ 			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_127_96,
+@@ -590,13 +590,6 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 		HWS_SET_HDR(fc, match_param, IPV6_SRC_31_0_O,
+ 			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
+ 			    ipv6_src_outer.ipv6_address_31_0);
+-	} else {
+-		/* Handle IPv4 source address */
+-		HWS_SET_HDR(fc, match_param, IPV4_SRC_O,
+-			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
+-			    ipv4_src_dest_outer.source_address);
+-	}
+-	if (is_d_ipv6) {
+ 		/* Handle IPv6 destination address */
+ 		HWS_SET_HDR(fc, match_param, IPV6_DST_127_96_O,
+ 			    outer_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_127_96,
+@@ -611,6 +604,10 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 			    outer_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
+ 			    ipv6_dst_outer.ipv6_address_31_0);
  	} else {
--		memcpy(priv->eeprom, eeprom->v1.data,
--		       le16_to_cpu(eeprom->v1.len));
-+		if (le16_to_cpu(eeprom->v1.len) != priv->eeprom_slice_size)
-+			return;
-+
-+		memcpy(priv->eeprom, eeprom->v1.data, priv->eeprom_slice_size);
- 	}
++		/* Handle IPv4 source address */
++		HWS_SET_HDR(fc, match_param, IPV4_SRC_O,
++			    outer_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
++			    ipv4_src_dest_outer.source_address);
+ 		/* Handle IPv4 destination address */
+ 		HWS_SET_HDR(fc, match_param, IPV4_DST_O,
+ 			    outer_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
+@@ -668,9 +665,9 @@ static int
+ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 		       u32 *match_param)
+ {
+-	bool is_s_ipv6, is_d_ipv6, smac_set, dmac_set;
+ 	struct mlx5hws_definer_fc *fc = cd->fc;
+ 	struct mlx5hws_definer_fc *curr_fc;
++	bool is_ipv6, smac_set, dmac_set;
+ 	u32 *s_ipv6, *d_ipv6;
  
- 	priv->eeprom = NULL;
-+	priv->eeprom_slice_size = 0;
- 	tmp = p54_find_and_unlink_skb(priv, hdr->req_id);
- 	dev_kfree_skb_any(tmp);
- 	complete(&priv->eeprom_comp);
+ 	if (HWS_IS_FLD_SET_SZ(match_param, inner_headers.l4_type, 0x2) ||
+@@ -731,10 +728,10 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 			      inner_headers.dst_ipv4_dst_ipv6.ipv6_layout);
+ 
+ 	/* Assume IPv6 is used if ipv6 bits are set */
+-	is_s_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2];
+-	is_d_ipv6 = d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
++	is_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2] ||
++		  d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
+ 
+-	if (is_s_ipv6) {
++	if (is_ipv6) {
+ 		/* Handle IPv6 source address */
+ 		HWS_SET_HDR(fc, match_param, IPV6_SRC_127_96_I,
+ 			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_127_96,
+@@ -748,13 +745,6 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 		HWS_SET_HDR(fc, match_param, IPV6_SRC_31_0_I,
+ 			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
+ 			    ipv6_src_inner.ipv6_address_31_0);
+-	} else {
+-		/* Handle IPv4 source address */
+-		HWS_SET_HDR(fc, match_param, IPV4_SRC_I,
+-			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
+-			    ipv4_src_dest_inner.source_address);
+-	}
+-	if (is_d_ipv6) {
+ 		/* Handle IPv6 destination address */
+ 		HWS_SET_HDR(fc, match_param, IPV6_DST_127_96_I,
+ 			    inner_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_127_96,
+@@ -769,6 +759,10 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 			    inner_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
+ 			    ipv6_dst_inner.ipv6_address_31_0);
+ 	} else {
++		/* Handle IPv4 source address */
++		HWS_SET_HDR(fc, match_param, IPV4_SRC_I,
++			    inner_headers.src_ipv4_src_ipv6.ipv6_simple_layout.ipv6_31_0,
++			    ipv4_src_dest_inner.source_address);
+ 		/* Handle IPv4 destination address */
+ 		HWS_SET_HDR(fc, match_param, IPV4_DST_I,
+ 			    inner_headers.dst_ipv4_dst_ipv6.ipv6_simple_layout.ipv6_31_0,
+-- 
+2.39.5
+
 
 
 
