@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156827-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD88FAE5055
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE460AE514C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 994404A0AD1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 794B37A8DCC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C682206BB;
-	Mon, 23 Jun 2025 21:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467B01C5D46;
+	Mon, 23 Jun 2025 21:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wc39ZcHM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMiKLc+v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721882628C;
-	Mon, 23 Jun 2025 21:24:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0482AC2E0;
+	Mon, 23 Jun 2025 21:32:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713847; cv=none; b=uHViqG9YRA97fX9/MrF6PoiiqfUEO+ZwtMj5x99/Fgpee4HTZxNdvTdfrHAdhhWMuz+aTnHnTPgvpq+yRtRgo/ROlXDS0m7COksJBdIMTE67fnNdjgz+fSS9zXL/8d8F51d+f4s24nMUa2/cxfPJeOJezI+Ih3Tipa12ZEmAiT4=
+	t=1750714363; cv=none; b=bC5dtM3MReyK9nOgpwMnWrzItRTh50gaQxfZlDDVcLf3boBfNpm0rgAhtcgXSIpwXmvvgn//liCdfFIIJaE7255UkPmq/xsTAi94Om/djVhnM9IZrLe9FecGuZo6bb+1V+OApM6Sy0HzPWr8IChs0+Y4r8LRtg2OucjUflFx/Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713847; c=relaxed/simple;
-	bh=700XKjVv8KoY2mg6I3XEKSSC6f+ehnyClkqAP24fT4k=;
+	s=arc-20240116; t=1750714363; c=relaxed/simple;
+	bh=rKroy6KZWhpC0oE5cwELAGo5M/U3iTt446VNLK5BQsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hROXgZ98OE2wr0EdM35kXPIgXklfciJPuUGOKT78m8ZA8VGWOWKdGcAJZOXWu8HreQMOk7aWdq6GPoXT4DJZJom4oa4NylUWf8BpnoGxPOB9VStuFOCjv9wjirvZPYU0ktzDAml9PpiY7n8gD20zar7OCZ2Ulr+V11dA4pvn7eY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wc39ZcHM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B576C4CEEA;
-	Mon, 23 Jun 2025 21:24:06 +0000 (UTC)
+	 MIME-Version; b=ryhHpf3b8kiLZcev4kcbPiXM/wOcndCeKjWjs0V7+2YXe6AvYpYH1+FQKkYWfLaEhESk3iEaKIZzmk8Ret09wtwHCUW7Vcn1uWkWcK/cq5gkJC4sG5XK6C5NGzlF7rWxIrAPES63IR92QrAbd6B+IW1LQNQf9Qpqp/auYTI+GIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMiKLc+v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BC8C4CEEA;
+	Mon, 23 Jun 2025 21:32:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713847;
-	bh=700XKjVv8KoY2mg6I3XEKSSC6f+ehnyClkqAP24fT4k=;
+	s=korg; t=1750714362;
+	bh=rKroy6KZWhpC0oE5cwELAGo5M/U3iTt446VNLK5BQsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wc39ZcHMiOLkSWRrsz30DHSP0P22I53+SiuOrQvLnuUnfT/bykQpTS6HsF1/rHp3S
-	 VLXynmsNsXRcBybZBkLlqH0IuM13ECh4j4pX78gjFAoBQezUHilSkjbWNek/VWLs+z
-	 DRi3LFE5i8Pw1ngNMN3IGRmmXDWfBHEYUZ+2oTmg=
+	b=GMiKLc+vN+O/tGEnOmmp19w4WWYCNRRyFJj77yN3Kl/yEkLand8UvTsdEWz5yQWVa
+	 bNF9n86PlWsVWU156imtj5AtDBiUvJdRdOo4EfY5J9WydJ2PbPIgupRMKoJdQlyVxq
+	 VSJqu+pvNQodI33Z69S4TRW78zts75raqtlarWAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiko Stuebner <heiko@sntech.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 369/592] clk: rockchip: rk3036: mark ddrphy as critical
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Kyle Tso <kyletso@google.com>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 5.15 183/411] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
 Date: Mon, 23 Jun 2025 15:05:27 +0200
-Message-ID: <20250623130709.219057511@linuxfoundation.org>
+Message-ID: <20250623130638.289674582@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Stuebner <heiko@sntech.de>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit 596a977b34a722c00245801a5774aa79cec4e81d ]
+commit 0736299d090f5c6a1032678705c4bc0a9511a3db upstream.
 
-The ddrphy is supplied by the dpll, but due to the limited number of PLLs
-on the rk3036, the dpll also is used for other periperhals, like the GPU.
+Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
 
-So it happened, when the Lima driver turned off the gpu clock, this in
-turn also disabled the dpll and thus the ram.
+  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
 
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250503202532.992033-4-heiko@sntech.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is validated against the max PD message (`struct pd_message`) size
+without accounting for the extra byte for the frame type. Note that the
+struct pd_message does not contain a field for the frame_type. This
+results in false negatives when the "PD message (pending read)" is equal
+to the max PD message size.
+
+Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Kyle Tso <kyletso@google.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/rockchip/clk-rk3036.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/typec/tcpm/tcpci_maxim.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/rockchip/clk-rk3036.c b/drivers/clk/rockchip/clk-rk3036.c
-index d341ce0708aac..e4af3a9286379 100644
---- a/drivers/clk/rockchip/clk-rk3036.c
-+++ b/drivers/clk/rockchip/clk-rk3036.c
-@@ -431,6 +431,7 @@ static const char *const rk3036_critical_clocks[] __initconst = {
- 	"hclk_peri",
- 	"pclk_peri",
- 	"pclk_ddrupctl",
-+	"ddrphy",
- };
+--- a/drivers/usb/typec/tcpm/tcpci_maxim.c
++++ b/drivers/usb/typec/tcpm/tcpci_maxim.c
+@@ -171,7 +171,8 @@ static void process_rx(struct max_tcpci_
+ 		return;
+ 	}
  
- static void __init rk3036_clk_init(struct device_node *np)
--- 
-2.39.5
-
+-	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
++	if (count > sizeof(struct pd_message) + 1 ||
++	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
+ 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
+ 		return;
+ 	}
 
 
 
