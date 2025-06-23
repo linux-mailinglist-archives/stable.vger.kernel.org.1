@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-155484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9222CAE4220
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCD7AE452D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90BD93B463D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C4B44444835
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7E0C23ED56;
-	Mon, 23 Jun 2025 13:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FEF25486D;
+	Mon, 23 Jun 2025 13:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sK0btEPp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Phq64kDC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75FDC13A265;
-	Mon, 23 Jun 2025 13:15:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40BCC25A337;
+	Mon, 23 Jun 2025 13:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684550; cv=none; b=dM73m+h07Flm1iqva9L9+OTjCFZYeeB/XN6+FirDBtwc5/t9fPG1ZkMNtMIk6YkPGxXvv8sTwV3F6XmBNp4eyuoosnuR9eC9mDEW6z5pljS+4x0PxshwXsr1XD5XyUJWfv07pFgvjyISBOUcrmNKxcMLgt+Mlu5h1Z3VPhXumfg=
+	t=1750685658; cv=none; b=rX39e7OKcFlI7lF3G7wiICT4dTMCeIMHyUlGww7j5SoLF9vI61SKN7DCidZbBAqDJ8HdbCmJW0ZWvnk8RsuAaOFsT6FpS89DaSrcGQAG2AvZfAkWruHzLWbOBzg3yZqsOFkkZJRrVfbh4IsHGs9ivUJNLv3lh5B+VGP/JYZXvy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684550; c=relaxed/simple;
-	bh=4GLLTXXHYQO9x008aaZ8zdO0Pmyy8TOD8PDnzKy1RRc=;
+	s=arc-20240116; t=1750685658; c=relaxed/simple;
+	bh=J9IIJtkGllz5g5vYTfsbRA3GDMTGLGOWizqkW69RGlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N77Ak6Y1kZUxjYgDGSSeDnDiatiFM08eXZsbrFW/DYoO58ZXvZIq+RBtdTIQplQ5ltWe4pWfecqk+0yjgiPtdEbMbn/U3y3vVixTnSWp2enkDZadUKlUawDsMhT4ggcsRDFvSHKcj1qDRcSa+L0Yk2cEMVU0sdwIHM+BYsjimKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sK0btEPp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08433C4CEEA;
-	Mon, 23 Jun 2025 13:15:49 +0000 (UTC)
+	 MIME-Version; b=g33Kf9Xoei4qhbYHtfQWAKjK/howHHcM+c421GmsVD+HJtWh1lb26l01yncSZoI2GkAhOfxvbv/OmGB16f8sLO93sHVhmzUqODON2BVUgjEKqQIxm7db4IncWfIExSrHOpBo1dg9BqwLPVIfiGPUTyNIclLxPX64l0CJUarigKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Phq64kDC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73ABDC4CEF0;
+	Mon, 23 Jun 2025 13:34:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684550;
-	bh=4GLLTXXHYQO9x008aaZ8zdO0Pmyy8TOD8PDnzKy1RRc=;
+	s=korg; t=1750685656;
+	bh=J9IIJtkGllz5g5vYTfsbRA3GDMTGLGOWizqkW69RGlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sK0btEPpo1siT+Hyc93A2pOF5IJm3wD+HxSoNKF359pBVTLw2PEpvrARyOmBeSzz4
-	 eJxF1LSxWgP4HfJlhZb9J97494/5MDeOIdUvK2E1rRJpDa2rD7ag3VnNhpDtKzlNKY
-	 ea+W1AL45KfLLLTILB73u4Tp2YU2vdbrnWpf9pcU=
+	b=Phq64kDCfev+Fo0mKnRknwysyowFcx2DQRFIfMzO3ld20z/XgLNOZ3grzpeUixQu/
+	 9lxpxXm6oIe7DcBH6Sfvu0ZaBxR/ePhStO8KI1CPZ5cHx757Il9/lr1vQuIBrSUUHf
+	 ikuGcp6osJKVzTyhWPBblzS55TjTT3Ml3dWCleFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikko Korhonen <mjkorhon@gmail.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 6.15 109/592] ata: ahci: Disallow LPM for Asus B550-F motherboard
+	kernel test robot <oliver.sang@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 022/508] crypto: lrw - Only add ecb if it is not already there
 Date: Mon, 23 Jun 2025 15:01:07 +0200
-Message-ID: <20250623130702.871494813@linuxfoundation.org>
+Message-ID: <20250623130645.796650060@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikko Korhonen <mjkorhon@gmail.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit a7b3b77fd111d49f8e25624e4ea1046322a57baf upstream.
+[ Upstream commit 3d73909bddc2ebb3224a8bc2e5ce00e9df70c15d ]
 
-Asus ROG STRIX B550-F GAMING (WI-FI) motherboard has problems on some
-SATA ports with at least one hard drive model (WDC WD20EFAX-68FB5N0)
-when LPM is enabled. Disabling LPM solves the issue.
+Only add ecb to the cipher name if it isn't already ecb.
 
-Cc: stable@vger.kernel.org
-Fixes: 7627a0edef54 ("ata: ahci: Drop low power policy board type")
-Signed-off-by: Mikko Korhonen <mjkorhon@gmail.com>
-Link: https://lore.kernel.org/r/20250617062055.784827-1-mjkorhon@gmail.com
-[cassel: more detailed comment, make single line comments consistent]
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Also use memcmp instead of strncmp since these strings are all
+stored in an array of length CRYPTO_MAX_ALG_NAME.
+
+Fixes: 700cb3f5fe75 ("crypto: lrw - Convert to skcipher")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Closes: https://lore.kernel.org/oe-lkp/202505151503.d8a6cf10-lkp@intel.com
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/ahci.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ crypto/lrw.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/ahci.c
-+++ b/drivers/ata/ahci.c
-@@ -1458,7 +1458,23 @@ static bool ahci_broken_lpm(struct pci_d
- 				DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
- 				DMI_MATCH(DMI_PRODUCT_VERSION, "ASUSPRO D840MB_M840SA"),
- 			},
--			/* 320 is broken, there is no known good version yet. */
-+			/* 320 is broken, there is no known good version. */
-+		},
-+		{
-+			/*
-+			 * AMD 500 Series Chipset SATA Controller [1022:43eb]
-+			 * on this motherboard timeouts on ports 5 and 6 when
-+			 * LPM is enabled, at least with WDC WD20EFAX-68FB5N0
-+			 * hard drives. LPM with the same drive works fine on
-+			 * all other ports on the same controller.
-+			 */
-+			.matches = {
-+				DMI_MATCH(DMI_BOARD_VENDOR,
-+					  "ASUSTeK COMPUTER INC."),
-+				DMI_MATCH(DMI_BOARD_NAME,
-+					  "ROG STRIX B550-F GAMING (WI-FI)"),
-+			},
-+			/* 3621 is broken, there is no known good version. */
- 		},
- 		{ }	/* terminate list */
- 	};
+diff --git a/crypto/lrw.c b/crypto/lrw.c
+index fb8892ed179f5..99d9eb67e1827 100644
+--- a/crypto/lrw.c
++++ b/crypto/lrw.c
+@@ -322,7 +322,7 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 
+ 	err = crypto_grab_skcipher(spawn, skcipher_crypto_instance(inst),
+ 				   cipher_name, 0, mask);
+-	if (err == -ENOENT) {
++	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
+ 		err = -ENAMETOOLONG;
+ 		if (snprintf(ecb_name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
+ 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
+@@ -356,7 +356,7 @@ static int lrw_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 	/* Alas we screwed up the naming so we have to mangle the
+ 	 * cipher name.
+ 	 */
+-	if (!strncmp(cipher_name, "ecb(", 4)) {
++	if (!memcmp(cipher_name, "ecb(", 4)) {
+ 		int len;
+ 
+ 		len = strscpy(ecb_name, cipher_name + 4, sizeof(ecb_name));
+-- 
+2.39.5
+
 
 
 
