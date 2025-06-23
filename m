@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB5B6AE44E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00CC7AE4360
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A86D61899BA1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85E6E17A150
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 370CD250C06;
-	Mon, 23 Jun 2025 13:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C9EE2566E8;
+	Mon, 23 Jun 2025 13:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MYmYATW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+lM/BzY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E569F24728E;
-	Mon, 23 Jun 2025 13:40:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F792566D3;
+	Mon, 23 Jun 2025 13:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686053; cv=none; b=oh6Y5ftVhXDwy5fzEx2zTvPuJ6DKA+vzqsJV4uOLeC+9NMYLlJ30dqYQgQd4pfE1xz63b8814gg3JLsHeDzP8HFuYU425B5Z/2q5lDUzLgyAo52oI84VeQfDn6zCPVdbw+i51uptw5yA9KwV0EH7C4CNuEzK3+I9cY/kIepw2Tw=
+	t=1750685001; cv=none; b=TXnGXBrq41qc1xlX7GLifZK5xDc3gbksa1ZtFJk4ct9Pkf1iy8ZqtF29C1bxu+jrRb+xg14xBQsGNZrpJtZdHamSTSvYQeFbZGJOryCCdK0mFtrAJ9KC6v8qmI13oEuHKvV+hGZryz64Wn0u+3jshhZvDQXNGUzWXbUfUlic/2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686053; c=relaxed/simple;
-	bh=lcug14flMsXGnYGRWFrlKBcG9B6jbSgIemV7NkZhrV0=;
+	s=arc-20240116; t=1750685001; c=relaxed/simple;
+	bh=CBe+/9VxXuj6IEIA3M3GeUWj+ZZCflvlWl7ywlqBXSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mk3s+4sjK2CaEKqi5Gyp35Eau7AAuTSGz5vbUreQDcZ9uTrKvCbkV8BCDYE++7w75qZHSJqGm3SavYdCIqWKNb68SF0rOxpkBzNCMr2EWHv8flpWaXKVmystWoOJ/uIB/kyUKLMNPF7CCEvANi13kvEAEqBtAWlOLl+KVE2o+Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MYmYATW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77EC3C4CEEA;
-	Mon, 23 Jun 2025 13:40:52 +0000 (UTC)
+	 MIME-Version; b=O2v7YFIP0o/uvg6y/nMcQmB9eYlWBdQ3Ga5VQU9A4LJQjhPr4cz80+Di316pNcp2bb5LxwOkiG6zhQbco+g9vC38Dgz+pIlJXRngO8tHorilabF9C4pizPnLtIlzTCr7JZdoevqMpdcgJQPVY6ugmcoCLy1CIKunYOuuBABqBsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+lM/BzY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A84F6C4CEEA;
+	Mon, 23 Jun 2025 13:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686052;
-	bh=lcug14flMsXGnYGRWFrlKBcG9B6jbSgIemV7NkZhrV0=;
+	s=korg; t=1750685001;
+	bh=CBe+/9VxXuj6IEIA3M3GeUWj+ZZCflvlWl7ywlqBXSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MYmYATWpJzmWNh03PDFKhnUwFSduV4C5Wg8JmGKV4ayKQt+TPTfZ+qTW7tFHA+a1
-	 uUtHxgU3Le4XDBykaWMmR5pj3w2+5o0PIZcextgJ2NbfZjhXiUWyrSiw4ELxeJKLRt
-	 FBycoF7yQRhCUaOuSJC/+3DS5+MVLpxSD4u6BU8o=
+	b=1+lM/BzYusYvw/gRBktCR5N021V9AlSVlnEE9IQJFqwiBZ2ql90W59M0ZyQnZAUYm
+	 5+zxrnwMJdUVowEhehe93x8RfVyuO1irFOboqlQQBAr0khKjRurLpiCsRJFuDNh86r
+	 x3qsk4iRY5Vn8/GIQ3VsX8UkTaZKc2eoJlQoiaYE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adam Ford <aford173@gmail.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 077/411] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
-Date: Mon, 23 Jun 2025 15:03:41 +0200
-Message-ID: <20250623130635.316014445@linuxfoundation.org>
+Subject: [PATCH 5.10 021/355] PM: wakeup: Delete space in the end of string shown by pm_show_wakelocks()
+Date: Mon, 23 Jun 2025 15:03:42 +0200
+Message-ID: <20250623130627.436989558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Adam Ford <aford173@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
+[ Upstream commit f0050a3e214aa941b78ad4caf122a735a24d81a6 ]
 
-Although not noticeable when used every day, the RTC appears to drift when
-left to sit over time.  This is due to the capacitive load not being
-properly set. Fix RTC drift by correcting the capacitive load setting
-from 7000 to 12500, which matches the actual hardware configuration.
+pm_show_wakelocks() is called to generate a string when showing
+attributes /sys/power/wake_(lock|unlock), but the string ends
+with an unwanted space that was added back by mistake by commit
+c9d967b2ce40 ("PM: wakeup: simplify the output logic of
+pm_show_wakelocks()").
 
-Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
-Signed-off-by: Adam Ford <aford173@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Remove the unwanted space.
+
+Fixes: c9d967b2ce40 ("PM: wakeup: simplify the output logic of pm_show_wakelocks()")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://patch.msgid.link/20250505-fix_power-v1-1-0f7f2c2f338c@quicinc.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/power/wakelock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-index 40f5e7a3b0644..7ed267bf9b8f4 100644
---- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
-@@ -231,6 +231,7 @@
- 	rtc: rtc@51 {
- 		compatible = "nxp,pcf85263";
- 		reg = <0x51>;
-+		quartz-load-femtofarads = <12500>;
- 	};
- };
+diff --git a/kernel/power/wakelock.c b/kernel/power/wakelock.c
+index 52571dcad768b..4e941999a53ba 100644
+--- a/kernel/power/wakelock.c
++++ b/kernel/power/wakelock.c
+@@ -49,6 +49,9 @@ ssize_t pm_show_wakelocks(char *buf, bool show_active)
+ 			len += sysfs_emit_at(buf, len, "%s ", wl->name);
+ 	}
  
++	if (len > 0)
++		--len;
++
+ 	len += sysfs_emit_at(buf, len, "\n");
+ 
+ 	mutex_unlock(&wakelocks_lock);
 -- 
 2.39.5
 
