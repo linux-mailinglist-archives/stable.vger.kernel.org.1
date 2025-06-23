@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42D3EAE4461
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6032AE425D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4BA6E176EC2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2C3175733
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD8E12550D0;
-	Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ED1248895;
+	Mon, 23 Jun 2025 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m04k4mEj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au6/0sn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A16A24FBFF;
-	Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C0613A265;
+	Mon, 23 Jun 2025 13:16:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685726; cv=none; b=C69h/h8f5gJ3pZLLwW6HWB3cG6SMXaUvulPUzKuLt7vlMtj6+N9lG4dh2/EZivUjjrVyzMc2uhgWV4mLJH8yqOpXr1N9xEoZetr1Ol/UCdzGk6OFpq8BDIiums5ww+1e8o11DkgmtU3S+UHrblt1XgdgKQMpXXGgP10OXmDe+qw=
+	t=1750684568; cv=none; b=R4OA/TXsvgNfGAPJlIn1nZw9jPFOBGZoZ9M+4Bw1FSSX2MUAlbpNcQnY6dsh3aRY19Ez/J8iqUxt2t7c8wtCYE4Xej0fanRVXjuG0JV9of2liFmwolUCMgrFX3im1oiHMr8Izw2dcTuDRcgKWajKG7FqgmvSdtMTDvIYQr1wmIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685726; c=relaxed/simple;
-	bh=VRc/3doPS0iazIW9RsX0AsVE/oZyZyLBRCb9PmwUGNU=;
+	s=arc-20240116; t=1750684568; c=relaxed/simple;
+	bh=YIUztGI8+S7tk9eaIWPWCHM9BhnQEmDdhEQMToWi67o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ilQidkfKmKWTURyMdmQzN/mIuUqq/n2wuPYZBpMOZ0eDyHcu195SRGEbxBijsRP1INo0AJjqFU6G1CVk3MBaQAG+/KC3y0kMGrZMfn40k9YihwX5BEq7URLqRp8OcBM0SwhcuCzq2u9ltBGgKSrxch6CnsDIpRWGObxjM+9tmnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m04k4mEj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C7CC4CEEA;
-	Mon, 23 Jun 2025 13:35:26 +0000 (UTC)
+	 MIME-Version; b=eBiYgOz8Dz6C9zhkz30IKb/L9xKV1LLRrXxKCRlxHlywOvfrlR20yZZXQj0QSgirn/09JeGd0nhLS1P9BnjRrEymEH8TOx0dYCGfhCAkmTwaNcqgxrcXGg/LQd/PevM00UY+mJREePRJj9UnMtGVT10MtLsJSheN3PR/Cq6LXig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au6/0sn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C801C4CEEA;
+	Mon, 23 Jun 2025 13:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685726;
-	bh=VRc/3doPS0iazIW9RsX0AsVE/oZyZyLBRCb9PmwUGNU=;
+	s=korg; t=1750684568;
+	bh=YIUztGI8+S7tk9eaIWPWCHM9BhnQEmDdhEQMToWi67o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m04k4mEj+6cPKdqMBvtyGtIEhZj7m0XPjMyn0JbHaDlDs8/pzRImlcdkqDRYM+cuC
-	 8PFR0Ien+/RQk93PZ0LsZ1Fav6y1BM2KDN2s0uHKLrFRi6eJSVFdv6BQ1Sw2vjGXLl
-	 y6XlLpnafDeZ30+CQ7+S0Q1tw6l/KO/DYZ+sd2xI=
+	b=Au6/0sn9vx64sg8/pKL/BpXSyH/Ij3JQ+OZ77sqtmVJ+XqlC4eH0HdQutWHoKuPhd
+	 6G6iuYLbIsI5YPKcwfLJ7UJZo9OjH1BEr8zqALjPwrIdjMKmHNnANMfWsD8Fm8+dMI
+	 A/JocrPZFYmJ4Io60wAfLQZAAUUADlVe5Zan4sS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishwaroop A <va@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/508] spi: tegra210-quad: Fix X1_X2_X4 encoding and support x4 transfers
-Date: Mon, 23 Jun 2025 15:01:12 +0200
-Message-ID: <20250623130645.917218000@linuxfoundation.org>
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.15 115/592] ext4: fix incorrect punch max_end
+Date: Mon, 23 Jun 2025 15:01:13 +0200
+Message-ID: <20250623130703.009545713@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishwaroop A <va@nvidia.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit dcb06c638a1174008a985849fa30fc0da7d08904 ]
+commit 29ec9bed2395061350249ae356fb300dd82a78e7 upstream.
 
-This patch corrects the QSPI_COMMAND_X1_X2_X4 and QSPI_ADDRESS_X1_X2_X4
-macros to properly encode the bus width for x1, x2, and x4 transfers.
-Although these macros were previously incorrect, they were not being
-used in the driver, so no functionality was affected.
+For the extents based inodes, the maxbytes should be sb->s_maxbytes
+instead of sbi->s_bitmap_maxbytes. Additionally, for the calculation of
+max_end, the -sb->s_blocksize operation is necessary only for
+indirect-block based inodes. Correct the maxbytes and max_end value to
+correct the behavior of punch hole.
 
-The patch updates tegra_qspi_cmd_config() and tegra_qspi_addr_config()
-function calls to use the actual bus width from the transfer, instead of
-hardcoding it to 0 (which implied x1 mode). This change enables proper
-support for x1, x2, and x4 data transfers by correctly configuring the
-interface width for commands and addresses.
-
-These modifications improve the QSPI driver's flexibility and prepare it
-for future use cases that may require different bus widths for commands
-and addresses.
-
-Fixes: 1b8342cc4a38 ("spi: tegra210-quad: combined sequence mode")
-Signed-off-by: Vishwaroop A <va@nvidia.com>
-Link: https://patch.msgid.link/20250416110606.2737315-2-va@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2da376228a24 ("ext4: limit length to bitmap_maxbytes - blocksize in punch_hole")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250506012009.3896990-2-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
+ fs/ext4/inode.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index 442d42130ec87..b84dc830c4333 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -135,7 +135,7 @@
- #define QSPI_COMMAND_VALUE_SET(X)		(((x) & 0xFF) << 0)
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4006,7 +4006,7 @@ int ext4_punch_hole(struct file *file, l
+ 	struct inode *inode = file_inode(file);
+ 	struct super_block *sb = inode->i_sb;
+ 	ext4_lblk_t start_lblk, end_lblk;
+-	loff_t max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
++	loff_t max_end = sb->s_maxbytes;
+ 	loff_t end = offset + length;
+ 	handle_t *handle;
+ 	unsigned int credits;
+@@ -4015,14 +4015,20 @@ int ext4_punch_hole(struct file *file, l
+ 	trace_ext4_punch_hole(inode, offset, length, 0);
+ 	WARN_ON_ONCE(!inode_is_locked(inode));
  
- #define QSPI_CMB_SEQ_CMD_CFG			0x1a0
--#define QSPI_COMMAND_X1_X2_X4(x)		(((x) & 0x3) << 13)
-+#define QSPI_COMMAND_X1_X2_X4(x)		((((x) >> 1) & 0x3) << 13)
- #define QSPI_COMMAND_X1_X2_X4_MASK		(0x03 << 13)
- #define QSPI_COMMAND_SDR_DDR			BIT(12)
- #define QSPI_COMMAND_SIZE_SET(x)		(((x) & 0xFF) << 0)
-@@ -147,7 +147,7 @@
- #define QSPI_ADDRESS_VALUE_SET(X)		(((x) & 0xFFFF) << 0)
++	/*
++	 * For indirect-block based inodes, make sure that the hole within
++	 * one block before last range.
++	 */
++	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
++
+ 	/* No need to punch hole beyond i_size */
+ 	if (offset >= inode->i_size || offset >= max_end)
+ 		return 0;
  
- #define QSPI_CMB_SEQ_ADDR_CFG			0x1ac
--#define QSPI_ADDRESS_X1_X2_X4(x)		(((x) & 0x3) << 13)
-+#define QSPI_ADDRESS_X1_X2_X4(x)		((((x) >> 1) & 0x3) << 13)
- #define QSPI_ADDRESS_X1_X2_X4_MASK		(0x03 << 13)
- #define QSPI_ADDRESS_SDR_DDR			BIT(12)
- #define QSPI_ADDRESS_SIZE_SET(x)		(((x) & 0xFF) << 0)
-@@ -1035,10 +1035,6 @@ static u32 tegra_qspi_addr_config(bool is_ddr, u8 bus_width, u8 len)
- {
- 	u32 addr_config = 0;
- 
--	/* Extract Address configuration and value */
--	is_ddr = 0; //Only SDR mode supported
--	bus_width = 0; //X1 mode
--
- 	if (is_ddr)
- 		addr_config |= QSPI_ADDRESS_SDR_DDR;
- 	else
-@@ -1072,13 +1068,13 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 		switch (transfer_phase) {
- 		case CMD_TRANSFER:
- 			/* X1 SDR mode */
--			cmd_config = tegra_qspi_cmd_config(false, 0,
-+			cmd_config = tegra_qspi_cmd_config(false, xfer->tx_nbits,
- 							   xfer->len);
- 			cmd_value = *((const u8 *)(xfer->tx_buf));
- 			break;
- 		case ADDR_TRANSFER:
- 			/* X1 SDR mode */
--			addr_config = tegra_qspi_addr_config(false, 0,
-+			addr_config = tegra_qspi_addr_config(false, xfer->tx_nbits,
- 							     xfer->len);
- 			address_value = *((const u32 *)(xfer->tx_buf));
- 			break;
--- 
-2.39.5
-
+ 	/*
+ 	 * If the hole extends beyond i_size, set the hole to end after
+-	 * the page that contains i_size, and also make sure that the hole
+-	 * within one block before last range.
++	 * the page that contains i_size.
+ 	 */
+ 	if (end > inode->i_size)
+ 		end = round_up(inode->i_size, PAGE_SIZE);
 
 
 
