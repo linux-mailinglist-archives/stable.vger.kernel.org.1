@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17BB7AE43B6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E96AE4576
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:54:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7DA17E452
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C4073BFAA4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA80253925;
-	Mon, 23 Jun 2025 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5226124EAB1;
+	Mon, 23 Jun 2025 13:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+7zNVNn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eR5+Jhkn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E824EA9D;
-	Mon, 23 Jun 2025 13:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FEB2347DD;
+	Mon, 23 Jun 2025 13:43:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685262; cv=none; b=NWhPzhUgV1QeXr2BH0tun6ekmc0Midz/D/j4amM4NfPNpkthBkJrWjvbrUR2rpYlgZ+6Lj3SOYnzXBLYUojr83/8ftRZ6cad28q17E1GavlBtB397yXwGvNpFjO5XDMx58Y4kh121Web4xw8s5ZkvGHGoRKvXdsaSNMfKcQIQJg=
+	t=1750686229; cv=none; b=KwVZbrPlkMiBCk/WlN40kHItzZLnTdMOJo0+NfsX+8rkXQRtS6kyecN65WeyA9exW9hA8txnWziWgkrAGlBBehD0n9Xof7E/rtPhz+Az4gi9BXNuh6j5oJAr3Wrq9oN2Nb6siITlTtRh/GR2v3gxQwtMIplh6OX1uR9a10rerk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685262; c=relaxed/simple;
-	bh=qIcyf175drs8agcSUnRw4UpryP8n9ax6ALFUGwS0a/Y=;
+	s=arc-20240116; t=1750686229; c=relaxed/simple;
+	bh=TNvn5ZW+PBMMW0td5o30Rl7NF6/hjtKvLFPvWcuO7hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UZjjOxLfYAEa+8C6jp9z6SlFPxudcatWgltyTWKKKvH/P/ZPZvBeLhEbE00uSGpataUQhMOsBMgScW00beH49k7k4qBd8osBnso7MobCWAgSQcHSltV5IvDnhpJHoorjrS8oLN1YmslJtcXuLmNJY437VgVPS3pEtXAhZp+1+FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+7zNVNn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2D0C4CEEA;
-	Mon, 23 Jun 2025 13:27:42 +0000 (UTC)
+	 MIME-Version; b=ZAosTtIqN16i3hP8bQBKM4wvprbiNybbb5Myw+v/JQHSyFwAuyU2Vz5HNWFM/+8SJb7jo9fh3pMqOP7Hz439js0iQ/OSz6ix1NgQtsTzcnT9Sj3Lx6O+aNS1NMuZGhczLLZ8eAzehfFwf7mkMAc6O2QUcTcltfivYwbvs9ixNQQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eR5+Jhkn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34D59C4CEEA;
+	Mon, 23 Jun 2025 13:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685262;
-	bh=qIcyf175drs8agcSUnRw4UpryP8n9ax6ALFUGwS0a/Y=;
+	s=korg; t=1750686228;
+	bh=TNvn5ZW+PBMMW0td5o30Rl7NF6/hjtKvLFPvWcuO7hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L+7zNVNnaHZtfWyErm4R3yMKzrwMsPxZx5m2mm+9Km4qjF2bZroseozhZ0TRAem1Q
-	 dKckbQvapfkfmuz+qAcEYTxqENW1EXLvgX16Qv2ed0UKMeYIaicVyMLdB0tSHaa4Ig
-	 +1GVGCoXDriPBYqDNRy7Zwx2mvX/8OQ8Ru2kucq8=
+	b=eR5+JhknQ+pOfsp3kCLSxdFs4oswYXMDQrsNKVXGz8+V9ixRTc68YgqL1xRE4BzjJ
+	 gOjDS9h1afuH5eVoTGY4MUb5E6dwfr8Ztvhz7zTyIozoVleE7XPe5kVVYf6jUCTRWb
+	 zk/kTVeHtIhAJzn+/qk0qNQVpSoe6d3xCdXjbF7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Xu <feng.f.xu@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/411] EDAC/skx_common: Fix general protection fault
+	Maninder Singh <maninder1.s@samsung.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 028/414] NFSD: unregister filesystem in case genl_register_family() fails
 Date: Mon, 23 Jun 2025 15:02:45 +0200
-Message-ID: <20250623130633.636589176@linuxfoundation.org>
+Message-ID: <20250623130642.730171906@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,73 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Maninder Singh <maninder1.s@samsung.com>
 
-[ Upstream commit 20d2d476b3ae18041be423671a8637ed5ffd6958 ]
+commit ff12eb379554eea7932ad6caea55e3091701cce4 upstream.
 
-After loading i10nm_edac (which automatically loads skx_edac_common), if
-unload only i10nm_edac, then reload it and perform error injection testing,
-a general protection fault may occur:
+With rpc_status netlink support, unregister of register_filesystem()
+was missed in case of genl_register_family() fails.
 
-  mce: [Hardware Error]: Machine check events logged
-  Oops: general protection fault ...
-  ...
-  Workqueue: events mce_gen_pool_process
-  RIP: 0010:string+0x53/0xe0
-  ...
-  Call Trace:
-  <TASK>
-  ? die_addr+0x37/0x90
-  ? exc_general_protection+0x1e7/0x3f0
-  ? asm_exc_general_protection+0x26/0x30
-  ? string+0x53/0xe0
-  vsnprintf+0x23e/0x4c0
-  snprintf+0x4d/0x70
-  skx_adxl_decode+0x16a/0x330 [skx_edac_common]
-  skx_mce_check_error.part.0+0xf8/0x220 [skx_edac_common]
-  skx_mce_check_error+0x17/0x20 [skx_edac_common]
-  ...
+Correcting it by making new label.
 
-The issue arose was because the variable 'adxl_component_count' (inside
-skx_edac_common), which counts the ADXL components, was not reset. During
-the reloading of i10nm_edac, the count was incremented by the actual number
-of ADXL components again, resulting in a count that was double the real
-number of ADXL components. This led to an out-of-bounds reference to the
-ADXL component array, causing the general protection fault above.
-
-Fix this issue by resetting the 'adxl_component_count' in adxl_put(),
-which is called during the unloading of {skx,i10nm}_edac.
-
-Fixes: 123b15863550 ("EDAC, i10nm: make skx_common.o a separate module")
-Reported-by: Feng Xu <feng.f.xu@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Feng Xu <feng.f.xu@intel.com>
-Link: https://lore.kernel.org/r/20250417150724.1170168-2-qiuxu.zhuo@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bd9d6a3efa97 ("NFSD: add rpc_status netlink support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Maninder Singh <maninder1.s@samsung.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/skx_common.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfsd/nfsctl.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index 88c44d5359076..46eeaa142a610 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -112,6 +112,7 @@ EXPORT_SYMBOL_GPL(skx_adxl_get);
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -2345,7 +2345,7 @@ static int __init init_nfsd(void)
+ 		goto out_free_cld;
+ 	retval = register_filesystem(&nfsd_fs_type);
+ 	if (retval)
+-		goto out_free_all;
++		goto out_free_nfsd4;
+ 	retval = genl_register_family(&nfsd_nl_family);
+ 	if (retval)
+ 		goto out_free_all;
+@@ -2353,6 +2353,8 @@ static int __init init_nfsd(void)
  
- void skx_adxl_put(void)
- {
-+	adxl_component_count = 0;
- 	kfree(adxl_values);
- 	kfree(adxl_msg);
- }
--- 
-2.39.5
-
+ 	return 0;
+ out_free_all:
++	unregister_filesystem(&nfsd_fs_type);
++out_free_nfsd4:
+ 	nfsd4_destroy_laundry_wq();
+ out_free_cld:
+ 	unregister_cld_notifier();
 
 
 
