@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C11FEAE576E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:30:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69261AE561A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E62F94416A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7954C1BC3342
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6857223DCC;
-	Mon, 23 Jun 2025 22:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D0C8221FC7;
+	Mon, 23 Jun 2025 22:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U5e9ld5A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2ue0hzc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D85B676;
-	Mon, 23 Jun 2025 22:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B14F19E7F9;
+	Mon, 23 Jun 2025 22:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717710; cv=none; b=lR8p0kAVPHwgO2zQExj/1nJOt4hbybuta4TV/kdAsPZM3orZx1uP7Bnraj5jvtU88GDHGOE5p800YdmZu25DpdzZWBzEY5ZC4UmQgeDUXfnOWLvLJ7qtsE4SXjAKGRBHgHw/1PY+A9+6EtcFCnJSAvznfATZXbuToXhtZi5UXsk=
+	t=1750716982; cv=none; b=qUmEYj8F5cArFeOY00NOjfFgPruI6UxE1PyLas0LNY6hoOEy4f2uhkSHfEHXBsgl7omBdCWhTFZ+Fd29iptqCnlcWpJblNWZTgW4he93imfPlBXVuJBhNPmUAolIIF0NeS5NXay+57cyH49nfZJvvPwyDzrAx2Hp3zUdqwhn+bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717710; c=relaxed/simple;
-	bh=EZ54n3aLudQfASNTvu/xADx8OwyTd1Tirbb94NWX20U=;
+	s=arc-20240116; t=1750716982; c=relaxed/simple;
+	bh=KfLzE4qX8FrPPa2p8t13cfYwFP3QvCRb9pnwiOy4eH0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mHeYtnbrXuoZQKPMjEeYaGaNYCi3xcu9dXjkVEVMG2nCLaWvIOEMLZceCP3gABx3wL6B67Oat7C62fC9OURPmx6fVs53eiZLXiNCcxkJDNdy2TVHpMVgM+ITVDviPUdrVt6skdqerkRfmdQVlZCvWbyl/VIBkDHd58QtCDzj5ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U5e9ld5A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B0C5C4CEEA;
-	Mon, 23 Jun 2025 22:28:29 +0000 (UTC)
+	 MIME-Version; b=ZmZOR178btMlhA+sUt9SK5ueFJXTBa22guZVIw9uFJS7wW+sTsMfunVs5MOx1dYlWmcu1IwOxaqizNamDOL8pgt6LZSUWO1JIQB4nKIIXignRnGfeB5qCBSdQUb11WZCypqyCvLGBlFCNIZbvr2BWH2Y3WTE+Ni2r3Gx8+tT+xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2ue0hzc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5855C4CEEA;
+	Mon, 23 Jun 2025 22:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717710;
-	bh=EZ54n3aLudQfASNTvu/xADx8OwyTd1Tirbb94NWX20U=;
+	s=korg; t=1750716982;
+	bh=KfLzE4qX8FrPPa2p8t13cfYwFP3QvCRb9pnwiOy4eH0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U5e9ld5A1I5DNFntO37D3u75+s335b7esC05UiZWzT7+Gt1mjZPkap4fYqGrszt0M
-	 obpyRg0ommirMCOsWToEOSrmlia4jwAZ1Jhp0eAWvvXOXTaZluXDmXNJOekXjCFwCY
-	 pkPIsuuz6tOoBF/+RdFoi/MhsXDmQW/muJ/JtkkQ=
+	b=S2ue0hzcKlTq+51LSQnw3Rrjr8BiMkQLvY0j1H0K+7+fZ214BVHdYgDUme9gQf6CY
+	 L7Pbb5+/8cZtYdtUezFzJbcGcX2Ta8PAHiQIObLmSj1/T3W0mHE5NuUQWl6UhwVgQ2
+	 LUesA+saU1dxkWvz3fKdLsK/fZcv/IDpMki2QN94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 482/508] mpls: Use rcu_dereference_rtnl() in mpls_route_input_rcu().
-Date: Mon, 23 Jun 2025 15:08:47 +0200
-Message-ID: <20250623130656.924242720@linuxfoundation.org>
+	Colin Foster <colin.foster@in-advantage.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 5.15 384/411] ARM: dts: am335x-bone-common: Increase MDIO reset deassert time
+Date: Mon, 23 Jun 2025 15:08:48 +0200
+Message-ID: <20250623130643.316182228@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-[ Upstream commit 6dbb0d97c5096072c78a6abffe393584e57ae945 ]
+commit b9bf5612610aa7e38d58fee16f489814db251c01 upstream.
 
-As syzbot reported [0], mpls_route_input_rcu() can be called
-from mpls_getroute(), where is under RTNL.
+Prior to commit df16c1c51d81 ("net: phy: mdio_device: Reset device only
+when necessary") MDIO reset deasserts were performed twice during boot.
+Now that the second deassert is no longer performed, device probe
+failures happen due to the change in timing with the following error
+message:
 
-net->mpls.platform_label is only updated under RTNL.
+SMSC LAN8710/LAN8720: probe of 4a101000.mdio:00 failed with error -5
 
-Let's use rcu_dereference_rtnl() in mpls_route_input_rcu() to
-silence the splat.
+Restore the original effective timing, which resolves the probe
+failures.
 
-[0]:
-WARNING: suspicious RCU usage
-6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 Not tainted
- ----------------------------
-net/mpls/af_mpls.c:84 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.2.4451/17730:
- #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x371/0xe90 net/core/rtnetlink.c:6961
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 17730 Comm: syz.2.4451 Not tainted 6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x166/0x260 kernel/locking/lockdep.c:6865
- mpls_route_input_rcu+0x1d4/0x200 net/mpls/af_mpls.c:84
- mpls_getroute+0x621/0x1ea0 net/mpls/af_mpls.c:2381
- rtnetlink_rcv_msg+0x3c9/0xe90 net/core/rtnetlink.c:6964
- netlink_rcv_skb+0x16d/0x440 net/netlink/af_netlink.c:2534
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa98/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmmsg+0x200/0x420 net/socket.c:2709
- __do_sys_sendmmsg net/socket.c:2736 [inline]
- __se_sys_sendmmsg net/socket.c:2733 [inline]
- __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2733
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0a2818e969
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0a28f52038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007f0a283b5fa0 RCX: 00007f0a2818e969
-RDX: 0000000000000003 RSI: 0000200000000080 RDI: 0000000000000003
-RBP: 00007f0a28210ab1 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f0a283b5fa0 R15: 00007ffce5e9f268
- </TASK>
-
-Fixes: 0189197f4416 ("mpls: Basic routing support")
-Reported-by: syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68507981.a70a0220.395abc.01ef.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616201532.1036568-1-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://lore.kernel.org/r/20240531183817.2698445-1-colin.foster@in-advantage.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mpls/af_mpls.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-index f1f43894efb8e..2d29d230f5698 100644
---- a/net/mpls/af_mpls.c
-+++ b/net/mpls/af_mpls.c
-@@ -80,8 +80,8 @@ static struct mpls_route *mpls_route_input_rcu(struct net *net, unsigned index)
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -384,7 +384,7 @@
+ 		/* Support GPIO reset on revision C3 boards */
+ 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		reset-assert-us = <300>;
+-		reset-deassert-us = <6500>;
++		reset-deassert-us = <13000>;
+ 	};
+ };
  
- 	if (index < net->mpls.platform_labels) {
- 		struct mpls_route __rcu **platform_label =
--			rcu_dereference(net->mpls.platform_label);
--		rt = rcu_dereference(platform_label[index]);
-+			rcu_dereference_rtnl(net->mpls.platform_label);
-+		rt = rcu_dereference_rtnl(platform_label[index]);
- 	}
- 	return rt;
- }
--- 
-2.39.5
-
 
 
 
