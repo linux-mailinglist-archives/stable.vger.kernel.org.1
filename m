@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644DCAE4253
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E157AE44C5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40FF81898412
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 16FA317D060
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBF824BBEB;
-	Mon, 23 Jun 2025 13:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7C41253949;
+	Mon, 23 Jun 2025 13:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KtsDVfNS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EbPSAauL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B26313A265;
-	Mon, 23 Jun 2025 13:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72992253938;
+	Mon, 23 Jun 2025 13:39:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684596; cv=none; b=BSEqjUzD/wrAK4CKzPDUXA3WHSrnafnM2IypT/k4QMaAOsCSrdFM4A8YZwBMbHd1WiE+7eIx7fiQgDJpuSBdPDBY0oYiSkFdn16N8lOxN8TV3198ZON0pCdqYkKFAyW64nKS/EXl93SmmYeAz0HxAtWJp7XwqHV/g0jyibZS4ak=
+	t=1750685979; cv=none; b=MteiW/qJ0TiUKX2za5LTSt0Mw9cfpmH5gAch/GMyk93sqyNA3M/CZNKSbnj9SW9Kf0gW82DaUOTnMWVIegtseMw6cgegWi95cAvR+u5jbDqLp5/yWgBu2jsJesmisooYV7neUOhRLh3+YQwBtCdup95NZcx25ywGSfJf5zBsvzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684596; c=relaxed/simple;
-	bh=dy7YIIrLYlJUlgykp1AXC5PSrNCZUWsUxCtkqsNUeXU=;
+	s=arc-20240116; t=1750685979; c=relaxed/simple;
+	bh=q8c4mXyK39IawK3/jAn9yrYAByHYieASkSMpEuw4wmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cbeIlBbmMVQGgjbcp+RdQJ4pgVhb5ZcofRbPP3IgaSKPOOUG4rg64kBSmMeehsfuCa34/Ogx0fqdh/x/uEIUgFK3QY5Fh96Ja3Cl6gJNtxwHOxdk13dDLR06t38ejnUrA+jrhQVGqdS5ukCC3qWAZy+foxw5q6/t0/miuHR0i2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KtsDVfNS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD209C4CEF0;
-	Mon, 23 Jun 2025 13:16:35 +0000 (UTC)
+	 MIME-Version; b=rNY5UTZuykVYByeROEPodz8vTBtgmXIyYekNlcJ0jA4LvoGtHXiLW5kSiKt5Lq2F9GWFoCh1xfT3TMGF2iqvcGr2Xo9YJt+X33Ks+uutCneki4juw3lh3DxlS5dYIqfzlBRs9c/zdvdsyplRzDmWAmtzpybjMb0C1M+BNMSQSXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EbPSAauL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 943E5C4CEEA;
+	Mon, 23 Jun 2025 13:39:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684596;
-	bh=dy7YIIrLYlJUlgykp1AXC5PSrNCZUWsUxCtkqsNUeXU=;
+	s=korg; t=1750685978;
+	bh=q8c4mXyK39IawK3/jAn9yrYAByHYieASkSMpEuw4wmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KtsDVfNS7PQW5taCpcOpilESevz11ivUn7efEwWKY2nJBK2y69rHRKUwPb8Z0EEa0
-	 DFS27ts04f8WAk6MZ3h5bWV9aM3KLyE568DwnTx5HkOQTtCbZulroIvVuBcZjSnDQn
-	 eZahGwx2hk+5dBU66CQ9939zQDxSIvocED5uA3So=
+	b=EbPSAauLZOg6WriMsL0aG03kiZay3ONUCYJbxVX+9zG/LZxp+lK/UozyY0yJNZVrB
+	 JuKhlC8rmMDktVmweaCYG1UXWUyjQRVah7ktoX6rTLB9pNdELrn7BML+zn8VU3xYgS
+	 wq4DHu8UikxvwVM8KsBLVVKukYZhBiE9juKggF6U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hyunwoo Kim <imv4bel@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 128/592] net/sched: fix use-after-free in taprio_dev_notifier
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/508] drm/bridge: lt9611uxc: Fix an error handling path in lt9611uxc_probe()
 Date: Mon, 23 Jun 2025 15:01:26 +0200
-Message-ID: <20250623130703.315941024@linuxfoundation.org>
+Message-ID: <20250623130646.256330370@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hyunwoo Kim <imv4bel@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit b160766e26d4e2e2d6fe2294e0b02f92baefcec5 upstream.
+[ Upstream commit b848cd418aebdb313364b4843f41fae82281a823 ]
 
-Since taprio’s taprio_dev_notifier() isn’t protected by an
-RCU read-side critical section, a race with advance_sched()
-can lead to a use-after-free.
+If lt9611uxc_audio_init() fails, some resources still need to be released
+before returning the error code.
 
-Adding rcu_read_lock() inside taprio_dev_notifier() prevents this.
+Use the existing error handling path.
 
-Fixes: fed87cc6718a ("net/sched: taprio: automatically calculate queueMaxSDU based on TC gate durations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/aEzIYYxt0is9upYG@v4bel-B760M-AORUS-ELITE-AX
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0cbbd5b1a012 ("drm: bridge: add support for lontium LT9611UXC bridge")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/f167608e392c6b4d7d7f6e45e3c21878feb60cbd.1744958833.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt9611uxc.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1328,13 +1328,15 @@ static int taprio_dev_notifier(struct no
- 
- 		stab = rtnl_dereference(q->root->stab);
- 
--		oper = rtnl_dereference(q->oper_sched);
-+		rcu_read_lock();
-+		oper = rcu_dereference(q->oper_sched);
- 		if (oper)
- 			taprio_update_queue_max_sdu(q, oper, stab);
- 
--		admin = rtnl_dereference(q->admin_sched);
-+		admin = rcu_dereference(q->admin_sched);
- 		if (admin)
- 			taprio_update_queue_max_sdu(q, admin, stab);
-+		rcu_read_unlock();
- 
- 		break;
+diff --git a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+index cb75da940b890..e9162125382f5 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
++++ b/drivers/gpu/drm/bridge/lontium-lt9611uxc.c
+@@ -961,7 +961,11 @@ static int lt9611uxc_probe(struct i2c_client *client,
+ 		}
  	}
+ 
+-	return lt9611uxc_audio_init(dev, lt9611uxc);
++	ret = lt9611uxc_audio_init(dev, lt9611uxc);
++	if (ret)
++		goto err_remove_bridge;
++
++	return 0;
+ 
+ err_remove_bridge:
+ 	free_irq(client->irq, lt9611uxc);
+-- 
+2.39.5
+
 
 
 
