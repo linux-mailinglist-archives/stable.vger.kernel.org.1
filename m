@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-157711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158042-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE234AE5535
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AE07AE56BE
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEF861BC17C2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E0FF4E0D97
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF66226CE6;
-	Mon, 23 Jun 2025 22:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 385CE22422F;
+	Mon, 23 Jun 2025 22:22:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6ASC56E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDBuAdKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17EA0226888;
-	Mon, 23 Jun 2025 22:08:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7AD92192EC;
+	Mon, 23 Jun 2025 22:22:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716535; cv=none; b=ps4CspmPpSnRebs56doNGsqpICjBO+3HndwC4VOmOyKbf1xm7Dxgx0GOmUhYjAHIHOJul0KVZ3Q9g2Zd9NaU0bdLeqLhZeGpewm4E2WfrRu9C2omMyr5dTS3wzNLVPEHBXXPvbFxdVwD0q+MsctOUzdyg75BvB9swWaKErDWl6k=
+	t=1750717341; cv=none; b=uNztk6S20yodg44lBmLhYZaM/S5VikKwN7LUkjl7ZrRfB72l0GmLnX8KGcj+pBS37yXRR/5VvppeZmPCui+GStnwj+OZSSZndWtal6Sqbd6q272szPUnoKNnw0Q8FVlBRll+c49CZMSQYW6FgNGlJ45k/QzkONRGCDJUZMxAqIY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716535; c=relaxed/simple;
-	bh=pFI9vA/ChZrwKn9xIupXq8kw2VrK9nboy9fqSlfmM8U=;
+	s=arc-20240116; t=1750717341; c=relaxed/simple;
+	bh=XQ+BSS1rDTTBd6cDB07SyVsZjcEQrrwhWZOMfHOgmco=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Eh6YI7W3za3++tk4jb482ty3pp71CsF06DZ25axBuSQ5r9Meu/ptDofE6vOOy8yspelIm2gCpuUycxoXL7CI7U37HXqtrWwxfoOv4OM5f9uqSYAKSxzC0Z+xGSOkFZ0iT0OIntz4xpfTftXFuR1fJXbTEsccj4qxPy6b6Lq4Rlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6ASC56E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B6F7C4CEED;
-	Mon, 23 Jun 2025 22:08:54 +0000 (UTC)
+	 MIME-Version; b=POTnGuWXuj2nbMgKO+9my7zygWrJkrc56eG9pR7VdLqs1wSP0Cjm+IhH/BJcFPopBIVLDwK2/7qe2PxpQep28GpgGfB/ES84ujlnlqgBD5VMem/s0idKNLmQWQdP0avaoXw063o1DDRl5a7BfIQ3irh8749R6Za6WzHKo6Pdggg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDBuAdKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81679C4CEEF;
+	Mon, 23 Jun 2025 22:22:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716534;
-	bh=pFI9vA/ChZrwKn9xIupXq8kw2VrK9nboy9fqSlfmM8U=;
+	s=korg; t=1750717340;
+	bh=XQ+BSS1rDTTBd6cDB07SyVsZjcEQrrwhWZOMfHOgmco=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y6ASC56EGvRLNEL2PvioCKMQ8kor400wXxcRPqEyuT1JupMybLBCYgoi7zysbpCMx
-	 mTFN0j0ULwnsFcguFkfO3TYLBIywuo/0/uiOcbZEaCX0AHZ8okQpQ+723TfhBUnsV1
-	 qTN+xqlu+lA1nvDru3KQL0MwQn9zcpFdh04t4/uo=
+	b=CDBuAdKm1NOQ8S/SiFyqERnWdkmD4KXYZlB8ow5RNM0B+Xh0ITINcNriHpeclAPrU
+	 sht4qX4sH5LRtlqlaBcQiS3HkzLzyd6oyELkEkQ8+1vbWlo1dK+tn7LtipyeSaCnw3
+	 DDec8ZRv47aU6SkYXOO1ZnGK29uGSpFibAL+ZNfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 362/411] mm/hugetlb: unshare page tables during VMA split, not before
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Gil Fine <gil.fine@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 369/414] e1000e: set fixed clock frequency indication for Nahum 11 and Nahum 13
 Date: Mon, 23 Jun 2025 15:08:26 +0200
-Message-ID: <20250623130642.754608688@linuxfoundation.org>
+Message-ID: <20250623130651.183659113@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,215 +64,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-commit 081056dc00a27bccb55ccc3c6f230a3d5fd3f7e0 upstream.
+[ Upstream commit 688a0d61b2d7427189c4eb036ce485d8fc957cbb ]
 
-Currently, __split_vma() triggers hugetlb page table unsharing through
-vm_ops->may_split().  This happens before the VMA lock and rmap locks are
-taken - which is too early, it allows racing VMA-locked page faults in our
-process and racing rmap walks from other processes to cause page tables to
-be shared again before we actually perform the split.
+On some systems with Nahum 11 and Nahum 13 the value of the XTAL clock in
+the software STRAP is incorrect. This causes the PTP timer to run at the
+wrong rate and can lead to synchronization issues.
 
-Fix it by explicitly calling into the hugetlb unshare logic from
-__split_vma() in the same place where THP splitting also happens.  At that
-point, both the VMA and the rmap(s) are write-locked.
+The STRAP value is configured by the system firmware, and a firmware
+update is not always possible. Since the XTAL clock on these systems
+always runs at 38.4MHz, the driver may ignore the STRAP and just set
+the correct value.
 
-An annoying detail is that we can now call into the helper
-hugetlb_unshare_pmds() from two different locking contexts:
-
-1. from hugetlb_split(), holding:
-    - mmap lock (exclusively)
-    - VMA lock
-    - file rmap lock (exclusively)
-2. hugetlb_unshare_all_pmds(), which I think is designed to be able to
-   call us with only the mmap lock held (in shared mode), but currently
-   only runs while holding mmap lock (exclusively) and VMA lock
-
-Backporting note:
-This commit fixes a racy protection that was introduced in commit
-b30c14cd6102 ("hugetlb: unshare some PMDs when splitting VMAs"); that
-commit claimed to fix an issue introduced in 5.13, but it should actually
-also go all the way back.
-
-[jannh@google.com: v2]
-  Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-1-1329349bad1a@google.com
-Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-0-1329349bad1a@google.com
-Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-1-f4136f5ec58a@google.com
-Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-Signed-off-by: Jann Horn <jannh@google.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Oscar Salvador <osalvador@suse.de>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>	[b30c14cd6102: hugetlb: unshare some PMDs when splitting VMAs]
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[stable backport: code got moved around, VMA splitting is in
-__vma_adjust, hugetlb lock wasn't used back then]
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Reviewed-by: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/hugetlb.h |    3 ++
- mm/hugetlb.c            |   56 ++++++++++++++++++++++++++++++++++++------------
- mm/mmap.c               |    8 ++++++
- 3 files changed, 53 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 14 +++++++++++---
+ drivers/net/ethernet/intel/e1000e/ptp.c    |  8 +++++---
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -213,6 +213,7 @@ unsigned long hugetlb_change_protection(
- 
- bool is_hugetlb_entry_migration(pte_t pte);
- void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
-+void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
- 
- #else /* !CONFIG_HUGETLB_PAGE */
- 
-@@ -409,6 +410,8 @@ static inline vm_fault_t hugetlb_fault(s
- 
- static inline void hugetlb_unshare_all_pmds(struct vm_area_struct *vma) { }
- 
-+static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
-+
- #endif /* !CONFIG_HUGETLB_PAGE */
- /*
-  * hugepages at page global directory. If arch support
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -83,7 +83,7 @@ struct mutex *hugetlb_fault_mutex_table
- /* Forward declaration */
- static int hugetlb_acct_memory(struct hstate *h, long delta);
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
--		unsigned long start, unsigned long end);
-+		unsigned long start, unsigned long end, bool take_locks);
- 
- static inline bool subpool_is_free(struct hugepage_subpool *spool)
- {
-@@ -4165,26 +4165,40 @@ static int hugetlb_vm_op_split(struct vm
- {
- 	if (addr & ~(huge_page_mask(hstate_vma(vma))))
- 		return -EINVAL;
-+	return 0;
-+}
- 
-+void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
-+{
- 	/*
- 	 * PMD sharing is only possible for PUD_SIZE-aligned address ranges
- 	 * in HugeTLB VMAs. If we will lose PUD_SIZE alignment due to this
- 	 * split, unshare PMDs in the PUD_SIZE interval surrounding addr now.
-+	 * This function is called in the middle of a VMA split operation, with
-+	 * MM, VMA and rmap all write-locked to prevent concurrent page table
-+	 * walks (except hardware and gup_fast()).
- 	 */
-+	mmap_assert_write_locked(vma->vm_mm);
-+	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+
- 	if (addr & ~PUD_MASK) {
--		/*
--		 * hugetlb_vm_op_split is called right before we attempt to
--		 * split the VMA. We will need to unshare PMDs in the old and
--		 * new VMAs, so let's unshare before we split.
--		 */
- 		unsigned long floor = addr & PUD_MASK;
- 		unsigned long ceil = floor + PUD_SIZE;
- 
--		if (floor >= vma->vm_start && ceil <= vma->vm_end)
--			hugetlb_unshare_pmds(vma, floor, ceil);
-+		if (floor >= vma->vm_start && ceil <= vma->vm_end) {
-+			/*
-+			 * Locking:
-+			 * Use take_locks=false here.
-+			 * The file rmap lock is already held.
-+			 * The hugetlb VMA lock can't be taken when we already
-+			 * hold the file rmap lock, and we don't need it because
-+			 * its purpose is to synchronize against concurrent page
-+			 * table walks, which are not possible thanks to the
-+			 * locks held by our caller.
-+			 */
-+			hugetlb_unshare_pmds(vma, floor, ceil, /* take_locks = */ false);
-+		}
- 	}
--
--	return 0;
- }
- 
- static unsigned long hugetlb_vm_op_pagesize(struct vm_area_struct *vma)
-@@ -6369,9 +6383,16 @@ void move_hugetlb_state(struct page *old
- 	}
- }
- 
-+/*
-+ * If @take_locks is false, the caller must ensure that no concurrent page table
-+ * access can happen (except for gup_fast() and hardware page walks).
-+ * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
-+ * concurrent page fault handling) and the file rmap lock.
-+ */
- static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
- 				   unsigned long start,
--				   unsigned long end)
-+				   unsigned long end,
-+				   bool take_locks)
- {
- 	struct hstate *h = hstate_vma(vma);
- 	unsigned long sz = huge_page_size(h);
-@@ -6394,7 +6415,11 @@ static void hugetlb_unshare_pmds(struct
- 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, mm,
- 				start, end);
- 	mmu_notifier_invalidate_range_start(&range);
--	i_mmap_lock_write(vma->vm_file->f_mapping);
-+	if (take_locks) {
-+		i_mmap_lock_write(vma->vm_file->f_mapping);
-+	} else {
-+		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
-+	}
- 	for (address = start; address < end; address += PUD_SIZE) {
- 		unsigned long tmp = address;
- 
-@@ -6407,7 +6432,9 @@ static void hugetlb_unshare_pmds(struct
- 		spin_unlock(ptl);
- 	}
- 	flush_hugetlb_tlb_range(vma, start, end);
--	i_mmap_unlock_write(vma->vm_file->f_mapping);
-+	if (take_locks) {
-+		i_mmap_unlock_write(vma->vm_file->f_mapping);
-+	}
- 	/*
- 	 * No need to call mmu_notifier_invalidate_range(), see
- 	 * Documentation/vm/mmu_notifier.rst.
-@@ -6422,7 +6449,8 @@ static void hugetlb_unshare_pmds(struct
- void hugetlb_unshare_all_pmds(struct vm_area_struct *vma)
- {
- 	hugetlb_unshare_pmds(vma, ALIGN(vma->vm_start, PUD_SIZE),
--			ALIGN_DOWN(vma->vm_end, PUD_SIZE));
-+			ALIGN_DOWN(vma->vm_end, PUD_SIZE),
-+			/* take_locks = */ true);
- }
- 
- #ifdef CONFIG_CMA
---- a/mm/mmap.c
-+++ b/mm/mmap.c
-@@ -833,7 +833,15 @@ int __vma_adjust(struct vm_area_struct *
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 07e9033463582..5fe54e9b71e25 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -3540,9 +3540,6 @@ s32 e1000e_get_base_timinca(struct e1000_adapter *adapter, u32 *timinca)
+ 	case e1000_pch_cnp:
+ 	case e1000_pch_tgp:
+ 	case e1000_pch_adp:
+-	case e1000_pch_mtp:
+-	case e1000_pch_lnp:
+-	case e1000_pch_ptp:
+ 	case e1000_pch_nvp:
+ 		if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI) {
+ 			/* Stable 24MHz frequency */
+@@ -3558,6 +3555,17 @@ s32 e1000e_get_base_timinca(struct e1000_adapter *adapter, u32 *timinca)
+ 			adapter->cc.shift = shift;
  		}
- 	}
- again:
-+	/*
-+	 * Get rid of huge pages and shared page tables straddling the split
-+	 * boundary.
-+	 */
- 	vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
-+	if (is_vm_hugetlb_page(orig_vma)) {
-+		hugetlb_split(orig_vma, start);
-+		hugetlb_split(orig_vma, end);
-+	}
- 
- 	if (file) {
- 		mapping = file->f_mapping;
+ 		break;
++	case e1000_pch_mtp:
++	case e1000_pch_lnp:
++	case e1000_pch_ptp:
++		/* System firmware can misreport this value, so set it to a
++		 * stable 38400KHz frequency.
++		 */
++		incperiod = INCPERIOD_38400KHZ;
++		incvalue = INCVALUE_38400KHZ;
++		shift = INCVALUE_SHIFT_38400KHZ;
++		adapter->cc.shift = shift;
++		break;
+ 	case e1000_82574:
+ 	case e1000_82583:
+ 		/* Stable 25MHz frequency */
+diff --git a/drivers/net/ethernet/intel/e1000e/ptp.c b/drivers/net/ethernet/intel/e1000e/ptp.c
+index 89d57dd911dc8..ea3c3eb2ef202 100644
+--- a/drivers/net/ethernet/intel/e1000e/ptp.c
++++ b/drivers/net/ethernet/intel/e1000e/ptp.c
+@@ -295,15 +295,17 @@ void e1000e_ptp_init(struct e1000_adapter *adapter)
+ 	case e1000_pch_cnp:
+ 	case e1000_pch_tgp:
+ 	case e1000_pch_adp:
+-	case e1000_pch_mtp:
+-	case e1000_pch_lnp:
+-	case e1000_pch_ptp:
+ 	case e1000_pch_nvp:
+ 		if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI)
+ 			adapter->ptp_clock_info.max_adj = MAX_PPB_24MHZ;
+ 		else
+ 			adapter->ptp_clock_info.max_adj = MAX_PPB_38400KHZ;
+ 		break;
++	case e1000_pch_mtp:
++	case e1000_pch_lnp:
++	case e1000_pch_ptp:
++		adapter->ptp_clock_info.max_adj = MAX_PPB_38400KHZ;
++		break;
+ 	case e1000_82574:
+ 	case e1000_82583:
+ 		adapter->ptp_clock_info.max_adj = MAX_PPB_25MHZ;
+-- 
+2.39.5
+
 
 
 
