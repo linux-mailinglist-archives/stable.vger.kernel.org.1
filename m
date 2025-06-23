@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14060AE54CB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E8ADAE538C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D9DC4A01F4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7066445402
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E2119049B;
-	Mon, 23 Jun 2025 22:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DEB1AD3FA;
+	Mon, 23 Jun 2025 21:53:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="woWcAXh9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MIgfTA4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05483FB1B;
-	Mon, 23 Jun 2025 22:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8CE71C84A0;
+	Mon, 23 Jun 2025 21:53:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716282; cv=none; b=cS0dDpsrNuaP7F7A0DXJ+nh0oRlU9ELrCwXN5kvuTFGf1RbuLNe3cAyGTZL2GezQem+CdSWwLjYfRzRGd1/c30ny9+vESGqtDDbX9xQ3pAhxpGFTP8oTA6ae5UeUFyEpGHddolTvrRoDydeWsORiw3ue6kYKmThkV5O1NLc+yiI=
+	t=1750715629; cv=none; b=FGQ6J5Aq+0jMsIvyvpst0+xt6hobwAGQJQCvi5JeNuHq06YsynI0jYShhBkhqCTyMv2ZIP7PZ2mcS6HQJBdq+LrNzn0SCyc0gTSPwOGC8B5Bq817bI5YVzWAywGTsJl/0s66AhUGqqiWb27Ym1HZJDA3S6UdSoLffNUsrfwi8JE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716282; c=relaxed/simple;
-	bh=1nEzqYq8o0pw0iBwdfeq3Hc0U4aqTE14vui8nK417V4=;
+	s=arc-20240116; t=1750715629; c=relaxed/simple;
+	bh=tmxXQcM1JjskrXYEL6IvCO2QAa4TLfFDn+/sW77sMkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNAJQnPUIkrROXvFEp3dcp5u04dmpm0EudtZWtE1/QE/L1Ur2FO/zUI4xTFV3eUky8f/fVuGEBLGFfAb+DPOgWDTtLSbmwntgvOYQxIr+fZ3eFdE2ImQMoTQcBKw8sTfG1ZMUGSQEl2RxbfHPQ6PtnZlkDmCu92vF9VezGIkpkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=woWcAXh9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C2EC4CEEA;
-	Mon, 23 Jun 2025 22:04:41 +0000 (UTC)
+	 MIME-Version; b=MORLO/OvifBEr4CpRJXPx7mg9ldSJjvOzYDoYtGkQn2wjvpMrYGRZoMDAB8f9AhaZe7yiZLWPI9Jg8TUPDNw3hUVRv/ox5guRxTa/Ye4LvLyVPPLjXkYEQESM8FM+POenoCLwyOJN3Ltn+HS01qosCxzscH8UlyUqcqhIi/VTg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MIgfTA4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8037EC4CEEA;
+	Mon, 23 Jun 2025 21:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716282;
-	bh=1nEzqYq8o0pw0iBwdfeq3Hc0U4aqTE14vui8nK417V4=;
+	s=korg; t=1750715628;
+	bh=tmxXQcM1JjskrXYEL6IvCO2QAa4TLfFDn+/sW77sMkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=woWcAXh9VQVPPUfhvc8dPfbRPyb5F0gO3aKkfHA/dW5r3C+p82tOZ0K0LzmDyTanv
-	 Ifm0AxNE10M1aPhRAyIoU++Az6osatS58LGJ6q19frBdDrKButqsll1bMH4p1aN/eC
-	 KlFOy2Us/U+jbwXnPoPQt88q2kpLe8tt7f0BBvyc=
+	b=MIgfTA4RHvG1rrog3T52QdO7CWfqPIxSVB96jA9YOQW6Dsig5lIx9F2x26jO2BgBt
+	 LwimQNg5i++Ig2r4OEboeNSul96q5Y8PQ9Mznq0OaTWoloIry1isvxIiNcLGaKYfml
+	 EvD9pipXJ6SwzoAf+bWsGbUuCfhcvkFUsQpJVjLY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhi Wang <zhiw@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 513/592] drm/nouveau: fix a use-after-free in r535_gsp_rpc_push()
-Date: Mon, 23 Jun 2025 15:07:51 +0200
-Message-ID: <20250623130712.639206735@linuxfoundation.org>
+	Yanteng Si <si.yanteng@linux.dev>,
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 211/290] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
+Date: Mon, 23 Jun 2025 15:07:52 +0200
+Message-ID: <20250623130633.276735659@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhi Wang <zhiw@nvidia.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 9802f0a63b641f4cddb2139c814c2e95cb825099 ]
+commit 52c22661c79a7b6af7fad9f77200738fc6c51878 upstream.
 
-The RPC container is released after being passed to r535_gsp_rpc_send().
+When building kernel with LLVM there are occasionally such errors:
 
-When sending the initial fragment of a large RPC and passing the
-caller's RPC container, the container will be freed prematurely. Subsequent
-attempts to send remaining fragments will therefore result in a
-use-after-free.
+In file included from ./include/linux/spinlock.h:59:
+In file included from ./include/linux/irqflags.h:17:
+arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $r1
+   38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
+      |                 ^
+<inline asm>:1:16: note: instantiated into assembly here
+    1 |         csrxchg $a1, $ra, 0
+      |                       ^
 
-Allocate a temporary RPC container for holding the initial fragment of a
-large RPC when sending. Free the caller's container when all fragments
-are successfully sent.
+To prevent the compiler from allocating $r0 or $r1 for the "mask" of the
+csrxchg instruction, the 'q' constraint must be used but Clang < 21 does
+not support it. So force to use $t0 in the inline asm, in order to avoid
+using $r0/$r1 while keeping the backward compatibility.
 
-Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
-Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-Link: https://lore.kernel.org/r/20250527163712.3444-1-zhiw@nvidia.com
-[ Rebase onto Blackwell changes. - Danilo ]
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/pull/141037
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c   | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ arch/loongarch/include/asm/irqflags.h |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
-index ffb4104a7d8cd..d558b0f62b010 100644
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/rm/r535/rpc.c
-@@ -638,12 +638,18 @@ r535_gsp_rpc_push(struct nvkm_gsp *gsp, void *payload,
- 	if (payload_size > max_payload_size) {
- 		const u32 fn = rpc->function;
- 		u32 remain_payload_size = payload_size;
-+		void *next;
- 
--		/* Adjust length, and send initial RPC. */
--		rpc->length = sizeof(*rpc) + max_payload_size;
--		msg->checksum = rpc->length;
-+		/* Send initial RPC. */
-+		next = r535_gsp_rpc_get(gsp, fn, max_payload_size);
-+		if (IS_ERR(next)) {
-+			repv = next;
-+			goto done;
-+		}
- 
--		repv = r535_gsp_rpc_send(gsp, payload, NVKM_GSP_RPC_REPLY_NOWAIT, 0);
-+		memcpy(next, payload, max_payload_size);
+--- a/arch/loongarch/include/asm/irqflags.h
++++ b/arch/loongarch/include/asm/irqflags.h
+@@ -14,40 +14,48 @@
+ static inline void arch_local_irq_enable(void)
+ {
+ 	u32 flags = CSR_CRMD_IE;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
 +
-+		repv = r535_gsp_rpc_send(gsp, next, NVKM_GSP_RPC_REPLY_NOWAIT, 0);
- 		if (IS_ERR(repv))
- 			goto done;
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
  
-@@ -654,7 +660,6 @@ r535_gsp_rpc_push(struct nvkm_gsp *gsp, void *payload,
- 		while (remain_payload_size) {
- 			u32 size = min(remain_payload_size,
- 				       max_payload_size);
--			void *next;
+ static inline void arch_local_irq_disable(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
  
- 			next = r535_gsp_rpc_get(gsp, NV_VGPU_MSG_FUNCTION_CONTINUATION_RECORD, size);
- 			if (IS_ERR(next)) {
-@@ -675,6 +680,8 @@ r535_gsp_rpc_push(struct nvkm_gsp *gsp, void *payload,
- 		/* Wait for reply. */
- 		repv = r535_gsp_rpc_handle_reply(gsp, fn, policy, payload_size +
- 						 sizeof(*rpc));
-+		if (!IS_ERR(repv))
-+			kvfree(msg);
- 	} else {
- 		repv = r535_gsp_rpc_send(gsp, payload, policy, gsp_rpc_len);
- 	}
--- 
-2.39.5
-
+ static inline unsigned long arch_local_irq_save(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ 	return flags;
+ }
+ 
+ static inline void arch_local_irq_restore(unsigned long flags)
+ {
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
 
 
 
