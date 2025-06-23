@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-155999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8581AE44A0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9419EAE44B0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E22E01BC0E31
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2907B1789C4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23290256C6C;
-	Mon, 23 Jun 2025 13:38:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4019C252912;
+	Mon, 23 Jun 2025 13:38:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc1YDXSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fJkz66+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D576D25178C;
-	Mon, 23 Jun 2025 13:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F15EB25291F;
+	Mon, 23 Jun 2025 13:38:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685887; cv=none; b=TFe4qpwdzyuTEebMQZYMFwYkGiFsrqG5L+ydQm/aEfXrkgwn34OqWsv6yBX8WL7TM90jaabmNS7UmsLkYAaYmY3Hc54fMO1KKOVn1ItEHl//tSd9kF4mh8nPfAvyi0ad7AQ5GVdm8uQZzHfhZB5YHwhilnFv+M5yFELOoixqI0k=
+	t=1750685898; cv=none; b=P6NCoX3w05vxMllASEigiLoAISxQSihdVuvDZb+Dh4mpXP/vTf9ZTJbqg6L13xj5Buggqff5x7IKUq2jT/8oGJq2yT0AC9WCJ6EsNBryYxykf/OxESNSeLoexa9M6952RpBL7RebSI+bXN0NVM87pFBq0MXN2eiEv2KzsK43b+k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685887; c=relaxed/simple;
-	bh=hSKEES8so7vJWJsjhwalbG4Xku3rDYkU1qIOa6MJ/AI=;
+	s=arc-20240116; t=1750685898; c=relaxed/simple;
+	bh=c/lAOfKo3YMUOoO6oe4aeeDJsPe2Eb5k2tQoTjNquSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cahOzYo4mHgBudoB66HlIcnxG/A9gd7TR87KwMf2wISfJUtFnskQMwZTb1LcKncJAilPfPvwaPqs5ou2LPEi3YKnNq+5D3oa5+nnGpPjRXUSQuFGq+Bk9eP+HGzVbfetSMCrK0mpkiLcjf15715N6b9MXEn0UEGCdYr5aYEm+jU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc1YDXSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69E5DC4CEF1;
-	Mon, 23 Jun 2025 13:38:07 +0000 (UTC)
+	 MIME-Version; b=Oy4BbPt87zFMbRBuDdijY6UZCL8oVPAjqlTfTmdRtezWo9xxs2It21hNjNeaNlCm5g5Z53wRovfh1ovvoIUgP2FxlnhOJyNCtYy2coK4cMKv2YBlyrUHzSZCA1Cm8KhLmBkyo15oZ+7rdEB5tV0A1JvzD0iFkFoErVEtoONRB5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fJkz66+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85556C4CEEA;
+	Mon, 23 Jun 2025 13:38:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685887;
-	bh=hSKEES8so7vJWJsjhwalbG4Xku3rDYkU1qIOa6MJ/AI=;
+	s=korg; t=1750685897;
+	bh=c/lAOfKo3YMUOoO6oe4aeeDJsPe2Eb5k2tQoTjNquSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tc1YDXSh12YF0gl228EKFRn+0xZ0AtvFCdbU1uP+N3UKTQ/HJwQkKBJgmZYJczWJY
-	 Tr1e5N4c8zb/HZnkiCAhgl4y1Igg50cxgyiI4t6xGYzpFejlmbKgQ5Xyph60bjb0o4
-	 x4iZImNYoGSZIc4JQNxNrzr18FJ/JswKyzCLItKg=
+	b=fJkz66+MOz2LsHHW4m5HIg+qC1u4SFVk0etDancUr4FPfRP6T85dUZEBcyD1vEF6v
+	 4BLYwRKoSb5ATReKWpCMWXjc3njz0jKE10PwR0ugB2TN6JQu8uQlqJfpDCSIwffQVF
+	 P6CzZei8yzZ02dwLmaoUf4EApJ6q2iClbd8uXGkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.4 125/222] dm-mirror: fix a tiny race condition
-Date: Mon, 23 Jun 2025 15:07:40 +0200
-Message-ID: <20250623130615.859474145@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.4 126/222] ftrace: Fix UAF when lookup kallsym after ftrace disabled
+Date: Mon, 23 Jun 2025 15:07:41 +0200
+Message-ID: <20250623130615.889640514@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -64,54 +65,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
+commit f914b52c379c12288b7623bb814d0508dbe7481d upstream.
 
-There's a tiny race condition in dm-mirror. The functions queue_bio and
-write_callback grab a spinlock, add a bio to the list, drop the spinlock
-and wake up the mirrord thread that processes bios in the list.
+The following issue happens with a buggy module:
 
-It may be possible that the mirrord thread processes the bio just after
-spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
-wake-up is normally harmless, however if the device mapper device is
-unloaded just after the bio was processed, it may be possible that
-wakeup_mirrord(ms) uses invalid "ms" pointer.
+BUG: unable to handle page fault for address: ffffffffc05d0218
+PGD 1bd66f067 P4D 1bd66f067 PUD 1bd671067 PMD 101808067 PTE 0
+Oops: Oops: 0000 [#1] SMP KASAN PTI
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+RIP: 0010:sized_strscpy+0x81/0x2f0
+RSP: 0018:ffff88812d76fa08 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffffffc0601010 RCX: dffffc0000000000
+RDX: 0000000000000038 RSI: dffffc0000000000 RDI: ffff88812608da2d
+RBP: 8080808080808080 R08: ffff88812608da2d R09: ffff88812608da68
+R10: ffff88812608d82d R11: ffff88812608d810 R12: 0000000000000038
+R13: ffff88812608da2d R14: ffffffffc05d0218 R15: fefefefefefefeff
+FS:  00007fef552de740(0000) GS:ffff8884251c7000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffc05d0218 CR3: 00000001146f0000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ftrace_mod_get_kallsym+0x1ac/0x590
+ update_iter_mod+0x239/0x5b0
+ s_next+0x5b/0xa0
+ seq_read_iter+0x8c9/0x1070
+ seq_read+0x249/0x3b0
+ proc_reg_read+0x1b0/0x280
+ vfs_read+0x17f/0x920
+ ksys_read+0xf3/0x1c0
+ do_syscall_64+0x5f/0x2e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fix this bug by moving wakeup_mirrord inside the spinlock.
+The above issue may happen as follows:
+(1) Add kprobe tracepoint;
+(2) insmod test.ko;
+(3)  Module triggers ftrace disabled;
+(4) rmmod test.ko;
+(5) cat /proc/kallsyms; --> Will trigger UAF as test.ko already removed;
+ftrace_mod_get_kallsym()
+...
+strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+...
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+The problem is when a module triggers an issue with ftrace and
+sets ftrace_disable. The ftrace_disable is set when an anomaly is
+discovered and to prevent any more damage, ftrace stops all text
+modification. The issue that happened was that the ftrace_disable stops
+more than just the text modification.
+
+When a module is loaded, its init functions can also be traced. Because
+kallsyms deletes the init functions after a module has loaded, ftrace
+saves them when the module is loaded and function tracing is enabled. This
+allows the output of the function trace to show the init function names
+instead of just their raw memory addresses.
+
+When a module is removed, ftrace_release_mod() is called, and if
+ftrace_disable is set, it just returns without doing anything more. The
+problem here is that it leaves the mod_list still around and if kallsyms
+is called, it will call into this code and access the module memory that
+has already been freed as it will return:
+
+  strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+
+Where the "mod" no longer exists and triggers a UAF bug.
+
+Link: https://lore.kernel.org/all/20250523135452.626d8dcd@gandalf.local.home/
+
 Cc: stable@vger.kernel.org
+Fixes: aba4b5c22cba ("ftrace: Save module init functions kallsyms symbols for tracing")
+Link: https://lore.kernel.org/20250529111955.2349189-2-yebin@huaweicloud.com
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ kernel/trace/ftrace.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/md/dm-raid1.c
-+++ b/drivers/md/dm-raid1.c
-@@ -128,10 +128,9 @@ static void queue_bio(struct mirror_set
- 	spin_lock_irqsave(&ms->lock, flags);
- 	should_wake = !(bl->head);
- 	bio_list_add(bl, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -5855,9 +5855,10 @@ void ftrace_release_mod(struct module *m
+ 
+ 	mutex_lock(&ftrace_lock);
+ 
+-	if (ftrace_disabled)
+-		goto out_unlock;
 -
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
++	/*
++	 * To avoid the UAF problem after the module is unloaded, the
++	 * 'mod_map' resource needs to be released unconditionally.
++	 */
+ 	list_for_each_entry_safe(mod_map, n, &ftrace_mod_maps, list) {
+ 		if (mod_map->mod == mod) {
+ 			list_del_rcu(&mod_map->list);
+@@ -5866,6 +5867,9 @@ void ftrace_release_mod(struct module *m
+ 		}
+ 	}
  
- static void dispatch_bios(void *context, struct bio_list *bio_list)
-@@ -638,9 +637,9 @@ static void write_callback(unsigned long
- 	if (!ms->failures.head)
- 		should_wake = 1;
- 	bio_list_add(&ms->failures, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
- 
- static void do_write(struct mirror_set *ms, struct bio *bio)
++	if (ftrace_disabled)
++		goto out_unlock;
++
+ 	/*
+ 	 * Each module has its own ftrace_pages, remove
+ 	 * them from the list.
 
 
 
