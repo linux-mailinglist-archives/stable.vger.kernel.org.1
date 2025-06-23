@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D19CAE5147
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91B46AE53BE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE32A4A3448
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EAD24A86AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F334A1C5D46;
-	Mon, 23 Jun 2025 21:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17862222576;
+	Mon, 23 Jun 2025 21:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxPdDMqx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X2q9Ohp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1AD3C2E0;
-	Mon, 23 Jun 2025 21:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1AD3FB1B;
+	Mon, 23 Jun 2025 21:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714350; cv=none; b=AmbYo+NK8qmCnZwrcxJUf4Uf4KcSL0Qd+IFMeaikHbSBDYkLyQvgtFdI1jwvBmdqyFv8iVkFVbQBlbVm5ro+PO3IXU7X2BznstVWZ+SVOO5aL3DTwNX/gk0SkdrSCN02OClqmPbM/7uR8VHJUnqczXjbG59IPWRJCQl+SxKdpcc=
+	t=1750715770; cv=none; b=aam+D5rMGSDoO/iilj/LCENfGv4vMg9b3diwLDSPZz9D7u/ch3m1+fVD6Phl+XNcR03TDuyZBi3AXceUw1ROekpA+SxLU8sp/T3ik3HVl+32KH4+9pKo81I/1dxnBwr52K0j6103AW/kVIE6Cp2/djK12Jz1BS7XUARO/Zsz8dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714350; c=relaxed/simple;
-	bh=klkUarTT3Wd3W4AIl7AWtKC6SWraMO/dLLKsCkhhyDM=;
+	s=arc-20240116; t=1750715770; c=relaxed/simple;
+	bh=A76SDhBIuRD9zUB1SmLF16+dtD1k+dNu1luUcyS17O0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n6HFRtba1Mvh9cHT+tfuL86DQ55Be/WR7jwHTIuzdAvHuTR4eYQCOnV38wt+dEOXiteDhbAUOf/xnhlvaSUDh7TOMUbCuBvuPeZisTBRmZWuqdfgXnQ2NdCv5YryOSgfHVQBGCm2Ubfi39uyqpZQENwIeT+67l/d9aHkZEACC+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxPdDMqx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4975FC4CEEA;
-	Mon, 23 Jun 2025 21:32:30 +0000 (UTC)
+	 MIME-Version; b=rJHPi7ejND3lhnRU5shhndYb0PoU7C7ck6DL9YScbH2ahIIkQ+wN6Qwyw0kkNnmilqLt7w9O94M1oo92g9Cp/SCUJG4oKOfu0qz+FSdxc8RwMT339DeKf8oV6HZCwl4MTvEWSo0mzMycCZd8X0acCoJZTggojFj+Iipgj8vuEJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X2q9Ohp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61AC2C4CEEA;
+	Mon, 23 Jun 2025 21:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714350;
-	bh=klkUarTT3Wd3W4AIl7AWtKC6SWraMO/dLLKsCkhhyDM=;
+	s=korg; t=1750715770;
+	bh=A76SDhBIuRD9zUB1SmLF16+dtD1k+dNu1luUcyS17O0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FxPdDMqxCLg+w4i9qr7u0up1EQI3Z5qNuVpGIvviK0t4hKJp9oQ0GqKtWlqppyCGh
-	 i4g8QniSh6WOicJt0lx9HfMGyDswCXj0UkaFD2dntdQSC3fe0CVjducZ2HdjkO8wEA
-	 TTDthoP5v+igTUxrW3tLPjkLwH6KXLPksCMazu9g=
+	b=X2q9Ohp6pltGtjlo+PJ3kO0W3oKYOR8QssQFP6bx4JXYlALR754dATeKirWjd9lJv
+	 cE/ndoHp32wj3WDafT6axEZJUZGpgg9ghlprHEX1ccZX5YeDF1ZIv/hsXwfLylarDo
+	 L8G3c//aGzcDbVSiq1Uwf6ippZgHsF3mC9eIqx2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Alan Maguire <alan.maguire@oracle.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 385/592] wifi: mac80211_hwsim: Prevent tsf from setting if beacon is disabled
+Subject: [PATCH 6.12 206/414] libbpf/btf: Fix string handling to support multi-split BTF
 Date: Mon, 23 Jun 2025 15:05:43 +0200
-Message-ID: <20250623130709.600393053@linuxfoundation.org>
+Message-ID: <20250623130647.155869117@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit c575f5374be7a5c4be4acb9fe6be3a4669d94674 ]
+[ Upstream commit 4e29128a9acec2a622734844bedee013e2901bdf ]
 
-Setting tsf is meaningless if beacon is disabled, so check that beacon
-is enabled before setting tsf.
+libbpf handling of split BTF has been written largely with the
+assumption that multiple splits are possible, i.e. split BTF on top of
+split BTF on top of base BTF.  One area where this does not quite work
+is string handling in split BTF; the start string offset should be the
+base BTF string section length + the base BTF string offset.  This
+worked in the past because for a single split BTF with base the start
+string offset was always 0.
 
-Reported-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=064815c6cd721082a52a
-Tested-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Link: https://patch.msgid.link/tencent_3609AC2EFAAED68CA5A7E3C6D212D1C67806@qq.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250519165935.261614-2-alan.maguire@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ tools/lib/bpf/btf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index cf3e976471c61..6ca5d9d0fe532 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -1229,6 +1229,11 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
- 	/* MLD not supported here */
- 	u32 bcn_int = data->link_data[0].beacon_int;
- 	u64 delta = abs(tsf - now);
-+	struct ieee80211_bss_conf *conf;
-+
-+	conf = link_conf_dereference_protected(vif, data->link_data[0].link_id);
-+	if (conf && !conf->enable_beacon)
-+		return;
+diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
+index 27e7bfae953bd..4a486798fe4c0 100644
+--- a/tools/lib/bpf/btf.c
++++ b/tools/lib/bpf/btf.c
+@@ -995,7 +995,7 @@ static struct btf *btf_new_empty(struct btf *base_btf)
+ 	if (base_btf) {
+ 		btf->base_btf = base_btf;
+ 		btf->start_id = btf__type_cnt(base_btf);
+-		btf->start_str_off = base_btf->hdr->str_len;
++		btf->start_str_off = base_btf->hdr->str_len + base_btf->start_str_off;
+ 		btf->swapped_endian = base_btf->swapped_endian;
+ 	}
  
- 	/* adjust after beaconing with new timestamp at old TBTT */
- 	if (tsf > now) {
 -- 
 2.39.5
 
