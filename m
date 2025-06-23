@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-155464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDD4AE423F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D3A6EAE4241
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1688171CDC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94781177C40
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9F124BC0A;
-	Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0648124EF7F;
+	Mon, 23 Jun 2025 13:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVdGLbx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC64Jtc5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADB324DCF8;
-	Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B981F24E4C3;
+	Mon, 23 Jun 2025 13:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684494; cv=none; b=V3WHDCrDgmfEzYwVKthSk4R4FFEk56ecJddtz5XoqU2bCT+KuGlJwpAna0+xhInejJHYcGA1/mQG4epM9JRwfXE6pRf5ia9igXPVjKYM2rVh8eUPls2Bn4+zEmWylBZbb81GbJ/TUDa8BKztOLt/0gg1nHeJVdkv0YwAxnGUY2c=
+	t=1750684499; cv=none; b=KA+eX1qotU81gfGrYCJ+aEpcxgmyswxuGZZfzlVG1SpRE4qbH1z2OJlpuhm2WO/ibNIbfNcvO1C2c9xDTZfYzEcfk0SFhLFuL23OAdcJEJz6QrvohfMrW0CnRbC8csKyenJ0B+TksIKchiGEEGXfqwaXAcw+Zyisx0vGyc+lcis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684494; c=relaxed/simple;
-	bh=OkKFwvWqt1Ij3hsLJUu6gPSck9FC0H7ahNcMzoBUtJQ=;
+	s=arc-20240116; t=1750684499; c=relaxed/simple;
+	bh=0YqWQl8TuXrX3c5HXuytMN5AgJ+Qqy684D9QdWK6GW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O3GpYntqptpFA/Lf4izGMj/WMfHmkKnoN10ji5VvR4V07MG44g3K+g5wCvr/5EB9/cSxO20nKNMmGmgCQqI/UTD0J9LBky6aZzTE6ITfZCiCm9j38gRJX2KOxa3IVAroFNMSEmJ7Ku9UldDpVfekw05uH+T43XRo8ds3djfRp+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVdGLbx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D118C4CEEA;
-	Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
+	 MIME-Version; b=PfiiqYvt+dgKbA2u79DXShvEqiWTN0SgLchrKwlE9Dclkj1wy/JJSLQcaWtKD4AS0XkjU4GH2lmhU6XBfugqufop9whwqSiclM8yv0QylH7uWJWXD+ETlISZLlvQeyQhp6EcbjIiUISRd0nAT0HkK8FVRGtGbbbHJkBhi1QDDIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC64Jtc5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F22DC4CEEA;
+	Mon, 23 Jun 2025 13:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684494;
-	bh=OkKFwvWqt1Ij3hsLJUu6gPSck9FC0H7ahNcMzoBUtJQ=;
+	s=korg; t=1750684499;
+	bh=0YqWQl8TuXrX3c5HXuytMN5AgJ+Qqy684D9QdWK6GW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KVdGLbx6pcMYTje/6FlInojvgpz0axBFN5GPqlQQXENm0EXsSLNrKMRyORhwhOHRc
-	 zr6ICgTS++O4k3+j26QSVbjPxvqNlZtWt2IohPrs/HBtAKSIStlxTObe56AuVHbQ/e
-	 JAx1ove65E82jtsyNDf2puZZKTiH9PsAHzIPSSio=
+	b=dC64Jtc5fzanrcuIHjcyE4jpax/P0KD/f+TP2Xe62xqWqRcmmYiGTRDzEkuDudYc3
+	 nIgDU1YNIf185ehASyW1OY+8mlxhjyg+61VOGvGerameA1MQsX7uGXKB17EMWxVs5O
+	 Xu6Ym3/momqqHZI677gIWj+lniC72ccujNHRJzvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 091/592] media: uvcvideo: Fix deferred probing error
-Date: Mon, 23 Jun 2025 15:00:49 +0200
-Message-ID: <20250623130702.445710754@linuxfoundation.org>
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.15 092/592] arm64/mm: Close theoretical race where stale TLB entry remains valid
+Date: Mon, 23 Jun 2025 15:00:50 +0200
+Message-ID: <20250623130702.470096890@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,101 +65,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-commit 387e8939307192d5a852a2afeeb83427fa477151 upstream.
+commit 4b634918384c0f84c33aeb4dd9fd4c38e7be5ccb upstream.
 
-uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-have not yet been probed. This return code should be propagated to the
-caller of uvc_probe() to ensure that probing is retried when the required
-GPIOs become available.
+Commit 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with
+a parallel reclaim leaving stale TLB entries") describes a race that,
+prior to the commit, could occur between reclaim and operations such as
+mprotect() when using reclaim's tlbbatch mechanism. See that commit for
+details but the summary is:
 
-Currently, this error code is incorrectly converted to -ENODEV,
-causing some internal cameras to be ignored.
+"""
+Nadav Amit identified a theoritical race between page reclaim and
+mprotect due to TLB flushes being batched outside of the PTL being held.
 
-This commit fixes this issue by propagating the -EPROBE_DEFER error.
+He described the race as follows:
 
-Cc: stable@vger.kernel.org
-Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+	CPU0				CPU1
+	----				----
+					user accesses memory using RW PTE
+					[PTE now cached in TLB]
+	try_to_unmap_one()
+	==> ptep_get_and_clear()
+	==> set_tlb_ubc_flush_pending()
+					mprotect(addr, PROT_READ)
+					==> change_pte_range()
+					==> [ PTE non-present - no flush ]
+
+					user writes using cached RW PTE
+	...
+
+	try_to_unmap_flush()
+"""
+
+The solution was to insert flush_tlb_batched_pending() in mprotect() and
+friends to explcitly drain any pending reclaim TLB flushes. In the
+modern version of this solution, arch_flush_tlb_batched_pending() is
+called to do that synchronisation.
+
+arm64's tlbbatch implementation simply issues TLBIs at queue-time
+(arch_tlbbatch_add_pending()), eliding the trailing dsb(ish). The
+trailing dsb(ish) is finally issued in arch_tlbbatch_flush() at the end
+of the batch to wait for all the issued TLBIs to complete.
+
+Now, the Arm ARM states:
+
+"""
+The completion of the TLB maintenance instruction is guaranteed only by
+the execution of a DSB by the observer that performed the TLB
+maintenance instruction. The execution of a DSB by a different observer
+does not have this effect, even if the DSB is known to be executed after
+the TLB maintenance instruction is observed by that different observer.
+"""
+
+arch_tlbbatch_add_pending() and arch_tlbbatch_flush() conform to this
+requirement because they are called from the same task (either kswapd or
+caller of madvise(MADV_PAGEOUT)), so either they are on the same CPU or
+if the task was migrated, __switch_to() contains an extra dsb(ish).
+
+HOWEVER, arm64's arch_flush_tlb_batched_pending() is also implemented as
+a dsb(ish). But this may be running on a CPU remote from the one that
+issued the outstanding TLBIs. So there is no architectural gurantee of
+synchonization. Therefore we are still vulnerable to the theoretical
+race described in Commit 3ea277194daa ("mm, mprotect: flush TLB if
+potentially racing with a parallel reclaim leaving stale TLB entries").
+
+Fix this by flushing the entire mm in arch_flush_tlb_batched_pending().
+This aligns with what the other arches that implement the tlbbatch
+feature do.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 43b3dfdd0455 ("arm64: support batched/deferred tlb shootdown during page reclamation/migration")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250530152445.2430295-1-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ arch/arm64/include/asm/tlbflush.h |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2232,13 +2232,16 @@ static int uvc_probe(struct usb_interfac
- #endif
- 
- 	/* Parse the Video Class control descriptor. */
--	if (uvc_parse_control(dev) < 0) {
-+	ret = uvc_parse_control(dev);
-+	if (ret < 0) {
-+		ret = -ENODEV;
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
- 		goto error;
- 	}
- 
- 	/* Parse the associated GPIOs. */
--	if (uvc_gpio_parse(dev) < 0) {
-+	ret = uvc_gpio_parse(dev);
-+	if (ret < 0) {
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
- 		goto error;
- 	}
-@@ -2264,24 +2267,32 @@ static int uvc_probe(struct usb_interfac
- 	}
- 
- 	/* Register the V4L2 device. */
--	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-+	ret = v4l2_device_register(&intf->dev, &dev->vdev);
-+	if (ret < 0)
- 		goto error;
- 
- 	/* Scan the device for video chains. */
--	if (uvc_scan_device(dev) < 0)
-+	if (uvc_scan_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Initialize controls. */
--	if (uvc_ctrl_init_device(dev) < 0)
-+	if (uvc_ctrl_init_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Register video device nodes. */
--	if (uvc_register_chains(dev) < 0)
-+	if (uvc_register_chains(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	/* Register the media device node */
--	if (media_device_register(&dev->mdev) < 0)
-+	ret = media_device_register(&dev->mdev);
-+	if (ret < 0)
- 		goto error;
- #endif
- 	/* Save our data pointer in the interface data. */
-@@ -2315,7 +2326,7 @@ static int uvc_probe(struct usb_interfac
- error:
- 	uvc_unregister_video(dev);
- 	kref_put(&dev->ref, uvc_delete);
--	return -ENODEV;
-+	return ret;
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -323,13 +323,14 @@ static inline bool arch_tlbbatch_should_
  }
  
- static void uvc_disconnect(struct usb_interface *intf)
+ /*
+- * If mprotect/munmap/etc occurs during TLB batched flushing, we need to
+- * synchronise all the TLBI issued with a DSB to avoid the race mentioned in
+- * flush_tlb_batched_pending().
++ * If mprotect/munmap/etc occurs during TLB batched flushing, we need to ensure
++ * all the previously issued TLBIs targeting mm have completed. But since we
++ * can be executing on a remote CPU, a DSB cannot guarantee this like it can
++ * for arch_tlbbatch_flush(). Our only option is to flush the entire mm.
+  */
+ static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
+ {
+-	dsb(ish);
++	flush_tlb_mm(mm);
+ }
+ 
+ /*
 
 
 
