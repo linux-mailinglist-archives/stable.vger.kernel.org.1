@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F6DAE44B2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B33AE44A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 817623B869C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0D31BC253D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A1F7254AF5;
-	Mon, 23 Jun 2025 13:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C815E25291F;
+	Mon, 23 Jun 2025 13:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+S87aoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlxIIVg8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9C9253F30;
-	Mon, 23 Jun 2025 13:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857ED16419;
+	Mon, 23 Jun 2025 13:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685708; cv=none; b=gm41ScdDAkppc6dretDvQOYQQS7P/1UL+MLHuf9x7RH1kyjBgJwT/HkDuMXkeMq9EBTJwXj3h1xYINwIyekgY8Sl3ucFPHxZjccoZGK7CgUefLLpKDOpTHXLRyiV+nCzn5pVBzkK7gKFWy+ItfreCcQa01UEv+Qcppk71qt7dIY=
+	t=1750685900; cv=none; b=nbJddKlwVwjRND+lESKkeYOeGf6vUZMDDuJX5G7Rb+ZWmLgVA+NWQ5kCu6bZRCjgyBCSpqKw9azoCfFfZQKrFsoFxrDgbo6xAGW0Kf3/NvlrCNXLi90GtGuKX58GUHjYGim+AQosjn+PTu2sNjntHCRSLg/eFB4a+Tpw45PuhyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685708; c=relaxed/simple;
-	bh=9F9saG+n8PKWstulGJP0Z8nES/RzYJxx0tHggCnxWkQ=;
+	s=arc-20240116; t=1750685900; c=relaxed/simple;
+	bh=IWkGBORHTGRh2LB3BIwEHZIOdUHR4/ih0iMQq4Hhr34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kHKINRHIchE3w1pn7dTLAGjLOVxggiB0DBnD2m3yhyp8EDMLNI2zITPtD35KUP12it5Y9FwRC92dcsOr00twbOQypoUsnyiM8bMoQQax6+ZTub5aYdic/5sssYlY/n+rwD7zzF25jZWYybrV4NbsTUc4qWaYUbJkKcuZHEBOQr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+S87aoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BD4EC4CEEA;
-	Mon, 23 Jun 2025 13:35:08 +0000 (UTC)
+	 MIME-Version; b=rJnGTIfIcmaAVR5Exo//kbO00pmIlTrjX3QeocV5FSj92xvvmGLXodbGgJejZXJYf1xk0Q2MFbFOrfnqddOMlHwT/A5x9weJZ6jf1BJad/L7R3LIJYd7c+/tDKV2kCzISJQ4DUZDslCi9UslKMN0Lj0Utcu6TEPVi/6Fy/brXkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlxIIVg8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F64C4CEEA;
+	Mon, 23 Jun 2025 13:38:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685708;
-	bh=9F9saG+n8PKWstulGJP0Z8nES/RzYJxx0tHggCnxWkQ=;
+	s=korg; t=1750685900;
+	bh=IWkGBORHTGRh2LB3BIwEHZIOdUHR4/ih0iMQq4Hhr34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+S87aoLz1WM9juMQOtU42jI8uIpi4oV/2KxY4NbJz16LRYvw5xkeqMIn+moDxI4j
-	 BROD0q+6pv3ojSN5q5yBfmp6uNAHOUPOyzFNMO907igVE+xyUqVYcvTPosbnLwXCiU
-	 YhtLls8QNQONRKRq1tYD7lNpXhSxR5+avXbHE668=
+	b=zlxIIVg8i3GtRtdD0nrq4bNichXCWSXOZ7ItLBjd3XSaZOVJ3pcoW25dk4XSC0qmm
+	 qVcEY3jnwL0WNOVB8BqjZBP2roA/Cd4ufYFdozC2GRpoq1XzTk52VDuPe0lzKJFu8w
+	 N+Vo7Y0zjWxQLVr9GJgpdanjn2CPIkCRCJX59+Bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Chang <zhang971090220@gmail.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com,
+	KaFai Wan <mannkafai@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 254/592] media: nuvoton: npcm-video: Fix stuck due to no video signal error
+Subject: [PATCH 5.15 068/411] bpf: Avoid __bpf_prog_ret0_warn when jit fails
 Date: Mon, 23 Jun 2025 15:03:32 +0200
-Message-ID: <20250623130706.338899480@linuxfoundation.org>
+Message-ID: <20250623130635.040647825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Chang <zhang971090220@gmail.com>
+From: KaFai Wan <mannkafai@gmail.com>
 
-[ Upstream commit 497f1fb94759fa0c638f15c12b1ab3e586bccfcb ]
+[ Upstream commit 86bc9c742426a16b52a10ef61f5b721aecca2344 ]
 
-Fix the issue when start_frame and detect_resolution
-functions are executed at the same time, which may cause driver
-stops capturing due to status of no video signal error.
+syzkaller reported an issue:
 
-Signed-off-by: Michael Chang <zhang971090220@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+WARNING: CPU: 3 PID: 217 at kernel/bpf/core.c:2357 __bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Modules linked in:
+CPU: 3 UID: 0 PID: 217 Comm: kworker/u32:6 Not tainted 6.15.0-rc4-syzkaller-00040-g8bac8898fe39
+RIP: 0010:__bpf_prog_ret0_warn+0xa/0x20 kernel/bpf/core.c:2357
+Call Trace:
+ <TASK>
+ bpf_dispatcher_nop_func include/linux/bpf.h:1316 [inline]
+ __bpf_prog_run include/linux/filter.h:718 [inline]
+ bpf_prog_run include/linux/filter.h:725 [inline]
+ cls_bpf_classify+0x74a/0x1110 net/sched/cls_bpf.c:105
+ ...
+
+When creating bpf program, 'fp->jit_requested' depends on bpf_jit_enable.
+This issue is triggered because of CONFIG_BPF_JIT_ALWAYS_ON is not set
+and bpf_jit_enable is set to 1, causing the arch to attempt JIT the prog,
+but jit failed due to FAULT_INJECTION. As a result, incorrectly
+treats the program as valid, when the program runs it calls
+`__bpf_prog_ret0_warn` and triggers the WARN_ON_ONCE(1).
+
+Reported-by: syzbot+0903f6d7f285e41cdf10@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/6816e34e.a70a0220.254cdc.002c.GAE@google.com
+Fixes: fa9dd599b4da ("bpf: get rid of pure_initcall dependency to enable jits")
+Signed-off-by: KaFai Wan <mannkafai@gmail.com>
+Link: https://lore.kernel.org/r/20250526133358.2594176-1-mannkafai@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nuvoton/npcm-video.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ kernel/bpf/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/nuvoton/npcm-video.c b/drivers/media/platform/nuvoton/npcm-video.c
-index 7a9d8928ae401..3022fdcf66ec7 100644
---- a/drivers/media/platform/nuvoton/npcm-video.c
-+++ b/drivers/media/platform/nuvoton/npcm-video.c
-@@ -863,7 +863,6 @@ static void npcm_video_detect_resolution(struct npcm_video *video)
- 	struct regmap *gfxi = video->gfx_regmap;
- 	unsigned int dispst;
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index d7dbca573df31..1ded3eb492b8e 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1909,7 +1909,7 @@ struct bpf_prog *bpf_prog_select_runtime(struct bpf_prog *fp, int *err)
+ 	/* In case of BPF to BPF calls, verifier did all the prep
+ 	 * work with regards to JITing, etc.
+ 	 */
+-	bool jit_needed = false;
++	bool jit_needed = fp->jit_requested;
  
--	video->v4l2_input_status = V4L2_IN_ST_NO_SIGNAL;
- 	det->width = npcm_video_hres(video);
- 	det->height = npcm_video_vres(video);
- 
-@@ -892,12 +891,16 @@ static void npcm_video_detect_resolution(struct npcm_video *video)
- 		clear_bit(VIDEO_RES_CHANGING, &video->flags);
- 	}
- 
--	if (det->width && det->height)
-+	if (det->width && det->height) {
- 		video->v4l2_input_status = 0;
--
--	dev_dbg(video->dev, "Got resolution[%dx%d] -> [%dx%d], status %d\n",
--		act->width, act->height, det->width, det->height,
--		video->v4l2_input_status);
-+		dev_dbg(video->dev, "Got resolution[%dx%d] -> [%dx%d], status %d\n",
-+			act->width, act->height, det->width, det->height,
-+			video->v4l2_input_status);
-+	} else {
-+		video->v4l2_input_status = V4L2_IN_ST_NO_SIGNAL;
-+		dev_err(video->dev, "Got invalid resolution[%dx%d]\n", det->width,
-+			det->height);
-+	}
- }
- 
- static int npcm_video_set_resolution(struct npcm_video *video,
+ 	if (fp->bpf_func)
+ 		goto finalize;
 -- 
 2.39.5
 
