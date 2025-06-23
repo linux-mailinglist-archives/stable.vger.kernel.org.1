@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED14DAE55F4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87A46AE5598
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC08D3B4148
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318E44C50D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E83B7228CA9;
-	Mon, 23 Jun 2025 22:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D9B225413;
+	Mon, 23 Jun 2025 22:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bw5D0KHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dM4JltMa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1AA1227EB9;
-	Mon, 23 Jun 2025 22:13:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686BB2248B5;
+	Mon, 23 Jun 2025 22:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716825; cv=none; b=Sr138R7AS4431H12sS3EL013pKIM4ANCkFZEOmjx7oajNHh7Cj6z8HXAfpxfsH7yyJ0b3PhUL8ZlC6wMOFplEYY5b/0YL2Z8ZwFHBL+7NdHBABgfxQ9hzMXWSTvjRDznPtz6A6vFIeOyvMMfMPNjF+jDiZzxVmjyBY1gyTqWGsY=
+	t=1750716701; cv=none; b=AoVPrBXYgnUPITCiNucNVl63J8KiU6ldDRHIgd4UwQucUeBwksdvIldPy3IABR6tZB/S9/3/uufBvAyFzkCKxi9sIOr4Dcxwbnk5SunZScniqANWYW0L3W0tbRX+AYsOXYImqVON3h92ycR4WB8dLzwc7kehKmuyIVDVGo6tZtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716825; c=relaxed/simple;
-	bh=1oSKOQgkVpKHALlNKNabz2RWQ8dT+jxJ46AgDrG42uU=;
+	s=arc-20240116; t=1750716701; c=relaxed/simple;
+	bh=R5IsFHtTKyBpg5g1Yf640heol9+h3xl1ZiHstqDpSAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ufco/W46oUivs0Lkg6RRfSlLT2YPRvI0jeM9EShwe26kTaRiQSUxkntiTJdeeJ/kpRn45hkmvRath6g+bDTQTfJheQtGrfGpzl20D32kWU2LmR7o9BIEElwmW3DG8kiZ9K1c4+Bjv73kPeJuqREpM4NxqHyN/mN6oVLQw5NSL0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bw5D0KHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D49C4CEED;
-	Mon, 23 Jun 2025 22:13:45 +0000 (UTC)
+	 MIME-Version; b=IvZT0fr1hvZ+FFUNFnbYZv9KejUgL0N2hR4lsnwsKfXlRNz0gpVnADpA1C2j2uY+UvxqBeVYSTr3WCKpIaSLzVHE/+3PY3G1FSMJgRUb6k6NDs82LkBM1GZd9c6hAXM/mRPddLVFNg/vmNQFwie64HDllHPvNu4kIyDq2XtcZmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dM4JltMa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFCCC4CEEA;
+	Mon, 23 Jun 2025 22:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716825;
-	bh=1oSKOQgkVpKHALlNKNabz2RWQ8dT+jxJ46AgDrG42uU=;
+	s=korg; t=1750716700;
+	bh=R5IsFHtTKyBpg5g1Yf640heol9+h3xl1ZiHstqDpSAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bw5D0KHehgvKIKT45+53N+hNDWMwAro5A/E7Df1JrlHSY3JGl1MLfwXvSjgb8gj2N
-	 2AOFAM+rrW6n2AJyZ1fv63o1xc9LSoEFaFySvK27Hf2WFNPIuunT4DKiBwJn6msF7A
-	 L0PyM57nYlEsv6MdeMndeT5V+CAxTHJQEGxuuHBM=
+	b=dM4JltMai+dnUcgc/ywJkzGAArsZqFzUaq8o9F/U2TS1kedasWqsb5H5JsE2DLmkx
+	 t8JmkgqHaa/2ls7OYIXxzLtQNxdGmqF6gfh7lz3Zmb4g3bMwfKEpLgpAhT6d4fuYDo
+	 9Q1TmYS7Wyvrp/4aaYfznUWqYJmzWyT7BAIXH+X4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tudor Ambarus <tudor.ambarus@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Luo Gengkun <luogengkun@huaweicloud.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 586/592] mtd: spinand: Use more specific naming for the (quad IO) read from cache ops
+Subject: [PATCH 6.6 283/290] perf/core: Fix WARN in perf_cgroup_switch()
 Date: Mon, 23 Jun 2025 15:09:04 +0200
-Message-ID: <20250623130714.372861453@linuxfoundation.org>
+Message-ID: <20250623130635.432438537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,195 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miquel Raynal <miquel.raynal@bootlin.com>
+From: Luo Gengkun <luogengkun@huaweicloud.com>
 
-[ Upstream commit 9c6911072c6e8b128ccdb7dd00efa13c47513074 ]
+[ Upstream commit 3172fb986666dfb71bf483b6d3539e1e587fa197 ]
 
-SPI operations have been initially described through macros implicitly
-implying the use of a single SPI SDR bus. Macros for supporting dual and
-quad I/O transfers have been added on top, generally inspired by vendor
-naming, followed by DTR operations. Soon we might see octal
-and even octal DTR operations as well (including the opcode byte).
+There may be concurrency between perf_cgroup_switch and
+perf_cgroup_event_disable. Consider the following scenario: after a new
+perf cgroup event is created on CPU0, the new event may not trigger
+a reprogramming, causing ctx->is_active to be 0. In this case, when CPU1
+disables this perf event, it executes __perf_remove_from_context->
+list _del_event->perf_cgroup_event_disable on CPU1, which causes a race
+with perf_cgroup_switch running on CPU0.
 
-Let's clarify what the macro really mean by describing the expected bus
-topology in the (quad IO) read from cache macro names.
+The following describes the details of this concurrency scenario:
 
-Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Stable-dep-of: dba90f5a79c1 ("mtd: spinand: winbond: Prevent unsupported frequencies on dual/quad I/O variants")
+CPU0						CPU1
+
+perf_cgroup_switch:
+   ...
+   # cpuctx->cgrp is not NULL here
+   if (READ_ONCE(cpuctx->cgrp) == NULL)
+   	return;
+
+						perf_remove_from_context:
+						   ...
+						   raw_spin_lock_irq(&ctx->lock);
+						   ...
+						   # ctx->is_active == 0 because reprogramm is not
+						   # tigger, so CPU1 can do __perf_remove_from_context
+						   # for CPU0
+						   __perf_remove_from_context:
+						         perf_cgroup_event_disable:
+							    ...
+							    if (--ctx->nr_cgroups)
+							    ...
+
+   # this warning will happened because CPU1 changed
+   # ctx.nr_cgroups to 0.
+   WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
+
+[peterz: use guard instead of goto unlock]
+Fixes: db4a835601b7 ("perf/core: Set cgroup in CPU contexts for new cgroup events")
+Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250604033924.3914647-3-luogengkun@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/spi/alliancememory.c | 2 +-
- drivers/mtd/nand/spi/gigadevice.c     | 8 ++++----
- drivers/mtd/nand/spi/micron.c         | 2 +-
- drivers/mtd/nand/spi/paragon.c        | 2 +-
- drivers/mtd/nand/spi/skyhigh.c        | 2 +-
- drivers/mtd/nand/spi/winbond.c        | 6 +++---
- drivers/mtd/nand/spi/xtx.c            | 2 +-
- include/linux/mtd/spinand.h           | 6 +++---
- 8 files changed, 15 insertions(+), 15 deletions(-)
+ kernel/events/core.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mtd/nand/spi/alliancememory.c b/drivers/mtd/nand/spi/alliancememory.c
-index 66df707c8370b..0f9522009843b 100644
---- a/drivers/mtd/nand/spi/alliancememory.c
-+++ b/drivers/mtd/nand/spi/alliancememory.c
-@@ -17,7 +17,7 @@
- #define AM_STATUS_ECC_MAX_CORRECTED	(3 << 4)
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index e9e785542b9f4..873b17545717c 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -171,6 +171,19 @@ static void perf_ctx_unlock(struct perf_cpu_context *cpuctx,
+ 	raw_spin_unlock(&cpuctx->ctx.lock);
+ }
  
- static SPINAND_OP_VARIANTS(read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
-index 22c13a727f0f4..3ce79ae1bac4e 100644
---- a/drivers/mtd/nand/spi/gigadevice.c
-+++ b/drivers/mtd/nand/spi/gigadevice.c
-@@ -24,7 +24,7 @@
- #define GD5FXGQ4UXFXXG_STATUS_ECC_UNCOR_ERROR	(7 << 4)
++typedef struct {
++	struct perf_cpu_context *cpuctx;
++	struct perf_event_context *ctx;
++} class_perf_ctx_lock_t;
++
++static inline void class_perf_ctx_lock_destructor(class_perf_ctx_lock_t *_T)
++{ perf_ctx_unlock(_T->cpuctx, _T->ctx); }
++
++static inline class_perf_ctx_lock_t
++class_perf_ctx_lock_constructor(struct perf_cpu_context *cpuctx,
++				struct perf_event_context *ctx)
++{ perf_ctx_lock(cpuctx, ctx); return (class_perf_ctx_lock_t){ cpuctx, ctx }; }
++
+ #define TASK_TOMBSTONE ((void *)-1L)
  
- static SPINAND_OP_VARIANTS(read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-@@ -32,7 +32,7 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ static bool is_kernel_event(struct perf_event *event)
+@@ -866,7 +879,13 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	if (READ_ONCE(cpuctx->cgrp) == cgrp)
+ 		return;
  
- static SPINAND_OP_VARIANTS(read_cache_variants_f,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_3A_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_3A_1S_1S_2S_OP(0, 1, NULL, 0),
-@@ -40,7 +40,7 @@ static SPINAND_OP_VARIANTS(read_cache_variants_f,
- 		SPINAND_PAGE_READ_FROM_CACHE_3A_1S_1S_1S_OP(0, 0, NULL, 0));
+-	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
++	guard(perf_ctx_lock)(cpuctx, cpuctx->task_ctx);
++	/*
++	 * Re-check, could've raced vs perf_remove_from_context().
++	 */
++	if (READ_ONCE(cpuctx->cgrp) == NULL)
++		return;
++
+ 	perf_ctx_disable(&cpuctx->ctx, true);
  
- static SPINAND_OP_VARIANTS(read_cache_variants_1gq5,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-@@ -48,7 +48,7 @@ static SPINAND_OP_VARIANTS(read_cache_variants_1gq5,
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
+@@ -884,7 +903,6 @@ static void perf_cgroup_switch(struct task_struct *task)
+ 	ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
  
- static SPINAND_OP_VARIANTS(read_cache_variants_2gq5,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 4, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 4, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/drivers/mtd/nand/spi/micron.c b/drivers/mtd/nand/spi/micron.c
-index aec09df353eb4..f92c28b8d5571 100644
---- a/drivers/mtd/nand/spi/micron.c
-+++ b/drivers/mtd/nand/spi/micron.c
-@@ -35,7 +35,7 @@
- 	(CFG_OTP_ENABLE | MICRON_MT29F2G01ABAGD_CFG_OTP_STATE)
+ 	perf_ctx_enable(&cpuctx->ctx, true);
+-	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
+ }
  
- static SPINAND_OP_VARIANTS(quadio_read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/drivers/mtd/nand/spi/paragon.c b/drivers/mtd/nand/spi/paragon.c
-index dc84e70bb1323..b5ea248618036 100644
---- a/drivers/mtd/nand/spi/paragon.c
-+++ b/drivers/mtd/nand/spi/paragon.c
-@@ -22,7 +22,7 @@
- 
- 
- static SPINAND_OP_VARIANTS(read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/drivers/mtd/nand/spi/skyhigh.c b/drivers/mtd/nand/spi/skyhigh.c
-index c179a067db809..ac73f43e9365c 100644
---- a/drivers/mtd/nand/spi/skyhigh.c
-+++ b/drivers/mtd/nand/spi/skyhigh.c
-@@ -17,7 +17,7 @@
- #define SKYHIGH_CONFIG_PROTECT_EN		BIT(1)
- 
- static SPINAND_OP_VARIANTS(read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 4, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 4, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
-index fbe819c972b68..b2297699ff4fa 100644
---- a/drivers/mtd/nand/spi/winbond.c
-+++ b/drivers/mtd/nand/spi/winbond.c
-@@ -24,9 +24,9 @@
-  */
- 
- static SPINAND_OP_VARIANTS(read_cache_dtr_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_DTR_OP(0, 8, NULL, 0, 80 * HZ_PER_MHZ),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4D_4D_OP(0, 8, NULL, 0, 80 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_4D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2D_2D_OP(0, 4, NULL, 0, 80 * HZ_PER_MHZ),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_2D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
-@@ -37,7 +37,7 @@ static SPINAND_OP_VARIANTS(read_cache_dtr_variants,
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0, 54 * HZ_PER_MHZ));
- 
- static SPINAND_OP_VARIANTS(read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 2, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/drivers/mtd/nand/spi/xtx.c b/drivers/mtd/nand/spi/xtx.c
-index 4e38b2e0ca732..abbbcd594c2c1 100644
---- a/drivers/mtd/nand/spi/xtx.c
-+++ b/drivers/mtd/nand/spi/xtx.c
-@@ -23,7 +23,7 @@
- #define XT26XXXD_STATUS_ECC_UNCOR_ERROR     (2)
- 
- static SPINAND_OP_VARIANTS(read_cache_variants,
--		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
-+		SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_4S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_2S_2S_OP(0, 1, NULL, 0),
- 		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_2S_OP(0, 1, NULL, 0),
-diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
-index e02454f2f7c9e..392ea3ef73605 100644
---- a/include/linux/mtd/spinand.h
-+++ b/include/linux/mtd/spinand.h
-@@ -151,19 +151,19 @@
- 		   SPI_MEM_DTR_OP_DATA_IN(len, buf, 4),			\
- 		   SPI_MEM_OP_MAX_FREQ(freq))
- 
--#define SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(addr, ndummy, buf, len)	\
-+#define SPINAND_PAGE_READ_FROM_CACHE_1S_4S_4S_OP(addr, ndummy, buf, len) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xeb, 1),				\
- 		   SPI_MEM_OP_ADDR(2, addr, 4),				\
- 		   SPI_MEM_OP_DUMMY(ndummy, 4),				\
- 		   SPI_MEM_OP_DATA_IN(len, buf, 4))
- 
--#define SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP_3A(addr, ndummy, buf, len) \
-+#define SPINAND_PAGE_READ_FROM_CACHE_3A_1S_4S_4S_OP(addr, ndummy, buf, len) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xeb, 1),				\
- 		   SPI_MEM_OP_ADDR(3, addr, 4),				\
- 		   SPI_MEM_OP_DUMMY(ndummy, 4),				\
- 		   SPI_MEM_OP_DATA_IN(len, buf, 4))
- 
--#define SPINAND_PAGE_READ_FROM_CACHE_QUADIO_DTR_OP(addr, ndummy, buf, len, freq) \
-+#define SPINAND_PAGE_READ_FROM_CACHE_1S_4D_4D_OP(addr, ndummy, buf, len, freq) \
- 	SPI_MEM_OP(SPI_MEM_OP_CMD(0xed, 1),				\
- 		   SPI_MEM_DTR_OP_ADDR(2, addr, 4),			\
- 		   SPI_MEM_DTR_OP_DUMMY(ndummy, 4),			\
+ static int perf_cgroup_ensure_storage(struct perf_event *event,
 -- 
 2.39.5
 
