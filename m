@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848C3AE54D4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5981DAE52B0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21D11168E7F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D706C4A67D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D18D221DAE;
-	Mon, 23 Jun 2025 22:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B692288CB;
+	Mon, 23 Jun 2025 21:46:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sN79RNKG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTsSKQrp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE8E419049B;
-	Mon, 23 Jun 2025 22:05:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C734F16D9BF;
+	Mon, 23 Jun 2025 21:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716301; cv=none; b=jY0FAWeOpGeqaFmlc5VRf5NS3Q9yys6sicSe9hScrbDJuoDYKlSLl6HmR5UedvPSnmX/+azOyILBurXWX4GiDj1vo12/+L159CWNoE5M/jcTR971ysU5ELqvVoWZyV16pulyRTOgF/DII/2fuIMCXeTDvhYGKhvp+Z9EOUK/tVo=
+	t=1750715161; cv=none; b=OAYq/LFEBqtcUPi9wd+kIkozynwAQh7xLB0AVq1cipcfGhcjtwvuGexKyOxF1CoZNaWluqiqwXPAWOJeOo1X2JeBG2Oh2KwlQbrvNYhNgRT1uFTE3uYAxDhL561boBrBje8Ccq0hl1do/nUeeuNnFuCQAeyxWW94jqfRzAr2kG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716301; c=relaxed/simple;
-	bh=kLyADrxaoi5mTi0FgBOzdjO6bjRP6qQ6mEIYNEUDRLk=;
+	s=arc-20240116; t=1750715161; c=relaxed/simple;
+	bh=ccqojST6/beiD3HDL7ns9vR9JOjDqRl+TcwvwYdT1Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E01Fv5XciNYG5CelQuq+jxDZUyv6rcQxUsurgu+iJIpaBHSe33h5pFnlYhBplnxTRh/UWnYob9L3jwz8d44ifAbzOicZyOL9PqtOO7GmKcJc0QuG9rNCmXS6dNN9JWRu82uBej7awBs2KmHQ53IIfuzaP5QE1hVvGdp1vHWF1zI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sN79RNKG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53226C4CEEA;
-	Mon, 23 Jun 2025 22:05:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ie9dDBzw46YRIUxGtfO3pxkgXzU61OqOQ+NJiKpAGdhYLZmS4c4NO5IBz4ZkZAZDwSAzUeX9VyxRZkL8HyDaQoPUicpF8GVxxJP//SzxUrxHdRDT4GK76C2Iy5b+zSiw2lqpVwL172s1rRPNbZ9gFuI/99oSx6EXQ2UsxTyFBjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTsSKQrp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7CCC4CEEA;
+	Mon, 23 Jun 2025 21:46:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716301;
-	bh=kLyADrxaoi5mTi0FgBOzdjO6bjRP6qQ6mEIYNEUDRLk=;
+	s=korg; t=1750715161;
+	bh=ccqojST6/beiD3HDL7ns9vR9JOjDqRl+TcwvwYdT1Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sN79RNKGlMyGQd5pGwnJRw5SsGan/2df/3kcQDz3OYRmQo5AREGQKm59Ew5BjEYca
-	 iOzVZRYgNL25D0YGafOpUs+yBfpH/yxGvSg+BY9IidcQ4fqVfWhK7U2xovgI2Li2x7
-	 h8BtzO4oZXD0zNZgBCtXCgzDzjHgB01rZPvaU6mg=
+	b=CTsSKQrpyRbjiatGY3vbl4hMahnADDdSfeLAT8/t0ZcbHuGDdWuqfT5KkPPA2C6WH
+	 Yxm/G16x8QB72WUkyR8bn1owAULiC7Fc5aYZ7AHUtKiTCetrMl4703ZJgvEBaDiHFH
+	 X6p8PSZOqm3MNxGPYa2JBXRCPVJvQgPkHn99v4/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 320/411] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
+Subject: [PATCH 6.6 203/290] platform/x86: dell_rbu: Stop overwriting data buffer
 Date: Mon, 23 Jun 2025 15:07:44 +0200
-Message-ID: <20250623130641.690458736@linuxfoundation.org>
+Message-ID: <20250623130633.038205237@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
+[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
 
-The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
-propagate their error values back to the stack instead of silently
-ignoring those.
+The dell_rbu driver will use memset() to clear the data held by each
+packet when it is no longer needed (when the driver is unloaded, the
+packet size is changed, etc).
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+The amount of memory that is cleared (before this patch) is the normal
+packet size. However, the last packet in the list may be smaller.
+
+Fix this to only clear the memory actually used by each packet, to prevent
+it from writing past the end of data buffer.
+
+Because the packet data buffers are allocated with __get_free_pages() (in
+page-sized increments), this bug could only result in a buffer being
+overwritten when a packet size larger than one page is used. The only user
+of the dell_rbu module should be the Dell BIOS update program, which uses
+a packet size of 4096, so no issues should be seen without the patch, it
+just blocks the possiblity.
+
+Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/platform/x86/dell/dell_rbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 3a9a3a1d5d4be..9c8ed5a03a825 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -468,16 +468,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
- {
- 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct gpio_chip *chip = range->gc;
-+	int ret;
- 
- 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
- 		offset, range->name, offset, input ? "input" : "output");
- 
- 	if (input)
--		armada_37xx_gpio_direction_input(chip, offset);
-+		ret = armada_37xx_gpio_direction_input(chip, offset);
- 	else
--		armada_37xx_gpio_direction_output(chip, offset, 0);
-+		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
- 
--	return 0;
-+	return ret;
- }
- 
- static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 4d2b5f6dd513f..fee20866b41e4 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -322,7 +322,7 @@ static void packet_empty_list(void)
+ 		 * zero out the RBU packet memory before freeing
+ 		 * to make sure there are no stale RBU packets left in memory
+ 		 */
+-		memset(newpacket->data, 0, rbu_data.packetsize);
++		memset(newpacket->data, 0, newpacket->length);
+ 		set_memory_wb((unsigned long)newpacket->data,
+ 			1 << newpacket->ordernum);
+ 		free_pages((unsigned long) newpacket->data,
 -- 
 2.39.5
 
