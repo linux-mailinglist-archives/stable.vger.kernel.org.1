@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A01AE52B1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C2D2AE53D9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A83C81B65AE8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 34F741B660B7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 958201FECBA;
-	Mon, 23 Jun 2025 21:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83EA0222581;
+	Mon, 23 Jun 2025 21:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ziNztmCA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1U/bNnj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F71D42056;
-	Mon, 23 Jun 2025 21:46:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B613FB1B;
+	Mon, 23 Jun 2025 21:56:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715166; cv=none; b=I33yj3wBlZDgXyRnpGmjVJE2aomUfap3w2hiFOw2Z0js5Pvtck/249xMbl+tk0GFbSbWHfK9A/EZLlFxJ3o4rCkuyV4qXsdSH8KAA0XphlKmNyBbxZfBVVGN11uSfdkB/N9JeS+PzcbugOaRDqrPXJ4aQhD3AQgyS/qWdbLm9gQ=
+	t=1750715773; cv=none; b=uxbJe1VgMZ97ymPKNkJlC9TZ91jY4FIESCqGsHXYOYcGAuo7wOfeQx9XGF9sxEvSRBbkIBntHjymL3twYuBl0IfmhyGJKALj+bwAx0caXINq42CXB1VVCergFY2Hn0IW+3MPMVSrILzaHT3PXox6k8Tp9jZFVNhWxaO26IK295Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715166; c=relaxed/simple;
-	bh=f3Vd+Hyc9AsoddlAIl7zrKATaWug3DL/cJAEscl+1f4=;
+	s=arc-20240116; t=1750715773; c=relaxed/simple;
+	bh=2NWD/f368jNiEthahlyNJcUi3X/KqshjhN0FwP0XE8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FPQbsVAMUQMRJCkeAMimwTZi8n6sUpm7G1ombb3KHHUJb70cDNBxDfRj9PMlSLljmspqQqyil+3Dz6jEv2rnyhtd3rGFO66tw6ix+edLWFX0wirrpFJvAYqvMaV7vDWj+ycMg2djLRaQN2isfotRd20d39rhHI52BPebvuQHri8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ziNztmCA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD609C4CEEA;
-	Mon, 23 Jun 2025 21:46:05 +0000 (UTC)
+	 MIME-Version; b=pQ43/4hCL+dkJb3VPaK6L8JT1aiqgwpYScy/O7hEiJk+X/EaXOtSAX8oIr4yOh5TNHlKBoncCaTqkUfkalEr+9TyV52H+hDVSMUPDrS5EF6q8hqtX4grcY//AiketjyHubcA9seqgrZTfaizCHeAAUOqk0cd5gOdDgBUenIPuhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1U/bNnj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC904C4CEEA;
+	Mon, 23 Jun 2025 21:56:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715166;
-	bh=f3Vd+Hyc9AsoddlAIl7zrKATaWug3DL/cJAEscl+1f4=;
+	s=korg; t=1750715773;
+	bh=2NWD/f368jNiEthahlyNJcUi3X/KqshjhN0FwP0XE8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ziNztmCA7yiiIu5E6Hf1FzhbBR+Sz+htz7Os6InBHSywGAKVt4K5NgaDEMWFimmkc
-	 CqbVa1wXBvYqqls0cc+Bt+HXZhvEQG9cIC8wuLfCy7/fx08R2RSgdqQAXaPZpUfW1o
-	 B0gPQjTRPeN3Lvc8qmfPZWH7BXI5xYHBSJTRG3Yc=
+	b=1U/bNnj2/cjHjclm+66l3JVoh81YU+9XU5YcBHZEz6kF5gbhPadd+Z8L7f3wC59Ty
+	 lBFaYMFfPDMPcm9h4C2pxLJw9SGI1ToUoAjlXZMCF1+QwSgoPnpTwu00HMEjtisXU8
+	 7zmrnrvgmwKUPwSQkBUnnrHC5dSSUZGoflc+MJiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 279/355] platform: Add Surface platform directory
-Date: Mon, 23 Jun 2025 15:08:00 +0200
-Message-ID: <20250623130635.169604976@linuxfoundation.org>
+	M Nikhil <nikh1092@linux.ibm.com>,
+	Nihar Panda <niharp@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 220/290] scsi: s390: zfcp: Ensure synchronous unit_add
+Date: Mon, 23 Jun 2025 15:08:01 +0200
+Message-ID: <20250623130633.545777897@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 1e3a2bc89de44ec34153ab1c1056346b51def250 ]
+commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
 
-It may make sense to split the Microsoft Surface hardware platform
-drivers out to a separate subdirectory, since some of it may be shared
-between ARM and x86 in the future (regarding devices like the Surface
-Pro X).
+Improve the usability of the unit_add sysfs attribute by ensuring that
+the associated FCP LUN scan processing is completed synchronously.  This
+enables configuration tooling to consistently determine the end of the
+scan process to allow for serialization of follow-on actions.
 
-Further, newer Surface devices will require additional platform drivers
-for fundamental support (mostly regarding their embedded controller),
-which may also warrant this split from a size perspective.
+While the scan process associated with unit_add typically completes
+synchronously, it is deferred to an asynchronous background process if
+unit_add is used before initial remote port scanning has completed.  This
+occurs when unit_add is used immediately after setting the associated FCP
+device online.
 
-This commit introduces a new platform/surface subdirectory for the
-Surface device family, with subsequent commits moving existing Surface
-drivers over from platform/x86.
+To ensure synchronous unit_add processing, wait for remote port scanning
+to complete before initiating the FCP LUN scan.
 
-A new MAINTAINERS entry is added for this directory. Patches to files in
-this directory will be taken up by the platform-drivers-x86 team (i.e.
-Hans de Goede and Mark Gross) after they have been reviewed by
-Maximilian Luz.
-
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20201009141128.683254-2-luzmaximilian@gmail.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Stable-dep-of: 61ce04601e0d ("platform/x86: dell_rbu: Fix list usage")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
+Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- MAINTAINERS                       |  9 +++++++++
- drivers/platform/Kconfig          |  2 ++
- drivers/platform/Makefile         |  1 +
- drivers/platform/surface/Kconfig  | 14 ++++++++++++++
- drivers/platform/surface/Makefile |  5 +++++
- 5 files changed, 31 insertions(+)
- create mode 100644 drivers/platform/surface/Kconfig
- create mode 100644 drivers/platform/surface/Makefile
+ drivers/s390/scsi/zfcp_sysfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cdb5f1f22f4c4..beaa5f6294bd2 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -11633,6 +11633,15 @@ F:	drivers/scsi/smartpqi/smartpqi*.[ch]
- F:	include/linux/cciss*.h
- F:	include/uapi/linux/cciss*.h
+--- a/drivers/s390/scsi/zfcp_sysfs.c
++++ b/drivers/s390/scsi/zfcp_sysfs.c
+@@ -450,6 +450,8 @@ static ssize_t zfcp_sysfs_unit_add_store
+ 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
+ 		return -EINVAL;
  
-+MICROSOFT SURFACE HARDWARE PLATFORM SUPPORT
-+M:	Hans de Goede <hdegoede@redhat.com>
-+M:	Mark Gross <mgross@linux.intel.com>
-+M:	Maximilian Luz <luzmaximilian@gmail.com>
-+L:	platform-driver-x86@vger.kernel.org
-+S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git
-+F:	drivers/platform/surface/
++	flush_work(&port->rport_work);
 +
- MICROSOFT SURFACE PRO 3 BUTTON DRIVER
- M:	Chen Yu <yu.c.chen@intel.com>
- L:	platform-driver-x86@vger.kernel.org
-diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
-index 971426bb4302c..18fc6a08569eb 100644
---- a/drivers/platform/Kconfig
-+++ b/drivers/platform/Kconfig
-@@ -13,3 +13,5 @@ source "drivers/platform/chrome/Kconfig"
- source "drivers/platform/mellanox/Kconfig"
- 
- source "drivers/platform/olpc/Kconfig"
-+
-+source "drivers/platform/surface/Kconfig"
-diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
-index 6fda58c021ca4..4de08ef4ec9d0 100644
---- a/drivers/platform/Makefile
-+++ b/drivers/platform/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_MIPS)		+= mips/
- obj-$(CONFIG_OLPC_EC)		+= olpc/
- obj-$(CONFIG_GOLDFISH)		+= goldfish/
- obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
-+obj-$(CONFIG_SURFACE_PLATFORMS)	+= surface/
-diff --git a/drivers/platform/surface/Kconfig b/drivers/platform/surface/Kconfig
-new file mode 100644
-index 0000000000000..b67926ece95fb
---- /dev/null
-+++ b/drivers/platform/surface/Kconfig
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Microsoft Surface Platform-Specific Drivers
-+#
-+
-+menuconfig SURFACE_PLATFORMS
-+	bool "Microsoft Surface Platform-Specific Device Drivers"
-+	default y
-+	help
-+	  Say Y here to get to see options for platform-specific device drivers
-+	  for Microsoft Surface devices. This option alone does not add any
-+	  kernel code.
-+
-+	  If you say N, all options in this submenu will be skipped and disabled.
-diff --git a/drivers/platform/surface/Makefile b/drivers/platform/surface/Makefile
-new file mode 100644
-index 0000000000000..3700f9e84299e
---- /dev/null
-+++ b/drivers/platform/surface/Makefile
-@@ -0,0 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for linux/drivers/platform/surface
-+# Microsoft Surface Platform-Specific Drivers
-+#
--- 
-2.39.5
-
+ 	retval = zfcp_unit_add(port, fcp_lun);
+ 	if (retval)
+ 		return retval;
 
 
 
