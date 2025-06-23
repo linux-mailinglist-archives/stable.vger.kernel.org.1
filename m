@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-156899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C4C1AE5196
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5540CAE52EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 49ACA4422EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 30ADF3A904F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 938D5221734;
-	Mon, 23 Jun 2025 21:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B601C5D46;
+	Mon, 23 Jun 2025 21:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Le0VC0Bh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RSUklDp/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516821EE7C6;
-	Mon, 23 Jun 2025 21:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DEAC3FD4;
+	Mon, 23 Jun 2025 21:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714539; cv=none; b=WqPn4DcdFiwHrZAbnaywarQsrPjmkysiGOP6xBYajx60BrWUqo2jgQ6O3VZL3SILQfAfr6fQ/CMJ4Vcvr/uc+BmKqlIMtDP3hhbxNSFTyyjspC2NH/ioHfbg+VBtvV8GgczX7D3qpHwniXDtvjFAc8GlLwWpFUPSgDGKyAxDe80=
+	t=1750715277; cv=none; b=h/rmM6mHVKvk/S/t/gTkjLcV3FdNuf2a1baPcyPwfQemGLrLi648WhnkNpCSiigeDpJJ2IdvH4orYlFNS128sJkGPm+OPdecQg9sM7tbTE8NeIc6PCqzcQ8n78k9ImV5ce0t0c+joN15olMq/AX6/QQkrcA/uWC6WY59rOg6ukU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714539; c=relaxed/simple;
-	bh=WwXGbE7IIb9Y3RGPt9jcRG5JxZfRzzoemDYcaRr1zbI=;
+	s=arc-20240116; t=1750715277; c=relaxed/simple;
+	bh=RSDFTBeg47yFIsa0eusvFfTA84MB8d5zWh5cTS7nxmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h/lKnNJQvydVuPyqhsy6r+y0xfFrz9eS6scq5PTnN7EIrJAq8QdZ9Dz0n+nwrMu5ositR+vCz8YeaheqlfoTV4RwlizsDRXMN1851ok0eRtGRrvdJ9uuM8Z1OQhft+W313rEOC4s5Ku8Fn15dfgSzI87bOhjMP4wW6wIESRlhVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Le0VC0Bh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98AD2C4CEEA;
-	Mon, 23 Jun 2025 21:35:38 +0000 (UTC)
+	 MIME-Version; b=YgUiR9N/D9FTmcAw9OO55u4OAF+dp7/dslxrkcRgxQtMk0YPzg3U9G7nl/sneIPzK3rflJrtF3+52Qe9TKWN2DrF81uAlSf49hndyR8O/hdgxf1Y/7tNNqRtv2Y7KkKvDiVfj1+v0Jzb7ctzHImlsGeLBHVZW421IlRLCF+7C64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RSUklDp/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE0CEC4CEEA;
+	Mon, 23 Jun 2025 21:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714538;
-	bh=WwXGbE7IIb9Y3RGPt9jcRG5JxZfRzzoemDYcaRr1zbI=;
+	s=korg; t=1750715277;
+	bh=RSDFTBeg47yFIsa0eusvFfTA84MB8d5zWh5cTS7nxmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Le0VC0BhJOsNIYGkK/66w2ZY1Y6I3JHBoI7MpmwtJIqtVAe34spoup5unk4LBzSdG
-	 avAzcH6lnAe8FSzs9kzGu4vng07s6U7PK37pk7DZj+h7sOteh2USYPmj1OwIjQcvqZ
-	 aDovN2+r0PU+cn6kG7Ojm+L5OIYpP57XjH3MJ768=
+	b=RSUklDp/51jNhFygkWwRB1SHTlJwK/PSZOYMNpTN+oeExw1McVNSiRuvaNWtCpE/e
+	 dN1RrnUsrNhtQ1uTQSWquTwuh82h6FxbrdX1ht+rSWNF8PuXdqiDOO+8ugsdsnHRzg
+	 4gP99ZO2GLKc/nMCPRBCKO9i2qjd1KCL/xShZbEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Chandrakanthan <quic_haric@quicinc.com>,
-	Nicolas Escande <nico.escande@gmail.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 421/592] wifi: ath12k: fix link valid field initialization in the monitor Rx
-Date: Mon, 23 Jun 2025 15:06:19 +0200
-Message-ID: <20250623130710.450384528@linuxfoundation.org>
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 236/411] fbdev: Fix fb_set_var to prevent null-ptr-deref in fb_videomode_to_var
+Date: Mon, 23 Jun 2025 15:06:20 +0200
+Message-ID: <20250623130639.597274634@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,49 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hari Chandrakanthan <quic_haric@quicinc.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 2826139f9295821fe2b049318a1cc057ec003131 ]
+commit 05f6e183879d9785a3cdf2f08a498bc31b7a20aa upstream.
 
-Currently, the link_valid field is not initialized in the monitor Rx path.
-This can result in random values for the link_valid and link_id leads to
-undefined behaviour in mac80211. Therefore, initialize the link_valid
-field in the monitor Rx path.
+If fb_add_videomode() in fb_set_var() fails to allocate memory for
+fb_videomode, later it may lead to a null-ptr dereference in
+fb_videomode_to_var(), as the fb_info is registered while not having the
+mode in modelist that is expected to be there, i.e. the one that is
+described in fb_info->var.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+================================================================
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
+Call Trace:
+ display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
+ fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
+ resize_screen drivers/tty/vt/vt.c:1176 [inline]
+ vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
+ fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
+ fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
+ do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
+ fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+================================================================
 
-Signed-off-by: Hari Chandrakanthan <quic_haric@quicinc.com>
-Tested-by: Nicolas Escande <nico.escande@gmail.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
-Link: https://patch.msgid.link/20250324062518.2752822-2-quic_periyasa@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The reason is that fb_info->var is being modified in fb_set_var(), and
+then fb_videomode_to_var() is called. If it fails to add the mode to
+fb_info->modelist, fb_set_var() returns error, but does not restore the
+old value of fb_info->var. Restore fb_info->var on failure the same way
+it is done earlier in the function.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/dp_mon.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/video/fbdev/core/fbmem.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp_mon.c b/drivers/net/wireless/ath/ath12k/dp_mon.c
-index 600d97169f241..826c9723a7a68 100644
---- a/drivers/net/wireless/ath/ath12k/dp_mon.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_mon.c
-@@ -2097,6 +2097,8 @@ static void ath12k_dp_mon_rx_deliver_msdu(struct ath12k *ar, struct napi_struct
- 	bool is_mcbc = rxcb->is_mcbc;
- 	bool is_eapol_tkip = rxcb->is_eapol;
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1064,8 +1064,10 @@ fb_set_var(struct fb_info *info, struct
+ 	    !list_empty(&info->modelist))
+ 		ret = fb_add_videomode(&mode, &info->modelist);
  
-+	status->link_valid = 0;
-+
- 	if ((status->encoding == RX_ENC_HE) && !(status->flag & RX_FLAG_RADIOTAP_HE) &&
- 	    !(status->flag & RX_FLAG_SKIP_MONITOR)) {
- 		he = skb_push(msdu, sizeof(known));
--- 
-2.39.5
-
+-	if (ret)
++	if (ret) {
++		info->var = old_var;
+ 		return ret;
++	}
+ 
+ 	event.info = info;
+ 	event.data = &mode;
 
 
 
