@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61B9EAE56B2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 463FFAE55C1
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9EE54A4F6B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE4F21790B2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 050A62192EC;
-	Mon, 23 Jun 2025 22:19:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FC5227EB9;
+	Mon, 23 Jun 2025 22:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FAAS8DNk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxH4xale"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64CE19E7F9;
-	Mon, 23 Jun 2025 22:19:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741B2227EA7;
+	Mon, 23 Jun 2025 22:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717165; cv=none; b=fjmkDUVH7+4P6g+JXFVnN3Sz3WBifrT3uQzHN6Xy/q1oiLyK+vVcK8HpjWKu+cmny9DT2Suyo6NIQo6WdClNhw1DzbcnhwMqWKT8rAN6/FJARKIAVgDOB+yYUHo7r6D3q5OrplGGNaaqRuBIwjEOmpjg+nBbTuHkhOfK8HR/fhg=
+	t=1750716786; cv=none; b=FJ2J0QKq3rtFQ6d6I+/llBTKiI0dtDpqsuQWxyNUBNQsW0D1vNB3XfLm1H8YZ+BAO2rmOgY8qAtiAL/cwImoYa1U9i/rqxHBBO3sb46/cQuQC5EcJ5TVCUemgZ/G1E1r7Ld9A0dVuNKTbFdeKb7OM2YzN9AwZXfNcrzJn5+Lx8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717165; c=relaxed/simple;
-	bh=wQG268i3ViXo5kcAZqIZhWnUIb0Hg8kHoe53g6X3CkE=;
+	s=arc-20240116; t=1750716786; c=relaxed/simple;
+	bh=Fe9jTjFLPcbxyiH2Zw7zswBElq4tikRVfHDtwm/eWkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LZ4Xgn36SdhuECEXxgHjS1aaKjWGF1A0EakiFOvDuI7Ne7UALRrxTWKq9FVP5KOfa/7LIw6mHYkDM+DDAvycmknWq+pfgSf0jqEI4gdN+HY05wuJsjGpQrrmdn+9R9HWWprEcTdc09bR0levD70bVgXh9GMk+hVbW2uVa3MAprM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FAAS8DNk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5054DC4CEEA;
-	Mon, 23 Jun 2025 22:19:25 +0000 (UTC)
+	 MIME-Version; b=fEifkoSaiahljCOa6IADqVE4RwESqwXSdCamIPQN71sje2YtPjQTkYLRTUZofrdf6yX/MDV2ym831KHG3CVXLk55c02SWy99FoJZNYCehxz4HGkeBSLBXvkrCpXUYWfml6zqqc1qKVzF8bAM/EKIjLVIDdHGrE4LvFx5Wo1U1Qo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxH4xale; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF44C4CEEA;
+	Mon, 23 Jun 2025 22:13:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717165;
-	bh=wQG268i3ViXo5kcAZqIZhWnUIb0Hg8kHoe53g6X3CkE=;
+	s=korg; t=1750716786;
+	bh=Fe9jTjFLPcbxyiH2Zw7zswBElq4tikRVfHDtwm/eWkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FAAS8DNkfmb/szrysWprSVHTFr1Dk7Y1CkVDYGUFAmUVyzoHlId58vy/GlYOtl7/C
-	 RuvZQFNJrySTcNJa9I6DKce0ygyAo7OUiq/gFl6b9eNoNyddemKJhV+A4zM/FuGSEY
-	 nQ38WC/aOZ/dSxDV+Lg7X45d0tStmAS/Xn6kvKHQ=
+	b=lxH4xalekCtfCAWhtVrZNaJb3aVlSS8AYXlNqJLYSp/4Y2odw4CvnaivqlsjDUoVg
+	 XmBRDSkRDDmZ+aKacPQ5JBa6mU4NHZ4YNA+gaf3T1ZF7aGuiXVdJFaZwP87/EBq5W5
+	 IJtMy6mP+mmsW5G4aMqFjaPuhVEz6L8zymzzwmqQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghun Han <kkamagui@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
+	Kees Cook <kees@kernel.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 374/508] ACPICA: fix acpi operand cache leak in dswstate.c
+Subject: [PATCH 6.12 282/414] fbcon: Make sure modelist not set on unregistered console
 Date: Mon, 23 Jun 2025 15:06:59 +0200
-Message-ID: <20250623130654.532675614@linuxfoundation.org>
+Message-ID: <20250623130649.070731066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,112 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghun Han <kkamagui@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 156fd20a41e776bbf334bd5e45c4f78dfc90ce1c ]
+[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
 
-ACPICA commit 987a3b5cf7175916e2a4b6ea5b8e70f830dfe732
+It looks like attempting to write to the "store_modes" sysfs node will
+run afoul of unregistered consoles:
 
-I found an ACPI cache leak in ACPI early termination and boot continuing case.
+UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
+index -1 is out of range for type 'fb_info *[32]'
+...
+ fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
+ fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
+ store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
+ dev_attr_store+0x55/0x80 drivers/base/core.c:2439
 
-When early termination occurs due to malicious ACPI table, Linux kernel
-terminates ACPI function and continues to boot process. While kernel terminates
-ACPI function, kmem_cache_destroy() reports Acpi-Operand cache leak.
+static struct fb_info *fbcon_registered_fb[FB_MAX];
+...
+static signed char con2fb_map[MAX_NR_CONSOLES];
+...
+static struct fb_info *fbcon_info_from_console(int console)
+...
+        return fbcon_registered_fb[con2fb_map[console]];
 
-Boot log of ACPI operand cache leak is as follows:
->[    0.585957] ACPI: Added _OSI(Module Device)
->[    0.587218] ACPI: Added _OSI(Processor Device)
->[    0.588530] ACPI: Added _OSI(3.0 _SCP Extensions)
->[    0.589790] ACPI: Added _OSI(Processor Aggregator Device)
->[    0.591534] ACPI Error: Illegal I/O port address/length above 64K: C806E00000004002/0x2 (20170303/hwvalid-155)
->[    0.594351] ACPI Exception: AE_LIMIT, Unable to initialize fixed events (20170303/evevent-88)
->[    0.597858] ACPI: Unable to start the ACPI Interpreter
->[    0.599162] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
->[    0.601836] kmem_cache_destroy Acpi-Operand: Slab cache still has objects
->[    0.603556] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.12.0-rc5 #26
->[    0.605159] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS virtual_box 12/01/2006
->[    0.609177] Call Trace:
->[    0.610063]  ? dump_stack+0x5c/0x81
->[    0.611118]  ? kmem_cache_destroy+0x1aa/0x1c0
->[    0.612632]  ? acpi_sleep_proc_init+0x27/0x27
->[    0.613906]  ? acpi_os_delete_cache+0xa/0x10
->[    0.617986]  ? acpi_ut_delete_caches+0x3f/0x7b
->[    0.619293]  ? acpi_terminate+0xa/0x14
->[    0.620394]  ? acpi_init+0x2af/0x34f
->[    0.621616]  ? __class_create+0x4c/0x80
->[    0.623412]  ? video_setup+0x7f/0x7f
->[    0.624585]  ? acpi_sleep_proc_init+0x27/0x27
->[    0.625861]  ? do_one_initcall+0x4e/0x1a0
->[    0.627513]  ? kernel_init_freeable+0x19e/0x21f
->[    0.628972]  ? rest_init+0x80/0x80
->[    0.630043]  ? kernel_init+0xa/0x100
->[    0.631084]  ? ret_from_fork+0x25/0x30
->[    0.633343] vgaarb: loaded
->[    0.635036] EDAC MC: Ver: 3.0.0
->[    0.638601] PCI: Probing PCI hardware
->[    0.639833] PCI host bridge to bus 0000:00
->[    0.641031] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
-> ... Continue to boot and log is omitted ...
+If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
+as callers of fbcon_info_from_console() are trying to compare against
+existing "info" pointers, so error handling should kick in correctly.
 
-I analyzed this memory leak in detail and found acpi_ds_obj_stack_pop_and_
-delete() function miscalculated the top of the stack. acpi_ds_obj_stack_push()
-function uses walk_state->operand_index for start position of the top, but
-acpi_ds_obj_stack_pop_and_delete() function considers index 0 for it.
-Therefore, this causes acpi operand memory leak.
-
-This cache leak causes a security threat because an old kernel (<= 4.9) shows
-memory locations of kernel functions in stack dump. Some malicious users
-could use this information to neutralize kernel ASLR.
-
-I made a patch to fix ACPI operand cache leak.
-
-Link: https://github.com/acpica/acpica/commit/987a3b5c
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/4999480.31r3eYUQgx@rjwysocki.net
+Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dsutils.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dsutils.c b/drivers/acpi/acpica/dsutils.c
-index fb9ed5e1da89d..2bdae8a25e084 100644
---- a/drivers/acpi/acpica/dsutils.c
-+++ b/drivers/acpi/acpica/dsutils.c
-@@ -668,6 +668,8 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
- 	union acpi_parse_object *arguments[ACPI_OBJ_NUM_OPERANDS];
- 	u32 arg_count = 0;
- 	u32 index = walk_state->num_operands;
-+	u32 prev_num_operands = walk_state->num_operands;
-+	u32 new_num_operands;
- 	u32 i;
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 07d127110ca4c..c98786996c647 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -117,9 +117,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
  
- 	ACPI_FUNCTION_TRACE_PTR(ds_create_operands, first_arg);
-@@ -696,6 +698,7 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+ static struct fb_info *fbcon_info_from_console(int console)
+ {
++	signed char fb;
+ 	WARN_CONSOLE_UNLOCKED();
  
- 	/* Create the interpreter arguments, in reverse order */
- 
-+	new_num_operands = index;
- 	index--;
- 	for (i = 0; i < arg_count; i++) {
- 		arg = arguments[index];
-@@ -720,7 +723,11 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
- 	 * pop everything off of the operand stack and delete those
- 	 * objects
- 	 */
--	acpi_ds_obj_stack_pop_and_delete(arg_count, walk_state);
-+	walk_state->num_operands = i;
-+	acpi_ds_obj_stack_pop_and_delete(new_num_operands, walk_state);
+-	return fbcon_registered_fb[con2fb_map[console]];
++	fb = con2fb_map[console];
++	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
++		return NULL;
 +
-+	/* Restore operand count */
-+	walk_state->num_operands = prev_num_operands;
++	return fbcon_registered_fb[fb];
+ }
  
- 	ACPI_EXCEPTION((AE_INFO, status, "While creating Arg %u", index));
- 	return_ACPI_STATUS(status);
+ static int logo_lines;
 -- 
 2.39.5
 
