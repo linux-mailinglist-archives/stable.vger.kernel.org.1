@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-157462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B72AE5413
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB162AE5279
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A40863AFD18
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 09C4518844C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2B5220686;
-	Mon, 23 Jun 2025 21:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A1021F5820;
+	Mon, 23 Jun 2025 21:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK4q1+1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnwkWRHq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACF1270838;
-	Mon, 23 Jun 2025 21:58:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA5092AEE4;
+	Mon, 23 Jun 2025 21:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715924; cv=none; b=p/doNTUV1mSTJqszRVuyj0X1JQikxXEfW6gg6F2q7kKzgX/hjanmXc/tHJIW2j44L+8DjsKdBYwAxDgUjjFp5zvhdA5FQLibrAKGVeTaUmWxfuFYK5GSpSMwR/9g1oFVJtVP+fY86J4iJEaPcYouCRRcqXN93o4N/Ra7n4smIOU=
+	t=1750715033; cv=none; b=hAi9vgPR/0B/u+ewz7+pipJdRVn3Hjh47htNUCarZnm9+n+v0l/28KaE1JfjJvpxJUlr/BpoYEsRDbPoJBWNsGcHT4oI3v+8fgOCRuwv1vd+hA554HpEW3NN1GiddPpYidfUB0oZDTu0gtwNZUyIkqEUCgCHxh9CEJvUwcMdpfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715924; c=relaxed/simple;
-	bh=JDTCA6z+QIQsaIB1vTvpWze+bDRbZMXFkyng3oSvHu8=;
+	s=arc-20240116; t=1750715033; c=relaxed/simple;
+	bh=LWC5hipTMAYZkvYhIWm3i8FYr/iqV5UkqypO3jsVCRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XUODbXlmhzX7rfr1iXmpi6ppZPaD0+0/1OUVXXFipI6dBfbDrAjqmdNpa9JRGvzm53ogUUBtJGzvKbDIT0x0WPj4dbHVE+zvrdvrCw3Jyj0qEXjKiP0BIqwxEIHIkPodCDrD/TJjwzhw6WYRJzs4xRP95LrPBCZ2f2PhhHKCC9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK4q1+1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4286AC4CEEA;
-	Mon, 23 Jun 2025 21:58:44 +0000 (UTC)
+	 MIME-Version; b=IdQh9a6/tyhnpJUJ+cs5PK9WGc0m0VNq8DLfc7TyR4UizWsa4pDqz6o4SCUHx5I+bJ1DK8umTIdRfwynCNshio8sVZOio0yj+v4DpR0iqfID5ipJCHXw2XptAjVCK70KxnRcXO2HFjy2M8p1MEFIXkjCh+hUvQIs0g48y91rSHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnwkWRHq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5413EC4CEEA;
+	Mon, 23 Jun 2025 21:43:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715924;
-	bh=JDTCA6z+QIQsaIB1vTvpWze+bDRbZMXFkyng3oSvHu8=;
+	s=korg; t=1750715033;
+	bh=LWC5hipTMAYZkvYhIWm3i8FYr/iqV5UkqypO3jsVCRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VK4q1+1oz2T/YIPKR7aQWYG+0z5rblvjjy2/j4xqah0k30svyh9fqQYWC7cegPGYd
-	 9iNB5hgYzBC2XLaK+AOx63NYoxSgRHLXC8Z+XwlARGGG0mGZwFNrWuZCpmn053+YU4
-	 U3LZux6Bu1+1bLYECYe9O/jPAjuuc+VPdMrdXrYk=
+	b=YnwkWRHqTQXuzeJonqU1+26uQlASvFMSzxhJmeZrlWJQxK2x0DMomqIHl3x5JY0M8
+	 fjk/Adj3va3aRmGLuM6z7Q+ZG0hfVPGOJ+LzrGavTHkC01tCacFCCA3cuC/HLIPL2z
+	 L0qL50wYTLDWB0/Y/+kgL5ul9dafP/uBCc5WEIhE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 491/592] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+	Sergio Perez Gonzalez <sperezglz@gmail.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 248/355] net: macb: Check return value of dma_set_mask_and_coherent()
 Date: Mon, 23 Jun 2025 15:07:29 +0200
-Message-ID: <20250623130712.111369662@linuxfoundation.org>
+Message-ID: <20250623130634.206977368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Sergio Perez Gonzalez <sperezglz@gmail.com>
 
-commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
+[ Upstream commit 3920a758800762917177a6b5ab39707d8e376fe6 ]
 
-Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
-noises after runtime-PM suspend.  Disable the codec runtime PM as a
-workaround.
+Issue flagged by coverity. Add a safety check for the return value
+of dma_set_mask_and_coherent, go to a safe exit if it returns error.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://scan7.scan.coverity.com/#/project-view/53936/11354?selectedIssue=1643754
+Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://patch.msgid.link/20250526032034.84900-1-sperezglz@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/cadence/macb_main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2276,6 +2276,8 @@ static const struct snd_pci_quirk power_
- 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	/* Dell ALC3271 */
- 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
-+	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
- 	{}
- };
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index 74f3cabf8ed64..2a103be1c9d8a 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -4571,7 +4571,11 @@ static int macb_probe(struct platform_device *pdev)
  
+ #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+ 	if (GEM_BFEXT(DAW64, gem_readl(bp, DCFG6))) {
+-		dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
++		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
++		if (err) {
++			dev_err(&pdev->dev, "failed to set DMA mask\n");
++			goto err_out_free_netdev;
++		}
+ 		bp->hw_dma_cap |= HW_DMA_CAP_64B;
+ 	}
+ #endif
+-- 
+2.39.5
+
 
 
 
