@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 307F9AE446A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6953AE4474
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB204189CD2E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28BDC189D7E1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD16A257453;
-	Mon, 23 Jun 2025 13:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FEF252910;
+	Mon, 23 Jun 2025 13:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apBIK6da"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBbx60nL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89581257440;
-	Mon, 23 Jun 2025 13:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2705D2528F7;
+	Mon, 23 Jun 2025 13:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685784; cv=none; b=cyOagQHLWS8O2KXEL+BXa+OVQ2+Akq6v1qIIpes3zM0XVLZxtJkVZVc8fVUqOM6ik0FVgucmf/mMzLJ8AJe91HKXTG+sBgZPeD3uNO4RQFMwH+5d9RgQ28PfrwzgbXeJZNp99ClWAdZGk5X7HL2KJdbMOHrQ51Fe6MSIbiGylWQ=
+	t=1750685805; cv=none; b=G4I3lABJaeKMesK0wYJbri7T8v2lIy/RU4HPEdb+3BFzT3vl6VH9qNwbHreQqEDt30+l56/B27ddVd3exiMhme08McWetg1q0FnBOg8fjR2giUpA1ylfRXt5eKZldPETrioehsxD0UeHbtTHsAydyMvewLSjpyfVMzh9sgF5DBw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685784; c=relaxed/simple;
-	bh=rg45NlsAUTxSAJPpF7YXL7zxK0qXVNjQrNrNZ0/zqz8=;
+	s=arc-20240116; t=1750685805; c=relaxed/simple;
+	bh=0owHNhFPBLS3P08uXbimrt69yarYkNN9DVbYiWMkhOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OZRuBMUgMwc9FwOkcmkxy+CjkF3MRMMDChegFB0uVCdms64CuKDSFg3VVt23fHQNsjZ9n55/oyTIPhdCQTHboOU/yBNIOeg+QuTJVuup4vR1y3v4MYO4mzWt0QRYpTz+JYJXIvTkRZXup6spfmAQasp2jnDOGCmQ5RSZOf4nurk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apBIK6da; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD50C4CEEA;
-	Mon, 23 Jun 2025 13:36:23 +0000 (UTC)
+	 MIME-Version; b=lWCkrgt4VEGES98+sDPnWInYuHNQ/hOHQvesbhbDlOQ7abGWc/cf3csdZlOxzeeEJmeJHCUl1CeoLiscABeu/jo43wdsMwyccsfL89BIWGwAaz4+knqXT/1kHzc5LQqBb06DFB4Aa4GmwzFGUAy3L2MZuBA4x4CzCahqJqkBci0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBbx60nL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AE0C4CEEA;
+	Mon, 23 Jun 2025 13:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685784;
-	bh=rg45NlsAUTxSAJPpF7YXL7zxK0qXVNjQrNrNZ0/zqz8=;
+	s=korg; t=1750685805;
+	bh=0owHNhFPBLS3P08uXbimrt69yarYkNN9DVbYiWMkhOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apBIK6da/DmEPLnZzaZHkAEcELSyM/y3N9xHfr45WzL7i0dqMqVMKKW8Tjd5XtBMV
-	 nrKjmtB0Nz9YLNNKSih+C4npuFC+W4noAmECi/Gwb90CGH3XqMuDKbjJzVr6jggZwc
-	 hnUYFZAvtF1sTZAxrZ+XKPEKvcjmt0Ajy9YwdTuA=
+	b=iBbx60nLozySd4VrsQRKZYPgXr2+qG5vR0CCVUxvAjxWAIFdwRll1de/0MCstZDu1
+	 TaflG4Aq1dowmwnk1frY0SyrjtdEyMeXlpx1GOIHNA1VaWsYKeg2b4KOfq1PmhaJwp
+	 mwEFWDCtZdINgQMNYqnIDruwHxQa3feHXmLEToBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.6 026/290] media: nxp: imx8-isi: better handle the m2m usage_count
-Date: Mon, 23 Jun 2025 15:04:47 +0200
-Message-ID: <20250623130627.771952686@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Jai Luthra <jai.luthra@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 027/290] media: i2c: ds90ub913: Fix returned fmt from .set_fmt()
+Date: Mon, 23 Jun 2025 15:04:48 +0200
+Message-ID: <20250623130627.803263816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
 References: <20250623130626.910356556@linuxfoundation.org>
@@ -66,92 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 910efa649076be9c2e1326059830327cf4228cf6 upstream.
+commit ef205273132bdc9bcfa1540eef8105475a453300 upstream.
 
-Currently, if streamon/streamoff calls are imbalanced we can either end up
-with a negative ISI m2m usage_count (if streamoff() is called more times
-than streamon()) in which case we'll not be able to restart the ISI pipe
-next time, or the usage_count never gets to 0 and the pipe is never
-switched off.
+When setting the sink pad's stream format, set_fmt accidentally changes
+the returned format's code to 'outcode', while the purpose is to only
+use the 'outcode' for the propagated source stream format.
 
-To avoid that, add a 'streaming' flag to mxc_isi_m2m_ctx_queue_data and use it
-in the streamon/streamoff to avoid incrementing/decrementing the usage_count
-uselessly, if called multiple times from the same context.
-
-Fixes: cf21f328fcafac ("media: nxp: Add i.MX8 ISI driver")
+Fixes: c158d0d4ff15 ("media: i2c: add DS90UB913 driver")
 Cc: stable@vger.kernel.org
-Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241023085643.978729-1-laurentiu.palcu@oss.nxp.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Jai Luthra <jai.luthra@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/media/i2c/ds90ub913.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-@@ -43,6 +43,7 @@ struct mxc_isi_m2m_ctx_queue_data {
- 	struct v4l2_pix_format_mplane format;
- 	const struct mxc_isi_format_info *info;
- 	u32 sequence;
-+	bool streaming;
- };
+--- a/drivers/media/i2c/ds90ub913.c
++++ b/drivers/media/i2c/ds90ub913.c
+@@ -453,10 +453,10 @@ static int ub913_set_fmt(struct v4l2_sub
+ 	if (!fmt)
+ 		return -EINVAL;
  
- struct mxc_isi_m2m_ctx {
-@@ -486,15 +487,18 @@ static int mxc_isi_m2m_streamon(struct f
- 				enum v4l2_buf_type type)
- {
- 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
- 	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
- 	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
- 	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
- 	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
- 	struct mxc_isi_m2m *m2m = ctx->m2m;
- 	bool bypass;
+-	format->format.code = finfo->outcode;
 -
- 	int ret;
+ 	*fmt = format->format;
  
-+	if (q->streaming)
-+		return 0;
-+
- 	mutex_lock(&m2m->lock);
- 
- 	if (m2m->usage_count == INT_MAX) {
-@@ -547,6 +551,8 @@ static int mxc_isi_m2m_streamon(struct f
- 		goto unchain;
- 	}
- 
-+	q->streaming = true;
-+
- 	return 0;
- 
- unchain:
-@@ -569,10 +575,14 @@ static int mxc_isi_m2m_streamoff(struct
- 				 enum v4l2_buf_type type)
- {
- 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
- 	struct mxc_isi_m2m *m2m = ctx->m2m;
- 
- 	v4l2_m2m_ioctl_streamoff(file, fh, type);
- 
-+	if (!q->streaming)
-+		return 0;
-+
- 	mutex_lock(&m2m->lock);
- 
- 	/*
-@@ -598,6 +608,8 @@ static int mxc_isi_m2m_streamoff(struct
- 
- 	mutex_unlock(&m2m->lock);
- 
-+	q->streaming = false;
++	fmt->code = finfo->outcode;
 +
  	return 0;
  }
