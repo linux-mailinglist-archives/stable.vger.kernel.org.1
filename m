@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-156593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD4AEAE5037
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8B2AAE5041
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D00DF3BD10F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B77101B62327
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043501EDA0F;
-	Mon, 23 Jun 2025 21:23:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 992BB2206BB;
+	Mon, 23 Jun 2025 21:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nN2PyPLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iAGWJkWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B65DB2628C;
-	Mon, 23 Jun 2025 21:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5764E1EFFA6;
+	Mon, 23 Jun 2025 21:23:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713793; cv=none; b=aECK8zkQBfTJ7YesbwjxnkURXgqUlwDML/xGkRUlZ9Wr4k++kkZSv+ZtuMEzyDjBsK/0tOZEj+7S+PTeigFOsQzI1kUemJcCQzI9iWmFR6+Zn0rDTZzBrcpP44/q+YwSJo5HD2okjRI25HoxZHVQ/JIC15ljpWsVQXPtP3kfGqk=
+	t=1750713808; cv=none; b=luw6JeBwj1IfSy8IcXOwbg5ufOGeJwC1mzbNNegTMpMWjdstmhA5d/X9G52DIz7jrJMPZLYPW5Ag79I6dfA+eKBsbP8v7oA9J8g2z7VMzr6Rg8Um73170Cce0Rl6snnNH8Uenbhjq5kDUrzSv0aDM1yE7JKcVZ24ngVPDAgfqXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713793; c=relaxed/simple;
-	bh=cj2WevqKa9colJ0iHKaK4l0bfVJdOeSrgwu77hGZ+ic=;
+	s=arc-20240116; t=1750713808; c=relaxed/simple;
+	bh=9ZvTPONqKfs1PEpm7XlOtM08UgAsdxfV3HJxJhethwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/yR3phFiQVLAzB5EmRLMWMlO4Sg3iUFgphplQXz5nH3sJLbDrBhKP8WzTIL0R69AFfyozBi0ZBgpP+z8vr/Rbtu4q8TuzQC/KhuPGA5xwdmWF2caY2Cn9Vhmbh27fIKBbKTOvZtMFuaHFbHuE0qqNDoS5AsM5l++P7NL63z44k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nN2PyPLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEB7C4CEEA;
-	Mon, 23 Jun 2025 21:23:13 +0000 (UTC)
+	 MIME-Version; b=MPME2N+uCPR7KR2bDS5KjyysU+4/AXfPuRUkC1C0HAMK3Y8JvZ9Zdf5JADbkT6Dxf+XvPfwHWFo/lrz8Vf7ICfJQO0ZNIpjNnGkaHIPEUB1Ja14yJfIXoupxY4llRV80xxGS6Wsop+E5WoLfBWvShJ5YTKjEGz9SIdGwMfKy6p0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iAGWJkWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4586C4CEEA;
+	Mon, 23 Jun 2025 21:23:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713793;
-	bh=cj2WevqKa9colJ0iHKaK4l0bfVJdOeSrgwu77hGZ+ic=;
+	s=korg; t=1750713808;
+	bh=9ZvTPONqKfs1PEpm7XlOtM08UgAsdxfV3HJxJhethwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nN2PyPLUIPY68v/hbWEzj+DvE1DsFAmXQMLI7jKYfDiDueTYmSMw5J5nPaWY2LYGh
-	 U5/yFBZHeRUGevWCyBUNHd+CZSEPECrOHq//jOWanU24OVDmEeLV8LkGdEqTt396zv
-	 41H3c0gddi4+uz/8HcQByZi9hTBBTHsAgLfVX0iE=
+	b=iAGWJkWXcq+IhRt2zIw5tkANoD+NJHac3aMH5BvI4qWWjQAYXToFlvGGaJz0Inm8q
+	 sMNYA4zRPlWiVA4vrFF5xwFMGUm/ZchuaStQ8H0WS4ubxuFn433s2d1gcV1p5wwWUX
+	 /z64Ksn0JWbj2lISu/fSs8fcM//qdtWH90MQEVhc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
+	Dennis Marttinen <twelho@welho.tech>,
 	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
 	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 083/414] ceph: avoid kernel BUG for encrypted inode with unaligned file size
-Date: Mon, 23 Jun 2025 15:03:40 +0200
-Message-ID: <20250623130644.160313983@linuxfoundation.org>
+Subject: [PATCH 6.12 084/414] ceph: set superblock s_magic for IMA fsmagic matching
+Date: Mon, 23 Jun 2025 15:03:41 +0200
+Message-ID: <20250623130644.185067321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -66,180 +66,92 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+From: Dennis Marttinen <twelho@welho.tech>
 
-commit 060909278cc0a91373a20726bd3d8ce085f480a9 upstream.
+commit 72386d5245b249f5a0a8fabb881df7ad947b8ea4 upstream.
 
-The generic/397 test hits a BUG_ON for the case of encrypted inode with
-unaligned file size (for example, 33K or 1K):
+The CephFS kernel driver forgets to set the filesystem magic signature in
+its superblock. As a result, IMA policy rules based on fsmagic matching do
+not apply as intended. This causes a major performance regression in Talos
+Linux [1] when mounting CephFS volumes, such as when deploying Rook Ceph
+[2]. Talos Linux ships a hardened kernel with the following IMA policy
+(irrelevant lines omitted):
 
-[ 877.737811] run fstests generic/397 at 2025-01-03 12:34:40
-[ 877.875761] libceph: mon0 (2)127.0.0.1:40674 session established
-[ 877.876130] libceph: client4614 fsid 19b90bca-f1ae-47a6-93dd-0b03ee637949
-[ 877.991965] libceph: mon0 (2)127.0.0.1:40674 session established
-[ 877.992334] libceph: client4617 fsid 19b90bca-f1ae-47a6-93dd-0b03ee637949
-[ 878.017234] libceph: mon0 (2)127.0.0.1:40674 session established
-[ 878.017594] libceph: client4620 fsid 19b90bca-f1ae-47a6-93dd-0b03ee637949
-[ 878.031394] xfs_io (pid 18988) is setting deprecated v1 encryption policy; recommend upgrading to v2.
-[ 878.054528] libceph: mon0 (2)127.0.0.1:40674 session established
-[ 878.054892] libceph: client4623 fsid 19b90bca-f1ae-47a6-93dd-0b03ee637949
-[ 878.070287] libceph: mon0 (2)127.0.0.1:40674 session established
-[ 878.070704] libceph: client4626 fsid 19b90bca-f1ae-47a6-93dd-0b03ee637949
-[ 878.264586] libceph: mon0 (2)127.0.0.1:40674 session established
-[ 878.265258] libceph: client4629 fsid 19b90bca-f1ae-47a6-93dd-0b03ee637949
-[ 878.374578] -----------[ cut here ]------------
-[ 878.374586] kernel BUG at net/ceph/messenger.c:1070!
-[ 878.375150] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-[ 878.378145] CPU: 2 UID: 0 PID: 4759 Comm: kworker/2:9 Not tainted 6.13.0-rc5+ #1
-[ 878.378969] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[ 878.380167] Workqueue: ceph-msgr ceph_con_workfn
-[ 878.381639] RIP: 0010:ceph_msg_data_cursor_init+0x42/0x50
-[ 878.382152] Code: 89 17 48 8b 46 70 55 48 89 47 08 c7 47 18 00 00 00 00 48 89 e5 e8 de cc ff ff 5d 31 c0 31 d2 31 f6 31 ff c3 cc cc cc cc 0f 0b <0f> 0b 0f 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90
-[ 878.383928] RSP: 0018:ffffb4ffc7cbbd28 EFLAGS: 00010287
-[ 878.384447] RAX: ffffffff82bb9ac0 RBX: ffff981390c2f1f8 RCX: 0000000000000000
-[ 878.385129] RDX: 0000000000009000 RSI: ffff981288232b58 RDI: ffff981390c2f378
-[ 878.385839] RBP: ffffb4ffc7cbbe18 R08: 0000000000000000 R09: 0000000000000000
-[ 878.386539] R10: 0000000000000000 R11: 0000000000000000 R12: ffff981390c2f030
-[ 878.387203] R13: ffff981288232b58 R14: 0000000000000029 R15: 0000000000000001
-[ 878.387877] FS: 0000000000000000(0000) GS:ffff9814b7900000(0000) knlGS:0000000000000000
-[ 878.388663] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 878.389212] CR2: 00005e106a0554e0 CR3: 0000000112bf0001 CR4: 0000000000772ef0
-[ 878.389921] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 878.390620] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 878.391307] PKRU: 55555554
-[ 878.391567] Call Trace:
-[ 878.391807] <TASK>
-[ 878.392021] ? show_regs+0x71/0x90
-[ 878.392391] ? die+0x38/0xa0
-[ 878.392667] ? do_trap+0xdb/0x100
-[ 878.392981] ? do_error_trap+0x75/0xb0
-[ 878.393372] ? ceph_msg_data_cursor_init+0x42/0x50
-[ 878.393842] ? exc_invalid_op+0x53/0x80
-[ 878.394232] ? ceph_msg_data_cursor_init+0x42/0x50
-[ 878.394694] ? asm_exc_invalid_op+0x1b/0x20
-[ 878.395099] ? ceph_msg_data_cursor_init+0x42/0x50
-[ 878.395583] ? ceph_con_v2_try_read+0xd16/0x2220
-[ 878.396027] ? _raw_spin_unlock+0xe/0x40
-[ 878.396428] ? raw_spin_rq_unlock+0x10/0x40
-[ 878.396842] ? finish_task_switch.isra.0+0x97/0x310
-[ 878.397338] ? __schedule+0x44b/0x16b0
-[ 878.397738] ceph_con_workfn+0x326/0x750
-[ 878.398121] process_one_work+0x188/0x3d0
-[ 878.398522] ? __pfx_worker_thread+0x10/0x10
-[ 878.398929] worker_thread+0x2b5/0x3c0
-[ 878.399310] ? __pfx_worker_thread+0x10/0x10
-[ 878.399727] kthread+0xe1/0x120
-[ 878.400031] ? __pfx_kthread+0x10/0x10
-[ 878.400431] ret_from_fork+0x43/0x70
-[ 878.400771] ? __pfx_kthread+0x10/0x10
-[ 878.401127] ret_from_fork_asm+0x1a/0x30
-[ 878.401543] </TASK>
-[ 878.401760] Modules linked in: hctr2 nhpoly1305_avx2 nhpoly1305_sse2 nhpoly1305 chacha_generic chacha_x86_64 libchacha adiantum libpoly1305 essiv authenc mptcp_diag xsk_diag tcp_diag udp_diag raw_diag inet_diag unix_diag af_packet_diag netlink_diag intel_rapl_msr intel_rapl_common intel_uncore_frequency_common skx_edac_common nfit kvm_intel kvm crct10dif_pclmul crc32_pclmul polyval_clmulni polyval_generic ghash_clmulni_intel sha256_ssse3 sha1_ssse3 aesni_intel joydev crypto_simd cryptd rapl input_leds psmouse sch_fq_codel serio_raw bochs i2c_piix4 floppy qemu_fw_cfg i2c_smbus mac_hid pata_acpi msr parport_pc ppdev lp parport efi_pstore ip_tables x_tables
-[ 878.407319] ---[ end trace 0000000000000000 ]---
-[ 878.407775] RIP: 0010:ceph_msg_data_cursor_init+0x42/0x50
-[ 878.408317] Code: 89 17 48 8b 46 70 55 48 89 47 08 c7 47 18 00 00 00 00 48 89 e5 e8 de cc ff ff 5d 31 c0 31 d2 31 f6 31 ff c3 cc cc cc cc 0f 0b <0f> 0b 0f 0b 66 2e 0f 1f 84 00 00 00 00 00 90 90 90 90 90 90 90 90
-[ 878.410087] RSP: 0018:ffffb4ffc7cbbd28 EFLAGS: 00010287
-[ 878.410609] RAX: ffffffff82bb9ac0 RBX: ffff981390c2f1f8 RCX: 0000000000000000
-[ 878.411318] RDX: 0000000000009000 RSI: ffff981288232b58 RDI: ffff981390c2f378
-[ 878.412014] RBP: ffffb4ffc7cbbe18 R08: 0000000000000000 R09: 0000000000000000
-[ 878.412735] R10: 0000000000000000 R11: 0000000000000000 R12: ffff981390c2f030
-[ 878.413438] R13: ffff981288232b58 R14: 0000000000000029 R15: 0000000000000001
-[ 878.414121] FS: 0000000000000000(0000) GS:ffff9814b7900000(0000) knlGS:0000000000000000
-[ 878.414935] CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 878.415516] CR2: 00005e106a0554e0 CR3: 0000000112bf0001 CR4: 0000000000772ef0
-[ 878.416211] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 878.416907] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 878.417630] PKRU: 55555554
+[...]
+dont_measure fsmagic=0xc36400 # CEPH_SUPER_MAGIC
+[...]
+measure func=FILE_CHECK mask=^MAY_READ euid=0
+measure func=FILE_CHECK mask=^MAY_READ uid=0
+[...]
 
-(gdb) l *ceph_msg_data_cursor_init+0x42
-0xffffffff823b45a2 is in ceph_msg_data_cursor_init (net/ceph/messenger.c:1070).
-1065
-1066 void ceph_msg_data_cursor_init(struct ceph_msg_data_cursor *cursor,
-1067                                struct ceph_msg *msg, size_t length)
-1068 {
-1069        BUG_ON(!length);
-1070        BUG_ON(length > msg->data_length);
-1071        BUG_ON(!msg->num_data_items);
-1072
-1073        cursor->total_resid = length;
-1074        cursor->data = msg->data;
+Currently, IMA compares 0xc36400 == 0x0 for CephFS files, resulting in all
+files opened with O_RDONLY or O_RDWR getting measured with SHA512 on every
+open(2):
 
-The issue takes place because of this:
+10 69990c87e8af323d47e2d6ae4... ima-ng sha512:<hash> /data/cephfs/test-file
 
-[ 202.628853] libceph: net/ceph/messenger_v2.c:2034 prepare_sparse_read_data(): msg->data_length 33792, msg->sparse_read_total 36864
+Since O_WRONLY is rare, this results in an order of magnitude lower
+performance than expected for practically all file operations. Properly
+setting CEPH_SUPER_MAGIC in the CephFS superblock resolves the regression.
 
-1070        BUG_ON(length > msg->data_length);
+Tests performed on a 3x replicated Ceph v19.3.0 cluster across three
+i5-7200U nodes each equipped with one Micron 7400 MAX M.2 disk (BlueStore)
+and Gigabit ethernet, on Talos Linux v1.10.2:
 
-The generic/397 test (xfstests) executes such steps:
-(1) create encrypted files and directories;
-(2) access the created files and folders with encryption key;
-(3) access the created files and folders without encryption key.
+FS-Mark 3.3
+Test: 500 Files, Empty
+Files/s > Higher Is Better
+6.12.27-talos . 16.6  |====
++twelho patch . 208.4 |====================================================
 
-The issue takes place in this portion of code:
+FS-Mark 3.3
+Test: 500 Files, 1KB Size
+Files/s > Higher Is Better
+6.12.27-talos . 15.6  |=======
++twelho patch . 118.6 |====================================================
 
-    if (IS_ENCRYPTED(inode)) {
-            struct page **pages;
-            size_t page_off;
+FS-Mark 3.3
+Test: 500 Files, 32 Sub Dirs, 1MB Size
+Files/s > Higher Is Better
+6.12.27-talos . 12.7 |===============
++twelho patch . 44.7 |=====================================================
 
-            err = iov_iter_get_pages_alloc2(&subreq->io_iter, &pages, len,
-                                            &page_off);
-            if (err < 0) {
-                    doutc(cl, "%llx.%llx failed to allocate pages, %d\n",
-                          ceph_vinop(inode), err);
-                    goto out;
-            }
+IO500 [3] 2fcd6d6 results (benchmarks within variance omitted):
 
-            /* should always give us a page-aligned read */
-            WARN_ON_ONCE(page_off);
-            len = err;
-            err = 0;
+| IO500 benchmark   | 6.12.27-talos  | +twelho patch  | Speedup   |
+|-------------------|----------------|----------------|-----------|
+| mdtest-easy-write | 0.018524 kIOPS | 1.135027 kIOPS | 6027.33 % |
+| mdtest-hard-write | 0.018498 kIOPS | 0.973312 kIOPS | 5161.71 % |
+| ior-easy-read     | 0.064727 GiB/s | 0.155324 GiB/s | 139.97 %  |
+| mdtest-hard-read  | 0.018246 kIOPS | 0.780800 kIOPS | 4179.29 % |
 
-            osd_req_op_extent_osd_data_pages(req, 0, pages, len, 0, false,
-                                             false);
+This applies outside of synthetic benchmarks as well, for example, the time
+to rsync a 55 MiB directory with ~12k of mostly small files drops from an
+unusable 10m5s to a reasonable 26s (23x the throughput).
 
-The reason of the issue is that subreq->io_iter.count keeps unaligned
-value of length:
+[1]: https://www.talos.dev/
+[2]: https://www.talos.dev/v1.10/kubernetes-guides/configuration/ceph-with-rook/
+[3]: https://github.com/IO500/io500
 
-[  347.751182] lib/iov_iter.c:1185 __iov_iter_get_pages_alloc(): maxsize 36864, maxpages 4294967295, start 18446659367320516064
-[  347.752808] lib/iov_iter.c:1196 __iov_iter_get_pages_alloc(): maxsize 33792, maxpages 4294967295, start 18446659367320516064
-[  347.754394] lib/iov_iter.c:1015 iter_folioq_get_pages(): maxsize 33792, maxpages 4294967295, extracted 0, _start_offset 18446659367320516064
-
-This patch simply assigns the aligned value to subreq->io_iter.count
-before calling iov_iter_get_pages_alloc2().
-
-[ idryomov: tag the comment with FIXME to make it clear that it's only
-            a workaround for netfslib not coexisting with fscrypt nicely
-            (this is also noted in another pre-existing comment) ]
-
-Cc: David Howells <dhowells@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: ee4cdf7ba857 ("netfs: Speed up buffered reading")
-Signed-off-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Dennis Marttinen <twelho@welho.tech>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ceph/addr.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/ceph/super.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ceph/addr.c
-+++ b/fs/ceph/addr.c
-@@ -396,6 +396,15 @@ static void ceph_netfs_issue_read(struct
- 		struct page **pages;
- 		size_t page_off;
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1227,6 +1227,7 @@ static int ceph_set_super(struct super_b
+ 	s->s_time_min = 0;
+ 	s->s_time_max = U32_MAX;
+ 	s->s_flags |= SB_NODIRATIME | SB_NOATIME;
++	s->s_magic = CEPH_SUPER_MAGIC;
  
-+		/*
-+		 * FIXME: io_iter.count needs to be corrected to aligned
-+		 * length. Otherwise, iov_iter_get_pages_alloc2() operates
-+		 * with the initial unaligned length value. As a result,
-+		 * ceph_msg_data_cursor_init() triggers BUG_ON() in the case
-+		 * if msg->sparse_read_total > msg->data_length.
-+		 */
-+		subreq->io_iter.count = len;
-+
- 		err = iov_iter_get_pages_alloc2(&subreq->io_iter, &pages, len, &page_off);
- 		if (err < 0) {
- 			doutc(cl, "%llx.%llx failed to allocate pages, %d\n",
+ 	ceph_fscrypt_set_ops(s);
+ 
 
 
 
