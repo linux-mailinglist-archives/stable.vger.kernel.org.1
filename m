@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDFF3AE4210
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:15:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B87BAE4486
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE7707A2B6A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7A03B6CFF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70AAA24BBE4;
-	Mon, 23 Jun 2025 13:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92B42561A7;
+	Mon, 23 Jun 2025 13:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HW2CTRJk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0UvG5zZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1B813B58B;
-	Mon, 23 Jun 2025 13:15:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65D4255F39;
+	Mon, 23 Jun 2025 13:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684540; cv=none; b=KB1z/cq9TohAwkBL0Q7V5suMLLMVI2GvKdhbL+Sf/aeEtSf7sm7KXwgnedA70uA0lNc8d/wjCjMS47zK1RqIKR1miWsFi5b7UhUfaMrfgex5ZkmzP7UtTyACk2G9OyQZlkrJHqfP2XrCUBX6oKPol1W1UVT4W172SD0n0KJZuJ0=
+	t=1750685600; cv=none; b=KEL/1g24OS+S6kLivj5I/txGarOCHTjie3fNOWooYkh1pZDXrXIgP1tkqpg5nz+7no0nN01sCbuab5I/jxJn0MUuzCVlD19v5hZC5YRyXVod0hod4sQD0ZqA3JF27EXh5q1JC4cdImLUyQrtiBuipDMZ6wL3mICQDjn85JRxJfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684540; c=relaxed/simple;
-	bh=DAHTnrpzw2XHh5Wryws3WXm9gTGwjNPuqw0/mbsmvj4=;
+	s=arc-20240116; t=1750685600; c=relaxed/simple;
+	bh=A2gj8+4sT1hReJ6NCKg5T1BA053jxwxIUQVtPy85K0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ro8huvU2o8ylhgJugEnBCFHiKpI8VVcNLTvkQjfb5cn0HG30I2tS/WawHzu2fM/GhDseo6XvGQvuIEzR27fwlRgX+FpcjfzUzR5g6yyl9C7PUJJT6JU+yBK8b1BC/EAaJod3uQDlhhIxWTJut0Zu/gvkoqjGVGpvIAmbONwmUOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HW2CTRJk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C16C4CEEA;
-	Mon, 23 Jun 2025 13:15:39 +0000 (UTC)
+	 MIME-Version; b=maoUIk+AmAQMy2Rb8MjTaZSxLx8mKgFHKCkrzjyfV9zthaMplTU5BV9x+NSO/fZ71EQyQKMCTY4lzD03m2lfQfVh1bViz/hi/SC4KVs1+uGiL82odKKpvt1X4y6XBImzrzLIvpEmh9YclMurYBWT7jSDXK3tiSLbWc/TqN66hPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0UvG5zZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39930C4CEEA;
+	Mon, 23 Jun 2025 13:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684540;
-	bh=DAHTnrpzw2XHh5Wryws3WXm9gTGwjNPuqw0/mbsmvj4=;
+	s=korg; t=1750685600;
+	bh=A2gj8+4sT1hReJ6NCKg5T1BA053jxwxIUQVtPy85K0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HW2CTRJkFOWqe8I6JY7frjpApSNjFpTzA5BxN9JhqSiFcjU+FqmyqsJpviG2CmueY
-	 7co78FyoeUUtrMVhxihAFmI3riicklrjuBFvx0wPVYLTz+AEhaxNlppVt3dY2aKfCp
-	 g4xj3soTJMBB0JtDcfKytStg/8KyiCng/c5OUTgk=
+	b=B0UvG5zZLxE8Y3b+yLOjybedLlV+67fvFbaye/IjDTj9eS+QUxYEhms6U3uoRcqxU
+	 aYsijqfb6x2nKAT/BgWYsX3GxP+lcj0fS3LfY8rl+euv1Vfe9n1pWv5xNZnMPO0wwj
+	 gUwKlhCe8A1E+4iNji68/OMbFl/6aP6jlRSRIXTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.15 105/592] cgroup,freezer: fix incomplete freezing when attaching tasks
+	Eddie James <eajames@linux.ibm.com>,
+	Hari Bathini <hbathini@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 018/508] powerpc/crash: Fix non-smp kexec preparation
 Date: Mon, 23 Jun 2025 15:01:03 +0200
-Message-ID: <20250623130702.774926558@linuxfoundation.org>
+Message-ID: <20250623130645.702988014@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,69 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-commit 37fb58a7273726e59f9429c89ade5116083a213d upstream.
+[ Upstream commit 882b25af265de8e05c66f72b9a29f6047102958f ]
 
-An issue was found:
+In non-smp configurations, crash_kexec_prepare is never called in
+the crash shutdown path. One result of this is that the crashing_cpu
+variable is never set, preventing crash_save_cpu from storing the
+NT_PRSTATUS elf note in the core dump.
 
-	# cd /sys/fs/cgroup/freezer/
-	# mkdir test
-	# echo FROZEN > test/freezer.state
-	# cat test/freezer.state
-	FROZEN
-	# sleep 1000 &
-	[1] 863
-	# echo 863 > test/cgroup.procs
-	# cat test/freezer.state
-	FREEZING
-
-When tasks are migrated to a frozen cgroup, the freezer fails to
-immediately freeze the tasks, causing the cgroup to remain in the
-"FREEZING".
-
-The freeze_task() function is called before clearing the CGROUP_FROZEN
-flag. This causes the freezing() check to incorrectly return false,
-preventing __freeze_task() from being invoked for the migrated task.
-
-To fix this issue, clear the CGROUP_FROZEN state before calling
-freeze_task().
-
-Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-Cc: stable@vger.kernel.org # v6.1+
-Reported-by: Zhong Jiawei <zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c7255058b543 ("powerpc/crash: save cpu register data in crash_smp_send_stop()")
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250211162054.857762-1-eajames@linux.ibm.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/legacy_freezer.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/powerpc/kexec/crash.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/kernel/cgroup/legacy_freezer.c
-+++ b/kernel/cgroup/legacy_freezer.c
-@@ -188,13 +188,12 @@ static void freezer_attach(struct cgroup
- 		if (!(freezer->state & CGROUP_FREEZING)) {
- 			__thaw_task(task);
- 		} else {
--			freeze_task(task);
--
- 			/* clear FROZEN and propagate upwards */
- 			while (freezer && (freezer->state & CGROUP_FROZEN)) {
- 				freezer->state &= ~CGROUP_FROZEN;
- 				freezer = parent_freezer(freezer);
- 			}
-+			freeze_task(task);
- 		}
- 	}
+diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
+index 252724ed666a3..14abe7046cd74 100644
+--- a/arch/powerpc/kexec/crash.c
++++ b/arch/powerpc/kexec/crash.c
+@@ -356,7 +356,10 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
+ 	if (TRAP(regs) == INTERRUPT_SYSTEM_RESET)
+ 		is_via_system_reset = 1;
  
+-	crash_smp_send_stop();
++	if (IS_ENABLED(CONFIG_SMP))
++		crash_smp_send_stop();
++	else
++		crash_kexec_prepare();
+ 
+ 	crash_save_cpu(regs, crashing_cpu);
+ 
+-- 
+2.39.5
+
 
 
 
