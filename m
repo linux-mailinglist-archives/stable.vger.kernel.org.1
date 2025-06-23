@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0F1DAE51F4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B7A1AE5221
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2F437A3F94
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5037C1B6457D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B7B2222A9;
-	Mon, 23 Jun 2025 21:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 983E52222CA;
+	Mon, 23 Jun 2025 21:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OiPaRxzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fWZNc36g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF5421D3DD;
-	Mon, 23 Jun 2025 21:39:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5640119D084;
+	Mon, 23 Jun 2025 21:40:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714741; cv=none; b=tXlZfeQ6bPnwyXW/5qnokZ4sF3DeCCIwbUB3j6H+V6BtuORerOXYUyEmKdPPXvkKbR3+r3YAVCiXOB2gZDV0PH6X8g2lNtVhAT4ikpjYx8kYd0CqwLrOGyscLmWBXTEql/bWmdqK0UUpgUMuKprErPJsi5wTxtq/TWLP7dFAQ6U=
+	t=1750714836; cv=none; b=R6mWbxSuv39MAFSKAeM0wsuu9UEnkpnC6tjzdOd8m+bGy6DJZY4UV2OIf1t+/eNTjconQY9KIxsBJv+sfM/TnAA7QXajUJ+tgem4GgUjrbeYeF4JV9trJ70X+sYWj6lBOeFoL2PMxg03G1iwYWgBdmYzxk9rFgZpgGGG4YMk50M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714741; c=relaxed/simple;
-	bh=YcKoEJKnBWDcMr6eBij6HxOuNbf+KlHx5Cz5DkhMZcg=;
+	s=arc-20240116; t=1750714836; c=relaxed/simple;
+	bh=qzMO5E9TVye+2JU70wnoTbSXMRP/B4Fqtf7IlxUbJhk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kKbNUbGJCIv9wXRpFCgThqnFJvDEiVFMys4ZK3XAUgTI3kXRBgabFK5JeoKaO7+Mhva1eo2J7MU6MTHHoehVq+lmEyKbqGz94Hps+vhKPjjkbZ0G+zWQYxLDWPH66ObIwScZ7uehSf3bhNh2VOYvc7tp2u/g0hDPsdRKDK0pme0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OiPaRxzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45003C4CEEA;
-	Mon, 23 Jun 2025 21:39:00 +0000 (UTC)
+	 MIME-Version; b=QEjvxU5J8mXM88WoMTvxPtUb2Q1G84s3pJMGMNz1JowONTHx/bwu3RZKJen8g2vYTpOj3U5FHkUzB/dePxo9wHa+yg6pRjq0lI4QZvnFfLtOqvm3znCyrGHAmCvFkOVH0k53ePRzvE1vOlEhPiMAmMZBZ91RDDLA2RjyG2rGkqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fWZNc36g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E17C4CEEA;
+	Mon, 23 Jun 2025 21:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714740;
-	bh=YcKoEJKnBWDcMr6eBij6HxOuNbf+KlHx5Cz5DkhMZcg=;
+	s=korg; t=1750714836;
+	bh=qzMO5E9TVye+2JU70wnoTbSXMRP/B4Fqtf7IlxUbJhk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OiPaRxzUkKhIAH0bJ7keaPqvBCJ5mVPhnDt0mmqSz2SD1MhJhHX3hU8YCpDdjJqPj
-	 YfRdkEfMRw/PIEGd7kjnpPeCQ8l/DhfnMySjeVLmHF0vvKoX5q8ZNSMMrlYfltqxoI
-	 RhSx45O4TY9sVHWg8oHy0/5AiYden64iMgTjUNl4=
+	b=fWZNc36gaoOHDttRrKdZgw5S58gFg0VJqMYjITrB1Dy8aj3dp0+Y0uMrIIgmSFGWo
+	 CBLb4tpYXDT8LxlAXrSKj8ulQUAacMfAoDNvUfvPDRO4ghcUsmdMoMZemVNZ+S9A6T
+	 QvLH7EyQxmqI0DXQrnJn31nsRy7fXkRrRPAZZz68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 127/414] mtd: rawnand: qcom: Fix read len for onfi param page
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Nishanth Menon <nm@ti.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 219/508] arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0
 Date: Mon, 23 Jun 2025 15:04:24 +0200
-Message-ID: <20250623130645.237070764@linuxfoundation.org>
+Message-ID: <20250623130650.650868350@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
+From: Judith Mendez <jm@ti.com>
 
-commit e6031b11544b44966ba020c867fe438bccd3bdfa upstream.
+[ Upstream commit f55c9f087cc2e2252d44ffd9d58def2066fc176e ]
 
-The minimum size to fetch the data from device to QPIC buffer
-is 512-bytes. If size is less than 512-bytes the data will not be
-protected by ECC as per QPIC standard. So while reading onfi parameter
-page from NAND device set nandc->buf_count = 512.
+For am65x, add missing ITAPDLYSEL values for Default Speed and High
+Speed SDR modes to sdhci0 node according to the device datasheet [0].
 
+[0] https://www.ti.com/lit/gpn/am6548
+
+Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
 Cc: stable@vger.kernel.org
-Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://lore.kernel.org/r/20250429173009.33994-1-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2917,7 +2917,7 @@ static int qcom_param_page_type_exec(str
- 		write_reg_dma(nandc, NAND_DEV_CMD1, 1, NAND_BAM_NEXT_SGL);
- 	}
- 
--	nandc->buf_count = len;
-+	nandc->buf_count = 512;
- 	memset(nandc->data_buffer, 0xff, nandc->buf_count);
- 
- 	config_nand_single_cw_page_read(chip, false, 0);
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index c09457fef2db0..ebd8434c6b60b 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -274,6 +274,8 @@ sdhci0: mmc@4f80000 {
+ 		ti,otap-del-sel-ddr50 = <0x5>;
+ 		ti,otap-del-sel-ddr52 = <0x5>;
+ 		ti,otap-del-sel-hs200 = <0x5>;
++		ti,itap-del-sel-legacy = <0xa>;
++		ti,itap-del-sel-mmc-hs = <0x1>;
+ 		ti,itap-del-sel-ddr52 = <0x0>;
+ 		dma-coherent;
+ 	};
+-- 
+2.39.5
+
 
 
 
