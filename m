@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65CC4AE520D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F07BAE5453
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0F2287A64B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 060924C0A85
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 604A32222A9;
-	Mon, 23 Jun 2025 21:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 076FD19DF4A;
+	Mon, 23 Jun 2025 22:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KR8a8nne"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxxwMJfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D48219D084;
-	Mon, 23 Jun 2025 21:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7E44409;
+	Mon, 23 Jun 2025 22:00:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714792; cv=none; b=d+yfdda6WKVPh+96HjMMn95igDDKTVmeuR8Nj7PMk2xDK1jpumrziCRzhn0Wqgfd3oEwSXZOAmt35tdBQw5wsj1AZMCUGlXB6NIuc2oFosa4nLzy6WR75yhxZfMK5Cv8lUxXzCHp51lp1z8Qymc0+tS1YsIySIhAQG7NVi1597U=
+	t=1750716029; cv=none; b=B+XbUsIPCH5unIU2czoT0EFReXVRiK0Z83bV78u7PucLmkmde1JrSsxEJWgkYZiX7VOWXnn6b+ziQISjWwuo5ImTXkpVg+bdYYQKJq+6JtX8NK0oJjaZioyYNibSbWSsmw+Ms4+RZpdEKJ9cmpht23N1V3n8QvlDnfvWu3rwets=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714792; c=relaxed/simple;
-	bh=ld3yWgm9xfyM30S1/abburv1i0WwYK8Hg20jMtMJMv0=;
+	s=arc-20240116; t=1750716029; c=relaxed/simple;
+	bh=wuTb0BveLSa3xwhDWy+dcGdgj2vz61HHPaAGhNGAFMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SouR31l8S76NSmQR/ZSunPaaL+TK2GfDMWBP63SH+oZuRiXGXQk+eWYiUJ4Wz4DS9Mk5BPjrN2mkqrPXpqWfLqGR8yF08UR0hc2UGJHH0bSDTYqJXLKWJZVB3vDOiue3OqJxYCost4smW55I+K1Re9AZIPiWkT+LJrkxxI/bCjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KR8a8nne; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A74F4C4CEEA;
-	Mon, 23 Jun 2025 21:39:51 +0000 (UTC)
+	 MIME-Version; b=seUiodaaQU4Pu8t2fEc09fyawWMtk9TNbwK1uU+qwX0uScv4bThFdUw2NEjMTX44BtH2xJhNDSMNmVz2PeHDE7ZWMIrjI6zTGHPEzFsAcqyQmSDKwT4NLa361GoXVY89L6LXppe0uVdbULXFQFDYHf60n+nLRy32ONNtIq+KGe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxxwMJfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 014DFC4CEEA;
+	Mon, 23 Jun 2025 22:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714792;
-	bh=ld3yWgm9xfyM30S1/abburv1i0WwYK8Hg20jMtMJMv0=;
+	s=korg; t=1750716029;
+	bh=wuTb0BveLSa3xwhDWy+dcGdgj2vz61HHPaAGhNGAFMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KR8a8nneKWs6vQe4YkMPG7RF16nqE20XhCnjSHZ/3LChoKG2VsqpKEKPkwNWFSwaJ
-	 cc2OzMuAcb7/xElViQ65cvWAJcZFczJwgkpPQmRnSiSSNz/QB4UkziWpxTqjEkOi8w
-	 jkmWBXBIu1jvqL9eLMu/piX6AlxKHKVt4eBx4qJE=
+	b=MxxwMJfHMLierCVTXnZznmUgoPekOOyprs9HmckcW53Mc7QaFhB0xLWQLeVb6boUu
+	 xD/IzLAe16HzBF0JCj2EhtYsK2FB9QDdp3rxMGu33zhzhXrEoiUROHh/v6TWNI8T3V
+	 FmfTgdUkMxSUw+/jT9rj04PvKmafNNC2YqxwanP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Maxime Ripard <mripard@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 181/290] scsi: lpfc: Use memcpy() for BIOS version
+Subject: [PATCH 5.15 298/411] media: tc358743: ignore video while HPD is low
 Date: Mon, 23 Jun 2025 15:07:22 +0200
-Message-ID: <20250623130632.319629108@linuxfoundation.org>
+Message-ID: <20250623130641.149130422@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-[ Upstream commit ae82eaf4aeea060bb736c3e20c0568b67c701d7d ]
+[ Upstream commit 6829c5b5d26b1be31880d74ec24cb32d2d75f1ae ]
 
-The strlcat() with FORTIFY support is triggering a panic because it
-thinks the target buffer will overflow although the correct target
-buffer size is passed in.
+If the HPD is low (happens if there is no EDID or the
+EDID is being updated), then return -ENOLINK in
+tc358743_get_detected_timings() instead of detecting video.
 
-Anyway, instead of memset() with 0 followed by a strlcat(), just use
-memcpy() and ensure that the resulting buffer is NULL terminated.
+This avoids userspace thinking that it can start streaming when
+the HPD is low.
 
-BIOSVersion is only used for the lpfc_printf_log() which expects a
-properly terminated string.
-
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Link: https://lore.kernel.org/r/20250409-fix-lpfc-bios-str-v1-1-05dac9e51e13@kernel.org
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240628-stoic-bettong-of-fortitude-e25611@houat/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/tc358743.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 4a9fa00eeb798..4cf935b7223af 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -6014,9 +6014,9 @@ lpfc_sli4_get_ctl_attr(struct lpfc_hba *phba)
- 	phba->sli4_hba.flash_id = bf_get(lpfc_cntl_attr_flash_id, cntl_attr);
- 	phba->sli4_hba.asic_rev = bf_get(lpfc_cntl_attr_asic_rev, cntl_attr);
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 6f5ca3d63dbdb..87feada1f6020 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -309,6 +309,10 @@ static int tc358743_get_detected_timings(struct v4l2_subdev *sd,
  
--	memset(phba->BIOSVersion, 0, sizeof(phba->BIOSVersion));
--	strlcat(phba->BIOSVersion, (char *)cntl_attr->bios_ver_str,
-+	memcpy(phba->BIOSVersion, cntl_attr->bios_ver_str,
- 		sizeof(phba->BIOSVersion));
-+	phba->BIOSVersion[sizeof(phba->BIOSVersion) - 1] = '\0';
+ 	memset(timings, 0, sizeof(struct v4l2_dv_timings));
  
- 	lpfc_printf_log(phba, KERN_INFO, LOG_SLI,
- 			"3086 lnk_type:%d, lnk_numb:%d, bios_ver:%s, "
++	/* if HPD is low, ignore any video */
++	if (!(i2c_rd8(sd, HPD_CTL) & MASK_HPD_OUT0))
++		return -ENOLINK;
++
+ 	if (no_signal(sd)) {
+ 		v4l2_dbg(1, debug, sd, "%s: no valid signal\n", __func__);
+ 		return -ENOLINK;
 -- 
 2.39.5
 
