@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-155992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C7C3AE447A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07B9AE448A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0A4A7A2821
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 773AB7A66CA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64C682561D4;
-	Mon, 23 Jun 2025 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4FBC2571AD;
+	Mon, 23 Jun 2025 13:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wZB4ZgxY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zIApeS9j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E9625334B;
-	Mon, 23 Jun 2025 13:37:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AF92571A5;
+	Mon, 23 Jun 2025 13:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685870; cv=none; b=FJ2p7KqsGo7raTgTzo6jG0ZzqVFTgDGcjtDzfmLYRF970YShdJSknFj0I7RHefUe8c0mX5b7iOAb7pozdZlmlWAjnUiANoemzeQe6y8IXuCSpBS1lVjv4RK8xTWSa82+gTHAdjGeRp615hDOKhEz0nHWLYqmRWg53t/e500OZbM=
+	t=1750685890; cv=none; b=gSYgyhg+xvsG+XtKHBTx7Vg54y4o5HUyZOUl/iggkVbqRBDgGowJaUjN5TJcyOouF1LmMDt0vBdymhFI/dLgWFpPCF6vSDgqSc7d6v8EtdyNCIEXfQejxM5PW6VpxQe9niSWY8FKWCv8htsvuMCFXfq1ntX6xCTYCBgr9cSEBCQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685870; c=relaxed/simple;
-	bh=tjRpYGGlByNtz4OPfINBltHbscSTGG/Uzgmy3T7xjbc=;
+	s=arc-20240116; t=1750685890; c=relaxed/simple;
+	bh=FhJ69nZENyPhky/ZMxXLWQoRzL3SA/KTZFXrUyXUbEc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JGUZrX/7aAtW3VE1Us88atb3NPAKVcvGzecKAQj6PXhO+0kJl3nH0JO7lvaDY3jLM0V4rP2hojXZZywd76vn01cCniyo6mdgcb+B3a++nu7rehPin7HwlqY1bUO4slgtCP8FnV9UdZcXafeu0StMcCjmLvO9BwQm/Y/GQKRLiYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wZB4ZgxY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABAF0C4CEEA;
-	Mon, 23 Jun 2025 13:37:49 +0000 (UTC)
+	 MIME-Version; b=pR3OwvoRmwypR8kzN22Tk0vRwTOXrSfotymY1ryd4HuJRrWXCOuBvD7SNqK/p97aLkXki229wehWUh2v/60xp7uZoR+Tcke65leOaIr/TPnfbjQ32/T3x+RejHBrK1K7yZNFzLSkcnDcxcXAP6jtvxhVXvzH49K0HWaYhfbECFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zIApeS9j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDECDC4CEEA;
+	Mon, 23 Jun 2025 13:38:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685870;
-	bh=tjRpYGGlByNtz4OPfINBltHbscSTGG/Uzgmy3T7xjbc=;
+	s=korg; t=1750685890;
+	bh=FhJ69nZENyPhky/ZMxXLWQoRzL3SA/KTZFXrUyXUbEc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wZB4ZgxYeWuaEgiwuq7tSNZ+96Md0HOB4hZuEV/UheATXEXWSRb96z04rt3sJ9Eb+
-	 PNz5EYGtZ9ttFzozhKaFWlSlFFNYrZzaqIVwpdatC/E9X9N1lbs3TgFHGhCiRP/fK+
-	 E/8/gwSu5RANGY3d9lMI0O9P4Z0xfVaes72icnWY=
+	b=zIApeS9jblHSUiUEiD0HegYyT2H5zXw9xNjJbAFA2e9pc3utnIVPI2OYeRZH4Syr7
+	 4pwigU08IPI6sPVSyIRB2yvfHcSV2Si+rVL021vHiD5A3C58M3+QD1etFtR2NOt8Ef
+	 VFog9jhrtPmYkesbp6gNb9WdHS16l1UXMCs+Ka3M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 011/414] ASoC: amd: sof_amd_sdw: Fix unlikely uninitialized variable use in create_sdw_dailinks()
-Date: Mon, 23 Jun 2025 15:02:28 +0200
-Message-ID: <20250623130642.309835484@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 012/414] io_uring: account drain memory to cgroup
+Date: Mon, 23 Jun 2025 15:02:29 +0200
+Message-ID: <20250623130642.332488652@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -65,39 +65,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 6b83ba4bc3ecb915476d688c9f00f3be57b49a0c upstream.
+commit f979c20547e72568e3c793bc92c7522bc3166246 upstream.
 
-Initialize current_be_id to 0 in SOF based AMD generic SoundWire machine
-driver to handle the unlikely case when there are no devices connected to
-a DAI.
-In this case create_sdw_dailink() would return without touching the passed
-pointer to current_be_id.
+Account drain allocations against memcg. It's not a big problem as each
+such allocation is paired with a request, which is accounted, but it's
+nicer to follow the limits more closely.
 
-Found by gcc -fanalyzer
-
-Cc: stable@vger.kernel.org
-Fixes: 6d8348ddc56ed ("ASoC: amd: acp: refactor SoundWire machine driver code")
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://patch.msgid.link/20250506120823.3621604-2-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/f8dfdbd755c41fd9c75d12b858af07dfba5bbb68.1746788718.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/acp-sdw-sof-mach.c |    2 +-
+ io_uring/io_uring.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/amd/acp/acp-sdw-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sdw-sof-mach.c
-@@ -267,7 +267,7 @@ static int create_sdw_dailinks(struct sn
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1681,7 +1681,7 @@ queue:
+ 	spin_unlock(&ctx->completion_lock);
  
- 	/* generate DAI links by each sdw link */
- 	while (sof_dais->initialised) {
--		int current_be_id;
-+		int current_be_id = 0;
- 
- 		ret = create_sdw_dailink(card, sof_dais, dai_links,
- 					 &current_be_id, codec_conf);
+ 	io_prep_async_link(req);
+-	de = kmalloc(sizeof(*de), GFP_KERNEL);
++	de = kmalloc(sizeof(*de), GFP_KERNEL_ACCOUNT);
+ 	if (!de) {
+ 		ret = -ENOMEM;
+ 		io_req_defer_failed(req, ret);
 
 
 
