@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-156465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D02AE4FB2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4606CAE4FC9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE60016C0D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5A6C1B61A5E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38A12223DFF;
-	Mon, 23 Jun 2025 21:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78499221F0F;
+	Mon, 23 Jun 2025 21:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gft9OGag"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uww/6bG5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E2D1E521E;
-	Mon, 23 Jun 2025 21:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AEC4C62;
+	Mon, 23 Jun 2025 21:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713478; cv=none; b=UabPRuEAv4tT1lCk6Q3C82pvmBLd/T68gwEx8osuykkP4rVTJPBr39vJakzCllgSpkq1VcuFcbZCr+KyZ6wvZVAGiAr0VbaLav2zF7QNkiz7G8soE63y0N6AkGd+lHTIvQ9eaRJtPdxgzGMQQH7tZjRMsg0DT+h69z0PGD3YP5g=
+	t=1750713536; cv=none; b=Jxpk/fIXBWxm8DAg2o5EMZb1xhE+bsMJtr8KVAd0yrK8gKRNnDGitS9ea0wfZcIpgxeTbS3QR3S57X8eVxNwgDBVy7Fy3KJLtAhVwG9zT/A+S/bfebZXRUzOFd4bv5fGbJj5uJTgrqy4wbYzttrKqW3xJQ2ULKuG5wADa4WEvTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713478; c=relaxed/simple;
-	bh=LgP7cRZhjuavTIgAegKaZWqkDagbH9iBXQF1Tiv9mKI=;
+	s=arc-20240116; t=1750713536; c=relaxed/simple;
+	bh=JU43upnr4MzMJzT52veZN8nG+MeISef27o5uYnivFQc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CYCSyfrpTzCjHrbBiN0LMiVUnDEkt7AMH5tRCpTUyVTLXnqISrdDPBPdfo/xRC941s5bVemmq+X6+qXt7zpMJkE6o5C2StQQ7FRbTqtsNV7EDwf59Kif3nzxrAu34RbosL0WSdFbna8VP3FuCr7hr5dekUDLtl4IbpHXVXFg/4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gft9OGag; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EFF4C4CEEA;
-	Mon, 23 Jun 2025 21:17:57 +0000 (UTC)
+	 MIME-Version; b=fPJlmDfL85IA6HZGPK/j84jymS3tDWiTM7pl3F5eDcV1MdXTojnxwjgett9GBvjrOcx0uQiaa7xbXBboJJgeeBKxfsjdayxJgjxAFFOgHD/MqCyQ4esymur5ZFXv/00ZoI4kkLx44LU6qg3hiKSk44gXiqDS1x2UB9zau4WhRig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uww/6bG5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE62C4CEEA;
+	Mon, 23 Jun 2025 21:18:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713477;
-	bh=LgP7cRZhjuavTIgAegKaZWqkDagbH9iBXQF1Tiv9mKI=;
+	s=korg; t=1750713536;
+	bh=JU43upnr4MzMJzT52veZN8nG+MeISef27o5uYnivFQc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gft9OGagMJx+PkNTBj9aIuCtToErejXSiGM4epSfSvr7lf5788WbtJXQFr8UI/VOu
-	 7Ipiebe5R84HghC2zwo/EdtSvHkiLzDM76nGAIAhd2RLY5WN6h39durPqoKXxMnF3e
-	 YzWyBFtaitSIezDTCJArFB6ORVU/vPFz8qzKtzH0=
+	b=Uww/6bG5BM2D7x0WM7jpaLuLiw5If+DCPIvAQuU4dzweGFm46bPs1OeFlnVPhjsbn
+	 y8evBPLJ+6M6fGxMAKFzMVCXHXYVtIducRAcKm6H0Skaceg1TFrJV1N6FnPqP2+lAh
+	 V/3jepLq2TOf3Skyqo5ecZEdN+2RICIT5fcDvC2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.10 150/355] drm/amd/display: Do not add -mhard-float to dcn2{1,0}_resource.o for clang
-Date: Mon, 23 Jun 2025 15:05:51 +0200
-Message-ID: <20250623130631.216659861@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10 151/355] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
+Date: Mon, 23 Jun 2025 15:05:52 +0200
+Message-ID: <20250623130631.243987109@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -64,56 +65,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-This patch is for linux-5.15.y and earlier only. It is functionally
-equivalent to upstream commit 7db038d9790e ("drm/amd/display: Do not add
-'-mhard-float' to dml_ccflags for clang"), which was created after all
-files that require '-mhard-float' were moved under the dml folder. In
-kernels older than 5.18, which do not contain upstream commits
+commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
 
-  22f87d998326 ("drm/amd/display: move FPU operations from dcn21 to dml/dcn20 folder")
-  cf689e869cf0 ("drm/amd/display: move FPU-related code from dcn20 to dml folder")
+usb core avoids sending a Set-Interface altsetting 0 request after device
+reset, and instead relies on calling usb_disable_interface() and
+usb_enable_interface() to flush and reset host-side of those endpoints.
 
-newer versions of clang error with
+xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
+during usb_hcd_alloc_bandwidth() callback, which in this case is called
+before flushing the endpoint in usb_disable_interface().
 
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:289: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:289: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn21/dcn21_resource.o] Error 1
+Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
+URBs are flushed before new ring buffers for the endpoints are allocated.
 
-Apply a functionally equivalent change to prevent adding '-mhard-float'
-with clang for these files.
+Otherwise host driver will attempt to find and remove old stale URBs
+from a freshly allocated new ringbuffer.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/Makefile |    2 +-
- drivers/gpu/drm/amd/display/dc/dcn21/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/core/hub.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
-@@ -10,7 +10,7 @@ DCN20 = dcn20_resource.o dcn20_init.o dc
- DCN20 += dcn20_dsc.o
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6014,6 +6014,7 @@ static int usb_reset_and_verify_device(s
+ 	struct usb_hub			*parent_hub;
+ 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
+ 	struct usb_device_descriptor	descriptor;
++	struct usb_interface		*intf;
+ 	struct usb_host_bos		*bos;
+ 	int				i, j, ret = 0;
+ 	int				port1 = udev->portnum;
+@@ -6074,6 +6075,18 @@ static int usb_reset_and_verify_device(s
+ 	if (!udev->actconfig)
+ 		goto done;
  
- ifdef CONFIG_X86
--CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_resource.o := -mhard-float -msse
-+CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_resource.o := $(if $(CONFIG_CC_IS_GCC), -mhard-float) -msse
- endif
++	/*
++	 * Some devices can't handle setting default altsetting 0 with a
++	 * Set-Interface request. Disable host-side endpoints of those
++	 * interfaces here. Enable and reset them back after host has set
++	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
++	 */
++	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
++		intf = udev->actconfig->interface[i];
++		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
++			usb_disable_interface(udev, intf, true);
++	}
++
+ 	mutex_lock(hcd->bandwidth_mutex);
+ 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
+ 	if (ret < 0) {
+@@ -6105,12 +6118,11 @@ static int usb_reset_and_verify_device(s
+ 	 */
+ 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
+ 		struct usb_host_config *config = udev->actconfig;
+-		struct usb_interface *intf = config->interface[i];
+ 		struct usb_interface_descriptor *desc;
  
- ifdef CONFIG_PPC64
---- a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
-@@ -6,7 +6,7 @@ DCN21 = dcn21_init.o dcn21_hubp.o dcn21_
- 	 dcn21_hwseq.o dcn21_link_encoder.o
- 
- ifdef CONFIG_X86
--CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_resource.o := -mhard-float -msse
-+CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_resource.o := $(if $(CONFIG_CC_IS_GCC), -mhard-float) -msse
- endif
- 
- ifdef CONFIG_PPC64
++		intf = config->interface[i];
+ 		desc = &intf->cur_altsetting->desc;
+ 		if (desc->bAlternateSetting == 0) {
+-			usb_disable_interface(udev, intf, true);
+ 			usb_enable_interface(udev, intf, true);
+ 			ret = 0;
+ 		} else {
 
 
 
