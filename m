@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90AD9AE41DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:13:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16360AE4215
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:15:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4869174ADD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:12:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C385188AB1F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE38624BC07;
-	Mon, 23 Jun 2025 13:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A041A24BC0A;
+	Mon, 23 Jun 2025 13:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aS97rzYz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEJzdk4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 861CF1F1522;
-	Mon, 23 Jun 2025 13:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5B81F1522;
+	Mon, 23 Jun 2025 13:14:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684320; cv=none; b=lJGtkL+YSA36UNNIsFkSu1+3roU6S4GWWUFvNNkvBH596+eFu675M6mt6KKZsMPcL2/qIIugo4VpvJAbvhvyYC6L3bkI7Rl3k5TghYhMw/1Blx3HkEax8Zg7940vxugxZADvkC2lbQ+Ow9vtmiCse78KizXK0X4bP4UROsQnP6A=
+	t=1750684466; cv=none; b=fCJuCmiaShupWACNGZwnEJ4XZKXOPcVHLqDMjTZhJss2snLR0XguYefNU2yiF7oTdmD+jlpUxRLbx/YJK2ihN/BMYRq9f8mw+YBrzzkZED12CFUC5mfU2DaRBDEzLtN2thx9sgHcr6JqqkX0/jH8xuSTimWepqouJOT1N3fBhUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684320; c=relaxed/simple;
-	bh=/eqF367tx8ZjLiTBvfPMINkku3CiJClieBMXLee8UvE=;
+	s=arc-20240116; t=1750684466; c=relaxed/simple;
+	bh=U5WYrlJPlkAZnLyFhwzh20EV6jqB44qBGpWaI2giGVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5VknctFUdvD1EwGTBkhGT3YD/+SVPtZzeAgkPZuQsz3xw7xs4L73FQQWuPxqO4l1ENKYLbMgr0hkNEguoCWryR546nSC3galaJFQE1awqX7cPyzH1eIz7x6hhZcwlGsSTXOpMkni+sA0/M1v1anXdWjA5Pkp+vbUpjRLoWqmoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aS97rzYz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3BB5C4CEEA;
-	Mon, 23 Jun 2025 13:11:59 +0000 (UTC)
+	 MIME-Version; b=a/sk0G2sLzlZqM4NbuB502UFk+eUbVFmEmknHgA9GrqJ14TDhEV4ZeiOJd/OXXUvTtjI7vpuyXL4aae24fyXNmtSfs6sZGNyY79hwG2b7ggsfz56lytjEl1AI01Ynk44u2LGk0v1OLQXI4JlnQS4U6J/cBXi222srUdDinyScsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEJzdk4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBDBCC4CEEA;
+	Mon, 23 Jun 2025 13:14:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684320;
-	bh=/eqF367tx8ZjLiTBvfPMINkku3CiJClieBMXLee8UvE=;
+	s=korg; t=1750684466;
+	bh=U5WYrlJPlkAZnLyFhwzh20EV6jqB44qBGpWaI2giGVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aS97rzYzXRJZUer3nKVMxODTtmm4TfKIjKUks0lOOIBzuS+zvHhp/fVQ26hFf+5A5
-	 AA4vXYkK9P9HKIugbZNcMtFslgWrfGTWUfgfU5Qj+oVjCmjrZkRRdSAs7R9mciDRF/
-	 opOPXIM6f/IGt+b0KGrodOf8VyUXC4adyprxe2/Q=
+	b=nEJzdk4CUYkma+anMoy7lKmqwkUUb0IkCngyO55azA3Rr7LbeS2XQA0BXfJbanm7q
+	 WBMax7MD/t8S/fHV4brD/k1IE3qYYWUxPQnAqmVroE5V0t5zw9XhTJXvPIc6aCQnp7
+	 mVXoH5SfRVdQ0/WCo9TF6H36RDPeGc440APEFph0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Gerd Bayer <gbayer@linux.ibm.com>,
-	Julian Ruess <julianr@linux.ibm.com>,
 	Niklas Schnelle <schnelle@linux.ibm.com>,
 	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.15 023/592] s390/pci: Remove redundant bus removal and disable from zpci_release_device()
-Date: Mon, 23 Jun 2025 14:59:41 +0200
-Message-ID: <20250623130700.785540845@linuxfoundation.org>
+Subject: [PATCH 6.15 024/592] s390/pci: Prevent self deletion in disable_slot()
+Date: Mon, 23 Jun 2025 14:59:42 +0200
+Message-ID: <20250623130700.809083454@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -69,41 +68,51 @@ Content-Transfer-Encoding: 8bit
 
 From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-commit d76f9633296785343d45f85199f4138cb724b6d2 upstream.
+commit 47c397844869ad0e6738afb5879c7492f4691122 upstream.
 
-Remove zpci_bus_remove_device() and zpci_disable_device() calls from
-zpci_release_device(). These calls were done when the device
-transitioned into the ZPCI_FN_STATE_STANDBY state which is guaranteed to
-happen before it enters the ZPCI_FN_STATE_RESERVED state. When
-zpci_release_device() is called the device is known to be in the
-ZPCI_FN_STATE_RESERVED state which is also checked by a WARN_ON().
+As disable_slot() takes a struct zpci_dev from the Configured to the
+Standby state. In Standby there is still a hotplug slot so this is not
+usually a case of sysfs self deletion. This is important because self
+deletion gets very hairy in terms of locking (see for example
+recover_store() in arch/s390/pci/pci_sysfs.c).
+
+Because the pci_dev_put() is not within the critical section of the
+zdev->state_lock however, disable_slot() can turn into a case of self
+deletion if zPCI device event handling slips between the mutex_unlock()
+and the pci_dev_put(). If the latter is the last put and
+zpci_release_device() is called this then tries to remove the hotplug
+slot via zpci_exit_slot() which will try to remove the hotplug slot
+directory the disable_slot() is part of i.e. self deletion.
+
+Prevent this by widening the zdev->state_lock critical section to
+include the pci_dev_put() which is then guaranteed to happen with the
+struct zpci_dev still in Standby state ensuring it will not lead to
+a zpci_release_device() call as at least the zPCI event handling code
+still holds a reference.
 
 Cc: stable@vger.kernel.org
 Fixes: a46044a92add ("s390/pci: fix zpci_zdev_put() on reserve")
 Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
 Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
 Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/pci/hotplug/s390_pci_hpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -949,12 +949,6 @@ void zpci_release_device(struct kref *kr
+--- a/drivers/pci/hotplug/s390_pci_hpc.c
++++ b/drivers/pci/hotplug/s390_pci_hpc.c
+@@ -65,9 +65,9 @@ static int disable_slot(struct hotplug_s
  
- 	WARN_ON(zdev->state != ZPCI_FN_STATE_RESERVED);
- 
--	if (zdev->zbus->bus)
--		zpci_bus_remove_device(zdev, false);
--
--	if (zdev_enabled(zdev))
--		zpci_disable_device(zdev);
--
- 	if (zdev->has_hp_slot)
- 		zpci_exit_slot(zdev);
+ 	rc = zpci_deconfigure_device(zdev);
+ out:
+-	mutex_unlock(&zdev->state_lock);
+ 	if (pdev)
+ 		pci_dev_put(pdev);
++	mutex_unlock(&zdev->state_lock);
+ 	return rc;
+ }
  
 
 
