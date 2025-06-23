@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-155466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3A6EAE4241
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F3FCAE4345
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 94781177C40
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA5593B8B7A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0648124EF7F;
-	Mon, 23 Jun 2025 13:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B258924DCFD;
+	Mon, 23 Jun 2025 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dC64Jtc5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNe+yZrk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B981F24E4C3;
-	Mon, 23 Jun 2025 13:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F25D24678E;
+	Mon, 23 Jun 2025 13:24:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684499; cv=none; b=KA+eX1qotU81gfGrYCJ+aEpcxgmyswxuGZZfzlVG1SpRE4qbH1z2OJlpuhm2WO/ibNIbfNcvO1C2c9xDTZfYzEcfk0SFhLFuL23OAdcJEJz6QrvohfMrW0CnRbC8csKyenJ0B+TksIKchiGEEGXfqwaXAcw+Zyisx0vGyc+lcis=
+	t=1750685062; cv=none; b=XR8RmMN2Gt/yy73mIWGVPl4ibwh5CdPRja0D/zYlKhRpRrXCFV/25kKKxrnm5IvKuldNF5+oyQSGmnH9EhcV51ge4JVXdKG7tHAJ67QUWB9owjEhb3PpsUiCC0joRe3o/ZHf5GIzNlGH6oeBSbyc6hf3WVnqfcYtWByl6iH5WWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684499; c=relaxed/simple;
-	bh=0YqWQl8TuXrX3c5HXuytMN5AgJ+Qqy684D9QdWK6GW8=;
+	s=arc-20240116; t=1750685062; c=relaxed/simple;
+	bh=ZhzDCO9BzBY53WxSI7w4CQFeI6tD8fdb8HVE1cTIxkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PfiiqYvt+dgKbA2u79DXShvEqiWTN0SgLchrKwlE9Dclkj1wy/JJSLQcaWtKD4AS0XkjU4GH2lmhU6XBfugqufop9whwqSiclM8yv0QylH7uWJWXD+ETlISZLlvQeyQhp6EcbjIiUISRd0nAT0HkK8FVRGtGbbbHJkBhi1QDDIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dC64Jtc5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F22DC4CEEA;
-	Mon, 23 Jun 2025 13:14:59 +0000 (UTC)
+	 MIME-Version; b=gKgkVMBPSkSSxG0b8rSWZqeueGr6ZlsR0fswOZOScS+DHX42QUiNDshaUGSu7oOiJtTHD1rax2UbWoehbvdnErZ22pPSS8GInpGebfoxmsFepsw3uQSLKSFJ5DwapAnf+4bi7mUrIPZf0xFmNCFKfS8rjhbwrp97gkb/z88DEHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNe+yZrk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF90C4CEEA;
+	Mon, 23 Jun 2025 13:24:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684499;
-	bh=0YqWQl8TuXrX3c5HXuytMN5AgJ+Qqy684D9QdWK6GW8=;
+	s=korg; t=1750685062;
+	bh=ZhzDCO9BzBY53WxSI7w4CQFeI6tD8fdb8HVE1cTIxkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dC64Jtc5fzanrcuIHjcyE4jpax/P0KD/f+TP2Xe62xqWqRcmmYiGTRDzEkuDudYc3
-	 nIgDU1YNIf185ehASyW1OY+8mlxhjyg+61VOGvGerameA1MQsX7uGXKB17EMWxVs5O
-	 Xu6Ym3/momqqHZI677gIWj+lniC72ccujNHRJzvg=
+	b=GNe+yZrk5M4zuCJOJhYYtsz0xTuWMdSyuQJ1Kopr/+r+wcgAjtZlgJwDLbcSilT9k
+	 6uh2hlTTKlVa+MUJkxeHNuccAVLMZbXt+aRtZpye6S2RGm7pzW5cv6y54zB8+YRorm
+	 glOj1C7SlIbifbK4muCWXAdv4OdWlMv988kD6dAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.15 092/592] arm64/mm: Close theoretical race where stale TLB entry remains valid
+	Manu Bretelle <chantr4@gmail.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 005/508] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
 Date: Mon, 23 Jun 2025 15:00:50 +0200
-Message-ID: <20250623130702.470096890@linuxfoundation.org>
+Message-ID: <20250623130645.389055752@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-commit 4b634918384c0f84c33aeb4dd9fd4c38e7be5ccb upstream.
+commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
 
-Commit 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with
-a parallel reclaim leaving stale TLB entries") describes a race that,
-prior to the commit, could occur between reclaim and operations such as
-mprotect() when using reclaim's tlbbatch mechanism. See that commit for
-details but the summary is:
+commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+modified get_max_boost_ratio() to return the nominal_freq advertised
+in the _CPC object. This was for the purposes of computing the maximum
+frequency. The frequencies advertised in _CPC objects are in
+MHz. However, cpufreq expects the frequency to be in KHz. Since the
+nominal_freq returned by get_max_boost_ratio() was not in KHz but
+instead in MHz,the cpuinfo_max_frequency that was computed using this
+nominal_freq was incorrect and an invalid value which resulted in
+cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
 
-"""
-Nadav Amit identified a theoritical race between page reclaim and
-mprotect due to TLB flushes being batched outside of the PTL being held.
+Fix this by converting the nominal_freq to KHz before returning the
+same from get_max_boost_ratio().
 
-He described the race as follows:
-
-	CPU0				CPU1
-	----				----
-					user accesses memory using RW PTE
-					[PTE now cached in TLB]
-	try_to_unmap_one()
-	==> ptep_get_and_clear()
-	==> set_tlb_ubc_flush_pending()
-					mprotect(addr, PROT_READ)
-					==> change_pte_range()
-					==> [ PTE non-present - no flush ]
-
-					user writes using cached RW PTE
-	...
-
-	try_to_unmap_flush()
-"""
-
-The solution was to insert flush_tlb_batched_pending() in mprotect() and
-friends to explcitly drain any pending reclaim TLB flushes. In the
-modern version of this solution, arch_flush_tlb_batched_pending() is
-called to do that synchronisation.
-
-arm64's tlbbatch implementation simply issues TLBIs at queue-time
-(arch_tlbbatch_add_pending()), eliding the trailing dsb(ish). The
-trailing dsb(ish) is finally issued in arch_tlbbatch_flush() at the end
-of the batch to wait for all the issued TLBIs to complete.
-
-Now, the Arm ARM states:
-
-"""
-The completion of the TLB maintenance instruction is guaranteed only by
-the execution of a DSB by the observer that performed the TLB
-maintenance instruction. The execution of a DSB by a different observer
-does not have this effect, even if the DSB is known to be executed after
-the TLB maintenance instruction is observed by that different observer.
-"""
-
-arch_tlbbatch_add_pending() and arch_tlbbatch_flush() conform to this
-requirement because they are called from the same task (either kswapd or
-caller of madvise(MADV_PAGEOUT)), so either they are on the same CPU or
-if the task was migrated, __switch_to() contains an extra dsb(ish).
-
-HOWEVER, arm64's arch_flush_tlb_batched_pending() is also implemented as
-a dsb(ish). But this may be running on a CPU remote from the one that
-issued the outstanding TLBIs. So there is no architectural gurantee of
-synchonization. Therefore we are still vulnerable to the theoretical
-race described in Commit 3ea277194daa ("mm, mprotect: flush TLB if
-potentially racing with a parallel reclaim leaving stale TLB entries").
-
-Fix this by flushing the entire mm in arch_flush_tlb_batched_pending().
-This aligns with what the other arches that implement the tlbbatch
-feature do.
-
-Cc: <stable@vger.kernel.org>
-Fixes: 43b3dfdd0455 ("arm64: support batched/deferred tlb shootdown during page reclamation/migration")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Link: https://lore.kernel.org/r/20250530152445.2430295-1-ryan.roberts@arm.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Reported-by: Manu Bretelle <chantr4@gmail.com>
+Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
+Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
+Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/include/asm/tlbflush.h |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/cpufreq/acpi-cpufreq.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/include/asm/tlbflush.h
-+++ b/arch/arm64/include/asm/tlbflush.h
-@@ -323,13 +323,14 @@ static inline bool arch_tlbbatch_should_
- }
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -666,7 +666,7 @@ static u64 get_max_boost_ratio(unsigned
+ 	nominal_perf = perf_caps.nominal_perf;
  
- /*
-- * If mprotect/munmap/etc occurs during TLB batched flushing, we need to
-- * synchronise all the TLBI issued with a DSB to avoid the race mentioned in
-- * flush_tlb_batched_pending().
-+ * If mprotect/munmap/etc occurs during TLB batched flushing, we need to ensure
-+ * all the previously issued TLBIs targeting mm have completed. But since we
-+ * can be executing on a remote CPU, a DSB cannot guarantee this like it can
-+ * for arch_tlbbatch_flush(). Our only option is to flush the entire mm.
-  */
- static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
- {
--	dsb(ish);
-+	flush_tlb_mm(mm);
- }
+ 	if (nominal_freq)
+-		*nominal_freq = perf_caps.nominal_freq;
++		*nominal_freq = perf_caps.nominal_freq * 1000;
  
- /*
+ 	if (!highest_perf || !nominal_perf) {
+ 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
 
 
 
