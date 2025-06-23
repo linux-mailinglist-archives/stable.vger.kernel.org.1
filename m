@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-157325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156974-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F407AE537A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2267BAE51EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C5A44A7DC6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E17827A3605
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AAD3220686;
-	Mon, 23 Jun 2025 21:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D5C3221FD2;
+	Mon, 23 Jun 2025 21:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mxNCMFwY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jxpByocN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0814E72624;
-	Mon, 23 Jun 2025 21:53:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 167EC21D3DD;
+	Mon, 23 Jun 2025 21:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715592; cv=none; b=mD3IfbJdQDOveuu/0gEhiA81t3sCJxc2DTLzBDLfc6mQvPkouq3GmCT7vHOHdEhI8Ow8BFP5Qmcss6x7EPGycP+OlwCz/kgPPEcAuN1wcr2PKQto0II7/7O76FZxBsN46Kn97KcOxR8AsbjWMBXSsYJ/oy0TG3YLq/SeCf95vI4=
+	t=1750714726; cv=none; b=I6BaNT+kcbsiB5HvUgBHfrRuMX0wFZZS2pQmIX98/ysKa9xmUmDiryQLSQnNzCBKpawS40dgU37Duit0thyT1fME3oWzJy5VBLafkQ7PHCwf7DBeukHjfxqTtibbrEf33zt48CQJjLoC3Zv73HrJxJ2UUn2mz0IahwaxE72u/xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715592; c=relaxed/simple;
-	bh=WhoAhpX8ogOqlDGsF2zFQzDBoVzTH5mR/PNZa8BuM2c=;
+	s=arc-20240116; t=1750714726; c=relaxed/simple;
+	bh=+1Jb+dc8mYjzOZMU48BsCcDpje1kVknZ4ioB4hkWy/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HQ382CYYstIL5Ig1ZCLFG6BcrmS7cbj/QAILsTTCs9CTBowAVBp+vF5/i+rWqtbiOb2x9jXNPUpE84wa0iKm9rsWwe9Y0OKvJlW1Jp1ryTVnOKYdIu0PBPGne2tTQiTj4vqJKe64G/gI6Ll+LX4yRGM18VMG2wYYZwR/KI3YZDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mxNCMFwY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94334C4CEEA;
-	Mon, 23 Jun 2025 21:53:11 +0000 (UTC)
+	 MIME-Version; b=iGfQ6Ep0Ybo1e7s4bk4z+gp5u6zCcNbt7V773Ceb3+V7HR4rt6bALW70gn4Na86tygt1MVl/LpjKx7zC7ps2eC0iot0sTUsAdGQW3P1Ykhe02siI7j03C3mDC/D1fLHvicp+6w20WT1AUK1bG621uhSiCXaOudzLv4CkHG8N+GI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jxpByocN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20A0C4CEEA;
+	Mon, 23 Jun 2025 21:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715591;
-	bh=WhoAhpX8ogOqlDGsF2zFQzDBoVzTH5mR/PNZa8BuM2c=;
+	s=korg; t=1750714726;
+	bh=+1Jb+dc8mYjzOZMU48BsCcDpje1kVknZ4ioB4hkWy/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mxNCMFwYwL/4wyJ4zBjbiQxp0D3lZz3QyYytkzTKUPwpa7qLKPpL1sHRszffv4v3h
-	 TAvylOVlZe2VMStZTFWslw/q29yk+ge6BtQeOp8bM9Gwxhmw7rmo7jO1J4F5S3r4nf
-	 Y0B3bJ1X3ld7yGYjQLeXnbbt2v0erhseRSOXyXpU=
+	b=jxpByocNC20C5ymYKYSxT3V1GOBKARLhoJniaRHe8VjNccBChKWLLdH77A6XrXrEs
+	 gDXlf4ZDpRgocKeBzo7yoneYex+8wh9OJKiS85775dAFL1Au7anwmHsTNrAb9UDMdf
+	 j+HMzBcWArcRJmuSEvW1rVStscWYbqgiU0/RsnYA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Jann Horn <jannh@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Mel Gorman <mgormanmgorman@suse.de>
-Subject: [PATCH 6.15 468/592] mm: close theoretical race where stale TLB entries could linger
+	Jianzhou Zhao <xnxc22xnxc22@qq.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 225/355] exfat: fix double free in delayed_free
 Date: Mon, 23 Jun 2025 15:07:06 +0200
-Message-ID: <20250623130711.561732906@linuxfoundation.org>
+Message-ID: <20250623130633.508901622@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,100 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan Roberts <ryan.roberts@arm.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 383c4613c67c26e90e8eebb72e3083457d02033f upstream.
+[ Upstream commit 1f3d9724e16d62c7d42c67d6613b8512f2887c22 ]
 
-Commit 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with a
-parallel reclaim leaving stale TLB entries") described a theoretical race
-as such:
+The double free could happen in the following path.
 
+exfat_create_upcase_table()
+        exfat_create_upcase_table() : return error
+        exfat_free_upcase_table() : free ->vol_utbl
+        exfat_load_default_upcase_table : return error
+     exfat_kill_sb()
+           delayed_free()
+                  exfat_free_upcase_table() <--------- double free
+This patch set ->vol_util as NULL after freeing it.
 
-"""
-Nadav Amit identified a theoretical race between page reclaim and mprotect
-due to TLB flushes being batched outside of the PTL being held.
-
-He described the race as follows:
-
-	CPU0                            CPU1
-	----                            ----
-					user accesses memory using RW PTE
-					[PTE now cached in TLB]
-	try_to_unmap_one()
-	==> ptep_get_and_clear()
-	==> set_tlb_ubc_flush_pending()
-					mprotect(addr, PROT_READ)
-					==> change_pte_range()
-					==> [ PTE non-present - no flush ]
-
-					user writes using cached RW PTE
-	...
-
-	try_to_unmap_flush()
-
-The same type of race exists for reads when protecting for PROT_NONE and
-also exists for operations that can leave an old TLB entry behind such as
-munmap, mremap and madvise.
-"""
-
-The solution was to introduce flush_tlb_batched_pending() and call it
-under the PTL from mprotect/madvise/munmap/mremap to complete any pending
-tlb flushes.
-
-However, while madvise_free_pte_range() and
-madvise_cold_or_pageout_pte_range() were both retro-fitted to call
-flush_tlb_batched_pending() immediately after initially acquiring the PTL,
-they both temporarily release the PTL to split a large folio if they
-stumble upon one.  In this case, where re-acquiring the PTL
-flush_tlb_batched_pending() must be called again, but it previously was
-not.  Let's fix that.
-
-There are 2 Fixes: tags here: the first is the commit that fixed
-madvise_free_pte_range().  The second is the commit that added
-madvise_cold_or_pageout_pte_range(), which looks like it copy/pasted the
-faulty pattern from madvise_free_pte_range().
-
-This is a theoretical bug discovered during code review.
-
-Link: https://lkml.kernel.org/r/20250606092809.4194056-1-ryan.roberts@arm.com
-Fixes: 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with a parallel reclaim leaving stale TLB entries")
-Fixes: 9c276cc65a58 ("mm: introduce MADV_COLD")
-Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-Reviewed-by: Jann Horn <jannh@google.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Mel Gorman <mgorman <mgorman@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jianzhou Zhao <xnxc22xnxc22@qq.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/madvise.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/exfat/nls.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -503,6 +503,7 @@ restart:
- 					pte_offset_map_lock(mm, pmd, addr, &ptl);
- 				if (!start_pte)
- 					break;
-+				flush_tlb_batched_pending(mm);
- 				arch_enter_lazy_mmu_mode();
- 				if (!err)
- 					nr = 0;
-@@ -736,6 +737,7 @@ static int madvise_free_pte_range(pmd_t
- 				start_pte = pte;
- 				if (!start_pte)
- 					break;
-+				flush_tlb_batched_pending(mm);
- 				arch_enter_lazy_mmu_mode();
- 				if (!err)
- 					nr = 0;
+diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+index 314d5407a1be5..a75d5fb2404c7 100644
+--- a/fs/exfat/nls.c
++++ b/fs/exfat/nls.c
+@@ -804,4 +804,5 @@ int exfat_create_upcase_table(struct super_block *sb)
+ void exfat_free_upcase_table(struct exfat_sb_info *sbi)
+ {
+ 	kvfree(sbi->vol_utbl);
++	sbi->vol_utbl = NULL;
+ }
+-- 
+2.39.5
+
 
 
 
