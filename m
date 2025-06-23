@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EFB8AE44F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CAD29AE43EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B72044183E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 307B91BC06C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EEFD252910;
-	Mon, 23 Jun 2025 13:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD91B24E019;
+	Mon, 23 Jun 2025 13:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c2UDhPkR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjPm+cKR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF71F2522A8;
-	Mon, 23 Jun 2025 13:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2E3246BC9;
+	Mon, 23 Jun 2025 13:31:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686035; cv=none; b=p5mQK4j+PLVoiPeG1kbfJ85V8SlCha8Fuo4KUz1k4kmB1eav11SFLwh8S+/UhLdhN/QyQXtmDaoitY0iXAlJOG+H0wbCcgJGCYLl9QYteMCSIH5rHwihAJQ7BXQA8fPBROUcCbWbMB8sxJRAhtZVhZKY8EJiZR7cm6RDBLzCucc=
+	t=1750685479; cv=none; b=McZ2zMHXwkhoDmWH/KBDgH2wgtW18pdqMCIPH42T5PR9qUVgRSgZ19Jtjwx4HU1a3hBLJ0ZZ2JDG3ec17F499wuaSWAZQAfgc6PpmcBYTqTJ38M13EdeIk+bVreLQwgmsK5K3SKOifhJyu3KmzKpMKsCjtu84QVzTUdOcywKDJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686035; c=relaxed/simple;
-	bh=KDNYyEyFApfX/4sfkVGXVT6G+Z3XfsPX7E52nQXoUxk=;
+	s=arc-20240116; t=1750685479; c=relaxed/simple;
+	bh=XwhWbZvNZynVWKg5tEGeUuE+/nTKoHusZ0HZoOgz/bY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NTZOqubrZXl/QGH2HjkjcR9Qo1k/vlahNxP5AsDnNccFFBD3Lm210M6RJOPdj4gdzClYouYRVIvYLjqNK3sBwumUeCEV5OPjVIt3cvpmjKPJpVnQK/qu5CKejxORscMs6jvjzWG9HtRj+OHlYjikRhFYuUCuLyprgR6Y9N3ychA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c2UDhPkR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF230C4CEEA;
-	Mon, 23 Jun 2025 13:40:34 +0000 (UTC)
+	 MIME-Version; b=fWBfrugHOADp4ftuFTsyk8mtxbeuZeir6vlmrTx5GEGnndR2VLMhkhjn/Yg5Y1m6DeWha2p8oTHBDpkdAARdqKhb0gCpCOxlY/bslURmPO6gmUmusI4o76yG12BKMeU/UTd7BoLWkidZl27m+nSPmyW7b2qBti0/MDAhBTd8a8w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjPm+cKR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD652C4CEEA;
+	Mon, 23 Jun 2025 13:31:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686035;
-	bh=KDNYyEyFApfX/4sfkVGXVT6G+Z3XfsPX7E52nQXoUxk=;
+	s=korg; t=1750685478;
+	bh=XwhWbZvNZynVWKg5tEGeUuE+/nTKoHusZ0HZoOgz/bY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c2UDhPkRpLc4icTMusvtAdM4LVeD2VjmTYnEavFyBiJYkSyJ+1mR36Tpu5VKn9xsE
-	 ozfUlJp9bT3oGYXqMazj4ReIisAi+WjFuj1o1k5A/0YehlaK8/BwaqorOFsSXwGkks
-	 xQbsJWRXmrwOBqZkhf9/QseGVi3syIFkMGeLQaFY=
+	b=XjPm+cKRKrkQFMy5ZAJgH5+GUFJJpw8UyHv1RIwoQ44qY9+3Q6KgNP0Z081YQyvhg
+	 A1vTwrlR/sHyhKz5t8dp1pJdR94WbkS8kGecVbqw+mLVDcGF9NVq9YN/PE7CY71KOV
+	 afJt33/yYKwSC2MUTPyUoPK4eJPKApaqWG3PR+jo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 076/411] ARM: dts: at91: at91sam9263: fix NAND chip selects
+Subject: [PATCH 6.15 262/592] media: verisilicon: Enable wide 4K in AV1 decoder
 Date: Mon, 23 Jun 2025 15:03:40 +0200
-Message-ID: <20250623130635.287247299@linuxfoundation.org>
+Message-ID: <20250623130706.537915726@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
+[ Upstream commit 311e40e877bd980bc665e6c8d3b15d96f0ec2aa8 ]
 
-NAND did not work on my USB-A9263. I discovered that the offending
-commit converted the PIO bank for chip selects wrongly, so all A9263
-boards need to be fixed.
+Tested on RK3588, this decoder is capable of handling WUHD, so bump the
+maximum width and height accordingly.
 
-Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/at91sam9263ek.dts | 2 +-
- arch/arm/boot/dts/tny_a9263.dts     | 2 +-
- arch/arm/boot/dts/usb_a9263.dts     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ .../platform/verisilicon/rockchip_vpu_hw.c    | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/boot/dts/at91sam9263ek.dts b/arch/arm/boot/dts/at91sam9263ek.dts
-index 71f60576761a0..df206bdb67883 100644
---- a/arch/arm/boot/dts/at91sam9263ek.dts
-+++ b/arch/arm/boot/dts/at91sam9263ek.dts
-@@ -148,7 +148,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/tny_a9263.dts b/arch/arm/boot/dts/tny_a9263.dts
-index 62b7d9f9a926c..c8b6318aaa838 100644
---- a/arch/arm/boot/dts/tny_a9263.dts
-+++ b/arch/arm/boot/dts/tny_a9263.dts
-@@ -64,7 +64,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index d1c07503ff76f..87a5f96014e01 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -84,7 +84,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
+diff --git a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
+index 964122e7c3559..b64f0658f7f1e 100644
+--- a/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
++++ b/drivers/media/platform/verisilicon/rockchip_vpu_hw.c
+@@ -85,10 +85,10 @@ static const struct hantro_fmt rockchip_vpu981_postproc_fmts[] = {
+ 		.postprocessed = true,
+ 		.frmsize = {
+ 			.min_width = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_width = FMT_UHD_WIDTH,
++			.max_width = FMT_4K_WIDTH,
+ 			.step_width = MB_DIM,
+ 			.min_height = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_height = FMT_UHD_HEIGHT,
++			.max_height = FMT_4K_HEIGHT,
+ 			.step_height = MB_DIM,
+ 		},
+ 	},
+@@ -99,10 +99,10 @@ static const struct hantro_fmt rockchip_vpu981_postproc_fmts[] = {
+ 		.postprocessed = true,
+ 		.frmsize = {
+ 			.min_width = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_width = FMT_UHD_WIDTH,
++			.max_width = FMT_4K_WIDTH,
+ 			.step_width = MB_DIM,
+ 			.min_height = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_height = FMT_UHD_HEIGHT,
++			.max_height = FMT_4K_HEIGHT,
+ 			.step_height = MB_DIM,
+ 		},
+ 	},
+@@ -318,10 +318,10 @@ static const struct hantro_fmt rockchip_vpu981_dec_fmts[] = {
+ 		.match_depth = true,
+ 		.frmsize = {
+ 			.min_width = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_width = FMT_UHD_WIDTH,
++			.max_width = FMT_4K_WIDTH,
+ 			.step_width = MB_DIM,
+ 			.min_height = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_height = FMT_UHD_HEIGHT,
++			.max_height = FMT_4K_HEIGHT,
+ 			.step_height = MB_DIM,
+ 		},
+ 	},
+@@ -331,10 +331,10 @@ static const struct hantro_fmt rockchip_vpu981_dec_fmts[] = {
+ 		.match_depth = true,
+ 		.frmsize = {
+ 			.min_width = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_width = FMT_UHD_WIDTH,
++			.max_width = FMT_4K_WIDTH,
+ 			.step_width = MB_DIM,
+ 			.min_height = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_height = FMT_UHD_HEIGHT,
++			.max_height = FMT_4K_HEIGHT,
+ 			.step_height = MB_DIM,
+ 		},
+ 	},
+@@ -344,10 +344,10 @@ static const struct hantro_fmt rockchip_vpu981_dec_fmts[] = {
+ 		.max_depth = 2,
+ 		.frmsize = {
+ 			.min_width = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_width = FMT_UHD_WIDTH,
++			.max_width = FMT_4K_WIDTH,
+ 			.step_width = MB_DIM,
+ 			.min_height = ROCKCHIP_VPU981_MIN_SIZE,
+-			.max_height = FMT_UHD_HEIGHT,
++			.max_height = FMT_4K_HEIGHT,
+ 			.step_height = MB_DIM,
+ 		},
+ 	},
 -- 
 2.39.5
 
