@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8310AE525F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19B90AE53BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00E65443742
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23ABF1B6123C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224C1222582;
-	Mon, 23 Jun 2025 21:43:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2BF1FECBA;
+	Mon, 23 Jun 2025 21:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zklpZA8E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9pKhNXX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51B54315A;
-	Mon, 23 Jun 2025 21:43:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC365222576;
+	Mon, 23 Jun 2025 21:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714994; cv=none; b=BxOahdCaphSHqS4imZJtDabsgYz9L9BfBpqmE5g4Aewj8vMIuaflLS6dycQ1bhDptNs9Vqo1jbwwnb8Jy0eTjM4J95Ie7OMuqE7jU3mhmuENM2LbEMdo1WqvDvr7wqhA9xyK86cs1kAWYiVAZSiOzmj6fbqPPDIjQ20WWJHX+iA=
+	t=1750715720; cv=none; b=AU2bm1yLBNx7amSxSft0PFJe4Qx50bd41nZVqFQn7C2RCIKmkttKBqTW+0lAALP6W5L8/mxUuNPVi77iQGs8/qyZRpta5ZqFjUfJOu2vCM6ZSK8sb7S6+So5fFg7raEiHa7w/ogZ9uCWysKZMBKZJfrWySZO0FTcNye2V82V3PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714994; c=relaxed/simple;
-	bh=AueGq5ua9ycGYfeY4pOnE+QGnALuHv4JMTGtFma5dN4=;
+	s=arc-20240116; t=1750715720; c=relaxed/simple;
+	bh=kexV3X6pYpyq4KcIHXnBiWEwykoBYLvgUBO8Zpgoq2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f3eA3I/4PmVVwwDYTVVtwIYDsemG7Ue1e1cQ36Evc1HFxlunwIOQPWsDvYipjn990MumIZwy0nafkw4WAdnUicG4FZdQvpkmFrwZmWVAtGJwolO4UHE9+MmL2mbrjUVfG6QAQx5zxCIBskUWHoGVYEX9y38+oQZIkNEEgvT+RAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zklpZA8E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBE4C4CEEA;
-	Mon, 23 Jun 2025 21:43:14 +0000 (UTC)
+	 MIME-Version; b=aLb1sTjJqJNSh3btMfRZULJUWT0zXtTecrx+DCDZogWFFjTtlsOd38hn5mS6Dh/3izBHjgubJRhtZDsYYrE81xq/EkfesiDQJwwvC9be/whXDmPKVWJwKOchDVhDFb2d5J4BL8tgVIbdYUrC0uzJdbVyGq+gYgB6/5SV7Utnp3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9pKhNXX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CE8C4CEEA;
+	Mon, 23 Jun 2025 21:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714994;
-	bh=AueGq5ua9ycGYfeY4pOnE+QGnALuHv4JMTGtFma5dN4=;
+	s=korg; t=1750715719;
+	bh=kexV3X6pYpyq4KcIHXnBiWEwykoBYLvgUBO8Zpgoq2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zklpZA8ELgE1qN1DIxPM2iLHh7ss/M/0a6O4lnDgW7++CWllGEbtRiFazkvn2AQrD
-	 d2Jfin2DtCU3SpWBsNv7xTvcguZY59+Qj/BKTYRrHU5NXgsMynj9vXTeq2Xqh6dWHv
-	 tuf+wvtSORKHcxnOlm2jubFEIffIxmr9GHKhv1Mo=
+	b=W9pKhNXXIHV/z8SsLZ/KZsy9dOGeOFlcsk84oQ78bj5NmnA5ZCqoG+nsgCP4uJnS7
+	 uGLP0HUtzrIHwCBe0pHVS0uEFl2lQkI5fJkmwOxBcC0gS9vMXwxZZZkgmvi6+Pryb+
+	 o3sClibE0b1zyRpAXe8nfy6IJzCGQ7tC3y4xxKxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/290] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
+	Kai Huang <kai.huang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.15 476/592] x86/virt/tdx: Avoid indirect calls to TDX assembly functions
 Date: Mon, 23 Jun 2025 15:07:14 +0200
-Message-ID: <20250623130632.091305599@linuxfoundation.org>
+Message-ID: <20250623130711.755612039@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+From: Kai Huang <kai.huang@intel.com>
 
-[ Upstream commit 2b801487ac3be7bec561ae62d1a6c4d6f5283f8c ]
+commit 0b3bc018e86afdc0cbfef61328c63d5c08f8b370 upstream.
 
-The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
+Two 'static inline' TDX helper functions (sc_retry() and
+sc_retry_prerr()) take function pointer arguments which refer to
+assembly functions.  Normally, the compiler inlines the TDX helper,
+realizes that the function pointer targets are completely static --
+thus can be resolved at compile time -- and generates direct call
+instructions.
 
-Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
-Link: https://patch.msgid.link/20240313180227.2224780-1-victor.gonzalo@anddroptable.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But, other times (like when CONFIG_CC_OPTIMIZE_FOR_SIZE=y), the
+compiler declines to inline the helpers and will instead generate
+indirect call instructions.
+
+Indirect calls to assembly functions require special annotation (for
+various Control Flow Integrity mechanisms).  But TDX assembly
+functions lack the special annotations and can only be called
+directly.
+
+Annotate both the helpers as '__always_inline' to prod the compiler
+into maintaining the direct calls. There is no guarantee here, but
+Peter has volunteered to report the compiler bug if this assumption
+ever breaks[1].
+
+Fixes: 1e66a7e27539 ("x86/virt/tdx: Handle SEAMCALL no entropy error in common code")
+Fixes: df01f5ae07dd ("x86/virt/tdx: Add SEAMCALL error printing for module initialization")
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/20250605145914.GW39944@noisy.programming.kicks-ass.net/ [1]
+Link: https://lore.kernel.org/all/20250606130737.30713-1-kai.huang%40intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/include/asm/tdx.h  |    2 +-
+ arch/x86/virt/vmx/tdx/tdx.c |    5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index d594694206b33..906f2790f5619 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -44,6 +44,8 @@
- 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
- 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
-+#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
-+	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_CC_A_MODULE_FIRMWARE(api)			\
- 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -100,7 +100,7 @@ void tdx_init(void);
  
-@@ -423,6 +425,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
--- 
-2.39.5
-
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+ 
+-static inline u64 sc_retry(sc_func_t func, u64 fn,
++static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+ 			   struct tdx_module_args *args)
+ {
+ 	int retry = RDRAND_RETRY_LOOPS;
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -69,8 +69,9 @@ static inline void seamcall_err_ret(u64
+ 			args->r9, args->r10, args->r11);
+ }
+ 
+-static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
+-				 u64 fn, struct tdx_module_args *args)
++static __always_inline int sc_retry_prerr(sc_func_t func,
++					  sc_err_func_t err_func,
++					  u64 fn, struct tdx_module_args *args)
+ {
+ 	u64 sret = sc_retry(func, fn, args);
+ 
 
 
 
