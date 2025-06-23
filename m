@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6127EAE44F2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 454E2AE456B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6AF116855D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE0573B414F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B4B16419;
-	Mon, 23 Jun 2025 13:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291EC2475E3;
+	Mon, 23 Jun 2025 13:41:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIQzKAEY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNL8Vz+O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E764C6E;
-	Mon, 23 Jun 2025 13:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB71E16419;
+	Mon, 23 Jun 2025 13:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686094; cv=none; b=PMgxAE+XzJ46eTdwvL8J+ZqLifiyQyVZRwGnQOMyWld2NB/K3mVGVtQN3T2LxS41HigtjPSwK4jWMKLIDPjgGW/GDa6hWtMn5Y7ZbaBocehNw/emF26wQ9jsNAgbS4XAeRtWJjf1NIOIaKyLoAsrDP3bMoSsZc87TP/CmYRnS2Y=
+	t=1750686114; cv=none; b=IWDtR9dyDOnm76+N94tQ0IK9y5lnAxO6fK4h/zueBrwT7BRqzEnsUrRauBDGvl09IT3GhIhyEDl29fTEjFyGlSq4uxdEeATyewUFaNBuRb7IW+Dr8f5EFI8y6/V6OJd7UHDOf0lGCmDKA7zkksXpWzvQ0q8qoW6v9wbItjR5Z8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686094; c=relaxed/simple;
-	bh=yQNpsTRxf1iQ56FiWPWo+ZnC5+/6kkHOwNiNDFQ4lmI=;
+	s=arc-20240116; t=1750686114; c=relaxed/simple;
+	bh=Tz8ElIo7HmIZkMv+l+81S39tfSKvLZicDjWpG1Ev+wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0Eqah6076avXBlxongkgRLrl0NsVzQ9PhWPRTtRTtBLyMpgJ2aJF/1xYU23AtR8Zx00/qXJ/meQ4NuBDgqQDE5JZREBVntG4dXfJ7gB2SG9tDsQyYygdltzDmlVNQYXnuFGyd/WRudVjsL6aGoe4qn6bHrl1vWP8C9TVNUW+9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIQzKAEY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE936C4CEEA;
-	Mon, 23 Jun 2025 13:41:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cfkbpSQLwZ/By9nNVjVq1wNZ5MsAYX9CX5d7vgm88EXgItOS4ewOxtF1yvCnnp6InM3bswd5fufdrzsCQUyUTrMlPzWJVxyyu6x+7OmmwWf/IznnVib4MVWOgcfszw7+YqET5kqVwWwiACYoT2jwNleIHyUNJ2Zm7wwcGrRD1hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNL8Vz+O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CDBC4CEEA;
+	Mon, 23 Jun 2025 13:41:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686094;
-	bh=yQNpsTRxf1iQ56FiWPWo+ZnC5+/6kkHOwNiNDFQ4lmI=;
+	s=korg; t=1750686114;
+	bh=Tz8ElIo7HmIZkMv+l+81S39tfSKvLZicDjWpG1Ev+wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIQzKAEYzL9Hml9u5Y4s3YZWueu9354fA/OdhC3acpGyce8HXLKd0AcxA0Os8vE5W
-	 AzWWatW3YvX4T+IUbC5fOKj9REVqZ+YGFzOIvRkc5QTc4+3flbcHzE8FFZjUs43arx
-	 jQnUH8hvU631zIe9Tlt3H9h299XMDoShh1WlIh0w=
+	b=gNL8Vz+OSfQ4UL3S1+eg+pNkbDz64ja5T/kDdJjeCYU1Api6yiTYla2M4LPk0DCIC
+	 t7RKSzrfJRXi/dC9egzGR9hGzZqZjVR5HfwW9Wvbd4swl+YPObcLSfp0u4btNiSaIH
+	 r0NR2LFXZaX0btjwV1uD7pjkcjHTlPEc5Aj9Z82Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghun Han <kkamagui@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Jerry Lv <Jerry.Lv@axis.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 137/222] ACPICA: fix acpi parse and parseext cache leaks
-Date: Mon, 23 Jun 2025 15:07:52 +0200
-Message-ID: <20250623130616.214195631@linuxfoundation.org>
+Subject: [PATCH 5.4 138/222] power: supply: bq27xxx: Retrieve again when busy
+Date: Mon, 23 Jun 2025 15:07:53 +0200
+Message-ID: <20250623130616.241958661@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,231 +68,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Seunghun Han <kkamagui@gmail.com>
+From: Jerry Lv <Jerry.Lv@axis.com>
 
-[ Upstream commit bed18f0bdcd6737a938264a59d67923688696fc4 ]
+[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
 
-ACPICA commit 8829e70e1360c81e7a5a901b5d4f48330e021ea5
+Multiple applications may access the battery gauge at the same time, so
+the gauge may be busy and EBUSY will be returned. The driver will set a
+flag to record the EBUSY state, and this flag will be kept until the next
+periodic update. When this flag is set, bq27xxx_battery_get_property()
+will just return ENODEV until the flag is updated.
 
-I'm Seunghun Han, and I work for National Security Research Institute of
-South Korea.
+Even if the gauge was busy during the last accessing attempt, returning
+ENODEV is not ideal, and can cause confusion in the applications layer.
 
-I have been doing a research on ACPI and found an ACPI cache leak in ACPI
-early abort cases.
+Instead, retry accessing the I2C to update the flag is as expected, for
+the gauge typically recovers from busy state within a few milliseconds.
+If still failed to access the gauge, the real error code would be returned
+instead of ENODEV (as suggested by Pali Rohár).
 
-Boot log of ACPI cache leak is as follows:
-[    0.352414] ACPI: Added _OSI(Module Device)
-[    0.353182] ACPI: Added _OSI(Processor Device)
-[    0.353182] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.353182] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.356028] ACPI: Unable to start the ACPI Interpreter
-[    0.356799] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.360215] kmem_cache_destroy Acpi-State: Slab cache still has objects
-[    0.360648] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #10
-[    0.361273] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.361873] Call Trace:
-[    0.362243]  ? dump_stack+0x5c/0x81
-[    0.362591]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.362944]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.363296]  ? acpi_os_delete_cache+0xa/0x10
-[    0.363646]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.364000]  ? acpi_terminate+0xa/0x14
-[    0.364000]  ? acpi_init+0x2af/0x34f
-[    0.364000]  ? __class_create+0x4c/0x80
-[    0.364000]  ? video_setup+0x7f/0x7f
-[    0.364000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.364000]  ? do_one_initcall+0x4e/0x1a0
-[    0.364000]  ? kernel_init_freeable+0x189/0x20a
-[    0.364000]  ? rest_init+0xc0/0xc0
-[    0.364000]  ? kernel_init+0xa/0x100
-[    0.364000]  ? ret_from_fork+0x25/0x30
-
-I analyzed this memory leak in detail. I found that “Acpi-State” cache and
-“Acpi-Parse” cache were merged because the size of cache objects was same
-slab cache size.
-
-I finally found “Acpi-Parse” cache and “Acpi-parse_ext” cache were leaked
-using SLAB_NEVER_MERGE flag in kmem_cache_create() function.
-
-Real ACPI cache leak point is as follows:
-[    0.360101] ACPI: Added _OSI(Module Device)
-[    0.360101] ACPI: Added _OSI(Processor Device)
-[    0.360101] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.361043] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.364016] ACPI: Unable to start the ACPI Interpreter
-[    0.365061] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.368174] kmem_cache_destroy Acpi-Parse: Slab cache still has objects
-[    0.369332] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.371256] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.372000] Call Trace:
-[    0.372000]  ? dump_stack+0x5c/0x81
-[    0.372000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.372000]  ? acpi_ut_delete_caches+0x56/0x7b
-[    0.372000]  ? acpi_terminate+0xa/0x14
-[    0.372000]  ? acpi_init+0x2af/0x34f
-[    0.372000]  ? __class_create+0x4c/0x80
-[    0.372000]  ? video_setup+0x7f/0x7f
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? do_one_initcall+0x4e/0x1a0
-[    0.372000]  ? kernel_init_freeable+0x189/0x20a
-[    0.372000]  ? rest_init+0xc0/0xc0
-[    0.372000]  ? kernel_init+0xa/0x100
-[    0.372000]  ? ret_from_fork+0x25/0x30
-[    0.388039] kmem_cache_destroy Acpi-parse_ext: Slab cache still has objects
-[    0.389063] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.390557] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.392000] Call Trace:
-[    0.392000]  ? dump_stack+0x5c/0x81
-[    0.392000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.392000]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.392000]  ? acpi_terminate+0xa/0x14
-[    0.392000]  ? acpi_init+0x2af/0x34f
-[    0.392000]  ? __class_create+0x4c/0x80
-[    0.392000]  ? video_setup+0x7f/0x7f
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? do_one_initcall+0x4e/0x1a0
-[    0.392000]  ? kernel_init_freeable+0x189/0x20a
-[    0.392000]  ? rest_init+0xc0/0xc0
-[    0.392000]  ? kernel_init+0xa/0x100
-[    0.392000]  ? ret_from_fork+0x25/0x30
-
-When early abort is occurred due to invalid ACPI information, Linux kernel
-terminates ACPI by calling acpi_terminate() function. The function calls
-acpi_ut_delete_caches() function to delete local caches (acpi_gbl_namespace_
-cache, state_cache, operand_cache, ps_node_cache, ps_node_ext_cache).
-
-But the deletion codes in acpi_ut_delete_caches() function only delete
-slab caches using kmem_cache_destroy() function, therefore the cache
-objects should be flushed before acpi_ut_delete_caches() function.
-
-"Acpi-Parse" cache and "Acpi-ParseExt" cache are used in an AML parse
-function, acpi_ps_parse_loop(). The function should complete all ops
-using acpi_ps_complete_final_op() when an error occurs due to invalid
-AML codes.
-However, the current implementation of acpi_ps_complete_final_op() does not
-complete all ops when it meets some errors and this cause cache leak.
-
-This cache leak has a security threat because an old kernel (<= 4.9) shows
-memory locations of kernel functions in stack dump. Some malicious users
-could use this information to neutralize kernel ASLR.
-
-To fix ACPI cache leak for enhancing security, I made a patch to complete all
-ops unconditionally for acpi_ps_complete_final_op() function.
-
-I hope that this patch improves the security of Linux kernel.
-
-Thank you.
-
-Link: https://github.com/acpica/acpica/commit/8829e70e
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2363774.ElGaqSPkdT@rjwysocki.net
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
+Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psobject.c | 52 ++++++++++------------------------
- 1 file changed, 15 insertions(+), 37 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c     |  2 +-
+ drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
-index 98e5c7400e547..3ea26bbd534df 100644
---- a/drivers/acpi/acpica/psobject.c
-+++ b/drivers/acpi/acpica/psobject.c
-@@ -639,7 +639,8 @@ acpi_status
- acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  union acpi_parse_object *op, acpi_status status)
- {
--	acpi_status status2;
-+	acpi_status return_status = status;
-+	u8 ascending = TRUE;
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index e6c4dfdc58c47..1cfec675f82f3 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -1780,7 +1780,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
+ 	mutex_unlock(&di->lock);
  
- 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+-		return -ENODEV;
++		return di->cache.flags;
  
-@@ -653,7 +654,7 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  op));
- 	do {
- 		if (op) {
--			if (walk_state->ascending_callback != NULL) {
-+			if (ascending && walk_state->ascending_callback != NULL) {
- 				walk_state->op = op;
- 				walk_state->op_info =
- 				    acpi_ps_get_opcode_info(op->common.
-@@ -675,49 +676,26 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 				}
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 08c7e2b4155ad..bf235d0a96033 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -14,6 +14,7 @@
+  * GNU General Public License for more details.
+  */
  
- 				if (status == AE_CTRL_TERMINATE) {
--					status = AE_OK;
--
--					/* Clean up */
--					do {
--						if (op) {
--							status2 =
--							    acpi_ps_complete_this_op
--							    (walk_state, op);
--							if (ACPI_FAILURE
--							    (status2)) {
--								return_ACPI_STATUS
--								    (status2);
--							}
--						}
--
--						acpi_ps_pop_scope(&
--								  (walk_state->
--								   parser_state),
--								  &op,
--								  &walk_state->
--								  arg_types,
--								  &walk_state->
--								  arg_count);
--
--					} while (op);
--
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = AE_CTRL_TERMINATE;
- 				}
++#include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -40,6 +41,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	struct i2c_msg msg[2];
+ 	u8 data[2];
+ 	int ret;
++	int retry = 0;
  
- 				else if (ACPI_FAILURE(status)) {
+ 	if (!client->adapter)
+ 		return -ENODEV;
+@@ -56,7 +58,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	else
+ 		msg[1].len = 2;
  
- 					/* First error is most important */
+-	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++	do {
++		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++		if (ret == -EBUSY && ++retry < 3) {
++			/* sleep 10 milliseconds when busy */
++			usleep_range(10000, 11000);
++			continue;
++		}
++		break;
++	} while (1);
++
+ 	if (ret < 0)
+ 		return ret;
  
--					(void)
--					    acpi_ps_complete_this_op(walk_state,
--								     op);
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = status;
- 				}
- 			}
- 
--			status2 = acpi_ps_complete_this_op(walk_state, op);
--			if (ACPI_FAILURE(status2)) {
--				return_ACPI_STATUS(status2);
-+			status = acpi_ps_complete_this_op(walk_state, op);
-+			if (ACPI_FAILURE(status)) {
-+				ascending = FALSE;
-+				if (ACPI_SUCCESS(return_status) ||
-+				    return_status == AE_CTRL_TERMINATE) {
-+					return_status = status;
-+				}
- 			}
- 		}
- 
-@@ -727,5 +705,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 
- 	} while (op);
- 
--	return_ACPI_STATUS(status);
-+	return_ACPI_STATUS(return_status);
- }
 -- 
 2.39.5
 
