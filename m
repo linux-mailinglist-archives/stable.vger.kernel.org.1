@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 741C7AE4E9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A6AAE4EA1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00016189F6CA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E90317C2E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA5C1221F3E;
-	Mon, 23 Jun 2025 21:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9636822157E;
+	Mon, 23 Jun 2025 21:07:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iQYMukpk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ngp/4nSQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670752153C1;
-	Mon, 23 Jun 2025 21:07:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5233A217668;
+	Mon, 23 Jun 2025 21:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712844; cv=none; b=VmvulArbOeZKfcwg4vdSQqTovOQxqeV25fR01gx94pNc/676M7/ly9s4M7H0V2vsQ9AZO6yEJOXFrpR2USF268IXfonpMC7IaU/lnVUlr2uQ3BERdHnZcKfsrWI13cAHuxF1lmnUPQBP2rzflqmXpnMHibMb/JoHlBChQAbR500=
+	t=1750712864; cv=none; b=EuJm28Cl07I/24Ww2lMAI+oKSWjD3koiTir5XLlDp73gewdOx/rRf2bj8Rw1UuR42PcwjqaMP1UVH3/XHFrnzGGPhT3H4jj2RVGLxY7326L2zqx2EfwRN8yHE/Vx5ADeQaU7CoULqFmtfCIMDNibRGC/QsIX81ioZaETqTDDS4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712844; c=relaxed/simple;
-	bh=SuJ87xGSGAEPCoPesJ3rMMZm7KvxGH9laeOtKW5lF1I=;
+	s=arc-20240116; t=1750712864; c=relaxed/simple;
+	bh=wkYXNEIH4QtGEPoeg5FQQIyG8wPtJI6cghDJTRdOtmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoDTVbtLpQsN0C8ZxsfCJrsEIjjtczaE/LiTtBjcpm7fBLjL0yX1wT8NNDAK/II4Vik5OwKS7YX7T0Jh2L+HI/ALa96dAGcW3zyM1S+Lo9z8JXloz45qEWxqK3Brk2WL/mvB7A/Sw96kZfEgGVCE4KkYoHJWcm/hOMYRnM8wxlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iQYMukpk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006A2C4CEEA;
-	Mon, 23 Jun 2025 21:07:23 +0000 (UTC)
+	 MIME-Version; b=UTCiWfYi/bEWZwWXvfWYpcDJbaSgBM7X/pEA1Tg03/3xZhPZRvQxRae1SO83GYyrJV50nC/IGOKkfZ9DMjpDdR0w7Cmjiroeyjcqg9equhQvDlEQlpe+4mdrWGKugOpzcAGTnwZPN9y6slS5n2Hp1Xl3KuLjXMyTT9N28O9O3RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ngp/4nSQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88767C4CEEA;
+	Mon, 23 Jun 2025 21:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712844;
-	bh=SuJ87xGSGAEPCoPesJ3rMMZm7KvxGH9laeOtKW5lF1I=;
+	s=korg; t=1750712863;
+	bh=wkYXNEIH4QtGEPoeg5FQQIyG8wPtJI6cghDJTRdOtmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iQYMukpkyombOAbvRqGwgeNFQw2Bpd9wPdZd2TkLFflFYlRWGdLsDo6+qliT5O9+7
-	 ArdpNwMu5aN9eSDFBbqhtFedlWgL94+09PWcA2OoF25RokSg7A47STzspF2o05NADZ
-	 FbJW4kUp05Pvy8WUwAFvjGh+trsGokl2ofKNdf8Q=
+	b=Ngp/4nSQ7G5UNP6NvAq3CpNREBd6wAFoJgszSQdhwifzp5DZXOvu/ovzbQeaa2wv5
+	 NB9Kp+BD2pF+Sh0cGzo3aNxgCBOnprXtjAlIlNH6AwwXOyQSYQZd2maoLYgdsmh7Xo
+	 Fo0nRs/LXC9KZIgaMy8NPtw22wNMxV5wfMo9/P1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yihang Li <liyihang9@huawei.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 063/508] scsi: hisi_sas: Call I_T_nexus after soft reset for SATA disk
-Date: Mon, 23 Jun 2025 15:01:48 +0200
-Message-ID: <20250623130646.794152392@linuxfoundation.org>
+Subject: [PATCH 6.1 064/508] iommu: Protect against overflow in iommu_pgsize()
+Date: Mon, 23 Jun 2025 15:01:49 +0200
+Message-ID: <20250623130646.818235068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,77 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihang Li <liyihang9@huawei.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit e4d953ca557e02edd3aed7390043e1b8ad1c9723 ]
+[ Upstream commit e586e22974d2b7acbef3c6c3e01b2d5ce69efe33 ]
 
-In commit 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe
-I_T nexus reset failure"), if the softreset fails upon certain
-conditions, the PHY connected to the disk is disabled directly. Manual
-recovery is required, which is inconvenient for users in actual use.
+On a 32 bit system calling:
+ iommu_map(0, 0x40000000)
 
-In addition, SATA disks do not support simultaneous connection of multiple
-hosts. Therefore, when multiple controllers are connected to a SATA disk
-at the same time, the controller which is connected later failed to issue
-an ATA softreset to the SATA disk. As a result, the PHY associated with
-the disk is disabled and cannot be automatically recovered.
+When using the AMD V1 page table type with a domain->pgsize of 0xfffff000
+causes iommu_pgsize() to miscalculate a result of:
+  size=0x40000000 count=2
 
-Now that, we will not focus on the execution result of softreset. No
-matter whether the execution is successful or not, we will directly carry
-out I_T_nexus_reset.
+count should be 1. This completely corrupts the mapping process.
 
-Fixes: 21c7e972475e ("scsi: hisi_sas: Disable SATA disk phy for severe I_T nexus reset failure")
-Signed-off-by: Yihang Li <liyihang9@huawei.com>
-Link: https://lore.kernel.org/r/20250414080845.1220997-4-liyihang9@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+This is because the final test to adjust the pagesize malfunctions when
+the addition overflows. Use check_add_overflow() to prevent this.
+
+Fixes: b1d99dc5f983 ("iommu: Hook up '->unmap_pages' driver callback")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/0-v1-3ad28fc2e3a3+163327-iommu_overflow_pgsize_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hisi_sas/hisi_sas_main.c | 29 +++++----------------------
- 1 file changed, 5 insertions(+), 24 deletions(-)
+ drivers/iommu/iommu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hisi_sas/hisi_sas_main.c b/drivers/scsi/hisi_sas/hisi_sas_main.c
-index 02855164bf28d..360f2799f2a13 100644
---- a/drivers/scsi/hisi_sas/hisi_sas_main.c
-+++ b/drivers/scsi/hisi_sas/hisi_sas_main.c
-@@ -1758,33 +1758,14 @@ static int hisi_sas_I_T_nexus_reset(struct domain_device *device)
- 	}
- 	hisi_sas_dereg_device(hisi_hba, device);
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index 83736824f17d1..ae9ca0700ad22 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2202,6 +2202,7 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 	unsigned int pgsize_idx, pgsize_idx_next;
+ 	unsigned long pgsizes;
+ 	size_t offset, pgsize, pgsize_next;
++	size_t offset_end;
+ 	unsigned long addr_merge = paddr | iova;
  
--	rc = hisi_sas_debug_I_T_nexus_reset(device);
--	if (rc == TMF_RESP_FUNC_COMPLETE && dev_is_sata(device)) {
--		struct sas_phy *local_phy;
--
-+	if (dev_is_sata(device)) {
- 		rc = hisi_sas_softreset_ata_disk(device);
--		switch (rc) {
--		case -ECOMM:
--			rc = -ENODEV;
--			break;
--		case TMF_RESP_FUNC_FAILED:
--		case -EMSGSIZE:
--		case -EIO:
--			local_phy = sas_get_local_phy(device);
--			rc = sas_phy_enable(local_phy, 0);
--			if (!rc) {
--				local_phy->enabled = 0;
--				dev_err(dev, "Disabled local phy of ATA disk %016llx due to softreset fail (%d)\n",
--					SAS_ADDR(device->sas_addr), rc);
--				rc = -ENODEV;
--			}
--			sas_put_local_phy(local_phy);
--			break;
--		default:
--			break;
--		}
-+		if (rc == TMF_RESP_FUNC_FAILED)
-+			dev_err(dev, "ata disk %016llx reset (%d)\n",
-+				SAS_ADDR(device->sas_addr), rc);
- 	}
+ 	/* Page sizes supported by the hardware and small enough for @size */
+@@ -2242,7 +2243,8 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 	 * If size is big enough to accommodate the larger page, reduce
+ 	 * the number of smaller pages.
+ 	 */
+-	if (offset + pgsize_next <= size)
++	if (!check_add_overflow(offset, pgsize_next, &offset_end) &&
++	    offset_end <= size)
+ 		size = offset;
  
-+	rc = hisi_sas_debug_I_T_nexus_reset(device);
- 	if ((rc == TMF_RESP_FUNC_COMPLETE) || (rc == -ENODEV))
- 		hisi_sas_release_task(hisi_hba, device);
- 
+ out_set_count:
 -- 
 2.39.5
 
