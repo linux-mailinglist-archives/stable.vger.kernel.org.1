@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-158168-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8839AE576A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5B79AE5714
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A06CB3BA26F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 812561C23A03
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECE7223DCC;
-	Mon, 23 Jun 2025 22:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1280B22370A;
+	Mon, 23 Jun 2025 22:25:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ne/n5Tl0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWsQjdeY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BBB62222B2;
-	Mon, 23 Jun 2025 22:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AB7221543;
+	Mon, 23 Jun 2025 22:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717651; cv=none; b=uzyBYAi2gE2SJXKWlkRGNlRBOBT6jVizajXAg610O0vJ4sbeQpY9YXqa3YS0k9Smw22UV7kAahxzCOQwNdufrbEI/RULoKwU+vSZXbuTUEUPqzoYsDvRARAPk9BQtNZ5oWAN8jBXpgdr06W0MJb8tiBZeQ5GONxDsTB8zQPKA4o=
+	t=1750717550; cv=none; b=kDqFROrmkcj0xEDmuDR0/naqUySnxvD2CUyVj+/guwx0JomhFr+eVtmW9a6OJP6wg3dHyvdD0QbiuwLWUvuLe/Ze4ytPqim8gpoLc+Yd6wN7iPlvBTpaWRLVrdtJeAuFY2rRI/nhcaJYKtHjQJk283Ubm0Yq/y21lZNEDBdbGCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717651; c=relaxed/simple;
-	bh=IeGw3zV00NFDfHOJsf/YzjNUDmkYUzC+cDF52se3qRo=;
+	s=arc-20240116; t=1750717550; c=relaxed/simple;
+	bh=+jrC7HgT2ssyfa6URUgi5mKzFW6DAATZlNvyKUPWhC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlfLJdy9ZrFKWZSOz1qjkDlZt3oTb2YCpBUCZB/3QHoWsa06c7axlQ/DTID2cKdb1rynstccL6xFdJ/0Lbw5wfdzl6y7Zg3VPrHlizSC8u4eYr1XMEFelxynRhvUxSUbkTEFgUeJ8cAvDMpZl0FxPcHbFKiOrfQVAY0nd2iG/5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ne/n5Tl0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12416C4CEEA;
-	Mon, 23 Jun 2025 22:27:30 +0000 (UTC)
+	 MIME-Version; b=NIXPkoZbBxQflYPcK9LPOsT9NjyBn6NJ8HZu4qXcLTaDcvUDoIwOfw+vd/2gsz0uTts+JiPJMn9VVL4JFfHHktZUBTx2oZPn3BiJLsXw1ce6zQBOkep17jR7oNY0isZi2sI9YPuijn8Ov48nTjq1KdMfdgAGZNehnOVfGjczROs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWsQjdeY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50059C4CEEA;
+	Mon, 23 Jun 2025 22:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717651;
-	bh=IeGw3zV00NFDfHOJsf/YzjNUDmkYUzC+cDF52se3qRo=;
+	s=korg; t=1750717550;
+	bh=+jrC7HgT2ssyfa6URUgi5mKzFW6DAATZlNvyKUPWhC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ne/n5Tl0qc45YNA2ZoUsoJe1LJWlI4AGkqNZN7f3EiYGFCg5Ea/Fa++CdwCbacsfo
-	 PFs7aUo/oRJYEprnW2qZbjp5aWY+CSQbvkN0npS5RWTBrw91SPjv7gqlN+oOqHm22P
-	 RpvgyOvq8sB4bHuGkYhRVhnIju3xR2y9fITKh+vM=
+	b=QWsQjdeY+baiv5I21I0bh6WB+wg2TT/VAWiZiM3N8mZof2aKiNXYmLNf2KksyB3oC
+	 A9/i/9vBHdYUqI5ZE/wiNKemYH7gX008OMpz9ydc05QLtIFWgdot0vFnBeJvrPNXPv
+	 px8t9IwGFNePPnyEG1lW8K2o9tgEkSTkNvjd0OWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b64dec3affaed7b3af5@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 490/508] net: atm: add lec_mutex
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.12 398/414] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
 Date: Mon, 23 Jun 2025 15:08:55 +0200
-Message-ID: <20250623130657.097190072@linuxfoundation.org>
+Message-ID: <20250623130651.888887229@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,166 +60,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit d13a3824bfd2b4774b671a75cf766a16637a0e67 ]
+commit 5f1017069933489add0c08659673443c9905659e upstream.
 
-syzbot found its way in net/atm/lec.c, and found an error path
-in lecd_attach() could leave a dangling pointer in dev_lec[].
+The early_console_setup() function initializes sci_ports[0].port with an
+object of type struct uart_port obtained from the struct earlycon_device
+passed as an argument to early_console_setup().
 
-Add a mutex to protect dev_lecp[] uses from lecd_attach(),
-lec_vcc_attach() and lec_mcast_attach().
+Later, during serial port probing, the serial port used as earlycon
+(e.g., port A) might be remapped to a different position in the sci_ports[]
+array, and a different serial port (e.g., port B) might be assigned to slot
+0. For example:
 
-Following patch will use this mutex for /proc/net/atm/lec.
+sci_ports[0] = port B
+sci_ports[X] = port A
 
-BUG: KASAN: slab-use-after-free in lecd_attach net/atm/lec.c:751 [inline]
-BUG: KASAN: slab-use-after-free in lane_ioctl+0x2224/0x23e0 net/atm/lec.c:1008
-Read of size 8 at addr ffff88807c7b8e68 by task syz.1.17/6142
+In this scenario, the new port mapped at index zero (port B) retains the
+data associated with the earlycon configuration. Consequently, after the
+Linux boot process, any access to the serial port now mapped to
+sci_ports[0] (port B) will block the original earlycon port (port A).
 
-CPU: 1 UID: 0 PID: 6142 Comm: syz.1.17 Not tainted 6.16.0-rc1-syzkaller-00239-g08215f5486ec #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:94 [inline]
-  dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
-  print_address_description mm/kasan/report.c:408 [inline]
-  print_report+0xcd/0x680 mm/kasan/report.c:521
-  kasan_report+0xe0/0x110 mm/kasan/report.c:634
-  lecd_attach net/atm/lec.c:751 [inline]
-  lane_ioctl+0x2224/0x23e0 net/atm/lec.c:1008
-  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
-  sock_do_ioctl+0x118/0x280 net/socket.c:1190
-  sock_ioctl+0x227/0x6b0 net/socket.c:1311
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
- </TASK>
+To address this, introduce an early_console_exit() function to clean up
+sci_ports[0] when earlycon is exited.
 
-Allocated by task 6132:
-  kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-  poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
-  __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
-  kasan_kmalloc include/linux/kasan.h:260 [inline]
-  __do_kmalloc_node mm/slub.c:4328 [inline]
-  __kvmalloc_node_noprof+0x27b/0x620 mm/slub.c:5015
-  alloc_netdev_mqs+0xd2/0x1570 net/core/dev.c:11711
-  lecd_attach net/atm/lec.c:737 [inline]
-  lane_ioctl+0x17db/0x23e0 net/atm/lec.c:1008
-  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
-  sock_do_ioctl+0x118/0x280 net/socket.c:1190
-  sock_ioctl+0x227/0x6b0 net/socket.c:1311
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
-  do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-  do_syscall_64+0xcd/0x4c0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+To prevent the cleanup of sci_ports[0] while the serial device is still
+being used by earlycon, introduce the struct sci_port::probing flag and
+account for it in early_console_exit().
 
-Freed by task 6132:
-  kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
-  kasan_save_track+0x14/0x30 mm/kasan/common.c:68
-  kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
-  poison_slab_object mm/kasan/common.c:247 [inline]
-  __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
-  kasan_slab_free include/linux/kasan.h:233 [inline]
-  slab_free_hook mm/slub.c:2381 [inline]
-  slab_free mm/slub.c:4643 [inline]
-  kfree+0x2b4/0x4d0 mm/slub.c:4842
-  free_netdev+0x6c5/0x910 net/core/dev.c:11892
-  lecd_attach net/atm/lec.c:744 [inline]
-  lane_ioctl+0x1ce8/0x23e0 net/atm/lec.c:1008
-  do_vcc_ioctl+0x12c/0x930 net/atm/ioctl.c:159
-  sock_do_ioctl+0x118/0x280 net/socket.c:1190
-  sock_ioctl+0x227/0x6b0 net/socket.c:1311
-  vfs_ioctl fs/ioctl.c:51 [inline]
-  __do_sys_ioctl fs/ioctl.c:907 [inline]
-  __se_sys_ioctl fs/ioctl.c:893 [inline]
-  __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:893
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+8b64dec3affaed7b3af5@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/6852c6f6.050a0220.216029.0018.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250618140844.1686882-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/atm/lec.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/tty/serial/sh-sci.c |   32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/net/atm/lec.c b/net/atm/lec.c
-index ac3cfc1ae5102..d4ac1488eca6f 100644
---- a/net/atm/lec.c
-+++ b/net/atm/lec.c
-@@ -124,6 +124,7 @@ static unsigned char bus_mac[ETH_ALEN] = { 0xff, 0xff, 0xff, 0xff, 0xff, 0xff };
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -183,6 +183,7 @@ static struct sci_port sci_ports[SCI_NPO
+ static unsigned long sci_ports_in_use;
+ static struct uart_driver sci_uart_driver;
+ static bool sci_uart_earlycon;
++static bool sci_uart_earlycon_dev_probing;
  
- /* Device structures */
- static struct net_device *dev_lec[MAX_LEC_ITF];
-+static DEFINE_MUTEX(lec_mutex);
- 
- #if IS_ENABLED(CONFIG_BRIDGE)
- static void lec_handle_bridge(struct sk_buff *skb, struct net_device *dev)
-@@ -685,6 +686,7 @@ static int lec_vcc_attach(struct atm_vcc *vcc, void __user *arg)
- 	int bytes_left;
- 	struct atmlec_ioc ioc_data;
- 
-+	lockdep_assert_held(&lec_mutex);
- 	/* Lecd must be up in this case */
- 	bytes_left = copy_from_user(&ioc_data, arg, sizeof(struct atmlec_ioc));
- 	if (bytes_left != 0)
-@@ -710,6 +712,7 @@ static int lec_vcc_attach(struct atm_vcc *vcc, void __user *arg)
- 
- static int lec_mcast_attach(struct atm_vcc *vcc, int arg)
+ static inline struct sci_port *
+ to_sci_port(struct uart_port *uart)
+@@ -3404,7 +3405,8 @@ static struct plat_sci_port *sci_parse_d
+ static int sci_probe_single(struct platform_device *dev,
+ 				      unsigned int index,
+ 				      struct plat_sci_port *p,
+-				      struct sci_port *sciport)
++				      struct sci_port *sciport,
++				      struct resource *sci_res)
  {
-+	lockdep_assert_held(&lec_mutex);
- 	if (arg < 0 || arg >= MAX_LEC_ITF)
- 		return -EINVAL;
- 	arg = array_index_nospec(arg, MAX_LEC_ITF);
-@@ -725,6 +728,7 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
- 	int i;
- 	struct lec_priv *priv;
+ 	int ret;
  
-+	lockdep_assert_held(&lec_mutex);
- 	if (arg < 0)
- 		arg = 0;
- 	if (arg >= MAX_LEC_ITF)
-@@ -742,6 +746,7 @@ static int lecd_attach(struct atm_vcc *vcc, int arg)
- 		snprintf(dev_lec[i]->name, IFNAMSIZ, "lec%d", i);
- 		if (register_netdev(dev_lec[i])) {
- 			free_netdev(dev_lec[i]);
-+			dev_lec[i] = NULL;
- 			return -EINVAL;
- 		}
- 
-@@ -1003,6 +1008,7 @@ static int lane_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		return -ENOIOCTLCMD;
+@@ -3451,6 +3453,14 @@ static int sci_probe_single(struct platf
+ 		sciport->port.flags |= UPF_HARD_FLOW;
  	}
  
-+	mutex_lock(&lec_mutex);
- 	switch (cmd) {
- 	case ATMLEC_CTRL:
- 		err = lecd_attach(vcc, (int)arg);
-@@ -1017,6 +1023,7 @@ static int lane_ioctl(struct socket *sock, unsigned int cmd, unsigned long arg)
- 		break;
- 	}
- 
-+	mutex_unlock(&lec_mutex);
- 	return err;
++	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
++		/*
++		 * Skip cleanup the sci_port[0] in early_console_exit(), this
++		 * port is the same as the earlycon one.
++		 */
++		sci_uart_earlycon_dev_probing = true;
++	}
++
+ 	return uart_add_one_port(&sci_uart_driver, &sciport->port);
  }
  
--- 
-2.39.5
-
+@@ -3509,7 +3519,7 @@ static int sci_probe(struct platform_dev
+ 
+ 	platform_set_drvdata(dev, sp);
+ 
+-	ret = sci_probe_single(dev, dev_id, p, sp);
++	ret = sci_probe_single(dev, dev_id, p, sp, res);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -3666,6 +3676,22 @@ sh_early_platform_init_buffer("earlyprin
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg;
+ 
++static int early_console_exit(struct console *co)
++{
++	struct sci_port *sci_port = &sci_ports[0];
++
++	/*
++	 * Clean the slot used by earlycon. A new SCI device might
++	 * map to this slot.
++	 */
++	if (!sci_uart_earlycon_dev_probing) {
++		memset(sci_port, 0, sizeof(*sci_port));
++		sci_uart_earlycon = false;
++	}
++
++	return 0;
++}
++
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
+ {
+@@ -3683,6 +3709,8 @@ static int __init early_console_setup(st
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
+ 
+ 	device->con->write = serial_console_write;
++	device->con->exit = early_console_exit;
++
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 
 
 
