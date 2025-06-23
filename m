@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B09BAE51AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53AB6AE51F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C46113A812E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DFA494A4AC6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACBF922258C;
-	Mon, 23 Jun 2025 21:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C1252222A9;
+	Mon, 23 Jun 2025 21:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U+oIDRUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="05iTJej3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AC20221734;
-	Mon, 23 Jun 2025 21:36:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39C0221D3DD;
+	Mon, 23 Jun 2025 21:39:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714580; cv=none; b=BRWX6ve+WjdZ/AP/4EnTlduO9eixGPAeo4H4i5rR+vgGxtX9pb5RaPZiv2CfgTahIdvE6E/T7rPahy1HcC8qsIaMcldKILjYqxev1BlC3FJ8obFhb8iTssA0p6BkvdkhjNovf5GZK1TmxIDNMiIr6Pejn6jxzzYkUsHpXJ68hLw=
+	t=1750714748; cv=none; b=geotm2iZwuX2eIiADGI2UOOlyQRSBtFf9Ha09RlrzOb7+GkDvW0mFgcIVE/w8Q0uGRfL9Q8ZwU+VQZmEjn+/amysD3jSQvUQksJjnxHoOVV23M/qeqSj/vc36p3E/433KsvOy+Kx95INWJgi+Y1XwA9HvtDh5vWbAr/C/Vf2WfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714580; c=relaxed/simple;
-	bh=zuqfRXM5EUadGKk0sjqeHK07torravIrXZblN0tZI0M=;
+	s=arc-20240116; t=1750714748; c=relaxed/simple;
+	bh=oXti5lP+L5PzMiLzcT07p1PkOBlee1pNSnLTaMpwcN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aVMkS2bCbVioMGzx7AX9ZzNARAWHy6Aut9eHE+t8y+QqQQIcEFYu63DPYOnmhlKGJVZkGMRjTRl0YygseJWfuHxxJ4wKq+l3bjKS3wRUMbC41+gGX9JoSDX8SHNWkxklj1vhHPZFGe/SFXvYRrDGIjgiO1zqccQ5DAD6I+TX2ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U+oIDRUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 037E9C4CEEA;
-	Mon, 23 Jun 2025 21:36:19 +0000 (UTC)
+	 MIME-Version; b=m8IWNFktpwXCyaQiJUHIjM2vMCL96EsG8TA+Uxf+nkMAWkNUWi3AGo6mMTj62/tEef2qYLz0hoX1//SAeNYQU/gbvfh7h3HqM0+UCcnHd2SxOkHj5iBFJVAxgHjyuTahsUGJDS5aWE1r5HAn53dThIJrFi8BSROjEEuCbD/O18A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=05iTJej3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8658DC4CEEA;
+	Mon, 23 Jun 2025 21:39:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714580;
-	bh=zuqfRXM5EUadGKk0sjqeHK07torravIrXZblN0tZI0M=;
+	s=korg; t=1750714747;
+	bh=oXti5lP+L5PzMiLzcT07p1PkOBlee1pNSnLTaMpwcN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U+oIDRUFpzb8B3ngxpVwSk6SKGzjgYIq5rw0bYmGTcriGDjWXNH9D2jaGDJEAeRMS
-	 dORpOCEzLgVQdCd8wK88ZNv9dtUAYcCHkUvwj38rxyHruzowmxfDf3STzBB6ELN6dX
-	 hW92C17eRdlI7UyuCzSy5c/7d++so8wXS/0CEsrM=
+	b=05iTJej3jF+WTX//XexeYXT6rqjxMJgXUItzM2iWinZ2GTmBPRcxCVxclxkQSOhoL
+	 jBwQZHMOK9PxcCjN7daXhBTB2TwVDJvVK1pt/gPitNSveeG/kdEC81Lm4n8Pn/BLnO
+	 Z2fVdfManxbsz1ZmZv/Isyd2LxPV4mnoycO6dkDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghun Han <kkamagui@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 216/355] ACPICA: fix acpi parse and parseext cache leaks
+Subject: [PATCH 6.6 156/290] net: atlantic: generate software timestamp just before the doorbell
 Date: Mon, 23 Jun 2025 15:06:57 +0200
-Message-ID: <20250623130633.239662123@linuxfoundation.org>
+Message-ID: <20250623130631.583621978@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,238 +60,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghun Han <kkamagui@gmail.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit bed18f0bdcd6737a938264a59d67923688696fc4 ]
+[ Upstream commit 285ad7477559b6b5ceed10ba7ecfed9d17c0e7c6 ]
 
-ACPICA commit 8829e70e1360c81e7a5a901b5d4f48330e021ea5
+Make sure the call of skb_tx_timestamp is as close as possible to the
+doorbell.
 
-I'm Seunghun Han, and I work for National Security Research Institute of
-South Korea.
-
-I have been doing a research on ACPI and found an ACPI cache leak in ACPI
-early abort cases.
-
-Boot log of ACPI cache leak is as follows:
-[    0.352414] ACPI: Added _OSI(Module Device)
-[    0.353182] ACPI: Added _OSI(Processor Device)
-[    0.353182] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.353182] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.356028] ACPI: Unable to start the ACPI Interpreter
-[    0.356799] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.360215] kmem_cache_destroy Acpi-State: Slab cache still has objects
-[    0.360648] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #10
-[    0.361273] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.361873] Call Trace:
-[    0.362243]  ? dump_stack+0x5c/0x81
-[    0.362591]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.362944]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.363296]  ? acpi_os_delete_cache+0xa/0x10
-[    0.363646]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.364000]  ? acpi_terminate+0xa/0x14
-[    0.364000]  ? acpi_init+0x2af/0x34f
-[    0.364000]  ? __class_create+0x4c/0x80
-[    0.364000]  ? video_setup+0x7f/0x7f
-[    0.364000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.364000]  ? do_one_initcall+0x4e/0x1a0
-[    0.364000]  ? kernel_init_freeable+0x189/0x20a
-[    0.364000]  ? rest_init+0xc0/0xc0
-[    0.364000]  ? kernel_init+0xa/0x100
-[    0.364000]  ? ret_from_fork+0x25/0x30
-
-I analyzed this memory leak in detail. I found that “Acpi-State” cache and
-“Acpi-Parse” cache were merged because the size of cache objects was same
-slab cache size.
-
-I finally found “Acpi-Parse” cache and “Acpi-parse_ext” cache were leaked
-using SLAB_NEVER_MERGE flag in kmem_cache_create() function.
-
-Real ACPI cache leak point is as follows:
-[    0.360101] ACPI: Added _OSI(Module Device)
-[    0.360101] ACPI: Added _OSI(Processor Device)
-[    0.360101] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.361043] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.364016] ACPI: Unable to start the ACPI Interpreter
-[    0.365061] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.368174] kmem_cache_destroy Acpi-Parse: Slab cache still has objects
-[    0.369332] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.371256] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.372000] Call Trace:
-[    0.372000]  ? dump_stack+0x5c/0x81
-[    0.372000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.372000]  ? acpi_ut_delete_caches+0x56/0x7b
-[    0.372000]  ? acpi_terminate+0xa/0x14
-[    0.372000]  ? acpi_init+0x2af/0x34f
-[    0.372000]  ? __class_create+0x4c/0x80
-[    0.372000]  ? video_setup+0x7f/0x7f
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? do_one_initcall+0x4e/0x1a0
-[    0.372000]  ? kernel_init_freeable+0x189/0x20a
-[    0.372000]  ? rest_init+0xc0/0xc0
-[    0.372000]  ? kernel_init+0xa/0x100
-[    0.372000]  ? ret_from_fork+0x25/0x30
-[    0.388039] kmem_cache_destroy Acpi-parse_ext: Slab cache still has objects
-[    0.389063] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.390557] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.392000] Call Trace:
-[    0.392000]  ? dump_stack+0x5c/0x81
-[    0.392000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.392000]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.392000]  ? acpi_terminate+0xa/0x14
-[    0.392000]  ? acpi_init+0x2af/0x34f
-[    0.392000]  ? __class_create+0x4c/0x80
-[    0.392000]  ? video_setup+0x7f/0x7f
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? do_one_initcall+0x4e/0x1a0
-[    0.392000]  ? kernel_init_freeable+0x189/0x20a
-[    0.392000]  ? rest_init+0xc0/0xc0
-[    0.392000]  ? kernel_init+0xa/0x100
-[    0.392000]  ? ret_from_fork+0x25/0x30
-
-When early abort is occurred due to invalid ACPI information, Linux kernel
-terminates ACPI by calling acpi_terminate() function. The function calls
-acpi_ut_delete_caches() function to delete local caches (acpi_gbl_namespace_
-cache, state_cache, operand_cache, ps_node_cache, ps_node_ext_cache).
-
-But the deletion codes in acpi_ut_delete_caches() function only delete
-slab caches using kmem_cache_destroy() function, therefore the cache
-objects should be flushed before acpi_ut_delete_caches() function.
-
-"Acpi-Parse" cache and "Acpi-ParseExt" cache are used in an AML parse
-function, acpi_ps_parse_loop(). The function should complete all ops
-using acpi_ps_complete_final_op() when an error occurs due to invalid
-AML codes.
-However, the current implementation of acpi_ps_complete_final_op() does not
-complete all ops when it meets some errors and this cause cache leak.
-
-This cache leak has a security threat because an old kernel (<= 4.9) shows
-memory locations of kernel functions in stack dump. Some malicious users
-could use this information to neutralize kernel ASLR.
-
-To fix ACPI cache leak for enhancing security, I made a patch to complete all
-ops unconditionally for acpi_ps_complete_final_op() function.
-
-I hope that this patch improves the security of Linux kernel.
-
-Thank you.
-
-Link: https://github.com/acpica/acpica/commit/8829e70e
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2363774.ElGaqSPkdT@rjwysocki.net
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Link: https://patch.msgid.link/20250510134812.48199-2-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/psobject.c | 52 ++++++++++------------------------
- 1 file changed, 15 insertions(+), 37 deletions(-)
+ drivers/net/ethernet/aquantia/atlantic/aq_main.c | 1 -
+ drivers/net/ethernet/aquantia/atlantic/aq_nic.c  | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
-index 2480c26c51710..bf708126a7523 100644
---- a/drivers/acpi/acpica/psobject.c
-+++ b/drivers/acpi/acpica/psobject.c
-@@ -636,7 +636,8 @@ acpi_status
- acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  union acpi_parse_object *op, acpi_status status)
- {
--	acpi_status status2;
-+	acpi_status return_status = status;
-+	u8 ascending = TRUE;
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+index 0b2a52199914b..75d436c906968 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
+@@ -123,7 +123,6 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
+ 	}
+ #endif
  
- 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
- 
-@@ -650,7 +651,7 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  op));
- 	do {
- 		if (op) {
--			if (walk_state->ascending_callback != NULL) {
-+			if (ascending && walk_state->ascending_callback != NULL) {
- 				walk_state->op = op;
- 				walk_state->op_info =
- 				    acpi_ps_get_opcode_info(op->common.
-@@ -672,49 +673,26 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 				}
- 
- 				if (status == AE_CTRL_TERMINATE) {
--					status = AE_OK;
--
--					/* Clean up */
--					do {
--						if (op) {
--							status2 =
--							    acpi_ps_complete_this_op
--							    (walk_state, op);
--							if (ACPI_FAILURE
--							    (status2)) {
--								return_ACPI_STATUS
--								    (status2);
--							}
--						}
--
--						acpi_ps_pop_scope(&
--								  (walk_state->
--								   parser_state),
--								  &op,
--								  &walk_state->
--								  arg_types,
--								  &walk_state->
--								  arg_count);
--
--					} while (op);
--
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = AE_CTRL_TERMINATE;
- 				}
- 
- 				else if (ACPI_FAILURE(status)) {
- 
- 					/* First error is most important */
- 
--					(void)
--					    acpi_ps_complete_this_op(walk_state,
--								     op);
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = status;
- 				}
- 			}
- 
--			status2 = acpi_ps_complete_this_op(walk_state, op);
--			if (ACPI_FAILURE(status2)) {
--				return_ACPI_STATUS(status2);
-+			status = acpi_ps_complete_this_op(walk_state, op);
-+			if (ACPI_FAILURE(status)) {
-+				ascending = FALSE;
-+				if (ACPI_SUCCESS(return_status) ||
-+				    return_status == AE_CTRL_TERMINATE) {
-+					return_status = status;
-+				}
- 			}
- 		}
- 
-@@ -724,5 +702,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 
- 	} while (op);
- 
--	return_ACPI_STATUS(status);
-+	return_ACPI_STATUS(return_status);
+-	skb_tx_timestamp(skb);
+ 	return aq_nic_xmit(aq_nic, skb);
  }
+ 
+diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+index c9b0d57696a48..07392174f6437 100644
+--- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
++++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
+@@ -898,6 +898,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
+ 
+ 	frags = aq_nic_map_skb(self, skb, ring);
+ 
++	skb_tx_timestamp(skb);
++
+ 	if (likely(frags)) {
+ 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
+ 						       ring, frags);
 -- 
 2.39.5
 
