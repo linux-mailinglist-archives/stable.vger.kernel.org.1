@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157482-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CA81AE50B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E929CAE5427
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D4C41B62A3B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19AA446C3D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A4F223316;
-	Mon, 23 Jun 2025 21:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0AA223DEE;
+	Mon, 23 Jun 2025 21:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJZJlu/1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSBqmVvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8294F1F4628;
-	Mon, 23 Jun 2025 21:27:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1C7223714;
+	Mon, 23 Jun 2025 21:59:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714028; cv=none; b=pqeeDDa2Ca2qmTKj/lc8HycIow8B6TjVftgJRf4Fb63hP1pkFFhF8qDRzothFodaniLwuHNs6DzpMrJot5EpcQG0I+wml3v5cJumtU6p+tKxQzklpJGed39Tb3g/yaJ6h56kapULut3yoRQ72OnqYOu/ze2/OiNHaW/QC8h2DXQ=
+	t=1750715975; cv=none; b=IJQ7wP/qO3C2kW5SXsq/5mkoqbTUVWJIVpomNIQj1hK1B3BcNgeD0z8FurBr3+z4gNlaW54djbWFO3qVv29IfZNCL2RCRlwuze35nh1iaKf3PS65qJ0BFbZRcpzhzBYkQPu1d+cyCMNdrMbpuTrdJgdwYhESEHYccp8NcBI0XAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714028; c=relaxed/simple;
-	bh=aALxbmLdA+7ihN3Ilx8+3woHpcDWh+R9uhx9M9KIftc=;
+	s=arc-20240116; t=1750715975; c=relaxed/simple;
+	bh=MD/LjQ84VL3D1nPs9Wr37la3eDONWpxxLT2eChVn5bQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bOTYDvyyIV0Pu9BD+JEkRP8NykbawPU7q6b3XCBhxZ1gFW52EnK8ixd7wLw+EhTET0nkIYexonJd8mFdljamQNTeWeMy/lpPiP8VtMmydEOG5ttDaN+fsof3HRGMR6u/32A+Du5OzW1AWabTbrW9sBj5wxVQaJbET5/VSIRHt1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJZJlu/1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6F3C4CEEA;
-	Mon, 23 Jun 2025 21:27:07 +0000 (UTC)
+	 MIME-Version; b=QTT3dToPiZdf9Z38qwT6vP2p1hYXeG62L+xrB5i0haJJG4NFvmxWZMG0+sgBugsQqeWnx/gpyU1zaAvkiyGR6NB3XWq3UrgumkKVr9ezlCSSz//nemare+CY8xT7UpxFKnyPPrc5/hOFXZSC/q+DsN4bi9LN2FpfyfOyvVlf1xM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSBqmVvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D32C4CEEA;
+	Mon, 23 Jun 2025 21:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714028;
-	bh=aALxbmLdA+7ihN3Ilx8+3woHpcDWh+R9uhx9M9KIftc=;
+	s=korg; t=1750715975;
+	bh=MD/LjQ84VL3D1nPs9Wr37la3eDONWpxxLT2eChVn5bQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJZJlu/1SIan69WGbPQdT7AeAUJWB8lQoJUrkdo3b4sRTfaF9/Ym2JtzBSDxi4tq8
-	 7Qm9AAxBxCTQOw4UkPzW6J5dlkLpBXS/mcnoOseHBl3jBElXcBnTLstfnB+9wlbUBe
-	 C+vL8hTNhtpLnVl7GMWU08tLR7SiCqmANgWi5AVg=
+	b=WSBqmVvQIXBSdMcPoYRWXPA9+uyUsw4slDZvMqOcbpMgVF2FhhjUAjniWTcLhV32y
+	 8ZQsbeopB4pyLmri3vKYN1Gp80CxmM3Pg5ZEVQtQWg7GTPUiQoUbpePvxiki77qVj7
+	 bOhyhRdZFijwHxJT69D6ZAHpzR3o3XRuKhiZRO5I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mykyta Yatsenko <yatsenko@meta.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 359/592] libbpf: Check bpf_map_skeleton link for NULL
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 6.1 272/508] mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
 Date: Mon, 23 Jun 2025 15:05:17 +0200
-Message-ID: <20250623130708.982154406@linuxfoundation.org>
+Message-ID: <20250623130651.940039287@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mykyta Yatsenko <yatsenko@meta.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit d0445d7dd3fd9b15af7564c38d7aa3cbc29778ee ]
+commit 08f6554ff90ef189e6b8f0303e57005bddfdd6a7 upstream.
 
-Avoid dereferencing bpf_map_skeleton's link field if it's NULL.
-If BPF map skeleton is created with the size, that indicates containing
-link field, but the field was not actually initialized with valid
-bpf_link pointer, libbpf crashes. This may happen when using libbpf-rs
-skeleton.
-Skeleton loading may still progress, but user needs to attach struct_ops
-map separately.
+A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
+KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
+When that occurs, the following error appears when building ARCH=mips
+with clang (tip of tree error shown):
 
-Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250514113220.219095-1-mykyta.yatsenko5@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  clang: error: unsupported option '-mabi=' for target 'x86_64-pc-linux-gnu'
+
+Add KBUILD_CPPFLAGS in the CHECKFLAGS invocation to keep everything
+working after the move.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/libbpf.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index 147964bb64c8f..30cf210261032 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -14078,6 +14078,12 @@ int bpf_object__attach_skeleton(struct bpf_object_skeleton *s)
- 		}
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -351,7 +351,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwin
+ KBUILD_LDFLAGS		+= -m $(ld-emul)
  
- 		link = map_skel->link;
-+		if (!link) {
-+			pr_warn("map '%s': BPF map skeleton link is uninitialized\n",
-+				bpf_map__name(map));
-+			continue;
-+		}
-+
- 		if (*link)
- 			continue;
- 
--- 
-2.39.5
-
+ ifdef need-compiler
+-CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
++CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
+ 	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
+ 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
+ endif
 
 
 
