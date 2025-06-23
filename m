@@ -1,124 +1,262 @@
-Return-Path: <stable+bounces-156163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EED8DAE4DBD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EFB6AE4EAC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8546F7A16F2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 19:45:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 86A603BE3D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BA001D88D7;
-	Mon, 23 Jun 2025 19:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0D6221727;
+	Mon, 23 Jun 2025 21:08:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="AiWmlF0V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPc/wG6R"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E161EEA3C;
-	Mon, 23 Jun 2025 19:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0C861F582A;
+	Mon, 23 Jun 2025 21:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750707989; cv=none; b=U+UklQN84AXOpFUEEaUeRhJw7f+BPVC3FvEbaic4a/E+fBjQLNngu/TFg8420XmYmKigLG7oj2lFatUWy80zFG7DOKD4ltOkgxQayKeA1jlVdZYdEBxarLPzCpT1CkE6ecx5KprkhIALPXlU+/RrhfRoh5SaRkdRkxLHS05iJFU=
+	t=1750712883; cv=none; b=l7NZKbNgE0UxM7zCN6Vrp6S2l0kfJ6iZUEkkq4bJMyxv3EMoPnx7akqrgUEjRRcd4hh//p8DlfsPBGu3huJ0ZIUZHa3aBWMcjaemSo+Z6px7X0M+dxZd3VYkpo6FAkF1Dc1nyTJAI41dlS2V0TD+zbPr8/tA0caz9qWJGMDoQZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750707989; c=relaxed/simple;
-	bh=qNtX7HOtHPAZ37bzCwU2x94iYElxKJdWBv4q8izut5Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tJbmNTVE5VONr12bXOMtZdox1pQumgBtUAJJQ894NC5j3E/vTQkbSO1CyR5nCkB0wCC56b6qy/naNbmo3vSJYa7nkVcsT+PqUR0HzJgdrsam0lcXczNqsjyUbxYmPqhyHwAS54JE05N3TIm8IZ4bp0PQu0++o4yn8oYkifEr91U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=AiWmlF0V; arc=none smtp.client-ip=209.85.128.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-451e2f0d9c2so30312375e9.1;
-        Mon, 23 Jun 2025 12:46:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1750707986; x=1751312786; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=HEGyrQzRFDGKEhq8E+Hk5aKFGbdt1Msuid5ULByX0HE=;
-        b=AiWmlF0VsqiyvXXG4ed8RYgljmv+uMfjhH3HvLBaWoZm5DzZglSAMwFDL0OuVK5t4L
-         M7bpBhxI3DcvQDI5K0odksqAUytSUoNOU90wkYQ3QlgLRUQjESVef9aviFm8rIYTE8HJ
-         dHXsdkNLhKBaSl0RwcQzG6blNgGzbEvK/oihnnzDSkEIY/ah9/++QsW3+5zAKbpNmkif
-         aM1xQTUg9BT1st2gaE76qJ7zmvd31xsCXDHCXW3T3pNrVge25mNzTTSzGT6yOaVZRBE2
-         F9i34THRnjkjXVNJV2EwXjg+41WyIzJloQ3/4Rh0mk1Vq0z/8fLdQ/NTIxvWJGyG6Mbn
-         cS7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750707986; x=1751312786;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HEGyrQzRFDGKEhq8E+Hk5aKFGbdt1Msuid5ULByX0HE=;
-        b=YQ43Cs2d4CdjhLYLMbblh6SRnoyUrDQ5rNwvXXEZuZtRBMmLeXyZ9MbLCd90mZf+Vn
-         9N201M5Q3OLyCdBYNE/UhwXW9gn+xaHRzKOrOClDDrAayzYGVWN79P2Y/yxeyi/l/sk2
-         ai5qsMOEPcDLJZUKJoBtavsmnOSWiFLVm1MSRT2A42/XxukwAgpMlSgsUAV+xGRW/Tyk
-         TnlMoHizCQPjkZsfewSFZMk6T0FvOjUYfNvq9nHaazk5ICByf59AVEZXwVmas74mMxbr
-         iL6yge9Ha5JsoAr2OKWPlqOmqRe0B/7bOVjvfT2f726L8sNF903gEmgligPDOZoqTvC0
-         1lbg==
-X-Forwarded-Encrypted: i=1; AJvYcCVneXpss6nH9TSs8FDL1+HJZYwDS3MKrhsYKEbu3JTEm8f/Bf0db8ZCTnLLytwAzkyBFD8vO72x@vger.kernel.org, AJvYcCW5mV0959TXg06iEdTf/ts8ecJYh33eJWwbvsz8byuxXlbZLehBBmFxTeZ3Zh28PheAa+HrX3I8O0B4YMg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy3/zhjSb593na0es18gYlx4evykZcSFuv+cwhYUOxOnBgbuGqS
-	LOyQS/oVBi+etQvfbfZt6IUXq/O6FHkFjXpkTzohDQgOLlmZmxaFnMQ=
-X-Gm-Gg: ASbGncvrPp6sIf5ipC2IJyTrNxGzGn4gDaAyP6RTwH7y9UVESajn5rKqqh4SRh72f6F
-	k3uKl9+rCkZXpjO8bLhh6eVyx+u81HvFlLL+krGZE8v7r8SP0d9Zt710cP8CBOx0k8hfpKM+HLb
-	Dd6sn15ls7OD1MnLM6SjLlmNsfwWxrKZuIJc9Vk2M6Qlff2KA8jmRbFjT51DX2muEn68lplsjBu
-	VdBGFg3d2rFQVHjLwaxRodODCJo5RHjLfeXFIrMK9fD3YniViFqaAAfy4ZuFxagCcdEokgigjdS
-	j8j8MptVn+pMapeG5fdBUZbwZVBafuc1sA20Xe8Q80PF4OLm2YVjvytt1lji/WVKlpNBWfoU1tD
-	E4VhggKt9l1onNJqQveOkz0kTwBGqn0d0UZmq4tTB
-X-Google-Smtp-Source: AGHT+IEC3oCTdWFz7Fo7GvpLWVJrW+JtooF8zjBoWDJe0pgPBUTFLBci6fXO3NhGZrBGR3uLXCD0TQ==
-X-Received: by 2002:a05:600c:4706:b0:450:d79d:3b16 with SMTP id 5b1f17b1804b1-4537b79c3d0mr8441305e9.14.1750707986182;
-        Mon, 23 Jun 2025 12:46:26 -0700 (PDT)
-Received: from [192.168.1.3] (p5b2ac778.dip0.t-ipconnect.de. [91.42.199.120])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4535e97b501sm151363115e9.2.2025.06.23.12.46.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 23 Jun 2025 12:46:25 -0700 (PDT)
-Message-ID: <9c093c7b-5b38-4865-ae01-8c97943db05f@googlemail.com>
-Date: Mon, 23 Jun 2025 21:46:24 +0200
+	s=arc-20240116; t=1750712883; c=relaxed/simple;
+	bh=dAbSMYlQvZvKzawW/B66sU85yvnA2YuS6RbI98b1DDQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=N30MKcVksvRnQpGJ7rMEaPh976y9vHSpwMEsHsR7mPtptz3de0+pE1cFaXNQTZlOC8bwXXCYbRox46+QpoDXH9dsTV8EkOwmayS8HlJm9K6rG10sAidjmUbxE0ezmBn15gYnG6nWmPnKb9wW1PDN3gipkB0x9Vzoyt7+54Gogno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPc/wG6R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58D9FC4CEEA;
+	Mon, 23 Jun 2025 21:08:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1750712883;
+	bh=dAbSMYlQvZvKzawW/B66sU85yvnA2YuS6RbI98b1DDQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bPc/wG6RtTZkc2afgKgba046TVXtJPBlMppIAipFDvA4gNfT49rOhHH4CE4cm+v5i
+	 bGHYY4F6MJ7+vk09WvPrv7N7rZQBjBl2mWOsdewaqIh7npAA40HXNH0K0y+oVy1CzB
+	 86ilTmf2w2vAbE4MuCOakbeSnmhzdXj4XL8HP67Q=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 057/508] bpf, sockmap: Fix panic when calling skb_linearize
+Date: Mon, 23 Jun 2025 15:01:42 +0200
+Message-ID: <20250623130646.645633281@linuxfoundation.org>
+X-Mailer: git-send-email 2.50.0
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
+User-Agent: quilt/0.68
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 000/414] 6.12.35-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org
-References: <20250623130642.015559452@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Am 23.06.2025 um 15:02 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.35 release.
-> There are 414 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
-oddities or regressions found.
+------------------
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
+[ Upstream commit 5ca2e29f6834c64c0e5a9ccf1278c21fb49b827e ]
 
-Beste Grüße,
-Peter Schneider
+The panic can be reproduced by executing the command:
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress --rx-strp 100000
 
+Then a kernel panic was captured:
+'''
+[  657.460555] kernel BUG at net/core/skbuff.c:2178!
+[  657.462680] Tainted: [W]=WARN
+[  657.463287] Workqueue: events sk_psock_backlog
+...
+[  657.469610]  <TASK>
+[  657.469738]  ? die+0x36/0x90
+[  657.469916]  ? do_trap+0x1d0/0x270
+[  657.470118]  ? pskb_expand_head+0x612/0xf40
+[  657.470376]  ? pskb_expand_head+0x612/0xf40
+[  657.470620]  ? do_error_trap+0xa3/0x170
+[  657.470846]  ? pskb_expand_head+0x612/0xf40
+[  657.471092]  ? handle_invalid_op+0x2c/0x40
+[  657.471335]  ? pskb_expand_head+0x612/0xf40
+[  657.471579]  ? exc_invalid_op+0x2d/0x40
+[  657.471805]  ? asm_exc_invalid_op+0x1a/0x20
+[  657.472052]  ? pskb_expand_head+0xd1/0xf40
+[  657.472292]  ? pskb_expand_head+0x612/0xf40
+[  657.472540]  ? lock_acquire+0x18f/0x4e0
+[  657.472766]  ? find_held_lock+0x2d/0x110
+[  657.472999]  ? __pfx_pskb_expand_head+0x10/0x10
+[  657.473263]  ? __kmalloc_cache_noprof+0x5b/0x470
+[  657.473537]  ? __pfx___lock_release.isra.0+0x10/0x10
+[  657.473826]  __pskb_pull_tail+0xfd/0x1d20
+[  657.474062]  ? __kasan_slab_alloc+0x4e/0x90
+[  657.474707]  sk_psock_skb_ingress_enqueue+0x3bf/0x510
+[  657.475392]  ? __kasan_kmalloc+0xaa/0xb0
+[  657.476010]  sk_psock_backlog+0x5cf/0xd70
+[  657.476637]  process_one_work+0x858/0x1a20
+'''
+
+The panic originates from the assertion BUG_ON(skb_shared(skb)) in
+skb_linearize(). A previous commit(see Fixes tag) introduced skb_get()
+to avoid race conditions between skb operations in the backlog and skb
+release in the recvmsg path. However, this caused the panic to always
+occur when skb_linearize is executed.
+
+The "--rx-strp 100000" parameter forces the RX path to use the strparser
+module which aggregates data until it reaches 100KB before calling sockmap
+logic. The 100KB payload exceeds MAX_MSG_FRAGS, triggering skb_linearize.
+
+To fix this issue, just move skb_get into sk_psock_skb_ingress_enqueue.
+
+'''
+sk_psock_backlog:
+    sk_psock_handle_skb
+       skb_get(skb) <== we move it into 'sk_psock_skb_ingress_enqueue'
+       sk_psock_skb_ingress____________
+                                       ↓
+                                       |
+                                       | → sk_psock_skb_ingress_self
+                                       |      sk_psock_skb_ingress_enqueue
+sk_psock_verdict_apply_________________↑          skb_linearize
+'''
+
+Note that for verdict_apply path, the skb_get operation is unnecessary so
+we add 'take_ref' param to control it's behavior.
+
+Fixes: a454d84ee20b ("bpf, sockmap: Fix skb refcnt race after locking changes")
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20250407142234.47591-4-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ net/core/skmsg.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
+
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 72f4949cbb70f..0613f9a2543bb 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -528,16 +528,22 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ 					u32 off, u32 len,
+ 					struct sk_psock *psock,
+ 					struct sock *sk,
+-					struct sk_msg *msg)
++					struct sk_msg *msg,
++					bool take_ref)
+ {
+ 	int num_sge, copied;
+ 
++	/* skb_to_sgvec will fail when the total number of fragments in
++	 * frag_list and frags exceeds MAX_MSG_FRAGS. For example, the
++	 * caller may aggregate multiple skbs.
++	 */
+ 	num_sge = skb_to_sgvec(skb, msg->sg.data, off, len);
+ 	if (num_sge < 0) {
+ 		/* skb linearize may fail with ENOMEM, but lets simply try again
+ 		 * later if this happens. Under memory pressure we don't want to
+ 		 * drop the skb. We need to linearize the skb so that the mapping
+ 		 * in skb_to_sgvec can not error.
++		 * Note that skb_linearize requires the skb not to be shared.
+ 		 */
+ 		if (skb_linearize(skb))
+ 			return -EAGAIN;
+@@ -554,7 +560,7 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ 	msg->sg.start = 0;
+ 	msg->sg.size = copied;
+ 	msg->sg.end = num_sge;
+-	msg->skb = skb;
++	msg->skb = take_ref ? skb_get(skb) : skb;
+ 
+ 	sk_psock_queue_msg(psock, msg);
+ 	sk_psock_data_ready(sk, psock);
+@@ -562,7 +568,7 @@ static int sk_psock_skb_ingress_enqueue(struct sk_buff *skb,
+ }
+ 
+ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+-				     u32 off, u32 len);
++				     u32 off, u32 len, bool take_ref);
+ 
+ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 				u32 off, u32 len)
+@@ -576,7 +582,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 	 * correctly.
+ 	 */
+ 	if (unlikely(skb->sk == sk))
+-		return sk_psock_skb_ingress_self(psock, skb, off, len);
++		return sk_psock_skb_ingress_self(psock, skb, off, len, true);
+ 	msg = sk_psock_create_ingress_msg(sk, skb);
+ 	if (!msg)
+ 		return -EAGAIN;
+@@ -588,7 +594,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+ 	 * into user buffers.
+ 	 */
+ 	skb_set_owner_r(skb, sk);
+-	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg);
++	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, true);
+ 	if (err < 0)
+ 		kfree(msg);
+ 	return err;
+@@ -599,7 +605,7 @@ static int sk_psock_skb_ingress(struct sk_psock *psock, struct sk_buff *skb,
+  * because the skb is already accounted for here.
+  */
+ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb,
+-				     u32 off, u32 len)
++				     u32 off, u32 len, bool take_ref)
+ {
+ 	struct sk_msg *msg = alloc_sk_msg(GFP_ATOMIC);
+ 	struct sock *sk = psock->sk;
+@@ -608,7 +614,7 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ 	if (unlikely(!msg))
+ 		return -EAGAIN;
+ 	skb_set_owner_r(skb, sk);
+-	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg);
++	err = sk_psock_skb_ingress_enqueue(skb, off, len, psock, sk, msg, take_ref);
+ 	if (err < 0)
+ 		kfree(msg);
+ 	return err;
+@@ -617,18 +623,13 @@ static int sk_psock_skb_ingress_self(struct sk_psock *psock, struct sk_buff *skb
+ static int sk_psock_handle_skb(struct sk_psock *psock, struct sk_buff *skb,
+ 			       u32 off, u32 len, bool ingress)
+ {
+-	int err = 0;
+-
+ 	if (!ingress) {
+ 		if (!sock_writeable(psock->sk))
+ 			return -EAGAIN;
+ 		return skb_send_sock(psock->sk, skb, off, len);
+ 	}
+-	skb_get(skb);
+-	err = sk_psock_skb_ingress(psock, skb, off, len);
+-	if (err < 0)
+-		kfree_skb(skb);
+-	return err;
++
++	return sk_psock_skb_ingress(psock, skb, off, len);
+ }
+ 
+ static void sk_psock_skb_state(struct sk_psock *psock,
+@@ -1016,7 +1017,7 @@ static int sk_psock_verdict_apply(struct sk_psock *psock, struct sk_buff *skb,
+ 				off = stm->offset;
+ 				len = stm->full_len;
+ 			}
+-			err = sk_psock_skb_ingress_self(psock, skb, off, len);
++			err = sk_psock_skb_ingress_self(psock, skb, off, len, false);
+ 		}
+ 		if (err < 0) {
+ 			spin_lock_bh(&psock->ingress_lock);
 -- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+2.39.5
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+
+
 
