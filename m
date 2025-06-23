@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B896FAE4FF0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B998AE523C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D6D383BE0CF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1969B1B64AE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C0FC2628C;
-	Mon, 23 Jun 2025 21:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6119D221FCC;
+	Mon, 23 Jun 2025 21:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6vBYzwB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NaqoKIqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF187482;
-	Mon, 23 Jun 2025 21:21:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0EC19D084;
+	Mon, 23 Jun 2025 21:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713660; cv=none; b=dD+MyzjkwitUCnWkFLkE1+vF7Fn3ROsBujboVaagLx/oss7+XxSR1NLQ5/B46qICL9fjCH/+CCv40kbaeQf84FqKw+groMGQnPQOMHeaikNrgHvWOCWLsU/0ugLP/qPP3fsgtd2TQxkiJcveLcnNwek8GCvNrJpIaYCwThEVch0=
+	t=1750714902; cv=none; b=FjuumUm0zKlT8zvsZo4YVn8CoCELCzrGMTJtnQKU5nVE4WzFnTltxBPk6v7AKFzESuWkbUNPE3ZBkc+K0xjlgy24W2r2cdHMTX0pXZGZj9GYxa/qXdPcLhh9uJj0gJLFFSTBdk6mvogLrZ3hF3Z39zNK09JVIa1szHkBC+4sefk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713660; c=relaxed/simple;
-	bh=vT16eT+vnTG8T51Bq7862a8ly9EWdLHzGvxOXkBzq04=;
+	s=arc-20240116; t=1750714902; c=relaxed/simple;
+	bh=55G3VllLCMKaRFVD+NgWyrfUW3cAA+FZ91ZbniRs+bk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=El/bxe9ddpPwuUXZ5ZyOwF/T3I3FBK5SAeVlgQc7DWTLPRMrwPX+wH1IsbtXHFxjaHFgu6AtbpSMTnp6GEqC35R/XfPTuarUMDmTjQgXFeUs6gvQLeShsYRGHNOKyxyRaLQDbSVL2eUi3JOOHuEE1btkhQbCPxpCXfpqbEO3oyw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6vBYzwB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56623C4CEEA;
-	Mon, 23 Jun 2025 21:21:00 +0000 (UTC)
+	 MIME-Version; b=BEJrxFd+fTr1KSaL1xvwvhLiIwfkF2QMeUMkVBRiDLUPWYUxtnYmZoKyZkGGpwOCmmIRIJszgD9RlcfnpqheExIuEfABBqiqYpkTx5JB1QfEOmuLEc7K0eFaKmNKECUuYjAQK48DRhYuYKajORhyy+YlxO6p9uqj6qlLI5YqSsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NaqoKIqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9CD1C4CEEA;
+	Mon, 23 Jun 2025 21:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713660;
-	bh=vT16eT+vnTG8T51Bq7862a8ly9EWdLHzGvxOXkBzq04=;
+	s=korg; t=1750714902;
+	bh=55G3VllLCMKaRFVD+NgWyrfUW3cAA+FZ91ZbniRs+bk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6vBYzwBw8eB6staF/SE9wxX7m0M+AHpkkPm1jq8R+LBkgMiZ6vw6z/UJyNYmZGsj
-	 +SyUZFeYhKAvFCTnaYMdd6qf/Glcnh44m4iLH/h5rj4Pvfh/Bm/WrIGlZIGXfLGQpF
-	 rxWV3Eix3iERGYAOMFbegjyVIFGcXtZwdaEi8ekU=
+	b=NaqoKIqpaAFb7nJ8QRhgncQQ6jRZGcZnqhpiL/Q1ZK4+CMN19g6aTNFlf0SMYKJHi
+	 r8aNrRma5zrumBlMCsZ0XgLeR0rpwC7S+lJFYPBAdQbDKe/wFqtTFS1cthJhl+7p8o
+	 NEHxrbj77D6j2M1FvcYIIV2OI/f+5suoHKHBjxws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	Arjun Roy <arjunroy@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 158/355] tcp: tcp_data_ready() must look at SOCK_DONE
-Date: Mon, 23 Jun 2025 15:05:59 +0200
-Message-ID: <20250623130631.453370482@linuxfoundation.org>
+	syzbot+365005005522b70a36f2@syzkaller.appspotmail.com,
+	Denis Arefev <arefev@swemel.ru>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 216/411] media: vivid: Change the siize of the composing
+Date: Mon, 23 Jun 2025 15:06:00 +0200
+Message-ID: <20250623130639.103850089@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-commit 39354eb29f597aa01b3d51ccc8169cf183c4367f upstream.
+commit f83ac8d30c43fd902af7c84c480f216157b60ef0 upstream.
 
-My prior cleanup missed that tcp_data_ready() has to look at SOCK_DONE.
-Otherwise, an application using SO_RCVLOWAT will not get EPOLLIN event
-if a FIN is received in the middle of expected payload.
+syzkaller found a bug:
 
-The reason SOCK_DONE is not examined in tcp_epollin_ready()
-is that tcp_poll() catches the FIN because tcp_fin()
-is also setting RCV_SHUTDOWN into sk->sk_shutdown
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+BUG: KASAN: vmalloc-out-of-bounds in tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+Write of size 1440 at addr ffffc9000d0ffda0 by task vivid-000-vid-c/5304
 
-Fixes: 05dc72aba364 ("tcp: factorize logic into tcp_epollin_ready()")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: Wei Wang <weiwan@google.com>
-Cc: Arjun Roy <arjunroy@google.com>
-Reviewed-by: Wei Wang <weiwan@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+CPU: 0 UID: 0 PID: 5304 Comm: vivid-000-vid-c Not tainted 6.14.0-rc2-syzkaller-00039-g09fbf3d50205 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ kasan_check_range+0x282/0x290 mm/kasan/generic.c:189
+ __asan_memcpy+0x40/0x70 mm/kasan/shadow.c:106
+ tpg_fill_plane_pattern drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2608 [inline]
+ tpg_fill_plane_buffer+0x1a9c/0x5af0 drivers/media/common/v4l2-tpg/v4l2-tpg-core.c:2705
+ vivid_fillbuff drivers/media/test-drivers/vivid/vivid-kthread-cap.c:470 [inline]
+ vivid_thread_vid_cap_tick+0xf8e/0x60d0 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:629
+ vivid_thread_vid_cap+0x8aa/0xf30 drivers/media/test-drivers/vivid/vivid-kthread-cap.c:767
+ kthread+0x7a9/0x920 kernel/kthread.c:464
+ ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:148
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+
+The composition size cannot be larger than the size of fmt_cap_rect.
+So execute v4l2_rect_map_inside() even if has_compose_cap == 0.
+
+Fixes: 94a7ad928346 ("media: vivid: fix compose size exceed boundary")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+365005005522b70a36f2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=8ed8e8cc30cbe0d86c9a25bd1d6a5775129b8ea3
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c |    2 +-
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5028,7 +5028,7 @@ err:
- 
- void tcp_data_ready(struct sock *sk)
- {
--	if (tcp_epollin_ready(sk, sk->sk_rcvlowat))
-+	if (tcp_epollin_ready(sk, sk->sk_rcvlowat) || sock_flag(sk, SOCK_DONE))
- 		sk->sk_data_ready(sk);
- }
- 
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -962,8 +962,8 @@ int vivid_vid_cap_s_selection(struct fil
+ 			if (dev->has_compose_cap) {
+ 				v4l2_rect_set_min_size(compose, &min_rect);
+ 				v4l2_rect_set_max_size(compose, &max_rect);
+-				v4l2_rect_map_inside(compose, &fmt);
+ 			}
++			v4l2_rect_map_inside(compose, &fmt);
+ 			dev->fmt_cap_rect = fmt;
+ 			tpg_s_buf_height(&dev->tpg, fmt.height);
+ 		} else if (dev->has_compose_cap) {
 
 
 
