@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-158069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3757AE56CD
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 620C1AE572F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EA99C7B3799
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83D037B3E7D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65F80223DE5;
-	Mon, 23 Jun 2025 22:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3692222B2;
+	Mon, 23 Jun 2025 22:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1dffHcJc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pr9n5Bv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13DC122370A;
-	Mon, 23 Jun 2025 22:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CCC1222581;
+	Mon, 23 Jun 2025 22:26:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717407; cv=none; b=meWcGtjVCLae1brrwOeI7uRvxeNRLSfqG9/8xeB0yO+A3TWmqumSnaHfV2JbrqSLRMPrbwvWBtP8kupm8lMA+66YPl+WCubSdRCttGH8lP5B6sYDY+HpCH8KxykmJYKUtL8ULeYbo/glXLCrf6UEJm8s1NZ0wQUa93v/yzXR6HU=
+	t=1750717619; cv=none; b=P/jOMAK3dzhrbKho78Y1LSHO+HSptfX6xvsCmKjujLW4PQ5wJZOYRJsjWLDx57537UnCrmgwwMFs9XfQSV/xUfJIrC12AlFU0jpWCkBixiV3A76GlwHzemp9ivoxWt1v/oEqhyGNkG7sw3HJLLb7gEhj0brFB7Zg2IBdLLHVRD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717407; c=relaxed/simple;
-	bh=C1dcoJ9uT5JvBa35RAcMKdGUTjLsWx4xr39DJ3Hlsh8=;
+	s=arc-20240116; t=1750717619; c=relaxed/simple;
+	bh=YzytVnKiUK7Bqr8EYW7J5SoyughQLLadVA6TelgSzvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K4QymuV7K6RwPdy99TE7il8XchEpRFiit4ax3SUt7J06oSZntPbb+OBt8FwxfwLpBLotD3QDryU9gUMdvEX7yXRwBPbggZuWT5DtWBsUmnDCzvG7lX1Xgfx83Nysk0EnCdnjzk8K4eUZ8xOzcXNJUI96bREhVLRj0QyKi9VD1SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1dffHcJc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C783C4CEEA;
-	Mon, 23 Jun 2025 22:23:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=is/eJfpd3GxVnIRO8O8W4gRWGRLMabQCX+Gt1apU/duuqu4ATlyVbQWdURV24e4y46hfC6Oj3qrrvHMFBG7ppvjeccpHIBrHpb+oc+4Ydv+b5uqr3FK5RRdzNGzSYYPuBC2xFoydEaoUewqtbaGmzAtW4MvwchQhr4HAb2ZDhqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pr9n5Bv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F8BC4CEEA;
+	Mon, 23 Jun 2025 22:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717406;
-	bh=C1dcoJ9uT5JvBa35RAcMKdGUTjLsWx4xr39DJ3Hlsh8=;
+	s=korg; t=1750717619;
+	bh=YzytVnKiUK7Bqr8EYW7J5SoyughQLLadVA6TelgSzvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1dffHcJcoxDgqArhOG8wui3jONa2ATbPIv7l+HrvLXSmS2g9SxGwKooMxDqzgSEf7
-	 W6DezBmnjdo5xu6nhAckpZSi/lzxXRlJnQg+8XrOwlKDuwPCCs9kYe5IutHRiwm5CH
-	 ezM6LCViblUykj0eHBos7jh5iPc9aUOFhRdsgcDk=
+	b=0pr9n5Bv803aZZt17JNPhpLa0Ej6QXHm1lxGIto4g4nxwttw+2p4rEjf9RT+TSM7c
+	 J8fIT2PuqvUk1g7AY1l1PNnkxLVif7188wCxiQHaRjKKl5rYJGWxR669Z+wwn2sW2A
+	 o6EEQVJcKE7S7jZA7DY3KJ7QWUsRyd6Vv50CZFk0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d3c235276f62963e93a@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Danilo Krummrich <dakr@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 381/414] atm: atmtcp: Free invalid length skb in atmtcp_c_send().
+Subject: [PATCH 6.1 473/508] drm/nouveau/bl: increase buffer size to avoid truncate warning
 Date: Mon, 23 Jun 2025 15:08:38 +0200
-Message-ID: <20250623130651.477979048@linuxfoundation.org>
+Message-ID: <20250623130656.728142161@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,182 +62,83 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 2f370ae1fb6317985f3497b1bb80d457508ca2f7 ]
+[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
 
-syzbot reported the splat below. [0]
+The nouveau_get_backlight_name() function generates a unique name for the
+backlight interface, appending an id from 1 to 99 for all backlight devices
+after the first.
 
-vcc_sendmsg() copies data passed from userspace to skb and passes
-it to vcc->dev->ops->send().
+GCC 15 (and likely other compilers) produce the following
+-Wformat-truncation warning:
 
-atmtcp_c_send() accesses skb->data as struct atmtcp_hdr after
-checking if skb->len is 0, but it's not enough.
+nouveau_backlight.c: In function ‘nouveau_backlight_init’:
+nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                                     ^~
+In function ‘nouveau_get_backlight_name’,
+    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
+nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                                                        ^~~~~~~~~~~~~~~~
+nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
+   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
+      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Also, when skb->len == 0, skb and sk (vcc) were leaked because
-dev_kfree_skb() is not called and sk_wmem_alloc adjustment is missing
-to revert atm_account_tx() in vcc_sendmsg(), which is expected
-to be done in atm_pop_raw().
+The warning started appearing after commit ab244be47a8f ("drm/nouveau:
+Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
+for the ida usage removed the explicit value check for ids larger than 99.
+The compiler is unable to intuit that the ida_alloc_max() limits the
+returned value range between 0 and 99.
 
-Let's properly free skb with an invalid length in atmtcp_c_send().
+Because the compiler can no longer infer that the number ranges from 0 to
+99, it thinks that it could use as many as 11 digits (10 + the potential -
+sign for negative numbers).
 
-[0]:
-BUG: KMSAN: uninit-value in atmtcp_c_send+0x255/0xed0 drivers/atm/atmtcp.c:294
- atmtcp_c_send+0x255/0xed0 drivers/atm/atmtcp.c:294
- vcc_sendmsg+0xd7c/0xff0 net/atm/common.c:644
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x330/0x3d0 net/socket.c:727
- ____sys_sendmsg+0x7e0/0xd80 net/socket.c:2566
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
- __sys_sendmsg net/socket.c:2652 [inline]
- __do_sys_sendmsg net/socket.c:2657 [inline]
- __se_sys_sendmsg net/socket.c:2655 [inline]
- __x64_sys_sendmsg+0x211/0x3e0 net/socket.c:2655
- x64_sys_call+0x32fb/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+The warning has gone unfixed for some time, with at least one kernel test
+robot report. The code breaks W=1 builds, which is especially frustrating
+with the introduction of CONFIG_WERROR.
 
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4154 [inline]
- slab_alloc_node mm/slub.c:4197 [inline]
- kmem_cache_alloc_node_noprof+0x818/0xf00 mm/slub.c:4249
- kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:579
- __alloc_skb+0x347/0x7d0 net/core/skbuff.c:670
- alloc_skb include/linux/skbuff.h:1336 [inline]
- vcc_sendmsg+0xb40/0xff0 net/atm/common.c:628
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x330/0x3d0 net/socket.c:727
- ____sys_sendmsg+0x7e0/0xd80 net/socket.c:2566
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
- __sys_sendmsg net/socket.c:2652 [inline]
- __do_sys_sendmsg net/socket.c:2657 [inline]
- __se_sys_sendmsg net/socket.c:2655 [inline]
- __x64_sys_sendmsg+0x211/0x3e0 net/socket.c:2655
- x64_sys_call+0x32fb/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+The string is stored temporarily on the stack and then copied into the
+device name. Its not a big deal to use 11 more bytes of stack rounding out
+to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
+warning. This fixes the W=1 builds that include this driver.
 
-CPU: 1 UID: 0 PID: 5798 Comm: syz-executor192 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(undef)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Compile tested only.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+1d3c235276f62963e93a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1d3c235276f62963e93a
-Tested-by: syzbot+1d3c235276f62963e93a@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-2-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
+Suggested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/atm/atmtcp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/atm/atmtcp.c b/drivers/atm/atmtcp.c
-index d4aa0f353b6c8..eeae160c898d3 100644
---- a/drivers/atm/atmtcp.c
-+++ b/drivers/atm/atmtcp.c
-@@ -288,7 +288,9 @@ static int atmtcp_c_send(struct atm_vcc *vcc,struct sk_buff *skb)
- 	struct sk_buff *new_skb;
- 	int result = 0;
+diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+index a614582779cae..6469820e46151 100644
+--- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
++++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
+@@ -41,7 +41,7 @@
+ #include "nouveau_acpi.h"
  
--	if (!skb->len) return 0;
-+	if (skb->len < sizeof(struct atmtcp_hdr))
-+		goto done;
-+
- 	dev = vcc->dev_data;
- 	hdr = (struct atmtcp_hdr *) skb->data;
- 	if (hdr->length == ATMTCP_HDR_MAGIC) {
--- 
-2.39.5
-
-
-
-multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4037,6 +4037,32 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
- #endif
- }
+ static struct ida bl_ida;
+-#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
++#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
  
-+void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state)
-+{
-+#if IS_ENABLED(CONFIG_BRIDGE_VLAN_FILTERING)
-+	struct net_bridge *br;
-+
-+	if (!br_vlan_should_use(v))
-+		return;
-+
-+	if (br_vlan_is_master(v))
-+		return;
-+
-+	br = v->port->br;
-+
-+	if (!br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
-+		return;
-+
-+	if (br_vlan_state_allowed(state, true))
-+		br_multicast_enable_port_ctx(&v->port_mcast_ctx);
-+
-+	/* Multicast is not disabled for the vlan when it goes in
-+	 * blocking state because the timers will expire and stop by
-+	 * themselves without sending more queries.
-+	 */
-+#endif
-+}
-+
- void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
- {
- 	struct net_bridge *br;
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 19fb505492521..767f0e81dd265 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -977,6 +977,7 @@ void br_multicast_port_ctx_init(struct net_bridge_port *port,
- 				struct net_bridge_vlan *vlan,
- 				struct net_bridge_mcast_port *pmctx);
- void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx);
-+void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state);
- void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on);
- int br_multicast_toggle_vlan_snooping(struct net_bridge *br, bool on,
- 				      struct netlink_ext_ack *extack);
-@@ -1403,6 +1404,11 @@ static inline void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pm
- {
- }
- 
-+static inline void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v,
-+						      u8 state)
-+{
-+}
-+
- static inline void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan,
- 						bool on)
- {
-@@ -1752,7 +1758,9 @@ bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
- bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
- 			      const struct net_bridge_vlan *v_opts);
- 
--/* vlan state manipulation helpers using *_ONCE to annotate lock-free access */
-+/* vlan state manipulation helpers using *_ONCE to annotate lock-free access,
-+ * while br_vlan_set_state() may access data protected by multicast_lock.
-+ */
- static inline u8 br_vlan_get_state(const struct net_bridge_vlan *v)
- {
- 	return READ_ONCE(v->state);
-@@ -1761,6 +1769,7 @@ static inline u8 br_vlan_get_state(const struct net_bridge_vlan *v)
- static inline void br_vlan_set_state(struct net_bridge_vlan *v, u8 state)
- {
- 	WRITE_ONCE(v->state, state);
-+	br_multicast_update_vlan_mcast_ctx(v, state);
- }
- 
- static inline u8 br_vlan_get_pvid_state(const struct net_bridge_vlan_group *vg)
+ static bool
+ nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
 -- 
 2.39.5
 
