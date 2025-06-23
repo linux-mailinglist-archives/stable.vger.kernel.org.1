@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-156016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CBBAE44BA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BAEEAE4305
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5E8714A286C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 68A8E17E6FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D582254873;
-	Mon, 23 Jun 2025 13:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BBA9253938;
+	Mon, 23 Jun 2025 13:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPu0w52i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kS65OSY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B240252903;
-	Mon, 23 Jun 2025 13:38:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3D4239E63;
+	Mon, 23 Jun 2025 13:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685931; cv=none; b=T+EhtoOQnvSAB+0T8oDZlPthWwhR/HXQDRxl6UKKyBBa+iMEaULfVCmJJ+8qQuqzX4M+4amGPHB1g/z585pxCQ/aXMyBtaEN/QPgsGTjOogssli7f0roWmjpiSmdihK8dcW+1ULwcf6U3orKQYZpazQP64C84hGr4jDAFfLimDc=
+	t=1750684884; cv=none; b=GqcUL+bFZJDXj/8JET6BY3GHBgadBCdb9f4PXxZqVKUUDnZL8+qclpDq+lz6YaB/HqmjIE5Vq8NynIX88j/3ap2mCQZnrAXBB05NPC+F0/Zt+7uP0Zhvq/hrqdETVfQNwAbmn7lf2ktsJX8y1hWAFuPg+9JDGv4+zlDheKc4eeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685931; c=relaxed/simple;
-	bh=81C2I2CwLzEJ246D01X2IjUl1jXtEtr3i6WS1dmVFSg=;
+	s=arc-20240116; t=1750684884; c=relaxed/simple;
+	bh=4YVZxTyqutW+SoM7gN3/Fut+dKNJk/JvIVn1zbg5Fbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sm8gNv8PSIt/GLuZFGBYQtCV4HljEBGl+dl4OEWifWg/KwryoQw0E4FjAEz9Qy0gV+nWXQPcUCQa7z+q25M1BCV9wyfu1NZb8YhvbhXW//P/1E7OS514u9pPm8FYWnss3KDrul69/x+gboOc+GgxpdQjuRQcVU4IPM0ZZp4dJUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPu0w52i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953DEC4CEEA;
-	Mon, 23 Jun 2025 13:38:50 +0000 (UTC)
+	 MIME-Version; b=mqVCyd3vhpij4Y3M9ZJWrtQoHFBfZZoi5Gif3nfkdm6K8Ll1yFwgpG5N/mrFSB2hN+E3XqYVRmzw8qP8YHsuSHEwLRxh9z4ajdqqToe1ENZxpmAQhYYzbt0CC6JwXck0M2un2ATIImNjHh6h2mbnVx9Heoa822LCdeQmYfUUvRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kS65OSY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6512EC4CEEA;
+	Mon, 23 Jun 2025 13:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685930;
-	bh=81C2I2CwLzEJ246D01X2IjUl1jXtEtr3i6WS1dmVFSg=;
+	s=korg; t=1750684884;
+	bh=4YVZxTyqutW+SoM7gN3/Fut+dKNJk/JvIVn1zbg5Fbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPu0w52iqHl+CWn6Qx0IKQIGxDwyJzvhE2x2BAbfGBZRdLryXx6YSUu7LcDHBvTKi
-	 hE62DpQuEFf9TekGr3HFqY5P2DqpMaKVDx8niQp7gOO6i3M7cFoHxUADa89fqRtHGy
-	 9nhjamDjd9GJGsdFZ+xylZxTFkn46qta3KxYXT6s=
+	b=2kS65OSYBnlYrvc1K2xU6vaoNY036GQz8ZSJ1l5MogiSa7046eGgu7N7Oot/T8FXb
+	 UhBI8kNklB6Y6059kwbpF67EYg51cEjpmO1fufgsA3Zb1w3kLbGshUiAxB6Lxzi8fF
+	 xSJ0iI56lr8I4SGZrLHbo8B2Gpp6BFaMxd1Tbe7c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 063/411] netfilter: nf_tables: nft_fib_ipv6: fix VRF ipv4/ipv6 result discrepancy
-Date: Mon, 23 Jun 2025 15:03:27 +0200
-Message-ID: <20250623130634.880682124@linuxfoundation.org>
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 5.10 007/355] usb: usbtmc: Fix timeout value in get_stb
+Date: Mon, 23 Jun 2025 15:03:28 +0200
+Message-ID: <20250623130626.956145842@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,84 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit 8b53f46eb430fe5b42d485873b85331d2de2c469 ]
+commit 342e4955a1f1ce28c70a589999b76365082dbf10 upstream.
 
-With a VRF, ipv4 and ipv6 FIB expression behave differently.
+wait_event_interruptible_timeout requires a timeout argument
+in units of jiffies. It was being called in usbtmc_get_stb
+with the usb timeout value which is in units of milliseconds.
 
-   fib daddr . iif oif
+Pass the timeout argument converted to jiffies.
 
-Will return the input interface name for ipv4, but the real device
-for ipv6.  Example:
-
-If VRF device name is tvrf and real (incoming) device is veth0.
-First round is ok, both ipv4 and ipv6 will yield 'veth0'.
-
-But in the second round (incoming device will be set to "tvrf"), ipv4
-will yield "tvrf" whereas ipv6 returns "veth0" for the second round too.
-
-This makes ipv6 behave like ipv4.
-
-A followup patch will add a test case for this, without this change
-it will fail with:
-  get element inet t fibif6iif { tvrf . dead:1::99 . tvrf }
-  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  FAIL: did not find tvrf . dead:1::99 . tvrf in fibif6iif
-
-Alternatively we could either not do anything at all or change
-ipv4 to also return the lower/real device, however, nft (userspace)
-doc says "iif: if fib lookup provides a route then check its output
-interface is identical to the packets input interface." which is what
-the nft fib ipv4 behaviour is.
-
-Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-4-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/netfilter/nft_fib_ipv6.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/usb/class/usbtmc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
-index 1a08b00aa3213..b7e543d4d57be 100644
---- a/net/ipv6/netfilter/nft_fib_ipv6.c
-+++ b/net/ipv6/netfilter/nft_fib_ipv6.c
-@@ -154,6 +154,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- {
- 	const struct nft_fib *priv = nft_expr_priv(expr);
- 	int noff = skb_network_offset(pkt->skb);
-+	const struct net_device *found = NULL;
- 	const struct net_device *oif = NULL;
- 	u32 *dest = &regs->data[priv->dreg];
- 	struct ipv6hdr *iph, _iph;
-@@ -198,11 +199,15 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
- 	if (rt->rt6i_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
- 		goto put_rt_err;
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -486,6 +486,7 @@ static int usbtmc488_ioctl_read_stb(stru
+ 	__u8 stb;
+ 	int rv;
+ 	long wait_rv;
++	unsigned long expire;
  
--	if (oif && oif != rt->rt6i_idev->dev &&
--	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) != oif->ifindex)
--		goto put_rt_err;
-+	if (!oif) {
-+		found = rt->rt6i_idev->dev;
-+	} else {
-+		if (oif == rt->rt6i_idev->dev ||
-+		    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == oif->ifindex)
-+			found = oif;
-+	}
+ 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
+ 		data->iin_ep_present);
+@@ -528,10 +529,11 @@ static int usbtmc488_ioctl_read_stb(stru
+ 	}
  
--	nft_fib_store_result(dest, priv, rt->rt6i_idev->dev);
-+	nft_fib_store_result(dest, priv, found);
-  put_rt_err:
- 	ip6_rt_put(rt);
- }
--- 
-2.39.5
-
+ 	if (data->iin_ep_present) {
++		expire = msecs_to_jiffies(file_data->timeout);
+ 		wait_rv = wait_event_interruptible_timeout(
+ 			data->waitq,
+ 			atomic_read(&data->iin_data_valid) != 0,
+-			file_data->timeout);
++			expire);
+ 		if (wait_rv < 0) {
+ 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
+ 			rv = wait_rv;
 
 
 
