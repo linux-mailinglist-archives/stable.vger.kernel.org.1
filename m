@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-158041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158043-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2A95AE56AE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97F3AE5702
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 918281C22798
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B6343B13D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7568223DE5;
-	Mon, 23 Jun 2025 22:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D8A22370A;
+	Mon, 23 Jun 2025 22:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwC5xUsH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4S+xbjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B752192EC;
-	Mon, 23 Jun 2025 22:22:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BDF199FBA;
+	Mon, 23 Jun 2025 22:22:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717338; cv=none; b=rxLxmrTROh6i1CLmuLT2i9ADebuH4C+jJHRS6HcngjPD1ZKG9pYchsqZnHqI0vIsYeTKlmdH5c2HP25Mpo/pmvwI2bbIlZGBBl2lyOgjsyE33BD31CW3tR7uitofBI1erQeZRmeCb0A/Mr59LLM5hjD+/Vt7qAXwpL+1ppI53oI=
+	t=1750717343; cv=none; b=AUt4UCB8CiRVOgtFBtZGR6ogH5c43Ids4lau1M9aD4OTkejmTbIgwphrTX2JHqR0uRIGsP/KZvFUaY4tHcu75IwbalIg2fF5EUoLWUYzCWkl0x+C9u4hwa+AeyyKlSKbMjUtK3JwpYM5ubVgPsbqP8ZokMs6G6wHdXFKh57tlDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717338; c=relaxed/simple;
-	bh=S8jXtAmEn7M6j3nq8KHtuVQ0/lFhdj9oA9oFr0MLDlA=;
+	s=arc-20240116; t=1750717343; c=relaxed/simple;
+	bh=fImO82QCXva0QjAm1ZUP5Vuy5zxL5Z2vdgkKYvxcSsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gxtw7AOmNIURCG5pj2d5/UByL+unwfKsgjSorlZ3faCTa3LMbMgG7IoVpDZ7HdjNsK3a74+D+Mvip86glAM/kuI/wj6G7iu2ymh3wHgIgTS1oFwpIJub8VomPvP0ycM4PSZawRIKuKShsVAZZtpOCbev3OJdnLLwALUFYLJnA0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwC5xUsH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 134C6C4CEEA;
-	Mon, 23 Jun 2025 22:22:17 +0000 (UTC)
+	 MIME-Version; b=D9z7SAQpgBtkpR6ldqYcpaFK4lGDEPnpHjdKRnKmY++kfYAjZtYve6fqaaZ/L2FXtSzEikAJs0x3Tuoh6aHgCpvswMVyV+9N0vED2nXy4cNuNa0zQigzpxw0cXbhB4wAR0jnxBY6DYWe4RfBg2SJN/YaQyTU72t6dqG4r02bcSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4S+xbjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B71C4CEEA;
+	Mon, 23 Jun 2025 22:22:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717338;
-	bh=S8jXtAmEn7M6j3nq8KHtuVQ0/lFhdj9oA9oFr0MLDlA=;
+	s=korg; t=1750717343;
+	bh=fImO82QCXva0QjAm1ZUP5Vuy5zxL5Z2vdgkKYvxcSsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MwC5xUsH8/pojBtsqOc4Arxdi8G1prvUXVBbc6dj2bPiuRX/NYnm4dMh2qlGQ4yBk
-	 s01u2GOPnYsZZpmQo+pUl82OBNnXrnocKqBxLAv6VUhR4sUEekkrL/9HwpRNR806Zm
-	 K8gOqGG02G6hzMPyydbTWBnts22JeAVFc6nRZ55U=
+	b=R4S+xbjjgJbwDz0/zqed0i9kHvGvAcjDhu/WIreIEDPFB2pOXUpDtSteBJK8Q0mSA
+	 HhdObN7tBsmD5RvmR9kgLw4xRvau4dc2ZZgCrlKURwftWv5J46/O9YJOOo7s1C4rDy
+	 SwhHGKxn7h4UkXHMahQ04wjJs0TQWUn3SycqNdV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Gabor Juhos <j4g8y7@gmail.com>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 407/508] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get_direction()
-Date: Mon, 23 Jun 2025 15:07:32 +0200
-Message-ID: <20250623130655.244781637@linuxfoundation.org>
+Subject: [PATCH 6.1 408/508] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
+Date: Mon, 23 Jun 2025 15:07:33 +0200
+Message-ID: <20250623130655.266302435@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -70,40 +70,47 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 6481c0a83367b0672951ccc876fbae7ee37b594b ]
+[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
+propagate their error values back to the stack instead of silently
+ignoring those.
 
 Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-6-07e9ac1ab737@gmail.com
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 7483ffa2a409c..e9032359a68a5 100644
+index e9032359a68a5..3ada8dcaa806b 100644
 --- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
 +++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -402,10 +402,13 @@ static int armada_37xx_gpio_get_direction(struct gpio_chip *chip,
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = OUTPUT_EN;
- 	unsigned int val, mask;
+@@ -474,16 +474,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+ {
+ 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
+ 	struct gpio_chip *chip = range->gc;
 +	int ret;
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
+ 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
+ 		offset, range->name, offset, input ? "input" : "output");
  
- 	if (val & mask)
- 		return GPIO_LINE_DIRECTION_OUT;
+ 	if (input)
+-		armada_37xx_gpio_direction_input(chip, offset);
++		ret = armada_37xx_gpio_direction_input(chip, offset);
+ 	else
+-		armada_37xx_gpio_direction_output(chip, offset, 0);
++		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
+ 
+-	return 0;
++	return ret;
+ }
+ 
+ static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
 -- 
 2.39.5
 
