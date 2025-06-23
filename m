@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6944AE5053
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37747AE505F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D297E7A17A7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC273BFFA6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3E781EDA0F;
-	Mon, 23 Jun 2025 21:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 812FA1EFFA6;
+	Mon, 23 Jun 2025 21:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDNHFQvC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mbhGJxy6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6374E2628C;
-	Mon, 23 Jun 2025 21:23:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F5171E5B71;
+	Mon, 23 Jun 2025 21:24:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713788; cv=none; b=ABHiibss7sN0UjeHr9sLNsxalfIzlnROwcYDJNJ+YkT2x9uSeZKuZtc9jP5LgZU8X1y6e4wte0zAQAptyCtvy00QkQdD6ZJzZOHKL8JMlgnp3fpEN2Z6BXQt4sK1LzSDv3PnFXsQ5R4ebIq5RTesMWuPxD8AHyYeSwc6VvMTVJk=
+	t=1750713879; cv=none; b=V0kquNxXzpw3BOhRQrJFX8tobPvGQhIi2LQxn1tcBWgAbIitJnzipBEQpYLmbjIhUg1EUR4hg3I808D5UvnzWgeQirRZ+TZkq/vSVYOl8+Txp5Mkcb7lfuX/xGlRiz1WpxQsSkhiJvcjYIs/Ph2UZWZEIUZm6JhXYJbuB28hcxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713788; c=relaxed/simple;
-	bh=k52gCpLRBufST6ha7VgjAFovtCOD2kkszE9wMQX9GoE=;
+	s=arc-20240116; t=1750713879; c=relaxed/simple;
+	bh=EbXp/I4Qoo6/1ji4/bkqYnga5I4pn4nvZot4fuQJR+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u70MEeEs1mQTuSL6KM2veVnsZed+tCowMq3potjU7IiIbR8MN0F/fmqMYWYHSuK+YX6bF6g73fvVD5KEu3ht8uYwHh+pSFlTMDXJjesqPiVYmSIYcDmBDek1dDTVrA9vkuSzUQsOlgWjKi2acBrc6vbFDTMhIcjIsQUXvPAOT5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDNHFQvC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E73C1C4CEEA;
-	Mon, 23 Jun 2025 21:23:07 +0000 (UTC)
+	 MIME-Version; b=GZVYEa0VT53wlw83pKICW5DRPdyyhBI3FQIYpf4W2oFj5tfqx/nPAhAWZFKIdSQkWMkQVbAtXEBL17MYKLyjxHgpyDwqOkRnoOEjE+PbEkaZs7fH0IQSh5fuM+1rugv47ikzQ9vbsxmlLiixNXXVBvBOfwViXP2sqUttQjKecWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mbhGJxy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC308C4CEED;
+	Mon, 23 Jun 2025 21:24:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713788;
-	bh=k52gCpLRBufST6ha7VgjAFovtCOD2kkszE9wMQX9GoE=;
+	s=korg; t=1750713879;
+	bh=EbXp/I4Qoo6/1ji4/bkqYnga5I4pn4nvZot4fuQJR+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDNHFQvCoDfrMy05LfpjGraU2lSYyCiWOWFp1YRGwkvFkkisALsWmMoBg93OzDsjI
-	 loyMNUXxARz68ePecIWBatdn83qe6WRcdew6serY2PxCqzwqdGH0SEQa0GqXKNTw79
-	 m6FXBJ0gMMZRmOg4G0nPFu1e8ACA16ZDenuT65Uo=
+	b=mbhGJxy6rebYMu9O1CAu5oHWJsNJ0JxjptHttFdmmWICcPTQCXImc4REwsArs4Qjb
+	 BWwCuIyLO4ikDb8TKZhorGiFEF8R9bgCpoycvXzkPtsx7j/+nBZxPU/PJHiYlruzXl
+	 gB0J8JnWd/YWsVdpxOx2xHgGoZoD9By6/pok1Lb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 5.4 213/222] posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
-Date: Mon, 23 Jun 2025 15:09:08 +0200
-Message-ID: <20250623130618.704753063@linuxfoundation.org>
+	Dan Aloni <dan.aloni@vastdata.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Larry Bassel <larry.bassel@oracle.com>
+Subject: [PATCH 5.4 214/222] xprtrdma: fix pointer derefs in error cases of rpcrdma_ep_create
+Date: Mon, 23 Jun 2025 15:09:09 +0200
+Message-ID: <20250623130618.732847526@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -60,60 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Dan Aloni <dan.aloni@vastdata.com>
 
-commit f90fff1e152dedf52b932240ebbd670d83330eca upstream.
+commit a9c10b5b3b67b3750a10c8b089b2e05f5e176e33 upstream.
 
-If an exiting non-autoreaping task has already passed exit_notify() and
-calls handle_posix_cpu_timers() from IRQ, it can be reaped by its parent
-or debugger right after unlock_task_sighand().
+If there are failures then we must not leave the non-NULL pointers with
+the error value, otherwise `rpcrdma_ep_destroy` gets confused and tries
+free them, resulting in an Oops.
 
-If a concurrent posix_cpu_timer_del() runs at that moment, it won't be
-able to detect timer->it.cpu.firing != 0: cpu_timer_task_rcu() and/or
-lock_task_sighand() will fail.
-
-Add the tsk->exit_state check into run_posix_cpu_timers() to fix this.
-
-This fix is not needed if CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y, because
-exit_task_work() is called before exit_notify(). But the check still
-makes sense, task_work_add(&tsk->posix_cputimers_work.work) will fail
-anyway in this case.
-
-Cc: stable@vger.kernel.org
-Reported-by: Benoît Sevens <bsevens@google.com>
-Fixes: 0bdd2ed4138e ("sched: run_posix_cpu_timers: Don't check ->exit_state, use lock_task_sighand()")
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Dan Aloni <dan.aloni@vastdata.com>
+Acked-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+[ Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 93aa8e0a9de80
+  xprtrdma: Merge struct rpcrdma_ia into struct rpcrdma_ep ]
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
 ---
- kernel/time/posix-cpu-timers.c |    9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/sunrpc/xprtrdma/verbs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/time/posix-cpu-timers.c
-+++ b/kernel/time/posix-cpu-timers.c
-@@ -1120,6 +1120,15 @@ void run_posix_cpu_timers(void)
- 	lockdep_assert_irqs_disabled();
+--- a/net/sunrpc/xprtrdma/verbs.c
++++ b/net/sunrpc/xprtrdma/verbs.c
+@@ -525,6 +525,7 @@ int rpcrdma_ep_create(struct rpcrdma_xpr
+ 				 IB_POLL_WORKQUEUE);
+ 	if (IS_ERR(sendcq)) {
+ 		rc = PTR_ERR(sendcq);
++		sendcq = NULL;
+ 		goto out1;
+ 	}
  
- 	/*
-+	 * Ensure that release_task(tsk) can't happen while
-+	 * handle_posix_cpu_timers() is running. Otherwise, a concurrent
-+	 * posix_cpu_timer_del() may fail to lock_task_sighand(tsk) and
-+	 * miss timer->it.cpu.firing != 0.
-+	 */
-+	if (tsk->exit_state)
-+		return;
-+
-+	/*
- 	 * The fast path checks that there are no expired thread or thread
- 	 * group timers.  If that's so, just return.
- 	 */
+@@ -533,6 +534,7 @@ int rpcrdma_ep_create(struct rpcrdma_xpr
+ 				 IB_POLL_WORKQUEUE);
+ 	if (IS_ERR(recvcq)) {
+ 		rc = PTR_ERR(recvcq);
++		recvcq = NULL;
+ 		goto out2;
+ 	}
+ 
 
 
 
