@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-155895-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C270AE4429
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B003AE4252
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF0417D1ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3486D173ACD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024E5246BC9;
-	Mon, 23 Jun 2025 13:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E366223ED56;
+	Mon, 23 Jun 2025 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ccu4SdDR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbUr5P2C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D754C7F;
-	Mon, 23 Jun 2025 13:33:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A100813A265;
+	Mon, 23 Jun 2025 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685613; cv=none; b=L438106CnVJOaPnaNx8O9LNofa2YDlnyxhitwJcBbbiOwwOPA9GD30d7AV8Wy+IBOmieQdLenBwgDFuUq1S5gy/soE8Op6cErYEty98wEg9haJSK5Oig5soLxzHAnQVsrgm6VHZhBpBlPOijfSsRo17t8PHHWtfn/1fmCxjTWGk=
+	t=1750684542; cv=none; b=hImG9EoURNGpuObDATOVDKJKjziynLlzAM8UX/ZHe6aMiIdNG71ozyxd2ZQCMcM5i/538/qsAWhMuClJ3iQRHMSvDX1O+TVlugUujxUgecMkhcVPZRwLPadP57uOaU8bVgt7X2CviRE6xHbBeTOVwNE4PWi0k+BsJTR8YyIs2HM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685613; c=relaxed/simple;
-	bh=cqAeRf8G0w1af8bQzWfUpBp3t4oVe2lprdCBES74xy4=;
+	s=arc-20240116; t=1750684542; c=relaxed/simple;
+	bh=1/9V9Nmnb2jqb9b94BWZgXGgeJ3OhTAnJ54iWlY2eUE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fOslzVCeIoIfSWi3oKR+ttDFKq043oWRaJ3Pz2YjvFCcm7/9MhfqPfDJSA7mb2mekIkoo9zyOmGHtuFshYo2OLabBqzExnPn3Wtw1nTsCh8bPFFaXccFHFCIOnD+4LIhz+f4c0Naw/DdKBQQkzq6+l/8M5SemHUmJvvrJR8VVHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ccu4SdDR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4966AC4CEEA;
-	Mon, 23 Jun 2025 13:33:33 +0000 (UTC)
+	 MIME-Version; b=STGtJjZw3oPTMUqO6CmQ3T1xH/fFSOZeQq2pMH0E1nV9PoH6Oc8COyxAA/ukcWjGYivppcvlx6wOc/EC9WsKw6pFdAGqaTXGIeO++gDkRStbGAtGbfUWagmWnWDk1BCu4aAhsOPS1BBDuGE4I8OjgxpnPjZCa9JePXs5yz4tncg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbUr5P2C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358A7C4CEEA;
+	Mon, 23 Jun 2025 13:15:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685613;
-	bh=cqAeRf8G0w1af8bQzWfUpBp3t4oVe2lprdCBES74xy4=;
+	s=korg; t=1750684542;
+	bh=1/9V9Nmnb2jqb9b94BWZgXGgeJ3OhTAnJ54iWlY2eUE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ccu4SdDRBmwFDdXWTAYsNQbG7/DuS+C+GgGHpatJ9Ok2HumLYRmL8aEVraXNF7OKC
-	 ftVcm7pn9Il6uFvmkKKv1yR/PEXU/s7E2plwrWz9LqypIoN+8uZ8zBH0Kip9HYzpK5
-	 z54VeZO5ERJH9gfe4CJb8vdVwehg6Q5yvQ35ZjNY=
+	b=vbUr5P2CJhF2Qr1HHBOcJKXRtIZxZQqGix5l3G/MS61Xdlxt91bSjWP6sVvD/FQG1
+	 57531YS7mvt0sYakucjnvmSbUxCCaIiyV0b/OprhiwHQF6TzGwnw5oMIXHVCpJYx0M
+	 aahQnggzK200HMITY3FnbquvaUJL3+k0azh/ZKQY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ahmed S. Darwish" <darwi@linutronix.de>,
-	Ingo Molnar <mingo@kernel.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	John Ogness <john.ogness@linutronix.de>,
-	x86-cpuid@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 019/508] x86/cpu: Sanitize CPUID(0x80000000) output
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.15 106/592] bus: firewall: Fix missing static inline annotations for stubs
 Date: Mon, 23 Jun 2025 15:01:04 +0200
-Message-ID: <20250623130645.726495588@linuxfoundation.org>
+Message-ID: <20250623130702.798758601@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,97 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed S. Darwish <darwi@linutronix.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit cc663ba3fe383a628a812f893cc98aafff39ab04 ]
+commit 66db876162155c1cec87359cd78c62aaafde9257 upstream.
 
-CPUID(0x80000000).EAX returns the max extended CPUID leaf available.  On
-x86-32 machines without an extended CPUID range, a CPUID(0x80000000)
-query will just repeat the output of the last valid standard CPUID leaf
-on the CPU; i.e., a garbage values.  Current tip:x86/cpu code protects against
-this by doing:
+Stubs in the header file for !CONFIG_STM32_FIREWALL case should be both
+static and inline, because they do not come with earlier declaration and
+should be inlined in every unit including the header.
 
-	eax = cpuid_eax(0x80000000);
-	c->extended_cpuid_level = eax;
-
-	if ((eax & 0xffff0000) == 0x80000000) {
-		// CPU has an extended CPUID range. Check for 0x80000001
-		if (eax >= 0x80000001) {
-			cpuid(0x80000001, ...);
-		}
-	}
-
-This is correct so far.  Afterwards though, the same possibly broken EAX
-value is used to check the availability of other extended CPUID leaves:
-
-	if (c->extended_cpuid_level >= 0x80000007)
-		...
-	if (c->extended_cpuid_level >= 0x80000008)
-		...
-	if (c->extended_cpuid_level >= 0x8000000a)
-		...
-	if (c->extended_cpuid_level >= 0x8000001f)
-		...
-
-which is invalid.  Fix this by immediately setting the CPU's max extended
-CPUID leaf to zero if CPUID(0x80000000).EAX doesn't indicate a valid
-CPUID extended range.
-
-While at it, add a comment, similar to kernel/head_32.S, clarifying the
-CPUID(0x80000000) sanity check.
-
-References: 8a50e5135af0 ("x86-32: Use symbolic constants, safer CPUID when enabling EFER.NX")
-Fixes: 3da99c977637 ("x86: make (early)_identify_cpu more the same between 32bit and 64 bit")
-Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: John Ogness <john.ogness@linutronix.de>
-Cc: x86-cpuid@lists.linux.dev
-Link: https://lore.kernel.org/r/20250506050437.10264-3-darwi@linutronix.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Patrice Chotard <patrice.chotard@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 5c9668cfc6d7 ("firewall: introduce stm32_firewall framework")
+Link: https://lore.kernel.org/r/20250507092121.95121-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/common.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ include/linux/bus/stm32_firewall_device.h |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index 48cc1612df49f..722eac51beae6 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1045,17 +1045,18 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
- 		c->x86_capability[CPUID_D_1_EAX] = eax;
- 	}
+--- a/include/linux/bus/stm32_firewall_device.h
++++ b/include/linux/bus/stm32_firewall_device.h
+@@ -114,27 +114,30 @@ void stm32_firewall_release_access_by_id
  
--	/* AMD-defined flags: level 0x80000001 */
-+	/*
-+	 * Check if extended CPUID leaves are implemented: Max extended
-+	 * CPUID leaf must be in the 0x80000001-0x8000ffff range.
-+	 */
- 	eax = cpuid_eax(0x80000000);
--	c->extended_cpuid_level = eax;
-+	c->extended_cpuid_level = ((eax & 0xffff0000) == 0x80000000) ? eax : 0;
+ #else /* CONFIG_STM32_FIREWALL */
  
--	if ((eax & 0xffff0000) == 0x80000000) {
--		if (eax >= 0x80000001) {
--			cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
-+	if (c->extended_cpuid_level >= 0x80000001) {
-+		cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
+-int stm32_firewall_get_firewall(struct device_node *np, struct stm32_firewall *firewall,
+-				unsigned int nb_firewall)
++static inline int stm32_firewall_get_firewall(struct device_node *np,
++					      struct stm32_firewall *firewall,
++					      unsigned int nb_firewall)
+ {
+ 	return -ENODEV;
+ }
  
--			c->x86_capability[CPUID_8000_0001_ECX] = ecx;
--			c->x86_capability[CPUID_8000_0001_EDX] = edx;
--		}
-+		c->x86_capability[CPUID_8000_0001_ECX] = ecx;
-+		c->x86_capability[CPUID_8000_0001_EDX] = edx;
- 	}
+-int stm32_firewall_grant_access(struct stm32_firewall *firewall)
++static inline int stm32_firewall_grant_access(struct stm32_firewall *firewall)
+ {
+ 	return -ENODEV;
+ }
  
- 	if (c->extended_cpuid_level >= 0x80000007) {
--- 
-2.39.5
-
+-void stm32_firewall_release_access(struct stm32_firewall *firewall)
++static inline void stm32_firewall_release_access(struct stm32_firewall *firewall)
+ {
+ }
+ 
+-int stm32_firewall_grant_access_by_id(struct stm32_firewall *firewall, u32 subsystem_id)
++static inline int stm32_firewall_grant_access_by_id(struct stm32_firewall *firewall,
++						    u32 subsystem_id)
+ {
+ 	return -ENODEV;
+ }
+ 
+-void stm32_firewall_release_access_by_id(struct stm32_firewall *firewall, u32 subsystem_id)
++static inline void stm32_firewall_release_access_by_id(struct stm32_firewall *firewall,
++						       u32 subsystem_id)
+ {
+ }
+ 
 
 
 
