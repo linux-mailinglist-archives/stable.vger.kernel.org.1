@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BCC8AE44CF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B10CAE43EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D18E817D46C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3135B189CD0A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AF572517AF;
-	Mon, 23 Jun 2025 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1A84254873;
+	Mon, 23 Jun 2025 13:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUg8JOom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/0hOWJy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585614C6E;
-	Mon, 23 Jun 2025 13:40:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F1274C6E;
+	Mon, 23 Jun 2025 13:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686004; cv=none; b=BofH1htMc3kQM/WLVyPS8CsEiO+dgfboDnWwEPtdf1rBRAVQ9hA6C0u4HLWBXobBBhfrOjH/INEX1BhA74jOJUkZCRWUTjHBHz4HsT9+jMB5iAtKvCqINnvwRO2tGynpVbQ0zCt765L5deoaxrIZ10zuCLSYDfQAbvb4ilEAfC8=
+	t=1750685493; cv=none; b=ElaOiB01fGtceUinqwTZLsKuXVUm/JOyyV7DMFhJwO4pd50htFkiJbzB9Kc4LwcUx0nVTdz8ILX3RGu8R4W9f7bYKI9afSrzYVIsyxyWBD8QyJn4WI3Z0t+m3TaI2Ld1PYjoeDgmHwX0rXt9uRyQ/nARGzVOzynKf/bMbUtMUvA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686004; c=relaxed/simple;
-	bh=y3MwQMtlPCMDzFcLjNmYdctNmbHc90KhI6zWkqz4N8k=;
+	s=arc-20240116; t=1750685493; c=relaxed/simple;
+	bh=GPmkiTpCqQzzdWSjby7Pc68YOpKbDB9AA2tHz9RdaZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YUyZn0VIo8vaBWcE8WWSAdnb4DjGkts4Ms42E69iLxnun8SPaUaS04AWlweIZ6ydpjvbvnkTpO2utNb927RwjmygNO2gSAA+/dyrNtm+Hk/SnU2PHzrQURa2cr1GjIOAd89XhuNTHcrVhZN4JUQCx5AC2SqBlFOMqrfn931OuDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUg8JOom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCCCC4CEEA;
-	Mon, 23 Jun 2025 13:40:03 +0000 (UTC)
+	 MIME-Version; b=b806d4jfjhweaMBkWfQCK2F0iWfUSLjO3JObpZfhABKfz9aJ2Ua1Po9HdDxBF8qtof8qbTiJS9JQi/HtQIEruqwp2LzuBGuynYVe6NoPA/PAZhIznYiXqjxq3K7B9TK6xVwiZFeRH2R09lPWuZ0LJq0BdwShXiUSVaHJ4Vk4ERM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/0hOWJy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F40DEC4CEEA;
+	Mon, 23 Jun 2025 13:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686004;
-	bh=y3MwQMtlPCMDzFcLjNmYdctNmbHc90KhI6zWkqz4N8k=;
+	s=korg; t=1750685493;
+	bh=GPmkiTpCqQzzdWSjby7Pc68YOpKbDB9AA2tHz9RdaZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GUg8JOomk5dXl0wvq85O/L+DJluRrRDhMFi8Aqc2u7gqvJV9UR3Mx+AMHiZ5VfCtS
-	 yWdJm6Ot/JwJ7YLyn0/fhboFQGIaQ03LiZsiZN5xaPaZwZz8ogvs5jvwFHDgxBo1G6
-	 FQ+lNlaZL9mD+LjO0xV06eUK+DM6Sy+bduVoyjlY=
+	b=f/0hOWJy4ii8pvMFf9+qLje5i1es8a+Ll4EwnmmJ24pZT3HNRPp6k8ZRVfLw/mVO8
+	 pYIxUz2J4ZVsKnh+J99fQPySJlDNIvXZqS4otwDjCcd8Kp9iCCuJ5THZKF/w5Ap9L4
+	 U14AfiYruLSotaRuwHCZEIj6uHG9X2j8bnDBozVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 017/290] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
-Date: Mon, 23 Jun 2025 15:04:38 +0200
-Message-ID: <20250623130627.502115227@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 078/355] rpmsg: qcom_smd: Fix uninitialized return variable in __qcom_smd_send()
+Date: Mon, 23 Jun 2025 15:04:39 +0200
+Message-ID: <20250623130629.165371233@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
+[ Upstream commit 5de775df3362090a6e90046d1f2d83fe62489aa0 ]
 
-In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
-nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
-this can cause NULL pointer dereference.
+The "ret" variable isn't initialized if we don't enter the loop.  For
+example,  if "channel->state" is not SMD_CHANNEL_OPENED.
 
-Normally the delayed start of laundromat_work allows sufficient time for
-nfsd_ssc initialization to complete. However, when the kernel waits too
-long for userspace responses (e.g. in nfs4_state_start_net ->
-nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
-cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
-delayed work may start before nfsd_ssc initialization finishes.
-
-Fix this by moving nfsd_ssc initialization before starting laundromat_work.
-
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33e3820dda88 ("rpmsg: smd: Use spinlock in tx path")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/aAkhvV0nSbrsef1P@stanley.mountain
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/rpmsg/qcom_smd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -432,13 +432,13 @@ static int nfsd_startup_net(struct net *
- 	if (ret)
- 		goto out_filecache;
+diff --git a/drivers/rpmsg/qcom_smd.c b/drivers/rpmsg/qcom_smd.c
+index b5167ef93abf9..6facf1b31d463 100644
+--- a/drivers/rpmsg/qcom_smd.c
++++ b/drivers/rpmsg/qcom_smd.c
+@@ -746,7 +746,7 @@ static int __qcom_smd_send(struct qcom_smd_channel *channel, const void *data,
+ 	__le32 hdr[5] = { cpu_to_le32(len), };
+ 	int tlen = sizeof(hdr) + len;
+ 	unsigned long flags;
+-	int ret;
++	int ret = 0;
  
-+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
-+	nfsd4_ssc_init_umount_work(nn);
-+#endif
- 	ret = nfs4_state_start_net(net);
- 	if (ret)
- 		goto out_reply_cache;
- 
--#ifdef CONFIG_NFSD_V4_2_INTER_SSC
--	nfsd4_ssc_init_umount_work(nn);
--#endif
- 	nn->nfsd_net_up = true;
- 	return 0;
- 
+ 	/* Word aligned channels only accept word size aligned data */
+ 	if (channel->info_word && len % 4)
+-- 
+2.39.5
+
 
 
 
