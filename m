@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C878EAE5199
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20DA9AE534E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 68F497ADF8F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D8B188B4F9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCCEF21D3DD;
-	Mon, 23 Jun 2025 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E61A21B9E5;
+	Mon, 23 Jun 2025 21:51:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs4ZxhMt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W36+NZaT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 790EC1EE7C6;
-	Mon, 23 Jun 2025 21:35:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6AD224B07;
+	Mon, 23 Jun 2025 21:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714541; cv=none; b=MSHMxqS4Jsx4FKX8ZRgkmqYF8Tw5Ujl6WHLa5SLXLTbqyoEtf608KHv4Ae18pN3ejhYOjoSqi8gJ8SE+ZdzYs3I9yLSTOsMvyLPlTvA4nfYD8KU3bIsa8GAQpi9G2H7eaGpfKw+0q2x9t2UNofYotcZEuZ2bAxgJUiBhdRPe2ZQ=
+	t=1750715496; cv=none; b=Einkr/csBWitS4Bl9L5byKpb6wR9bGhEP3BI2z88h8Xenz1XOw6DiEskmxk6AOnCEnJda8wcd/c1a47ObMtwgwjJ0d/nVB1wt+MgWn2fP3U45wFno0C/ZQEV74MlF3vIdobgPxb9X/GD/+DN4jD4ZnRp3CWuT/Kf2k1DcYTDqRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714541; c=relaxed/simple;
-	bh=RmML+VZvR3FMdFbM5DQ1Udyvj0fPV185WCM9f4GxJ+o=;
+	s=arc-20240116; t=1750715496; c=relaxed/simple;
+	bh=PcnRw3ln1PoLyzzXt246pQgF784fGXfnQA4GO0Of7AQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fHayP91Xp2iFLll6EpPbIjrYm2jCSZi2cLhUvnKAql/p38Pfphqu/67bh/uup9uaAsJXQggE3Oj1GL5s9h2N2hviz0Z7DJ76GwK5pRPtsAoNP7B/Ex5IvmtEZR/QJ6ag0w7BCzOelEORDyOqkjpLICKvfM+jNsDneAV+0qZAUD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs4ZxhMt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1264EC4CEEA;
-	Mon, 23 Jun 2025 21:35:40 +0000 (UTC)
+	 MIME-Version; b=SafW5TPaYGECOa5dVnutIWvUYpwblW3FsA7FbN8qSlULQHXQ9rc5c09cjmTDEyNbXhJfVk/6itHxRF/aP4p7p3csCt26T5V3bMDIahzrAWuUeyugYlBInqwnkw7jF+BN135+fcPPgvMwBAygP26uQ0XFfXPIhH0726DM69NYRCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W36+NZaT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D54C4CEEA;
+	Mon, 23 Jun 2025 21:51:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714541;
-	bh=RmML+VZvR3FMdFbM5DQ1Udyvj0fPV185WCM9f4GxJ+o=;
+	s=korg; t=1750715496;
+	bh=PcnRw3ln1PoLyzzXt246pQgF784fGXfnQA4GO0Of7AQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bs4ZxhMtEarvv+FdAN1AzhwM7i6y6DogsMDUZ8l0XHrIl/fxOOxU5odAgruB6WgvI
-	 9Q3QtQ4dFdgeLnNNv4IqGj1+9NLHJPPLvRtxDLBq9mG5F9K1bQkHgZPF0nnrMnpQMB
-	 uXujUOsFIG61q5dsliKcYwJwnDz4WKUJ/wdIDlAg=
+	b=W36+NZaTGCWlBbY2JSge9zFBxgXrJ0dzEjjbvxc3xxS2M9NS52ZjlEzREBTNwIjkx
+	 8Hf396gRzmgsL/6Nv+S/qIlMmqt6zhhwA36NtYQbyUUWy7hWxRHJfdadyw8fgBIkT5
+	 As5EUkFyfIbJPkZ6Bfmu5cVXUU0MiTGi/WCcMSb4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Maya Matuszczyk <maccraft123mc@gmail.com>,
+	Anthony Ruhier <aruhier@mailbox.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/290] wifi: mac80211: do not offer a mesh path if forwarding is disabled
+Subject: [PATCH 5.15 281/411] drm/msm/a6xx: Increase HFI response timeout
 Date: Mon, 23 Jun 2025 15:07:05 +0200
-Message-ID: <20250623130631.831614835@linuxfoundation.org>
+Message-ID: <20250623130640.723602997@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
 
-[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
+[ Upstream commit 5f02f5e78ec9688e29b6857813185b1181796abe ]
 
-When processing a PREQ the code would always check whether we have a
-mesh path locally and reply accordingly. However, when forwarding is
-disabled then we should not reply with this information as we will not
-forward data packets down that path.
+When ACD feature is enabled, it triggers some internal calibrations
+which result in a pretty long delay during the first HFI perf vote.
+So, increase the HFI response timeout to match the downstream driver.
 
-Move the check for dot11MeshForwarding up in the function and skip the
-mesh path lookup in that case. In the else block, set forward to false
-so that the rest of the function becomes a no-op and the
-dot11MeshForwarding check does not need to be duplicated.
-
-This explains an effect observed in the Freifunk community where mesh
-forwarding is disabled. In that case a mesh with three STAs and only bad
-links in between them, individual STAs would occionally have indirect
-mpath entries. This should not have happened.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Tested-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+Tested-by: Anthony Ruhier <aruhier@mailbox.org>
+Patchwork: https://patchwork.freedesktop.org/patch/649344/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_hwmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index c6395551f5df0..54930b06c3a4a 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -634,7 +634,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 				mesh_path_add_gate(mpath);
- 		}
- 		rcu_read_unlock();
--	} else {
-+	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
- 		rcu_read_lock();
- 		mpath = mesh_path_lookup(sdata, target_addr);
- 		if (mpath) {
-@@ -652,6 +652,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 		rcu_read_unlock();
-+	} else {
-+		forward = false;
- 	}
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
+index d4c65bf0a1b7f..a40ad74877623 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
+@@ -102,7 +102,7 @@ static int a6xx_hfi_wait_for_ack(struct a6xx_gmu *gmu, u32 id, u32 seqnum,
  
- 	if (reply) {
-@@ -669,7 +671,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
+ 	/* Wait for a response */
+ 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_GMU2HOST_INTR_INFO, val,
+-		val & A6XX_GMU_GMU2HOST_INTR_INFO_MSGQ, 100, 5000);
++		val & A6XX_GMU_GMU2HOST_INTR_INFO_MSGQ, 100, 1000000);
  
--	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
-+	if (forward) {
- 		u32 preq_id;
- 		u8 hopcount;
- 
+ 	if (ret) {
+ 		DRM_DEV_ERROR(gmu->dev,
 -- 
 2.39.5
 
