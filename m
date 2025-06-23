@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56779AE516E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9FFEAE50E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7434B441E6C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C97B81B62F93
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE401218580;
-	Mon, 23 Jun 2025 21:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D3F42206BB;
+	Mon, 23 Jun 2025 21:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apFkAqIz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZXhtIj1C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC584409;
-	Mon, 23 Jun 2025 21:34:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06D51E5B71;
+	Mon, 23 Jun 2025 21:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714448; cv=none; b=aYn9XMPbIIAqC7iXod/BgbIzTa9Ix2YaW+RYmtbVoF151le4BFLwMZ7CggkRyljx0AENbk0aWQFW0eCEQuS/5BdIwIInIW2PI/Y6+QEGh/6gbCpZeql0IQgf8GEPrByV56zR8eGoIjNM10WpQfXGR5Rc8zX4reW6NDkyQ2ETzVw=
+	t=1750714130; cv=none; b=lXmx8pXo/b9FlpzrVzH5ppfsXT5VzgiGBLHrr+J9S+xHbobRtTPlf5YEFcYs5a4G8XLDkVOnz4o6+YaP92fpPE3Buk4/brG4eYwm8HyzHeHNEwFOJ3ogqsZ093LsHUVJAaxEo8KtGYzSOsIfP33hd6o6DLink+JndZu5A3cYrx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714448; c=relaxed/simple;
-	bh=sAN/Kss2b+az1lSJ3R+3MnAWr5pkmYi9C/xcDSmLx8Y=;
+	s=arc-20240116; t=1750714130; c=relaxed/simple;
+	bh=BlNC21t4px582KbiLtMf3+80Vg1rpf3ADiM+VbgVciA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n7RzWzxysmqQ0dcAOWKXQ1arAsauur8OrDoiV64VJw9hTaqodkcHsyeQioSP35DGKWhqsw2hWdhZ5hw6WOdwUQlBmM5BzSIrX55lpJ9MPrzYT2pF2b+B3jyi2rxmjLpfKsgF1a+xnz58DptTOdSq5iPJy6fYXHiQsw0EPXS7ZLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apFkAqIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1621CC4CEEA;
-	Mon, 23 Jun 2025 21:34:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ldr71/xrQs9IvxJPbp85zp2LgSXVpCW0FtUs3ezhg7LoKquaECodhbbfDdZaVj4PDKgYohmvLOxGtWZb8hr3IGfaODNoQhQHsHUHwZ2FbVTavWHhaHBWH3wDBBGVDR2wb5NaM/cBVwRzqJbchycVk1eFbp/EL1jg8oVGALGORX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZXhtIj1C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5874DC4CEEA;
+	Mon, 23 Jun 2025 21:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714448;
-	bh=sAN/Kss2b+az1lSJ3R+3MnAWr5pkmYi9C/xcDSmLx8Y=;
+	s=korg; t=1750714130;
+	bh=BlNC21t4px582KbiLtMf3+80Vg1rpf3ADiM+VbgVciA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=apFkAqIzywnJWOPh1T6c/lYw2WUTA0fkec1EchcAUYGwyMcl3xd2FyYqzpT8UjEZ0
-	 Yrj4BS5Jg7NwHCY16NPdx1m+sYwuR3rx5bxjrYou1SIakBgnmRflQEsCucQnQgQItJ
-	 AKMP3YtNdvu3MPmxDDBsp/zgGSfkM/j0s2PBmS6Q=
+	b=ZXhtIj1CpwM0AUM5fKZ1prvkYDIH4xFDB1XocZx7hcA0EmXZgp7emSVyCLILGZYhK
+	 NpuOPcasF7WdB6bCZaFDq5ArjC62PyvVsq2Mhb0FYXFUlG+r0TkR649WLK8qTP488b
+	 3NLVQ9UgsyGPqAUsyi6D7L1He9WQf4DFza6LDGKY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 195/508] xfs: fix logdev fsmap query result filtering
-Date: Mon, 23 Jun 2025 15:04:00 +0200
-Message-ID: <20250623130650.069741133@linuxfoundation.org>
+	Hyunwoo Kim <imv4bel@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 104/414] net/sched: fix use-after-free in taprio_dev_notifier
+Date: Mon, 23 Jun 2025 15:04:01 +0200
+Message-ID: <20250623130644.700187024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Hyunwoo Kim <imv4bel@gmail.com>
 
-[ Upstream commit a949a1c2a198e048630a8b0741a99b85a5d88136 ]
+commit b160766e26d4e2e2d6fe2294e0b02f92baefcec5 upstream.
 
-The external log device fsmap backend doesn't have an rmapbt to query,
-so it's wasteful to spend time initializing the rmap_irec objects.
-Worse yet, the log could (someday) be longer than 2^32 fsblocks, so
-using the rmap irec structure will result in integer overflows.
+Since taprio’s taprio_dev_notifier() isn’t protected by an
+RCU read-side critical section, a race with advance_sched()
+can lead to a use-after-free.
 
-Fix this mess by computing the start address that we want from keys[0]
-directly, and use the daddr-based record filtering algorithm that we
-also use for rtbitmap queries.
+Adding rcu_read_lock() inside taprio_dev_notifier() prevents this.
 
-Fixes: e89c041338ed ("xfs: implement the GETFSMAP ioctl")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fed87cc6718a ("net/sched: taprio: automatically calculate queueMaxSDU based on TC gate durations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hyunwoo Kim <imv4bel@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/aEzIYYxt0is9upYG@v4bel-B760M-AORUS-ELITE-AX
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_fsmap.c | 30 ++++++++----------------------
- 1 file changed, 8 insertions(+), 22 deletions(-)
+ net/sched/sch_taprio.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index 202f162515bd5..cdd806d80b7cf 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -437,36 +437,22 @@ xfs_getfsmap_logdev(
- 	struct xfs_mount		*mp = tp->t_mountp;
- 	struct xfs_rmap_irec		rmap;
- 	xfs_daddr_t			rec_daddr, len_daddr;
--	xfs_fsblock_t			start_fsb;
--	int				error;
-+	xfs_fsblock_t			start_fsb, end_fsb;
-+	uint64_t			eofs;
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1328,13 +1328,15 @@ static int taprio_dev_notifier(struct no
  
--	/* Set up search keys */
-+	eofs = XFS_FSB_TO_BB(mp, mp->m_sb.sb_logblocks);
-+	if (keys[0].fmr_physical >= eofs)
-+		return 0;
- 	start_fsb = XFS_BB_TO_FSBT(mp,
- 				keys[0].fmr_physical + keys[0].fmr_length);
--	info->low.rm_startblock = XFS_BB_TO_FSBT(mp, keys[0].fmr_physical);
--	info->low.rm_offset = XFS_BB_TO_FSBT(mp, keys[0].fmr_offset);
--	error = xfs_fsmap_owner_to_rmap(&info->low, keys);
--	if (error)
--		return error;
--	info->low.rm_blockcount = 0;
--	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
-+	end_fsb = XFS_BB_TO_FSB(mp, min(eofs - 1, keys[1].fmr_physical));
+ 		stab = rtnl_dereference(q->root->stab);
  
- 	/* Adjust the low key if we are continuing from where we left off. */
- 	if (keys[0].fmr_length > 0)
- 		info->low_daddr = XFS_FSB_TO_BB(mp, start_fsb);
+-		oper = rtnl_dereference(q->oper_sched);
++		rcu_read_lock();
++		oper = rcu_dereference(q->oper_sched);
+ 		if (oper)
+ 			taprio_update_queue_max_sdu(q, oper, stab);
  
--	error = xfs_fsmap_owner_to_rmap(&info->high, keys + 1);
--	if (error)
--		return error;
--	info->high.rm_startblock = -1U;
--	info->high.rm_owner = ULLONG_MAX;
--	info->high.rm_offset = ULLONG_MAX;
--	info->high.rm_blockcount = 0;
--	info->high.rm_flags = XFS_RMAP_KEY_FLAGS | XFS_RMAP_REC_FLAGS;
--	info->missing_owner = XFS_FMR_OWN_FREE;
--
--	trace_xfs_fsmap_low_key(mp, info->dev, NULLAGNUMBER, &info->low);
--	trace_xfs_fsmap_high_key(mp, info->dev, NULLAGNUMBER, &info->high);
-+	trace_xfs_fsmap_low_key_linear(mp, info->dev, start_fsb);
-+	trace_xfs_fsmap_high_key_linear(mp, info->dev, end_fsb);
+-		admin = rtnl_dereference(q->admin_sched);
++		admin = rcu_dereference(q->admin_sched);
+ 		if (admin)
+ 			taprio_update_queue_max_sdu(q, admin, stab);
++		rcu_read_unlock();
  
- 	if (start_fsb > 0)
- 		return 0;
--- 
-2.39.5
-
+ 		break;
+ 	}
 
 
 
