@@ -1,167 +1,200 @@
-Return-Path: <stable+bounces-155334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEAABAE3B18
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:51:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9AA2AE3B3C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:54:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6261E3AA10B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:49:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D581F16B2BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:54:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 198502367CF;
-	Mon, 23 Jun 2025 09:49:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA3E2192E1;
+	Mon, 23 Jun 2025 09:54:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="C3rNVk6/"
+	dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b="UA4R0NoR"
 X-Original-To: stable@vger.kernel.org
-Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
+Received: from PA4PR04CU001.outbound.protection.outlook.com (mail-francecentralazon11013014.outbound.protection.outlook.com [40.107.162.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF5601531C1;
-	Mon, 23 Jun 2025 09:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750672192; cv=none; b=dRxg10is4yJCCakg7To1yjdWd0xXUnDkRIwzhzyMryNnPamLQQkeZh7PVleKDUTXEVr4ivBml/E3XywGUghTuY5JdJ1Yp1rq7Ub+Ldr04GS3wvud8feC4u+XWU1xWflqK1qpuTs9TUK3e0Q2dPfDdkJJh12mckqVKw9hBKiBuvg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750672192; c=relaxed/simple;
-	bh=AZGaJNprgITn+xmP//waVMDmWqRhQDQh/GejgpeV7UE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s43/8qaVvtJKruTNMnXonBeVoMRol3uTJMm9YFiRfkolyJ84sKf6P40PJVRd1sQfY/rLbDIm1HIsdhJ6zaT/1djdvJaUNNsOwmKgLFYOCLfzLw6toph4Tw+ZalmpKAQ31pojr8kpOX7+kBLF2fh1xhaYgSXOkrjzVrlnvERMthc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=C3rNVk6/; arc=none smtp.client-ip=185.11.138.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
-	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Reply-To;
-	bh=+5Oe+/qsP9gfaCq5yCuWO510xxb4CYOCrtgkQfYUfqw=; b=C3rNVk6/YTgOx18uOwfA/6Kv0u
-	aT5jAbMK8fISo1i2ZDI8wtkeuEumGISm2CSaGra/PnZe+QXa8tPOOmCr81d+flSTSM8HI0iz636eM
-	Ia1ifm8MCjueTiSq+qkMMy0+C0LY67xLbyYiZgl+XPJ9De4eGjmY48XhvYohx2Fu3l4vKOynwXK5p
-	AX+TzQnynxRdFmt6x2zxwaUu3eqxgCtcnYtOwWeZ07IjCnnv4Le+91SiKqzzIJTmv9lmq6cM2zsLG
-	y6cAEr5zvlXqp1BUhOuWBM5CmDhd7Vftxr98Q3KoSLCOF+tAtDcNqPF7bPjKKyQupixBLU+lnyzYY
-	tHgPAjvw==;
-Received: from [185.15.108.45] (helo=phil.localnet)
-	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <heiko@sntech.de>)
-	id 1uTdnr-0007yN-8k; Mon, 23 Jun 2025 11:49:27 +0200
-From: Heiko Stuebner <heiko@sntech.de>
-To: Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Conor Dooley <conor+dt@kernel.org>,
- Quentin Schulz <quentin.schulz@cherry.de>,
- Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>,
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9B991A3168
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 09:54:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.162.14
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750672484; cv=fail; b=NwcBO5IMzWrQaKn8NYzgDAOKza4Ewi9GcyiD6jYMLAidQr1PzX6CIbuQUbraLWxMWwvzCpKqDogPlvp1KDbg5rPZxdCmTpQeBstSwQ+l6Lm1oakl5oC1d9Z8vNwhl2G3sn4SzmTgHV5aDsBxFCGE7+t0co1KyoyoMLKPUJ+vMB4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750672484; c=relaxed/simple;
+	bh=DXof64md3swRq+2Hm3YdSOSjlPQViRGZLov1zbU1m0I=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=aKzGmJe446JVGRCN8cI40YmftL+LUkJ3HJRnkVOuqyb8zUS/y3MoAepy44syMCIjCVnSWF6nIvT5SaYkc/xIjUVm3aCq5OdoLl1lppjN0ruKMVAieXOFzS98vH6wvvDZuDqdcJS7P6hMouI/mwwv+refUK2I8Pu8kDIFYd0NJ+c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de; spf=pass smtp.mailfrom=cherry.de; dkim=pass (1024-bit key) header.d=cherry.de header.i=@cherry.de header.b=UA4R0NoR; arc=fail smtp.client-ip=40.107.162.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=cherry.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cherry.de
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=lQ4M+SUtoPjayz8RP/kzu/v2NwsFFwCJqwRPsuxr+bYzi8ALxmiysl7C3t2/JYc68Rip/mtRsDBukRLeiQhwWg7TyIReauZLVUE6TrZXrr78mhAQwnWJwH/3YW9K14G1Rhjqtsax2CXr54VD0K/fbWnqcSrhh9cRxqhoDMdpX4QgRjFsULoLCSxZ8XINqvdBe5oERz6A0KVHdsswru5aCV2d4kv0M1kl74U7szYqlS17uKIYu9vzrTjFVcukKhMOUZ8GiWrqSqj7XFxGUSwVfPSS0oYqxpU4Y9rsacok/Su8F3PvB1gCwXAkKLkt4ERZuA3iJPeVanzUCo+AQ6Ty2A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=78mvDjpv8iAUD7jiDdqcoELNyNrmk4U8ysbkNC2hGnY=;
+ b=ZTYEJasZ43BfHicANFfMZ1ktMQbI3BBkC9NyPUR/vNeSuxCYsw42wvhADxpn+goaWUmX6Mu0YWFhUqRkvmKmcdboM1/iBDL2Qmptz47044J5eCvWl3bDl+wEz/m75yEPpzTqHXoRQCwDe7EMeleW4Go6HFRfQXNCFB1inMtwZ9juO+vVZe8zg9HoX/LKHEwKfM4ByFaBo4JVP5xmlM4ow6y1u3zwgvmXZDdyckCfc0G7PuoJHKcbUnQk31UEsIsUmld3meX0J0zzrBiYvN+m7bXR90uBBEvjDnA8jYY/gqT3H4TjFDl73Yad/1v7ORARlvvDDGuGORv4Sr8PAYitpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=cherry.de; dmarc=pass action=none header.from=cherry.de;
+ dkim=pass header.d=cherry.de; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cherry.de;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=78mvDjpv8iAUD7jiDdqcoELNyNrmk4U8ysbkNC2hGnY=;
+ b=UA4R0NoRnYbG7M5nwgYiEZpeJauXR7MQnNpotI6JmCR86hiSA1ErXzBfGe/VlqrdDYfWbfYPt90vT9jum9/Tc0W1KMmVratYJpiTaWx5na0XQ7qCHudCDY82e4V3yqXo32V6AqbwFRIuk0VR7XKnBi9a6/pH7Z3lZMW52mn2V4A=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=cherry.de;
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com (2603:10a6:20b:42c::20)
+ by AS5PR04MB10020.eurprd04.prod.outlook.com (2603:10a6:20b:682::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.27; Mon, 23 Jun
+ 2025 09:54:38 +0000
+Received: from AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1]) by AS8PR04MB8897.eurprd04.prod.outlook.com
+ ([fe80::5ee:7297:93b4:a8d1%6]) with mapi id 15.20.8857.026; Mon, 23 Jun 2025
+ 09:54:38 +0000
+Message-ID: <52f9ac88-da92-4e45-905e-8b4bd8d0b289@cherry.de>
+Date: Mon, 23 Jun 2025 11:54:37 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.12 261/512] arm64: dts: rockchip: disable unrouted USB
+ controllers and PHY on RK3399 Puma with Haikou
+To: Pavel Machek <pavel@denx.de>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
  Lukasz Czechowski <lukasz.czechowski@thaumatec.com>,
- Dragan Simic <dsimic@manjaro.org>, Diederik de Haas <didi.debian@cknow.org>,
- Farouk Bouabid <farouk.bouabid@cherry.de>, Johan Jonker <jbx6244@gmail.com>,
- Jakob Unterwurzacher <jakobunt@gmail.com>
-Cc: stable@vger.kernel.org, Heiko Stuebner <heiko.stuebner@cherry.de>,
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-rockchip@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] arm64: dts: rockchip: use cs-gpios for spi1 on ringneck
-Date: Mon, 23 Jun 2025 11:49:26 +0200
-Message-ID: <1925003.tdWV9SEqCh@phil>
-In-Reply-To: <20250620113549.2900285-1-jakob.unterwurzacher@cherry.de>
-References: <20250620113549.2900285-1-jakob.unterwurzacher@cherry.de>
+ Heiko Stuebner <heiko@sntech.de>, Sasha Levin <sashal@kernel.org>
+References: <20250617152419.512865572@linuxfoundation.org>
+ <20250617152430.161978386@linuxfoundation.org> <aFVBa4ID/6uxE47h@duo.ucw.cz>
+Content-Language: en-US
+From: Quentin Schulz <quentin.schulz@cherry.de>
+In-Reply-To: <aFVBa4ID/6uxE47h@duo.ucw.cz>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: VI1P195CA0027.EURP195.PROD.OUTLOOK.COM
+ (2603:10a6:802:5a::16) To AS8PR04MB8897.eurprd04.prod.outlook.com
+ (2603:10a6:20b:42c::20)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AS8PR04MB8897:EE_|AS5PR04MB10020:EE_
+X-MS-Office365-Filtering-Correlation-Id: 51bd9943-04eb-48b2-ee87-08ddb23bf7a2
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?U0dZZy9vdDBmN1JpVlFzdFZHd1RQM3NLdmtPazU4akQrWlQ1R1M5ekVTZDR6?=
+ =?utf-8?B?dHVMdXc1SCs2SG9TTzA1ckk1Tis5Wmh0RExUSHluOFdEZGZzdkpVQTd2L1da?=
+ =?utf-8?B?UGlBMUMwMFdqUEJIMTNqRlAzWS84S2FOeTFZZDhYVTZVTCtKSjJkYTd2K1J4?=
+ =?utf-8?B?OVliT3BPRzlUTzhmRUFRTnAxbzdmVXkrdjVFRUZ3VE9QZEpoejQzaTNSekE5?=
+ =?utf-8?B?ZmwzMXU3UXpLUVByY3AvQkJKNEtrU3hzaWN3blQ4S0NNczRNNi9lWFZlK3Ix?=
+ =?utf-8?B?ZTZ1MVN4aTlPM01WMHZZSGlSaEFYUG5yUnRkYXB4cmxJTThiY1JsRU9YbmIz?=
+ =?utf-8?B?bitKTkNKcStqUzUyTzQ0a3lYQzdRMVR4cHJ6dXc2M1M3Tjd2VGEwVmpYalEv?=
+ =?utf-8?B?ekN2MitzWEJ5QTZVcEhEbFdHL0tlbzNTVDdkZnlFcjYyeFIyZGxSL1NMZXdw?=
+ =?utf-8?B?Q2dJQmtvaU1pcjAyZjBWM3hwNklYWm5hcW1RSlg4bUZOSUxDSzlBbnBUZzVh?=
+ =?utf-8?B?YkNOOEd2VEZMQjJMSVN5MTFZOUhqUlFaRzVkWHlEZzJ3cERGQkNVT2FWRUZy?=
+ =?utf-8?B?dzcySGpMRGFCMUtuMmhKVjZvMUdEd2QzUlZrZ3QyN1c2RVZ4N1RCMVAzOEFz?=
+ =?utf-8?B?UDBndmNRSitYTVZmZXhVcUhnMGlDMXdBV0tQb0tTN0d4L3lSN0htTnRUb0RW?=
+ =?utf-8?B?OXdrQ2I0ZlYyVU9HR1QvSUF6dmtLbHorR1B4YkhXa05lOTFBT2FXTHdjOGlw?=
+ =?utf-8?B?Ym0rTXdtV2xScmNmeFBlZEdmSWxpS3k3ZVJheWRFSUc2WC9qWEJYb2tLUG8r?=
+ =?utf-8?B?Nmp0Zm5XRlMwaVoyeTkwV3lzUVYzc3N4c3E5WUlZS2JZbG90TFZ5UXNpbnhM?=
+ =?utf-8?B?VnNqaWo1NjZDeVdnMDF0UEtyaC9SdlhOM2lmK0JNN0VTZDVweElOYkRBMm9G?=
+ =?utf-8?B?cmFSWXlFb3FEdUd1ZlFhaE44WVYwN3VWMWFqYlB3M3hjZWt3VEhLWnJkUjNK?=
+ =?utf-8?B?a0oydCtSZ0Jza1pBTWdldTUvY1k2N3ZrVjZCbW9Ba2Y3UUJIVWdlYm9rOC9I?=
+ =?utf-8?B?TXZQRGxvR0k1c0paWHcyNll2YjBDUzgrc2xCUFArNVBVZFlvaEZicnNzdmlU?=
+ =?utf-8?B?dXZDTkdEV01YRDhUV0F4ZjFnRUFZVHlDOVJFd2lZbGhrY1g0NVlOcmVhOXBs?=
+ =?utf-8?B?aHo5eHJnN1N5MEVlbFpxcENwUXA4bm9rUEdGVmxVbEpCTE5zR0JuSXBHdURM?=
+ =?utf-8?B?SEtrRGttNzQ3NUh5NktRNFA0WlJlUHEyb1hhL0tSUURFY0FBS0RFSW5VbTNj?=
+ =?utf-8?B?NDhsTWVkWW1wVFV4bEJxM3BwdjdiZVkrSmlKU0QwUU9OR05YZFFiTFF3WWMr?=
+ =?utf-8?B?bDNVT0ExcUpUeDFZZHg4Q1l0b3EvaXdQSldnenhUcktoMjV2bDRPT05aKzZ4?=
+ =?utf-8?B?Z0Ywcyt6aHNzcnNGYklHTG9lVXBMMDZnNG5ValFkZStvZ0N1UDBic3g3Yk11?=
+ =?utf-8?B?WEpNcHBNeWZUSmtMOWRYc3JkY3V3dWVoT2RFM2toQ25xbTNRT2lzaVYzS3dM?=
+ =?utf-8?B?V1FMa2F6ak5mY2k2NVVSU3hGRG5BMjJRT1FnUDV1bW9zWnRCMDhLSENSb0Ry?=
+ =?utf-8?B?SkR1bGNib2lpWHhEdG9jMlplMG1zYkgxbkJCTVRMZXBZSkdEZ24yVlJBdklp?=
+ =?utf-8?B?a3ZFcmFPdkd2Y0NhYndlRitReEQydXNEaG9SbkhCWXVHQzUyZUw3dmVDUjAz?=
+ =?utf-8?B?cHJYN3hsbmEwemhUWlp6Vkg2d3V0dnNGcUJJelhpZ09OWFA4a3pMSHJUeDRz?=
+ =?utf-8?B?RFUwM1QxVlBnci9KenFzZ3lTWGFpVkNjVjh1aG5xOUVRYUtMazNPTitiNUEv?=
+ =?utf-8?B?WUo1aTFmcUNJZTRESkdqRFV5WWNFQ0RoOGtEY1pBRmYwemkya2xQOERiRHRT?=
+ =?utf-8?Q?/9APtOoeF5Q=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AS8PR04MB8897.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?dis0SW1BNG05bjVlemhIT3NxSFVWc0Q2V0pZbW0vOWZTVVdmRzdKSUM2bFhi?=
+ =?utf-8?B?eHg3TGZEWlVzZGpJaHRmY0FSU1JDZzNNMmM3dkJPeElmNWFLZkdZVnNJdFRq?=
+ =?utf-8?B?ajdXNDhBcVhwNXRTcDY1SlUxTFR1THJrcU8yenpUMHZ0Rk9aWnpCampyUFp6?=
+ =?utf-8?B?aC94b3Fwdmg2S1Q5SlM3U2tXNzEzT2lMRDVrRjVjSkgzeE5HbG5NTEVuZStF?=
+ =?utf-8?B?U2pYYkwxT0Zpei9xYWh6d2VPSElTY3ZLVlR5MnNQNUVnVG9XRHl5T2l3a2RS?=
+ =?utf-8?B?MnNvV3NZblVFbTRLU0FsRGV0aE8vcXV0c0NXZkVHL1dHMnc2dFZCUTdIbjVE?=
+ =?utf-8?B?T1FHOGplWjFrVlZ0UHBCVDFMT095RXorblIwU0pUMHoxZW96S2xndk1VaFNJ?=
+ =?utf-8?B?bU5nYlpaSVcxSVF6OFkrYUNKeU9uM2NhS0cwQUVMdXdrTzJmc0tkWUxhakhx?=
+ =?utf-8?B?bHk1YWo0S251Mkg2cExQdGZibzhUc3BNVVUzM2VFdE5GcU45b2t6dGpMNjN5?=
+ =?utf-8?B?NklkYzhZY0E4SS84VFBqNXgwR01IQkZzTytVZFhjL3k3ekpJWVU2NytxSTVv?=
+ =?utf-8?B?R3JpZ1Uxa01Kc0VIQkdKTE50NW8weEdyajRJd1dCOEJHanlseEpDU3RzVjZM?=
+ =?utf-8?B?bWx5TWw4Y0FwUEg2SVpRVUFOYTM4UldrMnMzdlhySTR3NU9BWmxWT2JJL1BL?=
+ =?utf-8?B?a1MzWlROWmY0cXBmTDlHVGtLaWdtTDh6b25rMlZNUlBFK3FyeWFZRmtPSjRH?=
+ =?utf-8?B?T3R4Y1RUMVlUY1lHbS8ybTUvM1loTmxWdkdBNGhhK1lYcDRlYzJqV1BhMlYr?=
+ =?utf-8?B?NTB3NVB2ZE9yN0NXOHk1bW1PTkJ1djV4cHJoSGdQTHJ0TWg3K3p6d3hjZlNB?=
+ =?utf-8?B?R2tmVFRiMG9iTUhTMFlnc08ydlF5NHFBOWFMMXJ6aUYzQVRMQnJwTTlMNFky?=
+ =?utf-8?B?WWUxWlRLRVNUMGUwSUIrZHZldE1oZ0NheUhnODN0bzI1cEhWY1VXSmdUZHQ2?=
+ =?utf-8?B?NVUxbThMWE11aTY3dGhVOTRKbGF3SmtSVHJxMVFuNHVSY1BEc1I3djV3M3NN?=
+ =?utf-8?B?aVRtekZZWm9ReHhXeThpVEoxbVpVdlIrM2RlSnVZdXpGMVhGb0JnMjJVdzFR?=
+ =?utf-8?B?VDR5a0hwN0xCZnVFN0xkZHhKc1hoRzgxaFRib3hIcDFnNU5RWkJMQXRKTlBz?=
+ =?utf-8?B?N2w0RXQ2VTl3YVVpSHhDVzZIVnE3VTJlMGdqeWExZmFLbUFPamRvZUZBdG1E?=
+ =?utf-8?B?QmhlTGpoRk9FYU11MnVVTFdPQVZhdll1b0JTbWNJeW55cVJYT2l3TEhWd2dZ?=
+ =?utf-8?B?YXNoNFdJWHorMlh0Uml4VVZoZTFPbmZucWI3UDhOQWczeGt6emVIcDlqOFor?=
+ =?utf-8?B?YlpmRGRWSGV5TXhvc1NZTTdIdjZhNjdvYWxPWi9WZTB2VFRGbG1sTkg3SlY2?=
+ =?utf-8?B?QzdrMHNYOEdNMkk5cFdjaVdMSElhY2ZXcFlBb1piemJKQUQ5YjhJWktueERm?=
+ =?utf-8?B?YSs3UUVtaThDeGtDWnpLYW5Gek8xb2FHZG1UVmJPVlBPMkcyZ2s3aStEY1NJ?=
+ =?utf-8?B?cUYraDJidDUvY0NNRU9JMFB1SEYvL1Z5VVROOElkR1BlZmlVdGZSRXBYcHJP?=
+ =?utf-8?B?TVY4MnhRYXVYMnVBSHdUNEVvLzZuTVptKzJCU0p3bzBWTnc1RTZ2M05UU2w5?=
+ =?utf-8?B?WWRSQ0ttMHpnSXhObG90TU4vQUFwaHQxNTNGNFB5NlBsbFNNTE8zVUpJM3FX?=
+ =?utf-8?B?NUJMNEowRExScUJLRzdsVTNaUVhsWnVMQlg0NUdJUWlxQUdHUnc3MlZ2cnlT?=
+ =?utf-8?B?Sjd6S2JFTHdQeU00cnFZVE1JeFhkTC91VXhUcUVKWVBUYnh0MEt6SktycHN1?=
+ =?utf-8?B?eE95RE9LWktxQVd4MElSZFhTbnJOZzFXakZRRXpjWFFhNTRTMmNmcVV4SFdX?=
+ =?utf-8?B?Z1RJWjlGbktSbnpWYkNXR0EvVVI1VGpWS1JhS3M4dzBoTG5YMU1BQlFBRmhM?=
+ =?utf-8?B?NVR5Y1dPRUd3T1h6VnhmanI2dmFRbHkrcmc0QUVGWjRyLy9xazVPLzE3OU44?=
+ =?utf-8?B?TjlqOFV6NlF3azJjRzA4SnRSWlFsS0oyRkJJTEVsSGgwUDZZakx4Q0k1WWl6?=
+ =?utf-8?B?aGMzK25KVi9SMDZZd2JaY0o0T08zblpoQ2M4dkZNU2lCWTUwQzIvMUF2MXY0?=
+ =?utf-8?B?dmc9PQ==?=
+X-OriginatorOrg: cherry.de
+X-MS-Exchange-CrossTenant-Network-Message-Id: 51bd9943-04eb-48b2-ee87-08ddb23bf7a2
+X-MS-Exchange-CrossTenant-AuthSource: AS8PR04MB8897.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 09:54:38.5146
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 5e0e1b52-21b5-4e7b-83bb-514ec460677e
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 4x4shhumlSezf6cEvZNNGxLCtSk1G8tBpCGsfhl78LdZ+vpGs+ywt31K0laHuxpE1EXuY/6BSLu3qelnNPLxkHDtGEslZT/SKtlLLYVKLRs=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR04MB10020
 
-Hi Jakob,
+Hi Pavel,
 
-Am Freitag, 20. Juni 2025, 13:35:46 Mitteleurop=C3=A4ische Sommerzeit schri=
-eb Jakob Unterwurzacher:
-> From: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
->=20
-> Hardware CS has a very slow rise time of about 6us,
-> causing transmission errors when CS does not reach
-> high between transaction.
->=20
-> It looks like it's not driven actively when transitioning
-> from low to high but switched to input, so only the CPU
-> pull-up pulls it high, slowly. Transitions from high to low
-> are fast. On the oscilloscope, CS looks like an irregular sawtooth
-> pattern like this:
->                          _____
->               ^         /     |
->       ^      /|        /      |
->      /|     / |       /       |
->     / |    /  |      /        |
-> ___/  |___/   |_____/         |___
->=20
-> With cs-gpios we have a CS rise time of about 20ns, as it should be,
-> and CS looks rectangular.
->=20
-> This fixes the data errors when running a flashcp loop against a
-> m25p40 spi flash.
->=20
-> With the Rockchip 6.1 kernel we see the same slow rise time, but
-> for some reason CS is always high for long enough to reach a solid
-> high.
->=20
-> The RK3399 and RK3588 SoCs use the same SPI driver, so we also
-> checked our "Puma" (RK3399) and "Tiger" (RK3588) boards.
-> They do not have this problem. Hardware CS rise time is good.
->=20
-> Fixes: c484cf93f61b ("arm64: dts: rockchip: add PX30-=C2=B5Q7 (Ringneck) =
-SoM with Haikou baseboard")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Quentin Schulz <quentin.schulz@cherry.de>
-> Signed-off-by: Jakob Unterwurzacher <jakob.unterwurzacher@cherry.de>
-> ---
->  .../boot/dts/rockchip/px30-ringneck.dtsi      | 22 +++++++++++++++++++
->  1 file changed, 22 insertions(+)
->=20
-> diff --git a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi b/arch/arm64=
-/boot/dts/rockchip/px30-ringneck.dtsi
-> index ab232e5c7ad6..dcc62dd9b894 100644
-> --- a/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/px30-ringneck.dtsi
-> @@ -379,6 +379,18 @@ pmic_int: pmic-int {
->  				<0 RK_PA7 RK_FUNC_GPIO &pcfg_pull_up>;
->  		};
->  	};
-> +
-> +	spi1 {
-> +		spi1_csn0_gpio: spi1-csn0-gpio {
-> +			rockchip,pins =3D
-> +				<3 RK_PB1 RK_FUNC_GPIO &pcfg_pull_up_4ma>;
-> +		};
-> +
-> +		spi1_csn1_gpio: spi1-csn1-gpio {
+On 6/20/25 1:09 PM, Pavel Machek wrote:
+> Hi!
+> 
+>> No intended functional change.
+> 
+> So.. no reason to be in -stable, I guess.
+> 
 
-naming the node -gpio trigger the bot, I guess a better name would
-be something with -pin at the end instead.
+Would make it easier to backport other patches in the future where this 
+would appear (or not) in the git context though and avoid conflicts.
 
-> +&spi1 {
-> +	/*
-> +	 * Hardware CS has a very slow rise time of about 6us,
-> +	 * causing transmission errors.
-> +	 * With cs-gpios we have a rise time of about 20ns.
-> +	 */
-> +	cs-gpios =3D <&gpio3 RK_PB1 GPIO_ACTIVE_LOW>, <&gpio3 RK_PB2 GPIO_ACTIV=
-E_LOW>;
+I haven't gotten any data on that, but I assume that disabling unused 
+IPs in the SoC should reduce power consumption, whether that's 
+noticeable is a different thing :)
 
-please also provide a
-	pinctrl-names =3D "default"
-here.
-It feels more futur proof when overriding the pinctrl-0 entry
-to also state we only expect that one.
+No strong opinion on whether to backport though.
 
-> +	pinctrl-0 =3D <&spi1_clk &spi1_csn0_gpio &spi1_csn1_gpio &spi1_miso &sp=
-i1_mosi>;
-> +};
-> +
->  &tsadc {
->  	status =3D "okay";
->  };
->=20
-
-
-
-
+Cheers,
+Quentin
 
