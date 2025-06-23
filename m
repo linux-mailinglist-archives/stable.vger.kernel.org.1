@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-157508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A149EAE546F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFDDAE547D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B86E1BC117A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9D94C1183
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C59B21FF50;
-	Mon, 23 Jun 2025 22:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8884921D3F6;
+	Mon, 23 Jun 2025 22:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8Tgp6qu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QnWza9gs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A69F4409;
-	Mon, 23 Jun 2025 22:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475584C74;
+	Mon, 23 Jun 2025 22:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716039; cv=none; b=r+EocOAaD51IUkeW6dEDO9OW/2rbHUmSu96A9VXWAYTkkvDCL1GoqVfipXnsrujEbec1wzFf/CgqZYJKre9exPMftuImr4JOeqeijCCobON35fY/nUYM1O2vu4dxS7+WZl9kSiqQqYf2P/xw8CIrM7MfDGEwHot3ggVHnFWBZ8Y=
+	t=1750716120; cv=none; b=kJ2MnCniyTJW6eNCdF5PDqodg0J2wyikIhcZoEhzBF/l9ZaTvupdPayX62a+wWb8p+YbatKXaFGwK6OtdGCba2d4+nCiYsHHKxRFDGyT3j9lIsVTgpoEpNQAszHF8L1EluRJVNvm0Cxxe8dx6877kU2Fl69j933W3A3jE+xsunk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716039; c=relaxed/simple;
-	bh=tczerea8Pf74QjnK78vpmIyRylMgzQKUmD18CQ/8qn0=;
+	s=arc-20240116; t=1750716120; c=relaxed/simple;
+	bh=3ARQAhjVCSmZv64TUkntB2QS8qZO8nCllVg7SXOrirA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YxSXW2upOtqaYe9wj+AQcVsRZ6kA9wHS5H4E9H+tYW4G/x2bXw1MUJtq5Ds8FOiYlYOsB/A7/kJyki1imyK1MRrukytSkl/TZSwGUmrwazAfwlBamV1We89gM6dCuWZGXjbDZb6mbGfHA0Er1EQefE3ustXALpXLPX0VTAKgp8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8Tgp6qu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75FAC4CEEA;
-	Mon, 23 Jun 2025 22:00:38 +0000 (UTC)
+	 MIME-Version; b=l8UU+rUEFdtSeQApyo2lJ0b5rCJqN1zSl1rQWG+80D9S6SKB2q7ViCwtxyTJ5s+rE3UK8DeREYCkEaC4kXQrf5BRaO9W9Vo847oK5CbSE9Mylc1YxKdoM+6oWJsxC2BvA1K1hqOp8K2S7C3l+nPPRzx4aKupf1nXa1WVOGpXetc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QnWza9gs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4BC6C4CEEA;
+	Mon, 23 Jun 2025 22:01:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716039;
-	bh=tczerea8Pf74QjnK78vpmIyRylMgzQKUmD18CQ/8qn0=;
+	s=korg; t=1750716120;
+	bh=3ARQAhjVCSmZv64TUkntB2QS8qZO8nCllVg7SXOrirA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8Tgp6quyen41gFQtkCqhOJ2vKTg4nB5ngl+Oj+RvH7/UMtf2sp3pMtVclAhxSgr7
-	 j/KdNwJjpkNNqZ8Bu06+3IhvwBuKoS/eRp/OlJ7n3VwsmmRWQR/8v6750RrNlamxXT
-	 TbXEHWDLG54i+xiign1K8ZOfLwlfKiTbmNehY3w0=
+	b=QnWza9gsiVDpBp5bT9C7ehfkNTWLYbRLPbghA83ROdV4xYPSq6Ms77A9IVbkgi2oW
+	 79lLAJO3FEV3iKJaFFExfAjmD+ukD7wCWKDa7wMG9eAg0frRrrBOfuhbj/c4oDrWYs
+	 FSmxD+jrD9J22+LAwrx0IqzkOM4gV0hCgCuF66i8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Binbin Zhou <zhoubinbin@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.15 488/592] gpio: loongson-64bit: Correct Loongson-7A2000 ACPI GPIO access mode
-Date: Mon, 23 Jun 2025 15:07:26 +0200
-Message-ID: <20250623130712.041129184@linuxfoundation.org>
+	Ryan Roberts <ryan.roberts@arm.com>,
+	David Hildenbrand <david@redhat.com>,
+	Dev Jain <dev.jain@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.15 489/592] arm64: Restrict pagetable teardown to avoid false warning
+Date: Mon, 23 Jun 2025 15:07:27 +0200
+Message-ID: <20250623130712.064925110@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,36 +69,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Binbin Zhou <zhoubinbin@loongson.cn>
+From: Dev Jain <dev.jain@arm.com>
 
-commit 72f37957007d25f4290e3ba40d40aaec1dd0b0cf upstream.
+commit 650768c512faba8070bf4cfbb28c95eb5cd203f3 upstream.
 
-According to the description of the Loongson-7A2000 ACPI GPIO register in
-the manual, its access mode should be BIT_CTRL_MODE, otherwise there maybe
-some unpredictable behavior.
+Commit 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from
+pXd_free_pYd_table()") removes the pxd_present() checks because the
+caller checks pxd_present(). But, in case of vmap_try_huge_pud(), the
+caller only checks pud_present(); pud_free_pmd_page() recurses on each
+pmd through pmd_free_pte_page(), wherein the pmd may be none. Thus it is
+possible to hit a warning in the latter, since pmd_none => !pmd_table().
+Thus, add a pmd_present() check in pud_free_pmd_page().
 
+This problem was found by code inspection.
+
+Fixes: 9c006972c3fe ("arm64: mmu: drop pXd_present() checks from pXd_free_pYd_table()")
 Cc: stable@vger.kernel.org
-Fixes: 44fe79020b91 ("gpio: loongson-64bit: Add more gpio chip support")
-Signed-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
-Link: https://lore.kernel.org/r/20250610115926.347845-1-zhoubinbin@loongson.cn
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Signed-off-by: Dev Jain <dev.jain@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250527082633.61073-1-dev.jain@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-loongson-64bit.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/mm/mmu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpio/gpio-loongson-64bit.c
-+++ b/drivers/gpio/gpio-loongson-64bit.c
-@@ -266,7 +266,7 @@ static const struct loongson_gpio_chip_d
- /* LS7A2000 ACPI GPIO */
- static const struct loongson_gpio_chip_data loongson_gpio_ls7a2000_data1 = {
- 	.label = "ls7a2000_gpio",
--	.mode = BYTE_CTRL_MODE,
-+	.mode = BIT_CTRL_MODE,
- 	.conf_offset = 0x4,
- 	.in_offset = 0x8,
- 	.out_offset = 0x0,
+--- a/arch/arm64/mm/mmu.c
++++ b/arch/arm64/mm/mmu.c
+@@ -1286,7 +1286,8 @@ int pud_free_pmd_page(pud_t *pudp, unsig
+ 	next = addr;
+ 	end = addr + PUD_SIZE;
+ 	do {
+-		pmd_free_pte_page(pmdp, next);
++		if (pmd_present(pmdp_get(pmdp)))
++			pmd_free_pte_page(pmdp, next);
+ 	} while (pmdp++, next += PMD_SIZE, next != end);
+ 
+ 	pud_clear(pudp);
 
 
 
