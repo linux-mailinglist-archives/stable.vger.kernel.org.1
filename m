@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-158153-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F779AE5763
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F7CCAE55E7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3943AF513
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 285371BC384C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB210223DE5;
-	Mon, 23 Jun 2025 22:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D299C226CE6;
+	Mon, 23 Jun 2025 22:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR3ASYpw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q90j8sZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777A12222B2;
-	Mon, 23 Jun 2025 22:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2C1224B07;
+	Mon, 23 Jun 2025 22:14:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717614; cv=none; b=uKalBArr/2hSW4HNMcYvUe6A8dfm23uq/kEP775stIYsQcDjeiuo0V7r+LtxE4Gr1t6TlmPosVo+kDQpDOrqlRVhsUu+DuXYzHIpyC3FUQpti77NTCdB3CrLjYd16bjCcniWe89/rCY0hiic2BJPlbqLc3NKMO7UKlxUbFSSSRk=
+	t=1750716852; cv=none; b=Bb2dNpbXpDmYQzjbJMgkVjNWGq1hoAFhYXbqS2SaWAGBQYYz2+qvTspxEql+m/me07Ae26/ePTjIQkVVal7c9oq9VZdD2Pjf/cHfxzhUcrIzwXUUO9ZuPGP4joyvBlTq3d8UZQ1fu+Gz7ISvFNCn5lEIC91aw6EdfqsLmv9BlAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717614; c=relaxed/simple;
-	bh=HjX643CthLlTvuHWJK3JmiDGajS5aDKqMc0D4iG6pXA=;
+	s=arc-20240116; t=1750716852; c=relaxed/simple;
+	bh=k4NXLRBguqIRKY+7jl0aiTgOOax9oJG4THbYgajFRTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSZL6+CT+t/ay9de6SrVWTxmUZRy+31pfREDfr0c69I1yBvYfKJrVXPCnA1FqsFqgRbcn/t+tYKl8Wr+RPLi14IjmL2A/5Bzx9034dliUsLYg2euEEdaiZ2PDiCwTgMVGsi3hY81ROexGmlzypZNXJMVTMsCRRvdk+EOZCq8bho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR3ASYpw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F917C4CEEA;
-	Mon, 23 Jun 2025 22:26:53 +0000 (UTC)
+	 MIME-Version; b=FIx5EBjE7YXD/cN15XNGW7wYVzmev7vyVs5LD3mCRgyCE/OY1xx3Sb5F9hu6raJ2YELTxctjbqoZc17cb0Na6w7oHAOpIG0z3OoO1hgNgt/Gv3xWJSMCQQ1SimvjR+ByH6j0pAV7/6mXjy9T1L9xJbOefwzgXmKGKD3H7D36Ozk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q90j8sZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17DC7C4CEEA;
+	Mon, 23 Jun 2025 22:14:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717614;
-	bh=HjX643CthLlTvuHWJK3JmiDGajS5aDKqMc0D4iG6pXA=;
+	s=korg; t=1750716852;
+	bh=k4NXLRBguqIRKY+7jl0aiTgOOax9oJG4THbYgajFRTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QR3ASYpwXtadMDPHqN2PkUlFhczLG86uxYvc3DRcxvG2pAEVOAKt+bUFkZjJFJTMr
-	 AAeQ5sOgobTtAwkGyICoKnYavhNa9W2l7CvsSYw2JxtBHEjuJDGxBVoDSl3bgHgJv0
-	 3AalMr42h0W6eCm95hEQVdhIq3Qhk09x02gAw1SY=
+	b=Q90j8sZmbm3n4Qkpox8dKZfxmMLicHp9ujrqHd+S2LffkiiceHP/FiMVV3Tz6CqsC
+	 N36lQBtRVk59mkMT4Y6D+0PK/qf5JcpdZx4TjSGriL673iA1RSUh4D6Zn6M82aTslC
+	 /4WkXNyj4XtxAaHFgxO3lh3aSoVXids7ouhmo9RU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Justin Sanders <jsanders.devel@gmail.com>,
+	Valentin Kleibel <valentin@vrvis.at>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 471/508] drm/msm/dsi/dsi_phy_10nm: Fix missing initial VCO rate
+Subject: [PATCH 5.15 372/411] aoe: clean device rq_list in aoedev_downdev()
 Date: Mon, 23 Jun 2025 15:08:36 +0200
-Message-ID: <20250623130656.683995608@linuxfoundation.org>
+Message-ID: <20250623130643.007544020@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Justin Sanders <jsanders.devel@gmail.com>
 
-[ Upstream commit 8a48e35becb214743214f5504e726c3ec131cd6d ]
+[ Upstream commit 7f90d45e57cb2ef1f0adcaf925ddffdfc5e680ca ]
 
-Driver unconditionally saves current state on first init in
-dsi_pll_10nm_init(), but does not save the VCO rate, only some of the
-divider registers.  The state is then restored during probe/enable via
-msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
-dsi_10nm_pll_restore_state().
+An aoe device's rq_list contains accepted block requests that are
+waiting to be transmitted to the aoe target. This queue was added as
+part of the conversion to blk_mq. However, the queue was not cleaned out
+when an aoe device is downed which caused blk_mq_freeze_queue() to sleep
+indefinitely waiting for those requests to complete, causing a hang. This
+fix cleans out the queue before calling blk_mq_freeze_queue().
 
-Restoring calls dsi_pll_10nm_vco_set_rate() with
-pll_10nm->vco_current_rate=0, which basically overwrites existing rate of
-VCO and messes with clock hierarchy, by setting frequency to 0 to clock
-tree.  This makes anyway little sense - VCO rate was not saved, so
-should not be restored.
-
-If PLL was not configured configure it to minimum rate to avoid glitches
-and configuring entire in clock hierarchy to 0 Hz.
-
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/sz4kbwy5nwsebgf64ia7uq4ee7wbsa5uy3xmlqwcstsbntzcov@ew3dcyjdzmi2/
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Fixes: a4ccc37693a2 ("drm/msm/dsi_pll_10nm: restore VCO rate during
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/654796/
-Link: https://lore.kernel.org/r/20250520111325.92352-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=212665
+Fixes: 3582dd291788 ("aoe: convert aoeblk to blk-mq")
+Signed-off-by: Justin Sanders <jsanders.devel@gmail.com>
+Link: https://lore.kernel.org/r/20250610170600.869-1-jsanders.devel@gmail.com
+Tested-By: Valentin Kleibel <valentin@vrvis.at>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/block/aoe/aoedev.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-index 27b592c776a30..1c111969342a7 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
-@@ -716,6 +716,13 @@ static int dsi_pll_10nm_init(struct msm_dsi_phy *phy)
- 	/* TODO: Remove this when we have proper display handover support */
- 	msm_dsi_phy_pll_save_state(phy);
+diff --git a/drivers/block/aoe/aoedev.c b/drivers/block/aoe/aoedev.c
+index c5753c6bfe804..2e836c8656760 100644
+--- a/drivers/block/aoe/aoedev.c
++++ b/drivers/block/aoe/aoedev.c
+@@ -198,6 +198,7 @@ aoedev_downdev(struct aoedev *d)
+ {
+ 	struct aoetgt *t, **tt, **te;
+ 	struct list_head *head, *pos, *nx;
++	struct request *rq, *rqnext;
+ 	int i;
  
-+	/*
-+	 * Store also proper vco_current_rate, because its value will be used in
-+	 * dsi_10nm_pll_restore_state().
-+	 */
-+	if (!dsi_pll_10nm_vco_recalc_rate(&pll_10nm->clk_hw, VCO_REF_CLK_RATE))
-+		pll_10nm->vco_current_rate = pll_10nm->phy->cfg->min_pll_rate;
+ 	d->flags &= ~DEVFL_UP;
+@@ -223,6 +224,13 @@ aoedev_downdev(struct aoedev *d)
+ 	/* clean out the in-process request (if any) */
+ 	aoe_failip(d);
+ 
++	/* clean out any queued block requests */
++	list_for_each_entry_safe(rq, rqnext, &d->rq_list, queuelist) {
++		list_del_init(&rq->queuelist);
++		blk_mq_start_request(rq);
++		blk_mq_end_request(rq, BLK_STS_IOERR);
++	}
 +
- 	return 0;
- }
- 
+ 	/* fast fail all pending I/O */
+ 	if (d->blkq) {
+ 		/* UP is cleared, freeze+quiesce to insure all are errored */
 -- 
 2.39.5
 
