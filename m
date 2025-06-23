@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-155995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C2AEAE454F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:51:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDD2FAE424C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4488144575F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A05743ADB06
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE512566E2;
-	Mon, 23 Jun 2025 13:37:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF76923C4F8;
+	Mon, 23 Jun 2025 13:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4uaZ7Nv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rj6FfjMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3542472AF;
-	Mon, 23 Jun 2025 13:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE8F1798F;
+	Mon, 23 Jun 2025 13:17:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685877; cv=none; b=Nv42g4sJ7+tyemlLwOTmCqKOtab+6WyNUO0+LEURdDFNDunfnbfmhv8WYi4P2mwFr82ukoLJMlG9QAAKLMqmvu4Sw5+NPcVsIvKPALl8sDW+tnK7u3sMglPYJtGwurC5ZRnmLozWNegAyin3qUHZ2WikZc52rFMEu3AJj4wg4Qc=
+	t=1750684637; cv=none; b=sAMN7rK/nHs03Es6ai1kUB7NF0Q0cUXX9GnAR5Rv9B/TILGYGzPz4DIy2TvnmjmIH9aedshg9YWiqbcs8JkOFwKlEPbBzRcovtN/a0xDVtAf+upEP9mDRaDsab+8rCfLP/5XwBwXHv7BXbiIV7gIRmGUatrvYPMo4VW4vPQuJKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685877; c=relaxed/simple;
-	bh=N4qjVFz6TkmDIaGDfp5N+0WZCnhkXTAioqES/q+pawM=;
+	s=arc-20240116; t=1750684637; c=relaxed/simple;
+	bh=nQbTnln+nsAv9jovMwXcuXzhh6TS7UkAMNb9VBFGzEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GPDGpPTMaxeBkEG6oeuK/QFf0JqDXwFoWp8qOCgpql1bEdKqpljKck0AcDBIBRZBsHu5H65co0MhKO+jinFpOr2W642NPS5QPFCuon5mQbZCzOpDl0HUSD2XE68ZjOPZDAk0oE5Svd+91QYBkgvVO1YEEr2ZrS/L6VGKeAjmvzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4uaZ7Nv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46E67C4CEEA;
-	Mon, 23 Jun 2025 13:37:57 +0000 (UTC)
+	 MIME-Version; b=tNGR3mmWnAKenr4acAoFGdywsNrbOZ3MV3D4O2nMtftY+eamG25RTSn2IgTaCZhyD0R2JCZie75h/Oo/8qOQPPSpCs9JVg3/68cPpLqMfI35zBhkP9MhPY2Ipk5sKNXyDM49EJckB0UAokW4zNFNlbN11BfbA4um98zGaQuOErQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rj6FfjMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0289C4CEEA;
+	Mon, 23 Jun 2025 13:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685877;
-	bh=N4qjVFz6TkmDIaGDfp5N+0WZCnhkXTAioqES/q+pawM=;
+	s=korg; t=1750684637;
+	bh=nQbTnln+nsAv9jovMwXcuXzhh6TS7UkAMNb9VBFGzEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4uaZ7NvpsS4CGI2Vk6IfnXCXyqzNw7BaJzvcLxazCGERLjuxX2XDNr/gz+XUswwI
-	 x+mEV4I3Iom1PBLX7R9uOV0tISgz5gSPSwFMpwWJP4VoAqAyAhNHqhDI30Y5bsFfoF
-	 hIPJnuq9IaWb68YKcPElABBAqVZ+Ytck5KhPLfpA=
+	b=rj6FfjMNKS1+OZFCcSq/Ytr/lC0rR0j9v2AUqx2eq6YWCKcl++flH+FlqM0Fgl+bx
+	 aarCbWokUj4TxP38TUqo/oS12cOfZ+duDBDo2l8DE9gf71OrTBHVO9OihvL3oAmn7B
+	 OJQR3dE/N8ID0csaL0pfb+WnwAoNtszBJURWPaFE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 056/508] bpf, sockmap: fix duplicated data transmission
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>,
+	Sami Mujawar <sami.mujawar@arm.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	Cedric Xing <cedric.xing@intel.com>,
+	Kai Huang <kai.huang@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>
+Subject: [PATCH 6.15 143/592] configfs-tsm-report: Fix NULL dereference of tsm_ops
 Date: Mon, 23 Jun 2025 15:01:41 +0200
-Message-ID: <20250623130646.623026530@linuxfoundation.org>
+Message-ID: <20250623130703.680496349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +68,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Dan Williams <dan.j.williams@intel.com>
 
-[ Upstream commit 3b4f14b794287be137ea2c6158765d1ea1e018a4 ]
+commit fba4ceaa242d2bdf4c04b77bda41d32d02d3925d upstream.
 
-In the !ingress path under sk_psock_handle_skb(), when sending data to the
-remote under snd_buf limitations, partial skb data might be transmitted.
+Unlike sysfs, the lifetime of configfs objects is controlled by
+userspace. There is no mechanism for the kernel to find and delete all
+created config-items. Instead, the configfs-tsm-report mechanism has an
+expectation that tsm_unregister() can happen at any time and cause
+established config-item access to start failing.
 
-Although we preserved the partial transmission state (offset/length), the
-state wasn't properly consumed during retries. This caused the retry path
-to resend the entire skb data instead of continuing from the previous
-offset, resulting in data overlap at the receiver side.
+That expectation is not fully satisfied. While tsm_report_read(),
+tsm_report_{is,is_bin}_visible(), and tsm_report_make_item() safely fail
+if tsm_ops have been unregistered, tsm_report_privlevel_store()
+tsm_report_provider_show() fail to check for ops registration. Add the
+missing checks for tsm_ops having been removed.
 
-Fixes: 405df89dd52c ("bpf, sockmap: Improved check for empty queue")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20250407142234.47591-3-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now, in supporting the ability for tsm_unregister() to always succeed,
+it leaves the problem of what to do with lingering config-items. The
+expectation is that the admin that arranges for the ->remove() (unbind)
+of the ${tsm_arch}-guest driver is also responsible for deletion of all
+open config-items. Until that deletion happens, ->probe() (reload /
+bind) of the ${tsm_arch}-guest driver fails.
+
+This allows for emergency shutdown / revocation of attestation
+interfaces, and requires coordinated restart.
+
+Fixes: 70e6f7e2b985 ("configfs-tsm: Introduce a shared ABI for attestation reports")
+Cc: stable@vger.kernel.org
+Cc: Suzuki K Poulose <suzuki.poulose@arm.com>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Sami Mujawar <sami.mujawar@arm.com>
+Cc: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reported-by: Cedric Xing <cedric.xing@intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Link: https://patch.msgid.link/20250430203331.1177062-1-dan.j.williams@intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skmsg.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/virt/coco/tsm.c |   31 +++++++++++++++++++++++++++++--
+ 1 file changed, 29 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index 5a790cd1121b1..72f4949cbb70f 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -654,11 +654,6 @@ static void sk_psock_backlog(struct work_struct *work)
- 	int ret;
+--- a/drivers/virt/coco/tsm.c
++++ b/drivers/virt/coco/tsm.c
+@@ -15,6 +15,7 @@
+ static struct tsm_provider {
+ 	const struct tsm_ops *ops;
+ 	void *data;
++	atomic_t count;
+ } provider;
+ static DECLARE_RWSEM(tsm_rwsem);
  
- 	mutex_lock(&psock->work_mutex);
--	if (unlikely(state->len)) {
--		len = state->len;
--		off = state->off;
--	}
--
- 	while ((skb = skb_peek(&psock->ingress_skb))) {
- 		len = skb->len;
- 		off = 0;
-@@ -668,6 +663,13 @@ static void sk_psock_backlog(struct work_struct *work)
- 			off = stm->offset;
- 			len = stm->full_len;
- 		}
-+
-+		/* Resume processing from previous partial state */
-+		if (unlikely(state->len)) {
-+			len = state->len;
-+			off = state->off;
-+		}
-+
- 		ingress = skb_bpf_ingress(skb);
- 		skb_bpf_redirect_clear(skb);
- 		do {
-@@ -695,6 +697,8 @@ static void sk_psock_backlog(struct work_struct *work)
- 			len -= ret;
- 		} while (len);
+@@ -92,6 +93,10 @@ static ssize_t tsm_report_privlevel_stor
+ 	if (rc)
+ 		return rc;
  
-+		/* The entire skb sent, clear state */
-+		sk_psock_skb_state(psock, state, 0, 0);
- 		skb = skb_dequeue(&psock->ingress_skb);
- 		kfree_skb(skb);
++	guard(rwsem_write)(&tsm_rwsem);
++	if (!provider.ops)
++		return -ENXIO;
++
+ 	/*
+ 	 * The valid privilege levels that a TSM might accept, if it accepts a
+ 	 * privilege level setting at all, are a max of TSM_PRIVLEVEL_MAX (see
+@@ -101,7 +106,6 @@ static ssize_t tsm_report_privlevel_stor
+ 	if (provider.ops->privlevel_floor > val || val > TSM_PRIVLEVEL_MAX)
+ 		return -EINVAL;
+ 
+-	guard(rwsem_write)(&tsm_rwsem);
+ 	rc = try_advance_write_generation(report);
+ 	if (rc)
+ 		return rc;
+@@ -115,6 +119,10 @@ static ssize_t tsm_report_privlevel_floo
+ 					       char *buf)
+ {
+ 	guard(rwsem_read)(&tsm_rwsem);
++
++	if (!provider.ops)
++		return -ENXIO;
++
+ 	return sysfs_emit(buf, "%u\n", provider.ops->privlevel_floor);
+ }
+ CONFIGFS_ATTR_RO(tsm_report_, privlevel_floor);
+@@ -217,6 +225,9 @@ CONFIGFS_ATTR_RO(tsm_report_, generation
+ static ssize_t tsm_report_provider_show(struct config_item *cfg, char *buf)
+ {
+ 	guard(rwsem_read)(&tsm_rwsem);
++	if (!provider.ops)
++		return -ENXIO;
++
+ 	return sysfs_emit(buf, "%s\n", provider.ops->name);
+ }
+ CONFIGFS_ATTR_RO(tsm_report_, provider);
+@@ -284,7 +295,7 @@ static ssize_t tsm_report_read(struct ts
+ 	guard(rwsem_write)(&tsm_rwsem);
+ 	ops = provider.ops;
+ 	if (!ops)
+-		return -ENOTTY;
++		return -ENXIO;
+ 	if (!report->desc.inblob_len)
+ 		return -EINVAL;
+ 
+@@ -421,12 +432,20 @@ static struct config_item *tsm_report_ma
+ 	if (!state)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	atomic_inc(&provider.count);
+ 	config_item_init_type_name(&state->cfg, name, &tsm_report_type);
+ 	return &state->cfg;
+ }
+ 
++static void tsm_report_drop_item(struct config_group *group, struct config_item *item)
++{
++	config_item_put(item);
++	atomic_dec(&provider.count);
++}
++
+ static struct configfs_group_operations tsm_report_group_ops = {
+ 	.make_item = tsm_report_make_item,
++	.drop_item = tsm_report_drop_item,
+ };
+ 
+ static const struct config_item_type tsm_reports_type = {
+@@ -459,6 +478,11 @@ int tsm_register(const struct tsm_ops *o
+ 		return -EBUSY;
  	}
--- 
-2.39.5
-
+ 
++	if (atomic_read(&provider.count)) {
++		pr_err("configfs/tsm/report not empty\n");
++		return -EBUSY;
++	}
++
+ 	provider.ops = ops;
+ 	provider.data = priv;
+ 	return 0;
+@@ -470,6 +494,9 @@ int tsm_unregister(const struct tsm_ops
+ 	guard(rwsem_write)(&tsm_rwsem);
+ 	if (ops != provider.ops)
+ 		return -EBUSY;
++	if (atomic_read(&provider.count))
++		pr_warn("\"%s\" unregistered with items present in configfs/tsm/report\n",
++			provider.ops->name);
+ 	provider.ops = NULL;
+ 	provider.data = NULL;
+ 	return 0;
 
 
 
