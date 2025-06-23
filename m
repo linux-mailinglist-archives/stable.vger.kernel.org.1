@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-158108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AE24AE56FD
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6092BAE5690
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54BC4E2096
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AFF1D1C21E6B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68219223DCC;
-	Mon, 23 Jun 2025 22:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE44F223DF0;
+	Mon, 23 Jun 2025 22:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bCDKr+HS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0qXMUSn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25CB32192EC;
-	Mon, 23 Jun 2025 22:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA9815ADB4;
+	Mon, 23 Jun 2025 22:21:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717504; cv=none; b=SEeRQXNEKE4BTyCp9MmXmagYAABzWHzMEnJnR5C4BOu1O2Sm4r05rqo1PJLFrJpaS96gTlkTlhSVw1uCRG7QhWYuzKnJK1a0sYDDWdMBbuZ0tN2oEoqBy4YfEz9QdBt1C1ooc+E22iHSWLayC4kc+YFA9f3ezrW38dSTjwPuL0A=
+	t=1750717272; cv=none; b=FS5I7YWYnS5rFw+3A48Veef1Zu960079oWBjZAEE6JaU8WQO/MgNWBNB8vkjGAvUWM5PR1Uc+vfw2XYYXZ+9BEQ/tRU5Le8hlcAIizzzTCA8FZqn6jlsSzqzceUo4hRt8m4YaFNKhJTjui3twxJxLOQ+ao8L/AbI0Rn8p2yEUnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717504; c=relaxed/simple;
-	bh=tgln7OInEwZBmgXD5Va/iFQK6n4R5Lhboq4r/nfUzJ4=;
+	s=arc-20240116; t=1750717272; c=relaxed/simple;
+	bh=SE8pE2Qy380dGX6kkBHXLiIplFKPTowJtwCP7Q1JPqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Iupog9tKi00vWVflHzxzLmbX8mIetc+bQsrI6lNTX3fa0EFkPO/Pw7y+Zc+nWWK/8fDFRetLLaCW0LQUUTy9T+Fs4Lwagon24Xt6BEp7b3y17q2kP7ap8G8I2a8sLJs+HuP1YI8tbD4Qic3EXm8i6cmzb5g22k+WarbpU5AVVDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bCDKr+HS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A16C4CEEA;
-	Mon, 23 Jun 2025 22:25:03 +0000 (UTC)
+	 MIME-Version; b=DxQLYr7UzacklZ6LbROqzFWgyKQRfci/E3h6mIqc3zxJIf0CU9WFMq12RD5zB3BKo54Ydq2IU6eisXqOuOShuHT9FTURSDZr9WDU6CKVNac9H5HkJEfpF1+1ZsriAfwijCjaxMuJlNfcH6w8NhFsjEv/ijwT4lgD6nGEwsdM3rE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0qXMUSn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33808C4CEED;
+	Mon, 23 Jun 2025 22:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717504;
-	bh=tgln7OInEwZBmgXD5Va/iFQK6n4R5Lhboq4r/nfUzJ4=;
+	s=korg; t=1750717272;
+	bh=SE8pE2Qy380dGX6kkBHXLiIplFKPTowJtwCP7Q1JPqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bCDKr+HSru5ll5JDKGNlh1qy/EfhLbQWjlg9g/rnqesVy4GaYXMIXIyHMi9N+gUSt
-	 vIDCWoJqr448OFMl4jBcwQy2V8RWRupzoV7LqXbsbd/R2/943Zo7BHTF1u83pr0Lyc
-	 0XWPD4Qs8QhCFp/rLWHHXc+Or66y3lfI1hwMCOiE=
+	b=y0qXMUSn6hvvcNXMPUl1KWMYFvwXXGTTjneyxtkYbzVfUrHxIiMDsgrTkBYwgSQwM
+	 DCVqK3iLquRk0V4vlMPS5IUgqpdQEILSORihVCh3Rw0RvjvXuyRvGOxwLSuCW01lBh
+	 BSD78mUDQKJrL+bTkWdjA5y6jLDQwJIYg4VKg23Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	maher azz <maherazz04@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 442/508] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+	Willem de Bruijn <willemb@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 350/414] ipv6: remove leftover ip6 cookie initializer
 Date: Mon, 23 Jun 2025 15:08:07 +0200
-Message-ID: <20250623130656.038279118@linuxfoundation.org>
+Message-ID: <20250623130650.726178264@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Willem de Bruijn <willemb@google.com>
 
-commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
+commit 54580ccdd8a9c6821fd6f72171d435480867e4c3 upstream.
 
-In
+As of the blamed commit ipc6.dontfrag is always initialized at the
+start of udpv6_sendmsg, by ipcm6_init_sk, to either 0 or 1.
 
-riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
-   -> cm_chan_msg_send()
-      -> riocm_ch_send()
+Later checks against -1 are no longer needed and the branches are now
+dead code.
 
-cm_chan_msg_send() checks that userspace didn't send too much data but
-riocm_ch_send() failed to check that userspace sent sufficient data.  The
-result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
-which were outside the bounds of the space which cm_chan_msg_send()
-allocated.
+The blamed commit had removed those branches. But I had overlooked
+this one case.
 
-Address this by teaching riocm_ch_send() to check that the entire
-rio_ch_chan_hdr was copied in from userspace.
+UDP has both a lockless fast path and a slower path for corked
+requests. This branch remained in the fast path.
 
-Reported-by: maher azz <maherazz04@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 096208592b09 ("ipv6: replace ipcm6_init calls with ipcm6_init_sk")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250307033620.411611-2-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rapidio/rio_cm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv6/ip6_output.c |    2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/rapidio/rio_cm.c
-+++ b/drivers/rapidio/rio_cm.c
-@@ -787,6 +787,9 @@ static int riocm_ch_send(u16 ch_id, void
- 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
- 		return -EINVAL;
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -2043,8 +2043,6 @@ struct sk_buff *ip6_make_skb(struct sock
+ 		ip6_cork_release(cork, &v6_cork);
+ 		return ERR_PTR(err);
+ 	}
+-	if (ipc6->dontfrag < 0)
+-		ipc6->dontfrag = inet6_test_bit(DONTFRAG, sk);
  
-+	if (len < sizeof(struct rio_ch_chan_hdr))
-+		return -EINVAL;		/* insufficient data from user */
-+
- 	ch = riocm_get_channel(ch_id);
- 	if (!ch) {
- 		riocm_error("%s(%d) ch_%d not found", current->comm,
+ 	err = __ip6_append_data(sk, &queue, cork, &v6_cork,
+ 				&current->task_frag, getfrag, from,
 
 
 
