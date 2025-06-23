@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-158127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157926-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B79AE5714
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBE1DAE567C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 812561C23A03
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4FC4C3B77F2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1280B22370A;
-	Mon, 23 Jun 2025 22:25:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398E0226865;
+	Mon, 23 Jun 2025 22:17:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWsQjdeY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qLMOi6eP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2AB7221543;
-	Mon, 23 Jun 2025 22:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8753223DF0;
+	Mon, 23 Jun 2025 22:17:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717550; cv=none; b=kDqFROrmkcj0xEDmuDR0/naqUySnxvD2CUyVj+/guwx0JomhFr+eVtmW9a6OJP6wg3dHyvdD0QbiuwLWUvuLe/Ze4ytPqim8gpoLc+Yd6wN7iPlvBTpaWRLVrdtJeAuFY2rRI/nhcaJYKtHjQJk283Ubm0Yq/y21lZNEDBdbGCM=
+	t=1750717058; cv=none; b=JDph0LLhk68sPSzVfWdvAXfA+H2jh6mlcrApZ8ui7mSrK/tHwsCduOhrsUKh0+VMAVu1uW4LHFMwaRNDaDgDBpmYy44fHyEMFx05AFu9CO4oIoRFHPZJdKt7CpHE67GnXbs8wh2LYiamM+lrogpzTLBzAm48fehFUk+orZIPaXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717550; c=relaxed/simple;
-	bh=+jrC7HgT2ssyfa6URUgi5mKzFW6DAATZlNvyKUPWhC4=;
+	s=arc-20240116; t=1750717058; c=relaxed/simple;
+	bh=fINyNN2euDq4yOzXAE8Q/tO767/YiKQpTepBK67A2Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NIXPkoZbBxQflYPcK9LPOsT9NjyBn6NJ8HZu4qXcLTaDcvUDoIwOfw+vd/2gsz0uTts+JiPJMn9VVL4JFfHHktZUBTx2oZPn3BiJLsXw1ce6zQBOkep17jR7oNY0isZi2sI9YPuijn8Ov48nTjq1KdMfdgAGZNehnOVfGjczROs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWsQjdeY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50059C4CEEA;
-	Mon, 23 Jun 2025 22:25:50 +0000 (UTC)
+	 MIME-Version; b=LAq8r1VYMlinyidikwB+ewRxkTpPQGIh77r5c+fKdKvkZL+HdRdimyczWMJ7dbVsut5VL8vhAtFPIsGmYUvoqQw7q0AdJBhAfcxbkzgwLBrJWuX7AFm6br9TELSZN7e+OQBkbTEQorCmGWBACxpg0xh9p21srbJYg4A8ViTBzfs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qLMOi6eP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81301C4CEEA;
+	Mon, 23 Jun 2025 22:17:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717550;
-	bh=+jrC7HgT2ssyfa6URUgi5mKzFW6DAATZlNvyKUPWhC4=;
+	s=korg; t=1750717057;
+	bh=fINyNN2euDq4yOzXAE8Q/tO767/YiKQpTepBK67A2Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QWsQjdeY+baiv5I21I0bh6WB+wg2TT/VAWiZiM3N8mZof2aKiNXYmLNf2KksyB3oC
-	 A9/i/9vBHdYUqI5ZE/wiNKemYH7gX008OMpz9ydc05QLtIFWgdot0vFnBeJvrPNXPv
-	 px8t9IwGFNePPnyEG1lW8K2o9tgEkSTkNvjd0OWg=
+	b=qLMOi6ePzGVvNKAuxIhMvEGtSM0vSWk6Xqe3gdO333hbvsWEg+qRWkr8cQw3Gz8oy
+	 m8E3P+flYUsC8fUgmvr7AKvCx7a6W6+UH/I3vE10PfoPFEzwSl87wJB3sj+QG/SGhv
+	 1mF9iSl4oTSVxxkKrek5EcxB64T3wGDZG1O2+QWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.12 398/414] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 391/411] arm64: proton-pack: Expose whether the platform is mitigated by firmware
 Date: Mon, 23 Jun 2025 15:08:55 +0200
-Message-ID: <20250623130651.888887229@linuxfoundation.org>
+Message-ID: <20250623130643.519462687@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,123 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: James Morse <james.morse@arm.com>
 
-commit 5f1017069933489add0c08659673443c9905659e upstream.
+[ Upstream commit e7956c92f396a44eeeb6eaf7a5b5e1ad24db6748 ]
 
-The early_console_setup() function initializes sci_ports[0].port with an
-object of type struct uart_port obtained from the struct earlycon_device
-passed as an argument to early_console_setup().
+is_spectre_bhb_fw_affected() allows the caller to determine if the CPU
+is known to need a firmware mitigation. CPUs are either on the list
+of CPUs we know about, or firmware has been queried and reported that
+the platform is affected - and mitigated by firmware.
 
-Later, during serial port probing, the serial port used as earlycon
-(e.g., port A) might be remapped to a different position in the sci_ports[]
-array, and a different serial port (e.g., port B) might be assigned to slot
-0. For example:
+This helper is not useful to determine if the platform is mitigated
+by firmware. A CPU could be on the know list, but the firmware may
+not be implemented. Its affected but not mitigated.
 
-sci_ports[0] = port B
-sci_ports[X] = port A
+spectre_bhb_enable_mitigation() handles this distinction by checking
+the firmware state before enabling the mitigation.
 
-In this scenario, the new port mapped at index zero (port B) retains the
-data associated with the earlycon configuration. Consequently, after the
-Linux boot process, any access to the serial port now mapped to
-sci_ports[0] (port B) will block the original earlycon port (port A).
+Add a helper to expose this state. This will be used by the BPF JIT
+to determine if calling firmware for a mitigation is necessary and
+supported.
 
-To address this, introduce an early_console_exit() function to clean up
-sci_ports[0] when earlycon is exited.
-
-To prevent the cleanup of sci_ports[0] while the serial device is still
-being used by earlycon, introduce the struct sci_port::probing flag and
-account for it in early_console_exit().
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sh-sci.c |   32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/spectre.h |    1 +
+ arch/arm64/kernel/proton-pack.c  |    5 +++++
+ 2 files changed, 6 insertions(+)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -183,6 +183,7 @@ static struct sci_port sci_ports[SCI_NPO
- static unsigned long sci_ports_in_use;
- static struct uart_driver sci_uart_driver;
- static bool sci_uart_earlycon;
-+static bool sci_uart_earlycon_dev_probing;
+--- a/arch/arm64/include/asm/spectre.h
++++ b/arch/arm64/include/asm/spectre.h
+@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
  
- static inline struct sci_port *
- to_sci_port(struct uart_port *uart)
-@@ -3404,7 +3405,8 @@ static struct plat_sci_port *sci_parse_d
- static int sci_probe_single(struct platform_device *dev,
- 				      unsigned int index,
- 				      struct plat_sci_port *p,
--				      struct sci_port *sciport)
-+				      struct sci_port *sciport,
-+				      struct resource *sci_res)
- {
- 	int ret;
- 
-@@ -3451,6 +3453,14 @@ static int sci_probe_single(struct platf
- 		sciport->port.flags |= UPF_HARD_FLOW;
- 	}
- 
-+	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
-+		/*
-+		 * Skip cleanup the sci_port[0] in early_console_exit(), this
-+		 * port is the same as the earlycon one.
-+		 */
-+		sci_uart_earlycon_dev_probing = true;
-+	}
-+
- 	return uart_add_one_port(&sci_uart_driver, &sciport->port);
+ enum mitigation_state arm64_get_spectre_bhb_state(void);
+ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
++bool is_spectre_bhb_fw_mitigated(void);
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+ bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+ #endif	/* __ASSEMBLY__ */
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -1088,6 +1088,11 @@ void spectre_bhb_enable_mitigation(const
+ 	update_mitigation_state(&spectre_bhb_state, state);
  }
  
-@@ -3509,7 +3519,7 @@ static int sci_probe(struct platform_dev
- 
- 	platform_set_drvdata(dev, sp);
- 
--	ret = sci_probe_single(dev, dev_id, p, sp);
-+	ret = sci_probe_single(dev, dev_id, p, sp, res);
- 	if (ret)
- 		return ret;
- 
-@@ -3666,6 +3676,22 @@ sh_early_platform_init_buffer("earlyprin
- #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
- static struct plat_sci_port port_cfg;
- 
-+static int early_console_exit(struct console *co)
++bool is_spectre_bhb_fw_mitigated(void)
 +{
-+	struct sci_port *sci_port = &sci_ports[0];
-+
-+	/*
-+	 * Clean the slot used by earlycon. A new SCI device might
-+	 * map to this slot.
-+	 */
-+	if (!sci_uart_earlycon_dev_probing) {
-+		memset(sci_port, 0, sizeof(*sci_port));
-+		sci_uart_earlycon = false;
-+	}
-+
-+	return 0;
++	return test_bit(BHB_FW, &system_bhb_mitigations);
 +}
 +
- static int __init early_console_setup(struct earlycon_device *device,
- 				      int type)
- {
-@@ -3683,6 +3709,8 @@ static int __init early_console_setup(st
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
- 
- 	device->con->write = serial_console_write;
-+	device->con->exit = early_console_exit;
-+
- 	return 0;
- }
- static int __init sci_early_console_setup(struct earlycon_device *device,
+ /* Patched to NOP when enabled */
+ void noinstr spectre_bhb_patch_loop_mitigation_enable(struct alt_instr *alt,
+ 						     __le32 *origptr,
 
 
 
