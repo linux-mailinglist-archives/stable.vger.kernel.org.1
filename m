@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6178AAE513B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62EE5AE509C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 739593BFCC8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 870A41B62ACB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A56441DDC04;
-	Mon, 23 Jun 2025 21:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F146F1F582A;
+	Mon, 23 Jun 2025 21:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xbykVMKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zu+z9ZqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CAA8C2E0;
-	Mon, 23 Jun 2025 21:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF140222581;
+	Mon, 23 Jun 2025 21:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714321; cv=none; b=SLBEAFGbDy1zhH34aEX9ENmIy4VaDfba1Pc461T0emW1Xr7IlquW53Hw02xRwhmfQKrb4q/f6ryzyH4/kJWC0i7WjPCvlcnwtmtrTsNGOkifY7/pLWc3wQ6A8+1/bK8lktYxuWLY5cjnou8TTujSjF2K0IOYwpoNV7kvH819588=
+	t=1750713964; cv=none; b=r8zCTtJj+v3DnA2CST+SpZDbOdbQvhPLbBVtFaiiYeVOMKB0pweObBLLWBcsOBlKBD4ep6OJd2fv6C29o6/pogaoUvnMAzr2tZJF+tZ7GMbdqdRUSpCURMOiRkOwj1IIzXYrDXN8XGg+WOkNzWe8Yd6siy/955IUzEZpoPXksT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714321; c=relaxed/simple;
-	bh=1HVadQmJ5MHhFee0LYAcez2K67m6O7KdfeJ76CW/tDY=;
+	s=arc-20240116; t=1750713964; c=relaxed/simple;
+	bh=Wj5cyhMuBaSDOmgMLGtG9CG8+q7WmF7FHVMmKrQEUUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HyTcfudRE4PpgKa2wfKp2NsuNWauhrLTyhcaYegCDZF3h4NTmj4v9wt79OEO4gMn3A8SYxNGbWDfd1Vr0hm4CsO2KlG+zJrcvkcVTKhNUTALXPtB021LztHF61VFoEPm2sXUnTYmZ006FU/4CuUTTb/KCCdY1Q9UuSqkmXFd5bs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xbykVMKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8492C4CEEA;
-	Mon, 23 Jun 2025 21:32:00 +0000 (UTC)
+	 MIME-Version; b=rMTvgvVw3kBQGHSYDKtVwcqcEiPBY3L3EaB8RxTaQPkDaAL4hRfinkSD8x4M0Pjw2GIqehvxNRWoWFnqH3ZrGtsPi99ESkL+revmwdDDlncfInd/dWJCljUgSLcl1ZxeEBWetswmxA+NDrL/MlUZuXsMlYJgIBdalPGLIHzBL2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zu+z9ZqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463E5C4CEEA;
+	Mon, 23 Jun 2025 21:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714321;
-	bh=1HVadQmJ5MHhFee0LYAcez2K67m6O7KdfeJ76CW/tDY=;
+	s=korg; t=1750713964;
+	bh=Wj5cyhMuBaSDOmgMLGtG9CG8+q7WmF7FHVMmKrQEUUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xbykVMKopCBbJMes7uTGEckj76A16YRRQKodadOPciDdmEqfA5a9XFQyIBX5p16RQ
-	 qlYdcnACjFMgwH9fTBAH2ZYXGzcgu52NqRFweH71kFNqsEbseFAnTYx39K1U+oJcrR
-	 pSkay/PHo+fdAI7kX3FxQojPUftGI/H/iFYYs8S0=
+	b=Zu+z9ZqKUutHM8b7oow60nyvaM7ksundhUSZ47K2ImSwNGI+YKs6BfRkxI2+BoMyU
+	 ukqxyDdktdgCba/nGV6RfP/PaU61lY+2+jijcTlfurpM6WGOr2AjWZu2Fuyl+w3fMl
+	 Cd7EnWc03EU70BRHoJgF2GV1W3KH9R/zzs7/reAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/508] coresight: prevent deactivate active config while enabling the config
+	Ross Stutterheim <ross.stutterheim@garmin.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.12 073/414] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
 Date: Mon, 23 Jun 2025 15:03:30 +0200
-Message-ID: <20250623130649.335756448@linuxfoundation.org>
+Message-ID: <20250623130643.901264895@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Ross Stutterheim <ross.stutterheim@garmin.com>
 
-[ Upstream commit 408c97c4a5e0b634dcd15bf8b8808b382e888164 ]
+commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
 
-While enable active config via cscfg_csdev_enable_active_config(),
-active config could be deactivated via configfs' sysfs interface.
-This could make UAF issue in below scenario:
+arm/memremap: fix arch_memremap_can_ram_remap()
 
-CPU0                                          CPU1
-(sysfs enable)                                load module
-                                              cscfg_load_config_sets()
-                                              activate config. // sysfs
-                                              (sys_active_cnt == 1)
-...
-cscfg_csdev_enable_active_config()
-lock(csdev->cscfg_csdev_lock)
-// here load config activate by CPU1
-unlock(csdev->cscfg_csdev_lock)
+commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
+presence of linear map") added the definition of
+arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
+can be used from the linear mapping. memblock_is_map_memory() was called
+with the pfn of the address given to arch_memremap_can_ram_remap();
+however, memblock_is_map_memory() expects to be given an address for arm,
+not a pfn.
 
-                                              deactivate config // sysfs
-                                              (sys_activec_cnt == 0)
-                                              cscfg_unload_config_sets()
-                                              unload module
+This results in calls to memremap() returning a newly mapped area when
+it should return an address in the existing linear mapping.
 
-// access to config_desc which freed
-// while unloading module.
-cscfg_csdev_enable_config
+Fix this by removing the address to pfn translation and pass the
+address directly.
 
-To address this, use cscfg_config_desc's active_cnt as a reference count
- which will be holded when
-    - activate the config.
-    - enable the activated config.
-and put the module reference when config_active_cnt == 0.
-
-Fixes: f8cce2ff3c04 ("coresight: syscfg: Add API to activate and enable configurations")
-Suggested-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250514161951.3427590-4-yeoreum.yun@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
+Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../hwtracing/coresight/coresight-config.h    |  2 +-
- .../hwtracing/coresight/coresight-syscfg.c    | 49 +++++++++++++------
- 2 files changed, 35 insertions(+), 16 deletions(-)
+ arch/arm/mm/ioremap.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-config.h b/drivers/hwtracing/coresight/coresight-config.h
-index 6ba0139757418..84cdde6f0e4db 100644
---- a/drivers/hwtracing/coresight/coresight-config.h
-+++ b/drivers/hwtracing/coresight/coresight-config.h
-@@ -228,7 +228,7 @@ struct cscfg_feature_csdev {
-  * @feats_csdev:references to the device features to enable.
-  */
- struct cscfg_config_csdev {
--	const struct cscfg_config_desc *config_desc;
-+	struct cscfg_config_desc *config_desc;
- 	struct coresight_device *csdev;
- 	bool enabled;
- 	struct list_head node;
-diff --git a/drivers/hwtracing/coresight/coresight-syscfg.c b/drivers/hwtracing/coresight/coresight-syscfg.c
-index 11138a9762b01..30a561d874819 100644
---- a/drivers/hwtracing/coresight/coresight-syscfg.c
-+++ b/drivers/hwtracing/coresight/coresight-syscfg.c
-@@ -867,6 +867,25 @@ void cscfg_csdev_reset_feats(struct coresight_device *csdev)
- }
- EXPORT_SYMBOL_GPL(cscfg_csdev_reset_feats);
- 
-+static bool cscfg_config_desc_get(struct cscfg_config_desc *config_desc)
-+{
-+	if (!atomic_fetch_inc(&config_desc->active_cnt)) {
-+		/* must ensure that config cannot be unloaded in use */
-+		if (unlikely(cscfg_owner_get(config_desc->load_owner))) {
-+			atomic_dec(&config_desc->active_cnt);
-+			return false;
-+		}
-+	}
-+
-+	return true;
-+}
-+
-+static void cscfg_config_desc_put(struct cscfg_config_desc *config_desc)
-+{
-+	if (!atomic_dec_return(&config_desc->active_cnt))
-+		cscfg_owner_put(config_desc->load_owner);
-+}
-+
- /*
-  * This activate configuration for either perf or sysfs. Perf can have multiple
-  * active configs, selected per event, sysfs is limited to one.
-@@ -890,22 +909,17 @@ static int _cscfg_activate_config(unsigned long cfg_hash)
- 			if (config_desc->available == false)
- 				return -EBUSY;
- 
--			/* must ensure that config cannot be unloaded in use */
--			err = cscfg_owner_get(config_desc->load_owner);
--			if (err)
-+			if (!cscfg_config_desc_get(config_desc)) {
-+				err = -EINVAL;
- 				break;
-+			}
-+
- 			/*
- 			 * increment the global active count - control changes to
- 			 * active configurations
- 			 */
- 			atomic_inc(&cscfg_mgr->sys_active_cnt);
- 
--			/*
--			 * mark the descriptor as active so enable config on a
--			 * device instance will use it
--			 */
--			atomic_inc(&config_desc->active_cnt);
--
- 			err = 0;
- 			dev_dbg(cscfg_device(), "Activate config %s.\n", config_desc->name);
- 			break;
-@@ -920,9 +934,8 @@ static void _cscfg_deactivate_config(unsigned long cfg_hash)
- 
- 	list_for_each_entry(config_desc, &cscfg_mgr->config_desc_list, item) {
- 		if ((unsigned long)config_desc->event_ea->var == cfg_hash) {
--			atomic_dec(&config_desc->active_cnt);
- 			atomic_dec(&cscfg_mgr->sys_active_cnt);
--			cscfg_owner_put(config_desc->load_owner);
-+			cscfg_config_desc_put(config_desc);
- 			dev_dbg(cscfg_device(), "Deactivate config %s.\n", config_desc->name);
- 			break;
- 		}
-@@ -1047,7 +1060,7 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
- 				     unsigned long cfg_hash, int preset)
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -515,7 +515,5 @@ void __init early_ioremap_init(void)
+ bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+ 				 unsigned long flags)
  {
- 	struct cscfg_config_csdev *config_csdev_active = NULL, *config_csdev_item;
--	const struct cscfg_config_desc *config_desc;
-+	struct cscfg_config_desc *config_desc;
- 	unsigned long flags;
- 	int err = 0;
- 
-@@ -1062,8 +1075,8 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
- 	spin_lock_irqsave(&csdev->cscfg_csdev_lock, flags);
- 	list_for_each_entry(config_csdev_item, &csdev->config_csdev_list, node) {
- 		config_desc = config_csdev_item->config_desc;
--		if ((atomic_read(&config_desc->active_cnt)) &&
--		    ((unsigned long)config_desc->event_ea->var == cfg_hash)) {
-+		if (((unsigned long)config_desc->event_ea->var == cfg_hash) &&
-+				cscfg_config_desc_get(config_desc)) {
- 			config_csdev_active = config_csdev_item;
- 			csdev->active_cscfg_ctxt = (void *)config_csdev_active;
- 			break;
-@@ -1097,7 +1110,11 @@ int cscfg_csdev_enable_active_config(struct coresight_device *csdev,
- 				err = -EBUSY;
- 			spin_unlock_irqrestore(&csdev->cscfg_csdev_lock, flags);
- 		}
-+
-+		if (err)
-+			cscfg_config_desc_put(config_desc);
- 	}
-+
- 	return err;
+-	unsigned long pfn = PHYS_PFN(offset);
+-
+-	return memblock_is_map_memory(pfn);
++	return memblock_is_map_memory(offset);
  }
- EXPORT_SYMBOL_GPL(cscfg_csdev_enable_active_config);
-@@ -1136,8 +1153,10 @@ void cscfg_csdev_disable_active_config(struct coresight_device *csdev)
- 	spin_unlock_irqrestore(&csdev->cscfg_csdev_lock, flags);
- 
- 	/* true if there was an enabled active config */
--	if (config_csdev)
-+	if (config_csdev) {
- 		cscfg_csdev_disable_config(config_csdev);
-+		cscfg_config_desc_put(config_csdev->config_desc);
-+	}
- }
- EXPORT_SYMBOL_GPL(cscfg_csdev_disable_active_config);
- 
--- 
-2.39.5
-
 
 
 
