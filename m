@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7050AE543A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3CF9AE5289
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 823957ACC91
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D8B6443D18
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDBA76136;
-	Mon, 23 Jun 2025 21:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3310A223DEA;
+	Mon, 23 Jun 2025 21:44:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sU+wdIp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtHXwQ1m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1371F8722;
-	Mon, 23 Jun 2025 21:59:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2AB81DDC04;
+	Mon, 23 Jun 2025 21:44:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715997; cv=none; b=rQdNMK+Yv+tt1QDMcRAZOyWG1Y2ritpjaYs3LOU2ESoIYKQMtK797qnRokfcYhny8vfz1LqUkyaJcjG3BdNTQLOiehVQx/mW1KCXdbwJECW1wxPF1fRAFIsnkaP5FIsifkVuELW4bJfjRLoQ4OcxBwzZMMw0RzrZn3Lip8rIti0=
+	t=1750715090; cv=none; b=olo6lJZs423u7nvzeKEpeS+UB45KItO9AUIJ89C+HvhyAAxF7xXN2F8VZvq855hgPiqvgQNQ7e2yLMJTBlmn4H/X4U904kKlF/m5xIAv9OtTztTNRIvWeeK/dVRL2PrHtheowaPrwvD6yR3CZTvGzqvJTaFH4lA0r6ONOt8eJIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715997; c=relaxed/simple;
-	bh=J3ANYhVj4MuSqBR/GEnqz+Y4Jha8yOIP9ti4Q5J6p3o=;
+	s=arc-20240116; t=1750715090; c=relaxed/simple;
+	bh=M18CLnsiVZUupjjMGtJOsiOoYFoTGeEBcz8klWHCmvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ypus4sc1HieU73Q5b8+irVI1OaW5QAuGDX8uIhDaDmdDddOx1kJTJpYBLNEabsgo+fSiUsgIpj6KMsE2GqAEaXEgRFAJi/3YMD/hbuAbqFlZvBz3q0LJ+076MykE1/0lxiZiKJgN2EGVO86dTqVd37y4SjuzMKuVfBFRQS2ox+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sU+wdIp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35963C4CEEA;
-	Mon, 23 Jun 2025 21:59:57 +0000 (UTC)
+	 MIME-Version; b=CKgWCIHx7+RjmgbPXdQTIQUsG38XWJPyADZmEWoGbfHebXFep3X38Xu4EMDqOkYGDzTbH8bmef8xFdFWn8ZPaUArKiMmzl5qNCLX+KHTZdl/G+E50K0NyLCW5yVPUjRJGxZqurNjk1lx2ENcgxW7SXE8ZYr4RZjhmGm5SzUl/0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtHXwQ1m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CD62C4CEEA;
+	Mon, 23 Jun 2025 21:44:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715997;
-	bh=J3ANYhVj4MuSqBR/GEnqz+Y4Jha8yOIP9ti4Q5J6p3o=;
+	s=korg; t=1750715089;
+	bh=M18CLnsiVZUupjjMGtJOsiOoYFoTGeEBcz8klWHCmvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sU+wdIp4jvdS1+/Gc8AJVVMkcmk1JqAEfnmQvkMznX02jEBko8GEX1WY7t7zLYSyo
-	 bzv1u8b0XHVXPXgRd1VOUMN6SAo+OyppE6JreREF13BSYxyr4nGxoO4xlDHTGFsjTX
-	 FBx+XZctxOId+VRK6teL9vZhH/EjxzJKugJq63ms=
+	b=HtHXwQ1menbizC+6LkwW21k0Fz1nmNfs3vK4NQj5MhXZZei+pmCGLCpg0ZbyV135f
+	 ZV+/3rR5hRksr0Shpk8Xm2kO14HngDXowFYBgEHIrRdxE8PeH3iLQsfqOMKFJLSgju
+	 MuYzslOHB8D5MrUGZGo64dqv5op0Vt3SMnyGSMms=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.15 296/411] drm/msm/dpu: dont select single flush for active CTL blocks
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/290] pinctrl: mcp23s08: Reset all pins to input at probe
 Date: Mon, 23 Jun 2025 15:07:20 +0200
-Message-ID: <20250623130641.100379559@linuxfoundation.org>
+Message-ID: <20250623130632.262212396@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Mike Looijmans <mike.looijmans@topic.nl>
 
-[ Upstream commit e93eee524bb78f3ee4b78654d0083382f98b3d23 ]
+[ Upstream commit 3ede3f8b4b4b399b0ca41e44959f80d5cf84fc98 ]
 
-In case of ACTIVE CTLs, a single CTL is being used for flushing all INTF
-blocks. Don't skip programming the CTL on those targets.
+At startup, the driver just assumes that all registers have their
+default values. But after a soft reset, the chip will just be in the
+state it was, and some pins may have been configured as outputs. Any
+modification of the output register will cause these pins to be driven
+low, which leads to unexpected/unwanted effects. To prevent this from
+happening, set the chip's IO configuration register to a known safe
+mode (all inputs) before toggling any other bits.
 
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/641585/
-Link: https://lore.kernel.org/r/20250307-dpu-active-ctl-v3-5-5d20655f10ca@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Link: https://lore.kernel.org/20250314151803.28903-1-mike.looijmans@topic.nl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index 7c58e9ba71b77..7ddb4df885b0f 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -360,7 +360,8 @@ static void dpu_encoder_phys_vid_underrun_irq(void *arg, int irq_idx)
- static bool dpu_encoder_phys_vid_needs_single_flush(
- 		struct dpu_encoder_phys *phys_enc)
- {
--	return phys_enc->split_role != ENC_ROLE_SOLO;
-+	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
-+		phys_enc->split_role != ENC_ROLE_SOLO;
- }
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
+index fd97b6ee2a8d1..ca45c1f36a89b 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08.c
+@@ -612,6 +612,14 @@ int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
  
- static void dpu_encoder_phys_vid_mode_set(
+ 	mcp->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+ 
++	/*
++	 * Reset the chip - we don't really know what state it's in, so reset
++	 * all pins to input first to prevent surprises.
++	 */
++	ret = mcp_write(mcp, MCP_IODIR, mcp->chip.ngpio == 16 ? 0xFFFF : 0xFF);
++	if (ret < 0)
++		return ret;
++
+ 	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
+ 	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
+ 	 */
 -- 
 2.39.5
 
