@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-155521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155532-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34F7AAE4251
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E20ACAE427D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 769723B5DA5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54912189A84F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FF2023C4F8;
-	Mon, 23 Jun 2025 13:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B4024E4C3;
+	Mon, 23 Jun 2025 13:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iop+hZ15"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLTDwe4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE321798F;
-	Mon, 23 Jun 2025 13:17:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C886613A265;
+	Mon, 23 Jun 2025 13:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684648; cv=none; b=BXR9A0L1I74prH6fSsTznq3wAatleJfX7yq+yWsTJYqtkCVoqXQdqclWOsoMhCkRXcoGkuhIZOXmfIgJ8TwbZ1YxBmZpAVVX2Lb59Y1r6dLC/S6uu3BxrvJuTYo1S7sLhhH9rMoOogTbDScEuiOWsNHz0jobh6OFUBtX+qk1fUs=
+	t=1750684676; cv=none; b=oYQ59+lwSSo6j1WMnVl/8DsC11/52r0h+G2iDf0hlXjRMcJzv9FpywJ26KT3Ueql2VfwfhgpGIoW2vR7bS4JOq4W30amTPxlLpB1DNb3IR5VFlEZFlvOWAjauZTxWwVWW3YCYSkkyJjpC1GAPMdoFVsOTzy+7CA6ZEb9zqwNS3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684648; c=relaxed/simple;
-	bh=fYQ4mvWS5FWxvNkghmg8aPMVF/4DUodzW6PCMjRPUeU=;
+	s=arc-20240116; t=1750684676; c=relaxed/simple;
+	bh=ECGGxNi2miJMC5rHsLqfvYZex54d/I8dpOX+cXKLsYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jeDfT04ckmmoYlRXvo9UCNuBH0GCbzB6BYvLPOmuIWJg5y5VE+av9NQxuMq+OwSdT3afDwOYEiR/76czfRk0a8PR+njQa8kjBezCGQvELmRHxIBXloE9vntjhrs1ZZ8YD7tJscvXryldVqyE/Oc4La5kfwLPXZWsYgi/omSzhis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iop+hZ15; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CDDFC4CEEA;
-	Mon, 23 Jun 2025 13:17:27 +0000 (UTC)
+	 MIME-Version; b=pDm3Go4UCyVztn3u8oEI543RQrF158Lhzzr+EmFdhx+VQHY4476qye1lpFa8JWnPjBzeFs2d5IId+U/KFVnmAyFOYRCCTHPW7p/lzwgoDetQI/3ebZw1ZNyeE4VoNH8htA1jGMfMYodd5tvRBk55EwCrrMnxGGggdy7+QosZwsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLTDwe4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C53CC4CEEA;
+	Mon, 23 Jun 2025 13:17:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684647;
-	bh=fYQ4mvWS5FWxvNkghmg8aPMVF/4DUodzW6PCMjRPUeU=;
+	s=korg; t=1750684676;
+	bh=ECGGxNi2miJMC5rHsLqfvYZex54d/I8dpOX+cXKLsYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iop+hZ15sBZCRdNmHSOI1AYkI6henawUteTLSUoOdsS3gJ2KfYOKc7GGtVNinDYub
-	 uFr4zvd7IkssyjL9jybL1WSfA8bCRNSqE/zKCrRyPCe1D8uOuj30G11zQhjZ/zS/0y
-	 pMI8PgVJGRLe7/JTy9FyxAkWYxaYIjHyLJy4t6fg=
+	b=cLTDwe4zS5bz7ZyaAe8mjUaoP9J48eTn/resHudINerQ/hQT3GZv3ckZK/PwmaI5X
+	 HBFsuzib81FCdCFDOecGPhrBcUg1iJ8d5nxhPijCkelT5Tsh3MCcAJSYn9A8Zfhgq9
+	 TP3TlYgpmCM9NEJYd7blYNA5sLR/NU2T36JTeCA8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.15 120/592] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
-Date: Mon, 23 Jun 2025 15:01:18 +0200
-Message-ID: <20250623130703.124093156@linuxfoundation.org>
+Subject: [PATCH 6.15 121/592] Input: gpio-keys - fix possible concurrent access in gpio_keys_irq_timer()
+Date: Mon, 23 Jun 2025 15:01:19 +0200
+Message-ID: <20250623130703.148849458@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -65,40 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Gatien Chevallier <gatien.chevallier@foss.st.com>
 
-commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
+commit 8f38219fa139623c29db2cb0f17d0a197a86e344 upstream.
 
-The "len" variable comes from the firmware and we generally do
-trust firmware, but it's always better to double check.  If the "len"
-is too large it could result in memory corruption when we do
-"memcpy(fragment->data, rec->data, len);"
+gpio_keys_irq_isr() and gpio_keys_irq_timer() access the same resources.
+There could be a concurrent access if a GPIO interrupt occurs in parallel
+of a HR timer interrupt.
 
-Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
+Guard back those resources with a spinlock.
+
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-2-3fc55a9c3619@foss.st.com
 Cc: stable@vger.kernel.org
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/ims-pcu.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/input/keyboard/gpio_keys.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/input/misc/ims-pcu.c
-+++ b/drivers/input/misc/ims-pcu.c
-@@ -844,6 +844,12 @@ static int ims_pcu_flash_firmware(struct
- 		addr = be32_to_cpu(rec->addr) / 2;
- 		len = be16_to_cpu(rec->len);
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -449,6 +449,8 @@ static enum hrtimer_restart gpio_keys_ir
+ 						      release_timer);
+ 	struct input_dev *input = bdata->input;
  
-+		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
-+			dev_err(pcu->dev,
-+				"Invalid record length in firmware: %d\n", len);
-+			return -EINVAL;
-+		}
++	guard(spinlock_irqsave)(&bdata->lock);
 +
- 		fragment = (void *)&pcu->cmd_buf[1];
- 		put_unaligned_le32(addr, &fragment->addr);
- 		fragment->len = len;
+ 	if (bdata->key_pressed) {
+ 		input_report_key(input, *bdata->code, 0);
+ 		input_sync(input);
 
 
 
