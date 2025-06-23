@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6015AE4507
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C330DAE44DC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E20F94461BE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABDF91BC1BA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16F11253340;
-	Mon, 23 Jun 2025 13:40:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AE224DCFD;
+	Mon, 23 Jun 2025 13:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyBiUBGJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOhrbpUy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C699E16419;
-	Mon, 23 Jun 2025 13:40:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A4C2472AF;
+	Mon, 23 Jun 2025 13:40:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686027; cv=none; b=SYTggRWOG6P52/rIcTWftVUsedqxbTvS3kmNg7CmD9bpOvbvrNC5WmzHayA8I5dtAfMc7Z6NwhdGPepCN1cHbwpv0enmMg66w5LU2dVaUj3xYx8aZPmggNLi7stkNJWuPYA6b0xIqGivpjXsPlo90kfkmYR2Fx94E4HOSH0dW/Q=
+	t=1750686045; cv=none; b=W/yrBlN6qMKWY8+MLevY+XwlHfibLWXsLgoH+JguHaw8JInq1YdF6Q70KH+PejkSqddHPDkBCL2ZvMF2IzVqk6fHFQy0kL1XVE3VKOcM9d3erlhN+Lr/QjyrmkBonEZ44B/unLhrTHaDB5xzxJ6zFvI2kbRB+XtXk6vsk216dYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686027; c=relaxed/simple;
-	bh=WbUdJ6CCIyRbw9bP1o8Lu1MqCkP0iBRbEHjccby5lC8=;
+	s=arc-20240116; t=1750686045; c=relaxed/simple;
+	bh=Pi77n1zypkNh8gdmom/pSHnuFelK8ITmXAdTnEL+3B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmMokezdmn+8BdWRiQEBzsPRfqeNTg0zNgTS/AmhlXTCCh1+WFm17qY/9xnvoQjR897zyUpiwh0MlypqAmS8lw90Kqc8KsgmxFeX5qAcZpjY7INU3fqtaOpUmeI+qETgqjIgN/a6K1mM18x7EfOq6haBVsI0FejdfLwDSjRGT28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyBiUBGJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D22C4CEF1;
-	Mon, 23 Jun 2025 13:40:27 +0000 (UTC)
+	 MIME-Version; b=Xnq0RSKmDM4M0jlZj2Mok4Ky3Re/FTLgbOCLvhjleZFx++2oc0QbCgwqDKZpxqLXocAgtLeo2d3eHxDhTFQtCfn96uf0qlZB15Bher7DdeTf8zkI+V9tbwGuBGBUdgGRmtKNvYZOBLzG2rQDH4KtBNubEVSDM/uPXvwKXzMGCTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOhrbpUy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED14FC4CEEA;
+	Mon, 23 Jun 2025 13:40:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686027;
-	bh=WbUdJ6CCIyRbw9bP1o8Lu1MqCkP0iBRbEHjccby5lC8=;
+	s=korg; t=1750686045;
+	bh=Pi77n1zypkNh8gdmom/pSHnuFelK8ITmXAdTnEL+3B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LyBiUBGJmUR6MkdcZd+49hPBYOlwoYSvkWH7pMNkqNEBnu4+kFmRks58nU+2R9bOc
-	 HTkX9mhtLXN85R7/ABO/A52GPo54hPlKi7s8MVfTnCwuXHG7kho1F2FOvJ5XqTZC4y
-	 FuG9Yt+PyEu7/wLv8XHQSQIp6OV7TWrIPpY6/fiY=
+	b=zOhrbpUyYILK5U2CbT/lPeTrZsq9nTbAYQtXIqKYZU5M1gOVHZqtMNXqp4po3dwMx
+	 TBhoXqkyLZW/9XoNcdEtrdqaw3KykoVe6gwdFfkgcYhpY9/yUf6zE+1b62Vi60n196
+	 AnzvuSqRSPHpPtnqpIyhBjHcFuhN5iWHmhTvJzdA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com,
+	Aditya Dutt <duttaditya18@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 277/592] ext4: ext4: unify EXT4_EX_NOCACHE|NOFAIL flags in ext4_ext_remove_space()
-Date: Mon, 23 Jun 2025 15:03:55 +0200
-Message-ID: <20250623130706.925168958@linuxfoundation.org>
+Subject: [PATCH 6.15 278/592] jfs: fix array-index-out-of-bounds read in add_missing_indices
+Date: Mon, 23 Jun 2025 15:03:56 +0200
+Message-ID: <20250623130706.950073107@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,104 +67,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Aditya Dutt <duttaditya18@gmail.com>
 
-[ Upstream commit 53ce42accd2002cc490fc86000ac532530507a74 ]
+[ Upstream commit 5dff41a86377563f7a2b968aae00d25b4ceb37c9 ]
 
-When removing space, we should use EXT4_EX_NOCACHE because we don't
-need to cache extents, and we should also use EXT4_EX_NOFAIL to prevent
-metadata inconsistencies that may arise from memory allocation failures.
-While ext4_ext_remove_space() already uses these two flags in most
-places, they are missing in ext4_ext_search_right() and
-read_extent_tree_block() calls. Unify the flags to ensure consistent
-behavior throughout the extent removal process.
+stbl is s8 but it must contain offsets into slot which can go from 0 to
+127.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250423085257.122685-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Added a bound check for that error and return -EIO if the check fails.
+Also make jfs_readdir return with error if add_missing_indices returns
+with an error.
+
+Reported-by: syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com./bug?extid=b974bd41515f770c608b
+Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ fs/jfs/jfs_dtree.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index ad19b10ea11d3..81e010a6c797c 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1530,7 +1530,7 @@ static int ext4_ext_search_left(struct inode *inode,
- static int ext4_ext_search_right(struct inode *inode,
- 				 struct ext4_ext_path *path,
- 				 ext4_lblk_t *logical, ext4_fsblk_t *phys,
--				 struct ext4_extent *ret_ex)
-+				 struct ext4_extent *ret_ex, int flags)
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 93db6eec44655..ab11849cf9cc3 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -2613,7 +2613,7 @@ void dtInitRoot(tid_t tid, struct inode *ip, u32 idotdot)
+  *	     fsck.jfs should really fix this, but it currently does not.
+  *	     Called from jfs_readdir when bad index is detected.
+  */
+-static void add_missing_indices(struct inode *inode, s64 bn)
++static int add_missing_indices(struct inode *inode, s64 bn)
  {
- 	struct buffer_head *bh = NULL;
- 	struct ext4_extent_header *eh;
-@@ -1604,7 +1604,8 @@ static int ext4_ext_search_right(struct inode *inode,
- 	ix++;
- 	while (++depth < path->p_depth) {
- 		/* subtract from p_depth to get proper eh_depth */
--		bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
-+		bh = read_extent_tree_block(inode, ix, path->p_depth - depth,
-+					    flags);
- 		if (IS_ERR(bh))
- 			return PTR_ERR(bh);
- 		eh = ext_block_hdr(bh);
-@@ -1612,7 +1613,7 @@ static int ext4_ext_search_right(struct inode *inode,
- 		put_bh(bh);
- 	}
+ 	struct ldtentry *d;
+ 	struct dt_lock *dtlck;
+@@ -2622,7 +2622,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+ 	struct lv *lv;
+ 	struct metapage *mp;
+ 	dtpage_t *p;
+-	int rc;
++	int rc = 0;
+ 	s8 *stbl;
+ 	tid_t tid;
+ 	struct tlock *tlck;
+@@ -2647,6 +2647,16 @@ static void add_missing_indices(struct inode *inode, s64 bn)
  
--	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
-+	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, flags);
- 	if (IS_ERR(bh))
- 		return PTR_ERR(bh);
- 	eh = ext_block_hdr(bh);
-@@ -2822,6 +2823,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 	struct partial_cluster partial;
- 	handle_t *handle;
- 	int i = 0, err = 0;
-+	int flags = EXT4_EX_NOCACHE | EXT4_EX_NOFAIL;
+ 	stbl = DT_GETSTBL(p);
+ 	for (i = 0; i < p->header.nextindex; i++) {
++		if (stbl[i] < 0) {
++			jfs_err("jfs: add_missing_indices: Invalid stbl[%d] = %d for inode %ld, block = %lld",
++				i, stbl[i], (long)inode->i_ino, (long long)bn);
++			rc = -EIO;
++
++			DT_PUTPAGE(mp);
++			txAbort(tid, 0);
++			goto end;
++		}
++
+ 		d = (struct ldtentry *) &p->slot[stbl[i]];
+ 		index = le32_to_cpu(d->index);
+ 		if ((index < 2) || (index >= JFS_IP(inode)->next_index)) {
+@@ -2664,6 +2674,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+ 	(void) txCommit(tid, 1, &inode, 0);
+ end:
+ 	txEnd(tid);
++	return rc;
+ }
  
- 	partial.pclu = 0;
- 	partial.lblk = 0;
-@@ -2852,8 +2854,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 		ext4_fsblk_t pblk;
+ /*
+@@ -3017,7 +3028,8 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
+ 		}
  
- 		/* find extent for or closest extent to this block */
--		path = ext4_find_extent(inode, end, NULL,
--					EXT4_EX_NOCACHE | EXT4_EX_NOFAIL);
-+		path = ext4_find_extent(inode, end, NULL, flags);
- 		if (IS_ERR(path)) {
- 			ext4_journal_stop(handle);
- 			return PTR_ERR(path);
-@@ -2919,7 +2920,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 			 */
- 			lblk = ex_end + 1;
- 			err = ext4_ext_search_right(inode, path, &lblk, &pblk,
--						    NULL);
-+						    NULL, flags);
- 			if (err < 0)
- 				goto out;
- 			if (pblk) {
-@@ -2995,8 +2996,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 				  i + 1, ext4_idx_pblock(path[i].p_idx));
- 			memset(path + i + 1, 0, sizeof(*path));
- 			bh = read_extent_tree_block(inode, path[i].p_idx,
--						    depth - i - 1,
--						    EXT4_EX_NOCACHE);
-+						    depth - i - 1, flags);
- 			if (IS_ERR(bh)) {
- 				/* should we reset i_size? */
- 				err = PTR_ERR(bh);
-@@ -4315,7 +4315,8 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	if (err)
- 		goto out;
- 	ar.lright = map->m_lblk;
--	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright, &ex2);
-+	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright,
-+				    &ex2, 0);
- 	if (err < 0)
- 		goto out;
+ 		if (fix_page) {
+-			add_missing_indices(ip, bn);
++			if ((rc = add_missing_indices(ip, bn)))
++				goto out;
+ 			page_fixed = 1;
+ 		}
  
 -- 
 2.39.5
