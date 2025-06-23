@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92E0CAE518C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8310AE525F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F2014A3DC8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00E65443742
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0536221F17;
-	Mon, 23 Jun 2025 21:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224C1222582;
+	Mon, 23 Jun 2025 21:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SD4uEc/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zklpZA8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC581EE7C6;
-	Mon, 23 Jun 2025 21:35:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51B54315A;
+	Mon, 23 Jun 2025 21:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714519; cv=none; b=gfIazFopIRZvXHsYYu0A6nW0CptG7AigzqzZEsSsSTZ8n04jd0ZAf6N9wAINxe1Y8uBHJ7H8JFag8UKiVZZn+ISyWSo+eYpem3oDUTIvd+HIk66m1Ehvi5SWoG03N57ctkf7YMQMPmAJ8/zuOq2s1L/MyZm5Gldf17v8bvlZYLg=
+	t=1750714994; cv=none; b=BxOahdCaphSHqS4imZJtDabsgYz9L9BfBpqmE5g4Aewj8vMIuaflLS6dycQ1bhDptNs9Vqo1jbwwnb8Jy0eTjM4J95Ie7OMuqE7jU3mhmuENM2LbEMdo1WqvDvr7wqhA9xyK86cs1kAWYiVAZSiOzmj6fbqPPDIjQ20WWJHX+iA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714519; c=relaxed/simple;
-	bh=/JxwcFRd4m5Ac8DjeEXGoRy7a5pI1yt/KdteJBhF6Eg=;
+	s=arc-20240116; t=1750714994; c=relaxed/simple;
+	bh=AueGq5ua9ycGYfeY4pOnE+QGnALuHv4JMTGtFma5dN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hbJoB5oSVbHyDxpEkdZhS9vkzFHCdqVxGWqfqHASp8kFjeotepUGCI0LIRZ79xZIlqOmmeqOtIr+lAWgRScFYymQARYVR/d0auRqrX7CqO5teT2apOHu9CQ2EfLdoy1FaIZeeyvy5I4IOrzZLmbGww9OJykrLYwnExZIDxcv9H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SD4uEc/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E192C4CEEA;
-	Mon, 23 Jun 2025 21:35:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=f3eA3I/4PmVVwwDYTVVtwIYDsemG7Ue1e1cQ36Evc1HFxlunwIOQPWsDvYipjn990MumIZwy0nafkw4WAdnUicG4FZdQvpkmFrwZmWVAtGJwolO4UHE9+MmL2mbrjUVfG6QAQx5zxCIBskUWHoGVYEX9y38+oQZIkNEEgvT+RAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zklpZA8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EBE4C4CEEA;
+	Mon, 23 Jun 2025 21:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714519;
-	bh=/JxwcFRd4m5Ac8DjeEXGoRy7a5pI1yt/KdteJBhF6Eg=;
+	s=korg; t=1750714994;
+	bh=AueGq5ua9ycGYfeY4pOnE+QGnALuHv4JMTGtFma5dN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SD4uEc/Mdw+xyWE179Cocc8q92n73ISmAWvmhroGvXCfEFfMkvro/VsHELlP8yGcx
-	 9sNcmGKOhnryoS5qTJOyhggV4zb8cfqQjc1P+5OU/bbB4tWTRl2p2e0HlelVairR30
-	 jekyF7v/r1v70rKZ2iASjSC+UO3PB9GKTaJxSwjc=
+	b=zklpZA8ELgE1qN1DIxPM2iLHh7ss/M/0a6O4lnDgW7++CWllGEbtRiFazkvn2AQrD
+	 d2Jfin2DtCU3SpWBsNv7xTvcguZY59+Qj/BKTYRrHU5NXgsMynj9vXTeq2Xqh6dWHv
+	 tuf+wvtSORKHcxnOlm2jubFEIffIxmr9GHKhv1Mo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 233/355] ext4: ext4: unify EXT4_EX_NOCACHE|NOFAIL flags in ext4_ext_remove_space()
+Subject: [PATCH 6.6 173/290] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
 Date: Mon, 23 Jun 2025 15:07:14 +0200
-Message-ID: <20250623130633.756051943@linuxfoundation.org>
+Message-ID: <20250623130632.091305599@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,111 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
 
-[ Upstream commit 53ce42accd2002cc490fc86000ac532530507a74 ]
+[ Upstream commit 2b801487ac3be7bec561ae62d1a6c4d6f5283f8c ]
 
-When removing space, we should use EXT4_EX_NOCACHE because we don't
-need to cache extents, and we should also use EXT4_EX_NOFAIL to prevent
-metadata inconsistencies that may arise from memory allocation failures.
-While ext4_ext_remove_space() already uses these two flags in most
-places, they are missing in ext4_ext_search_right() and
-read_extent_tree_block() calls. Unify the flags to ensure consistent
-behavior throughout the extent removal process.
+The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250423085257.122685-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+Link: https://patch.msgid.link/20240313180227.2224780-1-victor.gonzalo@anddroptable.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/extents.c | 19 ++++++++++---------
- 1 file changed, 10 insertions(+), 9 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index d659d7c367133..ac97ef3c76e97 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -1526,7 +1526,7 @@ static int ext4_ext_search_left(struct inode *inode,
- static int ext4_ext_search_right(struct inode *inode,
- 				 struct ext4_ext_path *path,
- 				 ext4_lblk_t *logical, ext4_fsblk_t *phys,
--				 struct ext4_extent *ret_ex)
-+				 struct ext4_extent *ret_ex, int flags)
- {
- 	struct buffer_head *bh = NULL;
- 	struct ext4_extent_header *eh;
-@@ -1600,7 +1600,8 @@ static int ext4_ext_search_right(struct inode *inode,
- 	ix++;
- 	while (++depth < path->p_depth) {
- 		/* subtract from p_depth to get proper eh_depth */
--		bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
-+		bh = read_extent_tree_block(inode, ix, path->p_depth - depth,
-+					    flags);
- 		if (IS_ERR(bh))
- 			return PTR_ERR(bh);
- 		eh = ext_block_hdr(bh);
-@@ -1608,7 +1609,7 @@ static int ext4_ext_search_right(struct inode *inode,
- 		put_bh(bh);
- 	}
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index d594694206b33..906f2790f5619 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -44,6 +44,8 @@
+ 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
+ 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
++	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_CC_A_MODULE_FIRMWARE(api)			\
+ 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
  
--	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, 0);
-+	bh = read_extent_tree_block(inode, ix, path->p_depth - depth, flags);
- 	if (IS_ERR(bh))
- 		return PTR_ERR(bh);
- 	eh = ext_block_hdr(bh);
-@@ -2794,6 +2795,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 	struct partial_cluster partial;
- 	handle_t *handle;
- 	int i = 0, err = 0;
-+	int flags = EXT4_EX_NOCACHE | EXT4_EX_NOFAIL;
- 
- 	partial.pclu = 0;
- 	partial.lblk = 0;
-@@ -2824,8 +2826,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 		ext4_fsblk_t pblk;
- 
- 		/* find extent for or closest extent to this block */
--		path = ext4_find_extent(inode, end, NULL,
--					EXT4_EX_NOCACHE | EXT4_EX_NOFAIL);
-+		path = ext4_find_extent(inode, end, NULL, flags);
- 		if (IS_ERR(path)) {
- 			ext4_journal_stop(handle);
- 			return PTR_ERR(path);
-@@ -2890,7 +2891,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 			 */
- 			lblk = ex_end + 1;
- 			err = ext4_ext_search_right(inode, path, &lblk, &pblk,
--						    NULL);
-+						    NULL, flags);
- 			if (err < 0)
- 				goto out;
- 			if (pblk) {
-@@ -2967,8 +2968,7 @@ int ext4_ext_remove_space(struct inode *inode, ext4_lblk_t start,
- 				  i + 1, ext4_idx_pblock(path[i].p_idx));
- 			memset(path + i + 1, 0, sizeof(*path));
- 			bh = read_extent_tree_block(inode, path[i].p_idx,
--						    depth - i - 1,
--						    EXT4_EX_NOCACHE);
-+						    depth - i - 1, flags);
- 			if (IS_ERR(bh)) {
- 				/* should we reset i_size? */
- 				err = PTR_ERR(bh);
-@@ -4270,7 +4270,8 @@ int ext4_ext_map_blocks(handle_t *handle, struct inode *inode,
- 	if (err)
- 		goto out;
- 	ar.lright = map->m_lblk;
--	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright, &ex2);
-+	err = ext4_ext_search_right(inode, path, &ar.lright, &ar.pright,
-+				    &ex2, 0);
- 	if (err < 0)
- 		goto out;
- 
+@@ -423,6 +425,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
+ MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
 -- 
 2.39.5
 
