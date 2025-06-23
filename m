@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-157556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0207AE5493
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F10AE4F9A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 520C84C1454
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE2C23B3A97
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2920519DF4A;
-	Mon, 23 Jun 2025 22:02:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430BC22424C;
+	Mon, 23 Jun 2025 21:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9jjYFkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKZGvlYR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F2B21FF50;
-	Mon, 23 Jun 2025 22:02:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35C318E377;
+	Mon, 23 Jun 2025 21:16:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716156; cv=none; b=CTHi2sWrcYz35KftB8iLyWl1DD4Jvh+p94ECt9PaQ6NZR8m03sAyHf/2JOthd6gFxJbuzY89jSgfi9GCEN8cKFtRIULbbNbvZmZaSi54uSZcKNeiMXba8/TwlrUtC3MhgxfezDuSItpLbFDgNmBe9xR4bAFpTngMHr+D61cZusk=
+	t=1750713417; cv=none; b=hbHAFdb/UD9iEUx0RlJH/BRUnsgTcUfWSoMmWRjyu+SsKiFUB0bJVaD0Kf4/XWBwg1dh+4FJRnPUbmi/cU16vE9By17hbeqNa7GhnMcYFWyzZj/ZRLmQWzWFliMxRXt9O4C38V7zzt8hKiRKg32smlojNXFeEy054DvY91s6gaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716156; c=relaxed/simple;
-	bh=06j5iUQKFClkoJp9GdvWa61URj8aNCoDw4F2LwZp6Yg=;
+	s=arc-20240116; t=1750713417; c=relaxed/simple;
+	bh=volKZnI0ykmlNUcU/2XKIqeUfE1jQp8iTPZqBusL7YI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TgvU6v/B9SuQlV0JMa2wC67I9VNGNtTdxyr3FlyPDnXbyGwGrNqnCbKIfLrxeLMNrYQI7mMfeZcnFkYndXBMLzUaufEGXo49hdaTtus2LPayLRRNv3h0pE0zbocRYi6DkWY1NUVPIiuZqZeh0trE6g3yAr+MFqQE4fjASQOVbdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9jjYFkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 695F8C4CEEA;
-	Mon, 23 Jun 2025 22:02:36 +0000 (UTC)
+	 MIME-Version; b=DuQ6AaeNFQFvGRAODue+hXk2I8EjZSHnmZfLi5FLV+xLIGug5ScBprp4JIGp1SzWBfyZeOGajo9rb9wOPCBTUptjCdZNlQ1kRd/27fgkm1xsxIa8eHSIWXZbUP5JFnBXWp2s9OT5YORm6tTDnlzXDnPlMfi9/FswV1lkj88QnLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKZGvlYR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2ABC4CEEA;
+	Mon, 23 Jun 2025 21:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716156;
-	bh=06j5iUQKFClkoJp9GdvWa61URj8aNCoDw4F2LwZp6Yg=;
+	s=korg; t=1750713416;
+	bh=volKZnI0ykmlNUcU/2XKIqeUfE1jQp8iTPZqBusL7YI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X9jjYFkD175q6+zY8b81O2rSbx/LwIEgMz1/kZJdtCmdIcS2cNKi1FroF/sIEpPfz
-	 vWNRejW9UBaEo4XqKrEap2np4IEAU3yUnD3J08AC8gfWlvAtZA54Iep8/iUnILX1NX
-	 O1+6VMdHyrr8XTIi4eIMRzI0aNrH3VgzTBzrBjTw=
+	b=fKZGvlYROjf/NuLe4kJ1wxfMGLgiD0BWBaLSxUc7apRTKJUQ+soevDym+tqEHywy4
+	 9hot8IsGHsAD8tTMu+Uqm3nHBIwEYRAroZJgp4TEvwIlbRxnm2T63up/NSFJUsA1Hg
+	 /f4eWPGcKmImoXTdEA3wSv8/q/CFAYf5+SnYox3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 305/508] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 089/290] dm-mirror: fix a tiny race condition
 Date: Mon, 23 Jun 2025 15:05:50 +0200
-Message-ID: <20250623130652.812329298@linuxfoundation.org>
+Message-ID: <20250623130629.655015666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
+commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
 
-Since handle->h_transaction may be a NULL pointer, so we should change it
-to call is_handle_aborted(handle) first before dereferencing it.
+There's a tiny race condition in dm-mirror. The functions queue_bio and
+write_callback grab a spinlock, add a bio to the list, drop the spinlock
+and wake up the mirrord thread that processes bios in the list.
 
-And the following data-race was reported in my fuzzer:
+It may be possible that the mirrord thread processes the bio just after
+spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
+wake-up is normally harmless, however if the device mapper device is
+unloaded just after the bio was processed, it may be possible that
+wakeup_mirrord(ms) uses invalid "ms" pointer.
 
-==================================================================
-BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
+Fix this bug by moving wakeup_mirrord inside the spinlock.
 
-write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
- jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
- __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
- ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
- ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
- __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
- ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
-....
-
-read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
- jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
- __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
- ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
- ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
- __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
- ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
-....
-
-value changed: 0x00000000 -> 0x00000001
-==================================================================
-
-This issue is caused by missing data-race annotation for jh->b_modified.
-Therefore, the missing annotation needs to be added.
-
-Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
-Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/md/dm-raid1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1518,7 +1518,7 @@ int jbd2_journal_dirty_metadata(handle_t
- 				jh->b_next_transaction == transaction);
- 		spin_unlock(&jh->b_state_lock);
- 	}
--	if (jh->b_modified == 1) {
-+	if (data_race(jh->b_modified == 1)) {
- 		/* If it's in our transaction it must be in BJ_Metadata list. */
- 		if (data_race(jh->b_transaction == transaction &&
- 		    jh->b_jlist != BJ_Metadata)) {
-@@ -1537,7 +1537,6 @@ int jbd2_journal_dirty_metadata(handle_t
- 		goto out;
- 	}
+--- a/drivers/md/dm-raid1.c
++++ b/drivers/md/dm-raid1.c
+@@ -133,10 +133,9 @@ static void queue_bio(struct mirror_set
+ 	spin_lock_irqsave(&ms->lock, flags);
+ 	should_wake = !(bl->head);
+ 	bio_list_add(bl, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+-
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
  
--	journal = transaction->t_journal;
- 	spin_lock(&jh->b_state_lock);
+ static void dispatch_bios(void *context, struct bio_list *bio_list)
+@@ -646,9 +645,9 @@ static void write_callback(unsigned long
+ 	if (!ms->failures.head)
+ 		should_wake = 1;
+ 	bio_list_add(&ms->failures, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
  
- 	if (is_handle_aborted(handle)) {
-@@ -1552,6 +1551,8 @@ int jbd2_journal_dirty_metadata(handle_t
- 		goto out_unlock_bh;
- 	}
- 
-+	journal = transaction->t_journal;
-+
- 	if (jh->b_modified == 0) {
- 		/*
- 		 * This buffer's got modified and becoming part
+ static void do_write(struct mirror_set *ms, struct bio *bio)
 
 
 
