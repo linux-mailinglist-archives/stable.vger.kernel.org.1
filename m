@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FF44AE5250
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7869CAE546C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1C4F7AF228
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4644C0EA0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A6C5221FCC;
-	Mon, 23 Jun 2025 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106DD19DF4A;
+	Mon, 23 Jun 2025 22:01:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16t3kjjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sCGB01Si"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57AEE4315A;
-	Mon, 23 Jun 2025 21:42:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2B284409;
+	Mon, 23 Jun 2025 22:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714951; cv=none; b=uAMDf6NZVJtJhK9dclOTv1ZaxL/eHSo23ZplaCw3Y6AjoARAORolP5DGxd36CJyFtuojwdQqhZkYh/lYeF4rGzBh4NgRuu52pCwiFOJyzvlvs8rhQygpXDFeIKjUSl4XiDJhdljT64aXSU0uI0638AE3+MHVMl/+MnxR/i0fO4g=
+	t=1750716080; cv=none; b=trqUWsBiIMuUDsViUX/+knyC8V9+3JEJYACFd2FzgEbsryNNAesaEgU6v619sN5uRUedqEaP0893Edt6yQTmcPbNRBtEYhsx1S6iiLVi+i6mQXXPaff+jn0saq8bRG0y9SpKPgn6OUoiXRsjsYJRJpE7VeaUZm4of4pPkkhN3hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714951; c=relaxed/simple;
-	bh=dhc5C/qcLMlYtla/Y+KBR9x0JkMTlgU3A6AiSTg0jNM=;
+	s=arc-20240116; t=1750716080; c=relaxed/simple;
+	bh=oXkA9Zcg01BSCl9L4iYwnjq3AFsRX1b4IcDTL8dGME4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gkHdnGgfakdOnv87kcUdH88Fo7P/1/mH3TmihZ+x1mx6vqDZZTL3BrhZZPedJr9j6ljUMFW0XrXTkWHvf0XnRKQ875Z4Pjl8cllq9FNeULZETPs3vAdAlzjaLKnEaDQ1h0B+USJ+ZtQtlFsLo3edvz7adoCTv8DHyiUTzG63O5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16t3kjjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A26A1C4CEEA;
-	Mon, 23 Jun 2025 21:42:30 +0000 (UTC)
+	 MIME-Version; b=Gb/fQKWH4aBWClOOx5O9lYprNtgvVIiH2lNgnmJTqUjI81SlCsAyKGBo4viSpi+19Q40mQg17kZ22FigqCwvD0+/UtS3IR8NKO2g+rGN9IUBx136x4h2KiaIRHH13NvLG14lwtIptJm4PvY1KTfT4Bnbki+opf9jy7Yl2BghY/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sCGB01Si; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59AAAC4CEEA;
+	Mon, 23 Jun 2025 22:01:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714951;
-	bh=dhc5C/qcLMlYtla/Y+KBR9x0JkMTlgU3A6AiSTg0jNM=;
+	s=korg; t=1750716080;
+	bh=oXkA9Zcg01BSCl9L4iYwnjq3AFsRX1b4IcDTL8dGME4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16t3kjjE9cJ1kc2hbLYOuESAY/Ja2sPNSqo7Ss9gMyhDUVabdX6NKnY4wz9zpnx3+
-	 S0rbOwwFKpH6kRA9WKbANOm0WrRH2x2tMnSDCRe3p3p5/p1df/3JexH9S2949Hw/Op
-	 6qbmVXCAdWE49qKHO+IzwcebONPC20ErL25U0F90=
+	b=sCGB01SizuLIF34QjtLWW5ZhIUrJnnXmb1UPp53VYrLNGoJuXaA6CGu3bnlN+9BLW
+	 cWATrOJVCtO8aK7wZLKXvziBaoKRn5JyvPfl5J0HeP81pBHD+8jzT55bqQc/Kp8fqm
+	 UKrFDAM/KAG34uF28yxMSG62f6zc34Cka+A2C9mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 219/411] media: uvcvideo: Fix deferred probing error
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 226/414] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
 Date: Mon, 23 Jun 2025 15:06:03 +0200
-Message-ID: <20250623130639.176713535@linuxfoundation.org>
+Message-ID: <20250623130647.682588839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 387e8939307192d5a852a2afeeb83427fa477151 upstream.
+[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
 
-uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-have not yet been probed. This return code should be propagated to the
-caller of uvc_probe() to ensure that probing is retried when the required
-GPIOs become available.
+The regmap_update_bits() function can fail, so propagate its error
+up to the stack instead of silently ignoring that.
 
-Currently, this error code is incorrectly converted to -ENODEV,
-causing some internal cameras to be ignored.
-
-This commit fixes this issue by propagating the -EPROBE_DEFER error.
-
-Cc: stable@vger.kernel.org
-Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2447,13 +2447,16 @@ static int uvc_probe(struct usb_interfac
- #endif
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index 4ce11c74fec1f..aa6bb1c0d9fa7 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -358,9 +358,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
  
- 	/* Parse the Video Class control descriptor. */
--	if (uvc_parse_control(dev) < 0) {
-+	ret = uvc_parse_control(dev);
-+	if (ret < 0) {
-+		ret = -ENODEV;
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
- 		goto error;
- 	}
+ 	val = grp->val[func];
  
- 	/* Parse the associated GPIOs. */
--	if (uvc_gpio_parse(dev) < 0) {
-+	ret = uvc_gpio_parse(dev);
-+	if (ret < 0) {
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
- 		goto error;
- 	}
-@@ -2479,24 +2482,32 @@ static int uvc_probe(struct usb_interfac
- 	}
- 
- 	/* Register the V4L2 device. */
--	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-+	ret = v4l2_device_register(&intf->dev, &dev->vdev);
-+	if (ret < 0)
- 		goto error;
- 
- 	/* Scan the device for video chains. */
--	if (uvc_scan_device(dev) < 0)
-+	if (uvc_scan_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Initialize controls. */
--	if (uvc_ctrl_init_device(dev) < 0)
-+	if (uvc_ctrl_init_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Register video device nodes. */
--	if (uvc_register_chains(dev) < 0)
-+	if (uvc_register_chains(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	/* Register the media device node */
--	if (media_device_register(&dev->mdev) < 0)
-+	ret = media_device_register(&dev->mdev);
-+	if (ret < 0)
- 		goto error;
- #endif
- 	/* Save our data pointer in the interface data. */
-@@ -2523,7 +2534,7 @@ static int uvc_probe(struct usb_interfac
- error:
- 	uvc_unregister_video(dev);
- 	kref_put(&dev->ref, uvc_delete);
--	return -ENODEV;
-+	return ret;
+-	regmap_update_bits(info->regmap, reg, mask, val);
+-
+-	return 0;
++	return regmap_update_bits(info->regmap, reg, mask, val);
  }
  
- static void uvc_disconnect(struct usb_interface *intf)
+ static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
+-- 
+2.39.5
+
 
 
 
