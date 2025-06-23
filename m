@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157076-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42311AE4F20
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77CC2AE525A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE3151B606F3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB864436A5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23F61221FD6;
-	Mon, 23 Jun 2025 21:12:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC69C19D084;
+	Mon, 23 Jun 2025 21:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2qX6bfAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWy3+KME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4ADC221DAE;
-	Mon, 23 Jun 2025 21:12:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F1E4315A;
+	Mon, 23 Jun 2025 21:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713162; cv=none; b=eAEhiYjDNP0HZS/RgF/NyDyMfajB+bhrz6JYnhpCirVosuzkVvEumMBWfKU72wlFJC7RFg/hZ6/5meTXSX+UrGarhKPtSbDrrXICYlTMkzq9+XX4xn73dJRqE/vw68uTHlONrd/D3ZrxGvyCVEe6IdrVfWx9b8NS9HpP/ihv6Bg=
+	t=1750714975; cv=none; b=E8rqAxZN0LBNXeNqYur2x7+0bbhhBpszrwEZ2p+C2YqwsquX9H4ObtlENqVwY2QcnnRDVq5W7i82M1mY2kWbQhRHcnDVx9t+8LqHO+T0x0TqSu+VMa85dI1qmanTCLb8N4tLtDcV0FmgnVmr41iZTh1C7YkIub/zBYy0n7BV1g8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713162; c=relaxed/simple;
-	bh=+8c0WI741GyccjG+o0WrrtcZllVUWql/NXNaqrUIl70=;
+	s=arc-20240116; t=1750714975; c=relaxed/simple;
+	bh=aKmeVmuhtoamV8UA8a7554j6AcXMhVhXghws1ZCAxHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9n5tx3W6gqqIiBFC+4DS2kAK1JzhdMmgOyS9E8GUsPwam0XM1oVIuKn2bzlnrI46zecChgWxfxoYCUlMV/Yu3JBJMuK2Nupy7ZV7jmqrVsttVKQyYUnk/lE8Fj2C3Ht9n0f2BQnQlzxDp3ctuvGxFG4aQpPg0TqomxGChyyM8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2qX6bfAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BC78C4CEEA;
-	Mon, 23 Jun 2025 21:12:42 +0000 (UTC)
+	 MIME-Version; b=WqILGYLZ/OAKIUgM5FEqHRnY8naWFx2p3aKpOho/iEKA0wj0WJfjLEu+mLzz25zG6NNQEFL3Hfg12LitElDRuxFkCY7PGgkLlRKodRHc1xA5n2kuYjTwB6VnliRpuEhOGC0Ncck34mMLILdTg5oy2GEfc+2CmoBrLGAJZmwRhU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWy3+KME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B97C4CEEA;
+	Mon, 23 Jun 2025 21:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713162;
-	bh=+8c0WI741GyccjG+o0WrrtcZllVUWql/NXNaqrUIl70=;
+	s=korg; t=1750714975;
+	bh=aKmeVmuhtoamV8UA8a7554j6AcXMhVhXghws1ZCAxHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2qX6bfAzTWmC7kDfzMbaEv8YAupi3XjiF2nRswxzQ3bkJIvie+d1bXtwd2aeOWudM
-	 +mboOFmx8L0sCVKM3gqTc90D3DYkF5m/iIsNIgrXfTrVzLgKuen7C0ZdZlnmAbgfId
-	 GByoxF6FyxA0IxwTVx2SpsHEcGAvkI5PVhALk7OM=
+	b=CWy3+KMEPY7pgDKF/R8PgfW7XE+FUmDR0ojyQkNArMiYvJMK60H30coC2luAqoNQ/
+	 1ryUo7r6/UK6uQs6QouojIcr5gKGaUMUQ2A3eHg8GTHtXzinCTExyCpG5RxXuaONX1
+	 RnVRHB1u1WXQ53ky5HVZQ36pIeCj6D8r8QUz/8O0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
+	Julian Sun <sunjunchao2870@gmail.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 108/411] serial: Fix potential null-ptr-deref in mlb_usio_probe()
+Subject: [PATCH 6.1 207/508] xfs: remove unused parameter in macro XFS_DQUOT_LOGRES
 Date: Mon, 23 Jun 2025 15:04:12 +0200
-Message-ID: <20250623130636.238595874@linuxfoundation.org>
+Message-ID: <20250623130650.360399705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Julian Sun <sunjunchao2870@gmail.com>
 
-[ Upstream commit 86bcae88c9209e334b2f8c252f4cc66beb261886 ]
+[ Upstream commit af5d92f2fad818663da2ce073b6fe15b9d56ffdc ]
 
-devm_ioremap() can return NULL on error. Currently, mlb_usio_probe()
-does not check for this case, which could result in a NULL pointer
-dereference.
+In the macro definition of XFS_DQUOT_LOGRES, a parameter is accepted,
+but it is not used. Hence, it should be removed.
 
-Add NULL check after devm_ioremap() to prevent this issue.
+This patch has only passed compilation test, but it should be fine.
 
-Fixes: ba44dc043004 ("serial: Add Milbeaut serial control")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://lore.kernel.org/r/20250403070339.64990-1-bsdhenrymartin@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/milbeaut_usio.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/xfs/libxfs/xfs_quota_defs.h |  2 +-
+ fs/xfs/libxfs/xfs_trans_resv.c | 28 ++++++++++++++--------------
+ 2 files changed, 15 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/tty/serial/milbeaut_usio.c b/drivers/tty/serial/milbeaut_usio.c
-index 8f2cab7f66ad3..d9f094514945b 100644
---- a/drivers/tty/serial/milbeaut_usio.c
-+++ b/drivers/tty/serial/milbeaut_usio.c
-@@ -523,7 +523,10 @@ static int mlb_usio_probe(struct platform_device *pdev)
- 	}
- 	port->membase = devm_ioremap(&pdev->dev, res->start,
- 				resource_size(res));
--
-+	if (!port->membase) {
-+		ret = -ENOMEM;
-+		goto failed;
-+	}
- 	ret = platform_get_irq_byname(pdev, "rx");
- 	mlb_usio_irq[index][RX] = ret;
+diff --git a/fs/xfs/libxfs/xfs_quota_defs.h b/fs/xfs/libxfs/xfs_quota_defs.h
+index cb035da3f990b..fb05f44f6c754 100644
+--- a/fs/xfs/libxfs/xfs_quota_defs.h
++++ b/fs/xfs/libxfs/xfs_quota_defs.h
+@@ -56,7 +56,7 @@ typedef uint8_t		xfs_dqtype_t;
+  * And, of course, we also need to take into account the dquot log format item
+  * used to describe each dquot.
+  */
+-#define XFS_DQUOT_LOGRES(mp)	\
++#define XFS_DQUOT_LOGRES	\
+ 	((sizeof(struct xfs_dq_logformat) + sizeof(struct xfs_disk_dquot)) * 6)
  
+ #define XFS_IS_QUOTA_ON(mp)		((mp)->m_qflags & XFS_ALL_QUOTA_ACCT)
+diff --git a/fs/xfs/libxfs/xfs_trans_resv.c b/fs/xfs/libxfs/xfs_trans_resv.c
+index 5b2f27cbdb808..1bb2891b26ffb 100644
+--- a/fs/xfs/libxfs/xfs_trans_resv.c
++++ b/fs/xfs/libxfs/xfs_trans_resv.c
+@@ -334,11 +334,11 @@ xfs_calc_write_reservation(
+ 					blksz);
+ 		t1 += adj;
+ 		t3 += adj;
+-		return XFS_DQUOT_LOGRES(mp) + max3(t1, t2, t3);
++		return XFS_DQUOT_LOGRES + max3(t1, t2, t3);
+ 	}
+ 
+ 	t4 = xfs_calc_refcountbt_reservation(mp, 1);
+-	return XFS_DQUOT_LOGRES(mp) + max(t4, max3(t1, t2, t3));
++	return XFS_DQUOT_LOGRES + max(t4, max3(t1, t2, t3));
+ }
+ 
+ unsigned int
+@@ -406,11 +406,11 @@ xfs_calc_itruncate_reservation(
+ 					xfs_refcountbt_block_count(mp, 4),
+ 					blksz);
+ 
+-		return XFS_DQUOT_LOGRES(mp) + max3(t1, t2, t3);
++		return XFS_DQUOT_LOGRES + max3(t1, t2, t3);
+ 	}
+ 
+ 	t4 = xfs_calc_refcountbt_reservation(mp, 2);
+-	return XFS_DQUOT_LOGRES(mp) + max(t4, max3(t1, t2, t3));
++	return XFS_DQUOT_LOGRES + max(t4, max3(t1, t2, t3));
+ }
+ 
+ unsigned int
+@@ -436,7 +436,7 @@ STATIC uint
+ xfs_calc_rename_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		max((xfs_calc_inode_res(mp, 5) +
+ 		     xfs_calc_buf_res(2 * XFS_DIROP_LOG_COUNT(mp),
+ 				      XFS_FSB_TO_B(mp, 1))),
+@@ -475,7 +475,7 @@ STATIC uint
+ xfs_calc_link_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_iunlink_remove_reservation(mp) +
+ 		max((xfs_calc_inode_res(mp, 2) +
+ 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
+@@ -513,7 +513,7 @@ STATIC uint
+ xfs_calc_remove_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_iunlink_add_reservation(mp) +
+ 		max((xfs_calc_inode_res(mp, 2) +
+ 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
+@@ -572,7 +572,7 @@ xfs_calc_icreate_resv_alloc(
+ STATIC uint
+ xfs_calc_icreate_reservation(xfs_mount_t *mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		max(xfs_calc_icreate_resv_alloc(mp),
+ 		    xfs_calc_create_resv_modify(mp));
+ }
+@@ -581,7 +581,7 @@ STATIC uint
+ xfs_calc_create_tmpfile_reservation(
+ 	struct xfs_mount        *mp)
+ {
+-	uint	res = XFS_DQUOT_LOGRES(mp);
++	uint	res = XFS_DQUOT_LOGRES;
+ 
+ 	res += xfs_calc_icreate_resv_alloc(mp);
+ 	return res + xfs_calc_iunlink_add_reservation(mp);
+@@ -630,7 +630,7 @@ STATIC uint
+ xfs_calc_ifree_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(3, mp->m_sb.sb_sectsize) +
+ 		xfs_calc_iunlink_remove_reservation(mp) +
+@@ -647,7 +647,7 @@ STATIC uint
+ xfs_calc_ichange_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(1, mp->m_sb.sb_sectsize);
+ 
+@@ -756,7 +756,7 @@ STATIC uint
+ xfs_calc_addafork_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(2, mp->m_sb.sb_sectsize) +
+ 		xfs_calc_buf_res(1, mp->m_dir_geo->blksize) +
+@@ -804,7 +804,7 @@ STATIC uint
+ xfs_calc_attrsetm_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		xfs_calc_inode_res(mp, 1) +
+ 		xfs_calc_buf_res(1, mp->m_sb.sb_sectsize) +
+ 		xfs_calc_buf_res(XFS_DA_NODE_MAXDEPTH, XFS_FSB_TO_B(mp, 1));
+@@ -844,7 +844,7 @@ STATIC uint
+ xfs_calc_attrrm_reservation(
+ 	struct xfs_mount	*mp)
+ {
+-	return XFS_DQUOT_LOGRES(mp) +
++	return XFS_DQUOT_LOGRES +
+ 		max((xfs_calc_inode_res(mp, 1) +
+ 		     xfs_calc_buf_res(XFS_DA_NODE_MAXDEPTH,
+ 				      XFS_FSB_TO_B(mp, 1)) +
 -- 
 2.39.5
 
