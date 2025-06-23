@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-156733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB11EAE50E6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDF94AE51F3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7551A3A93D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C94A7A1F48
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7657221299;
-	Mon, 23 Jun 2025 21:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE837221FCC;
+	Mon, 23 Jun 2025 21:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ceusHB2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AnVPmluS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 761741E5B71;
-	Mon, 23 Jun 2025 21:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF75221DA8;
+	Mon, 23 Jun 2025 21:38:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714133; cv=none; b=P1erMIfc8eCDRelleWjwVO8Le40+PweeajgAcmUR5AvJRNQkxn9cGtdQNeA65VcsaVU/AIMgE+NaNvx8PlSJZUSOleNO0X5D2xNe2ZEnXrKQd2QdN2V7p1EgAJcLsDdsypjTgiokJ4XZP96PGfu1/wyOmtXE5+EEnRLgo6Ho5SY=
+	t=1750714738; cv=none; b=lJPQeptGhS/FbvEGDIJAKOko4RE27TkDALLUF9GNMRN9LO2t8R1Mt3LHLHiZAV9gKDAcnQ1vHRvJbUeokM2w7p2yyPf2IxWUWQoTn5cH5+69bdl3BwlbpAGKq4uxcobM2vEbBgD9tbRp7JY7aOLcpTVA3+KputTkc2PxhtxaoQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714133; c=relaxed/simple;
-	bh=Y2aUbctOq4H1U7kYl8BXF3hEPLq6fWd1xYcyypWQmag=;
+	s=arc-20240116; t=1750714738; c=relaxed/simple;
+	bh=WYU5w9ogmvkkaPQJBQstHr+NoUPxivaX1w2s1tJxF2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Thdn/pxu2/9T0xGiKL48pIJADLwKcO+3UOPQRwiUZH0rRXzXUf652A53wUMvfstw8H6xt0w/e+2NEayKea0VdPQ2EvjoqxVo7d2+DcJro1P7NYmkpSsuyGljk4bmiHdDKYNcT9PyNfDgoEeDmzCugT6y3D+Dfy9FbJRxpXmgUU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ceusHB2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C42B4C4CEEA;
-	Mon, 23 Jun 2025 21:28:52 +0000 (UTC)
+	 MIME-Version; b=WboFBoucZ7sNdalkBkd/TivRwuTG89TmFcitF3VBf4VuW7yjChUtBBsy8ZjjtdkkFf58yGnATkCtgTXzr+6ySVpbUQfF8TSTVmlmfcd+qBtiOKMRGX45S03lKBdCpUrnu9wzC1a1B3JoBNW4X+kdZTv3YA8FYFKPgOn7MRpt+jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AnVPmluS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D091DC4CEEA;
+	Mon, 23 Jun 2025 21:38:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714133;
-	bh=Y2aUbctOq4H1U7kYl8BXF3hEPLq6fWd1xYcyypWQmag=;
+	s=korg; t=1750714738;
+	bh=WYU5w9ogmvkkaPQJBQstHr+NoUPxivaX1w2s1tJxF2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ceusHB2lEQqAGw8NudxIcOhptosGDa5SQGvNtM3iyyvW4SK+0b0SG2uZ6wuadKbAb
-	 0K/nKHOojudDslf9Os17OwQP9Y81qdzwEdyPUBc2Zvej/AKDslTMJBg0RLd2Lnv4bq
-	 briUSwUxxdOGIYnwN5H83PMnuzoDt7OlLnFUBuCI=
+	b=AnVPmluS9xiAI5SpRApG721tPgPphbFOO9wSrnCq8xdbQI+BAiJ/WupXcvUwP4T9i
+	 bptDTUYJKDhb0AiNVqO4yNoA9h7N8vJZBqkGovxutaYJZBPOozDh57/co1jCU7QpbJ
+	 4fGJ1NGlCj7npa+gX16trbAHY7lqLlFjSbtWxSp8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wang <yongwang@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 392/592] net: bridge: mcast: update multicast contex when vlan state is changed
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 206/411] media: ccs-pll: Start VT pre-PLL multiplier search from correct value
 Date: Mon, 23 Jun 2025 15:05:50 +0200
-Message-ID: <20250623130709.768612978@linuxfoundation.org>
+Message-ID: <20250623130638.859222856@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,169 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong Wang <yongwang@nvidia.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 6c131043eaf1be2a6cc2d228f92ceb626fbcc0f3 ]
+commit 06d2d478b09e6764fb6161d1621fc10d9f0f2860 upstream.
 
-When the vlan STP state is changed, which could be manipulated by
-"bridge vlan" commands, similar to port STP state, this also impacts
-multicast behaviors such as igmp query. In the scenario of per-VLAN
-snooping, there's a need to update the corresponding multicast context
-to re-arm the port query timer when vlan state becomes "forwarding" etc.
+The ccs_pll_calculate_vt_tree() function does a search over possible VT
+PLL configurations to find the "best" one. If the sensor does not support
+odd pre-PLL divisors and the minimum value (with constraints) isn't 1,
+other odd values could be errorneously searched (and selected) for the
+pre-PLL divisor. Fix this.
 
-Update br_vlan_set_state() function to enable vlan multicast context
-in such scenario.
-
-Before the patch, the IGMP query does not happen in the last step of the
-following test sequence, i.e. no growth for tx counter:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # sleep 1
- # bridge vlan set vid 1 dev swp1 state 4
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge vlan set vid 1 dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
-
-After the patch, the IGMP query happens in the last step of the test:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # sleep 1
- # bridge vlan set vid 1 dev swp1 state 4
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge vlan set vid 1 dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-3
-
-Signed-off-by: Yong Wang <yongwang@nvidia.com>
-Reviewed-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_mst.c       |  4 ++--
- net/bridge/br_multicast.c | 26 ++++++++++++++++++++++++++
- net/bridge/br_private.h   | 11 ++++++++++-
- 3 files changed, 38 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ccs-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
-index 1820f09ff59ce..3f24b4ee49c27 100644
---- a/net/bridge/br_mst.c
-+++ b/net/bridge/br_mst.c
-@@ -80,10 +80,10 @@ static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
- 	if (br_vlan_get_state(v) == state)
- 		return;
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -397,6 +397,8 @@ static int ccs_pll_calculate_vt_tree(str
+ 	min_pre_pll_clk_div = max_t(u16, min_pre_pll_clk_div,
+ 				    pll->ext_clk_freq_hz /
+ 				    lim_fr->max_pll_ip_clk_freq_hz);
++	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
++		min_pre_pll_clk_div = clk_div_even(min_pre_pll_clk_div);
  
--	br_vlan_set_state(v, state);
--
- 	if (v->vid == vg->pvid)
- 		br_vlan_set_pvid_state(vg, state);
-+
-+	br_vlan_set_state(v, state);
- }
- 
- int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index dcbf058de1e3b..35e1fd4ec82ea 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4211,6 +4211,32 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
- #endif
- }
- 
-+void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state)
-+{
-+#if IS_ENABLED(CONFIG_BRIDGE_VLAN_FILTERING)
-+	struct net_bridge *br;
-+
-+	if (!br_vlan_should_use(v))
-+		return;
-+
-+	if (br_vlan_is_master(v))
-+		return;
-+
-+	br = v->port->br;
-+
-+	if (!br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
-+		return;
-+
-+	if (br_vlan_state_allowed(state, true))
-+		br_multicast_enable_port_ctx(&v->port_mcast_ctx);
-+
-+	/* Multicast is not disabled for the vlan when it goes in
-+	 * blocking state because the timers will expire and stop by
-+	 * themselves without sending more queries.
-+	 */
-+#endif
-+}
-+
- void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
- {
- 	struct net_bridge *br;
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 4715a8d6dc326..c41d315b09d32 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1052,6 +1052,7 @@ void br_multicast_port_ctx_init(struct net_bridge_port *port,
- 				struct net_bridge_vlan *vlan,
- 				struct net_bridge_mcast_port *pmctx);
- void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx);
-+void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state);
- void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on);
- int br_multicast_toggle_vlan_snooping(struct net_bridge *br, bool on,
- 				      struct netlink_ext_ack *extack);
-@@ -1502,6 +1503,11 @@ static inline void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pm
- {
- }
- 
-+static inline void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v,
-+						      u8 state)
-+{
-+}
-+
- static inline void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan,
- 						bool on)
- {
-@@ -1862,7 +1868,9 @@ bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
- bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
- 			      const struct net_bridge_vlan *v_opts);
- 
--/* vlan state manipulation helpers using *_ONCE to annotate lock-free access */
-+/* vlan state manipulation helpers using *_ONCE to annotate lock-free access,
-+ * while br_vlan_set_state() may access data protected by multicast_lock.
-+ */
- static inline u8 br_vlan_get_state(const struct net_bridge_vlan *v)
- {
- 	return READ_ONCE(v->state);
-@@ -1871,6 +1879,7 @@ static inline u8 br_vlan_get_state(const struct net_bridge_vlan *v)
- static inline void br_vlan_set_state(struct net_bridge_vlan *v, u8 state)
- {
- 	WRITE_ONCE(v->state, state);
-+	br_multicast_update_vlan_mcast_ctx(v, state);
- }
- 
- static inline u8 br_vlan_get_pvid_state(const struct net_bridge_vlan_group *vg)
--- 
-2.39.5
-
+ 	dev_dbg(dev, "vt min/max_pre_pll_clk_div: %u,%u\n",
+ 		min_pre_pll_clk_div, max_pre_pll_clk_div);
 
 
 
