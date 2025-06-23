@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-158143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 031D2AE5722
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E6DDAE56C1
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA4061C23EF2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51D6A4E100A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1DF22370A;
-	Mon, 23 Jun 2025 22:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D1B224B1F;
+	Mon, 23 Jun 2025 22:22:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YdEb1Hy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eq2BShHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDA9221543;
-	Mon, 23 Jun 2025 22:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E46199FBA;
+	Mon, 23 Jun 2025 22:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717590; cv=none; b=fOUBd/3aOSj4SCEuen0BFdxX5L8lsUwi8ztWgkhNWK6PtXN7hprqw3/UTukIhJut48sUPw/E9HgGqDdUFABdnMAQtzJfDKnaFicanf3rR+JyB9QjS0Fk5xuPYVFr92DkBnpvCFThwxCfzYXd/n70IbcNzE94b0QZmys0rIOvp0g=
+	t=1750717346; cv=none; b=Uqmou0wGpoeFujplwgVjrjQeXEzxdyHXYaBZpmkeM1Q80Bn0E0VGpA59duN3wrmgAWPDJqgQSI2hu0Y0YRNXTAp5SQyXbnvUPH/F/bbQMlvrzcCfUn4yTBIJCbMRJmyJ++OU2sNpCtxDYpziDYjuf18d+AK6JDX1soozGVQENrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717590; c=relaxed/simple;
-	bh=x7yCUdHA4O66OL3bw0vco7GyBr36/hjDAdnRYo35yRA=;
+	s=arc-20240116; t=1750717346; c=relaxed/simple;
+	bh=BX3kON+vbeUcKrYY3hLLwVFbItpoHULu3cqwFNAxv5M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZslC3i087+mVjB8KpztoC4kkKcxEjI2zhQ4fNXQgSbj7q6+TxQFuSy1nY0IginVhzH4t4jJvnxFNwpinWIhv+bM6G78FQ+9S3llQnaq4N7KUEt9cIF+jQx/d9uMIqfCInzSO6gbrdzFkFPsqv/C62bCD/27HMOvdlA3LSB5z5jY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YdEb1Hy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869E1C4CEEA;
-	Mon, 23 Jun 2025 22:26:29 +0000 (UTC)
+	 MIME-Version; b=eb36afGNilywM30CjkVboG21PmCu1Eo3HHPXji/+Ppg48AzXOCidctV7LtsuXmO9ZJ5ymNsafHruFP6vyR2T28bdHQhKitL/oiGpMIR72SebtMRzxeHnP88xxpJZAoaaB3b2pkCuc2/muR/gruarFyvkhzFdMWtf8xutPNerHls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eq2BShHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C888C4CEEA;
+	Mon, 23 Jun 2025 22:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717589;
-	bh=x7yCUdHA4O66OL3bw0vco7GyBr36/hjDAdnRYo35yRA=;
+	s=korg; t=1750717345;
+	bh=BX3kON+vbeUcKrYY3hLLwVFbItpoHULu3cqwFNAxv5M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YdEb1Hy9hpfTlQgZu07Gt9UVn++oxSl9ri3hwV0Pyv86BQateL0uTwqfUosT18blf
-	 TxYRdFD38CLqXoQO7AGeB/1lHT6az5/sMUrqa6RvMxO2LFuo/WCia9rgP/rMb/PaWX
-	 cvXDwVfZqdMrA8Ac5gwFiVIUkY/66yCRYqQ6YFTo=
+	b=eq2BShHn7AWZrNPQ4mRwWKyMAoFgrE8qFrAUjmnyTA73uzxBsnXZLpcs7Gt8/e0m9
+	 /FLTyhWag3uYnjPL3QoeEPQe5NYk7iZhyMdk1PtnAmtebbp3vlYjaXtyaaAVpLooQ8
+	 N3lpy7Su5zBYYyqfpbzY8EUmjyyfhhMLElGnvYJU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 462/508] iio: accel: fxls8962af: Fix temperature calculation
+	Chuyi Zhou <zhouchuyi@bytedance.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 370/414] workqueue: Initialize wq_isolated_cpumask in workqueue_init_early()
 Date: Mon, 23 Jun 2025 15:08:27 +0200
-Message-ID: <20250623130656.484952586@linuxfoundation.org>
+Message-ID: <20250623130651.207534318@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Chuyi Zhou <zhouchuyi@bytedance.com>
 
-commit 16038474e3a0263572f36326ef85057aaf341814 upstream.
+[ Upstream commit 261dce3d64021e7ec828a17b4975ce9182e54ceb ]
 
-According to spec temperature should be returned in milli degrees Celsius.
-Add in_temp_scale to calculate from Celsius to milli Celsius.
+Now when isolcpus is enabled via the cmdline, wq_isolated_cpumask does
+not include these isolated CPUs, even wq_unbound_cpumask has already
+excluded them. It is only when we successfully configure an isolate cpuset
+partition that wq_isolated_cpumask gets overwritten by
+workqueue_unbound_exclude_cpumask(), including both the cmdline-specified
+isolated CPUs and the isolated CPUs within the cpuset partitions.
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
-Cc: stable@vger.kernel.org
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250505-fxls-v4-1-a38652e21738@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this issue by initializing wq_isolated_cpumask properly in
+workqueue_init_early().
+
+Fixes: fe28f631fa94 ("workqueue: Add workqueue_unbound_exclude_cpumask() to exclude CPUs from wq_unbound_cpumask")
+Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ kernel/workqueue.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -20,6 +20,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
-+#include <linux/units.h>
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index a9d64e08dffc7..3c87eb98609c0 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -7731,7 +7731,8 @@ void __init workqueue_init_early(void)
+ 		restrict_unbound_cpumask("workqueue.unbound_cpus", &wq_cmdline_cpumask);
  
- #include <linux/iio/buffer.h>
- #include <linux/iio/events.h>
-@@ -435,8 +436,16 @@ static int fxls8962af_read_raw(struct ii
- 		*val = FXLS8962AF_TEMP_CENTER_VAL;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		*val = 0;
--		return fxls8962af_read_full_scale(data, val2);
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			*val = MILLIDEGREE_PER_DEGREE;
-+			return IIO_VAL_INT;
-+		case IIO_ACCEL:
-+			*val = 0;
-+			return fxls8962af_read_full_scale(data, val2);
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return fxls8962af_read_samp_freq(data, val, val2);
- 	default:
-@@ -735,6 +744,7 @@ static const struct iio_event_spec fxls8
- 	.type = IIO_TEMP, \
- 	.address = FXLS8962AF_TEMP_OUT, \
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-+			      BIT(IIO_CHAN_INFO_SCALE) | \
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
+ 	cpumask_copy(wq_requested_unbound_cpumask, wq_unbound_cpumask);
+-
++	cpumask_andnot(wq_isolated_cpumask, cpu_possible_mask,
++						housekeeping_cpumask(HK_TYPE_DOMAIN));
+ 	pwq_cache = KMEM_CACHE(pool_workqueue, SLAB_PANIC);
+ 
+ 	unbound_wq_update_pwq_attrs_buf = alloc_workqueue_attrs();
+-- 
+2.39.5
+
 
 
 
