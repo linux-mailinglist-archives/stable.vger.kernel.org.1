@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3E2FAE5524
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2870AE5710
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3AC6E4A0A67
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A75453AB5FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E38221DAE;
-	Mon, 23 Jun 2025 22:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27FA223DE8;
+	Mon, 23 Jun 2025 22:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CYgAKIn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwwgPzC5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403193597E;
-	Mon, 23 Jun 2025 22:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E1982222B2;
+	Mon, 23 Jun 2025 22:23:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716488; cv=none; b=eFLi4ZuRWZJUQ91w7O1TkWehkTo6/yQ9n+KieztVdgjdhGQspZpJJzISrdHE/daYftkk9qornnWwA7YDeFx6zhCMnKMiftr5tOGEQwDgtAsJfBrBamoaleCw0BKx9MzLy4p27wYvdD1RqiKM7QUV3DfTxOauH3gKiXiPhfaD/wg=
+	t=1750717380; cv=none; b=YQ2hzjDOxyUzbNxhm46Rc4wi9j5pIwWxYya+onL975ZhuJ4xhEpOQA/e6dLW0/OPr1Ei8yP1XAAlqxIsVhgefl9ySI43OLRZtEeU4pvxH5egLhJsVvTGH9m7ImuU0iGwbgX9i1qFlKQYV2YqlbVp6mpkgqT7BTd1iyTY6TlG5UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716488; c=relaxed/simple;
-	bh=3dUh7VGUbVpoUh1+058CUtxrV5Vp4aGAz3TYkHhaQLQ=;
+	s=arc-20240116; t=1750717380; c=relaxed/simple;
+	bh=8gMUq9zi2uGiMtTbjT3JEMPhYoTuMtCL3y543+mU4jM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p5ercFgnKawW4CehuEF2DkxI/z/Y+STXe14NoqzEMd8wWvN77345qWFLt3wFUynwiTSpAownUwr8SLLXxSKy90Y8KZmWM+S9NrDh61Qzl0RXENLuQj/qLR4dOSUdSS6zeQkQUeGplw7PU/xO/QR0lz4CYDtEPbgF5XCmDxO/kfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CYgAKIn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFB0C4CEEA;
-	Mon, 23 Jun 2025 22:08:07 +0000 (UTC)
+	 MIME-Version; b=lBNn6jnzB3VbbZ8xtQ95W7cGPGD4FD7+ezxI6mIGLq1otIRlcWYXToKfVJFOWajnc/qqjTl1Tj1J2LiBXLC3JApBunXXoZ/oQiATSjCqzmQpEpGWsc2ZaAS9whtl6V+YNgHa2Nogx1nXemsjrt7/Nhu4vHl+moX6Vm1Oi0qEB7w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwwgPzC5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D66C4CEEA;
+	Mon, 23 Jun 2025 22:22:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716488;
-	bh=3dUh7VGUbVpoUh1+058CUtxrV5Vp4aGAz3TYkHhaQLQ=;
+	s=korg; t=1750717380;
+	bh=8gMUq9zi2uGiMtTbjT3JEMPhYoTuMtCL3y543+mU4jM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CYgAKIn9lY5V79O/1Ej1NMbBOBEVUlw/5GSYgKBpHlBfyvwSSe0wxYkDfGiYE3TNo
-	 9TCeeLhZKo6KMu9Asjwe+fua43Gpkr5FArJUh2mcXM/moqbf1V29FgA4qDcRCg0wi9
-	 wEAwNb/C62ZCsVfi7WaJ46TAJ6BtlmPvi9PWEp5w=
+	b=iwwgPzC59K7FV//1prz9KB2DJkNKrW2HtyiAIUclMTBtb+hLeB7k3WZS9/0lApYG+
+	 xy9yqra/DLnSnKdJsx56oQKQnGh4AHKOcAz5Zr97/YGiGkETyDgpc0OkWrO2WtDAZo
+	 Cd58P6VXjVhRhZ55/wBGTFyyaHpaWhwKGIe44aOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
+	David Wei <dw@davidwei.uk>,
+	Pavan Chebbi <pavan.chebbi@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 555/592] tools: ynl: fix mixing ops and notifications on one socket
+Subject: [PATCH 6.12 376/414] bnxt_en: Update MRU and RSS table of RSS contexts on queue reset
 Date: Mon, 23 Jun 2025 15:08:33 +0200
-Message-ID: <20250623130713.646326850@linuxfoundation.org>
+Message-ID: <20250623130651.352810649@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +64,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Pavan Chebbi <pavan.chebbi@broadcom.com>
 
-[ Upstream commit 9738280aae592b579a25b5b1b6584c894827d3c7 ]
+[ Upstream commit 5dacc94c6fe61cde6f700e95cf35af9944b022c4 ]
 
-The multi message support loosened the connection between the request
-and response handling, as we can now submit multiple requests before
-we start processing responses. Passing the attr set to NlMsgs decoding
-no longer makes sense (if it ever did), attr set may differ message
-by messsage. Isolate the part of decoding responsible for attr-set
-specific interpretation and call it once we identified the correct op.
+The commit under the Fixes tag below which updates the VNICs' RSS
+and MRU during .ndo_queue_start(), needs to be extended to cover any
+non-default RSS contexts which have their own VNICs.  Without this
+step, packets that are destined to a non-default RSS context may be
+dropped after .ndo_queue_start().
 
-Without this fix performing SET operation on an ethtool socket, while
-being subscribed to notifications causes:
+We further optimize this scheme by updating the VNIC only if the
+RX ring being restarted is in the RSS table of the VNIC.  Updating
+the VNIC (in particular setting the MRU to 0) will momentarily stop
+all traffic to all rings in the RSS table.  Any VNIC that has the
+RX ring excluded from the RSS table can skip this step and avoid the
+traffic disruption.
 
- # File "tools/net/ynl/pyynl/lib/ynl.py", line 1096, in _op
- # Exception|     return self._ops(ops)[0]
- # Exception|            ~~~~~~~~~^^^^^
- # File "tools/net/ynl/pyynl/lib/ynl.py", line 1040, in _ops
- # Exception|     nms = NlMsgs(reply, attr_space=op.attr_set)
- # Exception|                                    ^^^^^^^^^^^
+Note that this scheme is just an improvement.  A VNIC with multiple
+rings in the RSS table will still see traffic disruptions to all rings
+in the RSS table when one of the rings is being restarted.  We are
+working on a FW scheme that will improve upon this further.
 
-The value of op we use on line 1040 is stale, it comes form the previous
-loop. If a notification comes before a response we will update op to None
-and the next iteration thru the loop will break with the trace above.
-
-Fixes: 6fda63c45fe8 ("tools/net/ynl: fix cli.py --subscribe feature")
-Fixes: ba8be00f68f5 ("tools/net/ynl: Add multi message support to ynl")
-Reviewed-by: Donald Hunter <donald.hunter@gmail.com>
-Link: https://patch.msgid.link/20250618171746.1201403-1-kuba@kernel.org
+Fixes: 5ac066b7b062 ("bnxt_en: Fix queue start to update vnic RSS table")
+Reported-by: David Wei <dw@davidwei.uk>
+Signed-off-by: Pavan Chebbi <pavan.chebbi@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250613231841.377988-4-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/net/ynl/pyynl/lib/ynl.py | 28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 56 +++++++++++++++++++++--
+ 1 file changed, 51 insertions(+), 5 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index 55b59f6c79b89..61deb59230671 100644
---- a/tools/net/ynl/pyynl/lib/ynl.py
-+++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -231,14 +231,7 @@ class NlMsg:
-                     self.extack['unknown'].append(extack)
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index e3dfce365ba40..154f73f121eca 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -10390,11 +10390,39 @@ void bnxt_del_one_rss_ctx(struct bnxt *bp, struct bnxt_rss_ctx *rss_ctx,
+ 	bp->num_rss_ctx--;
+ }
  
-             if attr_space:
--                # We don't have the ability to parse nests yet, so only do global
--                if 'miss-type' in self.extack and 'miss-nest' not in self.extack:
--                    miss_type = self.extack['miss-type']
--                    if miss_type in attr_space.attrs_by_val:
--                        spec = attr_space.attrs_by_val[miss_type]
--                        self.extack['miss-type'] = spec['name']
--                        if 'doc' in spec:
--                            self.extack['miss-type-doc'] = spec['doc']
-+                self.annotate_extack(attr_space)
- 
-     def _decode_policy(self, raw):
-         policy = {}
-@@ -264,6 +257,18 @@ class NlMsg:
-                 policy['mask'] = attr.as_scalar('u64')
-         return policy
- 
-+    def annotate_extack(self, attr_space):
-+        """ Make extack more human friendly with attribute information """
++static bool bnxt_vnic_has_rx_ring(struct bnxt *bp, struct bnxt_vnic_info *vnic,
++				  int rxr_id)
++{
++	u16 tbl_size = bnxt_get_rxfh_indir_size(bp->dev);
++	int i, vnic_rx;
 +
-+        # We don't have the ability to parse nests yet, so only do global
-+        if 'miss-type' in self.extack and 'miss-nest' not in self.extack:
-+            miss_type = self.extack['miss-type']
-+            if miss_type in attr_space.attrs_by_val:
-+                spec = attr_space.attrs_by_val[miss_type]
-+                self.extack['miss-type'] = spec['name']
-+                if 'doc' in spec:
-+                    self.extack['miss-type-doc'] = spec['doc']
++	/* Ntuple VNIC always has all the rx rings. Any change of ring id
++	 * must be updated because a future filter may use it.
++	 */
++	if (vnic->flags & BNXT_VNIC_NTUPLE_FLAG)
++		return true;
 +
-     def cmd(self):
-         return self.nl_type
++	for (i = 0; i < tbl_size; i++) {
++		if (vnic->flags & BNXT_VNIC_RSSCTX_FLAG)
++			vnic_rx = ethtool_rxfh_context_indir(vnic->rss_ctx)[i];
++		else
++			vnic_rx = bp->rss_indir_tbl[i];
++
++		if (rxr_id == vnic_rx)
++			return true;
++	}
++
++	return false;
++}
++
+ static int bnxt_set_vnic_mru_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic,
+-				u16 mru)
++				u16 mru, int rxr_id)
+ {
+ 	int rc;
  
-@@ -277,12 +282,12 @@ class NlMsg:
++	if (!bnxt_vnic_has_rx_ring(bp, vnic, rxr_id))
++		return 0;
++
+ 	if (mru) {
+ 		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
+ 		if (rc) {
+@@ -10410,6 +10438,24 @@ static int bnxt_set_vnic_mru_p5(struct bnxt *bp, struct bnxt_vnic_info *vnic,
+ 	return 0;
+ }
  
++static int bnxt_set_rss_ctx_vnic_mru(struct bnxt *bp, u16 mru, int rxr_id)
++{
++	struct ethtool_rxfh_context *ctx;
++	unsigned long context;
++	int rc;
++
++	xa_for_each(&bp->dev->ethtool->rss_ctx, context, ctx) {
++		struct bnxt_rss_ctx *rss_ctx = ethtool_rxfh_context_priv(ctx);
++		struct bnxt_vnic_info *vnic = &rss_ctx->vnic;
++
++		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru, rxr_id);
++		if (rc)
++			return rc;
++	}
++
++	return 0;
++}
++
+ static void bnxt_hwrm_realloc_rss_ctx_vnic(struct bnxt *bp)
+ {
+ 	bool set_tpa = !!(bp->flags & BNXT_FLAG_TPA);
+@@ -15381,12 +15427,11 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
+ 	for (i = 0; i < bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
  
- class NlMsgs:
--    def __init__(self, data, attr_space=None):
-+    def __init__(self, data):
-         self.msgs = []
+-		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru);
++		rc = bnxt_set_vnic_mru_p5(bp, vnic, mru, idx);
+ 		if (rc)
+ 			return rc;
+ 	}
+-
+-	return 0;
++	return bnxt_set_rss_ctx_vnic_mru(bp, mru, idx);
  
-         offset = 0
-         while offset < len(data):
--            msg = NlMsg(data, offset, attr_space=attr_space)
-+            msg = NlMsg(data, offset)
-             offset += msg.nl_len
-             self.msgs.append(msg)
+ err_free_hwrm_rx_ring:
+ 	bnxt_hwrm_rx_ring_free(bp, rxr, false);
+@@ -15403,8 +15448,9 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
+ 	for (i = 0; i < bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
  
-@@ -1034,12 +1039,13 @@ class YnlFamily(SpecFamily):
-         op_rsp = []
-         while not done:
-             reply = self.sock.recv(self._recv_size)
--            nms = NlMsgs(reply, attr_space=op.attr_set)
-+            nms = NlMsgs(reply)
-             self._recv_dbg_print(reply, nms)
-             for nl_msg in nms:
-                 if nl_msg.nl_seq in reqs_by_seq:
-                     (op, vals, req_msg, req_flags) = reqs_by_seq[nl_msg.nl_seq]
-                     if nl_msg.extack:
-+                        nl_msg.annotate_extack(op.attr_set)
-                         self._decode_extack(req_msg, op, nl_msg.extack, vals)
-                 else:
-                     op = None
+-		bnxt_set_vnic_mru_p5(bp, vnic, 0);
++		bnxt_set_vnic_mru_p5(bp, vnic, 0, idx);
+ 	}
++	bnxt_set_rss_ctx_vnic_mru(bp, 0, idx);
+ 	/* Make sure NAPI sees that the VNIC is disabled */
+ 	synchronize_net();
+ 	rxr = &bp->rx_ring[idx];
 -- 
 2.39.5
 
