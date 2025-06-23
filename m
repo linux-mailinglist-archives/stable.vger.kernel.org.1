@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-156400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4036DAE4F62
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94A68AE4F6A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A36A71B60DD2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B25333BF282
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 448861FE46D;
-	Mon, 23 Jun 2025 21:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C16C32628C;
+	Mon, 23 Jun 2025 21:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d50AXR04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ADn9u2M4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FB35FDA7;
-	Mon, 23 Jun 2025 21:15:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 800297482;
+	Mon, 23 Jun 2025 21:15:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713322; cv=none; b=CTG+LBXNyAaVwX4KSbssB2X/rmyluSoywOYmKZeS6dVgScnogSqr9wMjZOwMPfmR8m0o2982ryXDg10CSJiPqKMqQcIAJIB2mavYGQNUt8XVZfNsPDwT+d3qbPflepvZGc0qP/2bDeieOQ4ViP1Pygj7MlTIzlXebogF6iKNqkk=
+	t=1750713341; cv=none; b=C3mZaG88XrUK5t2teoEkAmtDWhvdQGxRNImaHk0dcPBJJqxTWb3uOveQD87TeO1Tqx4H71iAk62Xt1XNXfjNcnPgpd5XEJVoVc0bhIjzz6EOOR7mac9rLEqg4jd02xiEI4tzhxMyrmTPn7zBSh9Bxl5tic/JYWiWzyjl9LNX4FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713322; c=relaxed/simple;
-	bh=uRAMvwiM/jthdPI+0n8+KJSwdy9fGB4i0ekqbklpspE=;
+	s=arc-20240116; t=1750713341; c=relaxed/simple;
+	bh=NPtMRvdMfHYwMJ19RDNunOv70xyLVcV/KAS0ySwMOzg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HO0NW3+vFN+T7CnbGKzNFneT2EZviIf+czYvMY830wK1FvaLx4Q187+Q5RE57Rzuyb1WTPzElLVaGDdFCQUnds7eL60u3TVJNcTBnjpQDLE56I0kx/UuP919/TtUvIJZdMan5u8BoOxSjyDHlnH8WrdM48NJWVewNVFf+YkV8zY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d50AXR04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE75C4CEED;
-	Mon, 23 Jun 2025 21:15:21 +0000 (UTC)
+	 MIME-Version; b=U0Xn52Z4Q1VKUfyshrjWzN5FMWTWo7i/oFPT/8kSHIkQ6QpptP9r8pkHPmPbZEaQjvwjM/Zgn//B8mfq4Y2J0JY643O1/HR33uyNqS9JhhBthr0jn9epepgU6fm0e/aHMxvKly5Vh1huwXD162KUoANcgNZFJPGjZ+uvgPO0fX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ADn9u2M4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 161DEC4CEEA;
+	Mon, 23 Jun 2025 21:15:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713321;
-	bh=uRAMvwiM/jthdPI+0n8+KJSwdy9fGB4i0ekqbklpspE=;
+	s=korg; t=1750713341;
+	bh=NPtMRvdMfHYwMJ19RDNunOv70xyLVcV/KAS0ySwMOzg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d50AXR04TorxUk++q0sMj5eieucqLNZxNQRWOYqwiCBuUt8iKltmw8J+ZslGR667e
-	 hvbkE2/cmhIujm3Wub3SxCiXYg6+NG/wFYtdQNjI43/uCkxhTHC38eeEwcLC/wL7XL
-	 7FsW+WSSlOIRYd6JToxPAyHMisf7LC9AYKEzvAlE=
+	b=ADn9u2M4hRaZf9pWH0li6DTVvPBDV1mmBVoD5Ul7tK1X8amOmffygOCUaCI+IvBco
+	 CCfhlw2i9/d9ou3r8kpqXoKAMFCkbfLroex0w0/1O9H1bZWSxXteyxWMpBNkPmEk7r
+	 H7HHRbV+aJqawhO07ngMS+B5crPk2F/7uAT8/iBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 038/414] svcrdma: Unregister the device if svc_rdma_accept() fails
-Date: Mon, 23 Jun 2025 15:02:55 +0200
-Message-ID: <20250623130642.988647466@linuxfoundation.org>
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.12 039/414] wifi: rtw88: usb: Reduce control message timeout to 500 ms
+Date: Mon, 23 Jun 2025 15:02:56 +0200
+Message-ID: <20250623130643.014217169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -65,35 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 8ac6fcae5dc0e801f1c82a83f5ae2c0a4db19932 upstream.
+commit 490340faddea461319652ce36dbc7c1b4482c35e upstream.
 
-To handle device removal, svc_rdma_accept() requests removal
-notification for the underlying device when accepting a connection.
-However svc_rdma_free() is not invoked if svc_rdma_accept() fails.
-There needs to be a matching "unregister" in that case; otherwise
-the device cannot be removed.
+RTL8811AU stops responding during the firmware download on some systems:
 
-Fixes: c4de97f7c454 ("svcrdma: Handle device removal outside of the CM event handler")
+[  809.256440] rtw_8821au 5-2.1:1.0: Firmware version 42.4.0, H2C version 0
+[  812.759142] rtw_8821au 5-2.1:1.0 wlp48s0f4u2u1: renamed from wlan0
+[  837.315388] rtw_8821au 1-4:1.0: write register 0x1ef4 failed with -110
+[  867.524259] rtw_8821au 1-4:1.0: write register 0x1ef8 failed with -110
+[  868.930976] rtw_8821au 5-2.1:1.0 wlp48s0f4u2u1: entered promiscuous mode
+[  897.730952] rtw_8821au 1-4:1.0: write register 0x1efc failed with -110
+
+Each write takes 30 seconds to fail because that's the timeout currently
+used for control messages in rtw_usb_write().
+
+In this scenario the firmware download takes at least 2000 seconds.
+Because this is done from the USB probe function, the long delay makes
+other things in the system hang.
+
+Reduce the timeout to 500 ms. This is the value used by the official USB
+wifi drivers from Realtek.
+
+Of course this only makes things hang for ~30 seconds instead of ~30
+minutes. It doesn't fix the firmware download.
+
+Tested with RTL8822CU, RTL8812BU, RTL8811CU, RTL8814AU, RTL8811AU,
+RTL8812AU, RTL8821AU, RTL8723DU.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: a82dfd33d123 ("wifi: rtw88: Add common USB chip support")
+Link: https://github.com/lwfinger/rtw88/issues/344
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Acked-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/1e35dd26-3f10-40b1-b2b4-f72184a26611@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_transport.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/realtek/rtw88/usb.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sunrpc/xprtrdma/svc_rdma_transport.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_transport.c
-@@ -577,6 +577,7 @@ static struct svc_xprt *svc_rdma_accept(
- 	if (newxprt->sc_qp && !IS_ERR(newxprt->sc_qp))
- 		ib_destroy_qp(newxprt->sc_qp);
- 	rdma_destroy_id(newxprt->sc_cm_id);
-+	rpcrdma_rn_unregister(dev, &newxprt->sc_rn);
- 	/* This call to put will destroy the transport */
- 	svc_xprt_put(&newxprt->sc_xprt);
- 	return NULL;
+--- a/drivers/net/wireless/realtek/rtw88/usb.c
++++ b/drivers/net/wireless/realtek/rtw88/usb.c
+@@ -138,7 +138,7 @@ static void rtw_usb_write(struct rtw_dev
+ 
+ 	ret = usb_control_msg(udev, usb_sndctrlpipe(udev, 0),
+ 			      RTW_USB_CMD_REQ, RTW_USB_CMD_WRITE,
+-			      addr, 0, data, len, 30000);
++			      addr, 0, data, len, 500);
+ 	if (ret < 0 && ret != -ENODEV && count++ < 4)
+ 		rtw_err(rtwdev, "write register 0x%x failed with %d\n",
+ 			addr, ret);
 
 
 
