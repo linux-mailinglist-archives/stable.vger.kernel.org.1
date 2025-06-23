@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-158187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CD99AE5756
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFCDBAE5527
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C38F87B41D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 041B0163DA4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92C6C22422F;
-	Mon, 23 Jun 2025 22:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4625221FD6;
+	Mon, 23 Jun 2025 22:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cpE+snk4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEbY1NYA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB5DB676;
-	Mon, 23 Jun 2025 22:28:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B52218580;
+	Mon, 23 Jun 2025 22:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717698; cv=none; b=oDp+1Q1RyYqwQp8gsxRj9u13mSprHzzbUA0qwaHp/UXVuHL1hMbwTxiQMmMtZPtdyyJ0urKRr3lwjNoGx4eiEt/sdMsD9czxkWjXug2kVe4Tn0cNhgEze1sAQTXdmQPPuvhkDi4x4sgZZh7oOJ7CjriYBnP2UGsHhgaMQ4suQXY=
+	t=1750716478; cv=none; b=O8G57GcdPzBucw3ARB9WTNOgmcVhuDwiTBXItFIcnWiBxDSS+OTi86MxxqGKxEmSK9Z/7/vWvKSJNqU81NBrWUtiDNr3CmYXOMEm2gbGAQIvq7u4Bg5OJ1//VcqVugGm3qOQ2ZMZEtBTKwwAZuAgldVbJR8AaUZTmsiuQhSQcDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717698; c=relaxed/simple;
-	bh=5ssqsL+je2SoxgnqnumiLzzJB9NgncOCSYsyW4LYf5I=;
+	s=arc-20240116; t=1750716478; c=relaxed/simple;
+	bh=6WL4D9sIvC7xkWt6zD8Qv6+tA79ma4od6ZP3VBQphAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WeUBrzc6wBoVs/jhAV+rkNtMk8d19vM3dJr2av4+KtQG18/hqIZjJPMSVEOFWcAG6D0Yje20F6HEe51n7SYvd00PLxHvb+2NaVWmzn+DVMYmrpztrRJkqesWnLkq1exI24TGOw7NzIpB6YE0vTE8UBTUXKH0mjUE+c3jfbKVmT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cpE+snk4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7055C4CEEA;
-	Mon, 23 Jun 2025 22:28:17 +0000 (UTC)
+	 MIME-Version; b=WDsShVJO8aHruwxRIwKtFC+4HheXwc8F3KGe2nPfz93AhCXlaXbIgs6dI1VMJ3RzYzlWyuGuyi9uWuToDwFlwywE5mJtLRdmXREhwWGjAsEcV9MCTQZRY/IplbnC3rbJDl+R31pdE2BkLXMR8W+wJDYrmuH8f7BG6sC3rNV0LX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEbY1NYA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DE4C4CEEA;
+	Mon, 23 Jun 2025 22:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717698;
-	bh=5ssqsL+je2SoxgnqnumiLzzJB9NgncOCSYsyW4LYf5I=;
+	s=korg; t=1750716478;
+	bh=6WL4D9sIvC7xkWt6zD8Qv6+tA79ma4od6ZP3VBQphAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cpE+snk4TL8waAkC9BX2F/47Bm4ggmq6bbMRk6GSHp9FQqkkpKlTXE9ZAYV3Kj2kJ
-	 j+zdOTD4uL45PHjMqM1IhJ2Yq9IIH6BuacPHVrLlDHgU2+G21Vp+GyR5KTguJ6NP8x
-	 LELCs2kA9oQ3zVNT62WnW/DTskiD/hnCP7jMUmWs=
+	b=nEbY1NYAGZauo+qKnbz4Zr/DZgHN1nhXcDRPuixNwTn7oUfSEnJtggpvKU/kbypQO
+	 pRAEk5P/4A8/n9WmIZd4Wq50gXoaH7kdaJLPlyDhcaeKHfW3S1/Iv3WMdU3h6fPnUE
+	 VhDOShzC37K2cMApXbumJvcZPNhyHN5pkREaHl78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 507/508] RISC-V: KVM: Fix the size parameter check in SBI SFENCE calls
+	Wei Wei <weiwei.danny@bytedance.com>,
+	Aaron Lu <ziqianlu@bytedance.com>
+Subject: [PATCH 5.10 351/355] Revert "bpf: aggressively forget precise markings during state checkpointing"
 Date: Mon, 23 Jun 2025 15:09:12 +0200
-Message-ID: <20250623130657.468415305@linuxfoundation.org>
+Message-ID: <20250623130637.273490973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Aaron Lu <ziqianlu@bytedance.com>
 
-[ Upstream commit 6aba0cb5bba6141158d5449f2cf53187b7f755f9 ]
+This reverts commit 1952a4d5e4cf610336b9c9ab52b1fc4e42721cf3 which is
+commit 7a830b53c17bbadcf99f778f28aaaa4e6c41df5f upstream.
 
-As-per the SBI specification, an SBI remote fence operation applies
-to the entire address space if either:
-1) start_addr and size are both 0
-2) size is equal to 2^XLEN-1
+The backport of bpf precision tracking related changes has caused bpf
+verifier to panic while loading some certain bpf prog so revert them.
 
->From the above, only #1 is checked by SBI SFENCE calls so fix the
-size parameter check in SBI SFENCE calls to cover #2 as well.
-
-Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250605061458.196003-2-apatel@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20250605070921.GA3795@bytedance/
+Reported-by: Wei Wei <weiwei.danny@bytedance.com>
+Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/verifier.c |   37 -------------------------------------
+ 1 file changed, 37 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
-index 4c034d8a606a1..304d29383e6c0 100644
---- a/arch/riscv/kvm/vcpu_sbi_replace.c
-+++ b/arch/riscv/kvm/vcpu_sbi_replace.c
-@@ -91,14 +91,14 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
- 		kvm_riscv_fence_i(vcpu->kvm, hbase, hmask);
- 		break;
- 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA:
--		if (cp->a2 == 0 && cp->a3 == 0)
-+		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
- 			kvm_riscv_hfence_vvma_all(vcpu->kvm, hbase, hmask);
- 		else
- 			kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbase, hmask,
- 						  cp->a2, cp->a3, PAGE_SHIFT);
- 		break;
- 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID:
--		if (cp->a2 == 0 && cp->a3 == 0)
-+		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
- 			kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,
- 						       hbase, hmask, cp->a4);
- 		else
--- 
-2.39.5
-
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2053,31 +2053,6 @@ static void mark_all_scalars_precise(str
+ 	}
+ }
+ 
+-static void mark_all_scalars_imprecise(struct bpf_verifier_env *env, struct bpf_verifier_state *st)
+-{
+-	struct bpf_func_state *func;
+-	struct bpf_reg_state *reg;
+-	int i, j;
+-
+-	for (i = 0; i <= st->curframe; i++) {
+-		func = st->frame[i];
+-		for (j = 0; j < BPF_REG_FP; j++) {
+-			reg = &func->regs[j];
+-			if (reg->type != SCALAR_VALUE)
+-				continue;
+-			reg->precise = false;
+-		}
+-		for (j = 0; j < func->allocated_stack / BPF_REG_SIZE; j++) {
+-			if (!is_spilled_reg(&func->stack[j]))
+-				continue;
+-			reg = &func->stack[j].spilled_ptr;
+-			if (reg->type != SCALAR_VALUE)
+-				continue;
+-			reg->precise = false;
+-		}
+-	}
+-}
+-
+ /*
+  * __mark_chain_precision() backtracks BPF program instruction sequence and
+  * chain of verifier states making sure that register *regno* (if regno >= 0)
+@@ -2156,14 +2131,6 @@ static void mark_all_scalars_imprecise(s
+  * be imprecise. If any child state does require this register to be precise,
+  * we'll mark it precise later retroactively during precise markings
+  * propagation from child state to parent states.
+- *
+- * Skipping precise marking setting in current state is a mild version of
+- * relying on the above observation. But we can utilize this property even
+- * more aggressively by proactively forgetting any precise marking in the
+- * current state (which we inherited from the parent state), right before we
+- * checkpoint it and branch off into new child state. This is done by
+- * mark_all_scalars_imprecise() to hopefully get more permissive and generic
+- * finalized states which help in short circuiting more future states.
+  */
+ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
+ 				  int spi)
+@@ -9928,10 +9895,6 @@ next:
+ 	env->prev_jmps_processed = env->jmps_processed;
+ 	env->prev_insn_processed = env->insn_processed;
+ 
+-	/* forget precise markings we inherited, see __mark_chain_precision */
+-	if (env->bpf_capable)
+-		mark_all_scalars_imprecise(env, cur);
+-
+ 	/* add new state to the head of linked list */
+ 	new = &new_sl->state;
+ 	err = copy_verifier_state(new, cur);
 
 
 
