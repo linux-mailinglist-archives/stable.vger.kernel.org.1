@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155854-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B791AE42C6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 42471AE43FD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 665667A3142
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB6351898A1A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECA56248869;
-	Mon, 23 Jun 2025 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AF632561D9;
+	Mon, 23 Jun 2025 13:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JQ/FeRZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zk69TqMP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC37F2367B0;
-	Mon, 23 Jun 2025 13:25:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC985255E26;
+	Mon, 23 Jun 2025 13:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685100; cv=none; b=MNfV4b23Kem0DBuiAHhRgTNGoc9cEHDSD9tGqbPKGXCKnMTBt8iJe1LzXPrYONyiXIUtdgAs9Vgxxwr3jwGysVJcQpeRQzYkhweDNMGdO+aowtlPMeRDIOY5p2LMbC50XQqz2sU9YuaoVb7996Cfp6LVySRLer3kuScqkJLzblA=
+	t=1750685509; cv=none; b=V8JDXTzTh3nKsaDk+39buZoMRuugROCnaVCbaPtJeStwzJP2600wQk4NQMXnfW1h1DISVT6MraucikIyajeClSWWzOH53A5a7P9mOi/en/9de0nnHbrjyQK7hDJJhwwt1SO4ArXCkg+cF/RI48IDwjX5vQ4ej9arzVFAHt1amTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685100; c=relaxed/simple;
-	bh=4yA9JNC+fUicaPcbh1feMTMCLXzAYJSzldel2PsxSyU=;
+	s=arc-20240116; t=1750685509; c=relaxed/simple;
+	bh=ZO/QK1a9EvOT5zkinLRjXWeEpGFVcs/lDTMqfO+Rab4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=drf1H8Xx+LWWBJeeO0rQ+A1RDk3oh2VAUUP+WLtykS0OehrBGjjtRBJWHQLfW4KD9j4pE2pldLn6aeqwOZnKcaOE9MpqjvTsLKFXpkN9CEjelWwS16QvO6nc+sN1zuc0nkUNH2pkW6V8lzmAkRekPhFFXA+LjZxJmDn3XVF9S1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JQ/FeRZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EA29C4CEEA;
-	Mon, 23 Jun 2025 13:25:00 +0000 (UTC)
+	 MIME-Version; b=UiqKnJd6UEJMDJXeBn++OB7GdBstD+B1/zd+KNWwgIAYmEnPIH/Emrw1SdIfhAcN0GVaLAoueLBsSS/vryDtDcci3STrUCDjL9b09Nhc1X7ze85/2BS7N7dxlJ0GTWRCnKjlkE7atB46N4ttCyT/gj0Sszy5iGzD/NII0yTm77s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zk69TqMP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EA09C4CEEA;
+	Mon, 23 Jun 2025 13:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685100;
-	bh=4yA9JNC+fUicaPcbh1feMTMCLXzAYJSzldel2PsxSyU=;
+	s=korg; t=1750685508;
+	bh=ZO/QK1a9EvOT5zkinLRjXWeEpGFVcs/lDTMqfO+Rab4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0JQ/FeRZE3b0G2mlAng9kXtwcx7XnXZTGGJqQ0sIJ3VgoTUjYYhwka/uP50jz5upA
-	 dcFbMyz+UXoogyNQDYnv1uSteN2rTXFOpFCSqodBOEMn2LrAt00aCBNuI9e46R926P
-	 4sw5/hN4vZfftLCAy+5fgl0+08ZpMF1+He8GuDZU=
+	b=Zk69TqMPBRDHB+4HxcgdJtaDsX+ci3XZZIujnrkLNd68pfpyVaT/qLsDepKfGDipD
+	 xQl78mYi1R5cL9/h+Sqzx9NExZz2EL9dVpI64VcuxIqRfE381hzZYczn6S3isu4Ewe
+	 8ptM9EpNCxCCJxAhpd7U6kJwP4S6Fyz1GN/tUR1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Rini <trini@konsulko.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 093/222] kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS
-Date: Mon, 23 Jun 2025 15:07:08 +0200
-Message-ID: <20250623130614.898254935@linuxfoundation.org>
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.4 094/222] kbuild: Add KBUILD_CPPFLAGS to as-option invocation
+Date: Mon, 23 Jun 2025 15:07:09 +0200
+Message-ID: <20250623130614.933728715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,54 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit feb843a469fb0ab00d2d23cfb9bcc379791011bb upstream.
+commit 43fc0a99906e04792786edf8534d8d58d1e9de0c upstream.
 
-When preprocessing arch/*/kernel/vmlinux.lds.S, the target triple is
-not passed to $(CPP) because we add it only to KBUILD_{C,A}FLAGS.
+After commit feb843a469fb ("kbuild: add $(CLANG_FLAGS) to
+KBUILD_CPPFLAGS"), there is an error while building certain PowerPC
+assembly files with clang:
 
-As a result, the linker script is preprocessed with predefined macros
-for the build host instead of the target.
+  arch/powerpc/lib/copypage_power7.S: Assembler messages:
+  arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000'
+  arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010'
+  arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000'
+  arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010'
+  arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010'
+  clang: error: assembler command failed with exit code 1 (use -v to see invocation)
 
-Assuming you use an x86 build machine, compare the following:
+as-option only uses KBUILD_AFLAGS, so after removing CLANG_FLAGS from
+KBUILD_AFLAGS, there is no more '--target=' or '--prefix=' flags. As a
+result of those missing flags, the host target
+will be tested during as-option calls and likely fail, meaning necessary
+flags may not get added when building assembly files, resulting in
+errors like seen above.
 
- $ clang -dM -E -x c /dev/null
- $ clang -dM -E -x c /dev/null -target aarch64-linux-gnu
+Add KBUILD_CPPFLAGS to as-option invocations to clear up the errors.
+This should have been done in commit d5c8d6e0fa61 ("kbuild: Update
+assembler calls to use proper flags and language target"), which
+switched from using the assembler target to the assembler-with-cpp
+target, so flags that affect preprocessing are passed along in all
+relevant tests. as-option now mirrors cc-option.
 
-There is no actual problem presumably because our linker scripts do not
-rely on such predefined macros, but it is better to define correct ones.
-
-Move $(CLANG_FLAGS) to KBUILD_CPPFLAGS, so that all *.c, *.S, *.lds.S
-will be processed with the proper target triple.
-
-[Note]
-After the patch submission, we got an actual problem that needs this
-commit. (CBL issue 1859)
-
-Link: https://github.com/ClangBuiltLinux/linux/issues/1859
-Reported-by: Tom Rini <trini@konsulko.com>
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYs=koW9WardsTtora+nMgLR3raHz-LSLr58tgX4T5Mxag@mail.gmail.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
 Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Makefile |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ scripts/Kbuild.include |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -568,8 +568,7 @@ ifneq ($(LLVM_IAS),1)
- CLANG_FLAGS	+= -no-integrated-as
- endif
- CLANG_FLAGS	+= -Werror=unknown-warning-option
--KBUILD_CFLAGS	+= $(CLANG_FLAGS)
--KBUILD_AFLAGS	+= $(CLANG_FLAGS)
-+KBUILD_CPPFLAGS	+= $(CLANG_FLAGS)
- export CLANG_FLAGS
- endif
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -102,7 +102,7 @@ try-run = $(shell set -e;		\
+ # Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
  
+ as-option = $(call try-run,\
+-	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
++	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+ 
+ # as-instr
+ # Usage: aflags-y += $(call as-instr,instr,option1,option2)
 
 
 
