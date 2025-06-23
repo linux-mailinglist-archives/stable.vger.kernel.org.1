@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-158181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D485AE574E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8C2DAE56C8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4E2047B437D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6D144A6FD6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08DD225776;
-	Mon, 23 Jun 2025 22:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F415419F120;
+	Mon, 23 Jun 2025 22:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L8wvTQkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KgzhmDl3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F869223DCC;
-	Mon, 23 Jun 2025 22:28:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E521E3DCD;
+	Mon, 23 Jun 2025 22:20:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717683; cv=none; b=VpJf4u9qj1xpej36YzOAzw4P7+7gI6JLNSvKpL6Nxf3YvtsroJJcDTSfhdBX7TByF1VhbK26ZmjHhxIAbvY3xaLbL7GOiyztywJynMdHxb1FujDXKp4+nyxF1fsJ1bfI1QemOX5R2TTerhDnR4madNy8imCWbJW03bVW9adLreg=
+	t=1750717214; cv=none; b=lujFvVj2qTjKH8gZ1CCbo5e8F3gXjohQyLsFWxTSdsdBui4pbsQoPYKqquOKavGFV3ejn5Z+h+cnYPyiA8+aOYUo9ZFiD9zVfiSAMe/ldtSnB7tvciGQ6jM4LZwRhCeYmuRpzIBbYI9RU26L2kNlUOqplU7JENJX5NralavFTYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717683; c=relaxed/simple;
-	bh=40m5R+fdHCSl+sM3jMzmvrg1q6P7LVBCA4cuKPomqCo=;
+	s=arc-20240116; t=1750717214; c=relaxed/simple;
+	bh=ey1gsDPF6cok9Hv+VmQtRrl+g4XuXbAI2/JtRHOxyGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aiBavu6ndE8tZEwKV+p8vY9twIzl6VcddIK4kbHq9+J697zItM30VrnaCcM60tz0kVoKFUR6KUNvr3Xlr0S/iA27aqFzSeJ0kkAOuVO8igO4RO3Jap8h/Ra9RnVu3jB0yLarvbtS/YssMzWrMQlVDpmnHckB6jtBFvrxdsbqLe8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L8wvTQkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28C7FC4CEEA;
-	Mon, 23 Jun 2025 22:28:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JtTUae2XUlZwMdyQxj+8qkT4xOt/g2XLvPYEdjfOp5ya/HdvwFOU9hkISo7rWzUQKY7t+kXwc67VfBGdFK2nb1X+7sUVo2LjceUldUx5BV1TSScv8Q1YgrVPb+X2UdraM0zkMTIY0cnYxWojZfOvzV5HC440+I5ZwV30bBdGsRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KgzhmDl3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4914EC4CEEA;
+	Mon, 23 Jun 2025 22:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717683;
-	bh=40m5R+fdHCSl+sM3jMzmvrg1q6P7LVBCA4cuKPomqCo=;
+	s=korg; t=1750717214;
+	bh=ey1gsDPF6cok9Hv+VmQtRrl+g4XuXbAI2/JtRHOxyGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L8wvTQkl03Gkb8nLBpvAYPB3FQ3SdsJArW8ZLx7HrgbdiJr2dnuv1ydYnZZoZnf75
-	 ch1V/zk8OlO/20LtFpvk1gFPBnN8MPHgpn9skFietHjV9IeW+7KWbrwoZbGxkfhr6y
-	 bGtioE6C+1GHzdZZ8wB986bvxEzlCPHg+EkMGtw0=
+	b=KgzhmDl3akURFEiM1EqdVVqAjAYxwcqk1vksxCIIhE5aVjV11IB4WiSKO2RVaytaQ
+	 I3CvmbbW3r0QapVgZcxlcX1G9ThoXGhQ0jetX/FKl3Wmz9dcrVNK2PNBObB7DmjZiY
+	 DuHqus0VDZjvjX8F+Urjq9sdnvtdswQ2482bWm9s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 502/508] platform/loongarch: laptop: Add backlight power control support
+	=?UTF-8?q?L=C6=B0=C6=A1ng=20Vi=E1=BB=87t=20Ho=C3=A0ng?= <tcm4095@gmail.com>,
+	Joel Mathew Thomas <proxy0@tutamail.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 589/592] PCI: pciehp: Ignore belated Presence Detect Changed caused by DPC
 Date: Mon, 23 Jun 2025 15:09:07 +0200
-Message-ID: <20250623130657.359395012@linuxfoundation.org>
+Message-ID: <20250623130714.444311003@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,152 +62,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-commit 53c762b47f726e4079a1f06f684bce2fc0d56fba upstream.
+[ Upstream commit bbf10cd686835d5a4b8566dc73a3b00b4cd7932a ]
 
-loongson_laptop_turn_{on,off}_backlight() are designed for controlling
-the power of the backlight, but they aren't really used in the driver
-previously.
+Commit c3be50f7547c ("PCI: pciehp: Ignore Presence Detect Changed caused by
+DPC") sought to ignore Presence Detect Changed events occurring as a side
+effect of Downstream Port Containment.
 
-Unify these two functions since they only differ in arguments passed to
-ACPI method, and wire up loongson_laptop_backlight_update() to update
-the power state of the backlight as well. Tested on the TongFang L860-T2
-Loongson-3A5000 laptop.
+The commit awaits recovery from DPC and then clears events which occurred
+in the meantime.  However if the first event seen after DPC is Data Link
+Layer State Changed, only that event is cleared and not Presence Detect
+Changed.  The object of the commit is thus defeated.
 
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+That's because pciehp_ist() computes the events to clear based on the local
+"events" variable instead of "ctrl->pending_events".  The former contains
+the events that had occurred when pciehp_ist() was entered, whereas the
+latter also contains events that have accumulated while awaiting DPC
+recovery.
+
+In practice, the order of PDC and DLLSC events is arbitrary and the delay
+in-between can be several milliseconds.
+
+So change the logic to always clear PDC events, even if they come after an
+initial DLLSC event.
+
+Fixes: c3be50f7547c ("PCI: pciehp: Ignore Presence Detect Changed caused by DPC")
+Reported-by: Lương Việt Hoàng <tcm4095@gmail.com>
+Reported-by: Joel Mathew Thomas <proxy0@tutamail.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219765#c165
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Lương Việt Hoàng <tcm4095@gmail.com>
+Tested-by: Joel Mathew Thomas <proxy0@tutamail.com>
+Link: https://patch.msgid.link/d9c4286a16253af7e93eaf12e076e3ef3546367a.1750257164.git.lukas@wunner.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |   73 +++++++++++++--------------
- 1 file changed, 37 insertions(+), 36 deletions(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -56,8 +56,7 @@ static struct input_dev *generic_inputde
- static acpi_handle hotkey_handle;
- static struct key_entry hotkey_keycode_map[GENERIC_HOTKEY_MAP_MAX];
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index ebd342bda235d..91d2d92717d98 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -771,7 +771,7 @@ static irqreturn_t pciehp_ist(int irq, void *dev_id)
+ 		u16 ignored_events = PCI_EXP_SLTSTA_DLLSC;
  
--int loongson_laptop_turn_on_backlight(void);
--int loongson_laptop_turn_off_backlight(void);
-+static bool bl_powered;
- static int loongson_laptop_backlight_update(struct backlight_device *bd);
+ 		if (!ctrl->inband_presence_disabled)
+-			ignored_events |= events & PCI_EXP_SLTSTA_PDC;
++			ignored_events |= PCI_EXP_SLTSTA_PDC;
  
- /* 2. ACPI Helpers and device model */
-@@ -354,16 +353,42 @@ static int ec_backlight_level(u8 level)
- 	return level;
- }
- 
-+static int ec_backlight_set_power(bool state)
-+{
-+	int status;
-+	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
-+	struct acpi_object_list args = { 1, &arg0 };
-+
-+	arg0.integer.value = state;
-+	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
-+	if (ACPI_FAILURE(status)) {
-+		pr_info("Loongson lvds error: 0x%x\n", status);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- static int loongson_laptop_backlight_update(struct backlight_device *bd)
- {
--	int lvl = ec_backlight_level(bd->props.brightness);
-+	bool target_powered = !backlight_is_blank(bd);
-+	int ret = 0, lvl = ec_backlight_level(bd->props.brightness);
- 
- 	if (lvl < 0)
- 		return -EIO;
-+
- 	if (ec_set_brightness(lvl))
- 		return -EIO;
- 
--	return 0;
-+	if (target_powered != bl_powered) {
-+		ret = ec_backlight_set_power(target_powered);
-+		if (ret < 0)
-+			return ret;
-+
-+		bl_powered = target_powered;
-+	}
-+
-+	return ret;
- }
- 
- static int loongson_laptop_get_brightness(struct backlight_device *bd)
-@@ -384,7 +409,7 @@ static const struct backlight_ops backli
- 
- static int laptop_backlight_register(void)
- {
--	int status = 0;
-+	int status = 0, ret;
- 	struct backlight_properties props;
- 
- 	memset(&props, 0, sizeof(props));
-@@ -392,44 +417,20 @@ static int laptop_backlight_register(voi
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
- 
-+	ret = ec_backlight_set_power(true);
-+	if (ret)
-+		return ret;
-+
-+	bl_powered = true;
-+
- 	props.max_brightness = status;
- 	props.brightness = ec_get_brightness();
-+	props.power = FB_BLANK_UNBLANK;
- 	props.type = BACKLIGHT_PLATFORM;
- 
- 	backlight_device_register("loongson_laptop",
- 				NULL, NULL, &backlight_laptop_ops, &props);
- 
--	return 0;
--}
--
--int loongson_laptop_turn_on_backlight(void)
--{
--	int status;
--	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
--	struct acpi_object_list args = { 1, &arg0 };
--
--	arg0.integer.value = 1;
--	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
--	if (ACPI_FAILURE(status)) {
--		pr_info("Loongson lvds error: 0x%x\n", status);
--		return -ENODEV;
--	}
--
--	return 0;
--}
--
--int loongson_laptop_turn_off_backlight(void)
--{
--	int status;
--	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
--	struct acpi_object_list args = { 1, &arg0 };
--
--	arg0.integer.value = 0;
--	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
--	if (ACPI_FAILURE(status)) {
--		pr_info("Loongson lvds error: 0x%x\n", status);
--		return -ENODEV;
--	}
- 
- 	return 0;
- }
+ 		events &= ~ignored_events;
+ 		pciehp_ignore_link_change(ctrl, pdev, irq, ignored_events);
+-- 
+2.39.5
+
 
 
 
