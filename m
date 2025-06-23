@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8A5FAE5190
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82BB8AE5330
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 114D64422A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B378188CC99
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 233591EE7C6;
-	Mon, 23 Jun 2025 21:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AF8223DE5;
+	Mon, 23 Jun 2025 21:50:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mgwg+tNQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es6dYSXa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D561B1EEA5D;
-	Mon, 23 Jun 2025 21:35:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74A32222C2;
+	Mon, 23 Jun 2025 21:50:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714526; cv=none; b=DDCR3JGCrAXnqC9BW1scgIBhamrVklJpn2pjl4p5tBYxjdhYPP+d7GbLm8aRU7Tnq2XJWBCDRVoWBqxBR2Qz2lzeh+lmWyop3iX9PEZZ9ZYD4YGGIHzwoGVonpCiwLZyVPnk0N7MI44eCZdHuVpRa0OQg2nDfrGy6dJvcKkKEgc=
+	t=1750715436; cv=none; b=czZ8m8sm8hczQNUtxMXCi0tMRm+DENYzPONRI8bKs1BNAHbSkf/3WtrN1uXtgH7n0vorkuau0E4rA7KcR7Yoi/WK6Kcuh+vPrhHbX7GGsyiPuuWI8GVbn5gJId/32RobwqenQ/rtOU1PVP9alyAKri80RIUROlAgWRtE8dSlKQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714526; c=relaxed/simple;
-	bh=UNRSnROeyyOFF79lABnsfxb3QUAiFvnkmcd13d5y13g=;
+	s=arc-20240116; t=1750715436; c=relaxed/simple;
+	bh=GkxsvDIq5AtESo7A4XNveNWGHtV0gH1y7bBx5Bd7o7E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bF2bCy3pShBlfp8ZGzpAxkOqmN6fJuVr7OfQgxphWhxTqf1+v7YISTxAjqoA65Fkhc6hhhIkQY/rYkAyZyyI0ASFiTWtGmYuUa2P82azsKkZ8lkkonDHQDyl4014d/X/KAFjSIIpXfU8qKgvZqOCMKTenCpRh5uF9BE54ErbHr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mgwg+tNQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E112C4CEEA;
-	Mon, 23 Jun 2025 21:35:26 +0000 (UTC)
+	 MIME-Version; b=juzx9Xfu4V9KzYFSPYgmmekP3erZDpTFfq63lSRGyLqnbTGok2MIH1aTIw7TUlAp+XBvRVojSIEHvElaIVd7bxigbmadxfaj+Ge0EIImffOuIkyzvW6R5Cycg7sOBXuAPWgsDnlc6I8IIb5nqdjKBnkcJRctFgvH0sR0LLI9RM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es6dYSXa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA36C4CEF1;
+	Mon, 23 Jun 2025 21:50:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714526;
-	bh=UNRSnROeyyOFF79lABnsfxb3QUAiFvnkmcd13d5y13g=;
+	s=korg; t=1750715435;
+	bh=GkxsvDIq5AtESo7A4XNveNWGHtV0gH1y7bBx5Bd7o7E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mgwg+tNQl8Kf0Y1rLMxDrPTXFrMcMLDi1Ps9V+zOJDoxGcASzBv/DAFsQtBDSyMtD
-	 9tD/0icpNEhVd7vIRKUleP5g3cYB8mXLrlFWZitbdbFvVTbp8YlEUfw8HG15GZH0MH
-	 rBb5m2KeSdc+4MgPM34H5e6CqI+l9+4+0xKavGY4=
+	b=es6dYSXamSTGywSS/fusqenqcpE1euEMPaVsNqsHCl3UD62IQ0mn58O1Fo4TawtHY
+	 ETvuutNe42fAtvclM1a8UhXFVi6X97akKV3l5TgIV7wK2+yJ+ANL41KI34BJXx5RL8
+	 yXRgFfuoxmUsduzDVotwIj6hPXIW+YuTAGMrQ7sc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 214/355] ACPICA: Avoid sequence overread in call to strncmp()
-Date: Mon, 23 Jun 2025 15:06:55 +0200
-Message-ID: <20250623130633.179238447@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.15 458/592] cifs: deal with the channel loading lag while picking channels
+Date: Mon, 23 Jun 2025 15:06:56 +0200
+Message-ID: <20250623130711.323524488@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+commit 66d590b828b1fd9fa337047ae58fe1c4c6f43609 upstream.
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+Our current approach to select a channel for sending requests is this:
+1. iterate all channels to find the min and max queue depth
+2. if min and max are not the same, pick the channel with min depth
+3. if min and max are same, round robin, as all channels are equally loaded
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
+The problem with this approach is that there's a lag between selecting
+a channel and sending the request (that increases the queue depth on the channel).
+While these numbers will eventually catch up, there could be a skew in the
+channel usage, depending on the application's I/O parallelism and the server's
+speed of handling requests.
 
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
+With sufficient parallelism, this lag can artificially increase the queue depth,
+thereby impacting the performance negatively.
 
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
+This change will change the step 1 above to start the iteration from the last
+selected channel. This is to reduce the skew in channel usage even in the presence
+of this lag.
 
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/transport.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index 7334037624c5c..a2bf54fb946a0 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -524,7 +524,7 @@ typedef u64 acpi_integer;
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1018,14 +1018,16 @@ struct TCP_Server_Info *cifs_pick_channe
+ 	uint index = 0;
+ 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
+ 	struct TCP_Server_Info *server = NULL;
+-	int i;
++	int i, start, cur;
  
- /* Support for the special RSDP signature (8 characters) */
+ 	if (!ses)
+ 		return NULL;
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
+ 	spin_lock(&ses->chan_lock);
++	start = atomic_inc_return(&ses->chan_seq);
+ 	for (i = 0; i < ses->chan_count; i++) {
+-		server = ses->chans[i].server;
++		cur = (start + i) % ses->chan_count;
++		server = ses->chans[cur].server;
+ 		if (!server || server->terminate)
+ 			continue;
  
- /* Support for OEMx signature (x can be any character) */
--- 
-2.39.5
-
+@@ -1042,17 +1044,15 @@ struct TCP_Server_Info *cifs_pick_channe
+ 		 */
+ 		if (server->in_flight < min_in_flight) {
+ 			min_in_flight = server->in_flight;
+-			index = i;
++			index = cur;
+ 		}
+ 		if (server->in_flight > max_in_flight)
+ 			max_in_flight = server->in_flight;
+ 	}
+ 
+ 	/* if all channels are equally loaded, fall back to round-robin */
+-	if (min_in_flight == max_in_flight) {
+-		index = (uint)atomic_inc_return(&ses->chan_seq);
+-		index %= ses->chan_count;
+-	}
++	if (min_in_flight == max_in_flight)
++		index = (uint)start % ses->chan_count;
+ 
+ 	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
 
 
 
