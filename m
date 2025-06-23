@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-155639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 616C9AE4318
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6544BAE437F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2CB63B8672
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134F317ACD7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E40C2550A3;
-	Mon, 23 Jun 2025 13:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A9C4C7F;
+	Mon, 23 Jun 2025 13:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J38S28f7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhrjDoua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1135254B03;
-	Mon, 23 Jun 2025 13:22:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC9723A9BE;
+	Mon, 23 Jun 2025 13:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684952; cv=none; b=ZhxBqDM485DA9IPr7JW9wvjEn9l36c+8eufhf5ae/NPDt+Hnjj6BOfATS79F2GOWH6aavB2CP5K8zC/lOp3SC8kz29o7yAAfzwdzXnPZYrBQVbyYegiYL7eMuYqfoCnKkdl6oek3DSfkf/wcNCmDSI4tw9SRb7cUd5Xy+N0+21c=
+	t=1750685118; cv=none; b=jfqHEIhGQqnOGMmXv5pja+6dNrwIeH2i0MWax/XQeeOiTQ94pYcolMhRgewviRAF/8z2xLmf4aaHUAvF73JcjhmOqarMuOYpxMLhlTe63cJYK9Se3V4WjNj+NuPEA83RAjvohjcPlIPGW/iZvIv99C+YTMLCwy0riiVtPkfj9yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684952; c=relaxed/simple;
-	bh=U1TM1fbcvPlSeV/mxR0JEz1dg/WfygfjVCsw5RaqZuE=;
+	s=arc-20240116; t=1750685118; c=relaxed/simple;
+	bh=J0Xb7TQgtU1jvyUMUY9641wBtpDthUMMJ5A0N298Fjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BTBOzwfQR8MJ3Hxx4lxap7cGmNiD9ev6tr1+HQeWK9ugQrJAXe2Hrnq+D5IEukuVEcai6z9M8E804pRXUy7/elSAaWrejPb0v/9TtGyrscnPKt76Bu9kP7IwdIcJgQwowqA1qzOdd2obCTn9d1RR3ZydDsSZniKozi2tTeG7RqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J38S28f7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54E6DC4CEEA;
-	Mon, 23 Jun 2025 13:22:32 +0000 (UTC)
+	 MIME-Version; b=jZSXd+6rjSddISaOtVNTenc2JGFSp+djDyJ+GwdQTo3G6LUHID+1PvyyOh5fYGOH1BG9e97e4PcDzsFwsPaxgXa+WqjtK2FsGqkqdQ97tNu+PDEs+1FJoulLFzvp6Djfx4pZ4KHJPrvaXiOazzZf0q6gOpRpMvoENDHJIdsUio8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhrjDoua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6F2C4CEEA;
+	Mon, 23 Jun 2025 13:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684952;
-	bh=U1TM1fbcvPlSeV/mxR0JEz1dg/WfygfjVCsw5RaqZuE=;
+	s=korg; t=1750685118;
+	bh=J0Xb7TQgtU1jvyUMUY9641wBtpDthUMMJ5A0N298Fjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J38S28f7DsVsXqBih4dYqOtCPKvvlasp3znRTFYjX8mXJuMa/Z8WCBNyJtnoSSC3O
-	 djsjqJkv5KSQ9ZnAGfNqzk1Dqv5YTqMveH0ltxk3qBevIKjgbfbhN07cquG5FC4R38
-	 pD2wAEVrvb1xpF0y9nDuxohEeBa7KUsw4PE6/+Ps=
+	b=FhrjDoua+Xgb18mdsIXZdiCbK5P280Fjw6PKZvmwV3MF2HPfKWQbAmeFXf8pFwO9s
+	 BDdddL4Ed6c8P7X3KlenGHDalSe4plXymPG0AUOlOy1H6Cuq0uCTvAEZVz6cBsFAAQ
+	 yqAvH4+CaGu0/t6VJx/dU3ggfil5UByALIxuxwkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.15 194/592] accel/ivpu: Fix warning in ivpu_gem_bo_free()
-Date: Mon, 23 Jun 2025 15:02:32 +0200
-Message-ID: <20250623130704.904770624@linuxfoundation.org>
+	Charles Yeh <charlesyeh522@gmail.com>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.15 009/411] USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+Date: Mon, 23 Jun 2025 15:02:33 +0200
+Message-ID: <20250623130633.272094972@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Charles Yeh <charlesyeh522@gmail.com>
 
-commit 91274fd4ed9ba110b02c53d71d2778b7d13b49ac upstream.
+commit d3a889482bd5abf2bbdc1ec3d2d49575aa160c9c upstream.
 
-Don't WARN if imported buffers are in use in ivpu_gem_bo_free() as they
-can be indeed used in the original context/driver.
+Add new bcd (0x905) to support PL2303GT-2AB (TYPE_HXN).
+Add new bcd (0x1005) to support PL2303GC-Q20 (TYPE_HXN).
 
-Fixes: 647371a6609d ("accel/ivpu: Add GEM buffer object management")
-Cc: stable@vger.kernel.org # v6.3
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250528171220.513225-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Charles Yeh <charlesyeh522@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_gem.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/serial/pl2303.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/accel/ivpu/ivpu_gem.c
-+++ b/drivers/accel/ivpu/ivpu_gem.c
-@@ -285,7 +285,8 @@ static void ivpu_gem_bo_free(struct drm_
- 	list_del(&bo->bo_list_node);
- 	mutex_unlock(&vdev->bo_list_lock);
- 
--	drm_WARN_ON(&vdev->drm, !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
-+	drm_WARN_ON(&vdev->drm, !drm_gem_is_imported(&bo->base.base) &&
-+		    !dma_resv_test_signaled(obj->resv, DMA_RESV_USAGE_READ));
- 	drm_WARN_ON(&vdev->drm, ivpu_bo_size(bo) == 0);
- 	drm_WARN_ON(&vdev->drm, bo->base.vaddr);
- 
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -457,6 +457,8 @@ static int pl2303_detect_type(struct usb
+ 		case 0x605:
+ 		case 0x700:	/* GR */
+ 		case 0x705:
++		case 0x905:	/* GT-2AB */
++		case 0x1005:	/* GC-Q20 */
+ 			return TYPE_HXN;
+ 		}
+ 		break;
 
 
 
