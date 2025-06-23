@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA637AE453B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 690D1AE4243
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A353B5259
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16BCD3A23A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B107256C7E;
-	Mon, 23 Jun 2025 13:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D69923C4F8;
+	Mon, 23 Jun 2025 13:17:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nBjsK94r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="spAzzbpZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49154253F20;
-	Mon, 23 Jun 2025 13:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F04D413A265;
+	Mon, 23 Jun 2025 13:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685752; cv=none; b=QS6PS/oI5BT3dRt/RwQlHpAGsfGAPOE/kWgwnEt7LRIjzmhbg4nyDPXFm5Vbw3DBo3s0H69dcRBuEsQMg6+zcxbV/XxIx0LuL9VtHsT4bi81Ner3Q+K9PaEjqqoftU03katYyZMtfACgbdqO6KJkgXfkeXhDZPZgWszeY94xz5M=
+	t=1750684622; cv=none; b=qKaKMpX5Co8s6aZRg6/YgAHPHeWZ1XWhlh4i+RSJYClRY823jVy8kpQra+y4HO+4W6fQmj7ChayLUHj+TQlFJG9IpnHlvhPXQlJNcTS66IC6TUR/La6tiRntHje5cz2E2xBOoPnAMMGbEx7w5HFK1vephNUS6VbU0e7rkKzmDWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685752; c=relaxed/simple;
-	bh=W5O5+1+J3OWzmHmw1ZEMNlF/sBKNSHkEyTdyxzpDxQw=;
+	s=arc-20240116; t=1750684622; c=relaxed/simple;
+	bh=JRnuxx9Qb/yCToVkQsUplktDt/XWn1X2SjZIIlUzhyI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AXZBTtv6vpWpo01qATVgKkLB3zTi+aGd7GlNKzue3+M2tJFDXRKIKdf513Li+KTMYUtaVTEImKHcaUt34ufDq22MFy+4VdaIYe7bk7PeJ1EUzQiYV+/aUeRO44vVb+REZOQ/fhETTi16Q6owPbSoYPeqpLEJ9MrY3Bth2xzyKRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nBjsK94r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2A24C4CEEA;
-	Mon, 23 Jun 2025 13:35:51 +0000 (UTC)
+	 MIME-Version; b=EANH4SteV3Xl4PGEO3R1pIExUSyzSzHEbvpXbPNptM4Zfs9lh7TOnzSlE/80SR2ehh1nPiqcVwABV+VvmYwgOHmyEPFMl95kccJZTVGFAshzMu1Z4Ox19ARqHfR1aS0yErOK92DHWs2KgQ0jAfAaW0u2daow3flLKxMG/rFuiCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=spAzzbpZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C853C4CEEA;
+	Mon, 23 Jun 2025 13:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685752;
-	bh=W5O5+1+J3OWzmHmw1ZEMNlF/sBKNSHkEyTdyxzpDxQw=;
+	s=korg; t=1750684621;
+	bh=JRnuxx9Qb/yCToVkQsUplktDt/XWn1X2SjZIIlUzhyI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nBjsK94req1+X0qlvBzf9n8TBXtYBLk9Tbeoc6unFPa7B5REZXFSRqgM6J3Lm7sEd
-	 5Zlcf7zFWKMLhp9HhpF0Hlk1jK5825H8s9gmqoAc/9OeUo75Q6DvXm7cq7YyGc8Iog
-	 MBIehPyat+Z3PU52mODOLfOhNW9zIB8iQSQfwlA8=
+	b=spAzzbpZOL26ABcWAYUezUMsnN4S7Y0JzP0KqWB808r4aQgHD0I4t2RA/gtah178/
+	 lE3DtCZ9zdlEThH3z5E2h+WEOw34M74xgHkMyQ7oLowICjLNT48KFrIHJnGGlY/lTT
+	 SVhxgRTjmc83FeTZSyQh3EBAKFq5xg3o/wjYYtxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 050/508] drm/tegra: rgb: Fix the unbound reference count
+	Da Xue <da@libre.computer>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Jerome Brunet <jbrunet@baylibre.com>
+Subject: [PATCH 6.15 137/592] clk: meson-g12a: add missing fclk_div2 to spicc
 Date: Mon, 23 Jun 2025 15:01:35 +0200
-Message-ID: <20250623130646.477698409@linuxfoundation.org>
+Message-ID: <20250623130703.532204072@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Da Xue <da@libre.computer>
 
-[ Upstream commit 3c3642335065c3bde0742b0edc505b6ea8fdc2b3 ]
+commit daf004f87c3520c414992893e2eadd5db5f86a5a upstream.
 
-The of_get_child_by_name() increments the refcount in tegra_dc_rgb_probe,
-but the driver does not decrement the refcount during unbind. Fix the
-unbound reference count using devm_add_action_or_reset() helper.
+SPICC is missing fclk_div2, which means fclk_div5 and fclk_div7 indexes
+are wrong on this clock. This causes the spicc module to output sclk at
+2.5x the expected rate when clock index 3 is picked.
 
-Fixes: d8f4a9eda006 ("drm: Add NVIDIA Tegra20 support")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250205112137.36055-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adding the missing fclk_div2 resolves this.
+
+[jbrunet: amended commit description]
+Fixes: a18c8e0b7697 ("clk: meson: g12a: add support for the SPICC SCLK Source clocks")
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Da Xue <da@libre.computer>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://lore.kernel.org/r/20250512142617.2175291-1-da@libre.computer
+Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tegra/rgb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/clk/meson/g12a.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/tegra/rgb.c b/drivers/gpu/drm/tegra/rgb.c
-index 86e55e5d12b39..20ac30673ed53 100644
---- a/drivers/gpu/drm/tegra/rgb.c
-+++ b/drivers/gpu/drm/tegra/rgb.c
-@@ -189,6 +189,11 @@ static const struct drm_encoder_helper_funcs tegra_rgb_encoder_helper_funcs = {
- 	.atomic_check = tegra_rgb_encoder_atomic_check,
+--- a/drivers/clk/meson/g12a.c
++++ b/drivers/clk/meson/g12a.c
+@@ -4093,6 +4093,7 @@ static const struct clk_parent_data spic
+ 	{ .hw = &g12a_clk81.hw },
+ 	{ .hw = &g12a_fclk_div4.hw },
+ 	{ .hw = &g12a_fclk_div3.hw },
++	{ .hw = &g12a_fclk_div2.hw },
+ 	{ .hw = &g12a_fclk_div5.hw },
+ 	{ .hw = &g12a_fclk_div7.hw },
  };
- 
-+static void tegra_dc_of_node_put(void *data)
-+{
-+	of_node_put(data);
-+}
-+
- int tegra_dc_rgb_probe(struct tegra_dc *dc)
- {
- 	struct device_node *np;
-@@ -196,7 +201,14 @@ int tegra_dc_rgb_probe(struct tegra_dc *dc)
- 	int err;
- 
- 	np = of_get_child_by_name(dc->dev->of_node, "rgb");
--	if (!np || !of_device_is_available(np))
-+	if (!np)
-+		return -ENODEV;
-+
-+	err = devm_add_action_or_reset(dc->dev, tegra_dc_of_node_put, np);
-+	if (err < 0)
-+		return err;
-+
-+	if (!of_device_is_available(np))
- 		return -ENODEV;
- 
- 	rgb = devm_kzalloc(dc->dev, sizeof(*rgb), GFP_KERNEL);
--- 
-2.39.5
-
 
 
 
