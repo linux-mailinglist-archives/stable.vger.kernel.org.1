@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 796FFAE52E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5B0DAE53DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DBFB7B03F4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6DB91887DE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24251222576;
-	Mon, 23 Jun 2025 21:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0404F223714;
+	Mon, 23 Jun 2025 21:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ta/54W+z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yMY/Lua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D50193FD4;
-	Mon, 23 Jun 2025 21:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A34223316;
+	Mon, 23 Jun 2025 21:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715237; cv=none; b=tm4BgUstdoycVi8370i+KNaRFN+XoyPkP5pSxukL0xhObTa3IDGO2PypKoODAsKsDwdsCLVXkE7Zxw2k9jV1etF19saqpR4O+jMZ8EtsX5b0FD7PciQy9OIh+i26J8fYBfQQfpgJ2+jKWt782/WosSw5esstX2rD6h+2QSX4oQg=
+	t=1750715792; cv=none; b=OdlyhmG5cLd41CGENzuOLr70aO4CvcuXPj1oX7OW5hpBfCvX2t1rxwiIKwYGHQ6oXG2LScrDf4RZ2Xh5ToU5e4IVuQZChA/TLdLgZkwiJhYaVTygmKEKaaAqPQGM12C8SAf3jVTiS9/M1w+ID6O08Lf8aqTUNThhIMRKIBYp+Yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715237; c=relaxed/simple;
-	bh=OtwCxS6nlQihKOc2bwJvHcIe0j5toYJGs+eqUq8lIrg=;
+	s=arc-20240116; t=1750715792; c=relaxed/simple;
+	bh=vxC2j17ATF4vODoDiWczFriEN0cgmoNQqA4Hen51yNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QyDU370tD+e80t7tDSEOno9H8GbqMl+OM9VK7Jvxelt36/fqJX+rj+JWB+vaBEBXEL3VdA8wexXO31BTafUiMSV3dpLxz+nPATqgtO/B/tReq/MuJLnZbli8RlR70TOx4PKfy6Msvlz3oGUWwC1Trs7+99u3pOYtE1ZtaIwjRU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ta/54W+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EB85C4CEEA;
-	Mon, 23 Jun 2025 21:47:17 +0000 (UTC)
+	 MIME-Version; b=PxtPZrBiRsBS/CqtKYX8mc6H4sD2SKTpuSMaZyKFoR6x3RjoXMyPWEfqynqJ7jbNJuiXaAjle7w1PfxJK744RZiUxXe7kChO9tdQwjtNOtPyWBzvgTjjh7Kp/1j/0mgGCtkADhw+TJpBsBf3WChbKDmQvAvf4ai1AhtiLrxvhmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yMY/Lua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E160C4CEED;
+	Mon, 23 Jun 2025 21:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715237;
-	bh=OtwCxS6nlQihKOc2bwJvHcIe0j5toYJGs+eqUq8lIrg=;
+	s=korg; t=1750715792;
+	bh=vxC2j17ATF4vODoDiWczFriEN0cgmoNQqA4Hen51yNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ta/54W+zX1zTLLTz7Hf//zayIB2Mug7DwRSR8E54WYXvs0RDnuQ39X8iv5uVb98w3
-	 7xukaf5bMqfXJLx5mmg6aTi8UxWJ6hV7Iwq5yAy9cKmGc5o315kja36Qf0AY/HkJq9
-	 JO6fujqG3xI9hnLWdi4jeHL814Uf+Iw62gjI7TxM=
+	b=0yMY/LuaohlT0HPlxkDN5lwjeGvLd/tAOe0DJ9BTyWgkEKbS+kbaIYwLgwm9Et+8A
+	 XhiZa1/l5L6i0n3/HaSoDMBjtRzg/EDqlw28oN12R1GwAO491PNtHNVSFa3gDrygET
+	 U9g8SwptD4PkzlH3232k/c2EuZL3a6pCz/4bTIzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 170/414] power: supply: collie: Fix wakeup source leaks on device unbind
+Subject: [PATCH 6.1 262/508] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
 Date: Mon, 23 Jun 2025 15:05:07 +0200
-Message-ID: <20250623130646.279181751@linuxfoundation.org>
+Message-ID: <20250623130651.693425759@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit c73d19f89cb03c43abbbfa3b9caa1b8fc719764c ]
+[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+fs_name() has @index as unsigned int, so there is underflow risk for
+operation '@index--'.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202730.55096-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fix by breaking the for loop when '@index == 0' which is also more proper
+than '@index <= 0' for unsigned integer comparison.
+
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/collie_battery.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/filesystems.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/power/supply/collie_battery.c b/drivers/power/supply/collie_battery.c
-index 68390bd1004f0..3daf7befc0bf6 100644
---- a/drivers/power/supply/collie_battery.c
-+++ b/drivers/power/supply/collie_battery.c
-@@ -440,6 +440,7 @@ static int collie_bat_probe(struct ucb1x00_dev *dev)
- 
- static void collie_bat_remove(struct ucb1x00_dev *dev)
+diff --git a/fs/filesystems.c b/fs/filesystems.c
+index 58b9067b2391c..95e5256821a53 100644
+--- a/fs/filesystems.c
++++ b/fs/filesystems.c
+@@ -156,15 +156,19 @@ static int fs_index(const char __user * __name)
+ static int fs_name(unsigned int index, char __user * buf)
  {
-+	device_init_wakeup(&ucb->dev, 0);
- 	free_irq(gpiod_to_irq(collie_bat_main.gpio_full), &collie_bat_main);
- 	power_supply_unregister(collie_bat_bu.psy);
- 	power_supply_unregister(collie_bat_main.psy);
+ 	struct file_system_type * tmp;
+-	int len, res;
++	int len, res = -EINVAL;
+ 
+ 	read_lock(&file_systems_lock);
+-	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
+-		if (index <= 0 && try_module_get(tmp->owner))
++	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
++		if (index == 0) {
++			if (try_module_get(tmp->owner))
++				res = 0;
+ 			break;
++		}
++	}
+ 	read_unlock(&file_systems_lock);
+-	if (!tmp)
+-		return -EINVAL;
++	if (res)
++		return res;
+ 
+ 	/* OK, we got the reference, so we can safely block */
+ 	len = strlen(tmp->name) + 1;
 -- 
 2.39.5
 
