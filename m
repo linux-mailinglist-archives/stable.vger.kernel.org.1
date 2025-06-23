@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 650FEAE50BC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 572F5AE5166
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E8EA4A1938
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EFB417EB83
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CC952222B7;
-	Mon, 23 Jun 2025 21:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7299122068B;
+	Mon, 23 Jun 2025 21:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIifkHZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDnbN9q/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AAD019C554;
-	Mon, 23 Jun 2025 21:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FA8B218580;
+	Mon, 23 Jun 2025 21:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714055; cv=none; b=k3eOxRLJ+te2s3q+CYs3xecdINH0GmIs8nqGDo2H91wxbW6pIrTSAiGnNC2WodwhCU8nvPEKIn99XT0TWsvzSPt9SwdgJUVt8SJKF92YuXuHcQ7qbj4qsZL2cPthMHnBK5h67IHjYc006gQ96iGBI8wXXvtHqM+ueuxnkkIKuN8=
+	t=1750714414; cv=none; b=iNSB33Lg5e1HaZDT/VYVDuJAOGuaRjx16dKvHqAtiX7f8eMDobhTY7ZBsW+goo0FTpbrGq1e1Y6qsBtHnV7oKNo8c9tgITGq0Egd3PA0LzVOU8qCyhgqRq3MVuXJDp1bPLLRFiC/fz+WRxoLK7LyH9ImM4OzdK/rUMVkLTxvJFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714055; c=relaxed/simple;
-	bh=ucGo9bxnfhPyBV2COGokjAVWBb/YSqZjooLg/dCcy/8=;
+	s=arc-20240116; t=1750714414; c=relaxed/simple;
+	bh=qGba+cP7sXO2cSWkO6OBQqF4vmaIRoiw7lFtd8EC6QM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gk1j3hxhRpa0d//H5GI/0CrH1m0QjahuRf1sRU8EHD08rfSERQGIT6WnJgRAqFlKr/kiTzwmn4M0G/4SK/oXc0x+VlrR2250fpcQF1Etefp8Twhp97svfp+V6WguZl8Bq1p8LjvfIiK4ELVLwavcxsWSO1aaR8asUw7ve9ODa68=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIifkHZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981BCC4CEEA;
-	Mon, 23 Jun 2025 21:27:34 +0000 (UTC)
+	 MIME-Version; b=SUkUFVmgpPLIRhkd1ulMcxTdqIFwaZt9Cp8MmMcm6+/4XBoIKu/xQnwMzcai6Xz7rAU3OZaByzX3ivBv0OSUGN3t4kyQdrUWuYV3ccClBftq12oe3+2IB7zAVZn59lVfjybm6I5PCVdg0iglL4fJrNLO2oRe9cqtGLz1LUFEAP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDnbN9q/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC90AC4CEEA;
+	Mon, 23 Jun 2025 21:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714054;
-	bh=ucGo9bxnfhPyBV2COGokjAVWBb/YSqZjooLg/dCcy/8=;
+	s=korg; t=1750714414;
+	bh=qGba+cP7sXO2cSWkO6OBQqF4vmaIRoiw7lFtd8EC6QM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIifkHZW8S9JwWaVlfE8LQiNdhwHymAa4fvXKnxkV0cN7v5k1uFv/lyRXWH+MSCDx
-	 gXcC03Pz6sBc2gKlJqp69dbIt4ujJmAr9zW+frg7e2rY6jNn7rlRHFfIkcOlXCClfQ
-	 R3KSYhp0pkMBs6T0FhuBlnGkZpWWr5IJgEi6A2ek=
+	b=zDnbN9q/ba8esQsuocpr7GEhVjp+DdWj/C5i8skalfnHyG+1cuFJ6AontvthiXFNi
+	 qbCGe0CA7cKOtWkOw313k8PLFaxXQx+Et5CSQQQgrtnAbvmyNfMxFekKpKuCUpVmXP
+	 AniEjgDO3iNPctPg7e787i8qLBu7pdnmszOa/6iw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Troy Hanson <quic_thanson@quicinc.com>
-Subject: [PATCH 5.10 181/355] bus: mhi: host: Fix conflict between power_up and SYSERR
+	Ahmed Salem <x0rw3ll@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 121/290] ACPICA: Avoid sequence overread in call to strncmp()
 Date: Mon, 23 Jun 2025 15:06:22 +0200
-Message-ID: <20250623130632.135984327@linuxfoundation.org>
+Message-ID: <20250623130630.575934414@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Hugo <quic_jhugo@quicinc.com>
+From: Ahmed Salem <x0rw3ll@gmail.com>
 
-commit 4d92e7c5ccadc79764674ffc2c88d329aabbb7e0 upstream.
+[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
 
-When mhi_async_power_up() enables IRQs, it is possible that we could
-receive a SYSERR notification from the device if the firmware has crashed
-for some reason. Then the SYSERR notification queues a work item that
-cannot execute until the pm_mutex is released by mhi_async_power_up().
+ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
 
-So the SYSERR work item will be pending. If mhi_async_power_up() detects
-the SYSERR, it will handle it. If the device is in PBL, then the PBL state
-transition event will be queued, resulting in a work item after the
-pending SYSERR work item. Once mhi_async_power_up() releases the pm_mutex,
-the SYSERR work item can run. It will blindly attempt to reset the MHI
-state machine, which is the recovery action for SYSERR. PBL/SBL are not
-interrupt driven and will ignore the MHI Reset unless SYSERR is actively
-advertised. This will cause the SYSERR work item to timeout waiting for
-reset to be cleared, and will leave the host state in SYSERR processing.
-The PBL transition work item will then run, and immediately fail because
-SYSERR processing is not a valid state for PBL transition.
+ap_get_table_length() checks if tables are valid by
+calling ap_is_valid_header(). The latter then calls
+ACPI_VALIDATE_RSDP_SIG(Table->Signature).
 
-This leaves the device uninitialized.
+ap_is_valid_header() accepts struct acpi_table_header as an argument, so
+the signature size is always fixed to 4 bytes.
 
-This issue has a fairly unique signature in the kernel log:
+The problem is when the string comparison is between ACPI-defined table
+signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
+Signature field to be 4 bytes long[1], with the exception of the RSDP
+structure whose signature is 8 bytes long "RSD PTR " (including the
+trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
+then result in a sequence overread[3] as sig would be smaller (4 bytes)
+than the specified bound (8 bytes).
 
-	mhi mhi3: Requested to power ON
-	Qualcomm Cloud AI 100 0000:36:00.0: Fatal error received from
-	device.  Attempting to recover
-	mhi mhi3: Power on setup success
-	mhi mhi3: Device failed to exit MHI Reset state
-	mhi mhi3: Device MHI is not in valid state
+As a workaround, pass the bound conditionally based on the size of the
+signature being passed.
 
-We cannot remove the SYSERR handling from mhi_async_power_up() because the
-device may be in the SYSERR state, but we missed the notification as the
-irq was fired before irqs were enabled. We also can't queue the SYSERR work
-item from mhi_async_power_up() if SYSERR is detected because that may
-result in a duplicate work item, and cause the same issue since the
-duplicate item will blindly issue MHI reset even if SYSERR is no longer
-active.
-
-Instead, add a check in the SYSERR work item to make sure that MHI reset is
-only issued if the device is in SYSERR state for PBL or SBL EEs.
-
-Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250328163526.3365497-1-jeff.hugo@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
+Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
+Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
+Link: https://github.com/acpica/acpica/commit/8b83a8d8
+Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pm.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ include/acpi/actypes.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -454,6 +454,7 @@ static void mhi_pm_disable_transition(st
- 	struct mhi_cmd *mhi_cmd;
- 	struct mhi_event_ctxt *er_ctxt;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-+	bool reset_device = false;
- 	int ret, i;
+diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
+index 85c2dcf2b7048..0a24200852415 100644
+--- a/include/acpi/actypes.h
++++ b/include/acpi/actypes.h
+@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
  
- 	dev_dbg(dev, "Transitioning from PM state: %s to: %s\n",
-@@ -485,8 +486,23 @@ static void mhi_pm_disable_transition(st
- 		return;
- 	}
+ /* Support for the special RSDP signature (8 characters) */
  
--	/* Trigger MHI RESET so that the device will not access host memory */
- 	if (MHI_REG_ACCESS_VALID(prev_state)) {
-+		/*
-+		 * If the device is in PBL or SBL, it will only respond to
-+		 * RESET if the device is in SYSERR state. SYSERR might
-+		 * already be cleared at this point.
-+		 */
-+		enum mhi_state cur_state = mhi_get_mhi_state(mhi_cntrl);
-+		enum mhi_ee_type cur_ee = mhi_get_exec_env(mhi_cntrl);
-+
-+		if (cur_state == MHI_STATE_SYS_ERR)
-+			reset_device = true;
-+		else if (cur_ee != MHI_EE_PBL && cur_ee != MHI_EE_SBL)
-+			reset_device = true;
-+	}
-+
-+	/* Trigger MHI RESET so that the device will not access host memory */
-+	if (reset_device) {
- 		u32 in_reset = -1;
- 		unsigned long timeout = msecs_to_jiffies(mhi_cntrl->timeout_ms);
+-#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
++#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
+ #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
  
+ /* Support for OEMx signature (x can be any character) */
+-- 
+2.39.5
+
 
 
 
