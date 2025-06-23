@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-157972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157975-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04AA7AE5667
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 535F5AE566A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1CD1899054
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E41EA189CE9F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30BB1F6667;
-	Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E3A116D9BF;
+	Mon, 23 Jun 2025 22:19:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xijnOoWc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oGPo8o8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913A816D9BF;
-	Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0BE119F120;
+	Mon, 23 Jun 2025 22:19:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717170; cv=none; b=QKms9IajozojbwF4xfmZFxEoN0xCvwyZb8a57242xZbXgfbmz8K0TjbmiLMDnj/25wBI0cwXPaImSNiBJVDvunLlFudD0kjVOcMfqKY6FDa84z7D1Q4+U01S3hic4RxkOkpbElfJSwQP+jXcj9MUFmERxNN2PNcgMqSE6WulhTs=
+	t=1750717178; cv=none; b=nMFo/Eoai8+1fKyRI5O5whWvNSEIeRf3/D5gmdGxGMYJenql6ha9i7PiTHOE6KmbfnOZPlSyjwQZoM9f1DAFAP0/k2dpD5y24S4smQLKFcG37k6KX67Awef0hXZu0x7W5dBMgv6CwnAvnVOBJW0FASQoOyalIXW5yx38Q08b4CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717170; c=relaxed/simple;
-	bh=A57cGmsDGraNdj88R62LQbW3ctsm49gBxpPwjnnKhLA=;
+	s=arc-20240116; t=1750717178; c=relaxed/simple;
+	bh=uVwhkhsaX5eFnWuYTMapDzOjRGlWDX9oFK78SDeso88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NvSalYT3TbL8e0SmhykaF+EJfGbv5eyu6M5OL+hT5BNLEFAX34mtXP/6uNusTeQqZ+9geUHeF2UxaB9viX3zeVUKVTcjPimwGhKCwCfSIF16x2cpNvH6w01B/WPvGdhEaDml9JHiPX7pWnCky74iPVHQ/drrL7BbGvq1Rx51qhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xijnOoWc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC63C4CEEA;
-	Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
+	 MIME-Version; b=CCavexSh5sG0PlodQVGVMgb59bpB2b+DAHsCGF8LNImzK94DyHXTRPN4NaRUv5Bm/HVeP1AEmwQo1tfCPUm+FuF8WoLhxr29k6ywfM745mC/y9WA58I2nqxhZTR8whF1XADHz0FzMdrQKmW8cZ6qzJJMzbOPszx0PnBu8Hi1b24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oGPo8o8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86CD3C4CEEA;
+	Mon, 23 Jun 2025 22:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717170;
-	bh=A57cGmsDGraNdj88R62LQbW3ctsm49gBxpPwjnnKhLA=;
+	s=korg; t=1750717177;
+	bh=uVwhkhsaX5eFnWuYTMapDzOjRGlWDX9oFK78SDeso88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xijnOoWcraDjAT9MhSd/LTLMTP9aFJGaKdICP8T8dlmOoR1+jMSqeLTLJzDGdp4A1
-	 mDJqRqJBIaOKfv2QNaT0+gOYxMMkBLmp+gBw9w2izk4hGgtfJAYUI9sJbJpOByK/Wd
-	 BnCFzKbg3/d2q1pVqCVBM/6aFiwrdJsac7j970Z8=
+	b=oGPo8o8r0p5PJ/RfBEqjogQSwJN1pvd6Non0KYyPp8w6jSbxYlELcMkz2qCe4tYZY
+	 QQlyN5wlTc18sjWf52t12WBw8z2L3GG8ILgYmMzGavQ5NU45AZrnFd/jXF3V9UVF+N
+	 YKLP0WXq8ZBa8aJZ16QOt9Ui6+ITl1Hgpy2MWIr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	Will Deacon <will@kernel.org>,
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 410/411] arm64/ptrace: Fix stack-out-of-bounds read in regs_get_kernel_stack_nth()
-Date: Mon, 23 Jun 2025 15:09:14 +0200
-Message-ID: <20250623130644.007613068@linuxfoundation.org>
+Subject: [PATCH 5.15 411/411] scsi: elx: efct: Fix memory leak in efct_hw_parse_filter()
+Date: Mon, 23 Jun 2025 15:09:15 +0200
+Message-ID: <20250623130644.033046103@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -66,103 +67,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tengda Wu <wutengda@huaweicloud.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-[ Upstream commit 39dfc971e42d886e7df01371cd1bef505076d84c ]
+[ Upstream commit 2a8a5a5dd06eef580f9818567773fd75057cb875 ]
 
-KASAN reports a stack-out-of-bounds read in regs_get_kernel_stack_nth().
+strsep() modifies the address of the pointer passed to it so that it no
+longer points to the original address. This means kfree() gets the wrong
+pointer.
 
-Call Trace:
-[   97.283505] BUG: KASAN: stack-out-of-bounds in regs_get_kernel_stack_nth+0xa8/0xc8
-[   97.284677] Read of size 8 at addr ffff800089277c10 by task 1.sh/2550
-[   97.285732]
-[   97.286067] CPU: 7 PID: 2550 Comm: 1.sh Not tainted 6.6.0+ #11
-[   97.287032] Hardware name: linux,dummy-virt (DT)
-[   97.287815] Call trace:
-[   97.288279]  dump_backtrace+0xa0/0x128
-[   97.288946]  show_stack+0x20/0x38
-[   97.289551]  dump_stack_lvl+0x78/0xc8
-[   97.290203]  print_address_description.constprop.0+0x84/0x3c8
-[   97.291159]  print_report+0xb0/0x280
-[   97.291792]  kasan_report+0x84/0xd0
-[   97.292421]  __asan_load8+0x9c/0xc0
-[   97.293042]  regs_get_kernel_stack_nth+0xa8/0xc8
-[   97.293835]  process_fetch_insn+0x770/0xa30
-[   97.294562]  kprobe_trace_func+0x254/0x3b0
-[   97.295271]  kprobe_dispatcher+0x98/0xe0
-[   97.295955]  kprobe_breakpoint_handler+0x1b0/0x210
-[   97.296774]  call_break_hook+0xc4/0x100
-[   97.297451]  brk_handler+0x24/0x78
-[   97.298073]  do_debug_exception+0xac/0x178
-[   97.298785]  el1_dbg+0x70/0x90
-[   97.299344]  el1h_64_sync_handler+0xcc/0xe8
-[   97.300066]  el1h_64_sync+0x78/0x80
-[   97.300699]  kernel_clone+0x0/0x500
-[   97.301331]  __arm64_sys_clone+0x70/0x90
-[   97.302084]  invoke_syscall+0x68/0x198
-[   97.302746]  el0_svc_common.constprop.0+0x11c/0x150
-[   97.303569]  do_el0_svc+0x38/0x50
-[   97.304164]  el0_svc+0x44/0x1d8
-[   97.304749]  el0t_64_sync_handler+0x100/0x130
-[   97.305500]  el0t_64_sync+0x188/0x190
-[   97.306151]
-[   97.306475] The buggy address belongs to stack of task 1.sh/2550
-[   97.307461]  and is located at offset 0 in frame:
-[   97.308257]  __se_sys_clone+0x0/0x138
-[   97.308910]
-[   97.309241] This frame has 1 object:
-[   97.309873]  [48, 184) 'args'
-[   97.309876]
-[   97.310749] The buggy address belongs to the virtual mapping at
-[   97.310749]  [ffff800089270000, ffff800089279000) created by:
-[   97.310749]  dup_task_struct+0xc0/0x2e8
-[   97.313347]
-[   97.313674] The buggy address belongs to the physical page:
-[   97.314604] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14f69a
-[   97.315885] flags: 0x15ffffe00000000(node=1|zone=2|lastcpupid=0xfffff)
-[   97.316957] raw: 015ffffe00000000 0000000000000000 dead000000000122 0000000000000000
-[   97.318207] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
-[   97.319445] page dumped because: kasan: bad access detected
-[   97.320371]
-[   97.320694] Memory state around the buggy address:
-[   97.321511]  ffff800089277b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   97.322681]  ffff800089277b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-[   97.323846] >ffff800089277c00: 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 00 00 00 00
-[   97.325023]                          ^
-[   97.325683]  ffff800089277c80: 00 00 00 00 00 00 00 00 00 f3 f3 f3 f3 f3 f3 f3
-[   97.326856]  ffff800089277d00: f3 f3 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+Fix this by passing unmodified pointer returned from kstrdup() to
+kfree().
 
-This issue seems to be related to the behavior of some gcc compilers and
-was also fixed on the s390 architecture before:
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
- commit d93a855c31b7 ("s390/ptrace: Avoid KASAN false positives in regs_get_kernel_stack_nth()")
-
-As described in that commit, regs_get_kernel_stack_nth() has confirmed that
-`addr` is on the stack, so reading the value at `*addr` should be allowed.
-Use READ_ONCE_NOCHECK() helper to silence the KASAN check for this case.
-
-Fixes: 0a8ea52c3eb1 ("arm64: Add HAVE_REGS_AND_STACK_ACCESS_API feature")
-Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
-Link: https://lore.kernel.org/r/20250604005533.1278992-1-wutengda@huaweicloud.com
-[will: Use '*addr' as the argument to READ_ONCE_NOCHECK()]
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://lore.kernel.org/r/20250612163616.24298-1-v.shevtsov@mt-integration.ru
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/ptrace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/elx/efct/efct_hw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index 4ef9e688508c4..18dd5bc12d4f3 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -140,7 +140,7 @@ unsigned long regs_get_kernel_stack_nth(struct pt_regs *regs, unsigned int n)
+diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
+index ba8256b4c7824..6385c6c730fea 100644
+--- a/drivers/scsi/elx/efct/efct_hw.c
++++ b/drivers/scsi/elx/efct/efct_hw.c
+@@ -1120,7 +1120,7 @@ int
+ efct_hw_parse_filter(struct efct_hw *hw, void *value)
+ {
+ 	int rc = 0;
+-	char *p = NULL;
++	char *p = NULL, *pp = NULL;
+ 	char *token;
+ 	u32 idx = 0;
  
- 	addr += n;
- 	if (regs_within_kernel_stack(regs, (unsigned long)addr))
--		return *addr;
-+		return READ_ONCE_NOCHECK(*addr);
- 	else
- 		return 0;
+@@ -1132,6 +1132,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
+ 		efc_log_err(hw->os, "p is NULL\n");
+ 		return -ENOMEM;
+ 	}
++	pp = p;
+ 
+ 	idx = 0;
+ 	while ((token = strsep(&p, ",")) && *token) {
+@@ -1144,7 +1145,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
+ 		if (idx == ARRAY_SIZE(hw->config.filter_def))
+ 			break;
+ 	}
+-	kfree(p);
++	kfree(pp);
+ 
+ 	return rc;
  }
 -- 
 2.39.5
