@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0682FAE4E89
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A876FAE4E8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EDA463B218F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60F743BD08C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA60821FF2B;
-	Mon, 23 Jun 2025 21:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E516202983;
+	Mon, 23 Jun 2025 21:07:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pQt+IqQf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NoqqzinF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9722C219E0;
-	Mon, 23 Jun 2025 21:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE3370838;
+	Mon, 23 Jun 2025 21:06:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712794; cv=none; b=lQ5ouoFV3JLyxnZwErS9C79KZUn00rqhwLB7l4rXjSgy4pTHiRh1h8NXxkwtJ4h4VyhuPr90/qZkVAYiiRmhNSqWiOXgsQWjTTYllK9sJkVYJGIFoVj/rx7OeyD2RTcs0wY5d71TDv13H+etlBig/BJ4/w8slN7GKwv8/AecPEQ=
+	t=1750712820; cv=none; b=VIAM3jB22JENk+4iR441WV5/znamithLBUWdUcKxfDf+DT4JD5NyzRTOWIQR+2hTH1fzKL334+s08h5QOHIQv1tUEOLCOwtqE+CJl7lKhj9OEw3UZOdcT8ChUCKsrjxm2gx7BhV8wz9mr8XVocKy9sJUwnDD3GkAMGYaxjR5euo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712794; c=relaxed/simple;
-	bh=oqj/OzSWkY2qcDUGmoz0CJCu0IKmMGj0HmOaBBM1JeU=;
+	s=arc-20240116; t=1750712820; c=relaxed/simple;
+	bh=kLq8MGQE4Ot/bzaHu2Z1p60X2Q/MWL31s3rsx/d1TyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hq5RmoWJJviohz/VC8/T3TYSGkoX63VQFmapumxi0L1KKebcSycIA8nP2R3m1KPPVE+Tq46OII1yGARl11EdHv/iEjK+iWVGUq8v1tGBo7bh4S5TZmem0ZZyXks6JkG1H8jp1IQAPxt0BB7dX4iLNTuGBcevXj9WtGECyosB360=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pQt+IqQf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30653C4CEF0;
-	Mon, 23 Jun 2025 21:06:34 +0000 (UTC)
+	 MIME-Version; b=sRvj8QbVeFzt5TWCVJ4Khl9LfCQYVN3sLtZE3NUmZ8J4rkue8+RStstw3k0dVRgcRjnk6UetG5W1vpynLkpGf78txieSDWZhXWmaD5yvzG2ElatXa6GbztDV9Pn1uraQjSWo8df/z9SJ+Z8bp9ejbspCRp/s3T5LetSCdpPgsBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NoqqzinF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CAF1C4CEEA;
+	Mon, 23 Jun 2025 21:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712794;
-	bh=oqj/OzSWkY2qcDUGmoz0CJCu0IKmMGj0HmOaBBM1JeU=;
+	s=korg; t=1750712819;
+	bh=kLq8MGQE4Ot/bzaHu2Z1p60X2Q/MWL31s3rsx/d1TyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pQt+IqQfVzr8baW3Drd3SUpm6HLSHuZCThrTgbgTop4abzhfYpa4a3n8pwluNCH5X
-	 gbrkcUM0PalN7DquS3KyKm3W3ZFvZ5Bows1D0nEJu2Yi3VADKLSigz1PeDnGLntQlT
-	 kODwgB6nWuxQLOmRQaurlefpWH1efv4dNsFiV0Pw=
+	b=NoqqzinFgiqxwUO3X3iEQSnuw4QN8OY4hudh3Xj1Bkv8tYpVVTq+5uH5o0EMgrJZ6
+	 L8XLAefimYl7+p2VASouafVSURN4MI0+L6/GkIU9md7l5Y+Am2Kiv6eSQxTeNVs386
+	 f9ENksCApEGQ0Hr3VksqZLfpstlHwoFwLOihyDxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/355] do_change_type(): refuse to operate on unmounted/not ours mounts
-Date: Mon, 23 Jun 2025 15:05:07 +0200
-Message-ID: <20250623130629.961297416@linuxfoundation.org>
+Subject: [PATCH 5.10 107/355] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
+Date: Mon, 23 Jun 2025 15:05:08 +0200
+Message-ID: <20250623130629.989737267@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -67,38 +66,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
+[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
 
-Ensure that propagation settings can only be changed for mounts located
-in the caller's mount namespace. This change aligns permission checking
-with the rest of mount(2).
+The error checking for of_count_phandle_with_args() does not handle
+negative error codes correctly.  The problem is that "index" is a u32 so
+in the condition "if (index >= num_domains)" negative error codes stored
+in "num_domains" are type promoted to very high positive values and
+"index" is always going to be valid.
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Test for negative error codes first and then test if "index" is valid.
+
+Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/base/power/domain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 869cc6e06d889..2d5af6653cd11 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2308,6 +2308,10 @@ static int do_change_type(struct path *path, int ms_flags)
- 		return -EINVAL;
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index f5a032b6b8d69..7a76f0c53f545 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2676,7 +2676,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
+ 	/* Verify that the index is within a valid range. */
+ 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
+ 						 "#power-domain-cells");
+-	if (index >= num_domains)
++	if (num_domains < 0 || index >= num_domains)
+ 		return NULL;
  
- 	namespace_lock();
-+	if (!check_mnt(mnt)) {
-+		err = -EINVAL;
-+		goto out_unlock;
-+	}
- 	if (type == MS_SHARED) {
- 		err = invent_group_ids(mnt, recurse);
- 		if (err)
+ 	/* Allocate and register device on the genpd bus. */
 -- 
 2.39.5
 
