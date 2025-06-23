@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-157857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BE5AAE55F3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F6CAE55FF
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8F3014C69AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12859188C561
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEB85225A3D;
-	Mon, 23 Jun 2025 22:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85675223DCC;
+	Mon, 23 Jun 2025 22:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1JnCroq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wcgPifJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CA4E1F7580;
-	Mon, 23 Jun 2025 22:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43ED72222AF;
+	Mon, 23 Jun 2025 22:15:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716889; cv=none; b=ELvd7CDXbgH5Zqz4rbavO1ubv+TFmc6ssLnZn/RnOySfoECcXUQ+xGIUTTxiRqph8ti3ujNp5BgCwuUv3PtoFoebzvWx/rqcZNXMTjKjGtHeqs7T00hjWigemO33kUSsdkWMLgqHskFMocoWux1rBtX3DS2pLmrLv+RUuZFsqeY=
+	t=1750716916; cv=none; b=CsLGt8Snt1pmH7o7KoCxrfAAdoJFyWqVjZ1L+jtTnP7NNcRFyWMl6w+OxwdCnGq1sGkH6yzYM0rAA2fLZdKptQDpu6G/Ogm5tglw1QxlmLxY7NsOQ08zHSw73XtxE2qR6UMXUqCNJexN0p0YIjwOWgGTK1V/9AKuS4I4WWqesk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716889; c=relaxed/simple;
-	bh=1z+8MjPfUVE8G3OvRZYvmtoN52VZ0brFrAtjp6asl6I=;
+	s=arc-20240116; t=1750716916; c=relaxed/simple;
+	bh=Vo0TCtqkjiZyWcEo2i2JwJ+ykQ+DLjn08lt0LakBrXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uJQYzu6h7jm0pkJkQmjU5nKicjK9QUaJ/zuEw8UCZexV4K/viWRDy1RFQArYm7MTP6Yk8Ll1RTKehRG+uu6I+W+YZp312ZpiH6+gQL7u3XNb0fEkok/j7Xsk4YeWZERPOmcUv3QCCrCD0h+5id+HnzFEQRqefx7kSpzrQp0THsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1JnCroq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD74EC4CEEA;
-	Mon, 23 Jun 2025 22:14:48 +0000 (UTC)
+	 MIME-Version; b=ey0tE/wxEY0a31+vTTVaiZWo/8sHe+adEQp1Pd/xAFtf1RYpg1Ya7YGZoI23zK4h2P+MVRcSB+StyoJCMH4AyhrQvEek3FDKx6NjZUlqaRZCxhKE/GOW4HiSEmcOz2ynpc0dv8n3Hin+UYo17NwrtdTbcRWebarOB3QmjnDzxtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wcgPifJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B34C4CEEA;
+	Mon, 23 Jun 2025 22:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716889;
-	bh=1z+8MjPfUVE8G3OvRZYvmtoN52VZ0brFrAtjp6asl6I=;
+	s=korg; t=1750716916;
+	bh=Vo0TCtqkjiZyWcEo2i2JwJ+ykQ+DLjn08lt0LakBrXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1JnCroqnNpnhe6YecD1k5c0o6u89Yhh5asTJRX7i8bo0gqWDSeDKWflptaHgQT4C
-	 NhGIwUsdMCyV4TGSwnFVLvBiDbiMRPsJ6Ess3lf7V7UvHzCd2lXV0gTqO2UL9tJ73x
-	 3MkTwJ4VhGcKBPoVHEb6zfxhBPrU7OPsHuwJX7mw=
+	b=1wcgPifJMuQt4sB+HjqVFNpiUNbsNV2yQf8M/nQwisJl1+Nx/I0OhnnoXdGelJJBE
+	 2N/uq0gYAU+wXYw22icunk9aMTnD4NNUlNZflZJbVyJGvFSo2PfcHqf011FyVYPzbh
+	 KlItjiYQnKDzUzvSJ4jZO0VRSovhuovpa39quXVQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Eddie James <eajames@linux.ibm.com>,
+	Joel Stanley <joel@jms.id.au>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 367/411] drm/nouveau/bl: increase buffer size to avoid truncate warning
-Date: Mon, 23 Jun 2025 15:08:31 +0200
-Message-ID: <20250623130642.880943915@linuxfoundation.org>
+Subject: [PATCH 5.15 368/411] hwmon: (occ) Add soft minimum power cap attribute
+Date: Mon, 23 Jun 2025 15:08:32 +0200
+Message-ID: <20250623130642.905314603@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -62,83 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Eddie James <eajames@linux.ibm.com>
 
-[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
+[ Upstream commit 84dc9e8a7eec2cdff00728baedf0fb35fc7c11e8 ]
 
-The nouveau_get_backlight_name() function generates a unique name for the
-backlight interface, appending an id from 1 to 99 for all backlight devices
-after the first.
+Export the power caps data for the soft minimum power cap through hwmon.
 
-GCC 15 (and likely other compilers) produce the following
--Wformat-truncation warning:
-
-nouveau_backlight.c: In function ‘nouveau_backlight_init’:
-nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                                     ^~
-In function ‘nouveau_get_backlight_name’,
-    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
-nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                        ^~~~~~~~~~~~~~~~
-nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-The warning started appearing after commit ab244be47a8f ("drm/nouveau:
-Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
-for the ida usage removed the explicit value check for ids larger than 99.
-The compiler is unable to intuit that the ida_alloc_max() limits the
-returned value range between 0 and 99.
-
-Because the compiler can no longer infer that the number ranges from 0 to
-99, it thinks that it could use as many as 11 digits (10 + the potential -
-sign for negative numbers).
-
-The warning has gone unfixed for some time, with at least one kernel test
-robot report. The code breaks W=1 builds, which is especially frustrating
-with the introduction of CONFIG_WERROR.
-
-The string is stored temporarily on the stack and then copied into the
-device name. Its not a big deal to use 11 more bytes of stack rounding out
-to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
-warning. This fixes the W=1 builds that include this driver.
-
-Compile tested only.
-
-Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
-Suggested-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Signed-off-by: Eddie James <eajames@linux.ibm.com>
+Reviewed-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20220215151022.7498-5-eajames@linux.ibm.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 744c2fe950e9 ("hwmon: (occ) Rework attribute registration for stack usage")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/occ/common.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-index aa8ed08fe9a7c..596a16b8b2de9 100644
---- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-@@ -40,7 +40,7 @@
- #include "nouveau_connector.h"
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index bbe5e4ef4113c..1757f3ab842e1 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -675,6 +675,9 @@ static ssize_t occ_show_caps_3(struct device *dev,
+ 	case 7:
+ 		val = caps->user_source;
+ 		break;
++	case 8:
++		val = get_unaligned_be16(&caps->soft_min) * 1000000ULL;
++		break;
+ 	default:
+ 		return -EINVAL;
+ 	}
+@@ -836,12 +839,13 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 	case 1:
+ 		num_attrs += (sensors->caps.num_sensors * 7);
+ 		break;
+-	case 3:
+-		show_caps = occ_show_caps_3;
+-		fallthrough;
+ 	case 2:
+ 		num_attrs += (sensors->caps.num_sensors * 8);
+ 		break;
++	case 3:
++		show_caps = occ_show_caps_3;
++		num_attrs += (sensors->caps.num_sensors * 9);
++		break;
+ 	default:
+ 		sensors->caps.num_sensors = 0;
+ 	}
+@@ -1048,6 +1052,15 @@ static int occ_setup_sensor_attrs(struct occ *occ)
+ 			attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
+ 						     show_caps, NULL, 7, 0);
+ 			attr++;
++
++			if (sensors->caps.version > 2) {
++				snprintf(attr->name, sizeof(attr->name),
++					 "power%d_cap_min_soft", s);
++				attr->sensor = OCC_INIT_ATTR(attr->name, 0444,
++							     show_caps, NULL,
++							     8, 0);
++				attr++;
++			}
+ 		}
+ 	}
  
- static struct ida bl_ida;
--#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
-+#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
- 
- static bool
- nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
 -- 
 2.39.5
 
