@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F560AE533E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FF0AE4FB9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0211B66751
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD34217F008
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C65A1F4628;
-	Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A75155C87;
+	Mon, 23 Jun 2025 21:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amZkpWs/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jgYTLqd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C12A19049B;
-	Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65AB722257E;
+	Mon, 23 Jun 2025 21:18:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715477; cv=none; b=W8RM/yeZAq58J7xSSPyEzsiCCQY27Vm2D4fXNvR4ITE68grtd0G7KP2G6H62fFB5NDMhyWuSWidI0rbMLjWDRYbe+Wi78+9sc4gajkoi2IlVXy6xeJwodyyWiLvThI9eNXPQBsI90poIiGPxW0mP9zeMG2BNa1KkvLWDmBVFOEM=
+	t=1750713509; cv=none; b=f1pzjRdGvLwnla6WvDyKWYVNahYVBI+qWWzJklBI9G5pn65geBvh5p2HnvIm8JeEkauER5L2xG5g/hXYf7IdcYXBzi8Drsq/cAqQHKDGVpu0UnyhGwaqGV7kT+z43f9f0Qr8YRpfMVBNjEGMc9yWY2KVqQuzHPPoN6dSyr7v9Nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715477; c=relaxed/simple;
-	bh=XhIrbpUoksmRlnWo5tsAoscKSh2Mqw9a+w0LsweCK9c=;
+	s=arc-20240116; t=1750713509; c=relaxed/simple;
+	bh=E93B4ZPeqLDUVQNzfJlxJeXZ/beby/EEtOd9ZL3yyQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZHDD1yxxgEi/IdK5zwwFc/xYplET22yoFY9FLhRUV2r300x4QKGOwWQ2j2gmCTyl+6Swy5RebFnLjeGi18sm2dU9ELv2mge4ysh7vMqNTXxXNdS7LS69NSi3l4aORsJZ6gAUSCzV4KnT2tEFT7SYXeZIcBi5AmdoO2cGgCbJa7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amZkpWs/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8016C4CEEA;
-	Mon, 23 Jun 2025 21:51:16 +0000 (UTC)
+	 MIME-Version; b=KyTDfoZd5despGkTpGkuBqwKBQ46SvdhfYMyYzCI2k8mI7AKDbeOQmHY7TAw9Ax6YbW7vVsPax68RYJvJGa6mCmVbYlA+t9vkBg7veFRgf2zetLMz57ZV0z6PHPOiw64dadLVjQ7bO3w9fwdDm6EG9UtIzrqV5O/uLRAnXjJRWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jgYTLqd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0EDFC4CEEA;
+	Mon, 23 Jun 2025 21:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715477;
-	bh=XhIrbpUoksmRlnWo5tsAoscKSh2Mqw9a+w0LsweCK9c=;
+	s=korg; t=1750713509;
+	bh=E93B4ZPeqLDUVQNzfJlxJeXZ/beby/EEtOd9ZL3yyQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=amZkpWs/CIqh3BsrNVPcGCko2RUvOml1EmIajAhamATDi6Vm/amJdoiojf7yZ6gDt
-	 zZzgizwbACfV7kQyIKO120fHSfiR33RY8dUGuuqkIV+JlM1/xGzgszpRb47faP08Uy
-	 bUuJb/+mSRL5RMaCkye1bI7SZmUEobBISJXYQW+8=
+	b=0jgYTLqdgKJJ2Dlfy4EjQCYqtOQWmwgIge2QzGfU26MhrV2PyB0nDpil/Gf9yQA65
+	 kBhXV0wzhBGWq1i63Uoyef8u3Aam+UMapDc8zF7RH6gr168c4jTu5BYnRvt3+PUVvF
+	 CdiUoUbmGLly7CIqrG1VFucEKAb2qStr2K2OLfOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 263/508] nvmet-fcloop: access fcpreq only when holding reqlock
-Date: Mon, 23 Jun 2025 15:05:08 +0200
-Message-ID: <20250623130651.717531128@linuxfoundation.org>
+Subject: [PATCH 6.15 351/592] xfrm: validate assignment of maximal possible SEQ number
+Date: Mon, 23 Jun 2025 15:05:09 +0200
+Message-ID: <20250623130708.795304810@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +62,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-[ Upstream commit 47a827cd7929d0550c3496d70b417fcb5649b27b ]
+[ Upstream commit e86212b6b13a20c5ad404c5597933f57fd0f1519 ]
 
-The abort handling logic expects that the state and the fcpreq are only
-accessed when holding the reqlock lock.
+Users can set any seq/seq_hi/oseq/oseq_hi values. The XFRM core code
+doesn't prevent from them to set even 0xFFFFFFFF, however this value
+will cause for traffic drop.
 
-While at it, only handle the aborts in the abort handler.
+Is is happening because SEQ numbers here mean that packet with such
+number was processed and next number should be sent on the wire. In this
+case, the next number will be 0, and it means overflow which causes to
+(expected) packet drops.
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+While it can be considered as misconfiguration and handled by XFRM
+datapath in the same manner as any other SEQ number, let's add
+validation to easy for packet offloads implementations which need to
+configure HW with next SEQ to send and not with current SEQ like it is
+done in core code.
+
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/fcloop.c | 31 ++++++++++++++++---------------
- 1 file changed, 16 insertions(+), 15 deletions(-)
+ net/xfrm/xfrm_user.c | 52 +++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
-index 787dfb3859a0d..74fffcab88155 100644
---- a/drivers/nvme/target/fcloop.c
-+++ b/drivers/nvme/target/fcloop.c
-@@ -613,12 +613,13 @@ fcloop_fcp_recv_work(struct work_struct *work)
- {
- 	struct fcloop_fcpreq *tfcp_req =
- 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
--	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
-+	struct nvmefc_fcp_req *fcpreq;
- 	unsigned long flags;
- 	int ret = 0;
- 	bool aborted = false;
- 
- 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
-+	fcpreq = tfcp_req->fcpreq;
- 	switch (tfcp_req->inistate) {
- 	case INI_IO_START:
- 		tfcp_req->inistate = INI_IO_ACTIVE;
-@@ -633,16 +634,19 @@ fcloop_fcp_recv_work(struct work_struct *work)
- 	}
- 	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
- 
--	if (unlikely(aborted))
--		ret = -ECANCELED;
--	else {
--		if (likely(!check_for_drop(tfcp_req)))
--			ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
--				&tfcp_req->tgt_fcp_req,
--				fcpreq->cmdaddr, fcpreq->cmdlen);
--		else
--			pr_info("%s: dropped command ********\n", __func__);
-+	if (unlikely(aborted)) {
-+		/* the abort handler will call fcloop_call_host_done */
-+		return;
-+	}
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index 784a2d124749f..614b58cb26ab7 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -178,11 +178,27 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay seq and seq_hi should be 0 for output SA");
+ 			return -EINVAL;
+ 		}
+-		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
+-			NL_SET_ERR_MSG(
+-				extack,
+-				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
+-			return -EINVAL;
 +
-+	if (unlikely(check_for_drop(tfcp_req))) {
-+		pr_info("%s: dropped command ********\n", __func__);
-+		return;
- 	}
++		if (!(p->flags & XFRM_STATE_ESN)) {
++			if (rs->oseq_hi) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay oseq_hi should be 0 in non-ESN mode for output SA");
++				return -EINVAL;
++			}
++			if (rs->oseq == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay oseq should be less than 0xFFFFFFFF in non-ESN mode for output SA");
++				return -EINVAL;
++			}
++		} else {
++			if (rs->oseq == U32_MAX && rs->oseq_hi == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay oseq and oseq_hi should be less than 0xFFFFFFFF for output SA");
++				return -EINVAL;
++			}
+ 		}
+ 		if (rs->bmp_len) {
+ 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
+@@ -196,11 +212,27 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay oseq and oseq_hi should be 0 for input SA");
+ 			return -EINVAL;
+ 		}
+-		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
+-			NL_SET_ERR_MSG(
+-				extack,
+-				"Replay seq_hi should be 0 in non-ESN mode for input SA");
+-			return -EINVAL;
++		if (!(p->flags & XFRM_STATE_ESN)) {
++			if (rs->seq_hi) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay seq_hi should be 0 in non-ESN mode for input SA");
++				return -EINVAL;
++			}
 +
-+	ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
-+				   &tfcp_req->tgt_fcp_req,
-+				   fcpreq->cmdaddr, fcpreq->cmdlen);
- 	if (ret)
- 		fcloop_call_host_done(fcpreq, tfcp_req, ret);
++			if (rs->seq == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay seq should be less than 0xFFFFFFFF in non-ESN mode for input SA");
++				return -EINVAL;
++			}
++		} else {
++			if (rs->seq == U32_MAX && rs->seq_hi == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay seq and seq_hi should be less than 0xFFFFFFFF for input SA");
++				return -EINVAL;
++			}
+ 		}
+ 	}
  
-@@ -659,9 +663,10 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
--	fcpreq = tfcp_req->fcpreq;
- 	switch (tfcp_req->inistate) {
- 	case INI_IO_ABORTED:
-+		fcpreq = tfcp_req->fcpreq;
-+		tfcp_req->fcpreq = NULL;
- 		break;
- 	case INI_IO_COMPLETED:
- 		completed = true;
-@@ -683,10 +688,6 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
- 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
- 					&tfcp_req->tgt_fcp_req);
- 
--	spin_lock_irqsave(&tfcp_req->reqlock, flags);
--	tfcp_req->fcpreq = NULL;
--	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
--
- 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
- 	/* call_host_done releases reference for abort downcall */
- }
 -- 
 2.39.5
 
