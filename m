@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157345-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA5FAE54BF
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B387AE538A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A1184C1D47
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394E14A7C56
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A96C221DAE;
-	Mon, 23 Jun 2025 22:04:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D98223DE1;
+	Mon, 23 Jun 2025 21:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ae1Z4CPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udsKA0d5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE823FB1B;
-	Mon, 23 Jun 2025 22:04:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1100C223316;
+	Mon, 23 Jun 2025 21:54:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716252; cv=none; b=daAgGjfOrS2ok2e5DoKfwcy3JG9p0wdOcRMUEb3d5ZcMcFDgRR7x5IqXaS+27nAc86hXc/hKylN9UtvdAdO/kd/p9rRZ7uH9DSnc0SOdk2brMVrShIcIa8gkZYa92XZ6roqn3nD+BD/Op7gQz2KYWMkP5HhAWWqQzWk9V20bu7c=
+	t=1750715641; cv=none; b=Q6B26HZXYWKsCIQD5hqBSEQZlNP4vn0zpgHdTm71y5ECekPEuQHdQxGugoDYtVsUiC6tNppSYxOBgYnYSyITYGQuZ6tZP/y1/PVkQxyAEwclA6vpbNafSuopWlIGssysrdVl/7ramaDU1O70TKYXI/Ix2Jy6/BSof0Hx6vw/LGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716252; c=relaxed/simple;
-	bh=HanXi2zTgoGIO0JYDbI3DdQAUggEy46HdXQ0Gc3ES84=;
+	s=arc-20240116; t=1750715641; c=relaxed/simple;
+	bh=+l4VUfI0Ub/CIOHFYBCeQ0T3juTvX+4gLRgHlJN9pd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwXaknEjX+bo8187nfxZ7YHh+eZMRNgHWGWaDHGw5sE4yB0uRyVJq+Xf6+z/HN7N0Q3cWhrLtrp0MmcvXmYvmZnZ4WARkbFZcQ759QyRZ0mGwralPXP7ZQLoh8wwSG0qNOofAqziJ9f2CEtPO5Tn2vq3T5a9YhPo/NZBVnSp/6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ae1Z4CPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63072C4CEEA;
-	Mon, 23 Jun 2025 22:04:12 +0000 (UTC)
+	 MIME-Version; b=cYmoA85bXf/dHqvqeNJ8OfxN+/+QFtjB78C5LycT0lwhuagGKiXrn1hDNoNHTmiMiK4+BHhKm0yrzxBtRtJxD8u7A0OELRKYQI18/lHFmb3paRfVMLPg7vW1VH2teAzznKIVYQ6l0NHRb7+3eLVhtJHt7fKCTDqk5IDvccGzUeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udsKA0d5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C93CC4AF0B;
+	Mon, 23 Jun 2025 21:54:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716252;
-	bh=HanXi2zTgoGIO0JYDbI3DdQAUggEy46HdXQ0Gc3ES84=;
+	s=korg; t=1750715640;
+	bh=+l4VUfI0Ub/CIOHFYBCeQ0T3juTvX+4gLRgHlJN9pd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ae1Z4CPu/omkEDZwspnEEtqovudfXCZyCnpyLB8xQHkNBSt7s1Phc9w7tVuTDwiQd
-	 jRiw3OgJL2moMtLgzzJTwq0NJIe5BYMVuqc/OUzyNZNOecLWwJ4ieS5tw5QbLyBTsf
-	 qf1j4x6PbDVX0/W3SZz+3CIsYShsvRQNaP603InY=
+	b=udsKA0d5p4K2w34wmoCpAJ1gYb7CCwvvTaLa0HnOeYeT/3FcRVBrIQiLY2+mSQkBC
+	 /9xlJ1d1jpTUom79fpfq2XQ2JiaIHu31icibMOA58VG3Bp0Sr+68wH1djkr4ka+oB0
+	 +zKlR2lal8ro6YpfmBVGYV6zeyfrhs0tWkZQfB0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.1 290/508] crypto: marvell/cesa - Do not chain submitted requests
+	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
+	Shayne Chen <shayne.chen@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 198/414] wifi: mt76: mt7996: drop fragments with multicast or broadcast RA
 Date: Mon, 23 Jun 2025 15:05:35 +0200
-Message-ID: <20250623130652.410772072@linuxfoundation.org>
+Message-ID: <20250623130646.961641715@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,161 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
 
-commit 0413bcf0fc460a68a2a7a8354aee833293d7d693 upstream.
+[ Upstream commit 80fda1cd7b0a1edd0849dc71403a070d0922118d ]
 
-This driver tries to chain requests together before submitting them
-to hardware in order to reduce completion interrupts.
+IEEE 802.11 fragmentation can only be applied to unicast frames.
+Therefore, drop fragments with multicast or broadcast RA. This patch
+addresses vulnerabilities such as CVE-2020-26145.
 
-However, it even extends chains that have already been submitted
-to hardware.  This is dangerous because there is no way of knowing
-whether the hardware has already read the DMA memory in question
-or not.
-
-Fix this by splitting the chain list into two.  One for submitted
-requests and one for requests that have not yet been submitted.
-Only extend the latter.
-
-Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Fixes: 85030c5168f1 ("crypto: marvell - Add support for chaining crypto requests in TDMA mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Link: https://patch.msgid.link/20250515032952.1653494-4-shayne.chen@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cesa.c |    2 -
- drivers/crypto/marvell/cesa/cesa.h |    9 ++++--
- drivers/crypto/marvell/cesa/tdma.c |   53 ++++++++++++++++++++++---------------
- 3 files changed, 39 insertions(+), 25 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/crypto/marvell/cesa/cesa.c
-+++ b/drivers/crypto/marvell/cesa/cesa.c
-@@ -94,7 +94,7 @@ static int mv_cesa_std_process(struct mv
- 
- static int mv_cesa_int_process(struct mv_cesa_engine *engine, u32 status)
- {
--	if (engine->chain.first && engine->chain.last)
-+	if (engine->chain_hw.first && engine->chain_hw.last)
- 		return mv_cesa_tdma_process(engine, status);
- 
- 	return mv_cesa_std_process(engine, status);
---- a/drivers/crypto/marvell/cesa/cesa.h
-+++ b/drivers/crypto/marvell/cesa/cesa.h
-@@ -440,8 +440,10 @@ struct mv_cesa_dev {
-  *			SRAM
-  * @queue:		fifo of the pending crypto requests
-  * @load:		engine load counter, useful for load balancing
-- * @chain:		list of the current tdma descriptors being processed
-- *			by this engine.
-+ * @chain_hw:		list of the current tdma descriptors being processed
-+ *			by the hardware.
-+ * @chain_sw:		list of the current tdma descriptors that will be
-+ *			submitted to the hardware.
-  * @complete_queue:	fifo of the processed requests by the engine
-  *
-  * Structure storing CESA engine information.
-@@ -463,7 +465,8 @@ struct mv_cesa_engine {
- 	struct gen_pool *pool;
- 	struct crypto_queue queue;
- 	atomic_t load;
--	struct mv_cesa_tdma_chain chain;
-+	struct mv_cesa_tdma_chain chain_hw;
-+	struct mv_cesa_tdma_chain chain_sw;
- 	struct list_head complete_queue;
- 	int irq;
- };
---- a/drivers/crypto/marvell/cesa/tdma.c
-+++ b/drivers/crypto/marvell/cesa/tdma.c
-@@ -38,6 +38,15 @@ void mv_cesa_dma_step(struct mv_cesa_req
- {
- 	struct mv_cesa_engine *engine = dreq->engine;
- 
-+	spin_lock_bh(&engine->lock);
-+	if (engine->chain_sw.first == dreq->chain.first) {
-+		engine->chain_sw.first = NULL;
-+		engine->chain_sw.last = NULL;
-+	}
-+	engine->chain_hw.first = dreq->chain.first;
-+	engine->chain_hw.last = dreq->chain.last;
-+	spin_unlock_bh(&engine->lock);
-+
- 	writel_relaxed(0, engine->regs + CESA_SA_CFG);
- 
- 	mv_cesa_set_int_mask(engine, CESA_SA_INT_ACC0_IDMA_DONE);
-@@ -96,25 +105,27 @@ void mv_cesa_dma_prepare(struct mv_cesa_
- void mv_cesa_tdma_chain(struct mv_cesa_engine *engine,
- 			struct mv_cesa_req *dreq)
- {
--	if (engine->chain.first == NULL && engine->chain.last == NULL) {
--		engine->chain.first = dreq->chain.first;
--		engine->chain.last  = dreq->chain.last;
--	} else {
--		struct mv_cesa_tdma_desc *last;
-+	struct mv_cesa_tdma_desc *last = engine->chain_sw.last;
- 
--		last = engine->chain.last;
-+	/*
-+	 * Break the DMA chain if the request being queued needs the IV
-+	 * regs to be set before lauching the request.
-+	 */
-+	if (!last || dreq->chain.first->flags & CESA_TDMA_SET_STATE)
-+		engine->chain_sw.first = dreq->chain.first;
-+	else {
- 		last->next = dreq->chain.first;
--		engine->chain.last = dreq->chain.last;
--
--		/*
--		 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
--		 * the last element of the current chain, or if the request
--		 * being queued needs the IV regs to be set before lauching
--		 * the request.
--		 */
--		if (!(last->flags & CESA_TDMA_BREAK_CHAIN) &&
--		    !(dreq->chain.first->flags & CESA_TDMA_SET_STATE))
--			last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
-+		last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
-+	}
-+	last = dreq->chain.last;
-+	engine->chain_sw.last = last;
-+	/*
-+	 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
-+	 * the last element of the current chain.
-+	 */
-+	if (last->flags & CESA_TDMA_BREAK_CHAIN) {
-+		engine->chain_sw.first = NULL;
-+		engine->chain_sw.last = NULL;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+index ef2d7eaaaffdd..0990a3d481f2d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
+@@ -623,6 +623,14 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rxq_id q,
+ 		status->last_amsdu = amsdu_info == MT_RXD4_LAST_AMSDU_FRAME;
  	}
- }
  
-@@ -127,7 +138,7 @@ int mv_cesa_tdma_process(struct mv_cesa_
- 
- 	tdma_cur = readl(engine->regs + CESA_TDMA_CUR);
- 
--	for (tdma = engine->chain.first; tdma; tdma = next) {
-+	for (tdma = engine->chain_hw.first; tdma; tdma = next) {
- 		spin_lock_bh(&engine->lock);
- 		next = tdma->next;
- 		spin_unlock_bh(&engine->lock);
-@@ -149,12 +160,12 @@ int mv_cesa_tdma_process(struct mv_cesa_
- 								 &backlog);
- 
- 			/* Re-chaining to the next request */
--			engine->chain.first = tdma->next;
-+			engine->chain_hw.first = tdma->next;
- 			tdma->next = NULL;
- 
- 			/* If this is the last request, clear the chain */
--			if (engine->chain.first == NULL)
--				engine->chain.last  = NULL;
-+			if (engine->chain_hw.first == NULL)
-+				engine->chain_hw.last  = NULL;
- 			spin_unlock_bh(&engine->lock);
- 
- 			ctx = crypto_tfm_ctx(req->tfm);
++	/* IEEE 802.11 fragmentation can only be applied to unicast frames.
++	 * Hence, drop fragments with multicast/broadcast RA.
++	 * This check fixes vulnerabilities, like CVE-2020-26145.
++	 */
++	if ((ieee80211_has_morefrags(fc) || seq_ctrl & IEEE80211_SCTL_FRAG) &&
++	    FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) != MT_RXD3_NORMAL_U2M)
++		return -EINVAL;
++
+ 	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
+ 	if (hdr_trans && ieee80211_has_morefrags(fc)) {
+ 		if (mt7996_reverse_frag0_hdr_trans(skb, hdr_gap))
+-- 
+2.39.5
+
 
 
 
