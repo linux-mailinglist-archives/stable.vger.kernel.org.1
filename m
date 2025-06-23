@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FE7AE5745
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BD48AE5679
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0705D7B41A9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07091444E35
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8E492253B0;
-	Mon, 23 Jun 2025 22:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A84226888;
+	Mon, 23 Jun 2025 22:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icT//SV6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWsBSb+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D37D1F463B;
-	Mon, 23 Jun 2025 22:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6E0223DF0;
+	Mon, 23 Jun 2025 22:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717661; cv=none; b=VlRxY5iziT8BqKCqYonMrN1HqgoawaNP7voKe+AUm3inrRKSk12ZesVIiZQ3fHTw9ZP6Z4DK7BX+FOOEq8iOUlrR48/hyhwndrSd8ScQD/8wuqlwUAxB4nOUdsDqqRDzVYhfQNZVy0h9y67I9pp5iHPebAerzMAnBpvpNGsobIM=
+	t=1750717055; cv=none; b=W7m/anQe5diUi7FPysak8GcHviHgPGe7p80z20EuAbZQFBX1w8RJq7KWJt3uKPBWZC0zlspV+NGiPwLA2E7fZRXFNwgSQa2BdnBHr0zLYivpuCM4rubxAA2SZ4ee8b8cZYyv0VmgwYeYWLTfHOWgUBBObmcgfAfhWo0t6r393eo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717661; c=relaxed/simple;
-	bh=J5v6ZxmxrudQhQEyYQtARxWAncyL/rJuWBVvyOLv5sU=;
+	s=arc-20240116; t=1750717055; c=relaxed/simple;
+	bh=GwHYjhU3g7IpkGvWes7KiERcv/xM8cllrP0fGQSf4kY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hQFqDEKj06RKI4WteeMEO0RCjoAKK/8+ZRcLvhkR86qd90HXQZfdGBzzXHx0tCsIb7HWhRbSQzJBo02SrdemtZYntqlGk9sAT4Hcd5sKPE3KJC9ylXhz29BRmtbujducRd43w5RPsHDncuT8IwtnclEVmPEl29y7i+MtYIjJtqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icT//SV6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046D5C4CEEA;
-	Mon, 23 Jun 2025 22:27:40 +0000 (UTC)
+	 MIME-Version; b=H51BxVCVunuHNY00c4HXQFWlcYiMAIr8GqPdqI5K2goDc7XtIc3V4ttKdll3XlzPLnTMzxMl9G0fry6PFKXSptHNtxLDxsAG6lnO0qIefRJPEliR+SLKfYQdNc5+kkefS1Hg76V6Od+b03OWwBr7fwbCqHDAA+neutQz1f7B374=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWsBSb+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A7E7C4CEEA;
+	Mon, 23 Jun 2025 22:17:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717661;
-	bh=J5v6ZxmxrudQhQEyYQtARxWAncyL/rJuWBVvyOLv5sU=;
+	s=korg; t=1750717055;
+	bh=GwHYjhU3g7IpkGvWes7KiERcv/xM8cllrP0fGQSf4kY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icT//SV6ApJpbc0A42Sm54dOTAQDsbO5OUpXlmjLTTqSQW8Mvwz9rW1yvr4GNIc8E
-	 6WLvae1atMLmU60N7S3Jm6gBz7MUxmMhEMSvzvAIlnRkIq7TUcasbJ5t4PdJD1P3Z9
-	 bBAg2Ck5YN+MRbq3AtGEb+ZxXsW7Wa6Oi4METuJg=
+	b=tWsBSb+FNBOkdUGG9A40P+M1IeZFrjBiXANqgowFhlE8iZKqj0/k1zDeNS7LklcoA
+	 grOrZlr1MCCdha5Crj+mFUU5djr/Nxl4ek6joGHN7qmdqB8VdJB6d11WJhk6FWilth
+	 L6k66cHtXJ5S4L3DVW9PEq5p249Wp992l6keyaco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Nelson <robertcnelson@gmail.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Tony Lindgren <tony@atomide.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 6.1 494/508] ARM: dts: am335x-bone-common: Add GPIO PHY reset on revision C3 board
+	Rik van Riel <riel@surriel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 581/592] x86/mm: Fix early boot use of INVPLGB
 Date: Mon, 23 Jun 2025 15:08:59 +0200
-Message-ID: <20250623130657.185568709@linuxfoundation.org>
+Message-ID: <20250623130714.256940260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+From: Rik van Riel <riel@surriel.com>
 
-commit 623cef652768860bd5f205fb7b741be278585fba upstream.
+[ Upstream commit cb6075bc62dc6a9cd7ab3572758685fdf78e3e20 ]
 
-This patch adds ethernet PHY reset GPIO config for Beaglebone Black
-series boards with revision C3. This fixes a random phy startup failure
-bug discussed at [1]. The GPIO pin used for reset is not used on older
-revisions, so it is ok to apply to all board revisions. The reset timing
-was discussed and tested at [2].
+The INVLPGB instruction has limits on how many pages it can invalidate
+at once. That limit is enumerated in CPUID, read by the kernel, and
+stored in 'invpgb_count_max'. Ranged invalidation, like
+invlpgb_kernel_range_flush() break up their invalidations so
+that they do not exceed the limit.
 
-[1] https://forum.digikey.com/t/ethernet-device-is-not-detecting-on-ubuntu-20-04-lts-on-bbg/19948
-[2] https://forum.beagleboard.org/t/recognizing-a-beaglebone-black-rev-c3-board/31249/
+However, early boot code currently attempts to do ranged
+invalidation before populating 'invlpgb_count_max'. There is a
+for loop which is basically:
 
-Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Message-ID: <TY3P286MB26113797A3B2EC7E0348BBB2980FA@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	for (...; addr < end; addr += invlpgb_count_max*PAGE_SIZE)
+
+If invlpgb_kernel_range_flush is called before the kernel has read
+the value of invlpgb_count_max from the hardware, the normally
+bounded loop can become an infinite loop if invlpgb_count_max is
+initialized to zero.
+
+Fix that issue by initializing invlpgb_count_max to 1.
+
+This way INVPLGB at early boot time will be a little bit slower
+than normal (with initialized invplgb_count_max), and not an
+instant hang at bootup time.
+
+Fixes: b7aa05cbdc52 ("x86/mm: Add INVLPGB support code")
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/all/20250606171112.4013261-3-riel%40surriel.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am335x-bone-common.dtsi |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ arch/x86/kernel/cpu/amd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -145,6 +145,8 @@
- 			/* MDIO */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE7)
- 		>;
- 	};
+diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
+index 4e06baab40bb3..a59d6d8fc71f9 100644
+--- a/arch/x86/kernel/cpu/amd.c
++++ b/arch/x86/kernel/cpu/amd.c
+@@ -29,7 +29,7 @@
  
-@@ -153,6 +155,8 @@
- 			/* MDIO reset value */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 		>;
- 	};
+ #include "cpu.h"
  
-@@ -377,6 +381,10 @@
+-u16 invlpgb_count_max __ro_after_init;
++u16 invlpgb_count_max __ro_after_init = 1;
  
- 	ethphy0: ethernet-phy@0 {
- 		reg = <0>;
-+		/* Support GPIO reset on revision C3 boards */
-+		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <300>;
-+		reset-deassert-us = <6500>;
- 	};
- };
- 
+ static inline int rdmsrl_amd_safe(unsigned msr, unsigned long long *p)
+ {
+-- 
+2.39.5
+
 
 
 
