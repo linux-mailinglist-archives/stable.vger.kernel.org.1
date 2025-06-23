@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB1D8AE4219
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:16:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98019AE4221
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:16:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1800A3ADDA7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 185FF3B618E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56367248895;
-	Mon, 23 Jun 2025 13:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F4C248895;
+	Mon, 23 Jun 2025 13:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DgJZQVei"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHD9E6sE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4213A265;
-	Mon, 23 Jun 2025 13:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01DA113B58B;
+	Mon, 23 Jun 2025 13:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684527; cv=none; b=K3nBxrLQ6l5mkz34GR0QARXM6YRZhAHNyrQdPeUVDmQV5I1n5RL+67Ys13bEYGNLDdK5wnYMz13kE9XTEkmn3+WmJ71UAg93LITSwHw0lhaNvwKgUOCMkViCWGfIy/5gSABQTM1p3qom9KCL8esvHBUubGgMYyryXo2Yk0LFSVk=
+	t=1750684558; cv=none; b=fxmepvV5+Tc2v6B91rawfYTr7t9qcwTHIj+iZ95gyxpPZUp/+a9nShNMsPVDN5Mky1x6nJZMOG/RpFRSyH8OwMsA42rbcNpTf2dseaUSoe6RoJhvRfO2YLhT6+4LagyjgchtXRpijiGAY/KlnUH9vljGnQtLunVV/kG5YlYuw2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684527; c=relaxed/simple;
-	bh=XH+AuQkAK7T2HAhwmY9WrK40lFNcp+DGrNgamL5/578=;
+	s=arc-20240116; t=1750684558; c=relaxed/simple;
+	bh=GMTA9lIONPSUMcRLPgjmI8g9jtmcafOV9OmOH6JV5cY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=op/bhBvi2bd3CpiJHV2EQnpkCcMmXbm3hRj07PrZPz0G4JlmXp53kceYq4yikVsbHoV2k6OA06A4AnwBDx+A90PYP1KRreZ77IXrBRUzv5g4aA3uiPxNu6mSd7thETvhJ4DuEkq6n4VtcamcCQy6b+npobqqHhx2nGJlkqkiqNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DgJZQVei; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF1EC4CEEA;
-	Mon, 23 Jun 2025 13:15:24 +0000 (UTC)
+	 MIME-Version; b=Vb0IgfDPisdNg6if43zZaOjhSV/39uPtIfupO0qeb90MzhP7c7qgCxHIJ7hZBVju/7T1f5gEzUtWMNlydP+fUTLu0QaOI6eYkAawAdDZxu7ANqg6oUB+ozdsVf6PpapW71GtOdEEoUArB31SmR2Qkg1r5Xm5/ttWbqpG+Vim4BU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHD9E6sE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B71C4CEEA;
+	Mon, 23 Jun 2025 13:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684525;
-	bh=XH+AuQkAK7T2HAhwmY9WrK40lFNcp+DGrNgamL5/578=;
+	s=korg; t=1750684557;
+	bh=GMTA9lIONPSUMcRLPgjmI8g9jtmcafOV9OmOH6JV5cY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DgJZQVeiCSpNHxG74D4wENkBRm5qyJE5Ugcu9ROAAfRGzC3DOIMLF+Bwo0r9Gycne
-	 CwS4SQNDhqhDDcwzLfGW0sVpWMVUrdFz0LKakuklDwTooy6a7ebSet0r+14Cyi5r8S
-	 tYvQRsNbr9ftknZGEEdbWZllMqCu3yDxOeVOo6Xg=
+	b=JHD9E6sEj3LaqOMO8r6zAWhqgeHfPciChNzSIBi12luNZLrOn/4ZtpFmIwoZfoAkv
+	 pyPBDqsVSReV9Tq9itVCzj5Xcdj7vlppVV/rvtOBtUXyQiM+/0U8vB203Qg3rXdPgG
+	 VTyL1X4N/+9+qgXvi/Ws/4TNlw9fi5TTGcQIWpHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 075/592] media: omap3isp: use sgtable-based scatterlist wrappers
-Date: Mon, 23 Jun 2025 15:00:33 +0200
-Message-ID: <20250623130702.054050931@linuxfoundation.org>
+Subject: [PATCH 6.15 076/592] media: ov08x40: Extend sleep after reset to 5 ms
+Date: Mon, 23 Jun 2025 15:00:34 +0200
+Message-ID: <20250623130702.078249363@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,73 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit 3de572fe2189a4a0bd80295e1f478401e739498e upstream.
+commit 77aed862c34f192f9d4b80d5288263b22b50ca98 upstream.
 
-Use common wrappers operating directly on the struct sg_table objects to
-fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
-functions have to be called with the number of elements originally passed
-to dma_map_sg_*() function, not the one returned in sgtable's nents.
+Some users are reporting that ov08x40_identify_module() fails
+to identify the chip reading 0x00 as value for OV08X40_REG_CHIP_ID.
 
-Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
-Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
-CC: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Intel's out of tree IPU6 drivers include some ov08x40 changes
+including adding support for the reset GPIO for older kernels and
+Intel's patch for this uses 5 ms. Extend the sleep to 5 ms following
+Intel's example, this fixes the ov08x40_identify_module() problem.
+
+Link: https://github.com/intel/ipu6-drivers/blob/c09e2198d801e1eb701984d2948373123ba92a56/patch/v6.12/0008-media-ov08x40-Add-support-for-2-4-lanes-support-at-1.patch#L4607
+Fixes: df1ae2251a50 ("media: ov08x40: Add OF probe support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/omap3isp/ispccdc.c |    8 ++++----
- drivers/media/platform/ti/omap3isp/ispstat.c |    6 ++----
- 2 files changed, 6 insertions(+), 8 deletions(-)
+ drivers/media/i2c/ov08x40.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/ti/omap3isp/ispccdc.c
-+++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
-@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_cc
- 		if (ret < 0)
- 			goto done;
- 
--		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
--				    req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
-+					 DMA_TO_DEVICE);
- 
- 		if (copy_from_user(req->table.addr, config->lsc,
- 				   req->config.size)) {
-@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_cc
- 			goto done;
- 		}
- 
--		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
--				       req->table.sgt.nents, DMA_TO_DEVICE);
-+		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
-+					    DMA_TO_DEVICE);
+--- a/drivers/media/i2c/ov08x40.c
++++ b/drivers/media/i2c/ov08x40.c
+@@ -1341,7 +1341,7 @@ static int ov08x40_power_on(struct devic
  	}
  
- 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
---- a/drivers/media/platform/ti/omap3isp/ispstat.c
-+++ b/drivers/media/platform/ti/omap3isp/ispstat.c
-@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
+ 	gpiod_set_value_cansleep(ov08x->reset_gpio, 0);
+-	usleep_range(1500, 1800);
++	usleep_range(5000, 5500);
  
--	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
--			       buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
+ 	return 0;
  
- static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
-@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(st
- 	if (ISP_STAT_USES_DMAENGINE(stat))
- 		return;
- 
--	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
--			    buf->sgt.nents, DMA_FROM_DEVICE);
-+	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
- }
- 
- static void isp_stat_buf_clear(struct ispstat *stat)
 
 
 
