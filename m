@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-156787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65722AE5121
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC5EDAE532E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0EBB4A2EC2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53BFE4A75ED
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF2144C77;
-	Mon, 23 Jun 2025 21:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4401E1DD0C7;
+	Mon, 23 Jun 2025 21:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+0mhN1o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZEHqJyA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEECD2AD04;
-	Mon, 23 Jun 2025 21:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0243719049B;
+	Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714265; cv=none; b=NxUx2mxGD8lQe5bQMOsTAcjKbsbIAo9s8R644POtanm2UOWkIFwVKnu7xSEe9th+l2QM05WLVznGLLqMo+E9uIscs0CY84eHTu+gtet6n96MAtkgOr2XGzw/2NchMLKl7Ew1AmWYesdZX5fdsH5Y4KjNgNM5P4kTgmQnGIXq9q8=
+	t=1750715465; cv=none; b=N3z+PeAKYsExNQwmEk0z9pBaExelAoRGCgUbTsnExdlkj5IkD6DBrkUasBWRZxLgAEF08yukQ+hHtQ08yoDT2Ib0P6KIFFXiim9hHHHfFE18cOt9kVxgJ014SUU0OQ/hxEw+EgXDc9QpxXoQhCyc4XpkRTOxyIgae+h7ClQEmOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714265; c=relaxed/simple;
-	bh=iM6JA2p8B+wfuf+71kLAQx4er68qZFaXbuC7/vvp6+0=;
+	s=arc-20240116; t=1750715465; c=relaxed/simple;
+	bh=n0rv/3GPQlrmTW4QXYlFI+bPrQHiN9SGUTtQEnnen+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0n48BcR8qaNv+68nHyg4F8EnylcBeOoYzS+5Ckb2k0qTnhU54saivOWkI9Nmsf3crvDNNZPykl/agG0awW7BcY/NvIffC5Zg6c/IWoGJ5DoP0wimLKMyC/2k3ZOCthdji3hFb+R9ybvm8SFraF3U+oILhItav+pSxWnKEujlPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+0mhN1o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87B33C4CEEA;
-	Mon, 23 Jun 2025 21:31:04 +0000 (UTC)
+	 MIME-Version; b=SlqI8ikWm7axuMVGUsNQHlgmmRD5ebYw7J2NfVVeXMiXHuUTpCGiKNVSzMW+sMWxpMPTaIkF7rsyKhEhGSt7mNouG5GA7pgJeixEjS4rRNsEiQYkkcpfZZJW5kJ1TLPk7e7zBe+foSxAE08m24nsU5sI5TU52UmTyyCEDbxwF0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZEHqJyA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3EAC4CEEA;
+	Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714264;
-	bh=iM6JA2p8B+wfuf+71kLAQx4er68qZFaXbuC7/vvp6+0=;
+	s=korg; t=1750715464;
+	bh=n0rv/3GPQlrmTW4QXYlFI+bPrQHiN9SGUTtQEnnen+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+0mhN1onkt99egT5fDWyR97BcD35kMn7rTx9R8mWUbxo85N/DlsDe7AFi2E3aLzR
-	 c8Wl1PBKOOSZyhopDvGirWi3H+EQAz1viswy6SAwZb3wiR3fbtDUzwXvGx1US6ezwk
-	 xYuHlGMtKlt9nKh/m//6e0DV2zq8RVGO/2jqnZIY=
+	b=SZEHqJyAooYHJ0hWoEjZHHu34BUSJowQaNrL+bGmRPOEE2ALserJD6Srv+4BtxCvC
+	 ihhjEO5ZAgx9kCmHJdP+d68shn8RSYho+cmUc3mtKaGfn8/itu0OgZ97l4p7pPMzrj
+	 taIOq689IYmO+yk6sNHNYc0rR1yOfwV+iZn2FoOA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 177/411] drm/amd/display: Do not add -mhard-float to dcn2{1,0}_resource.o for clang
+	Frank Li <Frank.Li@nxp.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Marc Zyngier <maz@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 184/414] platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
 Date: Mon, 23 Jun 2025 15:05:21 +0200
-Message-ID: <20250623130638.142726101@linuxfoundation.org>
+Message-ID: <20250623130646.622077415@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-This patch is for linux-5.15.y and earlier only. It is functionally
-equivalent to upstream commit 7db038d9790e ("drm/amd/display: Do not add
-'-mhard-float' to dml_ccflags for clang"), which was created after all
-files that require '-mhard-float' were moved under the dml folder. In
-kernels older than 5.18, which do not contain upstream commits
+[ Upstream commit 9a958e1fd40d6fae8c66385687a00ebd9575a7d2 ]
 
-  22f87d998326 ("drm/amd/display: move FPU operations from dcn21 to dml/dcn20 folder")
-  cf689e869cf0 ("drm/amd/display: move FPU-related code from dcn20 to dml folder")
+platform_device_msi_init_and_alloc_irqs() performs two tasks: allocating
+the MSI domain for a platform device, and allocate a number of MSIs in that
+domain.
 
-newer versions of clang error with
+platform_device_msi_free_irqs_all() only frees the MSIs, and leaves the MSI
+domain alive.
 
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:289: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn20/dcn20_resource.o] Error 1
-  clang: error: unsupported option '-mhard-float' for target 'x86_64-linux-gnu'
-  make[6]: *** [scripts/Makefile.build:289: drivers/gpu/drm/amd/amdgpu/../display/dc/dcn21/dcn21_resource.o] Error 1
+Given that platform_device_msi_init_and_alloc_irqs() is the sole tool a
+platform device has to allocate platform MSIs, it makes sense for
+platform_device_msi_free_irqs_all() to teardown the MSI domain at the same
+time as the MSIs.
 
-Apply a functionally equivalent change to prevent adding '-mhard-float'
-with clang for these files.
+This avoids warnings and unexpected behaviours when a driver repeatedly
+allocates and frees MSIs.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/all/20250414-ep-msi-v18-1-f69b49917464@nxp.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/Makefile |    2 +-
- drivers/gpu/drm/amd/display/dc/dcn21/Makefile |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/base/platform-msi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/Makefile
-@@ -10,7 +10,7 @@ DCN20 = dcn20_resource.o dcn20_init.o dc
- DCN20 += dcn20_dsc.o
- 
- ifdef CONFIG_X86
--CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_resource.o := -mhard-float -msse
-+CFLAGS_$(AMDDALPATH)/dc/dcn20/dcn20_resource.o := $(if $(CONFIG_CC_IS_GCC), -mhard-float) -msse
- endif
- 
- ifdef CONFIG_PPC64
---- a/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dcn21/Makefile
-@@ -6,7 +6,7 @@ DCN21 = dcn21_init.o dcn21_hubp.o dcn21_
- 	 dcn21_hwseq.o dcn21_link_encoder.o dcn21_dccg.o
- 
- ifdef CONFIG_X86
--CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_resource.o := -mhard-float -msse
-+CFLAGS_$(AMDDALPATH)/dc/dcn21/dcn21_resource.o := $(if $(CONFIG_CC_IS_GCC), -mhard-float) -msse
- endif
- 
- ifdef CONFIG_PPC64
+diff --git a/drivers/base/platform-msi.c b/drivers/base/platform-msi.c
+index 0e60dd650b5e0..70db08f3ac6fa 100644
+--- a/drivers/base/platform-msi.c
++++ b/drivers/base/platform-msi.c
+@@ -95,5 +95,6 @@ EXPORT_SYMBOL_GPL(platform_device_msi_init_and_alloc_irqs);
+ void platform_device_msi_free_irqs_all(struct device *dev)
+ {
+ 	msi_domain_free_irqs_all(dev, MSI_DEFAULT_DOMAIN);
++	msi_remove_device_irq_domain(dev, MSI_DEFAULT_DOMAIN);
+ }
+ EXPORT_SYMBOL_GPL(platform_device_msi_free_irqs_all);
+-- 
+2.39.5
+
 
 
 
