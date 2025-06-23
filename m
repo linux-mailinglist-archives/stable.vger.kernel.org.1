@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD4A1AE551B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2640AAE576B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5C5442FBD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3085B3BA8CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4204B223316;
-	Mon, 23 Jun 2025 22:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FF622422F;
+	Mon, 23 Jun 2025 22:27:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H3lsTI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZYV3JMyM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF09C1E22E6;
-	Mon, 23 Jun 2025 22:07:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0161D1F463B;
+	Mon, 23 Jun 2025 22:27:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716454; cv=none; b=RgeWLgK7Lh6tQ4WM7jWBYBwmNPmKijapZz+Z8XRkCRn+PlkMjl+7d2vkuwdxkmaI1ymdXTtFO8u1v8+1SoWEDBKmkDOzR4GttVkos+5r8vQMhw1y7iIccvj++f8heb297C5Kc/9xFXDo85zC41NgaGd6fVe1acWyM67y63xzpJM=
+	t=1750717654; cv=none; b=pY1kn/Nsh0VPptuXXMKpXu3d1ZVg4Bh1qfH4sPAml5WWg2ijcluBCPH38xcmQcWxuhplKW8Rj0i4TKbVvrV86lSoTKBpY+wlER7ijkk/tOlFz9IkQuBLBnD7MH378oLMZ3sVUu4rApAGYnLaMh3T8500mQgKe5EizMJ8XE7LvGg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716454; c=relaxed/simple;
-	bh=7/q6oyqkLHANi/r9cbqyNhOLO5nJkFmBRVrXjkGNjs8=;
+	s=arc-20240116; t=1750717654; c=relaxed/simple;
+	bh=/6L7AUnn6g89jtlyXCZLJBbD0ap9duki49pa6RilMes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfURcdpzpgoAj0Ca6RWoVFOBHOvGf7LonScF9XJBqOm6ievmWbKwHlA5rRvhzhaIhYOlnyBuv6mLw1KvZVRym5fSdQzUV2P9+D9Gpv6UFbqN03BgYdsdzeu0PtGZhnsrzqGMBZo2+NCfdhLJvcylFv19cglKusJP7YAAj4VFN3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H3lsTI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D14C4CEEA;
-	Mon, 23 Jun 2025 22:07:33 +0000 (UTC)
+	 MIME-Version; b=F3qS/FCiuQKzF0RTM2MAV/sRSuDhRGxMEIgkS/aiTB5Nux28LraxZja0KlqyTNBdv43lv1s7wtpedpzYz+JZ/PJombltmxcX1L3zELmE9+F11MfMmxmvSplfM/CWNFGXiPyij7HbkNvTH1kn32e2riJDurEO/04nEnizoexr9GM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZYV3JMyM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BAB2C4CEEA;
+	Mon, 23 Jun 2025 22:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716453;
-	bh=7/q6oyqkLHANi/r9cbqyNhOLO5nJkFmBRVrXjkGNjs8=;
+	s=korg; t=1750717653;
+	bh=/6L7AUnn6g89jtlyXCZLJBbD0ap9duki49pa6RilMes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2H3lsTI7/O2QhYyXk558o5M6oUFxEJzeO/OGLFWy++2EkMHJfOWPeWkRHqiVu3/xo
-	 eAMMsKL7+BsUCFJXDCgfHf1wx98WNyuPb/7iBMyPo/nFl1UMVeJbIa2nKxmFbBhfGo
-	 SyzvfMaNDlilbBpfhS3DkP+/r55Jpl3ACDsceil4=
+	b=ZYV3JMyMdpwHvift99emNmdG8D4tb/OxTvovS+z36FTu867v0newz8fXBauqgLQ2u
+	 ndA88cJOYOwBrV4zdGU/9yj6wI0iMztMSzvlV4BqwPfwgm+hXr7hSIO92LqG1r6kvK
+	 0tjshmysWOnO7+WCuOO4cgl+6nDSC7SMh/RM/I/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.10 335/355] arm64: proton-pack: Add new CPUs k values for branch mitigation
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Francois Romieu <romieu@fr.zoreil.com>
+Subject: [PATCH 6.1 491/508] net: atm: fix /proc/net/atm/lec handling
 Date: Mon, 23 Jun 2025 15:08:56 +0200
-Message-ID: <20250623130636.808301449@linuxfoundation.org>
+Message-ID: <20250623130657.119287533@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit efe676a1a7554219eae0b0dcfe1e0cdcc9ef9aef ]
+[ Upstream commit d03b79f459c7935cff830d98373474f440bd03ae ]
 
-Update the list of 'k' values for the branch mitigation from arm's
-website.
+/proc/net/atm/lec must ensure safety against dev_lec[] changes.
 
-Add the values for Cortex-X1C. The MIDR_EL1 value can be found here:
-https://developer.arm.com/documentation/101968/0002/Register-descriptions/AArch>
+It appears it had dev_put() calls without prior dev_hold(),
+leading to imbalance and UAF.
 
-Link: https://developer.arm.com/documentation/110280/2-0/?lang=en
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Francois Romieu <romieu@fr.zoreil.com> # Minor atm contributor
+Link: https://patch.msgid.link/20250618140844.1686882-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/cputype.h |    2 ++
- arch/arm64/kernel/proton-pack.c  |    1 +
- 2 files changed, 3 insertions(+)
+ net/atm/lec.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/arch/arm64/include/asm/cputype.h
-+++ b/arch/arm64/include/asm/cputype.h
-@@ -80,6 +80,7 @@
- #define ARM_CPU_PART_CORTEX_A78AE	0xD42
- #define ARM_CPU_PART_CORTEX_X1		0xD44
- #define ARM_CPU_PART_CORTEX_A510	0xD46
-+#define ARM_CPU_PART_CORTEX_X1C		0xD4C
- #define ARM_CPU_PART_CORTEX_A520	0xD80
- #define ARM_CPU_PART_CORTEX_A710	0xD47
- #define ARM_CPU_PART_CORTEX_A715	0xD4D
-@@ -144,6 +145,7 @@
- #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
- #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
- #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
-+#define MIDR_CORTEX_X1C MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
- #define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
- #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
- #define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -899,6 +899,7 @@ static u8 spectre_bhb_loop_affected(void
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
-+		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
- 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
- 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index d4ac1488eca6f..b7fa48a9b7205 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -909,7 +909,6 @@ static void *lec_itf_walk(struct lec_state *state, loff_t *l)
+ 	v = (dev && netdev_priv(dev)) ?
+ 		lec_priv_walk(state, l, netdev_priv(dev)) : NULL;
+ 	if (!v && dev) {
+-		dev_put(dev);
+ 		/* Partial state reset for the next time we get called */
+ 		dev = NULL;
+ 	}
+@@ -933,6 +932,7 @@ static void *lec_seq_start(struct seq_file *seq, loff_t *pos)
+ {
+ 	struct lec_state *state = seq->private;
+ 
++	mutex_lock(&lec_mutex);
+ 	state->itf = 0;
+ 	state->dev = NULL;
+ 	state->locked = NULL;
+@@ -950,8 +950,9 @@ static void lec_seq_stop(struct seq_file *seq, void *v)
+ 	if (state->dev) {
+ 		spin_unlock_irqrestore(&state->locked->lec_arp_lock,
+ 				       state->flags);
+-		dev_put(state->dev);
++		state->dev = NULL;
+ 	}
++	mutex_unlock(&lec_mutex);
+ }
+ 
+ static void *lec_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+-- 
+2.39.5
+
 
 
 
