@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71FEDAE53CD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1A9EAE52D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19EB07B11E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865E93B65B0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DD71FECBA;
-	Mon, 23 Jun 2025 21:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DB62253EA;
+	Mon, 23 Jun 2025 21:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4jHeItg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kA76k16G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5116D222581;
-	Mon, 23 Jun 2025 21:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE37223DE1;
+	Mon, 23 Jun 2025 21:46:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715790; cv=none; b=FoF2RHgC6xLc65AYaz4TS6RNGlFWOP1Jms8cX/U/Hqor2189t3KHwH1UR9LtMesYxTShPxV36Uf8v+5Y8OusCnxhEezt4e7H4Fhr3mRHtvwD5nlcgj9XOFIS1zrQ9ynVKyzz/ZahzKogtM4DlAPbADHnHXBPAqFC+p6jTZDleaw=
+	t=1750715198; cv=none; b=FrrBTh1h4oHWEueB09PSMtiiUHWIv0XUFegXj3BDo2bqoVoNgK44sdieP9uTvZEEY5ipHe4zYag/KVA8e/RQ6hXkuXiXivy8bF1Bkl7umBCOWz420MSGu//5VHZb/latncy0Dx3EjsyavBOGFKDyb1DXlMzoPP2129G/RBeUPGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715790; c=relaxed/simple;
-	bh=JMH+pXX7a7lwz1EPhYv4MZbllg9jHIRi9eIECgf+n+o=;
+	s=arc-20240116; t=1750715198; c=relaxed/simple;
+	bh=dzYwy+PAfT/ydxk92fBLqik2ko7PzSQqYqvgYeTh1W8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ez/qAQ6tIcWQWQTvW8HV1wnpHXtENobrgYKTT9VXRkQegHms8VmBC8qVf7JYNXG2W6w2fZ3OBOh5ASLDiv2iPoyWC3XGgOjbPdCAQnEwv7qjIJ6EmjwMerHXzOSh2xUwRihSpeRl/gdWr20UL5jlZ436XJpji6rvKaX1/kw1pY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4jHeItg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9BAC4CEEA;
-	Mon, 23 Jun 2025 21:56:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=uOJ/dMRjcM3aeNwqOORW+8NdN+38tOnjVMnvBz9a0nVpJOoylWdOT9KRo0EbBguGWjwkPkYBLJlfJkEVH1kLiNER8jauoF2sCbXxeooZIXRDqwoDXb7pMo/rrscTqUcGlKytMktAj2MCCsB7d1sw5SM6M4lBEwn0ZrslZOGhosw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kA76k16G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9DBC4CEEA;
+	Mon, 23 Jun 2025 21:46:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715790;
-	bh=JMH+pXX7a7lwz1EPhYv4MZbllg9jHIRi9eIECgf+n+o=;
+	s=korg; t=1750715198;
+	bh=dzYwy+PAfT/ydxk92fBLqik2ko7PzSQqYqvgYeTh1W8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4jHeItgq+gbZfY5YEqJjap0LFkB6cmGPPnDoXpDifBlaE8W97R//OxnbYpb0J5Yz
-	 h4Txp1GWHSXVi7vx2xb1GlN/tCd7eLMsnRj+sUgb3Kyx4Wewq/CvDTstvhBpTIPc3u
-	 csUP1Evw3SRKnpCAp2Kw+G/dv8zxNlEoUiFfBUvg=
+	b=kA76k16G8zW8p4qx9KLvDVrYmpOtz0t3kEmJ+S4fcZIqJaW6kU7hQdIq9xnim8Z+b
+	 zNbCoWtnqoFjOfs+CKaVKvjljZDMxUWmToq3MQw8pBScZ8eRIuK6N5ULZM7KSCR+jL
+	 /iz81l1mMdzvUGthToy91ROLC19wIijp4MQ2uVug=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 221/290] net_sched: sch_sfq: reject invalid perturb period
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 281/355] platform/x86: dell_rbu: Stop overwriting data buffer
 Date: Mon, 23 Jun 2025 15:08:02 +0200
-Message-ID: <20250623130633.575632197@linuxfoundation.org>
+Message-ID: <20250623130635.228229407@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
+[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+The dell_rbu driver will use memset() to clear the data held by each
+packet when it is no longer needed (when the driver is unloaded, the
+packet size is changed, etc).
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
+The amount of memory that is cleared (before this patch) is the normal
+packet size. However, the last packet in the list may be smaller.
 
-Tested:
+Fix this to only clear the memory actually used by each packet, to prevent
+it from writing past the end of data buffer.
 
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
+Because the packet data buffers are allocated with __get_free_pages() (in
+page-sized increments), this bug could only result in a buffer being
+overwritten when a packet size larger than one page is used. The only user
+of the dell_rbu module should be the Dell BIOS update program, which uses
+a packet size of 4096, so no issues should be seen without the patch, it
+just blocks the possiblity.
 
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/platform/x86/dell_rbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
- 	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
- 
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+diff --git a/drivers/platform/x86/dell_rbu.c b/drivers/platform/x86/dell_rbu.c
+index 0b5c1a0260b7a..68a860a97f319 100644
+--- a/drivers/platform/x86/dell_rbu.c
++++ b/drivers/platform/x86/dell_rbu.c
+@@ -322,7 +322,7 @@ static void packet_empty_list(void)
+ 		 * zero out the RBU packet memory before freeing
+ 		 * to make sure there are no stale RBU packets left in memory
+ 		 */
+-		memset(newpacket->data, 0, rbu_data.packetsize);
++		memset(newpacket->data, 0, newpacket->length);
+ 		set_memory_wb((unsigned long)newpacket->data,
+ 			1 << newpacket->ordernum);
+ 		free_pages((unsigned long) newpacket->data,
+-- 
+2.39.5
+
 
 
 
