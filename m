@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B7A9AE53AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D577AE4EE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6482B18817C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9BC373BEA3F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FF31E22E6;
-	Mon, 23 Jun 2025 21:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E2421FF2B;
+	Mon, 23 Jun 2025 21:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ug87ZktS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHGi0znD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674931FECBA;
-	Mon, 23 Jun 2025 21:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F08470838;
+	Mon, 23 Jun 2025 21:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715680; cv=none; b=tMw4lci3MaEucg2iPMiDT+wSewW79XjhS7uUUUYkPTKR8bF97iieEbcZ9iUbipzGfluanhRyKFirgBMtVRHOqLE30jAnjfVu8IIAvOsb9KK1ap1yTek3tePBYjX8Gctu/XBPlhhPkFr1pPr3vwUxDOON/mAerUhg5c/cwR2bIkU=
+	t=1750713022; cv=none; b=hf4vI99KudT3crDXMMh21XQaqxZUsk1nGTFWTILoHMEjIy3J5naWgvkmCPZmJ755QTNVtaai+NZofNrWXuk10xPmlTe3h+jEKjref5GNlXwqETWBHhygFBU+vXyloMOwEvjWckmrchlyvRI8yO1TkSv1SHgcDY4j8nNMxmRvIqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715680; c=relaxed/simple;
-	bh=DFdoh5armBVdxZMr4K9P8jIK67TTXZj0UeWxp4Awkn0=;
+	s=arc-20240116; t=1750713022; c=relaxed/simple;
+	bh=7qjNJ7gkzPrrvVBi2amSBu9zDQiMNWxEbr6Ry6QiwQU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwESUx5MygetSZBA2J16ABhx4mhzIPI9VIC2Yx1APc8cR9X+KxpY7I6AfM/OFR8gCkGwp/0Z8iRn9Di76drS9L2Vz8uCcftaQF2S1C5+aT3PK0gH/euQyKP2g6AFyWFD02yZQjAJXflq3vdT/JjtFe82mCUZxvbPN5Cnhiq8EPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ug87ZktS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EB2C4CEEA;
-	Mon, 23 Jun 2025 21:54:39 +0000 (UTC)
+	 MIME-Version; b=u5lZ6uIV4tsrBWmUR9dezvwutkE4XjiOhh27rP6qt9ZDarjWS3jR6Mw5cpIFb/SSwqEM/KAmchs9TKjn9x5L26f90SSc+Ei1+SlOd0+9+r0EnmaGh3eRnYm01rrcLXLM7SpqJbaajjJOmkKt2cjBi7zM62eMsBmLxH1gA+XPh4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHGi0znD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8B3FC4CEEA;
+	Mon, 23 Jun 2025 21:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715680;
-	bh=DFdoh5armBVdxZMr4K9P8jIK67TTXZj0UeWxp4Awkn0=;
+	s=korg; t=1750713022;
+	bh=7qjNJ7gkzPrrvVBi2amSBu9zDQiMNWxEbr6Ry6QiwQU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ug87ZktSRWP5dBUE6w10V6qIam4TGqxck0LexA7ZkYPlUnXD8RKjbaVjqNzyH+ca6
-	 4mB3Di1irycVkGiTScf18UPKIixLPGijy4mgufjUsmL5bHjdHt+FyvE3/Ah6IBG6NI
-	 v3q/BKE6GBmqU9s7Rhy6YcFDxqaUQTUvBLXlUf5c=
+	b=XHGi0znDWuCFdqbP55lt0rXAJGRazydS1nNnBzP6BXA0wJWMCd8J78jF7ozGdN+82
+	 opdlTzmOdj6WOW62yGZ1eyZ3dsSWao9MTL64U0YBphA82r+fQwijxX7O5EQdKaoOgY
+	 vJbQ3Ri7WxW5Ze0Ai+jb5TutfjMFWFBR1l4liaVI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 255/508] net/mlx5: Ensure fw pages are always allocated on same NUMA
+Subject: [PATCH 5.10 099/355] net/mlx4_en: Prevent potential integer overflow calculating Hz
 Date: Mon, 23 Jun 2025 15:05:00 +0200
-Message-ID: <20250623130651.527591951@linuxfoundation.org>
+Message-ID: <20250623130629.764939908@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f37258133c1e95e61db532e14067e28b4881bf24 ]
+[ Upstream commit 54d34165b4f786d7fea8412a18fb4a54c1eab623 ]
 
-When firmware asks the driver to allocate more pages, using event of
-give_pages, the driver should always allocate it from same NUMA, the
-original device NUMA. Current code uses dev_to_node() which can result
-in different NUMA as it is changed by other driver flows, such as
-mlx5_dma_zalloc_coherent_node(). Instead, use saved numa node for
-allocating firmware pages.
+The "freq" variable is in terms of MHz and "max_val_cycles" is in terms
+of Hz.  The fact that "max_val_cycles" is a u64 suggests that support
+for high frequency is intended but the "freq_khz * 1000" would overflow
+the u32 type if we went above 4GHz.  Use unsigned long long type for the
+mutliplication to prevent that.
 
-Fixes: 311c7c71c9bb ("net/mlx5e: Allocate DMA coherent memory on reader NUMA node")
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250610151514.1094735-2-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 31c128b66e5b ("net/mlx4_en: Choose time-stamping shift value according to HW frequency")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/aDbFHe19juIJKjsb@stanley.mountain
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 2 +-
+ drivers/net/ethernet/mellanox/mlx4/en_clock.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-index 95dc67fb30015..99909c74a2144 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
-@@ -285,7 +285,7 @@ static void free_4k(struct mlx5_core_dev *dev, u64 addr, u32 function)
- static int alloc_system_page(struct mlx5_core_dev *dev, u32 function)
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_clock.c b/drivers/net/ethernet/mellanox/mlx4/en_clock.c
+index 024788549c256..060698b0c65cc 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_clock.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_clock.c
+@@ -251,7 +251,7 @@ static const struct ptp_clock_info mlx4_en_ptp_clock_info = {
+ static u32 freq_to_shift(u16 freq)
  {
- 	struct device *device = mlx5_core_dma_dev(dev);
--	int nid = dev_to_node(device);
-+	int nid = dev->priv.numa_node;
- 	struct page *page;
- 	u64 zero_addr = 1;
- 	u64 addr;
+ 	u32 freq_khz = freq * 1000;
+-	u64 max_val_cycles = freq_khz * 1000 * MLX4_EN_WRAP_AROUND_SEC;
++	u64 max_val_cycles = freq_khz * 1000ULL * MLX4_EN_WRAP_AROUND_SEC;
+ 	u64 max_val_cycles_rounded = 1ULL << fls64(max_val_cycles - 1);
+ 	/* calculate max possible multiplier in order to fit in 64bit */
+ 	u64 max_mul = div64_u64(ULLONG_MAX, max_val_cycles_rounded);
 -- 
 2.39.5
 
