@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-155535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D771AE4274
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1311FAE428E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C83E33B8133
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A62E17513E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13B5124A06D;
-	Mon, 23 Jun 2025 13:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F05124DCE8;
+	Mon, 23 Jun 2025 13:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CFg/3cb0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWXWJrNB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2A5A1E87B;
-	Mon, 23 Jun 2025 13:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B9214C7F;
+	Mon, 23 Jun 2025 13:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684684; cv=none; b=mCQmLBv013y/hZsJshrUJbGCKnThhaw3iHnE5jXcaeRLEFy9EEyICJuB2p8M/YC0cxZ6vhAfLMmYY1Wn1e/MjJl3l8z7tWMq38sEnUAmN5MbhNvePnFjTLouLibiRDo1SEv07avGche7vxmCmtwv40byZjUcr4CtvwjwuXRN1wM=
+	t=1750684690; cv=none; b=G5kgb42ntNqHGSSDfPfghmDs5ftcQJcpU+LPo985QVmAdI39scVW53sod47JLdG1z30U8tDueUfkU8bYuC9Fam5XKyUkLOZW7GFwPt5NiTanl/p4wmVUfuHA/lcmTKcL3cyGamyz6/awONtqc7Yo2GUp8vELT98XPO+cDIA6VAU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684684; c=relaxed/simple;
-	bh=Up7SILJf0cbG1gW7OGAv9p8hSJZV9ZPYGBv3HfuX6MA=;
+	s=arc-20240116; t=1750684690; c=relaxed/simple;
+	bh=wdSMNxUmgStaBVf+ZrR1o2xLhwgJoAr/plpufmrqUSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KEmRKiwz4I4xT95lZKyIrPusXpiCH0P1q+yYqdVR1Vk46Rshp7piaP1e1ZKmcsHoFsTBLTEsFuhKenXdSTLSb2YV4Bj+/VAOfguUI2fLzu2E80o84MgP/Bw1JsJWcM3W0myOPz1gmalMMloyACzCUwWGQLCONOdLE7DLujdfdiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CFg/3cb0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F21C4CEEA;
-	Mon, 23 Jun 2025 13:18:03 +0000 (UTC)
+	 MIME-Version; b=Xq+JYWXs6//ATm4cyxi0XHfhQkPlBisoG4LCwTsw0jbUJTOPZtxy0xWfPz2XCquDZQM6sC/Bw/N75vldtaEANXTlGUJbILV9LQAlM/PH8K0bx0Ce32Si+wOSTF/+7NNrDWU1iwOYKt/vlXXtnUItb40a1eCznXHBji2QwYQv68E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWXWJrNB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38726C4CEEA;
+	Mon, 23 Jun 2025 13:18:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684684;
-	bh=Up7SILJf0cbG1gW7OGAv9p8hSJZV9ZPYGBv3HfuX6MA=;
+	s=korg; t=1750684689;
+	bh=wdSMNxUmgStaBVf+ZrR1o2xLhwgJoAr/plpufmrqUSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CFg/3cb0iLm4Of889755EibiXhNTAW3/RZDEIXpbMWOxlHW5uDVBPSI9VxQe6eBPP
-	 8YnDC3CDOUZd3xU4RWzeiPqtGmuoWEi3JEDItHXwnx+Cst7LmnmkN8tGJnlb1cxHv7
-	 bALYe4/qPP33uLZrMiQ/L9FE1PKXD4FRuiN7YFaE=
+	b=iWXWJrNBfiBVkagrGnzOkv9Y/BrR1hjUPO3ptqFj6+TQhQggjk5tlCB2M2s3GonEy
+	 3JAJK2P6dlcX6dam1jouG+c2SmK+14jvIwQrESEAOffxErE9BM33DHVyaUbo5qqdD2
+	 IrfTv6BU681GPId8180qhHIxQbBdwcZ8Ylr2tbBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
 	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
 	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Mark Brown <broonie@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Gabor Juhos <j4g8y7@gmail.com>
-Subject: [PATCH 6.15 153/592] mtd: rawnand: qcom: Pass 18 bit offset from NANDc base to BAM base
-Date: Mon, 23 Jun 2025 15:01:51 +0200
-Message-ID: <20250623130703.921474852@linuxfoundation.org>
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.15 154/592] mtd: rawnand: qcom: Fix last codeword read in qcom_param_page_type_exec()
+Date: Mon, 23 Jun 2025 15:01:52 +0200
+Message-ID: <20250623130703.946851479@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -71,126 +69,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Md Sadre Alam <quic_mdalam@quicinc.com>
 
-commit ee000969f28bf579d3772bf7c0ae8aff86586e20 upstream.
+commit 47bddabbf69da50999ec68be92b58356c687e1d6 upstream.
 
-The BAM command descriptor provides only 18 bits to specify the BAM
-register offset. Additionally, in the BAM command descriptor, the BAM
-register offset is supposed to be specified as "(NANDc base - BAM base)
-+ reg_off". Since, the BAM controller expecting the value in the form of
-"NANDc base - BAM base", so that added a new field 'bam_offset' in the NAND
-properties structure and use it while preparing the command descriptor.
+For QPIC V2 onwards there is a separate register to read
+last code word "QPIC_NAND_READ_LOCATION_LAST_CW_n".
 
-Previously, the driver was specifying the NANDc base address in the BAM
-command descriptor.
+qcom_param_page_type_exec() is used to read only one code word
+If it configures the number of code words to 1 in QPIC_NAND_DEV0_CFG0
+register then QPIC controller thinks its reading the last code word,
+since we are having separate register to read the last code word,
+we have to configure "QPIC_NAND_READ_LOCATION_LAST_CW_n" register
+to fetch data from QPIC buffer to system memory.
+
+Without this change page read was failing with timeout error
+
+/ # hexdump -C /dev/mtd1
+[  129.206113] qcom-nandc 1cc8000.nand-controller: failure to read page/oob
+hexdump: /dev/mtd1: Connection timed out
+
+This issue only seen on SDX targets since SDX target used QPICv2. But
+same working on IPQ targets since IPQ used QPICv1.
 
 Cc: stable@vger.kernel.org
-Fixes: 8d6b6d7e135e ("mtd: nand: qcom: support for command descriptor formation")
+Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
 Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Acked-by: Mark Brown <broonie@kernel.org>
-Tested-by: Gabor Juhos <j4g8y7@gmail.com> # on IPQ9574
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/qpic_common.c       |    8 ++++----
- drivers/mtd/nand/raw/qcom_nandc.c    |    4 ++++
- drivers/spi/spi-qpic-snand.c         |    1 +
- include/linux/mtd/nand-qpic-common.h |    4 +---
- 4 files changed, 10 insertions(+), 7 deletions(-)
+ drivers/mtd/nand/raw/qcom_nandc.c |   12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
---- a/drivers/mtd/nand/qpic_common.c
-+++ b/drivers/mtd/nand/qpic_common.c
-@@ -236,21 +236,21 @@ int qcom_prep_bam_dma_desc_cmd(struct qc
- 	int i, ret;
- 	struct bam_cmd_element *bam_ce_buffer;
- 	struct bam_transaction *bam_txn = nandc->bam_txn;
-+	u32 offset;
- 
- 	bam_ce_buffer = &bam_txn->bam_ce[bam_txn->bam_ce_pos];
- 
- 	/* fill the command desc */
- 	for (i = 0; i < size; i++) {
-+		offset = nandc->props->bam_offset + reg_off + 4 * i;
- 		if (read)
- 			bam_prep_ce(&bam_ce_buffer[i],
--				    nandc_reg_phys(nandc, reg_off + 4 * i),
--				    BAM_READ_COMMAND,
-+				    offset, BAM_READ_COMMAND,
- 				    reg_buf_dma_addr(nandc,
- 						     (__le32 *)vaddr + i));
- 		else
- 			bam_prep_ce_le32(&bam_ce_buffer[i],
--					 nandc_reg_phys(nandc, reg_off + 4 * i),
--					 BAM_WRITE_COMMAND,
-+					 offset, BAM_WRITE_COMMAND,
- 					 *((__le32 *)vaddr + i));
- 	}
- 
 --- a/drivers/mtd/nand/raw/qcom_nandc.c
 +++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -2360,6 +2360,7 @@ static const struct qcom_nandc_props ipq
- 	.supports_bam = false,
- 	.use_codeword_fixup = true,
- 	.dev_cmd_reg_start = 0x0,
-+	.bam_offset = 0x30000,
- };
+@@ -1863,7 +1863,12 @@ static int qcom_param_page_type_exec(str
+ 	const struct nand_op_instr *instr = NULL;
+ 	unsigned int op_id = 0;
+ 	unsigned int len = 0;
+-	int ret;
++	int ret, reg_base;
++
++	reg_base = NAND_READ_LOCATION_0;
++
++	if (nandc->props->qpic_version2)
++		reg_base = NAND_READ_LOCATION_LAST_CW_0;
  
- static const struct qcom_nandc_props ipq4019_nandc_props = {
-@@ -2367,6 +2368,7 @@ static const struct qcom_nandc_props ipq
- 	.supports_bam = true,
- 	.nandc_part_of_qpic = true,
- 	.dev_cmd_reg_start = 0x0,
-+	.bam_offset = 0x30000,
- };
+ 	ret = qcom_parse_instructions(chip, subop, &q_op);
+ 	if (ret)
+@@ -1915,7 +1920,10 @@ static int qcom_param_page_type_exec(str
+ 	op_id = q_op.data_instr_idx;
+ 	len = nand_subop_get_data_len(subop, op_id);
  
- static const struct qcom_nandc_props ipq8074_nandc_props = {
-@@ -2374,6 +2376,7 @@ static const struct qcom_nandc_props ipq
- 	.supports_bam = true,
- 	.nandc_part_of_qpic = true,
- 	.dev_cmd_reg_start = 0x7000,
-+	.bam_offset = 0x30000,
- };
+-	nandc_set_read_loc(chip, 0, 0, 0, len, 1);
++	if (nandc->props->qpic_version2)
++		nandc_set_read_loc_last(chip, reg_base, 0, len, 1);
++	else
++		nandc_set_read_loc_first(chip, reg_base, 0, len, 1);
  
- static const struct qcom_nandc_props sdx55_nandc_props = {
-@@ -2382,6 +2385,7 @@ static const struct qcom_nandc_props sdx
- 	.nandc_part_of_qpic = true,
- 	.qpic_version2 = true,
- 	.dev_cmd_reg_start = 0x7000,
-+	.bam_offset = 0x30000,
- };
- 
- /*
---- a/drivers/spi/spi-qpic-snand.c
-+++ b/drivers/spi/spi-qpic-snand.c
-@@ -1636,6 +1636,7 @@ static void qcom_spi_remove(struct platf
- 
- static const struct qcom_nandc_props ipq9574_snandc_props = {
- 	.dev_cmd_reg_start = 0x7000,
-+	.bam_offset = 0x30000,
- 	.supports_bam = true,
- };
- 
---- a/include/linux/mtd/nand-qpic-common.h
-+++ b/include/linux/mtd/nand-qpic-common.h
-@@ -199,9 +199,6 @@
-  */
- #define dev_cmd_reg_addr(nandc, reg) ((nandc)->props->dev_cmd_reg_start + (reg))
- 
--/* Returns the NAND register physical address */
--#define nandc_reg_phys(chip, offset) ((chip)->base_phys + (offset))
--
- /* Returns the dma address for reg read buffer */
- #define reg_buf_dma_addr(chip, vaddr) \
- 	((chip)->reg_read_dma + \
-@@ -454,6 +451,7 @@ struct qcom_nand_controller {
- struct qcom_nandc_props {
- 	u32 ecc_modes;
- 	u32 dev_cmd_reg_start;
-+	u32 bam_offset;
- 	bool supports_bam;
- 	bool nandc_part_of_qpic;
- 	bool qpic_version2;
+ 	if (!nandc->props->qpic_version2) {
+ 		qcom_write_reg_dma(nandc, &nandc->regs->vld, NAND_DEV_CMD_VLD, 1, 0);
 
 
 
