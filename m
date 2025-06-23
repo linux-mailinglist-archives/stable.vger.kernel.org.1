@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF593AE52DF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D13EAE501A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BD797B01D6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CB1A1B6209B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777662222B7;
-	Mon, 23 Jun 2025 21:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B1D21B9C9;
+	Mon, 23 Jun 2025 21:22:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCPnGVlm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aAZRrD8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA1F16D9BF;
-	Mon, 23 Jun 2025 21:46:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13CF219E0;
+	Mon, 23 Jun 2025 21:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715218; cv=none; b=W2O9iEFT/RATFk+NjXH/0nC1am1Vkp4VSWEjF8Qi9yez8ktZGAyb3uMFT/GQIROiA0dpwaVXAY6D0Qj4ZGnV+/nHAJqnhxXIvdPGySeoySFLdUORm3Mas4m3/U72PGmEdfQk05eCy+YTPA//ztExJrQElLUOE4+HqtiF0weYSTI=
+	t=1750713734; cv=none; b=q7EnS513wwQ2srPMCTklvM9HsFbT7I+DiygWIyoMX6T3PU2Z1XnRBCbJGjKpR8+URCRCESImQ4Qou+QDauonNkbSejl7Vjeh24NjS8QTWWTWv/xQdIk9PLJjC/dHid6Zttk46X8DE3WMO76xHZWcRTc1ordXEmL/nvh3svAwrns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715218; c=relaxed/simple;
-	bh=9DYfyOEKnUaXPDCjBQewdLnj1g7+/DZeEx2wcNfyhSs=;
+	s=arc-20240116; t=1750713734; c=relaxed/simple;
+	bh=C16I3p1m9TEsTC1m7BROwU6di9qLeHwqHs3bqJ9ROP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGuW5RwjxEUn2TH3x+jHd26eMyvn3ykjcCUhyLvrNZMkX+lroiw3ZGy65AdPRtQTCndHM/99MLwLCu6sYbxf8WXTtIF+zxeyWTGHrO9xbV0z9zx7UzBVxcuBZx5WDeXJrmQASPZMMlkoR1eO0qSSWux46AYRIvxxSK6VpyOaQAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCPnGVlm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EA5C4CEEA;
-	Mon, 23 Jun 2025 21:46:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GwNuUG2BCHw6MQiYPO1HNQ7Cfdg3VPt4LWVW2dGv7RqvxVPCiKg42EThxY4bwg6OPg8YyXcRRJvFo8nkBFDJizKNW8EPzu5yZaFp9kKo3rKgx6Znj6PZfUpxcRnopUKBVLNdt9eaWcXBbecY27oc6PFRFAxGoxbkxgJ14s9B1eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aAZRrD8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38850C4CEEA;
+	Mon, 23 Jun 2025 21:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715218;
-	bh=9DYfyOEKnUaXPDCjBQewdLnj1g7+/DZeEx2wcNfyhSs=;
+	s=korg; t=1750713731;
+	bh=C16I3p1m9TEsTC1m7BROwU6di9qLeHwqHs3bqJ9ROP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCPnGVlmB9Ms5XAGsLONO23/nIaRnueq2yqoXgYOqS1M2v6gbzJNZGKpJTntS+sXd
-	 RibjmB0e34TeR1H+g1XFiExAbv7wFe4TR8QHMqjtsbzTl8Ui+judHohsQZHKKANch/
-	 B4/sUhoIu0G+nGn/IN4KJLrKTeD63N8/UbNGqppM=
+	b=aAZRrD8K6hhF+qI5LodhdCPQWu8x4T8+66FioIHMwNmC4qFQMG+2EryPMSO//bUQH
+	 uvfPYzzxduzvKR7A6VHFBKlF7OI7H2lKPVqByNMixx6v7whTOA966e4q2hDnpqKjKF
+	 J1oWEDtoXSVqk6qIh4mYgS74I/fIMDSFBAqm3SuY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
+	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 242/508] drm/meson: fix debug log statement when setting the HDMI clocks
+Subject: [PATCH 5.15 143/411] net_sched: sch_sfq: fix a potential crash on gso_skb handling
 Date: Mon, 23 Jun 2025 15:04:47 +0200
-Message-ID: <20250623130651.208240015@linuxfoundation.org>
+Message-ID: <20250623130637.205946387@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d17e61ab63fb7747b340d6a66bf1408cd5c6562b ]
+[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
 
-The "phy" and "vclk" frequency labels were swapped, making it more
-difficult to debug driver errors. Swap the label order to make them
-match with the actual frequencies printed to correct this.
+SFQ has an assumption of always being able to queue at least one packet.
 
-Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250606203729.3311592-1-martin.blumenstingl@googlemail.com
+However, after the blamed commit, sch->q.len can be inflated by packets
+in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
+by an immediate drop.
+
+Fix sfq_drop() to properly clear q->tail in this situation.
+
+Tested:
+
+ip netns add lb
+ip link add dev to-lb type veth peer name in-lb netns lb
+ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
+ip netns exec lb ethtool -K in-lb gro on # enable NAPI
+ip link set dev to-lb up
+ip -netns lb link set dev in-lb up
+ip addr add dev to-lb 192.168.20.1/24
+ip -netns lb addr add dev in-lb 192.168.20.2/24
+tc qdisc replace dev to-lb root sfq limit 100
+
+ip netns exec lb netserver
+
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+
+Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
+Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_sfq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-index c1401ec1354d1..e34dc1e405882 100644
---- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-+++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
-@@ -106,7 +106,7 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
- 		venc_freq /= 2;
- 
- 	dev_dbg(priv->dev,
--		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
-+		"phy:%lluHz vclk=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
- 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
- 		priv->venc.hdmi_use_enci);
- 
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index f8e569f79f136..8cd4e663575c6 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -317,7 +317,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
+ 		x = q->tail->next;
+ 		slot = &q->slots[x];
+-		q->tail->next = slot->next;
++		if (slot->next == x)
++			q->tail = NULL; /* no more active slots */
++		else
++			q->tail->next = slot->next;
+ 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+ 		goto drop;
+ 	}
 -- 
 2.39.5
 
