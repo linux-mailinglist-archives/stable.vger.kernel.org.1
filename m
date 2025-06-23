@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6CBFAE5402
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 360E6AE537D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F36374466D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59F4D3B38F9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6AC1222581;
-	Mon, 23 Jun 2025 21:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5342236E5;
+	Mon, 23 Jun 2025 21:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+MdLmeh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgcDoRta"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947BE1F4628;
-	Mon, 23 Jun 2025 21:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A0572624;
+	Mon, 23 Jun 2025 21:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715878; cv=none; b=gAo5PZQ6mD7gMo5u3DNBKieHy2EN2nHirEr12d//T9NGWf/R1Ej+1wklQHjUX1L1PMM+eCoSdLiEl9fUvs1RGea4W9PO9bVYkf3J18vyVGYJS9TnLRRUJr7ZDWin5HNrPGRoKVDdcpViqhjQSXR9Ujf1OjuSO+rg9lYtbIUJ78c=
+	t=1750715594; cv=none; b=LJh37HxzzLqL3VmcDjHk+hqElDRZLt7UsYop4sAdNPYINTxcQwIph9fd4IqbkMHhPKy0gxFZ4e8vt27c6vsoNUG3dojlijvdWO6o2ZLdDbCGoRQ8HhWg2+DTcJDm2Tkzuu5U/eF4gNYolR801iIibWNbPVA1KFT2AaGYmfyuMnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715878; c=relaxed/simple;
-	bh=jhUiJNXaFCeLz/Zhe/RZlots3Zu2tL/SwzF9XhHxnfE=;
+	s=arc-20240116; t=1750715594; c=relaxed/simple;
+	bh=14nm5H3nhTnBLFk33o0mg222+asTlknC1cz/VNtmWuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Oxe0R/6pBj8TQ7yUwfLqLNlSdpPDg2Pl64YqTdt5UlmqVxSVgROyUHnevi33II7rEPziGApF24w/zKg4ARXZ54ugGA/VTLKj8MoQVGWojv8e2zw7J1BELJyj7dor2aDATIqweuTExdWC2LU/RcEDIjs/HR6b2BFiAL2/ooADR/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+MdLmeh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F1DC4CEEA;
-	Mon, 23 Jun 2025 21:57:57 +0000 (UTC)
+	 MIME-Version; b=EUV1JbnS3z3oGLt8JbbFz6PtbqPdgq+KFY5NuDeACOy+BvoFKD2H7p0rVOR8uG8ySU3qy3mITv+7v9AW0XxMZnMf20DuI8AtXtMw34oOGKLOkPGjJj58t9kmQoxDuBofsd14YgWbHMU2ChdYAIixIr7MScDkQ1i81tYhEvxjb/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgcDoRta; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D49C4CEEA;
+	Mon, 23 Jun 2025 21:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715878;
-	bh=jhUiJNXaFCeLz/Zhe/RZlots3Zu2tL/SwzF9XhHxnfE=;
+	s=korg; t=1750715594;
+	bh=14nm5H3nhTnBLFk33o0mg222+asTlknC1cz/VNtmWuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I+MdLmehG905WEDNqRBog1TFk8Ad66MeJWL+zZmQDp8OZsrU93JnYyXT2boTFwOsw
-	 KQd3Zo4FG5GI4gXeLWF+YRb/Le/IVIqu4Miux5Cr0kfZ4ZuiDAnzzkpkhns4ltxMkW
-	 CFDBzGvi2ZpvYRSGPvafbBV/lquc1wWM4q1OK6/k=
+	b=MgcDoRtamNSh6EgyCcuW/pIKIBxwm9Oqoc7vBAUM1RP3kiLtTseVSr1KAHHLhe8NV
+	 JZg6+yD2+s9MxVSIC91A9ytXVl7of/dW87rHFher+6q+cHsOlNjkjZT8xOELwJGWAw
+	 6M4KktdyGP0PmLX/gX46EkvojIKp5zj4xTI6DIdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.1 287/508] kbuild: userprogs: fix bitsize and target detection on clang
+	syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 195/414] bpf: Check rcu_read_lock_trace_held() in bpf_map_lookup_percpu_elem()
 Date: Mon, 23 Jun 2025 15:05:32 +0200
-Message-ID: <20250623130652.333050563@linuxfoundation.org>
+Message-ID: <20250623130646.890205794@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +61,50 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 1b71c2fb04e7a713abc6edde4a412416ff3158f2 upstream.
+[ Upstream commit d4965578267e2e81f67c86e2608481e77e9c8569 ]
 
-scripts/Makefile.clang was changed in the linked commit to move --target from
-KBUILD_CFLAGS to KBUILD_CPPFLAGS, as that generally has a broader scope.
-However that variable is not inspected by the userprogs logic,
-breaking cross compilation on clang.
+bpf_map_lookup_percpu_elem() helper is also available for sleepable bpf
+program. When BPF JIT is disabled or under 32-bit host,
+bpf_map_lookup_percpu_elem() will not be inlined. Using it in a
+sleepable bpf program will trigger the warning in
+bpf_map_lookup_percpu_elem(), because the bpf program only holds
+rcu_read_lock_trace lock. Therefore, add the missed check.
 
-Use both variables to detect bitsize and target arguments for userprogs.
-
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000176a130617420310@google.com/
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20250526062534.1105938-1-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/bpf/helpers.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/Makefile
-+++ b/Makefile
-@@ -1139,8 +1139,8 @@ LDFLAGS_vmlinux += --orphan-handling=war
- endif
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index a05aeb3458964..9173d107758d4 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -129,7 +129,8 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
  
- # Align the bit size of userspace programs with the kernel
--KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
--KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CFLAGS))
-+KBUILD_USERCFLAGS  += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
-+KBUILD_USERLDFLAGS += $(filter -m32 -m64 --target=%, $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS))
+ BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
+ }
  
- # userspace programs are linked via the compiler, use the correct linker
- ifeq ($(CONFIG_CC_IS_CLANG)$(CONFIG_LD_IS_LLD),yy)
+-- 
+2.39.5
+
 
 
 
