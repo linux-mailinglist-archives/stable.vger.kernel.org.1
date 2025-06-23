@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D274AE553E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52A04AE567D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C17121B66C80
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD903B74D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7975F2236FB;
-	Mon, 23 Jun 2025 22:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96CC223DE8;
+	Mon, 23 Jun 2025 22:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UJH6CQWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1A2K1FZt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C3C221DA8;
-	Mon, 23 Jun 2025 22:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643BB1F6667;
+	Mon, 23 Jun 2025 22:17:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716559; cv=none; b=rtaPGv8HmoSKcMZ97NhbS/dEZdPcTr2bwXYa3hzw12sSS8RfmtZxpug2RGfqTXW6T0xuPx0sAlAZU2kD5iNc7lcqW4Cj52HpMzVAPDUOmaufK5Rs5ElWO60bNvFTEqUdNzclB6/dak2fFY2IuyG+d6vOXrHyTFUnflNVWAh4l6w=
+	t=1750717060; cv=none; b=HZfVf2WIInFg/qXH9ZO0CQjwQVaUPVgVQU2iDWhAa+Y9N2vY9zwPSibpqduxxbHf49yfHb+XkWl0o+PZ0bwezY7lAtFpSgDkZY9E//b8/GXRNnkSyl8CqChuxBi8QU4+9DJJWCfhkKyjW5x7xewNnZNYPlJlES9vlxUFeS0fOTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716559; c=relaxed/simple;
-	bh=atdH6019UCOyaw8BrWUNJClg5QAGldflq7/4QcT+w5U=;
+	s=arc-20240116; t=1750717060; c=relaxed/simple;
+	bh=KBUcKLvGpzMn4m7Qt+8TRCStTos4GBVYRrt09jt1JDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rJCfIBMPZdXT6QXlR3zoPDmlZ49d9PX3sWIIErBOZmo9yJGRXcSkdr+m4kAFrpPG3kx22FGddESKGiaIns2NczwT1z9Kd9iProt4LlEpY3s8iHd2f+N4sJAF1Bo82fvmj2ATqgwbdd+ma9Zl+ksrIXaED6LuubGa/FSiLFldoHA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UJH6CQWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C272FC4CEEA;
-	Mon, 23 Jun 2025 22:09:18 +0000 (UTC)
+	 MIME-Version; b=rf7Cp2VTgsQ0ZoDVnWZNfc5vRwyBaP/eBuVNtT6TbDbKahJ71PmHOgWdl3M3VgS0ktsU8Ld/Q+aLXScPKJuBWcGPbGKLUEjTMtt5N1cgV3DbChjQkiLZvgRd0lzdksohtNmlU3aUqIbAgdmI8jLo1D7Sep5GAN/IyHoq1PFtI+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1A2K1FZt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0827C4CEEA;
+	Mon, 23 Jun 2025 22:17:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716559;
-	bh=atdH6019UCOyaw8BrWUNJClg5QAGldflq7/4QcT+w5U=;
+	s=korg; t=1750717060;
+	bh=KBUcKLvGpzMn4m7Qt+8TRCStTos4GBVYRrt09jt1JDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UJH6CQWwdMLFvfPdtI69LwLATNOJ78pHxNjzsu1TKsBM+g50hLI8z1lVFtDzind8Q
-	 iivf7mbqmhmv1dA4BzXFajutn0yeCO96mwWgtJzJPPJ8MwWbZMZCDnBdiSjFl6pUSY
-	 olvfe2geJgtUXZxZQJb9NjV/SMpSHv/g9MytLIOA=
+	b=1A2K1FZtNlhDDBSJhwjd4ABKZQ0gSjBnCelQAj3ojGLZRS1MTawFh/ZfUrnaCMQUu
+	 Po8xWikG4ui5OexE2bVThefOFfQ6TXqFZaNSKWUUE08NY2g2Rhspcj16s2tBfpt/sV
+	 92ESZe2652udRzCQI3KbY6Y7pyiv3kRGaQqejiBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 265/414] wifi: ath12k: fix failed to set mhi state error during reboot with hardware grouping
-Date: Mon, 23 Jun 2025 15:06:42 +0200
-Message-ID: <20250623130648.659856305@linuxfoundation.org>
+	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
+	Qasim Ijaz <qasdev00@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 358/508] net: ch9200: fix uninitialised access during mii_nway_restart
+Date: Mon, 23 Jun 2025 15:06:43 +0200
+Message-ID: <20250623130654.171068163@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+From: Qasim Ijaz <qasdev00@gmail.com>
 
-[ Upstream commit dce7aec6b1f74b0a46b901ab8de1f7bd0515f733 ]
+commit 9ad0452c0277b816a435433cca601304cfac7c21 upstream.
 
-With hardware grouping, during reboot, whenever a device is removed, it
-powers down itself and all its partner devices in the same group. Now this
-is done by all devices and hence there is multiple power down for devices
-and hence the following error messages can be seen:
+In mii_nway_restart() the code attempts to call
+mii->mdio_read which is ch9200_mdio_read(). ch9200_mdio_read()
+utilises a local buffer called "buff", which is initialised
+with control_read(). However "buff" is conditionally
+initialised inside control_read():
 
-ath12k_pci 0002:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0002:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0002:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0003:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: POWER_OFF(3)
-ath12k_pci 0003:01:00.0: failed to set mhi state DEINIT(1) in current mhi state (0x0)
-ath12k_pci 0003:01:00.0: failed to set mhi state: DEINIT(1)
-ath12k_pci 0004:01:00.0: failed to set mhi state POWER_OFF(3) in current mhi state (0x0)
-ath12k_pci 0004:01:00.0: failed to set mhi state: POWER_OFF(3)
+        if (err == size) {
+                memcpy(data, buf, size);
+        }
 
-To prevent this, check if the ATH12K_PCI_FLAG_INIT_DONE flag is already
-set before powering down. If it is set, it indicates that another partner
-device has already performed the power down, and this device can skip this
-step.
+If the condition of "err == size" is not met, then
+"buff" remains uninitialised. Once this happens the
+uninitialised "buff" is accessed and returned during
+ch9200_mdio_read():
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
+        return (buff[0] | buff[1] << 8);
 
-Signed-off-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250408-fix_reboot_issues_with_hw_grouping-v4-3-95e7bf048595@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem stems from the fact that ch9200_mdio_read()
+ignores the return value of control_read(), leading to
+uinit-access of "buff".
+
+To fix this we should check the return value of
+control_read() and return early on error.
+
+Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
+Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
+Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
+Link: https://patch.msgid.link/20250526183607.66527-1-qasdev00@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/pci.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/ch9200.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/pci.c b/drivers/net/wireless/ath/ath12k/pci.c
-index 26f4b440c26d2..0f0e13c3dd463 100644
---- a/drivers/net/wireless/ath/ath12k/pci.c
-+++ b/drivers/net/wireless/ath/ath12k/pci.c
-@@ -1301,6 +1301,9 @@ void ath12k_pci_power_down(struct ath12k_base *ab, bool is_suspend)
+--- a/drivers/net/usb/ch9200.c
++++ b/drivers/net/usb/ch9200.c
+@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_d
  {
- 	struct ath12k_pci *ab_pci = ath12k_pci_priv(ab);
+ 	struct usbnet *dev = netdev_priv(netdev);
+ 	unsigned char buff[2];
++	int ret;
  
-+	if (!test_bit(ATH12K_PCI_FLAG_INIT_DONE, &ab_pci->flags))
-+		return;
-+
- 	/* restore aspm in case firmware bootup fails */
- 	ath12k_pci_aspm_restore(ab_pci);
+ 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
+ 		   __func__, phy_id, loc);
+@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_d
+ 	if (phy_id != 0)
+ 		return -ENODEV;
  
--- 
-2.39.5
-
+-	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
+-		     CONTROL_TIMEOUT_MS);
++	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
++			   CONTROL_TIMEOUT_MS);
++	if (ret < 0)
++		return ret;
+ 
+ 	return (buff[0] | buff[1] << 8);
+ }
 
 
 
