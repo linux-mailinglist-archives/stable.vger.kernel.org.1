@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156529-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F35AE54B4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57215AE4FE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3626217963E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E880817FA35
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6F621FF50;
-	Mon, 23 Jun 2025 22:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7441C18E377;
+	Mon, 23 Jun 2025 21:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs35Px8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DS/REXCQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA853FB1B;
-	Mon, 23 Jun 2025 22:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D807482;
+	Mon, 23 Jun 2025 21:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716218; cv=none; b=Kn8AGmChzgfpl7WOVtx9Rlz8GqNiGi1wVjx7HBiWRiFfDwcBl+T6ZrH33AXBquOG6mLI1DWzluElpxwcT1fxa/jSIQ++TtVbtuWWoXS5oQJuiyykpiF3lM7MH4ZPTMulelb2ree/hGkRSGz5RaS4imd/KA8GPXnsANhFiy2LThU=
+	t=1750713636; cv=none; b=kzKxdiZ/QJIzPqMr7bS/xxVX8EXw8zq5nqsJvxXKvR8M1TNtslaJE9ICfnop9XdEXaVue+VK2U9mOL9IL6QZ/CPC28b1TvA3ZGPkZ3OQfFr1sDkjlDOx1U5KhZ/Tyz8I+bjn7dhVyC5JqI0V7KgT99XiPXCx2l4f0pVtqDIVXsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716218; c=relaxed/simple;
-	bh=CgyTfuQl2hmEWqShy78Fc8SU995ri327z/uZwPI8o2U=;
+	s=arc-20240116; t=1750713636; c=relaxed/simple;
+	bh=XnBbDmgeycRxwqPqPhh7hCRzeVjAyF2fMasFKxVBsWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t3UukMOA5FLaipV4+RZWDJd/RbbhozujGz2XvyYpbKS7nzX8ChT5ktKUZgj3VOVIHhthWlSa9yKZgR/O6T5R9X3f0Y2K5nmZVESQPv52wm9MUNShRTmv4lz0PhFpeeMPqV/32CuEVeiossV2DBqU95cLzCQ4t0ShS3tPv6gsQNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs35Px8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44610C4CEEA;
-	Mon, 23 Jun 2025 22:03:38 +0000 (UTC)
+	 MIME-Version; b=JIhluER6FavxH3F+d6Nc42yC5F6uRy7Z04K2luFB9XLCj3VFmjIPYGm2ElgVmSZOFqQNDl59V/SP2f6vbBBelkPJ/pIXvZHVRZlvM28cJmvsPCN/eLTQejnb38NREQJuD3xt2pfPJTSPKT/v6EfDTrmn8sLb8f1VDVS7SUqbk/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DS/REXCQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE5CC4CEEA;
+	Mon, 23 Jun 2025 21:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716218;
-	bh=CgyTfuQl2hmEWqShy78Fc8SU995ri327z/uZwPI8o2U=;
+	s=korg; t=1750713636;
+	bh=XnBbDmgeycRxwqPqPhh7hCRzeVjAyF2fMasFKxVBsWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bs35Px8Kr0J4oii5GSWHBtj2wuC7OYi/13Ts6mAVNc7rxN44LGZgre+d3Ib33nsLh
-	 ig+dJ3stIH7741+ZxoJHmVNDhksUH0BOfi8QjXsOZ660ODyi6jDRjsO7h3KInJa2L5
-	 V6OgHaPbH3KU4Z2COgHpvtiVPfgYsuFQ11TD7pvM=
+	b=DS/REXCQ+xkc5dDS2Tl6FqwyV//cGErZE4Fp69++4MeKmIW8dz1thkxu1KbIvdeUH
+	 1JU4tVV5w9g/FQmV82rZZXvWfKLmix+Eh/A4bOzJnfcgUa8S/mke5Il+hlFj2R1y1u
+	 AX6Rd8qiN45wgQoYy/iBq6jAbD8E6Yatu5HSBCXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Andi Shyti <andi@smida.it>
-Subject: [PATCH 6.6 270/290] dt-bindings: i2c: nvidia,tegra20-i2c: Specify the required properties
-Date: Mon, 23 Jun 2025 15:08:51 +0200
-Message-ID: <20250623130635.041165950@linuxfoundation.org>
+	Jonathan Lane <jon@borg.moe>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 197/222] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
+Date: Mon, 23 Jun 2025 15:08:52 +0200
+Message-ID: <20250623130618.154713739@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +59,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Jonathan Lane <jon@borg.moe>
 
-commit 903cc7096db22f889d48e2cee8840709ce04fdac upstream.
+commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
 
-Specify the properties which are essential and which are not for the
-Tegra I2C driver to function correctly. This was not added correctly when
-the TXT binding was converted to yaml. All the existing DT nodes have
-these properties already and hence this does not break the ABI.
+Like many Dell laptops, the 3.5mm port by default can not detect a
+combined headphones+mic headset or even a pure microphone.  This
+change enables the port's functionality.
 
-dmas and dma-names which were specified as a must in the TXT binding
-is now made optional since the driver can work in PIO mode if dmas are
-missing.
-
-Fixes: f10a9b722f80 ("dt-bindings: i2c: tegra: Convert to json-schema”)
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.17+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Andi Shyti <andi@smida.it>
-Link: https://lore.kernel.org/r/20250603153022.39434-1-akhilrajeev@nvidia.com
+Signed-off-by: Jonathan Lane <jon@borg.moe>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml |   24 +++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
-@@ -103,7 +103,10 @@ properties:
- 
-   resets:
-     items:
--      - description: module reset
-+      - description:
-+          Module reset. This property is optional for controllers in Tegra194,
-+          Tegra234 etc where an internal software reset is available as an
-+          alternative.
- 
-   reset-names:
-     items:
-@@ -119,6 +122,13 @@ properties:
-       - const: rx
-       - const: tx
- 
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
- allOf:
-   - $ref: /schemas/i2c/i2c-controller.yaml
-   - if:
-@@ -172,6 +182,18 @@ allOf:
-           items:
-             - description: phandle to the VENC power domain
- 
-+  - if:
-+      not:
-+        properties:
-+          compatible:
-+            contains:
-+              enum:
-+                - nvidia,tegra194-i2c
-+    then:
-+      required:
-+        - resets
-+        - reset-names
-+
- unevaluatedProperties: false
- 
- examples:
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -8296,6 +8296,7 @@ static const struct snd_pci_quirk alc269
+ 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
++	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
 
 
 
