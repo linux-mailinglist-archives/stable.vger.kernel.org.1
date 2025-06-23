@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-157745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D5EDAE556A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CA9AE5744
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45AF71BC46FC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 366E44A550A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49697226D04;
-	Mon, 23 Jun 2025 22:10:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E83C2264BF;
+	Mon, 23 Jun 2025 22:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVNCeclN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c92Sk4LW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E32CD2248B5;
-	Mon, 23 Jun 2025 22:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B11422577C;
+	Mon, 23 Jun 2025 22:25:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716618; cv=none; b=Xg3AKe4KeGu1pzGeXOHj/v6gi3pCDRumPdfbpWRj9JuPDkDXZx9Ubajf/u6FX5dhK3i1Y+/e8P/cRc7e+XXu8zPgxJyOx2ot52wEeT0+HdpOdftxgn5bYtSbZxlTvfMkPi42Q//5LxRDNfCfrth4VIacZsLXk2iP43QtHmTIrb4=
+	t=1750717520; cv=none; b=ULTr3qZ+duWscLz5hVcchsXqzvwA7jngcf0Z0tqyPDAmH1J6Bfg5RPSKPCY3qAXWsUNZPacwbsuneq7H1943N6TQ8A6xZZY4sQvZLlNS7lz15ckFMqiAmSJt0NuHW3Eedd7TwZiKQF4GjiOKaOxje2OW4rlGkYVI3/YP2Wwi4Yo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716618; c=relaxed/simple;
-	bh=DaMm2dNahzbWe8RjJo3yg5MY6qwHl77uROC0G1BAqJY=;
+	s=arc-20240116; t=1750717520; c=relaxed/simple;
+	bh=ZXPDdG4ulqSG055FHlFgAeyqtyGrBcanSiDvjhvzOvI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQwXpRuWl5q4SvXPUSKOYxWzbEkc2nMZP3zhrp+/deI/Fjp/kzs3FCUfUIBg363QSOvheS3Z5JRf8g1OBNGW7wCYrf5Q1ipjbEhQAfBHHW9GFka5dCKgVD8IoTGJOzFpNv6EGHDxKqzML/KfDHgjzFNF6fsTr/6ksCwn/HTYijo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVNCeclN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E368C4CEEA;
-	Mon, 23 Jun 2025 22:10:17 +0000 (UTC)
+	 MIME-Version; b=uI9cdu9yMs3Oq+q9pawIVtlNlJixwQtZIkjoQZEe8qrYyZJ2PM07mZm2BcIVk+QMysONI8o4Kg+4neMtzekxUraCF/zC3mvhPxKBxOsLMGqtRz5pdLpzOp11ohMerJ6u78jPnsCDNNB/9e0eOKbPRWNuDbecNDl+eUqtgLsBkk0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c92Sk4LW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 675B0C4CEEA;
+	Mon, 23 Jun 2025 22:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716617;
-	bh=DaMm2dNahzbWe8RjJo3yg5MY6qwHl77uROC0G1BAqJY=;
+	s=korg; t=1750717518;
+	bh=ZXPDdG4ulqSG055FHlFgAeyqtyGrBcanSiDvjhvzOvI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oVNCeclNnoQ3cekMCFP23r/FzJX28AcZ0fOYCXaV0l/Mai+TJuHzZwPQSZsLTpYwZ
-	 HwT9L9u/ZL+e2CziiYQ3zvsgJ38R9FkkQio4Dyio1VWDshu1RCsfa8JpPldLynuzK0
-	 M5VN7kfs2/6M5hVeXCcpTPFi0ZSVAlsKHoSdbaNs=
+	b=c92Sk4LWbJxduy0Veb0zEU0lb3zRzoIB4nSOPL7ot4QLEf6xOHQ995huS6qKUMj/R
+	 uzUeuCjs19ftAxJLnuPhfLdy8WTfHqv9vV6j1EMme1bwhaWw/AOxhGtEb/Uox6Ky7b
+	 xDKFPtoDtzRzfI8XG+c9qoSP1xvJVnmWTANCj8jQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David.Kaplan@amd.com,
-	peterz@infradead.org,
-	pawan.kumar.gupta@linux.intel.com,
-	mingo@kernel.org,
-	brad.spengler@opensrcsec.com,
-	Salvatore Bonaccorso <carnil@debian.org>,
-	Breno Leitao <leitao@debian.org>
-Subject: [PATCH 5.15 345/411] Revert "x86/bugs: Make spectre user default depend on MITIGATION_SPECTRE_V2" on v6.6 and older
-Date: Mon, 23 Jun 2025 15:08:09 +0200
-Message-ID: <20250623130642.332564164@linuxfoundation.org>
+	Yanteng Si <si.yanteng@linux.dev>,
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 445/508] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
+Date: Mon, 23 Jun 2025 15:08:10 +0200
+Message-ID: <20250623130656.108026521@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,92 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Breno Leitao <leitao@debian.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-This reverts commit 4fc2d289b3cc4cf23ccabe59cf936d1dc49aeda8 which is
-commit 98fdaeb296f51ef08e727a7cc72e5b5c864c4f4d upstream.
+commit 52c22661c79a7b6af7fad9f77200738fc6c51878 upstream.
 
-commit 7adb96687ce8 ("x86/bugs: Make spectre user default depend on
-MITIGATION_SPECTRE_V2") depends on commit 72c70f480a70 ("x86/bugs: Add
-a separate config for Spectre V2"), which introduced
-MITIGATION_SPECTRE_V2.
+When building kernel with LLVM there are occasionally such errors:
 
-commit 72c70f480a70 ("x86/bugs: Add a separate config for Spectre V2")
-never landed in stable tree, thus, stable tree doesn't have
-MITIGATION_SPECTRE_V2, that said, commit 7adb96687ce8 ("x86/bugs: Make
-spectre user default depend on MITIGATION_SPECTRE_V2") has no value if
-the dependecy was not applied.
+In file included from ./include/linux/spinlock.h:59:
+In file included from ./include/linux/irqflags.h:17:
+arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $r1
+   38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
+      |                 ^
+<inline asm>:1:16: note: instantiated into assembly here
+    1 |         csrxchg $a1, $ra, 0
+      |                       ^
 
-Revert commit 7adb96687ce8 ("x86/bugs: Make spectre user default
-depend on MITIGATION_SPECTRE_V2")  in stable kernel which landed in in
-5.4.294, 5.10.238, 5.15.185, 6.1.141 and 6.6.93 stable versions.
+To prevent the compiler from allocating $r0 or $r1 for the "mask" of the
+csrxchg instruction, the 'q' constraint must be used but Clang < 21 does
+not support it. So force to use $t0 in the inline asm, in order to avoid
+using $r0/$r1 while keeping the backward compatibility.
 
-Cc: David.Kaplan@amd.com
-Cc: peterz@infradead.org
-Cc: pawan.kumar.gupta@linux.intel.com
-Cc: mingo@kernel.org
-Cc: brad.spengler@opensrcsec.com
-Cc: stable@vger.kernel.org # 6.6 6.1 5.15 5.10 5.4
-Reported-by: Brad Spengler <brad.spengler@opensrcsec.com>
-Reported-by: Salvatore Bonaccorso <carnil@debian.org>
-Signed-off-by: Breno Leitao <leitao@debian.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/pull/141037
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/admin-guide/kernel-parameters.txt |    2 --
- arch/x86/kernel/cpu/bugs.c                      |   10 +++-------
- 2 files changed, 3 insertions(+), 9 deletions(-)
+ arch/loongarch/include/asm/irqflags.h |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
---- a/Documentation/admin-guide/kernel-parameters.txt
-+++ b/Documentation/admin-guide/kernel-parameters.txt
-@@ -5445,8 +5445,6 @@
- 
- 			Selecting 'on' will also enable the mitigation
- 			against user space to user space task attacks.
--			Selecting specific mitigation does not force enable
--			user mitigations.
- 
- 			Selecting 'off' will disable both the kernel and
- 			the user space protections.
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1382,13 +1382,9 @@ static __ro_after_init enum spectre_v2_m
- static enum spectre_v2_user_cmd __init
- spectre_v2_parse_user_cmdline(void)
+--- a/arch/loongarch/include/asm/irqflags.h
++++ b/arch/loongarch/include/asm/irqflags.h
+@@ -14,40 +14,48 @@
+ static inline void arch_local_irq_enable(void)
  {
--	enum spectre_v2_user_cmd mode;
- 	char arg[20];
- 	int ret, i;
- 
--	mode = IS_ENABLED(CONFIG_MITIGATION_SPECTRE_V2) ?
--		SPECTRE_V2_USER_CMD_AUTO : SPECTRE_V2_USER_CMD_NONE;
--
- 	switch (spectre_v2_cmd) {
- 	case SPECTRE_V2_CMD_NONE:
- 		return SPECTRE_V2_USER_CMD_NONE;
-@@ -1401,7 +1397,7 @@ spectre_v2_parse_user_cmdline(void)
- 	ret = cmdline_find_option(boot_command_line, "spectre_v2_user",
- 				  arg, sizeof(arg));
- 	if (ret < 0)
--		return mode;
-+		return SPECTRE_V2_USER_CMD_AUTO;
- 
- 	for (i = 0; i < ARRAY_SIZE(v2_user_options); i++) {
- 		if (match_option(arg, ret, v2_user_options[i].option)) {
-@@ -1411,8 +1407,8 @@ spectre_v2_parse_user_cmdline(void)
- 		}
- 	}
- 
--	pr_err("Unknown user space protection option (%s). Switching to default\n", arg);
--	return mode;
-+	pr_err("Unknown user space protection option (%s). Switching to AUTO select\n", arg);
-+	return SPECTRE_V2_USER_CMD_AUTO;
+ 	u32 flags = CSR_CRMD_IE;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
  }
  
- static inline bool spectre_v2_in_eibrs_mode(enum spectre_v2_mitigation mode)
+ static inline void arch_local_irq_disable(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
+ static inline unsigned long arch_local_irq_save(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ 	return flags;
+ }
+ 
+ static inline void arch_local_irq_restore(unsigned long flags)
+ {
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
 
 
 
