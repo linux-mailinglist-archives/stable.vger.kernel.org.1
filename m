@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0F7AE566D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F55BAE5506
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEB44C8301
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE4184C2A35
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2200A1F6667;
-	Mon, 23 Jun 2025 22:19:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C8C222599;
+	Mon, 23 Jun 2025 22:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA6/1+II"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6hzksoz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37D019E7F9;
-	Mon, 23 Jun 2025 22:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F886218580;
+	Mon, 23 Jun 2025 22:06:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717182; cv=none; b=XJoFP1dtHAxBtE6kFjCeU3vEp9hqaMS8hpVCpx8oON9Y8qooDUKfyzecDANO619o1DTljEbRD8jD47bJpDux0TT0Gx+xbaYA47QWX+phckFBYcgDPmkr2lBmZ8eIUlk6MzqJfDEXsWjO3a7DsZPurlUDGPsQPC/zXUPntXToWYE=
+	t=1750716412; cv=none; b=cLqj2fkVbsdl9Bt+BgJPFAH4cXkQ68ZivGO1jZaGfOGcMC2dGq7MRlmRa9+quMRcMVgt7pQZg+DRVK/egYkJE7c7Vy2llmMbJ6wxUYRMHpokqofs6nmhHfw2u6uOpgJMLm7hOoFiO5C3/zezRhYa1O2lUgvx5Mr7eSGwVcmLhSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717182; c=relaxed/simple;
-	bh=MoVYi3v3DalYI8kXrZ3gLv/3LYL9KT4/WMIu4Dfbb98=;
+	s=arc-20240116; t=1750716412; c=relaxed/simple;
+	bh=gY9n7KAw6PvB1DtNHWQ9VeIlJEb5lpLl0UGegSmE+H0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNkHQoazciEVfMtCB9ut2TCNtAffKK2IZRdIWrpJNA/GRfv39oj4LuCwbnJJSh3zF3rEBCPhQesrolMzRz6iNoPA4PpzjDeevHPplucaLzY4RwQzVEKPPwRgyi7oN57gPlbVfntBM6+0VadKQX0VAl7rxmH+R02hEuSO50wW/3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA6/1+II; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7ACC4CEEA;
-	Mon, 23 Jun 2025 22:19:42 +0000 (UTC)
+	 MIME-Version; b=KMTghoquaf+svGlO/jby/RAAza5klyBead7nn0eDxaP/PN3BdJya42nSmPM41c3fXxaTrt5LykXT3l3NUThErdYtH0p/LPo/aT+LZXUP23MxA2ll2NZmls6Zg1HcH+MrgMP3gRIzbDUnq10TbRyV5ui6TcvkYd2rgitfkECYYBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6hzksoz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB31AC4CEEA;
+	Mon, 23 Jun 2025 22:06:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717182;
-	bh=MoVYi3v3DalYI8kXrZ3gLv/3LYL9KT4/WMIu4Dfbb98=;
+	s=korg; t=1750716412;
+	bh=gY9n7KAw6PvB1DtNHWQ9VeIlJEb5lpLl0UGegSmE+H0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jA6/1+IIRBZR4oZDbmp7Hl5H2W8aI5ThIPoh3beoUG3/k79nzIW5/UEkHZLYrlqj/
-	 jYdKlbrjG6tDKpEKyl8wje4XmyEaMur+WCJUxFN72fsn3MpdQ0fb9COX1eOgU2/QKU
-	 YxM/INTtr6SBbFQ6zpq6tqsnl0oXT20fHkcudN3Q=
+	b=H6hzksozvWqdnV0lPqvh9d45v4CLMtr+Cky+g6lCBpjPz4Af5n4oAhtT7C87+//25
+	 xEWnOkcnO/qZst0vjKIW06uIPpz4AehMxnAehGpjbZUE/bc/l2FYw0PUTFeex6+0yj
+	 rQWq28jIIe7dKcNypaQCMjji1yX9WWRTIEsCjc9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Lane <jon@borg.moe>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.12 334/414] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
+	Sean Christopherson <seanjc@google.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 327/411] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
 Date: Mon, 23 Jun 2025 15:07:51 +0200
-Message-ID: <20250623130650.334425833@linuxfoundation.org>
+Message-ID: <20250623130641.874225490@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Lane <jon@borg.moe>
+From: Sean Christopherson <seanjc@google.com>
 
-commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
+[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
 
-Like many Dell laptops, the 3.5mm port by default can not detect a
-combined headphones+mic headset or even a pure microphone.  This
-change enables the port's functionality.
+Synchronize RCU when unregistering KVM's GA log notifier to ensure all
+in-flight interrupt handlers complete before KVM-the module is unloaded.
 
-Signed-off-by: Jonathan Lane <jon@borg.moe>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/amd/iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10449,6 +10449,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
-+	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index 7d38cc5c04e68..714c78bf69db0 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -679,6 +679,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
+ {
+ 	iommu_ga_log_notifier = notifier;
+ 
++	/*
++	 * Ensure all in-flight IRQ handlers run to completion before returning
++	 * to the caller, e.g. to ensure module code isn't unloaded while it's
++	 * being executed in the IRQ handler.
++	 */
++	if (!notifier)
++		synchronize_rcu();
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
+-- 
+2.39.5
+
 
 
 
