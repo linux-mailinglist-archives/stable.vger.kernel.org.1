@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A95AE4385
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2407FAE43F0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE3907AC186
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A96188B5A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC657255E34;
-	Mon, 23 Jun 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50379254AF5;
+	Mon, 23 Jun 2025 13:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5oy6f8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+GZc8HV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860A4C7F;
-	Mon, 23 Jun 2025 13:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8F25392D;
+	Mon, 23 Jun 2025 13:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685394; cv=none; b=sltbiLM76VbE7/QiDSUt1r/+PG9TRYZVBgtw0qqQt/1YANuIJw2wOosba7e/PyFbTpehB6RBupRRF4HvrAYERrFWV1DcgSC9OyTZUcR4Gl0rcuvKgDIuK9NeE0/h1JjYgyPx3QMQIJ4ITVjbKpGKRkRW9TLdyBv0jZC4hLzLa5k=
+	t=1750685496; cv=none; b=LU1z7EP79NVoOOpwyKDcwP8yPfZwMHeRmO6Of0Hx0h6klMylwjJXhT6jAjXkJOS4M1nPhcnO35tS8F2B/kdMhjX4XbTPWD/ZPL3y8obvIpvsvJPqc8EKQz/riPzfwWfNKjFqekXC7hKHvY0yxSSuP0UZWhI+++tSivtSH81hF6k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685394; c=relaxed/simple;
-	bh=APbQiXVDJiPDV5bOf2xaTGwZngAWfxgGbVCTPoVUBhg=;
+	s=arc-20240116; t=1750685496; c=relaxed/simple;
+	bh=PdZgKg1EP1GbNGHvfScLwX1EGBdPqaCwcTap9DFIwzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ch4K4J3KC/RtO3uJaF08U7HraQSyFb2T1TG3jkbkVX5yu/oinc0QQRRBOK+j6YUexuTsnsXAIkU5bjUO5hcfMqt9GmfbKOqDxl+3rytkz5/u6Y0NH59HsaXkxhjEVF5G2cGntN1qACmity0TifFabpZ4khcRVL4Pa6RKEZp1aj8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5oy6f8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C735C4CEEA;
-	Mon, 23 Jun 2025 13:29:54 +0000 (UTC)
+	 MIME-Version; b=iN2TU7CgEbCQg1P3tR1n60Jdep9Jtg/fSpFWZgSCijFLMDu+dcRpfvDG8egyx5NPinlndWm1ailKrJKYkMJvsrIZ6wh+JPvCe6avkU0FT4/3jp5b36hqESytu1d/hZ4BR0vGdDQyITgdv+aSvAGTs7pFSkVsjgfuCIK+JN6I0tI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+GZc8HV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C26C4CEF1;
+	Mon, 23 Jun 2025 13:31:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685394;
-	bh=APbQiXVDJiPDV5bOf2xaTGwZngAWfxgGbVCTPoVUBhg=;
+	s=korg; t=1750685495;
+	bh=PdZgKg1EP1GbNGHvfScLwX1EGBdPqaCwcTap9DFIwzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y5oy6f8x0RuvVTVx9kOLlSflnumAtGZWxoREhMx4tZ+LqS5mAjiyTq64ISUPUFYpP
-	 itgjs38Ft1KObbyrBncguiJpsxo4I/BwXNicTh6a2hPF1lwe15cEbi6l+hX6FidMO8
-	 0kLzepzG1bQnwBdIpxuRPsNSToVK60uDVQ+7adnI=
+	b=y+GZc8HVTtwPy9FSeQtHWjhdhxRGGWVk9bBI6sCQ6bAUqQM9CqXvMTDxr5u7F10H0
+	 5Or9v276p6Rs3RZjVGJ4hGd3lI2Y05/b5wGIzFHfrb3Mdp4Br4JQHpKYD5YtJ2twNg
+	 GKyy4dn3kxe/Qq33l9A3g9W70N1sYAU/CIxyPu68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Yan <andy.yan@rock-chips.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Dave Airlie <airlied@redhat.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Timur Tabi <ttabi@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 238/592] drm/rockchip: inno-hdmi: Fix video timing HSYNC/VSYNC polarity setting for rk3036
-Date: Mon, 23 Jun 2025 15:03:16 +0200
-Message-ID: <20250623130705.949364848@linuxfoundation.org>
+Subject: [PATCH 6.15 239/592] drm/dp: add option to disable zero sized address only transactions.
+Date: Mon, 23 Jun 2025 15:03:17 +0200
+Message-ID: <20250623130705.973961329@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,124 +67,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Andy Yan <andy.yan@rock-chips.com>
+From: Dave Airlie <airlied@redhat.com>
 
-[ Upstream commit ad10b82c2bcac7f87ac6eaecfca33378b43425ee ]
+[ Upstream commit f0ddbb1eed1898286d2bd99fd6ab64ca9700d267 ]
 
-The HSYNC/VSYNC polarity of rk3036 HDMI are controlled by GRF.
-Without the polarity configuration in GRF, it can be observed
-from the HDMI protocol analyzer that the H/V front/back timing
-output by RK3036 HDMI are currently not in line with the specifications.
+Some older NVIDIA and some newer NVIDIA hardware/firmware seems to
+have issues with address only transactions (firmware rejects them).
 
-Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
-Tested-by: Heiko Stuebner <heiko@sntech.de> #rk3036-kylin
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20250422070455.432666-5-andyshrk@163.com
+Add an option to the core drm dp to avoid address only transactions,
+This just puts the MOT flag removal on the last message of the transfer
+and avoids the start of transfer transaction.
+
+This with the flag set in nouveau, allows eDP probing on GB203 device.
+
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Reviewed-by: Timur Tabi <ttabi@nvidia.com>
+Tested-by: Timur Tabi <ttabi@nvidia.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/inno_hdmi.c | 36 +++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/display/drm_dp_helper.c | 39 +++++++++++++++----------
+ include/drm/display/drm_dp_helper.h     |  5 ++++
+ 2 files changed, 28 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/inno_hdmi.c b/drivers/gpu/drm/rockchip/inno_hdmi.c
-index 483ecfeaebb08..87dfd30001583 100644
---- a/drivers/gpu/drm/rockchip/inno_hdmi.c
-+++ b/drivers/gpu/drm/rockchip/inno_hdmi.c
-@@ -10,10 +10,12 @@
- #include <linux/delay.h>
- #include <linux/err.h>
- #include <linux/hdmi.h>
-+#include <linux/mfd/syscon.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/platform_device.h>
-+#include <linux/regmap.h>
+diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
+index dbce1c3f49691..753d7c3942a14 100644
+--- a/drivers/gpu/drm/display/drm_dp_helper.c
++++ b/drivers/gpu/drm/display/drm_dp_helper.c
+@@ -2081,14 +2081,17 @@ static int drm_dp_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
  
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
-@@ -29,8 +31,19 @@
- 
- #include "inno_hdmi.h"
- 
-+#define HIWORD_UPDATE(val, mask)	((val) | (mask) << 16)
+ 	for (i = 0; i < num; i++) {
+ 		msg.address = msgs[i].addr;
+-		drm_dp_i2c_msg_set_request(&msg, &msgs[i]);
+-		/* Send a bare address packet to start the transaction.
+-		 * Zero sized messages specify an address only (bare
+-		 * address) transaction.
+-		 */
+-		msg.buffer = NULL;
+-		msg.size = 0;
+-		err = drm_dp_i2c_do_msg(aux, &msg);
 +
- #define INNO_HDMI_MIN_TMDS_CLOCK  25000000U
- 
-+#define RK3036_GRF_SOC_CON2	0x148
-+#define RK3036_HDMI_PHSYNC	BIT(4)
-+#define RK3036_HDMI_PVSYNC	BIT(5)
-+
-+enum inno_hdmi_dev_type {
-+	RK3036_HDMI,
-+	RK3128_HDMI,
-+};
-+
- struct inno_hdmi_phy_config {
- 	unsigned long pixelclock;
- 	u8 pre_emphasis;
-@@ -38,6 +51,7 @@ struct inno_hdmi_phy_config {
- };
- 
- struct inno_hdmi_variant {
-+	enum inno_hdmi_dev_type dev_type;
- 	struct inno_hdmi_phy_config *phy_configs;
- 	struct inno_hdmi_phy_config *default_phy_config;
- };
-@@ -58,6 +72,7 @@ struct inno_hdmi {
- 	struct clk *pclk;
- 	struct clk *refclk;
- 	void __iomem *regs;
-+	struct regmap *grf;
- 
- 	struct drm_connector	connector;
- 	struct rockchip_encoder	encoder;
-@@ -374,7 +389,15 @@ static int inno_hdmi_config_video_csc(struct inno_hdmi *hdmi)
- static int inno_hdmi_config_video_timing(struct inno_hdmi *hdmi,
- 					 struct drm_display_mode *mode)
- {
--	int value;
-+	int value, psync;
-+
-+	if (hdmi->variant->dev_type == RK3036_HDMI) {
-+		psync = mode->flags & DRM_MODE_FLAG_PHSYNC ? RK3036_HDMI_PHSYNC : 0;
-+		value = HIWORD_UPDATE(psync, RK3036_HDMI_PHSYNC);
-+		psync = mode->flags & DRM_MODE_FLAG_PVSYNC ? RK3036_HDMI_PVSYNC : 0;
-+		value |= HIWORD_UPDATE(psync, RK3036_HDMI_PVSYNC);
-+		regmap_write(hdmi->grf, RK3036_GRF_SOC_CON2, value);
-+	}
- 
- 	/* Set detail external video timing polarity and interlace mode */
- 	value = v_EXTERANL_VIDEO(1);
-@@ -911,6 +934,15 @@ static int inno_hdmi_bind(struct device *dev, struct device *master,
- 		goto err_disable_pclk;
- 	}
- 
-+	if (hdmi->variant->dev_type == RK3036_HDMI) {
-+		hdmi->grf = syscon_regmap_lookup_by_phandle(dev->of_node, "rockchip,grf");
-+		if (IS_ERR(hdmi->grf)) {
-+			ret = dev_err_probe(dev, PTR_ERR(hdmi->grf),
-+					    "Unable to get rockchip,grf\n");
-+			goto err_disable_clk;
++		if (!aux->no_zero_sized) {
++			drm_dp_i2c_msg_set_request(&msg, &msgs[i]);
++			/* Send a bare address packet to start the transaction.
++			 * Zero sized messages specify an address only (bare
++			 * address) transaction.
++			 */
++			msg.buffer = NULL;
++			msg.size = 0;
++			err = drm_dp_i2c_do_msg(aux, &msg);
 +		}
+ 
+ 		/*
+ 		 * Reset msg.request in case in case it got
+@@ -2107,6 +2110,8 @@ static int drm_dp_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
+ 			msg.buffer = msgs[i].buf + j;
+ 			msg.size = min(transfer_size, msgs[i].len - j);
+ 
++			if (j + msg.size == msgs[i].len && aux->no_zero_sized)
++				msg.request &= ~DP_AUX_I2C_MOT;
+ 			err = drm_dp_i2c_drain_msg(aux, &msg);
+ 
+ 			/*
+@@ -2124,15 +2129,17 @@ static int drm_dp_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
+ 	}
+ 	if (err >= 0)
+ 		err = num;
+-	/* Send a bare address packet to close out the transaction.
+-	 * Zero sized messages specify an address only (bare
+-	 * address) transaction.
+-	 */
+-	msg.request &= ~DP_AUX_I2C_MOT;
+-	msg.buffer = NULL;
+-	msg.size = 0;
+-	(void)drm_dp_i2c_do_msg(aux, &msg);
+ 
++	if (!aux->no_zero_sized) {
++		/* Send a bare address packet to close out the transaction.
++		 * Zero sized messages specify an address only (bare
++		 * address) transaction.
++		 */
++		msg.request &= ~DP_AUX_I2C_MOT;
++		msg.buffer = NULL;
++		msg.size = 0;
++		(void)drm_dp_i2c_do_msg(aux, &msg);
 +	}
-+
- 	irq = platform_get_irq(pdev, 0);
- 	if (irq < 0) {
- 		ret = irq;
-@@ -995,11 +1027,13 @@ static void inno_hdmi_remove(struct platform_device *pdev)
+ 	return err;
  }
  
- static const struct inno_hdmi_variant rk3036_inno_hdmi_variant = {
-+	.dev_type = RK3036_HDMI,
- 	.phy_configs = rk3036_hdmi_phy_configs,
- 	.default_phy_config = &rk3036_hdmi_phy_configs[1],
+diff --git a/include/drm/display/drm_dp_helper.h b/include/drm/display/drm_dp_helper.h
+index 5ae4241959f24..736dbfdd6321d 100644
+--- a/include/drm/display/drm_dp_helper.h
++++ b/include/drm/display/drm_dp_helper.h
+@@ -518,6 +518,11 @@ struct drm_dp_aux {
+ 	 * @powered_down: If true then the remote endpoint is powered down.
+ 	 */
+ 	bool powered_down;
++
++	/**
++	 * @no_zero_sized: If the hw can't use zero sized transfers (NVIDIA)
++	 */
++	bool no_zero_sized;
  };
  
- static const struct inno_hdmi_variant rk3128_inno_hdmi_variant = {
-+	.dev_type = RK3128_HDMI,
- 	.phy_configs = rk3128_hdmi_phy_configs,
- 	.default_phy_config = &rk3128_hdmi_phy_configs[1],
- };
+ int drm_dp_dpcd_probe(struct drm_dp_aux *aux, unsigned int offset);
 -- 
 2.39.5
 
