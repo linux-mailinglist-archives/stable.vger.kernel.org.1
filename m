@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158153-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D86E2AE56DD
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F779AE5763
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9271E178D9F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E3943AF513
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684BD223DE5;
-	Mon, 23 Jun 2025 22:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB210223DE5;
+	Mon, 23 Jun 2025 22:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGLstTIT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QR3ASYpw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652015ADB4;
-	Mon, 23 Jun 2025 22:23:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777A12222B2;
+	Mon, 23 Jun 2025 22:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717397; cv=none; b=C1SQE2P7rykCXFyQOGzrqNcbEKIGtVuETko0aovhu5N6Aq2Un6R6P+KEyCmgNnH5SBXEuIjd2UQdw8fK/7QJWfdQMdc8nAAolz2e1FeYNWw2DPOE6lBZUPthKNZ7def7Q5WWcbFoTmDZMYB9rPCFGLuAHI9CqLKHB2Mw0KTkYyg=
+	t=1750717614; cv=none; b=uKalBArr/2hSW4HNMcYvUe6A8dfm23uq/kEP775stIYsQcDjeiuo0V7r+LtxE4Gr1t6TlmPosVo+kDQpDOrqlRVhsUu+DuXYzHIpyC3FUQpti77NTCdB3CrLjYd16bjCcniWe89/rCY0hiic2BJPlbqLc3NKMO7UKlxUbFSSSRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717397; c=relaxed/simple;
-	bh=CSK0nW4g2jm8evcgl3Z9LY5w8IgutJLnyIfDGb3/JTg=;
+	s=arc-20240116; t=1750717614; c=relaxed/simple;
+	bh=HjX643CthLlTvuHWJK3JmiDGajS5aDKqMc0D4iG6pXA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YIDTY8qXu6zLW3carUo0BAD4qvzOurxqPHZ/zhLFLX1w1KiCKwm5eC1Nowmcd6IGUT25jahCDkPWMZAKNP3R4tGTNVJyaz8+29BbYXfN4T85IMOV9zFgW6eq8EfQLCmukACWfiVDqug1HgnUeetENdHMjWunxJMaDBWFqY2IlzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGLstTIT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC58C4CEEA;
-	Mon, 23 Jun 2025 22:23:16 +0000 (UTC)
+	 MIME-Version; b=jSZL6+CT+t/ay9de6SrVWTxmUZRy+31pfREDfr0c69I1yBvYfKJrVXPCnA1FqsFqgRbcn/t+tYKl8Wr+RPLi14IjmL2A/5Bzx9034dliUsLYg2euEEdaiZ2PDiCwTgMVGsi3hY81ROexGmlzypZNXJMVTMsCRRvdk+EOZCq8bho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QR3ASYpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F917C4CEEA;
+	Mon, 23 Jun 2025 22:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717397;
-	bh=CSK0nW4g2jm8evcgl3Z9LY5w8IgutJLnyIfDGb3/JTg=;
+	s=korg; t=1750717614;
+	bh=HjX643CthLlTvuHWJK3JmiDGajS5aDKqMc0D4iG6pXA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGLstTIT4KJiBLPbfV523yoH1xxuu8BsdsQ2XbOoyCviiGrweGNwvexS+t/9IUAx1
-	 Gh8x31A+wS+F4WQD3GddJ59LfwY0/zN0QKX0K6ACRpSOnbwlgHwcthYVA9dLWxf2vR
-	 uyFb03xlVwKgn5PD/983mxZTBKUeBLR0EochZ6lU=
+	b=QR3ASYpwXtadMDPHqN2PkUlFhczLG86uxYvc3DRcxvG2pAEVOAKt+bUFkZjJFJTMr
+	 AAeQ5sOgobTtAwkGyICoKnYavhNa9W2l7CvsSYw2JxtBHEjuJDGxBVoDSl3bgHgJv0
+	 3AalMr42h0W6eCm95hEQVdhIq3Qhk09x02gAw1SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Christian Lamparter <chunkeey@gmail.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 379/414] wifi: carl9170: do not ping device which has failed to load firmware
+Subject: [PATCH 6.1 471/508] drm/msm/dsi/dsi_phy_10nm: Fix missing initial VCO rate
 Date: Mon, 23 Jun 2025 15:08:36 +0200
-Message-ID: <20250623130651.426641232@linuxfoundation.org>
+Message-ID: <20250623130656.683995608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
+[ Upstream commit 8a48e35becb214743214f5504e726c3ec131cd6d ]
 
-Syzkaller reports [1, 2] crashes caused by an attempts to ping
-the device which has failed to load firmware. Since such a device
-doesn't pass 'ieee80211_register_hw()', an internal workqueue
-managed by 'ieee80211_queue_work()' is not yet created and an
-attempt to queue work on it causes null-ptr-deref.
+Driver unconditionally saves current state on first init in
+dsi_pll_10nm_init(), but does not save the VCO rate, only some of the
+divider registers.  The state is then restored during probe/enable via
+msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
+dsi_10nm_pll_restore_state().
 
-[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
-[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
+Restoring calls dsi_pll_10nm_vco_set_rate() with
+pll_10nm->vco_current_rate=0, which basically overwrites existing rate of
+VCO and messes with clock hierarchy, by setting frequency to 0 to clock
+tree.  This makes anyway little sense - VCO rate was not saved, so
+should not be restored.
 
-Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Christian Lamparter <chunkeey@gmail.com>
-Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+If PLL was not configured configure it to minimum rate to avoid glitches
+and configuring entire in clock hierarchy to 0 Hz.
+
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/sz4kbwy5nwsebgf64ia7uq4ee7wbsa5uy3xmlqwcstsbntzcov@ew3dcyjdzmi2/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: a4ccc37693a2 ("drm/msm/dsi_pll_10nm: restore VCO rate during
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/654796/
+Link: https://lore.kernel.org/r/20250520111325.92352-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
-index a3e03580cd9ff..564ca6a619856 100644
---- a/drivers/net/wireless/ath/carl9170/usb.c
-+++ b/drivers/net/wireless/ath/carl9170/usb.c
-@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+index 27b592c776a30..1c111969342a7 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+@@ -716,6 +716,13 @@ static int dsi_pll_10nm_init(struct msm_dsi_phy *phy)
+ 	/* TODO: Remove this when we have proper display handover support */
+ 	msm_dsi_phy_pll_save_state(phy);
  
- 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
- 			/*
--			 * The system is too slow to cope with
--			 * the enormous workload. We have simply
--			 * run out of active rx urbs and this
--			 * unfortunately leads to an unpredictable
--			 * device.
-+			 * At this point, either the system is too slow to
-+			 * cope with the enormous workload (so we have simply
-+			 * run out of active rx urbs and this unfortunately
-+			 * leads to an unpredictable device), or the device
-+			 * is not fully functional after an unsuccessful
-+			 * firmware loading attempts (so it doesn't pass
-+			 * ieee80211_register_hw() and there is no internal
-+			 * workqueue at all).
- 			 */
++	/*
++	 * Store also proper vco_current_rate, because its value will be used in
++	 * dsi_10nm_pll_restore_state().
++	 */
++	if (!dsi_pll_10nm_vco_recalc_rate(&pll_10nm->clk_hw, VCO_REF_CLK_RATE))
++		pll_10nm->vco_current_rate = pll_10nm->phy->cfg->min_pll_rate;
++
+ 	return 0;
+ }
  
--			ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			if (ar->registered)
-+				ieee80211_queue_work(ar->hw, &ar->ping_work);
-+			else
-+				pr_warn_once("device %s is not registered\n",
-+					     dev_name(&ar->udev->dev));
- 		}
- 	} else {
- 		/*
 -- 
 2.39.5
 
