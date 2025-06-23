@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B88BAE4F8A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4C88AE54EB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4900D1B60FB9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B2C6D1886100
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43FF3221F34;
-	Mon, 23 Jun 2025 21:16:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C82221DAE;
+	Mon, 23 Jun 2025 22:05:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="14GrMuxt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxLEG6oM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7BE1F3FF8;
-	Mon, 23 Jun 2025 21:16:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC7D1A4F12;
+	Mon, 23 Jun 2025 22:05:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713380; cv=none; b=NmeA668zmKSrqOifQQTKNVGpSs9tR1ff6GgZDqU6ayCFOkImVTEAPJETEHcm4Y4LXhE/vtdJoKBs6q9Vp2Mn5nb3YqMhK4Va2ctEN4nMHwWPrCI5ZpKPHlb0npO/6qWZlzGUXrgymYLLreYY660lpVUz0ucY716rTlt+BFYQnd4=
+	t=1750716353; cv=none; b=a8b/0ILQk1Nmy/lTrHbuXUbZaW+rhT6NdLNsDaGtjTDhx/meXkwnZEkF3eGIhPaDT1MWBueThn+C6VlQrAFb5l8JG0G7Vw4QzojO7a90Dspi48oPG4lo0zN3qR4oVlmstRuRtr0rEALGXMG2a7njKob5epfGxldTpyau8j3a+pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713380; c=relaxed/simple;
-	bh=AJCDuuP8DojbRKytNZ8uIngWAv1Rsm6zQYCBEYuNkGM=;
+	s=arc-20240116; t=1750716353; c=relaxed/simple;
+	bh=Yh5LwzlJWiunBWLqVAx6FXBrpyFRR1HIGDswIXr/M38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aophhQ0gFLadolNFVEu8fFmjpbAH/D3muwrLK5dA/oYWEX7DNWZC6T+lAuSBsHZn8iaWHukxol9jmSLkXCRmlg/uzvZLa24Kib2hxOjeO9Xml3GSUgBLl1SsurIfCjUvUy7JOlWQhl+sEgCV3s6WTsIVB1oEMhbmNg8Em5gYlXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=14GrMuxt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A96C4CEEA;
-	Mon, 23 Jun 2025 21:16:15 +0000 (UTC)
+	 MIME-Version; b=VNamcrIUlgnZ/iQuCCY9Kjy9Pkm/OFngJuczaO+REFdaFuwC97yWNOpjrWFbiGL6NwTy7mVHcuICKUcCkmJd2sywp0vzJe4JDbyxSl6N9QsuRfukiGdxAB1PhRRw+EIYg+0tkUPotX7xGbg/+MyKTbESrjlhab9AZfEl3wmyHwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxLEG6oM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B03CC4CEEA;
+	Mon, 23 Jun 2025 22:05:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713375;
-	bh=AJCDuuP8DojbRKytNZ8uIngWAv1Rsm6zQYCBEYuNkGM=;
+	s=korg; t=1750716352;
+	bh=Yh5LwzlJWiunBWLqVAx6FXBrpyFRR1HIGDswIXr/M38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=14GrMuxtF96SG7Xx3U46+ZiP9kzqL1JJ1u/02oKQHGXvvVYG4xBIFFEXQHx74CaFt
-	 ElIJXaSDirhSLlwt5b965UReqAjM6kR2FiHIAWEDU8d6EbpMhF52nXfMGHp5jDudue
-	 5Wo9b+mRmMcgK6o1do0e7AJ+IWxlWAvg/uMxUHgw=
+	b=fxLEG6oM4ZYcr3a2Ikh/x5gpMLP0CcWN6pXdhO0d4K62bn8aZP7dBAqP/4wezzTNP
+	 JBeq7ccDukWV67GJy11O+89h62jWFoUMWGggik/k7HSOqwOKnJBQN27a//dfdnBPsS
+	 o7khGVjcFpPe11Tn6VZGVA6NNfZegU1bZ67hPnG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	Andy Shevchenko <andy.shevchenko@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
+	syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 183/222] platform: Add Surface platform directory
-Date: Mon, 23 Jun 2025 15:08:38 +0200
-Message-ID: <20250623130617.674624666@linuxfoundation.org>
+Subject: [PATCH 6.6 258/290] mpls: Use rcu_dereference_rtnl() in mpls_route_input_rcu().
+Date: Mon, 23 Jun 2025 15:08:39 +0200
+Message-ID: <20250623130634.677138565@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,118 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 1e3a2bc89de44ec34153ab1c1056346b51def250 ]
+[ Upstream commit 6dbb0d97c5096072c78a6abffe393584e57ae945 ]
 
-It may make sense to split the Microsoft Surface hardware platform
-drivers out to a separate subdirectory, since some of it may be shared
-between ARM and x86 in the future (regarding devices like the Surface
-Pro X).
+As syzbot reported [0], mpls_route_input_rcu() can be called
+from mpls_getroute(), where is under RTNL.
 
-Further, newer Surface devices will require additional platform drivers
-for fundamental support (mostly regarding their embedded controller),
-which may also warrant this split from a size perspective.
+net->mpls.platform_label is only updated under RTNL.
 
-This commit introduces a new platform/surface subdirectory for the
-Surface device family, with subsequent commits moving existing Surface
-drivers over from platform/x86.
+Let's use rcu_dereference_rtnl() in mpls_route_input_rcu() to
+silence the splat.
 
-A new MAINTAINERS entry is added for this directory. Patches to files in
-this directory will be taken up by the platform-drivers-x86 team (i.e.
-Hans de Goede and Mark Gross) after they have been reviewed by
-Maximilian Luz.
+[0]:
+WARNING: suspicious RCU usage
+6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 Not tainted
+ ----------------------------
+net/mpls/af_mpls.c:84 suspicious rcu_dereference_check() usage!
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Link: https://lore.kernel.org/r/20201009141128.683254-2-luzmaximilian@gmail.com
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Stable-dep-of: f4b0fa38d5fe ("platform/x86: dell_rbu: Stop overwriting data buffer")
+other info that might help us debug this:
+
+rcu_scheduler_active = 2, debug_locks = 1
+1 lock held by syz.2.4451/17730:
+ #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
+ #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x371/0xe90 net/core/rtnetlink.c:6961
+
+stack backtrace:
+CPU: 1 UID: 0 PID: 17730 Comm: syz.2.4451 Not tainted 6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
+ lockdep_rcu_suspicious+0x166/0x260 kernel/locking/lockdep.c:6865
+ mpls_route_input_rcu+0x1d4/0x200 net/mpls/af_mpls.c:84
+ mpls_getroute+0x621/0x1ea0 net/mpls/af_mpls.c:2381
+ rtnetlink_rcv_msg+0x3c9/0xe90 net/core/rtnetlink.c:6964
+ netlink_rcv_skb+0x16d/0x440 net/netlink/af_netlink.c:2534
+ netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
+ netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
+ netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
+ sock_sendmsg_nosec net/socket.c:712 [inline]
+ __sock_sendmsg net/socket.c:727 [inline]
+ ____sys_sendmsg+0xa98/0xc70 net/socket.c:2566
+ ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
+ __sys_sendmmsg+0x200/0x420 net/socket.c:2709
+ __do_sys_sendmmsg net/socket.c:2736 [inline]
+ __se_sys_sendmmsg net/socket.c:2733 [inline]
+ __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2733
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0x230 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0a2818e969
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f0a28f52038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
+RAX: ffffffffffffffda RBX: 00007f0a283b5fa0 RCX: 00007f0a2818e969
+RDX: 0000000000000003 RSI: 0000200000000080 RDI: 0000000000000003
+RBP: 00007f0a28210ab1 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f0a283b5fa0 R15: 00007ffce5e9f268
+ </TASK>
+
+Fixes: 0189197f4416 ("mpls: Basic routing support")
+Reported-by: syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/68507981.a70a0220.395abc.01ef.GAE@google.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250616201532.1036568-1-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                       |  9 +++++++++
- drivers/platform/Kconfig          |  2 ++
- drivers/platform/Makefile         |  1 +
- drivers/platform/surface/Kconfig  | 14 ++++++++++++++
- drivers/platform/surface/Makefile |  5 +++++
- 5 files changed, 31 insertions(+)
- create mode 100644 drivers/platform/surface/Kconfig
- create mode 100644 drivers/platform/surface/Makefile
+ net/mpls/af_mpls.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 2040c2f76dcf7..474daf91a054b 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -10819,6 +10819,15 @@ L:	netdev@vger.kernel.org
- S:	Supported
- F:	drivers/net/ethernet/mscc/
+diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
+index 43e8343df0db7..5a4b175b78c8c 100644
+--- a/net/mpls/af_mpls.c
++++ b/net/mpls/af_mpls.c
+@@ -81,8 +81,8 @@ static struct mpls_route *mpls_route_input_rcu(struct net *net, unsigned index)
  
-+MICROSOFT SURFACE HARDWARE PLATFORM SUPPORT
-+M:	Hans de Goede <hdegoede@redhat.com>
-+M:	Mark Gross <mgross@linux.intel.com>
-+M:	Maximilian Luz <luzmaximilian@gmail.com>
-+L:	platform-driver-x86@vger.kernel.org
-+S:	Maintained
-+T:	git git://git.kernel.org/pub/scm/linux/kernel/git/pdx86/platform-drivers-x86.git
-+F:	drivers/platform/surface/
-+
- MICROSOFT SURFACE PRO 3 BUTTON DRIVER
- M:	Chen Yu <yu.c.chen@intel.com>
- L:	platform-driver-x86@vger.kernel.org
-diff --git a/drivers/platform/Kconfig b/drivers/platform/Kconfig
-index 971426bb4302c..18fc6a08569eb 100644
---- a/drivers/platform/Kconfig
-+++ b/drivers/platform/Kconfig
-@@ -13,3 +13,5 @@ source "drivers/platform/chrome/Kconfig"
- source "drivers/platform/mellanox/Kconfig"
- 
- source "drivers/platform/olpc/Kconfig"
-+
-+source "drivers/platform/surface/Kconfig"
-diff --git a/drivers/platform/Makefile b/drivers/platform/Makefile
-index 6fda58c021ca4..4de08ef4ec9d0 100644
---- a/drivers/platform/Makefile
-+++ b/drivers/platform/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_MIPS)		+= mips/
- obj-$(CONFIG_OLPC_EC)		+= olpc/
- obj-$(CONFIG_GOLDFISH)		+= goldfish/
- obj-$(CONFIG_CHROME_PLATFORMS)	+= chrome/
-+obj-$(CONFIG_SURFACE_PLATFORMS)	+= surface/
-diff --git a/drivers/platform/surface/Kconfig b/drivers/platform/surface/Kconfig
-new file mode 100644
-index 0000000000000..b67926ece95fb
---- /dev/null
-+++ b/drivers/platform/surface/Kconfig
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+#
-+# Microsoft Surface Platform-Specific Drivers
-+#
-+
-+menuconfig SURFACE_PLATFORMS
-+	bool "Microsoft Surface Platform-Specific Device Drivers"
-+	default y
-+	help
-+	  Say Y here to get to see options for platform-specific device drivers
-+	  for Microsoft Surface devices. This option alone does not add any
-+	  kernel code.
-+
-+	  If you say N, all options in this submenu will be skipped and disabled.
-diff --git a/drivers/platform/surface/Makefile b/drivers/platform/surface/Makefile
-new file mode 100644
-index 0000000000000..3700f9e84299e
---- /dev/null
-+++ b/drivers/platform/surface/Makefile
-@@ -0,0 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for linux/drivers/platform/surface
-+# Microsoft Surface Platform-Specific Drivers
-+#
+ 	if (index < net->mpls.platform_labels) {
+ 		struct mpls_route __rcu **platform_label =
+-			rcu_dereference(net->mpls.platform_label);
+-		rt = rcu_dereference(platform_label[index]);
++			rcu_dereference_rtnl(net->mpls.platform_label);
++		rt = rcu_dereference_rtnl(platform_label[index]);
+ 	}
+ 	return rt;
+ }
 -- 
 2.39.5
 
