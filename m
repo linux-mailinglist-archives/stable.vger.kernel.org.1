@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52DF7AE5329
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC2D3AE5216
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4932F7AED50
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5317F4A4F2D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB55B220686;
-	Mon, 23 Jun 2025 21:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DBDF221FCC;
+	Mon, 23 Jun 2025 21:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqTl4ILU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiCWW3ny"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DEF1A00F0;
-	Mon, 23 Jun 2025 21:49:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE2F21E22E6;
+	Mon, 23 Jun 2025 21:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715374; cv=none; b=JIBzUhUtwp3T7AmjIFGUDf8P9SjB423OIujp13hOkdUddAv/123hf8wMezI7amkwjd5B0DTfWnc+0tjy6uIB6EBqU3pikESsLXK346826DOA31JpZzIrTBTA0ujfv3rkSF8hnkOZyyUcvJCZa26+hIc93uJyD6tzeP8jvo1qeDo=
+	t=1750714816; cv=none; b=OekGzmUfAL0jujpVDppjWODRDCHNiC6nH0cN09ZrzRUzDAjMNv6/FiaLQmRXFZpIqr9eSWA/QWxr4PYCQ4BpQmAwYYrIia0qtkGb0v2XoDC7oS83PugvWyua2ujUsViDC0lDIPO1K2b/vGY7s8ABbYytLaqg/1hLRO/jHTGeyYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715374; c=relaxed/simple;
-	bh=SltZJXvP+DK2sRXB2ETzmLJ+d+68q2QTQDoJ7t2qzEM=;
+	s=arc-20240116; t=1750714816; c=relaxed/simple;
+	bh=JAbzIA7wQNmmszRxiVM+VUV7fLYrje2MUTNHxbNgGc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIGtbEBGUaroGd0MVrUIaJCz28HjWa2V0FzqV7IZ0dn4rfeIeYHXZlNBfDLj4iRV+cHGeKY+UnIcxtP9k4xUvIVoWrmarqBGRr7CjZXBlgJTr1Su0Oai4VmZjZJv2XaFjk0DtQs9tuKzrLbEuwwii32+OYJVqCUocNDg+yYDGMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqTl4ILU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9DD4C4CEEA;
-	Mon, 23 Jun 2025 21:49:33 +0000 (UTC)
+	 MIME-Version; b=pgZURgAchsrhnzJwJxZZP6oulIScsOiSTg6spj1G4B0p1dHslpm2ciFMbGHNqOo4ZBXwVjCdSfFTZBxu9vxugwutSlAynmLzAM1XIT7Krhw0NXUrfAZhFPkBj4ei/Gp0wLMnkWj45EwWkop4S6EuuuZ22u8+jwsfuy4IVNG36tw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiCWW3ny; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F106C4CEEA;
+	Mon, 23 Jun 2025 21:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715374;
-	bh=SltZJXvP+DK2sRXB2ETzmLJ+d+68q2QTQDoJ7t2qzEM=;
+	s=korg; t=1750714816;
+	bh=JAbzIA7wQNmmszRxiVM+VUV7fLYrje2MUTNHxbNgGc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jqTl4ILUHazHCAyh+xfLk5byJAMSfD85wf+EPqCihT/1fspuNgC5IwYwsoObSaEmY
-	 wKULirzpt3QdsjAOJRIRrxje48kLEe9QFAydWo/CM4dW92r7gXeqyUnk1Qctg1IiNc
-	 RlPX0uLv3horlNXqG4ZRWyW9IPCRiZaS2tiIEKJU=
+	b=qiCWW3ny2WV28SW2SAsDnIGP/hpuCO1JbQnhu9Fm595Y6ikNIlJMUqwJNqep3lafX
+	 wngW8EjyH2exIB1ANd6Y3LyBAXR7GHb72zTqD7Uf7whIJgm7kql4ETbjPk+DY6miDb
+	 4AHcYqH4LRMZNHjNcbqYUXW108XKiRpK+0o5LmRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Moon Yeounsu <yyyynoom@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/290] watchdog: da9052_wdt: respect TWDMIN
+Subject: [PATCH 5.10 255/355] net: dlink: add synchronization for stats update
 Date: Mon, 23 Jun 2025 15:07:36 +0200
-Message-ID: <20250623130632.718761750@linuxfoundation.org>
+Message-ID: <20250623130634.421980527@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
+From: Moon Yeounsu <yyyynoom@gmail.com>
 
-[ Upstream commit 325f510fcd9cda5a44bcb662b74ba4e3dabaca10 ]
+[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
 
-We have to wait at least the minimium time for the watchdog window
-(TWDMIN) before writings to the wdt register after the
-watchdog is activated.
-Otherwise the chip will assert TWD_ERROR and power down to reset mode.
+This patch synchronizes code that accesses from both user-space
+and IRQ contexts. The `get_stats()` function can be called from both
+context.
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250326-da9052-fixes-v3-4-a38a560fef0e@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
+in the `tx_errors()` function. Therefore, these fields must also be
+protected by synchronized.
+
+There is no code that accessses `dev->stats.tx_errors` between the
+previous and updated lines, so the updating point can be moved.
+
+Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
+Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/da9052_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
+ drivers/net/ethernet/dlink/dl2k.h |  2 ++
+ 2 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/da9052_wdt.c b/drivers/watchdog/da9052_wdt.c
-index d708c091bf1b1..180526220d8c4 100644
---- a/drivers/watchdog/da9052_wdt.c
-+++ b/drivers/watchdog/da9052_wdt.c
-@@ -164,6 +164,7 @@ static int da9052_wdt_probe(struct platform_device *pdev)
- 	da9052_wdt = &driver_data->wdt;
+diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
+index 66e0fbdcef220..b7f992103da3c 100644
+--- a/drivers/net/ethernet/dlink/dl2k.c
++++ b/drivers/net/ethernet/dlink/dl2k.c
+@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
+ 	np->ioaddr = ioaddr;
+ 	np->chip_id = chip_idx;
+ 	np->pdev = pdev;
++
++	spin_lock_init(&np->stats_lock);
+ 	spin_lock_init (&np->tx_lock);
+ 	spin_lock_init (&np->rx_lock);
  
- 	da9052_wdt->timeout = DA9052_DEF_TIMEOUT;
-+	da9052_wdt->min_hw_heartbeat_ms = DA9052_TWDMIN;
- 	da9052_wdt->info = &da9052_wdt_info;
- 	da9052_wdt->ops = &da9052_wdt_ops;
- 	da9052_wdt->parent = dev;
+@@ -869,7 +871,6 @@ tx_error (struct net_device *dev, int tx_status)
+ 	frame_id = (tx_status & 0xffff0000);
+ 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
+ 		dev->name, tx_status, frame_id);
+-	dev->stats.tx_errors++;
+ 	/* Ttransmit Underrun */
+ 	if (tx_status & 0x10) {
+ 		dev->stats.tx_fifo_errors++;
+@@ -906,9 +907,15 @@ tx_error (struct net_device *dev, int tx_status)
+ 		rio_set_led_mode(dev);
+ 		/* Let TxStartThresh stay default value */
+ 	}
++
++	spin_lock(&np->stats_lock);
+ 	/* Maximum Collisions */
+ 	if (tx_status & 0x08)
+ 		dev->stats.collisions++;
++
++	dev->stats.tx_errors++;
++	spin_unlock(&np->stats_lock);
++
+ 	/* Restart the Tx */
+ 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
+ }
+@@ -1077,7 +1084,9 @@ get_stats (struct net_device *dev)
+ 	int i;
+ #endif
+ 	unsigned int stat_reg;
++	unsigned long flags;
+ 
++	spin_lock_irqsave(&np->stats_lock, flags);
+ 	/* All statistics registers need to be acknowledged,
+ 	   else statistic overflow could cause problems */
+ 
+@@ -1127,6 +1136,9 @@ get_stats (struct net_device *dev)
+ 	dr16(TCPCheckSumErrors);
+ 	dr16(UDPCheckSumErrors);
+ 	dr16(IPCheckSumErrors);
++
++	spin_unlock_irqrestore(&np->stats_lock, flags);
++
+ 	return &dev->stats;
+ }
+ 
+diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
+index 0e33e2eaae960..56aff2f0bdbfa 100644
+--- a/drivers/net/ethernet/dlink/dl2k.h
++++ b/drivers/net/ethernet/dlink/dl2k.h
+@@ -372,6 +372,8 @@ struct netdev_private {
+ 	struct pci_dev *pdev;
+ 	void __iomem *ioaddr;
+ 	void __iomem *eeprom_addr;
++	// To ensure synchronization when stats are updated.
++	spinlock_t stats_lock;
+ 	spinlock_t tx_lock;
+ 	spinlock_t rx_lock;
+ 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
 -- 
 2.39.5
 
