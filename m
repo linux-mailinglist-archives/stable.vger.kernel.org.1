@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716A1AE509F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D0B4AE5322
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E349D3AA320
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6F4D27A89CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C5522333B;
-	Mon, 23 Jun 2025 21:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA4E4223DEE;
+	Mon, 23 Jun 2025 21:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bHkiJsSF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LEMUOGwB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC302222581;
-	Mon, 23 Jun 2025 21:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87003223DEA;
+	Mon, 23 Jun 2025 21:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713969; cv=none; b=Dyk8VcJhIJoF9Ya3lcNFYUUWRp3jlqpA/PIuLMV5K95cQkax5aLhOkTOUfwB1N+i5+eYan79Lm5qBiHLoEHlqQtSxEufypr5/u06csbrUJjI+iq3KvJA8EGh+Y4u9CNkPZozXtCXNPtM76QZH87+CFA3bR120RwjKQq3KTXXTn0=
+	t=1750715351; cv=none; b=U2NM3/PuZBM1bF5ISdnTd2NsPdxZMOEWxsiBh8PN887rfwwBSIc/6FpcoiV4NjuN4+R/rl9VfJV16H36ezqoy4XmZ9PQKkGr3FY0LJR1yESfaGMQcLHhB9aZox/8sK9NDjyU8uvJHINdUPe587ZNEJoH9P5wmUe4HKINhsfeDPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713969; c=relaxed/simple;
-	bh=/feKkd7WSEO5RMo2HxXnIYCN1lBNuSaIvVI3UHKC058=;
+	s=arc-20240116; t=1750715351; c=relaxed/simple;
+	bh=QvRe9hKACi8vSh8n8pqDJRFafkxsn0i0qg5xpdEEZ0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sTXQWkGGidsd8BK1Oe5kpZ22jrAp9XbLCfQyRgq1S3I19NwhAHMZGWUHbNkXH7UAwfJfyfesKmF6/gOU6Dgsm4AFDbCFgWWbwv+/tkL+56i4USZZ0uRDubezJzKJh0PE3HUn5o08h3Fz3q3NIx/JHYBPqEAv38ImSp7ezogOJwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bHkiJsSF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A97C4CEEA;
-	Mon, 23 Jun 2025 21:26:09 +0000 (UTC)
+	 MIME-Version; b=Kzz+sxFsK6sJnIDaZ8ZaOUROyRZnWLD9LWGZZFGXBwkFa0xZMeeeg7u0/OMfQhnPWqTkHNX5CMH25IgJuL8GKnQd/YMYcCGCqlKgJiBvTtrW9zs7CG8w4mfW3r7Xohjb5D/2v/7dXkWinLBvtt+VJmFDi2ch1R5/3pW1mQjhyPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LEMUOGwB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A2DC4CEEA;
+	Mon, 23 Jun 2025 21:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713969;
-	bh=/feKkd7WSEO5RMo2HxXnIYCN1lBNuSaIvVI3UHKC058=;
+	s=korg; t=1750715351;
+	bh=QvRe9hKACi8vSh8n8pqDJRFafkxsn0i0qg5xpdEEZ0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bHkiJsSFzZVqBt2Mgc+7YBIyY1cSelTG4lHYMAU6dmarnp0h4AFeB7wmTdEOeZ+jN
-	 5eVRTXey9o0wnGJAa0vybQy/SFqpSamCNlbr01OMemycfqKdvpEKR3PsGBhvDVD/bM
-	 Mc7h/4lqir0HyesEzubd0m/gc564LQXJ3GWVuskU=
+	b=LEMUOGwBhBzL+P8vbtOTztnzsW9WRhLAor4BSzKLrq78fhFjZD8b4e9srT2/YcUjW
+	 PCJVCt2CuEQTTJFBjvl8681WHxG0dWQbcA/fFXAbKeULH64KussHfOoxeZYC2YW56s
+	 GsEqKP7k0AxkM65L8/gu9M0GChxVlyjmb8ntJUMY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	kernel test robot <lkp@intel.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 356/592] bpf: Pass the same orig_call value to trampoline functions
+Subject: [PATCH 6.12 177/414] ACPI: Add missing prototype for non CONFIG_SUSPEND/CONFIG_X86 case
 Date: Mon, 23 Jun 2025 15:05:14 +0200
-Message-ID: <20250623130708.910794493@linuxfoundation.org>
+Message-ID: <20250623130646.453586268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Leoshkevich <iii@linux.ibm.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 94bde253d3ae5d8a01cb958663b12daef1d06574 ]
+[ Upstream commit e1bdbbc98279164d910d2de82a745f090a8b249f ]
 
-There is currently some confusion in the s390x JIT regarding whether
-orig_call can be NULL and what that means. Originally the NULL value
-was used to distinguish the struct_ops case, but this was superseded by
-BPF_TRAMP_F_INDIRECT (see commit 0c970ed2f87c ("s390/bpf: Fix indirect
-trampoline generation").
+acpi_register_lps0_dev() and acpi_unregister_lps0_dev() may be used
+in drivers that don't require CONFIG_SUSPEND or compile on !X86.
 
-The remaining reason to have this check is that NULL can actually be
-passed to the arch_bpf_trampoline_size() call - but not to the
-respective arch_prepare_bpf_trampoline()! call - by
-bpf_struct_ops_prepare_trampoline().
+Add prototypes for those cases.
 
-Remove this asymmetry by passing stub_func to both functions, so that
-JITs may rely on orig_call never being NULL.
-
-Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
-Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20250512221911.61314-2-iii@linux.ibm.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202502191627.fRgoBwcZ-lkp@intel.com/
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://patch.msgid.link/20250407183656.1503446-1-superm1@kernel.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/bpf_struct_ops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/acpi.h | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
-index db13ee70d94d5..96113633e391a 100644
---- a/kernel/bpf/bpf_struct_ops.c
-+++ b/kernel/bpf/bpf_struct_ops.c
-@@ -601,7 +601,7 @@ int bpf_struct_ops_prepare_trampoline(struct bpf_tramp_links *tlinks,
- 	if (model->ret_size > 0)
- 		flags |= BPF_TRAMP_F_RET_FENTRY_RET;
+diff --git a/include/linux/acpi.h b/include/linux/acpi.h
+index 4d5ee84c468ba..f826bb59556af 100644
+--- a/include/linux/acpi.h
++++ b/include/linux/acpi.h
+@@ -1110,13 +1110,13 @@ void acpi_os_set_prepare_extended_sleep(int (*func)(u8 sleep_state,
  
--	size = arch_bpf_trampoline_size(model, flags, tlinks, NULL);
-+	size = arch_bpf_trampoline_size(model, flags, tlinks, stub_func);
- 	if (size <= 0)
- 		return size ? : -EFAULT;
- 
+ acpi_status acpi_os_prepare_extended_sleep(u8 sleep_state,
+ 					   u32 val_a, u32 val_b);
+-#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
+ struct acpi_s2idle_dev_ops {
+ 	struct list_head list_node;
+ 	void (*prepare)(void);
+ 	void (*check)(void);
+ 	void (*restore)(void);
+ };
++#if defined(CONFIG_SUSPEND) && defined(CONFIG_X86)
+ int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg);
+ void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg);
+ int acpi_get_lps0_constraint(struct acpi_device *adev);
+@@ -1125,6 +1125,13 @@ static inline int acpi_get_lps0_constraint(struct device *dev)
+ {
+ 	return ACPI_STATE_UNKNOWN;
+ }
++static inline int acpi_register_lps0_dev(struct acpi_s2idle_dev_ops *arg)
++{
++	return -ENODEV;
++}
++static inline void acpi_unregister_lps0_dev(struct acpi_s2idle_dev_ops *arg)
++{
++}
+ #endif /* CONFIG_SUSPEND && CONFIG_X86 */
+ void arch_reserve_mem_area(acpi_physical_address addr, size_t size);
+ #else
 -- 
 2.39.5
 
