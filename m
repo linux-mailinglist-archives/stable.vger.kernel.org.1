@@ -1,121 +1,57 @@
-Return-Path: <stable+bounces-157232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9920FAE5312
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7372AE4F48
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 47EC61894EB7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D34393BC0A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88743220686;
-	Mon, 23 Jun 2025 21:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D575422069F;
+	Mon, 23 Jun 2025 21:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pv6Uiu1T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eoEzJ4sZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4573A3FB1B;
-	Mon, 23 Jun 2025 21:49:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943AC1DF98B;
+	Mon, 23 Jun 2025 21:14:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715364; cv=none; b=nWGAiLQK+aUbiEyP99cUrafxVPNS1Hq+w/zb+UJZShasjYNg39Ew+k6QIHPnY9kyg/449A9eycjeyFWeMpay561RQ4WWjgaoxzbAjaYpi82piwwvgQoGJXUBZk+9f7FIYgb8J+FMxrGH4ZnF1ELsSuccNAYY2cKazimTsJ2hEag=
+	t=1750713260; cv=none; b=hUH56zTWHSIH71Vl3sqOLgdH87vqr0rWHJZSLcg/u5Mm7uFMhBAbdv61PcRhuneGRrKk3tS7GatJt6bNeuaIHMAEC5JOpFKopp7ztbNU6++OTA2E1nlgjnxWdMSCXk9qvHUnu/GHnc6elYo0olp3tfJY8xmdB/ZP96ol5Pwe+8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715364; c=relaxed/simple;
-	bh=RLIH11zSMhNgzD5SzWpEqhejBlAAJnUnBIxUDBWIXJI=;
+	s=arc-20240116; t=1750713260; c=relaxed/simple;
+	bh=Grfgjx1K+dRsu/mH4+9hS1R63+Zzw5+sM1Bh/1j+4f8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FUq17Z6eAQzvPOAQHl0ncQfUk9KHONxXq742UnBxihD5459ctg8Os1UMkkYf48OtK07m5WIDfo1v1fBgAVN38a7AnqcXPCbZHG+7GVzOrV6HDSFx1Xq0OHewxSH4hSGScvOE9C+HcHV0RKnPHgsRPbFVsgUgHqBKGdKuJf1+4+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pv6Uiu1T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B9CC4CEEA;
-	Mon, 23 Jun 2025 21:49:23 +0000 (UTC)
+	 MIME-Version; b=ZAF0dzuFhEuIgDNY9V5zbhOVSM++N/nqjmQVnp3J4vrH0bh/OBMFayJRFvObUpA8Oy1VFWMrUpASaAZhMAaUj6xacxkj9jJy7pHzAwEO1tpqLhhcMWGWtU2e3PF9NbJy4lIidZnFPJ7c5+4UaA0Ozk5fMOMqNquLSvl4bryIKT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eoEzJ4sZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2ACBEC4CEEA;
+	Mon, 23 Jun 2025 21:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715364;
-	bh=RLIH11zSMhNgzD5SzWpEqhejBlAAJnUnBIxUDBWIXJI=;
+	s=korg; t=1750713260;
+	bh=Grfgjx1K+dRsu/mH4+9hS1R63+Zzw5+sM1Bh/1j+4f8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pv6Uiu1T2nxMuVgi3+p3hcK7puDZVyx/RxW06R5h4Ihy396Jk9KlFzuiQhN1WOhtN
-	 IeJCl6Ql3ljb0Uu+VMkZh1pj4V05Cm8ExmILclopR8ZCkpIRyyjfHF2D7eB6L82Scu
-	 zamfw6M1i7dWzgR8gf83h9QsZAAskph9AF0l6vOY=
+	b=eoEzJ4sZi1uUEwAQGg0FbGYwVM+CM2eodb1MDSXxVXJ36qgn6eRcv8+m3k++F1jjd
+	 xT+bLfdANieu/X/XaOZEfSNEw9RanCCcNPEX09iHfZvHbYF2hhyegBvVrlIVmFOpwA
+	 +o8TW8T606fVSf79LrJvAIFzqNi9iY7fOAE8wusg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Easwar Hariharan <eahariha@linux.microsoft.com>,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	Anna-Maria Behnsen <anna-maria@linutronix.de>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Christian Borntraeger <borntraeger@linux.ibm.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Daniel Mack <daniel@zonque.org>,
-	David Airlie <airlied@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Dick Kennedy <dick.kennedy@broadcom.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Haojian Zhuang <haojian.zhuang@gmail.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Jack Wang <jinpu.wang@cloud.ionos.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	James Bottomley <James.Bottomley@HansenPartnership.com>,
-	James Smart <james.smart@broadcom.com>,
-	Jaroslav Kysela <perex@perex.cz>,
-	Jeff Johnson <jjohnson@kernel.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Jeroen de Borst <jeroendb@google.com>,
-	Jiri Kosina <jikos@kernel.org>,
-	Joe Lawrence <joe.lawrence@redhat.com>,
-	Johan Hedberg <johan.hedberg@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jozsef Kadlecsik <kadlec@netfilter.org>,
-	Julia Lawall <julia.lawall@inria.fr>,
-	Kalle Valo <kvalo@kernel.org>,
-	Louis Peens <louis.peens@corigine.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Marcel Holtmann <marcel@holtmann.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Miroslav Benes <mbenes@suse.cz>,
-	Naveen N Rao <naveen@kernel.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Nicolas Palix <nicolas.palix@imag.fr>,
-	Oded Gabbay <ogabbay@kernel.org>,
-	Ofir Bitton <obitton@habana.ai>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Petr Mladek <pmladek@suse.com>,
-	Praveen Kaligineedi <pkaligineedi@google.com>,
-	Ray Jui <rjui@broadcom.com>,
-	Robert Jarzmik <robert.jarzmik@free.fr>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Russell King <linux@armlinux.org.uk>,
-	Scott Branden <sbranden@broadcom.com>,
-	Shailend Chand <shailend@google.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Simon Horman <horms@kernel.org>,
-	Sven Schnelle <svens@linux.ibm.com>,
-	Takashi Iwai <tiwai@suse.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Xiubo Li <xiubli@redhat.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tan En De <ende.tan@starfivetech.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 230/508] wifi: ath11k: convert timeouts to secs_to_jiffies()
+Subject: [PATCH 6.15 317/592] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:04:35 +0200
-Message-ID: <20250623130650.918319361@linuxfoundation.org>
+Message-ID: <20250623130707.968032852@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -125,122 +61,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Easwar Hariharan <eahariha@linux.microsoft.com>
+From: Tan En De <ende.tan@starfivetech.com>
 
-[ Upstream commit b29425972c5234a59b6fb634125420ed74266377 ]
+[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
 
-Commit b35108a51cf7 ("jiffies: Define secs_to_jiffies()") introduced
-secs_to_jiffies().  As the value here is a multiple of 1000, use
-secs_to_jiffies() instead of msecs_to_jiffies to avoid the multiplication.
+Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
+the runtime suspend is invoked immediately when unregistering a slave.
+This prevents a race condition where suspend was skipped when
+unregistering and registering slave in quick succession.
 
-This is converted using scripts/coccinelle/misc/secs_to_jiffies.cocci with
-the following Coccinelle rules:
+For example, consider the rapid sequence of
+`delete_device -> new_device -> delete_device -> new_device`.
+In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
+might not be invoked after `delete_device` operation.
 
-@@ constant C; @@
+This is because after `delete_device` operation, when the
+pm_runtime_put() is about to trigger suspend, the following `new_device`
+operation might race and cancel the suspend.
 
-- msecs_to_jiffies(C * 1000)
-+ secs_to_jiffies(C)
+If that happens, during the `new_device` operation,
+dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
+means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
+Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
+skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
+the interrupt mask register using devmem, it will show as zero.
 
-@@ constant C; @@
+Example shell script to reproduce the issue:
+```
+  #!/bin/sh
 
-- msecs_to_jiffies(C * MSEC_PER_SEC)
-+ secs_to_jiffies(C)
+  SLAVE_LADDR=0x1010
+  SLAVE_BUS=13
+  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
+  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
 
-Link: https://lkml.kernel.org/r/20241210-converge-secs-to-jiffies-v3-14-ddfefd7e9f2a@linux.microsoft.com
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Easwar Hariharan <eahariha@linux.microsoft.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Andrew Lunn <andrew+netdev@lunn.ch>
-Cc: Anna-Maria Behnsen <anna-maria@linutronix.de>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Daniel Mack <daniel@zonque.org>
-Cc: David Airlie <airlied@gmail.com>
-Cc: David S. Miller <davem@davemloft.net>
-Cc: Dick Kennedy <dick.kennedy@broadcom.com>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Haojian Zhuang <haojian.zhuang@gmail.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ilya Dryomov <idryomov@gmail.com>
-Cc: Jack Wang <jinpu.wang@cloud.ionos.com>
-Cc: Jakub Kicinski <kuba@kernel.org>
-Cc: James Bottomley <James.Bottomley@HansenPartnership.com>
-Cc: James Smart <james.smart@broadcom.com>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Jeff Johnson <jjohnson@kernel.org>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Jeroen de Borst <jeroendb@google.com>
-Cc: Jiri Kosina <jikos@kernel.org>
-Cc: Joe Lawrence <joe.lawrence@redhat.com>
-Cc: Johan Hedberg <johan.hedberg@gmail.com>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Jozsef Kadlecsik <kadlec@netfilter.org>
-Cc: Julia Lawall <julia.lawall@inria.fr>
-Cc: Kalle Valo <kvalo@kernel.org>
-Cc: Louis Peens <louis.peens@corigine.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Marcel Holtmann <marcel@holtmann.org>
-Cc: Martin K. Petersen <martin.petersen@oracle.com>
-Cc: Maxime Ripard <mripard@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Miroslav Benes <mbenes@suse.cz>
-Cc: Naveen N Rao <naveen@kernel.org>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Nicolas Palix <nicolas.palix@imag.fr>
-Cc: Oded Gabbay <ogabbay@kernel.org>
-Cc: Ofir Bitton <obitton@habana.ai>
-Cc: Pablo Neira Ayuso <pablo@netfilter.org>
-Cc: Paolo Abeni <pabeni@redhat.com>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Praveen Kaligineedi <pkaligineedi@google.com>
-Cc: Ray Jui <rjui@broadcom.com>
-Cc: Robert Jarzmik <robert.jarzmik@free.fr>
-Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: Roger Pau Monné <roger.pau@citrix.com>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Scott Branden <sbranden@broadcom.com>
-Cc: Shailend Chand <shailend@google.com>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Simon Horman <horms@kernel.org>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: Takashi Iwai <tiwai@suse.com>
-Cc: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Xiubo Li <xiubli@redhat.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
+  # Create initial device
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  sleep 2
+
+  # Rapid sequence of
+  # delete_device -> new_device -> delete_device -> new_device
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+
+  # Using devmem to inspect IC_INTR_MASK will show as zero
+```
+
+Signed-off-by: Tan En De <ende.tan@starfivetech.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/debugfs.c | 2 +-
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/debugfs.c b/drivers/net/wireless/ath/ath11k/debugfs.c
-index 34aa04d27a1d7..a8bd944f76d92 100644
---- a/drivers/net/wireless/ath/ath11k/debugfs.c
-+++ b/drivers/net/wireless/ath/ath11k/debugfs.c
-@@ -178,7 +178,7 @@ static int ath11k_debugfs_fw_stats_request(struct ath11k *ar,
- 	 * received 'update stats' event, we keep a 3 seconds timeout in case,
- 	 * fw_stats_done is not marked yet
- 	 */
--	timeout = jiffies + msecs_to_jiffies(3 * 1000);
-+	timeout = jiffies + secs_to_jiffies(3);
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index 5cd4a5f7a472e..b936a240db0a9 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -96,7 +96,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
+ 	i2c_dw_disable(dev);
+ 	synchronize_irq(dev->irq);
+ 	dev->slave = NULL;
+-	pm_runtime_put(dev->dev);
++	pm_runtime_put_sync_suspend(dev->dev);
  
- 	ath11k_debugfs_fw_stats_reset(ar);
- 
+ 	return 0;
+ }
 -- 
 2.39.5
 
