@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-158032-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E420AE56FE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C9EDAE5645
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF70B3ACDAA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1490A16629A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D592415ADB4;
-	Mon, 23 Jun 2025 22:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F74C22333B;
+	Mon, 23 Jun 2025 22:17:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DanirPtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c772MaGs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9130B2192EC;
-	Mon, 23 Jun 2025 22:21:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07141F6667;
+	Mon, 23 Jun 2025 22:17:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717316; cv=none; b=ip3IHJsdWvO+pS5gPpOrBRBgM0C5v6xKaWJOTOc9gX+B6GAp4z1QMULYpO2VHwDn1SH0DkBce/LwCcmBQWKLTY8BiSjHj3nEKV0KCvPgxy9DBuf3cZ7Nn+gKIOJW+z8SthjrYXUxXsy7gzt7cW9L4WReQcHbN/HVqpEoqzN9Dt4=
+	t=1750717062; cv=none; b=NRwQynvSCRj1sIAWYgfvkZyfuXuc6UqYvcx1R7LBrEHjzFLzxDFZ7Xn8tEGF2ognDGDUtHvD22gwGKpdDOeueXzps+jnfC0kPrzJcYG2E8peuNTYwYII1vCUeMFM6gW0MVbnlz0oxV/qOj5PRVegbg5by5Mqwpot3K7z5eDinUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717316; c=relaxed/simple;
-	bh=bBJpub/p+VNGWmO9D66R8B9LvMhSDGtJLnn0Phky+dk=;
+	s=arc-20240116; t=1750717062; c=relaxed/simple;
+	bh=HaEo/edqAQNJhgKvQA4ZEUOz8uL8hoVe5pUMRpgkxrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ifFeF31RWyPd8m9z+WhtqkgLMRmvv/f9fJNJ+BLpxgVME98ShDonvkA8Z1hsqe6+sLxOjNoMK5FzezY7WOuS2rERRJMfNCYKD7Qrk4gZ2ZHRfb+vE8ig+vtAlZiNfiX1qrrK5cuMtk085hyST7905PURphKV9As11FO3UC8YQA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DanirPtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28D2FC4CEEA;
-	Mon, 23 Jun 2025 22:21:56 +0000 (UTC)
+	 MIME-Version; b=BOmX3T2dWrkRVZw4XXyQM6WaU8tcpZtvjWdNWzB5655E6EVHc8IIPn8dyyVU+dTRxVmWUifUHqLQGFeTbcOfRYwJyxEEFGGOXqO8q4ursZAawrDVrr5e5J1kAkjPkLU+NTUtX2tZK7toWnVG9ex31GvN7gMNcHVbW+Ywz5zNqwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c772MaGs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68268C4CEEA;
+	Mon, 23 Jun 2025 22:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717316;
-	bh=bBJpub/p+VNGWmO9D66R8B9LvMhSDGtJLnn0Phky+dk=;
+	s=korg; t=1750717062;
+	bh=HaEo/edqAQNJhgKvQA4ZEUOz8uL8hoVe5pUMRpgkxrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DanirPtXw9IRxakwameky7AJFRBGRJGaN/Yc59+ahHn6SHRD+J2OMIlJzwBjrlRC9
-	 veKinrgxw6vztX1NaEgCvS6Oo9d6ZbAVs2dZk/3pqGEn2yFCW1N1z9HgVHSq5WtDR1
-	 TW7pbVxra0oJYqiHkiqWGbWL5qEhqTZMVT7kR8PE=
+	b=c772MaGsEULDEEkNBEKXlJygBAuPF1tc29QKFw3spjZG1wXBGbiV1GxwOOP5UYDJ6
+	 gMYRXhRUps3p8XqjT/laFWleqd/0uVxtlc6TwWBDGjYWXC5aCzR0z/FgqledkcliSJ
+	 tfTXrRANzqNF3my/QwJfpL35vGXIQ3NL+tPARod8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Zaborowski <andrew.zaborowski@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Tony Luck <tony.luck@intel.com>,
-	balrogg@gmail.com,
-	linux-sgx@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 403/508] x86/sgx: Prevent attempts to reclaim poisoned pages
+	M Nikhil <nikh1092@linux.ibm.com>,
+	Nihar Panda <niharp@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 311/414] scsi: s390: zfcp: Ensure synchronous unit_add
 Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130655.157954116@linuxfoundation.org>
+Message-ID: <20250623130649.777850825@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,92 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Zaborowski <andrew.zaborowski@intel.com>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit ed16618c380c32c68c06186d0ccbb0d5e0586e59 ]
+commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
 
-TL;DR: SGX page reclaim touches the page to copy its contents to
-secondary storage. SGX instructions do not gracefully handle machine
-checks. Despite this, the existing SGX code will try to reclaim pages
-that it _knows_ are poisoned. Avoid even trying to reclaim poisoned pages.
+Improve the usability of the unit_add sysfs attribute by ensuring that
+the associated FCP LUN scan processing is completed synchronously.  This
+enables configuration tooling to consistently determine the end of the
+scan process to allow for serialization of follow-on actions.
 
-The longer story:
+While the scan process associated with unit_add typically completes
+synchronously, it is deferred to an asynchronous background process if
+unit_add is used before initial remote port scanning has completed.  This
+occurs when unit_add is used immediately after setting the associated FCP
+device online.
 
-Pages used by an enclave only get epc_page->poison set in
-arch_memory_failure() but they currently stay on sgx_active_page_list until
-sgx_encl_release(), with the SGX_EPC_PAGE_RECLAIMER_TRACKED flag untouched.
+To ensure synchronous unit_add processing, wait for remote port scanning
+to complete before initiating the FCP LUN scan.
 
-epc_page->poison is not checked in the reclaimer logic meaning that, if other
-conditions are met, an attempt will be made to reclaim an EPC page that was
-poisoned.  This is bad because 1. we don't want that page to end up added
-to another enclave and 2. it is likely to cause one core to shut down
-and the kernel to panic.
-
-Specifically, reclaiming uses microcode operations including "EWB" which
-accesses the EPC page contents to encrypt and write them out to non-SGX
-memory.  Those operations cannot handle MCEs in their accesses other than
-by putting the executing core into a special shutdown state (affecting
-both threads with HT.)  The kernel will subsequently panic on the
-remaining cores seeing the core didn't enter MCE handler(s) in time.
-
-Call sgx_unmark_page_reclaimable() to remove the affected EPC page from
-sgx_active_page_list on memory error to stop it being considered for
-reclaiming.
-
-Testing epc_page->poison in sgx_reclaim_pages() would also work but I assume
-it's better to add code in the less likely paths.
-
-The affected EPC page is not added to &node->sgx_poison_page_list until
-later in sgx_encl_release()->sgx_free_epc_page() when it is EREMOVEd.
-Membership on other lists doesn't change to avoid changing any of the
-lists' semantics except for sgx_active_page_list.  There's a "TBD" comment
-in arch_memory_failure() about pre-emptive actions, the goal here is not
-to address everything that it may imply.
-
-This also doesn't completely close the time window when a memory error
-notification will be fatal (for a not previously poisoned EPC page) --
-the MCE can happen after sgx_reclaim_pages() has selected its candidates
-or even *inside* a microcode operation (actually easy to trigger due to
-the amount of time spent in them.)
-
-The spinlock in sgx_unmark_page_reclaimable() is safe because
-memory_failure() runs in process context and no spinlocks are held,
-explicitly noted in a mm/memory-failure.c comment.
-
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: balrogg@gmail.com
-Cc: linux-sgx@vger.kernel.org
-Link: https://lore.kernel.org/r/20250508230429.456271-1-andrew.zaborowski@intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
+Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/sgx/main.c | 2 ++
+ drivers/s390/scsi/zfcp_sysfs.c |    2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index c4960b8e5195f..b86eb601827bf 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -718,6 +718,8 @@ int arch_memory_failure(unsigned long pfn, int flags)
- 		goto out;
- 	}
+--- a/drivers/s390/scsi/zfcp_sysfs.c
++++ b/drivers/s390/scsi/zfcp_sysfs.c
+@@ -450,6 +450,8 @@ static ssize_t zfcp_sysfs_unit_add_store
+ 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
+ 		return -EINVAL;
  
-+	sgx_unmark_page_reclaimable(page);
++	flush_work(&port->rport_work);
 +
- 	/*
- 	 * TBD: Add additional plumbing to enable pre-emptive
- 	 * action for asynchronous poison notification. Until
--- 
-2.39.5
-
+ 	retval = zfcp_unit_add(port, fcp_lun);
+ 	if (retval)
+ 		return retval;
 
 
 
