@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E332AE5359
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5EE29AE503D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056274A7A73
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C8FE3BF04C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2996A2236E5;
-	Mon, 23 Jun 2025 21:52:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15871EFFA6;
+	Mon, 23 Jun 2025 21:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfa4kLxa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vUEjjULU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD65218AC1;
-	Mon, 23 Jun 2025 21:52:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C382628C;
+	Mon, 23 Jun 2025 21:23:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715540; cv=none; b=dRxwlEJVSL3PGgx4iNVz1hN/cL3suvxLVjM1AOs0uLL7VOpyEFsA6++bbrbTBiwu0NxLn/IKhbMHC32e7MoNwsFM7w7dvjn46Z7mUEvjUlXr7z0afxAP0Cnu7XCy1uJPIecb4VP+kT6L9vbJ3GU3pLk7FkAIXHERzIZhVSNUwcg=
+	t=1750713803; cv=none; b=Sb5O84TsBAhbbZqaN1L8ILcYqVD2KhMXsk9JprdMBqc1nMhC7om7yYndoDdVfhYN1F2vr3HnQ4dbn5MY/h3qqzFg4oKsT8If2/BuPDpJKz1mPM56xKxXyFxrLPpD95Qo2R7k+N8jU+XjeQ52FqdGpOeV6O1wrb2DJ8JpucCeji0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715540; c=relaxed/simple;
-	bh=PTGzc4xVybOMflKwOmdTmEv860MfwrD5x4NYwjNm5ns=;
+	s=arc-20240116; t=1750713803; c=relaxed/simple;
+	bh=lmaAhbmgNfzwzplXTaud80kN9O0sv/sGAM3tzXBgXVc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dkhwpN01JadKrp56EuiEtxQyDvQ7Ew8rOwod1smGH1AnJ907YQKmYETC6fWmf+hS8s9JsJFJkrr8EpsYl39nGMGrD6M8hn7tQ5VJCZReuoQ0j+0qrABMlsE1FZEWMr/sF0xAW/4kc1cEkweCo7DQnAp6lKO0v/iJGqsrZrJ1PBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfa4kLxa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724F6C4CEEA;
-	Mon, 23 Jun 2025 21:52:20 +0000 (UTC)
+	 MIME-Version; b=Dl1g/qKbBR5vXBx2SlCIP3GSHELB1GeEvtWOcW/TM1nYugXGz1QckilG6TCtx376Up4Ef019yMgtPOJAjiBfdwW7QaOdeePvWXTwnjlczz1aEg10RNZAYMQnvX5C5SqHjUMNy81V/ZOX393XOPwVh5XcSv2775GShXd8O1jelY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vUEjjULU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08D6BC4CEEA;
+	Mon, 23 Jun 2025 21:23:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715540;
-	bh=PTGzc4xVybOMflKwOmdTmEv860MfwrD5x4NYwjNm5ns=;
+	s=korg; t=1750713803;
+	bh=lmaAhbmgNfzwzplXTaud80kN9O0sv/sGAM3tzXBgXVc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jfa4kLxaZ/fnrSUQvcM5H+RifNOzTNbyX9ucYDeyFJ8sGn91qwtOWYzbL78FJshLJ
-	 w/mSiW51EbI8XfyczINQW7yZVJlcNkS4wcdfa9DKK3t09yR973rrV1h0t72Xypn+nw
-	 CEG6NAbxdK0WvozwMmzKBFCHL+jsHfCJMArc65T8=
+	b=vUEjjULUhJYMd58Rox/mgGDPogWsfiroUGUC7gENixkpq9ua0CPdBPAUXXVA+eA1y
+	 UBf6s52dZbT2MmLVSAPhOZRSjJbjjSk+PMPp9U5SBWa2mIG+HY7q2I6IBwy4kYNfmr
+	 qUeIJKC697WvnPlscfarNW+mO7gZDit6mBev1j3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heimann <d@dmeh.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 267/508] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 5.15 168/411] x86/boot/compressed: prefer cc-option for CFLAGS additions
 Date: Mon, 23 Jun 2025 15:05:12 +0200
-Message-ID: <20250623130651.814276871@linuxfoundation.org>
+Message-ID: <20250623130637.924163381@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heimann <d@dmeh.net>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-commit 6a3439a417b910e662c666993798e0691bc81147 upstream.
+commit 994f5f7816ff963f49269cfc97f63cb2e4edb84f upstream.
 
-The RODE AI-1 audio interface requires implicit feedback sync between
-playback endpoint 0x03 and feedback endpoint 0x84 on interface 3, but
-doesn't advertise this in its USB descriptors.
+as-option tests new options using KBUILD_CFLAGS, which causes problems
+when using as-option to update KBUILD_AFLAGS because many compiler
+options are not valid assembler options.
 
-Without this quirk, the device receives audio data but produces no output.
+This will be fixed in a follow up patch. Before doing so, move the
+assembler test for -Wa,-mrelax-relocations=no from using as-option to
+cc-option.
 
-Signed-off-by: David Heimann <d@dmeh.net>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/084dc88c-1193-4a94-a002-5599adff936c@app.fastmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/llvm/CAK7LNATcHt7GcXZ=jMszyH=+M_LC9Qr6yeAGRCBbE6xriLxtUQ@mail.gmail.com/
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/implicit.c |    1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/boot/compressed/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/usb/implicit.c
-+++ b/sound/usb/implicit.c
-@@ -57,6 +57,7 @@ static const struct snd_usb_implicit_fb_
- 	IMPLICIT_FB_FIXED_DEV(0x31e9, 0x0002, 0x81, 2), /* Solid State Logic SSL2+ */
- 	IMPLICIT_FB_FIXED_DEV(0x0499, 0x172f, 0x81, 2), /* Steinberg UR22C */
- 	IMPLICIT_FB_FIXED_DEV(0x0d9a, 0x00df, 0x81, 2), /* RTX6001 */
-+	IMPLICIT_FB_FIXED_DEV(0x19f7, 0x000a, 0x84, 3), /* RODE AI-1 */
- 	IMPLICIT_FB_FIXED_DEV(0x22f0, 0x0006, 0x81, 3), /* Allen&Heath Qu-16 */
- 	IMPLICIT_FB_FIXED_DEV(0x1686, 0xf029, 0x82, 2), /* Zoom UAC-2 */
- 	IMPLICIT_FB_FIXED_DEV(0x2466, 0x8003, 0x86, 2), /* Fractal Audio Axe-Fx II */
+--- a/arch/x86/boot/compressed/Makefile
++++ b/arch/x86/boot/compressed/Makefile
+@@ -50,7 +50,7 @@ KBUILD_CFLAGS += $(call cc-option,-fmacr
+ KBUILD_CFLAGS += -fno-asynchronous-unwind-tables
+ KBUILD_CFLAGS += -D__DISABLE_EXPORTS
+ # Disable relocation relaxation in case the link is not PIE.
+-KBUILD_CFLAGS += $(call as-option,-Wa$(comma)-mrelax-relocations=no)
++KBUILD_CFLAGS += $(call cc-option,-Wa$(comma)-mrelax-relocations=no)
+ KBUILD_CFLAGS += -include $(srctree)/include/linux/hidden.h
+ 
+ # sev.c indirectly inludes inat-table.h which is generated during
 
 
 
