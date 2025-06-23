@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A33DAE5276
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08881AE51E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6367443998
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4C9D1B6444F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8948E1DDC04;
-	Mon, 23 Jun 2025 21:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A596221FD2;
+	Mon, 23 Jun 2025 21:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbKZ5fpS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L0r3bXSb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711C4315A;
-	Mon, 23 Jun 2025 21:44:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB52921D3DD;
+	Mon, 23 Jun 2025 21:38:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715048; cv=none; b=OwSCWMPTBesIDZ/RbmGxp7B20ICp97QSXKUnaga+BaaAIERIf/5s3tseCc/+uttqEXXqoNS902EyLuT4ASMM9RxLxt4wPHmmRLsk8Cbs3y2tTZRZfRUXk9zNh7ADbczkgqhxi/P+OrzGNUghc1Iz/7J06g7Qg20bI+DCg4BDjoI=
+	t=1750714713; cv=none; b=ayTdoM+Benh8x6i5jPOEH9ZsYmYaN17ZKAUASsceggUJhLyaL3JY1qVXOLJe1mOI8jSxaCUQP09zA0vmFLZuhaO5YJizVjW9WNDvlDTWjtvMHm7Kb4DMrmhqUGrgFwHZ1+aCL3HcxVTlgm6wDOF4JyDmMiJxWtpKimct1ZKfFZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715048; c=relaxed/simple;
-	bh=Kt92OhGrxaNgsyvs5msRgXoSZlSMwVBharx4zkhf/38=;
+	s=arc-20240116; t=1750714713; c=relaxed/simple;
+	bh=kcysHUUHXJyhMBvYUBaX4klffLC4Sv41bxqLxYpEugo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IkMfYud+9ASkkOK6n7XcBGxXyKGeN95P4OQXGSds9HYGoTXuqNkMRXnYBAZcK2HXvtuWEHikhyQ6y9U+KgQlJXUrN08A+hQibAONiUOgZsuO3d/rzH+XxLlx9OTjj5Z5CiFRDzcW52kISKJbiE7a4iA4da9aQYGhn2sxZhOmnOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbKZ5fpS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D641CC4CEF1;
-	Mon, 23 Jun 2025 21:44:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gk675OtgixP3rlLzAntB6AMo86k3CLauqQaczsDjuRnxSYd8/W679m5L7p67rjUjM5tZsl0IOa/LPbAvXA32D3mFVE3vIemESIM7CPjE7/khEY8A9hjIVN/FvGI0yVCpOXCIVOB63XGpeXHLb+L9Y8k4wNh8kQI6Rq11506n0yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L0r3bXSb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3512EC4CEEA;
+	Mon, 23 Jun 2025 21:38:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715048;
-	bh=Kt92OhGrxaNgsyvs5msRgXoSZlSMwVBharx4zkhf/38=;
+	s=korg; t=1750714713;
+	bh=kcysHUUHXJyhMBvYUBaX4klffLC4Sv41bxqLxYpEugo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BbKZ5fpSKnGULXfoRzRdgbF5jl41R6WkPgcx7v6oDW9pOjRzySY0ABT3O+JOvP5h5
-	 x09AXLQ7Ue7LYaWKTyfBGg6J086UY4WVMdozeDR55UreO0Z1HQwa/v1ktbkr1wIs6j
-	 xBNE6xqXa4aIuPEu+xAbjji6wevyp1U1a0sd+DYg=
+	b=L0r3bXSb7dppsAKmId0k7AeGbiGqyGGwFkSkGXdZSXaUTkLDwaoyuiwROBIzOhTd0
+	 Z69ve//jbdzWDiXCnRJguj49/xaL0+FlHmJvpBcfTlkpG9cA/bsGVEuVn1f7FcKDfU
+	 3rPCIlJk1dMIlFl7Whr2BU6p9zoBXCrPPCNgC1lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>
-Subject: [PATCH 5.15 225/411] bus: fsl-mc: do not add a device-link for the UAPI used DPMCP device
+	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 411/592] usbnet: asix AX88772: leave the carrier control to phylink
 Date: Mon, 23 Jun 2025 15:06:09 +0200
-Message-ID: <20250623130639.326363185@linuxfoundation.org>
+Message-ID: <20250623130710.212571432@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +61,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ioana Ciornei <ioana.ciornei@nxp.com>
+From: Krzysztof Hałasa <khalasa@piap.pl>
 
-commit dd7d8e012b23de158ca0188239c7a1f2a83b4484 upstream.
+[ Upstream commit 4145f00227ee80f21ab274e9cd9c09758e9bcf3d ]
 
-The fsl-mc bus associated to the root DPRC in a DPAA2 system exports a
-device file for userspace access to the MC firmware. In case the DPRC's
-local MC portal (DPMCP) is currently in use, a new DPMCP device is
-allocated through the fsl_mc_portal_allocate() function.
+ASIX AX88772B based USB 10/100 Ethernet adapter doesn't come
+up ("carrier off"), despite the built-in 100BASE-FX PHY positive link
+indication. The internal PHY is configured (using EEPROM) in fixed
+100 Mbps full duplex mode.
 
-In this case, the call to fsl_mc_portal_allocate() will fail with -EINVAL
-when trying to add a device link between the root DPRC (consumer) and
-the newly allocated DPMCP device (supplier). This is because the DPMCP
-is a dependent of the DPRC device (the bus).
+The primary problem appears to be using carrier_netif_{on,off}() while,
+at the same time, delegating carrier management to phylink. Use only the
+latter and remove "manual control" in the asix driver.
 
-Fix this by not adding a device link in case the DPMCP is allocated for
-the root DPRC's usage.
+I don't have any other AX88772 board here, but the problem doesn't seem
+specific to a particular board or settings - it's probably
+timing-dependent.
 
-Fixes: afb77422819f ("bus: fsl-mc: automatically add a device_link on fsl_mc_[portal,object]_allocate")
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250408105814.2837951-3-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove unused asix_adjust_link() as well.
+
+Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/m3plhmdfte.fsf_-_@t19.piap.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/fsl-mc/mc-io.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/usb/asix.h         |  1 -
+ drivers/net/usb/asix_common.c  | 22 ----------------------
+ drivers/net/usb/asix_devices.c | 17 ++++-------------
+ 3 files changed, 4 insertions(+), 36 deletions(-)
 
---- a/drivers/bus/fsl-mc/mc-io.c
-+++ b/drivers/bus/fsl-mc/mc-io.c
-@@ -214,12 +214,19 @@ int __must_check fsl_mc_portal_allocate(
- 	if (error < 0)
- 		goto error_cleanup_resource;
+diff --git a/drivers/net/usb/asix.h b/drivers/net/usb/asix.h
+index 74162190bccc1..8531b804021aa 100644
+--- a/drivers/net/usb/asix.h
++++ b/drivers/net/usb/asix.h
+@@ -224,7 +224,6 @@ int asix_write_rx_ctl(struct usbnet *dev, u16 mode, int in_pm);
  
--	dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
--						   &dpmcp_dev->dev,
--						   DL_FLAG_AUTOREMOVE_CONSUMER);
--	if (!dpmcp_dev->consumer_link) {
--		error = -EINVAL;
--		goto error_cleanup_mc_io;
-+	/* If the DPRC device itself tries to allocate a portal (usually for
-+	 * UAPI interaction), don't add a device link between them since the
-+	 * DPMCP device is an actual child device of the DPRC and a reverse
-+	 * dependency is not allowed.
-+	 */
-+	if (mc_dev != mc_bus_dev) {
-+		dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
-+							   &dpmcp_dev->dev,
-+							   DL_FLAG_AUTOREMOVE_CONSUMER);
-+		if (!dpmcp_dev->consumer_link) {
-+			error = -EINVAL;
-+			goto error_cleanup_mc_io;
-+		}
- 	}
+ u16 asix_read_medium_status(struct usbnet *dev, int in_pm);
+ int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm);
+-void asix_adjust_link(struct net_device *netdev);
  
- 	*new_mc_io = mc_io;
+ int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm);
+ 
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 72ffc89b477ad..7fd763917ae2c 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -414,28 +414,6 @@ int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm)
+ 	return ret;
+ }
+ 
+-/* set MAC link settings according to information from phylib */
+-void asix_adjust_link(struct net_device *netdev)
+-{
+-	struct phy_device *phydev = netdev->phydev;
+-	struct usbnet *dev = netdev_priv(netdev);
+-	u16 mode = 0;
+-
+-	if (phydev->link) {
+-		mode = AX88772_MEDIUM_DEFAULT;
+-
+-		if (phydev->duplex == DUPLEX_HALF)
+-			mode &= ~AX_MEDIUM_FD;
+-
+-		if (phydev->speed != SPEED_100)
+-			mode &= ~AX_MEDIUM_PS;
+-	}
+-
+-	asix_write_medium_mode(dev, mode, 0);
+-	phy_print_status(phydev);
+-	usbnet_link_change(dev, phydev->link, 0);
+-}
+-
+ int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm)
+ {
+ 	int ret;
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index da24941a6e444..9b0318fb50b55 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -752,7 +752,6 @@ static void ax88772_mac_link_down(struct phylink_config *config,
+ 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
+ 
+ 	asix_write_medium_mode(dev, 0, 0);
+-	usbnet_link_change(dev, false, false);
+ }
+ 
+ static void ax88772_mac_link_up(struct phylink_config *config,
+@@ -783,7 +782,6 @@ static void ax88772_mac_link_up(struct phylink_config *config,
+ 		m |= AX_MEDIUM_RFC;
+ 
+ 	asix_write_medium_mode(dev, m, 0);
+-	usbnet_link_change(dev, true, false);
+ }
+ 
+ static const struct phylink_mac_ops ax88772_phylink_mac_ops = {
+@@ -1350,10 +1348,9 @@ static const struct driver_info ax88772_info = {
+ 	.description = "ASIX AX88772 USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+ 	.stop = ax88772_stop,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR | FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ };
+@@ -1362,11 +1359,9 @@ static const struct driver_info ax88772b_info = {
+ 	.description = "ASIX AX88772B USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+ 	.stop = ax88772_stop,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
+-	         FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ 	.data = FLAG_EEPROM_MAC,
+@@ -1376,11 +1371,9 @@ static const struct driver_info lxausb_t1l_info = {
+ 	.description = "Linux Automation GmbH USB 10Base-T1L",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+ 	.stop = ax88772_stop,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
+-		 FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ 	.data = FLAG_EEPROM_MAC,
+@@ -1412,10 +1405,8 @@ static const struct driver_info hg20f9_info = {
+ 	.description = "HG20F9 USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
+-	         FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ 	.data = FLAG_EEPROM_MAC,
+-- 
+2.39.5
+
 
 
 
