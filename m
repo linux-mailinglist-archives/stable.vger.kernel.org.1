@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-155718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19438AE438A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A06AE4328
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BA77017B6A0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22C2C3BBD9E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DA8248191;
-	Mon, 23 Jun 2025 13:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C620E25393C;
+	Mon, 23 Jun 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AUGRTmel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tcwmxpqN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DDA248869;
-	Mon, 23 Jun 2025 13:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D5725392C;
+	Mon, 23 Jun 2025 13:23:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685155; cv=none; b=iTe6Ow2emSyW43ONUxVzLDsNMizRDLc1S/puGFUxqQiwFlvbycC1WZVDzGGZZTwvsU7KuRM+FFcwxKBHPjcad7xDXVFQVJcXNXnaNoYg097freMzPBOOc3HV+IHdjJrY2jrp2AdeCf8qFoz5tg0jDgQBgYXyIHN15BU953UaUFU=
+	t=1750684993; cv=none; b=giWj0SDLoaBLfLBijkPkhk3LZLs4mxD4nLbpGpKuX1BVE4DfMA1Misf2XvTxA6CdrcCOuSlLgr9qCeI8wS1yg4jKrXTDAwBWyKjqBNWDCXt+KjkhEO5eUvGcURvQgRp3q2iQ6pD9GtkuJVd3DdOH97izpGBWI3C400qVRBE5T5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685155; c=relaxed/simple;
-	bh=Rhao7MCkW4AMQ5R+775uHrqaMQFjLZvWOwNU77oPElY=;
+	s=arc-20240116; t=1750684993; c=relaxed/simple;
+	bh=gRTPAcGEfWqWYiMez3ua01pZjC3GWt5WDQ2Q6wHQKsA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbHzFufFCbsDpSTqIRjoyPcSIXZne2Y0pOvkxvF2gXepo7YwNdgW/Kjh7h9aWyMC35SelzXDgDiyTrvbZMFXVZkV2LVStiw3mXqvkby9gPtW12YVBFPGExlUcYBJwuJhBxT4K+PqjOrKco6KXH4Z9ShUygxtC4C1sDJpO+rDYEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AUGRTmel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76C6C4CEEA;
-	Mon, 23 Jun 2025 13:25:54 +0000 (UTC)
+	 MIME-Version; b=ukYv9VM5IveWZNinM6tqJtEjiXzMQ75+WFOacQi91p27361HuoqLNQ5pIl4inPEViAKELSnLyDVX+AxvxKRtRrdynnrHeAtjckXe8zjMxWJTocfyqGlVj0l9UbsEl338QlgdcTKYJuVJHzv5kVwmrqUCWTxACKR+FtmjNYROyW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tcwmxpqN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14504C4CEF1;
+	Mon, 23 Jun 2025 13:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685155;
-	bh=Rhao7MCkW4AMQ5R+775uHrqaMQFjLZvWOwNU77oPElY=;
+	s=korg; t=1750684993;
+	bh=gRTPAcGEfWqWYiMez3ua01pZjC3GWt5WDQ2Q6wHQKsA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AUGRTmelghWr6RwbCf7akh1NbUnK/AXKwTdXf5lFCgC1+90AHjWIt5q8K4/nwL/WG
-	 cZ+6vZlsWkSqq+kBDxPdoxsoUmjJx43sCs+JThFswvprObd2Un+OJbVgFOgR9WBmEs
-	 YVPKR3rnfM8L8d/ZnfjPWb4AKMwHwbje/91E0YIU=
+	b=tcwmxpqNjmpDIGq6VdQZumfOtQRooWGImVp5LSZx59EBqSNgKkIwDj1C8ltwipsqs
+	 GXfdRYg+Z828lterfJZG84g2URpZ757d/qRgNtk/iZEKlNlkbaEXckyJ+TPoNHuXv9
+	 O/nuDQ1Vq0v89moAUREpU+gojcTeQiPAGjy80lQU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 012/411] gfs2: gfs2_create_inode error handling fix
-Date: Mon, 23 Jun 2025 15:02:36 +0200
-Message-ID: <20250623130633.361853311@linuxfoundation.org>
+	Jann Horn <jannh@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 199/592] mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race
+Date: Mon, 23 Jun 2025 15:02:37 +0200
+Message-ID: <20250623130705.022373352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit af4044fd0b77e915736527dd83011e46e6415f01 ]
+commit 1013af4f585fccc4d3e5c5824d174de2257f7d6d upstream.
 
-When gfs2_create_inode() finds a directory, make sure to return -EISDIR.
+huge_pmd_unshare() drops a reference on a page table that may have
+previously been shared across processes, potentially turning it into a
+normal page table used in another process in which unrelated VMAs can
+afterwards be installed.
 
-Fixes: 571a4b57975a ("GFS2: bugger off early if O_CREAT open finds a directory")
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If this happens in the middle of a concurrent gup_fast(), gup_fast() could
+end up walking the page tables of another process.  While I don't see any
+way in which that immediately leads to kernel memory corruption, it is
+really weird and unexpected.
+
+Fix it with an explicit broadcast IPI through tlb_remove_table_sync_one(),
+just like we do in khugepaged when removing page tables for a THP
+collapse.
+
+Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-2-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-2-f4136f5ec58a@google.com
+Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ mm/hugetlb.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
-index 763d8dccdfc13..a7af9904e3edb 100644
---- a/fs/gfs2/inode.c
-+++ b/fs/gfs2/inode.c
-@@ -640,7 +640,8 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
- 	if (!IS_ERR(inode)) {
- 		if (S_ISDIR(inode->i_mode)) {
- 			iput(inode);
--			inode = ERR_PTR(-EISDIR);
-+			inode = NULL;
-+			error = -EISDIR;
- 			goto fail_gunlock;
- 		}
- 		d_instantiate(dentry, inode);
--- 
-2.39.5
-
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7628,6 +7628,13 @@ int huge_pmd_unshare(struct mm_struct *m
+ 		return 0;
+ 
+ 	pud_clear(pud);
++	/*
++	 * Once our caller drops the rmap lock, some other process might be
++	 * using this page table as a normal, non-hugetlb page table.
++	 * Wait for pending gup_fast() in other threads to finish before letting
++	 * that happen.
++	 */
++	tlb_remove_table_sync_one();
+ 	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
+ 	mm_dec_nr_pmds(mm);
+ 	return 1;
 
 
 
