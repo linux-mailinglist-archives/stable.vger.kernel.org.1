@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-157054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FA0AE5244
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16375AE534D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43CFE7AEF5A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A17DA4A7903
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 020112222C2;
-	Mon, 23 Jun 2025 21:42:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBDD9223DED;
+	Mon, 23 Jun 2025 21:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXdUZ1qw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FEzjhgeM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B30E721D3DD;
-	Mon, 23 Jun 2025 21:42:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDD221B9E5;
+	Mon, 23 Jun 2025 21:51:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714921; cv=none; b=EPv6Dvn/SCmggX09RHShIu8H+DSAaKJhLgeNpCHDkWSKXetW2I3Hly5kSlZL9uma4QK07vYR84karKWbzjfOIR9ka3IDGLDQigLHJmnGerFuRdUjxfeomUpOocZS3bkpx8CiNIeiERyVE5HxpgELurK+8pBQiAm5oXl3MmvUJRY=
+	t=1750715516; cv=none; b=lHd9OPCYIJTFLx1SZv8OrDqdqoix6Ic/qX5tvKAEL8Oe+DVhHL+dnlMgKbeRE1r2ks53o3BP/5nfT3RHG/uFuJ3iUKKzb2Zu/FbyJdfRnhORHxqkbRO8M6eptLX0rtTs2e5t/mS3RcXpL6fF8SsEU5tpeKW+oclGwCr3JNQujSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714921; c=relaxed/simple;
-	bh=y3O3UKfi80nI9BAt01HZV6U1DZauYU+hMpkCgLgpbq8=;
+	s=arc-20240116; t=1750715516; c=relaxed/simple;
+	bh=9wLy5/vU2QLyWPyeaOfpxCorWYHSTy9l6XCHlYdy2Ek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foIbRmcQqrmMBcKbeX8TAv72ssgeLEJEwIBNZmVzR2Qywdp+xtW4+w1MUTgsJWN8j2h8Z2qjKwJZzLB6LPs7dbKctTE8FblqwR4ynpU10E6UWLydvQtDCgpu7rGIgobgDSQ+rBYJFAfuJe1a9BTIl3cWGP+seyMJdwrpEseFAQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXdUZ1qw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4194AC4CEEA;
-	Mon, 23 Jun 2025 21:42:01 +0000 (UTC)
+	 MIME-Version; b=FaVrZOgoMzylvVQ2COLmQiLJJoyWarw1ryL4/ojCon51BwZ+S6uktjJp12/C/CflbyAc/HA6xrnsEXV9oTpzJHKa0tT7t2qmcb0KcCPYzKtdVQiphwpFxsGndEGcZBKg6SnexpLunpCk09RWL0qjdscZ7BHsSmF8dew6KtwPruQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FEzjhgeM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1FCDC4CEEA;
+	Mon, 23 Jun 2025 21:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714921;
-	bh=y3O3UKfi80nI9BAt01HZV6U1DZauYU+hMpkCgLgpbq8=;
+	s=korg; t=1750715516;
+	bh=9wLy5/vU2QLyWPyeaOfpxCorWYHSTy9l6XCHlYdy2Ek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXdUZ1qw1hG3YEQgNfkDkf/cHRfmSWiqYo39X1SaB6Z61+KbczY4oOxlFNRzA7oxD
-	 O2QIGiKriBHsvPzkrlXsACPAeYfpFE87BDtgi4auAGE0TMhc7eH2UHSt9TcJ8sT+7V
-	 i9Ykl1w+O0L8Ii4fbp3c5r70XOkDLB47gNaOUDeo=
+	b=FEzjhgeMk7srY7MMpJWUGwSZRHreRjm8JCzhqZG2N1kj647wYRrL2HRjRBbjrEw+X
+	 RGa+xw4GP9NTCw1xg8qXBYYbCitgS3mbR4PQWzRnxnzvMnF0k5cdPgQ+yafQug17+4
+	 8dH+FqJLsWom+OavOH5KZhfMQFHzGwFv+l/dzSWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 241/355] drm/msm/dpu: dont select single flush for active CTL blocks
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.15 484/592] sched_ext, sched/core: Dont call scx_group_set_weight() prematurely from sched_create_group()
 Date: Mon, 23 Jun 2025 15:07:22 +0200
-Message-ID: <20250623130633.995432934@linuxfoundation.org>
+Message-ID: <20250623130711.945562064@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Tejun Heo <tj@kernel.org>
 
-[ Upstream commit e93eee524bb78f3ee4b78654d0083382f98b3d23 ]
+commit 33796b91871ad4010c8188372dd1faf97cf0f1c0 upstream.
 
-In case of ACTIVE CTLs, a single CTL is being used for flushing all INTF
-blocks. Don't skip programming the CTL on those targets.
+During task_group creation, sched_create_group() calls
+scx_group_set_weight() with CGROUP_WEIGHT_DFL to initialize the sched_ext
+portion. This is premature and ends up calling ops.cgroup_set_weight() with
+an incorrect @cgrp before ops.cgroup_init() is called.
 
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/641585/
-Link: https://lore.kernel.org/r/20250307-dpu-active-ctl-v3-5-5d20655f10ca@linaro.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sched_create_group() should just initialize SCX related fields in the new
+task_group. Fix it by factoring out scx_tg_init() from sched_init() and
+making sched_create_group() call that function instead of
+scx_group_set_weight().
+
+v2: Retain CONFIG_EXT_GROUP_SCHED ifdef in sched_init() as removing it leads
+    to build failures on !CONFIG_GROUP_SCHED configs.
+
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Fixes: 819513666966 ("sched_ext: Add cgroup support")
+Cc: stable@vger.kernel.org # v6.12+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/core.c |    4 ++--
+ kernel/sched/ext.c  |    5 +++++
+ kernel/sched/ext.h  |    2 ++
+ 3 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-index 33880f66625e6..f9da379999467 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
-@@ -353,7 +353,8 @@ static void dpu_encoder_phys_vid_underrun_irq(void *arg, int irq_idx)
- static bool dpu_encoder_phys_vid_needs_single_flush(
- 		struct dpu_encoder_phys *phys_enc)
- {
--	return phys_enc->split_role != ENC_ROLE_SOLO;
-+	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
-+		phys_enc->split_role != ENC_ROLE_SOLO;
- }
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -8571,7 +8571,7 @@ void __init sched_init(void)
+ 		init_cfs_bandwidth(&root_task_group.cfs_bandwidth, NULL);
+ #endif /* CONFIG_FAIR_GROUP_SCHED */
+ #ifdef CONFIG_EXT_GROUP_SCHED
+-		root_task_group.scx_weight = CGROUP_WEIGHT_DFL;
++		scx_tg_init(&root_task_group);
+ #endif /* CONFIG_EXT_GROUP_SCHED */
+ #ifdef CONFIG_RT_GROUP_SCHED
+ 		root_task_group.rt_se = (struct sched_rt_entity **)ptr;
+@@ -9011,7 +9011,7 @@ struct task_group *sched_create_group(st
+ 	if (!alloc_rt_sched_group(tg, parent))
+ 		goto err;
  
- static void _dpu_encoder_phys_vid_setup_irq_hw_idx(
--- 
-2.39.5
-
+-	scx_group_set_weight(tg, CGROUP_WEIGHT_DFL);
++	scx_tg_init(tg);
+ 	alloc_uclamp_sched_group(tg, parent);
+ 
+ 	return tg;
+--- a/kernel/sched/ext.c
++++ b/kernel/sched/ext.c
+@@ -3936,6 +3936,11 @@ bool scx_can_stop_tick(struct rq *rq)
+ DEFINE_STATIC_PERCPU_RWSEM(scx_cgroup_rwsem);
+ static bool scx_cgroup_enabled;
+ 
++void scx_tg_init(struct task_group *tg)
++{
++	tg->scx_weight = CGROUP_WEIGHT_DFL;
++}
++
+ int scx_tg_online(struct task_group *tg)
+ {
+ 	int ret = 0;
+--- a/kernel/sched/ext.h
++++ b/kernel/sched/ext.h
+@@ -80,6 +80,7 @@ static inline void scx_update_idle(struc
+ 
+ #ifdef CONFIG_CGROUP_SCHED
+ #ifdef CONFIG_EXT_GROUP_SCHED
++void scx_tg_init(struct task_group *tg);
+ int scx_tg_online(struct task_group *tg);
+ void scx_tg_offline(struct task_group *tg);
+ int scx_cgroup_can_attach(struct cgroup_taskset *tset);
+@@ -89,6 +90,7 @@ void scx_cgroup_cancel_attach(struct cgr
+ void scx_group_set_weight(struct task_group *tg, unsigned long cgrp_weight);
+ void scx_group_set_idle(struct task_group *tg, bool idle);
+ #else	/* CONFIG_EXT_GROUP_SCHED */
++static inline void scx_tg_init(struct task_group *tg) {}
+ static inline int scx_tg_online(struct task_group *tg) { return 0; }
+ static inline void scx_tg_offline(struct task_group *tg) {}
+ static inline int scx_cgroup_can_attach(struct cgroup_taskset *tset) { return 0; }
 
 
 
