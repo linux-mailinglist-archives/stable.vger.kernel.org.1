@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9610DAE5026
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ACA4AE5335
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 273257ADDEB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 835211B6689F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 637931E521E;
-	Mon, 23 Jun 2025 21:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAF87221DA8;
+	Mon, 23 Jun 2025 21:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NUfvr1b5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wz6dWVfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20FF47482;
-	Mon, 23 Jun 2025 21:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9417219049B;
+	Mon, 23 Jun 2025 21:50:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713602; cv=none; b=EO4HyNuLL1sOCi4BP6Cub5PDGUoUlPWNi1Bied9Vb995QaPc9QfxwpRtzMUDcGmw+aamDORoJ4T1wNmSb10daFPVJ7w/LCKe594N+iieyxbOSVwH93uuIOGjPRKte1LR6nSKX1aGnfr7Oo2+/2XxoWpFBdetRJMN1PNk1dgx0d0=
+	t=1750715445; cv=none; b=K0R3AG83+GAREuyM2yv9N0wjAGrynY8pe/OkMTuqOCtT97kBXaHi1TROEGnYtF/uhpRvRFrdUgX6PK1mUDZVdnaLX8zpgGTBVOAKCaX3/rpUZSq2kqR12bwyqMvoL26Wc3KqBdddQ2KvrJcZMS7sV9GO2U2OzgBSFqRLTTZKzOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713602; c=relaxed/simple;
-	bh=yedii3MlRFzwhC3bM47NRnhLdbwQmD9VJd6bza7zpAs=;
+	s=arc-20240116; t=1750715445; c=relaxed/simple;
+	bh=mpp6IV3hN7e3Bws/5TIOW1UAwFwKDW6Cu6SAM9tseXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZpQkKdiC1T8rxe4I3vyAVG7yaG/D1ROtMIbiMO0PQ7PjL7Y84zehI1xEd5P6xKLWxc7E1PV5v3NXhjOITtR8iju1aQMwS1yRXytpu79wC5jaeUXMEkhAT1JuPvAZJvDwOAa9dmqVKmGfBqpRlbHh3aQOs3tKjeYZZmJL7urHNAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NUfvr1b5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE93C4CEEA;
-	Mon, 23 Jun 2025 21:20:01 +0000 (UTC)
+	 MIME-Version; b=Enov3Y4it7kvg0icew2M1EujiMmwr0SAsUF1DIlYetE9wybldJKlNKG0M9czMWdqYLCwafp8pMTW8ONIkQB4n854CDPQcv8r5VqFFsViHTX0TpPHh2A4r6c7l7W3PLSYNlrYgTN/tZIv0GZnodE5yHdnAVPYhZyuDABJwGIv03U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wz6dWVfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7CBC4CEEA;
+	Mon, 23 Jun 2025 21:50:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713602;
-	bh=yedii3MlRFzwhC3bM47NRnhLdbwQmD9VJd6bza7zpAs=;
+	s=korg; t=1750715445;
+	bh=mpp6IV3hN7e3Bws/5TIOW1UAwFwKDW6Cu6SAM9tseXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NUfvr1b5IH/5x/2kybkAFNnH+rrCGUqeq0dISQb4tQZVK1phtWmvatJSzVhatU3Ki
-	 U6ywlPOakAcUzanWxiQTe/0lmNuahtAyA5GbwXUVisPl4twP75+eik2lBXsm1ZdFFr
-	 9nM6hxhT4tKPSBnZ53etIZBSKxkd7PCPkoMF/a4M=
+	b=wz6dWVfC7/TXkKcpnwCNWIgOE8YA5WpcSePzPaKj2PFh+xisnR5IgmYlo6vATuRsm
+	 QAf3KfxexP0/PKCFKA4odgDSs2J+A92H8AYUXMESx8CDiWYC8ylaMM5JaXNUmNjApk
+	 t3UKkSvjd3NRzRd1x1WE1uYv61tOOrredAgvlDY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 136/411] serial: sh-sci: Check if TX data was written to device in .tx_empty()
+Subject: [PATCH 6.1 235/508] regulator: max20086: Fix refcount leak in max20086_parse_regulators_dt()
 Date: Mon, 23 Jun 2025 15:04:40 +0200
-Message-ID: <20250623130637.007639979@linuxfoundation.org>
+Message-ID: <20250623130651.040263628@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,157 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 7cc0e0a43a91052477c2921f924a37d9c3891f0c upstream.
+[ Upstream commit 06118ae36855b7d3d22688298e74a766ccf0cb7a ]
 
-On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
-is called. The uart_suspend_port() calls 3 times the
-struct uart_port::ops::tx_empty() before shutting down the port.
+There is a missing call to of_node_put() if devm_kcalloc() fails.
+Fix this by changing the code to use cleanup.h magic to drop the
+refcount.
 
-According to the documentation, the struct uart_port::ops::tx_empty()
-API tests whether the transmitter FIFO and shifter for the port is
-empty.
-
-The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
-transmit FIFO through the FDR (FIFO Data Count Register). The data units
-in the FIFOs are written in the shift register and transmitted from there.
-The TEND bit in the Serial Status Register reports if the data was
-transmitted from the shift register.
-
-In the previous code, in the tx_empty() API implemented by the sh-sci
-driver, it is considered that the TX is empty if the hardware reports the
-TEND bit set and the number of data units in the FIFO is zero.
-
-According to the HW manual, the TEND bit has the following meaning:
-
-0: Transmission is in the waiting state or in progress.
-1: Transmission is completed.
-
-It has been noticed that when opening the serial device w/o using it and
-then switch to a power saving mode, the tx_empty() call in the
-uart_port_suspend() function fails, leading to the "Unable to drain
-transmitter" message being printed on the console. This is because the
-TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
-TEND=0 has double meaning (waiting state, in progress) we can't
-determined the scenario described above.
-
-Add a software workaround for this. This sets a variable if any data has
-been sent on the serial console (when using PIO) or if the DMA callback has
-been called (meaning something has been transmitted). In the tx_empty()
-API the status of the DMA transaction is also checked and if it is
-completed or in progress the code falls back in checking the hardware
-registers instead of relying on the software variable.
-
-Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20241125115856.513642-1-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[claudiu.beznea: fixed conflict by:
- - keeping serial_port_out() instead of sci_port_out() in
-   sci_transmit_chars()
- - keeping !uart_circ_empty(xmit) condition in sci_dma_tx_complete(),
-   after s->tx_occurred = true; assignement]
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Fixes: 6b0cd72757c6 ("regulator: max20086: fix invalid memory access")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aDVRLqgJWMxYU03G@stanley.mountain
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/regulator/max20086-regulator.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index eb9c1e991024a..a276efa103192 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -157,6 +157,7 @@ struct sci_port {
+diff --git a/drivers/regulator/max20086-regulator.c b/drivers/regulator/max20086-regulator.c
+index 332fb58f90952..a24dfffce25c7 100644
+--- a/drivers/regulator/max20086-regulator.c
++++ b/drivers/regulator/max20086-regulator.c
+@@ -5,6 +5,7 @@
+ // Copyright (C) 2022 Laurent Pinchart <laurent.pinchart@idesonboard.com>
+ // Copyright (C) 2018 Avnet, Inc.
  
- 	bool has_rtscts;
- 	bool autorts;
-+	bool tx_occurred;
- };
- 
- #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
-@@ -807,6 +808,7 @@ static void sci_transmit_chars(struct uart_port *port)
++#include <linux/cleanup.h>
+ #include <linux/err.h>
+ #include <linux/gpio.h>
+ #include <linux/gpio/consumer.h>
+@@ -134,11 +135,11 @@ static int max20086_regulators_register(struct max20086 *chip)
+ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
  {
- 	struct circ_buf *xmit = &port->state->xmit;
- 	unsigned int stopped = uart_tx_stopped(port);
-+	struct sci_port *s = to_sci_port(port);
- 	unsigned short status;
- 	unsigned short ctrl;
- 	int count;
-@@ -838,6 +840,7 @@ static void sci_transmit_chars(struct uart_port *port)
- 		}
+ 	struct of_regulator_match *matches;
+-	struct device_node *node;
+ 	unsigned int i;
+ 	int ret;
  
- 		serial_port_out(port, SCxTDR, c);
-+		s->tx_occurred = true;
+-	node = of_get_child_by_name(chip->dev->of_node, "regulators");
++	struct device_node *node __free(device_node) =
++		of_get_child_by_name(chip->dev->of_node, "regulators");
+ 	if (!node) {
+ 		dev_err(chip->dev, "regulators node not found\n");
+ 		return -ENODEV;
+@@ -154,7 +155,6 @@ static int max20086_parse_regulators_dt(struct max20086 *chip, bool *boot_on)
  
- 		port->icount.tx++;
- 	} while (--count > 0);
-@@ -1202,6 +1205,8 @@ static void sci_dma_tx_complete(void *arg)
- 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
- 		uart_write_wakeup(port);
- 
-+	s->tx_occurred = true;
-+
- 	if (!uart_circ_empty(xmit)) {
- 		s->cookie_tx = 0;
- 		schedule_work(&s->work_tx);
-@@ -1684,6 +1689,19 @@ static void sci_flush_buffer(struct uart_port *port)
- 		s->cookie_tx = -EINVAL;
- 	}
- }
-+
-+static void sci_dma_check_tx_occurred(struct sci_port *s)
-+{
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	if (!s->chan_tx)
-+		return;
-+
-+	status = dmaengine_tx_status(s->chan_tx, s->cookie_tx, &state);
-+	if (status == DMA_COMPLETE || status == DMA_IN_PROGRESS)
-+		s->tx_occurred = true;
-+}
- #else /* !CONFIG_SERIAL_SH_SCI_DMA */
- static inline void sci_request_dma(struct uart_port *port)
- {
-@@ -1693,6 +1711,10 @@ static inline void sci_free_dma(struct uart_port *port)
- {
- }
- 
-+static void sci_dma_check_tx_occurred(struct sci_port *s)
-+{
-+}
-+
- #define sci_flush_buffer	NULL
- #endif /* !CONFIG_SERIAL_SH_SCI_DMA */
- 
-@@ -2005,6 +2027,12 @@ static unsigned int sci_tx_empty(struct uart_port *port)
- {
- 	unsigned short status = serial_port_in(port, SCxSR);
- 	unsigned short in_tx_fifo = sci_txfill(port);
-+	struct sci_port *s = to_sci_port(port);
-+
-+	sci_dma_check_tx_occurred(s);
-+
-+	if (!s->tx_occurred)
-+		return TIOCSER_TEMT;
- 
- 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
- }
-@@ -2175,6 +2203,7 @@ static int sci_startup(struct uart_port *port)
- 
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
-+	s->tx_occurred = false;
- 	sci_request_dma(port);
- 
- 	ret = sci_request_irq(s);
+ 	ret = of_regulator_match(chip->dev, node, matches,
+ 				 chip->info->num_outputs);
+-	of_node_put(node);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to match regulators\n");
+ 		return -EINVAL;
 -- 
 2.39.5
 
