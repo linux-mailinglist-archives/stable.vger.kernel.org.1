@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-157460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9152AAE5408
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55BEAE5414
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7052B1BC0373
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E3B1C4C01D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B060222581;
-	Mon, 23 Jun 2025 21:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE7BB2236E5;
+	Mon, 23 Jun 2025 21:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5JQVEjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rzGW70A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29897220686;
-	Mon, 23 Jun 2025 21:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B13D21FF2B;
+	Mon, 23 Jun 2025 21:58:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715920; cv=none; b=YovkIV2n+vf76xOwHr02uwZRY5Y7aTGPw3rUZvEyfrMn1u+TbhFWQHzFCaUGVSR6TgJIrHKUBnZXvgqdFpF5K2yfgkVTrociTTp3vigGZeZsHRqk6rceHf+uRsg8fJ4owr9G8TjjkElKXpIPa3BlHPQ0e3ZE1nJqONvAXllDMpU=
+	t=1750715934; cv=none; b=MB+dy4v9hQU2uMQ9m0MLRDWTRlJ1RKgW7fqp5gysoBA3KAmvQuyV3iM/6dZAAgmUcSKUeEKxIR13w+RoLg/emfEYWYZmi8+dMotx7+jPBvtRbnGVb82cIMV2wseDWVR4g3Y3Nky1wrP1ThO9L3owJlQq51yHT3FsZseS4Fr9GY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715920; c=relaxed/simple;
-	bh=OZjRjBDvH5XRxa2QOtf+dxkTpbGBLSZz8KCMO78Gzgc=;
+	s=arc-20240116; t=1750715934; c=relaxed/simple;
+	bh=6d9nqRmmeLYcB2IeuOhhPghpWSZVOWGHtoSZmL+xDBY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPQpZLvz1dE0LvvZEWP54fLTcRdigvi7NZuB5jhVEsdA4smW69p4vfYyCG7IIw5l6Mr2hRV/3o6DImoyrchA5TkKCbb741pW4cRjtaen2XJBH8Dq1p83SX0IURrEYME1UtqY7KzDyTJ09lwWbI3H+wCXBqU0i8IofgMd4u2QAFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5JQVEjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61CDBC4CEED;
-	Mon, 23 Jun 2025 21:58:39 +0000 (UTC)
+	 MIME-Version; b=d8GVyeTOHDqimYRfm/BhtGnvhGvjM0JsEDtTsPOezLUXqpgXh/x1Eja0sKzBCe1WMC36QL6W4t+J1sTJ21Dcu1YxIGejhVaG1eaqCQpZ0nq4RbxNMpjdoroe152TUNOEL1Q31Kt8W+GmXON8LY8vLJfrQdvLcRwjYEB6PKSE/rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rzGW70A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12525C4CEEA;
+	Mon, 23 Jun 2025 21:58:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715919;
-	bh=OZjRjBDvH5XRxa2QOtf+dxkTpbGBLSZz8KCMO78Gzgc=;
+	s=korg; t=1750715934;
+	bh=6d9nqRmmeLYcB2IeuOhhPghpWSZVOWGHtoSZmL+xDBY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5JQVEjf/YYHfEo2TTIXcEKFSmOQ0lAjoPHkHB+H5pgk9r30skGNcq5v+ekVg46HG
-	 kI6OyVGUlMMGv+HkY45LpsxWJNwgtgy0+tU/O1lmuRqTn8M64gpV4zs1Tfxn11FhA7
-	 hKB94aIei+FyIQZ+8iCpr2OuZ8f50f8tSOxhb5Ow=
+	b=0rzGW70Ad/3e1GZyd1sRLBWwPof0EL8i94uq/EHBddtZRrSJz8hJ+tWtc/YjSb9Ec
+	 TOa0DbIKAb4kuje39RAW8yEMqPoKknOl7cbf9hNkHXmNmQaJvSovazAdEho+F+0YB6
+	 sILIjQdrkeapqmLWBdrbqvl5l8H17+cJqCksqsPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dian-Syuan Yang <dian_syuan0116@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 216/414] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
-Date: Mon, 23 Jun 2025 15:05:53 +0200
-Message-ID: <20250623130647.415260776@linuxfoundation.org>
+Subject: [PATCH 6.12 217/414] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
+Date: Mon, 23 Jun 2025 15:05:54 +0200
+Message-ID: <20250623130647.441060691@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -66,47 +66,69 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
+[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
 
-Due to mac80211 triggering the hardware to enter idle mode, it fails
-to install WEP key causing connected station can't ping successfully.
-Currently, it forces the hardware to leave idle mode before driver
-adding WEP keys.
+tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
+in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
 
-Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
+When TCP TS are enabled, tcp_rcv_rtt_update() is using
+EWMA to smooth the samples.
+
+Change this to immediately latch the incoming value if it
+is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
+does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/ipv4/tcp_input.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
-index 8d140b94cb440..0c8ea5e629e6a 100644
---- a/drivers/net/wireless/realtek/rtw89/cam.c
-+++ b/drivers/net/wireless/realtek/rtw89/cam.c
-@@ -6,6 +6,7 @@
- #include "debug.h"
- #include "fw.h"
- #include "mac.h"
-+#include "ps.h"
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index d29219e067b7f..cf4fef18a9cad 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -665,10 +665,12 @@ EXPORT_SYMBOL(tcp_initialize_rcv_mss);
+  */
+ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ {
+-	u32 new_sample = tp->rcv_rtt_est.rtt_us;
+-	long m = sample;
++	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
++	long m = sample << 3;
  
- static struct sk_buff *
- rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
-@@ -447,9 +448,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
+-	if (new_sample != 0) {
++	if (old_sample == 0 || m < old_sample) {
++		new_sample = m;
++	} else {
+ 		/* If we sample in larger samples in the non-timestamp
+ 		 * case, we could grossly overestimate the RTT especially
+ 		 * with chatty applications or bulk transfer apps which
+@@ -679,17 +681,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ 		 * else with timestamps disabled convergence takes too
+ 		 * long.
+ 		 */
+-		if (!win_dep) {
+-			m -= (new_sample >> 3);
+-			new_sample += m;
+-		} else {
+-			m <<= 3;
+-			if (m < new_sample)
+-				new_sample = m;
+-		}
+-	} else {
+-		/* No previous measure. */
+-		new_sample = m << 3;
++		if (win_dep)
++			return;
++		new_sample = old_sample - (old_sample >> 3) + sample;
+ 	}
  
- 	switch (key->cipher) {
- 	case WLAN_CIPHER_SUITE_WEP40:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
- 		break;
- 	case WLAN_CIPHER_SUITE_WEP104:
-+		rtw89_leave_ips_by_hwflags(rtwdev);
- 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
- 		break;
- 	case WLAN_CIPHER_SUITE_CCMP:
+ 	tp->rcv_rtt_est.rtt_us = new_sample;
 -- 
 2.39.5
 
