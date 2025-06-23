@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BE81AE54D8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 461AFAE51A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1813B1BC21E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F33618964BB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65ED6222576;
-	Mon, 23 Jun 2025 22:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71A64221F17;
+	Mon, 23 Jun 2025 21:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EiFPTDS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDU9hNCr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21C2B19049B;
-	Mon, 23 Jun 2025 22:05:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F3D31EE7C6;
+	Mon, 23 Jun 2025 21:35:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716309; cv=none; b=FDFs3w30rbZsUdtn4xYZPhyBgwV9wF08qw6eYvCO5sUP+7k3shgR941GP/hMjCEFrAKUTbUWs6NIW+whCGW0GnZVcUyHMm+2+26uH60I/ZKl25a4mZxKRY+ddeLAgikZPawsXVu/uon8Xes4PB2PsDs2h//mI/UFjBcEwX3IaT0=
+	t=1750714556; cv=none; b=WrnLYlmYFdevFm0HEEGD9SgaqYbj/f4km+Ci4e9SOMytjLEBefkbe9qnn9Ke2CL2gqv6keJsZlKk2cGeCVQyoVX9tKVYIb54uq1mlW4lmHs9jvVQeUuR0M+ZuSuE3kM8JOIn/bStvYokS+Knle8llRKp+AGVWHnnj0WjjkMGo3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716309; c=relaxed/simple;
-	bh=2xYohnZv0S2BG9OUEXS2t1e4z9HMQsIQ7/HPI75UpTk=;
+	s=arc-20240116; t=1750714556; c=relaxed/simple;
+	bh=KjW7HDVjkekRnZYbxVFDyr2P9YmtiGQCBwx+HII5Z/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfuIp1qTZGvFOcqzBenTUIlKd89LYx/W6Xq4NiGWBNoO9QpMD5tZ+sup7Zz4skRF7geN0sC3X0oRU3gxmtfX39uweMV0VRLUqzORbD3Ix2EMiZvTMpca3Bm78bIr46IaQEbXaPcSvqGoIusrGyVvvfTC3nR2IOuwPXBmAXrfocs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EiFPTDS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2CB2C4CEEA;
-	Mon, 23 Jun 2025 22:05:08 +0000 (UTC)
+	 MIME-Version; b=fwtSgqRmsmL0mQfkTGOMNvPb2Dk/J/n98CSUNOWL17L22v/tssO7MObZrRCNL+TiJoB5EC0Lot8TdxelH5ZUmL0oRqjA0npUaUkL25W7Tv28lo9rSjy+R481vXq15h+dQVcghV1LsGYWLsy5iVdT+SnwMOTKFMmq0PkQRcjhrgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDU9hNCr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8DDBC4CEED;
+	Mon, 23 Jun 2025 21:35:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716309;
-	bh=2xYohnZv0S2BG9OUEXS2t1e4z9HMQsIQ7/HPI75UpTk=;
+	s=korg; t=1750714556;
+	bh=KjW7HDVjkekRnZYbxVFDyr2P9YmtiGQCBwx+HII5Z/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EiFPTDS1sAQrO1kEqueKw4h/A4Xw1TOkVKBOT7D3qxq1tg0J4B7kNs+aYpPp8Msrg
-	 1RZV+qBtJeM5iTEOxhV+KyUDpS4CsPrbSiB+0gYkk413loBZPj9zwGJWuHS72Rulb0
-	 S45IogSis3VIhAiZb/UV3EKJ84YnX+ujN1u9xz50=
+	b=wDU9hNCrvZ38FdJQIGHsSmjBL4TMDr8Q6oSPJMcYFQFGoRSeIC0YxZ1GvBg8xwTVQ
+	 3pM8JPrcMi6FTUKVNBv5lo/1DOEghqaSK7ECV90jTmqHPB1t1WTux3uu3bEZ8W8xC7
+	 D53/gB8qocw1eQSd+76aljkFsSRvRlqgQObNEgAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 294/508] io_uring: account drain memory to cgroup
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 195/411] ASoC: qcom: sdm845: Add error handling in sdm845_slim_snd_hw_params()
 Date: Mon, 23 Jun 2025 15:05:39 +0200
-Message-ID: <20250623130652.516075126@linuxfoundation.org>
+Message-ID: <20250623130638.585650374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit f979c20547e72568e3c793bc92c7522bc3166246 upstream.
+commit 688abe2860fd9c644705b9e11cb9649eb891b879 upstream.
 
-Account drain allocations against memcg. It's not a big problem as each
-such allocation is paired with a request, which is accounted, but it's
-nicer to follow the limits more closely.
+The function sdm845_slim_snd_hw_params() calls the functuion
+snd_soc_dai_set_channel_map() but does not check its return
+value. A proper implementation can be found in msm_snd_hw_params().
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/f8dfdbd755c41fd9c75d12b858af07dfba5bbb68.1746788718.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Add error handling for snd_soc_dai_set_channel_map(). If the
+function fails and it is not a unsupported error, return the
+error code immediately.
+
+Fixes: 5caf64c633a3 ("ASoC: qcom: sdm845: add support to DB845c and Lenovo Yoga")
+Cc: stable@vger.kernel.org # v5.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250519075739.1458-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/soc/qcom/sdm845.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1654,7 +1654,7 @@ queue:
- 	spin_unlock(&ctx->completion_lock);
+--- a/sound/soc/qcom/sdm845.c
++++ b/sound/soc/qcom/sdm845.c
+@@ -78,6 +78,10 @@ static int sdm845_slim_snd_hw_params(str
+ 		else
+ 			ret = snd_soc_dai_set_channel_map(cpu_dai, tx_ch_cnt,
+ 							  tx_ch, 0, NULL);
++		if (ret != 0 && ret != -ENOTSUPP) {
++			dev_err(rtd->dev, "failed to set cpu chan map, err:%d\n", ret);
++			return ret;
++		}
+ 	}
  
- 	io_prep_async_link(req);
--	de = kmalloc(sizeof(*de), GFP_KERNEL);
-+	de = kmalloc(sizeof(*de), GFP_KERNEL_ACCOUNT);
- 	if (!de) {
- 		ret = -ENOMEM;
- 		io_req_complete_failed(req, ret);
+ 	return 0;
 
 
 
