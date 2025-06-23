@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBDF8AE50DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B34AAE50E2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 254E54A20D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81CB17A2C25
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A235222562;
-	Mon, 23 Jun 2025 21:28:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B33221299;
+	Mon, 23 Jun 2025 21:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0c45g1F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4Mlnt4t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5FD221723;
-	Mon, 23 Jun 2025 21:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032C61E5B71;
+	Mon, 23 Jun 2025 21:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714103; cv=none; b=GWTBPwhiBiLrK4P8RtHEL0ZIDlL7U7/4tuk3ShAepS12mPP4ziACptF7ieKJGTJhsSoMs55qtdNXLKu4poEmt5mJsdunt0S7X6s3mciJiGDrUJzQiaOOfKOikvSIgcrg/r9SO5SxGyFGbUrIJ0AG3O1iGlSxrpLrbO8hI5qfHHA=
+	t=1750714121; cv=none; b=Qw6maESG40O1LqUpQz+et+naNR1vPqvCf6j5rWj4Si4gKq/EwL0Kjcq8GbuEkG0+6188X9HENBUeZyBcNGur8u46PFHvmCEoIYYZFywm7epkF2fHHMqxdVUiKizEcESpK3arxnUYSrShy3yg12fekDCUAmsgAvbX6+HTjR889Gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714103; c=relaxed/simple;
-	bh=96r9Qg84fJDPhXJTDS9Snb0Q11QUGOSw0aLGxubq4wI=;
+	s=arc-20240116; t=1750714121; c=relaxed/simple;
+	bh=BlD9o4fbN+szLnve2qwsX015eXXxrlaGNy9yuxS3xp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MUuC+yR2Ma5WPBVeApppzwQfUA7NN7NsaFJIXIbcKl8isjd0M2MfcX0feLh1Wax/mNtdyjhMt9fU3wGO7cKkKn+MP6g/qDeAqgy+CCbRqYsDeSiS4dKZdzgzsZps/OL165tP+kr8UpShZXUL+DUqBJ7NDT+/HJr4X0vOQ0hV8H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0c45g1F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 730BEC4CEEA;
-	Mon, 23 Jun 2025 21:28:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OlLDmBv5pZ0c/RDX9Xdr0DuMnCITxv2EXheRsRlE0ZOBqzaSYxgeLFoC5PO2MRk34sFAoblLvtWZ1p42nxIqhJlgTJ6Bgwjyb9vf4geu0WcNBDzHddcja8slaVqwiytIaZjLuAcHrPvog6GY/FKu55OGFnP2f5v3wS6SfPVCKaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4Mlnt4t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EF6CC4CEEA;
+	Mon, 23 Jun 2025 21:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714103;
-	bh=96r9Qg84fJDPhXJTDS9Snb0Q11QUGOSw0aLGxubq4wI=;
+	s=korg; t=1750714120;
+	bh=BlD9o4fbN+szLnve2qwsX015eXXxrlaGNy9yuxS3xp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0c45g1Fq2IsDmopvF3FhZUfXZwbk8w2lgwpU5W4fbNiruq4HpNc2D9LugM/ody4P
-	 qEI2GqCUjuLDDnOI3nQJQ4zv6NRlnLPtDtWgfBwj8vtziNV8rq+AawynkPA/ZgHNLh
-	 5UiZ9Z+XbR1I47vWJGtBfS2DH9gvlP2kzZenfIpE=
+	b=e4Mlnt4t+GnRU/VinDcr8PkyuTC7FvlkWtvUL81itdOPkoa88uBJlVkZqznisJyyG
+	 j5UhfsIjZLCD7jHuJoU55VD23APsTl9zAWLiSkRPYPqBGkg0JH5ekLBFyQEntk4ti/
+	 t2LybmgZDtSXv2bUPPTEKleDbd2N9OiTG+Wlucdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.12 081/414] can: kvaser_pciefd: refine error prone echo_skb_max handling logic
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 173/508] spi: bcm63xx-spi: fix shared reset
 Date: Mon, 23 Jun 2025 15:03:38 +0200
-Message-ID: <20250623130644.106725203@linuxfoundation.org>
+Message-ID: <20250623130649.531362290@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +62,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-commit 54ec8b08216f3be2cc98b33633d3c8ea79749895 upstream.
+[ Upstream commit 5ad20e3d8cfe3b2e42bbddc7e0ebaa74479bb589 ]
 
-echo_skb_max should define the supported upper limit of echo_skb[]
-allocated inside the netdevice's priv. The corresponding size value
-provided by this driver to alloc_candev() is KVASER_PCIEFD_CAN_TX_MAX_COUNT
-which is 17.
+Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
+and HSSPI controllers, so reset shouldn't be exclusive.
 
-But later echo_skb_max is rounded up to the nearest power of two (for the
-max case, that would be 32) and the tx/ack indices calculated further
-during tx/rx may exceed the upper array boundary. Kasan reported this for
-the ack case inside kvaser_pciefd_handle_ack_packet(), though the xmit
-function has actually caught the same thing earlier.
-
- BUG: KASAN: slab-out-of-bounds in kvaser_pciefd_handle_ack_packet+0x2d7/0x92a drivers/net/can/kvaser_pciefd.c:1528
- Read of size 8 at addr ffff888105e4f078 by task swapper/4/0
-
- CPU: 4 UID: 0 PID: 0 Comm: swapper/4 Not tainted 6.15.0 #12 PREEMPT(voluntary)
- Call Trace:
-  <IRQ>
- dump_stack_lvl lib/dump_stack.c:122
- print_report mm/kasan/report.c:521
- kasan_report mm/kasan/report.c:634
- kvaser_pciefd_handle_ack_packet drivers/net/can/kvaser_pciefd.c:1528
- kvaser_pciefd_read_packet drivers/net/can/kvaser_pciefd.c:1605
- kvaser_pciefd_read_buffer drivers/net/can/kvaser_pciefd.c:1656
- kvaser_pciefd_receive_irq drivers/net/can/kvaser_pciefd.c:1684
- kvaser_pciefd_irq_handler drivers/net/can/kvaser_pciefd.c:1733
- __handle_irq_event_percpu kernel/irq/handle.c:158
- handle_irq_event kernel/irq/handle.c:210
- handle_edge_irq kernel/irq/chip.c:833
- __common_interrupt arch/x86/kernel/irq.c:296
- common_interrupt arch/x86/kernel/irq.c:286
-  </IRQ>
-
-Tx max count definitely matters for kvaser_pciefd_tx_avail(), but for seq
-numbers' generation that's not the case - we're free to calculate them as
-would be more convenient, not taking tx max count into account. The only
-downside is that the size of echo_skb[] should correspond to the max seq
-number (not tx max count), so in some situations a bit more memory would
-be consumed than could be.
-
-Thus make the size of the underlying echo_skb[] sufficient for the rounded
-max tx value.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 8256e0ca6010 ("can: kvaser_pciefd: Fix echo_skb race")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Link: https://patch.msgid.link/20250528192713.63894-1-pchelkin@ispras.ru
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 38807adeaf1e ("spi: bcm63xx-spi: add reset support")
+Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529130915.2519590-2-noltari@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/kvaser_pciefd.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 7d3066691d5d..52301511ed1b 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -966,7 +966,7 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		u32 status, tx_nr_packets_max;
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index 695ac74571286..2f2a130464651 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -533,7 +533,7 @@ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ 		return PTR_ERR(clk);
+ 	}
  
- 		netdev = alloc_candev(sizeof(struct kvaser_pciefd_can),
--				      KVASER_PCIEFD_CAN_TX_MAX_COUNT);
-+				      roundup_pow_of_two(KVASER_PCIEFD_CAN_TX_MAX_COUNT));
- 		if (!netdev)
- 			return -ENOMEM;
+-	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
++	reset = devm_reset_control_get_optional_shared(dev, NULL);
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
  
-@@ -995,7 +995,6 @@ static int kvaser_pciefd_setup_can_ctrls(struct kvaser_pciefd *pcie)
- 		can->tx_max_count = min(KVASER_PCIEFD_CAN_TX_MAX_COUNT, tx_nr_packets_max - 1);
- 
- 		can->can.clock.freq = pcie->freq;
--		can->can.echo_skb_max = roundup_pow_of_two(can->tx_max_count);
- 		spin_lock_init(&can->lock);
- 
- 		can->can.bittiming_const = &kvaser_pciefd_bittiming_const;
 -- 
-2.50.0
+2.39.5
 
 
 
