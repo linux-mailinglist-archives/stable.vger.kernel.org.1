@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-157483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C403BAE5428
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5558BAE54CA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 61C167A94E4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10A154A04C0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7726E22422F;
-	Mon, 23 Jun 2025 21:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 760822248B5;
+	Mon, 23 Jun 2025 22:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YZuTtjXW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R/bMeP7y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 347E3220686;
-	Mon, 23 Jun 2025 21:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330E92236E9;
+	Mon, 23 Jun 2025 22:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715978; cv=none; b=S8nHY2VEIdwxn6ucEbYAKHg4SQvBmFzXijl7iJEvW84CgbbD6acNsaIvqrtC5sINii78oZ/kpvRw/+m3HmJF+dSpOO27Lyqy9poRywhgrWejJib5fpJgu3AY5yHvrXqPlGZkD+RalDHgjHdodoLg0mEI+WSdWTWQ3NkujPG/sHg=
+	t=1750716280; cv=none; b=ZZ+J/zt7KM4J8JQ8hX+1XHFAsbQ2c2vnQQbVp8hKQuT8UvOD4cLeOUFRXD55EkpeGaLU8F59+QOFxJgHb6+u9eoJgQRBpN/Rb+/FU6u7FWP+MsOcx6warJ3FCMTfpSxb179jkOsikk1ecg+TijFO5AKtqMxAWdMh/jfcYgCpZq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715978; c=relaxed/simple;
-	bh=wx1kkJlcF261bJmLFQInyPtLVzby/8nOr6D2FuH9Y7Q=;
+	s=arc-20240116; t=1750716280; c=relaxed/simple;
+	bh=cAwdUjTwJMXh3GoQM7Fy9IbaEE0wT7eSQ7xnKF/iYHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MBnA58BJBU4ScTi3NMJ4n8PmYmuMwEVV2GaEYmZuTlO7Q/GAD98poCUJQyKVLVwyGG77ifeCX1VvW3o/xdTbxFJ3V+nJNT7qB4Sv4/wUC1GLUSxblDjCWA87paXpurLL9magx/jJEXlBrpwP4kMrHoYU0ziMBPwQ0YSBaba5lbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YZuTtjXW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2541C4CEEA;
-	Mon, 23 Jun 2025 21:59:37 +0000 (UTC)
+	 MIME-Version; b=kT5rP5Jls42ACO6aZcWuLUjpTxqcDl7GAsF69seCY1MFMpP+3Ed8q0b0Zhziau8ReiGhxdCyClIrDSnUKZsiq1kVHLuodxSo7wgEBocxmZuMuiXdUGiiL6ivgbEWnfmlL2XchA+t8hlRr5npREMvHNg1nE+68Y9vUgcSFXIgCQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R/bMeP7y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C9BAC4CEEA;
+	Mon, 23 Jun 2025 22:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715978;
-	bh=wx1kkJlcF261bJmLFQInyPtLVzby/8nOr6D2FuH9Y7Q=;
+	s=korg; t=1750716279;
+	bh=cAwdUjTwJMXh3GoQM7Fy9IbaEE0wT7eSQ7xnKF/iYHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZuTtjXWV2iyiVXu/r1n2XR+r/Qg9XK8S4Eudy4ARg9X9mWOoN95hjhn3dKF6v89J
-	 r4Jj88JjVOE/xSL5ZcU1NsQoXLB5cTqZfB3dLVIjoNEWAlyueVbHTBj62lfkLc09WJ
-	 z0cGLQNXcEwslBmv8RPuS08bV1yABkYP330nRBgg=
+	b=R/bMeP7yfnGn6Zniegi4AWPlO1wR8LW8rxdI7xftJk280cSGJ1iRwUrYt/XP7DSwB
+	 ZxXHYf4NDsZLdohyzPmtisdq5IxInUHHZh4YO9z4lLOY22LnpMXgCgjyfo2qVaGPzN
+	 NqkhJKVvu0lJV1U0iXS1Y41NNC7HcqMID5J0JLm4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Wheeler <netdev@lists.ewheeler.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 313/355] tcp: fix tcp_packet_delayed() for tcp_is_non_sack_preventing_reopen() behavior
+	Krishna Kumar <krikku@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 253/290] net: ice: Perform accurate aRFS flow match
 Date: Mon, 23 Jun 2025 15:08:34 +0200
-Message-ID: <20250623130636.191672326@linuxfoundation.org>
+Message-ID: <20250623130634.534818306@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,109 +64,160 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Krishna Kumar <krikku@gmail.com>
 
-[ Upstream commit d0fa59897e049e84432600e86df82aab3dce7aa5 ]
+[ Upstream commit 5d3bc9e5e725aa36cca9b794e340057feb6880b4 ]
 
-After the following commit from 2024:
+This patch fixes an issue seen in a large-scale deployment under heavy
+incoming pkts where the aRFS flow wrongly matches a flow and reprograms the
+NIC with wrong settings. That mis-steering causes RX-path latency spikes
+and noisy neighbor effects when many connections collide on the same
+hash (some of our production servers have 20-30K connections).
 
-commit e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+set_rps_cpu() calls ndo_rx_flow_steer() with flow_id that is calculated by
+hashing the skb sized by the per rx-queue table size. This results in
+multiple connections (even across different rx-queues) getting the same
+hash value. The driver steer function modifies the wrong flow to use this
+rx-queue, e.g.: Flow#1 is first added:
+    Flow#1:  <ip1, port1, ip2, port2>, Hash 'h', q#10
 
-...there was buggy behavior where TCP connections without SACK support
-could easily see erroneous undo events at the end of fast recovery or
-RTO recovery episodes. The erroneous undo events could cause those
-connections to suffer repeated loss recovery episodes and high
-retransmit rates.
+Later when a new flow needs to be added:
+	    Flow#2:  <ip3, port3, ip4, port4>, Hash 'h', q#20
 
-The problem was an interaction between the non-SACK behavior on these
-connections and the undo logic. The problem is that, for non-SACK
-connections at the end of a loss recovery episode, if snd_una ==
-high_seq, then tcp_is_non_sack_preventing_reopen() holds steady in
-CA_Recovery or CA_Loss, but clears tp->retrans_stamp to 0. Then upon
-the next ACK the "tcp: fix to allow timestamp undo if no retransmits
-were sent" logic saw the tp->retrans_stamp at 0 and erroneously
-concluded that no data was retransmitted, and erroneously performed an
-undo of the cwnd reduction, restoring cwnd immediately to the value it
-had before loss recovery.  This caused an immediate burst of traffic
-and build-up of queues and likely another immediate loss recovery
-episode.
+The driver finds the hash 'h' from Flow#1 and updates it to use q#20. This
+results in both flows getting un-optimized - packets for Flow#1 goes to
+q#20, and then reprogrammed back to q#10 later and so on; and Flow #2
+programming is never done as Flow#1 is matched first for all misses. Many
+flows may wrongly share the same hash and reprogram rules of the original
+flow each with their own q#.
 
-This commit fixes tcp_packet_delayed() to ignore zero retrans_stamp
-values for non-SACK connections when snd_una is at or above high_seq,
-because tcp_is_non_sack_preventing_reopen() clears retrans_stamp in
-this case, so it's not a valid signal that we can undo.
+Tested on two 144-core servers with 16K netperf sessions for 180s. Netperf
+clients are pinned to cores 0-71 sequentially (so that wrong packets on q#s
+72-143 can be measured). IRQs are set 1:1 for queues -> CPUs, enable XPS,
+enable aRFS (global value is 144 * rps_flow_cnt).
 
-Note that the commit named in the Fixes footer restored long-present
-behavior from roughly 2005-2019, so apparently this bug was present
-for a while during that era, and this was simply not caught.
+Test notes about results from ice_rx_flow_steer():
+---------------------------------------------------
+1. "Skip:" counter increments here:
+    if (fltr_info->q_index == rxq_idx ||
+	arfs_entry->fltr_state != ICE_ARFS_ACTIVE)
+	    goto out;
+2. "Add:" counter increments here:
+    ret = arfs_entry->fltr_info.fltr_id;
+    INIT_HLIST_NODE(&arfs_entry->list_entry);
+3. "Update:" counter increments here:
+    /* update the queue to forward to on an already existing flow */
 
-Fixes: e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
-Reported-by: Eric Wheeler <netdev@lists.ewheeler.net>
-Closes: https://lore.kernel.org/netdev/64ea9333-e7f9-0df-b0f2-8d566143acab@ewheeler.net/
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Co-developed-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Runtime comparison: original code vs with the patch for different
+rps_flow_cnt values.
+
++-------------------------------+--------------+--------------+
+| rps_flow_cnt                  |      512     |    2048      |
++-------------------------------+--------------+--------------+
+| Ratio of Pkts on Good:Bad q's | 214 vs 822K  | 1.1M vs 980K |
+| Avoid wrong aRFS programming  | 0 vs 310K    | 0 vs 30K     |
+| CPU User                      | 216 vs 183   | 216 vs 206   |
+| CPU System                    | 1441 vs 1171 | 1447 vs 1320 |
+| CPU Softirq                   | 1245 vs 920  | 1238 vs 961  |
+| CPU Total                     | 29 vs 22.7   | 29 vs 24.9   |
+| aRFS Update                   | 533K vs 59   | 521K vs 32   |
+| aRFS Skip                     | 82M vs 77M   | 7.2M vs 4.5M |
++-------------------------------+--------------+--------------+
+
+A separate TCP_STREAM and TCP_RR with 1,4,8,16,64,128,256,512 connections
+showed no performance degradation.
+
+Some points on the patch/aRFS behavior:
+1. Enabling full tuple matching ensures flows are always correctly matched,
+   even with smaller hash sizes.
+2. 5-6% drop in CPU utilization as the packets arrive at the correct CPUs
+   and fewer calls to driver for programming on misses.
+3. Larger hash tables reduces mis-steering due to more unique flow hashes,
+   but still has clashes. However, with larger per-device rps_flow_cnt, old
+   flows take more time to expire and new aRFS flows cannot be added if h/w
+   limits are reached (rps_may_expire_flow() succeeds when 10*rps_flow_cnt
+   pkts have been processed by this cpu that are not part of the flow).
+
+Fixes: 28bf26724fdb0 ("ice: Implement aRFS")
+Signed-off-by: Krishna Kumar <krikku@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_arfs.c | 48 +++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index f239310e91590..82382ac1514f9 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2424,20 +2424,33 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
- {
- 	const struct sock *sk = (const struct sock *)tp;
- 
--	if (tp->retrans_stamp &&
--	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
--		return true;  /* got echoed TS before first retransmission */
--
--	/* Check if nothing was retransmitted (retrans_stamp==0), which may
--	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
--	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
--	 * retrans_stamp even if we had retransmitted the SYN.
-+	/* Received an echoed timestamp before the first retransmission? */
-+	if (tp->retrans_stamp)
-+		return tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-+
-+	/* We set tp->retrans_stamp upon the first retransmission of a loss
-+	 * recovery episode, so normally if tp->retrans_stamp is 0 then no
-+	 * retransmission has happened yet (likely due to TSQ, which can cause
-+	 * fast retransmits to be delayed). So if snd_una advanced while
-+	 * (tp->retrans_stamp is 0 then apparently a packet was merely delayed,
-+	 * not lost. But there are exceptions where we retransmit but then
-+	 * clear tp->retrans_stamp, so we check for those exceptions.
- 	 */
--	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
--	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
--		return true;  /* nothing was retransmitted */
- 
--	return false;
-+	/* (1) For non-SACK connections, tcp_is_non_sack_preventing_reopen()
-+	 * clears tp->retrans_stamp when snd_una == high_seq.
-+	 */
-+	if (!tcp_is_sack(tp) && !before(tp->snd_una, tp->high_seq))
-+		return false;
-+
-+	/* (2) In TCP_SYN_SENT tcp_clean_rtx_queue() clears tp->retrans_stamp
-+	 * when setting FLAG_SYN_ACKED is set, even if the SYN was
-+	 * retransmitted.
-+	 */
-+	if (sk->sk_state == TCP_SYN_SENT)
-+		return false;
-+
-+	return true;	/* tp->retrans_stamp is zero; no retransmit yet */
+diff --git a/drivers/net/ethernet/intel/ice/ice_arfs.c b/drivers/net/ethernet/intel/ice/ice_arfs.c
+index d7e0116f67737..7036070bc0208 100644
+--- a/drivers/net/ethernet/intel/ice/ice_arfs.c
++++ b/drivers/net/ethernet/intel/ice/ice_arfs.c
+@@ -376,6 +376,50 @@ ice_arfs_is_perfect_flow_set(struct ice_hw *hw, __be16 l3_proto, u8 l4_proto)
+ 	return false;
  }
  
- /* Undo procedures. */
++/**
++ * ice_arfs_cmp - Check if aRFS filter matches this flow.
++ * @fltr_info: filter info of the saved ARFS entry.
++ * @fk: flow dissector keys.
++ * @n_proto:  One of htons(ETH_P_IP) or htons(ETH_P_IPV6).
++ * @ip_proto: One of IPPROTO_TCP or IPPROTO_UDP.
++ *
++ * Since this function assumes limited values for n_proto and ip_proto, it
++ * is meant to be called only from ice_rx_flow_steer().
++ *
++ * Return:
++ * * true	- fltr_info refers to the same flow as fk.
++ * * false	- fltr_info and fk refer to different flows.
++ */
++static bool
++ice_arfs_cmp(const struct ice_fdir_fltr *fltr_info, const struct flow_keys *fk,
++	     __be16 n_proto, u8 ip_proto)
++{
++	/* Determine if the filter is for IPv4 or IPv6 based on flow_type,
++	 * which is one of ICE_FLTR_PTYPE_NONF_IPV{4,6}_{TCP,UDP}.
++	 */
++	bool is_v4 = fltr_info->flow_type == ICE_FLTR_PTYPE_NONF_IPV4_TCP ||
++		     fltr_info->flow_type == ICE_FLTR_PTYPE_NONF_IPV4_UDP;
++
++	/* Following checks are arranged in the quickest and most discriminative
++	 * fields first for early failure.
++	 */
++	if (is_v4)
++		return n_proto == htons(ETH_P_IP) &&
++			fltr_info->ip.v4.src_port == fk->ports.src &&
++			fltr_info->ip.v4.dst_port == fk->ports.dst &&
++			fltr_info->ip.v4.src_ip == fk->addrs.v4addrs.src &&
++			fltr_info->ip.v4.dst_ip == fk->addrs.v4addrs.dst &&
++			fltr_info->ip.v4.proto == ip_proto;
++
++	return fltr_info->ip.v6.src_port == fk->ports.src &&
++		fltr_info->ip.v6.dst_port == fk->ports.dst &&
++		fltr_info->ip.v6.proto == ip_proto &&
++		!memcmp(&fltr_info->ip.v6.src_ip, &fk->addrs.v6addrs.src,
++			sizeof(struct in6_addr)) &&
++		!memcmp(&fltr_info->ip.v6.dst_ip, &fk->addrs.v6addrs.dst,
++			sizeof(struct in6_addr));
++}
++
+ /**
+  * ice_rx_flow_steer - steer the Rx flow to where application is being run
+  * @netdev: ptr to the netdev being adjusted
+@@ -447,6 +491,10 @@ ice_rx_flow_steer(struct net_device *netdev, const struct sk_buff *skb,
+ 			continue;
+ 
+ 		fltr_info = &arfs_entry->fltr_info;
++
++		if (!ice_arfs_cmp(fltr_info, &fk, n_proto, ip_proto))
++			continue;
++
+ 		ret = fltr_info->fltr_id;
+ 
+ 		if (fltr_info->q_index == rxq_idx ||
 -- 
 2.39.5
 
