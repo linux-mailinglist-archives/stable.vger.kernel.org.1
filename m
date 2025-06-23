@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-156131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0DA4AE4545
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41403AE432C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FCA5446717
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B105189536C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D7D824DD0B;
-	Mon, 23 Jun 2025 13:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 619EB25393A;
+	Mon, 23 Jun 2025 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HVl5NsES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRz//rGu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 094354C6E;
-	Mon, 23 Jun 2025 13:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F91C24678E;
+	Mon, 23 Jun 2025 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686226; cv=none; b=YtZM00+EBtHq2AJAnCLmL31/7mYbA5t3Xc6BdreD/ldU5drjDrvwy9ptPoNwbGf3zFicc8A8ZGk7jgbxbEvjxnLEAtVxHQwAayyW1EgV5ED0wowz3j0pEBf4jNmHqV4K5YuMzKduzZwqBd99e5/Qld5xsA4qYrFLFjNIeROIcC8=
+	t=1750685052; cv=none; b=AVvM8ZEde4H6BoVY8czD70j4GLGiGM9KHEiTB/NmmVSaqiJwDngxPndyRRnfaTgLYz2/5bdEWySiKEQYdJuK4fEybvl6lW+/+dTnsxkJsts8xtHtPWpDWBa0xDK1LR4txM3DoaGB3qTto32vwLNdMMKIos/XE7Mhkt89owWBfO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686226; c=relaxed/simple;
-	bh=TvqqEYtjKWzIG08D7r8SEGYG8K2yOnBT6U52q8vMO4Q=;
+	s=arc-20240116; t=1750685052; c=relaxed/simple;
+	bh=Nz2ZKjeaVw6iuJxMCdzhyM67Iskge3+SZdiNdSp22v0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAmQAtXAbZfWDzkOkkGIOhS8TOgYq4VEQh57oqX53b2e7TlloK4zedJXiP/JIXrKsqyMdaPrDBmYO4yFzKJt7ZWhB4XftuhSVUQ6KCdQ3W27tO2FHAB/IPF6+/5eLtErGiS/BgeYNIPdapJ8Vs4JskiorDCX9jxSr+xvSkztcLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HVl5NsES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90D92C4CEEA;
-	Mon, 23 Jun 2025 13:43:45 +0000 (UTC)
+	 MIME-Version; b=PYzk/T74mglVEL2SSxd1C8OEjqTcl+iolaqsspV02fuGVZZP5T/9+gyMkjlNzuhC8Q3EJ5kv66Ml/4+isVEgzKREhwEWYU0QRRZOD33D5SACG+zP9cgDhApMZcJE0hYHkEpLMiWhETfw5wwM7y5aoNgs7ObSEuQ6j2UnOQliFCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRz//rGu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9500C4CEF3;
+	Mon, 23 Jun 2025 13:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686225;
-	bh=TvqqEYtjKWzIG08D7r8SEGYG8K2yOnBT6U52q8vMO4Q=;
+	s=korg; t=1750685052;
+	bh=Nz2ZKjeaVw6iuJxMCdzhyM67Iskge3+SZdiNdSp22v0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HVl5NsESEqnNd4kvFtZyAtb612uaS1OxNi74ZqLJHpo84e7qjPRNcVVnH9g2HZewv
-	 /tjESF62ugaRhFR+5fDwn0K0HMFFegHuE0mCQs6NAARlY76a6zgRxKq87plhynLEg2
-	 tzkUGdwJWIJni4DQ4Xqf0RICtpaWp5k9GG0WM80Q=
+	b=YRz//rGuNfSZCmXAZt7SSAoe4ieTLoh0klrF/XyztL9W66Jimr5BsiRfwrqiDq95O
+	 c2DcjFKWhRLVs2BCgWVxpo3itWlD+Coyj++htAghGm/mCmQkHKTYo7eqZxDWeG22vg
+	 uI3xN9PwMFAxGIrbkNmchC52Jjo6VMkM1mKqcCSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aric Cyr <aric.cyr@amd.com>,
-	Dillon Varone <dillon.varone@amd.com>,
-	Fangzhi Zuo <jerry.zuo@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 293/592] drm/amd/display: Fix VUpdate offset calculations for dcn401
+Subject: [PATCH 5.10 050/355] netfilter: nf_tables: nft_fib_ipv6: fix VRF ipv4/ipv6 result discrepancy
 Date: Mon, 23 Jun 2025 15:04:11 +0200
-Message-ID: <20250623130707.344185926@linuxfoundation.org>
+Message-ID: <20250623130628.334928189@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,106 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dillon Varone <dillon.varone@amd.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit fe45e2af4a22e569b35b7f45eb9f040f6fbef94f ]
+[ Upstream commit 8b53f46eb430fe5b42d485873b85331d2de2c469 ]
 
-[WHY&HOW]
-DCN401 uses a different structure to store the VStartup offset used to
-calculate the VUpdate position, so adjust the calculations to use this
-value.
+With a VRF, ipv4 and ipv6 FIB expression behave differently.
 
-Reviewed-by: Aric Cyr <aric.cyr@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Fangzhi Zuo <jerry.zuo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+   fib daddr . iif oif
+
+Will return the input interface name for ipv4, but the real device
+for ipv6.  Example:
+
+If VRF device name is tvrf and real (incoming) device is veth0.
+First round is ok, both ipv4 and ipv6 will yield 'veth0'.
+
+But in the second round (incoming device will be set to "tvrf"), ipv4
+will yield "tvrf" whereas ipv6 returns "veth0" for the second round too.
+
+This makes ipv6 behave like ipv4.
+
+A followup patch will add a test case for this, without this change
+it will fail with:
+  get element inet t fibif6iif { tvrf . dead:1::99 . tvrf }
+  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  FAIL: did not find tvrf . dead:1::99 . tvrf in fibif6iif
+
+Alternatively we could either not do anything at all or change
+ipv4 to also return the lower/real device, however, nft (userspace)
+doc says "iif: if fib lookup provides a route then check its output
+interface is identical to the packets input interface." which is what
+the nft fib ipv4 behaviour is.
+
+Fixes: f6d0cbcf09c5 ("netfilter: nf_tables: add fib expression")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/hwss/dcn401/dcn401_hwseq.c | 44 +++++++++++++++++++
- .../amd/display/dc/hwss/dcn401/dcn401_hwseq.h |  1 +
- .../amd/display/dc/hwss/dcn401/dcn401_init.c  |  2 +-
- 3 files changed, 46 insertions(+), 1 deletion(-)
+ net/ipv6/netfilter/nft_fib_ipv6.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-index 3af6a3402b894..061553aebd883 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.c
-@@ -2646,3 +2646,47 @@ void dcn401_plane_atomic_power_down(struct dc *dc,
- 	if (hws->funcs.dpp_root_clock_control)
- 		hws->funcs.dpp_root_clock_control(hws, dpp->inst, false);
- }
-+
-+/*
-+ * apply_front_porch_workaround
-+ *
-+ * This is a workaround for a bug that has existed since R5xx and has not been
-+ * fixed keep Front porch at minimum 2 for Interlaced mode or 1 for progressive.
-+ */
-+static void apply_front_porch_workaround(
-+	struct dc_crtc_timing *timing)
-+{
-+	if (timing->flags.INTERLACE == 1) {
-+		if (timing->v_front_porch < 2)
-+			timing->v_front_porch = 2;
+diff --git a/net/ipv6/netfilter/nft_fib_ipv6.c b/net/ipv6/netfilter/nft_fib_ipv6.c
+index 1a08b00aa3213..b7e543d4d57be 100644
+--- a/net/ipv6/netfilter/nft_fib_ipv6.c
++++ b/net/ipv6/netfilter/nft_fib_ipv6.c
+@@ -154,6 +154,7 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ {
+ 	const struct nft_fib *priv = nft_expr_priv(expr);
+ 	int noff = skb_network_offset(pkt->skb);
++	const struct net_device *found = NULL;
+ 	const struct net_device *oif = NULL;
+ 	u32 *dest = &regs->data[priv->dreg];
+ 	struct ipv6hdr *iph, _iph;
+@@ -198,11 +199,15 @@ void nft_fib6_eval(const struct nft_expr *expr, struct nft_regs *regs,
+ 	if (rt->rt6i_flags & (RTF_REJECT | RTF_ANYCAST | RTF_LOCAL))
+ 		goto put_rt_err;
+ 
+-	if (oif && oif != rt->rt6i_idev->dev &&
+-	    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) != oif->ifindex)
+-		goto put_rt_err;
++	if (!oif) {
++		found = rt->rt6i_idev->dev;
 +	} else {
-+		if (timing->v_front_porch < 1)
-+			timing->v_front_porch = 1;
++		if (oif == rt->rt6i_idev->dev ||
++		    l3mdev_master_ifindex_rcu(rt->rt6i_idev->dev) == oif->ifindex)
++			found = oif;
 +	}
-+}
-+
-+int dcn401_get_vupdate_offset_from_vsync(struct pipe_ctx *pipe_ctx)
-+{
-+	const struct dc_crtc_timing *dc_crtc_timing = &pipe_ctx->stream->timing;
-+	struct dc_crtc_timing patched_crtc_timing;
-+	int vesa_sync_start;
-+	int asic_blank_end;
-+	int interlace_factor;
-+
-+	patched_crtc_timing = *dc_crtc_timing;
-+	apply_front_porch_workaround(&patched_crtc_timing);
-+
-+	interlace_factor = patched_crtc_timing.flags.INTERLACE ? 2 : 1;
-+
-+	vesa_sync_start = patched_crtc_timing.v_addressable +
-+			patched_crtc_timing.v_border_bottom +
-+			patched_crtc_timing.v_front_porch;
-+
-+	asic_blank_end = (patched_crtc_timing.v_total -
-+			vesa_sync_start -
-+			patched_crtc_timing.v_border_top)
-+			* interlace_factor;
-+
-+	return asic_blank_end -
-+			pipe_ctx->global_sync.dcn4x.vstartup_lines + 1;
-+}
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h
-index 781cf0efccc6c..37c915568afcb 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_hwseq.h
-@@ -109,4 +109,5 @@ void dcn401_detect_pipe_changes(
- void dcn401_plane_atomic_power_down(struct dc *dc,
- 		struct dpp *dpp,
- 		struct hubp *hubp);
-+int dcn401_get_vupdate_offset_from_vsync(struct pipe_ctx *pipe_ctx);
- #endif /* __DC_HWSS_DCN401_H__ */
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c
-index fe7aceb2f5104..aa9573ce44fce 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn401/dcn401_init.c
-@@ -73,7 +73,7 @@ static const struct hw_sequencer_funcs dcn401_funcs = {
- 	.init_sys_ctx = dcn20_init_sys_ctx,
- 	.init_vm_ctx = dcn20_init_vm_ctx,
- 	.set_flip_control_gsl = dcn20_set_flip_control_gsl,
--	.get_vupdate_offset_from_vsync = dcn10_get_vupdate_offset_from_vsync,
-+	.get_vupdate_offset_from_vsync = dcn401_get_vupdate_offset_from_vsync,
- 	.calc_vupdate_position = dcn10_calc_vupdate_position,
- 	.apply_idle_power_optimizations = dcn401_apply_idle_power_optimizations,
- 	.does_plane_fit_in_mall = NULL,
+ 
+-	nft_fib_store_result(dest, priv, rt->rt6i_idev->dev);
++	nft_fib_store_result(dest, priv, found);
+  put_rt_err:
+ 	ip6_rt_put(rt);
+ }
 -- 
 2.39.5
 
