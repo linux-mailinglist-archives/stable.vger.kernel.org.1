@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 675F1AE5385
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC72AAE51D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F094A43FB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444214A4995
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C452222B7;
-	Mon, 23 Jun 2025 21:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F91D2222C2;
+	Mon, 23 Jun 2025 21:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GICiKght"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cj7b4P81"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DE3220686;
-	Mon, 23 Jun 2025 21:53:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D67819CC11;
+	Mon, 23 Jun 2025 21:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715621; cv=none; b=Uc4lKJay97YUkMe+aBSAeJ9hccpPXBCqOoB1PHi27Zc9IB2Vr/PKiDyw/LDpMweHulcdwgQ20WCmSJ9x3wR0WDL0DPu3+act6p87SgKFtdvQ+T3j94bLv6hHiX3eD5Zfyrc61zyXdNL7J3qiHXx5/+s/9aXHOt/ZNhDbhz7nJhQ=
+	t=1750714667; cv=none; b=d708TahMOu7K1QhrF5w2YSfjLdjAb5wG+ZeL6wRbkz7gJlgLb4a0V45dUlAEFwnFPdRtM4NB+8Ufa1HVH3i6og58fC5skhYIL3Xsfq2cfrmQNhCSUB3g3J85vbhPQzqSYQ0QUFyYK+8LV/YAejT7mTSQt/uQp34TtG5la6WtLMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715621; c=relaxed/simple;
-	bh=LOkFX0td23e2YcaKYMO4IxFmSo6B8QVteq5/c21z5hg=;
+	s=arc-20240116; t=1750714667; c=relaxed/simple;
+	bh=/qSccqiN5/++vvqwg0yMtgx0ozK9GNDAD5JkySrhU1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfmMlE+Z0tU7Wkh+REr5H1Qqy44C0p4nq07UHPCj6NaHZB2g8Gqr4NInaeQ73PdffCeuzY76glfk6ZGSkxnQtFjTp3+49Kd6w3yYBjMhnNupatbqUdFroWfdmUG77/R5KX026+6n0pf9XAErjg63sw6DMhQjxEC+Upr/a0+W6sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GICiKght; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004F9C4CEEA;
-	Mon, 23 Jun 2025 21:53:40 +0000 (UTC)
+	 MIME-Version; b=l46/9jDTlzFaZVYeqIUfJ9Ud8Yk3OlrX9xlorR4sNWss2ZwOwXjfhiFmWf5r0zvdUXFVRnoZkk1I5ElZf7pVEugbNr/PT9q9Krexqb1pTcmlkEko4e3eO4fag5AFbxGZ7bAaOIYF0lCgsCxJe2nKxX5y/cDt2Q+eTGZD1H37J+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cj7b4P81; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C70A1C4CEEA;
+	Mon, 23 Jun 2025 21:37:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715621;
-	bh=LOkFX0td23e2YcaKYMO4IxFmSo6B8QVteq5/c21z5hg=;
+	s=korg; t=1750714667;
+	bh=/qSccqiN5/++vvqwg0yMtgx0ozK9GNDAD5JkySrhU1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GICiKghtLwrTSwpPNMTHy5TFytaMmRjtOVwWrJS/bM8SVwOL4OFVIE5fZVsa+yiy7
-	 jKLRM6Qht4SFcnBD8kL9xcYr/vuIDfQhAIHG776QT9+9vOpZ9LwotrLcubOi7Yn5xZ
-	 QfPxZkp3MG/uCQg2SC+OhS/u5uMDZJJV1PLTVv2Y=
+	b=Cj7b4P81dIIKUztdpFJpJla5h8WwIYr6NmDTaQkI8mAZKYobnNdVa68A/+UqAlufy
+	 UeFFQT2GXtmbiO0SpUIBOhM/t2L5P4nA4RKVv9xWkTmXevkMOmYvntW2HwasTaC3i9
+	 73I5Kz+e7yHo37n7FlbXeBh9W882+O9SnFzEaK4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	gldrk <me@rarity.fan>,
+	Dian-Syuan Yang <dian_syuan0116@realtek.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 268/411] ACPICA: utilities: Fix overflow check in vsnprintf()
+Subject: [PATCH 6.6 151/290] wifi: rtw89: leave idle mode when setting WEP encryption for AP mode
 Date: Mon, 23 Jun 2025 15:06:52 +0200
-Message-ID: <20250623130640.402979388@linuxfoundation.org>
+Message-ID: <20250623130631.438098383@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gldrk <me@rarity.fan>
+From: Dian-Syuan Yang <dian_syuan0116@realtek.com>
 
-[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
+[ Upstream commit d105652b33245162867ac769bea336976e67efb8 ]
 
-ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
+Due to mac80211 triggering the hardware to enter idle mode, it fails
+to install WEP key causing connected station can't ping successfully.
+Currently, it forces the hardware to leave idle mode before driver
+adding WEP keys.
 
-The old version breaks sprintf on 64-bit systems for buffers
-outside [0..UINT32_MAX].
-
-Link: https://github.com/acpica/acpica/commit/d9d59b79
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
-Signed-off-by: gldrk <me@rarity.fan>
-[ rjw: Added the tag from gldrk ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Dian-Syuan Yang <dian_syuan0116@realtek.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250507031203.8256-1-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/utprint.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/wireless/realtek/rtw89/cam.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
-index 05426596d1f4a..f910714b51f34 100644
---- a/drivers/acpi/acpica/utprint.c
-+++ b/drivers/acpi/acpica/utprint.c
-@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
+diff --git a/drivers/net/wireless/realtek/rtw89/cam.c b/drivers/net/wireless/realtek/rtw89/cam.c
+index f5301c2bbf133..9a0ffaddb8360 100644
+--- a/drivers/net/wireless/realtek/rtw89/cam.c
++++ b/drivers/net/wireless/realtek/rtw89/cam.c
+@@ -6,6 +6,7 @@
+ #include "debug.h"
+ #include "fw.h"
+ #include "mac.h"
++#include "ps.h"
  
- 	pos = string;
+ static struct sk_buff *
+ rtw89_cam_get_sec_key_cmd(struct rtw89_dev *rtwdev,
+@@ -333,9 +334,11 @@ int rtw89_cam_sec_key_add(struct rtw89_dev *rtwdev,
  
--	if (size != ACPI_UINT32_MAX) {
--		end = string + size;
--	} else {
--		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
--	}
-+	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
-+	end = string + size;
- 
- 	for (; *format; ++format) {
- 		if (*format != '%') {
+ 	switch (key->cipher) {
+ 	case WLAN_CIPHER_SUITE_WEP40:
++		rtw89_leave_ips_by_hwflags(rtwdev);
+ 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP40;
+ 		break;
+ 	case WLAN_CIPHER_SUITE_WEP104:
++		rtw89_leave_ips_by_hwflags(rtwdev);
+ 		hw_key_type = RTW89_SEC_KEY_TYPE_WEP104;
+ 		break;
+ 	case WLAN_CIPHER_SUITE_CCMP:
 -- 
 2.39.5
 
