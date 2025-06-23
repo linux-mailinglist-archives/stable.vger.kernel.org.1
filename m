@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C52BAE44AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD30BAE4559
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:51:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC997AD7FF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61B6D3B1A01
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A81524728E;
-	Mon, 23 Jun 2025 13:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4EEB230BC2;
+	Mon, 23 Jun 2025 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmJTd4z4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9p25ySs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B502F24;
-	Mon, 23 Jun 2025 13:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A8916419;
+	Mon, 23 Jun 2025 13:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685999; cv=none; b=gPDjRoYYtkki/C76yd1Q6Ku9/Yc2ExCD0jfdTHyMRPpNzzCerQkohmQIRYr2G2xKsS7XenMA1Oi4MIBq4pfdGtOst0KAWni3boDZ92JgbcID6ruyzsZPyPf/qv3RerWvQcGgGIfgeuba22Sxlkt4FvgEYYIRvrHT5xosM5otlg0=
+	t=1750686017; cv=none; b=Xx+VefCeQbPiNAepWDdRhBIAD10bO3Bm3sBreFeeDhUrdHnNjlVJykYkzSnoBh6qfFbomOIQe4fSbrcJk6HGYkd1GTqB/F1lmMNLl+dODd0CFcMEmu3VbEtYGmqT0q2Z/am01z57Eo+MiCyE5ELTlFUEk4a07Rv4rtQ4GnVBiP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685999; c=relaxed/simple;
-	bh=sGOoYRBelJm+tQTbOLofalw32yyXA/lBeAF+EYExKzc=;
+	s=arc-20240116; t=1750686017; c=relaxed/simple;
+	bh=A656ntGMESRxQEBCKj+acHraTQ9RGYAQtindfRPwbEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uEgNXiAzhgsQgr6Ns0l0/1MmoYFLE6weSPD4iezvHv39/YHbmIRjsohOS/orkVz316v367BWUfkCHH3XJA10Zh/7lfk9aL+ThhlNfYDAhA2KwiO5sZcF049j0jEAJqWNzjSzE8UYgZNQ9xWJRHY2BYa5kL3ZoBuDKQjboZijLNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmJTd4z4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5BAC4CEEA;
-	Mon, 23 Jun 2025 13:39:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=h+P+gsjLIhCTR1beMhErXUQeT97AF9+gt6VtUdy4J7b8oNRmbdt5FQpvIJ8xnkz0IxdpalGw5C1S6NGn75WB3Ow8J1TRUX3F6cVDYciesD39UDVisWJO9toQNluxWZy6GrdYSfwC66VmNMDKFRsuo588wguKKP2tTm1N/j0UhjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9p25ySs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15515C4CEEA;
+	Mon, 23 Jun 2025 13:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685999;
-	bh=sGOoYRBelJm+tQTbOLofalw32yyXA/lBeAF+EYExKzc=;
+	s=korg; t=1750686017;
+	bh=A656ntGMESRxQEBCKj+acHraTQ9RGYAQtindfRPwbEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CmJTd4z4NwbOaltdYyA2MxX0sBeNelihT4pR6d7TZylUuk0vN62gKO7rXU3SVcKRk
-	 TeNpI8BcQDw4yhof0EHfmgR8+pMCZ68I6vw6EBo2otfXYXWIcnd3bMwzGmLgPDkSin
-	 CMr2FxdQo0oGdQpxR5MVlK1SoFMYDUoWNgvlNcc0=
+	b=P9p25ySsT2GQpe2STvj4/q5fFSLEp+kOjTLBCcThzWpBxlTowgOanHdmKtNO7lWTx
+	 bT4KG5MuDYClQJMv0W6z0kQpQfr+g422MvxB400Vvm1Cu0RVEdKW5BoP0D2ssqvWqo
+	 xk+vR2/p7Tqs5r9WaAClFfuGQ6IVRNNfVHHI2UW0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.4 132/222] PCI: Add ACS quirk for Loongson PCIe
-Date: Mon, 23 Jun 2025 15:07:47 +0200
-Message-ID: <20250623130616.065173500@linuxfoundation.org>
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Lukas Wunner <lukas@wunner.de>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 5.4 133/222] PCI: Fix lock symmetry in pci_slot_unlock()
+Date: Mon, 23 Jun 2025 15:07:48 +0200
+Message-ID: <20250623130616.093500350@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -60,69 +61,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
+commit f3efb9569b4a21354ef2caf7ab0608a3e14cc6e4 upstream.
 
-Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
-allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
-each Root Port can be in a separate IOMMU group.
+The commit a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+made the lock function to call depend on dev->subordinate but left
+pci_slot_unlock() unmodified creating locking asymmetry compared with
+pci_slot_lock().
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Because of the asymmetric lock handling, the same bridge device is unlocked
+twice. First pci_bus_unlock() unlocks bus->self and then pci_slot_unlock()
+will unconditionally unlock the same bridge device.
+
+Move pci_dev_unlock() inside an else branch to match the logic in
+pci_slot_lock().
+
+Fixes: a4e772898f8b ("PCI: Add missing bridge lock to pci_bus_lock()")
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
+Link: https://patch.msgid.link/20250505115412.37628-1-ilpo.jarvinen@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ drivers/pci/pci.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4869,6 +4869,18 @@ static int pci_quirk_brcm_acs(struct pci
- 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+--- a/drivers/pci/pci.c
++++ b/drivers/pci/pci.c
+@@ -5296,7 +5296,8 @@ static void pci_slot_unlock(struct pci_s
+ 			continue;
+ 		if (dev->subordinate)
+ 			pci_bus_unlock(dev->subordinate);
+-		pci_dev_unlock(dev);
++		else
++			pci_dev_unlock(dev);
+ 	}
  }
  
-+static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
-+{
-+	/*
-+	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
-+	 * they do not allow peer-to-peer transactions between Root Ports.
-+	 * Allow each Root Port to be in a separate IOMMU group by masking
-+	 * SV/RR/CR/UF bits.
-+	 */
-+	return pci_acs_ctrl_enabled(acs_flags,
-+		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
-+}
-+
- /*
-  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-  * multi-function devices, the hardware isolates the functions by
-@@ -5002,6 +5014,17 @@ static const struct pci_dev_acs_enabled
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
-+	/* Loongson PCIe Root Ports */
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
- 	/* Amazon Annapurna Labs */
- 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
- 	/* Zhaoxin multi-function devices */
 
 
 
