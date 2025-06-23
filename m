@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692B8AE4F18
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E332AE5359
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 000ED17DDD8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 056274A7A73
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333591F582A;
-	Mon, 23 Jun 2025 21:12:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2996A2236E5;
+	Mon, 23 Jun 2025 21:52:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZFqj8I1a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jfa4kLxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E349B1F7580;
-	Mon, 23 Jun 2025 21:12:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD65218AC1;
+	Mon, 23 Jun 2025 21:52:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713136; cv=none; b=s5K+nGLUmZQxgMy21iFzgWA/Vr6cAjFna8PDjJ0Gdd/t2CAhIOGTvx0R+xIjK3w3g/yYjguL0ZJBA6D+PzFl9QERFGYpd6kJvbhAqkaVFNor5XBcJyg+tcz05VV082gJls9shSwh8Md40KwqrUUFti0EV1GaKvWIWUwKzrnPEHw=
+	t=1750715540; cv=none; b=dRxwlEJVSL3PGgx4iNVz1hN/cL3suvxLVjM1AOs0uLL7VOpyEFsA6++bbrbTBiwu0NxLn/IKhbMHC32e7MoNwsFM7w7dvjn46Z7mUEvjUlXr7z0afxAP0Cnu7XCy1uJPIecb4VP+kT6L9vbJ3GU3pLk7FkAIXHERzIZhVSNUwcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713136; c=relaxed/simple;
-	bh=VM+Y/agfYK87uiVcnFnHPF+pfjphLGgLE5YjtvG0RfI=;
+	s=arc-20240116; t=1750715540; c=relaxed/simple;
+	bh=PTGzc4xVybOMflKwOmdTmEv860MfwrD5x4NYwjNm5ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4jTRRNC8dPRaFpB+B/xLkKXdTonTrqkiCOIDS4bRE59XpoPUwarW7oAiWiZ1/UO737OnOuvnMC44lDBkHf9G0cL2ODdhzVCTkgh0dSrRtBB4/BabT7quf3dT8ZAiDQMgSUW6KrMlIMNtMd8J7H3nOyYCKpJtvJfyUBLrQNG4ss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZFqj8I1a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7805DC4CEEA;
-	Mon, 23 Jun 2025 21:12:15 +0000 (UTC)
+	 MIME-Version; b=dkhwpN01JadKrp56EuiEtxQyDvQ7Ew8rOwod1smGH1AnJ907YQKmYETC6fWmf+hS8s9JsJFJkrr8EpsYl39nGMGrD6M8hn7tQ5VJCZReuoQ0j+0qrABMlsE1FZEWMr/sF0xAW/4kc1cEkweCo7DQnAp6lKO0v/iJGqsrZrJ1PBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jfa4kLxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 724F6C4CEEA;
+	Mon, 23 Jun 2025 21:52:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713135;
-	bh=VM+Y/agfYK87uiVcnFnHPF+pfjphLGgLE5YjtvG0RfI=;
+	s=korg; t=1750715540;
+	bh=PTGzc4xVybOMflKwOmdTmEv860MfwrD5x4NYwjNm5ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZFqj8I1a9iIDbcMXVsfnwEoseqfiV+b95MXF95D6cx+5Hjc5R+8p4ZsAbeBFLrVSZ
-	 yZw/F4Uy6Na5BNEPxtzMKIbheDVwpjG4FesFGfDoDK7vh5Ozgz99Md9peRAcZi4h5F
-	 Y7cVAI76VX9G9ntWiLxNsLgfr/zYzKxBSLBFQI1I=
+	b=jfa4kLxaZ/fnrSUQvcM5H+RifNOzTNbyX9ucYDeyFJ8sGn91qwtOWYzbL78FJshLJ
+	 w/mSiW51EbI8XfyczINQW7yZVJlcNkS4wcdfa9DKK3t09yR973rrV1h0t72Xypn+nw
+	 CEG6NAbxdK0WvozwMmzKBFCHL+jsHfCJMArc65T8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 6.6 051/290] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
+	David Heimann <d@dmeh.net>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.1 267/508] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
 Date: Mon, 23 Jun 2025 15:05:12 +0200
-Message-ID: <20250623130628.537995186@linuxfoundation.org>
+Message-ID: <20250623130651.814276871@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: David Heimann <d@dmeh.net>
 
-commit 7397daf1029d5bfd3415ec8622f5179603d5702d upstream.
+commit 6a3439a417b910e662c666993798e0691bc81147 upstream.
 
-The late init call just writes to omap4 registers as soon as
-CONFIG_MFD_CPCAP is enabled without checking whether the
-cpcap driver is actually there or the SoC is indeed an
-OMAP4.
-Rather do these things only with the right device combination.
+The RODE AI-1 audio interface requires implicit feedback sync between
+playback endpoint 0x03 and feedback endpoint 0x84 on interface 3, but
+doesn't advertise this in its USB descriptors.
 
-Fixes booting the BT200 with said configuration enabled and non-factory
-X-Loader and probably also some surprising behavior on other devices.
+Without this quirk, the device receives audio data but produces no output.
 
-Fixes: c145649bf262 ("ARM: OMAP2+: Configure voltage controller for cpcap to low-speed")
-CC: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reivewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20250331144439.769697-1-andreas@kemnade.info
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: David Heimann <d@dmeh.net>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/084dc88c-1193-4a94-a002-5599adff936c@app.fastmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap2/pmic-cpcap.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ sound/usb/implicit.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm/mach-omap2/pmic-cpcap.c
-+++ b/arch/arm/mach-omap2/pmic-cpcap.c
-@@ -264,7 +264,11 @@ int __init omap4_cpcap_init(void)
- 
- static int __init cpcap_late_init(void)
- {
--	omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
-+	if (!of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-+		return 0;
-+
-+	if (soc_is_omap443x() || soc_is_omap446x() || soc_is_omap447x())
-+		omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
- 
- 	return 0;
- }
+--- a/sound/usb/implicit.c
++++ b/sound/usb/implicit.c
+@@ -57,6 +57,7 @@ static const struct snd_usb_implicit_fb_
+ 	IMPLICIT_FB_FIXED_DEV(0x31e9, 0x0002, 0x81, 2), /* Solid State Logic SSL2+ */
+ 	IMPLICIT_FB_FIXED_DEV(0x0499, 0x172f, 0x81, 2), /* Steinberg UR22C */
+ 	IMPLICIT_FB_FIXED_DEV(0x0d9a, 0x00df, 0x81, 2), /* RTX6001 */
++	IMPLICIT_FB_FIXED_DEV(0x19f7, 0x000a, 0x84, 3), /* RODE AI-1 */
+ 	IMPLICIT_FB_FIXED_DEV(0x22f0, 0x0006, 0x81, 3), /* Allen&Heath Qu-16 */
+ 	IMPLICIT_FB_FIXED_DEV(0x1686, 0xf029, 0x82, 2), /* Zoom UAC-2 */
+ 	IMPLICIT_FB_FIXED_DEV(0x2466, 0x8003, 0x86, 2), /* Fractal Audio Axe-Fx II */
 
 
 
