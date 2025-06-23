@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156205-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42679AE4E97
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 339CCAE535D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1657B189F600
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E4744220C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B5A21CA07;
-	Mon, 23 Jun 2025 21:07:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E589225771;
+	Mon, 23 Jun 2025 21:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AsG8jsky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYDutQD6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01F6E1EE019;
-	Mon, 23 Jun 2025 21:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88A225417;
+	Mon, 23 Jun 2025 21:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712842; cv=none; b=YN17ESn5ILV5/xOLQD/L8IFDbakD+UpAwyzHFdxkZclTVAgz+JmHcAG+b4OiUTcDElIa3QEjcjrjo0BRW6YyfW6yxlrAoMLlbjVGZwaaxCckSitu/NSNv2NmX96YTJTlVjtDbMYM9GWRwgkJe1/H1dt6mIfrYS5bsD6XVi5PA0Y=
+	t=1750715521; cv=none; b=Js90ZzT7cBZTJuOliBjKo/yWi3wG7wAlwgPlNrPoZaC1pY5xAQ5GS2aGzUcPDs8hiaXBjqtIxXk1lX/imgX1eGekNDZvvkepqit2kOKvShxysx4tLrkbYVJAm8PYThmiCUtTFZ12Dfoyl0zvj/JtSQxQLG860OyngbXcLHA2imU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712842; c=relaxed/simple;
-	bh=gujvYEoeYIxqzTgPcM/xIrtobfIsWGNioNAMZYV9HCg=;
+	s=arc-20240116; t=1750715521; c=relaxed/simple;
+	bh=oK6bEiBx6V3pwlnfFDWbEcR5UjCwgD8YlP/emdQ5Co4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CW2lctia1D+P+WvQilKKAxJCKqKWkXS2xcV1oRzZktgdajo8dL8GBq4qGpgeYGFFEBuprw/EvkeUpXHqVQ6Ee4JvyMdpSLxjugv6r2Nx0DxAv8qbpNW6BXoLkeTpxkblw0Gwm3fv5KONY1CqhdVG1EqeJLFE5J/oP8Yw3/wcSyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AsG8jsky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C782C4CEF0;
-	Mon, 23 Jun 2025 21:07:21 +0000 (UTC)
+	 MIME-Version; b=CCgxHY2Hjd2gKi2/WsSMlD83M/StSfIftDI6jAP6spBxx7fI4CEcU784nby2vB6E4U5ukpRF9QQc9VNsyZwE3Dqr8HlcgWhUGKAXERo1vHuBwYD3nckTwTMc7Ntb4E3G+u/8rID760N5w5szBw29Qk+7yRJQf9w0T0ucZLIghHo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYDutQD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DE4C4CEF1;
+	Mon, 23 Jun 2025 21:52:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712841;
-	bh=gujvYEoeYIxqzTgPcM/xIrtobfIsWGNioNAMZYV9HCg=;
+	s=korg; t=1750715521;
+	bh=oK6bEiBx6V3pwlnfFDWbEcR5UjCwgD8YlP/emdQ5Co4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AsG8jskyPMVPmAiNKdAHPvgyaTAVHnGPTIlUOYhNFVyskY/KwWSnRd32h9B7RsHpC
-	 Oz/Z1O4TCwM7ykhx9jB2XyS19LzTQAzsiofUkcvDKBUZtx3FqsWSjSfFOkr9bQKISK
-	 o/JMsnc9lcjpkS6WvnZindBMtUD4dHPvPWskOGEM=
+	b=UYDutQD6P4YRlVRsKbzfzpOPY3fdngKeL2D6lLSG4LABwXo/u+V/1bW1v0GA+FP5G
+	 NVQEtZ/7GY4qHL1BoOi0OWdVLnouNhFqQHBhlmXDbLVfc5QtpSD1kWS38RD7alCCSJ
+	 zIvLomXyElMi9I612bbA29ne+WJ/C8bLH5S7Y4NA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 151/222] drm/amdgpu/gfx8: fix CSIB handling
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.6 225/290] ksmbd: fix null pointer dereference in destroy_previous_session
 Date: Mon, 23 Jun 2025 15:08:06 +0200
-Message-ID: <20250623130616.628336848@linuxfoundation.org>
+Message-ID: <20250623130633.697013202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit c8b8d7a4f1c5cdfbd61d75302fb3e3cdefb1a7ab ]
+commit 7ac5b66acafcc9292fb935d7e03790f2b8b2dc0e upstream.
 
-We shouldn't return after the last section.
-We need to update the rest of the CSIB.
+If client set ->PreviousSessionId on kerberos session setup stage,
+NULL pointer dereference error will happen. Since sess->user is not
+set yet, It can pass the user argument as NULL to destroy_previous_session.
+sess->user will be set in ksmbd_krb5_authenticate(). So this patch move
+calling destroy_previous_session() after ksmbd_krb5_authenticate().
 
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27391
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/smb/server/smb2pdu.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-index 467ed7fca884d..79347df0620d0 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v8_0.c
-@@ -1267,8 +1267,6 @@ static void gfx_v8_0_get_csb_buffer(struct amdgpu_device *adev,
- 						PACKET3_SET_CONTEXT_REG_START);
- 				for (i = 0; i < ext->reg_count; i++)
- 					buffer[count++] = cpu_to_le32(ext->extent[i]);
--			} else {
--				return;
- 			}
- 		}
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1599,17 +1599,18 @@ static int krb5_authenticate(struct ksmb
+ 	out_len = work->response_sz -
+ 		(le16_to_cpu(rsp->SecurityBufferOffset) + 4);
+ 
+-	/* Check previous session */
+-	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
+-	if (prev_sess_id && prev_sess_id != sess->id)
+-		destroy_previous_session(conn, sess->user, prev_sess_id);
+-
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
+ 		ksmbd_debug(SMB, "krb5 authentication failed\n");
+ 		return -EINVAL;
  	}
--- 
-2.39.5
-
++
++	/* Check previous session */
++	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
++	if (prev_sess_id && prev_sess_id != sess->id)
++		destroy_previous_session(conn, sess->user, prev_sess_id);
++
+ 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
+ 
+ 	if ((conn->sign || server_conf.enforced_signing) ||
 
 
 
