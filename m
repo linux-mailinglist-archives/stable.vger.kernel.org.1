@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-155800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0624AE43C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4595AAE440A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E3A5189AB52
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DCCC7AB906
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D22252912;
-	Mon, 23 Jun 2025 13:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B044253F05;
+	Mon, 23 Jun 2025 13:34:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W0hUU95"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV2zJaks"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEB5230BC2;
-	Mon, 23 Jun 2025 13:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8E54C6E;
+	Mon, 23 Jun 2025 13:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685364; cv=none; b=dmjGRoZhxWTyLwt4usaZ7lmkpw3RoDX8z2z5txPufu/DbQrTvLaybrl0ZiXgSWNcNbxnQ5q8YFnUApIpLQ8HQc6SHrZBudbKRJwqWVx14dLApZ0duE1fOwUaDy527TZsQR1DcLU9wOFFIq9JKjLS0xxJxaLntHDMm/6Kt20cv7M=
+	t=1750685646; cv=none; b=sJu2mpw0aurFhhFgSCAdOYzRh9Ise+Xc134Zufv+PtGD89Had/Z7JF3J/caaocXXHBkq91XG0nf1dCmwdYlsW9oQ1ljAsnsdVlDnFRRE5fJdTNFhQfSAQ/slmKmXmrVvh3C4mR9+nNFomGhyULX5A/F+A5mp8rooCjc8X5R1lMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685364; c=relaxed/simple;
-	bh=RV1ri2DnalP+VXGt58jfsRUO2PfINLpn/ql8D76hdq8=;
+	s=arc-20240116; t=1750685646; c=relaxed/simple;
+	bh=3KgiS3tnbDiiZR3oCCyMIbcXUhTBr31Ms1505/kZEPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gUfQCko0/QljDpmtRx3Oxhe+hsNblz/CLKy+TWaK/DgLaZ3LXa3CKmnpQlLsBcZKwz7ncxS4RnbcGD5RZo+sFmp2DWYZJXi98reVy7+dJFb55q1ToWoYSGrmhn1RJ8Qqy41QdQcoQfeIXvirMSBlGdl79Fc3iAGNZ0F3BY23III=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W0hUU95; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8821C4CEEA;
-	Mon, 23 Jun 2025 13:29:23 +0000 (UTC)
+	 MIME-Version; b=FhA2FpHQ10hhBDRQxma12Af01KOKfNsFnsNyyUffy5o8gULpX6iqhBip4GLqVXrK6b1KNJlN0cuCmZsW3awjcfaNrD3D4jp8fH3mZDslP0ziyWh2z8QrLypdyzmjodF2iiw9T/PLi99f3YsraOhU+1kwPdSnBjtELgm98NS2guU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV2zJaks; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60EEAC4CEEA;
+	Mon, 23 Jun 2025 13:34:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685364;
-	bh=RV1ri2DnalP+VXGt58jfsRUO2PfINLpn/ql8D76hdq8=;
+	s=korg; t=1750685646;
+	bh=3KgiS3tnbDiiZR3oCCyMIbcXUhTBr31Ms1505/kZEPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0W0hUU95y1a13CwnCP+k2DTlQo40tg6Q8/eDhEMR3ZV6/01mNJsvHI1GZZkGC5/T7
-	 yKTLW+X71mApcV4j1bXSgnNJ8QP0XrZzxTWgtyUY1/aNmvsou6tp3is6kKG0ruvMJ/
-	 elmmJAmjkYXkcNr2IgonEvITDJ5rs7S21eIVMgCw=
+	b=cV2zJaksCoapjfgqGHKdG0lWkJiomUhycW+UJ3SsjT/ckDhYf6H14rgYTBmi+Hn5B
+	 HFNoPM2zqHFExiz9OVcZTJm8bkFXGxVvQ62djZRI46LjR+y6IsBZfGe/3nUn+kP1kw
+	 OShagBWVDlvQY7YTzBUkURcc2iICQ2+BNLIw+2mI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hansen Dsouza <hansen.dsouza@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Huajian Yang <huajianyang@asrmicro.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 234/592] drm/amd/display: disable DPP RCG before DPP CLK enable
-Date: Mon, 23 Jun 2025 15:03:12 +0200
-Message-ID: <20250623130705.857431228@linuxfoundation.org>
+Subject: [PATCH 5.15 049/411] netfilter: bridge: Move specific fragmented packet to slow_path instead of dropping it
+Date: Mon, 23 Jun 2025 15:03:13 +0200
+Message-ID: <20250623130634.468714278@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,247 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Huajian Yang <huajianyang@asrmicro.com>
 
-[ Upstream commit 1bcd679209420305a86833bc357d50021909edaf ]
+[ Upstream commit aa04c6f45b9224b949aa35d4fa5f8d0ba07b23d4 ]
 
-[why]
-DPP CLK enable needs to disable DPPCLK RCG first.
-The DPPCLK_en in dccg should always be enabled when the corresponding
-pipe is enabled.
+The config NF_CONNTRACK_BRIDGE will change the bridge forwarding for
+fragmented packets.
 
-Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The original bridge does not know that it is a fragmented packet and
+forwards it directly, after NF_CONNTRACK_BRIDGE is enabled, function
+nf_br_ip_fragment and br_ip6_fragment will check the headroom.
+
+In original br_forward, insufficient headroom of skb may indeed exist,
+but there's still a way to save the skb in the device driver after
+dev_queue_xmit.So droping the skb will change the original bridge
+forwarding in some cases.
+
+Fixes: 3c171f496ef5 ("netfilter: bridge: add connection tracking system")
+Signed-off-by: Huajian Yang <huajianyang@asrmicro.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dccg/dcn35/dcn35_dccg.c    | 38 ++++++++++++-------
- .../amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 21 ++++++----
- 2 files changed, 38 insertions(+), 21 deletions(-)
+ net/bridge/netfilter/nf_conntrack_bridge.c | 12 ++++++------
+ net/ipv6/netfilter.c                       | 12 ++++++------
+ 2 files changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-index b363f5360818d..ad910065f463f 100644
---- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-+++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
-@@ -391,6 +391,7 @@ static void dccg35_set_dppclk_rcg(struct dccg *dccg,
+diff --git a/net/bridge/netfilter/nf_conntrack_bridge.c b/net/bridge/netfilter/nf_conntrack_bridge.c
+index fbdb1ad448c3a..c63ad63db25ed 100644
+--- a/net/bridge/netfilter/nf_conntrack_bridge.c
++++ b/net/bridge/netfilter/nf_conntrack_bridge.c
+@@ -59,19 +59,19 @@ static int nf_br_ip_fragment(struct net *net, struct sock *sk,
+ 		struct ip_fraglist_iter iter;
+ 		struct sk_buff *frag;
  
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
+-		if (first_len - hlen > mtu ||
+-		    skb_headroom(skb) < ll_rs)
++		if (first_len - hlen > mtu)
+ 			goto blackhole;
  
-+
- 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && enable)
- 		return;
+-		if (skb_cloned(skb))
++		if (skb_cloned(skb) ||
++		    skb_headroom(skb) < ll_rs)
+ 			goto slow_path;
  
-@@ -411,6 +412,8 @@ static void dccg35_set_dppclk_rcg(struct dccg *dccg,
- 	BREAK_TO_DEBUGGER();
- 		break;
- 	}
-+	//DC_LOG_DEBUG("%s: inst(%d) DPPCLK rcg_disable: %d\n", __func__, inst, enable ? 0 : 1);
-+
- }
+ 		skb_walk_frags(skb, frag) {
+-			if (frag->len > mtu ||
+-			    skb_headroom(frag) < hlen + ll_rs)
++			if (frag->len > mtu)
+ 				goto blackhole;
  
- static void dccg35_set_dpstreamclk_rcg(
-@@ -1112,30 +1115,24 @@ static void dcn35_set_dppclk_enable(struct dccg *dccg,
- {
- 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
- 
-+
- 	switch (dpp_inst) {
- 	case 0:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK0_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
- 		break;
- 	case 1:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK1_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable);
- 		break;
- 	case 2:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK2_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable);
- 		break;
- 	case 3:
- 		REG_UPDATE(DPPCLK_CTRL, DPPCLK3_EN, enable);
--		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
--			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable);
- 		break;
- 	default:
- 		break;
- 	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
- 
- }
- 
-@@ -1163,14 +1160,18 @@ static void dccg35_update_dpp_dto(struct dccg *dccg, int dpp_inst,
- 			ASSERT(false);
- 			phase = 0xff;
+-			if (skb_shared(frag))
++			if (skb_shared(frag) ||
++			    skb_headroom(frag) < hlen + ll_rs)
+ 				goto slow_path;
  		}
-+		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
  
- 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
- 				DPPCLK0_DTO_PHASE, phase,
- 				DPPCLK0_DTO_MODULO, modulo);
+diff --git a/net/ipv6/netfilter.c b/net/ipv6/netfilter.c
+index 118e834e91902..064163b41cbf6 100644
+--- a/net/ipv6/netfilter.c
++++ b/net/ipv6/netfilter.c
+@@ -163,20 +163,20 @@ int br_ip6_fragment(struct net *net, struct sock *sk, struct sk_buff *skb,
+ 		struct ip6_fraglist_iter iter;
+ 		struct sk_buff *frag2;
  
- 		dcn35_set_dppclk_enable(dccg, dpp_inst, true);
--	} else
-+	} else {
- 		dcn35_set_dppclk_enable(dccg, dpp_inst, false);
-+		/*we have this in hwss: disable_plane*/
-+		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
-+	}
- 	dccg->pipe_dppclk_khz[dpp_inst] = req_dppclk;
- }
+-		if (first_len - hlen > mtu ||
+-		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
++		if (first_len - hlen > mtu)
+ 			goto blackhole;
  
-@@ -1182,6 +1183,7 @@ static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
- 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
- 		return;
+-		if (skb_cloned(skb))
++		if (skb_cloned(skb) ||
++		    skb_headroom(skb) < (hroom + sizeof(struct frag_hdr)))
+ 			goto slow_path;
  
-+
- 	switch (dpp_inst) {
- 	case 0:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
-@@ -1198,6 +1200,8 @@ static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
- 	default:
- 		break;
- 	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) rcg: %d\n", __func__, dpp_inst, enable);
-+
- }
+ 		skb_walk_frags(skb, frag2) {
+-			if (frag2->len > mtu ||
+-			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
++			if (frag2->len > mtu)
+ 				goto blackhole;
  
- static void dccg35_get_pixel_rate_div(
-@@ -1521,28 +1525,30 @@ static void dccg35_set_physymclk_root_clock_gating(
- 	switch (phy_inst) {
- 	case 0:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 1:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 2:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 3:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	case 4:
- 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
--				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
-+				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
- 		break;
- 	default:
- 		BREAK_TO_DEBUGGER();
- 		return;
- 	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
-+
- }
+ 			/* Partially cloned skb? */
+-			if (skb_shared(frag2))
++			if (skb_shared(frag2) ||
++			    skb_headroom(frag2) < (hlen + hroom + sizeof(struct frag_hdr)))
+ 				goto slow_path;
+ 		}
  
- static void dccg35_set_physymclk(
-@@ -1643,6 +1649,8 @@ static void dccg35_dpp_root_clock_control(
- 		return;
- 
- 	if (clock_on) {
-+		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
-+
- 		/* turn off the DTO and leave phase/modulo at max */
- 		dcn35_set_dppclk_enable(dccg, dpp_inst, 1);
- 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
-@@ -1654,6 +1662,8 @@ static void dccg35_dpp_root_clock_control(
- 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
- 			  DPPCLK0_DTO_PHASE, 0,
- 			  DPPCLK0_DTO_MODULO, 1);
-+		/*we have this in hwss: disable_plane*/
-+		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
- 	}
- 
- 	dccg->dpp_clock_gated[dpp_inst] = !clock_on;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index 922b8d71cf1aa..63077c1fad859 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -241,11 +241,6 @@ void dcn35_init_hw(struct dc *dc)
- 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
- 					!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter);
- 	}
--	if (res_pool->dccg->funcs->dccg_root_gate_disable_control) {
--		for (i = 0; i < res_pool->pipe_count; i++)
--			res_pool->dccg->funcs->dccg_root_gate_disable_control(res_pool->dccg, i, 0);
--	}
--
- 	for (i = 0; i < res_pool->audio_count; i++) {
- 		struct audio *audio = res_pool->audios[i];
- 
-@@ -901,12 +896,18 @@ void dcn35_init_pipes(struct dc *dc, struct dc_state *context)
- void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
- 			       struct dc_state *context)
- {
-+	struct dpp *dpp = pipe_ctx->plane_res.dpp;
-+	struct dccg *dccg = dc->res_pool->dccg;
-+
-+
- 	/* enable DCFCLK current DCHUB */
- 	pipe_ctx->plane_res.hubp->funcs->hubp_clk_cntl(pipe_ctx->plane_res.hubp, true);
- 
- 	/* initialize HUBP on power up */
- 	pipe_ctx->plane_res.hubp->funcs->hubp_init(pipe_ctx->plane_res.hubp);
--
-+	/*make sure DPPCLK is on*/
-+	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, true);
-+	dpp->funcs->dpp_dppclk_control(dpp, false, true);
- 	/* make sure OPP_PIPE_CLOCK_EN = 1 */
- 	pipe_ctx->stream_res.opp->funcs->opp_pipe_clock_control(
- 			pipe_ctx->stream_res.opp,
-@@ -923,6 +924,7 @@ void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
- 		// Program system aperture settings
- 		pipe_ctx->plane_res.hubp->funcs->hubp_set_vm_system_aperture_settings(pipe_ctx->plane_res.hubp, &apt);
- 	}
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d) =\n", __func__, dpp->inst);
- 
- 	if (!pipe_ctx->top_pipe
- 		&& pipe_ctx->plane_state
-@@ -938,6 +940,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
- {
- 	struct hubp *hubp = pipe_ctx->plane_res.hubp;
- 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
-+	struct dccg *dccg = dc->res_pool->dccg;
-+
- 
- 	dc->hwss.wait_for_mpcc_disconnect(dc, dc->res_pool, pipe_ctx);
- 
-@@ -955,7 +959,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	hubp->funcs->hubp_clk_cntl(hubp, false);
- 
- 	dpp->funcs->dpp_dppclk_control(dpp, false, false);
--/*to do, need to support both case*/
-+	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, false);
-+
- 	hubp->power_gated = true;
- 
- 	hubp->funcs->hubp_reset(hubp);
-@@ -967,6 +972,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
- 	pipe_ctx->top_pipe = NULL;
- 	pipe_ctx->bottom_pipe = NULL;
- 	pipe_ctx->plane_state = NULL;
-+	//DC_LOG_DEBUG("%s: dpp_inst(%d)=\n", __func__, dpp->inst);
-+
- }
- 
- void dcn35_disable_plane(struct dc *dc, struct dc_state *state, struct pipe_ctx *pipe_ctx)
 -- 
 2.39.5
 
