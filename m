@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A137AE441A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12D2FAE437B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81BCF189BEDE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B3D2E17AB3E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3708A2522A8;
-	Mon, 23 Jun 2025 13:33:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6681E24BBE4;
+	Mon, 23 Jun 2025 13:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KF6at1x2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvaFskhR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8B034C7F;
-	Mon, 23 Jun 2025 13:33:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2121023A9BE;
+	Mon, 23 Jun 2025 13:24:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685606; cv=none; b=S+JE4/fEhIvymrhmATHrwZqOLi4PfLNbI3cuUh+JoHNmynlHsMvLslkgbJS7owLnsbg/Ll3U0p6wiCKDSunVVvOp1HkY+fKgH5hUgP+4u+xZNilD9LgXSCrDLnd5jdehZCnW1KQu4Ekv/GZHHyD6WsU4reMzAIVVGfFyQzS9jQo=
+	t=1750685098; cv=none; b=tuwIbCp3JI8J9pkqprE5LLPd/OZ9VnYTpt3kCpAEHmSXIcrgzfjBCuAjDAyzV6fclLNHzwWdwMJ4Rgqzt4aDHliq4tpizRF5IF4wbV4q43nihTx+wXAUFaS3TErinX9wG5O9TD531HJPLqVBbBwTUdgOKjmJsVv6Tsl3j1ojLTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685606; c=relaxed/simple;
-	bh=LoX4SIzL+S6weSXCutQQ88VnBM34kua7YEfsW0FWHec=;
+	s=arc-20240116; t=1750685098; c=relaxed/simple;
+	bh=Mkwzd9jqtV26CacxyJ6WsbNrgpFNAZmrH6dcEJff2Jg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YwcMhqwzrrXsK/1HkLL7yP3aEBp/pO2MZXVz/xhwT7IQUJqQ2AYnrLMUFTESleepPE/96e4Cf0Oi60/H2JZiAl8fGj/nVWarNGMkOIclhuJOKvV67PEMD68cDEi2Hn2hYZ+39lxO/it2s0pTEeleL8oE9bO/DJ2fYTaAe6JCOeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KF6at1x2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BACFC4CEEA;
-	Mon, 23 Jun 2025 13:33:25 +0000 (UTC)
+	 MIME-Version; b=BGm3TLTPAZMK63gDSW/mxAkRMwfFoGg9t0t0LSaViBD+1UTSJ02FP6AhIkdGBwFqtsqYmHaeNURft9yndRw1iJdEn121+CQJH3vNOHjj/xpYhri0pSNZzXSyXt7fhc2JXXCHz6sRpNTkls19LCjHFXWCEI/jGTyaVDTd7tatupg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvaFskhR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA9E4C4CEEA;
+	Mon, 23 Jun 2025 13:24:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685605;
-	bh=LoX4SIzL+S6weSXCutQQ88VnBM34kua7YEfsW0FWHec=;
+	s=korg; t=1750685098;
+	bh=Mkwzd9jqtV26CacxyJ6WsbNrgpFNAZmrH6dcEJff2Jg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KF6at1x2pv4xWr2+GIAZXtKwLpUiSHPjrigHUG4EpOR1ow4K4vZWLbw9kdou2iIH5
-	 Tfb1RFvr47+3/n/33UKRNL/m7n9PoWNMjKjz3/FNYEMVKwVgYg0dUF4BixeGFE5LBK
-	 Y5llsBY0JApDCNwqJ/JJgsW5xX0aG0ZK4LhPIiVQ=
+	b=ZvaFskhRcJf6DvvXA6OVBHf8tSifF7SgHikiUF0m+o1mh4F3Cwr6zjTPKvhYgzgcw
+	 bD4AaVRhreRJ+9e/ziK+A3V5UIsSWSmr7OdtAuEaTylJaTMGepS8cL32UDoizrvjza
+	 lwM/RgRYlJYR5Q7y+ZFtya+6cwrrmn/PvrXm52ZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Svyatoslav Ryhel <clamor95@gmail.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 046/411] f2fs: clean up w/ fscrypt_is_bounce_page()
+Subject: [PATCH 6.15 232/592] power: supply: max17040: adjust thermal channel scaling
 Date: Mon, 23 Jun 2025 15:03:10 +0200
-Message-ID: <20250623130634.382051180@linuxfoundation.org>
+Message-ID: <20250623130705.809771099@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,36 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Svyatoslav Ryhel <clamor95@gmail.com>
 
-[ Upstream commit 0c708e35cf26449ca317fcbfc274704660b6d269 ]
+[ Upstream commit d055f51731744243b244aafb1720f793a5b61f7b ]
 
-Just cleanup, no logic changes.
+IIO thermal channel is in millidegree while power supply framework expects
+decidegree values. Adjust scaling to get correct readings.
 
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
+Link: https://lore.kernel.org/r/20250430060239.12085-2-clamor95@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/data.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/max17040_battery.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/data.c b/fs/f2fs/data.c
-index 3f8dae229d422..b5bcfb8288a13 100644
---- a/fs/f2fs/data.c
-+++ b/fs/f2fs/data.c
-@@ -56,7 +56,7 @@ static bool __is_cp_guaranteed(struct page *page)
- 	struct inode *inode;
- 	struct f2fs_sb_info *sbi;
+diff --git a/drivers/power/supply/max17040_battery.c b/drivers/power/supply/max17040_battery.c
+index 51310f6e4803b..c1640bc6accd2 100644
+--- a/drivers/power/supply/max17040_battery.c
++++ b/drivers/power/supply/max17040_battery.c
+@@ -410,8 +410,9 @@ static int max17040_get_property(struct power_supply *psy,
+ 		if (!chip->channel_temp)
+ 			return -ENODATA;
  
--	if (!mapping)
-+	if (fscrypt_is_bounce_page(page))
- 		return false;
- 
- 	inode = mapping->host;
+-		iio_read_channel_processed_scale(chip->channel_temp,
+-						 &val->intval, 10);
++		iio_read_channel_processed(chip->channel_temp, &val->intval);
++		val->intval /= 100; /* Convert from milli- to deci-degree */
++
+ 		break;
+ 	default:
+ 		return -EINVAL;
 -- 
 2.39.5
 
