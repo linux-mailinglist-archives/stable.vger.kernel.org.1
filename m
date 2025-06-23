@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157506-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2432AE546D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E5CE3AE5000
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28C001BC1091
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7923AD4EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF842940B;
-	Mon, 23 Jun 2025 22:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDC91ACEDA;
+	Mon, 23 Jun 2025 21:21:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ff7R7K08"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmbm+D3V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D53A4C74;
-	Mon, 23 Jun 2025 22:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBA97482;
+	Mon, 23 Jun 2025 21:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716034; cv=none; b=tX+EMFiqKIA1ESy5ol1HPzFnZK+g9gkitusBO4AFCdtYlYGEBy08R1tbh85AOas5lZtUtwFv4sUKeDWyOv1WH/+5Df9xPkKgloDQDbxryCsz3ObMAPPu9buT7IVdK60DJ9h/HxuvoPE4KD6ROVrt6l42Yq2Rs4QqO03XQ5l2588=
+	t=1750713695; cv=none; b=U5Yl8hUiKrwkecGG44QplkqcQclDXr97glCufk13CMzoN9IkLQtO2fHXUUYoVZ3XKG5tgCYY/ouRn2h2Y9kMXcWKwF7Op3gf3nqqMctkjzx+4m41MDI3jPLVuoIHBXvatoVRDVUZdpjPTU6qUQvbNVLY2X+XDr+BUMcfnIxkZq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716034; c=relaxed/simple;
-	bh=N293jCppDIKTE6EW8HLA2gO9tnZ7lALoaDnfErZ5l2s=;
+	s=arc-20240116; t=1750713695; c=relaxed/simple;
+	bh=IVkilv6mWBswWG7VghXQvweeja1A6fpC0LZQvaRx6Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CEHsrQIR0PucQ/tbR9h4OaFhKqynISUfv9gZp0leSmcPUSvZj9ZTSaBqVQsiadGM72PljlOlxQCIxwyMUv4fb7VQGWuzmB////coL/uSIOlkxFhrZShJvbEHKITkZY3dcHWUrSTv/6qr51q6ptR6qt3WLZ2OuZfC9WNgSEgpodU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ff7R7K08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBA3EC4CEEA;
-	Mon, 23 Jun 2025 22:00:33 +0000 (UTC)
+	 MIME-Version; b=Tni59IuXrNE8vMupIKm5dPbBKrn1AVAysbs4E+cYP9NyO2UbPbkPO77WWv6GlNaW3pT1wxQP25dsWNb4rIyIAiSHHdR0nqBnC/I1XquE2V9lMVpKrVMTHfMGbUQHeK3cnFy2C2clSwDCvGdFUUiJP7mXFAFdXh6OnulWmYi39bI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmbm+D3V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CF7C4CEEA;
+	Mon, 23 Jun 2025 21:21:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716034;
-	bh=N293jCppDIKTE6EW8HLA2gO9tnZ7lALoaDnfErZ5l2s=;
+	s=korg; t=1750713694;
+	bh=IVkilv6mWBswWG7VghXQvweeja1A6fpC0LZQvaRx6Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ff7R7K08MFnW9tYs1sXphP9cALFWUByRlKtpkt0gv9aJJcksjGetxpcHsWaV6oZTt
-	 YrBcGufOXMO26UK3eLGbjO6Dpy1QCq1yXeinPzFMEKYGQ728ve3DnPP2TT8J/8aZ+h
-	 UMPSKWRiefKVVG2T+ub+x4mcvpDXJ7Rsw+NihFTk=
+	b=dmbm+D3Vz9UD75FmiO7h7iLrdUPdw4JUNOAKCImmD59bccWIFY2eB2xmsVX0q12kY
+	 TO/6uq0tbzFI29iV2ziF3cx13Lmb0XroOIgOyPnRpzghjuJGaP5U3/97u9aF+NOiSG
+	 dzNfqRt9zZ8J56U14OsgtqQTOoLPkV8sYIiYfFJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 223/414] net: page_pool: Dont recycle into cache on PREEMPT_RT
-Date: Mon, 23 Jun 2025 15:06:00 +0200
-Message-ID: <20250623130647.602002171@linuxfoundation.org>
+	Klaus Kudielka <klaus.kudielka@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 5.10 160/355] crypto: marvell/cesa - Do not chain submitted requests
+Date: Mon, 23 Jun 2025 15:06:01 +0200
+Message-ID: <20250623130631.513252008@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +61,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 32471b2f481dea8624f27669d36ffd131d24b732 ]
+commit 0413bcf0fc460a68a2a7a8354aee833293d7d693 upstream.
 
-With preemptible softirq and no per-CPU locking in local_bh_disable() on
-PREEMPT_RT the consumer can be preempted while a skb is returned.
+This driver tries to chain requests together before submitting them
+to hardware in order to reduce completion interrupts.
 
-Avoid the race by disabling the recycle into the cache on PREEMPT_RT.
+However, it even extends chains that have already been submitted
+to hardware.  This is dangerous because there is no way of knowing
+whether the hardware has already read the DMA memory in question
+or not.
 
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250512092736.229935-2-bigeasy@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by splitting the chain list into two.  One for submitted
+requests and one for requests that have not yet been submitted.
+Only extend the latter.
+
+Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
+Fixes: 85030c5168f1 ("crypto: marvell - Add support for chaining crypto requests in TDMA mode")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/page_pool.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/crypto/marvell/cesa/cesa.c |    2 -
+ drivers/crypto/marvell/cesa/cesa.h |    9 ++++--
+ drivers/crypto/marvell/cesa/tdma.c |   53 ++++++++++++++++++++++---------------
+ 3 files changed, 39 insertions(+), 25 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 0f23b3126bdaf..b1c3e0ad6dbf4 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -829,6 +829,10 @@ static bool page_pool_napi_local(const struct page_pool *pool)
- 	const struct napi_struct *napi;
- 	u32 cpuid;
+--- a/drivers/crypto/marvell/cesa/cesa.c
++++ b/drivers/crypto/marvell/cesa/cesa.c
+@@ -94,7 +94,7 @@ static int mv_cesa_std_process(struct mv
  
-+	/* On PREEMPT_RT the softirq can be preempted by the consumer */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		return false;
+ static int mv_cesa_int_process(struct mv_cesa_engine *engine, u32 status)
+ {
+-	if (engine->chain.first && engine->chain.last)
++	if (engine->chain_hw.first && engine->chain_hw.last)
+ 		return mv_cesa_tdma_process(engine, status);
+ 
+ 	return mv_cesa_std_process(engine, status);
+--- a/drivers/crypto/marvell/cesa/cesa.h
++++ b/drivers/crypto/marvell/cesa/cesa.h
+@@ -439,8 +439,10 @@ struct mv_cesa_dev {
+  *			SRAM
+  * @queue:		fifo of the pending crypto requests
+  * @load:		engine load counter, useful for load balancing
+- * @chain:		list of the current tdma descriptors being processed
+- *			by this engine.
++ * @chain_hw:		list of the current tdma descriptors being processed
++ *			by the hardware.
++ * @chain_sw:		list of the current tdma descriptors that will be
++ *			submitted to the hardware.
+  * @complete_queue:	fifo of the processed requests by the engine
+  *
+  * Structure storing CESA engine information.
+@@ -459,7 +461,8 @@ struct mv_cesa_engine {
+ 	struct gen_pool *pool;
+ 	struct crypto_queue queue;
+ 	atomic_t load;
+-	struct mv_cesa_tdma_chain chain;
++	struct mv_cesa_tdma_chain chain_hw;
++	struct mv_cesa_tdma_chain chain_sw;
+ 	struct list_head complete_queue;
+ 	int irq;
+ };
+--- a/drivers/crypto/marvell/cesa/tdma.c
++++ b/drivers/crypto/marvell/cesa/tdma.c
+@@ -38,6 +38,15 @@ void mv_cesa_dma_step(struct mv_cesa_req
+ {
+ 	struct mv_cesa_engine *engine = dreq->engine;
+ 
++	spin_lock_bh(&engine->lock);
++	if (engine->chain_sw.first == dreq->chain.first) {
++		engine->chain_sw.first = NULL;
++		engine->chain_sw.last = NULL;
++	}
++	engine->chain_hw.first = dreq->chain.first;
++	engine->chain_hw.last = dreq->chain.last;
++	spin_unlock_bh(&engine->lock);
 +
- 	if (unlikely(!in_softirq()))
- 		return false;
+ 	writel_relaxed(0, engine->regs + CESA_SA_CFG);
  
--- 
-2.39.5
-
+ 	mv_cesa_set_int_mask(engine, CESA_SA_INT_ACC0_IDMA_DONE);
+@@ -96,25 +105,27 @@ void mv_cesa_dma_prepare(struct mv_cesa_
+ void mv_cesa_tdma_chain(struct mv_cesa_engine *engine,
+ 			struct mv_cesa_req *dreq)
+ {
+-	if (engine->chain.first == NULL && engine->chain.last == NULL) {
+-		engine->chain.first = dreq->chain.first;
+-		engine->chain.last  = dreq->chain.last;
+-	} else {
+-		struct mv_cesa_tdma_desc *last;
++	struct mv_cesa_tdma_desc *last = engine->chain_sw.last;
+ 
+-		last = engine->chain.last;
++	/*
++	 * Break the DMA chain if the request being queued needs the IV
++	 * regs to be set before lauching the request.
++	 */
++	if (!last || dreq->chain.first->flags & CESA_TDMA_SET_STATE)
++		engine->chain_sw.first = dreq->chain.first;
++	else {
+ 		last->next = dreq->chain.first;
+-		engine->chain.last = dreq->chain.last;
+-
+-		/*
+-		 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
+-		 * the last element of the current chain, or if the request
+-		 * being queued needs the IV regs to be set before lauching
+-		 * the request.
+-		 */
+-		if (!(last->flags & CESA_TDMA_BREAK_CHAIN) &&
+-		    !(dreq->chain.first->flags & CESA_TDMA_SET_STATE))
+-			last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
++		last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
++	}
++	last = dreq->chain.last;
++	engine->chain_sw.last = last;
++	/*
++	 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
++	 * the last element of the current chain.
++	 */
++	if (last->flags & CESA_TDMA_BREAK_CHAIN) {
++		engine->chain_sw.first = NULL;
++		engine->chain_sw.last = NULL;
+ 	}
+ }
+ 
+@@ -127,7 +138,7 @@ int mv_cesa_tdma_process(struct mv_cesa_
+ 
+ 	tdma_cur = readl(engine->regs + CESA_TDMA_CUR);
+ 
+-	for (tdma = engine->chain.first; tdma; tdma = next) {
++	for (tdma = engine->chain_hw.first; tdma; tdma = next) {
+ 		spin_lock_bh(&engine->lock);
+ 		next = tdma->next;
+ 		spin_unlock_bh(&engine->lock);
+@@ -149,12 +160,12 @@ int mv_cesa_tdma_process(struct mv_cesa_
+ 								 &backlog);
+ 
+ 			/* Re-chaining to the next request */
+-			engine->chain.first = tdma->next;
++			engine->chain_hw.first = tdma->next;
+ 			tdma->next = NULL;
+ 
+ 			/* If this is the last request, clear the chain */
+-			if (engine->chain.first == NULL)
+-				engine->chain.last  = NULL;
++			if (engine->chain_hw.first == NULL)
++				engine->chain_hw.last  = NULL;
+ 			spin_unlock_bh(&engine->lock);
+ 
+ 			ctx = crypto_tfm_ctx(req->tfm);
 
 
 
