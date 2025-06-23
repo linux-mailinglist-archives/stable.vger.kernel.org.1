@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2012AE5532
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D86E2AE56DD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6CA81899E0C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9271E178D9F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C40DE225A31;
-	Mon, 23 Jun 2025 22:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684BD223DE5;
+	Mon, 23 Jun 2025 22:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqN8TRKb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGLstTIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8093C1F7580;
-	Mon, 23 Jun 2025 22:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2652015ADB4;
+	Mon, 23 Jun 2025 22:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716522; cv=none; b=se1QNquaqaCFEUqAUy2N95P8FGo4MIe3VjcjN86uXV0MipRLT27H1qyJQ+zWM6DFtIzrzaZvZHNEkalNV/Y/ARVaz92G4W9zgb0QZK5Rq1fkV6FGa5oE20LrecLLL5nx+LE4TmRLcw89HGOyRp/kWQyXi7K6acgwk3iiIXhKw2k=
+	t=1750717397; cv=none; b=C1SQE2P7rykCXFyQOGzrqNcbEKIGtVuETko0aovhu5N6Aq2Un6R6P+KEyCmgNnH5SBXEuIjd2UQdw8fK/7QJWfdQMdc8nAAolz2e1FeYNWw2DPOE6lBZUPthKNZ7def7Q5WWcbFoTmDZMYB9rPCFGLuAHI9CqLKHB2Mw0KTkYyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716522; c=relaxed/simple;
-	bh=JxkJbgfRq82Ov6LSvQxmMlQB1HrF0ihMvmbHkWhW2sc=;
+	s=arc-20240116; t=1750717397; c=relaxed/simple;
+	bh=CSK0nW4g2jm8evcgl3Z9LY5w8IgutJLnyIfDGb3/JTg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/zw20Rz4eW7srXE7EbL0ri2/rZq8I+hMMnbPjA0cS2RojOgqzpi77EifhwhJX34cngdXP7pQ/wyH6FRPMAeyXAjTspcnAM91eKDuP7hGrqHmORXHDp2F4KZt5QWFd9mr1p4gBQs86Qg1Yn0LyPQSmbsXzkUpWHkRUEnZ00ruWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqN8TRKb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 193D7C4CEEA;
-	Mon, 23 Jun 2025 22:08:41 +0000 (UTC)
+	 MIME-Version; b=YIDTY8qXu6zLW3carUo0BAD4qvzOurxqPHZ/zhLFLX1w1KiCKwm5eC1Nowmcd6IGUT25jahCDkPWMZAKNP3R4tGTNVJyaz8+29BbYXfN4T85IMOV9zFgW6eq8EfQLCmukACWfiVDqug1HgnUeetENdHMjWunxJMaDBWFqY2IlzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGLstTIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAC58C4CEEA;
+	Mon, 23 Jun 2025 22:23:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716522;
-	bh=JxkJbgfRq82Ov6LSvQxmMlQB1HrF0ihMvmbHkWhW2sc=;
+	s=korg; t=1750717397;
+	bh=CSK0nW4g2jm8evcgl3Z9LY5w8IgutJLnyIfDGb3/JTg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqN8TRKb6nxxW7IGWaUjlN4l9Yl+xzADzwCNgWCHw36XBekFk5auER04nmlKL4Vyo
-	 c6+dvSmaiTMTXNCsA+lQ2tzUju5m00CG7s/Mvbf1QJT2XRF3reFk2qYVHu5iPWQHxR
-	 IzVWw1ba6mYq83djg/jaEVTm+89mTE555CCCsrFo=
+	b=ZGLstTIT4KJiBLPbfV523yoH1xxuu8BsdsQ2XbOoyCviiGrweGNwvexS+t/9IUAx1
+	 Gh8x31A+wS+F4WQD3GddJ59LfwY0/zN0QKX0K6ACRpSOnbwlgHwcthYVA9dLWxf2vR
+	 uyFb03xlVwKgn5PD/983mxZTBKUeBLR0EochZ6lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	reox <mailinglist@reox.at>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.15 558/592] EDAC/amd64: Correct number of UMCs for family 19h models 70h-7fh
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Christian Lamparter <chunkeey@gmail.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 379/414] wifi: carl9170: do not ping device which has failed to load firmware
 Date: Mon, 23 Jun 2025 15:08:36 +0200
-Message-ID: <20250623130713.715703433@linuxfoundation.org>
+Message-ID: <20250623130651.426641232@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit b2e673ae53ef4b943f68585207a5f21cfc9a0714 upstream.
+[ Upstream commit 15d25307692312cec4b57052da73387f91a2e870 ]
 
-AMD's Family 19h-based Models 70h-7fh support 4 unified memory controllers
-(UMC) per processor die.
+Syzkaller reports [1, 2] crashes caused by an attempts to ping
+the device which has failed to load firmware. Since such a device
+doesn't pass 'ieee80211_register_hw()', an internal workqueue
+managed by 'ieee80211_queue_work()' is not yet created and an
+attempt to queue work on it causes null-ptr-deref.
 
-The amd64_edac driver, however, assumes only 2 UMCs are supported since
-max_mcs variable for the models has not been explicitly set to 4. The same
-results in incomplete or incorrect memory information being logged to dmesg by
-the module during initialization in some instances.
+[1] https://syzkaller.appspot.com/bug?extid=9a4aec827829942045ff
+[2] https://syzkaller.appspot.com/bug?extid=0d8afba53e8fb2633217
 
-Fixes: 6c79e42169fe ("EDAC/amd64: Add support for ECC on family 19h model 60h-7Fh")
-Closes: https://lore.kernel.org/all/27dc093f-ce27-4c71-9e81-786150a040b6@reox.at/
-Reported-by: reox <mailinglist@reox.at>
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250613005233.2330627-1-avadhut.naik@amd.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e4a668c59080 ("carl9170: fix spurious restart due to high latency")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Christian Lamparter <chunkeey@gmail.com>
+Link: https://patch.msgid.link/20250616181205.38883-1-dmantipov@yandex.ru
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/amd64_edac.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/wireless/ath/carl9170/usb.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -3879,6 +3879,7 @@ static int per_family_init(struct amd64_
- 			break;
- 		case 0x70 ... 0x7f:
- 			pvt->ctl_name			= "F19h_M70h";
-+			pvt->max_mcs			= 4;
- 			pvt->flags.zn_regs_v2		= 1;
- 			break;
- 		case 0x90 ... 0x9f:
+diff --git a/drivers/net/wireless/ath/carl9170/usb.c b/drivers/net/wireless/ath/carl9170/usb.c
+index a3e03580cd9ff..564ca6a619856 100644
+--- a/drivers/net/wireless/ath/carl9170/usb.c
++++ b/drivers/net/wireless/ath/carl9170/usb.c
+@@ -438,14 +438,21 @@ static void carl9170_usb_rx_complete(struct urb *urb)
+ 
+ 		if (atomic_read(&ar->rx_anch_urbs) == 0) {
+ 			/*
+-			 * The system is too slow to cope with
+-			 * the enormous workload. We have simply
+-			 * run out of active rx urbs and this
+-			 * unfortunately leads to an unpredictable
+-			 * device.
++			 * At this point, either the system is too slow to
++			 * cope with the enormous workload (so we have simply
++			 * run out of active rx urbs and this unfortunately
++			 * leads to an unpredictable device), or the device
++			 * is not fully functional after an unsuccessful
++			 * firmware loading attempts (so it doesn't pass
++			 * ieee80211_register_hw() and there is no internal
++			 * workqueue at all).
+ 			 */
+ 
+-			ieee80211_queue_work(ar->hw, &ar->ping_work);
++			if (ar->registered)
++				ieee80211_queue_work(ar->hw, &ar->ping_work);
++			else
++				pr_warn_once("device %s is not registered\n",
++					     dev_name(&ar->udev->dev));
+ 		}
+ 	} else {
+ 		/*
+-- 
+2.39.5
+
 
 
 
