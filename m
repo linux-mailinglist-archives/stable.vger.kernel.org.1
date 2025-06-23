@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-157189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73F75AE52CE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D91FEAE519B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406B44A6EC0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 76A3D4A40C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EF11C5D46;
-	Mon, 23 Jun 2025 21:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C3122068B;
+	Mon, 23 Jun 2025 21:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfh8YMdo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVsJ3TEI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0803FD4;
-	Mon, 23 Jun 2025 21:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F241EE7C6;
+	Mon, 23 Jun 2025 21:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715257; cv=none; b=YfBuFwXc63W29MpAyF8num7ASN2DSAHAcg5GUyXAwmj8+tNLVefLssMp6kaNldThNlWZExCs4cwQptTB95msRYgoO9eGfvkKDl3H7sSNbcExxMqH2R//p1+rTi+wktVf+NWVwPqnVHunvcZiMytaLW34AZIiVQ4Q7jJ6qhd21AE=
+	t=1750714551; cv=none; b=VDOCoG1X1aG1R3eCf0t1JuR5kUBi28IfUo6YT2XeZgyIYZiNZ1jkkK9qU+Ow18sFOqIOqRlERZMO1j4X49gX0DLqWTei4wfAwZekBDD5utlsKRjtUZTMHoklIqD8YpAMMoGZaI72uFvkPb4rtXPvOcHeJ4dQIZ5bGipnb/0CiDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715257; c=relaxed/simple;
-	bh=3ACiB5gmA0LsUvKC47YYA19vhBUCPo+gK2ifjsHHbc4=;
+	s=arc-20240116; t=1750714551; c=relaxed/simple;
+	bh=AkU3CEg7MInLEfmmMdXPnI4odK4YlYE2gJowJJZiyeg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lZ+Hsi7FEzyZxkiYz+HPiEi4Van7xhaq/ydRkG29Kzm5HXE2ZpRcWWZ6eEIoxM66w9ZjqVVNSAF+ckt2AxAwDC2bWoCYvrsRcaUqO2iLdSmTQbWdA1QcHkFhV0LLWw8gpIyyb30/pTO46J/2jp3G6Ip1tlz2++43d8ytT4spMVY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfh8YMdo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B885AC4CEEA;
-	Mon, 23 Jun 2025 21:47:36 +0000 (UTC)
+	 MIME-Version; b=l5E3ciab1EnVyszT256KFjNepYmEX2ck/V1EtE/3RidmpJgEyii2IV01rNPoj0YT4Z5otHr9UvgTaHpCMoYVdvpWNFQhU0vOZfGlYbY2KePKhqRyDrlEZ77zmmSZsDGhBvcJmoH+9gD1xJJOxOzXfOfQuKKA6K0xchGntyBui6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVsJ3TEI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1552C4CEEA;
+	Mon, 23 Jun 2025 21:35:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715257;
-	bh=3ACiB5gmA0LsUvKC47YYA19vhBUCPo+gK2ifjsHHbc4=;
+	s=korg; t=1750714551;
+	bh=AkU3CEg7MInLEfmmMdXPnI4odK4YlYE2gJowJJZiyeg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zfh8YMdoQTGYjm9GMkuXCbodN3wtHbJV+9DZ+DYGVC1QL+EN3Fmqetb344i/d5/3y
-	 b2E18tJ169CNqzPUaJoAWcZkymlIOoOCd1+orDMTE3wCbEiTbjLWfbxi1d2Dw0CV7W
-	 BSfvfC5ZMB3wMfo/saDk5Xa2LZwbnmvYMZZhL3Xo=
+	b=pVsJ3TEI/+/l9lUPVhGbqy7pgjJaGEPrbampUm96NHbmEJ31/4ehZydaiBCroH+5l
+	 GfFfyEbQoKuEvv0ku+CKx8Irq1QQhAHJEyCz/vPWv5zDcaVnA+CKihcM1qIF7tn3hz
+	 JMUQ1rHQp/lXWSnxNOvne9Kv9JZFr6n3gK6Frigg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	maher azz <maherazz04@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.15 447/592] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+	Mike Tipton <quic_mdtipton@quicinc.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 144/290] cpufreq: scmi: Skip SCMI devices that arent used by the CPUs
 Date: Mon, 23 Jun 2025 15:06:45 +0200
-Message-ID: <20250623130711.062261389@linuxfoundation.org>
+Message-ID: <20250623130631.228471422@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +65,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Mike Tipton <quic_mdtipton@quicinc.com>
 
-commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
+[ Upstream commit 6c9bb86922728c7a4cceb99f131e00dd87514f20 ]
 
-In
+Currently, all SCMI devices with performance domains attempt to register
+a cpufreq driver, even if their performance domains aren't used to
+control the CPUs. The cpufreq framework only supports registering a
+single driver, so only the first device will succeed. And if that device
+isn't used for the CPUs, then cpufreq will scale the wrong domains.
 
-riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
-   -> cm_chan_msg_send()
-      -> riocm_ch_send()
+To avoid this, return early from scmi_cpufreq_probe() if the probing
+SCMI device isn't referenced by the CPU device phandles.
 
-cm_chan_msg_send() checks that userspace didn't send too much data but
-riocm_ch_send() failed to check that userspace sent sufficient data.  The
-result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
-which were outside the bounds of the space which cm_chan_msg_send()
-allocated.
+This keeps the existing assumption that all CPUs are controlled by a
+single SCMI device.
 
-Address this by teaching riocm_ch_send() to check that the entire
-rio_ch_chan_hdr was copied in from userspace.
-
-Reported-by: maher azz <maherazz04@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Tipton <quic_mdtipton@quicinc.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+Tested-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rapidio/rio_cm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/cpufreq/scmi-cpufreq.c | 36 +++++++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
---- a/drivers/rapidio/rio_cm.c
-+++ b/drivers/rapidio/rio_cm.c
-@@ -789,6 +789,9 @@ static int riocm_ch_send(u16 ch_id, void
- 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
- 		return -EINVAL;
+diff --git a/drivers/cpufreq/scmi-cpufreq.c b/drivers/cpufreq/scmi-cpufreq.c
+index e4989764efe2a..6ff77003a96ea 100644
+--- a/drivers/cpufreq/scmi-cpufreq.c
++++ b/drivers/cpufreq/scmi-cpufreq.c
+@@ -299,6 +299,40 @@ static struct cpufreq_driver scmi_cpufreq_driver = {
+ 	.register_em	= scmi_cpufreq_register_em,
+ };
  
-+	if (len < sizeof(struct rio_ch_chan_hdr))
-+		return -EINVAL;		/* insufficient data from user */
++static bool scmi_dev_used_by_cpus(struct device *scmi_dev)
++{
++	struct device_node *scmi_np = dev_of_node(scmi_dev);
++	struct device_node *cpu_np, *np;
++	struct device *cpu_dev;
++	int cpu, idx;
 +
- 	ch = riocm_get_channel(ch_id);
- 	if (!ch) {
- 		riocm_error("%s(%d) ch_%d not found", current->comm,
++	if (!scmi_np)
++		return false;
++
++	for_each_possible_cpu(cpu) {
++		cpu_dev = get_cpu_device(cpu);
++		if (!cpu_dev)
++			continue;
++
++		cpu_np = dev_of_node(cpu_dev);
++
++		np = of_parse_phandle(cpu_np, "clocks", 0);
++		of_node_put(np);
++
++		if (np == scmi_np)
++			return true;
++
++		idx = of_property_match_string(cpu_np, "power-domain-names", "perf");
++		np = of_parse_phandle(cpu_np, "power-domains", idx);
++		of_node_put(np);
++
++		if (np == scmi_np)
++			return true;
++	}
++
++	return false;
++}
++
+ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+ {
+ 	int ret;
+@@ -307,7 +341,7 @@ static int scmi_cpufreq_probe(struct scmi_device *sdev)
+ 
+ 	handle = sdev->handle;
+ 
+-	if (!handle)
++	if (!handle || !scmi_dev_used_by_cpus(dev))
+ 		return -ENODEV;
+ 
+ 	perf_ops = handle->devm_protocol_get(sdev, SCMI_PROTOCOL_PERF, &ph);
+-- 
+2.39.5
+
 
 
 
