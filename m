@@ -1,55 +1,60 @@
-Return-Path: <stable+bounces-156639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1995AE506A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CADC4AE50DC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 490894A0E61
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2EDE93A81C6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA31F21FF50;
-	Mon, 23 Jun 2025 21:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C91C122333B;
+	Mon, 23 Jun 2025 21:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b+Zs/5jF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8QYs+Gn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD631F4628;
-	Mon, 23 Jun 2025 21:25:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874F321B9C9;
+	Mon, 23 Jun 2025 21:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713903; cv=none; b=cmRsY+NXXGl/JjcfZ3Rw/83GcMjrswyiiGzUed1NDXsPfmJKI0eRt29bZBaveJ5N5YlR1LK/1hBdvR6ENKT2ixZdagO7cqVbDzkVLQZVILuX/vwGXDgTzlFNNRSUcXaoHCpHK3tc+KS4BOTNylyko3q0yu3RTZ9a0zP/HsW6pJY=
+	t=1750714096; cv=none; b=jxfOkxQxCCS5UAEJoclCboCa2tqXieSmLL8inCV1jBYgWAQW/cqGNbvxoTG8zwDSqKxPFGZ0ilKZZMkQZpZSPHdmiX9zhUykeXCyKvrOsPWk2nanlACWTVWCdi+xj8Yc40/0Clzgk1QkD7+wrahuRrTKE9Dka/xfl9qwRxL1fL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713903; c=relaxed/simple;
-	bh=Qh/QBJ/B5Xs/CXjFvRQ2/fwXamfUsH+2JqzLnesRhTA=;
+	s=arc-20240116; t=1750714096; c=relaxed/simple;
+	bh=6pqwFCdFNySOoKfaFloaBmZ8YPp04dwWPmy7j8n757E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sCqT+v/Sbd40iXd12vKY1z+NoybtI8lU0fcJ3bTIyzBrQZQxahL3iLdtdawGyeOZ3cdUNQYGDmnYPZp0HsUjWQSqIQ6AWDoxAu2XlfmcvSlGQ+GqEClkN0q3/u0W15nSSvHg0kHsSrqleulM9ITsxREJRIJ79fiRbZDw/FIrpNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b+Zs/5jF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34240C4CEED;
-	Mon, 23 Jun 2025 21:25:03 +0000 (UTC)
+	 MIME-Version; b=Q+iM/pMYKk3RZIN95WLajjuQsxPSBwLucJC/V+bvGtYWXWBpz47JNBaV4F3rDOXECQoHyKjAMmrdYJhbA7WavR9P4zP2/zp4hALAdp9YFArSuJzlq/RO9q6AjTSYDebJb0NRx7qYDY0TVT0qnuCgCkE42fRvy+2YnWP3s31eTDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8QYs+Gn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21045C4CEEA;
+	Mon, 23 Jun 2025 21:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713903;
-	bh=Qh/QBJ/B5Xs/CXjFvRQ2/fwXamfUsH+2JqzLnesRhTA=;
+	s=korg; t=1750714096;
+	bh=6pqwFCdFNySOoKfaFloaBmZ8YPp04dwWPmy7j8n757E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b+Zs/5jFJjtNXvZZOM31cW7n8ijGB7z28gWxa/XW8z5l27VBr+Ntw0M8EwZgVlCpO
-	 ZCcmIedNLo+RiIj8WJdOXVBphf6PGNnPxaA69yl3O4qTECNZHDd5UEoUXzJLOF7vsx
-	 eEtR2j3Eu3+k7Zmlf5SshZ325po3ScTa41wEMokc=
+	b=K8QYs+GnnZQ9Rrh1ssaZ9tD6rTpccOogEAoeVkqpoEJgknCeonFHFHtLyMKj55X2g
+	 qs9CEtSBTikHg/mzbTW0kNMkj990UNjqMb9OFOtn/a+yGZnBiJkdaZG+4H1nuGi0nZ
+	 ZVKL5u598PG1Fl0P7o0Yc9Tr4MxmNC60Se8wN6PM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.10 173/355] media: gspca: Add error handling for stv06xx_read_sensor()
+	Jann Horn <jannh@google.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 113/290] mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race
 Date: Mon, 23 Jun 2025 15:06:14 +0200
-Message-ID: <20250623130631.909632656@linuxfoundation.org>
+Message-ID: <20250623130630.349590788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +66,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Jann Horn <jannh@google.com>
 
-commit 398a1b33f1479af35ca915c5efc9b00d6204f8fa upstream.
+commit 1013af4f585fccc4d3e5c5824d174de2257f7d6d upstream.
 
-In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
-checked. A proper implementation can be found in vv6410_dump(). Add a
-check in loop condition and propergate error code to fix this issue.
+huge_pmd_unshare() drops a reference on a page table that may have
+previously been shared across processes, potentially turning it into a
+normal page table used in another process in which unrelated VMAs can
+afterwards be installed.
 
-Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+If this happens in the middle of a concurrent gup_fast(), gup_fast() could
+end up walking the page tables of another process.  While I don't see any
+way in which that immediately leads to kernel memory corruption, it is
+really weird and unexpected.
+
+Fix it with an explicit broadcast IPI through tlb_remove_table_sync_one(),
+just like we do in khugepaged when removing page tables for a THP
+collapse.
+
+Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-2-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-2-f4136f5ec58a@google.com
+Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+Signed-off-by: Jann Horn <jannh@google.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ mm/hugetlb.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-+++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
- static int hdcs_dump(struct sd *sd)
- {
- 	u16 reg, val;
-+	int err = 0;
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -7062,6 +7062,13 @@ int huge_pmd_unshare(struct mm_struct *m
+ 		return 0;
  
- 	pr_info("Dumping sensor registers:\n");
- 
--	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
--		stv06xx_read_sensor(sd, reg, &val);
-+	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
-+		err = stv06xx_read_sensor(sd, reg, &val);
- 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
- 	}
--	return 0;
-+	return (err < 0) ? err : 0;
- }
+ 	pud_clear(pud);
++	/*
++	 * Once our caller drops the rmap lock, some other process might be
++	 * using this page table as a normal, non-hugetlb page table.
++	 * Wait for pending gup_fast() in other threads to finish before letting
++	 * that happen.
++	 */
++	tlb_remove_table_sync_one();
+ 	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
+ 	mm_dec_nr_pmds(mm);
+ 	return 1;
 
 
 
