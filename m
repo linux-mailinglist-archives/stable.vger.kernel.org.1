@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C01EAE557F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7CB7AAE5749
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189D34C4AEF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2ABC57B4295
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DB4226D04;
-	Mon, 23 Jun 2025 22:11:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94EFC22422F;
+	Mon, 23 Jun 2025 22:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXvewEFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NmdD2VCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6351223DEE;
-	Mon, 23 Jun 2025 22:11:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170B22370A;
+	Mon, 23 Jun 2025 22:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716662; cv=none; b=trXOrhE4/n1iNB6jW5fmH+OGBvEtpDqN8IR3xwHNpwT3nhR+rtRviW4gUyMW5bqXfGiV/hQT4zf//qyJIvkaGkyqz/aQTT8cAIDeWtdOmqrB1qV0AZA8JioWyLYogoIMZzSTqaijvV4uuQHbph2CWnggks+VKkxEXky/hXkvR2U=
+	t=1750717671; cv=none; b=gcRfBrywbQgSbmMvARC+PhPxKXWismNn2ocKvpr48rf3QzGC430eXPsURrefeTzaYz6vsr/4oY6umlT7v/1O6uiJ3VcWfjrOxndU3iL9lgyibBDlIOnw27ZuH4cOAiAyAhG/Ab8BQobgc4zaHXsY69/h9WNlTxxbedSqKu5EUH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716662; c=relaxed/simple;
-	bh=hTIknVAFAAtm37SNiZFAG1ZY4XZai3+iBszAAQi+7UU=;
+	s=arc-20240116; t=1750717671; c=relaxed/simple;
+	bh=1yNHkV2VaoPD9Qr2ijYhOLNZyWurtihfXmB6B15w4Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FjP7qe4sZJevaIySqANeP95Jkdm9O99jz8G2TjgWjlP8Ra3DJeg1huwtBjl2UWPZKh3eCFCA/lKjBg8ylQbYjRbXV/kLLKK1rCFkdE4tOQGvF+AQ/ZoASK3v7WHk+GJT+nnyzrYdOq7FdwLAF6695Jtvfi2eFH3uTDWSg/MKD1Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXvewEFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8165CC4CEEA;
-	Mon, 23 Jun 2025 22:11:01 +0000 (UTC)
+	 MIME-Version; b=e0FK09H+wn8EDmnSip+Nv7PUV2OKQ7JV8fUBQclmG+gwJeEpSJkUTKxBxdcGyMqP47l4e6UsL8jjYVjPh2zk2QF6zuCsrDEJmGGeBf9/NQ1S0nwMZyzi6RgFB+zBRweR4exVCka4utPCuxwmu0supDXTzVQ90vKkQPaIkSlC4Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NmdD2VCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAF36C4CEEA;
+	Mon, 23 Jun 2025 22:27:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716661;
-	bh=hTIknVAFAAtm37SNiZFAG1ZY4XZai3+iBszAAQi+7UU=;
+	s=korg; t=1750717671;
+	bh=1yNHkV2VaoPD9Qr2ijYhOLNZyWurtihfXmB6B15w4Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SXvewEFU4/IGia8d0EkqVuHbRj4HWDB6aXownx0YbFQ3vNS6T1Acy3AYeNyyqJcjT
-	 AU8ieXUOqMe693OcQC3Nl02Zvv6aDgoW8kQSuwT9HYYI8oIBA1BlDf1f5Toxh4PwrT
-	 o3u3Ows1rhVFRyA1P3JrLL5MCQpCrIY9cnaC4dy4=
+	b=NmdD2VCckKehyg1nLSme4gVkT9woFjqtOIY0ViIXodq62lyiLVvNzEFzZwN81xuq1
+	 3V7OfLSU6Lw3Wg6YbSB9/ZOrGrE3ocmbjZe6jl/tt6EZr3Lrf52dIa6Ls2VU/+Nsqt
+	 rkUM86kM3H0uVvGjXzS7ceiADJb2W3zAWnEiVkLk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.6 280/290] s390/pci: Fix __pcilg_mio_inuser() inline assembly
-Date: Mon, 23 Jun 2025 15:09:01 +0200
-Message-ID: <20250623130635.343087936@linuxfoundation.org>
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Udit Kumar <u-kumar1@ti.com>,
+	Nishanth Menon <nm@ti.com>
+Subject: [PATCH 6.1 497/508] arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators
+Date: Mon, 23 Jun 2025 15:09:02 +0200
+Message-ID: <20250623130657.251329816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
 
-commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
+commit 97b67cc102dc2cc8aa39a569c22a196e21af5a21 upstream.
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+Add device tree nodes for two power regulators on the J721E SK board.
+vsys_5v0: A fixed regulator representing the 5V supply output from the
+LM61460 and vdd_sd_dv: A GPIO-controlled TLV71033 regulator.
 
-If register zero is used this my result in incorrect code generation:
+J721E-SK schematics: https://www.ti.com/lit/zip/sprr438
 
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
-
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
-
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Fixes: 1bfda92a3a36 ("arm64: dts: ti: Add support for J721E SK")
 Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Reviewed-by: Udit Kumar <u-kumar1@ti.com>
+Link: https://lore.kernel.org/r/20250415111328.3847502-2-y-abhilashchandra@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/pci/pci_mmio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts |   31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -223,7 +223,7 @@ static inline int __pcilg_mio_inuser(
- 		[ioaddr_len] "+&d" (ioaddr_len.pair),
- 		[cc] "+d" (cc), [val] "=d" (val),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:: "cc", "memory");
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -175,6 +175,17 @@
+ 		regulator-boot-on;
+ 	};
  
- 	/* did we write everything to the user space buffer? */
++	vsys_5v0: fixedregulator-vsys5v0 {
++		/* Output of LM61460 */
++		compatible = "regulator-fixed";
++		regulator-name = "vsys_5v0";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vusb_main>;
++		regulator-always-on;
++		regulator-boot-on;
++	};
++
+ 	vdd_mmc1: fixedregulator-sd {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -202,6 +213,20 @@
+ 			 <3300000 0x1>;
+ 	};
+ 
++	vdd_sd_dv: gpio-regulator-TLV71033 {
++		compatible = "regulator-gpio";
++		pinctrl-names = "default";
++		pinctrl-0 = <&vdd_sd_dv_pins_default>;
++		regulator-name = "tlv71033";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <3300000>;
++		regulator-boot-on;
++		vin-supply = <&vsys_5v0>;
++		gpios = <&main_gpio0 118 GPIO_ACTIVE_HIGH>;
++		states = <1800000 0x0>,
++			 <3300000 0x1>;
++	};
++
+ 	dp_pwr_3v3: fixedregulator-dp-prw {
+ 		compatible = "regulator-fixed";
+ 		regulator-name = "dp-pwr";
+@@ -455,6 +480,12 @@
+ 		>;
+ 	};
+ 
++	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
++		pinctrl-single,pins = <
++			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
++		>;
++	};
++
+ 	wkup_i2c0_pins_default: wkup-i2c0-pins-default {
+ 		pinctrl-single,pins = <
+ 			J721E_WKUP_IOPAD(0xf8, PIN_INPUT_PULLUP, 0) /* (J25) WKUP_I2C0_SCL */
 
 
 
