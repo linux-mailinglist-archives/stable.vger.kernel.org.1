@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-155559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60701AE42AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05ACEAE4531
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0AA8D1899F15
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8908F1B60128
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68FF2580DE;
-	Mon, 23 Jun 2025 13:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 057A32505A9;
+	Mon, 23 Jun 2025 13:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5yNI46K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBzJtHyo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6427B256C83;
-	Mon, 23 Jun 2025 13:19:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73064C6E;
+	Mon, 23 Jun 2025 13:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684741; cv=none; b=VnsGMPSWeccJlqUWS+DRPLVZtvXyMBYGmoxmNgHDnM2N0qtgn2DpLFdfWi8JxTeBvxaRt9Vt7rA2p6GeRZWxUlVkoAkDBC2sa3CkCLMmucyyr3rIBJ1mTx7kr4bSG+aKBnapfq9loSlSXJt1ApdHgg3tyva+pf5NFqKZ6XKA+mc=
+	t=1750686236; cv=none; b=C1EQB7LCyy6P9B10Yq2bPAwYkpPzE+v3JQlOwKG0uUM3epa3cGGgy8ye931lL7ocZPvhO3TZ1T7EaLFmOPpWe3ERnHorWwWThngYDU48Rxgl27CQwdq/yCCXkAevwRgAwxf567brfCPe3umCYjlwMKbo0lRXaNez6+kbQ2IScMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684741; c=relaxed/simple;
-	bh=S6Dcn9H08jcUBFFAHQLyVnjUjaUtNQTBz9ov5WLSNAQ=;
+	s=arc-20240116; t=1750686236; c=relaxed/simple;
+	bh=1/LnvRrvpFg6qt/ctwpNJHWg1mE+jxsgefB+CQVOESI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DP9UmpW4U+o1d5nmGsIgY1DpYrsfZOij90OvVLEAn8N/UaHVE2rHiuwPUswdL4ycvwGHfjWAer0fzvA/fmzEy7LedKac5tnEWN2XFFeI3FBsiQK8fTY8OYispV/P5rk79lX9rk8LQdEScxtCzVzuHz9lmDhjk8PJhRqA+IWEFiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5yNI46K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6E2C4CEF1;
-	Mon, 23 Jun 2025 13:19:00 +0000 (UTC)
+	 MIME-Version; b=P3AopTkMPxjBdrj5uW0ogVAc+hoD+3g4W5BVlyux67plUy/4JVtbDAg8NYmb7dzGAeOcyZH6a2ghk8J+DwwABm19wTa24wmOXuWgIzciGcW2YxErzx+NNiQVSTHmb6b1PZKJjUBlovPPmYY0HBETsum7WL63Gga/rOvwA4p1RXM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBzJtHyo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1E79C4CEEA;
+	Mon, 23 Jun 2025 13:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684740;
-	bh=S6Dcn9H08jcUBFFAHQLyVnjUjaUtNQTBz9ov5WLSNAQ=;
+	s=korg; t=1750686236;
+	bh=1/LnvRrvpFg6qt/ctwpNJHWg1mE+jxsgefB+CQVOESI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z5yNI46K38mjvFOPWAdD2AC4gX1P1xNBoZrJPOSBg+TvuqUOmAjiS7++RLz2jBJM1
-	 DD658vUMhu2DVDRxQwwrVlrH9cmmZJtbV3vCWumlUx5mIIuKg73nDBWS01rfkjQpRe
-	 3vzFHh5NJlRJsewCwtNTJOpeKqSZa0annGnt6Kp4=
+	b=jBzJtHyoUV0Jd77rajaCpdStlJ6kmbRPDGIb/n8eUDLbImI2v3WlO3nRuwb3WFuZj
+	 ovCXBzcKkpIBxjhmBKKP3gUICFwv6CyfoZWfmTKhrm2vuSF59i9XPo/mve7ZqU24+p
+	 cDXE82PfkKPbkpz5r3b7rmofahJfs+I0bQZnLrSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.15 163/592] video: screen_info: Relocate framebuffers behind PCI bridges
-Date: Mon, 23 Jun 2025 15:02:01 +0200
-Message-ID: <20250623130704.156261310@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tom Zanussi <zanussi@kernel.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 077/508] tracing: Rename event_trigger_alloc() to trigger_data_alloc()
+Date: Mon, 23 Jun 2025 15:02:02 +0200
+Message-ID: <20250623130647.131154092@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +66,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 2f29b5c231011b94007d2c8a6d793992f2275db1 upstream.
+[ Upstream commit f2947c4b7d0f235621c5daf78aecfbd6e22c05e5 ]
 
-Apply PCI host-bridge window offsets to screen_info framebuffers. Fixes
-invalid access to I/O memory.
+The function event_trigger_alloc() creates an event_trigger_data
+descriptor and states that it needs to be freed via event_trigger_free().
+This is incorrect, it needs to be freed by trigger_data_free() as
+event_trigger_free() adds ref counting.
 
-Resources behind a PCI host bridge can be relocated by a certain offset
-in the kernel's CPU address range used for I/O. The framebuffer memory
-range stored in screen_info refers to the CPU addresses as seen during
-boot (where the offset is 0). During boot up, firmware may assign a
-different memory offset to the PCI host bridge and thereby relocating
-the framebuffer address of the PCI graphics device as seen by the kernel.
-The information in screen_info must be updated as well.
+Rename event_trigger_alloc() to trigger_data_alloc() and state that it
+needs to be freed via trigger_data_free(). This naming convention
+was introducing bugs.
 
-The helper pcibios_bus_to_resource() performs the relocation of the
-screen_info's framebuffer resource (given in PCI bus addresses). The
-result matches the I/O-memory resource of the PCI graphics device (given
-in CPU addresses). As before, we store away the information necessary to
-later update the information in screen_info itself.
-
-Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
-EFI framebuffers") added the code for updating screen_info. It is based
-on similar functionality that pre-existed in efifb. Efifb uses a pointer
-to the PCI resource, while the newer code does a memcpy of the region.
-Hence efifb sees any updates to the PCI resource and avoids the issue.
-
-v3:
-- Only use struct pci_bus_region for PCI bus addresses (Bjorn)
-- Clarify address semantics in commit messages and comments (Bjorn)
-v2:
-- Fixed tags (Takashi, Ivan)
-- Updated information on efifb
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reported-by: "Ivan T. Ivanov" <iivanov@suse.de>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
-Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
-Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.9+
-Link: https://lore.kernel.org/r/20250528080234.7380-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://lore.kernel.org/20250507145455.776436410@goodmis.org
+Fixes: 86599dbe2c527 ("tracing: Add helper functions to simplify event_command.parse() callback handling")
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/screen_info_pci.c |   79 +++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 29 deletions(-)
+ kernel/trace/trace.h                |  8 +++-----
+ kernel/trace/trace_events_hist.c    |  2 +-
+ kernel/trace/trace_events_trigger.c | 16 ++++++++--------
+ 3 files changed, 12 insertions(+), 14 deletions(-)
 
---- a/drivers/video/screen_info_pci.c
-+++ b/drivers/video/screen_info_pci.c
-@@ -7,8 +7,8 @@
- 
- static struct pci_dev *screen_info_lfb_pdev;
- static size_t screen_info_lfb_bar;
--static resource_size_t screen_info_lfb_offset;
--static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
-+static resource_size_t screen_info_lfb_res_start; // original start of resource
-+static resource_size_t screen_info_lfb_offset; // framebuffer offset within resource
- 
- static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
- {
-@@ -31,7 +31,7 @@ void screen_info_apply_fixups(void)
- 	if (screen_info_lfb_pdev) {
- 		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
- 
--		if (pr->start != screen_info_lfb_res.start) {
-+		if (pr->start != screen_info_lfb_res_start) {
- 			if (__screen_info_relocation_is_valid(si, pr)) {
- 				/*
- 				 * Only update base if we have an actual
-@@ -47,46 +47,67 @@ void screen_info_apply_fixups(void)
+diff --git a/kernel/trace/trace.h b/kernel/trace/trace.h
+index 49b297ca7fc72..950782b0ab1cb 100644
+--- a/kernel/trace/trace.h
++++ b/kernel/trace/trace.h
+@@ -1586,6 +1586,9 @@ extern int event_enable_register_trigger(char *glob,
+ extern void event_enable_unregister_trigger(char *glob,
+ 					    struct event_trigger_data *test,
+ 					    struct trace_event_file *file);
++extern struct event_trigger_data *
++trigger_data_alloc(struct event_command *cmd_ops, char *cmd, char *param,
++		   void *private_data);
+ extern void trigger_data_free(struct event_trigger_data *data);
+ extern int event_trigger_init(struct event_trigger_data *data);
+ extern int trace_event_trigger_enable_disable(struct trace_event_file *file,
+@@ -1612,11 +1615,6 @@ extern bool event_trigger_check_remove(const char *glob);
+ extern bool event_trigger_empty_param(const char *param);
+ extern int event_trigger_separate_filter(char *param_and_filter, char **param,
+ 					 char **filter, bool param_required);
+-extern struct event_trigger_data *
+-event_trigger_alloc(struct event_command *cmd_ops,
+-		    char *cmd,
+-		    char *param,
+-		    void *private_data);
+ extern int event_trigger_parse_num(char *trigger,
+ 				   struct event_trigger_data *trigger_data);
+ extern int event_trigger_set_filter(struct event_command *cmd_ops,
+diff --git a/kernel/trace/trace_events_hist.c b/kernel/trace/trace_events_hist.c
+index a11392596a365..c53be68bcd111 100644
+--- a/kernel/trace/trace_events_hist.c
++++ b/kernel/trace/trace_events_hist.c
+@@ -6520,7 +6520,7 @@ static int event_hist_trigger_parse(struct event_command *cmd_ops,
+ 		return PTR_ERR(hist_data);
  	}
+ 
+-	trigger_data = event_trigger_alloc(cmd_ops, cmd, param, hist_data);
++	trigger_data = trigger_data_alloc(cmd_ops, cmd, param, hist_data);
+ 	if (!trigger_data) {
+ 		ret = -ENOMEM;
+ 		goto out_free;
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index afdbad16d00a6..22bee3eae7cc3 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -807,7 +807,7 @@ int event_trigger_separate_filter(char *param_and_filter, char **param,
  }
  
-+static int __screen_info_lfb_pci_bus_region(const struct screen_info *si, unsigned int type,
-+					    struct pci_bus_region *r)
-+{
-+	u64 base, size;
-+
-+	base = __screen_info_lfb_base(si);
-+	if (!base)
-+		return -EINVAL;
-+
-+	size = __screen_info_lfb_size(si, type);
-+	if (!size)
-+		return -EINVAL;
-+
-+	r->start = base;
-+	r->end = base + size - 1;
-+
-+	return 0;
-+}
-+
- static void screen_info_fixup_lfb(struct pci_dev *pdev)
+ /**
+- * event_trigger_alloc - allocate and init event_trigger_data for a trigger
++ * trigger_data_alloc - allocate and init event_trigger_data for a trigger
+  * @cmd_ops: The event_command operations for the trigger
+  * @cmd: The cmd string
+  * @param: The param string
+@@ -818,14 +818,14 @@ int event_trigger_separate_filter(char *param_and_filter, char **param,
+  * trigger_ops to assign to the event_trigger_data.  @private_data can
+  * also be passed in and associated with the event_trigger_data.
+  *
+- * Use event_trigger_free() to free an event_trigger_data object.
++ * Use trigger_data_free() to free an event_trigger_data object.
+  *
+  * Return: The trigger_data object success, NULL otherwise
+  */
+-struct event_trigger_data *event_trigger_alloc(struct event_command *cmd_ops,
+-					       char *cmd,
+-					       char *param,
+-					       void *private_data)
++struct event_trigger_data *trigger_data_alloc(struct event_command *cmd_ops,
++					      char *cmd,
++					      char *param,
++					      void *private_data)
  {
- 	unsigned int type;
--	struct resource res[SCREEN_INFO_MAX_RESOURCES];
--	size_t i, numres;
-+	struct pci_bus_region bus_region;
- 	int ret;
-+	struct resource r = {
-+		.flags = IORESOURCE_MEM,
-+	};
-+	const struct resource *pr;
- 	const struct screen_info *si = &screen_info;
+ 	struct event_trigger_data *trigger_data;
+ 	struct event_trigger_ops *trigger_ops;
+@@ -992,7 +992,7 @@ event_trigger_parse(struct event_command *cmd_ops,
+ 		return ret;
  
- 	if (screen_info_lfb_pdev)
- 		return; // already found
+ 	ret = -ENOMEM;
+-	trigger_data = event_trigger_alloc(cmd_ops, cmd, param, file);
++	trigger_data = trigger_data_alloc(cmd_ops, cmd, param, file);
+ 	if (!trigger_data)
+ 		goto out;
  
- 	type = screen_info_video_type(si);
--	if (type != VIDEO_TYPE_EFI)
--		return; // only applies to EFI
-+	if (!__screen_info_has_lfb(type))
-+		return; // only applies to EFI; maybe VESA
+@@ -1772,7 +1772,7 @@ int event_enable_trigger_parse(struct event_command *cmd_ops,
+ 	enable_data->enable = enable;
+ 	enable_data->file = event_enable_file;
  
--	ret = screen_info_resources(si, res, ARRAY_SIZE(res));
-+	ret = __screen_info_lfb_pci_bus_region(si, type, &bus_region);
- 	if (ret < 0)
- 		return;
--	numres = ret;
- 
--	for (i = 0; i < numres; ++i) {
--		struct resource *r = &res[i];
--		const struct resource *pr;
--
--		if (!(r->flags & IORESOURCE_MEM))
--			continue;
--		pr = pci_find_resource(pdev, r);
--		if (!pr)
--			continue;
--
--		/*
--		 * We've found a PCI device with the framebuffer
--		 * resource. Store away the parameters to track
--		 * relocation of the framebuffer aperture.
--		 */
--		screen_info_lfb_pdev = pdev;
--		screen_info_lfb_bar = pr - pdev->resource;
--		screen_info_lfb_offset = r->start - pr->start;
--		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
--	}
-+	/*
-+	 * Translate the PCI bus address to resource. Account
-+	 * for an offset if the framebuffer is behind a PCI host
-+	 * bridge.
-+	 */
-+	pcibios_bus_to_resource(pdev->bus, &r, &bus_region);
-+
-+	pr = pci_find_resource(pdev, &r);
-+	if (!pr)
-+		return;
-+
-+	/*
-+	 * We've found a PCI device with the framebuffer
-+	 * resource. Store away the parameters to track
-+	 * relocation of the framebuffer aperture.
-+	 */
-+	screen_info_lfb_pdev = pdev;
-+	screen_info_lfb_bar = pr - pdev->resource;
-+	screen_info_lfb_offset = r.start - pr->start;
-+	screen_info_lfb_res_start = bus_region.start;
- }
- DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
- 			       screen_info_fixup_lfb);
+-	trigger_data = event_trigger_alloc(cmd_ops, cmd, param, enable_data);
++	trigger_data = trigger_data_alloc(cmd_ops, cmd, param, enable_data);
+ 	if (!trigger_data) {
+ 		kfree(enable_data);
+ 		goto out;
+-- 
+2.39.5
+
 
 
 
