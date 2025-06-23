@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156920-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5A1AE54B8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E817BAE51B5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 187311887765
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 846C2440835
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C34C21D3F6;
-	Mon, 23 Jun 2025 22:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AB73221FCC;
+	Mon, 23 Jun 2025 21:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seHmAaM9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aeyjs/j3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3123FB1B;
-	Mon, 23 Jun 2025 22:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19043221FD2;
+	Mon, 23 Jun 2025 21:36:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716235; cv=none; b=EmQCw3k/aumgLBkOJIlFkproKJntYHb53lJRmkFMqlCchohbfGWCAkFFZwvuRCiHY9hUnhAkDcDePVOayGR/BNv0d+EC6exwJsRikvyAA2VzycGnPv5/AUd41zmEW8KlBbj5FaUczu2kCuoooP/9RLMSKtJ79DnguuhYc5nmH+M=
+	t=1750714593; cv=none; b=BmfWSlgeNNRej7wEOSh7XhBEVQd1QJJLxTVY4XXQcPyhqCu6Cv5uaWyG3ftcjU4e1UdFbbT3s5OmQ0KelMg0VMspo9O4uuAb2s37flkHd8ruJ02xrjHVnJSSFSm3oTuzKPEq/9srKiAkpAP0X8EE2CQ3rNXRUUcUaX00V2SJxyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716235; c=relaxed/simple;
-	bh=ktGDq5kn2XO8NdzT88OOwE/eQa2Na6LbXYb9C7miVfw=;
+	s=arc-20240116; t=1750714593; c=relaxed/simple;
+	bh=0ps3XK0ngR+zaytkzJYNDf2gzaO1p77mpXBMArA513w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PklYBGAj2elrsSe5XSAy5wH4Rs82GibSXy3OeK1Xox97T+hBSCn0zBji2zCT97ABsRLRqMNSSYoUPhzpLeuJ1vOiNqOy+sxCodSlYSEEgyFr34bMIiXUaHB08ADIh0ZGp3JibFYSbWpyQKbs27rKfKfp7xwx8kT+T/cRm8eBNPw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seHmAaM9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B01AC4CEEA;
-	Mon, 23 Jun 2025 22:03:55 +0000 (UTC)
+	 MIME-Version; b=k/5MC1H/WpLmL7LfEBPk+k4f4bs9OW6paDRnKODPXy8VxsAP9AXsk/LIz8hlKw3u3SBjfR3fUMNsSvHyxGGu7lZS3v1ph/xlQzmrqM2y3lDRLNFTr56Su/aF4Spy3Otjk9dx5nwoStcnVOTMtGniO6TptIgnB597JWzWG5i0WH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aeyjs/j3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A467FC4CEEA;
+	Mon, 23 Jun 2025 21:36:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716235;
-	bh=ktGDq5kn2XO8NdzT88OOwE/eQa2Na6LbXYb9C7miVfw=;
+	s=korg; t=1750714593;
+	bh=0ps3XK0ngR+zaytkzJYNDf2gzaO1p77mpXBMArA513w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=seHmAaM9D/1R1vn5cT9oJXewF52eGyT8xrjHThSM8IVyG9wsOjFgRqWgqUb+8qgBL
-	 qsPsnaXkHWC05Jad2ITFb4wmMj34AB2cHq7qENUdC4YnGVgTHQ9NCMkcuuxOF3BFw7
-	 94a8LYDqtPN1GcMjCIo2/kgz/OIoSlQWQUPYCKvs=
+	b=Aeyjs/j3UyDDwVcywxg3n/tG56b2THwBaHb4ph6Nwbg0KStVqhZfnrl1pPJ+P0Gct
+	 swxL6q7Z2sxG6sxmrvQWGErUyK26ebgmff55wU0wUUGY9y1p7PVryZPIV6hrdP9e0F
+	 TRq6yrTyxxsunUTSR7GM0atptoD3kSKYzbPBQ55Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 310/508] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 397/592] wifi: ath12k: correctly handle mcast packets for clients
 Date: Mon, 23 Jun 2025 15:05:55 +0200
-Message-ID: <20250623130652.941356864@linuxfoundation.org>
+Message-ID: <20250623130709.886277139@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
+[ Upstream commit 4541b0c8c3c1b85564971d497224e57cf8076a02 ]
 
-The PLL calculator does a search of the PLL configuration space for all
-valid OP pre-PLL clock dividers. The maximum did not take into account the
-CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
-dividers (other than 1) are valid. Do that now.
+Currently, RX is_mcbc bit is set for packets sent from client as
+destination address (DA) is multicast/broadcast address, but packets
+are actually unicast as receiver address (RA) is not multicast address.
+Hence, packets are not handled properly due to this is_mcbc bit.
 
-Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Therefore, reset the is_mcbc bit if interface type is AP.
+
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250411061523.859387-3-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 5 +++++
+ drivers/net/wireless/ath/ath12k/peer.c  | 5 ++++-
+ drivers/net/wireless/ath/ath12k/peer.h  | 3 ++-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
- 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
- 	max_op_pre_pll_clk_div =
- 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
--		      clk_div_even(pll->ext_clk_freq_hz /
-+		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
- 				   op_lim_fr->min_pll_ip_clk_freq_hz));
- 	min_op_pre_pll_clk_div =
- 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 7fadd366ec13d..8b1b038d67667 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2259,6 +2259,11 @@ static void ath12k_dp_rx_h_mpdu(struct ath12k *ar,
+ 	spin_lock_bh(&ar->ab->base_lock);
+ 	peer = ath12k_dp_rx_h_find_peer(ar->ab, msdu, rx_info);
+ 	if (peer) {
++		/* resetting mcbc bit because mcbc packets are unicast
++		 * packets only for AP as STA sends unicast packets.
++		 */
++		rxcb->is_mcbc = rxcb->is_mcbc && !peer->ucast_ra_only;
++
+ 		if (rxcb->is_mcbc)
+ 			enctype = peer->sec_type_grp;
+ 		else
+diff --git a/drivers/net/wireless/ath/ath12k/peer.c b/drivers/net/wireless/ath/ath12k/peer.c
+index 792cca8a3fb1b..ec7236bbccc0f 100644
+--- a/drivers/net/wireless/ath/ath12k/peer.c
++++ b/drivers/net/wireless/ath/ath12k/peer.c
+@@ -1,7 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include "core.h"
+@@ -383,6 +383,9 @@ int ath12k_peer_create(struct ath12k *ar, struct ath12k_link_vif *arvif,
+ 		arvif->ast_idx = peer->hw_peer_id;
+ 	}
+ 
++	if (vif->type == NL80211_IFTYPE_AP)
++		peer->ucast_ra_only = true;
++
+ 	if (sta) {
+ 		ahsta = ath12k_sta_to_ahsta(sta);
+ 		arsta = wiphy_dereference(ath12k_ar_to_hw(ar)->wiphy,
+diff --git a/drivers/net/wireless/ath/ath12k/peer.h b/drivers/net/wireless/ath/ath12k/peer.h
+index 5870ee11a8c7e..f3a5e054d2b55 100644
+--- a/drivers/net/wireless/ath/ath12k/peer.h
++++ b/drivers/net/wireless/ath/ath12k/peer.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
+- * Copyright (c) 2021-2024 Qualcomm Innovation Center, Inc. All rights reserved.
++ * Copyright (c) 2021-2025 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #ifndef ATH12K_PEER_H
+@@ -62,6 +62,7 @@ struct ath12k_peer {
+ 
+ 	/* for reference to ath12k_link_sta */
+ 	u8 link_id;
++	bool ucast_ra_only;
+ };
+ 
+ struct ath12k_ml_peer {
+-- 
+2.39.5
+
 
 
 
