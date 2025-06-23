@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C564EAE4300
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20107AE42DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A83A1174481
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7C5C189ED8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E7A12528F3;
-	Mon, 23 Jun 2025 13:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3B0C23BF9F;
+	Mon, 23 Jun 2025 13:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sHLnMWHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L25nHSAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE6124E019;
-	Mon, 23 Jun 2025 13:21:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B089724E019;
+	Mon, 23 Jun 2025 13:21:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684872; cv=none; b=htplT6Nk+SD3UBWISA9CM9teaOfWfWOetV4ukhZpiln68RlKXrUGMKNTQTnR7iRpl36sKYEN76LRR/YXVSKmtvCZOxKCe+jvn7aKa3ANkhy7qiq961a3TD5lIJXCwzzo4qkjnqkI8k7i/zflRiaFlRk5n7+DaEhJhesjSTr5O54=
+	t=1750684879; cv=none; b=DAAW2To5IVNfdXqIcJUdW/DddZUr4qV9SB/5k4HcsgzdlmfcatFWum4tNX2bf08YGPmwZA/3og3Z8T6kgoE1t5MEnEaY9k/6dUsYa/fu6ZgHzksO3AFyDMKg+ve02RrxoImCSx9i2ExaSVYijJVxQjr6A+koAq8YwlXzPu5a+fY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684872; c=relaxed/simple;
-	bh=pTDN80GyeFE4E3dX87oLe6GReksFNGYlv84YK4+dfxQ=;
+	s=arc-20240116; t=1750684879; c=relaxed/simple;
+	bh=jOVyoJspjLrw2isnVgjLgdZk7KhF0xh/GzcQIdk8vL4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GenX/RdgY1hBQmeziobnVx6rjTnPUh2ADGpz9OsQcqh8cBORxYJFjPX10YcPhEUUhqcMujDvAtmudrnGwsCtzwwVm1Xe+OQEBvEFa3EW2iDGZ4qXkJ83XCNEl4ThH+Ufqfmh4fgT5u2Y70aBLQrMGdXpNmc1aqC4vNxCZZRl+/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sHLnMWHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A3DC4CEEA;
-	Mon, 23 Jun 2025 13:21:11 +0000 (UTC)
+	 MIME-Version; b=ByktU16dlNNoYMvymffMPddxh1Pq97jFSGKE4Rko9GoxNRQHAs8ac0u1r8mL047JxwshytBhtwUP6tbFxSIXSHvqa6nQAcZ+nEM+1WWi89BWWNQ+pwRu4LAFS5HWkA4DMdU0/eRkvd6ib6jfBwykcmGLTxLXt5e+VvzZXXIm2v4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L25nHSAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 463EFC4CEEA;
+	Mon, 23 Jun 2025 13:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684871;
-	bh=pTDN80GyeFE4E3dX87oLe6GReksFNGYlv84YK4+dfxQ=;
+	s=korg; t=1750684879;
+	bh=jOVyoJspjLrw2isnVgjLgdZk7KhF0xh/GzcQIdk8vL4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sHLnMWHwDSja4cJL4SgeDY/SgyLZT6kNDFX00qgm50idztT0R4HnDsjk1kS6A4X/2
-	 GW0RFG43QaKBGu4D97dZ9d1hFwe/5fXv/r1cAC7ahr9qSH7h/IIOExTyYyihmInKni
-	 XG4JkA3VoNodZrYFUTBwgabSz8eM6R2eyjxZAnvY=
+	b=L25nHSAs1rl3AQ/Ynis1ojnNoQHcxwjHMjGkJkA0f0M9xEH/yejJEGaMN1F7n44kf
+	 zoZJHmyV5Locuw/nbdknsGFevkQUGrmR9pq3Ysby1ODsRoQAUj6kJAKZ/dCz7Y5EEg
+	 /NWTe6oOD9iy/nIm3sNoxlPknoD/8RB21KQkXOIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhiguo Niu <zhiguo.niu@unisoc.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 041/222] f2fs: fix to correct check conditions in f2fs_cross_rename
-Date: Mon, 23 Jun 2025 15:06:16 +0200
-Message-ID: <20250623130613.138990142@linuxfoundation.org>
+Subject: [PATCH 5.4 042/222] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
+Date: Mon, 23 Jun 2025 15:06:17 +0200
+Message-ID: <20250623130613.169567144@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,34 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhiguo Niu <zhiguo.niu@unisoc.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 9883494c45a13dc88d27dde4f988c04823b42a2f ]
+[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
 
-Should be "old_dir" here.
+Dataflash did not work on my board. After checking schematics and using
+the proper GPIO, it works now. Also, make it active low to avoid:
 
-Fixes: 5c57132eaf52 ("f2fs: support project quota")
-Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+flash@0 enforce active low on GPIO handle
+
+Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/namei.c | 2 +-
+ arch/arm/boot/dts/usb_a9263.dts | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
-index e74e5d2570ef6..d9b7bfb682a89 100644
---- a/fs/f2fs/namei.c
-+++ b/fs/f2fs/namei.c
-@@ -1067,7 +1067,7 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
- 			!projid_eq(F2FS_I(new_dir)->i_projid,
- 			F2FS_I(old_inode)->i_projid)) ||
--	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
-+	    (is_inode_flag_set(old_dir, FI_PROJ_INHERIT) &&
- 			!projid_eq(F2FS_I(old_dir)->i_projid,
- 			F2FS_I(new_inode)->i_projid)))
- 		return -EXDEV;
+diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
+index e7a705fddda95..937adf3ed3611 100644
+--- a/arch/arm/boot/dts/usb_a9263.dts
++++ b/arch/arm/boot/dts/usb_a9263.dts
+@@ -58,7 +58,7 @@
+ 			};
+ 
+ 			spi0: spi@fffa4000 {
+-				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
++				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
+ 				status = "okay";
+ 				mtd_dataflash@0 {
+ 					compatible = "atmel,at45", "atmel,dataflash";
 -- 
 2.39.5
 
