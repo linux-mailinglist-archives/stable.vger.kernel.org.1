@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155678-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED831AE4342
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DDD4AE423F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 700633B8AD7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B1688171CDC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3D59239E63;
-	Mon, 23 Jun 2025 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9F124BC0A;
+	Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ERp9AtL5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KVdGLbx6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A77225393A;
-	Mon, 23 Jun 2025 13:24:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADB324DCF8;
+	Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685049; cv=none; b=alFcJy10+A3frGPggYf8yJB6lvMzmEUXH4R6YiCDN6uBjr5T0oBQYwuALPGInKybOkPCI0OU4e9YkDgamb/ZD7ZNMlcZzcQ4KrrdfhXWp2r945yQp3K+vZYOE2psRrkgmwEjgGzR70ei7VSagYcQefcWsSYifTU57jF1RG3G0jA=
+	t=1750684494; cv=none; b=V3WHDCrDgmfEzYwVKthSk4R4FFEk56ecJddtz5XoqU2bCT+KuGlJwpAna0+xhInejJHYcGA1/mQG4epM9JRwfXE6pRf5ia9igXPVjKYM2rVh8eUPls2Bn4+zEmWylBZbb81GbJ/TUDa8BKztOLt/0gg1nHeJVdkv0YwAxnGUY2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685049; c=relaxed/simple;
-	bh=VeqiFfocRDQ527Sp8QZMScgziEGQj3yH+UJGsK3iKmA=;
+	s=arc-20240116; t=1750684494; c=relaxed/simple;
+	bh=OkKFwvWqt1Ij3hsLJUu6gPSck9FC0H7ahNcMzoBUtJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m2N2NNNS+L4xLR4OknJ5wBUlJGH57HJhW8xsysT7lvk9LNRBCD1hlwgd1HvEL52Gwop3fQz+3U7330EWJ4U0donsBmMznf35647zqcwEq5TUHB4CDd0efIv0XS6tdoEySguT9Ap7p1PPXkBRbW6o5O/srdKsQkxwUDKLic8wXEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ERp9AtL5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20644C4CEEA;
-	Mon, 23 Jun 2025 13:24:08 +0000 (UTC)
+	 MIME-Version; b=O3GpYntqptpFA/Lf4izGMj/WMfHmkKnoN10ji5VvR4V07MG44g3K+g5wCvr/5EB9/cSxO20nKNMmGmgCQqI/UTD0J9LBky6aZzTE6ITfZCiCm9j38gRJX2KOxa3IVAroFNMSEmJ7Ku9UldDpVfekw05uH+T43XRo8ds3djfRp+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KVdGLbx6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D118C4CEEA;
+	Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685049;
-	bh=VeqiFfocRDQ527Sp8QZMScgziEGQj3yH+UJGsK3iKmA=;
+	s=korg; t=1750684494;
+	bh=OkKFwvWqt1Ij3hsLJUu6gPSck9FC0H7ahNcMzoBUtJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ERp9AtL5GBGms5hRtX/hrIyU3IOwnMHQJHov94MdcWS8dLNdj2Ch7kQ0sVWC4pMDg
-	 5OS6GBh/H4C0qJ8yLcH+ccah2a7eJp9Z1EA3o1maGpEZdxsxdJDM837ZmY2VLN/+r0
-	 7pwt3+WRWGUM7jR4RN6b/bfydIcDg+eAqvy0wiTA=
+	b=KVdGLbx6pcMYTje/6FlInojvgpz0axBFN5GPqlQQXENm0EXsSLNrKMRyORhwhOHRc
+	 zr6ICgTS++O4k3+j26QSVbjPxvqNlZtWt2IohPrs/HBtAKSIStlxTObe56AuVHbQ/e
+	 JAx1ove65E82jtsyNDf2puZZKTiH9PsAHzIPSSio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 004/508] pinctrl: armada-37xx: set GPIO output value before setting direction
+	Douglas Anderson <dianders@chromium.org>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.15 091/592] media: uvcvideo: Fix deferred probing error
 Date: Mon, 23 Jun 2025 15:00:49 +0200
-Message-ID: <20250623130645.365901192@linuxfoundation.org>
+Message-ID: <20250623130702.445710754@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
+commit 387e8939307192d5a852a2afeeb83427fa477151 upstream.
 
-Changing the direction before updating the output value in the
-OUTPUT_VAL register may result in a glitch on the output line
-if the previous value in the OUTPUT_VAL register is different
-from the one we want to set.
+uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
+have not yet been probed. This return code should be propagated to the
+caller of uvc_probe() to ensure that probing is retried when the required
+GPIOs become available.
 
-In order to avoid that, update the output value before changing
-the direction.
+Currently, this error code is incorrectly converted to -ENODEV,
+causing some internal cameras to be ignored.
+
+This commit fixes this issue by propagating the -EPROBE_DEFER error.
 
 Cc: stable@vger.kernel.org
-Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |   27 +++++++++++++++++++--------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -419,23 +419,22 @@ static int armada_37xx_gpio_direction_ou
- 					     unsigned int offset, int value)
- {
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
--	unsigned int val_offset = offset;
--	unsigned int reg = OUTPUT_EN;
-+	unsigned int en_offset = offset;
-+	unsigned int reg = OUTPUT_VAL;
- 	unsigned int mask, val, ret;
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -2232,13 +2232,16 @@ static int uvc_probe(struct usb_interfac
+ #endif
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
-+	val = value ? mask : 0;
+ 	/* Parse the Video Class control descriptor. */
+-	if (uvc_parse_control(dev) < 0) {
++	ret = uvc_parse_control(dev);
++	if (ret < 0) {
++		ret = -ENODEV;
+ 		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
+ 		goto error;
+ 	}
  
--	ret = regmap_update_bits(info->regmap, reg, mask, mask);
--
-+	ret = regmap_update_bits(info->regmap, reg, mask, val);
- 	if (ret)
- 		return ret;
+ 	/* Parse the associated GPIOs. */
+-	if (uvc_gpio_parse(dev) < 0) {
++	ret = uvc_gpio_parse(dev);
++	if (ret < 0) {
+ 		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
+ 		goto error;
+ 	}
+@@ -2264,24 +2267,32 @@ static int uvc_probe(struct usb_interfac
+ 	}
  
--	reg = OUTPUT_VAL;
--	armada_37xx_update_reg(&reg, &val_offset);
-+	reg = OUTPUT_EN;
-+	armada_37xx_update_reg(&reg, &en_offset);
+ 	/* Register the V4L2 device. */
+-	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
++	ret = v4l2_device_register(&intf->dev, &dev->vdev);
++	if (ret < 0)
+ 		goto error;
  
--	val = value ? mask : 0;
--	regmap_update_bits(info->regmap, reg, mask, val);
-+	regmap_update_bits(info->regmap, reg, mask, mask);
+ 	/* Scan the device for video chains. */
+-	if (uvc_scan_device(dev) < 0)
++	if (uvc_scan_device(dev) < 0) {
++		ret = -ENODEV;
+ 		goto error;
++	}
  
- 	return 0;
+ 	/* Initialize controls. */
+-	if (uvc_ctrl_init_device(dev) < 0)
++	if (uvc_ctrl_init_device(dev) < 0) {
++		ret = -ENODEV;
+ 		goto error;
++	}
+ 
+ 	/* Register video device nodes. */
+-	if (uvc_register_chains(dev) < 0)
++	if (uvc_register_chains(dev) < 0) {
++		ret = -ENODEV;
+ 		goto error;
++	}
+ 
+ #ifdef CONFIG_MEDIA_CONTROLLER
+ 	/* Register the media device node */
+-	if (media_device_register(&dev->mdev) < 0)
++	ret = media_device_register(&dev->mdev);
++	if (ret < 0)
+ 		goto error;
+ #endif
+ 	/* Save our data pointer in the interface data. */
+@@ -2315,7 +2326,7 @@ static int uvc_probe(struct usb_interfac
+ error:
+ 	uvc_unregister_video(dev);
+ 	kref_put(&dev->ref, uvc_delete);
+-	return -ENODEV;
++	return ret;
  }
+ 
+ static void uvc_disconnect(struct usb_interface *intf)
 
 
 
