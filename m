@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E5C9AE4379
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946E2AE436D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51EE11897F92
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 83A0A17A58B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4319253358;
-	Mon, 23 Jun 2025 13:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4541E253937;
+	Mon, 23 Jun 2025 13:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XNDyDkG0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mlYUiOA7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6292E24C060;
-	Mon, 23 Jun 2025 13:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02A55239E63;
+	Mon, 23 Jun 2025 13:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685242; cv=none; b=VAOh439Tptj0QwptoH8VsriTSIEoG7K8nEK2OayZYNnEp7nu6VwGeY9wmEZ8kxzxLjZXJmvbNTE2sBHgWXVvZk6Co/o/xLTl16OT6sf2lU9NhFBRn6jfVaQxxJV2SjleSMXTXPzXlSy7F3z2XBV3D2TFwuVjnmoZVS7XOiUez90=
+	t=1750685047; cv=none; b=WgwcU5tKPAF5TqzQTrbrbEus5tqqbgBy4nqW+XX56+80n36rjMzKoO0MZH+zbFAWvJEF0DbKZda3Tr2icqlVouqc6yWG6brMtKDhQiy6OpMp5CNltOLBdnzu2eTSGYa2gDavoxLith3HEutPC81/MjE0UycOPEmrwR1E74xxocA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685242; c=relaxed/simple;
-	bh=lRgo5hYMJsaoPNHbuuq3MqXMMyNm7QbNzsUcTUsyeZk=;
+	s=arc-20240116; t=1750685047; c=relaxed/simple;
+	bh=HeeYRwpJ/rF03VnGb6+Jcu1MR7xtCNkAlJwXoDIdtb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rZAAc/j10Io7QKn8VsbWAHB8Q+uNLnUnInLigQTtww+o9y5mSpdPjMDjYBKxm/elyggE5yH4CzwEJT1dKTW/nAfBclmk5ahnzWwBtdn6Q7Hl3Eji3Yd4YzUn1PSIM+042xy4flyfHGhs2tIrs2QB17WSdBssoW14NPHOIYBkG/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XNDyDkG0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BB8C4CEF1;
-	Mon, 23 Jun 2025 13:27:21 +0000 (UTC)
+	 MIME-Version; b=IXTt1JNyx49KzrYHKls5BcRHRzP24ykwN4HiWqm7FaxC+z2dtsGffRPwpOqd/In1nDEKqbVDMpK9mNwBrp/9RhoNZIq/1ELV1hAtLZlABCm4XmpLMxiKa2i5D/M9sWufRQxuuA2so7BDo6id03stj+ZSXgphOqttTndAPl9Qykw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mlYUiOA7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8910CC4CEEA;
+	Mon, 23 Jun 2025 13:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685241;
-	bh=lRgo5hYMJsaoPNHbuuq3MqXMMyNm7QbNzsUcTUsyeZk=;
+	s=korg; t=1750685046;
+	bh=HeeYRwpJ/rF03VnGb6+Jcu1MR7xtCNkAlJwXoDIdtb0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XNDyDkG0V0Oetz2QSgjeEJMWwj4dE/vC4EfUZkMkJYGxo3J+v2/7Pm2CRGjkc4wCb
-	 4ZKplatnD6WJeX52N2v2sneJ/Mxvxju2bKeCvMYpQdGpmN8P3c90r0t4dCz4O/6iKc
-	 sisA+SjPOx9NOwLtegIdmTp+wEAIuEFVMMifDhaI=
+	b=mlYUiOA7m3sLxu/xdASuwOPUoU3xDaqr6FWeJjCb4iW6HzB0Ip9hgCImZAtvlNuTh
+	 vKka/haTw/deev3pi5raK7qzqCmhENW9ebTwYph0RyBIecDt4NNrLUMLg4uv1juOAd
+	 qmYcmzfJscidgNh4nflWIJj1WgMIiqAr8AwxNv0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 217/592] ACPI: bus: Bail out if acpi_kobj registration fails
+Subject: [PATCH 5.15 031/411] firmware: psci: Fix refcount leak in psci_dt_init
 Date: Mon, 23 Jun 2025 15:02:55 +0200
-Message-ID: <20250623130705.447486196@linuxfoundation.org>
+Message-ID: <20250623130633.936976699@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 94a370fc8def6038dbc02199db9584b0b3690f1a ]
+[ Upstream commit 7ff37d29fd5c27617b9767e1b8946d115cf93a1e ]
 
-The ACPI sysfs code will fail to initialize if acpi_kobj is NULL,
-together with some ACPI drivers.
+Fix a reference counter leak in psci_dt_init() where of_node_put(np) was
+missing after of_find_matching_node_and_match() when np is unavailable.
 
-Follow the other firmware subsystems and bail out if the kobject
-cannot be registered.
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20250518185111.3560-2-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: d09a0011ec0d ("drivers: psci: Allow PSCI node to be disabled")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250318151712.28763-1-linmq006@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/firmware/psci/psci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index 058910af82bca..c2ab2783303f2 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1446,8 +1446,10 @@ static int __init acpi_init(void)
- 	}
+diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+index cfb448eabdaa2..ec888aba57ffd 100644
+--- a/drivers/firmware/psci/psci.c
++++ b/drivers/firmware/psci/psci.c
+@@ -619,8 +619,10 @@ int __init psci_dt_init(void)
  
- 	acpi_kobj = kobject_create_and_add("acpi", firmware_kobj);
--	if (!acpi_kobj)
--		pr_debug("%s: kset create error\n", __func__);
-+	if (!acpi_kobj) {
-+		pr_err("Failed to register kobject\n");
-+		return -ENOMEM;
+ 	np = of_find_matching_node_and_match(NULL, psci_of_match, &matched_np);
+ 
+-	if (!np || !of_device_is_available(np))
++	if (!np || !of_device_is_available(np)) {
++		of_node_put(np);
+ 		return -ENODEV;
 +	}
  
- 	init_prmt();
- 	acpi_init_pcc();
+ 	init_fn = (psci_initcall_t)matched_np->data;
+ 	ret = init_fn(np);
 -- 
 2.39.5
 
