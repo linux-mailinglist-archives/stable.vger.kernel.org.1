@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF0B5AE53AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2661FAE5255
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B749C18839A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 43F8A4435A7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19A661E22E6;
-	Mon, 23 Jun 2025 21:54:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EBD121D3DD;
+	Mon, 23 Jun 2025 21:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YHlcxop1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SPT2Mm8A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBBCF1FECBA;
-	Mon, 23 Jun 2025 21:54:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B0124315A;
+	Mon, 23 Jun 2025 21:42:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715687; cv=none; b=LEZDyujJ3wi6NtlA9wJEGPCTPFzIS9mW/VQkWSqSoNcG0IP94d/dwRLl65KWPRYeLCPsOxeWzEPhKKau+oVx3mB6qPik7vwhbctg7C1JPlsNTUU6vC8nFunML5oKAOxyGfQ/i52j31ZLUoJ5xiWfZS3yPLsdiQZzKMir0WMEVa4=
+	t=1750714963; cv=none; b=VVMwh64lMZrPo6brkqX+C03HjsyRnkFbFkcKX9M5z9JSN8P0J2KYphNjKedW5BvMWx1epWFAGRsqu7fTw21zLCQv2tVvgHhLZ0PXTL7R+juxi3q5TmCksK9xy1Vy3iSziexc7rXOi1UoU/fUg4PP739lrVlQm4cN1wEhvC6ZbHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715687; c=relaxed/simple;
-	bh=7FxE1X6750jXuUPQ8q8jBsULnx6ONtiLEx6yEHZFk4U=;
+	s=arc-20240116; t=1750714963; c=relaxed/simple;
+	bh=7Raqfa5AgVY1OMgTghQK9Mkl96cDzIBGJ+jJOYKILFE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClpZ868zloEer26yTT+OGC9g7gLBYy2mwRez+bh7iCi5W4ul2O5z7CaQVz1+eN4mNAW+jCAvAE9FkJls+J+Nw0biI6sxYhjsWJ7K5fSnmOZf/x95vsMSSiMoUoh5iqCViASnTvcG7XkyGAdpjHVuXg1uvZbTQmdaJBwDakDXF44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YHlcxop1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE45C4CEEA;
-	Mon, 23 Jun 2025 21:54:47 +0000 (UTC)
+	 MIME-Version; b=A+TVCKpcXH56nQtHEl6PsPGR+JWoZ7w3LIm9bV6Pi3t7wwWNm6CGAJuVedgMwEuXorc7LX1xzr3/g85wSeruUVjblH1VOZuIlMa90IzQCQ6yMhjplrcUvoOYzfqrPZbOyGdUMyPfO7B4Q7tqVXIodFFHwHmsjAI24kSrp0tCHqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SPT2Mm8A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D92E2C4CEEA;
+	Mon, 23 Jun 2025 21:42:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715687;
-	bh=7FxE1X6750jXuUPQ8q8jBsULnx6ONtiLEx6yEHZFk4U=;
+	s=korg; t=1750714963;
+	bh=7Raqfa5AgVY1OMgTghQK9Mkl96cDzIBGJ+jJOYKILFE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YHlcxop19xGq4fplEi3Ylq4L10292ZXklmf3XFEedFgVFOIG8B2obarOIbQ3Wh6tu
-	 xoHeTDBZRlA9WD+IEwNw0FyBhsc9YRZktPkXzdUeDsKIcZMnT0JcrlLqikxI4t3I7c
-	 USuG7DSxzFozO36uAMM10HKcMtdiSWNjf15tuqRg=
+	b=SPT2Mm8AeVsAkqo1UdhAEQtb0pFAghvHSr0+AuChZt7TsUNRnLQfyJV7F5O9BbNU2
+	 SWeswP0AtfLUxoREtU+ZsH97pP7R/7TanwvuRAZVLUk45TEfUU0zzBTpfIjy1JDFnS
+	 lk8DLdTvciG9O4GjfECXaMJwRFnBfWVWnoja9+O8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	Nikolay Borisov <nik.borisov@suse.com>
-Subject: [PATCH 6.15 474/592] x86/its: explicitly manage permissions for ITS pages
+	syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 171/290] wifi: mac80211_hwsim: Prevent tsf from setting if beacon is disabled
 Date: Mon, 23 Jun 2025 15:07:12 +0200
-Message-ID: <20250623130711.707223050@linuxfoundation.org>
+Message-ID: <20250623130632.035297116@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,158 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra (Intel) <peterz@infradead.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit a82b26451de126a5ae130361081986bc459afe9b upstream.
+[ Upstream commit c575f5374be7a5c4be4acb9fe6be3a4669d94674 ]
 
-execmem_alloc() sets permissions differently depending on the kernel
-configuration, CPU support for PSE and whether a page is allocated
-before or after mark_rodata_ro().
+Setting tsf is meaningless if beacon is disabled, so check that beacon
+is enabled before setting tsf.
 
-Add tracking for pages allocated for ITS when patching the core kernel
-and make sure the permissions for ITS pages are explicitly managed for
-both kernel and module allocations.
-
-Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Co-developed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Nikolay Borisov <nik.borisov@suse.com>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250603111446.2609381-5-rppt@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=064815c6cd721082a52a
+Tested-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_3609AC2EFAAED68CA5A7E3C6D212D1C67806@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/alternative.c |   74 +++++++++++++++++++++++++++++-------------
- 1 file changed, 52 insertions(+), 22 deletions(-)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -138,6 +138,24 @@ static struct module *its_mod;
- #endif
- static void *its_page;
- static unsigned int its_offset;
-+struct its_array its_pages;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index d86a1bd7aab08..f5f48f7e6d26e 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -1201,6 +1201,11 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
+ 	/* MLD not supported here */
+ 	u32 bcn_int = data->link_data[0].beacon_int;
+ 	u64 delta = abs(tsf - now);
++	struct ieee80211_bss_conf *conf;
 +
-+static void *__its_alloc(struct its_array *pages)
-+{
-+	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-+	if (!page)
-+		return NULL;
-+
-+	void *tmp = krealloc(pages->pages, (pages->num+1) * sizeof(void *),
-+			     GFP_KERNEL);
-+	if (!tmp)
-+		return NULL;
-+
-+	pages->pages = tmp;
-+	pages->pages[pages->num++] = page;
-+
-+	return no_free_ptr(page);
-+}
++	conf = link_conf_dereference_protected(vif, data->link_data[0].link_id);
++	if (conf && !conf->enable_beacon)
++		return;
  
- /* Initialize a thunk with the "jmp *reg; int3" instructions. */
- static void *its_init_thunk(void *thunk, int reg)
-@@ -173,6 +191,21 @@ static void *its_init_thunk(void *thunk,
- 	return thunk + offset;
- }
- 
-+static void its_pages_protect(struct its_array *pages)
-+{
-+	for (int i = 0; i < pages->num; i++) {
-+		void *page = pages->pages[i];
-+		execmem_restore_rox(page, PAGE_SIZE);
-+	}
-+}
-+
-+static void its_fini_core(void)
-+{
-+	if (IS_ENABLED(CONFIG_STRICT_KERNEL_RWX))
-+		its_pages_protect(&its_pages);
-+	kfree(its_pages.pages);
-+}
-+
- #ifdef CONFIG_MODULES
- void its_init_mod(struct module *mod)
- {
-@@ -195,10 +228,8 @@ void its_fini_mod(struct module *mod)
- 	its_page = NULL;
- 	mutex_unlock(&text_mutex);
- 
--	for (int i = 0; i < mod->arch.its_pages.num; i++) {
--		void *page = mod->arch.its_pages.pages[i];
--		execmem_restore_rox(page, PAGE_SIZE);
--	}
-+	if (IS_ENABLED(CONFIG_STRICT_MODULE_RWX))
-+		its_pages_protect(&mod->arch.its_pages);
- }
- 
- void its_free_mod(struct module *mod)
-@@ -216,28 +247,23 @@ void its_free_mod(struct module *mod)
- 
- static void *its_alloc(void)
- {
--	void *page __free(execmem) = execmem_alloc(EXECMEM_MODULE_TEXT, PAGE_SIZE);
-+	struct its_array *pages = &its_pages;
-+	void *page;
- 
-+#ifdef CONFIG_MODULE
-+	if (its_mod)
-+		pages = &its_mod->arch.its_pages;
-+#endif
-+
-+	page = __its_alloc(pages);
- 	if (!page)
- 		return NULL;
- 
--#ifdef CONFIG_MODULES
--	if (its_mod) {
--		struct its_array *pages = &its_mod->arch.its_pages;
--		void *tmp = krealloc(pages->pages,
--				     (pages->num+1) * sizeof(void *),
--				     GFP_KERNEL);
--		if (!tmp)
--			return NULL;
--
--		pages->pages = tmp;
--		pages->pages[pages->num++] = page;
-+	execmem_make_temp_rw(page, PAGE_SIZE);
-+	if (pages == &its_pages)
-+		set_memory_x((unsigned long)page, 1);
- 
--		execmem_make_temp_rw(page, PAGE_SIZE);
--	}
--#endif /* CONFIG_MODULES */
--
--	return no_free_ptr(page);
-+	return page;
- }
- 
- static void *its_allocate_thunk(int reg)
-@@ -291,7 +317,9 @@ u8 *its_static_thunk(int reg)
- 	return thunk;
- }
- 
--#endif
-+#else
-+static inline void its_fini_core(void) {}
-+#endif /* CONFIG_MITIGATION_ITS */
- 
- /*
-  * Nomenclature for variable names to simplify and clarify this code and ease
-@@ -2368,6 +2396,8 @@ void __init alternative_instructions(voi
- 	apply_retpolines(__retpoline_sites, __retpoline_sites_end);
- 	apply_returns(__return_sites, __return_sites_end);
- 
-+	its_fini_core();
-+
- 	/*
- 	 * Adjust all CALL instructions to point to func()-10, including
- 	 * those in .altinstr_replacement.
+ 	/* adjust after beaconing with new timestamp at old TBTT */
+ 	if (tsf > now) {
+-- 
+2.39.5
+
 
 
 
