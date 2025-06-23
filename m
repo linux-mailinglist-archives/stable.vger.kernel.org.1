@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7208AAE5692
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DDE7AE5769
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 54F16173848
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA1343B400C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4639D223DE5;
-	Mon, 23 Jun 2025 22:20:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD387223DF0;
+	Mon, 23 Jun 2025 22:27:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0NtliFvW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="soHOS2ce"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01CBC223708;
-	Mon, 23 Jun 2025 22:20:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B1552222B2;
+	Mon, 23 Jun 2025 22:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717238; cv=none; b=Mtlt+r4BAQ5xJO9eiqDgTQ2f2qW7rxzw+UfFPx7kPSoZ7dv/QnlXf+fbnzTAKYh1gopdf2C3PH/LdLbNA0ZXa8WjFgVfrM181ugDTBzNzIasiiU5WYYcDQu6WYH/qx+bmis33Sus/THSibMTNjwEe4j2V56MlLcAks1FrPFp708=
+	t=1750717635; cv=none; b=SxAZm6B9IZtkWF7D/uQjLy9HjREzsNxHDKoeD/Par8BwYzdBSKnYWuFzKdUE6lHeMHLog/m6P4tmbSgPNK40MXAqzx1WSsOc9mBC8PdnhJ6FvuS/gMScrE9jhHCRWzZmsFtOQ0Jlbyl4xyKNropzc0HPE7kW2PCrt8aqYsIFDRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717238; c=relaxed/simple;
-	bh=bmK6KHONtCRoFqoinSfKAM9HVhT18ruEjeEJmgpfIRI=;
+	s=arc-20240116; t=1750717635; c=relaxed/simple;
+	bh=8IqO2LFtkkDDtLMUfVdkifmVaY2E1cWR/oVSt39ILo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RpFbPPwyuh2rnrX0PDotBNGdlPh34mNSSDkQTcqdTaCfaS+RbnwJD/0OC1e6iPYkCjPCE1hw8e1UFm0sBBln6fQZC4cJzOWjCnKAL50A8mYyBpxDbNpdlwV69c4fBKKJDK7BKQBOrMAjuEZ91DuhbwabQidgpTh3daIZZ43k57w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0NtliFvW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 232D1C4CEEA;
-	Mon, 23 Jun 2025 22:20:35 +0000 (UTC)
+	 MIME-Version; b=ZsfSuQt8DoJ+KHJ9N6oFBV8+v7fHPNJ4K8GB6LlWwZ/oYh0ljO35ed8icdQBQXCOBsj2O557scchKnscinq5Eu9chQp9VZjitosaWyZrmTnxJoI4iZU+UFi45uvxk/0faSHN2Hbqkv+PF/8hJ8JYuXIS7KrlwFfMZXZulaW0ZwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=soHOS2ce; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE946C4CEEA;
+	Mon, 23 Jun 2025 22:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717236;
-	bh=bmK6KHONtCRoFqoinSfKAM9HVhT18ruEjeEJmgpfIRI=;
+	s=korg; t=1750717634;
+	bh=8IqO2LFtkkDDtLMUfVdkifmVaY2E1cWR/oVSt39ILo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0NtliFvW8QRuC/DkvidZb95lQPx0E1eZinzrjGfKPI76xoS6WnHN1umSpRG3g7WMO
-	 JLutB96mD5BeuhtBgiZQzSKiew6xAD5QFbmStYiBbtIXpLOPd4cWOG4ceDy4yGhG73
-	 QH2IPLkHIuW9ygUVPaApvFxPW17yKoyOT15Dl3Nw=
+	b=soHOS2ce6BL0Ww0u/UDxB4hIGlbc3482DMsJvO9+ijwzrJLRcmC6pDgcwZG35xBjN
+	 UsToJWxmx/I8jxehQM3ByzVN405AT4FGtCcQUA7W+8pRKrZAq3Bp1sIa9E95ls9I9e
+	 7rS59GZQd19jgisTs74Ha/GpfnNvr0u84eHk3jmo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.12 344/414] erofs: remove unused trace event erofs_destroy_inode
+	Jann Horn <jannh@google.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 436/508] tee: Prevent size calculation wraparound on 32-bit kernels
 Date: Mon, 23 Jun 2025 15:08:01 +0200
-Message-ID: <20250623130650.578029882@linuxfoundation.org>
+Message-ID: <20250623130655.891698677@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +63,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Jann Horn <jannh@google.com>
 
-commit 30b58444807c93bffeaba7d776110f2a909d2f9a upstream.
+[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
 
-The trace event `erofs_destroy_inode` was added but remains unused. This
-unused event contributes approximately 5KB to the kernel module size.
+The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
+32-bit kernels: Multiplying a user-provided 32-bit value with the
+size of a structure can wrap around on such platforms.
 
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/r/20250612224906.15000244@batman.local.home
-Fixes: 13f06f48f7bf ("staging: erofs: support tracepoint")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250617054056.3232365-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by using saturating arithmetic for the size calculation.
+
+This has no security consequences because, in all users of
+TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
+for wrapping.
+
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/erofs.h |   18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/tee/tee_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/include/trace/events/erofs.h
-+++ b/include/trace/events/erofs.h
-@@ -211,24 +211,6 @@ TRACE_EVENT(erofs_map_blocks_exit,
- 		  show_mflags(__entry->mflags), __entry->ret)
- );
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 98da206cd7615..a9a893bc19fa4 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -10,6 +10,7 @@
+ #include <linux/fs.h>
+ #include <linux/idr.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/tee_drv.h>
+ #include <linux/uaccess.h>
+@@ -19,7 +20,7 @@
  
--TRACE_EVENT(erofs_destroy_inode,
--	TP_PROTO(struct inode *inode),
--
--	TP_ARGS(inode),
--
--	TP_STRUCT__entry(
--		__field(	dev_t,		dev		)
--		__field(	erofs_nid_t,	nid		)
--	),
--
--	TP_fast_assign(
--		__entry->dev	= inode->i_sb->s_dev;
--		__entry->nid	= EROFS_I(inode)->nid;
--	),
--
--	TP_printk("dev = (%d,%d), nid = %llu", show_dev_nid(__entry))
--);
--
- #endif /* _TRACE_EROFS_H */
+ #define TEE_NUM_DEVICES	32
  
-  /* This part must be outside protection */
+-#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
++#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
+ 
+ #define TEE_UUID_NS_NAME_SIZE	128
+ 
+@@ -487,7 +488,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -565,7 +566,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -699,7 +700,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
+ 	if (get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+@@ -798,7 +799,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
+ 	    get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+-- 
+2.39.5
+
 
 
 
