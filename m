@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-155975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1236AE4490
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02961AE453D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 06C624A1F71
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A02834455D6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE073253953;
-	Mon, 23 Jun 2025 13:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 018E7255F2B;
+	Mon, 23 Jun 2025 13:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nMJh6G8w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQv6oPV4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB87224728E;
-	Mon, 23 Jun 2025 13:37:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CA52550D7;
+	Mon, 23 Jun 2025 13:37:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685823; cv=none; b=V7opXnc2LAval8S4NlbDlPEhRceQW9ca5i39WSu76klTYYBMYJ4eqapElWdT6fDRXjhrGQ56FrwCvlTks/lUNW6QGzP8ow5PWnVOtRIfUHO0gK5JsXhjnlGRqvQXIIQSRyxbHix6+Lv8BAiOzKpCsQw0ZE3p+7l6mprrXfwlOc8=
+	t=1750685846; cv=none; b=jX7h3ENzEa2y5cOD7nNEAmyEjwAmZrc9ICnmpJPE5xXYtdDScD62Vz1MEmrFjJHbhtn5K1woOarT197ZznU8CluxUXbRWgXixtMBic2RwSkXwn1HzT2qGPvwK2n4UCErnNZAOSGLYgF39frD+U72KZugO14wrBzoDj4AHmUwmLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685823; c=relaxed/simple;
-	bh=4/qWnu61CqyL8p9dEeY6Jducu6/pGaX8aGpPq9ljuSk=;
+	s=arc-20240116; t=1750685846; c=relaxed/simple;
+	bh=DJy/NLrHGfd9BJx9i/rDXjsP4r3qMrU+MtNxYC1TmPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hv4C+DhH8RY+TCpovJ8lh7xp1A0ywmEQkfVkHX9U8+KhPitWOvyRu2i6DYLuMRLB4QdEkqKC2bVczsFrp5I//HpSVRNH0z11jTXAre1m2m2mB4wFy/qZKqXChQ7O9PzxZru9mxCNWsyJ5i3NjTAD37e9oVlPLUL1bv8xoGAYWKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nMJh6G8w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 410F2C4CEEA;
-	Mon, 23 Jun 2025 13:37:03 +0000 (UTC)
+	 MIME-Version; b=eOgwuz3KhwrrF2JXAbLC2uTjAGnnRod29K9tKAUC/9X4bEekgRrednuwdbdAlpuVTdEbJJZFCnMX7uM4zC97MVr1JSzWsGb5AarNYL0gmjrXITF+XpsMlTaWju0xENZ6h/KupZBJ21rwd7aDBtCU8M/gxkvy0cMceECMPo4yA+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQv6oPV4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 469D1C4CEEA;
+	Mon, 23 Jun 2025 13:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685823;
-	bh=4/qWnu61CqyL8p9dEeY6Jducu6/pGaX8aGpPq9ljuSk=;
+	s=korg; t=1750685846;
+	bh=DJy/NLrHGfd9BJx9i/rDXjsP4r3qMrU+MtNxYC1TmPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nMJh6G8wZB1OWsy6N+DWzk38bq+wNkwAc0k0mcE8gXwooUb0fASPOBhDF8759dxis
-	 nE4q3awYu3hM5ZOtD8Q8HSfi2am57Fehg51BctnjTcxYLs0w6Xve6TpyYUOU9Kz/P/
-	 xQVfJFdAVDZEmyIC3V1y5magvOf28bKtRqKvwYAs=
+	b=MQv6oPV4i8elamJ9qEGVTM61JOgtCh8jH7BfGAj+G4vdsw6exOW498A+/DL7TBlJ7
+	 ez+4rCqXycCX+ENiRbqR/WE85Hf1EYuzi2mjAU9xlijooHeTQXg0Eoaj6oDQm+A+YC
+	 EQgpG4CnpYmraAcpAvTyz6mUu8s3DgNc9xCLNJGg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 028/290] media: ccs-pll: Start VT pre-PLL multiplier search from correct value
-Date: Mon, 23 Jun 2025 15:04:49 +0200
-Message-ID: <20250623130627.832518179@linuxfoundation.org>
+Subject: [PATCH 6.6 029/290] media: ccs-pll: Start OP pre-PLL multiplier search from correct value
+Date: Mon, 23 Jun 2025 15:04:50 +0200
+Message-ID: <20250623130627.862029716@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
 References: <20250623130626.910356556@linuxfoundation.org>
@@ -68,13 +68,13 @@ Content-Transfer-Encoding: 8bit
 
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 06d2d478b09e6764fb6161d1621fc10d9f0f2860 upstream.
+commit 660e613d05e449766784c549faf5927ffaf281f1 upstream.
 
-The ccs_pll_calculate_vt_tree() function does a search over possible VT
-PLL configurations to find the "best" one. If the sensor does not support
-odd pre-PLL divisors and the minimum value (with constraints) isn't 1,
-other odd values could be errorneously searched (and selected) for the
-pre-PLL divisor. Fix this.
+The ccs_pll_calculate() function does a search over possible PLL
+configurations to find the "best" one. If the sensor does not support odd
+pre-PLL divisors and the minimum value (with constraints) isn't 1, other
+odd values could be errorneously searched (and selected) for the pre-PLL
+divisor. Fix this.
 
 Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
 Cc: stable@vger.kernel.org
@@ -88,15 +88,15 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/media/i2c/ccs-pll.c
 +++ b/drivers/media/i2c/ccs-pll.c
-@@ -397,6 +397,8 @@ static int ccs_pll_calculate_vt_tree(str
- 	min_pre_pll_clk_div = max_t(u16, min_pre_pll_clk_div,
- 				    pll->ext_clk_freq_hz /
- 				    lim_fr->max_pll_ip_clk_freq_hz);
+@@ -817,6 +817,8 @@ int ccs_pll_calculate(struct device *dev
+ 			      one_or_more(
+ 				      DIV_ROUND_UP(op_lim_fr->max_pll_op_clk_freq_hz,
+ 						   pll->ext_clk_freq_hz))));
 +	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
-+		min_pre_pll_clk_div = clk_div_even(min_pre_pll_clk_div);
++		min_op_pre_pll_clk_div = clk_div_even(min_op_pre_pll_clk_div);
+ 	dev_dbg(dev, "pll_op check: min / max op_pre_pll_clk_div: %u / %u\n",
+ 		min_op_pre_pll_clk_div, max_op_pre_pll_clk_div);
  
- 	dev_dbg(dev, "vt min/max_pre_pll_clk_div: %u,%u\n",
- 		min_pre_pll_clk_div, max_pre_pll_clk_div);
 
 
 
