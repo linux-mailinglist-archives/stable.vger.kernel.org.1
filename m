@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-155754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53D38AE43A7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E2BAE43C5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71C4E3AB18E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9CE10161A89
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 672E0252917;
-	Mon, 23 Jun 2025 13:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 334C5253358;
+	Mon, 23 Jun 2025 13:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0hl76ww"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTS+h+AG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C0524EF8C;
-	Mon, 23 Jun 2025 13:27:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A5524C060;
+	Mon, 23 Jun 2025 13:28:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685250; cv=none; b=r7rb/jIwrdSjPCwVYkCTWne/HX1asS/HpU+M6lDqCgIBfErpJ+2rzrTfa5lnkbf9YCyy7SoCQhRNyzZBlf6SFKBXYVYd2JnhNPmTdR1CGHQ/45uwWKObPa5a8zy7HmOQ/xUvOdcLJaOMaF+MHspUBSCZlA+m3cQxj4S5pmcZhjA=
+	t=1750685306; cv=none; b=Fgj1kwSOolTfiamxBG2+paQoUKms2OuJbWgOvEmLU8Mmkvq6kM1heGXBbT4QiG+Y/5hGs4zHdycL35KCOVpZAbXF4C3x5PRsHXpFeONZqKTwWNJsjZziWitjr1TDfXaRtV22Vn++Ln7kElidssXl7LIUiFm2bKfnsreay4LF7vU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685250; c=relaxed/simple;
-	bh=OYUwpms9Dsap5deIkXdK+wsDPV8Asv2Coyhu0UZVUEA=;
+	s=arc-20240116; t=1750685306; c=relaxed/simple;
+	bh=ATGfDo7fyw30hfPnqvYg9gYQfPetur8gD6axjLIUD8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tcZQggbDMy5ygMuZSvCgFRvvvcj4oBVtKyHafPTGc64kxvoYzBPlhG/YslfMhNbl2dy2CoKFGUoQlD/dPuH5FUdaffEr5bj3Nt/0hTh6c0Vf3ex5rphPsbi7LWRt5nnBNdQD3UTHZCjF4GHzS12+sDF3aWWy3XBsQy9KY0n9x0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0hl76ww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5962CC4CEEA;
-	Mon, 23 Jun 2025 13:27:29 +0000 (UTC)
+	 MIME-Version; b=J+R/MT4T97wijydlMZn934ZrgG+bf4lwl+PtgDev+brEM832XuRW1AJtCpyYJl1KrVn4SYk5Ysy9a/2F9vCPoCbV6QfUS25yo9kBJJycqwmx2S0sCA7hl98r3pAXfFdY+8mFbhADArTkN/g8kFYtToO5D/+q3zGl2/WnjM8NAUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTS+h+AG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C9C6C4CEEA;
+	Mon, 23 Jun 2025 13:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685249;
-	bh=OYUwpms9Dsap5deIkXdK+wsDPV8Asv2Coyhu0UZVUEA=;
+	s=korg; t=1750685305;
+	bh=ATGfDo7fyw30hfPnqvYg9gYQfPetur8gD6axjLIUD8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W0hl76wwVnFGS7EP+yTQhOjeA/6s1WRd+VY3hgm7Z+sZ7GJ8itEeHxv6+uPH9T823
-	 OaPek5ojvIZ00jz/OWSEhoZvnd5GL6QWELk8iKKZXlTZfoaOqtN15gLmY9GxSZzNeK
-	 Wmrsp3Cu6VVyoGBSQB74igmVf7vVMws4xO0jtiwU=
+	b=OTS+h+AGsyJJco6h23SaOOeJs40ZPaGogPzSo9Di8cFK11Nx/SuJMrjTjF8SZHtWa
+	 4C6b3EIhkMw7OJnnQWBf6KSLQ8t1vMb/BZcJgbE0UxlhwVrzpNg0tbq4NO0d41dcsW
+	 jNbhrBzP72/HqEXm6zICHBlaSGU/qWiWdZP2YSu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Mergnat <amergnat@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 5.15 006/411] rtc: Fix offset calculation for .start_secs < 0
-Date: Mon, 23 Jun 2025 15:02:30 +0200
-Message-ID: <20250623130633.184293373@linuxfoundation.org>
+	Jiayi Li <lijiayi@kylinos.cn>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 007/411] usb: quirks: Add NO_LPM quirk for SanDisk Extreme 55AE
+Date: Mon, 23 Jun 2025 15:02:31 +0200
+Message-ID: <20250623130633.213483024@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -60,59 +59,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Mergnat <amergnat@baylibre.com>
+From: Jiayi Li <lijiayi@kylinos.cn>
 
-commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d upstream.
+commit 19f795591947596b5b9efa86fd4b9058e45786e9 upstream.
 
-The comparison
+This device exhibits I/O errors during file transfers due to unstable
+link power management (LPM) behavior. The kernel logs show repeated
+warm resets and eventual disconnection when LPM is enabled:
 
-        rtc->start_secs > rtc->range_max
+[ 3467.810740] hub 2-0:1.0: state 7 ports 6 chg 0000 evt 0020
+[ 3467.810740] usb usb2-port5: do warm reset
+[ 3467.866444] usb usb2-port5: not warm reset yet, waiting 50ms
+[ 3467.907407] sd 0:0:0:0: [sda] tag#12 sense submit err -19
+[ 3467.994423] usb usb2-port5: status 02c0, change 0001, 10.0 Gb/s
+[ 3467.994453] usb 2-5: USB disconnect, device number 4
 
-has a signed left-hand side and an unsigned right-hand side.
-So the comparison might become true for negative start_secs which is
-interpreted as a (possibly very large) positive value.
+The error -19 (ENODEV) occurs when the device disappears during write
+operations. Adding USB_QUIRK_NO_LPM disables link power management
+for this specific device, resolving the stability issues.
 
-As a negative value can never be bigger than an unsigned value
-the correct representation of the (mathematical) comparison
-
-        rtc->start_secs > rtc->range_max
-
-in C is:
-
-        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
-
-Use that to fix the offset calculation currently used in the
-rtc-mt6397 driver.
-
-Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
-Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Signed-off-by: Jiayi Li <lijiayi@kylinos.cn>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/20250508055947.764538-1-lijiayi@kylinos.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rtc/class.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/core/quirks.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/rtc/class.c
-+++ b/drivers/rtc/class.c
-@@ -322,7 +322,7 @@ static void rtc_device_get_offset(struct
- 	 *
- 	 * Otherwise the offset seconds should be 0.
- 	 */
--	if (rtc->start_secs > rtc->range_max ||
-+	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
- 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
- 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
- 	else if (rtc->start_secs > rtc->range_min)
+--- a/drivers/usb/core/quirks.c
++++ b/drivers/usb/core/quirks.c
+@@ -369,6 +369,9 @@ static const struct usb_device_id usb_qu
+ 	/* SanDisk Corp. SanDisk 3.2Gen1 */
+ 	{ USB_DEVICE(0x0781, 0x55a3), .driver_info = USB_QUIRK_DELAY_INIT },
+ 
++	/* SanDisk Extreme 55AE */
++	{ USB_DEVICE(0x0781, 0x55ae), .driver_info = USB_QUIRK_NO_LPM },
++
+ 	/* Realforce 87U Keyboard */
+ 	{ USB_DEVICE(0x0853, 0x011b), .driver_info = USB_QUIRK_NO_LPM },
+ 
 
 
 
