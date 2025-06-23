@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-155439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A9EAE4207
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:15:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C7AAE422A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:16:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E8C18944BE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 502701759A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6A224169B;
-	Mon, 23 Jun 2025 13:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D3842459FF;
+	Mon, 23 Jun 2025 13:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEp6z9Kp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wFMYp9YB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396AF1F1522;
-	Mon, 23 Jun 2025 13:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C4C51F1522;
+	Mon, 23 Jun 2025 13:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684428; cv=none; b=IazhIYn1Crvnyke86C4IQJ8r2vdqbZ3y0ViIaloR0SVEe1J8pB8wfnE/2St1vOEtIoRMiV9fraGblLQ88gNJeCb0T6cw/QYrbIQtNHOXhhgplTJ+go2lLOd6Rz3R3Hfp1CZXDhqHR5Y+Dd2sHMXHUwtJviGXUbTQykJ3ETJWWdo=
+	t=1750684451; cv=none; b=Ad+rD6hsIR8rr/sxLaVMdpVTc4DHTYXoA/KjnQaKTBfaOid6tr7qJnl2AKs3B4QUkJhLMTn8XtkpEZmb/AHvBWHXs3By+gCeMkG3Vc2Yzta8+Wb8q/387PrCiVCwqhjFygb0p0KgztV6eFgur2EOqZyTLe+8yyPllsHRdTQhbIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684428; c=relaxed/simple;
-	bh=ha+Kr6S/lc4yb69e6apK1g5ZbwCNbFzpbjFbRn9gV0k=;
+	s=arc-20240116; t=1750684451; c=relaxed/simple;
+	bh=uwMr+BS5CHfq2/1aBY4qGKwzwX9d1GUMTtEPT/o0TXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jwebTH0ha4MQ2XHb16akuJN4jH7XqXWv0RsBzOIU9+ccbKkAzfNz2v9uWH9iTkf+9UjrQoHy328SeDjU60Qgvg1U1OlyXEjM1HasHAPFokRZ50ZSD0qCLsAgDxPEonrtH2ua4iSmZEQ9HS6Lz0zOG7BoCkYkf74/iwXGbwJXjfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEp6z9Kp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7156DC4CEF0;
-	Mon, 23 Jun 2025 13:13:47 +0000 (UTC)
+	 MIME-Version; b=nNlJtQKpE15gjikjPBf9iixz5tANKUdBkMmFy8ezACgYpjS5E8glqjE3L4YYmH7Mak5f46uIOZ14ehwD1CdGFrWAy8ETdmg0rvFtldA5+gY5+ZnuuNo3S3X2ovp0Ovenq75ZNCTVm8Ih5zxmiMwAUdhMXaE3i7QuhkW+JnKwnzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wFMYp9YB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C15C4CEEA;
+	Mon, 23 Jun 2025 13:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684427;
-	bh=ha+Kr6S/lc4yb69e6apK1g5ZbwCNbFzpbjFbRn9gV0k=;
+	s=korg; t=1750684450;
+	bh=uwMr+BS5CHfq2/1aBY4qGKwzwX9d1GUMTtEPT/o0TXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEp6z9Kp58eAa/gATJMfA7Z+z6n6qLzx28m1sD8ojfEved4f476kT/rvLJaRvwLZF
-	 OTjnBkZk/pfCcF1hk7rh/lQhflvN4ONTBzcEJ/60RIVnS/D5OYPjUZZAXpgyCXbuvw
-	 uxt3pyCJqPohzG9tcujgflnv1eDTVsVozQrVdLys=
+	b=wFMYp9YBMAYuCYN6MjorpubwM5O7P/4VGE/Cs/rb4fr4O1J5TG4/bTPtGo5kKQHQn
+	 zVPDed8fC9ls9bULhpNmoSDJQaoe+Jti3pLZz85/9p3fP/kVABSerSan+p9n0JQUHs
+	 ScPTPsMe+7Dw/HA/AyslDEsbh+be2v5S/WiCDAMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.15 028/592] regulator: max20086: Change enable gpio to optional
-Date: Mon, 23 Jun 2025 14:59:46 +0200
-Message-ID: <20250623130700.904015955@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.15 029/592] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
+Date: Mon, 23 Jun 2025 14:59:47 +0200
+Message-ID: <20250623130700.928152240@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -59,42 +60,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit e8ac7336dd62f0443a675ed80b17f0f0e6846e20 upstream.
+commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
 
-The enable pin can be configured as always enabled by the hardware. Make
-the enable gpio request optional so the driver doesn't fail to probe
-when `enable-gpios` property is not present in the device tree.
+The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
+mlx5_query_nic_vport_context() but does not check its return value. This
+could lead to undefined behavior if the query fails. A proper
+implementation can be found in mlx5_nic_vport_query_local_lb().
 
-Cc: stable@vger.kernel.org
-Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
-Signed-off-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
-Link: https://patch.msgid.link/20250420-fix-max20086-v1-2-8cc9ee0d5a08@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
+
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/regulator/max20086-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -264,7 +264,7 @@ static int max20086_i2c_probe(struct i2c
- 	 * shutdown.
- 	 */
- 	flags = boot_on ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
--	chip->ena_gpiod = devm_gpiod_get(chip->dev, "enable", flags);
-+	chip->ena_gpiod = devm_gpiod_get_optional(chip->dev, "enable", flags);
- 	if (IS_ERR(chip->ena_gpiod)) {
- 		ret = PTR_ERR(chip->ena_gpiod);
- 		dev_err(chip->dev, "Failed to get enable GPIO: %d\n", ret);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -519,19 +519,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
+ {
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
+ 
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
+ 				   nic_vport_context.qkey_violation_counter);
+-
++out:
+ 	kvfree(out);
+ 
+-	return 0;
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
+ 
 
 
 
