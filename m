@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB1B8AE55B4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8877DAE5729
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EAFB1BC623E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 347001C240E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BACC227B8E;
-	Mon, 23 Jun 2025 22:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8341C2253B0;
+	Mon, 23 Jun 2025 22:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMawNYyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kVWssdy1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B97931F7580;
-	Mon, 23 Jun 2025 22:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410372222B2;
+	Mon, 23 Jun 2025 22:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716776; cv=none; b=gVKB1SdM8nHVYnlAn9ne3I5lReGBP1ruuIYSpbAkGOolnzwtzkwGLIJkDhJ4n5VDeuigjYnBf3Ns5YoYYl492BFH4F9qcPjGIb9cmDNndUhWTa6iuq+MvgCjSRMTxt7M0kSEXAbANp4mlZY8ZdWw9nHvQGLv1FQgzXnBR/46IH0=
+	t=1750717602; cv=none; b=MYEt301EgkUXnQFwJuxqGfcjovWhS8QZ5niKt+emN16OK4OYhAFt4YC9kcozVRdnBLSoy7r4k80ZlsvvTj/EtNA7Pvk4jVDxO1z/7ytLxpOulVUDOgYugarORvASyQDfDAI0KaDDH0iqY2m2DBYmUB0ikjVQAnZXiRkVa+Kiq8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716776; c=relaxed/simple;
-	bh=jMlw41lLDcswCLEqK3SebUSfoDc0GU5F5pT7MamoEzY=;
+	s=arc-20240116; t=1750717602; c=relaxed/simple;
+	bh=2DFkYwZ8qcr8yRXWTijUzQ6KgRC9ECWhLUUA6BI2UVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PGK+OOf5Q9kKhaf7j4B0gvRUCoQyKaM0H2pcEI1sY2dm/AHoAs6aM1Fno3MBs/xXMPns5AipqiXjpq/IaWXT1j2tNAepn+ejeTAcQDbbK7l+IshpPkW73YgspPHkZaqUwClwC6YWkpV7R0bgINQS11PTSr27OFhJvZ1w8flviGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMawNYyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51839C4CEEA;
-	Mon, 23 Jun 2025 22:12:56 +0000 (UTC)
+	 MIME-Version; b=cqTkVwmw9aFYRM+fknPX3YSic8fDRlxZSHeOpLa7SArF6kOFyeK0G4KCXioHCQoDNV0dD7mbtDbBjmSmFSbQp0Wxzk3cohMn6G34u12B8m0Z/rmd7xXDCAkvMDz/lyaZOxQFpw9Z4uXPk3WV+ZnAQti1BGBwM9MMiokrYnyCqIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kVWssdy1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB03FC4CEEA;
+	Mon, 23 Jun 2025 22:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716776;
-	bh=jMlw41lLDcswCLEqK3SebUSfoDc0GU5F5pT7MamoEzY=;
+	s=korg; t=1750717602;
+	bh=2DFkYwZ8qcr8yRXWTijUzQ6KgRC9ECWhLUUA6BI2UVk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMawNYyUiF4xVUiP4oPjpUDE07Bd1U1xJYvof/9VDA0kjXMjUHlznL1LCR1yqBgj+
-	 trNk9TzCn6tMA/r11+WqbQIGLGecBbd9cPGTzs2QI66AWYlHQ8w0Udl2eXhUk7cP6K
-	 wlHZ7It3JV8/TnwK573yRVLvB3uqGMA4YjairAO0=
+	b=kVWssdy1cAf8H6GHsZK4Emq76xLpoqwhny6s/fRySkfOdkkaCj24tzeX+Yr7HrnQ8
+	 45GnCBRinXNzAca7LgBVI75oKe4Z68U9i5iFeFnepIXjyWu4sdryFBDSLTRxBgDoxo
+	 63PEHbNT43FE3g9eaRDLluucj7AmITc1XbNqHRic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Donald Hunter <donald.hunter@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 554/592] tools: ynl: parse extack for sub-messages
+	Paul Chaignon <paul.chaignon@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 467/508] net: Fix checksum update for ILA adj-transport
 Date: Mon, 23 Jun 2025 15:08:32 +0200
-Message-ID: <20250623130713.622772590@linuxfoundation.org>
+Message-ID: <20250623130656.594717168@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Donald Hunter <donald.hunter@gmail.com>
+From: Paul Chaignon <paul.chaignon@gmail.com>
 
-[ Upstream commit 09d7ff0694ea133c50ad905fd6e548c13f8af458 ]
+commit 6043b794c7668c19dabc4a93c75b924a19474d59 upstream.
 
-Extend the Python YNL extack decoding to handle sub-messages in the same
-way that YNL C does. This involves retaining the input values so that
-they are available during extack decoding.
+During ILA address translations, the L4 checksums can be handled in
+different ways. One of them, adj-transport, consist in parsing the
+transport layer and updating any found checksum. This logic relies on
+inet_proto_csum_replace_by_diff and produces an incorrect skb->csum when
+in state CHECKSUM_COMPLETE.
 
-./tools/net/ynl/pyynl/cli.py --family rt-link --do newlink --create \
-    --json '{
-        "linkinfo": {"kind": "netkit", "data": {"policy": 10} }
-    }'
-Netlink error: Invalid argument
-nl_len = 92 (76) nl_flags = 0x300 nl_type = 2
-	error: -22
-	extack: {'msg': 'Provided default xmit policy not supported', 'bad-attr': '.linkinfo.data(netkit).policy'}
+This bug can be reproduced with a simple ILA to SIR mapping, assuming
+packets are received with CHECKSUM_COMPLETE:
 
-Signed-off-by: Donald Hunter <donald.hunter@gmail.com>
-Link: https://patch.msgid.link/20250523103031.80236-1-donald.hunter@gmail.com
+  $ ip a show dev eth0
+  14: eth0@if15: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP group default qlen 1000
+      link/ether 62:ae:35:9e:0f:8d brd ff:ff:ff:ff:ff:ff link-netnsid 0
+      inet6 3333:0:0:1::c078/64 scope global
+         valid_lft forever preferred_lft forever
+      inet6 fd00:10:244:1::c078/128 scope global nodad
+         valid_lft forever preferred_lft forever
+      inet6 fe80::60ae:35ff:fe9e:f8d/64 scope link proto kernel_ll
+         valid_lft forever preferred_lft forever
+  $ ip ila add loc_match fd00:10:244:1 loc 3333:0:0:1 \
+      csum-mode adj-transport ident-type luid dev eth0
+
+Then I hit [fd00:10:244:1::c078]:8000 with a server listening only on
+[3333:0:0:1::c078]:8000. With the bug, the SYN packet is dropped with
+SKB_DROP_REASON_TCP_CSUM after inet_proto_csum_replace_by_diff changed
+skb->csum. The translation and drop are visible on pwru [1] traces:
+
+  IFACE   TUPLE                                                        FUNC
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ipv6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  ip6_rcv_core
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  nf_hook_slow
+  eth0:9  [fd00:10:244:3::3d8]:51420->[fd00:10:244:1::c078]:8000(tcp)  inet_proto_csum_replace_by_diff
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_early_demux
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_route_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_input_finish
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ip6_protocol_deliver_rcu
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     raw6_local_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     ipv6_raw_deliver
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     tcp_v6_rcv
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     __skb_checksum_complete
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skb_reason(SKB_DROP_REASON_TCP_CSUM)
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_head_state
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_release_data
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     skb_free_head
+  eth0:9  [fd00:10:244:3::3d8]:51420->[3333:0:0:1::c078]:8000(tcp)     kfree_skbmem
+
+This is happening because inet_proto_csum_replace_by_diff is updating
+skb->csum when it shouldn't. The L4 checksum is updated such that it
+"cancels" the IPv6 address change in terms of checksum computation, so
+the impact on skb->csum is null.
+
+Note this would be different for an IPv4 packet since three fields
+would be updated: the IPv4 address, the IP checksum, and the L4
+checksum. Two would cancel each other and skb->csum would still need
+to be updated to take the L4 checksum change into account.
+
+This patch fixes it by passing an ipv6 flag to
+inet_proto_csum_replace_by_diff, to skip the skb->csum update if we're
+in the IPv6 case. Note the behavior of the only other user of
+inet_proto_csum_replace_by_diff, the BPF subsystem, is left as is in
+this patch and fixed in the subsequent patch.
+
+With the fix, using the reproduction from above, I can confirm
+skb->csum is not touched by inet_proto_csum_replace_by_diff and the TCP
+SYN proceeds to the application after the ILA translation.
+
+Link: https://github.com/cilium/pwru [1]
+Fixes: 65d7ab8de582 ("net: Identifier Locator Addressing module")
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/b5539869e3550d46068504feb02d37653d939c0b.1748509484.git.paul.chaignon@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 9738280aae59 ("tools: ynl: fix mixing ops and notifications on one socket")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Paul Chaignon <paul.chaignon@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/net/ynl/pyynl/lib/ynl.py | 39 ++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 14 deletions(-)
+ include/net/checksum.h    |    2 +-
+ net/core/filter.c         |    2 +-
+ net/core/utils.c          |    4 ++--
+ net/ipv6/ila/ila_common.c |    6 +++---
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/tools/net/ynl/pyynl/lib/ynl.py b/tools/net/ynl/pyynl/lib/ynl.py
-index dcc2c6b298d60..55b59f6c79b89 100644
---- a/tools/net/ynl/pyynl/lib/ynl.py
-+++ b/tools/net/ynl/pyynl/lib/ynl.py
-@@ -594,7 +594,7 @@ class YnlFamily(SpecFamily):
-             scalar_selector = self._get_scalar(attr, value["selector"])
-             attr_payload = struct.pack("II", scalar_value, scalar_selector)
-         elif attr['type'] == 'sub-message':
--            msg_format = self._resolve_selector(attr, search_attrs)
-+            msg_format, _ = self._resolve_selector(attr, search_attrs)
-             attr_payload = b''
-             if msg_format.fixed_header:
-                 attr_payload += self._encode_struct(msg_format.fixed_header, value)
-@@ -712,10 +712,10 @@ class YnlFamily(SpecFamily):
-             raise Exception(f"No message format for '{value}' in sub-message spec '{sub_msg}'")
+--- a/include/net/checksum.h
++++ b/include/net/checksum.h
+@@ -156,7 +156,7 @@ void inet_proto_csum_replace16(__sum16 *
+ 			       const __be32 *from, const __be32 *to,
+ 			       bool pseudohdr);
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr);
++				     __wsum diff, bool pseudohdr, bool ipv6);
  
-         spec = sub_msg_spec.formats[value]
--        return spec
-+        return spec, value
+ static __always_inline
+ void inet_proto_csum_replace2(__sum16 *sum, struct sk_buff *skb,
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -1977,7 +1977,7 @@ BPF_CALL_5(bpf_l4_csum_replace, struct s
+ 		if (unlikely(from != 0))
+ 			return -EINVAL;
  
-     def _decode_sub_msg(self, attr, attr_spec, search_attrs):
--        msg_format = self._resolve_selector(attr_spec, search_attrs)
-+        msg_format, _ = self._resolve_selector(attr_spec, search_attrs)
-         decoded = {}
-         offset = 0
-         if msg_format.fixed_header:
-@@ -787,7 +787,7 @@ class YnlFamily(SpecFamily):
+-		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo);
++		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
+ 		break;
+ 	case 2:
+ 		inet_proto_csum_replace2(ptr, skb, from, to, is_pseudo);
+--- a/net/core/utils.c
++++ b/net/core/utils.c
+@@ -473,11 +473,11 @@ void inet_proto_csum_replace16(__sum16 *
+ EXPORT_SYMBOL(inet_proto_csum_replace16);
  
-         return rsp
+ void inet_proto_csum_replace_by_diff(__sum16 *sum, struct sk_buff *skb,
+-				     __wsum diff, bool pseudohdr)
++				     __wsum diff, bool pseudohdr, bool ipv6)
+ {
+ 	if (skb->ip_summed != CHECKSUM_PARTIAL) {
+ 		csum_replace_by_diff(sum, diff);
+-		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr)
++		if (skb->ip_summed == CHECKSUM_COMPLETE && pseudohdr && !ipv6)
+ 			skb->csum = ~csum_sub(diff, skb->csum);
+ 	} else if (pseudohdr) {
+ 		*sum = ~csum_fold(csum_add(diff, csum_unfold(*sum)));
+--- a/net/ipv6/ila/ila_common.c
++++ b/net/ipv6/ila/ila_common.c
+@@ -86,7 +86,7 @@ static void ila_csum_adjust_transport(st
  
--    def _decode_extack_path(self, attrs, attr_set, offset, target):
-+    def _decode_extack_path(self, attrs, attr_set, offset, target, search_attrs):
-         for attr in attrs:
-             try:
-                 attr_spec = attr_set.attrs_by_val[attr.type]
-@@ -801,26 +801,37 @@ class YnlFamily(SpecFamily):
-             if offset + attr.full_len <= target:
-                 offset += attr.full_len
-                 continue
--            if attr_spec['type'] != 'nest':
-+
-+            pathname = attr_spec.name
-+            if attr_spec['type'] == 'nest':
-+                sub_attrs = self.attr_sets[attr_spec['nested-attributes']]
-+                search_attrs = SpaceAttrs(sub_attrs, search_attrs.lookup(attr_spec['name']))
-+            elif attr_spec['type'] == 'sub-message':
-+                msg_format, value = self._resolve_selector(attr_spec, search_attrs)
-+                if msg_format is None:
-+                    raise Exception(f"Can't resolve sub-message of {attr_spec['name']} for extack")
-+                sub_attrs = self.attr_sets[msg_format.attr_set]
-+                pathname += f"({value})"
-+            else:
-                 raise Exception(f"Can't dive into {attr.type} ({attr_spec['name']}) for extack")
-             offset += 4
--            subpath = self._decode_extack_path(NlAttrs(attr.raw),
--                                               self.attr_sets[attr_spec['nested-attributes']],
--                                               offset, target)
-+            subpath = self._decode_extack_path(NlAttrs(attr.raw), sub_attrs,
-+                                               offset, target, search_attrs)
-             if subpath is None:
-                 return None
--            return '.' + attr_spec.name + subpath
-+            return '.' + pathname + subpath
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&th->check, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
+ 	case NEXTHDR_UDP:
+@@ -97,7 +97,7 @@ static void ila_csum_adjust_transport(st
+ 			if (uh->check || skb->ip_summed == CHECKSUM_PARTIAL) {
+ 				diff = get_csum_diff(ip6h, p);
+ 				inet_proto_csum_replace_by_diff(&uh->check, skb,
+-								diff, true);
++								diff, true, true);
+ 				if (!uh->check)
+ 					uh->check = CSUM_MANGLED_0;
+ 			}
+@@ -111,7 +111,7 @@ static void ila_csum_adjust_transport(st
  
-         return None
- 
--    def _decode_extack(self, request, op, extack):
-+    def _decode_extack(self, request, op, extack, vals):
-         if 'bad-attr-offs' not in extack:
-             return
- 
-         msg = self.nlproto.decode(self, NlMsg(request, 0, op.attr_set), op)
-         offset = self.nlproto.msghdr_size() + self._struct_size(op.fixed_header)
-+        search_attrs = SpaceAttrs(op.attr_set, vals)
-         path = self._decode_extack_path(msg.raw_attrs, op.attr_set, offset,
--                                        extack['bad-attr-offs'])
-+                                        extack['bad-attr-offs'], search_attrs)
-         if path:
-             del extack['bad-attr-offs']
-             extack['bad-attr'] = path
-@@ -1012,7 +1023,7 @@ class YnlFamily(SpecFamily):
-         for (method, vals, flags) in ops:
-             op = self.ops[method]
-             msg = self._encode_message(op, vals, flags, req_seq)
--            reqs_by_seq[req_seq] = (op, msg, flags)
-+            reqs_by_seq[req_seq] = (op, vals, msg, flags)
-             payload += msg
-             req_seq += 1
- 
-@@ -1027,9 +1038,9 @@ class YnlFamily(SpecFamily):
-             self._recv_dbg_print(reply, nms)
-             for nl_msg in nms:
-                 if nl_msg.nl_seq in reqs_by_seq:
--                    (op, req_msg, req_flags) = reqs_by_seq[nl_msg.nl_seq]
-+                    (op, vals, req_msg, req_flags) = reqs_by_seq[nl_msg.nl_seq]
-                     if nl_msg.extack:
--                        self._decode_extack(req_msg, op, nl_msg.extack)
-+                        self._decode_extack(req_msg, op, nl_msg.extack, vals)
-                 else:
-                     op = None
-                     req_flags = []
--- 
-2.39.5
-
+ 			diff = get_csum_diff(ip6h, p);
+ 			inet_proto_csum_replace_by_diff(&ih->icmp6_cksum, skb,
+-							diff, true);
++							diff, true, true);
+ 		}
+ 		break;
+ 	}
 
 
 
