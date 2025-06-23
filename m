@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157559-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5334EAE5326
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35733AE549D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D3D14A73E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B09444554C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC0A221FBE;
-	Mon, 23 Jun 2025 21:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F32822425B;
+	Mon, 23 Jun 2025 22:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKdQTctl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEoTzebZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D461219A7A;
-	Mon, 23 Jun 2025 21:50:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C72223DEF;
+	Mon, 23 Jun 2025 22:02:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715426; cv=none; b=o9ItRpdAe+BKLloZMtfDxuU/xNTWN62GL/Km9yGvYV/GOL7pGNyuY5QRbxfb8NFdRWaPW5F6AikwZI8kEr3DhMk9YZ5T3/dH9U9e1NjfwZ0QRAv698cT2jKID1Xu4s6FBiAklq2yIj2vXvXVoKceiWTQperqJSwtsGHta/dBJ6g=
+	t=1750716164; cv=none; b=oHXra+udCpqfYGKs6/DtH1h3MGzIiBBb2MSfWxo2Zgp9haZBr7WTd7hl1aiLPBr+kJsnwt760/mACiMTICmtmU0MsEq8J4HN2jyDYxwBq3GpJP0FUUjHEb5tl67KHQ1hosCh8iQNdeXLuSl0aR83sje2UQBkRTpmGZ4Z6zYd8EI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715426; c=relaxed/simple;
-	bh=j7b0CpFzGgPMk9RTLPUoS3EJHOWRlaqYjMKMvjhgO7E=;
+	s=arc-20240116; t=1750716164; c=relaxed/simple;
+	bh=r3FGzPaOGeyN4tEz0VFKjCkGKXIbtyZi207vcVDo6yQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V0EfLmNRlWPeCRe2M+ZlYMrVJoDmrD+SalFPDiQd7RBzzTxowRavcIrs70w7t2GETfsLErBljoOKx/EtfU+IqVZoX8pz06PBtnGrB3O4kby8+qZuPB5UEISfzP0chWG1RngbWbEq6vhscF2G3WzjXN/2iwJHs1ageOmEBrZPBac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKdQTctl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFF6DC4CEF2;
-	Mon, 23 Jun 2025 21:50:25 +0000 (UTC)
+	 MIME-Version; b=uI/W6USz4IxBlLRC/2im8eo2nJeooZPCqiR5Sn3IrSzLxGJV+HNi8/YR1cs4i+RYF9kMOxgXW+ocmODhMSwYgwkaNVTy+hqPIZt2tYwoPLGwm3betzF3MSzgjm0sIGcr+EC27JyAPAM84JXSEvR7uVdnVg+XuTUor8S4pFAGm8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEoTzebZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64C6C4CEEA;
+	Mon, 23 Jun 2025 22:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715426;
-	bh=j7b0CpFzGgPMk9RTLPUoS3EJHOWRlaqYjMKMvjhgO7E=;
+	s=korg; t=1750716164;
+	bh=r3FGzPaOGeyN4tEz0VFKjCkGKXIbtyZi207vcVDo6yQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KKdQTctly3QvUwtU11yoA5hO6/k86+K77NynG6ZF4yae+7ljg6qq0jNoi8L1l2KDS
-	 sCZL4A6kdTfWKYVdCIrIbf+ke5JuV5kjeXhvr3ZeU2adSaeJm/GkkWdYHg2L6eYCm+
-	 d29GBY+Mpzv9eK5fmSvOAKjeVnb9mpN7RAvUyjxE=
+	b=fEoTzebZfphhoG2rjEUoMFEnTZnbchw6VCh0bs/C5f2aKA6nfOLilqMiH/iZQRN1v
+	 MdcXCktkJh8yhx2SaRp7g1gWWr6pdvaYeAuLAyvxuRX9BMs2gMl+2HeMD8wagI2R2z
+	 uRAIpOIL2f7Xt2v1F8nBE9TMkA9QQCFU1FPSwdjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 274/355] watchdog: da9052_wdt: respect TWDMIN
-Date: Mon, 23 Jun 2025 15:07:55 +0200
-Message-ID: <20250623130635.009276473@linuxfoundation.org>
+Subject: [PATCH 5.15 332/411] scsi: lpfc: Use memcpy() for BIOS version
+Date: Mon, 23 Jun 2025 15:07:56 +0200
+Message-ID: <20250623130642.009018202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 325f510fcd9cda5a44bcb662b74ba4e3dabaca10 ]
+[ Upstream commit ae82eaf4aeea060bb736c3e20c0568b67c701d7d ]
 
-We have to wait at least the minimium time for the watchdog window
-(TWDMIN) before writings to the wdt register after the
-watchdog is activated.
-Otherwise the chip will assert TWD_ERROR and power down to reset mode.
+The strlcat() with FORTIFY support is triggering a panic because it
+thinks the target buffer will overflow although the correct target
+buffer size is passed in.
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250326-da9052-fixes-v3-4-a38a560fef0e@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Anyway, instead of memset() with 0 followed by a strlcat(), just use
+memcpy() and ensure that the resulting buffer is NULL terminated.
+
+BIOSVersion is only used for the lpfc_printf_log() which expects a
+properly terminated string.
+
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Link: https://lore.kernel.org/r/20250409-fix-lpfc-bios-str-v1-1-05dac9e51e13@kernel.org
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/da9052_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/lpfc/lpfc_sli.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/da9052_wdt.c b/drivers/watchdog/da9052_wdt.c
-index d708c091bf1b1..180526220d8c4 100644
---- a/drivers/watchdog/da9052_wdt.c
-+++ b/drivers/watchdog/da9052_wdt.c
-@@ -164,6 +164,7 @@ static int da9052_wdt_probe(struct platform_device *pdev)
- 	da9052_wdt = &driver_data->wdt;
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index 68b015bb6d157..fb139e1e35ca3 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -5926,9 +5926,9 @@ lpfc_sli4_get_ctl_attr(struct lpfc_hba *phba)
+ 	phba->sli4_hba.flash_id = bf_get(lpfc_cntl_attr_flash_id, cntl_attr);
+ 	phba->sli4_hba.asic_rev = bf_get(lpfc_cntl_attr_asic_rev, cntl_attr);
  
- 	da9052_wdt->timeout = DA9052_DEF_TIMEOUT;
-+	da9052_wdt->min_hw_heartbeat_ms = DA9052_TWDMIN;
- 	da9052_wdt->info = &da9052_wdt_info;
- 	da9052_wdt->ops = &da9052_wdt_ops;
- 	da9052_wdt->parent = dev;
+-	memset(phba->BIOSVersion, 0, sizeof(phba->BIOSVersion));
+-	strlcat(phba->BIOSVersion, (char *)cntl_attr->bios_ver_str,
++	memcpy(phba->BIOSVersion, cntl_attr->bios_ver_str,
+ 		sizeof(phba->BIOSVersion));
++	phba->BIOSVersion[sizeof(phba->BIOSVersion) - 1] = '\0';
+ 
+ 	lpfc_printf_log(phba, KERN_INFO, LOG_SLI,
+ 			"3086 lnk_type:%d, lnk_numb:%d, bios_ver:%s, "
 -- 
 2.39.5
 
