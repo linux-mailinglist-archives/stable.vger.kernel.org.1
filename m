@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157534-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB59CAE513E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39803AE547F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9916F1B63671
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066101BC0BB9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6701C5D46;
-	Mon, 23 Jun 2025 21:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E44819DF4A;
+	Mon, 23 Jun 2025 22:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5TTtq76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBLcWlAW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A732AC2E0;
-	Mon, 23 Jun 2025 21:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8364409;
+	Mon, 23 Jun 2025 22:01:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714328; cv=none; b=Osw/5mt6Ry+2smWls0WMEUsIXjY35aCgP5TYCxjuKwIbQIZQQA7zG392VpVbJT2qe+rojM6qcwxNvIpgudaaum9IItMwwSfvrO+SVjAy/76dR8qBzg+wSRAzb1utkhwInr1LsBRWjf8se1uz6SY5gy5VVzqCI4suPN+4S/hSsno=
+	t=1750716103; cv=none; b=QLeqWQDPm7HuH7vWpLzgXsrM8Ay4tgbsB0VPncGzDavqeoEcCWBuN0/iTQD7OPW4eJ/uSPugIQ7spN4qGb0UKXLpcyEdNA75dr8oWJhIriF9xQxNyARqF/YZJB59ACoVnlPlqfSxbJB0XNHQmcy7FdUbo4+A31zMIe/qjpv5jLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714328; c=relaxed/simple;
-	bh=2Gm3mJeyeHv3LY9C7ktLgJ/2qOtIt1ZL4XhbACQiWhg=;
+	s=arc-20240116; t=1750716103; c=relaxed/simple;
+	bh=ZkywCTHGu5bj0hMkA8h9n61NU9B8yLPD5iBErB6vsmk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGzqTu3o+8qx2DrSlSH+jUlu82SDuc8rp6EQlt96ysVrwZZiYa202uBoILQtm2ZhmwyofeEtNxQI0o3XfUeSxuej+z41iCqm6AKXkzUqCjksVOZdujH8OxMHHegDPFq9tOoNSM6UL0J/bcMIxg9NW92HttVIZwHWnSNZoRpB5UY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5TTtq76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D03BC4CEEA;
-	Mon, 23 Jun 2025 21:32:08 +0000 (UTC)
+	 MIME-Version; b=VWSl84a/9+BnHaDqO8MCRpqoAAst07CoBlyx4D+V44r/vWXgsadJdYkoU/Hv3TonW3YRTyZH8iumurrK5nw7kbYmyJAp1J1Z+zIcFBMk6obGUJWlAUBqgLngjZkG+IT2kmX+omgpxTSpjsyMDWlH6kabnZ1MF3MjCi1I6+8pl28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBLcWlAW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93B0C4CEEA;
+	Mon, 23 Jun 2025 22:01:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714328;
-	bh=2Gm3mJeyeHv3LY9C7ktLgJ/2qOtIt1ZL4XhbACQiWhg=;
+	s=korg; t=1750716103;
+	bh=ZkywCTHGu5bj0hMkA8h9n61NU9B8yLPD5iBErB6vsmk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5TTtq76daVO8eoL58sBzkxHZo8Vgf/moYLdhrt7VKWMA6rwT1DlIWx7hmSyncgJj
-	 KgYBKMsTieJX4oSNKTr9Th6OpeuPw24C90/884WgbKSBqOFW2LRbbdJQOZ9TmhbUWe
-	 fUP2RMTlZ0QA4ZLmz5WtamiRod1z7p/mEeh2/T/4=
+	b=iBLcWlAWbPx8AQiXX5jlypoLIBl3BRU5rNCrTN54heXNMzFOS5LBW60lh5nKCp8Pe
+	 yzprxDzo+WieixTWYQTDAqFi6TOD9LGkbRw4AxxQ2ftOX/q2nLpBGZxEqWoF4CszVB
+	 r380acprFx4saRNDFBt26ByRCMUhcOoiZR/8ivAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Pawel Laszczak <pawell@cadence.com>,
-	Peter Chen <peter.chen@kernel.org>
-Subject: [PATCH 5.15 181/411] usb: cdnsp: Fix issue with detecting USB 3.2 speed
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.1 280/508] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
 Date: Mon, 23 Jun 2025 15:05:25 +0200
-Message-ID: <20250623130638.240772594@linuxfoundation.org>
+Message-ID: <20250623130652.146698593@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Laszczak <pawell@cadence.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit 2852788cfbe9ca1ab68509d65804413871f741f9 upstream.
+commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
 
-Patch adds support for detecting SuperSpeedPlus Gen1 x2 and
-SuperSpeedPlus Gen2 x2 speed.
+usb core avoids sending a Set-Interface altsetting 0 request after device
+reset, and instead relies on calling usb_disable_interface() and
+usb_enable_interface() to flush and reset host-side of those endpoints.
 
-Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
+during usb_hcd_alloc_bandwidth() callback, which in this case is called
+before flushing the endpoint in usb_disable_interface().
+
+Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
+URBs are flushed before new ring buffers for the endpoints are allocated.
+
+Otherwise host driver will attempt to find and remove old stale URBs
+from a freshly allocated new ringbuffer.
+
 Cc: stable <stable@kernel.org>
-Signed-off-by: Pawel Laszczak <pawell@cadence.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/PH7PR07MB95387AD98EDCA695FECE52BADD96A@PH7PR07MB9538.namprd07.prod.outlook.com
+Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/cdns3/cdnsp-gadget.c |    3 ++-
- drivers/usb/cdns3/cdnsp-gadget.h |    4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/core/hub.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/cdns3/cdnsp-gadget.c
-+++ b/drivers/usb/cdns3/cdnsp-gadget.c
-@@ -28,7 +28,8 @@
- unsigned int cdnsp_port_speed(unsigned int port_status)
- {
- 	/*Detect gadget speed based on PORTSC register*/
--	if (DEV_SUPERSPEEDPLUS(port_status))
-+	if (DEV_SUPERSPEEDPLUS(port_status) ||
-+	    DEV_SSP_GEN1x2(port_status) || DEV_SSP_GEN2x2(port_status))
- 		return USB_SPEED_SUPER_PLUS;
- 	else if (DEV_SUPERSPEED(port_status))
- 		return USB_SPEED_SUPER;
---- a/drivers/usb/cdns3/cdnsp-gadget.h
-+++ b/drivers/usb/cdns3/cdnsp-gadget.h
-@@ -285,11 +285,15 @@ struct cdnsp_port_regs {
- #define XDEV_HS			(0x3 << 10)
- #define XDEV_SS			(0x4 << 10)
- #define XDEV_SSP		(0x5 << 10)
-+#define XDEV_SSP1x2		(0x6 << 10)
-+#define XDEV_SSP2x2		(0x7 << 10)
- #define DEV_UNDEFSPEED(p)	(((p) & DEV_SPEED_MASK) == (0x0 << 10))
- #define DEV_FULLSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_FS)
- #define DEV_HIGHSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_HS)
- #define DEV_SUPERSPEED(p)	(((p) & DEV_SPEED_MASK) == XDEV_SS)
- #define DEV_SUPERSPEEDPLUS(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP)
-+#define DEV_SSP_GEN1x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP1x2)
-+#define DEV_SSP_GEN2x2(p)	(((p) & DEV_SPEED_MASK) == XDEV_SSP2x2)
- #define DEV_SUPERSPEED_ANY(p)	(((p) & DEV_SPEED_MASK) >= XDEV_SS)
- #define DEV_PORT_SPEED(p)	(((p) >> 10) & 0x0f)
- /* Port Link State Write Strobe - set this when changing link state */
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6087,6 +6087,7 @@ static int usb_reset_and_verify_device(s
+ 	struct usb_hub			*parent_hub;
+ 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
+ 	struct usb_device_descriptor	descriptor;
++	struct usb_interface		*intf;
+ 	struct usb_host_bos		*bos;
+ 	int				i, j, ret = 0;
+ 	int				port1 = udev->portnum;
+@@ -6140,6 +6141,18 @@ static int usb_reset_and_verify_device(s
+ 	if (!udev->actconfig)
+ 		goto done;
+ 
++	/*
++	 * Some devices can't handle setting default altsetting 0 with a
++	 * Set-Interface request. Disable host-side endpoints of those
++	 * interfaces here. Enable and reset them back after host has set
++	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
++	 */
++	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
++		intf = udev->actconfig->interface[i];
++		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
++			usb_disable_interface(udev, intf, true);
++	}
++
+ 	mutex_lock(hcd->bandwidth_mutex);
+ 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
+ 	if (ret < 0) {
+@@ -6171,12 +6184,11 @@ static int usb_reset_and_verify_device(s
+ 	 */
+ 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
+ 		struct usb_host_config *config = udev->actconfig;
+-		struct usb_interface *intf = config->interface[i];
+ 		struct usb_interface_descriptor *desc;
+ 
++		intf = config->interface[i];
+ 		desc = &intf->cur_altsetting->desc;
+ 		if (desc->bAlternateSetting == 0) {
+-			usb_disable_interface(udev, intf, true);
+ 			usb_enable_interface(udev, intf, true);
+ 			ret = 0;
+ 		} else {
 
 
 
