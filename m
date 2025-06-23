@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-157183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D0C1AE52E4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F75AE52CE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E054E3AFBE7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406B44A6EC0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5D21E5206;
-	Mon, 23 Jun 2025 21:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70EF11C5D46;
+	Mon, 23 Jun 2025 21:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jUJz1B9j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfh8YMdo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 595A33FD4;
-	Mon, 23 Jun 2025 21:47:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0803FD4;
+	Mon, 23 Jun 2025 21:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715240; cv=none; b=enAPfnxms2WCfyRvj66LjBFw2HNk+I+FfvhfZAgHRyrLMKwBYqyXE+EXqIxxulKNV5CghDLG2zYoq+cxRzMOX9HyMregNKqbQA/ZcsTdFgZQtL/JvfnFESaE/g1mSUDuxOq5BqE+6kGGpH3xJdH10b3LslERCDowrSfD6daAlzE=
+	t=1750715257; cv=none; b=YfBuFwXc63W29MpAyF8num7ASN2DSAHAcg5GUyXAwmj8+tNLVefLssMp6kaNldThNlWZExCs4cwQptTB95msRYgoO9eGfvkKDl3H7sSNbcExxMqH2R//p1+rTi+wktVf+NWVwPqnVHunvcZiMytaLW34AZIiVQ4Q7jJ6qhd21AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715240; c=relaxed/simple;
-	bh=WLQ8QxJtVhEzx2lSt45gH8My0tM4BaExgMyA/yGiIfY=;
+	s=arc-20240116; t=1750715257; c=relaxed/simple;
+	bh=3ACiB5gmA0LsUvKC47YYA19vhBUCPo+gK2ifjsHHbc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X2ra1nclu3klX8I8rA+ezatSh4TlewG2i/KcFuigjfGtR5xgf7GrzBGx/w+WP/9NEiNLU6aOUZY0VA2bC3HXNgvJGfdOlJIQBCLT75Gks8tty2B5GgXqEdwKI1uuzpIguI80ylpjQGcBEwScZaqQAQWxTwVvbIY0yfYJNaVSuio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jUJz1B9j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E621FC4CEEA;
-	Mon, 23 Jun 2025 21:47:19 +0000 (UTC)
+	 MIME-Version; b=lZ+Hsi7FEzyZxkiYz+HPiEi4Van7xhaq/ydRkG29Kzm5HXE2ZpRcWWZ6eEIoxM66w9ZjqVVNSAF+ckt2AxAwDC2bWoCYvrsRcaUqO2iLdSmTQbWdA1QcHkFhV0LLWw8gpIyyb30/pTO46J/2jp3G6Ip1tlz2++43d8ytT4spMVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfh8YMdo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B885AC4CEEA;
+	Mon, 23 Jun 2025 21:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715240;
-	bh=WLQ8QxJtVhEzx2lSt45gH8My0tM4BaExgMyA/yGiIfY=;
+	s=korg; t=1750715257;
+	bh=3ACiB5gmA0LsUvKC47YYA19vhBUCPo+gK2ifjsHHbc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jUJz1B9jvniqpE9kPoeJt8sH+jr6GetsVWBK6B8QiUmBT9CsKgRDpewdAHaRWol6z
-	 J8XGLT2gskVLmp0ydPqtDYB2YIRJNlPwT1FxMCbHH5L+tBNzJbeOSQQLdhixb2JpqO
-	 rWkctP+AFPnUrC+nSak9bITZQQx5n2gKELQsH+3Y=
+	b=Zfh8YMdoQTGYjm9GMkuXCbodN3wtHbJV+9DZ+DYGVC1QL+EN3Fmqetb344i/d5/3y
+	 b2E18tJ169CNqzPUaJoAWcZkymlIOoOCd1+orDMTE3wCbEiTbjLWfbxi1d2Dw0CV7W
+	 BSfvfC5ZMB3wMfo/saDk5Xa2LZwbnmvYMZZhL3Xo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Penglei Jiang <superman.xpt@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 446/592] io_uring: fix task leak issue in io_wq_create()
-Date: Mon, 23 Jun 2025 15:06:44 +0200
-Message-ID: <20250623130711.038076423@linuxfoundation.org>
+	maher azz <maherazz04@gmail.com>,
+	Matt Porter <mporter@kernel.crashing.org>,
+	Alexandre Bounine <alex.bou9@gmail.com>,
+	Linus Torvalds <torvalds@linuxfoundation.org>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.15 447/592] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+Date: Mon, 23 Jun 2025 15:06:45 +0200
+Message-ID: <20250623130711.062261389@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -65,36 +68,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Penglei Jiang <superman.xpt@gmail.com>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit 89465d923bda180299e69ee2800aab84ad0ba689 upstream.
+commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
 
-Add missing put_task_struct() in the error path
+In
 
-Cc: stable@vger.kernel.org
-Fixes: 0f8baa3c9802 ("io-wq: fully initialize wqe before calling cpuhp_state_add_instance_nocalls()")
-Signed-off-by: Penglei Jiang <superman.xpt@gmail.com>
-Link: https://lore.kernel.org/r/20250615163906.2367-1-superman.xpt@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
+   -> cm_chan_msg_send()
+      -> riocm_ch_send()
+
+cm_chan_msg_send() checks that userspace didn't send too much data but
+riocm_ch_send() failed to check that userspace sent sufficient data.  The
+result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
+which were outside the bounds of the space which cm_chan_msg_send()
+allocated.
+
+Address this by teaching riocm_ch_send() to check that the entire
+rio_ch_chan_hdr was copied in from userspace.
+
+Reported-by: maher azz <maherazz04@gmail.com>
+Cc: Matt Porter <mporter@kernel.crashing.org>
+Cc: Alexandre Bounine <alex.bou9@gmail.com>
+Cc: Linus Torvalds <torvalds@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io-wq.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/rapidio/rio_cm.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1236,8 +1236,10 @@ struct io_wq *io_wq_create(unsigned boun
- 	atomic_set(&wq->worker_refs, 1);
- 	init_completion(&wq->worker_done);
- 	ret = cpuhp_state_add_instance_nocalls(io_wq_online, &wq->cpuhp_node);
--	if (ret)
-+	if (ret) {
-+		put_task_struct(wq->task);
- 		goto err;
-+	}
+--- a/drivers/rapidio/rio_cm.c
++++ b/drivers/rapidio/rio_cm.c
+@@ -789,6 +789,9 @@ static int riocm_ch_send(u16 ch_id, void
+ 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
+ 		return -EINVAL;
  
- 	return wq;
- err:
++	if (len < sizeof(struct rio_ch_chan_hdr))
++		return -EINVAL;		/* insufficient data from user */
++
+ 	ch = riocm_get_channel(ch_id);
+ 	if (!ch) {
+ 		riocm_error("%s(%d) ch_%d not found", current->comm,
 
 
 
