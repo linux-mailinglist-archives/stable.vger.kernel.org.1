@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C82A4AE5192
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A414AE5222
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D2711892A8D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26E0C4430F3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599F21EEA5D;
-	Mon, 23 Jun 2025 21:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F682222C2;
+	Mon, 23 Jun 2025 21:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Lruiuwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9dBP1p1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B881C5D46;
-	Mon, 23 Jun 2025 21:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BF41E22E6;
+	Mon, 23 Jun 2025 21:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714490; cv=none; b=h10fzPfGnKH5TCXQumDovJVtKY+jimfW/FAyK7J+d+aBKg+QYUHP0q1668Zpu03+RsnQJGWx2cMzFeoExDXX3+DFNTbVrBQ7nocJMLS60FkCx0U5LhDTRZbWLG58rB/NPkc9MNj8ZJAQkbKf6NLpf9aEGJA7azo34Oq2ekg8Gic=
+	t=1750714846; cv=none; b=FntA5kpurrN67RgY6YZB8ypxGOLPGeIBcNvNomAO2PRVb4C7NCTiD+z0KlC47Y6OLs597rBdkSUjzTt2Gtc9Sv2+7c+gzKjJOAHz9R8mPN1V7vXQwVCvy5tSaw6F+BZzZPSmNPRENkSXnpPH7pYWShGqqFMXJ1ToIVQQ485dng4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714490; c=relaxed/simple;
-	bh=1egYDUSuH/qaLGwCKGWN+2JodaFS+vurZZdA9qw3eT4=;
+	s=arc-20240116; t=1750714846; c=relaxed/simple;
+	bh=DH8mxAwtC9mqgVHqbQX/q/3oz7ticwxS9B22bpX62+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJX/64TvYfXZ+a1fzA+dxztHTMghE8pr+a4QBnRfLJ4ibQRt2R7fijFaqZ8FFmWQdjqGWU/Lf+NfLuIKDZ3h5yGx4Hzxkul0GD10f2Ukx4RxqhdIWBhtWtO8XmSDjhABpd9FYsOuphq9W5Pg07LQkBjGEBvrPOYoG0q+egqVWNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Lruiuwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D47C4CEEA;
-	Mon, 23 Jun 2025 21:34:49 +0000 (UTC)
+	 MIME-Version; b=PpL6uGEdeB8RaURUENU4EX0pKJ+p24+zCRmnI6ze4fEz2GC9CgWtYPEL5PA3EJWuTYCaDC3cZPiOVp+F+wVJcN7JycvQUlBbikAZCfGA+5LRVzZcYKcTMnrH1O9nvVGjMwTyLRcOtMdDWYpwnnK/MuGAz6wMqHu2Tadbm9S+1iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9dBP1p1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7C85C4CEEA;
+	Mon, 23 Jun 2025 21:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714489;
-	bh=1egYDUSuH/qaLGwCKGWN+2JodaFS+vurZZdA9qw3eT4=;
+	s=korg; t=1750714846;
+	bh=DH8mxAwtC9mqgVHqbQX/q/3oz7ticwxS9B22bpX62+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1LruiuwkhT+h9CWtutQDQSOTZso9rpT64qwcloSwND+aUgdLLIyT+U2UgwL5aSsel
-	 LigySlR+XZRY9HgfmERWamSRnw94bLHN0Q+VYfoq6SnquGS/r26jvPblsG7X3BTH7d
-	 rFMLPGLrFe4B3MnTFSsQyCNAaqsWOP5IEelOM0dw=
+	b=G9dBP1p1u+ZJGpu8uGfoDOzkwXdTkutUPjJuM0fpxiNeXyu3PoCCmgJ2dEsdfwulr
+	 Af3o0glSMaVhMyCy8NwV6NiY4RVYLR5cs733vlAuyX+4JEUcrYFvnGzQ5hIO7qI9Hy
+	 0MpobPXinCpBHdb1Zh8MHu1EnmGAVU3IgT0es4pE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sriram R <quic_srirrama@quicinc.com>,
-	Nithyanantham Paramasivam <quic_nithp@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 418/592] wifi: ath12k: Fix the enabling of REO queue lookup table feature
-Date: Mon, 23 Jun 2025 15:06:16 +0200
-Message-ID: <20250623130710.378235692@linuxfoundation.org>
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 5.15 233/411] f2fs: fix to do sanity check on sit_bitmap_size
+Date: Mon, 23 Jun 2025 15:06:17 +0200
+Message-ID: <20250623130639.524759522@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,313 +61,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sriram R <quic_srirrama@quicinc.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0bbcd42b15fa730f393a01bc818802d9f0b04197 ]
+commit 5db0d252c64e91ba1929c70112352e85dc5751e7 upstream.
 
-Instead of storing the REO queue address inside peer entries, REO
-hardware module prefers them to be stored in SRAM which could be
-directly accessed by REO using peer_ID/TID based lookup table
-mechanism.
+w/ below testcase, resize will generate a corrupted image which
+contains inconsistent metadata, so when mounting such image, it
+will trigger kernel panic:
 
-Fix the enabling of the REO queue lookup table(LUT) feature by
-configuring the LUT address information in the REO hardware register
-and setting the host service flags.
+touch img
+truncate -s $((512*1024*1024*1024)) img
+mkfs.f2fs -f img $((256*1024*1024))
+resize.f2fs -s -i img -t $((1024*1024*1024))
+mount img /mnt/f2fs
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/segment.h:863!
+Oops: invalid opcode: 0000 [#1] SMP PTI
+CPU: 11 UID: 0 PID: 3922 Comm: mount Not tainted 6.15.0-rc1+ #191 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:f2fs_ra_meta_pages+0x47c/0x490
 
-Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
-Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250402152529.1649402-2-quic_nithp@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call Trace:
+ f2fs_build_segment_manager+0x11c3/0x2600
+ f2fs_fill_super+0xe97/0x2840
+ mount_bdev+0xf4/0x140
+ legacy_get_tree+0x2b/0x50
+ vfs_get_tree+0x29/0xd0
+ path_mount+0x487/0xaf0
+ __x64_sys_mount+0x116/0x150
+ do_syscall_64+0x82/0x190
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fdbfde1bcfe
+
+The reaseon is:
+
+sit_i->bitmap_size is 192, so size of sit bitmap is 192*8=1536, at maximum
+there are 1536 sit blocks, however MAIN_SEGS is 261893, so that sit_blk_cnt
+is 4762, build_sit_entries() -> current_sit_addr() tries to access
+out-of-boundary in sit_bitmap at offset from [1536, 4762), once sit_bitmap
+and sit_bitmap_mirror is not the same, it will trigger f2fs_bug_on().
+
+Let's add sanity check in f2fs_sanity_check_ckpt() to avoid panic.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/dp.c    | 77 +++++++++++++++++--------
- drivers/net/wireless/ath/ath12k/dp.h    |  5 +-
- drivers/net/wireless/ath/ath12k/dp_rx.c | 10 +++-
- drivers/net/wireless/ath/ath12k/hal.h   |  6 ++
- drivers/net/wireless/ath/ath12k/hw.c    |  2 +
- drivers/net/wireless/ath/ath12k/hw.h    |  3 +
- drivers/net/wireless/ath/ath12k/wmi.c   |  8 ++-
- drivers/net/wireless/ath/ath12k/wmi.h   |  1 +
- 8 files changed, 83 insertions(+), 29 deletions(-)
+ fs/f2fs/super.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
-index 50c36e6ea1027..34e1bd2934ce3 100644
---- a/drivers/net/wireless/ath/ath12k/dp.c
-+++ b/drivers/net/wireless/ath/ath12k/dp.c
-@@ -1261,22 +1261,24 @@ static void ath12k_dp_reoq_lut_cleanup(struct ath12k_base *ab)
- 	if (!ab->hw_params->reoq_lut_support)
- 		return;
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -3450,6 +3450,7 @@ int f2fs_sanity_check_ckpt(struct f2fs_s
+ 	block_t user_block_count, valid_user_blocks;
+ 	block_t avail_node_count, valid_node_count;
+ 	unsigned int nat_blocks, nat_bits_bytes, nat_bits_blocks;
++	unsigned int sit_blk_cnt;
+ 	int i, j;
  
--	if (dp->reoq_lut.vaddr) {
-+	if (dp->reoq_lut.vaddr_unaligned) {
- 		ath12k_hif_write32(ab,
- 				   HAL_SEQ_WCSS_UMAC_REO_REG +
- 				   HAL_REO1_QDESC_LUT_BASE0(ab), 0);
--		dma_free_coherent(ab->dev, DP_REOQ_LUT_SIZE,
--				  dp->reoq_lut.vaddr, dp->reoq_lut.paddr);
--		dp->reoq_lut.vaddr = NULL;
-+		dma_free_coherent(ab->dev, dp->reoq_lut.size,
-+				  dp->reoq_lut.vaddr_unaligned,
-+				  dp->reoq_lut.paddr_unaligned);
-+		dp->reoq_lut.vaddr_unaligned = NULL;
+ 	total = le32_to_cpu(raw_super->segment_count);
+@@ -3561,6 +3562,13 @@ skip_cross:
+ 		return 1;
  	}
  
--	if (dp->ml_reoq_lut.vaddr) {
-+	if (dp->ml_reoq_lut.vaddr_unaligned) {
- 		ath12k_hif_write32(ab,
- 				   HAL_SEQ_WCSS_UMAC_REO_REG +
- 				   HAL_REO1_QDESC_LUT_BASE1(ab), 0);
--		dma_free_coherent(ab->dev, DP_REOQ_LUT_SIZE,
--				  dp->ml_reoq_lut.vaddr, dp->ml_reoq_lut.paddr);
--		dp->ml_reoq_lut.vaddr = NULL;
-+		dma_free_coherent(ab->dev, dp->ml_reoq_lut.size,
-+				  dp->ml_reoq_lut.vaddr_unaligned,
-+				  dp->ml_reoq_lut.paddr_unaligned);
-+		dp->ml_reoq_lut.vaddr_unaligned = NULL;
- 	}
- }
- 
-@@ -1608,39 +1610,66 @@ static int ath12k_dp_cc_init(struct ath12k_base *ab)
- 	return ret;
- }
- 
-+static int ath12k_dp_alloc_reoq_lut(struct ath12k_base *ab,
-+				    struct ath12k_reo_q_addr_lut *lut)
-+{
-+	lut->size =  DP_REOQ_LUT_SIZE + HAL_REO_QLUT_ADDR_ALIGN - 1;
-+	lut->vaddr_unaligned = dma_alloc_coherent(ab->dev, lut->size,
-+						  &lut->paddr_unaligned,
-+						  GFP_KERNEL | __GFP_ZERO);
-+	if (!lut->vaddr_unaligned)
-+		return -ENOMEM;
-+
-+	lut->vaddr = PTR_ALIGN(lut->vaddr_unaligned, HAL_REO_QLUT_ADDR_ALIGN);
-+	lut->paddr = lut->paddr_unaligned +
-+		     ((unsigned long)lut->vaddr - (unsigned long)lut->vaddr_unaligned);
-+	return 0;
-+}
-+
- static int ath12k_dp_reoq_lut_setup(struct ath12k_base *ab)
- {
- 	struct ath12k_dp *dp = &ab->dp;
-+	u32 val;
-+	int ret;
- 
- 	if (!ab->hw_params->reoq_lut_support)
- 		return 0;
- 
--	dp->reoq_lut.vaddr = dma_alloc_coherent(ab->dev,
--						DP_REOQ_LUT_SIZE,
--						&dp->reoq_lut.paddr,
--						GFP_KERNEL | __GFP_ZERO);
--	if (!dp->reoq_lut.vaddr) {
-+	ret = ath12k_dp_alloc_reoq_lut(ab, &dp->reoq_lut);
-+	if (ret) {
- 		ath12k_warn(ab, "failed to allocate memory for reoq table");
--		return -ENOMEM;
-+		return ret;
- 	}
- 
--	dp->ml_reoq_lut.vaddr = dma_alloc_coherent(ab->dev,
--						   DP_REOQ_LUT_SIZE,
--						   &dp->ml_reoq_lut.paddr,
--						   GFP_KERNEL | __GFP_ZERO);
--	if (!dp->ml_reoq_lut.vaddr) {
-+	ret = ath12k_dp_alloc_reoq_lut(ab, &dp->ml_reoq_lut);
-+	if (ret) {
- 		ath12k_warn(ab, "failed to allocate memory for ML reoq table");
--		dma_free_coherent(ab->dev, DP_REOQ_LUT_SIZE,
--				  dp->reoq_lut.vaddr, dp->reoq_lut.paddr);
--		dp->reoq_lut.vaddr = NULL;
--		return -ENOMEM;
-+		dma_free_coherent(ab->dev, dp->reoq_lut.size,
-+				  dp->reoq_lut.vaddr_unaligned,
-+				  dp->reoq_lut.paddr_unaligned);
-+		dp->reoq_lut.vaddr_unaligned = NULL;
-+		return ret;
- 	}
- 
-+	/* Bits in the register have address [39:8] LUT base address to be
-+	 * allocated such that LSBs are assumed to be zero. Also, current
-+	 * design supports paddr upto 4 GB max hence it fits in 32 bit register only
-+	 */
-+
- 	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE0(ab),
--			   dp->reoq_lut.paddr);
-+			   dp->reoq_lut.paddr >> 8);
-+
- 	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE1(ab),
- 			   dp->ml_reoq_lut.paddr >> 8);
- 
-+	val = ath12k_hif_read32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab));
-+
-+	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab),
-+			   val | HAL_REO_QDESC_ADDR_READ_LUT_ENABLE);
-+
-+	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_MAX_PEERID(ab),
-+			   HAL_REO_QDESC_MAX_PEERID);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
-index 427a87b63dec3..e8dbba0c3bb7d 100644
---- a/drivers/net/wireless/ath/ath12k/dp.h
-+++ b/drivers/net/wireless/ath/ath12k/dp.h
-@@ -311,8 +311,11 @@ struct ath12k_reo_queue_ref {
- } __packed;
- 
- struct ath12k_reo_q_addr_lut {
--	dma_addr_t paddr;
-+	u32 *vaddr_unaligned;
- 	u32 *vaddr;
-+	dma_addr_t paddr_unaligned;
-+	dma_addr_t paddr;
-+	u32 size;
- };
- 
- struct ath12k_dp {
-diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
-index 8b1b038d67667..cc5a23a46ea15 100644
---- a/drivers/net/wireless/ath/ath12k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
-@@ -3255,8 +3255,14 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
- 	reo_ent_ring->rx_mpdu_info.peer_meta_data =
- 		reo_dest_ring->rx_mpdu_info.peer_meta_data;
- 
--	reo_ent_ring->queue_addr_lo = cpu_to_le32(lower_32_bits(rx_tid->paddr));
--	queue_addr_hi = upper_32_bits(rx_tid->paddr);
-+	if (ab->hw_params->reoq_lut_support) {
-+		reo_ent_ring->queue_addr_lo = reo_dest_ring->rx_mpdu_info.peer_meta_data;
-+		queue_addr_hi = 0;
-+	} else {
-+		reo_ent_ring->queue_addr_lo = cpu_to_le32(lower_32_bits(rx_tid->paddr));
-+		queue_addr_hi = upper_32_bits(rx_tid->paddr);
++	sit_blk_cnt = DIV_ROUND_UP(main_segs, SIT_ENTRY_PER_BLOCK);
++	if (sit_bitmap_size * 8 < sit_blk_cnt) {
++		f2fs_err(sbi, "Wrong bitmap size: sit: %u, sit_blk_cnt:%u",
++			 sit_bitmap_size, sit_blk_cnt);
++		return 1;
 +	}
 +
- 	reo_ent_ring->info0 = le32_encode_bits(queue_addr_hi,
- 					       HAL_REO_ENTR_RING_INFO0_QUEUE_ADDR_HI) |
- 			      le32_encode_bits(dst_ind,
-diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
-index c8205672cd3dd..cb8530dfdd911 100644
---- a/drivers/net/wireless/ath/ath12k/hal.h
-+++ b/drivers/net/wireless/ath/ath12k/hal.h
-@@ -21,6 +21,7 @@ struct ath12k_base;
- #define HAL_MAX_AVAIL_BLK_RES			3
- 
- #define HAL_RING_BASE_ALIGN	8
-+#define HAL_REO_QLUT_ADDR_ALIGN 256
- 
- #define HAL_WBM_IDLE_SCATTER_BUF_SIZE_MAX	32704
- /* TODO: Check with hw team on the supported scatter buf size */
-@@ -39,6 +40,7 @@ struct ath12k_base;
- #define HAL_OFFSET_FROM_HP_TO_TP		4
- 
- #define HAL_SHADOW_REG(x) (HAL_SHADOW_BASE_ADDR + (4 * (x)))
-+#define HAL_REO_QDESC_MAX_PEERID		8191
- 
- /* WCSS Relative address */
- #define HAL_SEQ_WCSS_UMAC_OFFSET		0x00a00000
-@@ -139,6 +141,8 @@ struct ath12k_base;
- #define HAL_REO1_DEST_RING_CTRL_IX_1		0x00000008
- #define HAL_REO1_DEST_RING_CTRL_IX_2		0x0000000c
- #define HAL_REO1_DEST_RING_CTRL_IX_3		0x00000010
-+#define HAL_REO1_QDESC_ADDR(ab)		((ab)->hw_params->regs->hal_reo1_qdesc_addr)
-+#define HAL_REO1_QDESC_MAX_PEERID(ab)	((ab)->hw_params->regs->hal_reo1_qdesc_max_peerid)
- #define HAL_REO1_SW_COOKIE_CFG0(ab)	((ab)->hw_params->regs->hal_reo1_sw_cookie_cfg0)
- #define HAL_REO1_SW_COOKIE_CFG1(ab)	((ab)->hw_params->regs->hal_reo1_sw_cookie_cfg1)
- #define HAL_REO1_QDESC_LUT_BASE0(ab)	((ab)->hw_params->regs->hal_reo1_qdesc_lut_base0)
-@@ -326,6 +330,8 @@ struct ath12k_base;
- #define HAL_REO1_SW_COOKIE_CFG_ALIGN			BIT(18)
- #define HAL_REO1_SW_COOKIE_CFG_ENABLE			BIT(19)
- #define HAL_REO1_SW_COOKIE_CFG_GLOBAL_ENABLE		BIT(20)
-+#define HAL_REO_QDESC_ADDR_READ_LUT_ENABLE		BIT(7)
-+#define HAL_REO_QDESC_ADDR_READ_CLEAR_QDESC_ARRAY	BIT(6)
- 
- /* CE ring bit field mask and shift */
- #define HAL_CE_DST_R0_DEST_CTRL_MAX_LEN			GENMASK(15, 0)
-diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
-index 1bfb11bae7add..a5fa3b6a831ae 100644
---- a/drivers/net/wireless/ath/ath12k/hw.c
-+++ b/drivers/net/wireless/ath/ath12k/hw.c
-@@ -748,6 +748,8 @@ static const struct ath12k_hw_regs qcn9274_v2_regs = {
- 	.hal_reo1_sw_cookie_cfg1 = 0x00000070,
- 	.hal_reo1_qdesc_lut_base0 = 0x00000074,
- 	.hal_reo1_qdesc_lut_base1 = 0x00000078,
-+	.hal_reo1_qdesc_addr = 0x0000007c,
-+	.hal_reo1_qdesc_max_peerid = 0x00000088,
- 	.hal_reo1_ring_base_lsb = 0x00000500,
- 	.hal_reo1_ring_base_msb = 0x00000504,
- 	.hal_reo1_ring_id = 0x00000508,
-diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
-index 862b11325a902..e1ad03daebcd4 100644
---- a/drivers/net/wireless/ath/ath12k/hw.h
-+++ b/drivers/net/wireless/ath/ath12k/hw.h
-@@ -299,6 +299,9 @@ struct ath12k_hw_regs {
- 
- 	u32 hal_tcl_status_ring_base_lsb;
- 
-+	u32 hal_reo1_qdesc_addr;
-+	u32 hal_reo1_qdesc_max_peerid;
-+
- 	u32 hal_wbm_idle_ring_base_lsb;
- 	u32 hal_wbm_idle_ring_misc_addr;
- 	u32 hal_wbm_r0_idle_list_cntl_addr;
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index 22f21ecc8f235..56b2feb4ffe05 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -3665,7 +3665,8 @@ ath12k_fill_band_to_mac_param(struct ath12k_base  *soc,
- }
- 
- static void
--ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cfg,
-+ath12k_wmi_copy_resource_config(struct ath12k_base *ab,
-+				struct ath12k_wmi_resource_config_params *wmi_cfg,
- 				struct ath12k_wmi_resource_config_arg *tg_cfg)
- {
- 	wmi_cfg->num_vdevs = cpu_to_le32(tg_cfg->num_vdevs);
-@@ -3732,6 +3733,9 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
- 					   WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION);
- 	wmi_cfg->host_service_flags = cpu_to_le32(tg_cfg->is_reg_cc_ext_event_supported <<
- 				WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT);
-+	if (ab->hw_params->reoq_lut_support)
-+		wmi_cfg->host_service_flags |=
-+			cpu_to_le32(1 << WMI_RSRC_CFG_HOST_SVC_FLAG_REO_QREF_SUPPORT_BIT);
- 	wmi_cfg->ema_max_vap_cnt = cpu_to_le32(tg_cfg->ema_max_vap_cnt);
- 	wmi_cfg->ema_max_profile_period = cpu_to_le32(tg_cfg->ema_max_profile_period);
- 	wmi_cfg->flags2 |= cpu_to_le32(WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET);
-@@ -3772,7 +3776,7 @@ static int ath12k_init_cmd_send(struct ath12k_wmi_pdev *wmi,
- 	ptr = skb->data + sizeof(*cmd);
- 	cfg = ptr;
- 
--	ath12k_wmi_copy_resource_config(cfg, &arg->res_cfg);
-+	ath12k_wmi_copy_resource_config(ab, cfg, &arg->res_cfg);
- 
- 	cfg->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_RESOURCE_CONFIG,
- 						 sizeof(*cfg));
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
-index be4ac91dd34f5..bd7312f3cf24a 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.h
-+++ b/drivers/net/wireless/ath/ath12k/wmi.h
-@@ -2461,6 +2461,7 @@ struct wmi_init_cmd {
- } __packed;
- 
- #define WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT 4
-+#define WMI_RSRC_CFG_HOST_SVC_FLAG_REO_QREF_SUPPORT_BIT   12
- #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
- #define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
- #define WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET      BIT(9)
--- 
-2.39.5
-
+ 	cp_pack_start_sum = __start_sum_addr(sbi);
+ 	cp_payload = __cp_payload(sbi);
+ 	if (cp_pack_start_sum < cp_payload + 1 ||
 
 
 
