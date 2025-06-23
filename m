@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-156110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9408EAE451C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B325AE457A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:54:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32A3E189C6C1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DED613B6418
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9283253351;
-	Mon, 23 Jun 2025 13:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A73224A06D;
+	Mon, 23 Jun 2025 13:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzKLHK89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yiJ4Dn9X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A84242D90;
-	Mon, 23 Jun 2025 13:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53D7A4C6E;
+	Mon, 23 Jun 2025 13:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686172; cv=none; b=BBz2KnVvntubyR43ZGfJBquHFN14iv0cXjw7+pT8H0Q91gHOqr+14Etz8/3oJDAb5Sbz5fq5yeUAlg1JhfCAlMGwfcA5/kZGHZ19EjfkdD4YMiJcNmxl4oGiU+O/1toCKwJS2OlRJVz+kWayaG8lR8DVy5cnNj3lfySn7x0yatM=
+	t=1750686190; cv=none; b=BwiE4hJqSUwCtZUY8Hy+T+Z7VKO5Y7SqBuKiI+UTcoFrhB5ecS26rhTokyv3Z6/u391hdbSuuSjrF+By4GvlK/5cX+j7H+TeUt2IgM5ZsxDupvJLZ7uCtr3dWIQ6+1ycx86BqITOFR4CbFq2O193yxp0N/GFzj3GXaCGHY3nHxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686172; c=relaxed/simple;
-	bh=/wnXYC48ANctJh+qzvREAWcHpDZjQDy2OJ+khOLbzRI=;
+	s=arc-20240116; t=1750686190; c=relaxed/simple;
+	bh=a/47+7GvjOyAuFJ2of8yaRN1s7Cz84VYFw2QR0WO/ZE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hcUMndZbCp3KcdTPajue399WSnooQqfVcZ9bdciX8OL9JwGfyeOv8yjXyR8G+4LDPJ9BV+VT6FxNM7IlmMh+ggWVCAO+uDxt2y0Danek0Cz0JvbxPTnQdFKiyWY5f36jccWClKydjguCNxGhtjK1Nf93AV/Gh4+W+4PcOmQLDGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzKLHK89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D928C4CEEA;
-	Mon, 23 Jun 2025 13:42:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ko6beSuewlJ5NC/osPzvoVuxax/yLfHltvVIwSrVfV5EUWU7D3XxZ181j6qsqebgXqe8ZJVbWeR5ezMWgemEmzLRt/O6S98XHSWz4ATc0XfCIQZ9LnQpgvNgpMtn6ucwfaM0B3lb6jfcjNLOCyVZYcwU6Vi85dy6PSnZ9mub5uE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yiJ4Dn9X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C82C4CEEA;
+	Mon, 23 Jun 2025 13:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686172;
-	bh=/wnXYC48ANctJh+qzvREAWcHpDZjQDy2OJ+khOLbzRI=;
+	s=korg; t=1750686190;
+	bh=a/47+7GvjOyAuFJ2of8yaRN1s7Cz84VYFw2QR0WO/ZE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xzKLHK89lclNorA8cpblholhJdnRtt1LWRVM66R+imFtMfa2DymqXj8W36UgEv0Lk
-	 0XpD1oOJYTmGvuz/qgUaUHxec/V/3fVB9Knb/ms+MU8sb3wED2kdC6oI+4iTve2vyR
-	 2Kx4CuCsZjpqPN2RQgPxi+xswL+ceiSsRHs3ad5k=
+	b=yiJ4Dn9XWaGu4obF0RyJyJYSpwU61mruFTh+nLy27ztn8IRNJQdUlU4iEJYNUecIl
+	 6dfOC1n+eyI0lpPwRjTqNYCq6Dl40teNLUexVA8llra0bU5mtZsHVG0xS6K+rXYrPr
+	 A7V2ghqlIpCXbIS2WW082GTTVRr5NkMKaOuaSkxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/355] scsi: iscsi: Fix incorrect error path labels for flashnode operations
-Date: Mon, 23 Jun 2025 15:05:20 +0200
-Message-ID: <20250623130630.334825321@linuxfoundation.org>
+Subject: [PATCH 5.10 120/355] net_sched: sch_sfq: fix a potential crash on gso_skb handling
+Date: Mon, 23 Jun 2025 15:05:21 +0200
+Message-ID: <20250623130630.363787564@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -61,103 +62,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9b17621366d210ffee83262a8754086ebbde5e55 ]
+[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
 
-Correct the error handling goto labels used when host lookup fails in
-various flashnode-related event handlers:
+SFQ has an assumption of always being able to queue at least one packet.
 
- - iscsi_new_flashnode()
- - iscsi_del_flashnode()
- - iscsi_login_flashnode()
- - iscsi_logout_flashnode()
- - iscsi_logout_flashnode_sid()
+However, after the blamed commit, sch->q.len can be inflated by packets
+in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
+by an immediate drop.
 
-scsi_host_put() is not required when shost is NULL, so jumping to the
-correct label avoids unnecessary operations. These functions previously
-jumped to the wrong goto label (put_host), which did not match the
-intended cleanup logic.
+Fix sfq_drop() to properly clear q->tail in this situation.
 
-Use the correct exit labels (exit_new_fnode, exit_del_fnode, etc.) to
-ensure proper error handling.  Also remove the unused put_host label
-under iscsi_new_flashnode() as it is no longer needed.
+Tested:
 
-No functional changes beyond accurate error path correction.
+ip netns add lb
+ip link add dev to-lb type veth peer name in-lb netns lb
+ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
+ip netns exec lb ethtool -K in-lb gro on # enable NAPI
+ip link set dev to-lb up
+ip -netns lb link set dev in-lb up
+ip addr add dev to-lb 192.168.20.1/24
+ip -netns lb addr add dev in-lb 192.168.20.2/24
+tc qdisc replace dev to-lb root sfq limit 100
 
-Fixes: c6a4bb2ef596 ("[SCSI] scsi_transport_iscsi: Add flash node mgmt support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://lore.kernel.org/r/20250530193012.3312911-1-alok.a.tiwari@oracle.com
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+ip netns exec lb netserver
+
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+netperf -H 192.168.20.2 -l 100 &
+
+Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
+Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
+Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ net/sched/sch_sfq.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 548adbe544444..9fdfe1be95166 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3502,7 +3502,7 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.new_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_new_fnode;
+diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
+index 066754a18569b..6b65c5efb378e 100644
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -317,7 +317,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
+ 		x = q->tail->next;
+ 		slot = &q->slots[x];
+-		q->tail->next = slot->next;
++		if (slot->next == x)
++			q->tail = NULL; /* no more active slots */
++		else
++			q->tail->next = slot->next;
+ 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
+ 		goto drop;
  	}
- 
- 	index = transport->new_flashnode(shost, data, len);
-@@ -3512,7 +3512,6 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
- 	else
- 		err = -EIO;
- 
--put_host:
- 	scsi_host_put(shost);
- 
- exit_new_fnode:
-@@ -3537,7 +3536,7 @@ static int iscsi_del_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.del_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_del_fnode;
- 	}
- 
- 	idx = ev->u.del_flashnode.flashnode_idx;
-@@ -3579,7 +3578,7 @@ static int iscsi_login_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.login_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_login_fnode;
- 	}
- 
- 	idx = ev->u.login_flashnode.flashnode_idx;
-@@ -3631,7 +3630,7 @@ static int iscsi_logout_flashnode(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.logout_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_logout_fnode;
- 	}
- 
- 	idx = ev->u.logout_flashnode.flashnode_idx;
-@@ -3681,7 +3680,7 @@ static int iscsi_logout_flashnode_sid(struct iscsi_transport *transport,
- 		pr_err("%s could not find host no %u\n",
- 		       __func__, ev->u.logout_flashnode.host_no);
- 		err = -ENODEV;
--		goto put_host;
-+		goto exit_logout_sid;
- 	}
- 
- 	session = iscsi_session_lookup(ev->u.logout_flashnode_sid.sid);
 -- 
 2.39.5
 
