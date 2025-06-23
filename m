@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-156820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8493DAE5145
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D700AE5056
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC814A33C1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123E918814CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB5B7080C;
-	Mon, 23 Jun 2025 21:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69A61EFFA6;
+	Mon, 23 Jun 2025 21:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMzah6m+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oNgbz+Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACA4C2E0;
-	Mon, 23 Jun 2025 21:32:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641D01ACEDA;
+	Mon, 23 Jun 2025 21:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714345; cv=none; b=ZLG62W0TBQwQCxyt8JJ4fWCxCjuk9xMpYX2++Tb1WJVwag+5Xp5m58iLtPqiua7VFOdGgV2pwO1XdmlJAFLnR0ZV68Q2Sdsz/2S5K1TPXR7wVmCsRt6Hwj9j9mNBv4g/X1QGu5gfeOzRYhTTQQMHQxig7bNmft32lLzi3Zrajf8=
+	t=1750713830; cv=none; b=ltSr9RaZ9R/fIKqcTX6q4uB6uU8OYCcuJYPR7EHGkNjJrIVWikxdc0LHgIMEosqBLHBFv82KzeE57t+Nykdi9dZAx9SSbN+r5mmCO5cVjslS+TjfpcFqIu2+1b6eFQHICckSwulmWVNPv0DRzQTPnU+/wnUaHKBkzpnCSSmdASw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714345; c=relaxed/simple;
-	bh=4lDldMA6EB+42rLwEo6jqLwiu8gjZVyQ1iiVUcL8Ex4=;
+	s=arc-20240116; t=1750713830; c=relaxed/simple;
+	bh=PX2bOr8+ZfiujT415gswOusWDW44C10Epp/Wz1Avh4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o6D20x+6FpFvImoQDbycb2+WXayMuOBMcM/TCmbKhjlwi9gtz2PqnuHwJBGOHlpTBU87kcs2AqycQkPM2R+Dym0TCNjz2aiHGIly99O8yz6pmrtZ4krSmgjAAkPFje4HRVEy9iEMNMkDBloFpBSzImr+pltjRuKbbVcZw5g8KG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMzah6m+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC8DC4CEEA;
-	Mon, 23 Jun 2025 21:32:25 +0000 (UTC)
+	 MIME-Version; b=GsKxHQpfLOdJGVPeHlAVIHn2WTJ8Y7Ufaqg+RO+xXjMGMThb4pczg8ZZsPR4kaGsoaNgKjzlrm21FSC3Ho+GNOb0/NhulNKZFiw4bxgmkHgv1FNdIEvP+JnD+CHJstfOyhz5R0G1J+pJeaHxmSbAo5VEJeLfp48PORm4LMi6I/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oNgbz+Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1828C4CEEA;
+	Mon, 23 Jun 2025 21:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714345;
-	bh=4lDldMA6EB+42rLwEo6jqLwiu8gjZVyQ1iiVUcL8Ex4=;
+	s=korg; t=1750713830;
+	bh=PX2bOr8+ZfiujT415gswOusWDW44C10Epp/Wz1Avh4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hMzah6m+P9gN1XzrxR2JGGOyMgOdU/5jy82cynyOrDveXxK9Qde3RrjhRSYbiud7q
-	 TKulOVa79rTwCIjZVt3X/B/BaU8SsTvlDWoFJOzXLLZeDOFHswIJFr09dWt/3TwcAn
-	 LP6m5ukpvsrSjgnKngkk54Prew+YhRv5cySgci9E=
+	b=0oNgbz+QGdqy2VgAU8ZmH0RIBwtH6gWUxnaPv7RgF43UM9iWuS4p5kU9Cfk98ZrrU
+	 RWecHYeaoVoVDsz2Wel+EMaCW1XFtRR/f9jSAz7y0O8CvTsZcWnb5hyXXBpUEO8iYr
+	 DhHoLP6cCbFwALdexdwzitUjFYkxJSD3jeZ5Aygg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.15 182/411] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
+	Quentin Monnet <qmo@kernel.org>,
+	Takshak Chahande <ctakshak@meta.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 368/592] bpftool: Fix cgroup command to only show cgroup bpf programs
 Date: Mon, 23 Jun 2025 15:05:26 +0200
-Message-ID: <20250623130638.265199417@linuxfoundation.org>
+Message-ID: <20250623130709.195256086@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +65,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Martin KaFai Lau <martin.lau@kernel.org>
 
-commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
+[ Upstream commit b69d4413aa1961930fbf9ffad8376d577378daf9 ]
 
-usb core avoids sending a Set-Interface altsetting 0 request after device
-reset, and instead relies on calling usb_disable_interface() and
-usb_enable_interface() to flush and reset host-side of those endpoints.
+The netkit program is not a cgroup bpf program and should not be shown
+in the output of the "bpftool cgroup show" command.
 
-xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
-during usb_hcd_alloc_bandwidth() callback, which in this case is called
-before flushing the endpoint in usb_disable_interface().
+However, if the netkit device happens to have ifindex 3,
+the "bpftool cgroup show" command will output the netkit
+bpf program as well:
 
-Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
-URBs are flushed before new ring buffers for the endpoints are allocated.
+> ip -d link show dev nk1
+3: nk1@if2: ...
+    link/ether ...
+    netkit mode ...
 
-Otherwise host driver will attempt to find and remove old stale URBs
-from a freshly allocated new ringbuffer.
+> bpftool net show
+tc:
+nk1(3) netkit/peer tw_ns_nk2phy prog_id 469447
 
-Cc: stable <stable@kernel.org>
-Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> bpftool cgroup show /sys/fs/cgroup/...
+ID       AttachType      AttachFlags     Name
+...      ...                             ...
+469447   netkit_peer                     tw_ns_nk2phy
+
+The reason is that the target_fd (which is the cgroup_fd here) and
+the target_ifindex are in a union in the uapi/linux/bpf.h. The bpftool
+iterates all values in "enum bpf_attach_type" which includes
+non cgroup attach types like netkit. The cgroup_fd is usually 3 here,
+so the bug is triggered when the netkit ifindex just happens
+to be 3 as well.
+
+The bpftool's cgroup.c already has a list of cgroup-only attach type
+defined in "cgroup_attach_types[]". This patch fixes it by iterating
+over "cgroup_attach_types[]" instead of "__MAX_BPF_ATTACH_TYPE".
+
+Cc: Quentin Monnet <qmo@kernel.org>
+Reported-by: Takshak Chahande <ctakshak@meta.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/r/20250507203232.1420762-1-martin.lau@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ tools/bpf/bpftool/cgroup.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -6040,6 +6040,7 @@ static int usb_reset_and_verify_device(s
- 	struct usb_hub			*parent_hub;
- 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
- 	struct usb_device_descriptor	descriptor;
-+	struct usb_interface		*intf;
- 	struct usb_host_bos		*bos;
- 	int				i, j, ret = 0;
- 	int				port1 = udev->portnum;
-@@ -6103,6 +6104,18 @@ static int usb_reset_and_verify_device(s
- 	if (!udev->actconfig)
- 		goto done;
+diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
+index 3f1d6be512151..944ebe21a2169 100644
+--- a/tools/bpf/bpftool/cgroup.c
++++ b/tools/bpf/bpftool/cgroup.c
+@@ -318,11 +318,11 @@ static int show_bpf_progs(int cgroup_fd, enum bpf_attach_type type,
  
-+	/*
-+	 * Some devices can't handle setting default altsetting 0 with a
-+	 * Set-Interface request. Disable host-side endpoints of those
-+	 * interfaces here. Enable and reset them back after host has set
-+	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
-+	 */
-+	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
-+		intf = udev->actconfig->interface[i];
-+		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
-+			usb_disable_interface(udev, intf, true);
-+	}
-+
- 	mutex_lock(hcd->bandwidth_mutex);
- 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
- 	if (ret < 0) {
-@@ -6134,12 +6147,11 @@ static int usb_reset_and_verify_device(s
- 	 */
- 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
- 		struct usb_host_config *config = udev->actconfig;
--		struct usb_interface *intf = config->interface[i];
- 		struct usb_interface_descriptor *desc;
+ static int do_show(int argc, char **argv)
+ {
+-	enum bpf_attach_type type;
+ 	int has_attached_progs;
+ 	const char *path;
+ 	int cgroup_fd;
+ 	int ret = -1;
++	unsigned int i;
  
-+		intf = config->interface[i];
- 		desc = &intf->cur_altsetting->desc;
- 		if (desc->bAlternateSetting == 0) {
--			usb_disable_interface(udev, intf, true);
- 			usb_enable_interface(udev, intf, true);
+ 	query_flags = 0;
+ 
+@@ -370,14 +370,14 @@ static int do_show(int argc, char **argv)
+ 		       "AttachFlags", "Name");
+ 
+ 	btf_vmlinux = libbpf_find_kernel_btf();
+-	for (type = 0; type < __MAX_BPF_ATTACH_TYPE; type++) {
++	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++) {
+ 		/*
+ 		 * Not all attach types may be supported, so it's expected,
+ 		 * that some requests will fail.
+ 		 * If we were able to get the show for at least one
+ 		 * attach type, let's return 0.
+ 		 */
+-		if (show_bpf_progs(cgroup_fd, type, 0) == 0)
++		if (show_bpf_progs(cgroup_fd, cgroup_attach_types[i], 0) == 0)
  			ret = 0;
- 		} else {
+ 	}
+ 
+@@ -400,9 +400,9 @@ static int do_show(int argc, char **argv)
+ static int do_show_tree_fn(const char *fpath, const struct stat *sb,
+ 			   int typeflag, struct FTW *ftw)
+ {
+-	enum bpf_attach_type type;
+ 	int has_attached_progs;
+ 	int cgroup_fd;
++	unsigned int i;
+ 
+ 	if (typeflag != FTW_D)
+ 		return 0;
+@@ -434,8 +434,8 @@ static int do_show_tree_fn(const char *fpath, const struct stat *sb,
+ 	}
+ 
+ 	btf_vmlinux = libbpf_find_kernel_btf();
+-	for (type = 0; type < __MAX_BPF_ATTACH_TYPE; type++)
+-		show_bpf_progs(cgroup_fd, type, ftw->level);
++	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++)
++		show_bpf_progs(cgroup_fd, cgroup_attach_types[i], ftw->level);
+ 
+ 	if (errno == EINVAL)
+ 		/* Last attach type does not support query.
+-- 
+2.39.5
+
 
 
 
