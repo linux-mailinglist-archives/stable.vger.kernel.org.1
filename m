@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-157969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D28BAE5665
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04AA7AE5667
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABEDA4C5736
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C1CD1899054
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89D0316D9BF;
-	Mon, 23 Jun 2025 22:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D30BB1F6667;
+	Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tNh7Awqq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xijnOoWc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C7B19E7F9;
-	Mon, 23 Jun 2025 22:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913A816D9BF;
+	Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717163; cv=none; b=FSNubuoO9UAI4VeiILceTcb0bQ3YkXUT9v++CBYVuSCm+ejv4z29meoFduIct26RyQuT4ddIdJBUjUL4TXwMHpb0KLZrwQztgvf3jHNYQgNvS9+TQQAz0bA+e+FSeSGTiUKgMFFCKb2cStqNPSmFF/WOy+szY36ifeb9coXVOU4=
+	t=1750717170; cv=none; b=QKms9IajozojbwF4xfmZFxEoN0xCvwyZb8a57242xZbXgfbmz8K0TjbmiLMDnj/25wBI0cwXPaImSNiBJVDvunLlFudD0kjVOcMfqKY6FDa84z7D1Q4+U01S3hic4RxkOkpbElfJSwQP+jXcj9MUFmERxNN2PNcgMqSE6WulhTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717163; c=relaxed/simple;
-	bh=xqQ8NtC+pd+725YVPD6dKYcI5y93wDjT5GoAIsrNmek=;
+	s=arc-20240116; t=1750717170; c=relaxed/simple;
+	bh=A57cGmsDGraNdj88R62LQbW3ctsm49gBxpPwjnnKhLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obdhbY6pbB+znlzc+xXJbjVAWCPnxUlhr6Q8T8S0js7PCsj0sdOsPyy8QmVSp37g8Mq6PnYSER+VL7O0rDiWm88kd9ujSVsay3TDehO41vQwx9ifGEhJ4Gopc37Dp1Uo1hUoEpu5kKZNwI9wJANWl/lDU/ePlq4B1W6/OOsrjmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tNh7Awqq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1569C4CEEA;
-	Mon, 23 Jun 2025 22:19:22 +0000 (UTC)
+	 MIME-Version; b=NvSalYT3TbL8e0SmhykaF+EJfGbv5eyu6M5OL+hT5BNLEFAX34mtXP/6uNusTeQqZ+9geUHeF2UxaB9viX3zeVUKVTcjPimwGhKCwCfSIF16x2cpNvH6w01B/WPvGdhEaDml9JHiPX7pWnCky74iPVHQ/drrL7BbGvq1Rx51qhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xijnOoWc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC63C4CEEA;
+	Mon, 23 Jun 2025 22:19:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717163;
-	bh=xqQ8NtC+pd+725YVPD6dKYcI5y93wDjT5GoAIsrNmek=;
+	s=korg; t=1750717170;
+	bh=A57cGmsDGraNdj88R62LQbW3ctsm49gBxpPwjnnKhLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tNh7AwqqpfDiKgec+5qx4NJi6xjk/v3UlTngws5ns6X5y9cAo7u/sm5RRpjhkvV7T
-	 jKfKSaPFcmqNSUV8iYgMNIiL7dBvWBwk/vgQFlJto9J2/r3BSNmg54ac0YCYxEeYVZ
-	 p0EeymJjPKSOa5FykArMQ3EXjlDLxCfb6943o0zQ=
+	b=xijnOoWcraDjAT9MhSd/LTLMTP9aFJGaKdICP8T8dlmOoR1+jMSqeLTLJzDGdp4A1
+	 mDJqRqJBIaOKfv2QNaT0+gOYxMMkBLmp+gBw9w2izk4hGgtfJAYUI9sJbJpOByK/Wd
+	 BnCFzKbg3/d2q1pVqCVBM/6aFiwrdJsac7j970Z8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baisheng Gao <baisheng.gao@unisoc.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 409/411] perf: Fix sample vs do_exit()
-Date: Mon, 23 Jun 2025 15:09:13 +0200
-Message-ID: <20250623130643.982338871@linuxfoundation.org>
+Subject: [PATCH 5.15 410/411] arm64/ptrace: Fix stack-out-of-bounds read in regs_get_kernel_stack_nth()
+Date: Mon, 23 Jun 2025 15:09:14 +0200
+Message-ID: <20250623130644.007613068@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -67,100 +66,104 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit 4f6fc782128355931527cefe3eb45338abd8ab39 ]
+[ Upstream commit 39dfc971e42d886e7df01371cd1bef505076d84c ]
 
-Baisheng Gao reported an ARM64 crash, which Mark decoded as being a
-synchronous external abort -- most likely due to trying to access
-MMIO in bad ways.
+KASAN reports a stack-out-of-bounds read in regs_get_kernel_stack_nth().
 
-The crash further shows perf trying to do a user stack sample while in
-exit_mmap()'s tlb_finish_mmu() -- i.e. while tearing down the address
-space it is trying to access.
+Call Trace:
+[   97.283505] BUG: KASAN: stack-out-of-bounds in regs_get_kernel_stack_nth+0xa8/0xc8
+[   97.284677] Read of size 8 at addr ffff800089277c10 by task 1.sh/2550
+[   97.285732]
+[   97.286067] CPU: 7 PID: 2550 Comm: 1.sh Not tainted 6.6.0+ #11
+[   97.287032] Hardware name: linux,dummy-virt (DT)
+[   97.287815] Call trace:
+[   97.288279]  dump_backtrace+0xa0/0x128
+[   97.288946]  show_stack+0x20/0x38
+[   97.289551]  dump_stack_lvl+0x78/0xc8
+[   97.290203]  print_address_description.constprop.0+0x84/0x3c8
+[   97.291159]  print_report+0xb0/0x280
+[   97.291792]  kasan_report+0x84/0xd0
+[   97.292421]  __asan_load8+0x9c/0xc0
+[   97.293042]  regs_get_kernel_stack_nth+0xa8/0xc8
+[   97.293835]  process_fetch_insn+0x770/0xa30
+[   97.294562]  kprobe_trace_func+0x254/0x3b0
+[   97.295271]  kprobe_dispatcher+0x98/0xe0
+[   97.295955]  kprobe_breakpoint_handler+0x1b0/0x210
+[   97.296774]  call_break_hook+0xc4/0x100
+[   97.297451]  brk_handler+0x24/0x78
+[   97.298073]  do_debug_exception+0xac/0x178
+[   97.298785]  el1_dbg+0x70/0x90
+[   97.299344]  el1h_64_sync_handler+0xcc/0xe8
+[   97.300066]  el1h_64_sync+0x78/0x80
+[   97.300699]  kernel_clone+0x0/0x500
+[   97.301331]  __arm64_sys_clone+0x70/0x90
+[   97.302084]  invoke_syscall+0x68/0x198
+[   97.302746]  el0_svc_common.constprop.0+0x11c/0x150
+[   97.303569]  do_el0_svc+0x38/0x50
+[   97.304164]  el0_svc+0x44/0x1d8
+[   97.304749]  el0t_64_sync_handler+0x100/0x130
+[   97.305500]  el0t_64_sync+0x188/0x190
+[   97.306151]
+[   97.306475] The buggy address belongs to stack of task 1.sh/2550
+[   97.307461]  and is located at offset 0 in frame:
+[   97.308257]  __se_sys_clone+0x0/0x138
+[   97.308910]
+[   97.309241] This frame has 1 object:
+[   97.309873]  [48, 184) 'args'
+[   97.309876]
+[   97.310749] The buggy address belongs to the virtual mapping at
+[   97.310749]  [ffff800089270000, ffff800089279000) created by:
+[   97.310749]  dup_task_struct+0xc0/0x2e8
+[   97.313347]
+[   97.313674] The buggy address belongs to the physical page:
+[   97.314604] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14f69a
+[   97.315885] flags: 0x15ffffe00000000(node=1|zone=2|lastcpupid=0xfffff)
+[   97.316957] raw: 015ffffe00000000 0000000000000000 dead000000000122 0000000000000000
+[   97.318207] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+[   97.319445] page dumped because: kasan: bad access detected
+[   97.320371]
+[   97.320694] Memory state around the buggy address:
+[   97.321511]  ffff800089277b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   97.322681]  ffff800089277b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   97.323846] >ffff800089277c00: 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 00 00 00 00
+[   97.325023]                          ^
+[   97.325683]  ffff800089277c80: 00 00 00 00 00 00 00 00 00 f3 f3 f3 f3 f3 f3 f3
+[   97.326856]  ffff800089277d00: f3 f3 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
-It turns out that we stop perf after we tear down the userspace mm; a
-receipie for disaster, since perf likes to access userspace for
-various reasons.
+This issue seems to be related to the behavior of some gcc compilers and
+was also fixed on the s390 architecture before:
 
-Flip this order by moving up where we stop perf in do_exit().
+ commit d93a855c31b7 ("s390/ptrace: Avoid KASAN false positives in regs_get_kernel_stack_nth()")
 
-Additionally, harden PERF_SAMPLE_CALLCHAIN and PERF_SAMPLE_STACK_USER
-to abort when the current task does not have an mm (exit_mm() makes
-sure to set current->mm = NULL; before commencing with the actual
-teardown). Such that CPU wide events don't trip on this same problem.
+As described in that commit, regs_get_kernel_stack_nth() has confirmed that
+`addr` is on the stack, so reading the value at `*addr` should be allowed.
+Use READ_ONCE_NOCHECK() helper to silence the KASAN check for this case.
 
-Fixes: c5ebcedb566e ("perf: Add ability to attach user stack dump to sample")
-Reported-by: Baisheng Gao <baisheng.gao@unisoc.com>
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250605110815.GQ39944@noisy.programming.kicks-ass.net
+Fixes: 0a8ea52c3eb1 ("arm64: Add HAVE_REGS_AND_STACK_ACCESS_API feature")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Link: https://lore.kernel.org/r/20250604005533.1278992-1-wutengda@huaweicloud.com
+[will: Use '*addr' as the argument to READ_ONCE_NOCHECK()]
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |  7 +++++++
- kernel/exit.c        | 17 +++++++++--------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ arch/arm64/kernel/ptrace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index dd9ae1cae8e3c..c7ae6b426de38 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6886,6 +6886,10 @@ perf_sample_ustack_size(u16 stack_size, u16 header_size,
- 	if (!regs)
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index 4ef9e688508c4..18dd5bc12d4f3 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -140,7 +140,7 @@ unsigned long regs_get_kernel_stack_nth(struct pt_regs *regs, unsigned int n)
+ 
+ 	addr += n;
+ 	if (regs_within_kernel_stack(regs, (unsigned long)addr))
+-		return *addr;
++		return READ_ONCE_NOCHECK(*addr);
+ 	else
  		return 0;
- 
-+	/* No mm, no stack, no dump. */
-+	if (!current->mm)
-+		return 0;
-+
- 	/*
- 	 * Check if we fit in with the requested stack size into the:
- 	 * - TASK_SIZE
-@@ -7579,6 +7583,9 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
- 	const u32 max_stack = event->attr.sample_max_stack;
- 	struct perf_callchain_entry *callchain;
- 
-+	if (!current->mm)
-+		user = false;
-+
- 	if (!kernel && !user)
- 		return &__empty_callchain;
- 
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 890e5cb6799b0..888a63f076d50 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -858,6 +858,15 @@ void __noreturn do_exit(long code)
- 	tsk->exit_code = code;
- 	taskstats_exit(tsk, group_dead);
- 
-+	/*
-+	 * Since sampling can touch ->mm, make sure to stop everything before we
-+	 * tear it down.
-+	 *
-+	 * Also flushes inherited counters to the parent - before the parent
-+	 * gets woken up by child-exit notifications.
-+	 */
-+	perf_event_exit_task(tsk);
-+
- 	exit_mm();
- 
- 	if (group_dead)
-@@ -874,14 +883,6 @@ void __noreturn do_exit(long code)
- 	exit_task_work(tsk);
- 	exit_thread(tsk);
- 
--	/*
--	 * Flush inherited counters to the parent - before the parent
--	 * gets woken up by child-exit notifications.
--	 *
--	 * because of cgroup mode, must be called before cgroup_exit()
--	 */
--	perf_event_exit_task(tsk);
--
- 	sched_autogroup_exit_task(tsk);
- 	cgroup_exit(tsk);
- 
+ }
 -- 
 2.39.5
 
