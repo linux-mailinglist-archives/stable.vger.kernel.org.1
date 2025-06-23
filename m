@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23FAAAE51CF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51FE2AE528D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 997BE4A48F6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AA0D41B6520E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B73221FC7;
-	Mon, 23 Jun 2025 21:37:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEA4C223DE1;
+	Mon, 23 Jun 2025 21:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nnJrymvu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="izxr0ORW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E333A21D3DD;
-	Mon, 23 Jun 2025 21:37:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C9DC4315A;
+	Mon, 23 Jun 2025 21:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714660; cv=none; b=Ac1puxFrlHAj0sCQbCrwDLjL0PXx9CQ0n88ewfuzS7Q1eiH80TO8FFnFnCjnbZ6HYVW2/ZUyZAeJEe7qZYfDhzJmbVLdEvIchLonKAf05KmubQFrm4+4Bk4rAP2V00N+jAeSDLHl46ChodoOrGeEbZ/lo0Y/vrjdWo5oqR53pM4=
+	t=1750715087; cv=none; b=aB/2V0UN/qd4ZEoR6DIOGGEzCkst1/XIhcma3syFhYkG+6O5P3MuGRAZ9OfMjnICbYBdxIiLFsLDdMI6V5H2K/80VCxmtSoUfre8GsfsPLLYli9DpEvL0nNuiPR1JZRtfRhtSHWXwvPACmQcqz/ggACS0W6jp6W1s1frvCgxBkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714660; c=relaxed/simple;
-	bh=yuBVMfJeUuR1E0jzINWMstl+qgNGbmk8+kXmp7i1/XM=;
+	s=arc-20240116; t=1750715087; c=relaxed/simple;
+	bh=KGL41m6LdOWif1arAKzZxeNWfI+O+uw/B6aqXiA0y6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+McYGDTG3f/zmO/ok85O059pdc+p0dfJHxlQcb7EG4JdkBeS/5ZUHDmO1HnvXyIIwv/HXioW9C8p9hdr+EzmLGt8V+AmtVFpu+QvO1nsWkcYlSXRzZbzxhIbLt96sTy8QRheUpv1zzXDhBSZCr4De49hkY5/je+r1grYfEXf3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nnJrymvu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78286C4CEEA;
-	Mon, 23 Jun 2025 21:37:39 +0000 (UTC)
+	 MIME-Version; b=eoSlAdbrmQdmk0IpgtECZ3wcvpL4dNExB1B89dPBqUoLuGDxBJQSnQAQwgV3vg9du4NstkVitfN/uqFWPD1jlCyH7FvFlEgo4MKN6/3R2VDX3dV67s7fbHyBuGvckdzKRjT5TnZD4MdfXhQGERkNjDDL4otoHwbYoXWhvWCWSdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=izxr0ORW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16354C4CEEA;
+	Mon, 23 Jun 2025 21:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714659;
-	bh=yuBVMfJeUuR1E0jzINWMstl+qgNGbmk8+kXmp7i1/XM=;
+	s=korg; t=1750715087;
+	bh=KGL41m6LdOWif1arAKzZxeNWfI+O+uw/B6aqXiA0y6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nnJrymvu5FmTZ6CbmO/9F3diafnSFQuDxGqp1ENG94YkvfaXxXEgUcbOWBd1YPb2o
-	 GNHygD4F3rQjIiFdGlSDnPUU3cH31Jl+wlCmmxEPqSE0q6576Ancfh9U7gQwpnW3uj
-	 UMvnn7dAydo82jYtGhPKKZ6K9fBXZOatV8TupbiY=
+	b=izxr0ORWnTlUn25a9VXUXRyGue+SsBWhsnop0sxNcze/MHlTDuxyenCbyzymnOjBq
+	 U+C/AQw0XgTtLXOrw0pjzXJdSA31o6R3Ac0bJLv0ssefSxz3LNWjbc3zotV1MV5KH1
+	 p/Fpizgfhlg0oaq/NJHLXcRRyL6Xo2Che3JBHyP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 122/414] mtd: nand: sunxi: Add randomizer configuration before randomizer enable
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 214/508] pmdomain: core: Fix error checking in genpd_dev_pm_attach_by_id()
 Date: Mon, 23 Jun 2025 15:04:19 +0200
-Message-ID: <20250623130645.120858974@linuxfoundation.org>
+Message-ID: <20250623130650.529604001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 4a5a99bc79cdc4be63933653682b0261a67a0c9f upstream.
+[ Upstream commit 0f5757667ec0aaf2456c3b76fcf0c6c3ea3591fe ]
 
-In sunxi_nfc_hw_ecc_read_chunk(), the sunxi_nfc_randomizer_enable() is
-called without the config of randomizer. A proper implementation can be
-found in sunxi_nfc_hw_ecc_read_chunks_dma().
+The error checking for of_count_phandle_with_args() does not handle
+negative error codes correctly.  The problem is that "index" is a u32 so
+in the condition "if (index >= num_domains)" negative error codes stored
+in "num_domains" are type promoted to very high positive values and
+"index" is always going to be valid.
 
-Add sunxi_nfc_randomizer_config() before the start of randomization.
+Test for negative error codes first and then test if "index" is valid.
 
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ccf3f0cd197 ("PM / Domains: Enable genpd_dev_pm_attach_by_id|name() for single PM domain")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/aBxPQ8AI8N5v-7rL@stanley.mountain
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/power/domain.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -817,6 +817,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(s
- 	if (ret)
- 		return ret;
+diff --git a/drivers/base/power/domain.c b/drivers/base/power/domain.c
+index 3c44b0313a10e..a19a1f70adb2a 100644
+--- a/drivers/base/power/domain.c
++++ b/drivers/base/power/domain.c
+@@ -2840,7 +2840,7 @@ struct device *genpd_dev_pm_attach_by_id(struct device *dev,
+ 	/* Verify that the index is within a valid range. */
+ 	num_domains = of_count_phandle_with_args(dev->of_node, "power-domains",
+ 						 "#power-domain-cells");
+-	if (index >= num_domains)
++	if (num_domains < 0 || index >= num_domains)
+ 		return NULL;
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD | NFC_ECC_OP,
- 	       nfc->regs + NFC_REG_CMD);
+ 	/* Allocate and register device on the genpd bus. */
+-- 
+2.39.5
+
 
 
 
