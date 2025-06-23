@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C17FAAE4444
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B591BAE43C4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14CF37A6F50
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:35:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD5B9189B4C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2E9B2550D7;
-	Mon, 23 Jun 2025 13:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991FA253939;
+	Mon, 23 Jun 2025 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMp/G9MB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQppmgFx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BC0238C19;
-	Mon, 23 Jun 2025 13:35:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E26253925;
+	Mon, 23 Jun 2025 13:29:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685721; cv=none; b=HMYE3XpAUyX8BOlHeNiAWNM//E4h4sE+Z25AP3jDWE7DaXJ/PH+ZUtvmPPS5vC6LBoE9pqEQ/zfbcNS+ViFKoVz7R+aDlaubtOTLXLhpbm3QmQ3V6wohM+PE7ON41KDalqvqLUjNu87Hnjds+qS+Lq4c2NFlRVN5fKRGi4+RUpE=
+	t=1750685369; cv=none; b=iNrwjtO2HtA24yShcigCxG4sGoWnF9uA/5n5VaNcQ2mukaJnLwQh3qO0u8xbftQPO34TDx3JOBJy3pOHsoe/vA00Kpo2GI2Oc6/Wbe67WGRq5/pAon/lvsPyfzbt1oWg18O16U2SPFNG7VkEplYLBaY1lxyYipH+Tqhs/W1NFqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685721; c=relaxed/simple;
-	bh=ivifqEbW56J0I/MatNL9o5LyilIWFudjppYPp8gropY=;
+	s=arc-20240116; t=1750685369; c=relaxed/simple;
+	bh=eQhoiQ2IR7YuIdQchEHTzhkC5TC8u9NCbs57T52HfPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CObdm/eq+p8IULBDtNV1gvaNbREiMF17S6gE+00FQXSeE1mcqiQdxS7VdiWGJgK2m+qBfYdb3R27jkyFzpz+zXah/dCSehJmCBTxIReHSfa9aipqOfRX1djG4GOf7APg3frPo/8X9deAzSZp0KMCeoNiQmM9H9Fs217KLm9OPQM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMp/G9MB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17256C4CEEA;
-	Mon, 23 Jun 2025 13:35:20 +0000 (UTC)
+	 MIME-Version; b=pwvpoY73fXT119RPLh4s0H5GN7FvLoFbqn9ayHEwxu6YmUhZXMC2vhN7AgBxf3QsttBk9x5nCCQW83sv/Pmf4NzACCy5mQ50J/qWY0SVu6vk4tjBBFCOtW+aEHyAbk8qa6AndY6z4BmWLFe13pWZuD/fkAyVC+KMcA6HhJpipWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQppmgFx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4F1C4CEEA;
+	Mon, 23 Jun 2025 13:29:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685721;
-	bh=ivifqEbW56J0I/MatNL9o5LyilIWFudjppYPp8gropY=;
+	s=korg; t=1750685369;
+	bh=eQhoiQ2IR7YuIdQchEHTzhkC5TC8u9NCbs57T52HfPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMp/G9MBOHohnoCz2/LiWjthe1A5AU0hqfe1f/Isqr3YLVQTrYfdai9v4ljGddyrz
-	 nEH8QhvbwHOOqOZIpJtfcDwXALONxXiGa67X51eRn1Ukz6umEvCG0qhFmqZTjkP0nT
-	 aiFWKsAhaBW4MruYHD/xq8R/KrD3Dy1Xulkh/wec=
+	b=oQppmgFxbej10QFqfCy4td4PHTXJRKlOY8WyLYsZ4rc3QivoLdljRv77bRT4zEFEA
+	 jmRh/ZvneE/wRusFkNPGxWJUkoUeyFdyqkib3nlWNLHGcFpHL45rmp9ragYhnRdRe1
+	 DlZw25YcjlVa9QB0iVoOJ/osQtsYtF8XACSSaAUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Rudorff <chris@rudorff.com>,
-	Lyude Paul <lyude@redhat.com>,
+	Tarang Raval <tarang.raval@siliconsignals.io>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 255/592] drm/nouveau: fix hibernate on disabled GPU
-Date: Mon, 23 Jun 2025 15:03:33 +0200
-Message-ID: <20250623130706.364331332@linuxfoundation.org>
+Subject: [PATCH 6.15 256/592] media: i2c: imx334: Enable runtime PM before sub-device registration
+Date: Mon, 23 Jun 2025 15:03:34 +0200
+Message-ID: <20250623130706.389363151@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,53 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christoph Rudorff <chris@rudorff.com>
+From: Tarang Raval <tarang.raval@siliconsignals.io>
 
-[ Upstream commit 4c4d9b7b6c6e676eca22585139aba5f03de74b90 ]
+[ Upstream commit 01dfdf6a80c57151af0589af0db7adbbdd1361c7 ]
 
-Hibernate bricks the machine if a discrete GPU was disabled via
+Runtime PM is fully initialized before calling
+v4l2_async_register_subdev_sensor(). Moving the runtime PM initialization
+earlier prevents potential access to an uninitialized or powered-down
+device.
 
-echo IGD > /sys/kernel/debug/vgaswitcheroo/switch
-
-The freeze and thaw handler lacks checking the GPU power state,
-as suspend and resume do.
-
-This patch add the checks and fix this issue.
-
-Signed-off-by: Christoph Rudorff <chris@rudorff.com>
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Link: https://lore.kernel.org/r/20250325-nouveau-fix-hibernate-v2-1-2bd5c13fb953@rudorff.com
+Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_drm.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/media/i2c/imx334.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_drm.c b/drivers/gpu/drm/nouveau/nouveau_drm.c
-index e154d08857c55..c69139701056d 100644
---- a/drivers/gpu/drm/nouveau/nouveau_drm.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_drm.c
-@@ -1079,6 +1079,10 @@ nouveau_pmops_freeze(struct device *dev)
- {
- 	struct nouveau_drm *drm = dev_get_drvdata(dev);
+diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
+index a544fc3df39c2..b51721c01e1d6 100644
+--- a/drivers/media/i2c/imx334.c
++++ b/drivers/media/i2c/imx334.c
+@@ -1391,6 +1391,9 @@ static int imx334_probe(struct i2c_client *client)
+ 		goto error_handler_free;
+ 	}
  
-+	if (drm->dev->switch_power_state == DRM_SWITCH_POWER_OFF ||
-+	    drm->dev->switch_power_state == DRM_SWITCH_POWER_DYNAMIC_OFF)
-+		return 0;
++	pm_runtime_set_active(imx334->dev);
++	pm_runtime_enable(imx334->dev);
 +
- 	return nouveau_do_suspend(drm, false);
- }
+ 	ret = v4l2_async_register_subdev_sensor(&imx334->sd);
+ 	if (ret < 0) {
+ 		dev_err(imx334->dev,
+@@ -1398,13 +1401,13 @@ static int imx334_probe(struct i2c_client *client)
+ 		goto error_media_entity;
+ 	}
  
-@@ -1087,6 +1091,10 @@ nouveau_pmops_thaw(struct device *dev)
- {
- 	struct nouveau_drm *drm = dev_get_drvdata(dev);
+-	pm_runtime_set_active(imx334->dev);
+-	pm_runtime_enable(imx334->dev);
+ 	pm_runtime_idle(imx334->dev);
  
-+	if (drm->dev->switch_power_state == DRM_SWITCH_POWER_OFF ||
-+	    drm->dev->switch_power_state == DRM_SWITCH_POWER_DYNAMIC_OFF)
-+		return 0;
-+
- 	return nouveau_do_resume(drm, false);
- }
+ 	return 0;
  
+ error_media_entity:
++	pm_runtime_disable(imx334->dev);
++	pm_runtime_set_suspended(imx334->dev);
+ 	media_entity_cleanup(&imx334->sd.entity);
+ error_handler_free:
+ 	v4l2_ctrl_handler_free(imx334->sd.ctrl_handler);
 -- 
 2.39.5
 
