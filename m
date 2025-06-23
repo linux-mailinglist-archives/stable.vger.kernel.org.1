@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92561AE50BA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B58AE52B6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BF687AC65B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 27B4F1B65C0F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CA81EEA3C;
-	Mon, 23 Jun 2025 21:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67A181AAA1C;
+	Mon, 23 Jun 2025 21:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL/uUnpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmUHnFyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BB21E51FA;
-	Mon, 23 Jun 2025 21:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 262794315A;
+	Mon, 23 Jun 2025 21:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714050; cv=none; b=ERMyKUE2QS24Qw210FrX2mZIhwQkyYu0Ym13/syOQ+9Jpiyt+mBHpJ2ejaUeQKmcoLvEHEYmSbkTIz0e8exZdfcdFSZ5sExIJPlVllRUqYaJ6Vw4fh4mG5Jv7pXjmKnpA865zkcZUvlZJcwUp1u6oaC7l1vuOlgj5Et7oDiEftA=
+	t=1750715181; cv=none; b=LbbTyJRA1dDl6KuZ4DmGWF24mi6F5fjkyVJR+3NBqpbYbGEDLmKuHGcWSKQFDrOkKQNljjIZl2343p2jyviiwLW0yL2L+WZOhZ8tL6wem77GZYVPfpqghew4usV8PAOTEO/PThzoVgEwNHwWhNQGfKlJFSkH7fLE/groVLjj6mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714050; c=relaxed/simple;
-	bh=NmcXHfJHKz4CH0mvhJdI/D8IBE5cqimV2TvEOeezJMk=;
+	s=arc-20240116; t=1750715181; c=relaxed/simple;
+	bh=igpuMOLPQu2obFbmsxrkgbl+Z56s8Z1qWupDg5DCYyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X7gbPJ0duHfaZSOJnTzVNRHbgD1XRjga54adKEQL5yVweWdm8Fqi8ISgOt4VdfINLTloijtPQ0bQ1T0G7cHWAQDwEi9VsGPHF2stkY9xIGlK0r2ZyJkyCOjW/fr4O6u28/pC28wQHW22DngEb/D4AAyrVnE1oBj9o2Zu0/FEU+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL/uUnpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9F3C4CEEA;
-	Mon, 23 Jun 2025 21:27:29 +0000 (UTC)
+	 MIME-Version; b=XsRmkI3Qy8CC9U3zjvvW5cHxZPgu36GF8kwrYCeODKFcmYtIA71hFw86RVT7VWc7HqaVaX1Eb/LIxF7m5a4xYh9pENlbKzGMR4zL8ckRC8FFzOKHFIeBvbnqJ7jLfEuDQ0TsBqAGMTNKqccb0gwXjREG/p7vumg+FIfLnUzMusY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmUHnFyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B07FEC4CEED;
+	Mon, 23 Jun 2025 21:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714050;
-	bh=NmcXHfJHKz4CH0mvhJdI/D8IBE5cqimV2TvEOeezJMk=;
+	s=korg; t=1750715181;
+	bh=igpuMOLPQu2obFbmsxrkgbl+Z56s8Z1qWupDg5DCYyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gL/uUnpVLniZK+jDyUzqRPG0X4NxjGeCGQFTILFe8kylPRY5uou/dzVtCBabHAv1N
-	 7QLaB5IAFn1U0Ps8UKyXmHVLo1SP8Ont0yOlRc8HAM4GVkw2YHTpbxme6+Mys6JGf1
-	 CU6//4+qSNkbBM7Gc58RegjCrvOXXaxnQPabC98s=
+	b=qmUHnFyJTCxHbeC+OBBSyyqV+Ap4wUa4KO6cdQUJYwFgLsw03n8uQtFw1I1DC3peA
+	 I9F8BGPYW/aHvtEemHnUudDqnbQiNOVXGAelh/1Daud+MGz3Yo5kLANvmfJBTc5WUP
+	 gXBCHpVogZ3pCTCfcpHwLk9Wk4mOdx4rvgsLPzeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 162/411] net_sched: ets: fix a race in ets_qdisc_change()
+Subject: [PATCH 6.12 169/414] clocksource: Fix the CPUs choice in the watchdog per CPU verification
 Date: Mon, 23 Jun 2025 15:05:06 +0200
-Message-ID: <20250623130637.731511765@linuxfoundation.org>
+Message-ID: <20250623130646.255538371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit d92adacdd8c2960be856e0b82acc5b7c5395fddb ]
+[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
 
-Gerrard Tai reported a race condition in ETS, whenever SFQ perturb timer
-fires at the wrong time.
+Right now, if the clocksource watchdog detects a clocksource skew, it might
+perform a per CPU check, for example in the TSC case on x86.  In other
+words: supposing TSC is detected as unstable by the clocksource watchdog
+running at CPU1, as part of marking TSC unstable the kernel will also run a
+check of TSC readings on some CPUs to be sure it is synced between them
+all.
 
-The race is as follows:
+But that check happens only on some CPUs, not all of them; this choice is
+based on the parameter "verify_n_cpus" and in some random cpumask
+calculation. So, the watchdog runs such per CPU checks on up to
+"verify_n_cpus" random CPUs among all online CPUs, with the risk of
+repeating CPUs (that aren't double checked) in the cpumask random
+calculation.
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
+But if "verify_n_cpus" > num_online_cpus(), it should skip the random
+calculation and just go ahead and check the clocksource sync between
+all online CPUs, without the risk of skipping some CPUs due to
+duplicity in the random cpumask calculation.
 
-This can be abused to underflow a parent's qlen.
+Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
+CPU verification skipping some CPU even with verify_n_cpus=8, due to the
+duplicity on random cpumask generation. Skipping the randomization when the
+number of online CPUs is smaller than verify_n_cpus, solves that.
 
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-5-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 2 +-
+ kernel/time/clocksource.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index a37979ec78f88..b49e1a9775865 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -675,7 +675,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 	for (i = q->nbands; i < oldbands; i++) {
- 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
- 			list_del_init(&q->classes[i].alist);
--		qdisc_tree_flush_backlog(q->classes[i].qdisc);
-+		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
- 	q->nstrict = nstrict;
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 58fb7280cabbe..ae862ad9642cb 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -302,7 +302,7 @@ static void clocksource_verify_choose_cpus(void)
+ {
+ 	int cpu, i, n = verify_n_cpus;
+ 
+-	if (n < 0) {
++	if (n < 0 || n >= num_online_cpus()) {
+ 		/* Check all of the CPUs. */
+ 		cpumask_copy(&cpus_chosen, cpu_online_mask);
+ 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
 -- 
 2.39.5
 
