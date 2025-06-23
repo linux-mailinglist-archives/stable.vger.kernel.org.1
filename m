@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155569-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11EBBAE4317
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9E75AE42D0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410F0175608
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A7083178A40
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0C2255E53;
-	Mon, 23 Jun 2025 13:21:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9E9E25392C;
+	Mon, 23 Jun 2025 13:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDSEsyg6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JtwKet+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6B325523C;
-	Mon, 23 Jun 2025 13:21:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820924DFF3;
+	Mon, 23 Jun 2025 13:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684909; cv=none; b=ulglYgKb1L6xKoQVoR5StuNRNcGG9VMIoAFbOp7jcaqewrcKJCQx0uQoaeggp3/bDNiNrzBG40RhKOKWivyZ1w9mKgC+ftnWvpgISEWT87oIYOWEVoYTCU3jUxuYmHpNwPFVaWyPo6CWSiF2XzfAwZfFJpWTqpP/oC8v5cPZJb4=
+	t=1750684766; cv=none; b=Ysx2ZbapSVL4tpQ9vkorR0lKAbbnnJNuUa1tje0iEhE7c1RIA4Hm1fduV0ahm4CPfIS8S2prQzaa0R3tBczvaTcz0QuFm6+//LEfaQ7zA083wdGepUKl2TkCZTJ175QcZaO57TE70SE76/NRZ36r5FuGZRdOtYerZmMLzPllg8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684909; c=relaxed/simple;
-	bh=BlYNDB16azII6tqduIMcIO5X6qn1U4f2HhsSGisPR7o=;
+	s=arc-20240116; t=1750684766; c=relaxed/simple;
+	bh=42jeMrsOn2iCAOM8vpwG4HzNs6YusSM0eTFIPqFozGo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA4YYI0MNuXGYVI+/P6Pp+hwoKCID5Br+6At/vWpffwz+qSJ+mZpsqKOrLuJix/vAIWpGcmxSXfXAshg71ZpUioqr1sSv8XEzyJ4QMmJqx6k7YvlB9KmZoBgbQ5mJQCsd/BhCHn9/iV6+8vTiu7aWOzmKU/bRgfiB1hCt2ixQ8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDSEsyg6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10461C4CEEA;
-	Mon, 23 Jun 2025 13:21:48 +0000 (UTC)
+	 MIME-Version; b=fm0uCoNWGeh5Jd4dADM+T3NEJhBL7llqUwE9y0U7mSbXNa275MIznuFUFGMzno6lYx/uOcPFeBOH8yaxm/E9muExZzEJ+qkk/R65JrBfuauBSRNTkA8dcPdRYVJWx5Rz9xulYukVP9azpiziEQ5G5fnjbyopDtwpMOegeQQ+/eQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JtwKet+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B385C4CEEA;
+	Mon, 23 Jun 2025 13:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684909;
-	bh=BlYNDB16azII6tqduIMcIO5X6qn1U4f2HhsSGisPR7o=;
+	s=korg; t=1750684766;
+	bh=42jeMrsOn2iCAOM8vpwG4HzNs6YusSM0eTFIPqFozGo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eDSEsyg6EJTQGtCjf1UfvvzcUIHbeSWGiaZdWgrjaDafRsKeuD4qcRBs+LKg2Ly0I
-	 MeOO5qiTjsJ8Nmj6iMotDrZR9ObPekx2Qq/pvbl5w4UGvXOA8VPHCuwNxJ7qDVP3vf
-	 Ie3x8HjGlPLMfKbDq78cPiFfpkHt2avGe18dODh8=
+	b=JtwKet+txPMO0s32JsLOjMnRUFV1kgKvzDb9b0s52t3qhK/yhuH06gBnKIX4V+Woz
+	 eHmVlJC0VocUX+PBsikWfB4y7FdXlOWIC1faYxHaXSqX7ke6BdOBtOYDMtDJSzRBn3
+	 x0CY/2ircrLPMxDvY218qmrNNh41+Cj3GLFgGt1Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.15 189/592] iio: accel: fxls8962af: Fix temperature calculation
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 003/411] pinctrl: armada-37xx: set GPIO output value before setting direction
 Date: Mon, 23 Jun 2025 15:02:27 +0200
-Message-ID: <20250623130704.778459170@linuxfoundation.org>
+Message-ID: <20250623130633.095665130@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,65 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 16038474e3a0263572f36326ef85057aaf341814 upstream.
+commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
 
-According to spec temperature should be returned in milli degrees Celsius.
-Add in_temp_scale to calculate from Celsius to milli Celsius.
+Changing the direction before updating the output value in the
+OUTPUT_VAL register may result in a glitch on the output line
+if the previous value in the OUTPUT_VAL register is different
+from the one we want to set.
 
-Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+In order to avoid that, update the output value before changing
+the direction.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Link: https://patch.msgid.link/20250505-fxls-v4-1-a38652e21738@geanix.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/accel/fxls8962af-core.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/iio/accel/fxls8962af-core.c
-+++ b/drivers/iio/accel/fxls8962af-core.c
-@@ -23,6 +23,7 @@
- #include <linux/regulator/consumer.h>
- #include <linux/regmap.h>
- #include <linux/types.h>
-+#include <linux/units.h>
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -413,23 +413,22 @@ static int armada_37xx_gpio_direction_ou
+ 					     unsigned int offset, int value)
+ {
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
+-	unsigned int val_offset = offset;
+-	unsigned int reg = OUTPUT_EN;
++	unsigned int en_offset = offset;
++	unsigned int reg = OUTPUT_VAL;
+ 	unsigned int mask, val, ret;
  
- #include <linux/iio/buffer.h>
- #include <linux/iio/events.h>
-@@ -439,8 +440,16 @@ static int fxls8962af_read_raw(struct ii
- 		*val = FXLS8962AF_TEMP_CENTER_VAL;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
--		*val = 0;
--		return fxls8962af_read_full_scale(data, val2);
-+		switch (chan->type) {
-+		case IIO_TEMP:
-+			*val = MILLIDEGREE_PER_DEGREE;
-+			return IIO_VAL_INT;
-+		case IIO_ACCEL:
-+			*val = 0;
-+			return fxls8962af_read_full_scale(data, val2);
-+		default:
-+			return -EINVAL;
-+		}
- 	case IIO_CHAN_INFO_SAMP_FREQ:
- 		return fxls8962af_read_samp_freq(data, val, val2);
- 	default:
-@@ -736,6 +745,7 @@ static const struct iio_event_spec fxls8
- 	.type = IIO_TEMP, \
- 	.address = FXLS8962AF_TEMP_OUT, \
- 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
-+			      BIT(IIO_CHAN_INFO_SCALE) | \
- 			      BIT(IIO_CHAN_INFO_OFFSET),\
- 	.scan_index = -1, \
- 	.scan_type = { \
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
++	val = value ? mask : 0;
+ 
+-	ret = regmap_update_bits(info->regmap, reg, mask, mask);
+-
++	ret = regmap_update_bits(info->regmap, reg, mask, val);
+ 	if (ret)
+ 		return ret;
+ 
+-	reg = OUTPUT_VAL;
+-	armada_37xx_update_reg(&reg, &val_offset);
++	reg = OUTPUT_EN;
++	armada_37xx_update_reg(&reg, &en_offset);
+ 
+-	val = value ? mask : 0;
+-	regmap_update_bits(info->regmap, reg, mask, val);
++	regmap_update_bits(info->regmap, reg, mask, mask);
+ 
+ 	return 0;
+ }
 
 
 
