@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-157074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A5CAE5258
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E10DEAE521E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4CEF67AF43A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 80A227A8024
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D967B2222CA;
-	Mon, 23 Jun 2025 21:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2EF1E22E6;
+	Mon, 23 Jun 2025 21:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kivw+23W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CiinTHi8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98CC04315A;
-	Mon, 23 Jun 2025 21:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE97419D084;
+	Mon, 23 Jun 2025 21:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714970; cv=none; b=WgR50OLxfbFk0bZ0GJ8AgJzJ4tjpHKRyPbtemeaxl71+aQ/rBP169l6bCDP1CHFNxjuu/8Xo4YVx9Sl9I5FCTu0bsmY/c/VFG+JbLcBoII51dTQRRvvi1jpHw/OpxS1+iMpZf28/uiIW4UnhkERp17G/y3FmbrmmtMfPmiviAsI=
+	t=1750714838; cv=none; b=qdpBWnlcZrEQRg44yF6f9tpZHCDBpWRZB27nYPPp1AAJubWPvph28q14xHcy2ZFQSbqvjxkF8+mPZEQOIQmWJ2h9AyT7DYjn2Shl7oSfMNb/QUqcqihij+DHOsqkJYSfN2DOvqCCZBYBSD2sk85YCJWd7kuU5RP90Dowd8be9nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714970; c=relaxed/simple;
-	bh=GVnTrg8sr0T24Xi1AL3vAa0rWghpuhQllNGgQjQ+puE=;
+	s=arc-20240116; t=1750714838; c=relaxed/simple;
+	bh=gqPQtsQn9g5neX26umufQZQqR+eqwj+TZFz/F91mFuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZVbr3iClQilGBZd959rvr9dfyKoK3zgwbRF/7cg8FAslDmayt5u+XcEWhomvxmS/P5UbfWe8z4KfShYfAUhzyVcnw3EF34O2YV2gUDgr28brVkz7S+ek+nrhzXCnCPCAyIUCAgC9YnJBEt6AaqWBtP4fhIMGihBxS5ibVeZSbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kivw+23W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2998CC4CEEA;
-	Mon, 23 Jun 2025 21:42:50 +0000 (UTC)
+	 MIME-Version; b=qJHbTd6NXFWuEqUjPGkPPMQal/uMPIapioNytRuVS6kQjugwbNfZ/ilHARW/Sq60BlSWP0Pa+w4ujIeXNgeYLb6WO9RVCoy45YwhVgGtx5ciy+Tn7AcgHgWom1a8FiFgM0wZqsbOAdFYgrMJdSbVCEm98f/8o7lubLjIPN4FXwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CiinTHi8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E9CC4CEEA;
+	Mon, 23 Jun 2025 21:40:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714970;
-	bh=GVnTrg8sr0T24Xi1AL3vAa0rWghpuhQllNGgQjQ+puE=;
+	s=korg; t=1750714838;
+	bh=gqPQtsQn9g5neX26umufQZQqR+eqwj+TZFz/F91mFuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kivw+23W7DOoQozDkpcfgCi6aY1D+3NXVbn1uDGS8tHMSEGfzJij/hHbo/T4y8HQM
-	 wLcotxeG+YdJyBpWSs9TsvOCZAVUVWu74Y3K4EmeC8YFsZNOB3MqKat9B/LQpsKAD+
-	 BxKxyA/EW507XGtUhjXGrYpaRQ+90LTWU53Xf/1E=
+	b=CiinTHi8AkQ8tjRaP6fnUVVWyWvb6zWGSqoMIvbX4XfOH5/erxZCadYDur8n88sbi
+	 exVPRZ46GPnc/blNq7TAm40S4MWwklW1vA6/ultoh0OVgI81RH4Y/RXBo/fROkTdiC
+	 vgwEK1MQhWwwm7hadW49g/IxtFKS3CViogk0Bmws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
+	Larysa Zaremba <larysa.zaremba@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 244/355] media: platform: exynos4-is: Add hardware sync wait to fimc_is_hw_change_mode()
+Subject: [PATCH 6.6 184/290] ice: fix check for existing switch rule
 Date: Mon, 23 Jun 2025 15:07:25 +0200
-Message-ID: <20250623130634.081620648@linuxfoundation.org>
+Message-ID: <20250623130632.409257442@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +67,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
 
-[ Upstream commit bd9f6ce7d512fa21249415c16af801a4ed5d97b6 ]
+[ Upstream commit a808691df39b52cd9db861b118e88e18b63e2299 ]
 
-In fimc_is_hw_change_mode(), the function changes camera modes without
-waiting for hardware completion, risking corrupted data or system hangs
-if subsequent operations proceed before the hardware is ready.
+In case the rule already exists and another VSI wants to subscribe to it
+new VSI list is being created and both VSIs are moved to it.
+Currently, the check for already existing VSI with the same rule is done
+based on fdw_id.hw_vsi_id, which applies only to LOOKUP_RX flag.
+Change it to vsi_handle. This is software VSI ID, but it can be applied
+here, because vsi_map itself is also based on it.
 
-Add fimc_is_hw_wait_intmsr0_intmsd0() after mode configuration, ensuring
-hardware state synchronization and stable interrupt handling.
+Additionally change return status in case the VSI already exists in the
+VSI map to "Already exists". Such case should be handled by the caller.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
+Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/exynos4-is/fimc-is-regs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/platform/exynos4-is/fimc-is-regs.c b/drivers/media/platform/exynos4-is/fimc-is-regs.c
-index 366e6393817d2..5f9c44e825a5f 100644
---- a/drivers/media/platform/exynos4-is/fimc-is-regs.c
-+++ b/drivers/media/platform/exynos4-is/fimc-is-regs.c
-@@ -164,6 +164,7 @@ int fimc_is_hw_change_mode(struct fimc_is *is)
- 	if (WARN_ON(is->config_index >= ARRAY_SIZE(cmd)))
- 		return -EINVAL;
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 19f730a68fa21..ac004ef1d724d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -3024,7 +3024,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+ 		u16 vsi_handle_arr[2];
  
-+	fimc_is_hw_wait_intmsr0_intmsd0(is);
- 	mcuctl_write(cmd[is->config_index], is, MCUCTL_REG_ISSR(0));
- 	mcuctl_write(is->sensor_index, is, MCUCTL_REG_ISSR(1));
- 	mcuctl_write(is->setfile.sub_index, is, MCUCTL_REG_ISSR(2));
+ 		/* A rule already exists with the new VSI being added */
+-		if (cur_fltr->fwd_id.hw_vsi_id == new_fltr->fwd_id.hw_vsi_id)
++		if (cur_fltr->vsi_handle == new_fltr->vsi_handle)
+ 			return -EEXIST;
+ 
+ 		vsi_handle_arr[0] = cur_fltr->vsi_handle;
+@@ -5991,7 +5991,7 @@ ice_adv_add_update_vsi_list(struct ice_hw *hw,
+ 
+ 		/* A rule already exists with the new VSI being added */
+ 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
+-			return 0;
++			return -EEXIST;
+ 
+ 		/* Update the previously created VSI list set with
+ 		 * the new VSI ID passed in
 -- 
 2.39.5
 
