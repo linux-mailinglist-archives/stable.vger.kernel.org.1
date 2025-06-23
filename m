@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157424-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5981DAE52B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E44AE53DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D706C4A67D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 99FA17A66BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17B692288CB;
-	Mon, 23 Jun 2025 21:46:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4967A2222CC;
+	Mon, 23 Jun 2025 21:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CTsSKQrp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axquwhkI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C734F16D9BF;
-	Mon, 23 Jun 2025 21:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064AC1AD3FA;
+	Mon, 23 Jun 2025 21:57:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715161; cv=none; b=OAYq/LFEBqtcUPi9wd+kIkozynwAQh7xLB0AVq1cipcfGhcjtwvuGexKyOxF1CoZNaWluqiqwXPAWOJeOo1X2JeBG2Oh2KwlQbrvNYhNgRT1uFTE3uYAxDhL561boBrBje8Ccq0hl1do/nUeeuNnFuCQAeyxWW94jqfRzAr2kG8=
+	t=1750715832; cv=none; b=WTSB+NzxOE9uqWztqxIiElZPInv6GGJtAKsLy2CX/tE+5RUmEQ+DH1t2kHdzF4a7zdWeHwUNKtcNFgT9M91egqC2ydLyBwsjVy9dfhsEA2JBTLK7Rfqus0Rg2pXHsDTm4X3vy2EyMxt4dRxuOQ5UwfQ68m9vJsiy4cjZ23Yy/yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715161; c=relaxed/simple;
-	bh=ccqojST6/beiD3HDL7ns9vR9JOjDqRl+TcwvwYdT1Nk=;
+	s=arc-20240116; t=1750715832; c=relaxed/simple;
+	bh=MYc+oUy8PfUZaIjBcItiReFa/jortP7htFkllkjUN4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ie9dDBzw46YRIUxGtfO3pxkgXzU61OqOQ+NJiKpAGdhYLZmS4c4NO5IBz4ZkZAZDwSAzUeX9VyxRZkL8HyDaQoPUicpF8GVxxJP//SzxUrxHdRDT4GK76C2Iy5b+zSiw2lqpVwL172s1rRPNbZ9gFuI/99oSx6EXQ2UsxTyFBjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CTsSKQrp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D7CCC4CEEA;
-	Mon, 23 Jun 2025 21:46:01 +0000 (UTC)
+	 MIME-Version; b=LYDsb7drxHdzQHeHyEMn7cubHbDSP+mS8M7fcq7HhBMhl9xrUAGOzKvBw7194uf36BRxCS7e+s8QFWzvQrc66efioZ9pK+D3rhVrMFXDBksljycT4qV1TdqD61mcJAuKOqfMH2i9srK0ayL3RrTBjM83uvdvH7CdrlUKqP+fCWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axquwhkI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE4AC4CEEA;
+	Mon, 23 Jun 2025 21:57:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715161;
-	bh=ccqojST6/beiD3HDL7ns9vR9JOjDqRl+TcwvwYdT1Nk=;
+	s=korg; t=1750715831;
+	bh=MYc+oUy8PfUZaIjBcItiReFa/jortP7htFkllkjUN4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CTsSKQrpyRbjiatGY3vbl4hMahnADDdSfeLAT8/t0ZcbHuGDdWuqfT5KkPPA2C6WH
-	 Yxm/G16x8QB72WUkyR8bn1owAULiC7Fc5aYZ7AHUtKiTCetrMl4703ZJgvEBaDiHFH
-	 X6p8PSZOqm3MNxGPYa2JBXRCPVJvQgPkHn99v4/8=
+	b=axquwhkIUy57XLk+AFTiqaXn21FBWUnJmUUTkPvh7MnW1nSB84LjbkFjkT0pHVecg
+	 oWxKGQoV6ai1MFOf2/LwY0eGzNCz542CGwyWg+84OHuoVXZ+pFX4uMZJ+C83nR9m3Y
+	 zJBhCdVJGTJeaH0BEm+Uuq9TioJhMdiU0h3RKONA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayes <stuart.w.hayes@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"James A. MacInnes" <james.a.macinnes@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 203/290] platform/x86: dell_rbu: Stop overwriting data buffer
+Subject: [PATCH 6.15 506/592] drm/msm/disp: Correct porch timing for SDM845
 Date: Mon, 23 Jun 2025 15:07:44 +0200
-Message-ID: <20250623130633.038205237@linuxfoundation.org>
+Message-ID: <20250623130712.471243374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayes <stuart.w.hayes@gmail.com>
+From: James A. MacInnes <james.a.macinnes@gmail.com>
 
-[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
+[ Upstream commit 146e87f3e11de0dfa091ff87e34b4bc6eec761a4 ]
 
-The dell_rbu driver will use memset() to clear the data held by each
-packet when it is no longer needed (when the driver is unloaded, the
-packet size is changed, etc).
+Type-C DisplayPort inoperable due to incorrect porch settings.
+- Re-used wide_bus_en as flag to prevent porch shifting
 
-The amount of memory that is cleared (before this patch) is the normal
-packet size. However, the last packet in the list may be smaller.
-
-Fix this to only clear the memory actually used by each packet, to prevent
-it from writing past the end of data buffer.
-
-Because the packet data buffers are allocated with __get_free_pages() (in
-page-sized increments), this bug could only result in a buffer being
-overwritten when a packet size larger than one page is used. The only user
-of the dell_rbu module should be the Dell BIOS update program, which uses
-a packet size of 4096, so no issues should be seen without the patch, it
-just blocks the possiblity.
-
-Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
-Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/636945/
+Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-2-4954e51458f4@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index 4d2b5f6dd513f..fee20866b41e4 100644
---- a/drivers/platform/x86/dell/dell_rbu.c
-+++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -322,7 +322,7 @@ static void packet_empty_list(void)
- 		 * zero out the RBU packet memory before freeing
- 		 * to make sure there are no stale RBU packets left in memory
- 		 */
--		memset(newpacket->data, 0, rbu_data.packetsize);
-+		memset(newpacket->data, 0, newpacket->length);
- 		set_memory_wb((unsigned long)newpacket->data,
- 			1 << newpacket->ordernum);
- 		free_pages((unsigned long) newpacket->data,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index 8220a4012846b..c3c7a0d56c410 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -94,17 +94,21 @@ static void drm_mode_to_intf_timing_params(
+ 		timing->vsync_polarity = 0;
+ 	}
+ 
+-	/* for DP/EDP, Shift timings to align it to bottom right */
+-	if (phys_enc->hw_intf->cap->type == INTF_DP) {
++	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
++	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
++
++	/*
++	 *  For DP/EDP, Shift timings to align it to bottom right.
++	 *  wide_bus_en is set for everything excluding SDM845 &
++	 *  porch changes cause DisplayPort failure and HDMI tearing.
++	 */
++	if (phys_enc->hw_intf->cap->type == INTF_DP && timing->wide_bus_en) {
+ 		timing->h_back_porch += timing->h_front_porch;
+ 		timing->h_front_porch = 0;
+ 		timing->v_back_porch += timing->v_front_porch;
+ 		timing->v_front_porch = 0;
+ 	}
+ 
+-	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
+-	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
+-
+ 	/*
+ 	 * for DP, divide the horizonal parameters by 2 when
+ 	 * widebus is enabled
 -- 
 2.39.5
 
