@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-157698-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EDDAE5530
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 450A9AE553B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7AD44A15B7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A7CA33AC967
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED9A226CF3;
-	Mon, 23 Jun 2025 22:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7A3522577C;
+	Mon, 23 Jun 2025 22:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B/G6CKIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ra4W6Hz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589FB226888;
-	Mon, 23 Jun 2025 22:08:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B9B222599;
+	Mon, 23 Jun 2025 22:08:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716505; cv=none; b=X5HXkRCeA5/rOts6NufVoeoCQsPRpdh4V6qCF3APd3DM2pAlUdnQ2AsOAYy3eAHwH6axWOGyfbIEynHn2WWX4WNFtVBbr3vJNE0Ouaf+qQ3Gft7UGipLmXj2giUh/jJivWl1GGASr80LkEam9oFWFVkx2NUts17Wva5dYzUfiM4=
+	t=1750716517; cv=none; b=FZ5Kkfi7CW6KQM8SJRkYW8/E4m7AQyeHWphaATC/GCb6f03i4MkjGe/aimMyOPJ8GTubVTnLQbsKmBIyGApB1pEdi12+Pm4nFbwUDbgTgcuZ7mp16OR4LZ74Xfj24xg4TCdI1VLVyP5nTk82xow1AKWnNrXRQIObTQhQp+HczcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716505; c=relaxed/simple;
-	bh=E7gdCf5ui8AxWDX87PVCiMab+sy5vaaf8jv3z5rPN8c=;
+	s=arc-20240116; t=1750716517; c=relaxed/simple;
+	bh=Vs130+DkwoRBxHealCPdkiXMOwgXucYrYt33QA+hO6g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lno8uEIJnNoDc60scEqKkiqrs6PQDy2AnUNI0sjky4bLjFCUYSVOJ6U6AWDvune9T6DExB8svGHoXO8aLAPRQVFm4UD/H1nBtFaFawgME2Qrw+TF2Jj0Y1V4O6Pm7JVUrSimVLu0JZ5tsTh2AMWW0WyUOJBJcVzHDgLm5xqc0fg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B/G6CKIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4F18C4CEED;
-	Mon, 23 Jun 2025 22:08:24 +0000 (UTC)
+	 MIME-Version; b=EG98M9GoIkdv7xkvmRLo5CHkXip3hfU5iXsseswI73P5oR7KLsVCbg88f7zUI1H3KE8w/9FN9Lt+Ss6pSoNLR5RjopC6KiCHE/hiQfwHtxVFy7ZDrpX/tgGn6iSiKXKO2uZhX4X+vXxGT/fQ6OC1KcejmsZ1p70EsmF3vyaCruY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ra4W6Hz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2010BC4CEEA;
+	Mon, 23 Jun 2025 22:08:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716505;
-	bh=E7gdCf5ui8AxWDX87PVCiMab+sy5vaaf8jv3z5rPN8c=;
+	s=korg; t=1750716517;
+	bh=Vs130+DkwoRBxHealCPdkiXMOwgXucYrYt33QA+hO6g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B/G6CKIlyG2OyplXx7/YVmoCoEvmcxedxT3+6tGt4+JHNrQszovYyb4PXcIhsQZrE
-	 fc95R0iEkj0IMSapbf2chnmOYU3UIEHXbx0ds7IKqVn0lIw2npRHVwkiPXVmcg0Sg1
-	 mvBCASSR0gRjKyVLMs2HuEgNa2fA55Y82+ukN7Qs=
+	b=Ra4W6Hz0id8GbjyYcEPPFTD4QYjl5dgkakIDVZsYSVy60JwP9u/QggFoQJSGFlQc6
+	 6VdkWCzPTdGX1k6BBLynHsTbg/DlpHc9bbgCcOuJcj//r2aumHa8m7zXeXgn90kvSV
+	 uclb76vYQwspgT3X4cox5MKv1dV2W5NOT+gF7Qyc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhong Jiawei <zhongjiawei1@huawei.com>,
-	Chen Ridong <chenridong@huawei.com>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.1 330/508] cgroup,freezer: fix incomplete freezing when attaching tasks
-Date: Mon, 23 Jun 2025 15:06:15 +0200
-Message-ID: <20250623130653.445925333@linuxfoundation.org>
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 6.1 331/508] ata: pata_via: Force PIO for ATAPI devices on VT6415/VT6330
+Date: Mon, 23 Jun 2025 15:06:16 +0200
+Message-ID: <20250623130653.474001197@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -61,69 +59,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ridong <chenridong@huawei.com>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-commit 37fb58a7273726e59f9429c89ade5116083a213d upstream.
+commit d29fc02caad7f94b62d56ee1b01c954f9c961ba7 upstream.
 
-An issue was found:
+The controller has a hardware bug that can hard hang the system when
+doing ATAPI DMAs without any trace of what happened. Depending on the
+device attached, it can also prevent the system from booting.
 
-	# cd /sys/fs/cgroup/freezer/
-	# mkdir test
-	# echo FROZEN > test/freezer.state
-	# cat test/freezer.state
-	FROZEN
-	# sleep 1000 &
-	[1] 863
-	# echo 863 > test/cgroup.procs
-	# cat test/freezer.state
-	FREEZING
+In this case, the system hangs when reading the ATIP from optical media
+with cdrecord -vvv -atip on an _NEC DVD_RW ND-4571A 1-01 and an
+Optiarc DVD RW AD-7200A 1.06 attached to an ASRock 990FX Extreme 4,
+running at UDMA/33.
 
-When tasks are migrated to a frozen cgroup, the freezer fails to
-immediately freeze the tasks, causing the cgroup to remain in the
-"FREEZING".
+The issue can be reproduced by running the same command with a cygwin
+build of cdrecord on WinXP, although it requires more attempts to cause
+it. The hang in that case is also resolved by forcing PIO. It doesn't
+appear that VIA has produced any drivers for that OS, thus no known
+workaround exists.
 
-The freeze_task() function is called before clearing the CGROUP_FROZEN
-flag. This causes the freezing() check to incorrectly return false,
-preventing __freeze_task() from being invoked for the migrated task.
+HDDs attached to the controller do not suffer from any DMA issues.
 
-To fix this issue, clear the CGROUP_FROZEN state before calling
-freeze_task().
-
-Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
-Cc: stable@vger.kernel.org # v6.1+
-Reported-by: Zhong Jiawei <zhongjiawei1@huawei.com>
-Signed-off-by: Chen Ridong <chenridong@huawei.com>
-Acked-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/916677
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250519085508.1398701-1-tasos@tasossah.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/legacy_freezer.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/ata/pata_via.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/cgroup/legacy_freezer.c
-+++ b/kernel/cgroup/legacy_freezer.c
-@@ -189,13 +189,12 @@ static void freezer_attach(struct cgroup
- 		if (!(freezer->state & CGROUP_FREEZING)) {
- 			__thaw_task(task);
- 		} else {
--			freeze_task(task);
--
- 			/* clear FROZEN and propagate upwards */
- 			while (freezer && (freezer->state & CGROUP_FROZEN)) {
- 				freezer->state &= ~CGROUP_FROZEN;
- 				freezer = parent_freezer(freezer);
- 			}
-+			freeze_task(task);
- 		}
+--- a/drivers/ata/pata_via.c
++++ b/drivers/ata/pata_via.c
+@@ -368,7 +368,8 @@ static unsigned int via_mode_filter(stru
  	}
  
+ 	if (dev->class == ATA_DEV_ATAPI &&
+-	    dmi_check_system(no_atapi_dma_dmi_table)) {
++	    (dmi_check_system(no_atapi_dma_dmi_table) ||
++	     config->id == PCI_DEVICE_ID_VIA_6415)) {
+ 		ata_dev_warn(dev, "controller locks up on ATAPI DMA, forcing PIO\n");
+ 		mask &= ATA_MASK_PIO;
+ 	}
 
 
 
