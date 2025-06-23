@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97E1DAE5045
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1933AE51AE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 570C31B623A0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E457A1B64102
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E432D1EF397;
-	Mon, 23 Jun 2025 21:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C885221FCA;
+	Mon, 23 Jun 2025 21:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KwCSyIKp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ruty5hl5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E782628C;
-	Mon, 23 Jun 2025 21:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29797221734;
+	Mon, 23 Jun 2025 21:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713815; cv=none; b=jIdx6W0MP96FRDp3btsXzXA6w/bR7BwDfZnasI0WlTLJ2OfqSODj0w6vuoBGPa8t9uL1worYiTX9NGEeSqXt1yxSTr6Kkn+20MQu25lBPslG5trV09d2Q7HnXaAlJBVX1jM2APtU0ZDRQSz8M7eWmO1jiiMgAZFfZKUgBMQstFQ=
+	t=1750714583; cv=none; b=RHkvK1BKLXYu3KDIgqCEe+/Jl0gbw8Jz+Y74RASLP8RFXflskEze/LQiGyL8Ek4cRtJePkV7a9/LKxDAw0ol+EmbV0DE6lLh5hwv8GbLIudDUqHh0mK1OPyjmdy9A8UFn1ROUPI9FwDTE50v+5tqWLwUoTmJ9cww0F5jeYPV0KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713815; c=relaxed/simple;
-	bh=RvrFSFtz5VVSquKtPgeuCuJfuJcqI9AowsXmut6BiWo=;
+	s=arc-20240116; t=1750714583; c=relaxed/simple;
+	bh=segoUwQoDf2HcHC53esITE73Cl7efff4pq/gKMhL3hU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRC5euVR7I4foIPv1WXfXLCXMgTYg3fpoPaGS4J9L0NfiZoh1KyPL9epeifzt5fBPSFWMrxl/XA/Tq9dAFucDHPP/91BIjzB50WnEWi1C73xmDxza6S0p7Ouxi1TSrBKI8iN/DfGB2S+gyIDdjpzkUG1zxt0Zlh8pZXDOScjWd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KwCSyIKp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BF62C4CEEA;
-	Mon, 23 Jun 2025 21:23:35 +0000 (UTC)
+	 MIME-Version; b=sZFLD9rkGJeEf7MelTngOHSDTxJH3RiK9Jp2xK7cK1TYHYCB0gfYu85RxUcKitFEOP3d2piV32KlF13wAi0D5zY3+qrBDA5YAuNRLEu6gTERtbq6KjBjeTY7A5TA2gYd9WYNgNIO6RqHE3L/8sW3NT97Ul73AO4Ex/XaPJMXth8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ruty5hl5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6602C4CEEA;
+	Mon, 23 Jun 2025 21:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713815;
-	bh=RvrFSFtz5VVSquKtPgeuCuJfuJcqI9AowsXmut6BiWo=;
+	s=korg; t=1750714583;
+	bh=segoUwQoDf2HcHC53esITE73Cl7efff4pq/gKMhL3hU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KwCSyIKpYwDpRcK10KsIYyQgkqslqe9EXQOExD5ANmI+70JVZGkXOKRn1PIL5Whg+
-	 Ks46o6kDT4MTn/EtJUhUXvmQWZueJYWi1OL5BvyP71UCbUd2OJ0imjkpjtYovlg7vo
-	 jhUcHfHy2qSGlTUeV/3qS36VoYpAYIbnaWTTghcw=
+	b=ruty5hl5imrZ0nL5YdzbWuY8N/34Bc5fH3GCTCPJqF4hNLIyCJ7+brfpXq9dm0o4U
+	 PWjUtRWhp7cPk5vkeVoB00tGbZDLK9i+WmSxxRqzQKLA9dIjPUxqAqh62qHz046cm6
+	 XmH/wuc40IWDpCj4Vz/beO0QPwXNO6f4BOZN+eWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH 6.6 100/290] remoteproc: core: Cleanup acquired resources when rproc_handle_resources() fails in rproc_attach()
+	Mike Looijmans <mike.looijmans@topic.nl>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 403/592] pinctrl: mcp23s08: Reset all pins to input at probe
 Date: Mon, 23 Jun 2025 15:06:01 +0200
-Message-ID: <20250623130629.974202624@linuxfoundation.org>
+Message-ID: <20250623130710.026912817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Mike Looijmans <mike.looijmans@topic.nl>
 
-commit 7692c9fbedd9087dc9050903f58095915458d9b1 upstream.
+[ Upstream commit 3ede3f8b4b4b399b0ca41e44959f80d5cf84fc98 ]
 
-When rproc->state = RPROC_DETACHED and rproc_attach() is used
-to attach to the remote processor, if rproc_handle_resources()
-returns a failure, the resources allocated by imx_rproc_prepare()
-should be released, otherwise the following memory leak will occur.
+At startup, the driver just assumes that all registers have their
+default values. But after a soft reset, the chip will just be in the
+state it was, and some pins may have been configured as outputs. Any
+modification of the output register will cause these pins to be driven
+low, which leads to unexpected/unwanted effects. To prevent this from
+happening, set the chip's IO configuration register to a known safe
+mode (all inputs) before toggling any other bits.
 
-Since almost the same thing is done in imx_rproc_prepare() and
-rproc_resource_cleanup(), Function rproc_resource_cleanup() is able
-to deal with empty lists so it is better to fix the "goto" statements
-in rproc_attach(). replace the "unprepare_device" goto statement with
-"clean_up_resources" and get rid of the "unprepare_device" label.
-
-unreferenced object 0xffff0000861c5d00 (size 128):
-comm "kworker/u12:3", pid 59, jiffies 4294893509 (age 149.220s)
-hex dump (first 32 bytes):
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00 00 02 88 00 00 00 00 00 00 10 00 00 00 00 00 ............
-backtrace:
- [<00000000f949fe18>] slab_post_alloc_hook+0x98/0x37c
- [<00000000adbfb3e7>] __kmem_cache_alloc_node+0x138/0x2e0
- [<00000000521c0345>] kmalloc_trace+0x40/0x158
- [<000000004e330a49>] rproc_mem_entry_init+0x60/0xf8
- [<000000002815755e>] imx_rproc_prepare+0xe0/0x180
- [<0000000003f61b4e>] rproc_boot+0x2ec/0x528
- [<00000000e7e994ac>] rproc_add+0x124/0x17c
- [<0000000048594076>] imx_rproc_probe+0x4ec/0x5d4
- [<00000000efc298a1>] platform_probe+0x68/0xd8
- [<00000000110be6fe>] really_probe+0x110/0x27c
- [<00000000e245c0ae>] __driver_probe_device+0x78/0x12c
- [<00000000f61f6f5e>] driver_probe_device+0x3c/0x118
- [<00000000a7874938>] __device_attach_driver+0xb8/0xf8
- [<0000000065319e69>] bus_for_each_drv+0x84/0xe4
- [<00000000db3eb243>] __device_attach+0xfc/0x18c
- [<0000000072e4e1a4>] device_initial_probe+0x14/0x20
-
-Fixes: 10a3d4079eae ("remoteproc: imx_rproc: move memory parsing to rproc_ops")
-Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250430092043.1819308-2-xiaolei.wang@windriver.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mike Looijmans <mike.looijmans@topic.nl>
+Link: https://lore.kernel.org/20250314151803.28903-1-mike.looijmans@topic.nl
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/remoteproc_core.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/remoteproc/remoteproc_core.c
-+++ b/drivers/remoteproc/remoteproc_core.c
-@@ -1616,7 +1616,7 @@ static int rproc_attach(struct rproc *rp
- 	ret = rproc_set_rsc_table(rproc);
- 	if (ret) {
- 		dev_err(dev, "can't load resource table: %d\n", ret);
--		goto unprepare_device;
-+		goto clean_up_resources;
- 	}
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08.c b/drivers/pinctrl/pinctrl-mcp23s08.c
+index 4d1f41488017e..c2f4b16f42d20 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08.c
+@@ -636,6 +636,14 @@ int mcp23s08_probe_one(struct mcp23s08 *mcp, struct device *dev,
  
- 	/* reset max_notifyid */
-@@ -1633,7 +1633,7 @@ static int rproc_attach(struct rproc *rp
- 	ret = rproc_handle_resources(rproc, rproc_loading_handlers);
- 	if (ret) {
- 		dev_err(dev, "Failed to process resources: %d\n", ret);
--		goto unprepare_device;
-+		goto clean_up_resources;
- 	}
+ 	mcp->reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
  
- 	/* Allocate carveout resources associated to rproc */
-@@ -1652,7 +1652,6 @@ static int rproc_attach(struct rproc *rp
- 
- clean_up_resources:
- 	rproc_resource_cleanup(rproc);
--unprepare_device:
- 	/* release HW resources if needed */
- 	rproc_unprepare_device(rproc);
- disable_iommu:
++	/*
++	 * Reset the chip - we don't really know what state it's in, so reset
++	 * all pins to input first to prevent surprises.
++	 */
++	ret = mcp_write(mcp, MCP_IODIR, mcp->chip.ngpio == 16 ? 0xFFFF : 0xFF);
++	if (ret < 0)
++		return ret;
++
+ 	/* verify MCP_IOCON.SEQOP = 0, so sequential reads work,
+ 	 * and MCP_IOCON.HAEN = 1, so we work with all chips.
+ 	 */
+-- 
+2.39.5
+
 
 
 
