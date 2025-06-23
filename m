@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-156608-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D700AE5056
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6787DAE5489
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 123E918814CB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2756F3B85FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69A61EFFA6;
-	Mon, 23 Jun 2025 21:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71E631D86DC;
+	Mon, 23 Jun 2025 22:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0oNgbz+Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmJnO+Fv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 641D01ACEDA;
-	Mon, 23 Jun 2025 21:23:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301624C74;
+	Mon, 23 Jun 2025 22:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713830; cv=none; b=ltSr9RaZ9R/fIKqcTX6q4uB6uU8OYCcuJYPR7EHGkNjJrIVWikxdc0LHgIMEosqBLHBFv82KzeE57t+Nykdi9dZAx9SSbN+r5mmCO5cVjslS+TjfpcFqIu2+1b6eFQHICckSwulmWVNPv0DRzQTPnU+/wnUaHKBkzpnCSSmdASw=
+	t=1750716118; cv=none; b=a2tCFjYvsBh+3rV2Z3E1UD7SqWcbIZ058fk7kf66fkqeq/4IPkpG1pkKlCigGLUPHWQi2hg+sYBCnJmhs6Yp6aNQ6SdJgh6AjvwHYSmV9yHrlicoqqJ+HMXtcrViAYsglq7Cauto7n16mGbUbpJ5Zc+NyVJMN3SRaIg0aZzuZPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713830; c=relaxed/simple;
-	bh=PX2bOr8+ZfiujT415gswOusWDW44C10Epp/Wz1Avh4o=;
+	s=arc-20240116; t=1750716118; c=relaxed/simple;
+	bh=Bk9hNytm/BpNueayOVSOtcIHL1/YEV/KXf3fS/ixxjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GsKxHQpfLOdJGVPeHlAVIHn2WTJ8Y7Ufaqg+RO+xXjMGMThb4pczg8ZZsPR4kaGsoaNgKjzlrm21FSC3Ho+GNOb0/NhulNKZFiw4bxgmkHgv1FNdIEvP+JnD+CHJstfOyhz5R0G1J+pJeaHxmSbAo5VEJeLfp48PORm4LMi6I/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0oNgbz+Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1828C4CEEA;
-	Mon, 23 Jun 2025 21:23:49 +0000 (UTC)
+	 MIME-Version; b=jF/wjVz5mDTtZPv+4nMldseqF2eyxccbMlnlECoQOz8kp8uqOd+IH/wFyxwcN5edpAfeW9+lO4QHZXXgeG/2Qaqxs4JfYqZPkDyjeJAN8OoPLHIrBqJP/Zj1iFUM6Obuw789U9A94IFWQeT+Q31b5uowCuWPHmpxBE9nBsechMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmJnO+Fv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63AADC4CEEA;
+	Mon, 23 Jun 2025 22:01:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713830;
-	bh=PX2bOr8+ZfiujT415gswOusWDW44C10Epp/Wz1Avh4o=;
+	s=korg; t=1750716117;
+	bh=Bk9hNytm/BpNueayOVSOtcIHL1/YEV/KXf3fS/ixxjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0oNgbz+QGdqy2VgAU8ZmH0RIBwtH6gWUxnaPv7RgF43UM9iWuS4p5kU9Cfk98ZrrU
-	 RWecHYeaoVoVDsz2Wel+EMaCW1XFtRR/f9jSAz7y0O8CvTsZcWnb5hyXXBpUEO8iYr
-	 DhHoLP6cCbFwALdexdwzitUjFYkxJSD3jeZ5Aygg=
+	b=qmJnO+FvcW0wrHOIwv2XqG2RZVo/mZlocHzwabIsGdlk2bFGRvBB8yZ3tIp20zcx7
+	 ZjYj0v3Yw2YcLtJGgsKZIpF5J4Pebv7O1gPiuNjq2luSsoQkAKeGTVFZbOXmvxp+rt
+	 0c3Akv2xa/xrI7doU7V0sWi1zEAtfdmnl8PhuLBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Monnet <qmo@kernel.org>,
-	Takshak Chahande <ctakshak@meta.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 368/592] bpftool: Fix cgroup command to only show cgroup bpf programs
+	Amit Sunil Dhamne <amitsd@google.com>,
+	Badhri Jagan Sridharan <badhri@google.com>,
+	Kyle Tso <kyletso@google.com>,
+	stable <stable@kernel.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 281/508] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
 Date: Mon, 23 Jun 2025 15:05:26 +0200
-Message-ID: <20250623130709.195256086@linuxfoundation.org>
+Message-ID: <20250623130652.172995072@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,117 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Amit Sunil Dhamne <amitsd@google.com>
 
-[ Upstream commit b69d4413aa1961930fbf9ffad8376d577378daf9 ]
+commit 0736299d090f5c6a1032678705c4bc0a9511a3db upstream.
 
-The netkit program is not a cgroup bpf program and should not be shown
-in the output of the "bpftool cgroup show" command.
+Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
 
-However, if the netkit device happens to have ifindex 3,
-the "bpftool cgroup show" command will output the netkit
-bpf program as well:
+  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
 
-> ip -d link show dev nk1
-3: nk1@if2: ...
-    link/ether ...
-    netkit mode ...
+This is validated against the max PD message (`struct pd_message`) size
+without accounting for the extra byte for the frame type. Note that the
+struct pd_message does not contain a field for the frame_type. This
+results in false negatives when the "PD message (pending read)" is equal
+to the max PD message size.
 
-> bpftool net show
-tc:
-nk1(3) netkit/peer tw_ns_nk2phy prog_id 469447
-
-> bpftool cgroup show /sys/fs/cgroup/...
-ID       AttachType      AttachFlags     Name
-...      ...                             ...
-469447   netkit_peer                     tw_ns_nk2phy
-
-The reason is that the target_fd (which is the cgroup_fd here) and
-the target_ifindex are in a union in the uapi/linux/bpf.h. The bpftool
-iterates all values in "enum bpf_attach_type" which includes
-non cgroup attach types like netkit. The cgroup_fd is usually 3 here,
-so the bug is triggered when the netkit ifindex just happens
-to be 3 as well.
-
-The bpftool's cgroup.c already has a list of cgroup-only attach type
-defined in "cgroup_attach_types[]". This patch fixes it by iterating
-over "cgroup_attach_types[]" instead of "__MAX_BPF_ATTACH_TYPE".
-
-Cc: Quentin Monnet <qmo@kernel.org>
-Reported-by: Takshak Chahande <ctakshak@meta.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/r/20250507203232.1420762-1-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Reviewed-by: Kyle Tso <kyletso@google.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/bpf/bpftool/cgroup.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/usb/typec/tcpm/tcpci_maxim.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/cgroup.c b/tools/bpf/bpftool/cgroup.c
-index 3f1d6be512151..944ebe21a2169 100644
---- a/tools/bpf/bpftool/cgroup.c
-+++ b/tools/bpf/bpftool/cgroup.c
-@@ -318,11 +318,11 @@ static int show_bpf_progs(int cgroup_fd, enum bpf_attach_type type,
- 
- static int do_show(int argc, char **argv)
- {
--	enum bpf_attach_type type;
- 	int has_attached_progs;
- 	const char *path;
- 	int cgroup_fd;
- 	int ret = -1;
-+	unsigned int i;
- 
- 	query_flags = 0;
- 
-@@ -370,14 +370,14 @@ static int do_show(int argc, char **argv)
- 		       "AttachFlags", "Name");
- 
- 	btf_vmlinux = libbpf_find_kernel_btf();
--	for (type = 0; type < __MAX_BPF_ATTACH_TYPE; type++) {
-+	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++) {
- 		/*
- 		 * Not all attach types may be supported, so it's expected,
- 		 * that some requests will fail.
- 		 * If we were able to get the show for at least one
- 		 * attach type, let's return 0.
- 		 */
--		if (show_bpf_progs(cgroup_fd, type, 0) == 0)
-+		if (show_bpf_progs(cgroup_fd, cgroup_attach_types[i], 0) == 0)
- 			ret = 0;
+--- a/drivers/usb/typec/tcpm/tcpci_maxim.c
++++ b/drivers/usb/typec/tcpm/tcpci_maxim.c
+@@ -171,7 +171,8 @@ static void process_rx(struct max_tcpci_
+ 		return;
  	}
  
-@@ -400,9 +400,9 @@ static int do_show(int argc, char **argv)
- static int do_show_tree_fn(const char *fpath, const struct stat *sb,
- 			   int typeflag, struct FTW *ftw)
- {
--	enum bpf_attach_type type;
- 	int has_attached_progs;
- 	int cgroup_fd;
-+	unsigned int i;
- 
- 	if (typeflag != FTW_D)
- 		return 0;
-@@ -434,8 +434,8 @@ static int do_show_tree_fn(const char *fpath, const struct stat *sb,
+-	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
++	if (count > sizeof(struct pd_message) + 1 ||
++	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
+ 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
+ 		return;
  	}
- 
- 	btf_vmlinux = libbpf_find_kernel_btf();
--	for (type = 0; type < __MAX_BPF_ATTACH_TYPE; type++)
--		show_bpf_progs(cgroup_fd, type, ftw->level);
-+	for (i = 0; i < ARRAY_SIZE(cgroup_attach_types); i++)
-+		show_bpf_progs(cgroup_fd, cgroup_attach_types[i], ftw->level);
- 
- 	if (errno == EINVAL)
- 		/* Last attach type does not support query.
--- 
-2.39.5
-
 
 
 
