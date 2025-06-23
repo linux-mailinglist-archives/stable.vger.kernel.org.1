@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75800AE44A2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27A1EAE44A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5BE77AC259
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0715517F061
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813D725291F;
-	Mon, 23 Jun 2025 13:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522A42561AA;
+	Mon, 23 Jun 2025 13:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSpRL+HV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCEeAtjV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F65F253358;
-	Mon, 23 Jun 2025 13:39:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED282561A7;
+	Mon, 23 Jun 2025 13:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685961; cv=none; b=D0gkMzAZaNUMUmXlr4g24ZwWkVSWhXNULh/fvddlg3UeUNfc/HUceO4/pbMHtN6XV4H4DkyCE0VG3aquj0HRa8HWhpj6pKxlapfa0Eh9OtlY738M8ZbX3tXzHYY9bB2807HkDQUVvgUhTnv/jUAXDr8CpQb3+0EqUgStpZRbBI0=
+	t=1750685865; cv=none; b=hJYrUxm1B3t+6999kZUeUjuTjpnP+o2lZNLm1rDovUrKC15Z+KwZYf2e5bQfR2es18hDr7zDtRT1/AjDF5lCR+Yw4p4mkERhYWMXj0MhTPIhmAevJrM9RDqTTF6boy6LSTsmVbNl6KtrlTYZlhbPWrL5yIiFhMcM+TKbPKsCsdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685961; c=relaxed/simple;
-	bh=39+K4aWf0mFWekiuTWkhyNIAQS5B/6Vu5H9/FI1oxZw=;
+	s=arc-20240116; t=1750685865; c=relaxed/simple;
+	bh=CeLvkVZFiiZy34EzcxoXBdYS9yZXYjnrjKtYll1/ZHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OFtq1CSG/9gSnIJ7irf9/gXBVsVPOGAVRbUHrAyIS+LcGDhpkhkRJsDp6bCYhYKOBsOjJyC9QXFRWqq5l4t+RbpqJrYFXmPTJh4CnMhEb5ral0GwTPrjjSfawFsh8pNkvKuCnehdSTfpdAG+onhK8krxOghqxHmh8EyF9yYzw3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSpRL+HV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BA1C4CEEA;
-	Mon, 23 Jun 2025 13:39:20 +0000 (UTC)
+	 MIME-Version; b=qPhFvb/AcOmnUozRjmVqmMzW/HzuESwhpJ4QcbDwU9w1vry1WAhutFvHeStqwaDyoH11rHX90RTcxK0YFP8iyj6DOrng4vIzG9EgjqlcasuEVA1DyZ+s8imrTtWXjKBCeiIrcxeFykkYI4+wsr8nIkzoqZvHEOyShB6nAox4NAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCEeAtjV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C32C4CEEA;
+	Mon, 23 Jun 2025 13:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685961;
-	bh=39+K4aWf0mFWekiuTWkhyNIAQS5B/6Vu5H9/FI1oxZw=;
+	s=korg; t=1750685864;
+	bh=CeLvkVZFiiZy34EzcxoXBdYS9yZXYjnrjKtYll1/ZHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSpRL+HV8rsIhBcJWNuwNq+CP9M6iciBk4WT39+iVl0NmJaq25AWn63udpV57VuYV
-	 c4KuvhHXtsbZWXxKA5rxau7KrMOUPdrb4AiIIGPjiyC+vX3c/CzVZqxcnChEN7aB1A
-	 X2WtiL9jYVEBY/dI5fwYjoQg4MW4bXb+1T8qGLHU=
+	b=eCEeAtjVx1tT9uy9ieL2GwMfCGwoX0wZL9kw/kLtYqK+Lx/Vi5aS5KTlWJwlIcI0l
+	 73s4csYhOAw3cOHcJqOjat8C/z/j0ZofSvJE+DQXpPvO0y/yzZWe0wA6pMZ4iGbUJM
+	 ujxrBeKIyLdXa8oYUAT/O2W6N2ivBWfpsI19Pb4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ovidiu Bunea <ovidiu.bunea@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Arnd Bergmann <arnd@arndb.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 273/592] drm/amd/display: fix zero value for APU watermark_c
+Subject: [PATCH 5.15 087/411] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
 Date: Mon, 23 Jun 2025 15:03:51 +0200
-Message-ID: <20250623130706.824547301@linuxfoundation.org>
+Message-ID: <20250623130635.620197022@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,43 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-[ Upstream commit d5a7fdc88a2d64242d959942cbd0e1499ebb9806 ]
+[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
 
-[why]
-the guard of is_apu not in sync, caused no watermark_c output.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+aspeed_lpc_enable_snoop() does not check for this case, which results in a
+NULL pointer dereference.
 
-Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add NULL check after devm_kasprintf() to prevent this issue.
+
+Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
+[arj: Fix Fixes: tag to use subject from 3772e5da4454]
+Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-index e89571874185e..525b7d04bf84c 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
-@@ -663,7 +663,10 @@ static bool dml2_validate_and_build_resource(const struct dc *in_dc, struct dc_s
- 		dml2_copy_clocks_to_dc_state(&out_clks, context);
- 		dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.a, &dml2->v20.dml_core_ctx);
- 		dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.b, &dml2->v20.dml_core_ctx);
--		memcpy(&context->bw_ctx.bw.dcn.watermarks.c, &dml2->v20.g6_temp_read_watermark_set, sizeof(context->bw_ctx.bw.dcn.watermarks.c));
-+		if (context->streams[0]->sink->link->dc->caps.is_apu)
-+			dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.c, &dml2->v20.dml_core_ctx);
-+		else
-+			memcpy(&context->bw_ctx.bw.dcn.watermarks.c, &dml2->v20.g6_temp_read_watermark_set, sizeof(context->bw_ctx.bw.dcn.watermarks.c));
- 		dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.d, &dml2->v20.dml_core_ctx);
- 		dml2_extract_writeback_wm(context, &dml2->v20.dml_core_ctx);
- 		//copy for deciding zstate use
+diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+index d9bdc2e084086..22619b853f449 100644
+--- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
++++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
+@@ -201,11 +201,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
+ 	lpc_snoop->chan[channel].miscdev.name =
+ 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
++	if (!lpc_snoop->chan[channel].miscdev.name) {
++		rc = -ENOMEM;
++		goto err_free_fifo;
++	}
+ 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
+ 	lpc_snoop->chan[channel].miscdev.parent = dev;
+ 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
+ 	if (rc)
+-		return rc;
++		goto err_free_fifo;
+ 
+ 	/* Enable LPC snoop channel at requested port */
+ 	switch (channel) {
+@@ -222,7 +226,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 		hicrb_en = HICRB_ENSNP1D;
+ 		break;
+ 	default:
+-		return -EINVAL;
++		rc = -EINVAL;
++		goto err_misc_deregister;
+ 	}
+ 
+ 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
+@@ -232,6 +237,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
+ 		regmap_update_bits(lpc_snoop->regmap, HICRB,
+ 				hicrb_en, hicrb_en);
+ 
++	return 0;
++
++err_misc_deregister:
++	misc_deregister(&lpc_snoop->chan[channel].miscdev);
++err_free_fifo:
++	kfifo_free(&lpc_snoop->chan[channel].fifo);
+ 	return rc;
+ }
+ 
 -- 
 2.39.5
 
