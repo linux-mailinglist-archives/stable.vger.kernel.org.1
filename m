@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33ED7AE423E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30224AE43CE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90ECC177A0A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 000CD1791AC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0BF24DD0A;
-	Mon, 23 Jun 2025 13:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 878F62550D0;
+	Mon, 23 Jun 2025 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH+8ILsp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FtCIqs7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CED24E019;
-	Mon, 23 Jun 2025 13:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438FB254B09;
+	Mon, 23 Jun 2025 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684492; cv=none; b=SaLc6FXIDzaIYw025fV8KzK3jjellYbCgKWXPpKmPEY0Auw/whV8Rnc529LEqoUKjoBUEOwXbRtq5qBnoLFXvc3jnB47QBgntcpbI34CLgKLtZ8joGwlqkmRHc3WVmV468QeazK+6+2K3Xgu8lmEzqr9DSQ6m13ePmynM0np9cg=
+	t=1750685359; cv=none; b=LLSoUA4LH0kH1etM8Rf/tBfJ3ERJZaXsDKAMTxAlXSqglvT3ut3hMp/JxEfpr4ZubDRwvAMDA+aU6IN0CKTCAGkEg901ZoX/DdjFd3JRom7Df0hTPIuVjNrumEY6P0ziU+72IiFexw4hTragDK1tL3VA7BgyOkElBobCNlq4l28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684492; c=relaxed/simple;
-	bh=uA0Rb6wLROCmO0/p0xhg1w9rQPTGkAODQEU5i2CqtfE=;
+	s=arc-20240116; t=1750685359; c=relaxed/simple;
+	bh=aPSZnO/c7Kw+JvRxAi+U1zt0pGrsAI+2MD+bynUp0+s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IT3b8Reup2t8qXu3AwHhk4RJKb9FbMwPiYsvAevwDc5N22ppIqmsFJEHIUn2dCLbr+E8/lt5zO9sCVwiGY+x1OaPgi1Cx++GgdovUVqAr2LccNc937cyjUCQIPO4zci29cZ1MCpmfCSYDoW6vzA/h2jBKqyFkfagptn36ZZHEmE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH+8ILsp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2A4C4CEF1;
-	Mon, 23 Jun 2025 13:14:51 +0000 (UTC)
+	 MIME-Version; b=I8M2zoJpky3CfVEZftfiDx1SMpoXS5ef/sawXTts2b1Amr1XVAYdb7i37NMUvlr7flba+6Fs6/PTLnazHSTsOAvH9lhzxp/9jtcVPxhht8Maklpv4mJ57VLClBLbEbb8DG11oyyUFFhWwQqJSBU8XvR9UtqvsItBhQ9/3DmfDpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FtCIqs7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB29FC4CEF1;
+	Mon, 23 Jun 2025 13:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684492;
-	bh=uA0Rb6wLROCmO0/p0xhg1w9rQPTGkAODQEU5i2CqtfE=;
+	s=korg; t=1750685359;
+	bh=aPSZnO/c7Kw+JvRxAi+U1zt0pGrsAI+2MD+bynUp0+s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WH+8ILsplhq7519esVvN0zBeOSzMFuUJKloYV3/UiA/Y24VZM81Df6l5bSsw77nYq
-	 yngvmAgsKn6h/i8habTuh5N1QCChrHUt02chfyTQ2NI9Rj84AdzU7Vp4YwuYCajCrG
-	 oCmBfkjNNi/vXPnKnplsv+weilq5/8KbsYRKEEOc=
+	b=FtCIqs7gsNdJxfWHcSBKnzTNpF6TS1aHEX0mgAKLsfcBtokTXAuJs9DSzzkF03Dfg
+	 AV5q1WSuQJZc27tHIFOphWhYb//MwpOaEKOEIGht+Z6uXHyilkoqh7iUtgCG0mlTtD
+	 UgJQ9jlKg6CTA/duqZJ3UIOdxl8ex0AdQ7fisOPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 090/592] media: uvcvideo: Send control events for partial succeeds
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.1 003/508] pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
 Date: Mon, 23 Jun 2025 15:00:48 +0200
-Message-ID: <20250623130702.421572324@linuxfoundation.org>
+Message-ID: <20250623130645.342973608@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7 upstream.
+commit 947c93eb29c2a581c0b0b6d5f21af3c2b7ff6d25 upstream.
 
-Today, when we are applying a change to entities A, B. If A succeeds and B
-fails the events for A are not sent.
+The controller has two consecutive OUTPUT_VAL registers and both
+holds output value for 32 GPIOs. Due to a missing adjustment, the
+current code always uses the first register while setting the
+output value whereas it should use the second one for GPIOs > 31.
 
-This change changes the code so the events for A are send right after
-they happen.
+Add the missing armada_37xx_update_reg() call to adjust the register
+according to the 'offset' parameter of the function to fix the issue.
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: stable@vger.kernel.org
+Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-1-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1943,7 +1943,9 @@ static bool uvc_ctrl_xctrls_has_control(
- }
- 
- static void uvc_ctrl_send_events(struct uvc_fh *handle,
--	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
-+				 struct uvc_entity *entity,
-+				 const struct v4l2_ext_control *xctrls,
-+				 unsigned int xctrls_count)
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -419,6 +419,7 @@ static int armada_37xx_gpio_direction_ou
+ 					     unsigned int offset, int value)
  {
- 	struct uvc_control_mapping *mapping;
- 	struct uvc_control *ctrl;
-@@ -1955,6 +1957,9 @@ static void uvc_ctrl_send_events(struct
- 		s32 value;
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
++	unsigned int val_offset = offset;
+ 	unsigned int reg = OUTPUT_EN;
+ 	unsigned int mask, val, ret;
  
- 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
-+		if (ctrl->entity != entity)
-+			continue;
+@@ -431,6 +432,8 @@ static int armada_37xx_gpio_direction_ou
+ 		return ret;
+ 
+ 	reg = OUTPUT_VAL;
++	armada_37xx_update_reg(&reg, &val_offset);
 +
- 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
- 			/* Notification will be sent from an Interrupt event. */
- 			continue;
-@@ -2198,11 +2203,12 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
- 							       err_ctrl);
- 			goto done;
-+		} else if (ret > 0 && !rollback) {
-+			uvc_ctrl_send_events(handle, entity,
-+					     ctrls->controls, ctrls->count);
- 		}
- 	}
+ 	val = value ? mask : 0;
+ 	regmap_update_bits(info->regmap, reg, mask, val);
  
--	if (!rollback)
--		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
- 	ret = 0;
- done:
- 	mutex_unlock(&chain->ctrl_mutex);
 
 
 
