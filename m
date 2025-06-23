@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06D1AAE5080
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE58AE52F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E18E41B62657
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD6633ADE8A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010D71F4628;
-	Mon, 23 Jun 2025 21:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A799B1FC0E3;
+	Mon, 23 Jun 2025 21:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/I/Tt96"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gsywkT3x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B36DA1E51FA;
-	Mon, 23 Jun 2025 21:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659694315A;
+	Mon, 23 Jun 2025 21:48:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713932; cv=none; b=nfMV+XdBRDcHmy/jKqUl8tOoyWn/cB6BtC3Zi5PDuuR2h3dl348gjqUkw77SChIU61xSa29PeHbm2hhjuwxzI/VpokfymLMGPQ/XUX64++8EmODqYQMWeemWFsfXwYCK8XVy434RtdUm90rOfgByq0qpkuET5SGnJ1a9Z0+39fU=
+	t=1750715319; cv=none; b=aa7HfvnXmVP0EK5BLFoexn3E/uQGY0ZALVUciSyKDen25aqK1U+JnUBLbAO0nUTrbuUHU5dF88utj45MdrK4uTejQSQRlDzPeqr/V8Kebz+xFy8TKdP8JRPJiZ+n1Rs2Qnw+zPvwqx2XTT6QcLgicDs6IlzwVbwSdAxlQv6ZadA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713932; c=relaxed/simple;
-	bh=GVBk0gmIVweuYEnQxWbmnex+9zqnl7RXNLFoPtEgEHc=;
+	s=arc-20240116; t=1750715319; c=relaxed/simple;
+	bh=MEG2EPT2P/tBAr2OqcOnEBYe7LS1RiD24yH3oOSbY0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TWRRbeTh05mdEfeDpBBVjZJmjCdFBv6rbcQbWnM0lngv698DUFmIppilZRfHR8pKc+NNV1vJayAhfpb5DzcG9JmaA4nbBp7worH6nn3Npm/BWrT+S2AMCL8fopAhsXHGu2GdcNAFusWTGsTz/Ne4MYodZZ08dGmOFj6a21KSbgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/I/Tt96; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C118C4CEEA;
-	Mon, 23 Jun 2025 21:25:32 +0000 (UTC)
+	 MIME-Version; b=HfobFumux6Koy702OVrk+VzDEyz8ihXwPPC7avE2G+GVyQOL0C9IzOmGje3hbOhYlqs2+3ThQN/LWiiIrCh/cbMBKB+W3sqjNTIs7FBLW+W++0ip4i/2EFT5F7S8eYJpF1Q2NT7B8aSYG7PZeMF4lb42Y8nplXKj2CPKAfybScg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gsywkT3x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DBEC4CEEA;
+	Mon, 23 Jun 2025 21:48:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713932;
-	bh=GVBk0gmIVweuYEnQxWbmnex+9zqnl7RXNLFoPtEgEHc=;
+	s=korg; t=1750715319;
+	bh=MEG2EPT2P/tBAr2OqcOnEBYe7LS1RiD24yH3oOSbY0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/I/Tt96agdf47kjW6OQLrre4SR/8pONKdN++luXBkHmzQ2T4qXqC+5AF0ANByG78
-	 hvSXukJGFydD+kCwyf6yvap93WsifllwaUTnkMEoUO3+sMrVH7z9ThNwdXbMbNrgAe
-	 z4dw+7wGrqbpxiTan9/m/igVNXAeN0i6kv24vox4=
+	b=gsywkT3x/IxsUWj3lm2g24XtfHPMG4YhOj+FhSt5fgeXc9IG+czwJ2J1lJ3ptaQb9
+	 N4+Zj8mOnyqE71/KfL8Vqu8UX2a2o6TAzE5BGfY2H6sXoHFgU+jT0TCyy9+5a+P/bQ
+	 HFkOHsp2SIjvVAw6UHfS/UwQADqOddDVL56WG8FE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	I Hsin Cheng <richard120310@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 354/592] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
+Subject: [PATCH 6.12 175/414] ASoC: intel/sdw_utils: Assign initial value in asoc_sdw_rt_amp_spk_rtd_init()
 Date: Mon, 23 Jun 2025 15:05:12 +0200
-Message-ID: <20250623130708.862994001@linuxfoundation.org>
+Message-ID: <20250623130646.402787524@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: I Hsin Cheng <richard120310@gmail.com>
 
-[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
+[ Upstream commit 5fb3878216aece471af030b33a9fbef3babd8617 ]
 
-The regmap_update_bits() function can fail, so propagate its error
-up to the stack instead of silently ignoring that.
+Initialize "ret" with "-EINVAL" to handle cases where "strstr()" for
+"codec_dai->component->name_prefix" doesn't find "-1" nor "-2". In that
+case "name_prefix" is invalid because for current implementation it's
+expected to have either "-1" or "-2" in it. (Maybe "-3", "-4" and so on
+in the future.)
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://scan5.scan.coverity.com/#/project-view/36179/10063?selectedIssue=1627120
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+Link: https://patch.msgid.link/20250505185423.680608-1-richard120310@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/sdw_utils/soc_sdw_rt_amp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 79f9c08e5039c..072bdd0d153ed 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -358,9 +358,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
+diff --git a/sound/soc/sdw_utils/soc_sdw_rt_amp.c b/sound/soc/sdw_utils/soc_sdw_rt_amp.c
+index 6951dfb565263..b3d6ca2499734 100644
+--- a/sound/soc/sdw_utils/soc_sdw_rt_amp.c
++++ b/sound/soc/sdw_utils/soc_sdw_rt_amp.c
+@@ -190,7 +190,7 @@ int asoc_sdw_rt_amp_spk_rtd_init(struct snd_soc_pcm_runtime *rtd, struct snd_soc
+ 	const struct snd_soc_dapm_route *rt_amp_map;
+ 	char codec_name[CODEC_NAME_SIZE];
+ 	struct snd_soc_dai *codec_dai;
+-	int ret;
++	int ret = -EINVAL;
+ 	int i;
  
- 	val = grp->val[func];
- 
--	regmap_update_bits(info->regmap, reg, mask, val);
--
--	return 0;
-+	return regmap_update_bits(info->regmap, reg, mask, val);
- }
- 
- static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
+ 	rt_amp_map = get_codec_name_and_route(dai, codec_name);
 -- 
 2.39.5
 
