@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84F3FAE5074
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B176AE5486
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28E837A2CB7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E92043B6062
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69751EDA0F;
-	Mon, 23 Jun 2025 21:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD051A4F12;
+	Mon, 23 Jun 2025 22:01:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nyC0sk8i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvbZbJFk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657FB1E51FA;
-	Mon, 23 Jun 2025 21:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF9164409;
+	Mon, 23 Jun 2025 22:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713920; cv=none; b=Nt4wib4DyomI2YEX3VBDPKZhrVaUCLUs9fv3bQ6dhHK7QgPDRgPimbPMdUoHZP7sOg1j/VSZ2nUYAZSPeWA0PQ9QoiLOP8MhRZyqdP4sPLp1gBQHtu0dhCp0dXyPk/eUrMBdhEgV3qGm3gBScSh96/wbjr8RC8OSKOfUoKlANAU=
+	t=1750716113; cv=none; b=mqYllC56FzNhw0xHqQRCFlpe/DEnzkTU6MfWyqX9HOl9PA7eXN1fC7KHIPdtHQ7w2bW5+tDBf9pa3mvUzZh9VGktNk0tUpttYDwzUc28g7dhpxJxl6nUaEub9APtYXGFlSdbIAGvwayLnXIwR57lSEWWIZN8mpiOy/qmlr5fZtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713920; c=relaxed/simple;
-	bh=3CSfZOx3ZlZwjEHyjFeBdevzNHXBJ1A86K2D9LdPgR8=;
+	s=arc-20240116; t=1750716113; c=relaxed/simple;
+	bh=q4SBgfVd4OkeyEdz/X6ngqGif8jI7iZePECB329eMTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nvFC/zp6omFy2Z27jjxGe/nwBFIQe+iMWS3eUP/orgCWSdMNne7wrQoTmD67OrFrEzaohAQWkDjrMTuIDKPAMRX3QyYQ+U0tXl755FQfsCBk//2eNE30rcRicLkMzrkGXgIoF5KGgbB92+Z6oiwcKcg3TICSvXhFABhf/o2JgnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nyC0sk8i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF468C4CEEA;
-	Mon, 23 Jun 2025 21:25:19 +0000 (UTC)
+	 MIME-Version; b=NYRcynYgKGqwgEuMKQs9TM3idJwB94TUIzhNou47Hm4RJUxR10Uu5fnxvZaa7UV4yJY/7dQLDD8GLFoeRDEyH2p0k7eBh+arOvt2RTza7zXJDgREVxKVvrFrdgOAjmqGT2ENRyCI4KsGCWhQS+XgciE4FyvX3y/VzSGLLgO2EV4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvbZbJFk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 870AFC4CEEA;
+	Mon, 23 Jun 2025 22:01:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713920;
-	bh=3CSfZOx3ZlZwjEHyjFeBdevzNHXBJ1A86K2D9LdPgR8=;
+	s=korg; t=1750716112;
+	bh=q4SBgfVd4OkeyEdz/X6ngqGif8jI7iZePECB329eMTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nyC0sk8ikBR8uBxGn2a0e1T54w2fJ64gh7mm/OMKKElTD5z+y4pt/R2loP5Ay7ZE0
-	 qnOh36iMoOfZHnfFUW6NrD/KB4sQsNSdAYNmzE7kMNq2JK9QJgMH6iy3H6k5T6Nyh1
-	 D/mIDwO4fkUTDa2DZc1BbiQGt01ookNHyJgMUCvw=
+	b=JvbZbJFktFC2LGlS1wySqSFF4EV2X13rBMgAs8AwDerGn6C4iOSXG4c3BlmJGk3XP
+	 2s0tWGheJI4i1uFmGDbd7g4F5W3IEuWqNz0YkgtVKXDCJfObqow8DCNMRwaORZFORo
+	 vIm7HRpARWl4ehXES4kfLQ4aRq0CAkYCTWHwAsck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 103/290] cifs: update dstaddr whenever channel iface is updated
-Date: Mon, 23 Jun 2025 15:06:04 +0200
-Message-ID: <20250623130630.058312482@linuxfoundation.org>
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 228/414] bpf: Pass the same orig_call value to trampoline functions
+Date: Mon, 23 Jun 2025 15:06:05 +0200
+Message-ID: <20250623130647.735825447@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit c1846893991f3b4ec8a0cc12219ada153f0814d6 upstream.
+[ Upstream commit 94bde253d3ae5d8a01cb958663b12daef1d06574 ]
 
-When the server interface info changes (more common in clustered
-servers like Azure Files), the per-channel iface gets updated.
-However, this did not update the corresponding dstaddr. As a result
-these channels will still connect (or try connecting) to older addresses.
+There is currently some confusion in the s390x JIT regarding whether
+orig_call can be NULL and what that means. Originally the NULL value
+was used to distinguish the struct_ops case, but this was superseded by
+BPF_TRAMP_F_INDIRECT (see commit 0c970ed2f87c ("s390/bpf: Fix indirect
+trampoline generation").
 
-Fixes: b54034a73baf ("cifs: during reconnect, update interface if necessary")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The remaining reason to have this check is that NULL can actually be
+passed to the arch_bpf_trampoline_size() call - but not to the
+respective arch_prepare_bpf_trampoline()! call - by
+bpf_struct_ops_prepare_trampoline().
+
+Remove this asymmetry by passing stub_func to both functions, so that
+JITs may rely on orig_call never being NULL.
+
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://lore.kernel.org/r/20250512221911.61314-2-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ kernel/bpf/bpf_struct_ops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -485,6 +485,10 @@ cifs_chan_update_iface(struct cifs_ses *
+diff --git a/kernel/bpf/bpf_struct_ops.c b/kernel/bpf/bpf_struct_ops.c
+index 477947456371a..2285b27ce68c7 100644
+--- a/kernel/bpf/bpf_struct_ops.c
++++ b/kernel/bpf/bpf_struct_ops.c
+@@ -577,7 +577,7 @@ int bpf_struct_ops_prepare_trampoline(struct bpf_tramp_links *tlinks,
+ 	if (model->ret_size > 0)
+ 		flags |= BPF_TRAMP_F_RET_FENTRY_RET;
  
- 	ses->chans[chan_index].iface = iface;
- 	spin_unlock(&ses->chan_lock);
-+
-+	spin_lock(&server->srv_lock);
-+	memcpy(&server->dstaddr, &iface->sockaddr, sizeof(server->dstaddr));
-+	spin_unlock(&server->srv_lock);
- }
+-	size = arch_bpf_trampoline_size(model, flags, tlinks, NULL);
++	size = arch_bpf_trampoline_size(model, flags, tlinks, stub_func);
+ 	if (size <= 0)
+ 		return size ? : -EFAULT;
  
- /*
+-- 
+2.39.5
+
 
 
 
