@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B481AAE5496
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F11E6AE5098
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7452A1BC1B25
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA28C1B6284D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCA2224B1F;
-	Mon, 23 Jun 2025 22:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4F82222CA;
+	Mon, 23 Jun 2025 21:25:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReOlVpym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rD6NONJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B20224B01;
-	Mon, 23 Jun 2025 22:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8BA221FBE;
+	Mon, 23 Jun 2025 21:25:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716166; cv=none; b=pabLt9ZRR0aGMKwYOhGHlU1OIg/ZI8TicsBD6prReA6kQwOIyv/ZZLL2EkF5idpBmiLqQVZ3GbfDXI487eZw0FWMiAom7d3BwdjH70BXpJJgd4BIOhcg+xP0p4JJl6NVzwnfscEVzHRRxvb4lKUiuRvfsGZf494Q0/Elm/Hap8U=
+	t=1750713955; cv=none; b=gYdovP0ex0/xRr8JCYQ3WKc+PzabqXL8WtnKrbPsqojbaaSCPu/ib6ZF1ifM9I22b6RQseog06Y+jM/hyjT2w3RjfaPEhbjARJkWR+KLT2yqT01bZgLde8bftLCqTrmTkgiE5XGeGbVqCT03PF2hHTFu8uGVBnoZTmrp7jrd9H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716166; c=relaxed/simple;
-	bh=K42ok3Pj0VKM6qWK2PL17DtIxEnwwPsZbLuycrWjnTY=;
+	s=arc-20240116; t=1750713955; c=relaxed/simple;
+	bh=OJKEXIiqV4WhkahEXLVFLOODgMDP661l8XwlK5s0XvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gAjFGufWX9D0n6lFkJAzfP5Ms14JAVldDkpprVCxb5gGZO4MS6ywvmrtTkuaoUx7CMpY4stVc9KJLYND721w2t5pvLXRKFdPWSXXwJ0/Xxu6NzwM+Z4SlsHm18BpAYCOoR4/ECgyrcp6l07p2aRP4kcphtnWTSZNFAsa+eGjTJk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReOlVpym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA0AC4CEEA;
-	Mon, 23 Jun 2025 22:02:45 +0000 (UTC)
+	 MIME-Version; b=u0knevwZWiDXuWcjF+QtBYHfDS5fyNNG8hgUUlZ2F+x+npGG9xNXw0TBhRpEK1RrC4Qx2nJLRHyVoWYhQ7z5gjNg6wxHuQ6IsbFZ/b14ePW+X6I6X+BbnfC2zJ1sqq5hcqTXZ2MpO/fgVc9ZkiHn4x0ngB9bqcnoFKTiqp4GTd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rD6NONJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7680AC4CEEA;
+	Mon, 23 Jun 2025 21:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716166;
-	bh=K42ok3Pj0VKM6qWK2PL17DtIxEnwwPsZbLuycrWjnTY=;
+	s=korg; t=1750713954;
+	bh=OJKEXIiqV4WhkahEXLVFLOODgMDP661l8XwlK5s0XvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ReOlVpymT/nrjE8ly+/PM8rSDNfF7d45zl5s4t72NTLzHYVxD6aBUu1SUvrBCVk5o
-	 8cdm+YHmzKXnF98VW9HrGfCi9S6AQKoPBtd1y5vnP5NQ1f0ym0N3ov/W9SuPm7CUaD
-	 XFhmFnedTq74cVlUFQUecEvuNS5s9TITOHySEyPs=
+	b=rD6NONJUkpoePme0+wWuewIFoE7wlaVlA1yx9Yda7HXQuhW9fAKUg3soCPh4QxmWh
+	 SteCyRfPd9gfs8gDF6c4RVZSSR4ck4m/WRp23GgSoouJO+RFdAFBOn14xKHDC6Txch
+	 ASqfJI8E80JJ9slKyHu54byXUHYma3/p2dsEjnpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Wei <weiwei.danny@bytedance.com>,
-	Aaron Lu <ziqianlu@bytedance.com>
-Subject: [PATCH 5.10 352/355] Revert "bpf: stop setting precise in current state"
+	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.4 218/222] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
 Date: Mon, 23 Jun 2025 15:09:13 +0200
-Message-ID: <20250623130637.304027346@linuxfoundation.org>
+Message-ID: <20250623130618.852137804@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,176 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Lu <ziqianlu@bytedance.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-This reverts commit 7ca3e7459f4a5795e78b14390635879f534d9741 which is
-commit f63181b6ae79fd3b034cde641db774268c2c3acf upstream.
+commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
 
-The backport of bpf precision tracking related changes has caused bpf
-verifier to panic while loading some certain bpf prog so revert them.
+Since handle->h_transaction may be a NULL pointer, so we should change it
+to call is_handle_aborted(handle) first before dereferencing it.
 
-Link: https://lkml.kernel.org/r/20250605070921.GA3795@bytedance/
-Reported-by: Wei Wei <weiwei.danny@bytedance.com>
-Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
+And the following data-race was reported in my fuzzer:
+
+==================================================================
+BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
+
+write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
+ jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
+
+read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
+ jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
+
+value changed: 0x00000000 -> 0x00000001
+==================================================================
+
+This issue is caused by missing data-race annotation for jh->b_modified.
+Therefore, the missing annotation needs to be added.
+
+Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
+Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/verifier.c |  103 +++++---------------------------------------------
- 1 file changed, 12 insertions(+), 91 deletions(-)
+ fs/jbd2/transaction.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -2028,11 +2028,8 @@ static void mark_all_scalars_precise(str
- 
- 	/* big hammer: mark all scalars precise in this path.
- 	 * pop_stack may still get !precise scalars.
--	 * We also skip current state and go straight to first parent state,
--	 * because precision markings in current non-checkpointed state are
--	 * not needed. See why in the comment in __mark_chain_precision below.
- 	 */
--	for (st = st->parent; st; st = st->parent) {
-+	for (; st; st = st->parent)
- 		for (i = 0; i <= st->curframe; i++) {
- 			func = st->frame[i];
- 			for (j = 0; j < BPF_REG_FP; j++) {
-@@ -2050,88 +2047,8 @@ static void mark_all_scalars_precise(str
- 				reg->precise = true;
- 			}
- 		}
--	}
- }
- 
--/*
-- * __mark_chain_precision() backtracks BPF program instruction sequence and
-- * chain of verifier states making sure that register *regno* (if regno >= 0)
-- * and/or stack slot *spi* (if spi >= 0) are marked as precisely tracked
-- * SCALARS, as well as any other registers and slots that contribute to
-- * a tracked state of given registers/stack slots, depending on specific BPF
-- * assembly instructions (see backtrack_insns() for exact instruction handling
-- * logic). This backtracking relies on recorded jmp_history and is able to
-- * traverse entire chain of parent states. This process ends only when all the
-- * necessary registers/slots and their transitive dependencies are marked as
-- * precise.
-- *
-- * One important and subtle aspect is that precise marks *do not matter* in
-- * the currently verified state (current state). It is important to understand
-- * why this is the case.
-- *
-- * First, note that current state is the state that is not yet "checkpointed",
-- * i.e., it is not yet put into env->explored_states, and it has no children
-- * states as well. It's ephemeral, and can end up either a) being discarded if
-- * compatible explored state is found at some point or BPF_EXIT instruction is
-- * reached or b) checkpointed and put into env->explored_states, branching out
-- * into one or more children states.
-- *
-- * In the former case, precise markings in current state are completely
-- * ignored by state comparison code (see regsafe() for details). Only
-- * checkpointed ("old") state precise markings are important, and if old
-- * state's register/slot is precise, regsafe() assumes current state's
-- * register/slot as precise and checks value ranges exactly and precisely. If
-- * states turn out to be compatible, current state's necessary precise
-- * markings and any required parent states' precise markings are enforced
-- * after the fact with propagate_precision() logic, after the fact. But it's
-- * important to realize that in this case, even after marking current state
-- * registers/slots as precise, we immediately discard current state. So what
-- * actually matters is any of the precise markings propagated into current
-- * state's parent states, which are always checkpointed (due to b) case above).
-- * As such, for scenario a) it doesn't matter if current state has precise
-- * markings set or not.
-- *
-- * Now, for the scenario b), checkpointing and forking into child(ren)
-- * state(s). Note that before current state gets to checkpointing step, any
-- * processed instruction always assumes precise SCALAR register/slot
-- * knowledge: if precise value or range is useful to prune jump branch, BPF
-- * verifier takes this opportunity enthusiastically. Similarly, when
-- * register's value is used to calculate offset or memory address, exact
-- * knowledge of SCALAR range is assumed, checked, and enforced. So, similar to
-- * what we mentioned above about state comparison ignoring precise markings
-- * during state comparison, BPF verifier ignores and also assumes precise
-- * markings *at will* during instruction verification process. But as verifier
-- * assumes precision, it also propagates any precision dependencies across
-- * parent states, which are not yet finalized, so can be further restricted
-- * based on new knowledge gained from restrictions enforced by their children
-- * states. This is so that once those parent states are finalized, i.e., when
-- * they have no more active children state, state comparison logic in
-- * is_state_visited() would enforce strict and precise SCALAR ranges, if
-- * required for correctness.
-- *
-- * To build a bit more intuition, note also that once a state is checkpointed,
-- * the path we took to get to that state is not important. This is crucial
-- * property for state pruning. When state is checkpointed and finalized at
-- * some instruction index, it can be correctly and safely used to "short
-- * circuit" any *compatible* state that reaches exactly the same instruction
-- * index. I.e., if we jumped to that instruction from a completely different
-- * code path than original finalized state was derived from, it doesn't
-- * matter, current state can be discarded because from that instruction
-- * forward having a compatible state will ensure we will safely reach the
-- * exit. States describe preconditions for further exploration, but completely
-- * forget the history of how we got here.
-- *
-- * This also means that even if we needed precise SCALAR range to get to
-- * finalized state, but from that point forward *that same* SCALAR register is
-- * never used in a precise context (i.e., it's precise value is not needed for
-- * correctness), it's correct and safe to mark such register as "imprecise"
-- * (i.e., precise marking set to false). This is what we rely on when we do
-- * not set precise marking in current state. If no child state requires
-- * precision for any given SCALAR register, it's safe to dictate that it can
-- * be imprecise. If any child state does require this register to be precise,
-- * we'll mark it precise later retroactively during precise markings
-- * propagation from child state to parent states.
-- */
- static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
- 				  int spi)
- {
-@@ -2149,10 +2066,6 @@ static int __mark_chain_precision(struct
- 	if (!env->bpf_capable)
- 		return 0;
- 
--	/* Do sanity checks against current state of register and/or stack
--	 * slot, but don't set precise flag in current state, as precision
--	 * tracking in the current state is unnecessary.
--	 */
- 	func = st->frame[frame];
- 	if (regno >= 0) {
- 		reg = &func->regs[regno];
-@@ -2160,7 +2073,11 @@ static int __mark_chain_precision(struct
- 			WARN_ONCE(1, "backtracing misuse");
- 			return -EFAULT;
- 		}
--		new_marks = true;
-+		if (!reg->precise)
-+			new_marks = true;
-+		else
-+			reg_mask = 0;
-+		reg->precise = true;
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1419,7 +1419,6 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out;
  	}
  
- 	while (spi >= 0) {
-@@ -2173,7 +2090,11 @@ static int __mark_chain_precision(struct
- 			stack_mask = 0;
- 			break;
- 		}
--		new_marks = true;
-+		if (!reg->precise)
-+			new_marks = true;
-+		else
-+			stack_mask = 0;
-+		reg->precise = true;
- 		break;
+-	journal = transaction->t_journal;
+ 	jbd_lock_bh_state(bh);
+ 
+ 	if (is_handle_aborted(handle)) {
+@@ -1434,6 +1433,8 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out_unlock_bh;
  	}
  
-@@ -9358,7 +9279,7 @@ static bool regsafe(struct bpf_verifier_
- 		if (env->explore_alu_limits)
- 			return false;
- 		if (rcur->type == SCALAR_VALUE) {
--			if (!rold->precise)
-+			if (!rold->precise && !rcur->precise)
- 				return true;
- 			/* new val must satisfy old val knowledge */
- 			return range_within(rold, rcur) &&
++	journal = transaction->t_journal;
++
+ 	if (jh->b_modified == 0) {
+ 		/*
+ 		 * This buffer's got modified and becoming part
 
 
 
