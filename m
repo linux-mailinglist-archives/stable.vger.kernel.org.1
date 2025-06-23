@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156331-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2798AE518D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F9C7AE4F25
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81D694A3EA7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD7C27AB828
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 512A5221734;
-	Mon, 23 Jun 2025 21:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9657B221FCA;
+	Mon, 23 Jun 2025 21:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSJmzte8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddC9zE1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7481EE7C6;
-	Mon, 23 Jun 2025 21:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533631ACEDA;
+	Mon, 23 Jun 2025 21:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714517; cv=none; b=OVrQuONArxJtxvonHbf5QASte8QN0XDAaojWXE8ZGDpHkiXbUUnRA3AlLyxCqjqud9LFJP8bUrTfwma4RXKrANVEuFjLYrgCkZxrgtOdZut1cOQ6MEL4NsB5zPieu3YcT/Wg53w2/qOREnb3Hhr06Alw9IwjV+3DbYeTMxZW8Ck=
+	t=1750713153; cv=none; b=o+8wzqBGBL+dRAbFzO82l4YlzHXLEms+0XS8dqITd6oh5Gt+wEbR4E/hbordhGZ4fztCGHazl8TabGlNAx+Yhpizt9D/4VjXq0uOXdsCJ7cDpg4PGGobK0h5hlhJAK8Lbs6xd+5RFziD7zehEKIwCHAIUVcC5de1T2pwiuhuIow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714517; c=relaxed/simple;
-	bh=FQO6BYQ1iii0zt/sX6BPPA/XtVXVzojK0vs8UenzKHo=;
+	s=arc-20240116; t=1750713153; c=relaxed/simple;
+	bh=7Cq9gvQhukfLFmuO6VXj3xXZvm8r58Az7BjGQWfSnW8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p3W+r93dwZ+f2uI6l4D43PqC7dTGGQglMTV8GV3r8e8P5kk5h5hi7sCg0DC1kokogiT0tO26Zb3zF18sNYwAPIz8RiNb21KbEp7L5DaGB0oZT09bjcfJKd049FyWkhAiY1H2Ielrv1Q77MrbF290b7g9k7LjYo1akoI0DZwvOK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSJmzte8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ABA3C4CEEA;
-	Mon, 23 Jun 2025 21:35:16 +0000 (UTC)
+	 MIME-Version; b=IGGlaDSOmSJHhLPZBV1Acaq/4ogsB4OxrrEuvT3jiJDGu/KS2hyF18JEdmksq16CyqfJtmkmuVp5tGZUQHeH5TvBC4RiKSYA7u0+4VWmIG+4RXzTXzQbjfQY/sXsX5Sz5puwzvo0zDV0wgegpcIJ9vvOpJyN4KkZwSoTgxhZBkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddC9zE1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3890C4CEEA;
+	Mon, 23 Jun 2025 21:12:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714516;
-	bh=FQO6BYQ1iii0zt/sX6BPPA/XtVXVzojK0vs8UenzKHo=;
+	s=korg; t=1750713153;
+	bh=7Cq9gvQhukfLFmuO6VXj3xXZvm8r58Az7BjGQWfSnW8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSJmzte8WIkHI5jZt4YHKSQQ6F6C07bHhfbUssIiIEV9uSartT1fVDbDGL1dT2Jn3
-	 NWpDTfeX03Fv/s2RLUV6CA9RBaBBTLdqCPMxV+6HAVFJ8Gg81lfoOUKV96EzHihMNY
-	 HQ0oB5DniG1c0VzkmUilB60dEeZITwjbzZAa8JPY=
+	b=ddC9zE1/3N/ZzdlM1NPQMSJRN3yJutc3I9XZVLRBgYbjPaUs2+RF6BHWkGdtMIkAz
+	 GCDzHinbFH8DDky2oDj9Rb7MajVzBVTyPN8C3H0+J2jhjMT3URNnjvQbfJQfM927dI
+	 i4bCR4CHqzG9peYTzyTI4PpFG5BfvZMUB/fC+tFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	"Ivan T. Ivanov" <iivanov@suse.de>,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH 6.12 134/414] video: screen_info: Relocate framebuffers behind PCI bridges
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 127/411] seg6: Fix validation of nexthop addresses
 Date: Mon, 23 Jun 2025 15:04:31 +0200
-Message-ID: <20250623130645.404511035@linuxfoundation.org>
+Message-ID: <20250623130636.763127420@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,174 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 2f29b5c231011b94007d2c8a6d793992f2275db1 upstream.
+[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
 
-Apply PCI host-bridge window offsets to screen_info framebuffers. Fixes
-invalid access to I/O memory.
+The kernel currently validates that the length of the provided nexthop
+address does not exceed the specified length. This can lead to the
+kernel reading uninitialized memory if user space provided a shorter
+length than the specified one.
 
-Resources behind a PCI host bridge can be relocated by a certain offset
-in the kernel's CPU address range used for I/O. The framebuffer memory
-range stored in screen_info refers to the CPU addresses as seen during
-boot (where the offset is 0). During boot up, firmware may assign a
-different memory offset to the PCI host bridge and thereby relocating
-the framebuffer address of the PCI graphics device as seen by the kernel.
-The information in screen_info must be updated as well.
+Fix by validating that the provided length exactly matches the specified
+one.
 
-The helper pcibios_bus_to_resource() performs the relocation of the
-screen_info's framebuffer resource (given in PCI bus addresses). The
-result matches the I/O-memory resource of the PCI graphics device (given
-in CPU addresses). As before, we store away the information necessary to
-later update the information in screen_info itself.
-
-Commit 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated
-EFI framebuffers") added the code for updating screen_info. It is based
-on similar functionality that pre-existed in efifb. Efifb uses a pointer
-to the PCI resource, while the newer code does a memcpy of the region.
-Hence efifb sees any updates to the PCI resource and avoids the issue.
-
-v3:
-- Only use struct pci_bus_region for PCI bus addresses (Bjorn)
-- Clarify address semantics in commit messages and comments (Bjorn)
-v2:
-- Fixed tags (Takashi, Ivan)
-- Updated information on efifb
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reported-by: "Ivan T. Ivanov" <iivanov@suse.de>
-Closes: https://bugzilla.suse.com/show_bug.cgi?id=1240696
-Tested-by: "Ivan T. Ivanov" <iivanov@suse.de>
-Fixes: 78aa89d1dfba ("firmware/sysfb: Update screen_info for relocated EFI framebuffers")
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v6.9+
-Link: https://lore.kernel.org/r/20250528080234.7380-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/screen_info_pci.c |   79 +++++++++++++++++++++++++---------------
- 1 file changed, 50 insertions(+), 29 deletions(-)
+ net/ipv6/seg6_local.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/drivers/video/screen_info_pci.c
-+++ b/drivers/video/screen_info_pci.c
-@@ -7,8 +7,8 @@
- 
- static struct pci_dev *screen_info_lfb_pdev;
- static size_t screen_info_lfb_bar;
--static resource_size_t screen_info_lfb_offset;
--static struct resource screen_info_lfb_res = DEFINE_RES_MEM(0, 0);
-+static resource_size_t screen_info_lfb_res_start; // original start of resource
-+static resource_size_t screen_info_lfb_offset; // framebuffer offset within resource
- 
- static bool __screen_info_relocation_is_valid(const struct screen_info *si, struct resource *pr)
- {
-@@ -31,7 +31,7 @@ void screen_info_apply_fixups(void)
- 	if (screen_info_lfb_pdev) {
- 		struct resource *pr = &screen_info_lfb_pdev->resource[screen_info_lfb_bar];
- 
--		if (pr->start != screen_info_lfb_res.start) {
-+		if (pr->start != screen_info_lfb_res_start) {
- 			if (__screen_info_relocation_is_valid(si, pr)) {
- 				/*
- 				 * Only update base if we have an actual
-@@ -47,46 +47,67 @@ void screen_info_apply_fixups(void)
- 	}
- }
- 
-+static int __screen_info_lfb_pci_bus_region(const struct screen_info *si, unsigned int type,
-+					    struct pci_bus_region *r)
-+{
-+	u64 base, size;
-+
-+	base = __screen_info_lfb_base(si);
-+	if (!base)
-+		return -EINVAL;
-+
-+	size = __screen_info_lfb_size(si, type);
-+	if (!size)
-+		return -EINVAL;
-+
-+	r->start = base;
-+	r->end = base + size - 1;
-+
-+	return 0;
-+}
-+
- static void screen_info_fixup_lfb(struct pci_dev *pdev)
- {
- 	unsigned int type;
--	struct resource res[SCREEN_INFO_MAX_RESOURCES];
--	size_t i, numres;
-+	struct pci_bus_region bus_region;
- 	int ret;
-+	struct resource r = {
-+		.flags = IORESOURCE_MEM,
-+	};
-+	const struct resource *pr;
- 	const struct screen_info *si = &screen_info;
- 
- 	if (screen_info_lfb_pdev)
- 		return; // already found
- 
- 	type = screen_info_video_type(si);
--	if (type != VIDEO_TYPE_EFI)
--		return; // only applies to EFI
-+	if (!__screen_info_has_lfb(type))
-+		return; // only applies to EFI; maybe VESA
- 
--	ret = screen_info_resources(si, res, ARRAY_SIZE(res));
-+	ret = __screen_info_lfb_pci_bus_region(si, type, &bus_region);
- 	if (ret < 0)
- 		return;
--	numres = ret;
- 
--	for (i = 0; i < numres; ++i) {
--		struct resource *r = &res[i];
--		const struct resource *pr;
--
--		if (!(r->flags & IORESOURCE_MEM))
--			continue;
--		pr = pci_find_resource(pdev, r);
--		if (!pr)
--			continue;
--
--		/*
--		 * We've found a PCI device with the framebuffer
--		 * resource. Store away the parameters to track
--		 * relocation of the framebuffer aperture.
--		 */
--		screen_info_lfb_pdev = pdev;
--		screen_info_lfb_bar = pr - pdev->resource;
--		screen_info_lfb_offset = r->start - pr->start;
--		memcpy(&screen_info_lfb_res, r, sizeof(screen_info_lfb_res));
--	}
-+	/*
-+	 * Translate the PCI bus address to resource. Account
-+	 * for an offset if the framebuffer is behind a PCI host
-+	 * bridge.
-+	 */
-+	pcibios_bus_to_resource(pdev->bus, &r, &bus_region);
-+
-+	pr = pci_find_resource(pdev, &r);
-+	if (!pr)
-+		return;
-+
-+	/*
-+	 * We've found a PCI device with the framebuffer
-+	 * resource. Store away the parameters to track
-+	 * relocation of the framebuffer aperture.
-+	 */
-+	screen_info_lfb_pdev = pdev;
-+	screen_info_lfb_bar = pr - pdev->resource;
-+	screen_info_lfb_offset = r.start - pr->start;
-+	screen_info_lfb_res_start = bus_region.start;
- }
- DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID, PCI_BASE_CLASS_DISPLAY, 16,
- 			       screen_info_fixup_lfb);
+diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
+index 0b64cf5b0f267..98af48b3fcce6 100644
+--- a/net/ipv6/seg6_local.c
++++ b/net/ipv6/seg6_local.c
+@@ -1123,10 +1123,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
+ 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
+ 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
+-	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in_addr) },
+-	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
+-				    .len = sizeof(struct in6_addr) },
++	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
++	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
+ 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
+ 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
+-- 
+2.39.5
+
 
 
 
