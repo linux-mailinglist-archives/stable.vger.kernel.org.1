@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156603-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98B61AE5046
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D535AE54CF
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8527A4A0749
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 961754C253F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 577D81E521E;
-	Mon, 23 Jun 2025 21:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B50A2236E9;
+	Mon, 23 Jun 2025 22:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f8NwL51M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWm6fhq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 156C91ACEDA;
-	Mon, 23 Jun 2025 21:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06BA93FB1B;
+	Mon, 23 Jun 2025 22:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713818; cv=none; b=WFmhBcUIsFEhY2mQ0ALxNknzaxBAAPO814LauFeb82XTXqDqU4a+W2ZDni2YAv/7e3LtQ7hwHEa1uHclTx5iQVThDug0Azuu9QNgSGU2khgJW30mrChrJR92W/+OagkAmaaWRV1u/5SXaXzrz6W6c4b1/21AI4YbSIPm0fZAzTE=
+	t=1750716285; cv=none; b=ARmor0Zy/pAFsuSxyWgCAZtOQpMzyLs1vbLG1SiksN/Diqt/8xYVqmERo992aeybZdDgCERPGdwRH0AJ8PuxLD6NAyafu/JmidI3EyS5xggtzVWrOEVIKylX+BQjAPlLefaG+g0HiiHEK2Xp9XAeAolQehsBgCzImHmQiE3ZtV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713818; c=relaxed/simple;
-	bh=YqIaBmVTzsbq1cd8GYkfFHmuIL3Bmpjl5Ryyfm7KHYk=;
+	s=arc-20240116; t=1750716285; c=relaxed/simple;
+	bh=z+io1kUgWoBvD8dk2fKl+DFDESLE91qOUAy93X8oKy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BnX1dI3NvojK4EkfRRZ2T4fqZBGGm26G5UVrkKGc2WQZcPJquNt3je5zDpxsABSyCqCeRqlmjw/jNEHr8p5B5QeUApyNKIo+DZunhcn/o/aw5aj7OVDKcziUbi+/NfO+jGv/mwbYCIHmbBkn8JG4VDhY9D/sQw+a2vIYbYLsihY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f8NwL51M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0634C4CEEA;
-	Mon, 23 Jun 2025 21:23:37 +0000 (UTC)
+	 MIME-Version; b=MM8/dgvj/7IfwqW8Awxv8x/90hzq9y9ZJjRiDWx7vcev8M8J37FRRG1JxAGlX2qrFox4AFnln2uTUULr4QqakfujAnLa266lmm3OhR+AifxLyOv/4DjaSfl2ZceoG8novahwPnnux1YCyqTHlPQx8n7t2bBW9wv8xsj4ewdUHuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWm6fhq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42750C4CEEA;
+	Mon, 23 Jun 2025 22:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713817;
-	bh=YqIaBmVTzsbq1cd8GYkfFHmuIL3Bmpjl5Ryyfm7KHYk=;
+	s=korg; t=1750716284;
+	bh=z+io1kUgWoBvD8dk2fKl+DFDESLE91qOUAy93X8oKy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f8NwL51Mp3bvkTpEG7u5Hvvd9ENdPBUxWa2g0na5MJ8+S12tyKJfgDwKnnnjhEC+i
-	 SpinUX01ccFZWyJCsZ4lD/RxnCdW4wHZi/HxOz9IWALlkfFsrKkawTZq1jxjYHtOnC
-	 a0YxOYvpQj9NrzQMQORADMfMZsVZwSMz07CtWz7Q=
+	b=dWm6fhq4iLo65vFEHp4lrjSBY5bTg1iYpAmOtApvHwFF72Rtffg8TFPbtHnFqmmqv
+	 7qIimx2pB786afDrbEP6/K1jLKqFzvL4brbyjYdqsyYRWd3vNLDho1zDEfV0kvOtJs
+	 UlT04mzu4kpbf+3iGw9CcjbDAaGqpe1bmWZXKAY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Talhah Peerbhai <talhah.peerbhai@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 117/290] ASoC: amd: yc: Add quirk for Lenovo Yoga Pro 7 14ASP9
+Subject: [PATCH 6.12 241/414] f2fs: fix to bail out in get_new_segment()
 Date: Mon, 23 Jun 2025 15:06:18 +0200
-Message-ID: <20250623130630.461596373@linuxfoundation.org>
+Message-ID: <20250623130648.073178436@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Talhah Peerbhai <talhah.peerbhai@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit a28206060dc5848a1a2a15b7f6ac6223d869084d ]
+[ Upstream commit bb5eb8a5b222fa5092f60d5555867a05ebc3bdf2 ]
 
-Similar to many other Lenovo models with AMD chips, the Lenovo
-Yoga Pro 7 14ASP9 (product name 83HN) requires a specific quirk
-to ensure internal mic detection. This patch adds a quirk fixing this.
+------------[ cut here ]------------
+WARNING: CPU: 3 PID: 579 at fs/f2fs/segment.c:2832 new_curseg+0x5e8/0x6dc
+pc : new_curseg+0x5e8/0x6dc
+Call trace:
+ new_curseg+0x5e8/0x6dc
+ f2fs_allocate_data_block+0xa54/0xe28
+ do_write_page+0x6c/0x194
+ f2fs_do_write_node_page+0x38/0x78
+ __write_node_page+0x248/0x6d4
+ f2fs_sync_node_pages+0x524/0x72c
+ f2fs_write_checkpoint+0x4bc/0x9b0
+ __checkpoint_and_complete_reqs+0x80/0x244
+ issue_checkpoint_thread+0x8c/0xec
+ kthread+0x114/0x1bc
+ ret_from_fork+0x10/0x20
 
-Signed-off-by: Talhah Peerbhai <talhah.peerbhai@gmail.com>
-Link: https://patch.msgid.link/20250515222741.144616-1-talhah.peerbhai@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+get_new_segment() detects inconsistent status in between free_segmap
+and free_secmap, let's record such error into super block, and bail
+out get_new_segment() instead of continue using the segment.
+
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ fs/f2fs/segment.c       | 6 +++++-
+ include/linux/f2fs_fs.h | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 622df58a96942..9fdee74c28df2 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -311,6 +311,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83HN"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-@@ -360,7 +367,7 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M5402RA"),
- 		}
- 	},
--        {
-+	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index b9ffb2ee9548a..769a90b609e2c 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2772,7 +2772,11 @@ static int get_new_segment(struct f2fs_sb_info *sbi,
+ 	}
+ got_it:
+ 	/* set it as dirty segment in free segmap */
+-	f2fs_bug_on(sbi, test_bit(segno, free_i->free_segmap));
++	if (test_bit(segno, free_i->free_segmap)) {
++		ret = -EFSCORRUPTED;
++		f2fs_stop_checkpoint(sbi, false, STOP_CP_REASON_CORRUPTED_FREE_BITMAP);
++		goto out_unlock;
++	}
+ 
+ 	/* no free section in conventional zone */
+ 	if (new_sec && pinning &&
+diff --git a/include/linux/f2fs_fs.h b/include/linux/f2fs_fs.h
+index c24f8bc01045d..5206d63b33860 100644
+--- a/include/linux/f2fs_fs.h
++++ b/include/linux/f2fs_fs.h
+@@ -78,6 +78,7 @@ enum stop_cp_reason {
+ 	STOP_CP_REASON_UPDATE_INODE,
+ 	STOP_CP_REASON_FLUSH_FAIL,
+ 	STOP_CP_REASON_NO_SEGMENT,
++	STOP_CP_REASON_CORRUPTED_FREE_BITMAP,
+ 	STOP_CP_REASON_MAX,
+ };
+ 
 -- 
 2.39.5
 
