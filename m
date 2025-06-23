@@ -1,59 +1,62 @@
-Return-Path: <stable+bounces-156033-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155828-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD755AE4558
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:51:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69B07AE43A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96558445DB2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C3A27AC933
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC54D2472A2;
-	Mon, 23 Jun 2025 13:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93C8C255F5C;
+	Mon, 23 Jun 2025 13:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uX/wfCA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0ZUTofj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6552475E3;
-	Mon, 23 Jun 2025 13:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49D97255F3C;
+	Mon, 23 Jun 2025 13:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685971; cv=none; b=ptvBlIfYX7vwpcFGeTs3S4h57YiqnwCHSjLUbSUb5P0+rPQaKz1mdjztyR9QMhtdfjPHFiIK5+okhHuFCtujF+V0LMFFFPB5IICe4POFhUGEAeVQHZ0matE1KJMTOM3c9ctP479fzDg4eJjnH/QtoDrIIO+ncyg7jLGMrFYScS8=
+	t=1750685433; cv=none; b=ZZYiP2DJ4u22YBatEElwY3FXGGAYBHOJQz6sC0Tf7fRow6R83H4KG7N2iDFwRzbvBqIja1fX/rcknXKIoTxRgvzraZWqLmgNdt1jiX2AJFBrYrZCrc2cV1UQESNKYjy+ptiAv5Vaa3ShZU5vxsBs0wbSyndgwbRiHCbjAfVxIss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685971; c=relaxed/simple;
-	bh=6PebgWWz9evJJy6AAhDlRxBH9L2OZpXxd6U5e1TaxUA=;
+	s=arc-20240116; t=1750685433; c=relaxed/simple;
+	bh=bxB91XLfiQMSDzPLgKBpd7rm8J2ALb842OmvLPr5F8k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKgMT8XAN25uke5nNmzmLJYXCROyZ693a7wLpE3oH7j6BaoFRVTXq0KHUBqH8nOujT+iq8MMmB91iUSj2QRauzlyJvrqYEFFfDJeRk88OcCsdgphcm2sT1d5pq1qL062eUOqbaOs9DlYFYbsGfqQj1O7IoCT0fIepLX1YgI8H/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uX/wfCA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3562C4CEEA;
-	Mon, 23 Jun 2025 13:39:30 +0000 (UTC)
+	 MIME-Version; b=bS2Ne+6Fb0SosfKx1OguUcehDbVSp2nQcmlFEdfmHlvVgLLdGW5jmqSBNrWqW+9WUA2YPd4ZY7XcMRTmbt/qsNUIikW+8Un2/c4bv5cRf4o3CHC4lDJ6Mwqj1uBO4mqaDzDZ5Gp8MAjAzVR0lvEfbrg5Lqhp3Cxo/m5Wvp0ZVF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0ZUTofj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BBCC4CEEA;
+	Mon, 23 Jun 2025 13:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685971;
-	bh=6PebgWWz9evJJy6AAhDlRxBH9L2OZpXxd6U5e1TaxUA=;
+	s=korg; t=1750685433;
+	bh=bxB91XLfiQMSDzPLgKBpd7rm8J2ALb842OmvLPr5F8k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uX/wfCA8NP2YTsV5lPwd1POstduXo5S4hry3NHYU3WAILXxkj5dUWB34totaCwz44
-	 tReLDKMYrFIOMn9Eq/PYz66vB6Ik4wSRdbNjUdrprll//b9xfU0xa7io+HxPLxQ4dO
-	 hZ3/TMQ1Bj9QgqWcO1ahdDowJNDXNo6kx1C3BTvk=
+	b=K0ZUTofjtPlSWfXeHfV9KZTp/+ZfvIa1whaco5+QT0b6fUsK6cPUnNOMiFlgnKEWE
+	 2/MG6lzI1swk8Cg4AZwizmTo3axWt8GV0YNfUt3Xj3OvpL+O2b/UILYRNBnL8LgLng
+	 +ZaOu6PAx/GaRwGFOVCPTi940LI9rGVB0E+CatbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqing Pan <quic_miaoqing@quicinc.com>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Steev Klimaszewski <steev@kali.org>,
-	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
-	Clayton Craft <clayton@craftyguy.net>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.6 015/290] wifi: ath11k: fix ring-buffer corruption
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 075/355] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
 Date: Mon, 23 Jun 2025 15:04:36 +0200
-Message-ID: <20250623130627.443369486@linuxfoundation.org>
+Message-ID: <20250623130629.078376300@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,103 +68,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 6d037a372f817e9fcb56482f37917545596bd776 upstream.
+[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
 
-Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
-breaks and the log fills up with errors like:
+In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
+perf_hpp_list") it assumes that act->thread is set prior to calling
+do_zoom_thread().
 
-    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
-    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
+This doesn't happen when we use ESC or the Left arrow key to Zoom out of
+a specific thread, making this operation not to work and we get stuck
+into the thread zoom.
 
-which based on a quick look at the driver seemed to indicate some kind
-of ring-buffer corruption.
+In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
+pstack_peek()") it says no need to set actions->thread, and at that
+point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
+check was added before the zoom out of thread could kick in.
 
-Miaoqing Pan tracked it down to the host seeing the updated destination
-ring head pointer before the updated descriptor, and the error handling
-for that in turn leaves the ring buffer in an inconsistent state.
+We can zoom out using the alternative 't' thread zoom toggle hotkey to
+finally set actions->thread before calling do_zoom_thread() and zoom
+out, but lets also fix the ESC/Zoom out of thread case.
 
-Add the missing memory barrier to make sure that the descriptor is read
-after the head pointer to address the root cause of the corruption while
-fixing up the error handling in case there are ever any (ordering) bugs
-on the device side.
-
-Note that the READ_ONCE() are only needed to avoid compiler mischief in
-case the ring-buffer helpers are ever inlined.
-
-Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
-
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
-Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
-Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Cc: stable@vger.kernel.org	# 5.6
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
-Tested-by: Steev Klimaszewski <steev@kali.org>
-Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
-Tested-by: Clayton Craft <clayton@craftyguy.net>
-Link: https://patch.msgid.link/20250321094916.19098-1-johan+linaro@kernel.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/ce.c  |   11 +++++------
- drivers/net/wireless/ath/ath11k/hal.c |    4 ++--
- 2 files changed, 7 insertions(+), 8 deletions(-)
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/wireless/ath/ath11k/ce.c
-+++ b/drivers/net/wireless/ath/ath11k/ce.c
-@@ -393,11 +393,10 @@ static int ath11k_ce_completed_recv_next
- 		goto err;
- 	}
- 
-+	/* Make sure descriptor is read after the head pointer. */
-+	dma_rmb();
-+
- 	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
--	if (*nbytes == 0) {
--		ret = -EIO;
--		goto err;
--	}
- 
- 	*skb = pipe->dest_ring->skb[sw_index];
- 	pipe->dest_ring->skb[sw_index] = NULL;
-@@ -430,8 +429,8 @@ static void ath11k_ce_recv_process_cb(st
- 		dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
- 				 max_nbytes, DMA_FROM_DEVICE);
- 
--		if (unlikely(max_nbytes < nbytes)) {
--			ath11k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
-+		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
-+			ath11k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
- 				    nbytes, max_nbytes);
- 			dev_kfree_skb_any(skb);
- 			continue;
---- a/drivers/net/wireless/ath/ath11k/hal.c
-+++ b/drivers/net/wireless/ath/ath11k/hal.c
-@@ -601,7 +601,7 @@ u32 ath11k_hal_ce_dst_status_get_length(
- 		(struct hal_ce_srng_dst_status_desc *)buf;
- 	u32 len;
- 
--	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, desc->flags);
-+	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, READ_ONCE(desc->flags));
- 	desc->flags &= ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
- 
- 	return len;
-@@ -802,7 +802,7 @@ void ath11k_hal_srng_access_begin(struct
- 		srng->u.src_ring.cached_tp =
- 			*(volatile u32 *)srng->u.src_ring.tp_addr;
- 	} else {
--		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
-+		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
- 
- 		/* Try to prefetch the next descriptor in the ring */
- 		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index f2586e46d53e8..19e79e159996a 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -3241,10 +3241,10 @@ static int perf_evsel__hists_browse(struct evsel *evsel, int nr_events,
+ 				/*
+ 				 * No need to set actions->dso here since
+ 				 * it's just to remove the current filter.
+-				 * Ditto for thread below.
+ 				 */
+ 				do_zoom_dso(browser, actions);
+ 			} else if (top == &browser->hists->thread_filter) {
++				actions->thread = thread;
+ 				do_zoom_thread(browser, actions);
+ 			} else if (top == &browser->hists->socket_filter) {
+ 				do_zoom_socket(browser, actions);
+-- 
+2.39.5
+
 
 
 
