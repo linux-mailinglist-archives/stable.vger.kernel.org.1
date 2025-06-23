@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47737AE52C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C16AAE519A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37C6F4A6BE0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3FF188A494
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB91223DC1;
-	Mon, 23 Jun 2025 21:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A014522068B;
+	Mon, 23 Jun 2025 21:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQypdGsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjJMWjEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869851AAA1C;
-	Mon, 23 Jun 2025 21:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8191EE7C6;
+	Mon, 23 Jun 2025 21:35:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715225; cv=none; b=s785QONi/PjIArd1hkj+jX2JH9FPMhDoOUr7hpKvOv9clXKhV/m86qJGkIMgWHIXkkrqA0Ai9VSJatSiAptomdIyPwygB78v4J/K28tdESYB2naZeXAESULmCgFPjhykon4qGCRxhr51wQWETIwSxMN4s8kaxnp5DtcbBJF5UXs=
+	t=1750714524; cv=none; b=Vu1emNM5DZIxeHN/S8vcHRf4B1E/RUthbYzjMpXgwzGRyefjO2Fz/TneqnN52HRmS0uxxpEZJERXgijY/wJI+wqRIXUWlZnumwkOvyRRO9zt2x3xSqQ5hckA8znHw9A+EIxEStjZggZwZka8N+dBG24Fvp3rFVDW3bSXyC/mmew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715225; c=relaxed/simple;
-	bh=/XaAafHuQOvIhWB591cXkJLSLgkJ+q4qnuYYGlns/HY=;
+	s=arc-20240116; t=1750714524; c=relaxed/simple;
+	bh=ju+1wnqRYorKeP9pVIhd6EKVihvUsyxoR2ZHv1SLe6Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vFcuYRkezPCqzZMsiHKosh8/eTZPfk4qG4BAb+zc/yeENcpPBK8l0pgRwJJpmSntW4ZsSZ4tktpzlCaAC16Sn78yhBbo/yw6Z7qgRD7tFL8U6AVSzDGKISyZ2oo8D5DGYeZInm5C0yJEhiSHDzO39ih9YGO4ZNHsdweKTkSeAHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQypdGsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E815C4CEEA;
-	Mon, 23 Jun 2025 21:47:04 +0000 (UTC)
+	 MIME-Version; b=nqd7uoKqSr3ymbf799wdnYGiFxZKSaMwSM/wkkBgS9bwgoJ7ro18K7AOK6RtkN/r4Tf1SEJjX8XlbLnTfi8LZXBZHmjMEU07J8VkP3PFyYbTaEmlmj0ylM8UCIr+sAoN97sbRXsoZc/XvlTDWjHxpyip9N/T/JZLf1mKw71+C48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjJMWjEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E36C4CEEA;
+	Mon, 23 Jun 2025 21:35:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715225;
-	bh=/XaAafHuQOvIhWB591cXkJLSLgkJ+q4qnuYYGlns/HY=;
+	s=korg; t=1750714524;
+	bh=ju+1wnqRYorKeP9pVIhd6EKVihvUsyxoR2ZHv1SLe6Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xQypdGsMbGVdk1XseT7CnXbjsudtYueTZ2Nxk9HcyR/HkaXXo84uhxZTGaV1zaoYV
-	 +28zucT3DQL/2x6sfq4KMoo35ko5YEy/UrMJc7B+NIS4XbHyYsBVuRPilr3wiynrNL
-	 8ThU8mArTkb7L9W7T6KsPrOZMkaV9fuxs43Aottg=
+	b=JjJMWjElnAlBx/d1cKVxR3h6aq6IjwERK9odJ0VBQ0drcgcHLImZrhR1ZOftvyyls
+	 VYd+uFAIMx2VCwpruau9vIfgjh0CrpfjUQuecS0URB11Tw2kqcurQkNGW8KBL80UyY
+	 MkDwCn8cBxqJh+ZURxxyY7UYUuW9rDBcAq2BEdrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 466/592] net_sched: sch_sfq: reject invalid perturb period
+	Salah Triki <salah.triki@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 163/290] wireless: purelifi: plfxlc: fix memory leak in plfxlc_usb_wreq_asyn()
 Date: Mon, 23 Jun 2025 15:07:04 +0200
-Message-ID: <20250623130711.513970405@linuxfoundation.org>
+Message-ID: <20250623130631.801610913@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Salah Triki <salah.triki@gmail.com>
 
-commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
+[ Upstream commit 63a9a727d373fa5b8ce509eef50dbc45e0f745b9 ]
 
-Gerrard Tai reported that SFQ perturb_period has no range check yet,
-and this can be used to trigger a race condition fixed in a separate patch.
+Add usb_free_urb() in the error path to prevent memory leak.
 
-We want to make sure ctl->perturb_period * HZ will not overflow
-and is positive.
-
-Tested:
-
-tc qd add dev lo root sfq perturb -10   # negative value : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 1000000000 # too big : error
-Error: sch_sfq: invalid perturb period.
-
-tc qd add dev lo root sfq perturb 2000000 # acceptable value
-tc -s -d qd sh dev lo
-qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
- Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
- backlog 0b 0p requeues 0
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Link: https://patch.msgid.link/aA3_maPlEJzO7wrL@pc
+[fix subject]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/wireless/purelifi/plfxlc/usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
- 		return -EINVAL;
- 	}
-+
-+	if (ctl->perturb_period < 0 ||
-+	    ctl->perturb_period > INT_MAX / HZ) {
-+		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
-+		return -EINVAL;
-+	}
-+	perturb_period = ctl->perturb_period * HZ;
-+
- 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
- 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
- 		return -EINVAL;
-@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
- 	headdrop = q->headdrop;
- 	maxdepth = q->maxdepth;
- 	maxflows = q->maxflows;
--	perturb_period = q->perturb_period;
- 	quantum = q->quantum;
- 	flags = q->flags;
+diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
+index 311676c1ece0a..8151bc5e00ccc 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/usb.c
++++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
+@@ -503,8 +503,10 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
+ 			  (void *)buffer, buffer_len, complete_fn, context);
  
- 	/* update and validate configuration */
- 	if (ctl->quantum)
- 		quantum = ctl->quantum;
--	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
- 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
+ 	r = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (r)
++	if (r) {
++		usb_free_urb(urb);
+ 		dev_err(&udev->dev, "Async write submit failed (%d)\n", r);
++	}
+ 
+ 	return r;
+ }
+-- 
+2.39.5
+
 
 
 
