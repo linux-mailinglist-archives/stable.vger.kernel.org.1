@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34175AE52CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4E8BAE50D6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 02A4C4A6DCB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6D133A634E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBA71FC0E3;
-	Mon, 23 Jun 2025 21:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E94223DE8;
+	Mon, 23 Jun 2025 21:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C0MRpfpr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hveF6Zsf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60523FD4;
-	Mon, 23 Jun 2025 21:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578FA1EFFA6;
+	Mon, 23 Jun 2025 21:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715252; cv=none; b=Q+zunOM+1pCtErJbwco5fZm7im/79X3tX8LEHxGY5x5f9hnH2Dx69yjemVusViIbeC979S6nRy2IsvPfW0KqM1SM7whoAMW9lLaJtIIdQz8ScbvwBsiZn9U/X3L+ODogXinFZLL8QoB8kisXvTsJLYJtAOdAh53XUjgBAifZKIA=
+	t=1750714084; cv=none; b=EAQWXmVVU2A3bfzaZmtArMaZBW15FuKlwSKlURaLsKrscZ13K2SuNXaYf0cXjqIBHiHjkZXhTkb8rZrNPQPeLPwl17xG8qlibfTUvqZa8MOHWeoTT1XFRuMAc/UJxUmyZcMgNvcMdSZx332mtdbfNE2wbQd6kX8ruATZtOKtxeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715252; c=relaxed/simple;
-	bh=bSwIwB/R8/3VG1ZqtnAHzCCKArqG2FjBisxUsHtjMko=;
+	s=arc-20240116; t=1750714084; c=relaxed/simple;
+	bh=eQqqWwWBfKFqEqKAzpAWMwCvER7a6pXVDgfuQDKKRSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Om6fbMSlw2kTgTANK6h7eIfR7yhnNg1EII1EyGORgk+MMjHxdlE+cxxtKuekkrSFgGJMbWqVAPcCREDofDL2pUzcwWlRHNKNV727jZGu/McR5A4rma0QoWk8dYqv5UI/nYsKopSnJBoie3fWCiClf8p1eiCE644PBGqRzdOjWbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C0MRpfpr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F470C4CEED;
-	Mon, 23 Jun 2025 21:47:32 +0000 (UTC)
+	 MIME-Version; b=Jcf27LmEaD2f4EZvELFdcWCKsO3McLCfJmtRlTy7482GxDVOiB6dDwrdCELJdRAp7WvF2No/bHD03AfHmlmw1mQpzKPR+ILrKitkaaZRpSkXJywfY70+dEFYYCUa0kewo1rOSpffH2J7Ek9f/teJ3gEpktpb9TYhz8wIuCXjjFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hveF6Zsf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1698C4CEEA;
+	Mon, 23 Jun 2025 21:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715252;
-	bh=bSwIwB/R8/3VG1ZqtnAHzCCKArqG2FjBisxUsHtjMko=;
+	s=korg; t=1750714084;
+	bh=eQqqWwWBfKFqEqKAzpAWMwCvER7a6pXVDgfuQDKKRSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C0MRpfpr1h+h5orn2oBoOio5jp2slguP5mhdlMNipksu2B8bfK5nJPxGZioIf4/lp
-	 Z7T8GGJcyxSXud0r1pZUBG4BRUYqrAXxpKLGQ6mcpqzWvx21L2zPPWosQvvcw1xpMd
-	 oNaoPlFYIxi6eT4r0Oy+FC5nu3hNCAdgqannmeOY=
+	b=hveF6ZsfSQ6vMY+7+lagmkwl8jD6Duu8PYIDFL+aGh7Axd2wPOsvmxppdVgie4rwH
+	 kGsBLuiGKrJWEm938ArXHxd2vZhg5f9YJCSIbtrQ2cGNv8umnPPOxPu30xcBb7Tpje
+	 7iRia/0XcGy6FSkRzAKSbTQ9RRhBTA3iVGJfWFM8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Erick Shepherd <erick.shepherd@ni.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	Daniel Wagner <wagi@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 171/414] mmc: Add quirk to disable DDR50 tuning
+Subject: [PATCH 5.15 164/411] nvmet-fcloop: access fcpreq only when holding reqlock
 Date: Mon, 23 Jun 2025 15:05:08 +0200
-Message-ID: <20250623130646.303237366@linuxfoundation.org>
+Message-ID: <20250623130637.818382764@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,136 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Erick Shepherd <erick.shepherd@ni.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 9510b38dc0ba358c93cbf5ee7c28820afb85937b ]
+[ Upstream commit 47a827cd7929d0550c3496d70b417fcb5649b27b ]
 
-Adds the MMC_QUIRK_NO_UHS_DDR50_TUNING quirk and updates
-mmc_execute_tuning() to return 0 if that quirk is set. This fixes an
-issue on certain Swissbit SD cards that do not support DDR50 tuning
-where tuning requests caused I/O errors to be thrown.
+The abort handling logic expects that the state and the fcpreq are only
+accessed when holding the reqlock lock.
 
-Signed-off-by: Erick Shepherd <erick.shepherd@ni.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20250331221337.1414534-1-erick.shepherd@ni.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+While at it, only handle the aborts in the abort handler.
+
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/card.h   |  6 ++++++
- drivers/mmc/core/quirks.h | 10 ++++++++++
- drivers/mmc/core/sd.c     | 32 ++++++++++++++++++++++++--------
- include/linux/mmc/card.h  |  1 +
- 4 files changed, 41 insertions(+), 8 deletions(-)
+ drivers/nvme/target/fcloop.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/mmc/core/card.h b/drivers/mmc/core/card.h
-index 3205feb1e8ff6..9cbdd240c3a7d 100644
---- a/drivers/mmc/core/card.h
-+++ b/drivers/mmc/core/card.h
-@@ -89,6 +89,7 @@ struct mmc_fixup {
- #define CID_MANFID_MICRON       0x13
- #define CID_MANFID_SAMSUNG      0x15
- #define CID_MANFID_APACER       0x27
-+#define CID_MANFID_SWISSBIT     0x5D
- #define CID_MANFID_KINGSTON     0x70
- #define CID_MANFID_HYNIX	0x90
- #define CID_MANFID_KINGSTON_SD	0x9F
-@@ -294,4 +295,9 @@ static inline int mmc_card_broken_sd_poweroff_notify(const struct mmc_card *c)
- 	return c->quirks & MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY;
- }
+diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
+index 787dfb3859a0d..74fffcab88155 100644
+--- a/drivers/nvme/target/fcloop.c
++++ b/drivers/nvme/target/fcloop.c
+@@ -613,12 +613,13 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ {
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
+-	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
++	struct nvmefc_fcp_req *fcpreq;
+ 	unsigned long flags;
+ 	int ret = 0;
+ 	bool aborted = false;
  
-+static inline int mmc_card_no_uhs_ddr50_tuning(const struct mmc_card *c)
-+{
-+	return c->quirks & MMC_QUIRK_NO_UHS_DDR50_TUNING;
-+}
-+
- #endif
-diff --git a/drivers/mmc/core/quirks.h b/drivers/mmc/core/quirks.h
-index 89b512905be14..7f893bafaa607 100644
---- a/drivers/mmc/core/quirks.h
-+++ b/drivers/mmc/core/quirks.h
-@@ -34,6 +34,16 @@ static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
- 		   MMC_QUIRK_BROKEN_SD_CACHE | MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY,
- 		   EXT_CSD_REV_ANY),
+ 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
++	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 		tfcp_req->inistate = INI_IO_ACTIVE;
+@@ -633,16 +634,19 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 	}
+ 	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
  
-+	/*
-+	 * Swissbit series S46-u cards throw I/O errors during tuning requests
-+	 * after the initial tuning request expectedly times out. This has
-+	 * only been observed on cards manufactured on 01/2019 that are using
-+	 * Bay Trail host controllers.
-+	 */
-+	_FIXUP_EXT("0016G", CID_MANFID_SWISSBIT, 0x5342, 2019, 1,
-+		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
-+		   MMC_QUIRK_NO_UHS_DDR50_TUNING, EXT_CSD_REV_ANY),
-+
- 	END_FIXUP
- };
- 
-diff --git a/drivers/mmc/core/sd.c b/drivers/mmc/core/sd.c
-index 63915541c0e49..916ae9996e9d7 100644
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -613,6 +613,29 @@ static int sd_set_current_limit(struct mmc_card *card, u8 *status)
- 	return 0;
- }
- 
-+/*
-+ * Determine if the card should tune or not.
-+ */
-+static bool mmc_sd_use_tuning(struct mmc_card *card)
-+{
-+	/*
-+	 * SPI mode doesn't define CMD19 and tuning is only valid for SDR50 and
-+	 * SDR104 mode SD-cards. Note that tuning is mandatory for SDR104.
-+	 */
-+	if (mmc_host_is_spi(card->host))
-+		return false;
-+
-+	switch (card->host->ios.timing) {
-+	case MMC_TIMING_UHS_SDR50:
-+	case MMC_TIMING_UHS_SDR104:
-+		return true;
-+	case MMC_TIMING_UHS_DDR50:
-+		return !mmc_card_no_uhs_ddr50_tuning(card);
+-	if (unlikely(aborted))
+-		ret = -ECANCELED;
+-	else {
+-		if (likely(!check_for_drop(tfcp_req)))
+-			ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
+-				&tfcp_req->tgt_fcp_req,
+-				fcpreq->cmdaddr, fcpreq->cmdlen);
+-		else
+-			pr_info("%s: dropped command ********\n", __func__);
++	if (unlikely(aborted)) {
++		/* the abort handler will call fcloop_call_host_done */
++		return;
 +	}
 +
-+	return false;
-+}
++	if (unlikely(check_for_drop(tfcp_req))) {
++		pr_info("%s: dropped command ********\n", __func__);
++		return;
+ 	}
 +
- /*
-  * UHS-I specific initialization procedure
-  */
-@@ -656,14 +679,7 @@ static int mmc_sd_init_uhs_card(struct mmc_card *card)
- 	if (err)
- 		goto out;
++	ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
++				   &tfcp_req->tgt_fcp_req,
++				   fcpreq->cmdaddr, fcpreq->cmdlen);
+ 	if (ret)
+ 		fcloop_call_host_done(fcpreq, tfcp_req, ret);
  
--	/*
--	 * SPI mode doesn't define CMD19 and tuning is only valid for SDR50 and
--	 * SDR104 mode SD-cards. Note that tuning is mandatory for SDR104.
--	 */
--	if (!mmc_host_is_spi(card->host) &&
--		(card->host->ios.timing == MMC_TIMING_UHS_SDR50 ||
--		 card->host->ios.timing == MMC_TIMING_UHS_DDR50 ||
--		 card->host->ios.timing == MMC_TIMING_UHS_SDR104)) {
-+	if (mmc_sd_use_tuning(card)) {
- 		err = mmc_execute_tuning(card);
+@@ -659,9 +663,10 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 	unsigned long flags;
  
- 		/*
-diff --git a/include/linux/mmc/card.h b/include/linux/mmc/card.h
-index eb67d3d5ff5b2..2e455b20c37c2 100644
---- a/include/linux/mmc/card.h
-+++ b/include/linux/mmc/card.h
-@@ -295,6 +295,7 @@ struct mmc_card {
- #define MMC_QUIRK_BROKEN_SD_CACHE	(1<<15)	/* Disable broken SD cache support */
- #define MMC_QUIRK_BROKEN_CACHE_FLUSH	(1<<16)	/* Don't flush cache until the write has occurred */
- #define MMC_QUIRK_BROKEN_SD_POWEROFF_NOTIFY	(1<<17) /* Disable broken SD poweroff notify support */
-+#define MMC_QUIRK_NO_UHS_DDR50_TUNING	(1<<18) /* Disable DDR50 tuning */
+ 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+-	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_ABORTED:
++		fcpreq = tfcp_req->fcpreq;
++		tfcp_req->fcpreq = NULL;
+ 		break;
+ 	case INI_IO_COMPLETED:
+ 		completed = true;
+@@ -683,10 +688,6 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
+ 					&tfcp_req->tgt_fcp_req);
  
- 	bool			written_flag;	/* Indicates eMMC has been written since power on */
- 	bool			reenable_cmdq;	/* Re-enable Command Queue */
+-	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+-	tfcp_req->fcpreq = NULL;
+-	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+-
+ 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
+ 	/* call_host_done releases reference for abort downcall */
+ }
 -- 
 2.39.5
 
