@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7BBCAE51D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C698AAE529D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C68D1B642E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 632BD4A6361
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 531AD221FC7;
-	Mon, 23 Jun 2025 21:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304A223DEE;
+	Mon, 23 Jun 2025 21:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJEMnLxc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrdzkDWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108894409;
-	Mon, 23 Jun 2025 21:37:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906C222A4CC;
+	Mon, 23 Jun 2025 21:45:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714677; cv=none; b=c01V1I5Vt3gUZiEYk3940QoLbk27GGL3Cv5ZxE+B129k9Q28oXWZhQ1/gbheoFyJiNIDUEioWY6iXSGCpDhEeHFJGLtG0wxxKkyDp7WDK1w5gZUmd17cv8q1TxcEd4qloEkZQODYqhcOCqsjhGC19pJkr02I8vTrSsZ0S3bVFA4=
+	t=1750715105; cv=none; b=ltaoU4/47jzjv6wMjh9gN8t29ICcRkOSOjMM2/pfhCxd/N0auZweLjhtKYz1vdODL6TiFjU/oPyPWl4yTv8t+9rdUc+UCjaAjAlLfuSTugOClCDo3c4mFpuEnv8NT+u9E+8czJLahKLchdAP47NCxFNk+E4ygKhYRfTI5Q9l0B0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714677; c=relaxed/simple;
-	bh=ITfdNYwdwQqYWa6wz0KbKHUFbkXkMAqhC/TiFOwC+Zk=;
+	s=arc-20240116; t=1750715105; c=relaxed/simple;
+	bh=bemz+0MAxbLCSPtoaMTUubjGS9rxENpYEJnzlhNIRus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hqc/VBsyuBnN3qn5D84XQ0fhSG/Mn3aA5Cbd1avEJtAoWv9CmpvJ+4+vudxPA5JoIwAHDv+nDiOQ128zQQ16grd6q16nEsfAudvc306usTZxNNtRprt5GoHWTzUskt8ot2jasrzwDqD3N1Qu0ZqdiFKlH8KlsPEcdunT4Ckntiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJEMnLxc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0CBC4CEEA;
-	Mon, 23 Jun 2025 21:37:56 +0000 (UTC)
+	 MIME-Version; b=mkoFTo4hok5TrgefBJLDPIyQy17z1BEm+jUqIl6Jnbe0IP+42wLFOKBl1DXOGRxxdODoPmiN9BninUJ08UVUClt4/5RutM27d0ZLizJoCQ8eKZ9jRvN+HAX7Fl09YY+ft169ll8FSFPg/BL4Lx+XpFD9i+aLwuoNP30bk8LfK8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrdzkDWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267DDC4CEEA;
+	Mon, 23 Jun 2025 21:45:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714676;
-	bh=ITfdNYwdwQqYWa6wz0KbKHUFbkXkMAqhC/TiFOwC+Zk=;
+	s=korg; t=1750715105;
+	bh=bemz+0MAxbLCSPtoaMTUubjGS9rxENpYEJnzlhNIRus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJEMnLxc8lpJrtkFpPwIsLKPcpUwd+Won9j6uzHKHO5fCQyRbkLTOewIStyHan+M+
-	 x7L6+eGE4E3Dy3VwuMUpQ/EgUN2rFiIyO+1Ka9vA6UeKB7rOKbaF9SokB4i/gaiDHU
-	 AYfdmwFGa/uhnt0OR0fqETUnb1YDjUYHAy1wNn84=
+	b=rrdzkDWb2O1l0tJ11BEM1ghAI0/apFLxabG3drLl1wMP+mfW2VvhCV+ZbHWLcopZG
+	 hsh8m17YdQ6YlRI5vkOUHPg78y/adxZTmIHcepodEa1cjwD88IbxrqCdyuKelQnlXQ
+	 91PUgwv5HH6tWOnVuX/8TYsVUu7UsG6RnnCjhQ9I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 123/414] KVM: SVM: Clear current_vmcb during vCPU free for all *possible* CPUs
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Imre Kaloz <kaloz@openwrt.org>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 215/508] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
 Date: Mon, 23 Jun 2025 15:04:20 +0200
-Message-ID: <20250623130645.143695748@linuxfoundation.org>
+Message-ID: <20250623130650.553628698@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 1bee4838eb3a2c689f23c7170ea66ae87ea7d93a upstream.
+[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
 
-When freeing a vCPU and thus its VMCB, clear current_vmcb for all possible
-CPUs, not just online CPUs, as it's theoretically possible a CPU could go
-offline and come back online in conjunction with KVM reusing the page for
-a new VMCB.
+The two alarm LEDs of on the uDPU board are stopped working since
+commit 78efa53e715e ("leds: Init leds class earlier").
 
-Link: https://lore.kernel.org/all/20250320013759.3965869-1-yosry.ahmed@linux.dev
-Fixes: fd65d3142f73 ("kvm: svm: Ensure an IBPB on all affected CPUs when freeing a vmcb")
-Cc: stable@vger.kernel.org
-Cc: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-[sean: split to separate patch, write changelog]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The LEDs are driven by the GPIO{15,16} pins of the North Bridge
+GPIO controller. These pins are part of the 'spi_quad' pin group
+for which the 'spi' function is selected via the default pinctrl
+state of the 'spi' node. This is wrong however, since in order to
+allow controlling the LEDs, the pins should use the 'gpio' function.
+
+Before the commit mentined above, the 'spi' function is selected
+first by the pinctrl core before probing the spi driver, but then
+it gets overridden to 'gpio' implicitly via the
+devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
+
+After the commit, the LED subsystem gets initialized before the
+SPI subsystem, so the function of the pin group remains 'spi'
+which in turn prevents controlling of the LEDs.
+
+Despite the change of the initialization order, the root cause is
+that the pinctrl state definition is wrong since its initial commit
+0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
+
+To fix the problem, override the function in the 'spi_quad_pins'
+node to 'gpio' and move the pinctrl state definition from the
+'spi' node into the 'leds' node.
+
+Cc: stable@vger.kernel.org # needs adjustment for < 6.1
+Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/svm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1483,7 +1483,7 @@ static void svm_clear_current_vmcb(struc
- {
- 	int i;
+diff --git a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+index 3f79923376fb2..37244e8816d9e 100644
+--- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
++++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
+@@ -26,6 +26,8 @@ memory@0 {
  
--	for_each_online_cpu(i)
-+	for_each_possible_cpu(i)
- 		cmpxchg(per_cpu_ptr(&svm_data.current_vmcb, i), vmcb, NULL);
- }
+ 	leds {
+ 		compatible = "gpio-leds";
++		pinctrl-names = "default";
++		pinctrl-0 = <&spi_quad_pins>;
  
+ 		led-power1 {
+ 			label = "udpu:green:power";
+@@ -82,8 +84,6 @@ &sdhci0 {
+ 
+ &spi0 {
+ 	status = "okay";
+-	pinctrl-names = "default";
+-	pinctrl-0 = <&spi_quad_pins>;
+ 
+ 	flash@0 {
+ 		compatible = "jedec,spi-nor";
+@@ -108,6 +108,10 @@ partition@180000 {
+ 	};
+ };
+ 
++&spi_quad_pins {
++	function = "gpio";
++};
++
+ &pinctrl_nb {
+ 	i2c2_recovery_pins: i2c2-recovery-pins {
+ 		groups = "i2c2";
+-- 
+2.39.5
+
 
 
 
