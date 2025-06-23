@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9DC8AE550E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AF36AE5613
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF1BE1BC350F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 33BEC4C64A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A1C222576;
-	Mon, 23 Jun 2025 22:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5154223DF0;
+	Mon, 23 Jun 2025 22:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NAtqEvtQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zAcYSDkN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE2E221DAE;
-	Mon, 23 Jun 2025 22:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832EE19E7F9;
+	Mon, 23 Jun 2025 22:16:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716449; cv=none; b=ez2tat7E9dlfDT5+H1ZQmQkTK9V5zY0Rq1OCBwMXpgrtXUGn+kMrVroQLBql/gEOqaHVU+Q/ORnk+EF2pglfNimHvzIRvFRJBS7xA51YPIJ7+vh4FVpnbKAilHKIWjC3Y3Y6AwzF/ehCvDh0rmX+Avk1R0L1dgmF0dp6y3g0qH4=
+	t=1750716960; cv=none; b=ebY6Hw7D+OJneIju4SwuUFnPDYhCAhVRJgHYII78T9FTOOvjziNWpGk2skzH8iGIiW6Zchz9L+Cq9n4cL/8Xhjpmoof7f+r7N/Vdij6980dSlKoZYBOp1cg4XNME8NOHLldaE8HSTRHcAJCulKexlRziao6Uc0fNGChhcGB2tkc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716449; c=relaxed/simple;
-	bh=bxQlS+Mmr6ZcP93dG9k2UAM/8hF26b97k6MHP9F0Csc=;
+	s=arc-20240116; t=1750716960; c=relaxed/simple;
+	bh=dGEeLG0raJhVZVOGOnGiY1eAmJZj1/fbOQZ+tZhivNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2MbLpt1exscUhgkAGJmwIRkYF/c+W/IkT0oE6MKQbQLpq1MniGJwL3h92Tufytkh/uI2QxyG0rMomp4WmfHoHF+LsGm3ocLsLTVWVCrtAQnMDS6MP0y+8AIfKCvZ3ESnS0ldVstvSgUdOyOqb/4C/Uu1dDqED3BqAooovnneYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NAtqEvtQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FD69C4CEEA;
-	Mon, 23 Jun 2025 22:07:28 +0000 (UTC)
+	 MIME-Version; b=Ez6ZTJFzGSmSntpoYiH6tHx9LSby6Rh2o160eU48i0jPq6AiG/KzMEp6YGRDa8QR2TzDB7xgJN7msMp8btOp412qlTWkq4fIN62oEuDTf+kCFS2mTHKfDZwvy7+tEG/POoXmOuP8NOtKwXtW51Da/ZbvPI3Rk2ptk8ekRX4drZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zAcYSDkN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20EDC4CEEA;
+	Mon, 23 Jun 2025 22:15:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716448;
-	bh=bxQlS+Mmr6ZcP93dG9k2UAM/8hF26b97k6MHP9F0Csc=;
+	s=korg; t=1750716960;
+	bh=dGEeLG0raJhVZVOGOnGiY1eAmJZj1/fbOQZ+tZhivNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NAtqEvtQZuCRKk+nfB5Kd/FbWNlDfCS3EvTOlZirGgeokw2IWcr/dwkIOljMwDCoe
-	 /BlNwChzeUHO340Wa0fLIguy9zj4BZ2pC7tj8pIfaUZwEoFOV0TaHCighLMdmTyFqq
-	 C/c3zg5ndGYN1yvZ57SV3z2oAqL3cTSWJ82gyVW8=
+	b=zAcYSDkN6CSVvHzWcdHIkstuZ16KtRsv/bXTFU8IF4hGcN1GWuF+Dw7cmry+aQhoV
+	 TVWA07JvPSDdZklaprX/UB/ma0IzenqK3O0Aeb/jPJx+D/uYGNHTEKLnrF8YQLvjtZ
+	 llVpri3eOPS7ojx1gYm9lsK4J1ULuJjiqaJSUvtg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rengarajan S <rengarajan.s@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/290] net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()
-Date: Mon, 23 Jun 2025 15:08:45 +0200
-Message-ID: <20250623130634.850468899@linuxfoundation.org>
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Francois Romieu <romieu@fr.zoreil.com>
+Subject: [PATCH 5.15 382/411] net: atm: fix /proc/net/atm/lec handling
+Date: Mon, 23 Jun 2025 15:08:46 +0200
+Message-ID: <20250623130643.264009250@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit e353b0854d3a1a31cb061df8d022fbfea53a0f24 ]
+[ Upstream commit d03b79f459c7935cff830d98373474f440bd03ae ]
 
-Before calling lan743x_ptp_io_event_clock_get(), the 'channel' value
-is checked against the maximum value of PCI11X1X_PTP_IO_MAX_CHANNELS(8).
-This seems correct and aligns with the PTP interrupt status register
-(PTP_INT_STS) specifications.
+/proc/net/atm/lec must ensure safety against dev_lec[] changes.
 
-However, lan743x_ptp_io_event_clock_get() writes to ptp->extts[] with
-only LAN743X_PTP_N_EXTTS(4) elements, using channel as an index:
+It appears it had dev_put() calls without prior dev_hold(),
+leading to imbalance and UAF.
 
-    lan743x_ptp_io_event_clock_get(..., u8 channel,...)
-    {
-        ...
-        /* Update Local timestamp */
-        extts = &ptp->extts[channel];
-        extts->ts.tv_sec = sec;
-        ...
-    }
-
-To avoid an out-of-bounds write and utilize all the supported GPIO
-inputs, set LAN743X_PTP_N_EXTTS to 8.
-
-Detected using the static analysis tool - Svace.
-Fixes: 60942c397af6 ("net: lan743x: Add support for PTP-IO Event Input External Timestamp (extts)")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Rengarajan S <rengarajan.s@microchip.com>
-Link: https://patch.msgid.link/20250616113743.36284-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Francois Romieu <romieu@fr.zoreil.com> # Minor atm contributor
+Link: https://patch.msgid.link/20250618140844.1686882-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_ptp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/atm/lec.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
-index 0d29914cd4606..225e8232474d7 100644
---- a/drivers/net/ethernet/microchip/lan743x_ptp.h
-+++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
-@@ -18,9 +18,9 @@
-  */
- #define LAN743X_PTP_N_EVENT_CHAN	2
- #define LAN743X_PTP_N_PEROUT		LAN743X_PTP_N_EVENT_CHAN
--#define LAN743X_PTP_N_EXTTS		4
--#define LAN743X_PTP_N_PPS		0
- #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
-+#define LAN743X_PTP_N_EXTTS		PCI11X1X_PTP_IO_MAX_CHANNELS
-+#define LAN743X_PTP_N_PPS		0
- #define PTP_CMD_CTL_TIMEOUT_CNT		50
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index 3f67b84c8f1c9..73078306504c0 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -911,7 +911,6 @@ static void *lec_itf_walk(struct lec_state *state, loff_t *l)
+ 	v = (dev && netdev_priv(dev)) ?
+ 		lec_priv_walk(state, l, netdev_priv(dev)) : NULL;
+ 	if (!v && dev) {
+-		dev_put(dev);
+ 		/* Partial state reset for the next time we get called */
+ 		dev = NULL;
+ 	}
+@@ -935,6 +934,7 @@ static void *lec_seq_start(struct seq_file *seq, loff_t *pos)
+ {
+ 	struct lec_state *state = seq->private;
  
- struct lan743x_adapter;
++	mutex_lock(&lec_mutex);
+ 	state->itf = 0;
+ 	state->dev = NULL;
+ 	state->locked = NULL;
+@@ -952,8 +952,9 @@ static void lec_seq_stop(struct seq_file *seq, void *v)
+ 	if (state->dev) {
+ 		spin_unlock_irqrestore(&state->locked->lec_arp_lock,
+ 				       state->flags);
+-		dev_put(state->dev);
++		state->dev = NULL;
+ 	}
++	mutex_unlock(&lec_mutex);
+ }
+ 
+ static void *lec_seq_next(struct seq_file *seq, void *v, loff_t *pos)
 -- 
 2.39.5
 
