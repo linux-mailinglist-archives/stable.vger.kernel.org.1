@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6146AAE5134
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20FBDAE5091
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2B4C91B634FA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D02B4A0BE1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8E544C77;
-	Mon, 23 Jun 2025 21:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C8FB2253F9;
+	Mon, 23 Jun 2025 21:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCtGoIPv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfPE4huN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFE6C2E0;
-	Mon, 23 Jun 2025 21:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE62E224B01;
+	Mon, 23 Jun 2025 21:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714304; cv=none; b=o2bzTC7fgSk4WWc+DJsAa8DhkP2FSXoHHn7Wcylui8xVyRcWLjI0GT9zBb+OlTGPz4wCjuioOhQycr6PNtSrPHVgbiNbhn1USaBPWLX337+H/16/9DyI6GkB7eFbcnxNUM07FHMXieJ6wIcyk5PPsJjMi2fZVPlDuJMr2X46NIc=
+	t=1750713948; cv=none; b=MbTLiWC7o6BmGHZYOYIIpxvi+4rGqzEr1kAoGmxNPZhEKWX/bKiOISDFj89pMEEfp4cIgVENHZIhqGPE0WoEYWWvyCWBqiN4SVfy3CTqL9ruRrq820VOwNz3NL1lDzVgYChI+DuWRFXRV/AaHZze5BhiIXgbubPWx9lUyLvs2W8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714304; c=relaxed/simple;
-	bh=c9w9IC2BqCZ0Wo2BZI2KCJDkUzypnCckVfNzDAUI6TI=;
+	s=arc-20240116; t=1750713948; c=relaxed/simple;
+	bh=0nEFvdJrHjla68baqkebCUaoNtwuCCH2it+0FJslXpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rx05yqOWHQqzmDqhX72pckC8WYT+49OW+exbAmBr3Ystoa7nCPbXzxvbTZVO0+wjqEjGN8+P4+DTmzQF/pX/si2XRA/lmst5jeIpPO5e6hCg1ROINrV+/gng1AAW2ZK61zscw4ne/e3iGujXwDuGqq9t4R5IIjr2gp1mTD61Kwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCtGoIPv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC9B1C4CEEA;
-	Mon, 23 Jun 2025 21:31:43 +0000 (UTC)
+	 MIME-Version; b=X89ehy+I1ujYL8TLS4B43+H3n+l+uBINircyt+ok1LHu0iYwPUJeAPIRku5PwSvvo21UZnA19sxTDeri+43Xykek0V3OWIlUVj7nth3hRVwAkITKirWv9nbZUSzSjPUNnJb/yiO5FzCnOC4cTNFeV+MM46L0V8lmQAC3BVoSaes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfPE4huN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2576BC4CEF6;
+	Mon, 23 Jun 2025 21:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714304;
-	bh=c9w9IC2BqCZ0Wo2BZI2KCJDkUzypnCckVfNzDAUI6TI=;
+	s=korg; t=1750713947;
+	bh=0nEFvdJrHjla68baqkebCUaoNtwuCCH2it+0FJslXpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCtGoIPvaP6lhbh8IuiZI3f4wQL/GFXy/x/OnlZWoVQj4sWNkOjdMBptlBHLyguel
-	 5wOgd3blGtRDhxnpH3mZ+KQ7rTIkT381NJdWL/9OCp0tIFRVhXSaN4PsMo7CwIJTDq
-	 kXMWej4x9cQN4WP5+8N9ACsqfdTf2Xfjk4oaQa98=
+	b=sfPE4huNPdCpfbEEitefZGfBMmoLpP+NLMYVvuSuofgm2XKHY1DmIhH/+MssXAQVW
+	 cs0SpnhZGkwn3MxHLetG9953kGeZi304jdgZQA60CDrBxjLqAfB55D1fblB1Kf+a95
+	 /icb+zu+PGnIPZ5UoZfxurbH3/wteYg6irSznPXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	William Breathitt Gray <wbg@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/508] counter: interrupt-cnt: Protect enable/disable OPs with mutex
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.12 072/414] arm64/mm: Close theoretical race where stale TLB entry remains valid
 Date: Mon, 23 Jun 2025 15:03:29 +0200
-Message-ID: <20250623130649.311071990@linuxfoundation.org>
+Message-ID: <20250623130643.873591658@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Ryan Roberts <ryan.roberts@arm.com>
 
-[ Upstream commit 7351312632e831e51383f48957d47712fae791ef ]
+commit 4b634918384c0f84c33aeb4dd9fd4c38e7be5ccb upstream.
 
-Enable/disable seems to be racy on SMP, consider the following scenario:
+Commit 3ea277194daa ("mm, mprotect: flush TLB if potentially racing with
+a parallel reclaim leaving stale TLB entries") describes a race that,
+prior to the commit, could occur between reclaim and operations such as
+mprotect() when using reclaim's tlbbatch mechanism. See that commit for
+details but the summary is:
 
-CPU0					CPU1
+"""
+Nadav Amit identified a theoritical race between page reclaim and
+mprotect due to TLB flushes being batched outside of the PTL being held.
 
-interrupt_cnt_enable_write(true)
-{
-	if (priv->enabled == enable)
-		return 0;
+He described the race as follows:
 
-	if (enable) {
-		priv->enabled = true;
-					interrupt_cnt_enable_write(false)
-					{
-						if (priv->enabled == enable)
-							return 0;
+	CPU0				CPU1
+	----				----
+					user accesses memory using RW PTE
+					[PTE now cached in TLB]
+	try_to_unmap_one()
+	==> ptep_get_and_clear()
+	==> set_tlb_ubc_flush_pending()
+					mprotect(addr, PROT_READ)
+					==> change_pte_range()
+					==> [ PTE non-present - no flush ]
 
-						if (enable) {
-							priv->enabled = true;
-							enable_irq(priv->irq);
-						} else {
-							disable_irq(priv->irq)
-							priv->enabled = false;
-						}
-		enable_irq(priv->irq);
-	} else {
-		disable_irq(priv->irq);
-		priv->enabled = false;
-	}
+					user writes using cached RW PTE
+	...
 
-The above would result in priv->enabled == false, but IRQ left enabled.
-Protect both write (above race) and read (to propagate the value on SMP)
-callbacks with a mutex.
+	try_to_unmap_flush()
+"""
 
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20250331163642.2382651-1-alexander.sverdlin@siemens.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The solution was to insert flush_tlb_batched_pending() in mprotect() and
+friends to explcitly drain any pending reclaim TLB flushes. In the
+modern version of this solution, arch_flush_tlb_batched_pending() is
+called to do that synchronisation.
+
+arm64's tlbbatch implementation simply issues TLBIs at queue-time
+(arch_tlbbatch_add_pending()), eliding the trailing dsb(ish). The
+trailing dsb(ish) is finally issued in arch_tlbbatch_flush() at the end
+of the batch to wait for all the issued TLBIs to complete.
+
+Now, the Arm ARM states:
+
+"""
+The completion of the TLB maintenance instruction is guaranteed only by
+the execution of a DSB by the observer that performed the TLB
+maintenance instruction. The execution of a DSB by a different observer
+does not have this effect, even if the DSB is known to be executed after
+the TLB maintenance instruction is observed by that different observer.
+"""
+
+arch_tlbbatch_add_pending() and arch_tlbbatch_flush() conform to this
+requirement because they are called from the same task (either kswapd or
+caller of madvise(MADV_PAGEOUT)), so either they are on the same CPU or
+if the task was migrated, __switch_to() contains an extra dsb(ish).
+
+HOWEVER, arm64's arch_flush_tlb_batched_pending() is also implemented as
+a dsb(ish). But this may be running on a CPU remote from the one that
+issued the outstanding TLBIs. So there is no architectural gurantee of
+synchonization. Therefore we are still vulnerable to the theoretical
+race described in Commit 3ea277194daa ("mm, mprotect: flush TLB if
+potentially racing with a parallel reclaim leaving stale TLB entries").
+
+Fix this by flushing the entire mm in arch_flush_tlb_batched_pending().
+This aligns with what the other arches that implement the tlbbatch
+feature do.
+
+Cc: <stable@vger.kernel.org>
+Fixes: 43b3dfdd0455 ("arm64: support batched/deferred tlb shootdown during page reclamation/migration")
+Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Link: https://lore.kernel.org/r/20250530152445.2430295-1-ryan.roberts@arm.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/counter/interrupt-cnt.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ arch/arm64/include/asm/tlbflush.h |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
-index 229473855c5b3..bc762ba87a19b 100644
---- a/drivers/counter/interrupt-cnt.c
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -3,12 +3,14 @@
-  * Copyright (c) 2021 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
+--- a/arch/arm64/include/asm/tlbflush.h
++++ b/arch/arm64/include/asm/tlbflush.h
+@@ -330,13 +330,14 @@ static inline void arch_tlbbatch_add_pen
+ }
+ 
+ /*
+- * If mprotect/munmap/etc occurs during TLB batched flushing, we need to
+- * synchronise all the TLBI issued with a DSB to avoid the race mentioned in
+- * flush_tlb_batched_pending().
++ * If mprotect/munmap/etc occurs during TLB batched flushing, we need to ensure
++ * all the previously issued TLBIs targeting mm have completed. But since we
++ * can be executing on a remote CPU, a DSB cannot guarantee this like it can
++ * for arch_tlbbatch_flush(). Our only option is to flush the entire mm.
   */
- 
-+#include <linux/cleanup.h>
- #include <linux/counter.h>
- #include <linux/gpio/consumer.h>
- #include <linux/interrupt.h>
- #include <linux/irq.h>
- #include <linux/mod_devicetable.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/platform_device.h>
- #include <linux/types.h>
- 
-@@ -19,6 +21,7 @@ struct interrupt_cnt_priv {
- 	struct gpio_desc *gpio;
- 	int irq;
- 	bool enabled;
-+	struct mutex lock;
- 	struct counter_signal signals;
- 	struct counter_synapse synapses;
- 	struct counter_count cnts;
-@@ -41,6 +44,8 @@ static int interrupt_cnt_enable_read(struct counter_device *counter,
+ static inline void arch_flush_tlb_batched_pending(struct mm_struct *mm)
  {
- 	struct interrupt_cnt_priv *priv = counter_priv(counter);
+-	dsb(ish);
++	flush_tlb_mm(mm);
+ }
  
-+	guard(mutex)(&priv->lock);
-+
- 	*enable = priv->enabled;
- 
- 	return 0;
-@@ -51,6 +56,8 @@ static int interrupt_cnt_enable_write(struct counter_device *counter,
- {
- 	struct interrupt_cnt_priv *priv = counter_priv(counter);
- 
-+	guard(mutex)(&priv->lock);
-+
- 	if (priv->enabled == enable)
- 		return 0;
- 
-@@ -227,6 +234,8 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
- 	if (ret)
- 		return ret;
- 
-+	mutex_init(&priv->lock);
-+
- 	ret = devm_counter_add(dev, counter);
- 	if (ret < 0)
- 		return dev_err_probe(dev, ret, "Failed to add counter\n");
--- 
-2.39.5
-
+ /*
 
 
 
