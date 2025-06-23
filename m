@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-156993-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156293-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04E17AE5203
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04B5BAE4EFC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F390C442E4B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20337A9B6D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDDD222562;
-	Mon, 23 Jun 2025 21:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B06202983;
+	Mon, 23 Jun 2025 21:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8fsGqzU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/i9XJXE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6119D084;
-	Mon, 23 Jun 2025 21:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A6B70838;
+	Mon, 23 Jun 2025 21:10:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714772; cv=none; b=h9df+TlTQLRrIPKB3bZRMCTytSad/AOKQeYcoAkmDMON5DMIfQST1QeanfWndnPJ270vupdWHP8T0e2SHNNGRwM3QNnnZjIULvTjjpv8SkXckbrC1HonU4x2+Jp8fnqY3dsaYRWxC/JnEIMY3P9Da4V+zQm36B4DV9saS+bkjRs=
+	t=1750713059; cv=none; b=JnQZHtKkJi7hk+QOloeNHqixYpnf4jJbwMTZYHkFPMNEL38HeIt1PddpG/FEY3yX/jWLakk2QdBBUMtZ9koGgi0x81chkNLdtYb8yygTKfUChpmXU41la9FAxrE5WVVfSeFkLcYM7Tbn6KdkLWh00+3Ks2NyuhPZ4QjCeY6MHH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714772; c=relaxed/simple;
-	bh=J6kKIfbHq8GqxJzxoR6MxYjyrGFqD7bVn8k4MV0518M=;
+	s=arc-20240116; t=1750713059; c=relaxed/simple;
+	bh=Co5T8OF3vBfSULil1PZ9InU3aD4X0izpKdI6ZWgOi2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VO3QTe1DkNYutNqCVJo2jAaYdWffeLW+Fa3KUlKnykIiuYjc4vayRfC7XhcA/Su23UepuGY9/zrjDYxDbhyFymJHXDn7iWKpPr3+9k+/CthjjFycKGmhwhIcEKTxkQ0N22QYILGCXQ/7hey2GIrKnzU7b3BzN83izcmR+bQLhw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8fsGqzU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D55C4CEEA;
-	Mon, 23 Jun 2025 21:39:31 +0000 (UTC)
+	 MIME-Version; b=frzOOEXNqiGhXfM3sNWutO4nlbm0CO+2xhIRLI1t5d/iYlEdcQ/jeLHGMfdRkkOBckIlr1t/0CgMJ5O9ZmVuTKNzb92w6/hlZ+VsqiRYuf5COYzEgzN2BYdVX0Jmn0zCq//TmqYl11/Br7rsCLYLfLayyi1UBO0KhCJp1iDlzMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/i9XJXE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22958C4CEEA;
+	Mon, 23 Jun 2025 21:10:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714772;
-	bh=J6kKIfbHq8GqxJzxoR6MxYjyrGFqD7bVn8k4MV0518M=;
+	s=korg; t=1750713059;
+	bh=Co5T8OF3vBfSULil1PZ9InU3aD4X0izpKdI6ZWgOi2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c8fsGqzUGI0PiHcZK0KhJa86hMqOL94dgLgSwPXzUGUQRkophLDY4OKKKHu2ZtY27
-	 8ZKwE3ZUsSEBQL50AaJpxYzi0udOvRCUS/Wgd85y/985zdV+syy0MnXMomMJrAKNma
-	 YnHjnR30oPuy8GYZe40E04qcj4hgI1Na2MTd2AEQ=
+	b=z/i9XJXEl3lxQXOSL+AJ2/CxKwbZ5zaDTewoPRo/co7l939uVtmhXgcoKGJ2isjtm
+	 iZgmzoaqBJG4nb5Pq5g7qfKQT9dLHZhwAjOzFKq170N9h0r3cYa624YjRSQBaQxR6w
+	 lUOQYNWUoTUuEyV5/ZPAcd95m7gdLo/90ItzBJaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 129/414] dm: lock limits when reading them
+	Ronak Doshi <ronak.doshi@broadcom.com>,
+	Guolin Yang <guolin.yang@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 122/411] vmxnet3: correctly report gso type for UDP tunnels
 Date: Mon, 23 Jun 2025 15:04:26 +0200
-Message-ID: <20250623130645.283563731@linuxfoundation.org>
+Message-ID: <20250623130636.626152964@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Ronak Doshi <ronak.doshi@broadcom.com>
 
-commit abb4cf2f4c1c1b637cad04d726f2e13fd3051e03 upstream.
+[ Upstream commit 982d30c30eaa2ec723df42e3bf526c014c1dbb88 ]
 
-Lock queue limits when reading them, so that we don't read halfway
-modified values.
+Commit 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing
+in a tunnel") added checks in linux stack to not accept non-tunnel
+GRO packets landing in a tunnel. This exposed an issue in vmxnet3
+which was not correctly reporting GRO packets for tunnel packets.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch fixes this issue by setting correct GSO type for the
+tunnel packets.
+
+Currently, vmxnet3 does not support reporting inner fields for LRO
+tunnel packets. The issue is not seen for egress drivers that do not
+use skb inner fields. The workaround is to enable tnl-segmentation
+offload on the egress interfaces if the driver supports it. This
+problem pre-exists this patch fix and can be addressed as a separate
+future patch.
+
+Fixes: dacce2be3312 ("vmxnet3: add geneve and vxlan tunnel offload support")
+Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
+Acked-by: Guolin Yang <guolin.yang@broadcom.com>
+Link: https://patch.msgid.link/20250530152701.70354-1-ronak.doshi@broadcom.com
+[pabeni@redhat.com: dropped the changelog]
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-table.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/vmxnet3/vmxnet3_drv.c | 26 ++++++++++++++++++++++++++
+ 1 file changed, 26 insertions(+)
 
---- a/drivers/md/dm-table.c
-+++ b/drivers/md/dm-table.c
-@@ -431,6 +431,7 @@ static int dm_set_device_limits(struct d
- 		return 0;
- 	}
- 
-+	mutex_lock(&q->limits_lock);
- 	if (blk_stack_limits(limits, &q->limits,
- 			get_start_sect(bdev) + start) < 0)
- 		DMWARN("%s: adding target device %pg caused an alignment inconsistency: "
-@@ -448,6 +449,7 @@ static int dm_set_device_limits(struct d
- 	 */
- 	if (!dm_target_has_integrity(ti->type))
- 		queue_limits_stack_integrity_bdev(limits, bdev);
-+	mutex_unlock(&q->limits_lock);
- 	return 0;
+diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
+index b88092a6bc851..78d8c04b00a7f 100644
+--- a/drivers/net/vmxnet3/vmxnet3_drv.c
++++ b/drivers/net/vmxnet3/vmxnet3_drv.c
+@@ -1361,6 +1361,30 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
+ 	return (hlen + (hdr.tcp->doff << 2));
  }
  
-@@ -1734,8 +1736,12 @@ static int device_not_write_zeroes_capab
- 					   sector_t start, sector_t len, void *data)
- {
- 	struct request_queue *q = bdev_get_queue(dev->bdev);
-+	int b;
- 
--	return !q->limits.max_write_zeroes_sectors;
-+	mutex_lock(&q->limits_lock);
-+	b = !q->limits.max_write_zeroes_sectors;
-+	mutex_unlock(&q->limits_lock);
-+	return b;
- }
- 
- static bool dm_table_supports_write_zeroes(struct dm_table *t)
++static void
++vmxnet3_lro_tunnel(struct sk_buff *skb, __be16 ip_proto)
++{
++	struct udphdr *uh = NULL;
++
++	if (ip_proto == htons(ETH_P_IP)) {
++		struct iphdr *iph = (struct iphdr *)skb->data;
++
++		if (iph->protocol == IPPROTO_UDP)
++			uh = (struct udphdr *)(iph + 1);
++	} else {
++		struct ipv6hdr *iph = (struct ipv6hdr *)skb->data;
++
++		if (iph->nexthdr == IPPROTO_UDP)
++			uh = (struct udphdr *)(iph + 1);
++	}
++	if (uh) {
++		if (uh->check)
++			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
++		else
++			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
++	}
++}
++
+ static int
+ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
+ 		       struct vmxnet3_adapter *adapter, int quota)
+@@ -1615,6 +1639,8 @@ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
+ 			if (segCnt != 0 && mss != 0) {
+ 				skb_shinfo(skb)->gso_type = rcd->v4 ?
+ 					SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
++				if (encap_lro)
++					vmxnet3_lro_tunnel(skb, skb->protocol);
+ 				skb_shinfo(skb)->gso_size = mss;
+ 				skb_shinfo(skb)->gso_segs = segCnt;
+ 			} else if ((segCnt != 0 || skb->len > mtu) && !encap_lro) {
+-- 
+2.39.5
+
 
 
 
