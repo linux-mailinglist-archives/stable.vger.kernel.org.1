@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-157919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCF8AE5635
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83E3AAE563E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 717941BC26BC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E8A44C7D85
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0057B225776;
-	Mon, 23 Jun 2025 22:17:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53D0222577C;
+	Mon, 23 Jun 2025 22:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abdGptdp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUAD1Hlh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0EE19E7F9;
-	Mon, 23 Jun 2025 22:17:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 128281F6667;
+	Mon, 23 Jun 2025 22:17:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717040; cv=none; b=RICMgIyyRp8tPmkUEuTWNBN1xEinKKTlvAh3tSYLL/ElxiodVXeWvu9oOYAPNTd9Th6u6fpe1Kava4QhE5Q03XhyFyNNYKBZsQmwc0FwKgoZyR5zqXtYZQ7+NLHma0gOhVMDV7bCtiONZISH5Jr0sFPfy1SalbZ1RtzOdGadPCQ=
+	t=1750717053; cv=none; b=TAPV0ouzPznzebItKSI7gCHfsk4xtOFXAywAhGNcuSe9in+xS5MfzY9r7i0J5waXfxVP4KV3PV0tYOS32dWCCV+haneVFWKRo2wm45nxP6JtuWRBubLzPOgsIMDmaBz9ZYe8uCE7WUjcC9Z/NAWadWA7ibjwCJBavPwlqB5984M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717040; c=relaxed/simple;
-	bh=543CcNcSLBMxNu/PH8vZqzcNz//Cu9aXz87zL3Vo0Zg=;
+	s=arc-20240116; t=1750717053; c=relaxed/simple;
+	bh=P04UQJJZ9Q563hdWqSYY2YMVhOg6sK+HRM7/dxPkpgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lKN0yxdyzwAGLHF+HzVM9T6pvLNeud1bpKlfRcaJ6K98c3iXRF/0jClPiFyTmOMD7OsUKrysPvTeCiyANLc4709at7ItGlOU+QIqaac4pN3ZhU/DTeHS38wpgKobzqDqpGFiRXA9T1doXoeFkrj5wYQiCXVAXyI41OIn4iz+adI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abdGptdp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44053C4CEEA;
-	Mon, 23 Jun 2025 22:17:20 +0000 (UTC)
+	 MIME-Version; b=Y35U/wSp5jRAOVq/QUurVW3SCE9XisKhxvBitRxzOnwON14h12cWQncPi5cJyW8kMfOYwNHscz8/UzWuIZvdLom2sPgG2q9ek5XayVGHEjzLuqOa/zQ205XDqOr5EqelSpaRv0vjU4b8/+0upbd3Jn4+3/SVELKT4BAhg5aK2iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUAD1Hlh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BFB0C4CEEA;
+	Mon, 23 Jun 2025 22:17:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717040;
-	bh=543CcNcSLBMxNu/PH8vZqzcNz//Cu9aXz87zL3Vo0Zg=;
+	s=korg; t=1750717052;
+	bh=P04UQJJZ9Q563hdWqSYY2YMVhOg6sK+HRM7/dxPkpgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abdGptdpQGh3dq+7GoC1zqoWWKcyIUwzmLG89D6n6qMht+hRNyrTyDTX2KHvFov45
-	 mhmSUgK65y9daSMUAvq0zKq08CWfaP9i8UPs0q9b/KOGJ4dCLQxXLBN7hwRIDt+PGd
-	 Ms2X/uTENOYbNkWLrRMCxHCsuGTDFTAFIQtov/uE=
+	b=FUAD1HlhO5qp2FSrh5VJKtC1zkSaVhUlRU2QfKNsaANBp21R8A+dzT/AHJPFTqD/I
+	 0zbB68TUOi+sztpWamrLqPtKkXeGUMInrAp2Gqsp0cCxUyuPrhByGd9d5xjpSAu1g0
+	 /NOt3z9o9ujHZamTB44f3oIt01fFPZn8FVnSI/oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bharath SM <bharathsm@microsoft.com>,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 309/414] smb: improve directory cache reuse for readdir operations
-Date: Mon, 23 Jun 2025 15:07:26 +0200
-Message-ID: <20250623130649.726055226@linuxfoundation.org>
+	stable@kernel.org,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.12 310/414] scsi: storvsc: Increase the timeouts to storvsc_timeout
+Date: Mon, 23 Jun 2025 15:07:27 +0200
+Message-ID: <20250623130649.751377714@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -66,153 +67,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bharath SM <bharathsm.hsk@gmail.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-commit 72dd7961a4bb4fa1fc456169a61dd12e68e50645 upstream.
+commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
 
-Currently, cached directory contents were not reused across subsequent
-'ls' operations because the cache validity check relied on comparing
-the ctx pointer, which changes with each readdir invocation. As a
-result, the cached dir entries was not marked as valid and the cache was
-not utilized for subsequent 'ls' operations.
+Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
+5s and 10s are used elsewhere. It turns out that rarely the 5s is not
+enough on Azure, so let's use storvsc_timeout everywhere.
 
-This change uses the file pointer, which remains consistent across all
-readdir calls for a given directory instance, to associate and validate
-the cache. As a result, cached directory contents can now be
-correctly reused, improving performance for repeated directory listings.
+In case a timeout happens and storvsc_channel_init() returns an error,
+close the VMBus channel so that any host-to-guest messages in the
+channel's ringbuffer, which might come late, can be safely ignored.
 
-Performance gains with local windows SMB server:
+Add a "const" to storvsc_timeout.
 
-Without the patch and default actimeo=1:
- 1000 directory enumeration operations on dir with 10k files took 135.0s
-
-With this patch and actimeo=0:
- 1000 directory enumeration operations on dir with 10k files took just 5.1s
-
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: stable@kernel.org
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/cached_dir.h |    8 ++++----
- fs/smb/client/readdir.c    |   28 +++++++++++++++-------------
- 2 files changed, 19 insertions(+), 17 deletions(-)
+ drivers/scsi/storvsc_drv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/smb/client/cached_dir.h
-+++ b/fs/smb/client/cached_dir.h
-@@ -21,10 +21,10 @@ struct cached_dirent {
- struct cached_dirents {
- 	bool is_valid:1;
- 	bool is_failed:1;
--	struct dir_context *ctx; /*
--				  * Only used to make sure we only take entries
--				  * from a single context. Never dereferenced.
--				  */
-+	struct file *file; /*
-+			    * Used to associate the cache with a single
-+			    * open file instance.
-+			    */
- 	struct mutex de_mutex;
- 	int pos;		 /* Expected ctx->pos */
- 	struct list_head entries;
---- a/fs/smb/client/readdir.c
-+++ b/fs/smb/client/readdir.c
-@@ -850,9 +850,9 @@ static bool emit_cached_dirents(struct c
- }
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -362,7 +362,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
+ /*
+  * Timeout in seconds for all devices managed by this driver.
+  */
+-static int storvsc_timeout = 180;
++static const int storvsc_timeout = 180;
  
- static void update_cached_dirents_count(struct cached_dirents *cde,
--					struct dir_context *ctx)
-+					struct file *file)
- {
--	if (cde->ctx != ctx)
-+	if (cde->file != file)
+ #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+ static struct scsi_transport_template *fc_transport_template;
+@@ -768,7 +768,7 @@ static void  handle_multichannel_storage
  		return;
- 	if (cde->is_valid || cde->is_failed)
- 		return;
-@@ -861,9 +861,9 @@ static void update_cached_dirents_count(
- }
- 
- static void finished_cached_dirents_count(struct cached_dirents *cde,
--					struct dir_context *ctx)
-+					struct dir_context *ctx, struct file *file)
- {
--	if (cde->ctx != ctx)
-+	if (cde->file != file)
- 		return;
- 	if (cde->is_valid || cde->is_failed)
- 		return;
-@@ -876,11 +876,12 @@ static void finished_cached_dirents_coun
- static void add_cached_dirent(struct cached_dirents *cde,
- 			      struct dir_context *ctx,
- 			      const char *name, int namelen,
--			      struct cifs_fattr *fattr)
-+			      struct cifs_fattr *fattr,
-+				  struct file *file)
- {
- 	struct cached_dirent *de;
- 
--	if (cde->ctx != ctx)
-+	if (cde->file != file)
- 		return;
- 	if (cde->is_valid || cde->is_failed)
- 		return;
-@@ -910,7 +911,8 @@ static void add_cached_dirent(struct cac
- static bool cifs_dir_emit(struct dir_context *ctx,
- 			  const char *name, int namelen,
- 			  struct cifs_fattr *fattr,
--			  struct cached_fid *cfid)
-+			  struct cached_fid *cfid,
-+			  struct file *file)
- {
- 	bool rc;
- 	ino_t ino = cifs_uniqueid_to_ino_t(fattr->cf_uniqueid);
-@@ -922,7 +924,7 @@ static bool cifs_dir_emit(struct dir_con
- 	if (cfid) {
- 		mutex_lock(&cfid->dirents.de_mutex);
- 		add_cached_dirent(&cfid->dirents, ctx, name, namelen,
--				  fattr);
-+				  fattr, file);
- 		mutex_unlock(&cfid->dirents.de_mutex);
  	}
  
-@@ -1022,7 +1024,7 @@ static int cifs_filldir(char *find_entry
- 	cifs_prime_dcache(file_dentry(file), &name, &fattr);
+-	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0) {
+ 		dev_err(dev, "Failed to create sub-channel: timed out\n");
+ 		return;
+@@ -833,7 +833,7 @@ static int storvsc_execute_vstor_op(stru
+ 	if (ret != 0)
+ 		return ret;
  
- 	return !cifs_dir_emit(ctx, name.name, name.len,
--			      &fattr, cfid);
-+			      &fattr, cfid, file);
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return -ETIMEDOUT;
+ 
+@@ -1351,6 +1351,8 @@ static int storvsc_connect_to_vsp(struct
+ 		return ret;
+ 
+ 	ret = storvsc_channel_init(device, is_fc);
++	if (ret)
++		vmbus_close(device->channel);
+ 
+ 	return ret;
  }
+@@ -1668,7 +1670,7 @@ static int storvsc_host_reset_handler(st
+ 	if (ret != 0)
+ 		return FAILED;
  
- 
-@@ -1073,8 +1075,8 @@ int cifs_readdir(struct file *file, stru
- 	 * we need to initialize scanning and storing the
- 	 * directory content.
- 	 */
--	if (ctx->pos == 0 && cfid->dirents.ctx == NULL) {
--		cfid->dirents.ctx = ctx;
-+	if (ctx->pos == 0 && cfid->dirents.file == NULL) {
-+		cfid->dirents.file = file;
- 		cfid->dirents.pos = 2;
- 	}
- 	/*
-@@ -1142,7 +1144,7 @@ int cifs_readdir(struct file *file, stru
- 	} else {
- 		if (cfid) {
- 			mutex_lock(&cfid->dirents.de_mutex);
--			finished_cached_dirents_count(&cfid->dirents, ctx);
-+			finished_cached_dirents_count(&cfid->dirents, ctx, file);
- 			mutex_unlock(&cfid->dirents.de_mutex);
- 		}
- 		cifs_dbg(FYI, "Could not find entry\n");
-@@ -1183,7 +1185,7 @@ int cifs_readdir(struct file *file, stru
- 		ctx->pos++;
- 		if (cfid) {
- 			mutex_lock(&cfid->dirents.de_mutex);
--			update_cached_dirents_count(&cfid->dirents, ctx);
-+			update_cached_dirents_count(&cfid->dirents, file);
- 			mutex_unlock(&cfid->dirents.de_mutex);
- 		}
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return TIMEOUT_ERROR;
  
 
 
