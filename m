@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51788AE4E91
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D15F3AE5351
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C886F3BDEB7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71A903B75AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDFB21ADB5;
-	Mon, 23 Jun 2025 21:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3632218AC1;
+	Mon, 23 Jun 2025 21:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPMWgal7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfBbDmIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D86570838;
-	Mon, 23 Jun 2025 21:07:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91C8919049B;
+	Mon, 23 Jun 2025 21:51:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712822; cv=none; b=D3G64CT+sO6Ha7+WR+8qkL9nZkHchE4dZ8UtzN88nVdkAlzCsDW4kH4zW3abe4MlCzajHLjadHA11rklUk7X2hkm5QQ88zbLgBXFEZfwf0k6CvO/jyk//LSgbNIe4Q0FE2D57f+g7yxNnoCHmKwXFMnWruD26eolyGZoiHHLCNw=
+	t=1750715506; cv=none; b=MtNt9TUmBNtFzn1HCUxlgNMQWrvQ3d1lcdlqGap7tR8oa1K75LUHXVx9KVLoG9x5Pj6zPXQIK7YtY7Is0h6uOKG9r8n09uNvmLNzZ3WZQ81QI/F0oGUI5hU/yiemvWtKfxhQbTjDlHURn0POblft3y4SoC2Z30RLyYacSTuGXcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712822; c=relaxed/simple;
-	bh=QiOUwO862shY+BfTvzEEVPM0ByHAEmB649+908yJJtI=;
+	s=arc-20240116; t=1750715506; c=relaxed/simple;
+	bh=hSAhox3U2Oxi07vgifRG1+3165l3KSqP7UhJ0wt7siQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ue8Vy5QWm9EWOud+ysP1RTLiHXZq/5ZTovyEB10+QTGZOmt5oMg6+TjkW5yIm5hAuXwSL6modzaaiVvtbk5gDqbxC3h3jJzkEJhJR2oe2OewqSuxMpnACvkMURiLiWnnTleyHyuXXriirFZIKU0wHIdQWZJ9VWfNb2SsDDjtM0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPMWgal7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1889BC4CEEA;
-	Mon, 23 Jun 2025 21:07:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XiCk8mOESNcLCE/57e3wubwUxE/qyrK13CpLAC8FvuaRgCj3NpAFRLpMZRJ8Nsys1VIE8Xwof7CvZUW+BkO0lTuinjJUsGrLpCM58Fm/cyRgyU0WGNGKL9phMCHWAe48XhpmgSnqWsTrRY5oI6Jy2TSFfkrvJqrK2j8+0FE6J0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfBbDmIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22838C4CEEA;
+	Mon, 23 Jun 2025 21:51:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712822;
-	bh=QiOUwO862shY+BfTvzEEVPM0ByHAEmB649+908yJJtI=;
+	s=korg; t=1750715506;
+	bh=hSAhox3U2Oxi07vgifRG1+3165l3KSqP7UhJ0wt7siQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iPMWgal7PpH/Se8KMoXwW8Qx9Iper1+0y/YJOQAgJBv/TqAVIcbygRC7R5iwELI4A
-	 1WYjj+o5edJVQcpccTwUSCY5a/tx5tV6Kn9TWGNlJx2CKSdCXrB04KqhcXIwYLRx6E
-	 xMHMqxI9hcXr9MBthwUHpqYX3+ZP+xzi/eEIcdks=
+	b=QfBbDmIVoIz1mykFFSOG/dQIm1XompiSnjm8scYiuRtzN599lJXgGSMTi+3VrAPuu
+	 eLETYuG8OBvzYsYwYTA4RETCKpTdHcDJzheWK0o/7Af4EMzngNXG1wLaZKla10soPL
+	 bXjoxWYwcSFYEjL7YQOn5fScoxI4nGhAVjFKU0pM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com,
-	Aditya Dutt <duttaditya18@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 150/222] jfs: fix array-index-out-of-bounds read in add_missing_indices
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.6 224/290] selftests/x86: Add a test to detect infinite SIGTRAP handler loop
 Date: Mon, 23 Jun 2025 15:08:05 +0200
-Message-ID: <20250623130616.599741794@linuxfoundation.org>
+Message-ID: <20250623130633.663856612@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,92 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aditya Dutt <duttaditya18@gmail.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 5dff41a86377563f7a2b968aae00d25b4ceb37c9 ]
+commit f287822688eeb44ae1cf6ac45701d965efc33218 upstream.
 
-stbl is s8 but it must contain offsets into slot which can go from 0 to
-127.
+When FRED is enabled, if the Trap Flag (TF) is set without an external
+debugger attached, it can lead to an infinite loop in the SIGTRAP
+handler.  To avoid this, the software event flag in the augmented SS
+must be cleared, ensuring that no single-step trap remains pending when
+ERETU completes.
 
-Added a bound check for that error and return -EIO if the check fails.
-Also make jfs_readdir return with error if add_missing_indices returns
-with an error.
+This test checks for that specific scenario—verifying whether the kernel
+correctly prevents an infinite SIGTRAP loop in this edge case when FRED
+is enabled.
 
-Reported-by: syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com./bug?extid=b974bd41515f770c608b
-Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The test should _always_ pass with IDT event delivery, thus no need to
+disable the test even when FRED is not enabled.
+
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250609084054.2083189-3-xin%40zytor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_dtree.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ tools/testing/selftests/x86/Makefile       |    2 
+ tools/testing/selftests/x86/sigtrap_loop.c |  101 +++++++++++++++++++++++++++++
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/x86/sigtrap_loop.c
 
-diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
-index 4666aee2e1f4b..93df5f3bb3bbb 100644
---- a/fs/jfs/jfs_dtree.c
-+++ b/fs/jfs/jfs_dtree.c
-@@ -2909,7 +2909,7 @@ void dtInitRoot(tid_t tid, struct inode *ip, u32 idotdot)
-  *	     fsck.jfs should really fix this, but it currently does not.
-  *	     Called from jfs_readdir when bad index is detected.
-  */
--static void add_missing_indices(struct inode *inode, s64 bn)
-+static int add_missing_indices(struct inode *inode, s64 bn)
- {
- 	struct ldtentry *d;
- 	struct dt_lock *dtlck;
-@@ -2918,7 +2918,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
- 	struct lv *lv;
- 	struct metapage *mp;
- 	dtpage_t *p;
--	int rc;
-+	int rc = 0;
- 	s8 *stbl;
- 	tid_t tid;
- 	struct tlock *tlck;
-@@ -2943,6 +2943,16 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+--- a/tools/testing/selftests/x86/Makefile
++++ b/tools/testing/selftests/x86/Makefile
+@@ -12,7 +12,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_
  
- 	stbl = DT_GETSTBL(p);
- 	for (i = 0; i < p->header.nextindex; i++) {
-+		if (stbl[i] < 0) {
-+			jfs_err("jfs: add_missing_indices: Invalid stbl[%d] = %d for inode %ld, block = %lld",
-+				i, stbl[i], (long)inode->i_ino, (long long)bn);
-+			rc = -EIO;
+ TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
+ 			check_initial_reg_state sigreturn iopl ioperm \
+-			test_vsyscall mov_ss_trap \
++			test_vsyscall mov_ss_trap sigtrap_loop \
+ 			syscall_arg_fault fsgsbase_restore sigaltstack
+ TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
+ 			test_FCMOV test_FCOMI test_FISTTP \
+--- /dev/null
++++ b/tools/testing/selftests/x86/sigtrap_loop.c
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
++#define _GNU_SOURCE
 +
-+			DT_PUTPAGE(mp);
-+			txAbort(tid, 0);
-+			goto end;
++#include <err.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ucontext.h>
++
++#ifdef __x86_64__
++# define REG_IP REG_RIP
++#else
++# define REG_IP REG_EIP
++#endif
++
++static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *), int flags)
++{
++	struct sigaction sa;
++
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_sigaction = handler;
++	sa.sa_flags = SA_SIGINFO | flags;
++	sigemptyset(&sa.sa_mask);
++
++	if (sigaction(sig, &sa, 0))
++		err(1, "sigaction");
++
++	return;
++}
++
++static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
++{
++	ucontext_t *ctx = (ucontext_t *)ctx_void;
++	static unsigned int loop_count_on_same_ip;
++	static unsigned long last_trap_ip;
++
++	if (last_trap_ip == ctx->uc_mcontext.gregs[REG_IP]) {
++		printf("\tTrapped at %016lx\n", last_trap_ip);
++
++		/*
++		 * If the same IP is hit more than 10 times in a row, it is
++		 * _considered_ an infinite loop.
++		 */
++		if (++loop_count_on_same_ip > 10) {
++			printf("[FAIL]\tDetected SIGTRAP infinite loop\n");
++			exit(1);
 +		}
 +
- 		d = (struct ldtentry *) &p->slot[stbl[i]];
- 		index = le32_to_cpu(d->index);
- 		if ((index < 2) || (index >= JFS_IP(inode)->next_index)) {
-@@ -2960,6 +2970,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
- 	(void) txCommit(tid, 1, &inode, 0);
- end:
- 	txEnd(tid);
-+	return rc;
- }
- 
- /*
-@@ -3313,7 +3324,8 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
- 		}
- 
- 		if (fix_page) {
--			add_missing_indices(ip, bn);
-+			if ((rc = add_missing_indices(ip, bn)))
-+				goto out;
- 			page_fixed = 1;
- 		}
- 
--- 
-2.39.5
-
++		return;
++	}
++
++	loop_count_on_same_ip = 0;
++	last_trap_ip = ctx->uc_mcontext.gregs[REG_IP];
++	printf("\tTrapped at %016lx\n", last_trap_ip);
++}
++
++int main(int argc, char *argv[])
++{
++	sethandler(SIGTRAP, sigtrap, 0);
++
++	/*
++	 * Set the Trap Flag (TF) to single-step the test code, therefore to
++	 * trigger a SIGTRAP signal after each instruction until the TF is
++	 * cleared.
++	 *
++	 * Because the arithmetic flags are not significant here, the TF is
++	 * set by pushing 0x302 onto the stack and then popping it into the
++	 * flags register.
++	 *
++	 * Four instructions in the following asm code are executed with the
++	 * TF set, thus the SIGTRAP handler is expected to run four times.
++	 */
++	printf("[RUN]\tSIGTRAP infinite loop detection\n");
++	asm volatile(
++#ifdef __x86_64__
++		/*
++		 * Avoid clobbering the redzone
++		 *
++		 * Equivalent to "sub $128, %rsp", however -128 can be encoded
++		 * in a single byte immediate while 128 uses 4 bytes.
++		 */
++		"add $-128, %rsp\n\t"
++#endif
++		"push $0x302\n\t"
++		"popf\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"push $0x202\n\t"
++		"popf\n\t"
++#ifdef __x86_64__
++		"sub $-128, %rsp\n\t"
++#endif
++	);
++
++	printf("[OK]\tNo SIGTRAP infinite loop detected\n");
++	return 0;
++}
 
 
 
