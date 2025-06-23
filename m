@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44368AE5155
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4D82AE51F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1166E1B639AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FC8E4A499B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D122236E5;
-	Mon, 23 Jun 2025 21:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28BE0221FDC;
+	Mon, 23 Jun 2025 21:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maYut4ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SUJkw9vj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203F21B8F6;
-	Mon, 23 Jun 2025 21:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D86C621D3DD;
+	Mon, 23 Jun 2025 21:38:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714380; cv=none; b=FhBFg4BSYuFFn/rRA3+n6PnPGt4fUcFl7DCqRMphPoxThRrfgtIEau+6gZc4/P0AQzpMyFCL+B5YqoOwFnBZgr3nfRt3y0R7K2dl/pWG0g/CByndMjMg87m6K/vH0aHx2RLSWUT6RB1B159jvbE9quDZywLufBW8CJXs/JI/dJA=
+	t=1750714735; cv=none; b=Ak6m2jrgQhfrKAsQR/LTHyqi5a5tydFtITyDo0lrjlPBTFxIeBvl1RoD11e031T0ujRNUacc00Z7Ym0PokxKbt54gOy0kzEAB1Ccc1XcQ1Pzv4CdCikkhFIy71lIRCizaX857UuAbdBH7IZW+AhojMDvJucycru5D7G+VNMCEE4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714380; c=relaxed/simple;
-	bh=xMax8O3s9QTpBMClX9PlJCX8FF0NAejH+7XgveIKxJE=;
+	s=arc-20240116; t=1750714735; c=relaxed/simple;
+	bh=Aee2ZskpCaOhe6zMHUu1beGr2Hie9oYZMZ6G1Ho4rJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dMJp1CxNpiqgs2xFyx+YqmIYQ0jzN2TMWt87RQsAEDe3+xVs7ghtQBPD2Hrt41TxwsaskK0QiWZTXcx7pHqHIsQwcUdg4GMs3pVTLr5gFUa/QLcrwNBCsW8skXZ0awFRY6fOXdPXwNUzgukaq9M9VZuQf3zq1EUdcDysvMuMEOQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maYut4ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A97C4CEEA;
-	Mon, 23 Jun 2025 21:32:59 +0000 (UTC)
+	 MIME-Version; b=YsP+fzJMlMXP8rpEzPjMvs0Kcllq56XAsoffJawRUPSl4c1tkBXdfStdhTNdhPTJEqz3m5+z6RAuN4bSG8NE9yvQ4CS0drqK511jJghYJcsCiQ2eATY2J7o+hhtGVy6Hlwa9aL290Pw5SYWDDoc6Tqieq37hi06HeIGgda+WFA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SUJkw9vj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683DDC4CEEA;
+	Mon, 23 Jun 2025 21:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714379;
-	bh=xMax8O3s9QTpBMClX9PlJCX8FF0NAejH+7XgveIKxJE=;
+	s=korg; t=1750714735;
+	bh=Aee2ZskpCaOhe6zMHUu1beGr2Hie9oYZMZ6G1Ho4rJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maYut4okOk6JifOdwSpsu0LSd5V3c3x3ss9uGRurAyede16KDFX5mKMxsAt3cXkLL
-	 L4AZCT6rYWujrnxvSX4fjiZ8VsNXFDwzVkNeYHs1UggYBdPp0p9DZkg041BKrMuB+Q
-	 b8SL9IF80s8Iaajv3ErwR4uRldW6Y16M4V2C5P+M=
+	b=SUJkw9vjpm2VGWLfTyhFO2RSS7wWvLqlhXGAFn6S0R4Q0wYrJbWE33CXeQjff841Q
+	 zBNHSs2uNjZy2f8XgEOKDBVU78HtPJrXua6ToWS18j/JU1a4cwxhDnc/D2j7MfR8br
+	 MtgQvOw66+zVi4cJl2qV6f5IEQkteJaNksgdq7o0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.12 099/414] f2fs: fix to do sanity check on ino and xnid
-Date: Mon, 23 Jun 2025 15:03:56 +0200
-Message-ID: <20250623130644.573053687@linuxfoundation.org>
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 192/508] xfs: fix integer overflows in the fsmap rtbitmap and logdev backends
+Date: Mon, 23 Jun 2025 15:03:57 +0200
+Message-ID: <20250623130649.995506981@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +63,302 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 061cf3a84bde038708eb0f1d065b31b7c2456533 upstream.
+[ Upstream commit 7975aba19cba4eba7ff60410f9294c90edc96dcf ]
 
-syzbot reported a f2fs bug as below:
+It's not correct to use the rmap irec structure to hold query key
+information to query the rtbitmap because the realtime volume can be
+longer than 2^32 fsblocks in length.  Because the rt volume doesn't have
+allocation groups, introduce a daddr-based record filtering algorithm
+and compute the rtextent values using 64-bit variables.  The same
+problem exists in the external log device fsmap implementation, so use
+the same solution to fix it too.
 
-INFO: task syz-executor140:5308 blocked for more than 143 seconds.
-      Not tainted 6.14.0-rc7-syzkaller-00069-g81e4f8d68c66 #0
-"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
-task:syz-executor140 state:D stack:24016 pid:5308  tgid:5308  ppid:5306   task_flags:0x400140 flags:0x00000006
-Call Trace:
- <TASK>
- context_switch kernel/sched/core.c:5378 [inline]
- __schedule+0x190e/0x4c90 kernel/sched/core.c:6765
- __schedule_loop kernel/sched/core.c:6842 [inline]
- schedule+0x14b/0x320 kernel/sched/core.c:6857
- io_schedule+0x8d/0x110 kernel/sched/core.c:7690
- folio_wait_bit_common+0x839/0xee0 mm/filemap.c:1317
- __folio_lock mm/filemap.c:1664 [inline]
- folio_lock include/linux/pagemap.h:1163 [inline]
- __filemap_get_folio+0x147/0xb40 mm/filemap.c:1917
- pagecache_get_page+0x2c/0x130 mm/folio-compat.c:87
- find_get_page_flags include/linux/pagemap.h:842 [inline]
- f2fs_grab_cache_page+0x2b/0x320 fs/f2fs/f2fs.h:2776
- __get_node_page+0x131/0x11b0 fs/f2fs/node.c:1463
- read_xattr_block+0xfb/0x190 fs/f2fs/xattr.c:306
- lookup_all_xattrs fs/f2fs/xattr.c:355 [inline]
- f2fs_getxattr+0x676/0xf70 fs/f2fs/xattr.c:533
- __f2fs_get_acl+0x52/0x870 fs/f2fs/acl.c:179
- f2fs_acl_create fs/f2fs/acl.c:375 [inline]
- f2fs_init_acl+0xd7/0x9b0 fs/f2fs/acl.c:418
- f2fs_init_inode_metadata+0xa0f/0x1050 fs/f2fs/dir.c:539
- f2fs_add_inline_entry+0x448/0x860 fs/f2fs/inline.c:666
- f2fs_add_dentry+0xba/0x1e0 fs/f2fs/dir.c:765
- f2fs_do_add_link+0x28c/0x3a0 fs/f2fs/dir.c:808
- f2fs_add_link fs/f2fs/f2fs.h:3616 [inline]
- f2fs_mknod+0x2e8/0x5b0 fs/f2fs/namei.c:766
- vfs_mknod+0x36d/0x3b0 fs/namei.c:4191
- unix_bind_bsd net/unix/af_unix.c:1286 [inline]
- unix_bind+0x563/0xe30 net/unix/af_unix.c:1379
- __sys_bind_socket net/socket.c:1817 [inline]
- __sys_bind+0x1e4/0x290 net/socket.c:1848
- __do_sys_bind net/socket.c:1853 [inline]
- __se_sys_bind net/socket.c:1851 [inline]
- __x64_sys_bind+0x7a/0x90 net/socket.c:1851
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+After this patch, all the code that touches info->low and info->high
+under xfs_getfsmap_logdev and __xfs_getfsmap_rtdev are unnecessary.
+Cleaning this up will be done in subsequent patches.
 
-Let's dump and check metadata of corrupted inode, it shows its xattr_nid
-is the same to its i_ino.
-
-dump.f2fs -i 3 chaseyu.img.raw
-i_xattr_nid                             [0x       3 : 3]
-
-So that, during mknod in the corrupted directory, it tries to get and
-lock inode page twice, result in deadlock.
-
-- f2fs_mknod
- - f2fs_add_inline_entry
-  - f2fs_get_inode_page --- lock dir's inode page
-   - f2fs_init_acl
-    - f2fs_acl_create(dir,..)
-     - __f2fs_get_acl
-      - f2fs_getxattr
-       - lookup_all_xattrs
-        - __get_node_page --- try to lock dir's inode page
-
-In order to fix this, let's add sanity check on ino and xnid.
-
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67e06150.050a0220.21942d.0005.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4c934c7dd60c ("xfs: report realtime space information via the rtbitmap")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/xfs/xfs_fsmap.c | 90 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 64 insertions(+), 26 deletions(-)
 
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -286,6 +286,12 @@ static bool sanity_check_inode(struct in
- 		return false;
- 	}
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index 2011f1bf7ce0f..5039d330ef98b 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -160,6 +160,8 @@ struct xfs_getfsmap_info {
+ 	struct xfs_buf		*agf_bp;	/* AGF, for refcount queries */
+ 	struct xfs_perag	*pag;		/* AG info, if applicable */
+ 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
++	/* daddr of low fsmap key when we're using the rtbitmap */
++	xfs_daddr_t		low_daddr;
+ 	u64			missing_owner;	/* owner of holes */
+ 	u32			dev;		/* device id */
+ 	/*
+@@ -250,6 +252,8 @@ xfs_getfsmap_rec_before_start(
+ 	const struct xfs_rmap_irec	*rec,
+ 	xfs_daddr_t			rec_daddr)
+ {
++	if (info->low_daddr != -1ULL)
++		return rec_daddr < info->low_daddr;
+ 	if (info->low.rm_blockcount)
+ 		return xfs_rmap_compare(rec, &info->low) < 0;
+ 	return false;
+@@ -257,14 +261,16 @@ xfs_getfsmap_rec_before_start(
  
-+	if (ino_of_node(node_page) == fi->i_xattr_nid) {
-+		f2fs_warn(sbi, "%s: corrupted inode i_ino=%lx, xnid=%x, run fsck to fix.",
-+			  __func__, inode->i_ino, fi->i_xattr_nid);
-+		return false;
+ /*
+  * Format a reverse mapping for getfsmap, having translated rm_startblock
+- * into the appropriate daddr units.
++ * into the appropriate daddr units.  Pass in a nonzero @len_daddr if the
++ * length could be larger than rm_blockcount in struct xfs_rmap_irec.
+  */
+ STATIC int
+ xfs_getfsmap_helper(
+ 	struct xfs_trans		*tp,
+ 	struct xfs_getfsmap_info	*info,
+ 	const struct xfs_rmap_irec	*rec,
+-	xfs_daddr_t			rec_daddr)
++	xfs_daddr_t			rec_daddr,
++	xfs_daddr_t			len_daddr)
+ {
+ 	struct xfs_fsmap		fmr;
+ 	struct xfs_mount		*mp = tp->t_mountp;
+@@ -274,12 +280,15 @@ xfs_getfsmap_helper(
+ 	if (fatal_signal_pending(current))
+ 		return -EINTR;
+ 
++	if (len_daddr == 0)
++		len_daddr = XFS_FSB_TO_BB(mp, rec->rm_blockcount);
++
+ 	/*
+ 	 * Filter out records that start before our startpoint, if the
+ 	 * caller requested that.
+ 	 */
+ 	if (xfs_getfsmap_rec_before_start(info, rec, rec_daddr)) {
+-		rec_daddr += XFS_FSB_TO_BB(mp, rec->rm_blockcount);
++		rec_daddr += len_daddr;
+ 		if (info->next_daddr < rec_daddr)
+ 			info->next_daddr = rec_daddr;
+ 		return 0;
+@@ -298,7 +307,7 @@ xfs_getfsmap_helper(
+ 
+ 		info->head->fmh_entries++;
+ 
+-		rec_daddr += XFS_FSB_TO_BB(mp, rec->rm_blockcount);
++		rec_daddr += len_daddr;
+ 		if (info->next_daddr < rec_daddr)
+ 			info->next_daddr = rec_daddr;
+ 		return 0;
+@@ -338,7 +347,7 @@ xfs_getfsmap_helper(
+ 	if (error)
+ 		return error;
+ 	fmr.fmr_offset = XFS_FSB_TO_BB(mp, rec->rm_offset);
+-	fmr.fmr_length = XFS_FSB_TO_BB(mp, rec->rm_blockcount);
++	fmr.fmr_length = len_daddr;
+ 	if (rec->rm_flags & XFS_RMAP_UNWRITTEN)
+ 		fmr.fmr_flags |= FMR_OF_PREALLOC;
+ 	if (rec->rm_flags & XFS_RMAP_ATTR_FORK)
+@@ -355,7 +364,7 @@ xfs_getfsmap_helper(
+ 
+ 	xfs_getfsmap_format(mp, &fmr, info);
+ out:
+-	rec_daddr += XFS_FSB_TO_BB(mp, rec->rm_blockcount);
++	rec_daddr += len_daddr;
+ 	if (info->next_daddr < rec_daddr)
+ 		info->next_daddr = rec_daddr;
+ 	return 0;
+@@ -376,7 +385,7 @@ xfs_getfsmap_datadev_helper(
+ 	fsb = XFS_AGB_TO_FSB(mp, cur->bc_ag.pag->pag_agno, rec->rm_startblock);
+ 	rec_daddr = XFS_FSB_TO_DADDR(mp, fsb);
+ 
+-	return xfs_getfsmap_helper(cur->bc_tp, info, rec, rec_daddr);
++	return xfs_getfsmap_helper(cur->bc_tp, info, rec, rec_daddr, 0);
+ }
+ 
+ /* Transform a bnobt irec into a fsmap */
+@@ -400,7 +409,7 @@ xfs_getfsmap_datadev_bnobt_helper(
+ 	irec.rm_offset = 0;
+ 	irec.rm_flags = 0;
+ 
+-	return xfs_getfsmap_helper(cur->bc_tp, info, &irec, rec_daddr);
++	return xfs_getfsmap_helper(cur->bc_tp, info, &irec, rec_daddr, 0);
+ }
+ 
+ /* Set rmap flags based on the getfsmap flags */
+@@ -427,9 +436,13 @@ xfs_getfsmap_logdev(
+ {
+ 	struct xfs_mount		*mp = tp->t_mountp;
+ 	struct xfs_rmap_irec		rmap;
++	xfs_daddr_t			rec_daddr, len_daddr;
++	xfs_fsblock_t			start_fsb;
+ 	int				error;
+ 
+ 	/* Set up search keys */
++	start_fsb = XFS_BB_TO_FSBT(mp,
++				keys[0].fmr_physical + keys[0].fmr_length);
+ 	info->low.rm_startblock = XFS_BB_TO_FSBT(mp, keys[0].fmr_physical);
+ 	info->low.rm_offset = XFS_BB_TO_FSBT(mp, keys[0].fmr_offset);
+ 	error = xfs_fsmap_owner_to_rmap(&info->low, keys);
+@@ -438,6 +451,10 @@ xfs_getfsmap_logdev(
+ 	info->low.rm_blockcount = 0;
+ 	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
+ 
++	/* Adjust the low key if we are continuing from where we left off. */
++	if (keys[0].fmr_length > 0)
++		info->low_daddr = XFS_FSB_TO_BB(mp, start_fsb);
++
+ 	error = xfs_fsmap_owner_to_rmap(&info->high, keys + 1);
+ 	if (error)
+ 		return error;
+@@ -451,7 +468,7 @@ xfs_getfsmap_logdev(
+ 	trace_xfs_fsmap_low_key(mp, info->dev, NULLAGNUMBER, &info->low);
+ 	trace_xfs_fsmap_high_key(mp, info->dev, NULLAGNUMBER, &info->high);
+ 
+-	if (keys[0].fmr_physical > 0)
++	if (start_fsb > 0)
+ 		return 0;
+ 
+ 	/* Fabricate an rmap entry for the external log device. */
+@@ -461,7 +478,9 @@ xfs_getfsmap_logdev(
+ 	rmap.rm_offset = 0;
+ 	rmap.rm_flags = 0;
+ 
+-	return xfs_getfsmap_helper(tp, info, &rmap, 0);
++	rec_daddr = XFS_FSB_TO_BB(mp, rmap.rm_startblock);
++	len_daddr = XFS_FSB_TO_BB(mp, rmap.rm_blockcount);
++	return xfs_getfsmap_helper(tp, info, &rmap, rec_daddr, len_daddr);
+ }
+ 
+ #ifdef CONFIG_XFS_RT
+@@ -475,16 +494,22 @@ xfs_getfsmap_rtdev_rtbitmap_helper(
+ {
+ 	struct xfs_getfsmap_info	*info = priv;
+ 	struct xfs_rmap_irec		irec;
+-	xfs_daddr_t			rec_daddr;
++	xfs_rtblock_t			rtbno;
++	xfs_daddr_t			rec_daddr, len_daddr;
++
++	rtbno = rec->ar_startext * mp->m_sb.sb_rextsize;
++	rec_daddr = XFS_FSB_TO_BB(mp, rtbno);
++	irec.rm_startblock = rtbno;
++
++	rtbno = rec->ar_extcount * mp->m_sb.sb_rextsize;
++	len_daddr = XFS_FSB_TO_BB(mp, rtbno);
++	irec.rm_blockcount = rtbno;
+ 
+-	irec.rm_startblock = rec->ar_startext * mp->m_sb.sb_rextsize;
+-	rec_daddr = XFS_FSB_TO_BB(mp, irec.rm_startblock);
+-	irec.rm_blockcount = rec->ar_extcount * mp->m_sb.sb_rextsize;
+ 	irec.rm_owner = XFS_RMAP_OWN_NULL;	/* "free" */
+ 	irec.rm_offset = 0;
+ 	irec.rm_flags = 0;
+ 
+-	return xfs_getfsmap_helper(tp, info, &irec, rec_daddr);
++	return xfs_getfsmap_helper(tp, info, &irec, rec_daddr, len_daddr);
+ }
+ 
+ /* Execute a getfsmap query against the realtime device. */
+@@ -493,23 +518,26 @@ __xfs_getfsmap_rtdev(
+ 	struct xfs_trans		*tp,
+ 	const struct xfs_fsmap		*keys,
+ 	int				(*query_fn)(struct xfs_trans *,
+-						    struct xfs_getfsmap_info *),
++						    struct xfs_getfsmap_info *,
++						    xfs_rtblock_t start_rtb,
++						    xfs_rtblock_t end_rtb),
+ 	struct xfs_getfsmap_info	*info)
+ {
+ 	struct xfs_mount		*mp = tp->t_mountp;
+-	xfs_fsblock_t			start_fsb;
+-	xfs_fsblock_t			end_fsb;
++	xfs_rtblock_t			start_rtb;
++	xfs_rtblock_t			end_rtb;
+ 	uint64_t			eofs;
+ 	int				error = 0;
+ 
+ 	eofs = XFS_FSB_TO_BB(mp, mp->m_sb.sb_rblocks);
+ 	if (keys[0].fmr_physical >= eofs)
+ 		return 0;
+-	start_fsb = XFS_BB_TO_FSBT(mp, keys[0].fmr_physical);
+-	end_fsb = XFS_BB_TO_FSB(mp, min(eofs - 1, keys[1].fmr_physical));
++	start_rtb = XFS_BB_TO_FSBT(mp,
++				keys[0].fmr_physical + keys[0].fmr_length);
++	end_rtb = XFS_BB_TO_FSB(mp, min(eofs - 1, keys[1].fmr_physical));
+ 
+ 	/* Set up search keys */
+-	info->low.rm_startblock = start_fsb;
++	info->low.rm_startblock = start_rtb;
+ 	error = xfs_fsmap_owner_to_rmap(&info->low, &keys[0]);
+ 	if (error)
+ 		return error;
+@@ -517,7 +545,14 @@ __xfs_getfsmap_rtdev(
+ 	info->low.rm_blockcount = 0;
+ 	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
+ 
+-	info->high.rm_startblock = end_fsb;
++	/* Adjust the low key if we are continuing from where we left off. */
++	if (keys[0].fmr_length > 0) {
++		info->low_daddr = XFS_FSB_TO_BB(mp, start_rtb);
++		if (info->low_daddr >= eofs)
++			return 0;
 +	}
 +
- 	if (f2fs_has_extra_attr(inode)) {
- 		if (!f2fs_sb_has_extra_attr(sbi)) {
- 			f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
++	info->high.rm_startblock = end_rtb;
+ 	error = xfs_fsmap_owner_to_rmap(&info->high, &keys[1]);
+ 	if (error)
+ 		return error;
+@@ -528,14 +563,16 @@ __xfs_getfsmap_rtdev(
+ 	trace_xfs_fsmap_low_key(mp, info->dev, NULLAGNUMBER, &info->low);
+ 	trace_xfs_fsmap_high_key(mp, info->dev, NULLAGNUMBER, &info->high);
+ 
+-	return query_fn(tp, info);
++	return query_fn(tp, info, start_rtb, end_rtb);
+ }
+ 
+ /* Actually query the realtime bitmap. */
+ STATIC int
+ xfs_getfsmap_rtdev_rtbitmap_query(
+ 	struct xfs_trans		*tp,
+-	struct xfs_getfsmap_info	*info)
++	struct xfs_getfsmap_info	*info,
++	xfs_rtblock_t			start_rtb,
++	xfs_rtblock_t			end_rtb)
+ {
+ 	struct xfs_rtalloc_rec		alow = { 0 };
+ 	struct xfs_rtalloc_rec		ahigh = { 0 };
+@@ -548,8 +585,8 @@ xfs_getfsmap_rtdev_rtbitmap_query(
+ 	 * Set up query parameters to return free rtextents covering the range
+ 	 * we want.
+ 	 */
+-	alow.ar_startext = info->low.rm_startblock;
+-	ahigh.ar_startext = info->high.rm_startblock;
++	alow.ar_startext = start_rtb;
++	ahigh.ar_startext = end_rtb;
+ 	do_div(alow.ar_startext, mp->m_sb.sb_rextsize);
+ 	if (do_div(ahigh.ar_startext, mp->m_sb.sb_rextsize))
+ 		ahigh.ar_startext++;
+@@ -988,6 +1025,7 @@ xfs_getfsmap(
+ 		info.dev = handlers[i].dev;
+ 		info.last = false;
+ 		info.pag = NULL;
++		info.low_daddr = -1ULL;
+ 		info.low.rm_blockcount = 0;
+ 		error = handlers[i].fn(tp, dkeys, &info);
+ 		if (error)
+-- 
+2.39.5
+
 
 
 
