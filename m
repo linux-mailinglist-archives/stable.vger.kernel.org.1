@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-157904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E0D7AE5657
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1064AAE5736
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E59F53A6F39
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A68E84E3231
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFEE0226D03;
-	Mon, 23 Jun 2025 22:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62367223DCC;
+	Mon, 23 Jun 2025 22:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TxV+b6l8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5f3sHJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D14A226CE6;
-	Mon, 23 Jun 2025 22:16:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 214392222B2;
+	Mon, 23 Jun 2025 22:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717006; cv=none; b=e8kaxnblUiZXWjPutU1zwj0vLe4OaJcCUPv/TryCNJCNc0BNg7CBwe1qi70yMXROcoX10GiSFpyomMlRhgh4Mtz5K/ngXDVwL2jnrTtYIS7XqOmSswzQjnG1/B901Sm2brcV+LBcEQBNtiXPng8tYboBMKA2ikcXRwjN1j88W9E=
+	t=1750717639; cv=none; b=DYEfpHBLUt8oKfUzL+sz2QfP9WzVAap+oTgI+8HuCNfDqvFOLJEv4gnrBQvlA2DuAtyYY+n1aDeOdWNrEx8rU5XQlaShP8UE1rNV6l85X3Hh/aLHDdAsYGIcrQPXfGE6cCZKv1bn2EIEgrE0ZaoINeYxdCheBeJfORq6+IydnDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717006; c=relaxed/simple;
-	bh=cutWAfCuMtpW5+fer1O5yysKQRdoqdtpFCcYRyn+/xo=;
+	s=arc-20240116; t=1750717639; c=relaxed/simple;
+	bh=ykPFD3Wj3gAdVcA1X1l/X0AMtr74pmDWbbRDprma2GY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UmgaAJjODPg5+lXPfpdKkqTLC590Vo+qQNA+K+py9nuFdrVvWJf3/KtHYMZN0lVCDYcKoe/podU3yHMGt+rcoggwIOACBu7f+tGIjqkwJeI6g7YYT1QTHV1wdi+zsKXwVQIkR7OpDQL8RWubWtn1IZaDtEUOZ45VlpM2ym4+Vl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TxV+b6l8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3D85C4CEF2;
-	Mon, 23 Jun 2025 22:16:43 +0000 (UTC)
+	 MIME-Version; b=KaoIBbfAP/c8W8wLX3/O0Ow994jBW2/uhZPkZa+PZVnkFf07JW32z61+t6JaH714uHkpVuyXxKV2UdPxp0t7lnm5olKYq8ngC5ecE8rSfKCZUu1GMnJk4LjbQB3kPKNyHacxPCN1rJIXw/upi8jhEUHZkYKHw7itQ1w6/sZssos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5f3sHJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD58C4CEEA;
+	Mon, 23 Jun 2025 22:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717004;
-	bh=cutWAfCuMtpW5+fer1O5yysKQRdoqdtpFCcYRyn+/xo=;
+	s=korg; t=1750717639;
+	bh=ykPFD3Wj3gAdVcA1X1l/X0AMtr74pmDWbbRDprma2GY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TxV+b6l8v7q5hhU4j5rU+gyS1ztNQUaODiFTxABh6mdVWkKw3jRyNuN0CmITSoIR+
-	 U59Nvc5S4Prlp4olRfi1kUYr/3tiY9nLdpQ/kElPTi6fHUHrRYEHXku/JamqNDZrTs
-	 iFKv8zxW3rM9kHlvD1skFSJ5W+VY+xHFDGcwCDMs=
+	b=C5f3sHJhckJH77ygR29vhtgsYs9vHTtijqAsOWOHv1CnwskPqufcFUtIaNq5NK1fW
+	 FR7cjJfpB4ON8SXqZCTFNSwitXcPc/zKYf7grVWkLunDSqboJGTabze8KO5EEgn4SU
+	 62TOupSfJ436Y5SmrTOGVTvq/8MTMpNaTY99u09s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 5.15 386/411] serial: sh-sci: Increment the runtime usage counter for the earlycon device
+	Haixia Qu <hxqu@hillstonenet.com>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 485/508] tipc: fix null-ptr-deref when acquiring remote ip of ethernet bearer
 Date: Mon, 23 Jun 2025 15:08:50 +0200
-Message-ID: <20250623130643.374026221@linuxfoundation.org>
+Message-ID: <20250623130656.989031119@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Haixia Qu <hxqu@hillstonenet.com>
 
-commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
+[ Upstream commit f82727adcf2992822e12198792af450a76ebd5ef ]
 
-In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
-with earlycon mapped at index zero.
+The reproduction steps:
+1. create a tun interface
+2. enable l2 bearer
+3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
 
-The uart_add_one_port() function eventually calls __device_attach(),
-which, in turn, calls pm_request_idle(). The identified code path is as
-follows:
+tipc: Started in network mode
+tipc: Node identity 8af312d38a21, cluster identity 4711
+tipc: Enabled bearer <eth:syz_tun>, priority 1
+Oops: general protection fault
+KASAN: null-ptr-deref in range
+CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
+Hardware name: QEMU Ubuntu 24.04 PC
+RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
 
-uart_add_one_port() ->
-  serial_ctrl_register_port() ->
-    serial_core_register_port() ->
-      serial_core_port_device_add() ->
-        serial_base_port_add() ->
-          device_add() ->
-            bus_probe_device() ->
-              device_initial_probe() ->
-                __device_attach() ->
-                  // ...
-                  if (dev->p->dead) {
-                    // ...
-                  } else if (dev->driver) {
-                    // ...
-                  } else {
-                    // ...
-                    pm_request_idle(dev);
-                    // ...
-                  }
+the ub was in fact a struct dev.
 
-The earlycon device clocks are enabled by the bootloader. However, the
-pm_request_idle() call in __device_attach() disables the SCI port clocks
-while earlycon is still active.
+when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or
+other media when other thread changes it.
 
-The earlycon write function, serial_console_write(), calls
-sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
-are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
-remain unset indefinitely, causing the while loop in sci_poll_put_char()
-to never exit. On single-core SoCs, this can result in the system being
-blocked during boot when this issue occurs.
+fix this by checking media_id.
 
-To resolve this, increment the runtime PM usage counter for the earlycon
-SCI device before registering the UART port.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 832629ca5c313 ("tipc: add UDP remoteip dump to netlink API")
+Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250617055624.2680-1-hxqu@hillstonenet.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/tipc/udp_media.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3335,6 +3335,22 @@ static int sci_probe_single(struct platf
+diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
+index f5bd75d931c1b..e1305d159834b 100644
+--- a/net/tipc/udp_media.c
++++ b/net/tipc/udp_media.c
+@@ -489,7 +489,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
  
- 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
- 		/*
-+		 * In case:
-+		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
-+		 * - it now maps to an alias other than zero and
-+		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
-+		 *   available in bootargs)
-+		 *
-+		 * we need to avoid disabling clocks and PM domains through the runtime
-+		 * PM APIs called in __device_attach(). For this, increment the runtime
-+		 * PM reference counter (the clocks and PM domains were already enabled
-+		 * by the bootloader). Otherwise the earlycon may access the HW when it
-+		 * has no clocks enabled leading to failures (infinite loop in
-+		 * sci_poll_put_char()).
-+		 */
-+		pm_runtime_get_noresume(&dev->dev);
-+
-+		/*
- 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
- 		 * port is the same as the earlycon one.
- 		 */
+ 		rtnl_lock();
+ 		b = tipc_bearer_find(net, bname);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+@@ -500,7 +500,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+ 
+ 		rtnl_lock();
+ 		b = rtnl_dereference(tn->bearer_list[bid]);
+-		if (!b) {
++		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
+ 			rtnl_unlock();
+ 			return -EINVAL;
+ 		}
+-- 
+2.39.5
+
 
 
 
