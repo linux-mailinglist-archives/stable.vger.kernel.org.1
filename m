@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-157088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 352ECAE5264
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 879E4AE526E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 51C23443835
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B08444A4563
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0A61222599;
-	Mon, 23 Jun 2025 21:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 445051E1A05;
+	Mon, 23 Jun 2025 21:43:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o0Tj4R3Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+ZZaPov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6151DDC04;
-	Mon, 23 Jun 2025 21:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007B92AEE4;
+	Mon, 23 Jun 2025 21:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715004; cv=none; b=Dk3/EwvWEUloecBRGTcBsMmCO8CmjDfMTfJZ11xLZN1uOYC+1wbi4I9qrhjVQrSoTtRcM04nqqZdk08rxiUXooKMXqwb2KSb3yU+JN8H5Vb/N5YqHUM/7sXRaazDl2PwLUMZiO7nN/L2sdbip2utSYWG2qcZI3/L2nW2TU7qhnI=
+	t=1750715023; cv=none; b=tmbtY4Sdap1odX3gRZJB8dNh+HqcR6ewArTpFtZOXF8dy9jyoO0J7Ks79hBEvCl3ghp1nxQQRWL7lWQ3BdEEjs/0xeJKSiC/6uF2pXZt5Ho469PX7+KvWTx+DeoQqfbi7H6bNjPxglamVnib0VORDrmpH4G+g/42Y4WeBzlL+F4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715004; c=relaxed/simple;
-	bh=rw/z9NhhNP5etsRWjAUArgncQDKcgK715g0Jp5/7DTw=;
+	s=arc-20240116; t=1750715023; c=relaxed/simple;
+	bh=FXPJlX9Nj0TCpRvi9CnxYOsehD9BQIxqnh8YT5TFOYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSwnG+HraIFWWnHq3NZRqRdN3QzWK/vrIErAewnhc1LQI6oEah92+iX0mVme99F2YxoNGuWUU42XU4iP5hu0s3aDvF+OREwgWQKzwOa4nTDzd2xVNrkifXW4UliTiC5GW5rBQhMfvxc2kVOCgbi9eAlOX0DswSU+1HKnPGxpcGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o0Tj4R3Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26F3BC4CEEA;
-	Mon, 23 Jun 2025 21:43:24 +0000 (UTC)
+	 MIME-Version; b=hCr1uYkvtBM/PVXIHcaTKqyqcWaBcGh0F4708arT6kMvATOpfwf9Mq3En9Flu/QIX/NgnXFSe1VqjrvMjQfALxMwy2pMatp367fCT9mS2N8KCXOA7p1mpaqdXV1R6ogG5+hu9XhQ7G2bWzC0oTcBQbPze1tM/y3RXMUuVFydgjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+ZZaPov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B82C4CEEA;
+	Mon, 23 Jun 2025 21:43:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715004;
-	bh=rw/z9NhhNP5etsRWjAUArgncQDKcgK715g0Jp5/7DTw=;
+	s=korg; t=1750715021;
+	bh=FXPJlX9Nj0TCpRvi9CnxYOsehD9BQIxqnh8YT5TFOYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o0Tj4R3YZTIrJrmgCK9Dmsew7mMU4BYOmB8I5APxu1cJRvi4RjrYk79lNV5Ubx3wP
-	 V0rV5dxzFNNsopFb/ujV09G9rx4s3FqvbezXBf12xXyTQygTOej9WsCWCFg/PTgOXf
-	 mms8+BQLKeiug6F2IdRU+akS+XJawyrnuASVs9p8=
+	b=i+ZZaPovLJ2UkllRCSYoTmpaZhMNIk7/p6L/6NWIoPSnbwlLCp88b5KX84teUnh0q
+	 lJi2QI+I9MrWydeSSaBquMY8rChmpqayngWVfHxg1xFA9PGqBp0zaItv5zqFPbQtYi
+	 WWLGV/r2j/LVS68HRzoDJD48iFtbKOixpn/3HtxM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sukrut Bellary <sbellary@baylibre.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Jann Horn <jannh@google.com>,
+	Jens Wiklander <jens.wiklander@linaro.org>,
+	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 431/592] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
-Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130710.687405434@linuxfoundation.org>
+Subject: [PATCH 6.15 432/592] tee: Prevent size calculation wraparound on 32-bit kernels
+Date: Mon, 23 Jun 2025 15:06:30 +0200
+Message-ID: <20250623130710.713181392@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,85 +67,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sukrut Bellary <sbellary@baylibre.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
+[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
 
-Don't put the l4ls clk domain to sleep in case of standby.
-Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
-upon wake-up, CM3 PM FW fails to wake-up the MPU.
+The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
+32-bit kernels: Multiplying a user-provided 32-bit value with the
+size of a structure can wrap around on such platforms.
 
-[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
+Fix it by using saturating arithmetic for the size calculation.
 
-Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+This has no security consequences because, in all users of
+TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
+for wrapping.
+
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
+Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/clockdomain.h           |  1 +
- arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
- arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/tee/tee_core.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
-index c36fb27212615..86a2f9e5d0ef9 100644
---- a/arch/arm/mach-omap2/clockdomain.h
-+++ b/arch/arm/mach-omap2/clockdomain.h
-@@ -48,6 +48,7 @@
- #define CLKDM_NO_AUTODEPS			(1 << 4)
- #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
- #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
-+#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index d113679b1e2d7..acc7998758ad8 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -10,6 +10,7 @@
+ #include <linux/fs.h>
+ #include <linux/idr.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/tee_core.h>
+ #include <linux/uaccess.h>
+@@ -19,7 +20,7 @@
  
- #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
- #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
-diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
-index 87f4e927eb183..c05a3c07d4486 100644
---- a/arch/arm/mach-omap2/clockdomains33xx_data.c
-+++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
-@@ -19,7 +19,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
- 	.pwrdm		= { .name = "per_pwrdm" },
- 	.cm_inst	= AM33XX_CM_PER_MOD,
- 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
--	.flags		= CLKDM_CAN_SWSUP,
-+	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
- };
+ #define TEE_NUM_DEVICES	32
  
- static struct clockdomain l3s_am33xx_clkdm = {
-diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
-index acdf72a541c02..a4dd42abda89b 100644
---- a/arch/arm/mach-omap2/cm33xx.c
-+++ b/arch/arm/mach-omap2/cm33xx.c
-@@ -20,6 +20,9 @@
- #include "cm-regbits-34xx.h"
- #include "cm-regbits-33xx.h"
- #include "prm33xx.h"
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+#include <linux/suspend.h>
-+#endif
+-#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
++#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
  
- /*
-  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
-@@ -328,8 +331,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
- {
- 	bool hwsup = false;
+ #define TEE_UUID_NS_NAME_SIZE	128
  
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+	/*
-+	 * In case of standby, Don't put the l4ls clk domain to sleep.
-+	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
-+	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
-+	 */
-+	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
-+	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
-+		return 0;
-+#endif
- 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
--
- 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
- 		am33xx_clkdm_sleep(clkdm);
+@@ -487,7 +488,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
  
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -565,7 +566,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
+ 	if (copy_from_user(&arg, uarg, sizeof(arg)))
+ 		return -EFAULT;
+ 
+-	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
++	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	if (arg.num_params) {
+@@ -699,7 +700,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
+ 	if (get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+@@ -798,7 +799,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
+ 	    get_user(num_params, &uarg->num_params))
+ 		return -EFAULT;
+ 
+-	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
++	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
+ 		return -EINVAL;
+ 
+ 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
 -- 
 2.39.5
 
