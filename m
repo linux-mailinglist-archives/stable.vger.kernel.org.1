@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B64FAE515D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 813C2AE5018
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98993441C29
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BF243ADB41
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EDA1DDC04;
-	Mon, 23 Jun 2025 21:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A99A1F582A;
+	Mon, 23 Jun 2025 21:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJaR7ki+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTBL1G4x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B947223DE5;
-	Mon, 23 Jun 2025 21:33:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2D91E521E;
+	Mon, 23 Jun 2025 21:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714399; cv=none; b=OKHxKyFPlWBvaiZgrEKUdyx97LIuO6wrqDy9MQZhu0Q56k/Hts6t+WY3LLku0JxoqNTmOmgYkYok8dzOWvz675F+jl0DYZdVmoBuaa9uT2AK3YuZjOD2DpDF0gL1p5mtNQC95TjyKE7F72M5QzoBG2sQma50IcdKhINuKCsrrxg=
+	t=1750713722; cv=none; b=c9FNKYI7YlKATZaG6zZqPxw602a4ZkYOLUnI+uSMrV5yo8+Ej7J7HrEn3xwdJg6m1eslqCvyStDOdiZ2FCoTZiL8Nkng0Tt1DR0ktUBYaRd8IYzB5VcE6diFsWxXQkmWDbnwiWnkqulvNSdztrxMQrWL+cVuM8GHr1KjxqG40LI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714399; c=relaxed/simple;
-	bh=ukJdL4S3hZ1QhniTjFZALP930kdsiAuyeM/FQNvy9L4=;
+	s=arc-20240116; t=1750713722; c=relaxed/simple;
+	bh=N8d2yAYXFVmlslXEuHfsFEhBpsTJFvIAPslhc9cP2+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PpDRc6ihxgsSxz2GUqDQs5yUURXewGH/wUYJK8LAoUWm64V/u6AFCu35jIlY0VIrgt6MEUYryIy6sQXqeCDoqRUWslaBbMuo9cEKluD50NTB1AdjcMEC/WWazXJP9NBWHAmWuiUlRXpJH6jV9GVqKX7qUScfBL7TH1CX0UOQYr8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJaR7ki+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDA8C4CEEA;
-	Mon, 23 Jun 2025 21:33:18 +0000 (UTC)
+	 MIME-Version; b=qOe00Rwuj2UBK+GlsKBgcXrBPKyeG8Ts5OTfwzia5wauRV1iBNWPaqZOJOWc82bmJgbaP7q9TKVE3nzDcspdM+fYRB0D8ZcSqrAbxBmDVVMPGeqQ7kOiQ++ld1WFuEDtiaGrx3vU3DcHk8OOMVtLvRijDbsMS55t6fha9HipHrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTBL1G4x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72892C4CEEA;
+	Mon, 23 Jun 2025 21:22:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714399;
-	bh=ukJdL4S3hZ1QhniTjFZALP930kdsiAuyeM/FQNvy9L4=;
+	s=korg; t=1750713721;
+	bh=N8d2yAYXFVmlslXEuHfsFEhBpsTJFvIAPslhc9cP2+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJaR7ki+yg02MOQV34umj5KCKO2JmGFIN7C9cFaaZIR6Qf2myq8i9tnaRO5vFm7c7
-	 yujt9FIh7HyezaPjkoiXd7NpCZZ/tzsdtelXMdEkTry3B6lYqacvlo9I4VfhWiB98x
-	 pPtdLXrXxjUUjGSIRg0H1x0mVp34aOLbPCqDyfs0=
+	b=zTBL1G4xwmDjvV0cEVuoDpJYis45ZuPwgD61RSsKkkkhSHFpSDq67s18+pILcbc3l
+	 sRKLTB26JE1QE0mKQ4BIaMItgXYAGClcM5UDCZpciOyxIPa2XFWkcwz+5XIq/kx8gz
+	 B5SpG27O2LO2TJjvoxa57rN9M5xMqKCEsZfA9tHk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 388/592] bpf: Use proper type to calculate bpf_raw_tp_null_args.mask index
-Date: Mon, 23 Jun 2025 15:05:46 +0200
-Message-ID: <20250623130709.671459333@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 086/290] mtd: nand: sunxi: Add randomizer configuration before randomizer enable
+Date: Mon, 23 Jun 2025 15:05:47 +0200
+Message-ID: <20250623130629.569489725@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 53ebef53a657d7957d35dc2b953db64f1bb28065 ]
+commit 4a5a99bc79cdc4be63933653682b0261a67a0c9f upstream.
 
-The calculation of the index used to access the mask field in 'struct
-bpf_raw_tp_null_args' is done with 'int' type, which could overflow when
-the tracepoint being attached has more than 8 arguments.
+In sunxi_nfc_hw_ecc_read_chunk(), the sunxi_nfc_randomizer_enable() is
+called without the config of randomizer. A proper implementation can be
+found in sunxi_nfc_hw_ecc_read_chunks_dma().
 
-While none of the tracepoints mentioned in raw_tp_null_args[] currently
-have more than 8 arguments, there do exist tracepoints that had more
-than 8 arguments (e.g. iocost_iocg_forgive_debt), so use the correct
-type for calculation and avoid Smatch static checker warning.
+Add sunxi_nfc_randomizer_config() before the start of randomization.
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/bpf/20250418074946.35569-1-shung-hsi.yu@suse.com
-
-Closes: https://lore.kernel.org/r/843a3b94-d53d-42db-93d4-be10a4090146@stanley.mountain/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+Cc: stable@vger.kernel.org # v4.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mtd/nand/raw/sunxi_nand.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 16ba36f34dfab..656ee11aff676 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6829,10 +6829,10 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
- 			/* Is this a func with potential NULL args? */
- 			if (strcmp(tname, raw_tp_null_args[i].func))
- 				continue;
--			if (raw_tp_null_args[i].mask & (0x1 << (arg * 4)))
-+			if (raw_tp_null_args[i].mask & (0x1ULL << (arg * 4)))
- 				info->reg_type |= PTR_MAYBE_NULL;
- 			/* Is the current arg IS_ERR? */
--			if (raw_tp_null_args[i].mask & (0x2 << (arg * 4)))
-+			if (raw_tp_null_args[i].mask & (0x2ULL << (arg * 4)))
- 				ptr_err_raw_tp = true;
- 			break;
- 		}
--- 
-2.39.5
-
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -817,6 +817,7 @@ static int sunxi_nfc_hw_ecc_read_chunk(s
+ 	if (ret)
+ 		return ret;
+ 
++	sunxi_nfc_randomizer_config(nand, page, false);
+ 	sunxi_nfc_randomizer_enable(nand);
+ 	writel(NFC_DATA_TRANS | NFC_DATA_SWAP_METHOD | NFC_ECC_OP,
+ 	       nfc->regs + NFC_REG_CMD);
 
 
 
