@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-155971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155979-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21DDAE44D7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9270BAE4471
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26B853BA728
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16A947A07E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4583E253358;
-	Mon, 23 Jun 2025 13:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 187942550CC;
+	Mon, 23 Jun 2025 13:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l56Cbjw1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dhjQ91oS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B50252912;
-	Mon, 23 Jun 2025 13:36:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAF67347DD;
+	Mon, 23 Jun 2025 13:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685813; cv=none; b=eNMiWOuPEkT4s9/KpbpmCXb+Fj4moC64v5ycgQkXqnBt7Q+xoG2NQQngLjIXu8KVIeEXR4xt/mkYdlfsXfh0TD3OGw6wl2a59zw5qAwamtvXL2LMBPe0fcSCk6nm48hxqeUKA40tdjwR2U40Rrsisiks37kfBRzuOdehgSpls8s=
+	t=1750685833; cv=none; b=oYVry2b0b9PrbNZbMQ6wRaVQA/NzLUShHK62RqawZJxIDprjvV6Fuq/EYgc9/2EC26qNLzdGIZ1Y9mjRJkO9tXYwynrfwvkztfQ1b/foARe0erBIfmxHo51jeWzVy2xgIvN4ZtwVDxG9r9CCb0MiFOxiMsiCHW3uZTOD4a631y4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685813; c=relaxed/simple;
-	bh=WF+wQxVwYxf0ZvZBFIP1BC9oVu1cUr9fU/xu2924X2Y=;
+	s=arc-20240116; t=1750685833; c=relaxed/simple;
+	bh=ADHBdSyH02HH3tZfxuLxtQxb3nqwYxKAk5WDXq25L+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uqv5hpjMpKae2BHW5N/XPE4BJWDHEK6Cx9DMdzVVMUg0ZWunYlu50GzoO5P+BeC6wrau1Yeiv+XDZmhtm6hegyojljfEFOtAhdKIaquWlt9bEze1qOOlx/4xGzz1lq9t/E3kd2iM2jm5l3+bwIK+9lpcekxM7LBnxe7p9mlL7n4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l56Cbjw1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 826F9C4CEEA;
-	Mon, 23 Jun 2025 13:36:52 +0000 (UTC)
+	 MIME-Version; b=f18O7z3C5+2EXERSU8ERK388hqvyhHZbK3JDigmQZIxJ72tY7cGh4iACZE1w1yS93DyZlHRcx8s7bCZf7R5egWvQAYB18PTa/V1TypxC8lroIJagzbksNVN1VOcWQXOYrtE2nJdgKotC5Rr9sbxx1Bs8Idy4ds99z40l9f+PaMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dhjQ91oS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E836C4CEEA;
+	Mon, 23 Jun 2025 13:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685812;
-	bh=WF+wQxVwYxf0ZvZBFIP1BC9oVu1cUr9fU/xu2924X2Y=;
+	s=korg; t=1750685833;
+	bh=ADHBdSyH02HH3tZfxuLxtQxb3nqwYxKAk5WDXq25L+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l56Cbjw1KGGcr6mBdAB5AnMOabed/ClxZXQt5q/oOcCbv8eWhPcDGeJ3IRfx2Doij
-	 FpdKNXG3iOhWmHfN8Z3pLrVUefRGgAdhinI17OfddiKxHl5O9wBCzYgnAbubAfk5ue
-	 mPmYFgExclWsBvNM8Z4yu3emXk+xpqct3g1vThbA=
+	b=dhjQ91oS9zKxRbzzvll1xBEZrhzXhikX+sphUIPg1PHO2HgIvA8dmRA3ZnKmSgZuJ
+	 0AXFph4FIi9QCamo1IN2HUgTIBjoTbEvokvxcDWJAl61iqBCBWGGGbvEZlnuMBsHRy
+	 ayF7eH24bE0uwRtngQl2qWdc5rjCk23tMMuEJXEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <Christian.Koenig@amd.com>,
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Hawking Zhang <Hawking.Zhang@amd.com>,
+	Asad Kamal <asad.kamal@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Shashank Sharma <shashank.sharma@amd.com>,
-	Arvind Yadav <arvind.yadav@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 286/592] drm/amdgpu: fix MES GFX mask
-Date: Mon, 23 Jun 2025 15:04:04 +0200
-Message-ID: <20250623130707.160010828@linuxfoundation.org>
+Subject: [PATCH 6.15 287/592] drm/amdgpu: Disallow partition query during reset
+Date: Mon, 23 Jun 2025 15:04:05 +0200
+Message-ID: <20250623130707.186255278@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -63,133 +62,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arvind Yadav <Arvind.Yadav@amd.com>
+From: Lijo Lazar <lijo.lazar@amd.com>
 
-[ Upstream commit 9d3afcb7b9f950b9b7c58ceeeb9e71f3476e69ed ]
+[ Upstream commit 75f138db48c5c493f0ac198c2579d52fc6a4c4a0 ]
 
-Current MES GFX mask prevents FW to enable oversubscription. This patch
-does the following:
-- Fixes the mask values and adds a description for the same
-- Removes the central mask setup and makes it IP specific, as it would
-  be different when the number of pipes and queues are different.
+Reject queries to get current partition modes during reset. Also, don't
+accept sysfs interface requests to switch compute partition mode while
+in reset.
 
-v2: squash in fix from Shashank
-
-Cc: Christian König <Christian.Koenig@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Shashank Sharma <shashank.sharma@amd.com>
-Signed-off-by: Arvind Yadav <arvind.yadav@amd.com>
+Signed-off-by: Lijo Lazar <lijo.lazar@amd.com>
+Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Asad Kamal <asad.kamal@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c |  3 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h |  2 +-
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c  | 15 +++++++++++++--
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c  | 15 ++++++++++++---
- 4 files changed, 26 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 10 ++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c |  4 ++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-index fb212f0a1136a..5590ad5e8cd76 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.c
-@@ -150,9 +150,6 @@ int amdgpu_mes_init(struct amdgpu_device *adev)
- 		adev->mes.compute_hqd_mask[i] = 0xc;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index cf2df7790077d..1dc06e4ab4970 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -1351,6 +1351,10 @@ static ssize_t amdgpu_gfx_get_current_compute_partition(struct device *dev,
+ 	struct amdgpu_device *adev = drm_to_adev(ddev);
+ 	int mode;
+ 
++	/* Only minimal precaution taken to reject requests while in reset.*/
++	if (amdgpu_in_reset(adev))
++		return -EPERM;
++
+ 	mode = amdgpu_xcp_query_partition_mode(adev->xcp_mgr,
+ 					       AMDGPU_XCP_FL_NONE);
+ 
+@@ -1394,8 +1398,14 @@ static ssize_t amdgpu_gfx_set_compute_partition(struct device *dev,
+ 		return -EINVAL;
  	}
  
--	for (i = 0; i < AMDGPU_MES_MAX_GFX_PIPES; i++)
--		adev->mes.gfx_hqd_mask[i] = i ? 0 : 0xfffffffe;
--
- 	for (i = 0; i < AMDGPU_MES_MAX_SDMA_PIPES; i++) {
- 		if (i >= adev->sdma.num_instances)
- 			break;
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-index da2c9a8cb3e01..52dd54a32fb47 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_mes.h
-@@ -111,8 +111,8 @@ struct amdgpu_mes {
- 
- 	uint32_t                        vmid_mask_gfxhub;
- 	uint32_t                        vmid_mask_mmhub;
--	uint32_t                        compute_hqd_mask[AMDGPU_MES_MAX_COMPUTE_PIPES];
- 	uint32_t                        gfx_hqd_mask[AMDGPU_MES_MAX_GFX_PIPES];
-+	uint32_t                        compute_hqd_mask[AMDGPU_MES_MAX_COMPUTE_PIPES];
- 	uint32_t                        sdma_hqd_mask[AMDGPU_MES_MAX_SDMA_PIPES];
- 	uint32_t                        aggregated_doorbells[AMDGPU_MES_PRIORITY_NUM_LEVELS];
- 	uint32_t                        sch_ctx_offs[AMDGPU_MAX_MES_PIPES];
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index 480283da18454..821c9baf5baa6 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -669,6 +669,18 @@ static int mes_v11_0_misc_op(struct amdgpu_mes *mes,
- 			offsetof(union MESAPI__MISC, api_status));
- }
- 
-+static void mes_v11_0_set_gfx_hqd_mask(union MESAPI_SET_HW_RESOURCES *pkt)
-+{
-+	/*
-+	 * GFX pipe 0 queue 0 is being used by Kernel queue.
-+	 * Set GFX pipe 0 queue 1 for MES scheduling
-+	 * mask = 10b
-+	 * GFX pipe 1 can't be used for MES due to HW limitation.
-+	 */
-+	pkt->gfx_hqd_mask[0] = 0x2;
-+	pkt->gfx_hqd_mask[1] = 0;
-+}
++	/* Don't allow a switch while under reset */
++	if (!down_read_trylock(&adev->reset_domain->sem))
++		return -EPERM;
 +
- static int mes_v11_0_set_hw_resources(struct amdgpu_mes *mes)
- {
- 	int i;
-@@ -693,8 +705,7 @@ static int mes_v11_0_set_hw_resources(struct amdgpu_mes *mes)
- 		mes_set_hw_res_pkt.compute_hqd_mask[i] =
- 			mes->compute_hqd_mask[i];
+ 	ret = amdgpu_xcp_switch_partition_mode(adev->xcp_mgr, mode);
  
--	for (i = 0; i < MAX_GFX_PIPES; i++)
--		mes_set_hw_res_pkt.gfx_hqd_mask[i] = mes->gfx_hqd_mask[i];
-+	mes_v11_0_set_gfx_hqd_mask(&mes_set_hw_res_pkt);
- 
- 	for (i = 0; i < MAX_SDMA_PIPES; i++)
- 		mes_set_hw_res_pkt.sdma_hqd_mask[i] = mes->sdma_hqd_mask[i];
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-index 624c6b4e452c8..7984ebda5b8bf 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -694,6 +694,17 @@ static int mes_v12_0_set_hw_resources_1(struct amdgpu_mes *mes, int pipe)
- 			offsetof(union MESAPI_SET_HW_RESOURCES_1, api_status));
- }
- 
-+static void mes_v12_0_set_gfx_hqd_mask(union MESAPI_SET_HW_RESOURCES *pkt)
-+{
-+	/*
-+	 * GFX V12 has only one GFX pipe, but 8 queues in it.
-+	 * GFX pipe 0 queue 0 is being used by Kernel queue.
-+	 * Set GFX pipe 0 queue 1-7 for MES scheduling
-+	 * mask = 1111 1110b
-+	 */
-+	pkt->gfx_hqd_mask[0] = 0xFE;
-+}
++	up_read(&adev->reset_domain->sem);
 +
- static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
- {
- 	int i;
-@@ -716,9 +727,7 @@ static int mes_v12_0_set_hw_resources(struct amdgpu_mes *mes, int pipe)
- 			mes_set_hw_res_pkt.compute_hqd_mask[i] =
- 				mes->compute_hqd_mask[i];
+ 	if (ret)
+ 		return ret;
  
--		for (i = 0; i < MAX_GFX_PIPES; i++)
--			mes_set_hw_res_pkt.gfx_hqd_mask[i] =
--				mes->gfx_hqd_mask[i];
-+		mes_v12_0_set_gfx_hqd_mask(&mes_set_hw_res_pkt);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+index ecb74ccf1d908..6b0fbbb91e579 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gmc.c
+@@ -1230,6 +1230,10 @@ static ssize_t current_memory_partition_show(
+ 	struct amdgpu_device *adev = drm_to_adev(ddev);
+ 	enum amdgpu_memory_partition mode;
  
- 		for (i = 0; i < MAX_SDMA_PIPES; i++)
- 			mes_set_hw_res_pkt.sdma_hqd_mask[i] =
++	/* Only minimal precaution taken to reject requests while in reset */
++	if (amdgpu_in_reset(adev))
++		return -EPERM;
++
+ 	mode = adev->gmc.gmc_funcs->query_mem_partition_mode(adev);
+ 	if ((mode >= ARRAY_SIZE(nps_desc)) ||
+ 	    (BIT(mode) & AMDGPU_ALL_NPS_MASK) != BIT(mode))
 -- 
 2.39.5
 
