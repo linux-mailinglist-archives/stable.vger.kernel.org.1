@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25444AE565D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F221AE5649
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345543AADD1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AB21671B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEDA223DE5;
-	Mon, 23 Jun 2025 22:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049212253B0;
+	Mon, 23 Jun 2025 22:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoZkeTvP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLFzthqm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB02B676;
-	Mon, 23 Jun 2025 22:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D421FF2B;
+	Mon, 23 Jun 2025 22:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717021; cv=none; b=h0n3YPVACccSIRPQiYQ4bFExrk6lCmpe1B0CSkhdAXxglEs5uv7PrdsVXY9WfpmKEm8l+HRYgQz8H10eGGV3jm4/NzD6lfBzNI457gakwKw4YdF+OOwcGhaeCn5iQJp9ITn+ECUODSpBMqbtuveaS694bHTeCw6c36ed1albLrc=
+	t=1750717067; cv=none; b=TdFtAqSmUWomZSU3jpAT/Z02oMa+rqsZhAL0QG7XYR2TL+Sk2JsryrkBnQjlkbTTCcWb+CwhnCTvpLhPGRKODuMFcH0gp5pypMdlX5QaJPKIdrFo+YlLbYgGsz4wVTWRTXP2sgxUi55q2qbwTkfKXPQfX4u3mxZgEfcfdRGRybA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717021; c=relaxed/simple;
-	bh=4wALQD21FIa1csLPWZDC54lR8KstQaPxTtQtIJw42Dg=;
+	s=arc-20240116; t=1750717067; c=relaxed/simple;
+	bh=2mZqwiOZc1NQ5EgdSaHVQT3kNGxRZ0fjnSI/Rfh8wFU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2/80fYSrvi9wYwFmyFLRVt5rk2pHDswlhlS5+UYAf55KiFkbvHeRk1k8ONBg1DEKkOUanJF9qkojqwRLVpC45CfWkBHJhtssW+2XhWjjwkT4KEC0j26qGPVj2E559W2p2jPQPwWJQ4vvVc7b+di2pzNP41d0Sf6E2RE0Mtk828=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoZkeTvP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DFCC4CEEA;
-	Mon, 23 Jun 2025 22:17:00 +0000 (UTC)
+	 MIME-Version; b=U/5kcnPAFamoW6eKzLPQqjUUSYMvnNjfwisdaPsxS0HTxyuDGuD+wUjhWmNmWO4dL1KCi/MJ3qRZz5zVDQxgWHq6DitiJLtmN01/K3EqDK1PrQwjCRyZF+REHk37KrfrnwcoVO7eHQNOky1iYpb3pQjign99dCkLOkZswDaeW0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLFzthqm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47963C4CEEA;
+	Mon, 23 Jun 2025 22:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717021;
-	bh=4wALQD21FIa1csLPWZDC54lR8KstQaPxTtQtIJw42Dg=;
+	s=korg; t=1750717067;
+	bh=2mZqwiOZc1NQ5EgdSaHVQT3kNGxRZ0fjnSI/Rfh8wFU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UoZkeTvPjnu1a1d3wSAkyeXDAYGyvaL0lH4rGWiBqc438xKUpBz/GN8foR18Xafe4
-	 hdF+n2r7zEmhNIVj4ZsP55+sjpFOPzOsaNDNIKx+jwaBR+r11Te79Fq5H9zD7mJ6Wg
-	 vOqJWoygmN9V5ujRwuSY26olFxSi/wfvDBkIkwXw=
+	b=BLFzthqmx7hPcLKPDbBFbHrETQSRpb2zyBELEO6mPq9JhzsJ/k/80WlzaQCJ2+bsg
+	 WSQrlNSZEivYeAXnOf8HOfih2FGdWlhj2734Q6WhqITZ/s9CXrtcsR/XNmtI2nMGfz
+	 wD5N/XTjNbEKQ2CmhOKcXHoDHOsXEpMiC1W1LW7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 578/592] gpio: pca953x: fix wrong error probe return value
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.15 392/411] arm64: proton-pack: Expose whether the branchy loop k value
 Date: Mon, 23 Jun 2025 15:08:56 +0200
-Message-ID: <20250623130714.184981382@linuxfoundation.org>
+Message-ID: <20250623130643.545537108@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: James Morse <james.morse@arm.com>
 
-[ Upstream commit 0a1db19f66c0960eb00e1f2ccd40708b6747f5b1 ]
+[ Upstream commit a1152be30a043d2d4dcb1683415f328bf3c51978 ]
 
-The second argument to dev_err_probe() is the error value. Pass the
-return value of devm_request_threaded_irq() there instead of the irq
-number.
+Add a helper to expose the k value of the branchy loop. This is needed
+by the BPF JIT to generate the mitigation sequence in BPF programs.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Fixes: c47f7ff0fe61 ("gpio: pca953x: Utilise dev_err_probe() where it makes sense")
-Link: https://lore.kernel.org/r/20250616134503.1201138-1-s.hauer@pengutronix.de
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpio-pca953x.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/include/asm/spectre.h |    1 +
+ arch/arm64/kernel/proton-pack.c  |    5 +++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 13cc120cf11f1..02da81ff1c0f1 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -952,7 +952,7 @@ static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
- 					IRQF_ONESHOT | IRQF_SHARED, dev_name(dev),
- 					chip);
- 	if (ret)
--		return dev_err_probe(dev, client->irq, "failed to request irq\n");
-+		return dev_err_probe(dev, ret, "failed to request irq\n");
+--- a/arch/arm64/include/asm/spectre.h
++++ b/arch/arm64/include/asm/spectre.h
+@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
  
- 	return 0;
+ enum mitigation_state arm64_get_spectre_bhb_state(void);
+ bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
++u8 get_spectre_bhb_loop_value(void);
+ bool is_spectre_bhb_fw_mitigated(void);
+ void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
+ bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -998,6 +998,11 @@ bool is_spectre_bhb_affected(const struc
+ 	return true;
  }
--- 
-2.39.5
-
+ 
++u8 get_spectre_bhb_loop_value(void)
++{
++	return max_bhb_k;
++}
++
+ static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
+ {
+ 	const char *v = arm64_get_bp_hardening_vector(slot);
 
 
 
