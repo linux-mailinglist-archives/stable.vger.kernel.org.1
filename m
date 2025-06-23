@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 010BDAE514A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 889BEAE530A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D41C71B637DC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABD71442397
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0991C5D46;
-	Mon, 23 Jun 2025 21:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409DA1F4628;
+	Mon, 23 Jun 2025 21:49:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1xjClhA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIMAXigJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D731C2E0;
-	Mon, 23 Jun 2025 21:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23FA19049B;
+	Mon, 23 Jun 2025 21:49:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714358; cv=none; b=dmbqtpMlxHLHjMDF+29sUryZVW6BvYT6VJh9zJNH9lWWMHl9pAd+WWSL84JwL6nLiYxUmEniXOHmwUn/MGPfjKOk4+CjAJouSOZ2HQouY8yVXRxeb/p7zi5dJdKLcEgg9piLIo1cXmBJClkdZd7op0v1dhPihQnL2hpEDY/JHUk=
+	t=1750715382; cv=none; b=FEosDwfEPhiVq5dlQxVFtTi3VFLHVrZvH0AfMbwhxiecctD9IbXIsNO9ryAMZeRUUCDcwEEW9p6UK5R7rI+dgRrr/xqPr6TIuHsTGYyJ6EPkTokw5AtDSGM6rHp3TfpVYuiZyxZZC3sHRr/F3Qdhb5k4TOTgCveUhJL+KjQKyvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714358; c=relaxed/simple;
-	bh=J2DAuoIcuPxTJtUgtXakW8TVHoJ6xnX0PvDDlqC/7ac=;
+	s=arc-20240116; t=1750715382; c=relaxed/simple;
+	bh=kBEu2ene663bIia8g9i0U3PAun9uspMcdEuO8aS8LJ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CK6qxcnBT0UF/MvxBWnBjMjHzsLSBLdtVyMgNLXkaebmuGLBOPDKy5r7Mh1SNVViko/U7kRsqABjOxqx2KLzutmDp/kS9gpjMToKP6sUq/vloLT89tM3jKtoep1P1hGZXuFSgHFKYWXazdLTi065SdCP8ZSVjGEvF6u5KatW5xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1xjClhA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97941C4CEEA;
-	Mon, 23 Jun 2025 21:32:37 +0000 (UTC)
+	 MIME-Version; b=alEPfq0rEJtiYSMqxXhsUe/IKbdNsiTiw/vabLsU63ILJvhj9IRxRKmSb3Cq2JWFZUlffc+8i+hb3zwrLHGpU5yWx6IegEmGK/7aDYJBDcUqqj9O7LSTHtF2alddHYecM36n+fqIh+bLzSuf6hgftD0gS7zPyvqcZP7SL2fNV7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIMAXigJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF81C4CEEA;
+	Mon, 23 Jun 2025 21:49:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714357;
-	bh=J2DAuoIcuPxTJtUgtXakW8TVHoJ6xnX0PvDDlqC/7ac=;
+	s=korg; t=1750715381;
+	bh=kBEu2ene663bIia8g9i0U3PAun9uspMcdEuO8aS8LJ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G1xjClhAW+4Gt8JDHhU0/pteh4O4Gz9D3tYHekXBvgXv/6v2aJXd1aGObWH8Ej2D+
-	 uv7/4/qsbC6EcNgyuAzusokrfhhicl8NL2lqSo2lOsuOt0IfRdpBMwlsJ+vemkvYJM
-	 pSDnxVnCz1SF16zcHC58tQMmMhh1782TCKnA0FKA=
+	b=SIMAXigJTUFbHwqessQuef45g2x8+RVe5Dyoj46HwYMc3sHnNUn+kh+PVqM/B73RE
+	 +dmnNOND+7OkwiAlFjgjMpoWraPwCblqYsoX3aw3UPyKIm9r3f6ny+XWs/6/YTO4Qm
+	 Lt9hqEIjFq3nSU20fleakT/fR8Yeu4du9PLtzWFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Marheine <pmarheine@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 132/290] ACPI: battery: negate current when discharging
+	Khem Raj <raj.khem@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.15 249/411] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
 Date: Mon, 23 Jun 2025 15:06:33 +0200
-Message-ID: <20250623130630.889873033@linuxfoundation.org>
+Message-ID: <20250623130639.918517839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Marheine <pmarheine@chromium.org>
+From: Khem Raj <raj.khem@gmail.com>
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
+CFLAGS to eliminate these errors and make the C standard version of these
+areas match the rest of the kernel.
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index e3cbaf3c3bbc1..cd3cbb7a36f85 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -243,10 +243,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
-+
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
--- 
-2.39.5
-
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -29,6 +29,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
 
 
