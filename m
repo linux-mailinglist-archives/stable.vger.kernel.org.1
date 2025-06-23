@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894DDAE50AA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF847AE5151
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 28F747AAAEA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02B3F441AC5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8A9221FBE;
-	Mon, 23 Jun 2025 21:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91AB22248B5;
+	Mon, 23 Jun 2025 21:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t0SF94eK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Sz++QBK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAD201E51FA;
-	Mon, 23 Jun 2025 21:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50B0F22424C;
+	Mon, 23 Jun 2025 21:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714021; cv=none; b=dWkPbczJ+jBmtl9GKLH82BaRP8nuOM4DYn+jFzIHNmx8JYdqArMadgxwkBrMXik0azt5OWPcixAJeFaEU+/moCLr3+yslkBmUf8Vcy+E6CtBp3NsdwFeHYlwDiGeSQJSrf8s919JpJnMaG8vCuApo/J05o6Q7jxpwLuHNV1059I=
+	t=1750714370; cv=none; b=KuiLcnh5Sz69MVYQpOJr3t2vo4d4QXDXSKI0bm91RkcNtLBs7vt7xGFji00fXL48IKNnoJqBRSoQxQboN3eYakKMWX+IRtbCJd7fIYrq0vCuDjzrb1k1fh7EMSeNA/6HS66gzl6sFFG+vX9+tQRg0n2PcjHcvldQy/CvSdCKiRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714021; c=relaxed/simple;
-	bh=zakGU79XHIONbvY9wDo34uS7I+h8QN9pUDJ8/SpmmbU=;
+	s=arc-20240116; t=1750714370; c=relaxed/simple;
+	bh=OGqN2mqnW+CTIgbewdqZGjCRHqitBXhInod0jFqG3IA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jO/22uGCCmx1m7AxTQzzCizAo6cOGNZOoiMyfQQvVlMfC1Cargv9op7MQGEONrfcIFiAy0crmvP+6tcL68KAHi2NpLrMhi8MnU+PdW4P9gLYe8fpnSttUwbr8gJdT5wZgPSQDYGdEsQsyOFdRPP/h4TFZS7T6DGwrYpMtlRB488=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t0SF94eK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81461C4CEEA;
-	Mon, 23 Jun 2025 21:27:00 +0000 (UTC)
+	 MIME-Version; b=MVJYm5fPHNVAh3KMZx8HEg51mqlrJmMTtzUwwhQXeDLhij+pm6SrMuT+T+g9H4KZNtdaMHD91tN5ivv2evYfcxPolZrmoF0TkUtguNgtcCRvu7SaT3nE4s3p6Rf4J9l1iYviKM1VFMF39mim3Pq8NVx+MlWJT2+cUTDWqBqco9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Sz++QBK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB64C4CEF0;
+	Mon, 23 Jun 2025 21:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714020;
-	bh=zakGU79XHIONbvY9wDo34uS7I+h8QN9pUDJ8/SpmmbU=;
+	s=korg; t=1750714370;
+	bh=OGqN2mqnW+CTIgbewdqZGjCRHqitBXhInod0jFqG3IA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t0SF94eK2q/jIXUv685+Oy5wz+AXgupfec8ByW3XFlJQLZuZLtSKEVfBbRTD3bQUH
-	 9l6PBdZGypwpLOgkYKRpxIL25CZPQG53cpt2KCwEU6+vzd4xumV8iJNaUuSu1QpFqV
-	 ZbVm6OVMSrU1sGr/x5Dw4JKeBDMQU5eH04z/bigM=
+	b=2Sz++QBK2PDWVhSz7YIH7YfDRLRXl0/td6uOAvM5JX+DEvfZKeE3ONVE5XOKl0CJg
+	 CCPdom+l96Oz1FAKihfFOtmlxmFdvEZgdi9ej6ZWpIBTcvCSQyTbBT2QJgkHnPInBr
+	 /ntAOg11SX2offxptxt2IslIiopiFKTZmNBv7abA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 076/414] ASoC: codecs: wcd937x: Drop unused buck_supply
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 168/508] gve: Fix RX_BUFFERS_POSTED stat to report per-queue fill_cnt
 Date: Mon, 23 Jun 2025 15:03:33 +0200
-Message-ID: <20250623130643.980235456@linuxfoundation.org>
+Message-ID: <20250623130649.409494226@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit dc59189d32fc3dbddcf418fd4b418fb61f24ade6 upstream.
+[ Upstream commit f41a94aade120dc60322865f363cee7865f2df01 ]
 
-Last user of wcd937x_priv->buck_supply was removed in
-commit 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling
-for vdd-buck supply").
+Previously, the RX_BUFFERS_POSTED stat incorrectly reported the
+fill_cnt from RX queue 0 for all queues, resulting in inaccurate
+per-queue statistics.
+Fix this by correctly indexing priv->rx[idx].fill_cnt for each RX queue.
 
-Fixes: 216d04139a6d ("ASoC: codecs: wcd937x: Remove separate handling for vdd-buck supply")
-Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20250526-b4-b4-asoc-wcd9395-vdd-px-fixes-v1-2-0b8a2993b7d3@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 24aeb56f2d38 ("gve: Add Gvnic stats AQ command and ethtool show/set-priv-flags.")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250527130830.1812903-1-alok.a.tiwari@oracle.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/wcd937x.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/google/gve/gve_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/codecs/wcd937x.c
-+++ b/sound/soc/codecs/wcd937x.c
-@@ -92,7 +92,6 @@ struct wcd937x_priv {
- 	struct regmap_irq_chip *wcd_regmap_irq_chip;
- 	struct regmap_irq_chip_data *irq_chip;
- 	struct regulator_bulk_data supplies[WCD937X_MAX_BULK_SUPPLY];
--	struct regulator *buck_supply;
- 	struct snd_soc_jack *jack;
- 	unsigned long status_mask;
- 	s32 micb_ref[WCD937X_MAX_MICBIAS];
+diff --git a/drivers/net/ethernet/google/gve/gve_main.c b/drivers/net/ethernet/google/gve/gve_main.c
+index 8771ccfc69b42..7e7890334ff60 100644
+--- a/drivers/net/ethernet/google/gve/gve_main.c
++++ b/drivers/net/ethernet/google/gve/gve_main.c
+@@ -1312,7 +1312,7 @@ void gve_handle_report_stats(struct gve_priv *priv)
+ 			};
+ 			stats[stats_idx++] = (struct stats) {
+ 				.stat_name = cpu_to_be32(RX_BUFFERS_POSTED),
+-				.value = cpu_to_be64(priv->rx[0].fill_cnt),
++				.value = cpu_to_be64(priv->rx[idx].fill_cnt),
+ 				.queue_id = cpu_to_be32(idx),
+ 			};
+ 		}
+-- 
+2.39.5
+
 
 
 
