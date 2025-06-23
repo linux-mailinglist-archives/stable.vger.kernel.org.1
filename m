@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-156052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD8C9AE4566
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 16DDDAE4419
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 88950446132
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D81383BEA74
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640D52472A2;
-	Mon, 23 Jun 2025 13:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0037B253F12;
+	Mon, 23 Jun 2025 13:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6wpZ+kE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ueTgCNry"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211C52F24;
-	Mon, 23 Jun 2025 13:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFF25242D90;
+	Mon, 23 Jun 2025 13:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686020; cv=none; b=jWhLyH72/hc8a+a25RErQKPZIvFNEAUsBOW5EgGSAewqcS5pQG5GSDAJPCm750ifxt0DalVDChpHMHYO+iBm9mDpMp9sYxWcS4uRPDRQ60KrxfG3BaW88ksF7wOBE879CdGvg19F6L/Ic1cfXB2+0tlHvuJEi9idnVC8G/TaT3s=
+	t=1750685457; cv=none; b=t07pqqNLBsfvBe1gntDZfyige5k5pGRy99qZ0hQooGSZ79fwjaDMtNqrS2tJuch7e5r2WeSM6C5T12qwrkWvDNOR5S+Fo0HqzK2uLadW0gijYH8TwVGQtPtWe3av0wTjw+Qhg0vBha5CIx0QFXDkTw32WlnhBVcI7va9PXQe20Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686020; c=relaxed/simple;
-	bh=KbxM3hJkyjpn1JNZuxjD3OxPKorwoE6WgXSmNZUGWtY=;
+	s=arc-20240116; t=1750685457; c=relaxed/simple;
+	bh=uRctoOa2mmLkHRyzagh2zRBkGUnVMNEHnXRh4qmM7Q4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4e6x1N4WNq+4PdO97uZFW7BkUK1VDQvx2L4aecSm61Xxmd/im4fRg6NNf6B5rCrwrdme71hOrnCOlgjqw6jIsqdd6LYmD7vwjEpS7XyFjB0GW9CDlPD5VTn8iVraE0C3rl77ntmAtIRGZ9k9KKwnGBsOrv+7HDFxWKZzrNgFas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6wpZ+kE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D03C4CEF0;
-	Mon, 23 Jun 2025 13:40:19 +0000 (UTC)
+	 MIME-Version; b=HexGflSk316g8fiyaCSgzUlZQsB5HyQCLvh9S/80JwzrddYLBTc9/bR86C0YeiQ/ZvnU9s+RwEEh3Dre1iuDYYb0IviVQH+vNYQgN/8ho6Tq9NKn5qKIywZds5haXxbf2v3PrXB/E+H3AQpv3VcA0IeDKv7U/HFBnlp/MG20P6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ueTgCNry; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC37C4CEEA;
+	Mon, 23 Jun 2025 13:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686020;
-	bh=KbxM3hJkyjpn1JNZuxjD3OxPKorwoE6WgXSmNZUGWtY=;
+	s=korg; t=1750685457;
+	bh=uRctoOa2mmLkHRyzagh2zRBkGUnVMNEHnXRh4qmM7Q4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6wpZ+kEcIapZEkHbieg9r/7YyK5MBKCNEJgle+ir8rVT4oYriCcS0BEkzr2ewiKU
-	 GiTZp0PVnxNow4gx0AOrdS31F+VvSZNeC1NUCagnj0RLwwzHiuYH9Ob+T7ugJla3UH
-	 Lk1LtbH2BRevRO6HgGR/KYeDPia0bSjKFyIc2Bpc=
+	b=ueTgCNryfRCulDBS0aM/TAcB+DtL/gDMRct6UHyGKqHZYsG1JnitTjEx0vvovx+jh
+	 j/VeeA72Sl5EknL9nQtR5/csIELoRT1gYSjCqN9IrwYn3PrD8Bp1WhaxSyF1QI4Sv1
+	 DgpTV4q3vZCp2IGDR4isB1lt1QsiPKRJdHbWya0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 075/411] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
+Subject: [PATCH 6.15 261/592] drm/amd/display: Add NULL pointer checks in dm_force_atomic_commit()
 Date: Mon, 23 Jun 2025 15:03:39 +0200
-Message-ID: <20250623130635.256424718@linuxfoundation.org>
+Message-ID: <20250623130706.514325347@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +68,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
+[ Upstream commit 3f397cd203f247879c2f1a061e90d4c8d23655de ]
 
-Dataflash did not work on my board. After checking schematics and using
-the proper GPIO, it works now. Also, make it active low to avoid:
+This commit updates the dm_force_atomic_commit function to replace the
+usage of PTR_ERR_OR_ZERO with IS_ERR for checking error states after
+retrieving the Connector (drm_atomic_get_connector_state), CRTC
+(drm_atomic_get_crtc_state), and Plane (drm_atomic_get_plane_state)
+states.
 
-flash@0 enforce active low on GPIO handle
+The function utilized PTR_ERR_OR_ZERO for error checking. However, this
+approach is inappropriate in this context because the respective
+functions do not return NULL; they return pointers that encode errors.
 
-Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+This change ensures that error pointers are properly checked using
+IS_ERR before attempting to dereference.
+
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/usb_a9263.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index 8a0cfbfd0c452..d1c07503ff76f 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -58,7 +58,7 @@
- 			};
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 0fe8bd19ecd13..d6214fc3921de 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -10510,16 +10510,20 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
+ 	 */
+ 	conn_state = drm_atomic_get_connector_state(state, connector);
  
- 			spi0: spi@fffa4000 {
--				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
-+				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
- 				status = "okay";
- 				mtd_dataflash@0 {
- 					compatible = "atmel,at45", "atmel,dataflash";
+-	ret = PTR_ERR_OR_ZERO(conn_state);
+-	if (ret)
++	/* Check for error in getting connector state */
++	if (IS_ERR(conn_state)) {
++		ret = PTR_ERR(conn_state);
+ 		goto out;
++	}
+ 
+ 	/* Attach crtc to drm_atomic_state*/
+ 	crtc_state = drm_atomic_get_crtc_state(state, &disconnected_acrtc->base);
+ 
+-	ret = PTR_ERR_OR_ZERO(crtc_state);
+-	if (ret)
++	/* Check for error in getting crtc state */
++	if (IS_ERR(crtc_state)) {
++		ret = PTR_ERR(crtc_state);
+ 		goto out;
++	}
+ 
+ 	/* force a restore */
+ 	crtc_state->mode_changed = true;
+@@ -10527,9 +10531,11 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
+ 	/* Attach plane to drm_atomic_state */
+ 	plane_state = drm_atomic_get_plane_state(state, plane);
+ 
+-	ret = PTR_ERR_OR_ZERO(plane_state);
+-	if (ret)
++	/* Check for error in getting plane state */
++	if (IS_ERR(plane_state)) {
++		ret = PTR_ERR(plane_state);
+ 		goto out;
++	}
+ 
+ 	/* Call commit internally with the state we just constructed */
+ 	ret = drm_atomic_commit(state);
 -- 
 2.39.5
 
