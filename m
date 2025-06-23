@@ -1,56 +1,69 @@
-Return-Path: <stable+bounces-157952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58AA1AE5655
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17460AE5712
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 242A71736E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEDE11C23B5D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EDE224B1F;
-	Mon, 23 Jun 2025 22:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96FB5225413;
+	Mon, 23 Jun 2025 22:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkQdlhm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xXS74aTv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9302E222599;
-	Mon, 23 Jun 2025 22:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54E76221543;
+	Mon, 23 Jun 2025 22:25:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717121; cv=none; b=fOnve6K1eMxBmWdMu9Q50vOtQb2Fo07nU370L6v/4ihlCj74uZnDTnFmHaxRWFDVuvat5QVbu31ApuOd/54iMv5Y2yeUV1CPbjMG/Gkji1gHX1D+/1gJlOEqyKAKUxa0M8CiBfyLauIgaft1dVXs8Yf0cYsRYVfGIPVsvqXfscY=
+	t=1750717548; cv=none; b=cJqgu73OdsW+oTlKvGFgIzC2Dho4Xkk78PrlMZZtZzMynfi0fhgtKItTyGNT7czu18UvYxEvVtPntvxFtGnJUCYYrySqHHUhhUuB2rw88LrTPk/IlMbnaUyWVJpm3yJWWmD7EyBb6B+TYZ/FGxhvugJk3J2kGxGlbCe1q10TC/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717121; c=relaxed/simple;
-	bh=G9dtbWEbSAkSB2hFrz456tRDksHhdfZl6iDoVK8HkyY=;
+	s=arc-20240116; t=1750717548; c=relaxed/simple;
+	bh=CnnuTi5oGar73iwmeqyNWOPlGKR5d8sgsvhQb1lJ01A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XyB3B9so54wh5vxFoUHKIzVwv4xWN/PCtrQE69fOke5atIPzTTHT7gHNZbmyaMCGxlgtIJeURGt3R1fttF2VTO7zbXV6/7ytKP9utPlcCuzSETfDB2rdlU/TKwLf7Ri41CQG6jPTxlUuwrpCymzWwgogpPNxltONXSNPeRuUcFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkQdlhm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B374C4CEEA;
-	Mon, 23 Jun 2025 22:18:41 +0000 (UTC)
+	 MIME-Version; b=tOpgn7o363VMAgQRf/9mgIHy8Do7HB3XlvKG1R5UepY2aGcFKhThiOjKSjC9kRTlaWdgYZbrYXXk6gQO4nka3YMeLcGYs0ycppLGyfqodjm7D6qFjIkVUxAi6Yc31g44Fl/nyVvKTBqvpPpHuL1MbLQqnCaskZfQhthx0wsCry8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xXS74aTv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA5BBC4CEEA;
+	Mon, 23 Jun 2025 22:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717121;
-	bh=G9dtbWEbSAkSB2hFrz456tRDksHhdfZl6iDoVK8HkyY=;
+	s=korg; t=1750717548;
+	bh=CnnuTi5oGar73iwmeqyNWOPlGKR5d8sgsvhQb1lJ01A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkQdlhm+yJsfbITRGMDPkXAKbBdR25QtSheYXl437c04sKYZ4kWUsW9o7C0UGGu15
-	 4XDcelGM6r85uCfq5FfxWA5GdTLW8njhn2OTDg+quR/IKbNkJNaz1hZFJJaJpPyQPF
-	 sDNqfOgiVn3SDZ23Y462wG5E+5uNHw1Qh4iN5uKI=
+	b=xXS74aTvS2wMidmhyCFzEtrsadD1h1wPIkCk4bnyLYR/LWU/Z2mrhv9FhUu0zeoNZ
+	 pBIXAukXsOdtne/sB3RBId8VrVi53GJHC+23eSTN/004bmLUuXDbTtZL/pquZ3prnV
+	 pxKO3UJQWWbPR/15BKfgUMtXM+Wegu9XEPCy81zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 5.15 404/411] ext4: make abort mount option handling standard
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Namhyung Kim <namhyung.kim@lge.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 411/414] perf evsel: Missed close() when probing hybrid core PMUs
 Date: Mon, 23 Jun 2025 15:09:08 +0200
-Message-ID: <20250623130643.851641431@linuxfoundation.org>
+Message-ID: <20250623130652.224732800@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +75,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Ian Rogers <irogers@google.com>
 
-commit 22b8d707b07e6e06f50fe1d9ca8756e1f894eb0d upstream.
+[ Upstream commit ebec62bc7ec435b475722a5467d67c720a1ad79f ]
 
-'abort' mount option is the only mount option that has special handling
-and sets a bit in sbi->s_mount_flags. There is not strong reason for
-that so just simplify the code and make 'abort' set a bit in
-sbi->s_mount_opt2 as any other mount option. This simplifies the code
-and will allow us to drop EXT4_MF_FS_ABORTED completely in the following
-patch.
+Add missing close() to avoid leaking perf events.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230616165109.21695-4-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 76486b104168 ("ext4: avoid remount errors with 'abort' mount option")
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In past perfs this mattered little as the function was just used by 'perf
+list'.
+
+As the function is now used to detect hybrid PMUs leaking the perf event
+is somewhat more painful.
+
+Fixes: b41f1cec91c37eee ("perf list: Skip unsupported events")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Link: https://lore.kernel.org/r/20250614004108.1650988-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/ext4.h  |    1 +
- fs/ext4/super.c |    6 ++----
- 2 files changed, 3 insertions(+), 4 deletions(-)
+ tools/perf/util/print-events.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -1255,6 +1255,7 @@ struct ext4_inode_info {
- #define EXT4_MOUNT2_MB_OPTIMIZE_SCAN	0x00000080 /* Optimize group
- 						    * scanning in mballoc
- 						    */
-+#define EXT4_MOUNT2_ABORT		0x00000100 /* Abort filesystem */
+diff --git a/tools/perf/util/print-events.c b/tools/perf/util/print-events.c
+index 81e0135cddf01..a1c71d9793bd8 100644
+--- a/tools/perf/util/print-events.c
++++ b/tools/perf/util/print-events.c
+@@ -282,6 +282,7 @@ bool is_event_supported(u8 type, u64 config)
+ 			ret = evsel__open(evsel, NULL, tmap) >= 0;
+ 		}
  
- #define clear_opt(sb, opt)		EXT4_SB(sb)->s_mount_opt &= \
- 						~EXT4_MOUNT_##opt
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -2023,6 +2023,7 @@ static const struct mount_opts {
- 	 MOPT_SET | MOPT_2 | MOPT_EXT4_ONLY},
- 	{Opt_fc_debug_max_replay, 0, MOPT_GTE0},
- #endif
-+	{Opt_abort, EXT4_MOUNT2_ABORT, MOPT_SET | MOPT_2},
- 	{Opt_err, 0, 0}
- };
- 
-@@ -2143,9 +2144,6 @@ static int handle_mount_opt(struct super
- 	case Opt_removed:
- 		ext4_msg(sb, KERN_WARNING, "Ignoring removed %s option", opt);
- 		return 1;
--	case Opt_abort:
--		ext4_set_mount_flag(sb, EXT4_MF_FS_ABORTED);
--		return 1;
- 	case Opt_i_version:
- 		sb->s_flags |= SB_I_VERSION;
- 		return 1;
-@@ -5851,7 +5849,7 @@ static int ext4_remount(struct super_blo
- 		goto restore_opts;
++		evsel__close(evsel);
+ 		evsel__delete(evsel);
  	}
  
--	if (ext4_test_mount_flag(sb, EXT4_MF_FS_ABORTED))
-+	if (test_opt2(sb, ABORT))
- 		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
- 
- 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
+-- 
+2.39.5
+
 
 
 
