@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-156965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71BD2AE51E7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D105DAE4E9D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2A2624A2BB3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697A4189F741
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB2D221FCC;
-	Mon, 23 Jun 2025 21:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9406622157E;
+	Mon, 23 Jun 2025 21:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6BTyNK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+oEW8mt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7AB4409;
-	Mon, 23 Jun 2025 21:38:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526E570838;
+	Mon, 23 Jun 2025 21:07:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714704; cv=none; b=TdX0jU3XCgP0R5I3Hy4AlEAuNAp9vDWhla4yPp8FR/tr6bteuU1FzkTxA2zJpqfpRh4lJMGGWKPWND6oriXLrIb9Ha79gT0bDr5FsxlJZLKd5Uv6muRtNh0WwMxumtAAuc+kfj8O3iiX/KboV9y76PgbKyvZ5Ama96y6DI308Wc=
+	t=1750712849; cv=none; b=Ue+4FpH8//O+FGK5UCg49Xc0lHc83cmhNmJdAiJwc6UTDxIw2dzSPKBIAT7Ju+Tl3soGV7+Ks//DVTxR/qxYyKF9LEPV1jNAXSQx3YwAABPHDOhp8ZzyS+CZJxhe6jjeUUrNbUoZedn8bSzKrZTSjSGCOyA3tUA838zK/T+EfP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714704; c=relaxed/simple;
-	bh=iJgMYC1kQboYugp4QPKRWJMT54LbS11hqVXYjtLJMcM=;
+	s=arc-20240116; t=1750712849; c=relaxed/simple;
+	bh=uyRm8PxxDvoXiAvogeoptTj8iRqR0JooAANxPvL7jcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gb4U5QGbYR2Kdu41DTcEjzgPw/8eT3up8gwd44PxPQPxoHYKPJApmdR5KhamUxYE9cUqZbpkAc3J6Ye9TYFgfz8jl1PMVYq2LikpqLiELVb15GusECeovQoqkGJ3GdETIzcWEfSReMFXw/1v6r5wet7BcV6uFIMOwkS9tC36TZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6BTyNK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73A73C4CEEA;
-	Mon, 23 Jun 2025 21:38:23 +0000 (UTC)
+	 MIME-Version; b=E6mhrB8DphblNyjY/quR961etA3AvG/apcLWAA7XGWWCu67oewIBouT8e+p2zp8hS3UAfubQBKfJ/UWEGFj94Cpi72NZYamQHXfWchx6fjbMmTRJm9zD4czqNAJxHOWG3WNkPcuSnFGjN0XNpz4fra4Dlel9fNQGBJKBmyre+Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+oEW8mt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1A4C4CEEA;
+	Mon, 23 Jun 2025 21:07:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714703;
-	bh=iJgMYC1kQboYugp4QPKRWJMT54LbS11hqVXYjtLJMcM=;
+	s=korg; t=1750712849;
+	bh=uyRm8PxxDvoXiAvogeoptTj8iRqR0JooAANxPvL7jcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G6BTyNK8Lw9o79AA8ZGyvIG++ouBEDCWANcmNIESnPs3bLM3dfhdZO7A/scDgsyw3
-	 0GzwsJtYAQFoWps1m9QyjIDw1vEWB6GlDisqDNdpjA/6oSjTS43Lb/ZY+l472JlPGP
-	 jK36iz0D6o6EhpIiUnbHge9msPUUJV3sPVQKIKlc=
+	b=T+oEW8mt0B88JFfb0XUC9rlhjET0bzdlVoU/gFusNOiw0f86dNM1TaYwIRSpcaRF6
+	 QFiKR7sSNG6GadIZlvLDDrIlPanuOapQEt/tdyALKNgCVA+m1ORZR/xz2ewc8rxjjr
+	 NBaKX9t6yNy8eaucGveH6Bt0vIdzdON1XZL3piNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 190/508] do_change_type(): refuse to operate on unmounted/not ours mounts
-Date: Mon, 23 Jun 2025 15:03:55 +0200
-Message-ID: <20250623130649.946796214@linuxfoundation.org>
+Subject: [PATCH 5.15 092/411] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
+Date: Mon, 23 Jun 2025 15:03:56 +0200
+Message-ID: <20250623130635.773350173@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +68,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
+[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
 
-Ensure that propagation settings can only be changed for mounts located
-in the caller's mount namespace. This change aligns permission checking
-with the rest of mount(2).
+In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
+perf_hpp_list") it assumes that act->thread is set prior to calling
+do_zoom_thread().
 
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
-Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+This doesn't happen when we use ESC or the Left arrow key to Zoom out of
+a specific thread, making this operation not to work and we get stuck
+into the thread zoom.
+
+In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
+pstack_peek()") it says no need to set actions->thread, and at that
+point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
+check was added before the zoom out of thread could kick in.
+
+We can zoom out using the alternative 't' thread zoom toggle hotkey to
+finally set actions->thread before calling do_zoom_thread() and zoom
+out, but lets also fix the ESC/Zoom out of thread case.
+
+Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index 65aa3495db6a1..aae1a77ac2d3f 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2371,6 +2371,10 @@ static int do_change_type(struct path *path, int ms_flags)
- 		return -EINVAL;
- 
- 	namespace_lock();
-+	if (!check_mnt(mnt)) {
-+		err = -EINVAL;
-+		goto out_unlock;
-+	}
- 	if (type == MS_SHARED) {
- 		err = invent_group_ids(mnt, recurse);
- 		if (err)
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index fd3e67d2c6bdd..a68d3ee1769d6 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -3238,10 +3238,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
+ 				/*
+ 				 * No need to set actions->dso here since
+ 				 * it's just to remove the current filter.
+-				 * Ditto for thread below.
+ 				 */
+ 				do_zoom_dso(browser, actions);
+ 			} else if (top == &browser->hists->thread_filter) {
++				actions->thread = thread;
+ 				do_zoom_thread(browser, actions);
+ 			} else if (top == &browser->hists->socket_filter) {
+ 				do_zoom_socket(browser, actions);
 -- 
 2.39.5
 
