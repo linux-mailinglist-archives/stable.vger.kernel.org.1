@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88F93AE44DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7592AE4529
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBF4416BFAA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A44E3B7A2A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8FC238C19;
-	Mon, 23 Jun 2025 13:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA840251792;
+	Mon, 23 Jun 2025 13:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgCAGLFP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yf0OGEMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E854B347DD;
-	Mon, 23 Jun 2025 13:40:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8717724DFF3;
+	Mon, 23 Jun 2025 13:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686043; cv=none; b=HCH4Fhdm+kTff6+JL5EPiiFxtZI8iqZ4s5KM+M+qYCV8BXLI7uG2myKQYo7YP8TCqH442kOG5C+6X6VTa1rOqOpvqAlb/WYgS16j0D3PInl+mtiCQ5lly1yM59+Rl6tIWSSxidklrC669EsypKAC4FLdncoVxpAKHSmdu5NpCc0=
+	t=1750685664; cv=none; b=D+JA/J0vvDX8JUaSqkLmzNRahHoiDvaOmUGEsKCWILY1BvErXFk7vA7btSG4VkqBEuQFJPBRQHnjMVtgfJUJWigrS1kDLsH7EhVs0JzmeH8QeE1GxpI+lIYSiCoac7V/vD9ZfCUmsJfgzf/n8nsLCunN1g2moxMW9JkJBD847IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686043; c=relaxed/simple;
-	bh=WknJks64u5+257tj33r3kuT8C6tnansvb0WCtqEM3SM=;
+	s=arc-20240116; t=1750685664; c=relaxed/simple;
+	bh=0MOQUBjHLVq3aE8nVrZ5lVnNIOII3sU/LSWLN72gNtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b433+gMxs7l10dB5Ckyg/Ya0ZliB9Oezd3Iccv9uLn/U+xje8ZROCh+pyOl5Ubnc+uUsQ9mvDGrI/EOBX+86TfOc0Epx63a2aNf+0mCiMl3KQo58MAm/UrIdpXnRfaz7CKi39Fnje//HujRkQYZYkloweRy77dDFMf6bE0a5fgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgCAGLFP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C3FAC4CEF0;
-	Mon, 23 Jun 2025 13:40:42 +0000 (UTC)
+	 MIME-Version; b=tJ9PzW9ievRfaKOicXtBGwmt9ebtzkuOpBltGy/bD0BM5ZzReK8NxQqmhAFiYjdiOROBTKjk+fOpVHEu3lgC33b/MZ2Vm4cxgeH5RhGx6LgXpnlrM2+D/aMwuHK1JHHvOsOf/tlBXljf6EpUM771pJSYorB48sEXyIQ/EOFYM84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yf0OGEMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 105C3C4CEEA;
+	Mon, 23 Jun 2025 13:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686042;
-	bh=WknJks64u5+257tj33r3kuT8C6tnansvb0WCtqEM3SM=;
+	s=korg; t=1750685664;
+	bh=0MOQUBjHLVq3aE8nVrZ5lVnNIOII3sU/LSWLN72gNtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgCAGLFPG7ULwkVZEOd+5IBX2MCBOQC4l88W3yDDNrKacBPwXLqhQI9nJ69y+2Ezc
-	 TXEYJqHgjpkHusY4Aj9U8vwH89hBFwOYN3sFoRGklX9KekqC9nQqa1iK47wpkEZNFr
-	 uE4Yw1AEJxEAQ84I19qa0q9YA8kQ1wPH94Maf8Yw=
+	b=yf0OGEMr4ZorQ7i/ef87E2NA3npfB/QGNVyzoQYs2cD4JDBlp3Sakzt4PRtdWr3Q9
+	 uiLWZDxI9xAgn8ZIEZigoSpKWK82nxUrNwwcSVRWtNipxMfJxMllwtNSGaVpSl5FcV
+	 s2gp2oywINrXlVAnDIakn2hHmOLh2timjP7NY7Lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Luczaj <mhal@rbox.co>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	John Fastabend <john.fastabend@gmail.com>,
+	Sungjong Seo <sj1557.seo@samsung.com>,
+	Yuezhang Mo <Yuezhang.Mo@sony.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 065/411] bpf, sockmap: Avoid using sk_socket after free when sending
+Subject: [PATCH 6.15 251/592] exfat: do not clear volume dirty flag during sync
 Date: Mon, 23 Jun 2025 15:03:29 +0200
-Message-ID: <20250623130634.952378026@linuxfoundation.org>
+Message-ID: <20250623130706.266755563@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,127 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Yuezhang Mo <Yuezhang.Mo@sony.com>
 
-[ Upstream commit 8259eb0e06d8f64c700f5fbdb28a5c18e10de291 ]
+[ Upstream commit 46a557694b464881b3c2c4a0ba389a6436419a37 ]
 
-The sk->sk_socket is not locked or referenced in backlog thread, and
-during the call to skb_send_sock(), there is a race condition with
-the release of sk_socket. All types of sockets(tcp/udp/unix/vsock)
-will be affected.
+xfstests generic/482 tests the file system consistency after each
+FUA operation. It fails when run on exfat.
 
-Race conditions:
-'''
-CPU0                               CPU1
+exFAT clears the volume dirty flag with a FUA operation during sync.
+Since s_lock is not held when data is being written to a file, sync
+can be executed at the same time. When data is being written to a
+file, the FAT chain is updated first, and then the file size is
+updated. If sync is executed between updating them, the length of the
+FAT chain may be inconsistent with the file size.
 
-backlog::skb_send_sock
-  sendmsg_unlocked
-    sock_sendmsg
-      sock_sendmsg_nosec
-                                   close(fd):
-                                     ...
-                                     ops->release() -> sock_map_close()
-                                     sk_socket->ops = NULL
-                                     free(socket)
-      sock->ops->sendmsg
-            ^
-            panic here
-'''
+To avoid the situation where the file system is inconsistent but the
+volume dirty flag is cleared, this commit moves the clearing of the
+volume dirty flag from exfat_fs_sync() to exfat_put_super(), so that
+the volume dirty flag is not cleared until unmounting. After the
+move, there is no additional action during sync, so exfat_fs_sync()
+can be deleted.
 
-The ref of psock become 0 after sock_map_close() executed.
-'''
-void sock_map_close()
-{
-    ...
-    if (likely(psock)) {
-    ...
-    // !! here we remove psock and the ref of psock become 0
-    sock_map_remove_links(sk, psock)
-    psock = sk_psock_get(sk);
-    if (unlikely(!psock))
-        goto no_psock; <=== Control jumps here via goto
-        ...
-        cancel_delayed_work_sync(&psock->work); <=== not executed
-        sk_psock_put(sk, psock);
-        ...
-}
-'''
-
-Based on the fact that we already wait for the workqueue to finish in
-sock_map_close() if psock is held, we simply increase the psock
-reference count to avoid race conditions.
-
-With this patch, if the backlog thread is running, sock_map_close() will
-wait for the backlog thread to complete and cancel all pending work.
-
-If no backlog running, any pending work that hasn't started by then will
-fail when invoked by sk_psock_get(), as the psock reference count have
-been zeroed, and sk_psock_drop() will cancel all jobs via
-cancel_delayed_work_sync().
-
-In summary, we require synchronization to coordinate the backlog thread
-and close() thread.
-
-The panic I catched:
-'''
-Workqueue: events sk_psock_backlog
-RIP: 0010:sock_sendmsg+0x21d/0x440
-RAX: 0000000000000000 RBX: ffffc9000521fad8 RCX: 0000000000000001
-...
-Call Trace:
- <TASK>
- ? die_addr+0x40/0xa0
- ? exc_general_protection+0x14c/0x230
- ? asm_exc_general_protection+0x26/0x30
- ? sock_sendmsg+0x21d/0x440
- ? sock_sendmsg+0x3e0/0x440
- ? __pfx_sock_sendmsg+0x10/0x10
- __skb_send_sock+0x543/0xb70
- sk_psock_backlog+0x247/0xb80
-...
-'''
-
-Fixes: 4b4647add7d3 ("sock_map: avoid race between sock_map_close and sk_psock_put")
-Reported-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Reviewed-by: John Fastabend <john.fastabend@gmail.com>
-Link: https://lore.kernel.org/r/20250516141713.291150-1-jiayuan.chen@linux.dev
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/exfat/super.c | 30 +++++++-----------------------
+ 1 file changed, 7 insertions(+), 23 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index f4186d4980b92..8a0a23079d902 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -638,6 +638,13 @@ static void sk_psock_backlog(struct work_struct *work)
- 	bool ingress;
- 	int ret;
+diff --git a/fs/exfat/super.c b/fs/exfat/super.c
+index 8465033a6cf0c..7ed858937d45d 100644
+--- a/fs/exfat/super.c
++++ b/fs/exfat/super.c
+@@ -36,31 +36,12 @@ static void exfat_put_super(struct super_block *sb)
+ 	struct exfat_sb_info *sbi = EXFAT_SB(sb);
  
-+	/* Increment the psock refcnt to synchronize with close(fd) path in
-+	 * sock_map_close(), ensuring we wait for backlog thread completion
-+	 * before sk_socket freed. If refcnt increment fails, it indicates
-+	 * sock_map_close() completed with sk_socket potentially already freed.
-+	 */
-+	if (!sk_psock_get(psock->sk))
-+		return;
- 	mutex_lock(&psock->work_mutex);
- 	while ((skb = skb_peek(&psock->ingress_skb))) {
- 		len = skb->len;
-@@ -691,6 +698,7 @@ static void sk_psock_backlog(struct work_struct *work)
- 	}
- end:
- 	mutex_unlock(&psock->work_mutex);
-+	sk_psock_put(psock->sk, psock);
+ 	mutex_lock(&sbi->s_lock);
++	exfat_clear_volume_dirty(sb);
+ 	exfat_free_bitmap(sbi);
+ 	brelse(sbi->boot_bh);
+ 	mutex_unlock(&sbi->s_lock);
  }
  
- struct sk_psock *sk_psock_init(struct sock *sk, int node)
+-static int exfat_sync_fs(struct super_block *sb, int wait)
+-{
+-	struct exfat_sb_info *sbi = EXFAT_SB(sb);
+-	int err = 0;
+-
+-	if (unlikely(exfat_forced_shutdown(sb)))
+-		return 0;
+-
+-	if (!wait)
+-		return 0;
+-
+-	/* If there are some dirty buffers in the bdev inode */
+-	mutex_lock(&sbi->s_lock);
+-	sync_blockdev(sb->s_bdev);
+-	if (exfat_clear_volume_dirty(sb))
+-		err = -EIO;
+-	mutex_unlock(&sbi->s_lock);
+-	return err;
+-}
+-
+ static int exfat_statfs(struct dentry *dentry, struct kstatfs *buf)
+ {
+ 	struct super_block *sb = dentry->d_sb;
+@@ -219,7 +200,6 @@ static const struct super_operations exfat_sops = {
+ 	.write_inode	= exfat_write_inode,
+ 	.evict_inode	= exfat_evict_inode,
+ 	.put_super	= exfat_put_super,
+-	.sync_fs	= exfat_sync_fs,
+ 	.statfs		= exfat_statfs,
+ 	.show_options	= exfat_show_options,
+ 	.shutdown	= exfat_shutdown,
+@@ -751,10 +731,14 @@ static void exfat_free(struct fs_context *fc)
+ 
+ static int exfat_reconfigure(struct fs_context *fc)
+ {
++	struct super_block *sb = fc->root->d_sb;
+ 	fc->sb_flags |= SB_NODIRATIME;
+ 
+-	/* volume flag will be updated in exfat_sync_fs */
+-	sync_filesystem(fc->root->d_sb);
++	sync_filesystem(sb);
++	mutex_lock(&EXFAT_SB(sb)->s_lock);
++	exfat_clear_volume_dirty(sb);
++	mutex_unlock(&EXFAT_SB(sb)->s_lock);
++
+ 	return 0;
+ }
+ 
 -- 
 2.39.5
 
