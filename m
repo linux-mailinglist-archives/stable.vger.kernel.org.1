@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 881F0AE4ECB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 559CFAE4FD3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 24F57173167
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0EE017F68E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 241261F582A;
-	Mon, 23 Jun 2025 21:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A31F219E0;
+	Mon, 23 Jun 2025 21:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dv0oCJHt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2pVzP/1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68D970838;
-	Mon, 23 Jun 2025 21:09:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 386DC2628C;
+	Mon, 23 Jun 2025 21:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712950; cv=none; b=EUhu+oLbEp5n4XAUhuxf6Q/T/V2FNJy+ImNV4xyI9cp+070ybBjGrnJF3bxDUJFn7+hUE5T1BbegF6STQE3Zhf9HgDVmn/NDMfhpaDvwSYGsk+3rFoQtmZdK3wp9OS0hfRY+VcBmZ6gw6g09x1wXpltx5IXXTnAosxjM/NPeaVk=
+	t=1750713597; cv=none; b=a13DQwc6Hgm2TZxrkcjfW/6IbN2qsKlzzd9AsS+bKVa9zN7oOYvZtUW8KupOM0fti09EeQ63SRVHvsSEMHMfxEMfvjt3Lnb+0nf+eZw8AEl0dGKxpiFiAvcYFhMIag6KgS0Bj+aQDhNZanYndEbEIKWJk/aKXMvPWwk8X8LWqU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712950; c=relaxed/simple;
-	bh=7d96rNN7EYP/72DaBLl9FroGPqEwFxdenMgdhc58U5E=;
+	s=arc-20240116; t=1750713597; c=relaxed/simple;
+	bh=EWOOqxPZRcfJISl/hHmmbhmXRA8sdFEw03/510R7sQY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gUZfEK2oyExyn56xXzR5/LxKo9/FLnADoswyTbGGoMy2OUYvRvHO6QyumpAQwx5VVMzJSjtscXGbplJbe06QzT1WfymkWhiLiyPDF5WKk9c/skFq+5Uy80AueceL6Kysu5GYfuQi9z5sp2qW2zzcL3BHdMw58QT4NiXQGGy8fmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dv0oCJHt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47576C4CEEA;
-	Mon, 23 Jun 2025 21:09:10 +0000 (UTC)
+	 MIME-Version; b=Ntb8ja1+A88GaMGozuc87jvTzgKAdhYgEmyZ8TlcDUu3ri20VBsjN8zR4NzgJPlT8Kj2DXLy+fHS7X/05qvbeUIA9lX+lWjt4Avir3RfgRwzqhjUdpwWgDbfa2Obndgbe34JEoZRkCDbvny5OrUlrYWiGT8vfyOrB0xByNy5gA4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2pVzP/1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3EDBC4CEEA;
+	Mon, 23 Jun 2025 21:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712950;
-	bh=7d96rNN7EYP/72DaBLl9FroGPqEwFxdenMgdhc58U5E=;
+	s=korg; t=1750713597;
+	bh=EWOOqxPZRcfJISl/hHmmbhmXRA8sdFEw03/510R7sQY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dv0oCJHtS1L3ER2wFeLpnu9S878AuG/fzNHR2LqZ0Rg6g4PAiEIFLrZmOm3LQ/qye
-	 w6eRrB6o5pI8BTCbvlsqS/yJmCOW8BHMCXSxoi/3yBw0cKPEo2BWJRGwhVnjEvfWop
-	 Goz/Qw9N3qUVkJXj2Gzd4tJbjsNVKWoGEmEebxuw=
+	b=2pVzP/1pdtVzQM09CpyiURU8YOq4LhjmMijt5N80U0IkNy7jpEUZJ77wo128xL1/l
+	 yr+FQjHngnpdIcRSDG7H/EWzgrtCV2BtcXjq6aWAPfkv3EzUPjk84mDNSjpkuRZUqn
+	 HQ7nEWAPeIjteGluOd2M495OL8mmiEtqMyk7QxRU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 020/414] regulator: max20086: Change enable gpio to optional
+	Adam Ford <aford173@gmail.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 112/508] arm64: dts: imx8mn-beacon: Fix RTC capacitive load
 Date: Mon, 23 Jun 2025 15:02:37 +0200
-Message-ID: <20250623130642.530818080@linuxfoundation.org>
+Message-ID: <20250623130648.051904062@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
+From: Adam Ford <aford173@gmail.com>
 
-commit e8ac7336dd62f0443a675ed80b17f0f0e6846e20 upstream.
+[ Upstream commit c3f03bec30efd5082b55876846d57b5d17dae7b9 ]
 
-The enable pin can be configured as always enabled by the hardware. Make
-the enable gpio request optional so the driver doesn't fail to probe
-when `enable-gpios` property is not present in the device tree.
+Although not noticeable when used every day, the RTC appears to drift when
+left to sit over time.  This is due to the capacitive load not being
+properly set. Fix RTC drift by correcting the capacitive load setting
+from 7000 to 12500, which matches the actual hardware configuration.
 
-Cc: stable@vger.kernel.org
-Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
-Signed-off-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
-Link: https://patch.msgid.link/20250420-fix-max20086-v1-2-8cc9ee0d5a08@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 36ca3c8ccb53 ("arm64: dts: imx: Add Beacon i.MX8M Nano development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max20086-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -264,7 +264,7 @@ static int max20086_i2c_probe(struct i2c
- 	 * shutdown.
- 	 */
- 	flags = boot_on ? GPIOD_OUT_HIGH : GPIOD_OUT_LOW;
--	chip->ena_gpiod = devm_gpiod_get(chip->dev, "enable", flags);
-+	chip->ena_gpiod = devm_gpiod_get_optional(chip->dev, "enable", flags);
- 	if (IS_ERR(chip->ena_gpiod)) {
- 		ret = PTR_ERR(chip->ena_gpiod);
- 		dev_err(chip->dev, "Failed to get enable GPIO: %d\n", ret);
+diff --git a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+index 1133cded9be2f..c4b1c6029c9a9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mn-beacon-som.dtsi
+@@ -240,6 +240,7 @@
+ 	rtc: rtc@51 {
+ 		compatible = "nxp,pcf85263";
+ 		reg = <0x51>;
++		quartz-load-femtofarads = <12500>;
+ 	};
+ };
+ 
+-- 
+2.39.5
+
 
 
 
