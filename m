@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B60AE5214
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76E4EAE530F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA2371B64593
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4C4E5188EF3D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD13C22256B;
-	Mon, 23 Jun 2025 21:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6266223DEF;
+	Mon, 23 Jun 2025 21:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQdYBc3Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkY3/JYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B6641EE7C6;
-	Mon, 23 Jun 2025 21:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739B319049B;
+	Mon, 23 Jun 2025 21:49:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714799; cv=none; b=BWQki8Z8Pzain8yxVJc7MzJNllmlKOOtOdiXcim8/umZhMEQxbneErhcqgrya6Hc13xGFMgwm4ngKb4ohZdXaeyIn7Jnwh0ReGBRDpmGIl8oOwrqvt/pVByj7S1rRaQTruDTdf0uK3Jeu7XVM67ZUz1/cEq8H9WcQU2BXuBmlVQ=
+	t=1750715356; cv=none; b=biAQmYn6QuvTqVeWphT6JLssK2juxMnT4W5+INQsunie5QW16vSZnilOKlovOVOb8PWaiMI7BHKpus5HP5aACwrOKnytofkhrkWdRF/cx48FAT47gSirmuF/dpISxUkhjwpvav8vbeYEqmR8cctrwiRHjR5eQUaOFmsg5y5UOMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714799; c=relaxed/simple;
-	bh=w5qtbRgGeBmrQmHdmPkWq6oO7It4xLbmbpwGHqCGTpw=;
+	s=arc-20240116; t=1750715356; c=relaxed/simple;
+	bh=NVH0hNQyImhhgVeS7Bi7nLP7bG+VazgxHa8c72NGSY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Drfp17WOX1IecDITFWoMW89+QDrrbRlltTKw+hXfeY5f8JKKSid6LMg6hjlg1KyajFhwMkv0W835hKXVT9wgevLQ9TlCGEaB+ZcCdHupkIjr+UPqE/cAjIF/5Fc5SY7wxJEtFw4hrc6q8e+cSFOgluEyoTisMBYoFy+Zp0uc854=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQdYBc3Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BE72C4CEEA;
-	Mon, 23 Jun 2025 21:39:58 +0000 (UTC)
+	 MIME-Version; b=HtLD3yLhaYYvPp5QIUACtx3t3K3gBenopDWSG6WvsWF7227/ytUx/fUDUj+4txETU3xlu90ve24ARLSz1AQogjW4x7219ewMc8f5vdsEYgqzbHmMYYl+r1S2nYvSICbpM4P9K+bRn2051fOLP2CxBV7B/T+gyB0H0u6keyeoyDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkY3/JYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C02DC4CEED;
+	Mon, 23 Jun 2025 21:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714799;
-	bh=w5qtbRgGeBmrQmHdmPkWq6oO7It4xLbmbpwGHqCGTpw=;
+	s=korg; t=1750715356;
+	bh=NVH0hNQyImhhgVeS7Bi7nLP7bG+VazgxHa8c72NGSY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aQdYBc3Q0wWsra0U0qyiKmMGCVGAs91ONvBKsp3W7NP+rtQNYulrYnmJhBsojM92C
-	 iX0wJcrYkF+ioWLQhE9Huk2P4GAvV7D7yJa5tLOkZaWDUaYrdMWuruXWAmyRXzPucv
-	 5qs9VCZq3sksQoppDxhU12xQQA3JJxcmScJFRdk4=
+	b=tkY3/JYufSU7yFQHOuL15iSzjQCDTY9HZzi0yFXKUHID4E3woreZ1bmfw0m3grPcz
+	 CJZ01TSD9YrZvZtyWwZpVGXzzPQ3CxmcPbV8vMmSzWY1hWsqh5bqQtqcOAhIxARoAp
+	 xdTBWOluw6AJYKZx/awElQVs8n65Djq6ZkJwI58E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tali Perry <tali.perry1@gmail.com>,
-	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
+	Kees Cook <kees@kernel.org>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 254/355] i2c: npcm: Add clock toggle recovery
+Subject: [PATCH 6.6 194/290] fbcon: Make sure modelist not set on unregistered console
 Date: Mon, 23 Jun 2025 15:07:35 +0200
-Message-ID: <20250623130634.388948571@linuxfoundation.org>
+Message-ID: <20250623130632.691117044@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,51 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tali Perry <tali.perry1@gmail.com>
+From: Kees Cook <kees@kernel.org>
 
-[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
+[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
 
-During init of the bus, the module checks that the bus is idle.
-If one of the lines are stuck try to recover them first before failing.
-Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
+It looks like attempting to write to the "store_modes" sysfs node will
+run afoul of unregistered consoles:
 
-Signed-off-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
-Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
+index -1 is out of range for type 'fb_info *[32]'
+...
+ fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
+ fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
+ store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
+ dev_attr_store+0x55/0x80 drivers/base/core.c:2439
+
+static struct fb_info *fbcon_registered_fb[FB_MAX];
+...
+static signed char con2fb_map[MAX_NR_CONSOLES];
+...
+static struct fb_info *fbcon_info_from_console(int console)
+...
+        return fbcon_registered_fb[con2fb_map[console]];
+
+If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
+as callers of fbcon_info_from_console() are trying to compare against
+existing "info" pointers, so error handling should kick in correctly.
+
+Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/video/fbdev/core/fbcon.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index d97694ac29ca9..3f30c3cff7201 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -1950,10 +1950,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 7a6f9a3cb3ba3..75996ef9992e4 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -115,9 +115,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
  
- 	/* check HW is OK: SDA and SCL should be high at this point. */
- 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
--		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
--		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
--			npcm_i2c_get_SCL(&bus->adap));
--		return -ENXIO;
-+		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
-+				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
-+		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
-+			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
-+				bus->num, npcm_i2c_get_SDA(&bus->adap),
-+				npcm_i2c_get_SCL(&bus->adap));
-+			return -ENXIO;
-+		}
- 	}
+ static struct fb_info *fbcon_info_from_console(int console)
+ {
++	signed char fb;
+ 	WARN_CONSOLE_UNLOCKED();
  
- 	npcm_i2c_int_enable(bus, true);
+-	return fbcon_registered_fb[con2fb_map[console]];
++	fb = con2fb_map[console];
++	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
++		return NULL;
++
++	return fbcon_registered_fb[fb];
+ }
+ 
+ static int logo_lines;
 -- 
 2.39.5
 
