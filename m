@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B24DAE54A4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C75B7AE50FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75924447FB5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E9BF11B60859
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA1E821FF2B;
-	Mon, 23 Jun 2025 22:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A3A221B8F6;
+	Mon, 23 Jun 2025 21:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeUO0CuJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7h4dIaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673A419DF4A;
-	Mon, 23 Jun 2025 22:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178EC1EFF9F;
+	Mon, 23 Jun 2025 21:29:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716203; cv=none; b=mcxR0Yx6gZD2lOKA+JLhwCa6SFPg60aH7fAsbjhdxuftjx0JZsVRD8GY50Uym1IY83adly1akUjSgDq7TMAzrtVErJ8wyejLItz24kqtmM5zqCRIqMqDkSxy/k7QeMP7QHie7jueDRuw48bI6QEuVohi4gQ0ujg9eti38QJLyrE=
+	t=1750714182; cv=none; b=DlXIAJeRP/pMXOVU4IE0Ufd50oedX5JV5mOUiW0fVsWcg1xFKd5d0a+IeuS6MSJQfsvv760PCFOR5e6T5uFgNV2yG8f2EnMJ2poAsQMUv1nLmenq5B4hkIjyp2M+CzWiEX+3kOg7YEM4oZxvo6NUmmWPMpUhXN4v+Djnqqa8r9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716203; c=relaxed/simple;
-	bh=MlPYJkbLC9Y94ZWFmP9vBcfX1i+gNBu+PQXzQnq5KpU=;
+	s=arc-20240116; t=1750714182; c=relaxed/simple;
+	bh=CeXz7mHNFVMOsbHpgBCy36Hzd4KcA9rfuneCRW+DkxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9xvdT2a8rZPqBa9W1zJX2V9LR9n3f+256qrjIXT8UMSanxxD/19vvNLWkSMAbahU39PA2CrUJdGKdXn3gUArXPeWnrT4l++MHMJOaRy/moHdC+HaOXF86LCY7sVpDq2SoUB1034eZfU1Y+a0nWZCE9zATzWsTHDrBOXp5ejXts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeUO0CuJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F087AC4CEEA;
-	Mon, 23 Jun 2025 22:03:22 +0000 (UTC)
+	 MIME-Version; b=qUjfs1uGBfjUPIHy4xAkQL41UIZ7zQBvT8UYUSCU+dE7kILCYWPWBEvMdkC1pOC9su8Qg/vvvRejizz19ZW6JsNq57C95XLo67FHs8DpoOcBTVJWnQsWduwrt9ZIOx6BkuosUUGkMiiYiaaJB0B9uK60czAN6TCc4hUoULMjQE8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7h4dIaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A7AC4CEEA;
+	Mon, 23 Jun 2025 21:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716203;
-	bh=MlPYJkbLC9Y94ZWFmP9vBcfX1i+gNBu+PQXzQnq5KpU=;
+	s=korg; t=1750714182;
+	bh=CeXz7mHNFVMOsbHpgBCy36Hzd4KcA9rfuneCRW+DkxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eeUO0CuJPBS95uzcZsJn/mCgfs0hjF7fBh/F6FhVrxXjBgqG3+ateWra0DTGnVYXO
-	 s5XakVqRr+eKWhQ0Y3wmRoKvMoi6TY6YcD2mAKYbA7Hy+R1hMGOX4OvLU6mne/PbAU
-	 cmusZg6XCayRxSWt43tBYJNt5IahilqGecoIhN3I=
+	b=T7h4dIaQye51m7nFYdDs7/QWzLKH2YSndqw7OXxrNNwG1Cu1EMZGDaqR8nDJQXZ1q
+	 P3kHfzYQk0BdrSjUkxg4QiEwIOQ0N3V/U3PvWvGRZbQNr18jsbksTxnca5i5g6XTuK
+	 i/wu4P//Tlbb/ZV9kJdBbN/rORTFxSHDA8F5Je7s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 308/508] media: ccs-pll: Start VT pre-PLL multiplier search from correct value
+	Somnath Kotur <somnath.kotur@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 395/592] bnxt_en: Remove unused field "ref_count" in struct bnxt_ulp
 Date: Mon, 23 Jun 2025 15:05:53 +0200
-Message-ID: <20250623130652.890430311@linuxfoundation.org>
+Message-ID: <20250623130709.839591924@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-commit 06d2d478b09e6764fb6161d1621fc10d9f0f2860 upstream.
+[ Upstream commit 5bccacb4cc32cb835fe2fe100a210332c494e81d ]
 
-The ccs_pll_calculate_vt_tree() function does a search over possible VT
-PLL configurations to find the "best" one. If the sensor does not support
-odd pre-PLL divisors and the minimum value (with constraints) isn't 1,
-other odd values could be errorneously searched (and selected) for the
-pre-PLL divisor. Fix this.
+The "ref_count" field in struct bnxt_ulp is unused after
+commit a43c26fa2e6c ("RDMA/bnxt_re: Remove the sriov config callback").
+So we can just remove it now.
 
-Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Somnath Kotur <somnath.kotur@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250417172448.1206107-4-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 5 -----
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h | 1 -
+ 2 files changed, 6 deletions(-)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -397,6 +397,8 @@ static int ccs_pll_calculate_vt_tree(str
- 	min_pre_pll_clk_div = max_t(u16, min_pre_pll_clk_div,
- 				    pll->ext_clk_freq_hz /
- 				    lim_fr->max_pll_ip_clk_freq_hz);
-+	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
-+		min_pre_pll_clk_div = clk_div_even(min_pre_pll_clk_div);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+index 7564705d64783..84c4812414fd4 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
+@@ -149,7 +149,6 @@ void bnxt_unregister_dev(struct bnxt_en_dev *edev)
+ 	struct net_device *dev = edev->net;
+ 	struct bnxt *bp = netdev_priv(dev);
+ 	struct bnxt_ulp *ulp;
+-	int i = 0;
  
- 	dev_dbg(dev, "vt min/max_pre_pll_clk_div: %u,%u\n",
- 		min_pre_pll_clk_div, max_pre_pll_clk_div);
+ 	ulp = edev->ulp_tbl;
+ 	netdev_lock(dev);
+@@ -165,10 +164,6 @@ void bnxt_unregister_dev(struct bnxt_en_dev *edev)
+ 	synchronize_rcu();
+ 	ulp->max_async_event_id = 0;
+ 	ulp->async_events_bmap = NULL;
+-	while (atomic_read(&ulp->ref_count) != 0 && i < 10) {
+-		msleep(100);
+-		i++;
+-	}
+ 	mutex_unlock(&edev->en_dev_lock);
+ 	netdev_unlock(dev);
+ 	return;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
+index 7fa3b8d1ebd28..f6b5efb5e7753 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
+@@ -50,7 +50,6 @@ struct bnxt_ulp {
+ 	unsigned long	*async_events_bmap;
+ 	u16		max_async_event_id;
+ 	u16		msix_requested;
+-	atomic_t	ref_count;
+ };
+ 
+ struct bnxt_en_dev {
+-- 
+2.39.5
+
 
 
 
