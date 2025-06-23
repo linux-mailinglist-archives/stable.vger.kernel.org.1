@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-156057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BF5FAE4514
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6C2AE4563
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F626442467
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35EBE4462A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DFE0248895;
-	Mon, 23 Jun 2025 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE1024A06D;
+	Mon, 23 Jun 2025 13:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NErXqmGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NczMbubP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A902505A9;
-	Mon, 23 Jun 2025 13:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406564C6E;
+	Mon, 23 Jun 2025 13:40:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686030; cv=none; b=cky1TfCPPZSZou/C++ATPrCrTBQ2TABKE++6UZ6DyV8fr6A36cn+2LHwq7TfElLyxo5rDHh7oBO1020YAf5MQFE/7rECz/zQMdfXEBsLhBBpsiz2LwTP0npyi9ki4Apn7Lc/aenzcJ+nH/PQtOynC+We4WiILtA1A63XVZI2MbQ=
+	t=1750686048; cv=none; b=dp5VQsyNu3WXU0nLCC2fdfsAdOZI19ffXxPV+g5cSJ/Iu0ZTRqU+E+E5Ddoc9PkpevNa2dOL5+Kml6tpn1JRGUKPwQYgZclsUway8tZo/iSgFsMLyP/ztoSaxkX6bHgxuhhnsDO/f/rurYF3hkyPOXzHUH4sf5HZ1wfY4c4m8zg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686030; c=relaxed/simple;
-	bh=c5bi00J6FtDT+uJDKYFR68++gZc1ajE0zrNxAmMeSyQ=;
+	s=arc-20240116; t=1750686048; c=relaxed/simple;
+	bh=N70bXol/GmgBcgBYXLN2DIU3tb0ya+kz5KmpMiZs0dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BnaMAPLZ25VEnW/0HIlWBOYditRJM6qh426moZHuJrqj+UT2xJIsiniEizt+A0lCB8Zecqeb/jS7wCiwVvov+m0Xi3LBR7N3OJCKRcGpXlXMU3yvhYggqliu+EmGtkAaPMi+bm+/IGnFaXFFqLpdvvOgSJoyrhEQWxxyc95V4rE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NErXqmGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD870C4CEEA;
-	Mon, 23 Jun 2025 13:40:29 +0000 (UTC)
+	 MIME-Version; b=LMvz7v0BxB89VzC4KPsRcTuJGbvBiZHPmBmzyH090N6EAk8fAIZ7kltZg2cTSZbDEcIeWV3gWU86gEyMXRFiTeI5fy5sKQMC4Fhn0bRRlOc6y1J4kt9VFbPHs4XqN/cfGvBZqQfmH6rvLC7nMI4dFrsIXe5AnUlgrlmjcOGGl4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NczMbubP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7664BC4CEEA;
+	Mon, 23 Jun 2025 13:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686030;
-	bh=c5bi00J6FtDT+uJDKYFR68++gZc1ajE0zrNxAmMeSyQ=;
+	s=korg; t=1750686047;
+	bh=N70bXol/GmgBcgBYXLN2DIU3tb0ya+kz5KmpMiZs0dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NErXqmGEYStZf7X1t9vJr2jsvuaqZGCoX7XNMovIkSbMrHDBBrvZSv97xwrQN/II+
-	 QLduuPKN/sVnJ+mvVc+nW2kr8Pb55xFvyyuzWK49GyrZ3TyKZALwRDA38tVrc8Z1bc
-	 M11NYP5yci553jftQUOJk8HuXHmx5OIv4DCBobvY=
+	b=NczMbubP2m1EV6rgfTbJWkK8hr+eueWGYJjs72BBgEl26ZUgtMjOjeSGpQ9ZeNoQa
+	 2JPiaPtG/xt7I6sWp075Iad5ke4iMP/d93HHmtBOg1keFspESZSFBGyE4sGO3pujZE
+	 7CIdFL/Awk2lsxfln10lZdVHaZSOvRCipfYEIMFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Thompson <funaho@jurai.org>,
-	Finn Thain <fthain@linux-m68k.org>,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/508] m68k: mac: Fix macintosh_config for Mac II
-Date: Mon, 23 Jun 2025 15:01:29 +0200
-Message-ID: <20250623130646.328304724@linuxfoundation.org>
+Subject: [PATCH 6.1 045/508] firmware: psci: Fix refcount leak in psci_dt_init
+Date: Mon, 23 Jun 2025 15:01:30 +0200
+Message-ID: <20250623130646.351198995@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,44 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 52ae3f5da7e5adbe3d1319573b55dac470abb83c ]
+[ Upstream commit 7ff37d29fd5c27617b9767e1b8946d115cf93a1e ]
 
-When booted on my Mac II, the kernel prints this:
+Fix a reference counter leak in psci_dt_init() where of_node_put(np) was
+missing after of_find_matching_node_and_match() when np is unavailable.
 
-    Detected Macintosh model: 6
-    Apple Macintosh Unknown
-
-The catch-all entry ("Unknown") is mac_data_table[0] which is only needed
-in the unlikely event that the bootinfo model ID can't be matched.
-When model ID is 6, the search should begin and end at mac_data_table[1].
-Fix the off-by-one error that causes this problem.
-
-Cc: Joshua Thompson <funaho@jurai.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/d0f30a551064ca4810b1c48d5a90954be80634a9.1745453246.git.fthain@linux-m68k.org
-Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Fixes: d09a0011ec0d ("drivers: psci: Allow PSCI node to be disabled")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Gavin Shan <gshan@redhat.com>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Link: https://lore.kernel.org/r/20250318151712.28763-1-linmq006@gmail.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/m68k/mac/config.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/psci/psci.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
-index 382f656c29eae..9f5603e01a688 100644
---- a/arch/m68k/mac/config.c
-+++ b/arch/m68k/mac/config.c
-@@ -801,7 +801,7 @@ static void __init mac_identify(void)
- 	}
+diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
+index a44ba09e49d9c..7eddf0912f96c 100644
+--- a/drivers/firmware/psci/psci.c
++++ b/drivers/firmware/psci/psci.c
+@@ -747,8 +747,10 @@ int __init psci_dt_init(void)
  
- 	macintosh_config = mac_data_table;
--	for (m = macintosh_config; m->ident != -1; m++) {
-+	for (m = &mac_data_table[1]; m->ident != -1; m++) {
- 		if (m->ident == model) {
- 			macintosh_config = m;
- 			break;
+ 	np = of_find_matching_node_and_match(NULL, psci_of_match, &matched_np);
+ 
+-	if (!np || !of_device_is_available(np))
++	if (!np || !of_device_is_available(np)) {
++		of_node_put(np);
+ 		return -ENODEV;
++	}
+ 
+ 	init_fn = (psci_initcall_t)matched_np->data;
+ 	ret = init_fn(np);
 -- 
 2.39.5
 
