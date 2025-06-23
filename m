@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-158047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71ED5AE56B6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E0FAE5723
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1062A7B3310
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E139A4E2C61
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A78223DE5;
-	Mon, 23 Jun 2025 22:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAF2223DF0;
+	Mon, 23 Jun 2025 22:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A89kKJ6Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPwSQ/+c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC1A15ADB4;
-	Mon, 23 Jun 2025 22:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D58221543;
+	Mon, 23 Jun 2025 22:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717353; cv=none; b=j7TyyjWcPsvAQB587+WSFRZUfZpy/SAO+bJPZrb66pGdOWpq/dwuY4P3F44doxlfNtMiSUihxaEWj2cUMwGBskBnochVABeQI0aM0r79cs0d/qkc/jmqD9JUBYY8jrQAs/mv4hLdiLVEGRKnFcFD8A6OJeu6UldLLbM0r5IgSYk=
+	t=1750717592; cv=none; b=k/WewnxxiHE0TNDZpED8TDX0oF3ZMpnyK0tG8bVyu4Kkovl4WbrmoA+fE76P1ls/LADfMm2MlSdR8bMBuKShE9DZzn0u3QHjVa3u0CnqBmVpXGfnHRo+Pj3y85p/rrp7OCtLCEsWOedhgg8BjDl7CVuGXReezSUz4OJHbRd6rS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717353; c=relaxed/simple;
-	bh=BhaPLvGr6/TaHmbvYP33KfahTlAavMZJvl/veEgWMjw=;
+	s=arc-20240116; t=1750717592; c=relaxed/simple;
+	bh=qmJDB1V5YfCCUKKOYijsqEgttplKIe/QTzuBmapeKOM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mPnB67dP/EuanDqb4bMgAE1mSR8hTLpjn62BePltTvkNR9iPjskfoR3z+dwrBrzBOm87su8PJi9rikZv4yUS9K5A3oSo8vYx6ivXbQfrt3LElbUpbOcwr4Vii1zuJHOKD3QmtgoG4USKG0FeZIs6D7OC9ktWtWgRf96igtg3AX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A89kKJ6Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA01C4CEEA;
-	Mon, 23 Jun 2025 22:22:32 +0000 (UTC)
+	 MIME-Version; b=nyLRV08I5bx4DlypU8OdPdIToFoL06Ym+/fsTCEKVKNuaVQ5fHe+aHHQhuielP2/j3VizD288UzyCMX68B15oq2pZaSwbTW+g5lyDlQt7RUJKkjgQmN0PLw77/xo4+h3/j0OvGsGVSsZ8DgsNxloW9AEi9B1ONkZg+U3dnLJvZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPwSQ/+c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF529C4CEEA;
+	Mon, 23 Jun 2025 22:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717353;
-	bh=BhaPLvGr6/TaHmbvYP33KfahTlAavMZJvl/veEgWMjw=;
+	s=korg; t=1750717592;
+	bh=qmJDB1V5YfCCUKKOYijsqEgttplKIe/QTzuBmapeKOM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A89kKJ6Z9M4I/n33UZVcddZBmQxkyEeMai48frZN1DhK83+HNfTdXmnVspfAVrqmc
-	 Cf2fpGVtRJ1XF1Gsnx54oP9yTUaAwvaxFg3EcoXU75newWdciEo/GLNrUvIwb52axb
-	 npMkylXLPKpIGuT4ybGjp+VebnYV7NRlG/OsFTCk=
+	b=RPwSQ/+cd+ayK4ikZvaryOVtHmu3zEp8ay7n4zgmJmhflM07rZuoQ+7jcrR3Tp6Tv
+	 j6nA6uN5cyONbJ+PMp+/svmbwcQk7XcjmL6uypbssA/tUvaUE479iePRX1si7YsroS
+	 1DtSNS5/5FMNDo9diqHWTVmbbHoPelqK8NwVSDr0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Metzmacher <metze@samba.org>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 371/414] ksmbd: add free_transport ops in ksmbd connection
+	Jann Horn <jannh@google.com>,
+	Liam Howlett <liam.howlett@oracle.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 463/508] mm/hugetlb: unshare page tables during VMA split, not before
 Date: Mon, 23 Jun 2025 15:08:28 +0200
-Message-ID: <20250623130651.231712754@linuxfoundation.org>
+Message-ID: <20250623130656.506668781@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,117 +65,218 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit a89f5fae998bdc4d0505306f93844c9ae059d50c ]
+commit 081056dc00a27bccb55ccc3c6f230a3d5fd3f7e0 upstream.
 
-free_transport function for tcp connection can be called from smbdirect.
-It will cause kernel oops. This patch add free_transport ops in ksmbd
-connection, and add each free_transports for tcp and smbdirect.
+Currently, __split_vma() triggers hugetlb page table unsharing through
+vm_ops->may_split().  This happens before the VMA lock and rmap locks are
+taken - which is too early, it allows racing VMA-locked page faults in our
+process and racing rmap walks from other processes to cause page tables to
+be shared again before we actually perform the split.
 
-Fixes: 21a4e47578d4 ("ksmbd: fix use-after-free in __smb2_lease_break_noti()")
-Reviewed-by: Stefan Metzmacher <metze@samba.org>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix it by explicitly calling into the hugetlb unshare logic from
+__split_vma() in the same place where THP splitting also happens.  At that
+point, both the VMA and the rmap(s) are write-locked.
+
+An annoying detail is that we can now call into the helper
+hugetlb_unshare_pmds() from two different locking contexts:
+
+1. from hugetlb_split(), holding:
+    - mmap lock (exclusively)
+    - VMA lock
+    - file rmap lock (exclusively)
+2. hugetlb_unshare_all_pmds(), which I think is designed to be able to
+   call us with only the mmap lock held (in shared mode), but currently
+   only runs while holding mmap lock (exclusively) and VMA lock
+
+Backporting note:
+This commit fixes a racy protection that was introduced in commit
+b30c14cd6102 ("hugetlb: unshare some PMDs when splitting VMAs"); that
+commit claimed to fix an issue introduced in 5.13, but it should actually
+also go all the way back.
+
+[jannh@google.com: v2]
+  Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-1-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-0-1329349bad1a@google.com
+Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-1-f4136f5ec58a@google.com
+Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
+Signed-off-by: Jann Horn <jannh@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>	[b30c14cd6102: hugetlb: unshare some PMDs when splitting VMAs]
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[stable backport: code got moved around, VMA splitting is in __vma_adjust]
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/connection.c     |  2 +-
- fs/smb/server/connection.h     |  1 +
- fs/smb/server/transport_rdma.c | 10 ++++++++--
- fs/smb/server/transport_tcp.c  |  3 ++-
- 4 files changed, 12 insertions(+), 4 deletions(-)
+ include/linux/hugetlb.h |    3 ++
+ mm/hugetlb.c            |   60 +++++++++++++++++++++++++++++++++++-------------
+ mm/mmap.c               |    8 ++++++
+ 3 files changed, 55 insertions(+), 16 deletions(-)
 
-diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
-index 7aaea71a4f206..9eb3e6010aa68 100644
---- a/fs/smb/server/connection.c
-+++ b/fs/smb/server/connection.c
-@@ -40,7 +40,7 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
- 	kvfree(conn->request_buf);
- 	kfree(conn->preauth_info);
- 	if (atomic_dec_and_test(&conn->refcnt)) {
--		ksmbd_free_transport(conn->transport);
-+		conn->transport->ops->free_transport(conn->transport);
- 		kfree(conn);
+--- a/include/linux/hugetlb.h
++++ b/include/linux/hugetlb.h
+@@ -239,6 +239,7 @@ unsigned long hugetlb_change_protection(
+ 
+ bool is_hugetlb_entry_migration(pte_t pte);
+ void hugetlb_unshare_all_pmds(struct vm_area_struct *vma);
++void hugetlb_split(struct vm_area_struct *vma, unsigned long addr);
+ 
+ #else /* !CONFIG_HUGETLB_PAGE */
+ 
+@@ -472,6 +473,8 @@ static inline vm_fault_t hugetlb_fault(s
+ 
+ static inline void hugetlb_unshare_all_pmds(struct vm_area_struct *vma) { }
+ 
++static inline void hugetlb_split(struct vm_area_struct *vma, unsigned long addr) {}
++
+ #endif /* !CONFIG_HUGETLB_PAGE */
+ /*
+  * hugepages at page global directory. If arch support
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -95,7 +95,7 @@ static void hugetlb_vma_lock_free(struct
+ static void hugetlb_vma_lock_alloc(struct vm_area_struct *vma);
+ static void __hugetlb_vma_unlock_write_free(struct vm_area_struct *vma);
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+-		unsigned long start, unsigned long end);
++		unsigned long start, unsigned long end, bool take_locks);
+ static struct resv_map *vma_resv_map(struct vm_area_struct *vma);
+ 
+ static inline bool subpool_is_free(struct hugepage_subpool *spool)
+@@ -4900,26 +4900,40 @@ static int hugetlb_vm_op_split(struct vm
+ {
+ 	if (addr & ~(huge_page_mask(hstate_vma(vma))))
+ 		return -EINVAL;
++	return 0;
++}
+ 
++void hugetlb_split(struct vm_area_struct *vma, unsigned long addr)
++{
+ 	/*
+ 	 * PMD sharing is only possible for PUD_SIZE-aligned address ranges
+ 	 * in HugeTLB VMAs. If we will lose PUD_SIZE alignment due to this
+ 	 * split, unshare PMDs in the PUD_SIZE interval surrounding addr now.
++	 * This function is called in the middle of a VMA split operation, with
++	 * MM, VMA and rmap all write-locked to prevent concurrent page table
++	 * walks (except hardware and gup_fast()).
+ 	 */
++	mmap_assert_write_locked(vma->vm_mm);
++	i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++
+ 	if (addr & ~PUD_MASK) {
+-		/*
+-		 * hugetlb_vm_op_split is called right before we attempt to
+-		 * split the VMA. We will need to unshare PMDs in the old and
+-		 * new VMAs, so let's unshare before we split.
+-		 */
+ 		unsigned long floor = addr & PUD_MASK;
+ 		unsigned long ceil = floor + PUD_SIZE;
+ 
+-		if (floor >= vma->vm_start && ceil <= vma->vm_end)
+-			hugetlb_unshare_pmds(vma, floor, ceil);
++		if (floor >= vma->vm_start && ceil <= vma->vm_end) {
++			/*
++			 * Locking:
++			 * Use take_locks=false here.
++			 * The file rmap lock is already held.
++			 * The hugetlb VMA lock can't be taken when we already
++			 * hold the file rmap lock, and we don't need it because
++			 * its purpose is to synchronize against concurrent page
++			 * table walks, which are not possible thanks to the
++			 * locks held by our caller.
++			 */
++			hugetlb_unshare_pmds(vma, floor, ceil, /* take_locks = */ false);
++		}
+ 	}
+-
+-	return 0;
+ }
+ 
+ static unsigned long hugetlb_vm_op_pagesize(struct vm_area_struct *vma)
+@@ -7495,9 +7509,16 @@ void move_hugetlb_state(struct page *old
  	}
  }
-diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
-index 14620e147dda5..572102098c108 100644
---- a/fs/smb/server/connection.h
-+++ b/fs/smb/server/connection.h
-@@ -132,6 +132,7 @@ struct ksmbd_transport_ops {
- 			  void *buf, unsigned int len,
- 			  struct smb2_buffer_desc_v1 *desc,
- 			  unsigned int desc_len);
-+	void (*free_transport)(struct ksmbd_transport *kt);
- };
  
- struct ksmbd_transport {
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index 7c5a0d712873d..6921d62934bcb 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -158,7 +158,8 @@ struct smb_direct_transport {
- };
- 
- #define KSMBD_TRANS(t) ((struct ksmbd_transport *)&((t)->transport))
--
-+#define SMBD_TRANS(t)	((struct smb_direct_transport *)container_of(t, \
-+				struct smb_direct_transport, transport))
- enum {
- 	SMB_DIRECT_MSG_NEGOTIATE_REQ = 0,
- 	SMB_DIRECT_MSG_DATA_TRANSFER
-@@ -409,6 +410,11 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
- 	return NULL;
- }
- 
-+static void smb_direct_free_transport(struct ksmbd_transport *kt)
-+{
-+	kfree(SMBD_TRANS(kt));
-+}
-+
- static void free_transport(struct smb_direct_transport *t)
++/*
++ * If @take_locks is false, the caller must ensure that no concurrent page table
++ * access can happen (except for gup_fast() and hardware page walks).
++ * If @take_locks is true, we take the hugetlb VMA lock (to lock out things like
++ * concurrent page fault handling) and the file rmap lock.
++ */
+ static void hugetlb_unshare_pmds(struct vm_area_struct *vma,
+ 				   unsigned long start,
+-				   unsigned long end)
++				   unsigned long end,
++				   bool take_locks)
  {
- 	struct smb_direct_recvmsg *recvmsg;
-@@ -454,7 +460,6 @@ static void free_transport(struct smb_direct_transport *t)
- 
- 	smb_direct_destroy_pools(t);
- 	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
--	kfree(t);
- }
- 
- static struct smb_direct_sendmsg
-@@ -2300,4 +2305,5 @@ static const struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops = {
- 	.read		= smb_direct_read,
- 	.rdma_read	= smb_direct_rdma_read,
- 	.rdma_write	= smb_direct_rdma_write,
-+	.free_transport = smb_direct_free_transport,
- };
-diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
-index abedf510899a7..4e9f98db9ff40 100644
---- a/fs/smb/server/transport_tcp.c
-+++ b/fs/smb/server/transport_tcp.c
-@@ -93,7 +93,7 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
- 	return t;
- }
- 
--void ksmbd_free_transport(struct ksmbd_transport *kt)
-+static void ksmbd_tcp_free_transport(struct ksmbd_transport *kt)
+ 	struct hstate *h = hstate_vma(vma);
+ 	unsigned long sz = huge_page_size(h);
+@@ -7521,8 +7542,12 @@ static void hugetlb_unshare_pmds(struct
+ 	mmu_notifier_range_init(&range, MMU_NOTIFY_CLEAR, 0, vma, mm,
+ 				start, end);
+ 	mmu_notifier_invalidate_range_start(&range);
+-	hugetlb_vma_lock_write(vma);
+-	i_mmap_lock_write(vma->vm_file->f_mapping);
++	if (take_locks) {
++		hugetlb_vma_lock_write(vma);
++		i_mmap_lock_write(vma->vm_file->f_mapping);
++	} else {
++		i_mmap_assert_write_locked(vma->vm_file->f_mapping);
++	}
+ 	for (address = start; address < end; address += PUD_SIZE) {
+ 		ptep = huge_pte_offset(mm, address, sz);
+ 		if (!ptep)
+@@ -7532,8 +7557,10 @@ static void hugetlb_unshare_pmds(struct
+ 		spin_unlock(ptl);
+ 	}
+ 	flush_hugetlb_tlb_range(vma, start, end);
+-	i_mmap_unlock_write(vma->vm_file->f_mapping);
+-	hugetlb_vma_unlock_write(vma);
++	if (take_locks) {
++		i_mmap_unlock_write(vma->vm_file->f_mapping);
++		hugetlb_vma_unlock_write(vma);
++	}
+ 	/*
+ 	 * No need to call mmu_notifier_invalidate_range(), see
+ 	 * Documentation/mm/mmu_notifier.rst.
+@@ -7548,7 +7575,8 @@ static void hugetlb_unshare_pmds(struct
+ void hugetlb_unshare_all_pmds(struct vm_area_struct *vma)
  {
- 	struct tcp_transport *t = TCP_TRANS(kt);
+ 	hugetlb_unshare_pmds(vma, ALIGN(vma->vm_start, PUD_SIZE),
+-			ALIGN_DOWN(vma->vm_end, PUD_SIZE));
++			ALIGN_DOWN(vma->vm_end, PUD_SIZE),
++			/* take_locks = */ true);
+ }
  
-@@ -656,4 +656,5 @@ static const struct ksmbd_transport_ops ksmbd_tcp_transport_ops = {
- 	.read		= ksmbd_tcp_read,
- 	.writev		= ksmbd_tcp_writev,
- 	.disconnect	= ksmbd_tcp_disconnect,
-+	.free_transport = ksmbd_tcp_free_transport,
- };
--- 
-2.39.5
-
+ #ifdef CONFIG_CMA
+--- a/mm/mmap.c
++++ b/mm/mmap.c
+@@ -727,7 +727,15 @@ int __vma_adjust(struct vm_area_struct *
+ 		return -ENOMEM;
+ 	}
+ 
++	/*
++	 * Get rid of huge pages and shared page tables straddling the split
++	 * boundary.
++	 */
+ 	vma_adjust_trans_huge(orig_vma, start, end, adjust_next);
++	if (is_vm_hugetlb_page(orig_vma)) {
++		hugetlb_split(orig_vma, start);
++		hugetlb_split(orig_vma, end);
++	}
+ 	if (file) {
+ 		mapping = file->f_mapping;
+ 		root = &mapping->i_mmap;
 
 
 
