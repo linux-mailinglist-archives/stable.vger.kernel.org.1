@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-157815-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 463FFAE55C1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D4EAE552C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE4F21790B2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3346D4A0DFC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7FC5227EB9;
-	Mon, 23 Jun 2025 22:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EF3E218580;
+	Mon, 23 Jun 2025 22:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxH4xale"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i012crPj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741B2227EA7;
-	Mon, 23 Jun 2025 22:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B0E47080E;
+	Mon, 23 Jun 2025 22:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716786; cv=none; b=FJ2J0QKq3rtFQ6d6I+/llBTKiI0dtDpqsuQWxyNUBNQsW0D1vNB3XfLm1H8YZ+BAO2rmOgY8qAtiAL/cwImoYa1U9i/rqxHBBO3sb46/cQuQC5EcJ5TVCUemgZ/G1E1r7Ld9A0dVuNKTbFdeKb7OM2YzN9AwZXfNcrzJn5+Lx8A=
+	t=1750716498; cv=none; b=FTnWACIW5GDFcGjOPUf2lJpBY28fAl2inVrUcfTv5tYF3a8PKtaaewEKLGfVAnhd/F1PTGg8hLluefHTTwyuz7bN20IkhH7Qt0GweMz2OSgvLqqOXPjEN3dCEmWfsQ9ISQZCnQzD0pfeH4YT0CoodWuis3Z7YejQC5oa0WYmUpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716786; c=relaxed/simple;
-	bh=Fe9jTjFLPcbxyiH2Zw7zswBElq4tikRVfHDtwm/eWkQ=;
+	s=arc-20240116; t=1750716498; c=relaxed/simple;
+	bh=ECVv7DVIggYBdWn80IZ9PXx/FTjapqCAGjVNGxEXn/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fEifkoSaiahljCOa6IADqVE4RwESqwXSdCamIPQN71sje2YtPjQTkYLRTUZofrdf6yX/MDV2ym831KHG3CVXLk55c02SWy99FoJZNYCehxz4HGkeBSLBXvkrCpXUYWfml6zqqc1qKVzF8bAM/EKIjLVIDdHGrE4LvFx5Wo1U1Qo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxH4xale; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF44C4CEEA;
-	Mon, 23 Jun 2025 22:13:05 +0000 (UTC)
+	 MIME-Version; b=tnGkeT+UcingdWZAavZTdt+ufdm33128FX8cossnrmY8NCeUYehtrbexTFuW2hvWLnWjvybykDB9B347inr9RW2F+b0IP3Fmz8RtHF/tJbS4LaoSyg5abdHZSKhtXvLIQQ1xIaWYOXLUvYzVAfNg6YzJPaZNBTVFS5lSHj7oS94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i012crPj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DDDC4CEED;
+	Mon, 23 Jun 2025 22:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716786;
-	bh=Fe9jTjFLPcbxyiH2Zw7zswBElq4tikRVfHDtwm/eWkQ=;
+	s=korg; t=1750716497;
+	bh=ECVv7DVIggYBdWn80IZ9PXx/FTjapqCAGjVNGxEXn/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxH4xalekCtfCAWhtVrZNaJb3aVlSS8AYXlNqJLYSp/4Y2odw4CvnaivqlsjDUoVg
-	 XmBRDSkRDDmZ+aKacPQ5JBa6mU4NHZ4YNA+gaf3T1ZF7aGuiXVdJFaZwP87/EBq5W5
-	 IJtMy6mP+mmsW5G4aMqFjaPuhVEz6L8zymzzwmqQ=
+	b=i012crPjUWFFdLgVNhtN13UWxhi+jTJrkAUWxXAwvsb06KhCQ+2k6YYps3dXGmMdV
+	 pJahFb1HlGc1sUHXpPVOdA4hnOPU+LwNKDsjAowkGhYkA7ufqC7X8ApBL0cmDG1sq7
+	 FciHzZJybcniGkL7ssW307qo7E+KSKm+XFEzlEx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
-	Kees Cook <kees@kernel.org>,
-	Helge Deller <deller@gmx.de>,
+	Marcus Folkesson <marcus.folkesson@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 282/414] fbcon: Make sure modelist not set on unregistered console
-Date: Mon, 23 Jun 2025 15:06:59 +0200
-Message-ID: <20250623130649.070731066@linuxfoundation.org>
+Subject: [PATCH 6.12 283/414] watchdog: da9052_wdt: respect TWDMIN
+Date: Mon, 23 Jun 2025 15:07:00 +0200
+Message-ID: <20250623130649.093085642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,63 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Marcus Folkesson <marcus.folkesson@gmail.com>
 
-[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
+[ Upstream commit 325f510fcd9cda5a44bcb662b74ba4e3dabaca10 ]
 
-It looks like attempting to write to the "store_modes" sysfs node will
-run afoul of unregistered consoles:
+We have to wait at least the minimium time for the watchdog window
+(TWDMIN) before writings to the wdt register after the
+watchdog is activated.
+Otherwise the chip will assert TWD_ERROR and power down to reset mode.
 
-UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
-index -1 is out of range for type 'fb_info *[32]'
-...
- fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
- fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
- fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
- store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
- dev_attr_store+0x55/0x80 drivers/base/core.c:2439
-
-static struct fb_info *fbcon_registered_fb[FB_MAX];
-...
-static signed char con2fb_map[MAX_NR_CONSOLES];
-...
-static struct fb_info *fbcon_info_from_console(int console)
-...
-        return fbcon_registered_fb[con2fb_map[console]];
-
-If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
-as callers of fbcon_info_from_console() are trying to compare against
-existing "info" pointers, so error handling should kick in correctly.
-
-Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20250326-da9052-fixes-v3-4-a38a560fef0e@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/fbcon.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/watchdog/da9052_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
-index 07d127110ca4c..c98786996c647 100644
---- a/drivers/video/fbdev/core/fbcon.c
-+++ b/drivers/video/fbdev/core/fbcon.c
-@@ -117,9 +117,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
+diff --git a/drivers/watchdog/da9052_wdt.c b/drivers/watchdog/da9052_wdt.c
+index d708c091bf1b1..180526220d8c4 100644
+--- a/drivers/watchdog/da9052_wdt.c
++++ b/drivers/watchdog/da9052_wdt.c
+@@ -164,6 +164,7 @@ static int da9052_wdt_probe(struct platform_device *pdev)
+ 	da9052_wdt = &driver_data->wdt;
  
- static struct fb_info *fbcon_info_from_console(int console)
- {
-+	signed char fb;
- 	WARN_CONSOLE_UNLOCKED();
- 
--	return fbcon_registered_fb[con2fb_map[console]];
-+	fb = con2fb_map[console];
-+	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
-+		return NULL;
-+
-+	return fbcon_registered_fb[fb];
- }
- 
- static int logo_lines;
+ 	da9052_wdt->timeout = DA9052_DEF_TIMEOUT;
++	da9052_wdt->min_hw_heartbeat_ms = DA9052_TWDMIN;
+ 	da9052_wdt->info = &da9052_wdt_info;
+ 	da9052_wdt->ops = &da9052_wdt_ops;
+ 	da9052_wdt->parent = dev;
 -- 
 2.39.5
 
