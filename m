@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-155539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DEFCAE427E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C6CAE4277
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB588189AAE3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC743B6D14
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F63252910;
-	Mon, 23 Jun 2025 13:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B75F252903;
+	Mon, 23 Jun 2025 13:18:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MbHa7KLk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muVyPuqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546F423A9BE;
-	Mon, 23 Jun 2025 13:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED65C4C7F;
+	Mon, 23 Jun 2025 13:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684695; cv=none; b=G7PaXAXN3EdkM0uVGC//Q1+qC1vqH+qqEmeXQR/3SYtH6AmttXjtdjo3/qA29n2KD7wHbsjZ5OuLLnOUl24pO8nc78hyFNU0uKPGrWzLuKa+8/2Th4TnPdHQNugRBawvvgIxv/2K/0Y9P8rBhpnJ0nok3UbxrxnEyYxmylCdMGc=
+	t=1750684700; cv=none; b=a/gXViJO45g8sy1BwRB9bBT44sJ3JxWfyqtmSaZ28KG1oM8RsP2RcT9P16XkJTPK3e0y65D6NqFoom1DUV/23pi/FTDyL/Cvp4cjcHpEetLv7YU8VgDZhJoX0DeN2vORJqk9QUNMshCW8NDXVW3baoxosgw5WPC7uvYkHXUuy5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684695; c=relaxed/simple;
-	bh=LJECXWd+5pI0qs/jWq2Wnsl/VzXqSN/xGq8lf/nhe5U=;
+	s=arc-20240116; t=1750684700; c=relaxed/simple;
+	bh=RX2OezC3zhMyeeEb/TUmQ0zpdUShT8apCo+VzRZFbMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdWNcXU6ikOKWKw2CPkaM1BkrtjbePOJYKGf103u6SMXo0yEItiUxDU4uCqai4Kb1XsB2wpi17g/3WfSkIkP+td8NDQG3IsjpXeWzoZ6BwXNhoinQYRTddvN/AeXjHyWVWLSHRn+N5Rbq42miyq665PzrMUC6OWo/XsRQnGBLng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MbHa7KLk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 765FFC4CEEA;
-	Mon, 23 Jun 2025 13:18:14 +0000 (UTC)
+	 MIME-Version; b=dmlkJiCcO5YKzUBtwFUP5L7lc24wxYmgkB9X/bptPT5bYME2MIgD6tdowy0pziJG3UuPdOUNnrM74rpQJMl52okZdBZrzP2LesaNw252SPU4q8cas+Gd0MlGNhM3vNGl6qjohft1Itre+GKYOhlXxpt5GZFEnaKwpimN6oiCsGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muVyPuqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8166DC4CEEA;
+	Mon, 23 Jun 2025 13:18:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684694;
-	bh=LJECXWd+5pI0qs/jWq2Wnsl/VzXqSN/xGq8lf/nhe5U=;
+	s=korg; t=1750684699;
+	bh=RX2OezC3zhMyeeEb/TUmQ0zpdUShT8apCo+VzRZFbMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MbHa7KLkRJjz8cVjr0SNFdbcCEk2nb5dfhfmUXV1pnc+XE1cdtkD7CTMLTSOExxcY
-	 DWdcErn0GwnmdiJeIgw2vDgazj2MSVC+mpgpYQK/OgIE8jfpCipiQH9BfuncV6crl6
-	 J8JBdHlTCYoU9X7AaSvDq81Q6iD74VaU16Tbf6nI=
+	b=muVyPuqI/mrzNaDsnCuBAI/Bt9PyfZNqsXP4iBl0rI6/nemBXd1ZUFZ5nMaZ4oWb2
+	 pxwzpCwUB2LD3Xr52BmY5aHQQKZYkpk/7KFXoJ6zvZReWvYJXNkWDMuh0HQsNRvEbY
+	 um83GB1kzg0R9el/9tuwnyNcFi0E4QMIDP1DGgM0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Lakshmi Sowjanya D <quic_laksd@quicinc.com>,
-	Md Sadre Alam <quic_mdalam@quicinc.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.15 155/592] mtd: rawnand: qcom: Fix read len for onfi param page
-Date: Mon, 23 Jun 2025 15:01:53 +0200
-Message-ID: <20250623130703.968630462@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.15 156/592] ftrace: Fix UAF when lookup kallsym after ftrace disabled
+Date: Mon, 23 Jun 2025 15:01:54 +0200
+Message-ID: <20250623130703.990851547@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,37 +65,113 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Md Sadre Alam <quic_mdalam@quicinc.com>
+From: Ye Bin <yebin10@huawei.com>
 
-commit e6031b11544b44966ba020c867fe438bccd3bdfa upstream.
+commit f914b52c379c12288b7623bb814d0508dbe7481d upstream.
 
-The minimum size to fetch the data from device to QPIC buffer
-is 512-bytes. If size is less than 512-bytes the data will not be
-protected by ECC as per QPIC standard. So while reading onfi parameter
-page from NAND device set nandc->buf_count = 512.
+The following issue happens with a buggy module:
+
+BUG: unable to handle page fault for address: ffffffffc05d0218
+PGD 1bd66f067 P4D 1bd66f067 PUD 1bd671067 PMD 101808067 PTE 0
+Oops: Oops: 0000 [#1] SMP KASAN PTI
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+RIP: 0010:sized_strscpy+0x81/0x2f0
+RSP: 0018:ffff88812d76fa08 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffffffc0601010 RCX: dffffc0000000000
+RDX: 0000000000000038 RSI: dffffc0000000000 RDI: ffff88812608da2d
+RBP: 8080808080808080 R08: ffff88812608da2d R09: ffff88812608da68
+R10: ffff88812608d82d R11: ffff88812608d810 R12: 0000000000000038
+R13: ffff88812608da2d R14: ffffffffc05d0218 R15: fefefefefefefeff
+FS:  00007fef552de740(0000) GS:ffff8884251c7000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffc05d0218 CR3: 00000001146f0000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ftrace_mod_get_kallsym+0x1ac/0x590
+ update_iter_mod+0x239/0x5b0
+ s_next+0x5b/0xa0
+ seq_read_iter+0x8c9/0x1070
+ seq_read+0x249/0x3b0
+ proc_reg_read+0x1b0/0x280
+ vfs_read+0x17f/0x920
+ ksys_read+0xf3/0x1c0
+ do_syscall_64+0x5f/0x2e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The above issue may happen as follows:
+(1) Add kprobe tracepoint;
+(2) insmod test.ko;
+(3)  Module triggers ftrace disabled;
+(4) rmmod test.ko;
+(5) cat /proc/kallsyms; --> Will trigger UAF as test.ko already removed;
+ftrace_mod_get_kallsym()
+...
+strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+...
+
+The problem is when a module triggers an issue with ftrace and
+sets ftrace_disable. The ftrace_disable is set when an anomaly is
+discovered and to prevent any more damage, ftrace stops all text
+modification. The issue that happened was that the ftrace_disable stops
+more than just the text modification.
+
+When a module is loaded, its init functions can also be traced. Because
+kallsyms deletes the init functions after a module has loaded, ftrace
+saves them when the module is loaded and function tracing is enabled. This
+allows the output of the function trace to show the init function names
+instead of just their raw memory addresses.
+
+When a module is removed, ftrace_release_mod() is called, and if
+ftrace_disable is set, it just returns without doing anything more. The
+problem here is that it leaves the mod_list still around and if kallsyms
+is called, it will call into this code and access the module memory that
+has already been freed as it will return:
+
+  strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+
+Where the "mod" no longer exists and triggers a UAF bug.
+
+Link: https://lore.kernel.org/all/20250523135452.626d8dcd@gandalf.local.home/
 
 Cc: stable@vger.kernel.org
-Fixes: 89550beb098e ("mtd: rawnand: qcom: Implement exec_op()")
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Tested-by: Lakshmi Sowjanya D <quic_laksd@quicinc.com>
-Signed-off-by: Md Sadre Alam <quic_mdalam@quicinc.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Fixes: aba4b5c22cba ("ftrace: Save module init functions kallsyms symbols for tracing")
+Link: https://lore.kernel.org/20250529111955.2349189-2-yebin@huaweicloud.com
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mtd/nand/raw/qcom_nandc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/ftrace.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/mtd/nand/raw/qcom_nandc.c
-+++ b/drivers/mtd/nand/raw/qcom_nandc.c
-@@ -1930,7 +1930,7 @@ static int qcom_param_page_type_exec(str
- 		qcom_write_reg_dma(nandc, &nandc->regs->cmd1, NAND_DEV_CMD1, 1, NAND_BAM_NEXT_SGL);
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -7395,9 +7395,10 @@ void ftrace_release_mod(struct module *m
+ 
+ 	mutex_lock(&ftrace_lock);
+ 
+-	if (ftrace_disabled)
+-		goto out_unlock;
+-
++	/*
++	 * To avoid the UAF problem after the module is unloaded, the
++	 * 'mod_map' resource needs to be released unconditionally.
++	 */
+ 	list_for_each_entry_safe(mod_map, n, &ftrace_mod_maps, list) {
+ 		if (mod_map->mod == mod) {
+ 			list_del_rcu(&mod_map->list);
+@@ -7406,6 +7407,9 @@ void ftrace_release_mod(struct module *m
+ 		}
  	}
  
--	nandc->buf_count = len;
-+	nandc->buf_count = 512;
- 	memset(nandc->data_buffer, 0xff, nandc->buf_count);
- 
- 	config_nand_single_cw_page_read(chip, false, 0);
++	if (ftrace_disabled)
++		goto out_unlock;
++
+ 	/*
+ 	 * Each module has its own ftrace_pages, remove
+ 	 * them from the list.
 
 
 
