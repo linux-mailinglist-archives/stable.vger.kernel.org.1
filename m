@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-155471-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5BDFAE4239
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F455AE4403
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D3201895F15
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142AA17F0BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95D124BBEB;
-	Mon, 23 Jun 2025 13:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5EA24DFF3;
+	Mon, 23 Jun 2025 13:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pt14YgYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmATPKJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7832E1E487;
-	Mon, 23 Jun 2025 13:15:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC76253F20;
+	Mon, 23 Jun 2025 13:31:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684512; cv=none; b=NZ9nh5oRrhDuMXbVu+Jzs+rjmBFLsH81capyVCB5saWWbj/pyh8SIcWSJUurv3XilHOriemoUIDeXxqjvXBuzC8d8iazMhZ+qlMMqZ8luRw8ssiLXAwyjfhC7JqMYvVXR8Z5i+EtB/343PZeCDR22yLo53OzO3U1PM0x0QbPIfY=
+	t=1750685503; cv=none; b=jzdKZtoo2CVrAIh1HGiw8K+KZa/FhEuJ3+XiO0ygIbScGugUwTvbdem3Of3uJ8GWKCaIMtGmByVCinV6rwjtyGU7Y6EOBXWYpJsS4NttMnOQytLN4AGbwcKF6AyH7AgOxt+3vwkM4jPkVWSxoprPlVonGGIVpsaN4fM8FpqXky4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684512; c=relaxed/simple;
-	bh=IOdKLNmgt9kE24Tc1VJbbV9Jf6cAOUdQfX3A00wziE4=;
+	s=arc-20240116; t=1750685503; c=relaxed/simple;
+	bh=b6PRhTbnCFjsisuMUCpV8+/cr8zuIRmEG8W7hbLYv94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNudgXUVoe+VluBuHjqKSgJaiLtzoPTlJ/CbFJy8LchYCC4fkE/fiwp2TOCfb0gFHsmvJN9FT3oYtyUNbtUTvXRrzR2eFugVavv7kIXeVungsYB0iiEMTqiqpx/yhpBBizi5taVoMIYRunmzpugXbue7/GFN6OkMWf5c7eKtkhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pt14YgYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE81C4CEEA;
-	Mon, 23 Jun 2025 13:15:11 +0000 (UTC)
+	 MIME-Version; b=i4bmEuzCV5BjLpCtPPaBQiK4PzRbltBnWy1sLbJ3WOiLZW4WiJtoX7/Qhd7KiJxu+Wx6b5ToMropVSR0aVw+VQv/aEALDthQKbgd37LchNk26vztSQT0bI5tI/fDkH3qLAbxMy/BRRkQcx2614s3BA15QzEO3vksRe12PYZb36k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmATPKJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531BCC4CEEA;
+	Mon, 23 Jun 2025 13:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684512;
-	bh=IOdKLNmgt9kE24Tc1VJbbV9Jf6cAOUdQfX3A00wziE4=;
+	s=korg; t=1750685503;
+	bh=b6PRhTbnCFjsisuMUCpV8+/cr8zuIRmEG8W7hbLYv94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pt14YgYchjf5M2FssSrVrXqOCqsOOnsIk07AaaZqvZQTRIxdkCDjA7R7blNkQs3Sr
-	 ExjVqTOOLmsXUedST3Bs91jWOCeiYWbTjA2MvFfGtH1NUN0avO9XY/4FpijuWtjd2x
-	 qPc9IpSpq6UIQVDOQVqHu1XhHkgEDoT94uXVE0gM=
+	b=SmATPKJ6rLJ7+LwPYJlwkO1US1xEbzPAzzWVrtyCQSf43VUww6KRSgXw/Lwlhr1sy
+	 Rxn2+41ZNJUxhI8y1z23tAnAXvdj+jIJOksJVoXTrKs9MnAyxImp/ajDrhrKsN/RKy
+	 yGr1neLsw8986tgBIZAlMBKVKHLW8LOxl+28MEWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.15 097/592] block: use plug request list tail for one-shot backmerge attempt
-Date: Mon, 23 Jun 2025 15:00:55 +0200
-Message-ID: <20250623130702.584168208@linuxfoundation.org>
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Hsin-chen Chuang <chharry@chromium.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.1 011/508] Bluetooth: hci_qca: move the SoC type check to the right place
+Date: Mon, 23 Jun 2025 15:00:56 +0200
+Message-ID: <20250623130645.532981536@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 961296e89dc3800e6a3abc3f5d5bb4192cf31e98 upstream.
+commit 0fb410c914eb03c7e9d821e26d03bac0a239e5db upstream.
 
-Previously, the block layer stored the requests in the plug list in
-LIFO order. For this reason, blk_attempt_plug_merge() would check
-just the head entry for a back merge attempt, and abort after that
-unless requests for multiple queues existed in the plug list. If more
-than one request is present in the plug list, this makes the one-shot
-back merging less useful than before, as it'll always fail to find a
-quick merge candidate.
-
-Use the tail entry for the one-shot merge attempt, which is the last
-added request in the list. If that fails, abort immediately unless
-there are multiple queues available. If multiple queues are available,
-then scan the list. Ideally the latter scan would be a backwards scan
-of the list, but as it currently stands, the plug list is singly linked
-and hence this isn't easily feasible.
+Commit 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL
+returned by gpiod_get_optional()") accidentally changed the prevous
+behavior where power control would be disabled without the BT_EN GPIO
+only on QCA_WCN6750 and QCA_WCN6855 while also getting the error check
+wrong. We should treat every IS_ERR() return value from
+devm_gpiod_get_optional() as a reason to bail-out while we should only
+set power_ctrl_enabled to false on the two models mentioned above. While
+at it: use dev_err_probe() to save a LOC.
 
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/linux-block/20250611121626.7252-1-abuehaze@amazon.com/
-Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-Fixes: e70c301faece ("block: don't reorder requests in blk_add_rq_to_plug")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL returned by gpiod_get_optional()")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Tested-by: Hsin-chen Chuang <chharry@chromium.org>
+Reviewed-by: Hsin-chen Chuang <chharry@chromium.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-merge.c |   26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/bluetooth/hci_qca.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/block/blk-merge.c
-+++ b/block/blk-merge.c
-@@ -1127,20 +1127,20 @@ bool blk_attempt_plug_merge(struct reque
- 	if (!plug || rq_list_empty(&plug->mq_list))
- 		return false;
+--- a/drivers/bluetooth/hci_qca.c
++++ b/drivers/bluetooth/hci_qca.c
+@@ -2263,14 +2263,14 @@ static int qca_serdev_probe(struct serde
  
--	rq_list_for_each(&plug->mq_list, rq) {
--		if (rq->q == q) {
--			if (blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
--			    BIO_MERGE_OK)
--				return true;
--			break;
+ 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
+ 					       GPIOD_OUT_LOW);
+-		if (IS_ERR(qcadev->bt_en) &&
+-		    (data->soc_type == QCA_WCN6750 ||
+-		     data->soc_type == QCA_WCN6855)) {
+-			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
+-			return PTR_ERR(qcadev->bt_en);
 -		}
-+	rq = plug->mq_list.tail;
-+	if (rq->q == q)
-+		return blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
-+			BIO_MERGE_OK;
-+	else if (!plug->multiple_queues)
-+		return false;
++		if (IS_ERR(qcadev->bt_en))
++			return dev_err_probe(&serdev->dev,
++					     PTR_ERR(qcadev->bt_en),
++					     "failed to acquire BT_EN gpio\n");
  
--		/*
--		 * Only keep iterating plug list for merges if we have multiple
--		 * queues
--		 */
--		if (!plug->multiple_queues)
--			break;
-+	rq_list_for_each(&plug->mq_list, rq) {
-+		if (rq->q != q)
-+			continue;
-+		if (blk_attempt_bio_merge(q, rq, bio, nr_segs, false) ==
-+		    BIO_MERGE_OK)
-+			return true;
-+		break;
- 	}
- 	return false;
- }
+-		if (!qcadev->bt_en)
++		if (!qcadev->bt_en &&
++		    (data->soc_type == QCA_WCN6750 ||
++		     data->soc_type == QCA_WCN6855))
+ 			power_ctrl_enabled = false;
+ 
+ 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
 
 
 
