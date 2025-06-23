@@ -1,51 +1,55 @@
-Return-Path: <stable+bounces-155796-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCD79AE436C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9363FAE4373
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37CD67AA92D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46EEA17F777
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A2CA2550CF;
-	Mon, 23 Jun 2025 13:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFE8725392D;
+	Mon, 23 Jun 2025 13:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h4QBovl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DCtriK/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D66230BC2;
-	Mon, 23 Jun 2025 13:29:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DEC32517A0;
+	Mon, 23 Jun 2025 13:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685354; cv=none; b=ERbAJJkYbrfSsYRbNCiTmNps20VFDDQbGsXwRLyEQA6BNkYBKjZ1gFnRqvBLufiWFgJ9SDVYsk1fo5WHwGUcuVg302AA/tPGQh4wHBpKAjiQqj9l0c4HNdKFJUeKR9Tt/w1wv6o8oWmt/ZUNNLxixpeBZEcqD5/NOGp+wEXtfDg=
+	t=1750685044; cv=none; b=rIMMsfC9F8lIMbzmNrUQ13IgRYb2T3OXWYHgF2eDe3i3zjUkt8zAP+5AHNNcVJ0mRMi1gxoiazeRibZYeg/rEzyQ72ZMb9YKzO6YNo3w2a0P4BKL3dQ6lTpdFqL66KjwqzZE1Lx6n+rvxqMsBHw1nluZMgqhRwoMDwphUuLel5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685354; c=relaxed/simple;
-	bh=16vKVzcFmBpTDdzGUUSgTUF0M4//L2fR8ZPWlKp3GnY=;
+	s=arc-20240116; t=1750685044; c=relaxed/simple;
+	bh=/jS8Wd+Jk+DX27th5xnmNB4wLZgH9D/AcQKNK8yae4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YU2D9AWepGf3zvDEv1KELzGG88QrWK7nFztsK7zEw0jp6H+dCrrlkvNc25+oOitSBdU9gsFzqy/PBk8ChkAxFdge1Vhx9puEDc9p/yhoYzi1gqFbxPQl6cPgqDL/Y9oJRqg0LTNj+dpmkKalYaZvp94hpdrbfI+w/9JDofaTZCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h4QBovl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE420C4CEEA;
-	Mon, 23 Jun 2025 13:29:13 +0000 (UTC)
+	 MIME-Version; b=TlBZCNdDNGulq5/+e3c/zek5Kgv6Ra97eLWiT9r/RABGP4Q9WwlvIyAHwg5Az5ZCDlxLB197dhkQME6Yl2G/5hREkasr1U3K+UPTHes1KHPiD29JocSxZFtOPbx78xMyfrHu+vZZgMAAMZ9CQmUvdgt0cczol5YGRZSRBcTTJrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DCtriK/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CBFC4CEEA;
+	Mon, 23 Jun 2025 13:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685354;
-	bh=16vKVzcFmBpTDdzGUUSgTUF0M4//L2fR8ZPWlKp3GnY=;
+	s=korg; t=1750685044;
+	bh=/jS8Wd+Jk+DX27th5xnmNB4wLZgH9D/AcQKNK8yae4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h4QBovl6Oq5n2DLiCy0n4NGmMatyjrBbdbopPi7DCvxSm5MqpOeuCndfOS977nfZ7
-	 gbm7JSHMuohuqSpyT9eWHBXI6reqvOl7sp3BwA06ALKFDw7X7ELIsM5J+kQucBu5OY
-	 EbJ/b2hM3rxylFEaM/DidkBa3j0P7ij22BnUDCv8=
+	b=DCtriK/ANHSqsSat6+9L5r7fl8ozb528VauSRsCH3DTmf8w7JiG5pilQO3HYt6efk
+	 YKg6YC6yHghzKl/uNl7yNaL0jvx+NaX8q5r1T2ZK1gcIk4gmyqGNm7Loe/x9qcs5q+
+	 0UzRFhzkB3qFZYf5uWDNrRbSMbu6/lYzikv3tEaQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.4 088/222] MIPS: Move -Wa,-msoft-float check from as-option to cc-option
-Date: Mon, 23 Jun 2025 15:07:03 +0200
-Message-ID: <20250623130614.747988012@linuxfoundation.org>
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 5.4 089/222] kbuild: Update assembler calls to use proper flags and language target
+Date: Mon, 23 Jun 2025 15:07:04 +0200
+Message-ID: <20250623130614.778190219@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -64,43 +68,68 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-This patch is for linux-6.1.y and earlier, it has no direct mainline
-equivalent.
+commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
 
-In order to backport commit d5c8d6e0fa61 ("kbuild: Update assembler
-calls to use proper flags and language target") to resolve a separate
-issue regarding PowerPC, the problem noticed and fixed by
-commit 80a20d2f8288 ("MIPS: Always use -Wa,-msoft-float and eliminate
-GAS_HAS_SET_HARDFLOAT") needs to be addressed. Unfortunately, 6.1 and
-earlier do not contain commit e4412739472b ("Documentation: raise
-minimum supported version of binutils to 2.25"), so it cannot be assumed
-that all supported versions of GNU as have support for -msoft-float.
+as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
+cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
+clang will emit -Werror,-Wunused-command-line-argument for various -m
+and -f flags in KBUILD_CFLAGS for assembler sources.
 
-In order to switch from KBUILD_CFLAGS to KBUILD_AFLAGS in as-option
-without consequence, move the '-Wa,-msoft-float' check to cc-option,
-including '$(cflags-y)' directly to avoid the issue mentioned in
-commit 80a20d2f8288 ("MIPS: Always use -Wa,-msoft-float and eliminate
-GAS_HAS_SET_HARDFLOAT").
+Callers of as-option and as-instr should be adding flags to
+KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
+KBUILD_AFLAGS in all macros to clear up the initial problem.
 
+Unfortunately, -Wunused-command-line-argument can still be triggered
+with clang by the presence of warning flags or macro definitions because
+'-x assembler' is used, instead of '-x assembler-with-cpp', which will
+consume these flags. Switch to '-x assembler-with-cpp' in places where
+'-x assembler' is used, as the compiler is always used as the driver for
+out of line assembler sources in the kernel.
+
+Finally, add -Werror to these macros so that they behave consistently
+whether or not CONFIG_WERROR is set.
+
+[nathan: Reworded and expanded on problems in commit message
+         Use '-x assembler-with-cpp' in a couple more places]
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1699
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Kbuild.include |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -107,7 +107,7 @@ endif
- # (specifically newer than 2.24.51.20140728) we then also need to explicitly
- # set ".set hardfloat" in all files which manipulate floating point registers.
- #
--ifneq ($(call as-option,-Wa$(comma)-msoft-float,),)
-+ifneq ($(call cc-option,$(cflags-y) -Wa$(comma)-msoft-float,),)
- 	cflags-y		+= -DGAS_HAS_SET_HARDFLOAT -Wa,-msoft-float
- endif
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -99,16 +99,16 @@ try-run = $(shell set -e;		\
+ 	fi)
  
+ # as-option
+-# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
++# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+ 
+ as-option = $(call try-run,\
+-	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
++	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+ 
+ # as-instr
+-# Usage: cflags-y += $(call as-instr,instr,option1,option2)
++# Usage: aflags-y += $(call as-instr,instr,option1,option2)
+ 
+ as-instr = $(call try-run,\
+-	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
++	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
+ 
+ # __cc-option
+ # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
 
 
 
