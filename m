@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156928-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB59AAE53CE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 421F7AE51B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 797D51B67FB9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20F531889A7A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DE72248B5;
-	Mon, 23 Jun 2025 21:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3B4221FD2;
+	Mon, 23 Jun 2025 21:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hScxGwE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ynGkyq7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A9B220686;
-	Mon, 23 Jun 2025 21:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2A16136;
+	Mon, 23 Jun 2025 21:36:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715734; cv=none; b=d7keOz7Dked7W6AI9pu3/FngkkijY+zleMFbeaPNyv3DXFVhQBZBNGmKixWknvtveLlvP4XHRv3uLQkyjWU5gJmbcawxj6FvTk/+i33huDMivCBoIQjOM6BJ9W6nhJyC8LaSjF/PZcbQjcEgSzD4L/5liBYFn351wDJv09y4k80=
+	t=1750714613; cv=none; b=YPSoDSJVSFCTQFg80ZvsDTFnRg0ZaOTwJR+eR5Z+GjPYw8+sy+eJ+UbTTdzSqsHFhw3YT4DkWpDOvjLWfhGc8U7jK3Lj8WuWBYObsGEBQqCvx3ubevFS8gioKUqsH0e/RQvFckLs4E45vUqjtCJw+T1AOQF+7aXwbaf86R9SOJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715734; c=relaxed/simple;
-	bh=sFwoE58H7Xc1+bgGM81akl5Swk6XOiAE9H4bjEBhZ8c=;
+	s=arc-20240116; t=1750714613; c=relaxed/simple;
+	bh=x5tNAGD2OvBWzT8LDXTUd0GJsP50TtHL8vOLXRbY+OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HI0nMkX6Bh7xvhsawMmJwaBwO1juAcGddzcn7eRp9Fy6kR+UhB9HimnvoTQWz1U8b8+djWf/hlq/kfLeAM4v+l9wiUAI7p3kzGLXh0Lp+X06wxTk98eRgOK5lrZeZ6WUnntyO2g1UB+1nvK+hwsvJH+p/gMnr+FqTtY3cpm7FdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hScxGwE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CFCC4CEEA;
-	Mon, 23 Jun 2025 21:55:33 +0000 (UTC)
+	 MIME-Version; b=lRtHZ7dqu51HJBZpfLDAaB7Ds2QybqQ90Zpax6SbprsNcd5X4KHofffQ0/NOez1mC4FnrKIOwZxAxrkWeWoU5HHqI0aJxo2c1Wqs+4zkDYTcxdRa0scilAAbCTRw6eqgZp5n97FmJsTnpGd44WbY71Ou7ctlKSFdpQUgck+/K1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ynGkyq7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86170C4CEEA;
+	Mon, 23 Jun 2025 21:36:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715734;
-	bh=sFwoE58H7Xc1+bgGM81akl5Swk6XOiAE9H4bjEBhZ8c=;
+	s=korg; t=1750714612;
+	bh=x5tNAGD2OvBWzT8LDXTUd0GJsP50TtHL8vOLXRbY+OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2hScxGwEFXK5ii+HjJRTjbUhm8QBwcN4Ihj1BMmQ5R+ILakoKuPIxJ9Xc5eBHlDU8
-	 bmlCGLKYLkvPNwpgd+YQ8jC7R746c9IkJUT1QX9FRutpUXYVTAznz4yg2rLW+8cI0t
-	 VoXCxq7gHj4Oc1nU142FmX1avvjr3baEOHwbpm04=
+	b=ynGkyq7dOOq8EriuESs08tvwcGxNqMV9vR6y9iFyOMJDCKGyTWEmCxIkN5afKbKc5
+	 ANJTieg9z46yaQ8/Tpl7cyYvkEXdbz6QgLefRF8TaZ5GteFl/25pLR+Hh1uUptA8cl
+	 70A7wohCP9Hp/SPSuVyb6D+qC+4T3W2eQFsUn1j0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianzhou Zhao <xnxc22xnxc22@qq.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	gldrk <me@rarity.fan>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 275/411] exfat: fix double free in delayed_free
+Subject: [PATCH 5.10 218/355] ACPICA: utilities: Fix overflow check in vsnprintf()
 Date: Mon, 23 Jun 2025 15:06:59 +0200
-Message-ID: <20250623130640.576712566@linuxfoundation.org>
+Message-ID: <20250623130633.296526745@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: gldrk <me@rarity.fan>
 
-[ Upstream commit 1f3d9724e16d62c7d42c67d6613b8512f2887c22 ]
+[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
 
-The double free could happen in the following path.
+ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
 
-exfat_create_upcase_table()
-        exfat_create_upcase_table() : return error
-        exfat_free_upcase_table() : free ->vol_utbl
-        exfat_load_default_upcase_table : return error
-     exfat_kill_sb()
-           delayed_free()
-                  exfat_free_upcase_table() <--------- double free
-This patch set ->vol_util as NULL after freeing it.
+The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX].
 
-Reported-by: Jianzhou Zhao <xnxc22xnxc22@qq.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Link: https://github.com/acpica/acpica/commit/d9d59b79
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: gldrk <me@rarity.fan>
+[ rjw: Added the tag from gldrk ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/exfat/nls.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/acpica/utprint.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
-index 314d5407a1be5..a75d5fb2404c7 100644
---- a/fs/exfat/nls.c
-+++ b/fs/exfat/nls.c
-@@ -804,4 +804,5 @@ int exfat_create_upcase_table(struct super_block *sb)
- void exfat_free_upcase_table(struct exfat_sb_info *sbi)
- {
- 	kvfree(sbi->vol_utbl);
-+	sbi->vol_utbl = NULL;
- }
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index 681c11f4af4e8..a288643e8acd3 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
+ 
+ 	pos = string;
+ 
+-	if (size != ACPI_UINT32_MAX) {
+-		end = string + size;
+-	} else {
+-		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
+-	}
++	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
++	end = string + size;
+ 
+ 	for (; *format; ++format) {
+ 		if (*format != '%') {
 -- 
 2.39.5
 
