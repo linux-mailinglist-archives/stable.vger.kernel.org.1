@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B33BAE4F8D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BC00AE4FE8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0E0521B61122
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0818417FA30
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8DD822256B;
-	Mon, 23 Jun 2025 21:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E102018E377;
+	Mon, 23 Jun 2025 21:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aLXYw8QO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjVa6nj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 657911F3FF8;
-	Mon, 23 Jun 2025 21:16:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E5517482;
+	Mon, 23 Jun 2025 21:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713390; cv=none; b=IMDkz0iJnIuzq05e1zznDSBVds9Ne5v3WpNnPcQ24AajoepmqPKGkDCnywtZGhJhO02rmznXij5y9/vitx8t5jZ7pQZeyZwxPATrY8hA+Iv/TOAUBM/cDExdQbPR1x8XSDQLXqymuD0ik2yocOl9ri2Jp8VF0CD/jsvgiaasL4g=
+	t=1750713638; cv=none; b=buzZykhewoD+E4xXfQqufms90EAXXNrQuR6P8auAZaiSLlYe82U0C9AzopUGCVpVX7Lykx2RG9K3R9sjWjlgoUqalDxu5ArUXS4M0KmGu/WDu/PjiJcENC/9l6K7fmS8XqFtYCK3T8oFagYeR/mik5R/NJmJXLN0zbkGarQtLLY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713390; c=relaxed/simple;
-	bh=HL2Kie3c4orsmGjaCUDzkozNDCrS5KGaUfDFx/NxBF8=;
+	s=arc-20240116; t=1750713638; c=relaxed/simple;
+	bh=yga9xvTI20fJeCl8+4VXSW3n0SOwTT8pnFDSIrTXQ4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mL0xUyTprytYQQ8YShCJ3AI84+S4GnE5rlyKn/wOnYL6iUPg/eJFJ5tImImQfGasqqiJla5DW0C9fLDfFYl5eKerVOCMnf2q2t+XiCpGTixm90weBIFTwBZx+id8gmbMeeY0g+wLNo/vsR9uTKo1QOlRCAif37QwLCHTlBHcfVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aLXYw8QO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7A95C4CEEA;
-	Mon, 23 Jun 2025 21:16:29 +0000 (UTC)
+	 MIME-Version; b=q6QV/nEVZe1P5a6VW9w2+mzm0rqwz0T0LAswHBbJjqn1WjyTD57myhCW+MzV+M1P7aRHSTZdK8aG1qGfbehwkniZjXhO1sr/l4zpjVvZmDcdT1kUTUJDwCRe1MZMsZxn+YNaJI4p4ixqZZqEFzkD602pIs49Q8Is9HyyV3TY2wY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjVa6nj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC81C4CEEA;
+	Mon, 23 Jun 2025 21:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713390;
-	bh=HL2Kie3c4orsmGjaCUDzkozNDCrS5KGaUfDFx/NxBF8=;
+	s=korg; t=1750713638;
+	bh=yga9xvTI20fJeCl8+4VXSW3n0SOwTT8pnFDSIrTXQ4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aLXYw8QOjgK9FdmCfDYCT8t14ahMcW0jm1Ur8PFSWsm7kfFSb2FweWdq8SFMKew84
-	 sKH+KB0dpyxR3WSz7uRhAxwtAZ2uycCAwAQGjyjwD+zq5OdBox9DvRtk/tz0TjxlJw
-	 k48TaqUgvvDJkxe3636TNwK2w4j/If8w1b6inYgg=
+	b=mjVa6nj2voIn4d7wK1yTaMd9SgXKQgZ+QHjubKAtrvLpN616Rnpkb3Vh3H0zXpb+5
+	 /E8QUXD9hg4j/nq0svxt/zCNDc86BlZxw6sfBeFQwuAO84KO7Pz1e3PaQWlBFYLZCZ
+	 5IjRP516PpWWrUdzySTSASBYSOkeZtdrgu6z3DeA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Dan Carpenter <error27@gmail.com>,
-	sunliming <sunliming@kylinos.cn>,
-	Felix Fietkau <nbd@nbd.name>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 324/592] wifi: mt76: mt7996: fix uninitialized symbol warning
+Subject: [PATCH 5.15 138/411] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
 Date: Mon, 23 Jun 2025 15:04:42 +0200
-Message-ID: <20250623130708.155383521@linuxfoundation.org>
+Message-ID: <20250623130637.062944577@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +61,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sunliming <sunliming@kylinos.cn>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 187de25110c8ac8d52e24f8c596ebdcbcd55bbbf ]
+commit 5f1017069933489add0c08659673443c9905659e upstream.
 
-Fix below smatch warnings:
-drivers/net/wireless/mediatek/mt76/mt7996/main.c:952 mt7996_mac_sta_add_links()
-error: uninitialized symbol 'err'.
-drivers/net/wireless/mediatek/mt76/mt7996/main.c:1133 mt7996_set_rts_threshold()
-error: uninitialized symbol 'ret'.
+The early_console_setup() function initializes sci_ports[0].port with an
+object of type struct uart_port obtained from the struct earlycon_device
+passed as an argument to early_console_setup().
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202504101051.1ya4Z4va-lkp@intel.com/
-Signed-off-by: sunliming <sunliming@kylinos.cn>
-Link: https://patch.msgid.link/20250419031528.2073892-1-sunliming@linux.dev
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Later, during serial port probing, the serial port used as earlycon
+(e.g., port A) might be remapped to a different position in the sci_ports[]
+array, and a different serial port (e.g., port B) might be assigned to slot
+0. For example:
+
+sci_ports[0] = port B
+sci_ports[X] = port A
+
+In this scenario, the new port mapped at index zero (port B) retains the
+data associated with the earlycon configuration. Consequently, after the
+Linux boot process, any access to the serial port now mapped to
+sci_ports[0] (port B) will block the original earlycon port (port A).
+
+To address this, introduce an early_console_exit() function to clean up
+sci_ports[0] when earlycon is exited.
+
+To prevent the cleanup of sci_ports[0] while the serial device is still
+being used by earlycon, introduce the struct sci_port::probing flag and
+account for it in early_console_exit().
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/tty/serial/sh-sci.c | 32 ++++++++++++++++++++++++++++++--
+ 1 file changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index a3295b22523a6..b11dd3dd5c46f 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -991,7 +991,7 @@ mt7996_mac_sta_add_links(struct mt7996_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index a24fcd702f6cd..534b9840eb796 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -166,6 +166,7 @@ static struct sci_port sci_ports[SCI_NPORTS];
+ static unsigned long sci_ports_in_use;
+ static struct uart_driver sci_uart_driver;
+ static bool sci_uart_earlycon;
++static bool sci_uart_earlycon_dev_probing;
+ 
+ static inline struct sci_port *
+ to_sci_port(struct uart_port *uart)
+@@ -3284,7 +3285,8 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
+ static int sci_probe_single(struct platform_device *dev,
+ 				      unsigned int index,
+ 				      struct plat_sci_port *p,
+-				      struct sci_port *sciport)
++				      struct sci_port *sciport,
++				      struct resource *sci_res)
  {
- 	struct mt7996_sta *msta = (struct mt7996_sta *)sta->drv_priv;
- 	unsigned int link_id;
--	int err;
-+	int err = 0;
+ 	int ret;
  
- 	for_each_set_bit(link_id, &new_links, IEEE80211_MLD_MAX_NUM_LINKS) {
- 		struct ieee80211_bss_conf *link_conf;
-@@ -1254,7 +1254,7 @@ static void mt7996_tx(struct ieee80211_hw *hw,
- static int mt7996_set_rts_threshold(struct ieee80211_hw *hw, u32 val)
+@@ -3331,6 +3333,14 @@ static int sci_probe_single(struct platform_device *dev,
+ 		sciport->port.flags |= UPF_HARD_FLOW;
+ 	}
+ 
++	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
++		/*
++		 * Skip cleanup the sci_port[0] in early_console_exit(), this
++		 * port is the same as the earlycon one.
++		 */
++		sci_uart_earlycon_dev_probing = true;
++	}
++
+ 	return uart_add_one_port(&sci_uart_driver, &sciport->port);
+ }
+ 
+@@ -3389,7 +3399,7 @@ static int sci_probe(struct platform_device *dev)
+ 
+ 	platform_set_drvdata(dev, sp);
+ 
+-	ret = sci_probe_single(dev, dev_id, p, sp);
++	ret = sci_probe_single(dev, dev_id, p, sp, res);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -3472,6 +3482,22 @@ sh_early_platform_init_buffer("earlyprintk", &sci_driver,
+ #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
+ static struct plat_sci_port port_cfg;
+ 
++static int early_console_exit(struct console *co)
++{
++	struct sci_port *sci_port = &sci_ports[0];
++
++	/*
++	 * Clean the slot used by earlycon. A new SCI device might
++	 * map to this slot.
++	 */
++	if (!sci_uart_earlycon_dev_probing) {
++		memset(sci_port, 0, sizeof(*sci_port));
++		sci_uart_earlycon = false;
++	}
++
++	return 0;
++}
++
+ static int __init early_console_setup(struct earlycon_device *device,
+ 				      int type)
  {
- 	struct mt7996_dev *dev = mt7996_hw_dev(hw);
--	int i, ret;
-+	int i, ret = 0;
+@@ -3491,6 +3517,8 @@ static int __init early_console_setup(struct earlycon_device *device,
+ 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
  
- 	mutex_lock(&dev->mt76.mutex);
- 
+ 	device->con->write = serial_console_write;
++	device->con->exit = early_console_exit;
++
+ 	return 0;
+ }
+ static int __init sci_early_console_setup(struct earlycon_device *device,
 -- 
 2.39.5
 
