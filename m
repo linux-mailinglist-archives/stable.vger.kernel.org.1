@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-155711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 588DEAE4387
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 125A7AE4383
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4638317AF62
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2278F17B204
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D1EC24DCE8;
-	Mon, 23 Jun 2025 13:25:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6EF4C7F;
+	Mon, 23 Jun 2025 13:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lIihihsv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlF3dUeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE3FA248191;
-	Mon, 23 Jun 2025 13:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B734248176;
+	Mon, 23 Jun 2025 13:25:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685134; cv=none; b=pdIzSKJDXwXxXHCNagImZxOTLSw27zjV89afoqfgChgMge9cmdp4s4Gh7GRJiZp6lSZ4AjPLxoM7jY4D2kbQhiB2vlad2/QCjSQSYWqTQCYpAvH3J7uQBxp91oZfN6Vcx3qbA5v/fT/fcIfFeXBDX9rwBHy5Om4fUD0sa1xxE2U=
+	t=1750685147; cv=none; b=GjklZ1VTllhRZgLUu6YT1wKh9q9Rg0soceeYx43ArVJJLKPrlsNewG6xIcgfBE+qjAs/k820nezgzOjjtmr4CS+seEAetSNAZ52iHyZSMfYB3Hy8g3oZXROakM4+SDvecGNW7M6SPDl5luLVauleTedO/gDM/c7y1XxQHAz/I0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685134; c=relaxed/simple;
-	bh=uPN8tdRrD7xRxFISUhcKlvFcd2MCBRMjlC/pywCMmII=;
+	s=arc-20240116; t=1750685147; c=relaxed/simple;
+	bh=PY8TMAlqlYjKOfv28Xy1TJlcKztfrwtG8MvcqXdKtLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bHqNiFw3ddhCPe0cU0ZXtLXHrsmpEixAt+jfBMm9Z/scy+PLSzscgN9yrQbOQ3rC7TfqrW1ws5Isc4116igwdL+nHb8hLwnqtzojHf802yVfamf2XfsN8axepIAow44h4INl6JWFWEw9M7Wq5G+1LfgI4VSHbBMjbVgSwQosq/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lIihihsv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F7BDC4CEEA;
-	Mon, 23 Jun 2025 13:25:33 +0000 (UTC)
+	 MIME-Version; b=rPvq9aaRVvSXI0SwaStibZRH5alwT6zq1dKHidfGlH9prYPrPbtDs6kLgVRJeH94bRXj1OawSqen6XNhseG4PrNztbk3tlD1fGKxWuI93WJywy5vqqy3hsFFSuUbKx5D+XlQGz+ZANy5wG4wMqbAIU132JNruWLiV2aHwOR9hLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlF3dUeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15CCC4CEEA;
+	Mon, 23 Jun 2025 13:25:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685133;
-	bh=uPN8tdRrD7xRxFISUhcKlvFcd2MCBRMjlC/pywCMmII=;
+	s=korg; t=1750685147;
+	bh=PY8TMAlqlYjKOfv28Xy1TJlcKztfrwtG8MvcqXdKtLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lIihihsvNGQrhCZNI3YEDZVw145haRXFzDJMMd2t0RCUCpIawbrI6eheP0gYlqQBf
-	 jO1qld81fhG7N9jSLpnv1w6NC+rtpf3bw/rnS5gu3Y4s8aFJxl/4G5dxYJM6Abr8lG
-	 z8sOg36XiBeQxDmEVLTvwnIgyt8BGmFPoA+br8v4=
+	b=jlF3dUeFgeFXHezr6uxlFNcGvyVSpVK33KEe5j97DPwTd9ibsTebHlhI0oHPBNAR+
+	 GRvf+rkZ2MXTW2nAV1//w0T2UAQCwmSwhrxv7Xo8ACLo43Wi3TM9um88Dhg+wc+9BV
+	 Cb7Np7pQQwpW1c9DhusFFjXMWO7jrz8DUnlAW/qw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 208/592] clocksource: Fix the CPUs choice in the watchdog per CPU verification
-Date: Mon, 23 Jun 2025 15:02:46 +0200
-Message-ID: <20250623130705.237139745@linuxfoundation.org>
+Subject: [PATCH 6.15 209/592] power: supply: gpio-charger: Fix wakeup source leaks on device unbind
+Date: Mon, 23 Jun 2025 15:02:47 +0200
+Message-ID: <20250623130705.259472579@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -68,57 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
+[ Upstream commit 51212ce95354c5b51e8c3054bf80eeeed80003b6 ]
 
-Right now, if the clocksource watchdog detects a clocksource skew, it might
-perform a per CPU check, for example in the TSC case on x86.  In other
-words: supposing TSC is detected as unstable by the clocksource watchdog
-running at CPU1, as part of marking TSC unstable the kernel will also run a
-check of TSC readings on some CPUs to be sure it is synced between them
-all.
+Device can be unbound, so driver must also release memory for the wakeup
+source.
 
-But that check happens only on some CPUs, not all of them; this choice is
-based on the parameter "verify_n_cpus" and in some random cpumask
-calculation. So, the watchdog runs such per CPU checks on up to
-"verify_n_cpus" random CPUs among all online CPUs, with the risk of
-repeating CPUs (that aren't double checked) in the cpumask random
-calculation.
-
-But if "verify_n_cpus" > num_online_cpus(), it should skip the random
-calculation and just go ahead and check the clocksource sync between
-all online CPUs, without the risk of skipping some CPUs due to
-duplicity in the random cpumask calculation.
-
-Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
-CPU verification skipping some CPU even with verify_n_cpus=8, due to the
-duplicity on random cpumask generation. Skipping the randomization when the
-number of online CPUs is smaller than verify_n_cpus, solves that.
-
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20250406202730.55096-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/gpio-charger.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index bb48498ebb5a8..6a8bc7da90626 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -310,7 +310,7 @@ static void clocksource_verify_choose_cpus(void)
- {
- 	int cpu, i, n = verify_n_cpus;
+diff --git a/drivers/power/supply/gpio-charger.c b/drivers/power/supply/gpio-charger.c
+index 1dfd5b0cb30d8..1b2da9b5fb654 100644
+--- a/drivers/power/supply/gpio-charger.c
++++ b/drivers/power/supply/gpio-charger.c
+@@ -366,7 +366,9 @@ static int gpio_charger_probe(struct platform_device *pdev)
  
--	if (n < 0) {
-+	if (n < 0 || n >= num_online_cpus()) {
- 		/* Check all of the CPUs. */
- 		cpumask_copy(&cpus_chosen, cpu_online_mask);
- 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
+ 	platform_set_drvdata(pdev, gpio_charger);
+ 
+-	device_init_wakeup(dev, 1);
++	ret = devm_device_init_wakeup(dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to init wakeup\n");
+ 
+ 	return 0;
+ }
 -- 
 2.39.5
 
