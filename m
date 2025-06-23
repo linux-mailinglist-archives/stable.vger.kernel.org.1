@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-158062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CFF2AE56D8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53BFBAE5694
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858AE16B1A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C3E4A0E34
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296CD223DF0;
-	Mon, 23 Jun 2025 22:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B900B676;
+	Mon, 23 Jun 2025 22:18:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRzRMcr2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jm422E0A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22715ADB4;
-	Mon, 23 Jun 2025 22:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA89B19E7F9;
+	Mon, 23 Jun 2025 22:18:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717389; cv=none; b=WbXpZ3sQJbbXOJ6dyjWPP4P4nKPX0S91an1VVAvEvy327h389CPi5zxEtNC4NlI11mwmRxAN7UsklPNW+W/UDuxUlGVya5B2URl5vfRQkREg0O8aXlbcF/JaXb7GtgqNzYAqjdKeM7iiPVr71Ctg0OiFB6fVZcEY3ciKRJLC3tk=
+	t=1750717112; cv=none; b=GT/mu1TgHw8Joz1HX8wkiBp8Jb99gqwnfibEOAUUcjMf7HdDO8PvUiOCoBtkDlPUPvB2J2YVhkaRzjUJVdEt8/p5cIzzbNshcx96Pai96Cfh0D+PYM+7QckuysJHxN4qfGV+lqF+hhEtbADu2Ahk8tsjmGBjddfenIcXNZmQecM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717389; c=relaxed/simple;
-	bh=vMVyqZFm6bxusQa5hzK80BJs0TAKgZanO4d+4Rx4Dy0=;
+	s=arc-20240116; t=1750717112; c=relaxed/simple;
+	bh=Ar4phHCW1MhhMno7fVSCJnsREEJr+E/lRH7Xd5ag2ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pEvyq0Ar3ZdVHuhssKAS/vPV4udJpUr6lu7nWTXMSe6cblq4TKIR5eJ5qoDrhfrZNDDZbOnEjaoXF5fKagT5jBpyOwuQuritgM6aJlPxVO1cqART+5mUbdMJcEdBEK5lACohJkMA8FPXGaRD6JMqO2hd1DNvNevGDpnZ2rDtoCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRzRMcr2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2CBC4CEEA;
-	Mon, 23 Jun 2025 22:23:09 +0000 (UTC)
+	 MIME-Version; b=dZmePGlqBeqwrvQQLFIwvOp4Qv07C0s7JYCvHLonfQxgPC42cuScyOgBsoWgitWy/aKpaCcuSjTWyGI3l0E3fJEoCddxygOsWUgotUXkKFzzEMQo2BpBzdB9zk15znZ9rEKYMWxMwWCUNLwhRXnTWKdxln671LQvskuQMeJLKig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jm422E0A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77ADDC4CEEA;
+	Mon, 23 Jun 2025 22:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717389;
-	bh=vMVyqZFm6bxusQa5hzK80BJs0TAKgZanO4d+4Rx4Dy0=;
+	s=korg; t=1750717111;
+	bh=Ar4phHCW1MhhMno7fVSCJnsREEJr+E/lRH7Xd5ag2ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kRzRMcr2s/NhWHqHCVsMkLNcZnvmipH7VGSCkmREYIW2xn+y2Rnb7h3Wxigp4ew7b
-	 4122FG6jpT2GHDvFAru5jMREWm4tBiaMKfNTIrtz7u/7o084pfgONQgC78QRzRga8g
-	 sL/CJFDMtsozZ1+dEXunPVrCJvveoiDagQi+z7to=
+	b=Jm422E0AR66DYTBVCkZirKNkrVjrf8CO/ZdP6Xr2OMrbCwJCc19YMh3AEkzfVKMjc
+	 ksVsKTq4naZQ9QdfDZSGr67A9I2O0oFBxDIH3e56cGVOxo6w4CDIh7xNaXD8iPHWs0
+	 Bn7qxPuxG7UJYxWNnTTlvrUq6DjIPgukw/BlzbWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 417/508] scsi: lpfc: Fix lpfc_check_sli_ndlp() handling for GEN_REQUEST64 commands
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Zenm Chen <zenmchen@gmail.com>
+Subject: [PATCH 6.12 325/414] wifi: rtw89: phy: add dummy C2H event handler for report of TAS power
 Date: Mon, 23 Jun 2025 15:07:42 +0200
-Message-ID: <20250623130655.464414096@linuxfoundation.org>
+Message-ID: <20250623130650.119403520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit 05ae6c9c7315d844fbc15afe393f5ba5e5771126 ]
+commit 09489812013f9ff3850c3af9900c88012b8c1e5d upstream.
 
-In lpfc_check_sli_ndlp(), the get_job_els_rsp64_did remote_id assignment
-does not apply for GEN_REQUEST64 commands as it only has meaning for a
-ELS_REQUEST64 command.  So, if (iocb->ndlp == ndlp) is false, we could
-erroneously return the wrong value.  Fix by replacing the fallthrough
-statement with a break statement before the remote_id check.
+The newer firmware, lik RTL8852C version 0.27.111.0, will notify driver
+report of TAS (Time Averaged SAR) power by new C2H events. This is to
+assist in higher accurate calculation of TAS.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250425194806.3585-2-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For now, driver doesn't use the report yet, so add a dummy handler to
+avoid it throws info like:
+   rtw89_8852ce 0000:03:00.0: c2h class 9 func 6 not support
+
+Also add "MAC" and "PHY" to the message to disambiguate the source of
+C2H event.
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20241209042127.21424-1-pkshih@realtek.com
+Signed-off-by: Zenm Chen <zenmchen@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw89/mac.c |    4 ++--
+ drivers/net/wireless/realtek/rtw89/phy.c |   10 ++++++++--
+ drivers/net/wireless/realtek/rtw89/phy.h |    1 +
+ 3 files changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index b04112c77fcd1..3a55e410235c0 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5074,7 +5074,7 @@ lpfc_check_sli_ndlp(struct lpfc_hba *phba,
- 		case CMD_GEN_REQUEST64_CR:
- 			if (iocb->ndlp == ndlp)
- 				return 1;
--			fallthrough;
-+			break;
- 		case CMD_ELS_REQUEST64_CR:
- 			if (remote_id == ndlp->nlp_DID)
- 				return 1;
--- 
-2.39.5
-
+--- a/drivers/net/wireless/realtek/rtw89/mac.c
++++ b/drivers/net/wireless/realtek/rtw89/mac.c
+@@ -5513,11 +5513,11 @@ void rtw89_mac_c2h_handle(struct rtw89_d
+ 	case RTW89_MAC_C2H_CLASS_FWDBG:
+ 		return;
+ 	default:
+-		rtw89_info(rtwdev, "c2h class %d not support\n", class);
++		rtw89_info(rtwdev, "MAC c2h class %d not support\n", class);
+ 		return;
+ 	}
+ 	if (!handler) {
+-		rtw89_info(rtwdev, "c2h class %d func %d not support\n", class,
++		rtw89_info(rtwdev, "MAC c2h class %d func %d not support\n", class,
+ 			   func);
+ 		return;
+ 	}
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -3062,10 +3062,16 @@ rtw89_phy_c2h_rfk_report_state(struct rt
+ 		    (int)(len - sizeof(report->hdr)), &report->state);
+ }
+ 
++static void
++rtw89_phy_c2h_rfk_log_tas_pwr(struct rtw89_dev *rtwdev, struct sk_buff *c2h, u32 len)
++{
++}
++
+ static
+ void (* const rtw89_phy_c2h_rfk_report_handler[])(struct rtw89_dev *rtwdev,
+ 						  struct sk_buff *c2h, u32 len) = {
+ 	[RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE] = rtw89_phy_c2h_rfk_report_state,
++	[RTW89_PHY_C2H_RFK_LOG_TAS_PWR] = rtw89_phy_c2h_rfk_log_tas_pwr,
+ };
+ 
+ bool rtw89_phy_c2h_chk_atomic(struct rtw89_dev *rtwdev, u8 class, u8 func)
+@@ -3119,11 +3125,11 @@ void rtw89_phy_c2h_handle(struct rtw89_d
+ 			return;
+ 		fallthrough;
+ 	default:
+-		rtw89_info(rtwdev, "c2h class %d not support\n", class);
++		rtw89_info(rtwdev, "PHY c2h class %d not support\n", class);
+ 		return;
+ 	}
+ 	if (!handler) {
+-		rtw89_info(rtwdev, "c2h class %d func %d not support\n", class,
++		rtw89_info(rtwdev, "PHY c2h class %d func %d not support\n", class,
+ 			   func);
+ 		return;
+ 	}
+--- a/drivers/net/wireless/realtek/rtw89/phy.h
++++ b/drivers/net/wireless/realtek/rtw89/phy.h
+@@ -151,6 +151,7 @@ enum rtw89_phy_c2h_rfk_log_func {
+ 
+ enum rtw89_phy_c2h_rfk_report_func {
+ 	RTW89_PHY_C2H_RFK_REPORT_FUNC_STATE = 0,
++	RTW89_PHY_C2H_RFK_LOG_TAS_PWR = 6,
+ };
+ 
+ enum rtw89_phy_c2h_dm_func {
 
 
 
