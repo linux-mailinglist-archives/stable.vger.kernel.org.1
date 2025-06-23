@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D3DBAE5421
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C161AE52EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F27C188F0AF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 511D1443FE2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66388220686;
-	Mon, 23 Jun 2025 21:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661731C84A0;
+	Mon, 23 Jun 2025 21:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qiLY0g6I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fH/0FGys"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F2270838;
-	Mon, 23 Jun 2025 21:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FA93FD4;
+	Mon, 23 Jun 2025 21:48:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715942; cv=none; b=bh8QYcz+Eaag1EMergoDYMIkjY8sB6okbfENs73lu6TvVUX8OeZT08XTf8VCntqEPNKKFF9EiOQna6MWx4kmDYUn84h3IvW73pF0pTm+4r9DY5I5chYkf8GHAwY3qpyo8rMYM+apVhquGKBTVry1UcU7x0WbIWunsP696qNoZ8w=
+	t=1750715292; cv=none; b=uaChvof+AseM+ucnnAMCSlWgJiAWSbCpEFrjs7KkonUYrVjhqvijtoX3S84zpXDdSkttEUPf1sUuJ4HqqUEvNq+qH3MAGGYZBfE20oG/fYdrI1Xxm3TMI6mZysmi0v8TLntoZCrVX9gYYbK/vIMJLKCelkWPbNCzAC4DcWYJz9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715942; c=relaxed/simple;
-	bh=cdzGCBK3/4MOVP1LBP2v1KPC02UqMj1Pt5MRrzESBuA=;
+	s=arc-20240116; t=1750715292; c=relaxed/simple;
+	bh=J96NFk5Mk7Koh/1mFm87XvblCvyGNL16CyMUTwU+m5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XbflGeT8kMufbxI5eOjy1XwCxqBzeKoCuTpjMbnq75foOwkhCAfbL8lrMEBQsINCxRXBXsb3LQylfthkuOK/wY51kiZVZXj+ySUjT0Kh+kYX94o4XE/o1GcpX97ZQx5sBRzEd8m3/zLtetRCqkm7vhPb/BF76NSIgySunhbDNtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qiLY0g6I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FA10C4CEEA;
-	Mon, 23 Jun 2025 21:59:01 +0000 (UTC)
+	 MIME-Version; b=Z1zdzI1lZYDj5Qgv1RCN9JdL/tW8Vs9BMdF1gLIDXPZyB7mkUaMYrBPuRPx1UfdWLM6JJr4CPylagk4K5Ye7+E4Bo377S6jBrMVTYiqoHaX1Tn345HIBfHCncW6Qwv9hxbXcIVdQsxjoXMC+fv/OJcS/CxgHb9Mv3OcfAQO12/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fH/0FGys; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A78C4CEEA;
+	Mon, 23 Jun 2025 21:48:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715941;
-	bh=cdzGCBK3/4MOVP1LBP2v1KPC02UqMj1Pt5MRrzESBuA=;
+	s=korg; t=1750715292;
+	bh=J96NFk5Mk7Koh/1mFm87XvblCvyGNL16CyMUTwU+m5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qiLY0g6IqP7V5XGe/j6ZNghfW6eUY8UpFAMcABK9dwlYz+jhgihouYdZ+7pFIr7zQ
-	 +0nAIolpw1pbrtypaPX5/EZJXbii7i68kgblRrhlEXWup17N/oNL6VgdwWqElgjGim
-	 /UYxpJQHqatUXWRs/ulUWYVD/u5/EZcDbT0J9fLc=
+	b=fH/0FGys8l7B9lAt/HuuwLSZ4ZX4w5NofuYtgMhQPvqC07XQCaAnxXNljJ/GkbX7l
+	 Rh30Vm6Vg3rzOCSw/hUvMUoxLx0hiWG6FPtR2ckGzSm8pWwQ5Vr/DK5BvgbOAdwgqp
+	 L5UdQ08Ch3TwYSLp9v3pfwjavnutNbYu2bz++eHc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Edip Hazuri <edip@medip.dev>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 492/592] ALSA: hda/realtek - Add mute LED support for HP Victus 16-s1xxx and HP Victus 15-fa1xxx
-Date: Mon, 23 Jun 2025 15:07:30 +0200
-Message-ID: <20250623130712.134577290@linuxfoundation.org>
+	Muhammad Usama Anjum <usama.anjum@collabora.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 190/290] wifi: ath11k: determine PM policy based on machine model
+Date: Mon, 23 Jun 2025 15:07:31 +0200
+Message-ID: <20250623130632.578545666@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +64,145 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edip Hazuri <edip@medip.dev>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-commit a0914bf56e26d2cf457690602883f9cd2ec2c646 upstream.
+[ Upstream commit ce8669a27016354dfa8bf3c954255cb9f3583bae ]
 
-The mute led on those laptops is using ALC245 but requires a quirk to work
-This patch enables the existing quirk for the devices.
+To handle the Lenovo unexpected wakeup issue [1], previously we revert
+commit 166a490f59ac ("wifi: ath11k: support hibernation"). So currently
+WLAN target is put into WoWLAN mode during suspend. This is a temporary
+solution as it does not work on machines where WLAN power is cut off.
 
-Tested on my Victus 16-s1011nt Laptop and my friend's Victus
-15-fa1xxx. The LED behaviour works as intended.
+The thought here is that we do WoWLAN suspend on Lenovo machines while
+do non-WoWLAN suspend (which is done in the reverted commit) on other
+machines. This requires us to identify Lenovo machines from others.
+For that purpose, read board vendor and product name from DMI interface,
+match it against all known affected machines. If there is a match, choose
+WoWLAN suspend mode, else choose non-WoWLAN mode. Save the mode in ab
+for later reference.
 
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Edip Hazuri <edip@medip.dev>
-Link: https://patch.msgid.link/20250609075943.13934-2-edip@medip.dev
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
+
+Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
+
+Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Tested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Link: https://patch.msgid.link/20250328-ath11k-bring-hibernation-back-v3-1-23405ae23431@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/ath/ath11k/core.c | 55 ++++++++++++++++++++++++++
+ drivers/net/wireless/ath/ath11k/core.h |  7 ++++
+ 2 files changed, 62 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10787,6 +10787,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8b97, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8bb3, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bb4, "HP Slim OMEN", ALC287_FIXUP_CS35L41_I2C_2),
-+	SND_PCI_QUIRK(0x103c, 0x8bc8, "HP Victus 15-fa1xxx", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bcd, "HP Omen 16-xd0xxx", ALC245_FIXUP_HP_MUTE_LED_V1_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8bdd, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
- 	SND_PCI_QUIRK(0x103c, 0x8bde, "HP Envy 17", ALC287_FIXUP_CS35L41_I2C_2),
-@@ -10840,6 +10841,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x103c, 0x8c91, "HP EliteBook 660", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8c96, "HP", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- 	SND_PCI_QUIRK(0x103c, 0x8c97, "HP ZBook", ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
-+	SND_PCI_QUIRK(0x103c, 0x8c9c, "HP Victus 16-s1xxx (MB 8C9C)", ALC245_FIXUP_HP_MUTE_LED_COEFBIT),
- 	SND_PCI_QUIRK(0x103c, 0x8ca1, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI_2_HP_GPIO_LED),
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 609d8387c41f3..0e8ff839cae23 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -704,6 +704,52 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
+ 	},
+ };
+ 
++static const struct dmi_system_id ath11k_pm_quirk_table[] = {
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
++		},
++	},
++	{
++		.driver_data = (void *)ATH11K_PM_WOW,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
++		},
++	},
++	{}
++};
++
+ static inline struct ath11k_pdev *ath11k_core_get_single_pdev(struct ath11k_base *ab)
+ {
+ 	WARN_ON(!ab->hw_params.single_pdev_only);
+@@ -2018,8 +2064,17 @@ EXPORT_SYMBOL(ath11k_core_pre_init);
+ 
+ int ath11k_core_init(struct ath11k_base *ab)
+ {
++	const struct dmi_system_id *dmi_id;
+ 	int ret;
+ 
++	dmi_id = dmi_first_match(ath11k_pm_quirk_table);
++	if (dmi_id)
++		ab->pm_policy = (kernel_ulong_t)dmi_id->driver_data;
++	else
++		ab->pm_policy = ATH11K_PM_DEFAULT;
++
++	ath11k_dbg(ab, ATH11K_DBG_BOOT, "pm policy %u\n", ab->pm_policy);
++
+ 	ret = ath11k_core_soc_create(ab);
+ 	if (ret) {
+ 		ath11k_err(ab, "failed to create soc core: %d\n", ret);
+diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
+index 555deafd8399a..812a174f74c0b 100644
+--- a/drivers/net/wireless/ath/ath11k/core.h
++++ b/drivers/net/wireless/ath/ath11k/core.h
+@@ -842,6 +842,11 @@ struct ath11k_msi_config {
+ 	u16 hw_rev;
+ };
+ 
++enum ath11k_pm_policy {
++	ATH11K_PM_DEFAULT,
++	ATH11K_PM_WOW,
++};
++
+ /* Master structure to hold the hw data which may be used in core module */
+ struct ath11k_base {
+ 	enum ath11k_hw_rev hw_rev;
+@@ -994,6 +999,8 @@ struct ath11k_base {
+ 	} testmode;
+ #endif
+ 
++	enum ath11k_pm_policy pm_policy;
++
+ 	/* must be last */
+ 	u8 drv_priv[] __aligned(sizeof(void *));
+ };
+-- 
+2.39.5
+
 
 
 
