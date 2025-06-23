@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9169DAE5590
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D800AE570D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F55C4C4E72
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACD541C23A01
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B914322A7E8;
-	Mon, 23 Jun 2025 22:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44EB82264BF;
+	Mon, 23 Jun 2025 22:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WEcg4onK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ywn0+DDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744ED22A4EE;
-	Mon, 23 Jun 2025 22:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0066A222581;
+	Mon, 23 Jun 2025 22:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716681; cv=none; b=IASNbxRwXeIICOp3J6+vuyU7lXQ8IWhViBAB03YXXF6e50DicMPXr9IixtiyFUtEGReoQ8zNPH/pz4BFHPp/uXOAZEECfrXPZUNf0QNxWoFq2Yys58yT0Sn7dmUD8p5PRZg6q2JYLzdeCMrksMEc2zLoKI28lkNKBm0gz24gAWY=
+	t=1750717536; cv=none; b=dpu6DT+LZB0XXe4PHO0ZP5IU0fU3IRi5qnK1DjS75aeAa4P3wzfxj7vaqeHkCXY8NlotbA5Lt85eD0hVhgWhaWHjbSa+Qf4LCP2X2c9i2txeuf96nne1JbRRV8vxe0THliXwaipt+BNBhWlx3nhcV3u8EvdnhNZ6ARiYvig56L0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716681; c=relaxed/simple;
-	bh=qY5yqCvqsmLpo9PMZ8Ae47dJVdFIqB4KZmup2tfNLIQ=;
+	s=arc-20240116; t=1750717536; c=relaxed/simple;
+	bh=ktY+8X/rj0qkVFA7G8UTHVhhfOohpFrnNQEqT4ErWeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NsDdBgsHc3xajnl8pMkcuSDrolVlFqMUUr3nyir/XzjuX69w3HEJv3xPTpjXonUhBlz60R11L+JOTm2l8WsSjgXMjqatpG/NV0Kccksuonrht8aSeUTv3e9f0v0GRn/hfCtVjrChltl9aIOcNgdGw+GcolgHTY48uzmByfWXJyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WEcg4onK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B88CC4CEED;
-	Mon, 23 Jun 2025 22:11:20 +0000 (UTC)
+	 MIME-Version; b=AuVDfCTfdzZ28PYSNOjlg+10x6BjLk7fyKNTm+OpWWzv7VuKsyS/KJF61VE3gFfQRyqCmBKRCAuPOO0v7Bmlzf0ZDingURtae6oY6ir7XanG5tpyRIvYl5Fes1anZ2bFCmJOQ/3yGKTIAFE9xgjaMMK+2tkCXtnllWE0cMeU1lY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ywn0+DDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A618C4CEEA;
+	Mon, 23 Jun 2025 22:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716681;
-	bh=qY5yqCvqsmLpo9PMZ8Ae47dJVdFIqB4KZmup2tfNLIQ=;
+	s=korg; t=1750717535;
+	bh=ktY+8X/rj0qkVFA7G8UTHVhhfOohpFrnNQEqT4ErWeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WEcg4onK/P2W9yPanQNOE4PZkpwhFTNwko8vEaT23HiRHST4eTBWOtP+wt5yKY6Dp
-	 y6xl7WtXLQAynXK6nV5vo3e0+WO8D2b0wAATP1g6YJkOJKRG56OAf0zokirYBQ6V67
-	 RY4DZo8t9dqYQYtB7vM30sOThz8ewqKJ2odMpCMI=
+	b=Ywn0+DDRaf61P+UUaB+vUFEiyXIqm77/92RApj3Hq6qP2Wx/Q8cqr8kkjwVcS0apM
+	 S/se1IOOud5CdPz/TU3dJxdu19p1sHg4C7qIG91PoVp9bytJ3F1yeHdPR6Fv+RFHzg
+	 h+uyjWuzdpy3FSkFg2kJVVHDldRyrhJybSRWSPWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 535/592] ptp: fix breakage after ptp_vclock_in_use() rework
+	Bharath SM <bharathsm@microsoft.com>,
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 448/508] smb: improve directory cache reuse for readdir operations
 Date: Mon, 23 Jun 2025 15:08:13 +0200
-Message-ID: <20250623130713.160403191@linuxfoundation.org>
+Message-ID: <20250623130656.179011702@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,169 +62,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Bharath SM <bharathsm.hsk@gmail.com>
 
-[ Upstream commit 5ab73b010cad294851e558f1d4714a85c6f206c7 ]
+commit 72dd7961a4bb4fa1fc456169a61dd12e68e50645 upstream.
 
-What is broken
---------------
+Currently, cached directory contents were not reused across subsequent
+'ls' operations because the cache validity check relied on comparing
+the ctx pointer, which changes with each readdir invocation. As a
+result, the cached dir entries was not marked as valid and the cache was
+not utilized for subsequent 'ls' operations.
 
-ptp4l, and any other application which calls clock_adjtime() on a
-physical clock, is greeted with error -EBUSY after commit 87f7ce260a3c
-("ptp: remove ptp->n_vclocks check logic in ptp_vclock_in_use()").
+This change uses the file pointer, which remains consistent across all
+readdir calls for a given directory instance, to associate and validate
+the cache. As a result, cached directory contents can now be
+correctly reused, improving performance for repeated directory listings.
 
-Explanation for the breakage
-----------------------------
+Performance gains with local windows SMB server:
 
-The blamed commit was based on the false assumption that
-ptp_vclock_in_use() callers already test for n_vclocks prior to calling
-this function.
+Without the patch and default actimeo=1:
+ 1000 directory enumeration operations on dir with 10k files took 135.0s
 
-This is notably incorrect for the code path below, in which there is, in
-fact, no n_vclocks test:
+With this patch and actimeo=0:
+ 1000 directory enumeration operations on dir with 10k files took just 5.1s
 
-ptp_clock_adjtime()
--> ptp_clock_freerun()
-   -> ptp_vclock_in_use()
-
-The result is that any clock adjustment on any physical clock is now
-impossible. This is _despite_ there not being any vclock over this
-physical clock.
-
-$ ptp4l -i eno0 -2 -P -m
-ptp4l[58.425]: selected /dev/ptp0 as PTP clock
-[   58.429749] ptp: physical clock is free running
-ptp4l[58.431]: Failed to open /dev/ptp0: Device or resource busy
-failed to create a clock
-$ cat /sys/class/ptp/ptp0/n_vclocks
-0
-
-The patch makes the ptp_vclock_in_use() function say "if it's not a
-virtual clock, then this physical clock does have virtual clocks on
-top".
-
-Then ptp_clock_freerun() uses this information to say "this physical
-clock has virtual clocks on top, so it must stay free-running".
-
-Then ptp_clock_adjtime() uses this information to say "well, if this
-physical clock has to be free-running, I can't do it, return -EBUSY".
-
-Simply put, ptp_vclock_in_use() cannot be simplified so as to remove the
-test whether vclocks are in use.
-
-What did the blamed commit intend to fix
-----------------------------------------
-
-The blamed commit presents a lockdep warning stating "possible recursive
-locking detected", with the n_vclocks_store() and ptp_clock_unregister()
-functions involved.
-
-The recursive locking seems this:
-n_vclocks_store()
--> mutex_lock_interruptible(&ptp->n_vclocks_mux) // 1
--> device_for_each_child_reverse(..., unregister_vclock)
-   -> unregister_vclock()
-      -> ptp_vclock_unregister()
-         -> ptp_clock_unregister()
-            -> ptp_vclock_in_use()
-               -> mutex_lock_interruptible(&ptp->n_vclocks_mux) // 2
-
-The issue can be triggered by creating and then deleting vclocks:
-$ echo 2 > /sys/class/ptp/ptp0/n_vclocks
-$ echo 0 > /sys/class/ptp/ptp0/n_vclocks
-
-But note that in the original stack trace, the address of the first lock
-is different from the address of the second lock. This is because at
-step 1 marked above, &ptp->n_vclocks_mux is the lock of the parent
-(physical) PTP clock, and at step 2, the lock is of the child (virtual)
-PTP clock. They are different locks of different devices.
-
-In this situation there is no real deadlock, the lockdep warning is
-caused by the fact that the mutexes have the same lock class on both the
-parent and the child. Functionally it is fine.
-
-Proposed alternative solution
------------------------------
-
-We must reintroduce the body of ptp_vclock_in_use() mostly as it was
-structured prior to the blamed commit, but avoid the lockdep warning.
-
-Based on the fact that vclocks cannot be nested on top of one another
-(ptp_is_attribute_visible() hides n_vclocks for virtual clocks), we
-already know that ptp->n_vclocks is zero for a virtual clock. And
-ptp->is_virtual_clock is a runtime invariant, established at
-ptp_clock_register() time and never changed. There is no need to
-serialize on any mutex in order to read ptp->is_virtual_clock, and we
-take advantage of that by moving it outside the lock.
-
-Thus, virtual clocks do not need to acquire &ptp->n_vclocks_mux at
-all, and step 2 in the code walkthrough above can simply go away.
-We can simply return false to the question "ptp_vclock_in_use(a virtual
-clock)".
-
-Other notes
------------
-
-Releasing &ptp->n_vclocks_mux before ptp_vclock_in_use() returns
-execution seems racy, because the returned value can become stale as
-soon as the function returns and before the return value is used (i.e.
-n_vclocks_store() can run any time). The locking requirement should
-somehow be transferred to the caller, to ensure a longer life time for
-the returned value, but this seems out of scope for this severe bug fix.
-
-Because we are also fixing up the logic from the original commit, there
-is another Fixes: tag for that.
-
-Fixes: 87f7ce260a3c ("ptp: remove ptp->n_vclocks check logic in ptp_vclock_in_use()")
-Fixes: 73f37068d540 ("ptp: support ptp physical/virtual clocks conversion")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20250613174749.406826-2-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ptp/ptp_private.h | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ fs/smb/client/cached_dir.h |    8 ++++----
+ fs/smb/client/readdir.c    |   28 +++++++++++++++-------------
+ 2 files changed, 19 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/ptp/ptp_private.h b/drivers/ptp/ptp_private.h
-index 528d86a33f37d..a6aad743c282f 100644
---- a/drivers/ptp/ptp_private.h
-+++ b/drivers/ptp/ptp_private.h
-@@ -98,7 +98,27 @@ static inline int queue_cnt(const struct timestamp_event_queue *q)
- /* Check if ptp virtual clock is in use */
- static inline bool ptp_vclock_in_use(struct ptp_clock *ptp)
- {
--	return !ptp->is_virtual_clock;
-+	bool in_use = false;
-+
-+	/* Virtual clocks can't be stacked on top of virtual clocks.
-+	 * Avoid acquiring the n_vclocks_mux on virtual clocks, to allow this
-+	 * function to be called from code paths where the n_vclocks_mux of the
-+	 * parent physical clock is already held. Functionally that's not an
-+	 * issue, but lockdep would complain, because they have the same lock
-+	 * class.
-+	 */
-+	if (ptp->is_virtual_clock)
-+		return false;
-+
-+	if (mutex_lock_interruptible(&ptp->n_vclocks_mux))
-+		return true;
-+
-+	if (ptp->n_vclocks)
-+		in_use = true;
-+
-+	mutex_unlock(&ptp->n_vclocks_mux);
-+
-+	return in_use;
+--- a/fs/smb/client/cached_dir.h
++++ b/fs/smb/client/cached_dir.h
+@@ -21,10 +21,10 @@ struct cached_dirent {
+ struct cached_dirents {
+ 	bool is_valid:1;
+ 	bool is_failed:1;
+-	struct dir_context *ctx; /*
+-				  * Only used to make sure we only take entries
+-				  * from a single context. Never dereferenced.
+-				  */
++	struct file *file; /*
++			    * Used to associate the cache with a single
++			    * open file instance.
++			    */
+ 	struct mutex de_mutex;
+ 	int pos;		 /* Expected ctx->pos */
+ 	struct list_head entries;
+--- a/fs/smb/client/readdir.c
++++ b/fs/smb/client/readdir.c
+@@ -882,9 +882,9 @@ static bool emit_cached_dirents(struct c
  }
  
- /* Check if ptp clock shall be free running */
--- 
-2.39.5
-
+ static void update_cached_dirents_count(struct cached_dirents *cde,
+-					struct dir_context *ctx)
++					struct file *file)
+ {
+-	if (cde->ctx != ctx)
++	if (cde->file != file)
+ 		return;
+ 	if (cde->is_valid || cde->is_failed)
+ 		return;
+@@ -893,9 +893,9 @@ static void update_cached_dirents_count(
+ }
+ 
+ static void finished_cached_dirents_count(struct cached_dirents *cde,
+-					struct dir_context *ctx)
++					struct dir_context *ctx, struct file *file)
+ {
+-	if (cde->ctx != ctx)
++	if (cde->file != file)
+ 		return;
+ 	if (cde->is_valid || cde->is_failed)
+ 		return;
+@@ -908,11 +908,12 @@ static void finished_cached_dirents_coun
+ static void add_cached_dirent(struct cached_dirents *cde,
+ 			      struct dir_context *ctx,
+ 			      const char *name, int namelen,
+-			      struct cifs_fattr *fattr)
++			      struct cifs_fattr *fattr,
++				  struct file *file)
+ {
+ 	struct cached_dirent *de;
+ 
+-	if (cde->ctx != ctx)
++	if (cde->file != file)
+ 		return;
+ 	if (cde->is_valid || cde->is_failed)
+ 		return;
+@@ -942,7 +943,8 @@ static void add_cached_dirent(struct cac
+ static bool cifs_dir_emit(struct dir_context *ctx,
+ 			  const char *name, int namelen,
+ 			  struct cifs_fattr *fattr,
+-			  struct cached_fid *cfid)
++			  struct cached_fid *cfid,
++			  struct file *file)
+ {
+ 	bool rc;
+ 	ino_t ino = cifs_uniqueid_to_ino_t(fattr->cf_uniqueid);
+@@ -954,7 +956,7 @@ static bool cifs_dir_emit(struct dir_con
+ 	if (cfid) {
+ 		mutex_lock(&cfid->dirents.de_mutex);
+ 		add_cached_dirent(&cfid->dirents, ctx, name, namelen,
+-				  fattr);
++				  fattr, file);
+ 		mutex_unlock(&cfid->dirents.de_mutex);
+ 	}
+ 
+@@ -1054,7 +1056,7 @@ static int cifs_filldir(char *find_entry
+ 	cifs_prime_dcache(file_dentry(file), &name, &fattr);
+ 
+ 	return !cifs_dir_emit(ctx, name.name, name.len,
+-			      &fattr, cfid);
++			      &fattr, cfid, file);
+ }
+ 
+ 
+@@ -1105,8 +1107,8 @@ int cifs_readdir(struct file *file, stru
+ 	 * we need to initialize scanning and storing the
+ 	 * directory content.
+ 	 */
+-	if (ctx->pos == 0 && cfid->dirents.ctx == NULL) {
+-		cfid->dirents.ctx = ctx;
++	if (ctx->pos == 0 && cfid->dirents.file == NULL) {
++		cfid->dirents.file = file;
+ 		cfid->dirents.pos = 2;
+ 	}
+ 	/*
+@@ -1174,7 +1176,7 @@ int cifs_readdir(struct file *file, stru
+ 	} else {
+ 		if (cfid) {
+ 			mutex_lock(&cfid->dirents.de_mutex);
+-			finished_cached_dirents_count(&cfid->dirents, ctx);
++			finished_cached_dirents_count(&cfid->dirents, ctx, file);
+ 			mutex_unlock(&cfid->dirents.de_mutex);
+ 		}
+ 		cifs_dbg(FYI, "Could not find entry\n");
+@@ -1215,7 +1217,7 @@ int cifs_readdir(struct file *file, stru
+ 		ctx->pos++;
+ 		if (cfid) {
+ 			mutex_lock(&cfid->dirents.de_mutex);
+-			update_cached_dirents_count(&cfid->dirents, ctx);
++			update_cached_dirents_count(&cfid->dirents, file);
+ 			mutex_unlock(&cfid->dirents.de_mutex);
+ 		}
+ 
 
 
 
