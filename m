@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157518-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED2E5AE5474
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAC3CAE5060
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9AC2E1BC1372
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 572804A0D0B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8F2D221DA8;
-	Mon, 23 Jun 2025 22:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9061F4628;
+	Mon, 23 Jun 2025 21:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3llGSwI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zCz1nA8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59E82940B;
-	Mon, 23 Jun 2025 22:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0181E5B71;
+	Mon, 23 Jun 2025 21:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716063; cv=none; b=EGjdmg091c3VlR++mfVuFkXwIEJZR71uRdmYt/FlJVQWTSQcOm8SOEQybBTU3HtCj6fOcrt7xBHnNvAwIBgOFmSYTaY8Vpiyb2v0NPkOX0VN7IKm6EVHuH9L4N2g/ALYGr/KDoCwS/XPUbbJbifKd2dlD4mv0Ek0lR2N3Ls23k8=
+	t=1750713881; cv=none; b=EDjq6ozzYEFbTa13jnv1FJVIEOEhSI7okUEwM5b+FOEcvln4bfezHTBaMvqtsYi6C6wNaa4IB3WEDb+/hwvBUqopkZg64SAbScejKzu6ei9OCVwd4ZQZul4GxvkKt93RhviOdtbdPQcALQHQs/LZxWs2LelFtOMf3p55L6+DIwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716063; c=relaxed/simple;
-	bh=9Z2wcuDqYsMHpmkcgInm1r8S8vVZjvxQJlekDCaICuY=;
+	s=arc-20240116; t=1750713881; c=relaxed/simple;
+	bh=YZaqbQY/xwXmyedAzr/0ciwhljy9C6gt1Z62UDD8R2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7spD2AQejgPB3MZjL00IGvoi+dA0S/CiEV29PxOG7H9qwNXM8Ofy/IOxG/YPai8ywmMbqfdYcf/DUExU5RB/C5oNmcuIt6P11k+Get3V5xi2ljeySoEsIsDwfnGx+cFkOE8ojOTZ4r1DPi6vCvORx5ni9+c8l9XzgVJhzWXi7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3llGSwI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DEC6C4CEEA;
-	Mon, 23 Jun 2025 22:01:03 +0000 (UTC)
+	 MIME-Version; b=eyl/hL+kdYjJdEzLJKdfGoWV+0k3InTjD/5DjGiyxEShvJySiKE3eD8FDeG0pEzFVKbTYDIZXh2zeviKbWpo+OhwJb75CkMeEgElp9mlmvXEGfuB7DzCFJP2K8xS6pwQlcW7HnFVKs/k1DJaHeAo3ZcIhnG+YIkLxQs/p7ZMrTE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zCz1nA8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CFDC4CEEA;
+	Mon, 23 Jun 2025 21:24:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716063;
-	bh=9Z2wcuDqYsMHpmkcgInm1r8S8vVZjvxQJlekDCaICuY=;
+	s=korg; t=1750713881;
+	bh=YZaqbQY/xwXmyedAzr/0ciwhljy9C6gt1Z62UDD8R2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3llGSwIIT5h/Tvt2RIKRIHlDpeMp7pss3lyORxQt2cgsnqW6PwVuLAfz1ngEEiH5
-	 MCTxuBpA3MpyWwoqKHdEtXyjJ4eRGF9NQqTleG+1WHeN/qsZknoCVr+S5uzGCvat0T
-	 UV+hndp+79Tevg1fJMBi4KDmsgxg5Fp/LcRSn934=
+	b=zCz1nA8xkJZY3NQcmQwzGODzEwNmOq4Ib9zSBQyU3RIgdW3kObraHa6iRzadis3ka
+	 vdGz/DlvC7yuZfg+9jHKeRNybUOqNIwGaee/XDo0iexwe1Wboj3ORv+y3e5RQS9v4A
+	 LoOrD5G/DfBq+8/zN7ebY/C5uJ6Z3iPbQ6lhBvX8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 225/414] net: atlantic: generate software timestamp just before the doorbell
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.6 101/290] remoteproc: core: Release rproc->clean_table after rproc_attach() fails
 Date: Mon, 23 Jun 2025 15:06:02 +0200
-Message-ID: <20250623130647.655981696@linuxfoundation.org>
+Message-ID: <20250623130630.001151712@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 285ad7477559b6b5ceed10ba7ecfed9d17c0e7c6 ]
+commit bcd241230fdbc6005230f80a4f8646ff5a84f15b upstream.
 
-Make sure the call of skb_tx_timestamp is as close as possible to the
-doorbell.
+When rproc->state = RPROC_DETACHED is attached to remote processor
+through rproc_attach(), if rproc_handle_resources() returns failure,
+then the clean table should be released, otherwise the following
+memory leak will occur.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Link: https://patch.msgid.link/20250510134812.48199-2-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+unreferenced object 0xffff000086a99800 (size 1024):
+comm "kworker/u12:3", pid 59, jiffies 4294893670 (age 121.140s)
+hex dump (first 32 bytes):
+00 00 00 00 00 80 00 00 00 00 00 00 00 00 10 00 ............
+00 00 00 00 00 00 08 00 00 00 00 00 00 00 00 00 ............
+backtrace:
+ [<000000008bbe4ca8>] slab_post_alloc_hook+0x98/0x3fc
+ [<000000003b8a272b>] __kmem_cache_alloc_node+0x13c/0x230
+ [<000000007a507c51>] __kmalloc_node_track_caller+0x5c/0x260
+ [<0000000037818dae>] kmemdup+0x34/0x60
+ [<00000000610f7f57>] rproc_boot+0x35c/0x56c
+ [<0000000065f8871a>] rproc_add+0x124/0x17c
+ [<00000000497416ee>] imx_rproc_probe+0x4ec/0x5d4
+ [<000000003bcaa37d>] platform_probe+0x68/0xd8
+ [<00000000771577f9>] really_probe+0x110/0x27c
+ [<00000000531fea59>] __driver_probe_device+0x78/0x12c
+ [<0000000080036a04>] driver_probe_device+0x3c/0x118
+ [<000000007e0bddcb>] __device_attach_driver+0xb8/0xf8
+ [<000000000cf1fa33>] bus_for_each_drv+0x84/0xe4
+ [<000000001a53b53e>] __device_attach+0xfc/0x18c
+ [<00000000d1a2a32c>] device_initial_probe+0x14/0x20
+ [<00000000d8f8b7ae>] bus_probe_device+0xb0/0xb4
+ unreferenced object 0xffff0000864c9690 (size 16):
+
+Fixes: 9dc9507f1880 ("remoteproc: Properly deal with the resource table when detaching")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250430092043.1819308-3-xiaolei.wang@windriver.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/aquantia/atlantic/aq_main.c | 1 -
- drivers/net/ethernet/aquantia/atlantic/aq_nic.c  | 2 ++
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/remoteproc/remoteproc_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_main.c b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
-index c1d1673c5749d..b565189e59139 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_main.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_main.c
-@@ -123,7 +123,6 @@ static netdev_tx_t aq_ndev_start_xmit(struct sk_buff *skb, struct net_device *nd
- 	}
- #endif
- 
--	skb_tx_timestamp(skb);
- 	return aq_nic_xmit(aq_nic, skb);
- }
- 
-diff --git a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-index 71e50fc65c147..b0994bd05874a 100644
---- a/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-+++ b/drivers/net/ethernet/aquantia/atlantic/aq_nic.c
-@@ -898,6 +898,8 @@ int aq_nic_xmit(struct aq_nic_s *self, struct sk_buff *skb)
- 
- 	frags = aq_nic_map_skb(self, skb, ring);
- 
-+	skb_tx_timestamp(skb);
-+
- 	if (likely(frags)) {
- 		err = self->aq_hw_ops->hw_ring_tx_xmit(self->aq_hw,
- 						       ring, frags);
--- 
-2.39.5
-
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1654,6 +1654,7 @@ clean_up_resources:
+ 	rproc_resource_cleanup(rproc);
+ 	/* release HW resources if needed */
+ 	rproc_unprepare_device(rproc);
++	kfree(rproc->clean_table);
+ disable_iommu:
+ 	rproc_disable_iommu(rproc);
+ 	return ret;
 
 
 
