@@ -1,54 +1,51 @@
-Return-Path: <stable+bounces-157928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C9EDAE5645
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 443DCAE5684
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1490A16629A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B97983B9AB8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F74C22333B;
-	Mon, 23 Jun 2025 22:17:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D029B221FC7;
+	Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c772MaGs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16fHXXdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D07141F6667;
-	Mon, 23 Jun 2025 22:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C8B676;
+	Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717062; cv=none; b=NRwQynvSCRj1sIAWYgfvkZyfuXuc6UqYvcx1R7LBrEHjzFLzxDFZ7Xn8tEGF2ognDGDUtHvD22gwGKpdDOeueXzps+jnfC0kPrzJcYG2E8peuNTYwYII1vCUeMFM6gW0MVbnlz0oxV/qOj5PRVegbg5by5Mqwpot3K7z5eDinUE=
+	t=1750717072; cv=none; b=YsAbXrObtVBhJIOJVH5aatqOgSMBZuATHUESMSZR+gQ5DtWw9dMGleqdEdA2QmDkRS1BTUcJIidYpf10nSMTKRsDj5MSR8i2VDwsxd2BLVW1NBMzzEASbY55p/z2PJtccm3KUto2NY1OdAUzfc9lnUTrATQVn+yBJ1V5IFhrboE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717062; c=relaxed/simple;
-	bh=HaEo/edqAQNJhgKvQA4ZEUOz8uL8hoVe5pUMRpgkxrI=;
+	s=arc-20240116; t=1750717072; c=relaxed/simple;
+	bh=Oj6tc0XrxoYpet6jmEotqFPC1jf+qTOpk5a0W2rpsl8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BOmX3T2dWrkRVZw4XXyQM6WaU8tcpZtvjWdNWzB5655E6EVHc8IIPn8dyyVU+dTRxVmWUifUHqLQGFeTbcOfRYwJyxEEFGGOXqO8q4ursZAawrDVrr5e5J1kAkjPkLU+NTUtX2tZK7toWnVG9ex31GvN7gMNcHVbW+Ywz5zNqwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c772MaGs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68268C4CEEA;
-	Mon, 23 Jun 2025 22:17:42 +0000 (UTC)
+	 MIME-Version; b=gfrWyD4jO/EQ3nHhWsLQ62TnBWQZaMr0oHMb2VFK/KqdtCjkAamP1FvPQl4VBTLjXUjIDWAgbsz5N/1ChdKLPbFz6J2entlDaOlBAFOUar5Cot1qTM9SFJTrv5BXiSbIH9ws/eXlTFk+9LbZYkJolcR0XFueQn84bOGDhMOJfyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16fHXXdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269CFC4CEEA;
+	Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717062;
-	bh=HaEo/edqAQNJhgKvQA4ZEUOz8uL8hoVe5pUMRpgkxrI=;
+	s=korg; t=1750717072;
+	bh=Oj6tc0XrxoYpet6jmEotqFPC1jf+qTOpk5a0W2rpsl8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c772MaGsEULDEEkNBEKXlJygBAuPF1tc29QKFw3spjZG1wXBGbiV1GxwOOP5UYDJ6
-	 gMYRXhRUps3p8XqjT/laFWleqd/0uVxtlc6TwWBDGjYWXC5aCzR0z/FgqledkcliSJ
-	 tfTXrRANzqNF3my/QwJfpL35vGXIQ3NL+tPARod8=
+	b=16fHXXdv1SpggsAcCGyL8ty6cqEsD+o1+GlVNKlIRt4e75WF7XCKTA5FLdEK/9WIs
+	 cVdzuDRnQeoQTc4xARM7h7ad42je9q//2CAAdyyUPgHL6cnuREPWaAdvUJqa4ngplr
+	 Acf7ysRCGnIjFosIJtKOKlgCbb+lxeLFOsX/a99M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	M Nikhil <nikh1092@linux.ibm.com>,
-	Nihar Panda <niharp@linux.ibm.com>,
-	Peter Oberparleiter <oberpar@linux.ibm.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.12 311/414] scsi: s390: zfcp: Ensure synchronous unit_add
-Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130649.777850825@linuxfoundation.org>
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.12 312/414] nvme: always punt polled uring_cmd end_io work to task_work
+Date: Mon, 23 Jun 2025 15:07:29 +0200
+Message-ID: <20250623130649.801288567@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,47 +64,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Oberparleiter <oberpar@linux.ibm.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
+commit 9ce6c9875f3e995be5fd720b65835291f8a609b1 upstream.
 
-Improve the usability of the unit_add sysfs attribute by ensuring that
-the associated FCP LUN scan processing is completed synchronously.  This
-enables configuration tooling to consistently determine the end of the
-scan process to allow for serialization of follow-on actions.
+Currently NVMe uring_cmd completions will complete locally, if they are
+polled. This is done because those completions are always invoked from
+task context. And while that is true, there's no guarantee that it's
+invoked under the right ring context, or even task. If someone does
+NVMe passthrough via multiple threads and with a limited number of
+poll queues, then ringA may find completions from ringB. For that case,
+completing the request may not be sound.
 
-While the scan process associated with unit_add typically completes
-synchronously, it is deferred to an asynchronous background process if
-unit_add is used before initial remote port scanning has completed.  This
-occurs when unit_add is used immediately after setting the associated FCP
-device online.
-
-To ensure synchronous unit_add processing, wait for remote port scanning
-to complete before initiating the FCP LUN scan.
+Always just punt the passthrough completions via task_work, which will
+redirect the completion, if needed.
 
 Cc: stable@vger.kernel.org
-Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
-Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
-Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
-Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
-Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 585079b6e425 ("nvme: wire up async polling for io passthrough commands")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/s390/scsi/zfcp_sysfs.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/nvme/host/ioctl.c |   21 +++++++--------------
+ 1 file changed, 7 insertions(+), 14 deletions(-)
 
---- a/drivers/s390/scsi/zfcp_sysfs.c
-+++ b/drivers/s390/scsi/zfcp_sysfs.c
-@@ -450,6 +450,8 @@ static ssize_t zfcp_sysfs_unit_add_store
- 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
- 		return -EINVAL;
+--- a/drivers/nvme/host/ioctl.c
++++ b/drivers/nvme/host/ioctl.c
+@@ -442,21 +442,14 @@ static enum rq_end_io_ret nvme_uring_cmd
+ 	pdu->result = le64_to_cpu(nvme_req(req)->result.u64);
  
-+	flush_work(&port->rport_work);
-+
- 	retval = zfcp_unit_add(port, fcp_lun);
- 	if (retval)
- 		return retval;
+ 	/*
+-	 * For iopoll, complete it directly. Note that using the uring_cmd
+-	 * helper for this is safe only because we check blk_rq_is_poll().
+-	 * As that returns false if we're NOT on a polled queue, then it's
+-	 * safe to use the polled completion helper.
+-	 *
+-	 * Otherwise, move the completion to task work.
++	 * IOPOLL could potentially complete this request directly, but
++	 * if multiple rings are polling on the same queue, then it's possible
++	 * for one ring to find completions for another ring. Punting the
++	 * completion via task_work will always direct it to the right
++	 * location, rather than potentially complete requests for ringA
++	 * under iopoll invocations from ringB.
+ 	 */
+-	if (blk_rq_is_poll(req)) {
+-		if (pdu->bio)
+-			blk_rq_unmap_user(pdu->bio);
+-		io_uring_cmd_iopoll_done(ioucmd, pdu->result, pdu->status);
+-	} else {
+-		io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
+-	}
+-
++	io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
+ 	return RQ_END_IO_FREE;
+ }
+ 
 
 
 
