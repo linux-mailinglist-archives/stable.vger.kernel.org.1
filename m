@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B37CAE534B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D291AE539B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E69737B0956
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0478D4A8123
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758FA221FCC;
-	Mon, 23 Jun 2025 21:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05B172222B7;
+	Mon, 23 Jun 2025 21:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxJ+RbgE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wt4B3qHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339981DD0C7;
-	Mon, 23 Jun 2025 21:50:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4FB81AD3FA;
+	Mon, 23 Jun 2025 21:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715443; cv=none; b=OnltKU1CduoFa9G0lEdVRCRmeTMjLxTXvFB37ZEVPuiEmABupsBsC1swtzhIKjrZjYyeF2uJBt4mosnV2GLBanFSXZ3HZEiyetMwZn22Fp2fCk+b1wdWKF0uasKl2oAkXToihlMfx14MDiApCHXYQv32fn7G+CIe/zQm1S1pHYU=
+	t=1750715692; cv=none; b=R2V6TLTpya/ZK5p721pFJslTeekdLHOkS8wBFzgT0hTB0JkFcF66qeV9ZcVb3DLtO0VPeoKDErhcwMwm4TT0ZnyEyyaIG0b8f3LHHku+CQNu7K88+wsm+5j7RGjM1HsehMfIpwcL5E40bV1mVokbPvTvZFpGfKAkFsl1vXWP6b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715443; c=relaxed/simple;
-	bh=z905HTBBL1w+zHtyyciTn4QgcN3oQtq9t3cndga6S3A=;
+	s=arc-20240116; t=1750715692; c=relaxed/simple;
+	bh=Bj1KRaAAZuKGjU7TEgNsGXSy/vw3GAyKuKS06LGHFN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UUgqoYyZ2iqLLvBRx+eaDiBlekrc4Vz+YB355ZQBRb6YTcq444QG2xJJSmc1AtRy0ddobWWMZP6hd5f29lPLOIgQ+AynfU3Bzz13M+5y8YfXnbtM56cSmjEB07++8UXtPb6b6DcqCXVA0PJqxIOVL8A4sGqsSF8iheh1x4rY5WQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxJ+RbgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF5CC4CEEA;
-	Mon, 23 Jun 2025 21:50:42 +0000 (UTC)
+	 MIME-Version; b=OiIDXFiZYSYHOM9EAqVxRiQTUFqkEPI59PLWRKk/GYc1FOLd8q+EiIyU1LtYQT496xF5zJ3a0fYdrpUux/tdWxpsTg4Y8L95TX3JI+KZ5ZAKdcWnUqZSCY3QNKdRwK3NqaZh6FiXXO4GRLGqn0gzW4p25YuzUGAtPBO0suIYxeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wt4B3qHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49FDAC4CEEA;
+	Mon, 23 Jun 2025 21:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715443;
-	bh=z905HTBBL1w+zHtyyciTn4QgcN3oQtq9t3cndga6S3A=;
+	s=korg; t=1750715692;
+	bh=Bj1KRaAAZuKGjU7TEgNsGXSy/vw3GAyKuKS06LGHFN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxJ+RbgEQIBs8XklGYMJkaQkyEAS+M5qRytNylzeV5P5Acv/Fnd3cbWLYXznP1kFm
-	 1e2WA3TJF11bcCm+utNeFNG4WxLBQXisGysYyBk98nwkDhRoz4jCoieGAZsxHfEEks
-	 +xA39s0uUuqqkSVXYCKlkZZjqrzabOxkPmdrtD0w=
+	b=Wt4B3qHe39Uz9F2zXw6/L/RsvmdmYTM3YDz9UV2Mo+pwuqnO0v760TAv0FM70Jj6K
+	 AuOpjA5LKwrElbBpncJful6XzCR+60CpMX0rs221N8HBiaJoNPgDd0gLolMEhKCRXv
+	 WwfUsLB0I8seRPaUZZ1+yXo2dfHAXe/Zd8KE61is=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
-	Ioana Ciornei <ioana.ciornei@nxp.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 275/355] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 215/290] cifs: deal with the channel loading lag while picking channels
 Date: Mon, 23 Jun 2025 15:07:56 +0200
-Message-ID: <20250623130635.040981733@linuxfoundation.org>
+Message-ID: <20250623130633.396427507@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 23d060136841c58c2f9ee8c08ad945d1879ead4b ]
+commit 66d590b828b1fd9fa337047ae58fe1c4c6f43609 upstream.
 
-In case the MC firmware runs in debug mode with extensive prints pushed
-to the console, the current timeout of 500ms is not enough.
-Increase the timeout value so that we don't have any chance of wrongly
-assuming that the firmware is not responding when it's just taking more
-time.
+Our current approach to select a channel for sending requests is this:
+1. iterate all channels to find the min and max queue depth
+2. if min and max are not the same, pick the channel with min depth
+3. if min and max are same, round robin, as all channels are equally loaded
 
-Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
-Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
-Link: https://lore.kernel.org/r/20250408105814.2837951-7-ioana.ciornei@nxp.com
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem with this approach is that there's a lag between selecting
+a channel and sending the request (that increases the queue depth on the channel).
+While these numbers will eventually catch up, there could be a skew in the
+channel usage, depending on the application's I/O parallelism and the server's
+speed of handling requests.
+
+With sufficient parallelism, this lag can artificially increase the queue depth,
+thereby impacting the performance negatively.
+
+This change will change the step 1 above to start the iteration from the last
+selected channel. This is to reduce the skew in channel usage even in the presence
+of this lag.
+
+Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/fsl-mc/mc-sys.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/transport.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
-index 85a0225db522a..14d77dc618cc1 100644
---- a/drivers/bus/fsl-mc/mc-sys.c
-+++ b/drivers/bus/fsl-mc/mc-sys.c
-@@ -19,7 +19,7 @@
- /**
-  * Timeout in milliseconds to wait for the completion of an MC command
-  */
--#define MC_CMD_COMPLETION_TIMEOUT_MS	500
-+#define MC_CMD_COMPLETION_TIMEOUT_MS	15000
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1025,14 +1025,16 @@ struct TCP_Server_Info *cifs_pick_channe
+ 	uint index = 0;
+ 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
+ 	struct TCP_Server_Info *server = NULL;
+-	int i;
++	int i, start, cur;
  
- /*
-  * usleep_range() min and max values used to throttle down polling
--- 
-2.39.5
-
+ 	if (!ses)
+ 		return NULL;
+ 
+ 	spin_lock(&ses->chan_lock);
++	start = atomic_inc_return(&ses->chan_seq);
+ 	for (i = 0; i < ses->chan_count; i++) {
+-		server = ses->chans[i].server;
++		cur = (start + i) % ses->chan_count;
++		server = ses->chans[cur].server;
+ 		if (!server || server->terminate)
+ 			continue;
+ 
+@@ -1049,17 +1051,15 @@ struct TCP_Server_Info *cifs_pick_channe
+ 		 */
+ 		if (server->in_flight < min_in_flight) {
+ 			min_in_flight = server->in_flight;
+-			index = i;
++			index = cur;
+ 		}
+ 		if (server->in_flight > max_in_flight)
+ 			max_in_flight = server->in_flight;
+ 	}
+ 
+ 	/* if all channels are equally loaded, fall back to round-robin */
+-	if (min_in_flight == max_in_flight) {
+-		index = (uint)atomic_inc_return(&ses->chan_seq);
+-		index %= ses->chan_count;
+-	}
++	if (min_in_flight == max_in_flight)
++		index = (uint)start % ses->chan_count;
+ 
+ 	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
 
 
 
