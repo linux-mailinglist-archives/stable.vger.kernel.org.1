@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-155742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A691AE4395
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 361C8AE43DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A0AD3B48B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 31BD84404E1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF6825178C;
-	Mon, 23 Jun 2025 13:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 094F42550BA;
+	Mon, 23 Jun 2025 13:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFmxD41i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQW0LckJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A8C24C060;
-	Mon, 23 Jun 2025 13:26:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98BE2550A3;
+	Mon, 23 Jun 2025 13:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685219; cv=none; b=bBCP2k+V9HPpsf48WuIEut7bQjp6X59neUF0LGTm9ypmI31xdzOpTMrfILwYPsR3uD0PFG//dt8BLXW9+lHW1VNdStzxA//qDTZmCELdNXk+b9LS2py6BwwJm320XvwQsPsPiHVPnuIpUyAs0iZ4eQSGX0Mu07XmTbv7g4br86k=
+	t=1750685356; cv=none; b=W822YSqO/Nd3r4oBWtNgcxV8OmRzU1RZlva7sh+x8RHvgaUwuaWkwSv1HEMZ4xHIhkflwjEjCH5w0SibBmQUFs/OnCEc+sjW2YiwF9gisWSzBIPirapyp+lZB69u62sk2BV/VJdB6kXmvNQ4BCs6bdpjXwKfE8ZKwfDLCVpc2fU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685219; c=relaxed/simple;
-	bh=j5JngwiofETnB34yD5lHb0xDUC644HhvqZ207/8G7II=;
+	s=arc-20240116; t=1750685356; c=relaxed/simple;
+	bh=lxB82SZhNeH9KzzV+vZFvyUqBpptXoV5K2rfc3AoXkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kObXk8ul9KcGzyex/akW/z4Q8gdMqjFvY++VgPKjsOaHZo+nTc94LAnLesft4h0okBzBtKsfWgmNFEWS4miy1fIkhEyrg93pTReyaDfBEA066i8VcbTv5zWYFIx1Wesuc0xcGqxLCocoHSN+KmjYZdSFZ+xuinzSoSZMg4GABvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFmxD41i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D41C4CEEA;
-	Mon, 23 Jun 2025 13:26:58 +0000 (UTC)
+	 MIME-Version; b=Sxc4Ph0NrfzICztuUreq5Hr2dQxycK/yvh3UvGyCScs81Giwibd66sKNYtMYzlf83D0RtN1isFuspjxiMLL+dsIWwmv7UJB75A+slcuMerQjdzQTYrdkzXY+em0PgPDfPXdBS6qHe8GUL+McdIfRkSPRxV3NbScAqvJvBV1IH5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQW0LckJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4541FC4CEEA;
+	Mon, 23 Jun 2025 13:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685219;
-	bh=j5JngwiofETnB34yD5lHb0xDUC644HhvqZ207/8G7II=;
+	s=korg; t=1750685356;
+	bh=lxB82SZhNeH9KzzV+vZFvyUqBpptXoV5K2rfc3AoXkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFmxD41iGjN1IJvRAKFXH7PHIB+m+cWn377xtNLJ6wzXqAhfE3MPy7a+kVqR/XJ0Y
-	 OipNzUScbyh83W97EBf3GuhYzoDmeUCfq1MvDjUHDNehf1Zl9fs4yOBxryGem/2ZSf
-	 355s559+A0WJ4I63UaG9oW+r42Hauw1i8rMd9GHE=
+	b=JQW0LckJzAhwXWO3bRGYExw83peOdH69EFC72X1M2uV5cADC7U0eFaGyOljYRB89A
+	 SvWYNcfAVFLywvmEVk3uWuhz6eub/MOL17J3PfvcQnnl8/kFCDs7OUHnxoRGfqUmbp
+	 8XzWVC7kbO+eKhbRCXxQD6NuY7B15sNy5Q89KSRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>,
-	James Calligeros <jcalligeros99@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Joshua Thompson <funaho@jurai.org>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 215/592] ASoC: tas2770: Power cycle amp on ISENSE/VSENSE change
-Date: Mon, 23 Jun 2025 15:02:53 +0200
-Message-ID: <20250623130705.398002267@linuxfoundation.org>
+Subject: [PATCH 5.15 030/411] m68k: mac: Fix macintosh_config for Mac II
+Date: Mon, 23 Jun 2025 15:02:54 +0200
+Message-ID: <20250623130633.903393596@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hector Martin <marcan@marcan.st>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit f529c91be8a34ac12e7599bf87c65b6f4a2c9f5c ]
+[ Upstream commit 52ae3f5da7e5adbe3d1319573b55dac470abb83c ]
 
-The ISENSE/VSENSE blocks are only powered up when the amplifier
-transitions from shutdown to active. This means that if those controls
-are flipped on while the amplifier is already playing back audio, they
-will have no effect.
+When booted on my Mac II, the kernel prints this:
 
-Fix this by forcing a power cycle around transitions in those controls.
+    Detected Macintosh model: 6
+    Apple Macintosh Unknown
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-Signed-off-by: Hector Martin <marcan@marcan.st>
-Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
-Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-1-50a00ec850a3@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The catch-all entry ("Unknown") is mac_data_table[0] which is only needed
+in the unlikely event that the bootinfo model ID can't be matched.
+When model ID is 6, the search should begin and end at mac_data_table[1].
+Fix the off-by-one error that causes this problem.
+
+Cc: Joshua Thompson <funaho@jurai.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d0f30a551064ca4810b1c48d5a90954be80634a9.1745453246.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2770.c | 30 ++++++++++++++++++++++++++++--
- 1 file changed, 28 insertions(+), 2 deletions(-)
+ arch/m68k/mac/config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
-index 7f219df8be704..8de7e94d4ba47 100644
---- a/sound/soc/codecs/tas2770.c
-+++ b/sound/soc/codecs/tas2770.c
-@@ -156,11 +156,37 @@ static const struct snd_kcontrol_new isense_switch =
- static const struct snd_kcontrol_new vsense_switch =
- 	SOC_DAPM_SINGLE("Switch", TAS2770_PWR_CTRL, 2, 1, 1);
+diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
+index 5d16f9b47aa90..75a5dd778d882 100644
+--- a/arch/m68k/mac/config.c
++++ b/arch/m68k/mac/config.c
+@@ -798,7 +798,7 @@ static void __init mac_identify(void)
+ 	}
  
-+static int sense_event(struct snd_soc_dapm_widget *w,
-+			struct snd_kcontrol *kcontrol, int event)
-+{
-+	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
-+	struct tas2770_priv *tas2770 = snd_soc_component_get_drvdata(component);
-+
-+	/*
-+	 * Powering up ISENSE/VSENSE requires a trip through the shutdown state.
-+	 * Do that here to ensure that our changes are applied properly, otherwise
-+	 * we might end up with non-functional IVSENSE if playback started earlier,
-+	 * which would break software speaker protection.
-+	 */
-+	switch (event) {
-+	case SND_SOC_DAPM_PRE_REG:
-+		return snd_soc_component_update_bits(component, TAS2770_PWR_CTRL,
-+						    TAS2770_PWR_CTRL_MASK,
-+						    TAS2770_PWR_CTRL_SHUTDOWN);
-+	case SND_SOC_DAPM_POST_REG:
-+		return tas2770_update_pwr_ctrl(tas2770);
-+	default:
-+		return 0;
-+	}
-+}
-+
- static const struct snd_soc_dapm_widget tas2770_dapm_widgets[] = {
- 	SND_SOC_DAPM_AIF_IN("ASI1", "ASI1 Playback", 0, SND_SOC_NOPM, 0, 0),
- 	SND_SOC_DAPM_MUX("ASI1 Sel", SND_SOC_NOPM, 0, 0, &tas2770_asi1_mux),
--	SND_SOC_DAPM_SWITCH("ISENSE", TAS2770_PWR_CTRL, 3, 1, &isense_switch),
--	SND_SOC_DAPM_SWITCH("VSENSE", TAS2770_PWR_CTRL, 2, 1, &vsense_switch),
-+	SND_SOC_DAPM_SWITCH_E("ISENSE", TAS2770_PWR_CTRL, 3, 1, &isense_switch,
-+		sense_event, SND_SOC_DAPM_PRE_REG | SND_SOC_DAPM_POST_REG),
-+	SND_SOC_DAPM_SWITCH_E("VSENSE", TAS2770_PWR_CTRL, 2, 1, &vsense_switch,
-+		sense_event, SND_SOC_DAPM_PRE_REG | SND_SOC_DAPM_POST_REG),
- 	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2770_dac_event,
- 			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
- 	SND_SOC_DAPM_OUTPUT("OUT"),
+ 	macintosh_config = mac_data_table;
+-	for (m = macintosh_config; m->ident != -1; m++) {
++	for (m = &mac_data_table[1]; m->ident != -1; m++) {
+ 		if (m->ident == model) {
+ 			macintosh_config = m;
+ 			break;
 -- 
 2.39.5
 
