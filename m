@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-158015-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 260E0AE56DB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44590AE56A9
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2EA3BAE22
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 45CE14E0D3A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 111AA223DF0;
-	Mon, 23 Jun 2025 22:21:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A59F2223DE5;
+	Mon, 23 Jun 2025 22:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arRk1s3C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUW74p2W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3F0B15ADB4;
-	Mon, 23 Jun 2025 22:21:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62EA22192EC;
+	Mon, 23 Jun 2025 22:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717277; cv=none; b=WkAcGn1Kmy9+f8GJ3vZoNwiw+P7DNNrci2FxJ3sHVqzNiuvxr6iZJ9mbMy4OVgW+5ZX+zy8zdtlTGSlvPcLHRlNnz45HmubqzkT6064zpT6PF0GbZdwSc8ZD6MIcBtE7Yh7MaNBhAKlROx4TcexiS99goIA73u544Z0HtOYj7/w=
+	t=1750717282; cv=none; b=QLfmO3L12QSHnsQpQwp91ZYnDwLBoE+IXSWtbCMub3Y3WSgK+K84dUqwUUJS0dK6Sb64ewo2ne7n8Rc3O/D70TX0/QDY6s1RC1w8RN/R2GzUp5ix8vx51ZezH5NyUcJqd3Xzgo9cyNxzPP4plE/uyD/JltdSYO/++k2H5rqfdGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717277; c=relaxed/simple;
-	bh=xdJVQENc/zCK7p9Kip2Skd/TBis/GsPDZFPr9beU2gQ=;
+	s=arc-20240116; t=1750717282; c=relaxed/simple;
+	bh=R83DXez0/BevVHHBAnJUScvQYbamP9INLpsRwC7o1Rw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QEzYG7Z5rX0qDEbCR9kdCW4xoQE1ZfqiYaIiTKHFVPPM+TCk2H7XcQTfv71miSe5kcP1D5AAm+mZ8dfUOvmz5Bcz+KS1SK1w/lWmUTV1sdRKxcH623/1BCgHHvjnyAx6iMFiRzwHLnr7NveJOxBviJMK2kjSiVNVDPXDcv51FWw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arRk1s3C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D3E4C4CEED;
-	Mon, 23 Jun 2025 22:21:16 +0000 (UTC)
+	 MIME-Version; b=lDxRzAI2Kv5EjfvwJXiyVCrnsVlJRh8j1YylL7DstnF+5ZRaXk03WCIIF0oCH1a4RG8h7T6O9u0/YR6OO9YoQ8RXnJq6dJE1xLpAOaBYDa3S65Y5JytHypF739c6QQpLR/gEBrj1y9+6Qvw7FrM5CYMG9aXjgHFnNz9uhm1to9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUW74p2W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF361C4CEED;
+	Mon, 23 Jun 2025 22:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717277;
-	bh=xdJVQENc/zCK7p9Kip2Skd/TBis/GsPDZFPr9beU2gQ=;
+	s=korg; t=1750717282;
+	bh=R83DXez0/BevVHHBAnJUScvQYbamP9INLpsRwC7o1Rw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arRk1s3CeLFSVAJL6rHgSFne0HGKmsvoV1b4dyK60CrbPmVvvifFb4LDthdxBOUoc
-	 RBt07R0IV3oSTclAJPXThP0Yv7FwE4WT39Z46dEygeoEP9HKuVWFsxCGhEXHhespVb
-	 BkddskAMlFCkVRISpe8KpWpp+BQRe6iZ0xUuBiW0=
+	b=hUW74p2WBQ5FZFO1lmLTqo7x0ixfojbnMc2rMTPYGyBtBl5ku4xPk0knJ96ZmBpST
+	 Uz6zLGk+NrJBxIxTcvFtwtSrEJWfWr/wPw9kBr11j/6ZBWQOhmWs+nnCmZxmqmkvjU
+	 rIwwI26mlFbNWJQQN7JHXvIy4NpbM4x3Occ7I5ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 351/414] ipv6: replace ipcm6_init calls with ipcm6_init_sk
-Date: Mon, 23 Jun 2025 15:08:08 +0200
-Message-ID: <20250623130650.750492836@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	xfuren <xfuren@gmail.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 352/414] smb: fix secondary channel creation issue with kerberos by populating hostname when adding channels
+Date: Mon, 23 Jun 2025 15:08:09 +0200
+Message-ID: <20250623130650.774601200@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -66,140 +67,41 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Bharath SM <bharathsm@microsoft.com>
 
-commit 096208592b09c2f5fc0c1a174694efa41c04209d upstream.
+commit 306cb65bb0cb243389fcbd0a66907d5bdea07d1e upstream.
 
-This initializes tclass and dontfrag before cmsg parsing, removing the
-need for explicit checks against -1 in each caller.
+When mounting a share with kerberos authentication with multichannel
+support, share mounts correctly, but fails to create secondary
+channels. This occurs because the hostname is not populated when
+adding the channels. The hostname is necessary for the userspace
+cifs.upcall program to retrieve the required credentials and pass
+it back to kernel, without hostname secondary channels fails
+establish.
 
-Leave hlimit set to -1, because its full initialization
-(in ip6_sk_dst_hoplimit) requires more state (dst, flowi6, ..).
-
-This also prepares for calling sockcm_init in a follow-on patch.
-
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250214222720.3205500-7-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Bharath SM <bharathsm@microsoft.com>
+Reported-by: xfuren <xfuren@gmail.com>
+Link: https://bugzilla.samba.org/show_bug.cgi?id=15824
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ipv6.h  |    9 ---------
- net/ipv6/raw.c      |    8 +-------
- net/ipv6/udp.c      |    7 +------
- net/l2tp/l2tp_ip6.c |    8 +-------
- 4 files changed, 3 insertions(+), 29 deletions(-)
+ fs/smb/client/sess.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/include/net/ipv6.h
-+++ b/include/net/ipv6.h
-@@ -363,15 +363,6 @@ struct ipcm6_cookie {
- 	struct ipv6_txoptions *opt;
- };
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -526,8 +526,7 @@ cifs_ses_add_channel(struct cifs_ses *se
+ 	ctx->domainauto = ses->domainAuto;
+ 	ctx->domainname = ses->domainName;
  
--static inline void ipcm6_init(struct ipcm6_cookie *ipc6)
--{
--	*ipc6 = (struct ipcm6_cookie) {
--		.hlimit = -1,
--		.tclass = -1,
--		.dontfrag = -1,
--	};
--}
--
- static inline void ipcm6_init_sk(struct ipcm6_cookie *ipc6,
- 				 const struct sock *sk)
- {
---- a/net/ipv6/raw.c
-+++ b/net/ipv6/raw.c
-@@ -777,7 +777,7 @@ static int rawv6_sendmsg(struct sock *sk
- 	fl6.flowi6_mark = READ_ONCE(sk->sk_mark);
- 	fl6.flowi6_uid = sk->sk_uid;
+-	/* no hostname for extra channels */
+-	ctx->server_hostname = "";
++	ctx->server_hostname = ses->server->hostname;
  
--	ipcm6_init(&ipc6);
-+	ipcm6_init_sk(&ipc6, sk);
- 	ipc6.sockc.tsflags = READ_ONCE(sk->sk_tsflags);
- 	ipc6.sockc.mark = fl6.flowi6_mark;
- 
-@@ -890,9 +890,6 @@ static int rawv6_sendmsg(struct sock *sk
- 	if (hdrincl)
- 		fl6.flowi6_flags |= FLOWI_FLAG_KNOWN_NH;
- 
--	if (ipc6.tclass < 0)
--		ipc6.tclass = np->tclass;
--
- 	fl6.flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6.flowlabel);
- 
- 	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl6, final_p);
-@@ -903,9 +900,6 @@ static int rawv6_sendmsg(struct sock *sk
- 	if (ipc6.hlimit < 0)
- 		ipc6.hlimit = ip6_sk_dst_hoplimit(np, &fl6, dst);
- 
--	if (ipc6.dontfrag < 0)
--		ipc6.dontfrag = inet6_test_bit(DONTFRAG, sk);
--
- 	if (msg->msg_flags&MSG_CONFIRM)
- 		goto do_confirm;
- 
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -1399,7 +1399,7 @@ int udpv6_sendmsg(struct sock *sk, struc
- 	int is_udplite = IS_UDPLITE(sk);
- 	int (*getfrag)(void *, char *, int, int, int, struct sk_buff *);
- 
--	ipcm6_init(&ipc6);
-+	ipcm6_init_sk(&ipc6, sk);
- 	ipc6.gso_size = READ_ONCE(up->gso_size);
- 	ipc6.sockc.tsflags = READ_ONCE(sk->sk_tsflags);
- 	ipc6.sockc.mark = READ_ONCE(sk->sk_mark);
-@@ -1608,9 +1608,6 @@ do_udp_sendmsg:
- 
- 	security_sk_classify_flow(sk, flowi6_to_flowi_common(fl6));
- 
--	if (ipc6.tclass < 0)
--		ipc6.tclass = np->tclass;
--
- 	fl6->flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6->flowlabel);
- 
- 	dst = ip6_sk_dst_lookup_flow(sk, fl6, final_p, connected);
-@@ -1656,8 +1653,6 @@ back_from_confirm:
- 	WRITE_ONCE(up->pending, AF_INET6);
- 
- do_append_data:
--	if (ipc6.dontfrag < 0)
--		ipc6.dontfrag = inet6_test_bit(DONTFRAG, sk);
- 	up->len += ulen;
- 	err = ip6_append_data(sk, getfrag, msg, ulen, sizeof(struct udphdr),
- 			      &ipc6, fl6, dst_rt6_info(dst),
---- a/net/l2tp/l2tp_ip6.c
-+++ b/net/l2tp/l2tp_ip6.c
-@@ -547,7 +547,7 @@ static int l2tp_ip6_sendmsg(struct sock
- 	fl6.flowi6_mark = READ_ONCE(sk->sk_mark);
- 	fl6.flowi6_uid = sk->sk_uid;
- 
--	ipcm6_init(&ipc6);
-+	ipcm6_init_sk(&ipc6, sk);
- 
- 	if (lsa) {
- 		if (addr_len < SIN6_LEN_RFC2133)
-@@ -634,9 +634,6 @@ static int l2tp_ip6_sendmsg(struct sock
- 
- 	security_sk_classify_flow(sk, flowi6_to_flowi_common(&fl6));
- 
--	if (ipc6.tclass < 0)
--		ipc6.tclass = np->tclass;
--
- 	fl6.flowlabel = ip6_make_flowinfo(ipc6.tclass, fl6.flowlabel);
- 
- 	dst = ip6_dst_lookup_flow(sock_net(sk), sk, &fl6, final_p);
-@@ -648,9 +645,6 @@ static int l2tp_ip6_sendmsg(struct sock
- 	if (ipc6.hlimit < 0)
- 		ipc6.hlimit = ip6_sk_dst_hoplimit(np, &fl6, dst);
- 
--	if (ipc6.dontfrag < 0)
--		ipc6.dontfrag = inet6_test_bit(DONTFRAG, sk);
--
- 	if (msg->msg_flags & MSG_CONFIRM)
- 		goto do_confirm;
- 
+ 	ctx->username = ses->user_name;
+ 	ctx->password = ses->password;
 
 
 
