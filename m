@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93C17AE5647
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7A51AE55AC
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59F477AB36F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906A71BC60D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABB6D222599;
-	Mon, 23 Jun 2025 22:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394EC223DEF;
+	Mon, 23 Jun 2025 22:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08PL0eEw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pDp9Myp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A37E19E7F9;
-	Mon, 23 Jun 2025 22:19:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F0D223DD0;
+	Mon, 23 Jun 2025 22:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717148; cv=none; b=oONTu3FKa+S/tkrmjDJkd3NnNWTt747ltYzh0pPHUI9IoDa2E+DlR2UCSK7ep06YtsRax5WvjXMMo4X+jqvNKMmDuMdnRlTChS4FV0pIAqzcZudUgXTjWd4UxJ1I1Y7cJKzli8mEB7nW4h6dcuMuniStXXDCmFolIyZfVyIifhI=
+	t=1750716760; cv=none; b=Ieesn9Fwc4RVu35g6v+QOSIww6RPTw78mlyfvpuObD2mGiBBCgJKqaZegUJaw21XPdqtz5ncz9hxlBUegrxBc1Jv3OGqwsYecjVdyUoBho16IJ264+UGqkErHma/J/yLDx1lesNek+fpkuvdp2n8MnD0DDD6f+NSHbDGOF058ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717148; c=relaxed/simple;
-	bh=UrcnkYbHLjGdyzFE+xOXeuW0UUEwRo+U19jrWxZVbhQ=;
+	s=arc-20240116; t=1750716760; c=relaxed/simple;
+	bh=kD3+dMd/xyihxO4zFJNYuRAaBUG2XdoxEQt8op7J4og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Bb1WjJ3w5p971WGgRfEgrbub3J2HTQBDe9WZfeCbgdm71P/ZzTe34uhndnneOPnk7baEvc8IB2enJW+5m8l41QYFrr9L8RA97MvcZ/Il2GHv/vib3k2WKahUBl1knSBlUqDLu41QLk1hT9pdPW4kXNPSQ3FPk1TqbEElNdr3t4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08PL0eEw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01336C4CEEA;
-	Mon, 23 Jun 2025 22:19:07 +0000 (UTC)
+	 MIME-Version; b=I+Y81maX3mBjTDHP1nxihh62KIcKWbIcregSTVqBzRKh7WXEru9Clu4Z36nxCt8tgHO7k87+zF1NhhYsXb08LeXuG3kfs0pHOYzUVKxQb4xYJJ0y+PWKrOLGmwtkXGwEGeIvQXTDyIPrHyu+An6CeypwUJ38wmotdR5tKWd+xps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pDp9Myp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB1CC4CEF2;
+	Mon, 23 Jun 2025 22:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717148;
-	bh=UrcnkYbHLjGdyzFE+xOXeuW0UUEwRo+U19jrWxZVbhQ=;
+	s=korg; t=1750716759;
+	bh=kD3+dMd/xyihxO4zFJNYuRAaBUG2XdoxEQt8op7J4og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08PL0eEwNE26IHZ1bgtF7j1rGyNoqUx92Y2oiv1J8VnTJliMfOnonvhOstTI0ao04
-	 Gbb6DGlzt2wzEFY8ZxSYlJdGQnhpIBCl2d1qb+GVjeOfYOBZNgyw8TIu0UQLY6Fud4
-	 7mag0ULslI84m/EbKKRLm5jqBsSWQyLN/0yrXFuc=
+	b=0pDp9Myp/LuKDfCmKVzrBxyQm2o41WoGuICE2MJBSqtYuoHprl4R0ZrwmiOSEyrg+
+	 abdSJyoWL3+EEl0O28iq8VIa4FfOrvwlXsqlWJmeTyjY8mBaveg4nLwnPAgq86fzC4
+	 hsTrv19uKqW90hjsRWTcfvneGuKfSy4FopWLKaCo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 372/508] iio: imu: inv_icm42600: Fix temperature calculation
+	Suraj P Kizhakkethil <quic_surapk@quicinc.com>,
+	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 280/414] wifi: ath12k: Pass correct values of center freq1 and center freq2 for 160 MHz
 Date: Mon, 23 Jun 2025 15:06:57 +0200
-Message-ID: <20250623130654.490657764@linuxfoundation.org>
+Message-ID: <20250623130649.020853645@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
 
-commit e2f820014239df9360064079ae93f838ff3b7f8c upstream.
+[ Upstream commit b1b01e46a3db5ad44d1e4691ba37c1e0832cd5cf ]
 
->From the documentation:
-"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
-Offset should be applied before multiplying scale, so divide offset by
-scale to make this correct.
+Currently, for 160 MHz bandwidth, center frequency1 and
+center frequency2 are not passed correctly to the firmware.
+Set center frequency1 as the center frequency
+of the primary 80 MHz channel segment and center frequency2 as
+the center frequency of the 160 MHz channel and pass the values
+to the firmware.
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
+Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250304095315.3050325-2-quic_surapk@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct ii
- 		return IIO_VAL_INT;
- 	/*
- 	 * T°C = (temp / 132.48) + 25
--	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
-+	 * Tm°C = 1000 * ((temp / 132.48) + 25)
-+	 * Tm°C = 7.548309 * temp + 25000
-+	 * Tm°C = (temp + 3312) * 7.548309
- 	 * scale: 100000 / 13248 ~= 7.548309
--	 * offset: 25000
-+	 * offset: 3312
- 	 */
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 7;
- 		*val2 = 548309;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = 25000;
-+		*val = 3312;
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index c38d3493c6911..5c2130f77dac6 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -980,14 +980,24 @@ int ath12k_wmi_vdev_down(struct ath12k *ar, u8 vdev_id)
+ static void ath12k_wmi_put_wmi_channel(struct ath12k_wmi_channel_params *chan,
+ 				       struct wmi_vdev_start_req_arg *arg)
+ {
++	u32 center_freq1 = arg->band_center_freq1;
++
+ 	memset(chan, 0, sizeof(*chan));
+ 
+ 	chan->mhz = cpu_to_le32(arg->freq);
+-	chan->band_center_freq1 = cpu_to_le32(arg->band_center_freq1);
+-	if (arg->mode == MODE_11AC_VHT80_80)
++	chan->band_center_freq1 = cpu_to_le32(center_freq1);
++	if (arg->mode == MODE_11BE_EHT160) {
++		if (arg->freq > center_freq1)
++			chan->band_center_freq1 = cpu_to_le32(center_freq1 + 40);
++		else
++			chan->band_center_freq1 = cpu_to_le32(center_freq1 - 40);
++
++		chan->band_center_freq2 = cpu_to_le32(center_freq1);
++	} else if (arg->mode == MODE_11BE_EHT80_80) {
+ 		chan->band_center_freq2 = cpu_to_le32(arg->band_center_freq2);
+-	else
++	} else {
+ 		chan->band_center_freq2 = 0;
++	}
+ 
+ 	chan->info |= le32_encode_bits(arg->mode, WMI_CHAN_INFO_MODE);
+ 	if (arg->passive)
+-- 
+2.39.5
+
 
 
 
