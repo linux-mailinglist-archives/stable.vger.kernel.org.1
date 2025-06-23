@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5CE3AE5000
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD910AE545D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7923AD4EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 661004C0AC1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CDC91ACEDA;
-	Mon, 23 Jun 2025 21:21:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375F219DF4A;
+	Mon, 23 Jun 2025 22:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmbm+D3V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0/D2xldg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDBA97482;
-	Mon, 23 Jun 2025 21:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85B24409;
+	Mon, 23 Jun 2025 22:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713695; cv=none; b=U5Yl8hUiKrwkecGG44QplkqcQclDXr97glCufk13CMzoN9IkLQtO2fHXUUYoVZ3XKG5tgCYY/ouRn2h2Y9kMXcWKwF7Op3gf3nqqMctkjzx+4m41MDI3jPLVuoIHBXvatoVRDVUZdpjPTU6qUQvbNVLY2X+XDr+BUMcfnIxkZq0=
+	t=1750716052; cv=none; b=WSqc3mbC53xSzPFUqZRcc07XBLE10s3F6WuoClAwjGi79k6Deatc8WL+pWhka0wEbd4/i7YA/YO03bJHoeBPDAw51nQEnFydZ0mrjNrrx2SxYOpRn4Kt3eLRocxN7ap1YEc5B8MRfa1B8/WMtwIZvCv2OcsrsjdFc98UdDTFlIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713695; c=relaxed/simple;
-	bh=IVkilv6mWBswWG7VghXQvweeja1A6fpC0LZQvaRx6Ac=;
+	s=arc-20240116; t=1750716052; c=relaxed/simple;
+	bh=1aVZ8lPUoZBXSYHeYLuXvTMFp0AxZM21/9+DnRGtqxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tni59IuXrNE8vMupIKm5dPbBKrn1AVAysbs4E+cYP9NyO2UbPbkPO77WWv6GlNaW3pT1wxQP25dsWNb4rIyIAiSHHdR0nqBnC/I1XquE2V9lMVpKrVMTHfMGbUQHeK3cnFy2C2clSwDCvGdFUUiJP7mXFAFdXh6OnulWmYi39bI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmbm+D3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CF7C4CEEA;
-	Mon, 23 Jun 2025 21:21:34 +0000 (UTC)
+	 MIME-Version; b=tOojipapR9y+kM2h8QTbZyyGBIfkROIG5JI5QPkvntCQ1tgHHipx7a4Ud26iF20OHE4D7vl611JjU+qjCHJyNmnssSh335FXkjDXdHgijWilQLQsBoQpLI7cpRc66GVSaABuK4dzHPHt7daSwHXQSnkOopsQnSRlBTWN0zdvyms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0/D2xldg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0763CC4CEEA;
+	Mon, 23 Jun 2025 22:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713694;
-	bh=IVkilv6mWBswWG7VghXQvweeja1A6fpC0LZQvaRx6Ac=;
+	s=korg; t=1750716051;
+	bh=1aVZ8lPUoZBXSYHeYLuXvTMFp0AxZM21/9+DnRGtqxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmbm+D3Vz9UD75FmiO7h7iLrdUPdw4JUNOAKCImmD59bccWIFY2eB2xmsVX0q12kY
-	 TO/6uq0tbzFI29iV2ziF3cx13Lmb0XroOIgOyPnRpzghjuJGaP5U3/97u9aF+NOiSG
-	 dzNfqRt9zZ8J56U14OsgtqQTOoLPkV8sYIiYfFJ8=
+	b=0/D2xldgYXuaud144+XxZJdnZ/XhkLO4SFxlHCQCO6yhmQKEtoCsQiD9P/0SCQgZZ
+	 LwRU4f2FJsiWE78xKrS1j5wzn0p1MNV6urXY4j9/LmPsZYd+3CvlhghIMM+rgpmigQ
+	 BMRYY8ZvfX0D7blaWIfBOB/xW8b+khKKYcdlCflQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Klaus Kudielka <klaus.kudielka@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 5.10 160/355] crypto: marvell/cesa - Do not chain submitted requests
+	Leon Romanovsky <leonro@nvidia.com>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 224/414] xfrm: validate assignment of maximal possible SEQ number
 Date: Mon, 23 Jun 2025 15:06:01 +0200
-Message-ID: <20250623130631.513252008@linuxfoundation.org>
+Message-ID: <20250623130647.629700726@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,161 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Leon Romanovsky <leonro@nvidia.com>
 
-commit 0413bcf0fc460a68a2a7a8354aee833293d7d693 upstream.
+[ Upstream commit e86212b6b13a20c5ad404c5597933f57fd0f1519 ]
 
-This driver tries to chain requests together before submitting them
-to hardware in order to reduce completion interrupts.
+Users can set any seq/seq_hi/oseq/oseq_hi values. The XFRM core code
+doesn't prevent from them to set even 0xFFFFFFFF, however this value
+will cause for traffic drop.
 
-However, it even extends chains that have already been submitted
-to hardware.  This is dangerous because there is no way of knowing
-whether the hardware has already read the DMA memory in question
-or not.
+Is is happening because SEQ numbers here mean that packet with such
+number was processed and next number should be sent on the wire. In this
+case, the next number will be 0, and it means overflow which causes to
+(expected) packet drops.
 
-Fix this by splitting the chain list into two.  One for submitted
-requests and one for requests that have not yet been submitted.
-Only extend the latter.
+While it can be considered as misconfiguration and handled by XFRM
+datapath in the same manner as any other SEQ number, let's add
+validation to easy for packet offloads implementations which need to
+configure HW with next SEQ to send and not with current SEQ like it is
+done in core code.
 
-Reported-by: Klaus Kudielka <klaus.kudielka@gmail.com>
-Fixes: 85030c5168f1 ("crypto: marvell - Add support for chaining crypto requests in TDMA mode")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/cesa.c |    2 -
- drivers/crypto/marvell/cesa/cesa.h |    9 ++++--
- drivers/crypto/marvell/cesa/tdma.c |   53 ++++++++++++++++++++++---------------
- 3 files changed, 39 insertions(+), 25 deletions(-)
+ net/xfrm/xfrm_user.c | 52 +++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 42 insertions(+), 10 deletions(-)
 
---- a/drivers/crypto/marvell/cesa/cesa.c
-+++ b/drivers/crypto/marvell/cesa/cesa.c
-@@ -94,7 +94,7 @@ static int mv_cesa_std_process(struct mv
- 
- static int mv_cesa_int_process(struct mv_cesa_engine *engine, u32 status)
- {
--	if (engine->chain.first && engine->chain.last)
-+	if (engine->chain_hw.first && engine->chain_hw.last)
- 		return mv_cesa_tdma_process(engine, status);
- 
- 	return mv_cesa_std_process(engine, status);
---- a/drivers/crypto/marvell/cesa/cesa.h
-+++ b/drivers/crypto/marvell/cesa/cesa.h
-@@ -439,8 +439,10 @@ struct mv_cesa_dev {
-  *			SRAM
-  * @queue:		fifo of the pending crypto requests
-  * @load:		engine load counter, useful for load balancing
-- * @chain:		list of the current tdma descriptors being processed
-- *			by this engine.
-+ * @chain_hw:		list of the current tdma descriptors being processed
-+ *			by the hardware.
-+ * @chain_sw:		list of the current tdma descriptors that will be
-+ *			submitted to the hardware.
-  * @complete_queue:	fifo of the processed requests by the engine
-  *
-  * Structure storing CESA engine information.
-@@ -459,7 +461,8 @@ struct mv_cesa_engine {
- 	struct gen_pool *pool;
- 	struct crypto_queue queue;
- 	atomic_t load;
--	struct mv_cesa_tdma_chain chain;
-+	struct mv_cesa_tdma_chain chain_hw;
-+	struct mv_cesa_tdma_chain chain_sw;
- 	struct list_head complete_queue;
- 	int irq;
- };
---- a/drivers/crypto/marvell/cesa/tdma.c
-+++ b/drivers/crypto/marvell/cesa/tdma.c
-@@ -38,6 +38,15 @@ void mv_cesa_dma_step(struct mv_cesa_req
- {
- 	struct mv_cesa_engine *engine = dreq->engine;
- 
-+	spin_lock_bh(&engine->lock);
-+	if (engine->chain_sw.first == dreq->chain.first) {
-+		engine->chain_sw.first = NULL;
-+		engine->chain_sw.last = NULL;
-+	}
-+	engine->chain_hw.first = dreq->chain.first;
-+	engine->chain_hw.last = dreq->chain.last;
-+	spin_unlock_bh(&engine->lock);
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index da2a1c00ca8a6..d41e5642625e3 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -178,11 +178,27 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay seq and seq_hi should be 0 for output SA");
+ 			return -EINVAL;
+ 		}
+-		if (rs->oseq_hi && !(p->flags & XFRM_STATE_ESN)) {
+-			NL_SET_ERR_MSG(
+-				extack,
+-				"Replay oseq_hi should be 0 in non-ESN mode for output SA");
+-			return -EINVAL;
 +
- 	writel_relaxed(0, engine->regs + CESA_SA_CFG);
- 
- 	mv_cesa_set_int_mask(engine, CESA_SA_INT_ACC0_IDMA_DONE);
-@@ -96,25 +105,27 @@ void mv_cesa_dma_prepare(struct mv_cesa_
- void mv_cesa_tdma_chain(struct mv_cesa_engine *engine,
- 			struct mv_cesa_req *dreq)
- {
--	if (engine->chain.first == NULL && engine->chain.last == NULL) {
--		engine->chain.first = dreq->chain.first;
--		engine->chain.last  = dreq->chain.last;
--	} else {
--		struct mv_cesa_tdma_desc *last;
-+	struct mv_cesa_tdma_desc *last = engine->chain_sw.last;
- 
--		last = engine->chain.last;
-+	/*
-+	 * Break the DMA chain if the request being queued needs the IV
-+	 * regs to be set before lauching the request.
-+	 */
-+	if (!last || dreq->chain.first->flags & CESA_TDMA_SET_STATE)
-+		engine->chain_sw.first = dreq->chain.first;
-+	else {
- 		last->next = dreq->chain.first;
--		engine->chain.last = dreq->chain.last;
--
--		/*
--		 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
--		 * the last element of the current chain, or if the request
--		 * being queued needs the IV regs to be set before lauching
--		 * the request.
--		 */
--		if (!(last->flags & CESA_TDMA_BREAK_CHAIN) &&
--		    !(dreq->chain.first->flags & CESA_TDMA_SET_STATE))
--			last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
-+		last->next_dma = cpu_to_le32(dreq->chain.first->cur_dma);
-+	}
-+	last = dreq->chain.last;
-+	engine->chain_sw.last = last;
-+	/*
-+	 * Break the DMA chain if the CESA_TDMA_BREAK_CHAIN is set on
-+	 * the last element of the current chain.
-+	 */
-+	if (last->flags & CESA_TDMA_BREAK_CHAIN) {
-+		engine->chain_sw.first = NULL;
-+		engine->chain_sw.last = NULL;
++		if (!(p->flags & XFRM_STATE_ESN)) {
++			if (rs->oseq_hi) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay oseq_hi should be 0 in non-ESN mode for output SA");
++				return -EINVAL;
++			}
++			if (rs->oseq == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay oseq should be less than 0xFFFFFFFF in non-ESN mode for output SA");
++				return -EINVAL;
++			}
++		} else {
++			if (rs->oseq == U32_MAX && rs->oseq_hi == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay oseq and oseq_hi should be less than 0xFFFFFFFF for output SA");
++				return -EINVAL;
++			}
+ 		}
+ 		if (rs->bmp_len) {
+ 			NL_SET_ERR_MSG(extack, "Replay bmp_len should 0 for output SA");
+@@ -196,11 +212,27 @@ static inline int verify_replay(struct xfrm_usersa_info *p,
+ 				       "Replay oseq and oseq_hi should be 0 for input SA");
+ 			return -EINVAL;
+ 		}
+-		if (rs->seq_hi && !(p->flags & XFRM_STATE_ESN)) {
+-			NL_SET_ERR_MSG(
+-				extack,
+-				"Replay seq_hi should be 0 in non-ESN mode for input SA");
+-			return -EINVAL;
++		if (!(p->flags & XFRM_STATE_ESN)) {
++			if (rs->seq_hi) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay seq_hi should be 0 in non-ESN mode for input SA");
++				return -EINVAL;
++			}
++
++			if (rs->seq == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay seq should be less than 0xFFFFFFFF in non-ESN mode for input SA");
++				return -EINVAL;
++			}
++		} else {
++			if (rs->seq == U32_MAX && rs->seq_hi == U32_MAX) {
++				NL_SET_ERR_MSG(
++					extack,
++					"Replay seq and seq_hi should be less than 0xFFFFFFFF for input SA");
++				return -EINVAL;
++			}
+ 		}
  	}
- }
  
-@@ -127,7 +138,7 @@ int mv_cesa_tdma_process(struct mv_cesa_
- 
- 	tdma_cur = readl(engine->regs + CESA_TDMA_CUR);
- 
--	for (tdma = engine->chain.first; tdma; tdma = next) {
-+	for (tdma = engine->chain_hw.first; tdma; tdma = next) {
- 		spin_lock_bh(&engine->lock);
- 		next = tdma->next;
- 		spin_unlock_bh(&engine->lock);
-@@ -149,12 +160,12 @@ int mv_cesa_tdma_process(struct mv_cesa_
- 								 &backlog);
- 
- 			/* Re-chaining to the next request */
--			engine->chain.first = tdma->next;
-+			engine->chain_hw.first = tdma->next;
- 			tdma->next = NULL;
- 
- 			/* If this is the last request, clear the chain */
--			if (engine->chain.first == NULL)
--				engine->chain.last  = NULL;
-+			if (engine->chain_hw.first == NULL)
-+				engine->chain_hw.last  = NULL;
- 			spin_unlock_bh(&engine->lock);
- 
- 			ctx = crypto_tfm_ctx(req->tfm);
+-- 
+2.39.5
+
 
 
 
