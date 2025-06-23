@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156021-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44D0AE44F1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75800AE44A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959593BF133
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5BE77AC259
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DA224DFF3;
-	Mon, 23 Jun 2025 13:39:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 813D725291F;
+	Mon, 23 Jun 2025 13:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ofs4P2uy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSpRL+HV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107B61E480;
-	Mon, 23 Jun 2025 13:39:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F65F253358;
+	Mon, 23 Jun 2025 13:39:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685944; cv=none; b=AOTFc1r0f4oXBTNrWwfG+ykEa+W8//Alun2H4ehw7dajLjVeAy6JQsiYXDYluK6fhojY5n1LhZ6EkpSlQhruTdratdicsCjDT9s6RzjCU5VC/H7RkQ8V7/gjyPbg9KEBNnYFbJ5ODozmPf/9TT8hlf1aCQuwgyROohQ5Wl9VxCw=
+	t=1750685961; cv=none; b=D0gkMzAZaNUMUmXlr4g24ZwWkVSWhXNULh/fvddlg3UeUNfc/HUceO4/pbMHtN6XV4H4DkyCE0VG3aquj0HRa8HWhpj6pKxlapfa0Eh9OtlY738M8ZbX3tXzHYY9bB2807HkDQUVvgUhTnv/jUAXDr8CpQb3+0EqUgStpZRbBI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685944; c=relaxed/simple;
-	bh=52U7i5tTdeK4hebS3AriLJUl8CpW3Ide2MdeesJ8bVM=;
+	s=arc-20240116; t=1750685961; c=relaxed/simple;
+	bh=39+K4aWf0mFWekiuTWkhyNIAQS5B/6Vu5H9/FI1oxZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YMSgqNlYQCEIG0HDIjEQtSQ5xjEmz9gqckkPHXkqvagVnq2R0bePMwVHVi14e2T29C2iavgMBZ5Sb9eXqE9/Hx8i/bIFIq/Pde5UQnXKzCttMvUBUkTvEV9wNAyjxEmdRl+sAzdGzDVNL5tM7LY3Iz0sLmuPgBVDYkFZRqshcHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ofs4P2uy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C999C4CEEA;
-	Mon, 23 Jun 2025 13:39:03 +0000 (UTC)
+	 MIME-Version; b=OFtq1CSG/9gSnIJ7irf9/gXBVsVPOGAVRbUHrAyIS+LcGDhpkhkRJsDp6bCYhYKOBsOjJyC9QXFRWqq5l4t+RbpqJrYFXmPTJh4CnMhEb5ral0GwTPrjjSfawFsh8pNkvKuCnehdSTfpdAG+onhK8krxOghqxHmh8EyF9yYzw3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSpRL+HV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5BA1C4CEEA;
+	Mon, 23 Jun 2025 13:39:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685943;
-	bh=52U7i5tTdeK4hebS3AriLJUl8CpW3Ide2MdeesJ8bVM=;
+	s=korg; t=1750685961;
+	bh=39+K4aWf0mFWekiuTWkhyNIAQS5B/6Vu5H9/FI1oxZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ofs4P2uy0nyN9+FMiOTxcmXY9uhHYNpjlBpOiJIsAjp4SN1qe1R1bc1StSeRXNjE/
-	 Yc64hLn0qIKWIu5qlgW3GZ7OYROAdKaGf/S5dxnYUNkzBF12cHiRt65VuJGkSgIo/b
-	 rEBkTJdPM7QjJhdpPlBl0zv3PLNmgShtwtmqRv4s=
+	b=BSpRL+HV8rsIhBcJWNuwNq+CP9M6iciBk4WT39+iVl0NmJaq25AWn63udpV57VuYV
+	 c4KuvhHXtsbZWXxKA5rxau7KrMOUPdrb4AiIIGPjiyC+vX3c/CzVZqxcnChEN7aB1A
+	 X2WtiL9jYVEBY/dI5fwYjoQg4MW4bXb+1T8qGLHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Michael Tretter <m.tretter@pengutronix.de>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Ovidiu Bunea <ovidiu.bunea@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 272/592] media: uapi: v4l: Change V4L2_TYPE_IS_CAPTURE condition
-Date: Mon, 23 Jun 2025 15:03:50 +0200
-Message-ID: <20250623130706.798554925@linuxfoundation.org>
+Subject: [PATCH 6.15 273/592] drm/amd/display: fix zero value for APU watermark_c
+Date: Mon, 23 Jun 2025 15:03:51 +0200
+Message-ID: <20250623130706.824547301@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -68,55 +69,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nas Chung <nas.chung@chipsnmedia.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit ad2698efce37e910dcf3c3914263e6cb3e86f8cd ]
+[ Upstream commit d5a7fdc88a2d64242d959942cbd0e1499ebb9806 ]
 
-Explicitly compare a buffer type only with valid buffer types,
-to avoid matching a buffer type outside of the valid buffer type set.
+[why]
+the guard of is_apu not in sync, caused no watermark_c output.
 
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Reviewed-by: Ovidiu Bunea <ovidiu.bunea@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/videodev2.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index b0e1f660c5f72..af86ece741e94 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -153,10 +153,18 @@ enum v4l2_buf_type {
- 	V4L2_BUF_TYPE_SDR_OUTPUT           = 12,
- 	V4L2_BUF_TYPE_META_CAPTURE         = 13,
- 	V4L2_BUF_TYPE_META_OUTPUT	   = 14,
-+	/*
-+	 * Note: V4L2_TYPE_IS_VALID and V4L2_TYPE_IS_OUTPUT must
-+	 * be updated if a new type is added.
-+	 */
- 	/* Deprecated, do not use */
- 	V4L2_BUF_TYPE_PRIVATE              = 0x80,
- };
- 
-+#define V4L2_TYPE_IS_VALID(type)		 \
-+	((type) >= V4L2_BUF_TYPE_VIDEO_CAPTURE &&\
-+	 (type) <= V4L2_BUF_TYPE_META_OUTPUT)
-+
- #define V4L2_TYPE_IS_MULTIPLANAR(type)			\
- 	((type) == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE	\
- 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE)
-@@ -170,7 +178,8 @@ enum v4l2_buf_type {
- 	 || (type) == V4L2_BUF_TYPE_SDR_OUTPUT			\
- 	 || (type) == V4L2_BUF_TYPE_META_OUTPUT)
- 
--#define V4L2_TYPE_IS_CAPTURE(type) (!V4L2_TYPE_IS_OUTPUT(type))
-+#define V4L2_TYPE_IS_CAPTURE(type)	\
-+	(V4L2_TYPE_IS_VALID(type) && !V4L2_TYPE_IS_OUTPUT(type))
- 
- enum v4l2_tuner_type {
- 	V4L2_TUNER_RADIO	     = 1,
+diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
+index e89571874185e..525b7d04bf84c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
++++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.c
+@@ -663,7 +663,10 @@ static bool dml2_validate_and_build_resource(const struct dc *in_dc, struct dc_s
+ 		dml2_copy_clocks_to_dc_state(&out_clks, context);
+ 		dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.a, &dml2->v20.dml_core_ctx);
+ 		dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.b, &dml2->v20.dml_core_ctx);
+-		memcpy(&context->bw_ctx.bw.dcn.watermarks.c, &dml2->v20.g6_temp_read_watermark_set, sizeof(context->bw_ctx.bw.dcn.watermarks.c));
++		if (context->streams[0]->sink->link->dc->caps.is_apu)
++			dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.c, &dml2->v20.dml_core_ctx);
++		else
++			memcpy(&context->bw_ctx.bw.dcn.watermarks.c, &dml2->v20.g6_temp_read_watermark_set, sizeof(context->bw_ctx.bw.dcn.watermarks.c));
+ 		dml2_extract_watermark_set(&context->bw_ctx.bw.dcn.watermarks.d, &dml2->v20.dml_core_ctx);
+ 		dml2_extract_writeback_wm(context, &dml2->v20.dml_core_ctx);
+ 		//copy for deciding zstate use
 -- 
 2.39.5
 
