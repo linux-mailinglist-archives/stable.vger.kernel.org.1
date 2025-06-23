@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-155378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155830-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37FEAAE41BB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:11:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B4A2AE43E3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F9583A73CD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:11:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FDE8188AFC7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8062255E34;
-	Mon, 23 Jun 2025 13:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04B9A2561A2;
+	Mon, 23 Jun 2025 13:30:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8YojDOD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbT7dlQ8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6307C255E23;
-	Mon, 23 Jun 2025 13:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B54BE253B47;
+	Mon, 23 Jun 2025 13:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684208; cv=none; b=t9UBn3RproPF2cY9TJCcZ++pUWbIER+0mgCoEpu7EPN+iJGB090erVSfITgOFVeNZgHAHjobqiOHIIVS2xqdSoPZONigE7Foh1p21CE4WyhufPzBTL6cQQT9Yqq8eTBy5/Hz0A7TMbA6EQCY6CvsrQzO3ZLBdf++k6PuDDByXgU=
+	t=1750685438; cv=none; b=PXY/SbkRviw7L6rFi6njG/8y2U4LRRbiTbix9I0R2CzTq83v7QfygkaXLTCR48kWOND8NW4hApJS395rIP2xZKPrN6QSwSCQ9kMtFiJ6UkahTUYxffklmiReogt5V/P7Eor3iR2/Ci6qwMfN4tJ9IAForwsGrkoCEDhNnTPsSvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684208; c=relaxed/simple;
-	bh=gAyepmdp2PEfkaH4cE6Zimyzi0tGPCnDsEKUhKIyaR0=;
+	s=arc-20240116; t=1750685438; c=relaxed/simple;
+	bh=9bwwbRu6CklhZOMvpfaCq44R8evY4e3W5mOzjQfrsFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sDPZpJRvekEhELy0ZsK+pNlk/u8Lme3zchooZKcKlT+TBshnTDe4vTRG+xYsEfFMcD6+iin76Hn/clem5wxbmcPh8ymDQ76bPjRsepAfcbt9cJkNxkGkCgtoWDAD977bzBpHfrWleIQ+oEVcKRG/GjYX67vHcMHghbUtdlaWejQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8YojDOD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2A94C4CEEA;
-	Mon, 23 Jun 2025 13:10:07 +0000 (UTC)
+	 MIME-Version; b=mYgGSib3xsdtQ19sLDy7h4g1scA2Zt0jVaZUKKUM0hTc9RcluV+Gn8JHHouPSsqpjCxbC/UFoBsstsBMOzGeWWYs9MMnW8buA/00kIQLyXDHHMH5QVE+Dhqq3HtN0abhgoRiLVcksIdM1z1hlSgUc/Yrb22rKUidCU2TI5twm8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbT7dlQ8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0343C4CEEA;
+	Mon, 23 Jun 2025 13:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684208;
-	bh=gAyepmdp2PEfkaH4cE6Zimyzi0tGPCnDsEKUhKIyaR0=;
+	s=korg; t=1750685438;
+	bh=9bwwbRu6CklhZOMvpfaCq44R8evY4e3W5mOzjQfrsFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8YojDODmTkS92V7ra55agYMO1GE4BocZlvt9KAxl7M02dSEsPGi/qGcRmnJABUZA
-	 WHbOxTXEjFf+M5skhSHn9JsFd3RSLHQ0/4QoiQLn6rsenTlStE2dgBnXJonEF+6ZmF
-	 ECnF9UdHbOPBTNUqT1d0hz/BMCE2lteB5MJpXlMc=
+	b=BbT7dlQ8v6zokrqEN+ucEy7r+6q3gZw7FIN63KlHV5XOr7wBGRV/U7s7/AlwTwEoH
+	 t1vGRxGWGLObrcxJjleKRYegGKf7NdHpbjb1emHmu8u+6Nxk1GIPVfuzH1fnEibDLz
+	 oMz825ibFEbtKzrwI2ReO/Xjpf/QMO6vqfmPCnfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.10 002/355] pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
+	Stephan Gerhold <stephan@gerhold.net>,
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Bryan ODonoghue <bryan.odonoghue@linaro.org>,
+	Vincent Knecht <vincent.knecht@mailoo.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 059/411] clk: qcom: gcc-msm8939: Fix mclk0 & mclk1 for 24 MHz
 Date: Mon, 23 Jun 2025 15:03:23 +0200
-Message-ID: <20250623130626.794612669@linuxfoundation.org>
+Message-ID: <20250623130634.761528308@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +65,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Vincent Knecht <vincent.knecht@mailoo.org>
 
-commit 947c93eb29c2a581c0b0b6d5f21af3c2b7ff6d25 upstream.
+[ Upstream commit 9e7acf70cf6aa7b22f67d911f50a8cd510e8fb00 ]
 
-The controller has two consecutive OUTPUT_VAL registers and both
-holds output value for 32 GPIOs. Due to a missing adjustment, the
-current code always uses the first register while setting the
-output value whereas it should use the second one for GPIOs > 31.
+Fix mclk0 & mclk1 parent map to use correct GPLL6 configuration and
+freq_tbl to use GPLL6 instead of GPLL0 so that they tick at 24 MHz.
 
-Add the missing armada_37xx_update_reg() call to adjust the register
-according to the 'offset' parameter of the function to fix the issue.
-
-Cc: stable@vger.kernel.org
-Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-1-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1664014e4679 ("clk: qcom: gcc-msm8939: Add MSM8939 Generic Clock Controller")
+Suggested-by: Stephan Gerhold <stephan@gerhold.net>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Signed-off-by: Vincent Knecht <vincent.knecht@mailoo.org>
+Link: https://lore.kernel.org/r/20250414-gcc-msm8939-fixes-mclk-v2-resend2-v2-1-5ddcf572a6de@mailoo.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/qcom/gcc-msm8939.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -413,6 +413,7 @@ static int armada_37xx_gpio_direction_ou
- 					     unsigned int offset, int value)
- {
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
-+	unsigned int val_offset = offset;
- 	unsigned int reg = OUTPUT_EN;
- 	unsigned int mask, val, ret;
+diff --git a/drivers/clk/qcom/gcc-msm8939.c b/drivers/clk/qcom/gcc-msm8939.c
+index de0022e5450de..81db8877acc2c 100644
+--- a/drivers/clk/qcom/gcc-msm8939.c
++++ b/drivers/clk/qcom/gcc-msm8939.c
+@@ -433,7 +433,7 @@ static const struct parent_map gcc_xo_gpll0_gpll1a_gpll6_sleep_map[] = {
+ 	{ P_XO, 0 },
+ 	{ P_GPLL0, 1 },
+ 	{ P_GPLL1_AUX, 2 },
+-	{ P_GPLL6, 2 },
++	{ P_GPLL6, 3 },
+ 	{ P_SLEEP_CLK, 6 },
+ };
  
-@@ -425,6 +426,8 @@ static int armada_37xx_gpio_direction_ou
- 		return ret;
+@@ -1087,7 +1087,7 @@ static struct clk_rcg2 jpeg0_clk_src = {
+ };
  
- 	reg = OUTPUT_VAL;
-+	armada_37xx_update_reg(&reg, &val_offset);
-+
- 	val = value ? mask : 0;
- 	regmap_update_bits(info->regmap, reg, mask, val);
- 
+ static const struct freq_tbl ftbl_gcc_camss_mclk0_1_clk[] = {
+-	F(24000000, P_GPLL0, 1, 1, 45),
++	F(24000000, P_GPLL6, 1, 1, 45),
+ 	F(66670000, P_GPLL0, 12, 0, 0),
+ 	{ }
+ };
+-- 
+2.39.5
+
 
 
 
