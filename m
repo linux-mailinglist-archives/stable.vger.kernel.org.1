@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79D0FAE507E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F71EAE4EF2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BEBF1B61570
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6F9A3BEBB4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D75CD1F582A;
-	Mon, 23 Jun 2025 21:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94EF21FF2B;
+	Mon, 23 Jun 2025 21:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FmkkMvoG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WNqEXCVV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 964501E51FA;
-	Mon, 23 Jun 2025 21:25:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65DF770838;
+	Mon, 23 Jun 2025 21:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713930; cv=none; b=VHRFxDE+mtgvAr/UkmgdDh4ogKwtPv5ePYUzq805Z2NkcBSKz9TLCif6PYGJMKYPfEMKOlGTKntfYNyAdbqFeqzvIIbyFPo05wfkDTWgYMJicQIwD91ZBY33sJxaJ1jgtQS+WQsPS4qvhrZ+Z3D+e8ahQcXpjoosM6WMgMop+gc=
+	t=1750713049; cv=none; b=HrlpqKb5eLA+qJTQ7cQRc3mcf3EcG26Co9OmHIs7H4BF0MR0TYY2Z3GsxdErMdQF6CVmHRgyePpMIaWB0BzthyMiXLZYfx6BQBeFhidknAn0+CVwRn1fq77PoD/bK7D9lUrC+lnzO/eyluxvYxIeCtsJVhc3FYAtwHSDQOsCpZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713930; c=relaxed/simple;
-	bh=zodM9iz6PHTw/javcP4p5OXU+RI82DZFauqpZjw+yRM=;
+	s=arc-20240116; t=1750713049; c=relaxed/simple;
+	bh=q3ns3jUbXdK0A4C7HhxqsultUQi4PBOxRBRuShKu4dI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=htjpnJRB5g/joVB5Fz8h7S578JeKXEYjqhLalpzFjl8A0gbZvz99mlMQaiNe3IzHTenD+fI+1utdTqZz4z/EIeLGfumEUmp0gh+3uAMaSMoQdE2Vbc5phXGwsVOR6Fh3qR+XfDE6NPo0fuv+LAtq648AmmAIZocwBiL+OpyXeK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FmkkMvoG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7A1AC4CEEA;
-	Mon, 23 Jun 2025 21:25:29 +0000 (UTC)
+	 MIME-Version; b=Dege6J54Pb+IrcMIBs048Y757OzGK06M2hvw774+m5/SyI9lmaq1paqXrlNAi/P9ce6o6lSR8v6liN0YS2LBziAIk5LnWzymxrptB+VPnAZ77fzGKiLV+Dtq/WnrK18VBq4PbutDqC37NrGaqn1Us38DXB8CHtZsicda6jOlHs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WNqEXCVV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00992C4CEEA;
+	Mon, 23 Jun 2025 21:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713930;
-	bh=zodM9iz6PHTw/javcP4p5OXU+RI82DZFauqpZjw+yRM=;
+	s=korg; t=1750713049;
+	bh=q3ns3jUbXdK0A4C7HhxqsultUQi4PBOxRBRuShKu4dI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FmkkMvoG2PYQtT0AcriOoid5Abh8kx3gnBvUmBrl65si//uMa/yTyqz3y1MVlf0h9
-	 19pCJMG6SqOWb9t3uG4rloewx4tR4QHLH7Rws1kYNKKDRU/7bWaVEEl0p+VBb39pze
-	 6SAH1uZpHUSh57ZQNBWlb2IzOIw/wJTjQZaW/Hj0=
+	b=WNqEXCVV7H99korVsC7yYQD36HVuZvt76E7YEmiX/nSssDsmc1rygFF9BCUiu/ZTk
+	 EJ4zoQHYtEDOcF7O5I78ISth6A+4ZD+2A5dkBpvIYzYgWe0mA7yvfSzRmNeIC8SsOa
+	 C4i31TpY14wQyscyUQlhG+yYq63D/JGtDxKi0z6M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 135/508] dm: free table mempools if not used in __bind
+	Umang Jain <umang.jain@ideasonboard.com>,
+	Kieran Bingham <kieran.bingham@ideasonboard.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 043/414] media: imx335: Use correct register width for HNUM
 Date: Mon, 23 Jun 2025 15:03:00 +0200
-Message-ID: <20250623130648.610586887@linuxfoundation.org>
+Message-ID: <20250623130643.113703518@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Marzinski <bmarzins@redhat.com>
+From: Umang Jain <umang.jain@ideasonboard.com>
 
-[ Upstream commit e8819e7f03470c5b468720630d9e4e1d5b99159e ]
+commit b122c9cfcb39c8ef520d50eddfbe15f3e6551a50 upstream.
 
-With request-based dm, the mempools don't need reloading when switching
-tables, but the unused table mempools are not freed until the active
-table is finally freed. Free them immediately if they are not needed.
+CCI_REG_HNUM should be using CCI_REG16_LE() instead of CCI_REG8()
+as HNUM spans from 0x302e[0:7] to 0x302f[0:3].
 
-Fixes: 29dec90a0f1d9 ("dm: fix bio_set allocation")
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Tested-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Umang Jain <umang.jain@ideasonboard.com>
+Signed-off-by: Kieran Bingham <kieran.bingham@ideasonboard.com>
+Fixes: 8f0926dba799 ("media: imx335: Use V4L2 CCI for accessing sensor registers")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/i2c/imx335.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm.c b/drivers/md/dm.c
-index 2b8fe98c515ed..cf7520551b63b 100644
---- a/drivers/md/dm.c
-+++ b/drivers/md/dm.c
-@@ -2205,10 +2205,10 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		 * requests in the queue may refer to bio from the old bioset,
- 		 * so you must walk through the queue to unprep.
- 		 */
--		if (!md->mempools) {
-+		if (!md->mempools)
- 			md->mempools = t->mempools;
--			t->mempools = NULL;
--		}
-+		else
-+			dm_free_md_mempools(t->mempools);
- 	} else {
- 		/*
- 		 * The md may already have mempools that need changing.
-@@ -2217,8 +2217,8 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
- 		 */
- 		dm_free_md_mempools(md->mempools);
- 		md->mempools = t->mempools;
--		t->mempools = NULL;
- 	}
-+	t->mempools = NULL;
+diff --git a/drivers/media/i2c/imx335.c b/drivers/media/i2c/imx335.c
+index 0beb80b8c458..d400a019f6b3 100644
+--- a/drivers/media/i2c/imx335.c
++++ b/drivers/media/i2c/imx335.c
+@@ -31,7 +31,7 @@
+ #define IMX335_REG_CPWAIT_TIME		CCI_REG8(0x300d)
+ #define IMX335_REG_WINMODE		CCI_REG8(0x3018)
+ #define IMX335_REG_HTRIMMING_START	CCI_REG16_LE(0x302c)
+-#define IMX335_REG_HNUM			CCI_REG8(0x302e)
++#define IMX335_REG_HNUM			CCI_REG16_LE(0x302e)
  
- 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
- 	rcu_assign_pointer(md->map, (void *)t);
+ /* Lines per frame */
+ #define IMX335_REG_VMAX			CCI_REG24_LE(0x3030)
 -- 
-2.39.5
+2.50.0
 
 
 
