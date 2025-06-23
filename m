@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FAC1AE54ED
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B37CAE534B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12304A0644
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E69737B0956
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F194621FF2B;
-	Mon, 23 Jun 2025 22:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 758FA221FCC;
+	Mon, 23 Jun 2025 21:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oINKA/r8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxJ+RbgE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A619E1E22E6;
-	Mon, 23 Jun 2025 22:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339981DD0C7;
+	Mon, 23 Jun 2025 21:50:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716357; cv=none; b=r7pssE1LvrFDrckkMVhiLtqKvy4y4QPWd9QtdiXSVtulAf8MVLEg+cvt193PamapbjAaNDzrdbDpwtOCStd/pa1nVvkhTZyUzrOdlWRVC+fAXHyRvxSfNbc9sNnxV7n/lAuD/sPd5me7uFZInKcMzxsqTe0glLEEf1Q2CCxxKJA=
+	t=1750715443; cv=none; b=OnltKU1CduoFa9G0lEdVRCRmeTMjLxTXvFB37ZEVPuiEmABupsBsC1swtzhIKjrZjYyeF2uJBt4mosnV2GLBanFSXZ3HZEiyetMwZn22Fp2fCk+b1wdWKF0uasKl2oAkXToihlMfx14MDiApCHXYQv32fn7G+CIe/zQm1S1pHYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716357; c=relaxed/simple;
-	bh=qTrSylmrOsMNet7uiJNcv9VrbSnqpTevryuX1EqaRZo=;
+	s=arc-20240116; t=1750715443; c=relaxed/simple;
+	bh=z905HTBBL1w+zHtyyciTn4QgcN3oQtq9t3cndga6S3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W7FKA2jK0fYvAN8iVOTTjL2OkNFD5JYY8BYOZK7zfgPuViszZauDg0T+srgcp12iphpnXoZPq3sB0vjljLe4meM9qiGAUAY6uXjru+XH1yB7Hw0VdOEMkPw7AcX2KGB8Xh1jO3mkONi4gRQeWrMYHD8yfrTwMxokJacNfLNy5Is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oINKA/r8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E51CC4CEEA;
-	Mon, 23 Jun 2025 22:05:57 +0000 (UTC)
+	 MIME-Version; b=UUgqoYyZ2iqLLvBRx+eaDiBlekrc4Vz+YB355ZQBRb6YTcq444QG2xJJSmc1AtRy0ddobWWMZP6hd5f29lPLOIgQ+AynfU3Bzz13M+5y8YfXnbtM56cSmjEB07++8UXtPb6b6DcqCXVA0PJqxIOVL8A4sGqsSF8iheh1x4rY5WQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxJ+RbgE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF5CC4CEEA;
+	Mon, 23 Jun 2025 21:50:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716357;
-	bh=qTrSylmrOsMNet7uiJNcv9VrbSnqpTevryuX1EqaRZo=;
+	s=korg; t=1750715443;
+	bh=z905HTBBL1w+zHtyyciTn4QgcN3oQtq9t3cndga6S3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oINKA/r8/bQVJ+ke/4XuSClzQ67rESZ5kQUQadXdYrrdWz6rIeYIgNZdTvjGpQyxL
-	 wgPFlx2s/vRwQUJ4G8xVcqXHcouKxisJf7/+YSBMcV+MPZ3Rp7vf5NFF0Yhk7wTfk5
-	 jJAIF+5nm4SBugZaUFEVDLE1U0Zua4QmHXYn8x90=
+	b=MxJ+RbgEQIBs8XklGYMJkaQkyEAS+M5qRytNylzeV5P5Acv/Fnd3cbWLYXznP1kFm
+	 1e2WA3TJF11bcCm+utNeFNG4WxLBQXisGysYyBk98nwkDhRoz4jCoieGAZsxHfEEks
+	 +xA39s0uUuqqkSVXYCKlkZZjqrzabOxkPmdrtD0w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 518/592] drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
+Subject: [PATCH 5.10 275/355] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
 Date: Mon, 23 Jun 2025 15:07:56 +0200
-Message-ID: <20250623130712.757937071@linuxfoundation.org>
+Message-ID: <20250623130635.040981733@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-[ Upstream commit a7137b1825b535eb7258b25beeb0d5425e0037d2 ]
+[ Upstream commit 23d060136841c58c2f9ee8c08ad945d1879ead4b ]
 
-i915_pmu.c may fail to build with GCOV and AutoFDO enabled.
+In case the MC firmware runs in debug mode with extensive prints pushed
+to the console, the current timeout of 500ms is not enough.
+Increase the timeout value so that we don't have any chance of wrongly
+assuming that the firmware is not responding when it's just taking more
+time.
 
-../drivers/gpu/drm/i915/i915_pmu.c:116:3: error: call to '__compiletime_assert_487' declared with 'error' attribute: BUILD_BUG_ON failed: bit > BITS_PER_TYPE(typeof_member(struct i915_pmu, enable)) - 1
-  116 |                 BUILD_BUG_ON(bit >
-      |                 ^
-
-Here is a way to reproduce the issue:
-$ git checkout v6.15
-$ mkdir build
-$ ./scripts/kconfig/merge_config.sh -O build -n -m <(cat <<EOF
-CONFIG_DRM=y
-CONFIG_PCI=y
-CONFIG_DRM_I915=y
-
-CONFIG_PERF_EVENTS=y
-
-CONFIG_DEBUG_FS=y
-CONFIG_GCOV_KERNEL=y
-CONFIG_GCOV_PROFILE_ALL=y
-
-CONFIG_AUTOFDO_CLANG=y
-EOF
-)
-$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
-       olddefconfig
-$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
-       CLANG_AUTOFDO_PROFILE=...PATH_TO_SOME_AFDO_PROFILE... \
-       drivers/gpu/drm/i915/i915_pmu.o
-
-Although not super sure what happened, by reviewing the code, it should
-depend on `__builtin_constant_p(bit)` directly instead of assuming
-`__builtin_constant_p(config)` makes `bit` a builtin constant.
-
-Also fix a nit, to reuse the `bit` local variable.
-
-Fixes: a644fde77ff7 ("drm/i915/pmu: Change bitmask of enabled events to u32")
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
-Link: https://lore.kernel.org/r/20250612083023.562585-1-tzungbi@kernel.org
-(cherry picked from commit 686d773186bf72b739bab7e12eb8665d914676ee)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-7-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_pmu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/bus/fsl-mc/mc-sys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
-index e5a188ce31857..990bfaba3ce4e 100644
---- a/drivers/gpu/drm/i915/i915_pmu.c
-+++ b/drivers/gpu/drm/i915/i915_pmu.c
-@@ -112,7 +112,7 @@ static u32 config_mask(const u64 config)
- {
- 	unsigned int bit = config_bit(config);
+diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
+index 85a0225db522a..14d77dc618cc1 100644
+--- a/drivers/bus/fsl-mc/mc-sys.c
++++ b/drivers/bus/fsl-mc/mc-sys.c
+@@ -19,7 +19,7 @@
+ /**
+  * Timeout in milliseconds to wait for the completion of an MC command
+  */
+-#define MC_CMD_COMPLETION_TIMEOUT_MS	500
++#define MC_CMD_COMPLETION_TIMEOUT_MS	15000
  
--	if (__builtin_constant_p(config))
-+	if (__builtin_constant_p(bit))
- 		BUILD_BUG_ON(bit >
- 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
- 							 enable)) - 1);
-@@ -121,7 +121,7 @@ static u32 config_mask(const u64 config)
- 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
- 							 enable)) - 1);
- 
--	return BIT(config_bit(config));
-+	return BIT(bit);
- }
- 
- static bool is_engine_event(struct perf_event *event)
+ /*
+  * usleep_range() min and max values used to throttle down polling
 -- 
 2.39.5
 
