@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-155750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61796AE43A0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22E56AE4562
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 431FA3B80B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A33F44667D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEB425291B;
-	Mon, 23 Jun 2025 13:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE9425291B;
+	Mon, 23 Jun 2025 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d74S0xv2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aHtGuM1H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF5324C060;
-	Mon, 23 Jun 2025 13:27:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095512472A2;
+	Mon, 23 Jun 2025 13:43:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685239; cv=none; b=RNO/sHNO+VBH24I1BYyXAgt0YG3RxCKYt9TQCG9ecIiizOXOhKWPyrC3zTnbKaNqwK4imCdRutGtvhsYjngPPYHIO/Z60Bzb3Wl9577R1+z41bc3FxILxymuO2I1djymeiYFoCvotUlPoLe7cECV8BHd8ILb1DKOnCk2Sk8A3fk=
+	t=1750686208; cv=none; b=l7gSAOi/GIIZSqrK9/WqsBGhdLD4ks9m78+oLXupWw8XoAudyOws6dcRmONTgQydv8gTIQ6fwSvgC3vBFj1cfsDT77l8oSRMzXzu77BpLkPj1dp1AqrUkpbwpt9cvK93UWHiiYbY3NKiRVthu3meTf/w9Z7tMzrwFFsierem/eA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685239; c=relaxed/simple;
-	bh=rj0GAkXWr99NSUfViMLe+Qc3VP8oVwK2nYpox0dT+eM=;
+	s=arc-20240116; t=1750686208; c=relaxed/simple;
+	bh=WHSygOfclJo1tJ+APGoL0Pzbnsag2NWaFDf0qbHK3Vg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fXgzQnz1uWmYRoDlkiPU86tyarTroKfiOS4Wzw7R8sbnBfgXqurSZbUP2aWzVfsi9WbNW0I3XUh5kT3fx6sUMr7rTmeh7Oonevpej0Jl0AN6XHBdgLzqdN/rLVIvFMWDJtVYBs9Oc6whQuCcfT9WKNM/axBXjftGdgQyhytwvM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d74S0xv2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD1AC4CEEA;
-	Mon, 23 Jun 2025 13:27:18 +0000 (UTC)
+	 MIME-Version; b=h0ncKTpkOUVCGbSauguchIfDI1CosmXGWrwMISNsqx+21hD5creagsqQrNBhCI7SHAA1NeRjY3sLCV5wHRBSe1dID2+8zngZsoBot/bMraAQ+jfIANmnhuF9ZUsQ4pU96QcD5dtKygYYlMAxp7p6Z2eSNRZ8xQsd20rIWp28QnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aHtGuM1H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92138C4CEEA;
+	Mon, 23 Jun 2025 13:43:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685239;
-	bh=rj0GAkXWr99NSUfViMLe+Qc3VP8oVwK2nYpox0dT+eM=;
+	s=korg; t=1750686207;
+	bh=WHSygOfclJo1tJ+APGoL0Pzbnsag2NWaFDf0qbHK3Vg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d74S0xv25w6plxgtqlAATeGuQ9XI/RRKjL/kROoXYlLOW8+d56I2qMExW232edGkp
-	 hm4LENba9utDU4dXXMQpW5hjzd+s/6KmjyWXRad/LA4LXJ/yiOW4fk/pr3nRWWNgJK
-	 npjX6hVxC8JV1L9fih/QPefet4QtvkFCfMiYxtyI=
+	b=aHtGuM1HWnAPei+/NmqnS3Vzk5Z6um6DsKhZ6ZTRZ49ij2AEimNCcwX1fUi7dINIM
+	 hSiqcZkrdU0bE5gIWS5XdW4v+JwjXwrLRHV1wpILz8XFXWybWa3fof/R73mlinItP2
+	 FCH+YOY+9a2d1gRKLApRrFX/rkXAYLAIyn8eU3Ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 019/411] crypto: xts - Only add ecb if it is not already there
-Date: Mon, 23 Jun 2025 15:02:43 +0200
-Message-ID: <20250623130633.578958933@linuxfoundation.org>
+	Miaoqing Pan <quic_miaoqing@quicinc.com>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
+	Clayton Craft <clayton@craftyguy.net>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Subject: [PATCH 6.12 027/414] wifi: ath11k: fix ring-buffer corruption
+Date: Mon, 23 Jun 2025 15:02:44 +0200
+Message-ID: <20250623130642.704550196@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +65,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit 270b6f13454cb7f2f7058c50df64df409c5dcf55 ]
+commit 6d037a372f817e9fcb56482f37917545596bd776 upstream.
 
-Only add ecb to the cipher name if it isn't already ecb.
+Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
+breaks and the log fills up with errors like:
 
-Also use memcmp instead of strncmp since these strings are all
-stored in an array of length CRYPTO_MAX_ALG_NAME.
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
 
-Fixes: f1c131b45410 ("crypto: xts - Convert to skcipher")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+which based on a quick look at the driver seemed to indicate some kind
+of ring-buffer corruption.
+
+Miaoqing Pan tracked it down to the host seeing the updated destination
+ring head pointer before the updated descriptor, and the error handling
+for that in turn leaves the ring buffer in an inconsistent state.
+
+Add the missing memory barrier to make sure that the descriptor is read
+after the head pointer to address the root cause of the corruption while
+fixing up the error handling in case there are ever any (ordering) bugs
+on the device side.
+
+Note that the READ_ONCE() are only needed to avoid compiler mischief in
+case the ring-buffer helpers are ever inlined.
+
+Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
+Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Cc: stable@vger.kernel.org	# 5.6
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
+Tested-by: Clayton Craft <clayton@craftyguy.net>
+Link: https://patch.msgid.link/20250321094916.19098-1-johan+linaro@kernel.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/xts.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath11k/ce.c  |   11 +++++------
+ drivers/net/wireless/ath/ath11k/hal.c |    4 ++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
-diff --git a/crypto/xts.c b/crypto/xts.c
-index b05020657cdc8..1972f40333f04 100644
---- a/crypto/xts.c
-+++ b/crypto/xts.c
-@@ -361,7 +361,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
+--- a/drivers/net/wireless/ath/ath11k/ce.c
++++ b/drivers/net/wireless/ath/ath11k/ce.c
+@@ -393,11 +393,10 @@ static int ath11k_ce_completed_recv_next
+ 		goto err;
+ 	}
  
- 	err = crypto_grab_skcipher(&ctx->spawn, skcipher_crypto_instance(inst),
- 				   cipher_name, 0, mask);
--	if (err == -ENOENT) {
-+	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
- 		err = -ENAMETOOLONG;
- 		if (snprintf(ctx->name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
- 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
-@@ -395,7 +395,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	/* Alas we screwed up the naming so we have to mangle the
- 	 * cipher name.
- 	 */
--	if (!strncmp(cipher_name, "ecb(", 4)) {
-+	if (!memcmp(cipher_name, "ecb(", 4)) {
- 		int len;
++	/* Make sure descriptor is read after the head pointer. */
++	dma_rmb();
++
+ 	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+-	if (*nbytes == 0) {
+-		ret = -EIO;
+-		goto err;
+-	}
  
- 		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
--- 
-2.39.5
-
+ 	*skb = pipe->dest_ring->skb[sw_index];
+ 	pipe->dest_ring->skb[sw_index] = NULL;
+@@ -430,8 +429,8 @@ static void ath11k_ce_recv_process_cb(st
+ 		dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
+ 				 max_nbytes, DMA_FROM_DEVICE);
+ 
+-		if (unlikely(max_nbytes < nbytes)) {
+-			ath11k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
++		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
++			ath11k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
+ 				    nbytes, max_nbytes);
+ 			dev_kfree_skb_any(skb);
+ 			continue;
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -599,7 +599,7 @@ u32 ath11k_hal_ce_dst_status_get_length(
+ 	struct hal_ce_srng_dst_status_desc *desc = buf;
+ 	u32 len;
+ 
+-	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, desc->flags);
++	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, READ_ONCE(desc->flags));
+ 	desc->flags &= ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
+ 
+ 	return len;
+@@ -829,7 +829,7 @@ void ath11k_hal_srng_access_begin(struct
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+ 	} else {
+-		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
++		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+ 
+ 		/* Try to prefetch the next descriptor in the ring */
+ 		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
 
 
 
