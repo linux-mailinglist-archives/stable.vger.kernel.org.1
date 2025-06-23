@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34135AE55B2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0AFBAE5678
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECF667A410F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B9791C21C55
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F45B226888;
-	Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EA1225785;
+	Mon, 23 Jun 2025 22:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvNgnQO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9v9exo8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D760C2E0;
-	Mon, 23 Jun 2025 22:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DCD022577C;
+	Mon, 23 Jun 2025 22:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716821; cv=none; b=cJ1FYktg7KeJGWDIpmiXNpnnmMwcCRto/lKyGm/htnxq+J3CWVHBhIkJhNaYfg/BGvCa6f3q9bNo6l3fmFCP9DoJg78374cbZRSJh2bMOIJ5ui8vj/LlyidjvUmYaKWXg8cG1P/xEfWU7hx8TWcW4PVX23VbP0mkmcKjrKznbyQ=
+	t=1750717212; cv=none; b=CdRWfrPa1pwAAGw5hNaUjjGqeB6xGBwNq6CjyNA0e+sAUju8URRATlMxc6sm0Bbf1LAmB934dU34geu4KacbAgnIdviFpNqLuON+jm+zT68XMiD7lYU3FpUXoWsNzpEwa9mc2/b8thIqSFVlR37alAwkek4MEqk8dr9UW+Ctkks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716821; c=relaxed/simple;
-	bh=Nr4RfBOhlheR6jDZnzJvc+Kfsjgk09eJsbkkcxo+dlk=;
+	s=arc-20240116; t=1750717212; c=relaxed/simple;
+	bh=FAGli7hcX4f1+VEdmIhSIYl8t37w3PEuAoEjQHeNIcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oNM6en/Fxh1ErnvsHYUP7cKm1dMyL19zYJteWzW+Jyt/0ZXbMiIHc3KmIgqJBzMSQaX07/6ZBUr/Waffv8Emh+/l43gMeYuZFfr+x7ultU1bzIoT0+BO6654E2sObhm7PtX0qfa73r1CUklyUKPInBgLkvr8C3j0c7aF9/lAMiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvNgnQO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527D7C4CEF2;
-	Mon, 23 Jun 2025 22:13:40 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bgSimGVicNwqiOHXRoQyKzFw3HKy2ATv0+gStugG5Vvo3ezVXIM6e3/k9gr3mq7QtKHSthEPbJp9KRzmFlL2ivoUKiIiEUtsOfnvVymedMXAhC3WOVyFDhQfl3L1tzcL719OJBypV+jLjR9X0asXneYWp2/+YCiKRDBAtHeKoqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9v9exo8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C52D9C4CEEA;
+	Mon, 23 Jun 2025 22:20:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716820;
-	bh=Nr4RfBOhlheR6jDZnzJvc+Kfsjgk09eJsbkkcxo+dlk=;
+	s=korg; t=1750717212;
+	bh=FAGli7hcX4f1+VEdmIhSIYl8t37w3PEuAoEjQHeNIcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pvNgnQO9WizZ7qZrFEPfd+DM1pIsw6iND5sB7U4KeXPSAs6RQZtRAWwYrOgz4FUUC
-	 fOKH5TeMWva1B5rkOB1Ed8jJG7lD/gvXEPGaOmfYDK1ShdjmuKRBiMhxpmNnsXPvpf
-	 2zoH5JNeUl73TCvANk6dPxzBDOe5s0UphUUtPyAs=
+	b=L9v9exo867nccj25lt6ED4qzi1upTxnEuieQtPCuaTYk+1xKhNhJCtpfjLCeVUCya
+	 8Ap9vXgqINGm0ViH4CbjoFH/T2yR+awb+lGsqUFA3WUhJqyfxJ980RccdHV951b2tf
+	 UOJgs42ClaBrYSePFO42L+ro6e7LyWoNu2u3/rm8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Jerry Lv <Jerry.Lv@axis.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 290/414] platform/x86/amd: pmf: Prevent amd_pmf_tee_deinit() from running twice
+Subject: [PATCH 6.1 382/508] power: supply: bq27xxx: Retrieve again when busy
 Date: Mon, 23 Jun 2025 15:07:07 +0200
-Message-ID: <20250623130649.262525933@linuxfoundation.org>
+Message-ID: <20250623130654.702237681@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,72 +64,89 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Jerry Lv <Jerry.Lv@axis.com>
 
-[ Upstream commit 93103d56650d7a38ed37ba4041578310f82776ae ]
+[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
 
-If any of the tee init fails, pass up the errors and clear the tee_ctx
-pointer. This will prevent cleaning up multiple times.
+Multiple applications may access the battery gauge at the same time, so
+the gauge may be busy and EBUSY will be returned. The driver will set a
+flag to record the EBUSY state, and this flag will be kept until the next
+periodic update. When this flag is set, bq27xxx_battery_get_property()
+will just return ENODEV until the flag is updated.
 
-Fixes: ac052d8c08f9d ("platform/x86/amd/pmf: Add PMF TEE interface")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20250512211154.2510397-3-superm1@kernel.org
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250522003457.1516679-3-superm1@kernel.org
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Even if the gauge was busy during the last accessing attempt, returning
+ENODEV is not ideal, and can cause confusion in the applications layer.
+
+Instead, retry accessing the I2C to update the flag is as expected, for
+the gauge typically recovers from busy state within a few milliseconds.
+If still failed to access the gauge, the real error code would be returned
+instead of ENODEV (as suggested by Pali Rohár).
+
+Reviewed-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
+Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/tee-if.c | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ drivers/power/supply/bq27xxx_battery.c     |  2 +-
+ drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
-index b6bcc1d57f968..a9b195ec6f33f 100644
---- a/drivers/platform/x86/amd/pmf/tee-if.c
-+++ b/drivers/platform/x86/amd/pmf/tee-if.c
-@@ -422,12 +422,12 @@ static int amd_pmf_ta_open_session(struct tee_context *ctx, u32 *id, const uuid_
- 	rc = tee_client_open_session(ctx, &sess_arg, NULL);
- 	if (rc < 0 || sess_arg.ret != 0) {
- 		pr_err("Failed to open TEE session err:%#x, rc:%d\n", sess_arg.ret, rc);
--		return rc;
-+		return rc ?: -EINVAL;
- 	}
+diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
+index 2868dcf3f96dc..b3dd64ab8d32c 100644
+--- a/drivers/power/supply/bq27xxx_battery.c
++++ b/drivers/power/supply/bq27xxx_battery.c
+@@ -2044,7 +2044,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
+ 	mutex_unlock(&di->lock);
  
- 	*id = sess_arg.session;
+ 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
+-		return -ENODEV;
++		return di->cache.flags;
  
--	return rc;
-+	return 0;
- }
+ 	switch (psp) {
+ 	case POWER_SUPPLY_PROP_STATUS:
+diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
+index 17b37354e32c0..b05d2693fde04 100644
+--- a/drivers/power/supply/bq27xxx_battery_i2c.c
++++ b/drivers/power/supply/bq27xxx_battery_i2c.c
+@@ -6,6 +6,7 @@
+  *	Andrew F. Davis <afd@ti.com>
+  */
  
- static int amd_pmf_register_input_device(struct amd_pmf_dev *dev)
-@@ -462,7 +462,9 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
- 	dev->tee_ctx = tee_client_open_context(NULL, amd_pmf_amdtee_ta_match, NULL, NULL);
- 	if (IS_ERR(dev->tee_ctx)) {
- 		dev_err(dev->dev, "Failed to open TEE context\n");
--		return PTR_ERR(dev->tee_ctx);
-+		ret = PTR_ERR(dev->tee_ctx);
-+		dev->tee_ctx = NULL;
-+		return ret;
- 	}
++#include <linux/delay.h>
+ #include <linux/i2c.h>
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+@@ -32,6 +33,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	struct i2c_msg msg[2];
+ 	u8 data[2];
+ 	int ret;
++	int retry = 0;
  
- 	ret = amd_pmf_ta_open_session(dev->tee_ctx, &dev->session_id, uuid);
-@@ -502,9 +504,12 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
+ 	if (!client->adapter)
+ 		return -ENODEV;
+@@ -48,7 +50,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
+ 	else
+ 		msg[1].len = 2;
  
- static void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
- {
-+	if (!dev->tee_ctx)
-+		return;
- 	tee_shm_free(dev->fw_shm_pool);
- 	tee_client_close_session(dev->tee_ctx, dev->session_id);
- 	tee_client_close_context(dev->tee_ctx);
-+	dev->tee_ctx = NULL;
- }
+-	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++	do {
++		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
++		if (ret == -EBUSY && ++retry < 3) {
++			/* sleep 10 milliseconds when busy */
++			usleep_range(10000, 11000);
++			continue;
++		}
++		break;
++	} while (1);
++
+ 	if (ret < 0)
+ 		return ret;
  
- int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
 -- 
 2.39.5
 
