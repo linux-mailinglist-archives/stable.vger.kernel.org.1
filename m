@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6037BAE4F32
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8493DAE5145
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E087AC9B9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BC814A33C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2106221727;
-	Mon, 23 Jun 2025 21:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AB5B7080C;
+	Mon, 23 Jun 2025 21:32:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1b/rEYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hMzah6m+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F39E1DF98B;
-	Mon, 23 Jun 2025 21:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BACA4C2E0;
+	Mon, 23 Jun 2025 21:32:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713177; cv=none; b=r+EqRJlvUcqib1AoNZd99bfgY+OGWjQtm1GCG9AVt0wJaLo9Whi88iyNloMGdE8KXrQnuAuluQWqZV92336j/k6+CWQREzZcNmQUeO+ucCul4MEGHqG66OH+eZAqk4ebOl4NA6B7pbkuqLk/41lKVDaMvzXenaUcyM7PIEhSBIc=
+	t=1750714345; cv=none; b=ZLG62W0TBQwQCxyt8JJ4fWCxCjuk9xMpYX2++Tb1WJVwag+5Xp5m58iLtPqiua7VFOdGgV2pwO1XdmlJAFLnR0ZV68Q2Sdsz/2S5K1TPXR7wVmCsRt6Hwj9j9mNBv4g/X1QGu5gfeOzRYhTTQQMHQxig7bNmft32lLzi3Zrajf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713177; c=relaxed/simple;
-	bh=4m/SnLSAZX86Tk2WVNEw2CdLstplH1U8cot/FMHT/Kw=;
+	s=arc-20240116; t=1750714345; c=relaxed/simple;
+	bh=4lDldMA6EB+42rLwEo6jqLwiu8gjZVyQ1iiVUcL8Ex4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DmYVOeLtjblah52C30M3A0xPtVgUEXRFt/t6D53H9K6XLBaB2u4l3sqecJNdpDRvbZu+aPZpoQVBdxYdZqjl6wkXzQd2fU/COV8JuuvXdj2a8L/qjwqq4+fpx+L7+rKsjw8tpytgDNehVfRctOLtwJqVFWG+QsVE79fFEP5bZPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1b/rEYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B72C4CEEA;
-	Mon, 23 Jun 2025 21:12:56 +0000 (UTC)
+	 MIME-Version; b=o6D20x+6FpFvImoQDbycb2+WXayMuOBMcM/TCmbKhjlwi9gtz2PqnuHwJBGOHlpTBU87kcs2AqycQkPM2R+Dym0TCNjz2aiHGIly99O8yz6pmrtZ4krSmgjAAkPFje4HRVEy9iEMNMkDBloFpBSzImr+pltjRuKbbVcZw5g8KG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hMzah6m+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC8DC4CEEA;
+	Mon, 23 Jun 2025 21:32:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713177;
-	bh=4m/SnLSAZX86Tk2WVNEw2CdLstplH1U8cot/FMHT/Kw=;
+	s=korg; t=1750714345;
+	bh=4lDldMA6EB+42rLwEo6jqLwiu8gjZVyQ1iiVUcL8Ex4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D1b/rEYDtafRv1wK4kBSKPgJOzyVgoiRP2+czgwekVHlgSbho3cemZ4oC8Tiy84fM
-	 XhMV1GTR4uokUzyd0aBwgjledk5dwxBdRu9K16qK8ACrLm+3uCf0a7jnZf2dHNalZo
-	 zVh90HppcFZW5su0Sv5i7wTqDCkVa6VCB3xqHcIs=
+	b=hMzah6m+P9gN1XzrxR2JGGOyMgOdU/5jy82cynyOrDveXxK9Qde3RrjhRSYbiud7q
+	 TKulOVa79rTwCIjZVt3X/B/BaU8SsTvlDWoFJOzXLLZeDOFHswIJFr09dWt/3TwcAn
+	 LP6m5ukpvsrSjgnKngkk54Prew+YhRv5cySgci9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Arjun Roy <arjunroy@google.com>,
-	Wei Wang <weiwan@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/355] tcp: factorize logic into tcp_epollin_ready()
+	stable <stable@kernel.org>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.15 182/411] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
 Date: Mon, 23 Jun 2025 15:05:26 +0200
-Message-ID: <20250623130630.505328050@linuxfoundation.org>
+Message-ID: <20250623130638.265199417@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,115 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-[ Upstream commit 05dc72aba364d374a27de567fac58c199ff5ee97 ]
+commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
 
-Both tcp_data_ready() and tcp_stream_is_readable() share the same logic.
+usb core avoids sending a Set-Interface altsetting 0 request after device
+reset, and instead relies on calling usb_disable_interface() and
+usb_enable_interface() to flush and reset host-side of those endpoints.
 
-Add tcp_epollin_ready() helper to avoid duplication.
+xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
+during usb_hcd_alloc_bandwidth() callback, which in this case is called
+before flushing the endpoint in usb_disable_interface().
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Arjun Roy <arjunroy@google.com>
-Cc: Wei Wang <weiwan@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 2660a544fdc0 ("net: Fix TOCTOU issue in sk_is_readable()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
+URBs are flushed before new ring buffers for the endpoints are allocated.
+
+Otherwise host driver will attempt to find and remove old stale URBs
+from a freshly allocated new ringbuffer.
+
+Cc: stable <stable@kernel.org>
+Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/tcp.h    | 12 ++++++++++++
- net/ipv4/tcp.c       | 18 +++++-------------
- net/ipv4/tcp_input.c | 11 ++---------
- 3 files changed, 19 insertions(+), 22 deletions(-)
+ drivers/usb/core/hub.c |   16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/tcp.h b/include/net/tcp.h
-index 2aad2e79ac6ad..41f535dcaa3f9 100644
---- a/include/net/tcp.h
-+++ b/include/net/tcp.h
-@@ -1445,6 +1445,18 @@ static inline bool tcp_rmem_pressure(const struct sock *sk)
- 	return atomic_read(&sk->sk_rmem_alloc) > threshold;
- }
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -6040,6 +6040,7 @@ static int usb_reset_and_verify_device(s
+ 	struct usb_hub			*parent_hub;
+ 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
+ 	struct usb_device_descriptor	descriptor;
++	struct usb_interface		*intf;
+ 	struct usb_host_bos		*bos;
+ 	int				i, j, ret = 0;
+ 	int				port1 = udev->portnum;
+@@ -6103,6 +6104,18 @@ static int usb_reset_and_verify_device(s
+ 	if (!udev->actconfig)
+ 		goto done;
  
-+static inline bool tcp_epollin_ready(const struct sock *sk, int target)
-+{
-+	const struct tcp_sock *tp = tcp_sk(sk);
-+	int avail = READ_ONCE(tp->rcv_nxt) - READ_ONCE(tp->copied_seq);
++	/*
++	 * Some devices can't handle setting default altsetting 0 with a
++	 * Set-Interface request. Disable host-side endpoints of those
++	 * interfaces here. Enable and reset them back after host has set
++	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
++	 */
++	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
++		intf = udev->actconfig->interface[i];
++		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
++			usb_disable_interface(udev, intf, true);
++	}
 +
-+	if (avail <= 0)
-+		return false;
-+
-+	return (avail >= target) || tcp_rmem_pressure(sk) ||
-+	       (tcp_receive_window(tp) <= inet_csk(sk)->icsk_ack.rcv_mss);
-+}
-+
- extern void tcp_openreq_init_rwin(struct request_sock *req,
- 				  const struct sock *sk_listener,
- 				  const struct dst_entry *dst);
-diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
-index 24ebd51c5e0b8..0332fdab942db 100644
---- a/net/ipv4/tcp.c
-+++ b/net/ipv4/tcp.c
-@@ -476,19 +476,11 @@ static void tcp_tx_timestamp(struct sock *sk, u16 tsflags)
- 	}
- }
+ 	mutex_lock(hcd->bandwidth_mutex);
+ 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
+ 	if (ret < 0) {
+@@ -6134,12 +6147,11 @@ static int usb_reset_and_verify_device(s
+ 	 */
+ 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
+ 		struct usb_host_config *config = udev->actconfig;
+-		struct usb_interface *intf = config->interface[i];
+ 		struct usb_interface_descriptor *desc;
  
--static inline bool tcp_stream_is_readable(const struct tcp_sock *tp,
--					  int target, struct sock *sk)
-+static bool tcp_stream_is_readable(struct sock *sk, int target)
- {
--	int avail = READ_ONCE(tp->rcv_nxt) - READ_ONCE(tp->copied_seq);
--
--	if (avail > 0) {
--		if (avail >= target)
--			return true;
--		if (tcp_rmem_pressure(sk))
--			return true;
--		if (tcp_receive_window(tp) <= inet_csk(sk)->icsk_ack.rcv_mss)
--			return true;
--	}
-+	if (tcp_epollin_ready(sk, target))
-+		return true;
-+
- 	if (sk->sk_prot->stream_memory_read)
- 		return sk->sk_prot->stream_memory_read(sk);
- 	return false;
-@@ -565,7 +557,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
- 		    tp->urg_data)
- 			target++;
- 
--		if (tcp_stream_is_readable(tp, target, sk))
-+		if (tcp_stream_is_readable(sk, target))
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 
- 		if (!(shutdown & SEND_SHUTDOWN)) {
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 7c2e714527f68..318fdeb1deef3 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -5028,15 +5028,8 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *msg, size_t size)
- 
- void tcp_data_ready(struct sock *sk)
- {
--	const struct tcp_sock *tp = tcp_sk(sk);
--	int avail = tp->rcv_nxt - tp->copied_seq;
--
--	if (avail < sk->sk_rcvlowat && !tcp_rmem_pressure(sk) &&
--	    !sock_flag(sk, SOCK_DONE) &&
--	    tcp_receive_window(tp) > inet_csk(sk)->icsk_ack.rcv_mss)
--		return;
--
--	sk->sk_data_ready(sk);
-+	if (tcp_epollin_ready(sk, sk->sk_rcvlowat))
-+		sk->sk_data_ready(sk);
- }
- 
- static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
--- 
-2.39.5
-
++		intf = config->interface[i];
+ 		desc = &intf->cur_altsetting->desc;
+ 		if (desc->bAlternateSetting == 0) {
+-			usb_disable_interface(udev, intf, true);
+ 			usb_enable_interface(udev, intf, true);
+ 			ret = 0;
+ 		} else {
 
 
 
