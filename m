@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 972C8AE53B5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 98F68AE4F6D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 071A21894B5B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CC061B60EB2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:16:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A74CE223714;
-	Mon, 23 Jun 2025 21:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6261F3FF8;
+	Mon, 23 Jun 2025 21:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="notKpaFk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5f04ZwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668011AD3FA;
-	Mon, 23 Jun 2025 21:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CD2A7482;
+	Mon, 23 Jun 2025 21:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715707; cv=none; b=VZutZU3Vhuxyz+BlJhDyiJEpENeqXD7GGCCGplrXs3K7Hst5dSCMJ+A3QnLX+4N9t1MVsxT+q+rkoXHLjzSk1MOiehDT5GV1UMPy+eqIuQ9pGfBI5LwloJE8+F9lTVnOs3gfIfEm8iA0jkQlKF3NKH9NjGlf/HZGKy6ibuqb3aQ=
+	t=1750713351; cv=none; b=o3eHn8+oIq1H3IZYeoJ9FNG9y7O0AodV92oLM7obHJFwWE/r4+R+vuYh8NjtTtd+XYc7ZQsC/2qrbs22jb6vqtLebrE8M/LAAqrKANBHen3daROnrOa9xdhRrt6NiU3Gj9IiN1P37b1p0BOFXvSrcsyHLZJX1bABftoRinX3sN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715707; c=relaxed/simple;
-	bh=zdNcHYBiDTIcmBM2+teBA+ZmlMpF9Kgt8NCEuPlvniI=;
+	s=arc-20240116; t=1750713351; c=relaxed/simple;
+	bh=lFFEEzl54Iueq9jfyKRRs9/1X6Xpc5BikOJjFNeP3NU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6QiCMIwosrhOf3kCR9hKul2D8AaLnw5MKxa0+2w54+RtoaE8Vp01TRl4DtP51YukP10/K8aj/LDDvXD0/Y308mKAv3+dw6+BngPAR5xxOhQonVYBme3FgWSaxZACSWc/ZJx2nElVPKIUMpzQIGlZe+uVbad9ybBxaHzD0SQV4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=notKpaFk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4158C4CEEA;
-	Mon, 23 Jun 2025 21:55:06 +0000 (UTC)
+	 MIME-Version; b=RMnSNwQepzPJf+g80Hh1aBVM5rlIrUXRlzkZKqtloZB34Vlef7//gtrjsKTGXycHIxply/YLM/YW25u1cc27Xod6kNgIgghVGX90xhH/t3ppn7oj3pYD961YfuJEI22NPBYYJAfp7kwBqbUP7ow9S+CiMV0wK8WCcl3ZQdG0eCE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5f04ZwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D96D7C4CEEA;
+	Mon, 23 Jun 2025 21:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715707;
-	bh=zdNcHYBiDTIcmBM2+teBA+ZmlMpF9Kgt8NCEuPlvniI=;
+	s=korg; t=1750713351;
+	bh=lFFEEzl54Iueq9jfyKRRs9/1X6Xpc5BikOJjFNeP3NU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=notKpaFkanf4yT4qXSvwYZY8rTc4vCnax7Yc6b7dpjp5A7SipDaB0Kpg3KVlrU+/R
-	 /9bOHk2yLPa67dRSzDpGVkIXdqAIXHTbO5Oetyg/tLLI9foHguyGzbR1aTFLubi2qd
-	 WxB9FeCN6W2InLfF4IuXcv2rT8lB6Smk+T/mRcQk=
+	b=o5f04ZwGl5IcE5F7B8Z/VHQYmWVWBSV5JAGHCFOhk9T1eGkj/ot9ggg9ouCAJJ67+
+	 U8MDITSbkYVSQkKNjG/Yl0fSBzJFt4Rz8vYLlvsO4h9MK3vydUGiUzdVBxcP95pQOV
+	 +G6+V159d8hiBN7t6UHmCemO3hJsO7231DrEMHCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samuel Williams <sam8641@gmail.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 202/414] wifi: mt76: mt7921: add 160 MHz AP for mt7922 device
-Date: Mon, 23 Jun 2025 15:05:39 +0200
-Message-ID: <20250623130647.059375406@linuxfoundation.org>
+Subject: [PATCH 5.10 139/355] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
+Date: Mon, 23 Jun 2025 15:05:40 +0200
+Message-ID: <20250623130630.901255938@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samuel Williams <sam8641@gmail.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 7011faebe543f8f094fdb3281d0ec9e1eab81309 ]
+[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
 
-This allows mt7922 in hostapd mode to transmit up to 1.4 Gbps.
+fs_name() has @index as unsigned int, so there is underflow risk for
+operation '@index--'.
 
-Signed-off-by: Samuel Williams <sam8641@gmail.com>
-Link: https://patch.msgid.link/20250511005316.1118961-1-sam8641@gmail.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix by breaking the for loop when '@index == 0' which is also more proper
+than '@index <= 0' for unsigned integer comparison.
+
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/filesystems.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 6a3629f71caaa..9c245c23a2d73 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -83,6 +83,11 @@ mt7921_init_he_caps(struct mt792x_phy *phy, enum nl80211_band band,
- 			he_cap_elem->phy_cap_info[9] |=
- 				IEEE80211_HE_PHY_CAP9_TX_1024_QAM_LESS_THAN_242_TONE_RU |
- 				IEEE80211_HE_PHY_CAP9_RX_1024_QAM_LESS_THAN_242_TONE_RU;
-+
-+			if (is_mt7922(phy->mt76->dev)) {
-+				he_cap_elem->phy_cap_info[0] |=
-+					IEEE80211_HE_PHY_CAP0_CHANNEL_WIDTH_SET_160MHZ_IN_5G;
-+			}
+diff --git a/fs/filesystems.c b/fs/filesystems.c
+index 90b8d879fbaf3..1ab8eb5edf28e 100644
+--- a/fs/filesystems.c
++++ b/fs/filesystems.c
+@@ -156,15 +156,19 @@ static int fs_index(const char __user * __name)
+ static int fs_name(unsigned int index, char __user * buf)
+ {
+ 	struct file_system_type * tmp;
+-	int len, res;
++	int len, res = -EINVAL;
+ 
+ 	read_lock(&file_systems_lock);
+-	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
+-		if (index <= 0 && try_module_get(tmp->owner))
++	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
++		if (index == 0) {
++			if (try_module_get(tmp->owner))
++				res = 0;
  			break;
- 		case NL80211_IFTYPE_STATION:
- 			he_cap_elem->mac_cap_info[1] |=
++		}
++	}
+ 	read_unlock(&file_systems_lock);
+-	if (!tmp)
+-		return -EINVAL;
++	if (res)
++		return res;
+ 
+ 	/* OK, we got the reference, so we can safely block */
+ 	len = strlen(tmp->name) + 1;
 -- 
 2.39.5
 
