@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D2C9AE55A1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4ED51AE5735
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F97B4C4DA2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DEDB44A14AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2145521B8F6;
-	Mon, 23 Jun 2025 22:12:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DD4223DCC;
+	Mon, 23 Jun 2025 22:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SFNYKdgr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VpiCgyKJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD4D225A38;
-	Mon, 23 Jun 2025 22:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4728222581;
+	Mon, 23 Jun 2025 22:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716725; cv=none; b=rfhr3j2csbTcrGYIQY9AWLKD7565ma0/yS9K2cs0yQ0/9wGGwABejtE/OTRaMDrngIxYzE6SUpGIKEVKxQ4I4YuwvxT0iQzvNORpTXOkSzRuBoD8QMkTgMLYSR5WpKi1k8J9zQI7/hIGQ1SWV1D3JLKPklCB5o9sawApsDzG0Fk=
+	t=1750717487; cv=none; b=ncem8vJ/JRvqbPDrln3ErXS2jYGc/N+UcCXvarEWbCTfdsaZSs3tu+oWh+bim2Zdhrba04iL1LfBpWMS5aD7OC5Wd0zSPlBrxOPQv+3nN8vRqLll7TiedAgCMIAFRWjtcAVf/kAJZS/DvCey12g3qZPmSn4eXBNm2j6cnYpVJjc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716725; c=relaxed/simple;
-	bh=APm8I8cN2C/gTpzc4JFH7hvDR8/CR8z+d/7luPN9yxA=;
+	s=arc-20240116; t=1750717487; c=relaxed/simple;
+	bh=E3osXNSCG9flPccWiXvNdwIBhH4/8KHUDde5Rm4Ttxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Hdm9ErduhRBd3tzM9aBtkLjDBs3uyy7cmWHOs925deTFk/YmnLXDvCAMd8Oaf+xzc+1cemMOBKYTxjYhc8k0uUo2ziFTkshy0rr5NgyjONgDTIrma8Te7lsipwUWkBvvVyt243LW5pT4taafhfIcCAmHo3zDS2laIzfVt4BLJms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SFNYKdgr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B039C4CEEA;
-	Mon, 23 Jun 2025 22:12:04 +0000 (UTC)
+	 MIME-Version; b=XRa9AO4Bj996HZFZFeKmu/Fs6QUtmbcGtEin8vbOT1D1nyzTJTeZvdLO39UhvqzlMp395BQqISDwPOulE4a8AFz0hNDlI2/V9ZAPM5xxCXge4NxZqWD6vmUck+ESUPOZT5eeREAwjDFOMOeq+7FGWfDB7lHfux9P96UpEfK/xmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VpiCgyKJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DA3AC4CEEA;
+	Mon, 23 Jun 2025 22:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716725;
-	bh=APm8I8cN2C/gTpzc4JFH7hvDR8/CR8z+d/7luPN9yxA=;
+	s=korg; t=1750717486;
+	bh=E3osXNSCG9flPccWiXvNdwIBhH4/8KHUDde5Rm4Ttxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SFNYKdgrdIvZ8a2bM+RZM19543eYe89nnOKKI7lZElvNH6sdBAKcHBvAnBaorbCKW
-	 TIR1bQqyRNI7cbBOqTX2D38uplTUfgrPB7HB4AKtVXsWgmkJlUyp7k6sg6k6RBY65J
-	 JvLk6UzCZ9/8sTaAxrN/CjlxnW7/+SMl1f/pD52k=
+	b=VpiCgyKJR/2qFJJO9exTpleK7hB4AXE7uhtvwla5olltkuShi5Uu8nho3zWIFOvpg
+	 ZZt1AWpWnXLIVVNbSiEm7yf1gF/+g1boDZXfoFYwCvxBAuHplOHWFxkj1FueauLzfM
+	 4oFIC7K7Zv/8UJrrj2zMhHd9TtysfCiE70etx96E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.15 353/411] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
+	Nathan Chancellor <nathan@kernel.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 360/414] drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
 Date: Mon, 23 Jun 2025 15:08:17 +0200
-Message-ID: <20250623130642.533396760@linuxfoundation.org>
+Message-ID: <20250623130650.967949888@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +62,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
+[ Upstream commit a7137b1825b535eb7258b25beeb0d5425e0037d2 ]
 
-We should count the terminating NUL byte as part of the ctx_len.
-Otherwise, UBSAN logs a warning:
-  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
-  index 60 is out of range for type 'char [*]'
+i915_pmu.c may fail to build with GCOV and AutoFDO enabled.
 
-The allocation itself is correct so there is no actual out of bounds
-indexing, just a warning.
+../drivers/gpu/drm/i915/i915_pmu.c:116:3: error: call to '__compiletime_assert_487' declared with 'error' attribute: BUILD_BUG_ON failed: bit > BITS_PER_TYPE(typeof_member(struct i915_pmu, enable)) - 1
+  116 |                 BUILD_BUG_ON(bit >
+      |                 ^
 
-Cc: stable@vger.kernel.org
-Suggested-by: Christian Göttsche <cgzones@googlemail.com>
-Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Here is a way to reproduce the issue:
+$ git checkout v6.15
+$ mkdir build
+$ ./scripts/kconfig/merge_config.sh -O build -n -m <(cat <<EOF
+CONFIG_DRM=y
+CONFIG_PCI=y
+CONFIG_DRM_I915=y
+
+CONFIG_PERF_EVENTS=y
+
+CONFIG_DEBUG_FS=y
+CONFIG_GCOV_KERNEL=y
+CONFIG_GCOV_PROFILE_ALL=y
+
+CONFIG_AUTOFDO_CLANG=y
+EOF
+)
+$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
+       olddefconfig
+$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
+       CLANG_AUTOFDO_PROFILE=...PATH_TO_SOME_AFDO_PROFILE... \
+       drivers/gpu/drm/i915/i915_pmu.o
+
+Although not super sure what happened, by reviewing the code, it should
+depend on `__builtin_constant_p(bit)` directly instead of assuming
+`__builtin_constant_p(config)` makes `bit` a builtin constant.
+
+Also fix a nit, to reuse the `bit` local variable.
+
+Fixes: a644fde77ff7 ("drm/i915/pmu: Change bitmask of enabled events to u32")
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20250612083023.562585-1-tzungbi@kernel.org
+(cherry picked from commit 686d773186bf72b739bab7e12eb8665d914676ee)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/selinux/xfrm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_pmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/security/selinux/xfrm.c
-+++ b/security/selinux/xfrm.c
-@@ -95,7 +95,7 @@ static int selinux_xfrm_alloc_user(struc
+diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
+index 21eb0c5b320d5..c43223916a1b1 100644
+--- a/drivers/gpu/drm/i915/i915_pmu.c
++++ b/drivers/gpu/drm/i915/i915_pmu.c
+@@ -115,7 +115,7 @@ static u32 config_mask(const u64 config)
+ {
+ 	unsigned int bit = config_bit(config);
  
- 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
- 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
--	ctx->ctx_len = str_len;
-+	ctx->ctx_len = str_len + 1;
- 	memcpy(ctx->ctx_str, &uctx[1], str_len);
- 	ctx->ctx_str[str_len] = '\0';
- 	rc = security_context_to_sid(&selinux_state, ctx->ctx_str, str_len,
+-	if (__builtin_constant_p(config))
++	if (__builtin_constant_p(bit))
+ 		BUILD_BUG_ON(bit >
+ 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
+ 							 enable)) - 1);
+@@ -124,7 +124,7 @@ static u32 config_mask(const u64 config)
+ 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
+ 							 enable)) - 1);
+ 
+-	return BIT(config_bit(config));
++	return BIT(bit);
+ }
+ 
+ static bool is_engine_event(struct perf_event *event)
+-- 
+2.39.5
+
 
 
 
