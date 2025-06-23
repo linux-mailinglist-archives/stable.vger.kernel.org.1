@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-156064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD6C2AE4563
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEA9EAE4256
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35EBE4462A2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9D92188F16F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BE1024A06D;
-	Mon, 23 Jun 2025 13:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254B324E019;
+	Mon, 23 Jun 2025 13:16:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NczMbubP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRZTRTYc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406564C6E;
-	Mon, 23 Jun 2025 13:40:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ADA13A265;
+	Mon, 23 Jun 2025 13:16:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686048; cv=none; b=dp5VQsyNu3WXU0nLCC2fdfsAdOZI19ffXxPV+g5cSJ/Iu0ZTRqU+E+E5Ddoc9PkpevNa2dOL5+Kml6tpn1JRGUKPwQYgZclsUway8tZo/iSgFsMLyP/ztoSaxkX6bHgxuhhnsDO/f/rurYF3hkyPOXzHUH4sf5HZ1wfY4c4m8zg=
+	t=1750684606; cv=none; b=uXMgsgMkt1cdXKgtPzJER1SpezzWloBvLg9fTIE6KnpZu2Zcx9/XtXAsaEuow83L0sn5hpQArvoAxG9/NyvCaKp0DIUgeV3yfPPJ3py7m/RnQp/xPm/0TmhIR171BOA6SW/+NGv9tLhEhaBOkvLaQuIkI1FdacMkg85abT5mRcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686048; c=relaxed/simple;
-	bh=N70bXol/GmgBcgBYXLN2DIU3tb0ya+kz5KmpMiZs0dI=;
+	s=arc-20240116; t=1750684606; c=relaxed/simple;
+	bh=U2k9ZEoT8wtH5BcxbxNMq6kDG0z/c+oFMhXuPek1nf8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LMvz7v0BxB89VzC4KPsRcTuJGbvBiZHPmBmzyH090N6EAk8fAIZ7kltZg2cTSZbDEcIeWV3gWU86gEyMXRFiTeI5fy5sKQMC4Fhn0bRRlOc6y1J4kt9VFbPHs4XqN/cfGvBZqQfmH6rvLC7nMI4dFrsIXe5AnUlgrlmjcOGGl4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NczMbubP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7664BC4CEEA;
-	Mon, 23 Jun 2025 13:40:47 +0000 (UTC)
+	 MIME-Version; b=YR/LS8zbEl2xgOGg7wJCtw4Qi+VLo4gvh+bHt6EvH5PZFSuDKPK0EnMTO/FBFrgHSAsmLLv/d3V52w1Zg+I/0ZbfsG6I2hI4IFQVKkbyCPB72Q2mpny0+KyBlwF8v+XkdCxjoRu5ZpOdlKG2WglDa6oghRTNbzAoyEaUeQztV/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRZTRTYc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDECC4CEEA;
+	Mon, 23 Jun 2025 13:16:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686047;
-	bh=N70bXol/GmgBcgBYXLN2DIU3tb0ya+kz5KmpMiZs0dI=;
+	s=korg; t=1750684606;
+	bh=U2k9ZEoT8wtH5BcxbxNMq6kDG0z/c+oFMhXuPek1nf8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NczMbubP2m1EV6rgfTbJWkK8hr+eueWGYJjs72BBgEl26ZUgtMjOjeSGpQ9ZeNoQa
-	 2JPiaPtG/xt7I6sWp075Iad5ke4iMP/d93HHmtBOg1keFspESZSFBGyE4sGO3pujZE
-	 7CIdFL/Awk2lsxfln10lZdVHaZSOvRCipfYEIMFY=
+	b=DRZTRTYc2tm6knqchR8Ehr3/WJ4Oc549qf4GzNf45UyjRl5wDnJ5tCW3LeXrgAlMV
+	 KkmRqYgRPpq6ahiTGA/t7MbfI6UuwGxlCnRDHAuJwftyaI9bweTmlnsZdS/oIsXBD4
+	 QE5KY+xULdcFFL4O/dMk+5CkNb0bWF+44nAPMsns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/508] firmware: psci: Fix refcount leak in psci_dt_init
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.15 132/592] EDAC/altera: Use correct write width with the INTTEST register
 Date: Mon, 23 Jun 2025 15:01:30 +0200
-Message-ID: <20250623130646.351198995@linuxfoundation.org>
+Message-ID: <20250623130703.412249231@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit 7ff37d29fd5c27617b9767e1b8946d115cf93a1e ]
+commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
 
-Fix a reference counter leak in psci_dt_init() where of_node_put(np) was
-missing after of_find_matching_node_and_match() when np is unavailable.
+On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
+A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
 
-Fixes: d09a0011ec0d ("drivers: psci: Allow PSCI node to be disabled")
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Link: https://lore.kernel.org/r/20250318151712.28763-1-linmq006@gmail.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  [ bp: AI-massage the commit message. ]
+
+Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/psci/psci.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/edac/altera_edac.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/psci/psci.c b/drivers/firmware/psci/psci.c
-index a44ba09e49d9c..7eddf0912f96c 100644
---- a/drivers/firmware/psci/psci.c
-+++ b/drivers/firmware/psci/psci.c
-@@ -747,8 +747,10 @@ int __init psci_dt_init(void)
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1746,9 +1746,9 @@ altr_edac_a10_device_trig(struct file *f
  
- 	np = of_find_matching_node_and_match(NULL, psci_of_match, &matched_np);
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	else
+-		writel(priv->ce_set_mask, set_addr);
++		writew(priv->ce_set_mask, set_addr);
  
--	if (!np || !of_device_is_available(np))
-+	if (!np || !of_device_is_available(np)) {
-+		of_node_put(np);
- 		return -ENODEV;
-+	}
+ 	/* Ensure the interrupt test bits are set */
+ 	wmb();
+@@ -1778,7 +1778,7 @@ altr_edac_a10_device_trig2(struct file *
  
- 	init_fn = (psci_initcall_t)matched_np->data;
- 	ret = init_fn(np);
--- 
-2.39.5
-
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	} else {
+ 		/* Setup read/write of 4 bytes */
+ 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
 
 
 
