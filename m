@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F179AE54D1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73994AE521C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E8B31BC1B04
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 109D64A519D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C71C222581;
-	Mon, 23 Jun 2025 22:04:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A912222A9;
+	Mon, 23 Jun 2025 21:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Frt0xDjf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbwrfvN6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEC833FB1B;
-	Mon, 23 Jun 2025 22:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F6E19D084;
+	Mon, 23 Jun 2025 21:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716292; cv=none; b=sEBeri1Yx4yow5/em/g9Xv+OZVY5aVO3YJyLhwhpPFzCnaDp1ZuCGQTgSzMn557TahA1qftYDCMQUIAMa6Bz18yhygDvf0NDBpRqp/FIFQj3jvoHXxtcf1adRSHchRcH/Jn/o73h75q2YgpapQp/POg80fTDuAhkGRPlY0pf6PQ=
+	t=1750714831; cv=none; b=Amo7OV7PfH0gE0ZiRgN+AWLKDYKuhe7fx3VwTQW6efSN2fM6HzymrWUK1w+i7gkSdwBZmx9HTZzNLx6vSG2pnFHbxnsrKcZ22Y8YFrOyYVJnTSt+bLUhf5pRl45bCk46lt/bp5qQ9QnUzGL3UMqxMFK1X3502Fom1Sdt9U0pfVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716292; c=relaxed/simple;
-	bh=MNonQdZX7tq8c3ulDONCZcS+Fmo+YuUOFkqkMyyUPv4=;
+	s=arc-20240116; t=1750714831; c=relaxed/simple;
+	bh=XzNHHIwWUdHzvKTa/dM8Bxl1YdYQ9XCMwF8clhfGvuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otiJoZG8qQgxR+xOQbhJeuU9GdNEcA9sDjb6NXyoS6DSItF0g4XMrrzsvyqSLXyCmR9rjKs9pl/eBvoDwdr8BM2Utiy7w5SuY1/aae2UNX+yzhtIHtWd/LHVGNxGPzmqFlB5FIv608EdS2MXqL87L2NqboJtIfXKfUyXrS2ClYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Frt0xDjf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8866EC4CEEA;
-	Mon, 23 Jun 2025 22:04:51 +0000 (UTC)
+	 MIME-Version; b=OZGftYTg/AMOl7vfIPhbL5G3PZ6+6Lgn7GVZdA7O5qvLnhKWRLB9T+VqDwVQ+7vMe75ElMzqKttgGtsmEYwM1AVgH1wv8XqnfYuY+IF7NBALA1axA4F3L1whFFUV7Zu+VYgTlWLsqdPXywrJXjf3ByiPS/Nvjz5ot7ivvbbEPxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbwrfvN6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 106D1C4CEEA;
+	Mon, 23 Jun 2025 21:40:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716291;
-	bh=MNonQdZX7tq8c3ulDONCZcS+Fmo+YuUOFkqkMyyUPv4=;
+	s=korg; t=1750714831;
+	bh=XzNHHIwWUdHzvKTa/dM8Bxl1YdYQ9XCMwF8clhfGvuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Frt0xDjfK9BAfDaDOymatfqk4AeNkElohllcg+35gY3skgxKdTGpRtZeLpIdQ8S/3
-	 S13qX/FSv+wUPOMMdHa4oe1n5QC+JxiBTbY8PSWy/tlGbHtsQowEWymFyWosXL0GD4
-	 E0QV4Ojuva1mtdja33g69LZq4+ZIQN+eFw33nvT8=
+	b=rbwrfvN6tuaTx7sEfTosyW/JZ/KryVmreTV1DqGNogBpV0egj140jMcIz81vCgevU
+	 vZeArmCZCntg/uLxEJtjvlCTdWBkpZPbkQj1SWhgxt/JD4soyQxxpGXIdr3usy4vzG
+	 Wq5Y9imkaznkQqG4Z1g/8cpMsaSIrgWip3Frk0kg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 313/411] net: dlink: add synchronization for stats update
+Subject: [PATCH 5.10 256/355] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
 Date: Mon, 23 Jun 2025 15:07:37 +0200
-Message-ID: <20250623130641.520806432@linuxfoundation.org>
+Message-ID: <20250623130634.453126857@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
+[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
 
-This patch synchronizes code that accesses from both user-space
-and IRQ contexts. The `get_stats()` function can be called from both
-context.
+tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
+in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
 
-`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
-in the `tx_errors()` function. Therefore, these fields must also be
-protected by synchronized.
+When TCP TS are enabled, tcp_rcv_rtt_update() is using
+EWMA to smooth the samples.
 
-There is no code that accessses `dev->stats.tx_errors` between the
-previous and updated lines, so the updating point can be moved.
+Change this to immediately latch the incoming value if it
+is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
+does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
 
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
- drivers/net/ethernet/dlink/dl2k.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ net/ipv4/tcp_input.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index af0b6fa296e56..09a275eb44487 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
- 	np->ioaddr = ioaddr;
- 	np->chip_id = chip_idx;
- 	np->pdev = pdev;
-+
-+	spin_lock_init(&np->stats_lock);
- 	spin_lock_init (&np->tx_lock);
- 	spin_lock_init (&np->rx_lock);
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index c874ed9484b54..ad91377f6cfae 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -640,10 +640,12 @@ EXPORT_SYMBOL(tcp_initialize_rcv_mss);
+  */
+ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ {
+-	u32 new_sample = tp->rcv_rtt_est.rtt_us;
+-	long m = sample;
++	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
++	long m = sample << 3;
  
-@@ -869,7 +871,6 @@ tx_error (struct net_device *dev, int tx_status)
- 	frame_id = (tx_status & 0xffff0000);
- 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
- 		dev->name, tx_status, frame_id);
--	dev->stats.tx_errors++;
- 	/* Ttransmit Underrun */
- 	if (tx_status & 0x10) {
- 		dev->stats.tx_fifo_errors++;
-@@ -906,9 +907,15 @@ tx_error (struct net_device *dev, int tx_status)
- 		rio_set_led_mode(dev);
- 		/* Let TxStartThresh stay default value */
+-	if (new_sample != 0) {
++	if (old_sample == 0 || m < old_sample) {
++		new_sample = m;
++	} else {
+ 		/* If we sample in larger samples in the non-timestamp
+ 		 * case, we could grossly overestimate the RTT especially
+ 		 * with chatty applications or bulk transfer apps which
+@@ -654,17 +656,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ 		 * else with timestamps disabled convergence takes too
+ 		 * long.
+ 		 */
+-		if (!win_dep) {
+-			m -= (new_sample >> 3);
+-			new_sample += m;
+-		} else {
+-			m <<= 3;
+-			if (m < new_sample)
+-				new_sample = m;
+-		}
+-	} else {
+-		/* No previous measure. */
+-		new_sample = m << 3;
++		if (win_dep)
++			return;
++		new_sample = old_sample - (old_sample >> 3) + sample;
  	}
-+
-+	spin_lock(&np->stats_lock);
- 	/* Maximum Collisions */
- 	if (tx_status & 0x08)
- 		dev->stats.collisions++;
-+
-+	dev->stats.tx_errors++;
-+	spin_unlock(&np->stats_lock);
-+
- 	/* Restart the Tx */
- 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
- }
-@@ -1077,7 +1084,9 @@ get_stats (struct net_device *dev)
- 	int i;
- #endif
- 	unsigned int stat_reg;
-+	unsigned long flags;
  
-+	spin_lock_irqsave(&np->stats_lock, flags);
- 	/* All statistics registers need to be acknowledged,
- 	   else statistic overflow could cause problems */
- 
-@@ -1127,6 +1136,9 @@ get_stats (struct net_device *dev)
- 	dr16(TCPCheckSumErrors);
- 	dr16(UDPCheckSumErrors);
- 	dr16(IPCheckSumErrors);
-+
-+	spin_unlock_irqrestore(&np->stats_lock, flags);
-+
- 	return &dev->stats;
- }
- 
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae960..56aff2f0bdbfa 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -372,6 +372,8 @@ struct netdev_private {
- 	struct pci_dev *pdev;
- 	void __iomem *ioaddr;
- 	void __iomem *eeprom_addr;
-+	// To ensure synchronization when stats are updated.
-+	spinlock_t stats_lock;
- 	spinlock_t tx_lock;
- 	spinlock_t rx_lock;
- 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
+ 	tp->rcv_rtt_est.rtt_us = new_sample;
 -- 
 2.39.5
 
