@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDF12AE4366
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79A94AE43AC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E30A33BE9A7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CBC61887219
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A19524EA81;
-	Mon, 23 Jun 2025 13:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5F92550D3;
+	Mon, 23 Jun 2025 13:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpTiQ6JI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+on9S0B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB12F248869;
-	Mon, 23 Jun 2025 13:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DBE2550A4;
+	Mon, 23 Jun 2025 13:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685158; cv=none; b=W4UbohvOz4Nm9TURete3bnNBuS5QftvLQlj+klNX6Io97y0eFkOlfWEGV6s7Dt3yw/VLCO0rvMlERAPQ02AfuSmqy+i9U2NiidSxjf5KKdsJ08NXC+9jyUh0MuUW2LNkXwtKwonXOmZyQc/KyONbYL6ZJCE8cNtP9RLVFkULsLE=
+	t=1750685295; cv=none; b=oeq/wkfy6TFRdFeeGp2C9fHYWO3Ehx61Nl2BijCmVMzf9LKYBezsKPbs9xZIz9LJlL9N0TOQ+rkv95yTjaFCgI3mgN2YAWL1mFvbuMctAnbo4siPImpJ/Ek2K3tAfg64ULMs+KZp9pT8z7sZKlsM/S+eTTJ3B0lP4ra+xPVtnNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685158; c=relaxed/simple;
-	bh=uExW0d+OeKMwnrryteY5gwJxHyjEw7joCKiKoIHFmtg=;
+	s=arc-20240116; t=1750685295; c=relaxed/simple;
+	bh=5BAEjZyksUoWft7iFwVzBkp6F82fLJqW6KCtGZHx1m8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZv+AWLm7dXGzdU7E4fVKfSPKjuYUaDBmn8EVnsFchxRFIJpLOrJq7SNpGT3PtXwsneI9q3Va/Gdyk0J8pL7rdl0aBbKLBAmw+8pSP1pzl4FGBJ0KwFAi+Gl4Pop6N9dj9XGBmdKtbiU1s+YPuptHW32rpDIkxHXDlpC7pthouU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpTiQ6JI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E399C4CEEA;
-	Mon, 23 Jun 2025 13:25:57 +0000 (UTC)
+	 MIME-Version; b=hrB3K7heGAf/kTbNHYeq9FlBWGgYKiJzGwrel2E2TvRGBUrSAjoWL9zviuof2SFyccvGEr+14p1iaMfCBCERSDdXYQHOXtmMJZIwh2HLP54rfKHj88e/wTzymz5yU4DgC2IKj+U5sXmM5swDMMhGh8+yCF7gFiq/tbVxoxK9kyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+on9S0B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60AACC4CEF1;
+	Mon, 23 Jun 2025 13:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685157;
-	bh=uExW0d+OeKMwnrryteY5gwJxHyjEw7joCKiKoIHFmtg=;
+	s=korg; t=1750685295;
+	bh=5BAEjZyksUoWft7iFwVzBkp6F82fLJqW6KCtGZHx1m8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpTiQ6JI7xz3MpvajIe5fjYBcU8hnQBdj5pYJzpY2nn4Gew9vFz1LqDE6K/Q91KSk
-	 AIZz2QzonIWfsJgJ+UtY+Kw6QlCWh2jgOT01bXK2R1D3v1UY9ikQGLkdsXA8G3WVXQ
-	 KQQzsgcw26Kp8M72x0cfX0xXV1bo3z4sVnOUiUmM=
+	b=M+on9S0BI58UJFRgG63ErDRgGp2m+joC3Tweqxv47u2PjNWC8pzrtC2t/I46nKxdn
+	 cD59N9c9S0SsLvGpQOLax4Op/v9CUQy0hHQulCJaTjIKDtUDLkPTMZJH4yFhgqDx/L
+	 7hm9kI715HvCqeL+9dylFh7I48RdGXoufERoo3dQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 210/592] power: supply: collie: Fix wakeup source leaks on device unbind
+Subject: [PATCH 5.15 024/411] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
 Date: Mon, 23 Jun 2025 15:02:48 +0200
-Message-ID: <20250623130705.281871427@linuxfoundation.org>
+Message-ID: <20250623130633.729541120@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-[ Upstream commit c73d19f89cb03c43abbbfa3b9caa1b8fc719764c ]
+[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
 
-Device can be unbound, so driver must also release memory for the wakeup
-source.
+When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
+to save fixed-range MTRRs.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/20250406202730.55096-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+On platforms without fixed-range MTRRs like the ACRN hypervisor which
+has removed fixed-range MTRR emulation, accessing these MSRs will
+trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
+supported before access to prevent such error.
+
+Since mtrr_state.have_fixed is only set when MTRRs are present and
+enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
+unnecessary.
+
+Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/collie_battery.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/collie_battery.c b/drivers/power/supply/collie_battery.c
-index 68390bd1004f0..3daf7befc0bf6 100644
---- a/drivers/power/supply/collie_battery.c
-+++ b/drivers/power/supply/collie_battery.c
-@@ -440,6 +440,7 @@ static int collie_bat_probe(struct ucb1x00_dev *dev)
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index 558108296f3cf..31549e7f6b7c6 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -349,7 +349,7 @@ static void get_fixed_ranges(mtrr_type *frs)
  
- static void collie_bat_remove(struct ucb1x00_dev *dev)
+ void mtrr_save_fixed_ranges(void *info)
  {
-+	device_init_wakeup(&ucb->dev, 0);
- 	free_irq(gpiod_to_irq(collie_bat_main.gpio_full), &collie_bat_main);
- 	power_supply_unregister(collie_bat_bu.psy);
- 	power_supply_unregister(collie_bat_main.psy);
+-	if (boot_cpu_has(X86_FEATURE_MTRR))
++	if (mtrr_state.have_fixed)
+ 		get_fixed_ranges(mtrr_state.fixed_ranges);
+ }
+ 
 -- 
 2.39.5
 
