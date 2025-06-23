@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE32EAE44F4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00673AE450C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 29C0618834CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6A763445CF0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95A9724728E;
-	Mon, 23 Jun 2025 13:41:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B659252912;
+	Mon, 23 Jun 2025 13:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y0GQrPo7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xkBSdIQC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5334F16419;
-	Mon, 23 Jun 2025 13:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C28230BC2;
+	Mon, 23 Jun 2025 13:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686098; cv=none; b=X73+Z7fWwux6fi4r53h0lwYS5EWTpq6OT1DaQz3CfS6VsIlMbNgIZyL4Q+ecpyYwH/LOAgTFR5XsVfTMDCooeTARo424zgasqYIeYWSNaAJLzNGcPeWL04EsC8qiE8AVvgtUGsZGJ+M83SzGZZUhFFnN/spN9F5zlA1qwXU7V+k=
+	t=1750685960; cv=none; b=eoEuNX5B2GKdf/jGIoX9EHVS9AJRfZXBbv3teQlyfgU33MWFicO4coJzPqZQ4CuK84HvD5IoBpopOhh21AUUSLMhCiIKecZZ0AqGf7gcsrVvutYzn8emOTRudE9EpIDwSKZDfpyBEV2C+cmaX/Fg+cciGyKnbsxiuSCoc4toIDo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686098; c=relaxed/simple;
-	bh=SNLycSAsaMVzcJld3wvIR1nBoP78HUGWOMEbqj/NBAE=;
+	s=arc-20240116; t=1750685960; c=relaxed/simple;
+	bh=Sc/WW4NEt4M+Xfn41zsQiChQNc56AVK/CqpOHny5QwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koJi8bd+7v318VQbowRu6lcSGJB0H7e0iU2Vq8eCmnzgNGHJ0lT36YJt2CQapaFnf13tQR0hfoaZaeBURTP47kE3du8iA4KK1hz7Pi+C95TuaAyqMeOfgFPJIUeF2dl96qSoQ7DGQ//ZOr3jpgAUVsdFCkhLo/xfLM/BrlyfR/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y0GQrPo7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77752C4CEEA;
-	Mon, 23 Jun 2025 13:41:36 +0000 (UTC)
+	 MIME-Version; b=rhCu7lQYWnFwlK07dy2us/Iiun7FnJ/gr4pnFRWvdbpMyM1cGlrSWyD8Li/9p0LGbJ797tOZUWhnZzdKZ6CpuW+VIqjK3+M49Cy66akuA7iiGrrwUJ09Y/rHAoG9TOINn0bw86tv6mDcpMkOvIELSuprySi7r0X9e00VAFPssys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xkBSdIQC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44215C4CEEA;
+	Mon, 23 Jun 2025 13:39:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686096;
-	bh=SNLycSAsaMVzcJld3wvIR1nBoP78HUGWOMEbqj/NBAE=;
+	s=korg; t=1750685958;
+	bh=Sc/WW4NEt4M+Xfn41zsQiChQNc56AVK/CqpOHny5QwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y0GQrPo7opl5452OYfXFsuGklluwjFn5H/X0eINPS13JRkvmA87+4XAiObuWXNlNL
-	 +SwJpRsuKWwvq/MIHbb1awN13PnFPfRD+E0dgWfbnrlTn77K/7JkMR0weaeJZ1F/kI
-	 9DtiN5F8q/n3rcCDzyuthS0lKL2noEUPpCqgLIhA=
+	b=xkBSdIQCNrWQ3FyLUmaIz5vVVGGOcv9kQf9Tx3hMtSL2rudJbUhei9ij/9KxmQbgP
+	 +MgG0UIFb1SHPaiSSib40dOrHOzTPKOpp4aIuDk37y4MUkUNu/g8UTr8z0FlG3PNyD
+	 y13zOpm0vGkXrvyv4HBExX3oNaaXz+VF2zbdWpic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Alexander Aring <aahringo@redhat.com>,
+	Heming zhao <heming.zhao@suse.com>,
+	David Teigland <teigland@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 079/411] Squashfs: check return result of sb_min_blocksize
+Subject: [PATCH 6.15 265/592] dlm: use SHUT_RDWR for SCTP shutdown
 Date: Mon, 23 Jun 2025 15:03:43 +0200
-Message-ID: <20250623130635.374335677@linuxfoundation.org>
+Message-ID: <20250623130706.617645578@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit 734aa85390ea693bb7eaf2240623d41b03705c84 ]
+[ Upstream commit 55612ddb62fc12437a7ff2f27b51a8981bc187a4 ]
 
-Syzkaller reports an "UBSAN: shift-out-of-bounds in squashfs_bio_read" bug.
+Currently SCTP shutdown() call gets stuck because there is no incoming
+EOF indicator on its socket. On the peer side the EOF indicator as
+recvmsg() returns 0 will be triggered as mechanism to flush the socket
+queue on the receive side. In SCTP recvmsg() function sctp_recvmsg() we
+can see that only if sk_shutdown has the bit RCV_SHUTDOWN set SCTP will
+recvmsg() will return EOF. The RCV_SHUTDOWN bit will only be set when
+shutdown with SHUT_RD is called. We use now SHUT_RDWR to also get a EOF
+indicator from recvmsg() call on the shutdown() initiator.
 
-Syzkaller forks multiple processes which after mounting the Squashfs
-filesystem, issues an ioctl("/dev/loop0", LOOP_SET_BLOCK_SIZE, 0x8000).
-Now if this ioctl occurs at the same time another process is in the
-process of mounting a Squashfs filesystem on /dev/loop0, the failure
-occurs.  When this happens the following code in squashfs_fill_super()
-fails.
+SCTP does not support half closed sockets and the semantic of SHUT_WR is
+different here, it seems that calling SHUT_WR on sctp sockets keeps the
+socket open to have the possibility to do some specific SCTP operations on
+it that we don't do here.
 
-----
-msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-msblk->devblksize_log2 = ffz(~msblk->devblksize);
-----
+There exists still a difference in the limitations of TCP vs SCTP in
+case if we are required to have a half closed socket functionality. This
+was tried to archieve with DLM protocol changes in the past and
+hopefully we really don't require half closed socket functionality.
 
-sb_min_blocksize() returns 0, which means msblk->devblksize is set to 0.
-
-As a result, ffz(~msblk->devblksize) returns 64, and msblk->devblksize_log2
-is set to 64.
-
-This subsequently causes the
-
-UBSAN: shift-out-of-bounds in fs/squashfs/block.c:195:36
-shift exponent 64 is too large for 64-bit type 'u64' (aka
-'unsigned long long')
-
-This commit adds a check for a 0 return by sb_min_blocksize().
-
-Link: https://lkml.kernel.org/r/20250409024747.876480-1-phillip@squashfs.org.uk
-Fixes: 0aa666190509 ("Squashfs: super block operations")
-Reported-by: syzbot+65761fc25a137b9c8c6e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/67f0dd7a.050a0220.0a13.0230.GAE@google.com/
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Tested-by: Heming zhao <heming.zhao@suse.com>
+Reviewed-by: Heming zhao <heming.zhao@suse.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/super.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/dlm/lowcomms.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
-index 60d6951915f44..5108740f9653c 100644
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -136,6 +136,11 @@ static int squashfs_fill_super(struct super_block *sb, struct fs_context *fc)
- 	msblk->panic_on_errors = (opts->errors == Opt_errors_panic);
+diff --git a/fs/dlm/lowcomms.c b/fs/dlm/lowcomms.c
+index 70abd4da17a63..90abcd07f8898 100644
+--- a/fs/dlm/lowcomms.c
++++ b/fs/dlm/lowcomms.c
+@@ -160,6 +160,7 @@ struct dlm_proto_ops {
+ 	bool try_new_addr;
+ 	const char *name;
+ 	int proto;
++	int how;
  
- 	msblk->devblksize = sb_min_blocksize(sb, SQUASHFS_DEVBLK_SIZE);
-+	if (!msblk->devblksize) {
-+		errorf(fc, "squashfs: unable to set blocksize\n");
-+		return -EINVAL;
-+	}
-+
- 	msblk->devblksize_log2 = ffz(~msblk->devblksize);
+ 	void (*sockopts)(struct socket *sock);
+ 	int (*bind)(struct socket *sock);
+@@ -810,7 +811,7 @@ static void shutdown_connection(struct connection *con, bool and_other)
+ 		return;
+ 	}
  
- 	mutex_init(&msblk->meta_index_mutex);
+-	ret = kernel_sock_shutdown(con->sock, SHUT_WR);
++	ret = kernel_sock_shutdown(con->sock, dlm_proto_ops->how);
+ 	up_read(&con->sock_lock);
+ 	if (ret) {
+ 		log_print("Connection %p failed to shutdown: %d will force close",
+@@ -1858,6 +1859,7 @@ static int dlm_tcp_listen_bind(struct socket *sock)
+ static const struct dlm_proto_ops dlm_tcp_ops = {
+ 	.name = "TCP",
+ 	.proto = IPPROTO_TCP,
++	.how = SHUT_WR,
+ 	.sockopts = dlm_tcp_sockopts,
+ 	.bind = dlm_tcp_bind,
+ 	.listen_validate = dlm_tcp_listen_validate,
+@@ -1896,6 +1898,7 @@ static void dlm_sctp_sockopts(struct socket *sock)
+ static const struct dlm_proto_ops dlm_sctp_ops = {
+ 	.name = "SCTP",
+ 	.proto = IPPROTO_SCTP,
++	.how = SHUT_RDWR,
+ 	.try_new_addr = true,
+ 	.sockopts = dlm_sctp_sockopts,
+ 	.bind = dlm_sctp_bind,
 -- 
 2.39.5
 
