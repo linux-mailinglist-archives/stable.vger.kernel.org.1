@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155595-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155597-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1E5BAE42F3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8DCAAE42D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DB6A3172E81
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8A0E2189E908
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1F18253F3A;
-	Mon, 23 Jun 2025 13:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AB625487B;
+	Mon, 23 Jun 2025 13:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIiBJHQq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BfEMFXZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC5A2F24;
-	Mon, 23 Jun 2025 13:20:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA4C25291B;
+	Mon, 23 Jun 2025 13:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684833; cv=none; b=AFg9Ab7ubI9odcjtsBK/sVYYW496WX0KQf4gCdV2z8dxN8pTuTttjRR7jCeBd4ZpFx4SZ1aWHvh2lEh7amEUMcpQ+wHk8Gg+45Q6OS34jtkYWAVuCU1Hh7REZ1CABIF1+YHjsdrZzocqZ6BXnuW9r7j7PTJYiB/Wb08Ia4Ul9s4=
+	t=1750684841; cv=none; b=Uw97nwABFqFQ9I5tTYduPzmNceEo0/DwOjb/8vZ4nZgTBF+jiuK7n7cZMhptHU31MI6k4/79eTzQW6UpTyk91ssZVOAjM7UvTKfOEy9rYsg/3lzGEj5gpTdMJn6XgufZ1MPC3A2Z4SvJWQ43OOLTvThXuPm5pMmMd6w7xLyssB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684833; c=relaxed/simple;
-	bh=lzx5UeC7EPT4ssBrpAvffaI1fLijvYec7q0fqKZBYVs=;
+	s=arc-20240116; t=1750684841; c=relaxed/simple;
+	bh=gGWVCnwMq2Ytt2iuvEasjxcjY+9KTDwacRYgTzzCNk8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nMhGSq2ak5J102KO5p43IH9eMf2GhUL6TWXvDIC8Welk0Rc+1nkdX2kERETT4h/Tvy29L0Y/wQzQOcLyRvp04DC3hGXJsk5xXHaA41apei1hvPsilJf5+iVMJqABJXlzhhAKukZ7XEeDXZGnepsJ9uQfEHxbFp/lqVhUpvU208c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIiBJHQq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E369C4CEEA;
-	Mon, 23 Jun 2025 13:20:32 +0000 (UTC)
+	 MIME-Version; b=MTQqyGSIVQbAJeTAswAFHBTZZIZN9Q3PIpk3GFnjj/XPSGN9tCPceAitAX342jvdYHqtrk+NCg2KbMqniKw9iYr59Hkfh1St7hkZuCkP935ZOPZ4BRUoMiXZBNaNtw16BT7kANk28SCCvbjkXmRKwjcl0nnFobr/n9hr95TXQ3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BfEMFXZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FA9C4CEEA;
+	Mon, 23 Jun 2025 13:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684833;
-	bh=lzx5UeC7EPT4ssBrpAvffaI1fLijvYec7q0fqKZBYVs=;
+	s=korg; t=1750684841;
+	bh=gGWVCnwMq2Ytt2iuvEasjxcjY+9KTDwacRYgTzzCNk8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PIiBJHQqD46R8d1VnzjHCYaNusQ2JTeNIk6i/EWtd4NHXJPl80YeD8TwmK0m1kVWw
-	 BqZ3SnoCDzk3Y+PrINwHwqIYWZKNHNKBbDDFF2NvZ7H6KQn7j9UIh4C7bR95w1NJpN
-	 TPLeCZOzaT5L16LekQknTliTrUodeCt7dcC0EtMo=
+	b=BfEMFXZimaqp3Rk0VZJu+XE0PMhD/1kjmOQ2c3ao6pwNq0uVDYEkOfmHmfDbbWSNn
+	 BuPX1mVKVlamDUuSmr6Ya0RpurJRjI10xMKlqEfGOGFe/rl/IxYuPLVORW5uMbtNaD
+	 BkF/Tr19BP7EV4SSb5/0anLIWuEikZtWdWJnHj40=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 037/222] net: usb: aqc111: fix error handling of usbnet read calls
-Date: Mon, 23 Jun 2025 15:06:12 +0200
-Message-ID: <20250623130613.015002999@linuxfoundation.org>
+Subject: [PATCH 5.4 038/222] net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
+Date: Mon, 23 Jun 2025 15:06:13 +0200
+Message-ID: <20250623130613.046498497@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,104 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit 405b0d610745fb5e84fc2961d9b960abb9f3d107 ]
+[ Upstream commit 68927eb52d0af04863584930db06075d2610e194 ]
 
-Syzkaller, courtesy of syzbot, identified an error (see report [1]) in
-aqc111 driver, caused by incomplete sanitation of usb read calls'
-results. This problem is quite similar to the one fixed in commit
-920a9fa27e78 ("net: asix: add proper error handling of usb read errors").
+rename the function to lan743x_hw_reset_phy to better describe it
+operation.
 
-For instance, usbnet_read_cmd() may read fewer than 'size' bytes,
-even if the caller expected the full amount, and aqc111_read_cmd()
-will not check its result properly. As [1] shows, this may lead
-to MAC address in aqc111_bind() being only partly initialized,
-triggering KMSAN warnings.
-
-Fix the issue by verifying that the number of bytes read is
-as expected and not less.
-
-[1] Partial syzbot report:
-BUG: KMSAN: uninit-value in is_valid_ether_addr include/linux/etherdevice.h:208 [inline]
-BUG: KMSAN: uninit-value in usbnet_probe+0x2e57/0x4390 drivers/net/usb/usbnet.c:1830
- is_valid_ether_addr include/linux/etherdevice.h:208 [inline]
- usbnet_probe+0x2e57/0x4390 drivers/net/usb/usbnet.c:1830
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:-1 [inline]
- really_probe+0x4d1/0xd90 drivers/base/dd.c:658
- __driver_probe_device+0x268/0x380 drivers/base/dd.c:800
-...
-
-Uninit was stored to memory at:
- dev_addr_mod+0xb0/0x550 net/core/dev_addr_lists.c:582
- __dev_addr_set include/linux/netdevice.h:4874 [inline]
- eth_hw_addr_set include/linux/etherdevice.h:325 [inline]
- aqc111_bind+0x35f/0x1150 drivers/net/usb/aqc111.c:717
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
-...
-
-Uninit was stored to memory at:
- ether_addr_copy include/linux/etherdevice.h:305 [inline]
- aqc111_read_perm_mac drivers/net/usb/aqc111.c:663 [inline]
- aqc111_bind+0x794/0x1150 drivers/net/usb/aqc111.c:713
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
- usb_probe_interface+0xd01/0x1310 drivers/usb/core/driver.c:396
- call_driver_probe drivers/base/dd.c:-1 [inline]
-...
-
-Local variable buf.i created at:
- aqc111_read_perm_mac drivers/net/usb/aqc111.c:656 [inline]
- aqc111_bind+0x221/0x1150 drivers/net/usb/aqc111.c:713
- usbnet_probe+0xbe6/0x4390 drivers/net/usb/usbnet.c:1772
-
-Reported-by: syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3b6b9ff7b80430020c7b
-Tested-by: syzbot+3b6b9ff7b80430020c7b@syzkaller.appspotmail.com
-Fixes: df2d59a2ab6c ("net: usb: aqc111: Add support for getting and setting of MAC address")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20250520113240.2369438-1-n.zhandarovich@fintech.ru
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250526053048.287095-2-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/aqc111.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/aqc111.c b/drivers/net/usb/aqc111.c
-index b958e00058820..44bf74b23c0f3 100644
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -30,10 +30,13 @@ static int aqc111_read_cmd_nopm(struct usbnet *dev, u8 cmd, u16 value,
- 	ret = usbnet_read_cmd_nopm(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
- 				   USB_RECIP_DEVICE, value, index, data, size);
- 
--	if (unlikely(ret < 0))
-+	if (unlikely(ret < size)) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+	}
- 
- 	return ret;
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index a69a34d93ad62..22e1143c58467 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -912,7 +912,7 @@ static int lan743x_mac_set_mtu(struct lan743x_adapter *adapter, int new_mtu)
  }
-@@ -46,10 +49,13 @@ static int aqc111_read_cmd(struct usbnet *dev, u8 cmd, u16 value,
- 	ret = usbnet_read_cmd(dev, cmd, USB_DIR_IN | USB_TYPE_VENDOR |
- 			      USB_RECIP_DEVICE, value, index, data, size);
  
--	if (unlikely(ret < 0))
-+	if (unlikely(ret < size)) {
-+		ret = ret < 0 ? ret : -ENODATA;
-+
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+	}
+ /* PHY */
+-static int lan743x_phy_reset(struct lan743x_adapter *adapter)
++static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
+ {
+ 	u32 data;
  
- 	return ret;
+@@ -946,7 +946,7 @@ static void lan743x_phy_update_flowcontrol(struct lan743x_adapter *adapter,
+ 
+ static int lan743x_phy_init(struct lan743x_adapter *adapter)
+ {
+-	return lan743x_phy_reset(adapter);
++	return lan743x_hw_reset_phy(adapter);
  }
+ 
+ static void lan743x_phy_link_status_change(struct net_device *netdev)
 -- 
 2.39.5
 
