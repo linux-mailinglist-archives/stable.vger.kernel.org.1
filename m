@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97B7AAE54C1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D31D7AE5460
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 259711B67FBA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B5FEF447150
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51D9421FF2B;
-	Mon, 23 Jun 2025 22:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A25E22173D;
+	Mon, 23 Jun 2025 22:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZ7rx3IW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9lTk9du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F7461A4F12;
-	Mon, 23 Jun 2025 22:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57C8F2940B;
+	Mon, 23 Jun 2025 22:00:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716265; cv=none; b=QMiNlL0K9ZRLfIqoa7xKn5FJ5NRrH2CB7lMIxgOcdeMjSpx1Z7FQYXO0apgClBmKYrUBrtJLT8vddzzPJXLMwYvJ83ACfPC/r6ULWBoWN2HCGSDt0USRMac9/flX4x4csoa46Qi8oLeT6522l070fEjjbbaYbg+vAI7Mxbl2lkI=
+	t=1750716056; cv=none; b=G1m1kfEDXSUmr847KBenB8ofpRh40VFYH4/OqQNy7A3Bif/NLD5JcFVqjX42xH3wXLmTKkdgOu388F4U9y4yUx/tM94D7kVDO/sGB+nmxKGg8x+tDeTmFKvK5R/BmS3Az/u7GXmOp+0t0zGcq5HjWZcK5niLphFov3FzecCytqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716265; c=relaxed/simple;
-	bh=Rjjk9uo8GykzxZ1vTRinvcOU7j3eEXxI5jAD6NAeQVA=;
+	s=arc-20240116; t=1750716056; c=relaxed/simple;
+	bh=qZdsNlxoowM4P3VcxIza9qhjAN6VmRY6cQpMFq5B1tw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFzYW5WgwfXftfbeeF9L4/m7aMxALap6YnIsldlx/xJIpYhw3qLQDI/5+pIMZ3he60yEVCiiSvjP78NfgwUONFPyB7Sr0noURI/Ew8ASfqThNee1KHXP8PV70qiwPiVqg3k6V7Sj7YMqoCJ+Gu5IuwAZbW8urTaoQVqxdSzrXk0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZ7rx3IW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8C9C4CEEA;
-	Mon, 23 Jun 2025 22:04:24 +0000 (UTC)
+	 MIME-Version; b=it3wzV7Sj/2ORkJeICzU+fQzP2YhcZnT4+D06CV4lGmZJc0xhNqlgYbsoDExZnwYbF9zjlwiKjgS/Jkf8MxNJqZYClsD78RwPCaRcsrL6gqEzITUnctk7VnEohCGUT/A7Id1nCrgQPiSWtpuB7PZ203PlH0mvL+hQfY1MWelVR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9lTk9du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55ADC4CEF1;
+	Mon, 23 Jun 2025 22:00:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716264;
-	bh=Rjjk9uo8GykzxZ1vTRinvcOU7j3eEXxI5jAD6NAeQVA=;
+	s=korg; t=1750716056;
+	bh=qZdsNlxoowM4P3VcxIza9qhjAN6VmRY6cQpMFq5B1tw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FZ7rx3IWCS2g1u6d8qYYEgnAUIc8A3LYz76q1GsfFsVb1KbU5Frq9DUxYGuDeTE1S
-	 PC/uySc5cY/52/ussQX3xCQuKfjg8EfvWb01mRL+EB0+8vK7NpAy2MemYr7rqFTs6L
-	 4gHq+vdYuwf8C5V1iQ/m9L5v30W5B/IlXr73J0z8=
+	b=D9lTk9dukRP+6uRX2Y07VFuTA1Q05rzW0Ve/1ilvFk0xL+Wbh56vi+dUeGZSelRDX
+	 7Wo4W6fG8KY9qmLxZDNbL9YYko1HErieOff8s0Mo0luMd58ajJYn28KYQmT2jDmS8O
+	 /1Gub+v0ufJNe6sk/BzPCBwQo/ytjxaYCi0XplBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tali Perry <tali.perry1@gmail.com>,
-	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 312/411] i2c: npcm: Add clock toggle recovery
-Date: Mon, 23 Jun 2025 15:07:36 +0200
-Message-ID: <20250623130641.494471991@linuxfoundation.org>
+	Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	Simon Horman <horms@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.15 499/592] nfsd: use threads array as-is in netlink interface
+Date: Mon, 23 Jun 2025 15:07:37 +0200
+Message-ID: <20250623130712.302043287@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tali Perry <tali.perry1@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
+commit 8ea688a3372e8369dc04395b39b4e71a6d91d4d5 upstream.
 
-During init of the bus, the module checks that the bus is idle.
-If one of the lines are stuck try to recover them first before failing.
-Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
+The old nfsdfs interface for starting a server with multiple pools
+handles the special case of a single entry array passed down from
+userland by distributing the threads over every NUMA node.
 
-Signed-off-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
-Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The netlink control interface however constructs an array of length
+nfsd_nrpools() and fills any unprovided slots with 0's. This behavior
+defeats the special casing that the old interface relies on.
+
+Change nfsd_nl_threads_set_doit() to pass down the array from userland
+as-is.
+
+Fixes: 7f5c330b2620 ("nfsd: allow passing in array of thread counts via netlink")
+Cc: stable@vger.kernel.org
+Reported-by: Mike Snitzer <snitzer@kernel.org>
+Closes: https://lore.kernel.org/linux-nfs/aDC-ftnzhJAlwqwh@kernel.org/
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ fs/nfsd/nfsctl.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index d97694ac29ca9..3f30c3cff7201 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -1950,10 +1950,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
- 
- 	/* check HW is OK: SDA and SCL should be high at this point. */
- 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
--		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
--		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
--			npcm_i2c_get_SCL(&bus->adap));
--		return -ENXIO;
-+		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
-+				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
-+		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
-+			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
-+				bus->num, npcm_i2c_get_SDA(&bus->adap),
-+				npcm_i2c_get_SCL(&bus->adap));
-+			return -ENXIO;
-+		}
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1611,7 +1611,7 @@ out_unlock:
+  */
+ int nfsd_nl_threads_set_doit(struct sk_buff *skb, struct genl_info *info)
+ {
+-	int *nthreads, count = 0, nrpools, i, ret = -EOPNOTSUPP, rem;
++	int *nthreads, nrpools = 0, i, ret = -EOPNOTSUPP, rem;
+ 	struct net *net = genl_info_net(info);
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 	const struct nlattr *attr;
+@@ -1623,12 +1623,11 @@ int nfsd_nl_threads_set_doit(struct sk_b
+ 	/* count number of SERVER_THREADS values */
+ 	nlmsg_for_each_attr(attr, info->nlhdr, GENL_HDRLEN, rem) {
+ 		if (nla_type(attr) == NFSD_A_SERVER_THREADS)
+-			count++;
++			nrpools++;
  	}
  
- 	npcm_i2c_int_enable(bus, true);
--- 
-2.39.5
-
-
-
- cha
- #endif /* CONFIG_KVM */
+ 	mutex_lock(&nfsd_mutex);
  
- static bool spectre_bhb_fw_mitigated;
-+static bool __read_mostly __nospectre_bhb;
-+static int __init parse_spectre_bhb_param(char *str)
-+{
-+	__nospectre_bhb = true;
-+	return 0;
-+}
-+early_param("nospectre_bhb", parse_spectre_bhb_param);
- 
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *entry)
- {
-@@ -1100,7 +1107,7 @@ void spectre_bhb_enable_mitigation(const
- 		/* No point mitigating Spectre-BHB alone. */
- 	} else if (!IS_ENABLED(CONFIG_MITIGATE_SPECTRE_BRANCH_HISTORY)) {
- 		pr_info_once("spectre-bhb mitigation disabled by compile time option\n");
--	} else if (cpu_mitigations_off()) {
-+	} else if (cpu_mitigations_off() || __nospectre_bhb) {
- 		pr_info_once("spectre-bhb mitigation disabled by command line option\n");
- 	} else if (supports_ecbhb(SCOPE_LOCAL_CPU)) {
- 		state = SPECTRE_MITIGATED;
+-	nrpools = max(count, nfsd_nrpools(net));
+ 	nthreads = kcalloc(nrpools, sizeof(int), GFP_KERNEL);
+ 	if (!nthreads) {
+ 		ret = -ENOMEM;
 
 
 
