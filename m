@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-155541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38C6CAE4277
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F184DAE429F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EC743B6D14
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40316178220
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B75F252903;
-	Mon, 23 Jun 2025 13:18:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B095255E27;
+	Mon, 23 Jun 2025 13:18:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="muVyPuqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HE+gdaew"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED65C4C7F;
-	Mon, 23 Jun 2025 13:18:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCDC925524C;
+	Mon, 23 Jun 2025 13:18:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684700; cv=none; b=a/gXViJO45g8sy1BwRB9bBT44sJ3JxWfyqtmSaZ28KG1oM8RsP2RcT9P16XkJTPK3e0y65D6NqFoom1DUV/23pi/FTDyL/Cvp4cjcHpEetLv7YU8VgDZhJoX0DeN2vORJqk9QUNMshCW8NDXVW3baoxosgw5WPC7uvYkHXUuy5k=
+	t=1750684707; cv=none; b=Y+m5EloCC+NFq/3qSj704BpqxNHGQbv/Moq6tuRqpUazkkYMBer68O6LeKXAlRZG2fcGvAsW02nEte7JS4dQw9T1KlYbUedFg6XdCm3qpw3UkiEDmHNo6j1qlV+kpgZb9WqP2ubeWhyHRqXPUk2R4tgqbz0rUrRV67/jzGpznWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684700; c=relaxed/simple;
-	bh=RX2OezC3zhMyeeEb/TUmQ0zpdUShT8apCo+VzRZFbMs=;
+	s=arc-20240116; t=1750684707; c=relaxed/simple;
+	bh=Ck/Ki3tBURTxrCjMyiPnPWitDU079iGT0B3QWAxr90M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dmlkJiCcO5YKzUBtwFUP5L7lc24wxYmgkB9X/bptPT5bYME2MIgD6tdowy0pziJG3UuPdOUNnrM74rpQJMl52okZdBZrzP2LesaNw252SPU4q8cas+Gd0MlGNhM3vNGl6qjohft1Itre+GKYOhlXxpt5GZFEnaKwpimN6oiCsGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=muVyPuqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8166DC4CEEA;
-	Mon, 23 Jun 2025 13:18:19 +0000 (UTC)
+	 MIME-Version; b=Y+FhNEsLSUw873e1Xzozm7fYyd7wCYUkIvZegItBAMyIEtcIdo95uFD7UfgPspMiLZd/giYF20AGKr6CQkdGnq7gFFvwKGIVcrxE+54C7N1ojeT7CdV2dx03EeM24uGcygubmV/MVDrNiFY+xlpTkwr8NdFQyA2eD/+Y3TPPJ0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HE+gdaew; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51708C4CEFB;
+	Mon, 23 Jun 2025 13:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684699;
-	bh=RX2OezC3zhMyeeEb/TUmQ0zpdUShT8apCo+VzRZFbMs=;
+	s=korg; t=1750684707;
+	bh=Ck/Ki3tBURTxrCjMyiPnPWitDU079iGT0B3QWAxr90M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=muVyPuqI/mrzNaDsnCuBAI/Bt9PyfZNqsXP4iBl0rI6/nemBXd1ZUFZ5nMaZ4oWb2
-	 pxwzpCwUB2LD3Xr52BmY5aHQQKZYkpk/7KFXoJ6zvZReWvYJXNkWDMuh0HQsNRvEbY
-	 um83GB1kzg0R9el/9tuwnyNcFi0E4QMIDP1DGgM0=
+	b=HE+gdaewKoqI+AiwgsOrao/LLh+gB4ZA7WR78408GeXWbpJNcV1az8Vr8aah8sUsf
+	 TKEJXYJl8V3Byz6C5VJ6ivKRq8vv1fX/DzxPgWTBjk22cq9RT6PkBItIq++MtwtG0y
+	 VBMSbwteiisrGMb5AgRLJFMYPDe0rOzMo6F/w96g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.15 156/592] ftrace: Fix UAF when lookup kallsym after ftrace disabled
-Date: Mon, 23 Jun 2025 15:01:54 +0200
-Message-ID: <20250623130703.990851547@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.15 157/592] dm: lock limits when reading them
+Date: Mon, 23 Jun 2025 15:01:55 +0200
+Message-ID: <20250623130704.013263510@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -65,113 +64,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit f914b52c379c12288b7623bb814d0508dbe7481d upstream.
+commit abb4cf2f4c1c1b637cad04d726f2e13fd3051e03 upstream.
 
-The following issue happens with a buggy module:
+Lock queue limits when reading them, so that we don't read halfway
+modified values.
 
-BUG: unable to handle page fault for address: ffffffffc05d0218
-PGD 1bd66f067 P4D 1bd66f067 PUD 1bd671067 PMD 101808067 PTE 0
-Oops: Oops: 0000 [#1] SMP KASAN PTI
-Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
-RIP: 0010:sized_strscpy+0x81/0x2f0
-RSP: 0018:ffff88812d76fa08 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: ffffffffc0601010 RCX: dffffc0000000000
-RDX: 0000000000000038 RSI: dffffc0000000000 RDI: ffff88812608da2d
-RBP: 8080808080808080 R08: ffff88812608da2d R09: ffff88812608da68
-R10: ffff88812608d82d R11: ffff88812608d810 R12: 0000000000000038
-R13: ffff88812608da2d R14: ffffffffc05d0218 R15: fefefefefefefeff
-FS:  00007fef552de740(0000) GS:ffff8884251c7000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffffffffc05d0218 CR3: 00000001146f0000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ftrace_mod_get_kallsym+0x1ac/0x590
- update_iter_mod+0x239/0x5b0
- s_next+0x5b/0xa0
- seq_read_iter+0x8c9/0x1070
- seq_read+0x249/0x3b0
- proc_reg_read+0x1b0/0x280
- vfs_read+0x17f/0x920
- ksys_read+0xf3/0x1c0
- do_syscall_64+0x5f/0x2e0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The above issue may happen as follows:
-(1) Add kprobe tracepoint;
-(2) insmod test.ko;
-(3)  Module triggers ftrace disabled;
-(4) rmmod test.ko;
-(5) cat /proc/kallsyms; --> Will trigger UAF as test.ko already removed;
-ftrace_mod_get_kallsym()
-...
-strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
-...
-
-The problem is when a module triggers an issue with ftrace and
-sets ftrace_disable. The ftrace_disable is set when an anomaly is
-discovered and to prevent any more damage, ftrace stops all text
-modification. The issue that happened was that the ftrace_disable stops
-more than just the text modification.
-
-When a module is loaded, its init functions can also be traced. Because
-kallsyms deletes the init functions after a module has loaded, ftrace
-saves them when the module is loaded and function tracing is enabled. This
-allows the output of the function trace to show the init function names
-instead of just their raw memory addresses.
-
-When a module is removed, ftrace_release_mod() is called, and if
-ftrace_disable is set, it just returns without doing anything more. The
-problem here is that it leaves the mod_list still around and if kallsyms
-is called, it will call into this code and access the module memory that
-has already been freed as it will return:
-
-  strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
-
-Where the "mod" no longer exists and triggers a UAF bug.
-
-Link: https://lore.kernel.org/all/20250523135452.626d8dcd@gandalf.local.home/
-
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Fixes: aba4b5c22cba ("ftrace: Save module init functions kallsyms symbols for tracing")
-Link: https://lore.kernel.org/20250529111955.2349189-2-yebin@huaweicloud.com
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/ftrace.c |   10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/md/dm-table.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/ftrace.c
-+++ b/kernel/trace/ftrace.c
-@@ -7395,9 +7395,10 @@ void ftrace_release_mod(struct module *m
- 
- 	mutex_lock(&ftrace_lock);
- 
--	if (ftrace_disabled)
--		goto out_unlock;
--
-+	/*
-+	 * To avoid the UAF problem after the module is unloaded, the
-+	 * 'mod_map' resource needs to be released unconditionally.
-+	 */
- 	list_for_each_entry_safe(mod_map, n, &ftrace_mod_maps, list) {
- 		if (mod_map->mod == mod) {
- 			list_del_rcu(&mod_map->list);
-@@ -7406,6 +7407,9 @@ void ftrace_release_mod(struct module *m
- 		}
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -431,6 +431,7 @@ static int dm_set_device_limits(struct d
+ 		return 0;
  	}
  
-+	if (ftrace_disabled)
-+		goto out_unlock;
-+
- 	/*
- 	 * Each module has its own ftrace_pages, remove
- 	 * them from the list.
++	mutex_lock(&q->limits_lock);
+ 	if (blk_stack_limits(limits, &q->limits,
+ 			get_start_sect(bdev) + start) < 0)
+ 		DMWARN("%s: adding target device %pg caused an alignment inconsistency: "
+@@ -448,6 +449,7 @@ static int dm_set_device_limits(struct d
+ 	 */
+ 	if (!dm_target_has_integrity(ti->type))
+ 		queue_limits_stack_integrity_bdev(limits, bdev);
++	mutex_unlock(&q->limits_lock);
+ 	return 0;
+ }
+ 
+@@ -1733,8 +1735,12 @@ static int device_not_write_zeroes_capab
+ 					   sector_t start, sector_t len, void *data)
+ {
+ 	struct request_queue *q = bdev_get_queue(dev->bdev);
++	int b;
+ 
+-	return !q->limits.max_write_zeroes_sectors;
++	mutex_lock(&q->limits_lock);
++	b = !q->limits.max_write_zeroes_sectors;
++	mutex_unlock(&q->limits_lock);
++	return b;
+ }
+ 
+ static bool dm_table_supports_write_zeroes(struct dm_table *t)
 
 
 
