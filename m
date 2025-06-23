@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-158071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157961-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 461C8AE571E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C61A9AE5660
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D8D283BBBA8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2B1F4C1CE4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E788922422F;
-	Mon, 23 Jun 2025 22:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B5D223DE5;
+	Mon, 23 Jun 2025 22:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdoobVXn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TZDbOWK/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5CB822370A;
-	Mon, 23 Jun 2025 22:23:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F5E19E7F9;
+	Mon, 23 Jun 2025 22:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717411; cv=none; b=uitBLNs4+QwsSQ7YntmGpk4+pQdS+O0mBpbauWyDfdWvaULCWZJ9PdvY80Fu9D0IA6LtELeu1cEXoS0foMt2mf/db+tMjw4aXnnvc0NRgL755IhqjBQFjayI+Xs3QQFFTs+7b9Es5mOjJ/uPkhvj/z7Gen1va7rj96kJYjQ7v8w=
+	t=1750717143; cv=none; b=D6iATIqMeMoy5nkaXMH/8kEGKL0BQUvTGlGYxdlpkox37knxxVz4NNrQaq7avKmBgWZ9rCiJNLqlp/SJ0cvBAwwKdNchEWPRCAC27/s3SbobxuWwNJnF2dInWxRkCrN7s0oIxZHEUJW7SBLNh2ncAYyZqwT4CikrHUhwY02GtMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717411; c=relaxed/simple;
-	bh=+6aD/RvU6l2ub3CrRgfUnaXdsss5CMomOCVS+jRSPow=;
+	s=arc-20240116; t=1750717143; c=relaxed/simple;
+	bh=uLwoo1ZBOftwbD7S1of6mE+1HG9USKbNX1PbcpyWLMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ku0BohbDK3Pzj4eVSecdAYM4lWgubgDC9yZwKvq8WtTQ+FcFtyQ5s3MeMw9aev8ymsnpUBMsn/UWxvzJcxl816A+GxX6IU0DUf7QotWMEVH+sugdsUX8DVamBxP1CHFLisbRrNwylEsdiZuykTzFHGdkZWSly+HljRVJBTUdnRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdoobVXn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D526C4CEEA;
-	Mon, 23 Jun 2025 22:23:31 +0000 (UTC)
+	 MIME-Version; b=nmDqMZzoZYeLrdC64n0kbQloDGCP3zcd+gs5Hb7Ua14Z5Q/k3tTvsQ4RLPmoZ/HpgphKWen/VtSIi1odHklb05tQElUjzF09ZBk7ZpcAeMePsamZ0N/ofJZaZy5Xq1bP6aJWTVgZ8Xda5w8XKsF7TS9vQbL7lRHLGW/kcGHUT2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TZDbOWK/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B8CC4CEEA;
+	Mon, 23 Jun 2025 22:19:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717411;
-	bh=+6aD/RvU6l2ub3CrRgfUnaXdsss5CMomOCVS+jRSPow=;
+	s=korg; t=1750717143;
+	bh=uLwoo1ZBOftwbD7S1of6mE+1HG9USKbNX1PbcpyWLMU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdoobVXn63c4d4PVVjD6S8NMRc59+OeRi1GYK3it9jNGEG+ny+W4dycv+WvSs+/iD
-	 gdtGQOio1Hqo2hsFEU3it1wPXBlwF5KwRQg4NAyWW4etOeq/LA+bnc7vJwhjX/uSYc
-	 4JWH5BwDCy3QYDUArHQEDQNUzsfgw3ytKQ/HiJFQ=
+	b=TZDbOWK/RHHynVwhxddnoE5pPGK21FZT8+A86jhoN1Ec0HOmJuWZVQcYaa9r7aWO6
+	 p4tAkZ3gC2VXhrbJmxsLpgTvvZO5v19byxTGLFxehBDAozE5TvCjMc/NTC8FbdNSWy
+	 D+vsriymqMCRQnY3cFmjTAJHtQwpJ0A3FJLpMImE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wang <yongwang@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 421/508] net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions
+	syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.12 329/414] wifi: cfg80211: init wiphy_work before allocating rfkill fails
 Date: Mon, 23 Jun 2025 15:07:46 +0200
-Message-ID: <20250623130655.552766726@linuxfoundation.org>
+Message-ID: <20250623130650.214262525@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,177 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong Wang <yongwang@nvidia.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 4b30ae9adb047dd0a7982975ec3933c529537026 ]
+commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c upstream.
 
-When a bridge port STP state is changed from BLOCKING/DISABLED to
-FORWARDING, the port's igmp query timer will NOT re-arm itself if the
-bridge has been configured as per-VLAN multicast snooping.
+syzbort reported a uninitialize wiphy_work_lock in cfg80211_dev_free. [1]
 
-Solve this by choosing the correct multicast context(s) to enable/disable
-port multicast based on whether per-VLAN multicast snooping is enabled or
-not, i.e. using per-{port, VLAN} context in case of per-VLAN multicast
-snooping by re-implementing br_multicast_enable_port() and
-br_multicast_disable_port() functions.
+After rfkill allocation fails, the wiphy release process will be performed,
+which will cause cfg80211_dev_free to access the uninitialized wiphy_work
+related data.
 
-Before the patch, the IGMP query does not happen in the last step of the
-following test sequence, i.e. no growth for tx counter:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # bridge link set dev swp1 state 0
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge link set dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
+Move the initialization of wiphy_work to before rfkill initialization to
+avoid this issue.
 
-After the patch, the IGMP query happens in the last step of the test:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # bridge link set dev swp1 state 0
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge link set dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-3
+[1]
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:983 [inline]
+ register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
+ __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
+ lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
+ cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
+ device_release+0xa1/0x240 drivers/base/core.c:2568
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1e4/0x5a0 lib/kobject.c:737
+ put_device+0x1f/0x30 drivers/base/core.c:3774
+ wiphy_free net/wireless/core.c:1224 [inline]
+ wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
+ ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
+ mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
+ hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
+ genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
+ netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
+ netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg net/socket.c:733 [inline]
+ ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+ ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+ __sys_sendmsg+0x16e/0x220 net/socket.c:2659
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
 
-Signed-off-by: Yong Wang <yongwang@nvidia.com>
-Reviewed-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 72d520476a2f ("wifi: cfg80211: cancel wiphy_work before freeing wiphy")
+Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Close: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
+Tested-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_258DD9121DDDB9DD9A1939CFAA0D8625B107@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_multicast.c | 77 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 69 insertions(+), 8 deletions(-)
+ net/wireless/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index 5972821ce1950..e28c9db0c4db2 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -1931,12 +1931,17 @@ static void __br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
- 	}
- }
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -553,6 +553,9 @@ use_default_name:
+ 	INIT_WORK(&rdev->mgmt_registrations_update_wk,
+ 		  cfg80211_mgmt_registrations_update_wk);
+ 	spin_lock_init(&rdev->mgmt_registrations_lock);
++	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
++	INIT_LIST_HEAD(&rdev->wiphy_work_list);
++	spin_lock_init(&rdev->wiphy_work_lock);
  
--void br_multicast_enable_port(struct net_bridge_port *port)
-+static void br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
- {
--	struct net_bridge *br = port->br;
-+	struct net_bridge *br = pmctx->port->br;
- 
- 	spin_lock_bh(&br->multicast_lock);
--	__br_multicast_enable_port_ctx(&port->multicast_ctx);
-+	if (br_multicast_port_ctx_is_vlan(pmctx) &&
-+	    !(pmctx->vlan->priv_flags & BR_VLFLAG_MCAST_ENABLED)) {
-+		spin_unlock_bh(&br->multicast_lock);
-+		return;
-+	}
-+	__br_multicast_enable_port_ctx(pmctx);
- 	spin_unlock_bh(&br->multicast_lock);
- }
- 
-@@ -1963,11 +1968,67 @@ static void __br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
- 	br_multicast_rport_del_notify(pmctx, del);
- }
- 
-+static void br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
-+{
-+	struct net_bridge *br = pmctx->port->br;
-+
-+	spin_lock_bh(&br->multicast_lock);
-+	if (br_multicast_port_ctx_is_vlan(pmctx) &&
-+	    !(pmctx->vlan->priv_flags & BR_VLFLAG_MCAST_ENABLED)) {
-+		spin_unlock_bh(&br->multicast_lock);
-+		return;
-+	}
-+
-+	__br_multicast_disable_port_ctx(pmctx);
-+	spin_unlock_bh(&br->multicast_lock);
-+}
-+
-+static void br_multicast_toggle_port(struct net_bridge_port *port, bool on)
-+{
-+#if IS_ENABLED(CONFIG_BRIDGE_VLAN_FILTERING)
-+	if (br_opt_get(port->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED)) {
-+		struct net_bridge_vlan_group *vg;
-+		struct net_bridge_vlan *vlan;
-+
-+		rcu_read_lock();
-+		vg = nbp_vlan_group_rcu(port);
-+		if (!vg) {
-+			rcu_read_unlock();
-+			return;
-+		}
-+
-+		/* iterate each vlan, toggle vlan multicast context */
-+		list_for_each_entry_rcu(vlan, &vg->vlan_list, vlist) {
-+			struct net_bridge_mcast_port *pmctx =
-+						&vlan->port_mcast_ctx;
-+			u8 state = br_vlan_get_state(vlan);
-+			/* enable vlan multicast context when state is
-+			 * LEARNING or FORWARDING
-+			 */
-+			if (on && br_vlan_state_allowed(state, true))
-+				br_multicast_enable_port_ctx(pmctx);
-+			else
-+				br_multicast_disable_port_ctx(pmctx);
-+		}
-+		rcu_read_unlock();
-+		return;
-+	}
-+#endif
-+	/* toggle port multicast context when vlan snooping is disabled */
-+	if (on)
-+		br_multicast_enable_port_ctx(&port->multicast_ctx);
-+	else
-+		br_multicast_disable_port_ctx(&port->multicast_ctx);
-+}
-+
-+void br_multicast_enable_port(struct net_bridge_port *port)
-+{
-+	br_multicast_toggle_port(port, true);
-+}
-+
- void br_multicast_disable_port(struct net_bridge_port *port)
- {
--	spin_lock_bh(&port->br->multicast_lock);
--	__br_multicast_disable_port_ctx(&port->multicast_ctx);
--	spin_unlock_bh(&port->br->multicast_lock);
-+	br_multicast_toggle_port(port, false);
- }
- 
- static int __grp_src_delete_marked(struct net_bridge_port_group *pg)
-@@ -4156,9 +4217,9 @@ int br_multicast_toggle_vlan_snooping(struct net_bridge *br, bool on,
- 		__br_multicast_open(&br->multicast_ctx);
- 	list_for_each_entry(p, &br->port_list, list) {
- 		if (on)
--			br_multicast_disable_port(p);
-+			br_multicast_disable_port_ctx(&p->multicast_ctx);
- 		else
--			br_multicast_enable_port(p);
-+			br_multicast_enable_port_ctx(&p->multicast_ctx);
+ #ifdef CONFIG_CFG80211_DEFAULT_PS
+ 	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
+@@ -570,9 +573,6 @@ use_default_name:
+ 		return NULL;
  	}
  
- 	list_for_each_entry(vlan, &vg->vlan_list, vlist)
--- 
-2.39.5
-
+-	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
+-	INIT_LIST_HEAD(&rdev->wiphy_work_list);
+-	spin_lock_init(&rdev->wiphy_work_lock);
+ 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
+ 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
+ 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
 
 
 
