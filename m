@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97A99AE52FB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D027DAE519E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 297B9177CA3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79121B63CAC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7E53FD4;
-	Mon, 23 Jun 2025 21:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF7D221FBE;
+	Mon, 23 Jun 2025 21:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOI8j+8g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofdp+uV5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0144315A;
-	Mon, 23 Jun 2025 21:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274851EE7C6;
+	Mon, 23 Jun 2025 21:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715314; cv=none; b=WADmUCq0olwrYS+A2GxN5AgUO+p4yigc9yH6xIEqhTksO13Usjz0YDItXXoQTEoxQ+FpohMJ4IhNhQYE5Rc5k8l90GppdPTY0xR83hDeuSdWrlu0YIyroaAQ9WpAdPJQ4Pv45N5SQuP28CuAPDB5GyTIR8nvGactDAh0fxxewmc=
+	t=1750714534; cv=none; b=mP4F+qU5mvz4eies/HCAwfcRzNhm9OgbL1nFYSd9LObr/lMWg2Pg/iQt+a6OFRcjkBl5Ufi7TPLpOnkpv9PNhVPfRrufE/6F62T9HObcMDjGCzO7qe9Y5KVvfOOz/jXIdsKQNqN1zu9wOqhSMmvanwAqV6uXpO/ONJKuMVil1WI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715314; c=relaxed/simple;
-	bh=qa2yeibhODCCbiZXjqxOwIC3vJ1krdzEqQ+/IQzhmIE=;
+	s=arc-20240116; t=1750714534; c=relaxed/simple;
+	bh=BfZQgCD8SkxSezfF3mVEoZ7cr9pQpK3ed0qRE+pGpso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fhgwj9d/Ezu80fjXhmdfSKrbmucO4tcPeBurFdYILwUG4vZHwDLyE3fXMyOK+KKRh86nk6w6fnR8ijIw48IrPilIepmxPKjLY9Ba/sDuRq+rNJgDRHUdrOVDrd2m+0/evOPMJWug8XT+MsCgCsQsraEnMVOdaS+FTtCM4s/FY+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOI8j+8g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01974C4CEEA;
-	Mon, 23 Jun 2025 21:48:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WBBpGU4CqtPQySiy2VnhOiNL1Md/tshSdlSNf0DFlOaibyWdArBgj6Uyis4Gd5PtswNurZZW2pEJ65NOVc/vn7V2gAHq51ClAOJaLAxmCeip06fhodQXsq/BFUVxPd9FPlBNkAWjlLq5u7Pue2CiRL7UPwrAtvGLCLgr0a5WNEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofdp+uV5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3787C4CEED;
+	Mon, 23 Jun 2025 21:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715314;
-	bh=qa2yeibhODCCbiZXjqxOwIC3vJ1krdzEqQ+/IQzhmIE=;
+	s=korg; t=1750714534;
+	bh=BfZQgCD8SkxSezfF3mVEoZ7cr9pQpK3ed0qRE+pGpso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wOI8j+8gV9ufGbVEAtHWTWtqh3l8u9W05JYJWtVSlGjld2DbZGLKgBLvm+c+ZYL7G
-	 fERoP0g4aj1Lsoutay/ESWQ9ujdTm3dTgGAEOHFZMicHd7YpREJ1/6g3yp3NsIC4xh
-	 gI8dMA1WepQEK9Ppx4FkRe2APSrf5oQKkNJ8lJ78=
+	b=ofdp+uV5D27unNcrxmzsB/rDw+Q8eyi/pcPxoFycGxNrWy/wA1Vk7yqg2TzlzJUl6
+	 YJkcCp6z/x08jFFHfl0ATiVZaiK/6FDxaf637OSyO2CsXz/dXxG2UOUmfLnPS6TmNp
+	 n4SWQjsZA/x0GjUOOAZ+4Eg9u8vz/JdjPIVaoykA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 227/508] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
+	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
+	Trevor Gamblin <tgamblin@baylibre.com>,
+	David Lechner <dlechner@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
+Subject: [PATCH 6.12 135/414] pwm: axi-pwmgen: fix missing separate external clock
 Date: Mon, 23 Jun 2025 15:04:32 +0200
-Message-ID: <20250623130650.847043212@linuxfoundation.org>
+Message-ID: <20250623130645.429816400@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +61,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: David Lechner <dlechner@baylibre.com>
 
-[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
+commit a8841dc3dfbf127a19c3612204bd336ee559b9a1 upstream.
 
-In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
-recovery flow, but we still unconditionally call enable again in
-ath10k_snoc_hif_start().
+Add proper support for external clock to the AXI PWM generator driver.
 
-We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
-before hif_start() is called, so instead check the
-ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
-recovery.
+In most cases, the HDL for this IP block is compiled with the default
+ASYNC_CLK_EN=1. With this option, there is a separate external clock
+that drives the PWM output separate from the peripheral clock. So the
+driver should be enabling the "axi" clock to power the peripheral and
+the "ext" clock to drive the PWM output.
 
-This fixes unbalanced IRQ enable splats that happen after recovering from
-a crash.
+When ASYNC_CLK_EN=0, the "axi" clock is also used to drive the PWM
+output and there is no "ext" clock.
 
-Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Previously, if there was a separate external clock, users had to specify
+only the external clock and (incorrectly) omit the AXI clock in order
+to get the correct operating frequency for the PWM output.
+
+The devicetree bindings are updated to fix this shortcoming and this
+patch changes the driver to match the new bindings. To preserve
+compatibility with any existing dtbs that specify only one clock, we
+don't require the clock name on the first clock.
+
+Fixes: 41814fe5c782 ("pwm: Add driver for AXI PWM generator")
+Cc: stable@vger.kernel.org
+Acked-by: Nuno Sá <nuno.sa@analog.com>
+Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://lore.kernel.org/r/20250529-pwm-axi-pwmgen-add-external-clock-v3-3-5d8809a7da91@baylibre.com
+Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pwm/pwm-axi-pwmgen.c |   23 ++++++++++++++++++++---
+ 1 file changed, 20 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 4b7266d928470..b43658b016844 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -936,7 +936,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
- 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+--- a/drivers/pwm/pwm-axi-pwmgen.c
++++ b/drivers/pwm/pwm-axi-pwmgen.c
+@@ -174,7 +174,7 @@ static int axi_pwmgen_probe(struct platf
+ 	struct regmap *regmap;
+ 	struct pwm_chip *chip;
+ 	struct axi_pwmgen_ddata *ddata;
+-	struct clk *clk;
++	struct clk *axi_clk, *clk;
+ 	void __iomem *io_base;
+ 	int ret;
  
- 	ath10k_core_napi_enable(ar);
--	ath10k_snoc_irq_enable(ar);
-+	/* IRQs are left enabled when we restart due to a firmware crash */
-+	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
-+		ath10k_snoc_irq_enable(ar);
- 	ath10k_snoc_rx_post(ar);
+@@ -197,9 +197,26 @@ static int axi_pwmgen_probe(struct platf
+ 	ddata = pwmchip_get_drvdata(chip);
+ 	ddata->regmap = regmap;
  
- 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
--- 
-2.39.5
-
+-	clk = devm_clk_get_enabled(dev, NULL);
++	/*
++	 * Using NULL here instead of "axi" for backwards compatibility. There
++	 * are some dtbs that don't give clock-names and have the "ext" clock
++	 * as the one and only clock (due to mistake in the original bindings).
++	 */
++	axi_clk = devm_clk_get_enabled(dev, NULL);
++	if (IS_ERR(axi_clk))
++		return dev_err_probe(dev, PTR_ERR(axi_clk), "failed to get axi clock\n");
++
++	clk = devm_clk_get_optional_enabled(dev, "ext");
+ 	if (IS_ERR(clk))
+-		return dev_err_probe(dev, PTR_ERR(clk), "failed to get clock\n");
++		return dev_err_probe(dev, PTR_ERR(clk), "failed to get ext clock\n");
++
++	/*
++	 * If there is no "ext" clock, it means the HDL was compiled with
++	 * ASYNC_CLK_EN=0. In this case, the AXI clock is also used for the
++	 * PWM output clock.
++	 */
++	if (!clk)
++		clk = axi_clk;
+ 
+ 	ret = devm_clk_rate_exclusive_get(dev, clk);
+ 	if (ret)
 
 
 
