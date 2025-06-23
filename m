@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 627E9AE532A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38C99AE511B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7238F44489E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6379144140E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2999136348;
-	Mon, 23 Jun 2025 21:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 913691EEA5D;
+	Mon, 23 Jun 2025 21:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCbjw7M7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HfchNGCG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F4E12222C2;
-	Mon, 23 Jun 2025 21:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F96B2AD04;
+	Mon, 23 Jun 2025 21:30:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715433; cv=none; b=L5cfIUgT9rahV55LiAojPTXmv1UgAOLGiN+7BQ1wLVmVSkpFiOKJqZL1SUNxdPXFxgCZkZ/lfTJAmhUlmEYyiqpCVRt05FVPCjGa9aCyJ3jUTPaEqdTkRsDVNmTnDHzoP0gOtQDUENjlgE+UxWzBzwkThRP1TORdnme1rljD6BE=
+	t=1750714233; cv=none; b=uP41xowB9A+D5SGYmIpt32JGeDDeqPV5Ki68EBn5+pFKsx/sEui8MawXKzQEwtONephx1Acgn6iZHs3ItY+QSYXDkM9zorhGpJbvKnJi6IAbzQBcK8985YMb8VNnvz4Fr9g6DcCIy3oGz/TzlBEYLLy0SE5RocVDxYXazfJ3Pa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715433; c=relaxed/simple;
-	bh=vAFQenjUZJCWXEUuQv6y2Zrf2sjClweuoQEKrBUxXY8=;
+	s=arc-20240116; t=1750714233; c=relaxed/simple;
+	bh=an7SThgsD+07Zlafn2EEy7coE44PUHn54vLFLWcIszE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=edM3G6NssAYYTDpTvIYGZnWxpkAYDESKS9/BxkeMtZTVFGaCXVSa8ie2hEruUu7ErpO9dRHC4+18sYWTyabx8wsZCUAZUVwGw5PA9lbz16sW+cwmZULxUcFkvUhJN54ahp0eRqfMsCcRQVmFYokFgDppof/HrUATFUsHSAFcdL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCbjw7M7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A203C4CEEA;
-	Mon, 23 Jun 2025 21:50:32 +0000 (UTC)
+	 MIME-Version; b=heEE6Iwx4403FQ80j7Kpl1b2fHbzkhbf2pJhI55kQQ6LGRNcI7OwoODG9iZP0wGN5MG6mNoARmBjR1rzgj5kizZhOtLpcM3X9qZ55XbpNsZxN8BNSghq9ZqYyiPkAfx1C5zsu4Dl3MHaM4ZEaVTOPySLAHSp2/wPb+UhpTZwHhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HfchNGCG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D65A2C4CEEA;
+	Mon, 23 Jun 2025 21:30:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715433;
-	bh=vAFQenjUZJCWXEUuQv6y2Zrf2sjClweuoQEKrBUxXY8=;
+	s=korg; t=1750714233;
+	bh=an7SThgsD+07Zlafn2EEy7coE44PUHn54vLFLWcIszE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCbjw7M7s3Vq7X7KY/djo4ScG2pGGTI7PHlu9F3MUTjEfN6/gNzkMEEMhn6eG3yhM
-	 QhxPWFJIYZ+95Mk6RNABZA6yjvyjoGXD35gf3LvdtSbJ0ujUOCLCxTsZ8rIpQiPZOS
-	 6pqpWbRX08TKQYCyD97wwmf91gkpWQVj2PMaT0rU=
+	b=HfchNGCGWPLEjFiBNMLhCTRdpz3BizFAjjnS0w6B1mJ4C0ILNUc2M6UrMRjAe4Uuw
+	 FyTPztAZLoLJeywZACvrJxsMox8iHofj5whXwqwh+D4VDWlw7NOXdCMtKSpNqkBW29
+	 Pp/TTA1yWEsHyINOEups158bUwC6YYEjqSQnWQ5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Dhruva Gole <d-gole@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 182/414] pmdomain: core: Reset genpd->states to avoid freeing invalid data
+	Tom Rini <trini@konsulko.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 5.15 175/411] kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS
 Date: Mon, 23 Jun 2025 15:05:19 +0200
-Message-ID: <20250623130646.573672453@linuxfoundation.org>
+Message-ID: <20250623130638.095624728@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ulf Hansson <ulf.hansson@linaro.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
 
-[ Upstream commit 99012014c902cd9ad85fd288d8a107f33a69855e ]
+commit feb843a469fb0ab00d2d23cfb9bcc379791011bb upstream.
 
-If genpd_alloc_data() allocates data for the default power-states for the
-genpd, let's make sure to also reset the pointer in the error path. This
-makes sure a genpd provider driver doesn't end up trying to free the data
-again, but using an invalid pointer.
+When preprocessing arch/*/kernel/vmlinux.lds.S, the target triple is
+not passed to $(CPP) because we add it only to KBUILD_{C,A}FLAGS.
 
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Link: https://lore.kernel.org/r/20250402120613.1116711-1-ulf.hansson@linaro.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As a result, the linker script is preprocessed with predefined macros
+for the build host instead of the target.
+
+Assuming you use an x86 build machine, compare the following:
+
+ $ clang -dM -E -x c /dev/null
+ $ clang -dM -E -x c /dev/null -target aarch64-linux-gnu
+
+There is no actual problem presumably because our linker scripts do not
+rely on such predefined macros, but it is better to define correct ones.
+
+Move $(CLANG_FLAGS) to KBUILD_CPPFLAGS, so that all *.c, *.S, *.lds.S
+will be processed with the proper target triple.
+
+[Note]
+After the patch submission, we got an actual problem that needs this
+commit. (CBL issue 1859)
+
+Link: https://github.com/ClangBuiltLinux/linux/issues/1859
+Reported-by: Tom Rini <trini@konsulko.com>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pmdomain/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ scripts/Makefile.clang |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
-index 8b1f894f5e790..2643525a572bb 100644
---- a/drivers/pmdomain/core.c
-+++ b/drivers/pmdomain/core.c
-@@ -2228,8 +2228,10 @@ static int genpd_alloc_data(struct generic_pm_domain *genpd)
- 	return 0;
- put:
- 	put_device(&genpd->dev);
--	if (genpd->free_states == genpd_free_default_power_state)
-+	if (genpd->free_states == genpd_free_default_power_state) {
- 		kfree(genpd->states);
-+		genpd->states = NULL;
-+	}
- free:
- 	if (genpd_is_cpu_domain(genpd))
- 		free_cpumask_var(genpd->cpus);
--- 
-2.39.5
-
+--- a/scripts/Makefile.clang
++++ b/scripts/Makefile.clang
+@@ -35,6 +35,5 @@ endif
+ # so they can be implemented or wrapped in cc-option.
+ CLANG_FLAGS	+= -Werror=unknown-warning-option
+ CLANG_FLAGS	+= -Werror=ignored-optimization-argument
+-KBUILD_CFLAGS	+= $(CLANG_FLAGS)
+-KBUILD_AFLAGS	+= $(CLANG_FLAGS)
++KBUILD_CPPFLAGS	+= $(CLANG_FLAGS)
+ export CLANG_FLAGS
 
 
 
