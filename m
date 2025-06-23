@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-157941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B304AE564F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9BA9AE550C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF1DE16ECC4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7AA861BC34B1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 202951F7580;
-	Mon, 23 Jun 2025 22:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E662F222599;
+	Mon, 23 Jun 2025 22:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtBmID5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H79UsE8r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D16DE19E7F9;
-	Mon, 23 Jun 2025 22:18:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CAC1222576;
+	Mon, 23 Jun 2025 22:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717095; cv=none; b=i//qjIngeWjnUYNR2c3JyqZRlWGx/4hZP1l3oQhYeT306DXWx3wBfKMfav3i/yQfLWOVRac+UqfA4zUdrbvW2Z1x1vGEzBRe005qInCBKMPrLeeVueVLG94DmFztS2j6R7jXGJa8IXDqcPknPq3TNExre9pIt8EDhRyjHR6jmKY=
+	t=1750716446; cv=none; b=WHbh3dKr9lPM4nHXLyQ5Rx92TPlT4P3nm0oOUgF8ZRYMrnvGGqPmj0mHaN3FcmekUVrVpWoA97H5qaI3aL6vXJguEeOXxpRbN++/YhtPw5ZdvjE2qOHylH9Y2ttcTb5Qksoz11XUTU3pKe8U/NV2AyUDTqrC2z21VZzmYmGSZFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717095; c=relaxed/simple;
-	bh=kNB2OjORJixXfLkCjQ1S5T+51+mPJN1SaskpeV4ejTY=;
+	s=arc-20240116; t=1750716446; c=relaxed/simple;
+	bh=uTF4iwJkVLnP5uv2TGQBGH7UI5gIk5+WoqEQxqD0Reg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8GozTH2FXNPBErLVsD7eq6SBuue7K7Zwbo3y/j9tx5htDfznVIMyS9Z07VCNmPk1FFo+Ej+SUGrgz7YdFLm2Nxs1ZgGgm3Uv8x0tGgonSdp3GaPpBMDcMRf1GyOUfEkRDjEHReq6AHw+cA+aCwbII5gpUa/BA9XKwhpwFDC1Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtBmID5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020FEC4CEEA;
-	Mon, 23 Jun 2025 22:18:13 +0000 (UTC)
+	 MIME-Version; b=BLkgK25gcCuJKHwpomSh/qIuyfteOoQ6M1xhHCUgx2n9sAsSFg3lXdVneslaQgkh9XCPRt0vuLCCAO0zZwGfKrWDRRkZHDLhe9UkIugQ02BkU0pbl+dQooX81DHQJMTJx7RUPrLS+a7PIlJPnhGY0OBya1Y8u743r2l/txh7ETY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H79UsE8r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 325CBC4CEEA;
+	Mon, 23 Jun 2025 22:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717094;
-	bh=kNB2OjORJixXfLkCjQ1S5T+51+mPJN1SaskpeV4ejTY=;
+	s=korg; t=1750716446;
+	bh=uTF4iwJkVLnP5uv2TGQBGH7UI5gIk5+WoqEQxqD0Reg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TtBmID5UIKAAKtxNZSCTPG18HdUKAWtzXJmF0ei5nV1/7oIx/whoUEes7nv8+z/p5
-	 u9ZVgHJI9jP+Pn1PDQMmibmrbQnQA+B87cRjh9t1KU1dzW07Fj5Q6KPEsunE8CdwPN
-	 R6tYZoRj3DHrkacR/yhk2p9qnhwdTxhXOWUBOTo4=
+	b=H79UsE8rC7Vets/VjFvftI2agsQ06Y92bsWavfXxZsiFkwtug4itN3q8MkxQmAntV
+	 u54qo+SXq3800McCDKH7KNTZIfeEmrNd9eWR+rY3glD1l/7DHMMLK1+STdeaLCfKdb
+	 DY3lzuf+76SXNVso5DyPplGNkY2YgiCfvOLK25qQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 592/592] erofs: remove a superfluous check for encoded extents
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.10 349/355] s390/pci: Fix __pcilg_mio_inuser() inline assembly
 Date: Mon, 23 Jun 2025 15:09:10 +0200
-Message-ID: <20250623130714.514048875@linuxfoundation.org>
+Message-ID: <20250623130637.216863166@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 417b8af2e30d7f131682a893ad79c506fd39c624 ]
+commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
 
-It is possible when an inode is split into segments for multi-threaded
-compression, and the tail extent of a segment could also be small.
+Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
+assembly. The used "d" constraint allows the compiler to use any general
+purpose register for the shift operand, including register zero.
 
-Fixes: 1d191b4ca51d ("erofs: implement encoded extent metadata")
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250620153108.1368029-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If register zero is used this my result in incorrect code generation:
+
+ 8f6:   a7 0a ff f8             ahi     %r0,-8
+ 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+
+If register zero is selected to contain the shift value, the srlg
+instruction ignores the contents of the register and always shifts zero
+bits. Therefore use the "a" constraint which does not permit to select
+register zero.
+
+Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Cc: stable@vger.kernel.org
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/erofs/zmap.c | 6 ------
- 1 file changed, 6 deletions(-)
+ arch/s390/pci/pci_mmio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
-index 6afcb054780d4..0bebc6e3a4d7d 100644
---- a/fs/erofs/zmap.c
-+++ b/fs/erofs/zmap.c
-@@ -639,12 +639,6 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
- 		}
- 	}
- 	map->m_llen = lend - map->m_la;
--	if (!last && map->m_llen < sb->s_blocksize) {
--		erofs_err(sb, "extent too small %llu @ offset %llu of nid %llu",
--			  map->m_llen, map->m_la, vi->nid);
--		DBG_BUGON(1);
--		return -EFSCORRUPTED;
--	}
- 	return 0;
- }
- 
--- 
-2.39.5
-
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -229,7 +229,7 @@ static inline int __pcilg_mio_inuser(
+ 		:
+ 		[cc] "+d" (cc), [val] "=d" (val), [len] "+d" (len),
+ 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
+-		[shift] "+d" (shift)
++		[shift] "+a" (shift)
+ 		:
+ 		[ioaddr] "a" (addr)
+ 		: "cc", "memory");
 
 
 
