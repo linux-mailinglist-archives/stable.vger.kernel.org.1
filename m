@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-156724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20732AE50E0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67811AE4F45
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 87F324A0233
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A579D1B60AB0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3ED2206BB;
-	Mon, 23 Jun 2025 21:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2C5721ADB5;
+	Mon, 23 Jun 2025 21:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmAQrtId"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dv0qOgst"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3915F1EEA3C;
-	Mon, 23 Jun 2025 21:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A13A81DF98B;
+	Mon, 23 Jun 2025 21:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714111; cv=none; b=l14Ri2HmKVB0bHcnzDWWjI1yVtfsDcBJVD8U5Nr+QOApC9kaGbVJm4SJDOWGYbUkn9MTNkPj/A0kkja4fAq3axpXWOTcTGl7X2Wm0dFLjopZzkbBlUs+ogSJ+rSWq99WpRRCLaEraHKEkZKD7DCBqV/wULymKqS0hmm+n0wm7yY=
+	t=1750713238; cv=none; b=lHWbeNuXebCucWR/Y4sstdjZsCwFJDUfX1BEp2WC07iO8HHHaMnxtCBRTszCBP8BZQoYK7Se2cd/82NOWZqLaTlmt0r9t219HL7mHj25v1L9fR+Y1c2j+GakcZ2NLBFVkSoLviRAUPdYfxEtZeUtHBI8OiYOz8cVOiNsz7kuGZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714111; c=relaxed/simple;
-	bh=539THhbACgAebh1J3nrpjLbMklshM3SCkLhiETufJZo=;
+	s=arc-20240116; t=1750713238; c=relaxed/simple;
+	bh=B/Xu4Lm3fcF+tzDba2Eqg3uenOnBK199n/8YXt/pwwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q2LdnfaiBerWVgN5jd81LPY0b7OT/bklGrSeH7vhm06hP0x9pI5sTgIUdKbuMyV/c/EGiq1RhoP8JJ3WbBQFSutYwmUpdUYWv+EVUbR2CDziiXgraFuo8vz0J2Hgt83KtgDnWp7nHlSE3gYlo2ncb7VW47W0tnJ//IbbUr4L9No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmAQrtId; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6169C4CEEA;
-	Mon, 23 Jun 2025 21:28:30 +0000 (UTC)
+	 MIME-Version; b=eW7OSBijZHj9L+LhF5z0baM+4x5NwGkJ/lNBsmdPE/DaZ7uuVDLyriHMEuv++gfxDF+aCypXARP1Mfzuukud6nULGxoQl0B8p9ylxzyqjZDHdPBvw+G7DzFicRZTtJzuuWmVXxiUxH0fkpP04TGoIvTjT5XRXKX0hoSYzVwoNL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dv0qOgst; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A78AC4CEEA;
+	Mon, 23 Jun 2025 21:13:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714111;
-	bh=539THhbACgAebh1J3nrpjLbMklshM3SCkLhiETufJZo=;
+	s=korg; t=1750713238;
+	bh=B/Xu4Lm3fcF+tzDba2Eqg3uenOnBK199n/8YXt/pwwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmAQrtIdgb7pYQDZCibO6R9a5JIdHGZSkMiwTG6l4APjHkhcS/PMNs5xrj7efEm3H
-	 UOOIqRXuyygemrkBG/hs1G+oHwPXROtWZ4qDNamIE9PWZRjGmBVMNMuojGn1o0aJTr
-	 pTn1Q0aMTAU0IPMAexsEe0OojbGuuIC3mSoO0J1I=
+	b=dv0qOgstkyel6/c2615vIJjdMq4t3sIKLirT7l0EZeqfv6rJDjVSsxJ1TwwViE+Ai
+	 7P6sD7V/xV1iUXYd+T0dpAiCsv9nMkDQQG934xwChQfFLUH2zIH/OFEmdQrKHi3C7J
+	 AjL2SunnWPvhdPaugBeT8LkQkaHxcXzvlbCYcTUQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Gavi Teitz <gavi@nvidia.com>,
+	Roi Dayan <roid@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 375/592] wifi: iwlwifi: mld: check for NULL before referencing a pointer
-Date: Mon, 23 Jun 2025 15:05:33 +0200
-Message-ID: <20250623130709.359066169@linuxfoundation.org>
+Subject: [PATCH 5.10 133/355] net/mlx5: Fix return value when searching for existing flow group
+Date: Mon, 23 Jun 2025 15:05:34 +0200
+Message-ID: <20250623130630.731898383@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +66,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit f9151f16e140b9c43f076579146679408af6f442 ]
+[ Upstream commit 8ec40e3f1f72bf8f8accf18020d487caa99f46a4 ]
 
-Errors can happen, and it is better not to risk with a NULL pointer
-dereference.
-Make sure that the links-to-remove pointers are not NULL before
-dereferencing it.
+When attempting to add a rule to an existing flow group, if a matching
+flow group exists but is not active, the error code returned should be
+EAGAIN, so that the rule can be added to the matching flow group once
+it is active, rather than ENOENT, which indicates that no matching
+flow group was found.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250430151952.408652d45cda.I1bb72836dab17895a2e39910e4493d667db0fa80@changeid
+Fixes: bd71b08ec2ee ("net/mlx5: Support multiple updates of steering rules in parallel")
+Signed-off-by: Gavi Teitz <gavi@nvidia.com>
+Signed-off-by: Roi Dayan <roid@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-4-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mac80211.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-index 68d97d3b8f026..2d5233dc3e242 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mac80211.c
-@@ -2460,7 +2460,7 @@ iwl_mld_change_vif_links(struct ieee80211_hw *hw,
- 		added |= BIT(0);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index c1a33f05702ec..4b237a0fee34b 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1869,6 +1869,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 	struct mlx5_flow_handle *rule;
+ 	struct match_list *iter;
+ 	bool take_write = false;
++	bool try_again = false;
+ 	struct fs_fte *fte;
+ 	u64  version = 0;
+ 	int err;
+@@ -1928,6 +1929,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 		nested_down_write_ref_node(&g->node, FS_LOCK_PARENT);
  
- 	for (int i = 0; i < IEEE80211_MLD_MAX_NUM_LINKS; i++) {
--		if (removed & BIT(i))
-+		if (removed & BIT(i) && !WARN_ON(!old[i]))
- 			iwl_mld_remove_link(mld, old[i]);
+ 		if (!g->node.active) {
++			try_again = true;
+ 			up_write_ref_node(&g->node, false);
+ 			continue;
+ 		}
+@@ -1949,7 +1951,8 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 			tree_put_node(&fte->node, false);
+ 		return rule;
  	}
- 
+-	rule = ERR_PTR(-ENOENT);
++	err = try_again ? -EAGAIN : -ENOENT;
++	rule = ERR_PTR(err);
+ out:
+ 	kmem_cache_free(steering->ftes_cache, fte);
+ 	return rule;
 -- 
 2.39.5
 
