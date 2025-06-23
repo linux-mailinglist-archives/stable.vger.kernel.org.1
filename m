@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-155894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CCFAE44A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 27965AE444A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7382D443317
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C46E44341E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A36E224DCFD;
-	Mon, 23 Jun 2025 13:33:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977C125291F;
+	Mon, 23 Jun 2025 13:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAnjoXiC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R3XDh64U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61F1E4C7F;
-	Mon, 23 Jun 2025 13:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F1630E84D;
+	Mon, 23 Jun 2025 13:33:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685612; cv=none; b=Jpez6runNrNkKKQkJ/PdjOmHqM0LuAND3FAFuUecP/EEgSBFC7UOaas7CXKtR3OG/XCNoV/gmeISiReQYU1fj9DIEsrXNGyYRXAVkKbS4qPlGRk74sJ2HHWf299yeuFg18mJl8B8qqP+eF3ULnBlIjUYbtWn3wsRHpn38JbySPc=
+	t=1750685626; cv=none; b=Nj388DuB55rtU5rNk+NO5v0A3CVTNcNlh1gj0ro925+PF4JY/Jpw6BLDKKcIg91jq30v9LuiBFH8I4TDJYbJByl+1VJvDroMdWH1NpAA5jSoVH3b20jj4ATpsgjDhJ/jD+Bs2XG83AgUu8IBZYj07RtkcPrsFVDFsTp3URHI48g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685612; c=relaxed/simple;
-	bh=s+1Adq8DJmoG78cDwj9aPBfaoqP0OkUBvCPHPdh2XmM=;
+	s=arc-20240116; t=1750685626; c=relaxed/simple;
+	bh=DdDqXTIJG2mYCcwbRzW19nBq8lGqxOWjIZdWUE0iGMw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojtrRPcTapgLXszi2SmPDkXwTEdTxXj/rZYGytPxAsNk6vRuqgb3rgSe+xlnwp6gRtJc+ELteZ2SJ611nl2JkOwXg1VlKh8Jyv3A/PgRFo76v8y6Coepr5SU51cSvJID6gCi1C7mmSkwlMgtG45NQosT0B/PAYFp/5TV5InB5Ik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAnjoXiC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C02C4CEEA;
-	Mon, 23 Jun 2025 13:33:30 +0000 (UTC)
+	 MIME-Version; b=gDdKEiuGmYlIlrqp4YPMplEVdT/IkNe+FwaQXxX7GFZSwaxtJhOHDM54KTMJLYbmfJhpuvuYNn5SyiHzUum58MtpetM0YK5ECXPuS8Cvw2lcQ/Jbp9IblppdkS/Vc43PcMrdZQgM8gepXHRtGZIN6FzXwbaTckzt1/yw/bVBMUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R3XDh64U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF78C4CEEA;
+	Mon, 23 Jun 2025 13:33:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685611;
-	bh=s+1Adq8DJmoG78cDwj9aPBfaoqP0OkUBvCPHPdh2XmM=;
+	s=korg; t=1750685626;
+	bh=DdDqXTIJG2mYCcwbRzW19nBq8lGqxOWjIZdWUE0iGMw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rAnjoXiCj3GWqb9is8siCswD0ow0V1SIqJESQSTZ6MtzVbI+9JcUY+oflRGn5JeeI
-	 3gUhROhDmkVVUvXHtDyDSL0VoSEos3X4Xgb7Vi/J8NfsvL8vRHeDzIyW3Z1lex/3Ti
-	 wIe5Lo13FZN5QceXiFv/4fKKv6FtcHeiW4PGNhzw=
+	b=R3XDh64UBt83KbHpdeaSrzWcrp4NeaK/G12i+CQ+CAdgBbSDO6xz9s+ObKJ3hYTVp
+	 +bDDpu5Ouc9L/aMc/gzUK6DK8jfI4ejeeBDi759BJxGAKXRzKXBuE/LPcHQot6q90m
+	 W/J7Zn32nq4rNw/q6WzcCeHb057uw3YUmWhmWe9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.4 107/222] media: gspca: Add error handling for stv06xx_read_sensor()
-Date: Mon, 23 Jun 2025 15:07:22 +0200
-Message-ID: <20250623130615.328478728@linuxfoundation.org>
+Subject: [PATCH 5.4 108/222] media: v4l2-dev: fix error handling in __video_register_device()
+Date: Mon, 23 Jun 2025 15:07:23 +0200
+Message-ID: <20250623130615.358012277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,42 +66,67 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit 398a1b33f1479af35ca915c5efc9b00d6204f8fa upstream.
+commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
 
-In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
-checked. A proper implementation can be found in vv6410_dump(). Add a
-check in loop condition and propergate error code to fix this issue.
+Once device_register() failed, we should call put_device() to
+decrement reference count for cleanup. Or it could cause memory leak.
+And move callback function v4l2_device_release() and v4l2_device_get()
+before put_device().
 
-Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+As comment of device_register() says, 'NOTE: _Never_ directly free
+@dev after calling this function, even if it returned an error! Always
+use put_device() to give up the reference initialized in this function
+instead.'
+
+Found by code review.
+
+Cc: stable@vger.kernel.org
+Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-+++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
- static int hdcs_dump(struct sd *sd)
- {
- 	u16 reg, val;
-+	int err = 0;
- 
- 	pr_info("Dumping sensor registers:\n");
- 
--	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
--		stv06xx_read_sensor(sd, reg, &val);
-+	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
-+		err = stv06xx_read_sensor(sd, reg, &val);
- 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
+--- a/drivers/media/v4l2-core/v4l2-dev.c
++++ b/drivers/media/v4l2-core/v4l2-dev.c
+@@ -1010,25 +1010,25 @@ int __video_register_device(struct video
+ 	vdev->dev.class = &video_class;
+ 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
+ 	vdev->dev.parent = vdev->dev_parent;
++	vdev->dev.release = v4l2_device_release;
+ 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
++
++	/* Increase v4l2_device refcount */
++	v4l2_device_get(vdev->v4l2_dev);
++
+ 	mutex_lock(&videodev_lock);
+ 	ret = device_register(&vdev->dev);
+ 	if (ret < 0) {
+ 		mutex_unlock(&videodev_lock);
+ 		pr_err("%s: device_register failed\n", __func__);
+-		goto cleanup;
++		put_device(&vdev->dev);
++		return ret;
  	}
--	return 0;
-+	return (err < 0) ? err : 0;
- }
+-	/* Register the release callback that will be called when the last
+-	   reference to the device goes away. */
+-	vdev->dev.release = v4l2_device_release;
+ 
+ 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
+ 		pr_warn("%s: requested %s%d, got %s\n", __func__,
+ 			name_base, nr, video_device_node_name(vdev));
+ 
+-	/* Increase v4l2_device refcount */
+-	v4l2_device_get(vdev->v4l2_dev);
+-
+ 	/* Part 5: Register the entity. */
+ 	ret = video_register_media_controller(vdev);
+ 
 
 
 
