@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-158072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470F1AE56D0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D864AE56D3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26BDC1C230EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1481C231DF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B41D222599;
-	Mon, 23 Jun 2025 22:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4338221543;
+	Mon, 23 Jun 2025 22:23:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsHHjaTk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK3L3OYG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AEB222581;
-	Mon, 23 Jun 2025 22:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6040F223DE5;
+	Mon, 23 Jun 2025 22:23:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717414; cv=none; b=qwbCZ8rSnwqy8ucOmShhtJlj61mQanPFJ0tXnFQ2VWFPjeikClqJAwfQKMkMAdSIzboBwNgbDSmw1fHXJkupgqoikasyEEMayXrnotrC7gMJsR78zOgLT547tntEnBhcI4nQh53ZCBNmvkw8m14wblZizqMZJorvkp/GciM2Bac=
+	t=1750717419; cv=none; b=IUyuTnA6vEnp6/nqfH/e1UrXV2GsQNUojJmJbVrHbD7q0U7WaORR1XolOrRIftIW2xQw4HlhjgzRB6JW2Y6lsM1VeZ62jz9u1lllH56vPmsRjxLL5WGFZGq3EoR7M9CkEymZOaJ6aYBDtT8Opcg+4RaGhAv+PdjBdHHt+CNUTRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717414; c=relaxed/simple;
-	bh=lL55cnOQX+R9AWpIF5GdAmoY6RpASWAfJ/HXD7I/lcI=;
+	s=arc-20240116; t=1750717419; c=relaxed/simple;
+	bh=j8RgE4gy0VEZFnXE6/Y9CoVU0vdQ/OZMmxd0sQdk+e4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=egAlp3abNSKUyWcEWiy7L61A1pit8eEiXpWCVjIMiCotcVDGPg04RLv8GjakX2Bcsrcr7bXNIGJj3lgxl3FCXeVL/9FOR+7moYsugI6k+JlDD2hUh9BB3JGOeThAIxKgpRNG/WwaZjm4njl2pc7luwD+WKHeYyMeZTy5Veni2rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsHHjaTk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A331BC4CEEA;
-	Mon, 23 Jun 2025 22:23:33 +0000 (UTC)
+	 MIME-Version; b=C0RbUL1y7yPGkxhw2pH3KSZhX4QPIKDo92VWAQtWEN3RZ+Z52FFamEErSrjaLW+KzvqMEm3sNRi+dtP9oErLnw7+zX/JRHUkOHOcjbVotnIgpc2cLap2zHeMnq8M+k9uIGKsqqxTLlRMrCg+AeLVRseoQbqhebJTaAsc+7fO7mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK3L3OYG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A4FC4CEEA;
+	Mon, 23 Jun 2025 22:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717414;
-	bh=lL55cnOQX+R9AWpIF5GdAmoY6RpASWAfJ/HXD7I/lcI=;
+	s=korg; t=1750717418;
+	bh=j8RgE4gy0VEZFnXE6/Y9CoVU0vdQ/OZMmxd0sQdk+e4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsHHjaTk6BukN5LL/BVA2Q9PtYLwHCkvG4KU2E+ZN3DIwJN84vS4dYRajBfwnc0Tu
-	 iseBtPDZ8PJtGXlO8hN3yH6qmwQgJyA4sQq2SBej2GMyQJWhL/gnckQpbYFwfWHeov
-	 Q/rk8fgdc+oxTU/A9SOgONEogoWdGn0JZD8YzcdQ=
+	b=LK3L3OYGjGn1Kes9LVOVZaAXFnWGzYRMYQDWH2fq2xZbgJL04IyuECg1nr8v+jZyZ
+	 4cmWRjpyBF/w3mszoE/3JjxMduMSrzz0sB65pT3+JWhIs9j5lyPbW8zYPhVQbh6uNl
+	 YqppL1ANVVAFt/0SVe1aUax3JC7jrTRW1CHDlbnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haixia Qu <hxqu@hillstonenet.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	David Wei <dw@davidwei.uk>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 383/414] tipc: fix null-ptr-deref when acquiring remote ip of ethernet bearer
-Date: Mon, 23 Jun 2025 15:08:40 +0200
-Message-ID: <20250623130651.527566684@linuxfoundation.org>
+Subject: [PATCH 6.12 384/414] tcp: fix passive TFO socket having invalid NAPI ID
+Date: Mon, 23 Jun 2025 15:08:41 +0200
+Message-ID: <20250623130651.552158668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,63 +68,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Haixia Qu <hxqu@hillstonenet.com>
+From: David Wei <dw@davidwei.uk>
 
-[ Upstream commit f82727adcf2992822e12198792af450a76ebd5ef ]
+[ Upstream commit dbe0ca8da1f62b6252e7be6337209f4d86d4a914 ]
 
-The reproduction steps:
-1. create a tun interface
-2. enable l2 bearer
-3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
+There is a bug with passive TFO sockets returning an invalid NAPI ID 0
+from SO_INCOMING_NAPI_ID. Normally this is not an issue, but zero copy
+receive relies on a correct NAPI ID to process sockets on the right
+queue.
 
-tipc: Started in network mode
-tipc: Node identity 8af312d38a21, cluster identity 4711
-tipc: Enabled bearer <eth:syz_tun>, priority 1
-Oops: general protection fault
-KASAN: null-ptr-deref in range
-CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
-Hardware name: QEMU Ubuntu 24.04 PC
-RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
+Fix by adding a sk_mark_napi_id_set().
 
-the ub was in fact a struct dev.
-
-when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or
-other media when other thread changes it.
-
-fix this by checking media_id.
-
-Fixes: 832629ca5c313 ("tipc: add UDP remoteip dump to netlink API")
-Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250617055624.2680-1-hxqu@hillstonenet.com
+Fixes: e5907459ce7e ("tcp: Record Rx hash and NAPI ID in tcp_child_process")
+Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250617212102.175711-5-dw@davidwei.uk
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/tcp_fastopen.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 108a4cc2e0010..258d6aa4f21ae 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -489,7 +489,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+index 32b28fc21b63c..408985eb74eef 100644
+--- a/net/ipv4/tcp_fastopen.c
++++ b/net/ipv4/tcp_fastopen.c
+@@ -3,6 +3,7 @@
+ #include <linux/tcp.h>
+ #include <linux/rcupdate.h>
+ #include <net/tcp.h>
++#include <net/busy_poll.h>
  
- 		rtnl_lock();
- 		b = tipc_bearer_find(net, bname);
--		if (!b) {
-+		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
- 			rtnl_unlock();
- 			return -EINVAL;
- 		}
-@@ -500,7 +500,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+ void tcp_fastopen_init_key_once(struct net *net)
+ {
+@@ -279,6 +280,8 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
  
- 		rtnl_lock();
- 		b = rtnl_dereference(tn->bearer_list[bid]);
--		if (!b) {
-+		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
- 			rtnl_unlock();
- 			return -EINVAL;
- 		}
+ 	refcount_set(&req->rsk_refcnt, 2);
+ 
++	sk_mark_napi_id_set(child, skb);
++
+ 	/* Now finish processing the fastopen child socket. */
+ 	tcp_init_transfer(child, BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB, skb);
+ 
 -- 
 2.39.5
 
