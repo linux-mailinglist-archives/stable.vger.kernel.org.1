@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5C02AE4E9E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58DA8AE51B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 75053189F687
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E3AB1B6406A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1616A22172D;
-	Mon, 23 Jun 2025 21:07:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41B51221F17;
+	Mon, 23 Jun 2025 21:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dy8N4JyF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gqM6Hcn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C678470838;
-	Mon, 23 Jun 2025 21:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A7619CC11;
+	Mon, 23 Jun 2025 21:36:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712851; cv=none; b=MOIhdsenOrWS8n7a+cCam47sbnwZSdHunA8CnQ1D5Mlzxlu5iCe+9xe9gPVXDFoAxFQ0rb5YJaL7sd9vzmX9Q79JAfyVMwPJPe0WkbSRliqJr7SET9jzWjM3Z0Ki2KltMJbDYD9o528IA9VZuipZ5U3CMDW3QI46X4eEYZbYYBI=
+	t=1750714597; cv=none; b=B2tbCWySITYkAf/InIdz401Zbdn4tfIHFxCAY6GTS3J4rDNGmYVVdF0jsiKNrsvMiW1Zzigw5xnQjqB2FTBUJAE4xtHfpNhWxyFQ/LShVzhAy6GfGyGsXclt61aeKM9leoR9j4REDe5bzfg0BawsyHLMz+WJTwI0Ff0iC2iqEpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712851; c=relaxed/simple;
-	bh=sEQ1AuJZ7cHIfvj+zxbwP6jD8sFyMEPOwu88r4tsShU=;
+	s=arc-20240116; t=1750714597; c=relaxed/simple;
+	bh=LBPjlFv0taToNEzAcJLhjVMyVfhBr+jHAoIyEaYTx3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rOHA+tkC/10UH1mG1IwSMUOfJUdLmGlTsMRQbOu2R3GGAzUH0wtuy4Bd2DIVF0AWLNzUdMiHWYIRwD3OejGplSDUECzK/Xj401PQ8/ZGo08FTxGIInGop0iFzKfHlV6hx7XX9AyheoHTU1ATXfiLtUwy+/nUqnbDT7DwSz4fPlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dy8N4JyF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60661C4CEEA;
-	Mon, 23 Jun 2025 21:07:31 +0000 (UTC)
+	 MIME-Version; b=o5b9D2EtwO+s8xyNtWNqMnWOOc//DQMZd6xGUtPSS4hHhfMIY7agE1AaSfewwEga65WF6Ua9pwDe2dCZzcqkC10Uy98R8jvLojTIaydUdowfXwXwczByT8d8DqJbXLQYEhqzrQIvGkv2cifoe6SaZW/OEyYwPvfWb8imXE5/lLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gqM6Hcn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B45FC4CEEA;
+	Mon, 23 Jun 2025 21:36:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712851;
-	bh=sEQ1AuJZ7cHIfvj+zxbwP6jD8sFyMEPOwu88r4tsShU=;
+	s=korg; t=1750714595;
+	bh=LBPjlFv0taToNEzAcJLhjVMyVfhBr+jHAoIyEaYTx3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dy8N4JyFjNbvRkTtfOblabB8hVJWxFwJQ/ktW+/MsT1Q1XYKRbJ2boyvDe5h2js6Y
-	 Vy2IZS1HZziBXIIJsBKNF4pTFlN4NNzt41Qajt5y32wlZMt/UFQNdmhZnVkpseNdjk
-	 o3jhS3M5YaqOtWRbX66fr9LxSjF8m5J1W4GbEIww=
+	b=1gqM6HcnzS76p5HFwKkkeMY3S+THmfuylW5EfNhDvmq5lFT/qmCHN10wj6hjIBGRN
+	 slSuTTJmuyhSWX+Rf0N+CFYFAbTO62koNCYMW+vhsVHY4B9LqCdEH4iiAt563Iewma
+	 eMLWoXrE/26yZ+T7PYr4C6ygU1Au5GET/wf0PXXM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alex Hung <alex.hung@amd.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Ray Wu <ray.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 297/592] drm/amd/display: Restructure DMI quirks
+	Bjorn Andersson <andersson@kernel.org>,
+	Clayton Craft <clayton@craftyguy.net>,
+	Johan Hovold <johan+linaro@kernel.org>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Subject: [PATCH 6.12 118/414] soc: qcom: pmic_glink_altmode: fix spurious DP hotplug events
 Date: Mon, 23 Jun 2025 15:04:15 +0200
-Message-ID: <20250623130707.448721352@linuxfoundation.org>
+Message-ID: <20250623130645.026316002@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,437 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-[ Upstream commit de6485e3df24170d71706d6f2c55a496443c3803 ]
+commit 5090ac9191a19c61beeade60d3d839e509fab640 upstream.
 
-[Why]
-DMI quirks are relatively big code that makes amdgpu_dm 200 lines
-larger.
+The PMIC GLINK driver is currently generating DisplayPort hotplug
+notifications whenever something is connected to (or disconnected from)
+a port regardless of the type of notification sent by the firmware.
 
-[How]
-Move DMI quirks into a dedicated source file and make all quirks
-variables for `struct amdgpu_display_manager`.
+These notifications are forwarded to user space by the DRM subsystem as
+connector "change" uevents:
 
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Signed-off-by: Ray Wu <ray.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    KERNEL[1556.223776] change   /devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0 (drm)
+    ACTION=change
+    DEVPATH=/devices/platform/soc@0/ae00000.display-subsystem/ae01000.display-controller/drm/card0
+    SUBSYSTEM=drm
+    HOTPLUG=1
+    CONNECTOR=36
+    DEVNAME=/dev/dri/card0
+    DEVTYPE=drm_minor
+    SEQNUM=4176
+    MAJOR=226
+    MINOR=0
+
+On the Lenovo ThinkPad X13s and T14s, the PMIC GLINK firmware sends two
+identical notifications with orientation information when connecting a
+charger, each generating a bogus DRM hotplug event. On the X13s, two
+such notification are also sent every 90 seconds while a charger remains
+connected, which again are forwarded to user space:
+
+    port = 1, svid = ff00, mode = 255, hpd_state = 0
+    payload = 01 00 00 00 00 00 00 ff 00 00 00 00 00 00 00 00
+
+Note that the firmware only sends on of these when connecting an
+ethernet adapter.
+
+Fix the spurious hotplug events by only forwarding hotplug notifications
+for the Type-C DisplayPort service id. This also reduces the number of
+uevents from four to two when an actual DisplayPort altmode device is
+connected:
+
+    port = 0, svid = ff01, mode = 2, hpd_state = 0
+    payload = 00 01 02 00 f2 0c 01 ff 03 00 00 00 00 00 00 00
+    port = 0, svid = ff01, mode = 2, hpd_state = 1
+    payload = 00 01 02 00 f2 0c 01 ff 43 00 00 00 00 00 00 00
+
+Fixes: 080b4e24852b ("soc: qcom: pmic_glink: Introduce altmode support")
+Cc: stable@vger.kernel.org	# 6.3
+Cc: Bjorn Andersson <andersson@kernel.org>
+Reported-by: Clayton Craft <clayton@craftyguy.net>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Tested-by: Clayton Craft <clayton@craftyguy.net>
+Link: https://lore.kernel.org/r/20250324132448.6134-1-johan+linaro@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/Makefile    |   1 +
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 152 +--------------
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h |   9 +
- .../amd/display/amdgpu_dm/amdgpu_dm_quirks.c  | 178 ++++++++++++++++++
- 4 files changed, 191 insertions(+), 149 deletions(-)
- create mode 100644 drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_quirks.c
+ drivers/soc/qcom/pmic_glink_altmode.c |   30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/Makefile b/drivers/gpu/drm/amd/display/amdgpu_dm/Makefile
-index ab2a97e354da1..7329b8cc2576e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/Makefile
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/Makefile
-@@ -38,6 +38,7 @@ AMDGPUDM = \
- 	amdgpu_dm_pp_smu.o \
- 	amdgpu_dm_psr.o \
- 	amdgpu_dm_replay.o \
-+	amdgpu_dm_quirks.o \
- 	amdgpu_dm_wb.o
+--- a/drivers/soc/qcom/pmic_glink_altmode.c
++++ b/drivers/soc/qcom/pmic_glink_altmode.c
+@@ -219,21 +219,29 @@ static void pmic_glink_altmode_worker(st
+ {
+ 	struct pmic_glink_altmode_port *alt_port = work_to_altmode_port(work);
+ 	struct pmic_glink_altmode *altmode = alt_port->altmode;
++	enum drm_connector_status conn_status;
  
- ifdef CONFIG_DRM_AMD_DC_FP
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index d6214fc3921de..96118a0e1ffeb 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -80,7 +80,6 @@
- #include <linux/power_supply.h>
- #include <linux/firmware.h>
- #include <linux/component.h>
--#include <linux/dmi.h>
- #include <linux/sort.h>
+ 	typec_switch_set(alt_port->typec_switch, alt_port->orientation);
  
- #include <drm/display/drm_dp_mst_helper.h>
-@@ -1631,153 +1630,6 @@ static bool dm_should_disable_stutter(struct pci_dev *pdev)
- 	return false;
+-	if (alt_port->svid == USB_TYPEC_DP_SID && alt_port->mode == 0xff)
+-		pmic_glink_altmode_safe(altmode, alt_port);
+-	else if (alt_port->svid == USB_TYPEC_DP_SID)
+-		pmic_glink_altmode_enable_dp(altmode, alt_port, alt_port->mode,
+-					     alt_port->hpd_state, alt_port->hpd_irq);
+-	else
+-		pmic_glink_altmode_enable_usb(altmode, alt_port);
++	if (alt_port->svid == USB_TYPEC_DP_SID) {
++		if (alt_port->mode == 0xff) {
++			pmic_glink_altmode_safe(altmode, alt_port);
++		} else {
++			pmic_glink_altmode_enable_dp(altmode, alt_port,
++						     alt_port->mode,
++						     alt_port->hpd_state,
++						     alt_port->hpd_irq);
++		}
++
++		if (alt_port->hpd_state)
++			conn_status = connector_status_connected;
++		else
++			conn_status = connector_status_disconnected;
+ 
+-	drm_aux_hpd_bridge_notify(&alt_port->bridge->dev,
+-				  alt_port->hpd_state ?
+-				  connector_status_connected :
+-				  connector_status_disconnected);
++		drm_aux_hpd_bridge_notify(&alt_port->bridge->dev, conn_status);
++	} else {
++		pmic_glink_altmode_enable_usb(altmode, alt_port);
++	}
+ 
+ 	pmic_glink_altmode_request(altmode, ALTMODE_PAN_ACK, alt_port->index);
  }
- 
--struct amdgpu_dm_quirks {
--	bool aux_hpd_discon;
--	bool support_edp0_on_dp1;
--};
--
--static struct amdgpu_dm_quirks quirk_entries = {
--	.aux_hpd_discon = false,
--	.support_edp0_on_dp1 = false
--};
--
--static int edp0_on_dp1_callback(const struct dmi_system_id *id)
--{
--	quirk_entries.support_edp0_on_dp1 = true;
--	return 0;
--}
--
--static int aux_hpd_discon_callback(const struct dmi_system_id *id)
--{
--	quirk_entries.aux_hpd_discon = true;
--	return 0;
--}
--
--static const struct dmi_system_id dmi_quirk_table[] = {
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3660"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3260"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3460"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower Plus 7010"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower 7010"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF Plus 7010"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF 7010"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro Plus 7010"),
--		},
--	},
--	{
--		.callback = aux_hpd_discon_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro 7010"),
--		},
--	},
--	{
--		.callback = edp0_on_dp1_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite mt645 G8 Mobile Thin Client"),
--		},
--	},
--	{
--		.callback = edp0_on_dp1_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 645 14 inch G11 Notebook PC"),
--		},
--	},
--	{
--		.callback = edp0_on_dp1_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
--		},
--	},
--	{
--		.callback = edp0_on_dp1_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "HP ProBook 445 14 inch G11 Notebook PC"),
--		},
--	},
--	{
--		.callback = edp0_on_dp1_callback,
--		.matches = {
--			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "HP ProBook 465 16 inch G11 Notebook PC"),
--		},
--	},
--	{}
--	/* TODO: refactor this from a fixed table to a dynamic option */
--};
--
--static void retrieve_dmi_info(struct amdgpu_display_manager *dm, struct dc_init_data *init_data)
--{
--	int dmi_id;
--	struct drm_device *dev = dm->ddev;
--
--	dm->aux_hpd_discon_quirk = false;
--	init_data->flags.support_edp0_on_dp1 = false;
--
--	dmi_id = dmi_check_system(dmi_quirk_table);
--
--	if (!dmi_id)
--		return;
--
--	if (quirk_entries.aux_hpd_discon) {
--		dm->aux_hpd_discon_quirk = true;
--		drm_info(dev, "aux_hpd_discon_quirk attached\n");
--	}
--	if (quirk_entries.support_edp0_on_dp1) {
--		init_data->flags.support_edp0_on_dp1 = true;
--		drm_info(dev, "support_edp0_on_dp1 attached\n");
--	}
--}
- 
- void*
- dm_allocate_gpu_mem(
-@@ -2064,7 +1916,9 @@ static int amdgpu_dm_init(struct amdgpu_device *adev)
- 	if (amdgpu_ip_version(adev, DCE_HWIP, 0) >= IP_VERSION(3, 0, 0))
- 		init_data.num_virtual_links = 1;
- 
--	retrieve_dmi_info(&adev->dm, &init_data);
-+	retrieve_dmi_info(&adev->dm);
-+	if (adev->dm.edp0_on_dp1_quirk)
-+		init_data.flags.support_edp0_on_dp1 = true;
- 
- 	if (adev->dm.bb_from_dmub)
- 		init_data.bb_from_dmub = adev->dm.bb_from_dmub;
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-index 385faaca6e26a..9e8c659c53c49 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.h
-@@ -613,6 +613,13 @@ struct amdgpu_display_manager {
- 	 */
- 	bool aux_hpd_discon_quirk;
- 
-+	/**
-+	 * @edp0_on_dp1_quirk:
-+	 *
-+	 * quirk for platforms that put edp0 on DP1.
-+	 */
-+	bool edp0_on_dp1_quirk;
-+
- 	/**
- 	 * @dpia_aux_lock:
- 	 *
-@@ -1045,4 +1052,6 @@ void hdmi_cec_set_edid(struct amdgpu_dm_connector *aconnector);
- void hdmi_cec_unset_edid(struct amdgpu_dm_connector *aconnector);
- int amdgpu_dm_initialize_hdmi_connector(struct amdgpu_dm_connector *aconnector);
- 
-+void retrieve_dmi_info(struct amdgpu_display_manager *dm);
-+
- #endif /* __AMDGPU_DM_H__ */
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_quirks.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_quirks.c
-new file mode 100644
-index 0000000000000..1da07ebf9217c
---- /dev/null
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_quirks.c
-@@ -0,0 +1,178 @@
-+// SPDX-License-Identifier: MIT
-+/*
-+ * Copyright 2025 Advanced Micro Devices, Inc.
-+ *
-+ * Permission is hereby granted, free of charge, to any person obtaining a
-+ * copy of this software and associated documentation files (the "Software"),
-+ * to deal in the Software without restriction, including without limitation
-+ * the rights to use, copy, modify, merge, publish, distribute, sublicense,
-+ * and/or sell copies of the Software, and to permit persons to whom the
-+ * Software is furnished to do so, subject to the following conditions:
-+ *
-+ * The above copyright notice and this permission notice shall be included in
-+ * all copies or substantial portions of the Software.
-+ *
-+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL
-+ * THE COPYRIGHT HOLDER(S) OR AUTHOR(S) BE LIABLE FOR ANY CLAIM, DAMAGES OR
-+ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
-+ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-+ * OTHER DEALINGS IN THE SOFTWARE.
-+ *
-+ * Authors: AMD
-+ *
-+ */
-+
-+#include <linux/dmi.h>
-+
-+#include "amdgpu.h"
-+#include "amdgpu_dm.h"
-+
-+struct amdgpu_dm_quirks {
-+	bool aux_hpd_discon;
-+	bool support_edp0_on_dp1;
-+};
-+
-+static struct amdgpu_dm_quirks quirk_entries = {
-+	.aux_hpd_discon = false,
-+	.support_edp0_on_dp1 = false
-+};
-+
-+static int edp0_on_dp1_callback(const struct dmi_system_id *id)
-+{
-+	quirk_entries.support_edp0_on_dp1 = true;
-+	return 0;
-+}
-+
-+static int aux_hpd_discon_callback(const struct dmi_system_id *id)
-+{
-+	quirk_entries.aux_hpd_discon = true;
-+	return 0;
-+}
-+
-+static const struct dmi_system_id dmi_quirk_table[] = {
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3660"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3260"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Precision 3460"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower Plus 7010"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Tower 7010"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF Plus 7010"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex SFF 7010"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro Plus 7010"),
-+		},
-+	},
-+	{
-+		.callback = aux_hpd_discon_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "OptiPlex Micro 7010"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite mt645 G8 Mobile Thin Client"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 645 14 inch G11 Notebook PC"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP EliteBook 665 16 inch G11 Notebook PC"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP ProBook 445 14 inch G11 Notebook PC"),
-+		},
-+	},
-+	{
-+		.callback = edp0_on_dp1_callback,
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "HP"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "HP ProBook 465 16 inch G11 Notebook PC"),
-+		},
-+	},
-+	{}
-+	/* TODO: refactor this from a fixed table to a dynamic option */
-+};
-+
-+void retrieve_dmi_info(struct amdgpu_display_manager *dm)
-+{
-+	struct drm_device *dev = dm->ddev;
-+	int dmi_id;
-+
-+	dm->aux_hpd_discon_quirk = false;
-+	dm->edp0_on_dp1_quirk = false;
-+
-+	dmi_id = dmi_check_system(dmi_quirk_table);
-+
-+	if (!dmi_id)
-+		return;
-+
-+	if (quirk_entries.aux_hpd_discon) {
-+		dm->aux_hpd_discon_quirk = true;
-+		drm_info(dev, "aux_hpd_discon_quirk attached\n");
-+	}
-+	if (quirk_entries.support_edp0_on_dp1) {
-+		dm->edp0_on_dp1_quirk = true;
-+		drm_info(dev, "support_edp0_on_dp1 attached\n");
-+	}
-+}
--- 
-2.39.5
-
 
 
 
