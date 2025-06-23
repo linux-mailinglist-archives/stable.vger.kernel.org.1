@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-156101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FCD8AE4570
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:53:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9408EAE451C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7963B275F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32A3E189C6C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B2D248891;
-	Mon, 23 Jun 2025 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9283253351;
+	Mon, 23 Jun 2025 13:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnl03+9s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzKLHK89"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759E224A06D;
-	Mon, 23 Jun 2025 13:42:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A84242D90;
+	Mon, 23 Jun 2025 13:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686152; cv=none; b=kH0qpqLMPcdLqE4mV/o4oGGk1zxMiV3jTN+zul4wyCqf2EIKR01IE6SvVQ7wwoM7kDWXSDlsxlQ4KGnSdTNkZAvyzPB77PzpcCSL7qUP6vlevnkJ2Luk1pMiJ156ZtUGKp3Dlc8oILrqvWQ3oy3UBzC0yIAOuiDOSB4wfrXnX6w=
+	t=1750686172; cv=none; b=BBz2KnVvntubyR43ZGfJBquHFN14iv0cXjw7+pT8H0Q91gHOqr+14Etz8/3oJDAb5Sbz5fq5yeUAlg1JhfCAlMGwfcA5/kZGHZ19EjfkdD4YMiJcNmxl4oGiU+O/1toCKwJS2OlRJVz+kWayaG8lR8DVy5cnNj3lfySn7x0yatM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686152; c=relaxed/simple;
-	bh=sKB4isgO2/S79vNhdNFck6svYvunJ806LREd6TOi8ak=;
+	s=arc-20240116; t=1750686172; c=relaxed/simple;
+	bh=/wnXYC48ANctJh+qzvREAWcHpDZjQDy2OJ+khOLbzRI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+FV83jfIflKtY5/mgEefQNzQkKMciQ1KYucpxT6pq8AMo/pX2W3N9Y45LFYgy5RzjmL71DKPI573prcH+KGQ+bl8fpFKOq8qCgTLkG+x8oHnLA0gTaQzp2FmvmP8K/DW8H9v/esq1w8t4k6hpuvLEij2j2jAluaTbuB17MSVF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnl03+9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A988C4CEEA;
-	Mon, 23 Jun 2025 13:42:31 +0000 (UTC)
+	 MIME-Version; b=hcUMndZbCp3KcdTPajue399WSnooQqfVcZ9bdciX8OL9JwGfyeOv8yjXyR8G+4LDPJ9BV+VT6FxNM7IlmMh+ggWVCAO+uDxt2y0Danek0Cz0JvbxPTnQdFKiyWY5f36jccWClKydjguCNxGhtjK1Nf93AV/Gh4+W+4PcOmQLDGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzKLHK89; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D928C4CEEA;
+	Mon, 23 Jun 2025 13:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686152;
-	bh=sKB4isgO2/S79vNhdNFck6svYvunJ806LREd6TOi8ak=;
+	s=korg; t=1750686172;
+	bh=/wnXYC48ANctJh+qzvREAWcHpDZjQDy2OJ+khOLbzRI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hnl03+9sgrKtRCITos4mje3FIPMFCPWzTjW4GeGt40Ven733TV6VZluXdnjWNfso9
-	 CHWe54kb/bfyaeODZuPOUlQttPLs+WKaVdK8f7BtJTN65xhUrrWeHjazc9Rk28D4S3
-	 v19ba3oYi2Z/uE7GwiWlw77P3dDsIPYW3V291lUU=
+	b=xzKLHK89lclNorA8cpblholhJdnRtt1LWRVM66R+imFtMfa2DymqXj8W36UgEv0Lk
+	 0XpD1oOJYTmGvuz/qgUaUHxec/V/3fVB9Knb/ms+MU8sb3wED2kdC6oI+4iTve2vyR
+	 2Kx4CuCsZjpqPN2RQgPxi+xswL+ceiSsRHs3ad5k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 118/355] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
-Date: Mon, 23 Jun 2025 15:05:19 +0200
-Message-ID: <20250623130630.306900349@linuxfoundation.org>
+Subject: [PATCH 5.10 119/355] scsi: iscsi: Fix incorrect error path labels for flashnode operations
+Date: Mon, 23 Jun 2025 15:05:20 +0200
+Message-ID: <20250623130630.334825321@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -67,47 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
+[ Upstream commit 9b17621366d210ffee83262a8754086ebbde5e55 ]
 
-In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
-recovery flow, but we still unconditionally call enable again in
-ath10k_snoc_hif_start().
+Correct the error handling goto labels used when host lookup fails in
+various flashnode-related event handlers:
 
-We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
-before hif_start() is called, so instead check the
-ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
-recovery.
+ - iscsi_new_flashnode()
+ - iscsi_del_flashnode()
+ - iscsi_login_flashnode()
+ - iscsi_logout_flashnode()
+ - iscsi_logout_flashnode_sid()
 
-This fixes unbalanced IRQ enable splats that happen after recovering from
-a crash.
+scsi_host_put() is not required when shost is NULL, so jumping to the
+correct label avoids unnecessary operations. These functions previously
+jumped to the wrong goto label (put_host), which did not match the
+intended cleanup logic.
 
-Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Use the correct exit labels (exit_new_fnode, exit_del_fnode, etc.) to
+ensure proper error handling.  Also remove the unused put_host label
+under iscsi_new_flashnode() as it is no longer needed.
+
+No functional changes beyond accurate error path correction.
+
+Fixes: c6a4bb2ef596 ("[SCSI] scsi_transport_iscsi: Add flash node mgmt support")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://lore.kernel.org/r/20250530193012.3312911-1-alok.a.tiwari@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/scsi_transport_iscsi.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 513794099f03f..616fcaed061f9 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -935,7 +935,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
- 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index 548adbe544444..9fdfe1be95166 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3502,7 +3502,7 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.new_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_new_fnode;
+ 	}
  
- 	ath10k_core_napi_enable(ar);
--	ath10k_snoc_irq_enable(ar);
-+	/* IRQs are left enabled when we restart due to a firmware crash */
-+	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
-+		ath10k_snoc_irq_enable(ar);
- 	ath10k_snoc_rx_post(ar);
+ 	index = transport->new_flashnode(shost, data, len);
+@@ -3512,7 +3512,6 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
+ 	else
+ 		err = -EIO;
  
- 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
+-put_host:
+ 	scsi_host_put(shost);
+ 
+ exit_new_fnode:
+@@ -3537,7 +3536,7 @@ static int iscsi_del_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.del_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_del_fnode;
+ 	}
+ 
+ 	idx = ev->u.del_flashnode.flashnode_idx;
+@@ -3579,7 +3578,7 @@ static int iscsi_login_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.login_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_login_fnode;
+ 	}
+ 
+ 	idx = ev->u.login_flashnode.flashnode_idx;
+@@ -3631,7 +3630,7 @@ static int iscsi_logout_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.logout_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_logout_fnode;
+ 	}
+ 
+ 	idx = ev->u.logout_flashnode.flashnode_idx;
+@@ -3681,7 +3680,7 @@ static int iscsi_logout_flashnode_sid(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.logout_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_logout_sid;
+ 	}
+ 
+ 	session = iscsi_session_lookup(ev->u.logout_flashnode_sid.sid);
 -- 
 2.39.5
 
