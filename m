@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157976-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA9DAE566B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 625D0AE5534
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7452B1BC0938
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 406884A1948
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A5F19F120;
-	Mon, 23 Jun 2025 22:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 260E2228CA3;
+	Mon, 23 Jun 2025 22:08:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXmMPd16"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iafTT2P+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636E4218EBF;
-	Mon, 23 Jun 2025 22:19:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D67442288C6;
+	Mon, 23 Jun 2025 22:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717180; cv=none; b=dWy818Bp8lK8Quh3GpXEgjKgYNQPJ13LtDXcQjxkqaoiKRfK4qtCJqWcaLiMQ74jkT53H1YzXXRcNTivjrzv7lorbMV9c66HgEALGRewfTrojNraUQHy356ZQ3kj2cY1+4sPGp7GMkKpN1AdOAcMq5XFTLS9NDFVUQw+ucY23A8=
+	t=1750716507; cv=none; b=HXRsMeRz4U+wu+dqPSn9nnLJfL/wuYBfcB2DhrofzbQhEe6XnEh5I6h3sXPbYMhjS0ov2Hbs6Ri3qx+6vaF3SJlNWHtBABnv12LkR3ZJxTDSsOGzS4DCFLiG5lPfMnDRad81XQ3bvA5Kro/WqRSCM0sI4vYAPd8PYOV47U3SXKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717180; c=relaxed/simple;
-	bh=V/qMPKHgljwQ6/Qviu79aGt6FgbT5YGBK8H94RnU9xY=;
+	s=arc-20240116; t=1750716507; c=relaxed/simple;
+	bh=Id7/eOIruyOCiRoIMpIpz/pLa+0gAm29hNIc9iK9zOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bsa3ddL7AfmRlW9EaPO3EQVjDDPU1T6R679zuWYHh9WKW4TWHr9do3pcOfPWvzgffqffjgtvWJdsPN+mKUYdaBg1Ddc7ANltrXgLeFrYygOX9FGY5jxVnitUGg2x/4ADDMR5fb6u3oUeNhCE3rCxhtU6EthEXmFSJz51dc41VnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXmMPd16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B9C4CEEA;
-	Mon, 23 Jun 2025 22:19:39 +0000 (UTC)
+	 MIME-Version; b=GSgbinHMtyqUEePGWXteLHGOxowPIQrnV60rNKQdZ3kB9Wi/BboyAwRjhm4Ai0tMty5tcKcjBbZErd9ZEXm0nNdniKavh96Oq01g8Mwwf3v6+RMTBp59b9mFBu0b/OP6JlyOTJjMuP5Z/NEAD2oJKaUywWay9Exw1jdhc3x4XOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iafTT2P+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66679C4CEEA;
+	Mon, 23 Jun 2025 22:08:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717180;
-	bh=V/qMPKHgljwQ6/Qviu79aGt6FgbT5YGBK8H94RnU9xY=;
+	s=korg; t=1750716507;
+	bh=Id7/eOIruyOCiRoIMpIpz/pLa+0gAm29hNIc9iK9zOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VXmMPd16/WqWzoZ0H47PXX4cEvYttK1QIQUt0yIdaaJyiFCfIxDVD5Jj3ZXqikq94
-	 DZLQ9ZQONbEDpZb7Fw8JByQ+crlCrlh9dnYZU0MqJa0fnMau2x9eb2aIOTOzrfMlwq
-	 Rc9rEEt5Ljpr5TTjXV71hRcaontj0I67HfYnCHsg=
+	b=iafTT2P+hsBlfhOFV4fWgMxUa14j0TTriyXWCoJZ6lQI+YaEPfzMtWyFGyRWClAw0
+	 ywqb6p98m+mQNRazjxmOex5o3SXPKvQljE98WvjopIotKaCOFjyBqAnMNqH3I2vvQG
+	 wWjnSI8aCljiD1ak4OXuVPyrQ33QLmaRmqSX7pGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 376/508] clocksource: Fix the CPUs choice in the watchdog per CPU verification
+Subject: [PATCH 6.12 284/414] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
 Date: Mon, 23 Jun 2025 15:07:01 +0200
-Message-ID: <20250623130654.575195660@linuxfoundation.org>
+Message-ID: <20250623130649.118760562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
+[ Upstream commit 23d060136841c58c2f9ee8c08ad945d1879ead4b ]
 
-Right now, if the clocksource watchdog detects a clocksource skew, it might
-perform a per CPU check, for example in the TSC case on x86.  In other
-words: supposing TSC is detected as unstable by the clocksource watchdog
-running at CPU1, as part of marking TSC unstable the kernel will also run a
-check of TSC readings on some CPUs to be sure it is synced between them
-all.
+In case the MC firmware runs in debug mode with extensive prints pushed
+to the console, the current timeout of 500ms is not enough.
+Increase the timeout value so that we don't have any chance of wrongly
+assuming that the firmware is not responding when it's just taking more
+time.
 
-But that check happens only on some CPUs, not all of them; this choice is
-based on the parameter "verify_n_cpus" and in some random cpumask
-calculation. So, the watchdog runs such per CPU checks on up to
-"verify_n_cpus" random CPUs among all online CPUs, with the risk of
-repeating CPUs (that aren't double checked) in the cpumask random
-calculation.
-
-But if "verify_n_cpus" > num_online_cpus(), it should skip the random
-calculation and just go ahead and check the clocksource sync between
-all online CPUs, without the risk of skipping some CPUs due to
-duplicity in the random cpumask calculation.
-
-Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
-CPU verification skipping some CPU even with verify_n_cpus=8, due to the
-duplicity on random cpumask generation. Skipping the randomization when the
-number of online CPUs is smaller than verify_n_cpus, solves that.
-
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-7-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c | 2 +-
+ drivers/bus/fsl-mc/mc-sys.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 9e221a97d2274..e89fd0bbc3b35 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -285,7 +285,7 @@ static void clocksource_verify_choose_cpus(void)
- {
- 	int cpu, i, n = verify_n_cpus;
+diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
+index f2052cd0a0517..b22c59d57c8f0 100644
+--- a/drivers/bus/fsl-mc/mc-sys.c
++++ b/drivers/bus/fsl-mc/mc-sys.c
+@@ -19,7 +19,7 @@
+ /*
+  * Timeout in milliseconds to wait for the completion of an MC command
+  */
+-#define MC_CMD_COMPLETION_TIMEOUT_MS	500
++#define MC_CMD_COMPLETION_TIMEOUT_MS	15000
  
--	if (n < 0) {
-+	if (n < 0 || n >= num_online_cpus()) {
- 		/* Check all of the CPUs. */
- 		cpumask_copy(&cpus_chosen, cpu_online_mask);
- 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
+ /*
+  * usleep_range() min and max values used to throttle down polling
 -- 
 2.39.5
 
