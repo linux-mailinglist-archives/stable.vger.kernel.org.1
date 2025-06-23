@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-155890-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B87BAE4486
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C270AE4429
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7A03B6CFF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF0417D1ED
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E92B42561A7;
-	Mon, 23 Jun 2025 13:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024E5246BC9;
+	Mon, 23 Jun 2025 13:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0UvG5zZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ccu4SdDR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A65D4255F39;
-	Mon, 23 Jun 2025 13:33:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D754C7F;
+	Mon, 23 Jun 2025 13:33:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685600; cv=none; b=KEL/1g24OS+S6kLivj5I/txGarOCHTjie3fNOWooYkh1pZDXrXIgP1tkqpg5nz+7no0nN01sCbuab5I/jxJn0MUuzCVlD19v5hZC5YRyXVod0hod4sQD0ZqA3JF27EXh5q1JC4cdImLUyQrtiBuipDMZ6wL3mICQDjn85JRxJfA=
+	t=1750685613; cv=none; b=L438106CnVJOaPnaNx8O9LNofa2YDlnyxhitwJcBbbiOwwOPA9GD30d7AV8Wy+IBOmieQdLenBwgDFuUq1S5gy/soE8Op6cErYEty98wEg9haJSK5Oig5soLxzHAnQVsrgm6VHZhBpBlPOijfSsRo17t8PHHWtfn/1fmCxjTWGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685600; c=relaxed/simple;
-	bh=A2gj8+4sT1hReJ6NCKg5T1BA053jxwxIUQVtPy85K0g=;
+	s=arc-20240116; t=1750685613; c=relaxed/simple;
+	bh=cqAeRf8G0w1af8bQzWfUpBp3t4oVe2lprdCBES74xy4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=maoUIk+AmAQMy2Rb8MjTaZSxLx8mKgFHKCkrzjyfV9zthaMplTU5BV9x+NSO/fZ71EQyQKMCTY4lzD03m2lfQfVh1bViz/hi/SC4KVs1+uGiL82odKKpvt1X4y6XBImzrzLIvpEmh9YclMurYBWT7jSDXK3tiSLbWc/TqN66hPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0UvG5zZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39930C4CEEA;
-	Mon, 23 Jun 2025 13:33:20 +0000 (UTC)
+	 MIME-Version; b=fOslzVCeIoIfSWi3oKR+ttDFKq043oWRaJ3Pz2YjvFCcm7/9MhfqPfDJSA7mb2mekIkoo9zyOmGHtuFshYo2OLabBqzExnPn3Wtw1nTsCh8bPFFaXccFHFCIOnD+4LIhz+f4c0Naw/DdKBQQkzq6+l/8M5SemHUmJvvrJR8VVHA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ccu4SdDR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4966AC4CEEA;
+	Mon, 23 Jun 2025 13:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685600;
-	bh=A2gj8+4sT1hReJ6NCKg5T1BA053jxwxIUQVtPy85K0g=;
+	s=korg; t=1750685613;
+	bh=cqAeRf8G0w1af8bQzWfUpBp3t4oVe2lprdCBES74xy4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B0UvG5zZLxE8Y3b+yLOjybedLlV+67fvFbaye/IjDTj9eS+QUxYEhms6U3uoRcqxU
-	 aYsijqfb6x2nKAT/BgWYsX3GxP+lcj0fS3LfY8rl+euv1Vfe9n1pWv5xNZnMPO0wwj
-	 gUwKlhCe8A1E+4iNji68/OMbFl/6aP6jlRSRIXTk=
+	b=Ccu4SdDRBmwFDdXWTAYsNQbG7/DuS+C+GgGHpatJ9Ok2HumLYRmL8aEVraXNF7OKC
+	 ftVcm7pn9Il6uFvmkKKv1yR/PEXU/s7E2plwrWz9LqypIoN+8uZ8zBH0Kip9HYzpK5
+	 z54VeZO5ERJH9gfe4CJb8vdVwehg6Q5yvQ35ZjNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eddie James <eajames@linux.ibm.com>,
-	Hari Bathini <hbathini@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	"Ahmed S. Darwish" <darwi@linutronix.de>,
+	Ingo Molnar <mingo@kernel.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	John Ogness <john.ogness@linutronix.de>,
+	x86-cpuid@lists.linux.dev,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 018/508] powerpc/crash: Fix non-smp kexec preparation
-Date: Mon, 23 Jun 2025 15:01:03 +0200
-Message-ID: <20250623130645.702988014@linuxfoundation.org>
+Subject: [PATCH 6.1 019/508] x86/cpu: Sanitize CPUID(0x80000000) output
+Date: Mon, 23 Jun 2025 15:01:04 +0200
+Message-ID: <20250623130645.726495588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,41 +70,90 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eddie James <eajames@linux.ibm.com>
+From: Ahmed S. Darwish <darwi@linutronix.de>
 
-[ Upstream commit 882b25af265de8e05c66f72b9a29f6047102958f ]
+[ Upstream commit cc663ba3fe383a628a812f893cc98aafff39ab04 ]
 
-In non-smp configurations, crash_kexec_prepare is never called in
-the crash shutdown path. One result of this is that the crashing_cpu
-variable is never set, preventing crash_save_cpu from storing the
-NT_PRSTATUS elf note in the core dump.
+CPUID(0x80000000).EAX returns the max extended CPUID leaf available.  On
+x86-32 machines without an extended CPUID range, a CPUID(0x80000000)
+query will just repeat the output of the last valid standard CPUID leaf
+on the CPU; i.e., a garbage values.  Current tip:x86/cpu code protects against
+this by doing:
 
-Fixes: c7255058b543 ("powerpc/crash: save cpu register data in crash_smp_send_stop()")
-Signed-off-by: Eddie James <eajames@linux.ibm.com>
-Reviewed-by: Hari Bathini <hbathini@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250211162054.857762-1-eajames@linux.ibm.com
+	eax = cpuid_eax(0x80000000);
+	c->extended_cpuid_level = eax;
+
+	if ((eax & 0xffff0000) == 0x80000000) {
+		// CPU has an extended CPUID range. Check for 0x80000001
+		if (eax >= 0x80000001) {
+			cpuid(0x80000001, ...);
+		}
+	}
+
+This is correct so far.  Afterwards though, the same possibly broken EAX
+value is used to check the availability of other extended CPUID leaves:
+
+	if (c->extended_cpuid_level >= 0x80000007)
+		...
+	if (c->extended_cpuid_level >= 0x80000008)
+		...
+	if (c->extended_cpuid_level >= 0x8000000a)
+		...
+	if (c->extended_cpuid_level >= 0x8000001f)
+		...
+
+which is invalid.  Fix this by immediately setting the CPU's max extended
+CPUID leaf to zero if CPUID(0x80000000).EAX doesn't indicate a valid
+CPUID extended range.
+
+While at it, add a comment, similar to kernel/head_32.S, clarifying the
+CPUID(0x80000000) sanity check.
+
+References: 8a50e5135af0 ("x86-32: Use symbolic constants, safer CPUID when enabling EFER.NX")
+Fixes: 3da99c977637 ("x86: make (early)_identify_cpu more the same between 32bit and 64 bit")
+Signed-off-by: Ahmed S. Darwish <darwi@linutronix.de>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: John Ogness <john.ogness@linutronix.de>
+Cc: x86-cpuid@lists.linux.dev
+Link: https://lore.kernel.org/r/20250506050437.10264-3-darwi@linutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/crash.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/kernel/cpu/common.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/powerpc/kexec/crash.c b/arch/powerpc/kexec/crash.c
-index 252724ed666a3..14abe7046cd74 100644
---- a/arch/powerpc/kexec/crash.c
-+++ b/arch/powerpc/kexec/crash.c
-@@ -356,7 +356,10 @@ void default_machine_crash_shutdown(struct pt_regs *regs)
- 	if (TRAP(regs) == INTERRUPT_SYSTEM_RESET)
- 		is_via_system_reset = 1;
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index 48cc1612df49f..722eac51beae6 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1045,17 +1045,18 @@ void get_cpu_cap(struct cpuinfo_x86 *c)
+ 		c->x86_capability[CPUID_D_1_EAX] = eax;
+ 	}
  
--	crash_smp_send_stop();
-+	if (IS_ENABLED(CONFIG_SMP))
-+		crash_smp_send_stop();
-+	else
-+		crash_kexec_prepare();
+-	/* AMD-defined flags: level 0x80000001 */
++	/*
++	 * Check if extended CPUID leaves are implemented: Max extended
++	 * CPUID leaf must be in the 0x80000001-0x8000ffff range.
++	 */
+ 	eax = cpuid_eax(0x80000000);
+-	c->extended_cpuid_level = eax;
++	c->extended_cpuid_level = ((eax & 0xffff0000) == 0x80000000) ? eax : 0;
  
- 	crash_save_cpu(regs, crashing_cpu);
+-	if ((eax & 0xffff0000) == 0x80000000) {
+-		if (eax >= 0x80000001) {
+-			cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
++	if (c->extended_cpuid_level >= 0x80000001) {
++		cpuid(0x80000001, &eax, &ebx, &ecx, &edx);
  
+-			c->x86_capability[CPUID_8000_0001_ECX] = ecx;
+-			c->x86_capability[CPUID_8000_0001_EDX] = edx;
+-		}
++		c->x86_capability[CPUID_8000_0001_ECX] = ecx;
++		c->x86_capability[CPUID_8000_0001_EDX] = edx;
+ 	}
+ 
+ 	if (c->extended_cpuid_level >= 0x80000007) {
 -- 
 2.39.5
 
