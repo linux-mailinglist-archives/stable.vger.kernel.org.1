@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43171AE5363
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE430AE5227
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE8984A7B96
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427E21B64840
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8D0222576;
-	Mon, 23 Jun 2025 21:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346802222CA;
+	Mon, 23 Jun 2025 21:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pY9E26Dm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfCF3uRX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B1721B9C9;
-	Mon, 23 Jun 2025 21:52:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E661A19D084;
+	Mon, 23 Jun 2025 21:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715565; cv=none; b=hdMORlMGgNoIU3TCCky/RnZ6bqxV1wjpzWReMPYK/56OIeNmRneeg7lpBvpcpseAKyLch4Xm5juHqemVslPN9tnCAudq5UE2KegeUFLWpcX6Cj9NBCQvoqpMWqsS2it3+CTl4xHOXSaC65pAvqZP0NDCruMrkqnP7XIdQN3VIjo=
+	t=1750714856; cv=none; b=Rz3jFnUBbPJxGNMUiWBwpyKSAbbwJ/4GB3U/EnPz41YJqn1rPdKTIRVpQG1sKnh9q4rzkE3nwhcYFTkgHkp4O9hj+QrPqN3DBDlks33YFNfrZ8E+vYYGzVz0lIez8zNyTydRJlcD8PmCX0Ptkz3qqA0Fiqq+YjKx1LSMBNh1PwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715565; c=relaxed/simple;
-	bh=TgaUlxowQjGIDYV1C30oL3wiW2pgG1nZLKHZsm5ECmI=;
+	s=arc-20240116; t=1750714856; c=relaxed/simple;
+	bh=QYOt5t+haK5FiPTa7IA+5jRHjnN5mxZUaFERbJZMfiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RGVq7Z7Nbctd+oliTGGSGiHOICHjN5N70sCdV7EhnVtOvyPDxT9NqmNJM7Rc3C1itydVFf1BTJ4pk9oPTU0DU1NYlyyL920erCRjW1EYIJHTvf3idqzGPbk+Yqzvf0b5oJt8XlUwbct9X5lJ4ScsYuDhTADzTJwAQq4Zq5SUc4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pY9E26Dm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2831C4CEEA;
-	Mon, 23 Jun 2025 21:52:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b4YUqdHzMnLsXU8c7jdPuxuepFiJZPEbafoq7iYMiu/hphbf0CMn4AEbJoqLmEnlIVj49TF+82EiHDGKZlmbB+cHXHiF+vTTAJk9JuaOdXHLSgLOT0yzbNIMwowT/DHcbfkuADgRIFZS+niLe1hCUH5M4KT/4Ee6iYwdhmILz8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfCF3uRX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F5C4CEEA;
+	Mon, 23 Jun 2025 21:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715565;
-	bh=TgaUlxowQjGIDYV1C30oL3wiW2pgG1nZLKHZsm5ECmI=;
+	s=korg; t=1750714855;
+	bh=QYOt5t+haK5FiPTa7IA+5jRHjnN5mxZUaFERbJZMfiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pY9E26DmfiEDJ1+lxr1S76o6mOLcQcIJF8wVTLWd0/3LUwzG9xQa+/ZbNEAPraYRZ
-	 PVjE0KBwTVPg+JpouCfoWNMs/P4mUdU8rM/W/BcxJIqdfRsH3Q3mqomEgDm3BjBeRz
-	 4XipWM3oDRdKcHBG5I1o9YbnK6Y3s6N41T1T9YpA=
+	b=ZfCF3uRXt2y2qdgBzhwFBj2VgI7VbSJwRHAgcZa+HxrdDpocJL5fYgv92W+zuZ3ir
+	 FoDzrdhnrtMVLrbBdJ5SlJs0QgO5jwhpwbXj9ZCuTIb85UGJ231N+zT/zTB8V7HHUn
+	 O+3o2gpaVbIcS31paEr7XH2K0sLU8MQKwg2HIgGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danilo Krummrich <dakr@kernel.org>,
-	Alexandre Courbot <acourbot@nvidia.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Zhi Wang <zhiw@nvidia.com>
-Subject: [PATCH 6.15 487/592] drm/nouveau/nvkm: introduce new GSP reply policy NVKM_GSP_RPC_REPLY_POLL
-Date: Mon, 23 Jun 2025 15:07:25 +0200
-Message-ID: <20250623130712.018962834@linuxfoundation.org>
+	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 185/290] usbnet: asix AX88772: leave the carrier control to phylink
+Date: Mon, 23 Jun 2025 15:07:26 +0200
+Message-ID: <20250623130632.437171464@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +61,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhi Wang <zhiw@nvidia.com>
+From: Krzysztof Hałasa <khalasa@piap.pl>
 
-commit a738fa9105ac2897701ba4067c33e85faa27d1e2 upstream.
+[ Upstream commit 4145f00227ee80f21ab274e9cd9c09758e9bcf3d ]
 
-Some GSP RPC commands need a new reply policy: "caller don't care about
-the message content but want to make sure a reply is received". To
-support this case, a new reply policy is introduced.
+ASIX AX88772B based USB 10/100 Ethernet adapter doesn't come
+up ("carrier off"), despite the built-in 100BASE-FX PHY positive link
+indication. The internal PHY is configured (using EEPROM) in fixed
+100 Mbps full duplex mode.
 
-NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY is a large GSP RPC command. The actual
-required policy is NVKM_GSP_RPC_REPLY_POLL. This can be observed from the
-dump of the GSP message queue. After the large GSP RPC command is issued,
-GSP will write only an empty RPC header in the queue as the reply.
+The primary problem appears to be using carrier_netif_{on,off}() while,
+at the same time, delegating carrier management to phylink. Use only the
+latter and remove "manual control" in the asix driver.
 
-Without this change, the policy "receiving the entire message" is used
-for NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY. This causes the timeout of receiving
-the returned GSP message in the suspend/resume path.
+I don't have any other AX88772 board here, but the problem doesn't seem
+specific to a particular board or settings - it's probably
+timing-dependent.
 
-Introduce the new reply policy NVKM_GSP_RPC_REPLY_POLL, which waits for
-the returned GSP message but discards it for the caller. Use the new policy
-NVKM_GSP_RPC_REPLY_POLL on the GSP RPC command
-NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY.
+Remove unused asix_adjust_link() as well.
 
-Fixes: 50f290053d79 ("drm/nouveau: support handling the return of large GSP message")
-Cc: Danilo Krummrich <dakr@kernel.org>
-Cc: Alexandre Courbot <acourbot@nvidia.com>
-Tested-by: Ben Skeggs <bskeggs@nvidia.com>
-Signed-off-by: Zhi Wang <zhiw@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250227013554.8269-3-zhiw@nvidia.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
+Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/m3plhmdfte.fsf_-_@t19.piap.pl
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h  |    4 ++++
- drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c     |    3 +++
- drivers/gpu/drm/nouveau/nvkm/subdev/instmem/r535.c |    2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/usb/asix.h         |  1 -
+ drivers/net/usb/asix_common.c  | 22 ----------------------
+ drivers/net/usb/asix_devices.c | 17 ++++-------------
+ 3 files changed, 4 insertions(+), 36 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-+++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
-@@ -44,10 +44,14 @@ typedef void (*nvkm_gsp_event_func)(stru
-  * NVKM_GSP_RPC_REPLY_RECV - If specified, wait and receive the entire GSP
-  * RPC message after the GSP RPC command is issued.
-  *
-+ * NVKM_GSP_RPC_REPLY_POLL - If specified, wait for the specific reply and
-+ * discard the reply before returning to the caller.
-+ *
-  */
- enum nvkm_gsp_rpc_reply_policy {
- 	NVKM_GSP_RPC_REPLY_NOWAIT = 0,
- 	NVKM_GSP_RPC_REPLY_RECV,
-+	NVKM_GSP_RPC_REPLY_POLL,
+diff --git a/drivers/net/usb/asix.h b/drivers/net/usb/asix.h
+index 74162190bccc1..8531b804021aa 100644
+--- a/drivers/net/usb/asix.h
++++ b/drivers/net/usb/asix.h
+@@ -224,7 +224,6 @@ int asix_write_rx_ctl(struct usbnet *dev, u16 mode, int in_pm);
+ 
+ u16 asix_read_medium_status(struct usbnet *dev, int in_pm);
+ int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm);
+-void asix_adjust_link(struct net_device *netdev);
+ 
+ int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm);
+ 
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 72ffc89b477ad..7fd763917ae2c 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -414,28 +414,6 @@ int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm)
+ 	return ret;
+ }
+ 
+-/* set MAC link settings according to information from phylib */
+-void asix_adjust_link(struct net_device *netdev)
+-{
+-	struct phy_device *phydev = netdev->phydev;
+-	struct usbnet *dev = netdev_priv(netdev);
+-	u16 mode = 0;
+-
+-	if (phydev->link) {
+-		mode = AX88772_MEDIUM_DEFAULT;
+-
+-		if (phydev->duplex == DUPLEX_HALF)
+-			mode &= ~AX_MEDIUM_FD;
+-
+-		if (phydev->speed != SPEED_100)
+-			mode &= ~AX_MEDIUM_PS;
+-	}
+-
+-	asix_write_medium_mode(dev, mode, 0);
+-	phy_print_status(phydev);
+-	usbnet_link_change(dev, phydev->link, 0);
+-}
+-
+ int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm)
+ {
+ 	int ret;
+diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
+index ec4dcf89cbedd..119295f5f3b35 100644
+--- a/drivers/net/usb/asix_devices.c
++++ b/drivers/net/usb/asix_devices.c
+@@ -752,7 +752,6 @@ static void ax88772_mac_link_down(struct phylink_config *config,
+ 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
+ 
+ 	asix_write_medium_mode(dev, 0, 0);
+-	usbnet_link_change(dev, false, false);
+ }
+ 
+ static void ax88772_mac_link_up(struct phylink_config *config,
+@@ -783,7 +782,6 @@ static void ax88772_mac_link_up(struct phylink_config *config,
+ 		m |= AX_MEDIUM_RFC;
+ 
+ 	asix_write_medium_mode(dev, m, 0);
+-	usbnet_link_change(dev, true, false);
+ }
+ 
+ static const struct phylink_mac_ops ax88772_phylink_mac_ops = {
+@@ -1350,10 +1348,9 @@ static const struct driver_info ax88772_info = {
+ 	.description = "ASIX AX88772 USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+ 	.stop = ax88772_stop,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR | FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
  };
- 
- struct nvkm_gsp {
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
-@@ -602,6 +602,9 @@ r535_gsp_rpc_handle_reply(struct nvkm_gs
- 		else
- 			repv = reply;
- 		break;
-+	case NVKM_GSP_RPC_REPLY_POLL:
-+		repv = r535_gsp_msg_recv(gsp, fn, 0);
-+		break;
- 	}
- 
- 	return repv;
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/r535.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/r535.c
-@@ -105,7 +105,7 @@ fbsr_memlist(struct nvkm_gsp_device *dev
- 			rpc->pteDesc.pte_pde[i].pte = (phys >> 12) + i;
- 	}
- 
--	ret = nvkm_gsp_rpc_wr(gsp, rpc, NVKM_GSP_RPC_REPLY_RECV);
-+	ret = nvkm_gsp_rpc_wr(gsp, rpc, NVKM_GSP_RPC_REPLY_POLL);
- 	if (ret)
- 		return ret;
- 
+@@ -1362,11 +1359,9 @@ static const struct driver_info ax88772b_info = {
+ 	.description = "ASIX AX88772B USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+ 	.stop = ax88772_stop,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
+-	         FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ 	.data = FLAG_EEPROM_MAC,
+@@ -1376,11 +1371,9 @@ static const struct driver_info lxausb_t1l_info = {
+ 	.description = "Linux Automation GmbH USB 10Base-T1L",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+ 	.stop = ax88772_stop,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
+-		 FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ 	.data = FLAG_EEPROM_MAC,
+@@ -1412,10 +1405,8 @@ static const struct driver_info hg20f9_info = {
+ 	.description = "HG20F9 USB 2.0 Ethernet",
+ 	.bind = ax88772_bind,
+ 	.unbind = ax88772_unbind,
+-	.status = asix_status,
+ 	.reset = ax88772_reset,
+-	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
+-	         FLAG_MULTI_PACKET,
++	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
+ 	.rx_fixup = asix_rx_fixup_common,
+ 	.tx_fixup = asix_tx_fixup,
+ 	.data = FLAG_EEPROM_MAC,
+-- 
+2.39.5
+
 
 
 
