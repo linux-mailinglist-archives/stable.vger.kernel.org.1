@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-157195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF41DAE52DA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B58ECAE5169
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48E751B65B83
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B61BE168A36
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7090E1C84A0;
-	Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B20221734;
+	Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajv7cZZx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jLCk2Sfw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE6C3FD4;
-	Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A48321F5820;
+	Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715272; cv=none; b=iVH1WSFC2HAPMzBjVFCHSVArFXXTc+rtPJZ5P5CQ0nOeAl1ks6l1GQmwrbT9nLUx0LiijFmsegGR2PFrrDD2CJn3E060xJ0r8uznxrSQTkzCtkejZo6Um+fabbaSGOA8jreKUeNIVl6IWsD5ytP99GQOszlrTQoYBcX2Zj8HX4o=
+	t=1750714421; cv=none; b=n37aHl4IbUJbsY3cmwHbeIJDfhLcIDeqUfVdCd5VwFUuFApCwNGbVVqiCwsALZOPl1dzJeiIBHwGDzl4iPIeve22wF2wyA6iWhJSIZbTRYiitSyHW9W7e1y1Y0GSgTMbKxhfpwaTkUsWJZ1va7zWOW+L6laophRS1VJ9/6t+uwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715272; c=relaxed/simple;
-	bh=CrMtvfuYVA5OJUPJ2/KA+jpGbhoCHCDev9rfe5Oa4Zc=;
+	s=arc-20240116; t=1750714421; c=relaxed/simple;
+	bh=/xRqDO7QSZ61RupOW0+3z6+uekjwE6IYM1xFVhGXlho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wnfub9hd4A5rLX38MGRRS7oHf+1kzzsJ79ynV4FywrOCrF99+pdOp1cYFqyn9zjOKp3qb6YATcxRY9Je0hdSKYeWEifUxpr/7TXeCeaUvqI+Vlz+dptFP9C0DYujyIu2O04Yv6McKk360RRIpx22TYFWyr96LzZT9Iwml2YjcPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajv7cZZx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9831C4CEEA;
-	Mon, 23 Jun 2025 21:47:51 +0000 (UTC)
+	 MIME-Version; b=Ctw2KEJtSnRyt69VSNaWbLIrVr0kS1WcrHgLRn+ArehYxwevZ3prT23cbtVgS4R/3QNYOgNJnt/dV9rskOtYvpKE0Oe15MyzEIw5D0Onb32ygHMBkz0Lo+Mj0T0o2OvvOHMy9pwXNskJQZwYR5WpvbDifkMDaFbfIwvw7EwD458=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jLCk2Sfw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D433C4CEED;
+	Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715272;
-	bh=CrMtvfuYVA5OJUPJ2/KA+jpGbhoCHCDev9rfe5Oa4Zc=;
+	s=korg; t=1750714421;
+	bh=/xRqDO7QSZ61RupOW0+3z6+uekjwE6IYM1xFVhGXlho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajv7cZZxOhXJotAWMvPZ9oWLxq++2mZ/NKG+rCXLDFPNmO5P+4ARjFv/C+dMo3n0e
-	 ocMjKObr49RksZIEOF+qCRRdDjlWXP7pI1x3utUOI60JfWuhEXyFZLqU/WGKxZDQ4g
-	 yWibQsbToTMJ7p0HpIl70A0/TxNOHbUQnf0H2JxU=
+	b=jLCk2SfwtcGcG4qsNz5saS6Y9xGuq72wTz573996otCdC56CF0GQyrxo9sPXH93MU
+	 dfWCkMCZZmrKqHx8E7amtU+jj6BVjFMXDFKFCXyEFnbqWoJthY3ftzqhDKrX0NGUQO
+	 l++3iDNrGkWhVz1buymQDbrkWKAgm1tCWKGdjlHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 448/592] platform/loongarch: laptop: Get brightness setting from EC on probe
+	Khem Raj <raj.khem@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 5.10 205/355] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
 Date: Mon, 23 Jun 2025 15:06:46 +0200
-Message-ID: <20250623130711.085198960@linuxfoundation.org>
+Message-ID: <20250623130632.817622195@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Khem Raj <raj.khem@gmail.com>
 
-commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
+commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
 
-Previously during driver probe, 1 is unconditionally taken as current
-brightness value and set to props.brightness, which will be considered
-as the brightness before suspend and restored to EC on resume. Since a
-brightness value of 1 almost never matches EC's state on coldboot (my
-laptop's EC defaults to 80), this causes surprising changes of screen
-brightness on the first time of resume after coldboot.
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
-Let's get brightness from EC and take it as the current brightness on
-probe of the laptop driver to avoid the surprising behavior. Tested on
-TongFang L860-T2 Loongson-3A5000 laptop.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
+Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
+CFLAGS to eliminate these errors and make the C standard version of these
+areas match the rest of the kernel.
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
- 
--	props.brightness = 1;
- 	props.max_brightness = status;
-+	props.brightness = ec_get_brightness();
- 	props.type = BACKLIGHT_PLATFORM;
- 
- 	backlight_device_register("loongson_laptop",
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -29,6 +29,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
 
 
