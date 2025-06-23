@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157067-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B38CBAE5357
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE8FBAE5251
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A54D4A79EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A2C443559
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE8E1223316;
-	Mon, 23 Jun 2025 21:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60692222CA;
+	Mon, 23 Jun 2025 21:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylz3oSp5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0hdt/YN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B9D91AD3FA;
-	Mon, 23 Jun 2025 21:52:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B974315A;
+	Mon, 23 Jun 2025 21:42:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715533; cv=none; b=pzIulIqPm5BB3Y0U4tIorjogk4VJpNR1C8jnX0EZJ+FlV6fNxHgcec1fr1idFAapnMjzoyIr9s8PlEjVKUe4K9ZKzC4Gq0hUbP4rK3rYq3B9W+5bgxirmX+0KryBpC1hcYt4n+icO7EYB+NqNXJajT/nKlAchNCyb8Qei9BEx9M=
+	t=1750714953; cv=none; b=hNAgnRZoyjhXWvRPRvwtHt1dEgceA63wg4iKNP3UaAN8pDLgn5MWZqC/I4eABIiYwzHGLtf37QvjBLWzTZZJf606thk8RCIrblgBsykg37mlVR85A4tY0+6i6FM2lhCWEpcGpv37CMY1oqiZzDffkEOOKaGWdAd83ti+uafCwME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715533; c=relaxed/simple;
-	bh=h92xyJA3g6ybl60fS/Y55iQdzDAEVgDJq3ro2XK1xB8=;
+	s=arc-20240116; t=1750714953; c=relaxed/simple;
+	bh=Hw/hbhbTYRAc9vdgHBlp43AF3GW29ik/NUAZGKNcmIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MfxUWmc08wc1rdRuigiAuQoVYsN0xcLF8zZp4hr0s1WDlllsWXsoqwqGbSci6bv8USyGG2TYmqQNSr9qCzFpBxqHWOr+16hE04BOQlWquWfcyEmzvKUnEROVH82L0yWXRR41mL0CdXBCZU+grfdGbEyYoX494YcSUunKG0Ulomg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylz3oSp5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AACC4CEEA;
-	Mon, 23 Jun 2025 21:52:12 +0000 (UTC)
+	 MIME-Version; b=BG8whhArSkPLbbRsBV47R9aHPpfNj8Y/wHzaj67a6BT6Q+3jqmUrFS/BBXEOBQLp+N0yBHvHBZ+b+acXBQRV2EYSOFKGsIu7d8eYH7qE/UzNQQTjIari6r6lC4LoqiU6BcGCxi4OAQ7x1h/EeteM6PptwkIpvRIUOm1Dgi73MHg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0hdt/YN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AA6C4CEEA;
+	Mon, 23 Jun 2025 21:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715533;
-	bh=h92xyJA3g6ybl60fS/Y55iQdzDAEVgDJq3ro2XK1xB8=;
+	s=korg; t=1750714953;
+	bh=Hw/hbhbTYRAc9vdgHBlp43AF3GW29ik/NUAZGKNcmIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylz3oSp5cljbA15pT/ZrSJj3GqbTATy58R634Ir8IrigtHt+9rn1RotF6aoBMa+w0
-	 15XC9nMD+Bbfacq3U9x47LzQzNLn9Csr/Ayff7D6XwmphGIuymBASJVQb4l5VSFhwP
-	 5cYZy+cmFniyZhHXJMnQrh0vi7VZ08IYQ7qsP3Ws=
+	b=K0hdt/YNJoOo6t7B7RJUi1NIZTJFEVkJJGfdKEjEw54xMI9an40F5B9s/dud8/1lu
+	 GjfeA3R5zorzKakG7Aq+f1fTd1UBJhImGTUJhN2JLrEcNUKar4FM7eQZUlp+azKO+L
+	 lZy3AcoMW8SaQy3QscndjC2facpI7obYa3f1kDgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 485/592] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
-Date: Mon, 23 Jun 2025 15:07:23 +0200
-Message-ID: <20250623130711.969342840@linuxfoundation.org>
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Maxime Ripard <mripard@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 243/355] media: tc358743: ignore video while HPD is low
+Date: Mon, 23 Jun 2025 15:07:24 +0200
+Message-ID: <20250623130634.052766719@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Hans Verkuil <hverkuil@xs4all.nl>
 
-commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
+[ Upstream commit 6829c5b5d26b1be31880d74ec24cb32d2d75f1ae ]
 
-In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
-atm_account_tx().
+If the HPD is low (happens if there is no EDID or the
+EDID is being updated), then return -ENOLINK in
+tc358743_get_detected_timings() instead of detecting video.
 
-It is expected to be reverted by atm_pop_raw() later called by
-vcc->dev->ops->send(vcc, skb).
+This avoids userspace thinking that it can start streaming when
+the HPD is low.
 
-However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
-fails, and then we will leak a socket.
-
-Let's factorise the revert part as atm_return_tx() and call it in
-the failure path.
-
-Note that the corresponding sk_wmem_alloc operation can be found in
-alloc_tx() as of the blamed commit.
-
-  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Tested-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/linux-media/20240628-stoic-bettong-of-fortitude-e25611@houat/
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/atmdev.h |    6 ++++++
- net/atm/common.c       |    1 +
- net/atm/raw.c          |    2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/media/i2c/tc358743.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -249,6 +249,12 @@ static inline void atm_account_tx(struct
- 	ATM_SKB(skb)->atm_options = vcc->atm_options;
- }
+diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
+index 8e9df9007d2ed..1b3441510b6fa 100644
+--- a/drivers/media/i2c/tc358743.c
++++ b/drivers/media/i2c/tc358743.c
+@@ -309,6 +309,10 @@ static int tc358743_get_detected_timings(struct v4l2_subdev *sd,
  
-+static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
-+{
-+	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
-+					   &sk_atm(vcc)->sk_wmem_alloc));
-+}
+ 	memset(timings, 0, sizeof(struct v4l2_dv_timings));
+ 
++	/* if HPD is low, ignore any video */
++	if (!(i2c_rd8(sd, HPD_CTL) & MASK_HPD_OUT0))
++		return -ENOLINK;
 +
- static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
- {
- 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
- 
- 	skb->dev = NULL; /* for paths shared with net_device interfaces */
- 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
-+		atm_return_tx(vcc, skb);
- 		kfree_skb(skb);
- 		error = -EFAULT;
- 		goto out;
---- a/net/atm/raw.c
-+++ b/net/atm/raw.c
-@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
- 
- 	pr_debug("(%d) %d -= %d\n",
- 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
--	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
-+	atm_return_tx(vcc, skb);
- 	dev_kfree_skb_any(skb);
- 	sk->sk_write_space(sk);
- }
+ 	if (no_signal(sd)) {
+ 		v4l2_dbg(1, debug, sd, "%s: no valid signal\n", __func__);
+ 		return -ENOLINK;
+-- 
+2.39.5
+
 
 
 
