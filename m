@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDF5FAE51DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98C99AE526A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A12F817FF1E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3F13F7A1A1D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB40221FC7;
-	Mon, 23 Jun 2025 21:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11EBD221FCC;
+	Mon, 23 Jun 2025 21:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tda4VHv0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9B8UAYL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9954409;
-	Mon, 23 Jun 2025 21:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A062AEE4;
+	Mon, 23 Jun 2025 21:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714682; cv=none; b=qLak+k6eu7M+iXXMBzyjOgjO0vmYzPX3A24Scy5hocA91jqjkNkw8tyyHfxEYgQ/eBSHBpR2rbe50KObH7pBgcuiwU55QK0rgnt9zoiTOT0DfLM6ijyRN0n7Cxv5+b4ZFq2x1Xi+yyBEoUX69pT2nn/OPyeTt5BRNBSnqS6Ohik=
+	t=1750715016; cv=none; b=ePlh/vCDffc8D/SCWt9U0dXuv913qX+4Xn9GCwmgK3Cwpe5q5+wjAHAZapNL/ZHguYM6Pt18q2hI4F9uFriO4ThsqRzisXwTsj9ASbEwfSoMuUBa0TnJUfTMtfkXIRkv3cJBN66yX2ayLBuKxvE5N3zouBtrcxJwYxZdHXXgjjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714682; c=relaxed/simple;
-	bh=/YGEN6vaLP3OgPJkUOwhJwwFfWZ6xj9+ljOkETDMfTk=;
+	s=arc-20240116; t=1750715016; c=relaxed/simple;
+	bh=5qzvuXnVAbYm6JTegpdJu2DV7IJkleg0guKIptLOJXc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jwAYg21FSbSsT2Hm5MlJ89uf9B5+uXzWNwnus43SSWCqebmMvhOtZJKwDRfHF8KgP+PfsRPsBc6uLHeQucqEEvVsniFJbQiR4vHT2kU7KYrSo1zl4/vT6OaiyMrIIf17FrrHP68zWgeVJ5Y2pH8BxP8ecRJVIJ3DkoJdHX8tiuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tda4VHv0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83131C4CEEA;
-	Mon, 23 Jun 2025 21:38:01 +0000 (UTC)
+	 MIME-Version; b=uFgJU4fct3Uu+2I/jAYJQfhG5omzsD9mTdPJLEofRldtmNcJY4mooH/nlx8zBM/APeJpoELCNRFmgYC6yUKZI3mzJKMygS060qFnQ7XQlCfQOXSdeDGDI1nj0zfhhyy8Tvdl9JrWNCrewfcubrikZe7Bh7e5tlnDVhbdamh3JWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9B8UAYL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CFA8C4CEEA;
+	Mon, 23 Jun 2025 21:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714681;
-	bh=/YGEN6vaLP3OgPJkUOwhJwwFfWZ6xj9+ljOkETDMfTk=;
+	s=korg; t=1750715016;
+	bh=5qzvuXnVAbYm6JTegpdJu2DV7IJkleg0guKIptLOJXc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tda4VHv0U94ZFcGS6OzeXIpEqBWV6iOdzGjnPaWYazfbZ0k/TkGlQmMEwkxzVHmE3
-	 XP4zuITzLu9K8QkYkHQgmtU8eYnKOJvaogk9I5umuAUNCcYVNkD+PagbgalnS+lhjN
-	 Niu/e0G6+ZK7vHPG8BvCoah0TKxR1rgqBStghoM8=
+	b=M9B8UAYLNvRu1sppLHh9cIo/fqQqa1ShgyFrHXgXl4J9T5MAg7t4y56G805tIC9sB
+	 +Hc+gBSEXHob+SAVAkgmVzOvm/Wz3pmS9o53th/0zCx/cKX5tA7/Sf+FGA3zYeI++w
+	 NTfoBs4AF6ov+IPqoI4qM+ZUTC+x4Y/tOE60dQ5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Linxuan <chenlinxuan@uniontech.com>,
-	Winston Wen <wentao@uniontech.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 409/592] RDMA/hns: initialize db in update_srq_db()
+	Brett Werling <brett.werling@garmin.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 5.15 223/411] can: tcan4x5x: fix power regulator retrieval during probe
 Date: Mon, 23 Jun 2025 15:06:07 +0200
-Message-ID: <20250623130710.165786840@linuxfoundation.org>
+Message-ID: <20250623130639.274526338@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Linxuan <chenlinxuan@uniontech.com>
+From: Brett Werling <brett.werling@garmin.com>
 
-[ Upstream commit ffe1cee21f8b533ae27c3a31bfa56b8c1b27fa6e ]
+commit db22720545207f734aaa9d9f71637bfc8b0155e0 upstream.
 
-On x86_64 with gcc version 13.3.0, I compile
-drivers/infiniband/hw/hns/hns_roce_hw_v2.c with:
+Fixes the power regulator retrieval in tcan4x5x_can_probe() by ensuring
+the regulator pointer is not set to NULL in the successful return from
+devm_regulator_get_optional().
 
-  make defconfig
-  ./scripts/kconfig/merge_config.sh .config <(
-    echo CONFIG_COMPILE_TEST=y
-    echo CONFIG_HNS3=m
-    echo CONFIG_INFINIBAND=m
-    echo CONFIG_INFINIBAND_HNS_HIP08=m
-  )
-  make KCFLAGS="-fno-inline-small-functions -fno-inline-functions-called-once" \
-    drivers/infiniband/hw/hns/hns_roce_hw_v2.o
-
-Then I get a compile error:
-
-    CALL    scripts/checksyscalls.sh
-    DESCEND objtool
-    INSTALL libsubcmd_headers
-    CC [M]  drivers/infiniband/hw/hns/hns_roce_hw_v2.o
-  In file included from drivers/infiniband/hw/hns/hns_roce_hw_v2.c:47:
-  drivers/infiniband/hw/hns/hns_roce_hw_v2.c: In function 'update_srq_db':
-  drivers/infiniband/hw/hns/hns_roce_common.h:74:17: error: 'db' is used uninitialized [-Werror=uninitialized]
-     74 |                 *((__le32 *)_ptr + (field_h) / 32) &=                          \
-        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  drivers/infiniband/hw/hns/hns_roce_common.h:90:17: note: in expansion of macro '_hr_reg_clear'
-     90 |                 _hr_reg_clear(ptr, field_type, field_h, field_l);              \
-        |                 ^~~~~~~~~~~~~
-  drivers/infiniband/hw/hns/hns_roce_common.h:95:39: note: in expansion of macro '_hr_reg_write'
-     95 | #define hr_reg_write(ptr, field, val) _hr_reg_write(ptr, field, val)
-        |                                       ^~~~~~~~~~~~~
-  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:948:9: note: in expansion of macro 'hr_reg_write'
-    948 |         hr_reg_write(&db, DB_TAG, srq->srqn);
-        |         ^~~~~~~~~~~~
-  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:946:31: note: 'db' declared here
-    946 |         struct hns_roce_v2_db db;
-        |                               ^~
-  cc1: all warnings being treated as errors
-
-Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
-Co-developed-by: Winston Wen <wentao@uniontech.com>
-Signed-off-by: Winston Wen <wentao@uniontech.com>
-Link: https://patch.msgid.link/FF922C77946229B6+20250411105459.90782-5-chenlinxuan@uniontech.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3814ca3a10be ("can: tcan4x5x: tcan4x5x_can_probe(): turn on the power before parsing the config")
+Signed-off-by: Brett Werling <brett.werling@garmin.com>
+Link: https://patch.msgid.link/20250612191825.3646364-1-brett.werling@garmin.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/m_can/tcan4x5x-core.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 59352d1b62099..bbf6e1983704c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -942,7 +942,7 @@ static void fill_wqe_idx(struct hns_roce_srq *srq, unsigned int wqe_idx)
- static void update_srq_db(struct hns_roce_srq *srq)
- {
- 	struct hns_roce_dev *hr_dev = to_hr_dev(srq->ibsrq.device);
--	struct hns_roce_v2_db db;
-+	struct hns_roce_v2_db db = {};
+--- a/drivers/net/can/m_can/tcan4x5x-core.c
++++ b/drivers/net/can/m_can/tcan4x5x-core.c
+@@ -310,10 +310,11 @@ static int tcan4x5x_can_probe(struct spi
+ 	priv = cdev_to_priv(mcan_class);
  
- 	hr_reg_write(&db, DB_TAG, srq->srqn);
- 	hr_reg_write(&db, DB_CMD, HNS_ROCE_V2_SRQ_DB);
--- 
-2.39.5
-
+ 	priv->power = devm_regulator_get_optional(&spi->dev, "vsup");
+-	if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
+-		ret = -EPROBE_DEFER;
+-		goto out_m_can_class_free_dev;
+-	} else {
++	if (IS_ERR(priv->power)) {
++		if (PTR_ERR(priv->power) == -EPROBE_DEFER) {
++			ret = -EPROBE_DEFER;
++			goto out_m_can_class_free_dev;
++		}
+ 		priv->power = NULL;
+ 	}
+ 
 
 
 
