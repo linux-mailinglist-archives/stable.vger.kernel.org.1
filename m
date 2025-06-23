@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C9CFAE5485
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCB80AE4FA0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096061BC1148
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF0F0166312
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452D921D3F6;
-	Mon, 23 Jun 2025 22:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BFA224AED;
+	Mon, 23 Jun 2025 21:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGGBg4Vx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va4TKey6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026954C74;
-	Mon, 23 Jun 2025 22:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EAC7482;
+	Mon, 23 Jun 2025 21:17:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716130; cv=none; b=eOsllXcrTJzHVmJ1BL43mY1xd4O8UnzUYs96RigSUwevkb8Kx0o50Lxgq5km+m5H/PeV+XVWztQgvYGQgeUgaPQAX7gFd6E3UYgI3/Iq5UAOEWoIBD0UiqyTkavSi8+1yV3socgR/0NGf+i04uuqXImNXlMduHbMLZlcNEpr+NM=
+	t=1750713427; cv=none; b=RW5/XGEb5CHtQEAB/8iCKLELcaeJ3dUjVqdgt+SY2Zb43kJPXm3BJYRibc2xTjJeAxxUZEgGsG11jqk6ndApqOm7XuidMw4rLcVIGc8krs6254xP1/7N9gIGUfd6Z+X+kX5qVAo0JPVC2fOOh9lXaNUXl75XqgVwrsKGrp92+sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716130; c=relaxed/simple;
-	bh=7I6aBsWliRGGTjGq92XHTexLctLxeMyKcMR0SdihF3E=;
+	s=arc-20240116; t=1750713427; c=relaxed/simple;
+	bh=TcATOKFyb+BhZULp7TMDiAYcwWwKnGP1o/uHN/BoGmY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EoGp+CBAVJOlkoNgBQkkOkyu8iZuQ4svJ/FZ/CUXGLAaUIQW/5GrgaAW4MBNxyVDNcB7cjAtR3bTP1UVP2TUGH5l80/FDhpwc1J9IqpqI2fmIemXjj9R97H8UBqw4k9wtGNH8OM0GRS9H4tTBkYsGyXT+6Fs6Z88C5KCSf2at0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGGBg4Vx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F368C4CEEA;
-	Mon, 23 Jun 2025 22:02:09 +0000 (UTC)
+	 MIME-Version; b=JC93Ah8YGBEg9219dJzw69UfJKm082M6VeVx+gHOla9sx7onJraHZwIBt5Cu+Re9OmRQrCh1fCAw9US/WO55f8I1pq54HS7cAD1V8tMdCRBpD4bZnl1ekQPdImpeum5dmRr00M1kCjmpQ2C9WXep0IGoNJxoqzyN02DZlJDOsi0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Va4TKey6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB45C4CEEA;
+	Mon, 23 Jun 2025 21:17:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716129;
-	bh=7I6aBsWliRGGTjGq92XHTexLctLxeMyKcMR0SdihF3E=;
+	s=korg; t=1750713426;
+	bh=TcATOKFyb+BhZULp7TMDiAYcwWwKnGP1o/uHN/BoGmY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aGGBg4Vx3quzmAZIuEY+jR/5JRQ97qgUGY5f8lnzzQREcppU5FVNCwfyh+UHsbWLJ
-	 AtzbqJfTcVTlc6lWEyvcdpY8zSdi4MkSi9uVFGt3ImpvfMCnWXSG7xa5ZMiL/EG/cW
-	 wGFP0oyI1Zeu5XMBm7RNvBIq9tk3cXkjV5xXciGw=
+	b=Va4TKey6v8cUUgRLO/Vje/tY3DQzQR9JekTFUEyy7NkPgtAQ5+sCFBnn1xEq9VInW
+	 gRwKcOtwDWpqWgAVX9Xko3U6tKsdxFcZhoxc+6A4MjX8gWzGVN5NoBt9CEbf+id1ha
+	 lryKP/NkZxMH5/NhOMf2eeAXG6cP9Nx80FpDadac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 229/414] net: stmmac: generate software timestamp just before the doorbell
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 165/355] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
 Date: Mon, 23 Jun 2025 15:06:06 +0200
-Message-ID: <20250623130647.761954801@linuxfoundation.org>
+Message-ID: <20250623130631.662426749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit 33d4cc81fcd930fdbcca7ac9e8959225cbec0a5e ]
+commit c6bb8a21cdad8c975a3a646b9e5c8df01ad29783 upstream.
 
-Make sure the call of skb_tx_timestamp is as close as possbile to the
-doorbell.
+The function mlx5_query_nic_vport_node_guid() calls the function
+mlx5_query_nic_vport_context() but does not check its return value.
+A proper implementation can be found in mlx5_nic_vport_query_local_lb().
 
-The patch also adjusts the order of setting SKBTX_IN_PROGRESS and
-generate software timestamp so that without SOF_TIMESTAMPING_OPT_TX_SWHW
-being set the software and hardware timestamps will not appear in the
-error queue of socket nearly at the same time (Please see __skb_tstamp_tx()).
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Link: https://patch.msgid.link/20250510134812.48199-4-kerneljasonxing@gmail.com
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250524163425.1695-1-vulab@iscas.ac.cn
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index f68e3ece919cc..0250c5cb28ff2 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4424,8 +4424,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (priv->sarc_type)
- 		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -440,19 +440,22 @@ int mlx5_query_nic_vport_node_guid(struc
+ {
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
  
--	skb_tx_timestamp(skb);
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
+ 				nic_vport_context.node_guid);
 -
- 	if (unlikely((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
- 		     priv->hwts_tx_en)) {
- 		/* declare that device is doing timestamping */
-@@ -4460,6 +4458,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
- 	}
++out:
+ 	kvfree(out);
  
- 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
-+	skb_tx_timestamp(skb);
+-	return 0;
++	return err;
+ }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
  
- 	stmmac_flush_tx_descriptors(priv, queue);
- 	stmmac_tx_timer_arm(priv, queue);
-@@ -4703,8 +4702,6 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	if (priv->sarc_type)
- 		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
- 
--	skb_tx_timestamp(skb);
--
- 	/* Ready to fill the first descriptor and set the OWN bit w/o any
- 	 * problems because all the descriptors are actually ready to be
- 	 * passed to the DMA engine.
-@@ -4751,7 +4748,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
- 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
- 
- 	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
--
-+	skb_tx_timestamp(skb);
- 	stmmac_flush_tx_descriptors(priv, queue);
- 	stmmac_tx_timer_arm(priv, queue);
- 
--- 
-2.39.5
-
 
 
 
