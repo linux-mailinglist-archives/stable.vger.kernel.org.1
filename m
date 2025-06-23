@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157482-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E929CAE5427
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EABEAE4F49
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19AA446C3D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1135B189F91B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0AA223DEE;
-	Mon, 23 Jun 2025 21:59:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F4D222069F;
+	Mon, 23 Jun 2025 21:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WSBqmVvQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG2w4aoT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF1C7223714;
-	Mon, 23 Jun 2025 21:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A551DF98B;
+	Mon, 23 Jun 2025 21:14:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715975; cv=none; b=IJQ7wP/qO3C2kW5SXsq/5mkoqbTUVWJIVpomNIQj1hK1B3BcNgeD0z8FurBr3+z4gNlaW54djbWFO3qVv29IfZNCL2RCRlwuze35nh1iaKf3PS65qJ0BFbZRcpzhzBYkQPu1d+cyCMNdrMbpuTrdJgdwYhESEHYccp8NcBI0XAU=
+	t=1750713250; cv=none; b=WDs06n71kKNyP8w2yjfbL1L57Ff2Fb6NdPeUGDXUvT9ZHj3QsxlR4xwDugZmgNdpzQg0RgNEjlpMD03uGPoza3WhJe/YXfr4jf5AVFdzBG6eA3rKJ7hdj3GPTKo7PzyIWBc0JgCQ5UKWRNip8d13owPx16O8gHbCjzz6EBejYek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715975; c=relaxed/simple;
-	bh=MD/LjQ84VL3D1nPs9Wr37la3eDONWpxxLT2eChVn5bQ=;
+	s=arc-20240116; t=1750713250; c=relaxed/simple;
+	bh=8B2QTdBMOgsW4xhSg5hYIZUh+/vy5yD1dks8JPIZ3C4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QTT3dToPiZdf9Z38qwT6vP2p1hYXeG62L+xrB5i0haJJG4NFvmxWZMG0+sgBugsQqeWnx/gpyU1zaAvkiyGR6NB3XWq3UrgumkKVr9ezlCSSz//nemare+CY8xT7UpxFKnyPPrc5/hOFXZSC/q+DsN4bi9LN2FpfyfOyvVlf1xM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WSBqmVvQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D32C4CEEA;
-	Mon, 23 Jun 2025 21:59:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dIm+uVKb3cmObp+hFzgPofrq8BYb0k0GkJOvCKSj1d1Lfw5c5Cxlo1VysNXK+jxPV5UyEDcURG+As2RElBoY1dDk0d9t6faw32tz5hGcfwYMs0m6CkvF5LppNkRVvKXISLHZz62vSVYFyoEwlerqf87dBk/ZkWqJUgzwVLqYxRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG2w4aoT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A60CC4CEEA;
+	Mon, 23 Jun 2025 21:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715975;
-	bh=MD/LjQ84VL3D1nPs9Wr37la3eDONWpxxLT2eChVn5bQ=;
+	s=korg; t=1750713250;
+	bh=8B2QTdBMOgsW4xhSg5hYIZUh+/vy5yD1dks8JPIZ3C4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WSBqmVvQIXBSdMcPoYRWXPA9+uyUsw4slDZvMqOcbpMgVF2FhhjUAjniWTcLhV32y
-	 8ZQsbeopB4pyLmri3vKYN1Gp80CxmM3Pg5ZEVQtQWg7GTPUiQoUbpePvxiki77qVj7
-	 bOhyhRdZFijwHxJT69D6ZAHpzR3o3XRuKhiZRO5I=
+	b=QG2w4aoTczealr3gWMbqxinpHAI1xP2BQPHmEvXUrj92gyPtxv4HWnY7QJVeIgHgv
+	 k3ZYLX7nr3bsouqCXhhfRM93sMJS4A70Mx7FvFdVhweaWR6PwmyNlMmrFHxyCsHNhb
+	 N6CWWXDY309rHt5V+ZL18q6dzwqJ+rSHANXQJfdc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.1 272/508] mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
+	Zhong Jiawei <zhongjiawei1@huawei.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.6 056/290] cgroup,freezer: fix incomplete freezing when attaching tasks
 Date: Mon, 23 Jun 2025 15:05:17 +0200
-Message-ID: <20250623130651.940039287@linuxfoundation.org>
+Message-ID: <20250623130628.694357605@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Chen Ridong <chenridong@huawei.com>
 
-commit 08f6554ff90ef189e6b8f0303e57005bddfdd6a7 upstream.
+commit 37fb58a7273726e59f9429c89ade5116083a213d upstream.
 
-A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
-KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
-When that occurs, the following error appears when building ARCH=mips
-with clang (tip of tree error shown):
+An issue was found:
 
-  clang: error: unsupported option '-mabi=' for target 'x86_64-pc-linux-gnu'
+	# cd /sys/fs/cgroup/freezer/
+	# mkdir test
+	# echo FROZEN > test/freezer.state
+	# cat test/freezer.state
+	FROZEN
+	# sleep 1000 &
+	[1] 863
+	# echo 863 > test/cgroup.procs
+	# cat test/freezer.state
+	FREEZING
 
-Add KBUILD_CPPFLAGS in the CHECKFLAGS invocation to keep everything
-working after the move.
+When tasks are migrated to a frozen cgroup, the freezer fails to
+immediately freeze the tasks, causing the cgroup to remain in the
+"FREEZING".
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+The freeze_task() function is called before clearing the CGROUP_FROZEN
+flag. This causes the freezing() check to incorrectly return false,
+preventing __freeze_task() from being invoked for the migrated task.
+
+To fix this issue, clear the CGROUP_FROZEN state before calling
+freeze_task().
+
+Fixes: f5d39b020809 ("freezer,sched: Rewrite core freezer logic")
+Cc: stable@vger.kernel.org # v6.1+
+Reported-by: Zhong Jiawei <zhongjiawei1@huawei.com>
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Acked-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/cgroup/legacy_freezer.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -351,7 +351,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwin
- KBUILD_LDFLAGS		+= -m $(ld-emul)
+--- a/kernel/cgroup/legacy_freezer.c
++++ b/kernel/cgroup/legacy_freezer.c
+@@ -189,13 +189,12 @@ static void freezer_attach(struct cgroup
+ 		if (!(freezer->state & CGROUP_FREEZING)) {
+ 			__thaw_task(task);
+ 		} else {
+-			freeze_task(task);
+-
+ 			/* clear FROZEN and propagate upwards */
+ 			while (freezer && (freezer->state & CGROUP_FROZEN)) {
+ 				freezer->state &= ~CGROUP_FROZEN;
+ 				freezer = parent_freezer(freezer);
+ 			}
++			freeze_task(task);
+ 		}
+ 	}
  
- ifdef need-compiler
--CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
-+CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
- 	grep -E -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
- 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
- endif
 
 
 
