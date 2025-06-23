@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157438-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C8E3AE53F8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB68BAE52EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D150E1B67E27
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF1B167A74
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46B10222576;
-	Mon, 23 Jun 2025 21:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E131AAA1C;
+	Mon, 23 Jun 2025 21:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIRr2xbn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKTdcV0R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027EF221DA8;
-	Mon, 23 Jun 2025 21:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E9942056;
+	Mon, 23 Jun 2025 21:48:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715866; cv=none; b=boY35SB+SocJ6EyTgRuNdRGuwq/WByg5z93okYxfqI9+kTrCSf4PNRV7e/KZ2ZFx49xJypTOyC+IjzBz0Oy8550VQ7AWhui+YNXn9X5zjCtlzQaoz07TVN2P+gGdn5qg/0WwPRoMkJ6GhufxYjmvueC6U33nmxvHX4cczVrQWIE=
+	t=1750715282; cv=none; b=GgG65MpXzrhGXH/1HmDNy6UwwcAdVPreX8BP5o04Ov3HQgtNsMK0L6hL9wyYBGw9fema2YDedQdfHiOFxrn1eO6M74dGD7LSpdmlwKj1oijWZtNGOZnWspp0nLnZfW2SFaSMmQj3slhnO1iRaE1Q6RgrR24iRpaPPRCzNs4PiBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715866; c=relaxed/simple;
-	bh=0F6ZMT4U3d3/2tLHwcEanoWirsrKSP3CRHRQty1kVPc=;
+	s=arc-20240116; t=1750715282; c=relaxed/simple;
+	bh=TH2gjuRo/kO0c0ngg+s96gwf14rHrP3JSSMHrJUyabE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=piy7SdwJQHkR8Mo5nS0GVTRGjYwXUOKmB2eEKkfk1AuWwkqKQy0ghcsIIC2xFFpmZqrhyz5lakBWXPaKRifZEXkqtxuGfOrrdwvQK1GaAQV9aU14tKus4VwJzMR8ruav0ZdptiU1E/WHO7c6KZ2+2Y7KMdTkxMNQBoMmzmtgpM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIRr2xbn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D734C4CEEA;
-	Mon, 23 Jun 2025 21:57:45 +0000 (UTC)
+	 MIME-Version; b=OsK6yFarTeyVwz+UPq4hdNZoWw+x+uBIxJtQVPjiZ5B8LEopxmWSUbV+mpdl+BzSvGK9zM7QU+XQKP1n9ZHEdjNvQWlTZuV2JhPXDIh+kDuZF/UzD0PoKupY2w7FaeC2By5Zzn65XItfuwRhfcu70ceA/+KrLrhR6VsbX+fEJ9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKTdcV0R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC904C4CEEA;
+	Mon, 23 Jun 2025 21:48:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715865;
-	bh=0F6ZMT4U3d3/2tLHwcEanoWirsrKSP3CRHRQty1kVPc=;
+	s=korg; t=1750715282;
+	bh=TH2gjuRo/kO0c0ngg+s96gwf14rHrP3JSSMHrJUyabE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eIRr2xbnety9v0ZxZD2reJ9M5oXsk6O9qOd0ei1Ue8hoH7TSx6Sd+JkOh2qhQP+yn
-	 r0aSBdlQE9rQE3QIRhD6bKutSKLUYXimyMg4gAazPUj+BFfdnj7cNB30og3lGABPZx
-	 FBan2x4q/AeKyTMqK01fGr8TN+0TxRUNOwHdH7dU=
+	b=hKTdcV0RpFMc9Bf7/xMEUZdFfUzXANbuZuFbQvLiQJbN6H76x9M9ZfirdzYjekQU6
+	 0yWc2ts+wYUajJvuewIKDCOFIksHYlf8p+K9eH2RoNHtZZShcdw2C8/d7Z3wV/8N4B
+	 +/3jsyPkpBN3QEtKwgy0RpcSunZUi3sa4x12F60E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Rouven Czerwinski <rouven@czerwinskis.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 508/592] drm/msm: Fix CP_RESET_CONTEXT_STATE bitfield names
+Subject: [PATCH 5.10 265/355] wifi: mac80211: do not offer a mesh path if forwarding is disabled
 Date: Mon, 23 Jun 2025 15:07:46 +0200
-Message-ID: <20250623130712.519323221@linuxfoundation.org>
+Message-ID: <20250623130634.721673773@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Connor Abbott <cwabbott0@gmail.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit b1c9e797ad37d188675505b66a3a4bbeea5d9560 ]
+[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
 
-Based on kgsl.
+When processing a PREQ the code would always check whether we have a
+mesh path locally and reply accordingly. However, when forwarding is
+disabled then we should not reply with this information as we will not
+forward data packets down that path.
 
-Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
-Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/654922/
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Move the check for dot11MeshForwarding up in the function and skip the
+mesh path lookup in that case. In the else block, set forward to false
+so that the rest of the function becomes a no-op and the
+dot11MeshForwarding check does not need to be duplicated.
+
+This explains an effect observed in the Freifunk community where mesh
+forwarding is disabled. In that case a mesh with three STAs and only bad
+links in between them, individual STAs would occionally have indirect
+mpath entries. This should not have happened.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
+Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/mesh_hwmp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
-index 5a6ae9fc31945..4627134016228 100644
---- a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
-+++ b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
-@@ -2255,7 +2255,8 @@ opcode: CP_LOAD_STATE4 (30) (4 dwords)
- 	<reg32 offset="0" name="0">
- 		<bitfield name="CLEAR_ON_CHIP_TS" pos="0" type="boolean"/>
- 		<bitfield name="CLEAR_RESOURCE_TABLE" pos="1" type="boolean"/>
--		<bitfield name="CLEAR_GLOBAL_LOCAL_TS" pos="2" type="boolean"/>
-+		<bitfield name="CLEAR_BV_BR_COUNTER" pos="2" type="boolean"/>
-+		<bitfield name="RESET_GLOBAL_LOCAL_TS" pos="3" type="boolean"/>
- 	</reg32>
- </domain>
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 4848e3c2f0af9..a8e80cb6a5cec 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -620,7 +620,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 				mesh_path_add_gate(mpath);
+ 		}
+ 		rcu_read_unlock();
+-	} else {
++	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
+ 		rcu_read_lock();
+ 		mpath = mesh_path_lookup(sdata, target_addr);
+ 		if (mpath) {
+@@ -638,6 +638,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 		rcu_read_unlock();
++	} else {
++		forward = false;
+ 	}
+ 
+ 	if (reply) {
+@@ -655,7 +657,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 	}
+ 
+-	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
++	if (forward) {
+ 		u32 preq_id;
+ 		u8 hopcount;
  
 -- 
 2.39.5
