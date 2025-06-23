@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7563CAE51E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 768CBAE518A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EEF75442A1F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEA774A3E53
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A9E221FCC;
-	Mon, 23 Jun 2025 21:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A4922068B;
+	Mon, 23 Jun 2025 21:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7SLKx2F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wsRwEL1O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744766136;
-	Mon, 23 Jun 2025 21:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94CD51EE7C6;
+	Mon, 23 Jun 2025 21:35:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714701; cv=none; b=VmG8jft/xi8E9J3HheUm1rEO6PUBjdoHJiEOr8bCNK+SeRG9RpCr2fb/i7ahpG9MW2QJTZtS4qH+0grfpoug2H0BXZeeHNhrk7tyVpCqYPTyR2410rzNePyAS4RcGLVqkQl3c9v0yhFbms4IuGLnEu/DUM6m1elmmg07/QN819M=
+	t=1750714514; cv=none; b=mPAEsCKWf2lN20PiwR2mKFf3NOqIRjPAgy69087wIwabwOGgxk9g0c+y4USuxH6x1jglV9yzNCvgLuWDacd1D80zfFDQgOq8oLgMUfQ5iIbkfgqJLLVutLhC92O7K3AVvoU9efD3tJCWoAJUBbJxIRAMjCZuiZsqFfE1TlwAXRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714701; c=relaxed/simple;
-	bh=ffb+uBz0L93L7zLzVbks+qHOp089RbrQbZj5j4zmfTA=;
+	s=arc-20240116; t=1750714514; c=relaxed/simple;
+	bh=xr9o+3VhOd0/Dct8NEMTgz/MldqxBAbh+Jy3lTMqWJA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dsl5Z+TabeDpd2kXH7fQVq1at6FZy78b4O5MggwEaq/s4iMpYVbKDXJNu32Gyq5GHVjupp9DMCcRAtk2hvXrMGTdQCEDmaQwgyB7aAoN9sYTpFHbiBy4HEVwJSZvhOn6t16/7zeUr61SYEJ/iG1wZ2/2+MA/cjCLg7wxEoHqkuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7SLKx2F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C505C4CEEA;
-	Mon, 23 Jun 2025 21:38:20 +0000 (UTC)
+	 MIME-Version; b=JNTyzhDCe43qnEPovCkU7nVnFf3taBfODHO5fM6aMr38uqTKnsExyRc7j7+bqfId2KFTVS+CYj3rq1o63ftsMkxbSf3v8RJok9zoWchrOXGix7+Rqappuv21Sm/zC7DSNZFIL+Ci96LaXaDSIOYqpE2cnZJpGScPFjU/ynT19nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wsRwEL1O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231A8C4CEEA;
+	Mon, 23 Jun 2025 21:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714701;
-	bh=ffb+uBz0L93L7zLzVbks+qHOp089RbrQbZj5j4zmfTA=;
+	s=korg; t=1750714514;
+	bh=xr9o+3VhOd0/Dct8NEMTgz/MldqxBAbh+Jy3lTMqWJA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7SLKx2F5BBT6bgqnV0RFRPQcCF8p8gm8LVCx+25nGIdGCSeywiYJG0na0Xi4mcCS
-	 qxc6QGSFVzCdolhZcu3rP70bQDt2TtHAytB6EqFYTNhjSRoXCl9brilbxm6v55MAnX
-	 0M7I2zWBnQzug73Y9HVeMqCF9scuFz4MAlcWB2o4=
+	b=wsRwEL1OD2SPgf0SXiTlZhZGsmmVDXeH13B9szxpsacg7vfuufUvCltb73Sir6GMT
+	 UKZiIzJG7WYLiAKtssxieNIYduue0+5qGi2nI0+fsS2ekbWD9ylFsqea5KGwnBXEcj
+	 12vaSRWHN9vQi3qCMFteAAbrVEvqiA5O4Cvk3m6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Walle <mwalle@kernel.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 399/592] net: ethernet: ti: am65-cpsw: handle -EPROBE_DEFER
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 213/411] media: venus: Fix probe error handling
 Date: Mon, 23 Jun 2025 15:05:57 +0200
-Message-ID: <20250623130709.933519352@linuxfoundation.org>
+Message-ID: <20250623130639.030391403@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Walle <mwalle@kernel.org>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 09737cb80b8686ffca4ed1805fee745d5c85604d ]
+commit 523cea3a19f0b3b020a4745344c136a636e6ffd7 upstream.
 
-of_get_mac_address() might fetch the MAC address from NVMEM and that
-driver might not have been loaded. In that case, -EPROBE_DEFER is
-returned. Right now, this will trigger an immediate fallback to
-am65_cpsw_am654_get_efuse_macid() possibly resulting in a random MAC
-address although the MAC address is stored in the referenced NVMEM.
+Video device registering has been moved earlier in the probe function,
+but the new order has not been propagated to error handling. This means
+we can end with unreleased resources on error (e.g dangling video device
+on missing firmware probe aborting).
 
-Fix it by handling the -EPROBE_DEFER return code correctly. This also
-means that the creation of the MDIO device has to be moved to a later
-stage as -EPROBE_DEFER must not be returned after child devices are
-created.
-
-Signed-off-by: Michael Walle <mwalle@kernel.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250414084336.4017237-3-mwalle@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08b1cf474b7f7 ("media: venus: core, venc, vdec: Fix probe dependency error")
+Cc: stable@vger.kernel.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/ti/am65-cpsw-nuss.c | 24 +++++++++++++-----------
- 1 file changed, 13 insertions(+), 11 deletions(-)
+ drivers/media/platform/qcom/venus/core.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/ti/am65-cpsw-nuss.c b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-index 30665ffe78cf9..4cec05e0e3d9b 100644
---- a/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-+++ b/drivers/net/ethernet/ti/am65-cpsw-nuss.c
-@@ -2679,7 +2679,9 @@ static int am65_cpsw_nuss_init_slave_ports(struct am65_cpsw_common *common)
- 			goto of_node_put;
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -333,7 +333,7 @@ static int venus_probe(struct platform_d
  
- 		ret = of_get_mac_address(port_np, port->slave.mac_addr);
--		if (ret) {
-+		if (ret == -EPROBE_DEFER) {
-+			goto of_node_put;
-+		} else if (ret) {
- 			am65_cpsw_am654_get_efuse_macid(port_np,
- 							port->port_id,
- 							port->slave.mac_addr);
-@@ -3561,6 +3563,16 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 		return ret;
+ 	ret = v4l2_device_register(dev, &core->v4l2_dev);
+ 	if (ret)
+-		goto err_core_deinit;
++		goto err_hfi_destroy;
+ 
+ 	platform_set_drvdata(pdev, core);
+ 
+@@ -365,24 +365,24 @@ static int venus_probe(struct platform_d
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_DEC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_ENC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = pm_runtime_put_sync(dev);
+ 	if (ret) {
+ 		pm_runtime_get_noresume(dev);
+-		goto err_dev_unregister;
++		goto err_core_deinit;
  	}
  
-+	am65_cpsw_nuss_get_ver(common);
-+
-+	ret = am65_cpsw_nuss_init_host_p(common);
-+	if (ret)
-+		goto err_pm_clear;
-+
-+	ret = am65_cpsw_nuss_init_slave_ports(common);
-+	if (ret)
-+		goto err_pm_clear;
-+
- 	node = of_get_child_by_name(dev->of_node, "mdio");
- 	if (!node) {
- 		dev_warn(dev, "MDIO node not found\n");
-@@ -3577,16 +3589,6 @@ static int am65_cpsw_nuss_probe(struct platform_device *pdev)
- 	}
- 	of_node_put(node);
+ 	venus_dbgfs_init(core);
  
--	am65_cpsw_nuss_get_ver(common);
--
--	ret = am65_cpsw_nuss_init_host_p(common);
--	if (ret)
--		goto err_of_clear;
--
--	ret = am65_cpsw_nuss_init_slave_ports(common);
--	if (ret)
--		goto err_of_clear;
--
- 	/* init common data */
- 	ale_params.dev = dev;
- 	ale_params.ale_ageout = AM65_CPSW_ALE_AGEOUT_DEFAULT;
--- 
-2.39.5
-
+ 	return 0;
+ 
+-err_dev_unregister:
+-	v4l2_device_unregister(&core->v4l2_dev);
++err_core_deinit:
++	hfi_core_deinit(core, false);
+ err_venus_shutdown:
+ 	venus_shutdown(core);
+ err_firmware_deinit:
+@@ -393,9 +393,9 @@ err_runtime_disable:
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_suspended(dev);
++	v4l2_device_unregister(&core->v4l2_dev);
++err_hfi_destroy:
+ 	hfi_destroy(core);
+-err_core_deinit:
+-	hfi_core_deinit(core, false);
+ err_core_put:
+ 	if (core->pm_ops->core_put)
+ 		core->pm_ops->core_put(core);
 
 
 
