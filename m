@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156548-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8769AE4FFB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F0E4AE5075
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE89F3A6436
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362B74A0DEA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7DE1E521E;
-	Mon, 23 Jun 2025 21:21:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEEB1E51FA;
+	Mon, 23 Jun 2025 21:25:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ES+17UbT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wfarZNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0493D7482;
-	Mon, 23 Jun 2025 21:21:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D109F1E521E;
+	Mon, 23 Jun 2025 21:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713683; cv=none; b=UnmwMK/aGiP7eK4jkKQcmsqbrZVyy9DmzX9Z5nTifh3Nvf2kxf+nWI3WXdDKrOIfGzJS5S+QokdI3JG+/b/Jz/RBdv7O4yDalwCkBh1arJj1scrlEVC9hNfg/kEuDeqzU3Ks8DYcsxStE5IzDvjciqFG3KG5wg4Gz0JBo5JEt0I=
+	t=1750713922; cv=none; b=l6F1+JoUCAoP64b+sqmuSxTfP4w3DzX76aIUuAChIU7o1pTeAx5j+LoQpofMaAXtqHnAZx5oyXZZuIBKMqmW3M/up909g/zZ9P+5aagaEH3wXzvORhbmiqpPf3vYhbK/tRJuQ3uzxfskAsEW62xzOD/P527I8YU54QRYSvREZMk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713683; c=relaxed/simple;
-	bh=tHzp4xf/oWaiFpo1MxFGUdFhIwKmsLr+yefY1iM2gNQ=;
+	s=arc-20240116; t=1750713922; c=relaxed/simple;
+	bh=rt3uwgRLPigtYy1IvclkbQvl6hM9vRO88ZH1/5LcWNg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uI+M/nbwnFR8+vt/wCGrsScdzz91RWmympks/j6OTw6zMLZVgHuzsMHz+WT4p6+jDOSNn/7M7nKgip9aH32PyeKGIL1RMGqr7jcaE6VfuYpMnynVGiuFIs4E8fHdmcuRP1e1wyt4FS5d/C+JbvqJKIdaeDRIpTxMPds9F0ZyS2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ES+17UbT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43C04C4CEEA;
-	Mon, 23 Jun 2025 21:21:22 +0000 (UTC)
+	 MIME-Version; b=ficY65fajaB6Lg/NF/W9CB1vUHV+tjETayw9wFkXWvPBf911lTWioUN0DUerqS1DL5I0A3XBWEaHtAhIrUlJ6t8REGXCAdi3M9tKEXMrN2jGq4mGixspYBlB52PsXQ0Te018iX5viQTapxxoOxVMRoWPzXcjnae/EZsVhDexeMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wfarZNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A688C4CEEA;
+	Mon, 23 Jun 2025 21:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713682;
-	bh=tHzp4xf/oWaiFpo1MxFGUdFhIwKmsLr+yefY1iM2gNQ=;
+	s=korg; t=1750713922;
+	bh=rt3uwgRLPigtYy1IvclkbQvl6hM9vRO88ZH1/5LcWNg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ES+17UbTVMswxuONoOOnff6AwzzCS5bYnoTg9hEGexAtKH0pIWtoMiE/fAJk7M5BZ
-	 WIqZiEoaNz/ncRKhjkIcbDmgQmuUERW5V8WgM/Apjus+PvoMbEJzOKj0mMevuVTesi
-	 s4g7rzTUeJRNjvPM5Kw+WwCpzj/IT/qPJY1+ZGww=
+	b=0wfarZNQuRGdHaZP3kaxvMqD2G0eha9XODL9i+YnY7SM0aUzvydWuT6wfx/kqp3KZ
+	 G/eechuYmfAKeEHaptSW8VeoRQk2Lq++j9kbL0vHaeXnvJHQaJM9CJqMqaBwI2r6/I
+	 QsvneE/Ur+EkGdO4hIrP6a+GLJZ6duZsk166aNTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Jakub Raczynski <j.raczynski@samsung.com>,
+	Wenjing Shan <wenjing.shan@samsung.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 341/592] wifi: ath11k: Fix QMI memory reuse logic
+Subject: [PATCH 5.15 155/411] net/mdiobus: Fix potential out-of-bounds read/write access
 Date: Mon, 23 Jun 2025 15:04:59 +0200
-Message-ID: <20250623130708.562716337@linuxfoundation.org>
+Message-ID: <20250623130637.542199420@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Jakub Raczynski <j.raczynski@samsung.com>
 
-[ Upstream commit cd2e7bae92bd7e65063ab8d04721d2b711ba4cbe ]
+[ Upstream commit 0e629694126ca388916f059453a1c36adde219c4 ]
 
-Firmware requests 2 segments at first. The first segment is of 6799360
-whose allocation fails due to dma remapping not available. The success
-is returned to firmware. Then firmware asks for 22 smaller segments
-instead of 2 big ones. Those get allocated successfully. At suspend/
-hibernation time, these segments aren't freed as they will be reused
-by firmware after resuming.
+When using publicly available tools like 'mdio-tools' to read/write data
+from/to network interface and its PHY via mdiobus, there is no verification of
+parameters passed to the ioctl and it accepts any mdio address.
+Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
+but it is possible to pass higher value than that via ioctl.
+While read/write operation should generally fail in this case,
+mdiobus provides stats array, where wrong address may allow out-of-bounds
+read/write.
 
-After resuming, the firmware asks for the 2 segments again with the
-first segment of 6799360 size. Since chunk->vaddr is not NULL, the
-type and size are compared with the previous type and size to know if
-it can be reused or not. Unfortunately, it is detected that it cannot
-be reused and this first smaller segment is freed. Then we continue to
-allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
-is called which frees the second smaller segment as well. Later success
-is returned to firmware which asks for 22 smaller segments again. But
-as we had freed 2 segments already, we'll allocate the first 2 new
-smaller segments again and reuse the remaining 20. Hence 20 small
-segments are being reused instead of 22.
+Fix that by adding address verification before read/write operation.
+While this excludes this access from any statistics, it improves security of
+read/write operation.
 
-Add skip logic when vaddr is set, but size/type don't match. Use the
-same skip and success logic as used when dma_alloc_coherent() fails.
-By skipping, the possibility of resume failure due to kernel failing to
-allocate memory for QMI can be avoided.
-
-	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
-	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
-
-Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250428080242.466901-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Fixes: 080bb352fad00 ("net: phy: Maintain MDIO device and bus statistics")
+Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
+Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/phy/mdio_bus.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 4f8b08ed1bbc6..83a48a77c53ee 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1993,6 +1993,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 			    chunk->prev_size == chunk->size)
- 				continue;
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index c26f46c06a1b2..95536c5e541da 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -757,6 +757,9 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
  
-+			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
-+					    chunk->size, chunk->type,
-+					    chunk->prev_size, chunk->prev_type);
-+				ab->qmi.target_mem_delayed = true;
-+				return 0;
-+			}
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
 +
- 			/* cannot reuse the existing chunk */
- 			dma_free_coherent(ab->dev, chunk->prev_size,
- 					  chunk->vaddr, chunk->paddr);
+ 	if (bus->read)
+ 		retval = bus->read(bus, addr, regnum);
+ 	else
+@@ -786,6 +789,9 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+ 
+ 	lockdep_assert_held_once(&bus->mdio_lock);
+ 
++	if (addr >= PHY_MAX_ADDR)
++		return -ENXIO;
++
+ 	if (bus->write)
+ 		err = bus->write(bus, addr, regnum, val);
+ 	else
 -- 
 2.39.5
 
