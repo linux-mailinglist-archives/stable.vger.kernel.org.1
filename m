@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-157277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85286AE5336
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF682AE5494
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C164A7653
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7201E4C149E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5041AD3FA;
-	Mon, 23 Jun 2025 21:51:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F088223714;
+	Mon, 23 Jun 2025 22:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJrQvBX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GH484LrU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA2C136348;
-	Mon, 23 Jun 2025 21:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BAC121FF50;
+	Mon, 23 Jun 2025 22:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715474; cv=none; b=aSo7oJBcJKA1HVIDiSx4cRhXCIaheSlbwkNZ87gUthcMxZeiIK/nbmhBdaVYn1nmcxvn2/FyF5YaFGoVo7/zs9/Ml+LRkxzyA8uWsTnRPmeFBrLzvkBg45Y9v4vXd36cFQibdWyCha0wVRPDXcHeZZ27dUZayZ+/yYpyBpVx6SY=
+	t=1750716159; cv=none; b=ObZZ5Z0kmSambplSB0RoqafcTNILCdjcycpMk8lDRF1AmNpyyRiFmkXVDNrbOh20UoSRWqeT+HCQm1B4d955x4bSRrW0DhTm2TJJ1JQnDDY6l4246xHFQoYOytyTAx07kG5U7bHcU5OM7LmXEx9RxbOAY2lcmU0rSgpWzTQQ/ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715474; c=relaxed/simple;
-	bh=te/ZfzvNsx18SMN2N7DSpYGFQi8PkvVd8QXsQmd91IU=;
+	s=arc-20240116; t=1750716159; c=relaxed/simple;
+	bh=wuLUvzTOAsAZa9ryNZUDecKatgtdtrKOkeJTbQjuzVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pBphkl1TuPHWYXeE+cQI6lHP4NdvimYiak4KI71o3IN+cEIf7+AlF/R412IC0lNqDENF6DG0KFCbPTNtUPZAfu48YmtzL5f2dcFp+uvH5btqoUGCtFvTtaJ5IMrLLgsIBIpf7E9EpYOtajuplUuMB+w6fj1U2dueZn3MEoM5sfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJrQvBX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9D7C4CEEA;
-	Mon, 23 Jun 2025 21:51:14 +0000 (UTC)
+	 MIME-Version; b=iPcvcujLOtZaIelkR7D/mBSWop2GXizFX60LqgauqbnbexpbZ0MmzuWl53By/myAxxOnu16/VAdqC3056aQMXbyEWMpijqwa4vLjxlGRbqYNRTobLs+ncBeMc40qUqXxNzRBfnl6dwLGCqcBGpuVwzMuacOGuZVjZSJDLGXZx64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GH484LrU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6FE6C4CEEA;
+	Mon, 23 Jun 2025 22:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715474;
-	bh=te/ZfzvNsx18SMN2N7DSpYGFQi8PkvVd8QXsQmd91IU=;
+	s=korg; t=1750716159;
+	bh=wuLUvzTOAsAZa9ryNZUDecKatgtdtrKOkeJTbQjuzVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cJrQvBX7iyHdDLloF3iE/ZDI79kuVO357OFWk85oaEuEd/mdvxRM1YZi1IXlEt7Oy
-	 WCnBlDW+imquXSpWIHar1X/xNwWp9kDCJGwpA23OvRI1UD3/9KS2OJ1R8fK2Emcvi8
-	 aTlLK8iNmqvcw6yFU7aATMzqTkb3hjjbArs6TZFA=
+	b=GH484LrUdWxFmVXlRnfOn/LAMp2dnI9KvTl3kQvcXYjecE4/N39UDJB/5WJ45f5IE
+	 TeGrFA490VpA1vIzz1dxSWqanPEXQIYsRCM8HAzM24tyAB19ynbcx167X19VDb1Fq4
+	 8La+wXpueZZ4DWKl3WmFZRNGAvS+72+nEIp1lLRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 222/290] net: clear the dst when changing skb protocol
-Date: Mon, 23 Jun 2025 15:08:03 +0200
-Message-ID: <20250623130633.604307701@linuxfoundation.org>
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.15 526/592] ice: fix eswitch code memory leak in reset scenario
+Date: Mon, 23 Jun 2025 15:08:04 +0200
+Message-ID: <20250623130712.945517169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,123 +63,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Grzegorz Nitka <grzegorz.nitka@intel.com>
 
-commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 upstream.
+[ Upstream commit 48c8b214974dc55283bd5f12e3a483b27c403bbc ]
 
-A not-so-careful NAT46 BPF program can crash the kernel
-if it indiscriminately flips ingress packets from v4 to v6:
+Add simple eswitch mode checker in attaching VF procedure and allocate
+required port representor memory structures only in switchdev mode.
+The reset flows triggers VF (if present) detach/attach procedure.
+It might involve VF port representor(s) re-creation if the device is
+configured is switchdev mode (not legacy one).
+The memory was blindly allocated in current implementation,
+regardless of the mode and not freed if in legacy mode.
 
-  BUG: kernel NULL pointer dereference, address: 0000000000000000
-    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
-    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
-    process_backlog (net/core/dev.c:6186:4)
-    napi_poll (net/core/dev.c:6906:9)
-    net_rx_action (net/core/dev.c:7028:13)
-    do_softirq (kernel/softirq.c:462:3)
-    netif_rx (net/core/dev.c:5326:3)
-    dev_loopback_xmit (net/core/dev.c:4015:2)
-    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
-    NF_HOOK (./include/linux/netfilter.h:314:9)
-    ip_mc_output (net/ipv4/ip_output.c:400:5)
-    dst_output (./include/net/dst.h:459:9)
-    ip_local_out (net/ipv4/ip_output.c:130:9)
-    ip_send_skb (net/ipv4/ip_output.c:1496:8)
-    udp_send_skb (net/ipv4/udp.c:1040:8)
-    udp_sendmsg (net/ipv4/udp.c:1328:10)
+Kmemeleak trace:
+unreferenced object (percpu) 0x7e3bce5b888458 (size 40):
+  comm "bash", pid 1784, jiffies 4295743894
+  hex dump (first 32 bytes on cpu 45):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+  backtrace (crc 0):
+    pcpu_alloc_noprof+0x4c4/0x7c0
+    ice_repr_create+0x66/0x130 [ice]
+    ice_repr_create_vf+0x22/0x70 [ice]
+    ice_eswitch_attach_vf+0x1b/0xa0 [ice]
+    ice_reset_all_vfs+0x1dd/0x2f0 [ice]
+    ice_pci_err_resume+0x3b/0xb0 [ice]
+    pci_reset_function+0x8f/0x120
+    reset_store+0x56/0xa0
+    kernfs_fop_write_iter+0x120/0x1b0
+    vfs_write+0x31c/0x430
+    ksys_write+0x61/0xd0
+    do_syscall_64+0x5b/0x180
+    entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-The output interface has a 4->6 program attached at ingress.
-We try to loop the multicast skb back to the sending socket.
-Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
-and changes skb->protocol to v6. We enter ip6_rcv_core which
-tries to use skb_dst(). But the dst is still an IPv4 one left
-after IPv4 mcast output.
+Testing hints (ethX is PF netdev):
+- create at least one VF
+    echo 1 > /sys/class/net/ethX/device/sriov_numvfs
+- trigger the reset
+    echo 1 > /sys/class/net/ethX/device/reset
 
-Clear the dst in all BPF helpers which change the protocol.
-Try to preserve metadata dsts, those may carry non-routing
-metadata.
-
-Cc: stable@vger.kernel.org
-Reviewed-by: Maciej Żenczykowski <maze@google.com>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
-Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
-Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 415db8399d06 ("ice: make representor code generic")
+Signed-off-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c |   19 +++++++++++++------
- 1 file changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_eswitch.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -3229,6 +3229,13 @@ static const struct bpf_func_proto bpf_s
- 	.arg1_type      = ARG_PTR_TO_CTX,
- };
- 
-+static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
-+{
-+	skb->protocol = htons(proto);
-+	if (skb_valid_dst(skb))
-+		skb_dst_drop(skb);
-+}
-+
- static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+diff --git a/drivers/net/ethernet/intel/ice/ice_eswitch.c b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+index ed21d7f55ac11..5b9a7ee278f17 100644
+--- a/drivers/net/ethernet/intel/ice/ice_eswitch.c
++++ b/drivers/net/ethernet/intel/ice/ice_eswitch.c
+@@ -502,10 +502,14 @@ ice_eswitch_attach(struct ice_pf *pf, struct ice_repr *repr, unsigned long *id)
+  */
+ int ice_eswitch_attach_vf(struct ice_pf *pf, struct ice_vf *vf)
  {
- 	/* Caller already did skb_cow() with len as headroom,
-@@ -3325,7 +3332,7 @@ static int bpf_skb_proto_4_to_6(struct s
- 		}
- 	}
+-	struct ice_repr *repr = ice_repr_create_vf(vf);
+ 	struct devlink *devlink = priv_to_devlink(pf);
++	struct ice_repr *repr;
+ 	int err;
  
--	skb->protocol = htons(ETH_P_IPV6);
-+	bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 	skb_clear_hash(skb);
++	if (!ice_is_eswitch_mode_switchdev(pf))
++		return 0;
++
++	repr = ice_repr_create_vf(vf);
+ 	if (IS_ERR(repr))
+ 		return PTR_ERR(repr);
  
- 	return 0;
-@@ -3355,7 +3362,7 @@ static int bpf_skb_proto_6_to_4(struct s
- 		}
- 	}
- 
--	skb->protocol = htons(ETH_P_IP);
-+	bpf_skb_change_protocol(skb, ETH_P_IP);
- 	skb_clear_hash(skb);
- 
- 	return 0;
-@@ -3546,10 +3553,10 @@ static int bpf_skb_net_grow(struct sk_bu
- 		/* Match skb->protocol to new outer l3 protocol */
- 		if (skb->protocol == htons(ETH_P_IP) &&
- 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
--			skb->protocol = htons(ETH_P_IPV6);
-+			bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 		else if (skb->protocol == htons(ETH_P_IPV6) &&
- 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
--			skb->protocol = htons(ETH_P_IP);
-+			bpf_skb_change_protocol(skb, ETH_P_IP);
- 	}
- 
- 	if (skb_is_gso(skb)) {
-@@ -3602,10 +3609,10 @@ static int bpf_skb_net_shrink(struct sk_
- 	/* Match skb->protocol to new outer l3 protocol */
- 	if (skb->protocol == htons(ETH_P_IP) &&
- 	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
--		skb->protocol = htons(ETH_P_IPV6);
-+		bpf_skb_change_protocol(skb, ETH_P_IPV6);
- 	else if (skb->protocol == htons(ETH_P_IPV6) &&
- 		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
--		skb->protocol = htons(ETH_P_IP);
-+		bpf_skb_change_protocol(skb, ETH_P_IP);
- 
- 	if (skb_is_gso(skb)) {
- 		struct skb_shared_info *shinfo = skb_shinfo(skb);
+-- 
+2.39.5
+
 
 
 
