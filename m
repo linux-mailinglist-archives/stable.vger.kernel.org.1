@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0C07AE4F9C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3D95AE54D0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 893E71B612CA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CDBF54C25B6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 309FE2628C;
-	Mon, 23 Jun 2025 21:17:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190E5224B1F;
+	Mon, 23 Jun 2025 22:04:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MImKx3wA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H6z9Y3Ap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5D11EDA0F;
-	Mon, 23 Jun 2025 21:17:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB9953FB1B;
+	Mon, 23 Jun 2025 22:04:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713422; cv=none; b=h3RqXxSV0cVpArjKvZgpouEbiDTXEtRSJxuCT0rUFy+JqjJKSYieBwmywtxyPxX9UJvh05GENbdET2GKNlm6y/dGUgsaCh3tKT06H44itYgbQIw7bOI6UsKe5uGc9ezEHRufB0HMXbSSKLrzKjLT+UwFSjNNgm+ZR6CzQyS82HE=
+	t=1750716289; cv=none; b=eEKxpkUu5KvADvdCOVIvNsGYpSB1MMqzmJ3uPmOJRdMwwfoZZRS9XkqkvbNDY3Kut2FT2ZtqyiuWP01oIm6mGNidqsLF+Z3AN1MNyffRM8sYzMTVJWxMc1AOrPQpaSU4/wt3rcLW9pyFX4M258ZZFGSEcWft+Tuqi4iu5LZwork=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713422; c=relaxed/simple;
-	bh=9DZqctmU38LiQhuK/hIMAto1jeADd91NUSyL/nuzcEE=;
+	s=arc-20240116; t=1750716289; c=relaxed/simple;
+	bh=MOcuIriKctwjsUuSva9JmSnadCb0fBhewcCJ7YYJqTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MK99HjxQ1GiS70FxpaZVY3d2VHwpz76u2At3OsuINCad18DkEsS/JplBpqZrQQ6cX2K0ZahZiOQj8i83Z1dF0Q+eNqDtyAbzdgY1TxsNcLndPZvbvlhkCnRKwo0MyzJDnOchMHWwHih1//28cMnwLBdOlBN5OpLAgZl4cKWixM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MImKx3wA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E60C4CEEA;
-	Mon, 23 Jun 2025 21:17:01 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NAjVC+7hUzJv9AWsWF7QJhhXE2V42mWo0bP7D/cPkEx/uStfotEYePdN1OTaYUrW+ok94IAuOchEX+yiY38IXYvJ7TedwllaUGx+vhSv2pPRfQDILFZ832HBHzsgEvvgSGMLBEvRR7Zlk2fJqG6/V2rwzVAvA0VRNCl+tG3CYjw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H6z9Y3Ap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C049C4CEEA;
+	Mon, 23 Jun 2025 22:04:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713421;
-	bh=9DZqctmU38LiQhuK/hIMAto1jeADd91NUSyL/nuzcEE=;
+	s=korg; t=1750716289;
+	bh=MOcuIriKctwjsUuSva9JmSnadCb0fBhewcCJ7YYJqTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MImKx3wAj9TrbqfQWDR73HtGgZG+wiMA+arhpSpz1ui4sU4Eic3fhGhrU8klVklJV
-	 5pmaPhIjXF9Z7n9qQiquNxcSjK+IHuJ14ZRcDjTT2U2s1k2Uqd3sM4xmlr0ZsDyt5U
-	 KoH3ck7z7hWm4ffJe+bE5ZWlyrdRJQQKNdCmKxoA=
+	b=H6z9Y3ApnDdA5XML+WfIU20PuugJCFnhXG7XaUu95dTS4GlMGa2P8N8IOduVHREH2
+	 y3gaEgSI52N735fpYC/3px3nrhztVUa//bK8EtXMUrb4rjUJTShMyzIIw/eRnhg4OZ
+	 EL4JwGSIPidLJxyTeMbJYF7QcHP6593+2637Axdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Wheeler <netdev@lists.ewheeler.net>,
-	Neal Cardwell <ncardwell@google.com>,
-	Yuchung Cheng <ycheng@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 205/222] tcp: fix tcp_packet_delayed() for tcp_is_non_sack_preventing_reopen() behavior
+	Cassio Neri <cassio.neri@gmail.com>,
+	kernel test robot <lkp@intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=83=C2=B6nig?= <u.kleine-koenig@baylibre.com>
+Subject: [PATCH 5.10 339/355] rtc: Improve performance of rtc_time64_to_tm(). Add tests.
 Date: Mon, 23 Jun 2025 15:09:00 +0200
-Message-ID: <20250623130618.470910055@linuxfoundation.org>
+Message-ID: <20250623130636.924283920@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,114 +61,296 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neal Cardwell <ncardwell@google.com>
+From: Cassio Neri <cassio.neri@gmail.com>
 
-[ Upstream commit d0fa59897e049e84432600e86df82aab3dce7aa5 ]
+commit 1d1bb12a8b1805ddeef9793ebeb920179fb0fa38 upstream.
 
-After the following commit from 2024:
+The current implementation of rtc_time64_to_tm() contains unnecessary
+loops, branches and look-up tables. The new one uses an arithmetic-based
+algorithm appeared in [1] and is approximately 4.3 times faster (YMMV).
 
-commit e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
+The drawback is that the new code isn't intuitive and contains many 'magic
+numbers' (not unusual for this type of algorithm). However, [1] justifies
+all those numbers and, given this function's history, the code is unlikely
+to need much maintenance, if any at all.
 
-...there was buggy behavior where TCP connections without SACK support
-could easily see erroneous undo events at the end of fast recovery or
-RTO recovery episodes. The erroneous undo events could cause those
-connections to suffer repeated loss recovery episodes and high
-retransmit rates.
+Add a KUnit test case that checks every day in a 160,000 years interval
+starting on 1970-01-01 against the expected result. Add a new config
+RTC_LIB_KUNIT_TEST symbol to give the option to run this test suite.
 
-The problem was an interaction between the non-SACK behavior on these
-connections and the undo logic. The problem is that, for non-SACK
-connections at the end of a loss recovery episode, if snd_una ==
-high_seq, then tcp_is_non_sack_preventing_reopen() holds steady in
-CA_Recovery or CA_Loss, but clears tp->retrans_stamp to 0. Then upon
-the next ACK the "tcp: fix to allow timestamp undo if no retransmits
-were sent" logic saw the tp->retrans_stamp at 0 and erroneously
-concluded that no data was retransmitted, and erroneously performed an
-undo of the cwnd reduction, restoring cwnd immediately to the value it
-had before loss recovery.  This caused an immediate burst of traffic
-and build-up of queues and likely another immediate loss recovery
-episode.
+[1] Neri, Schneider, "Euclidean Affine Functions and Applications to
+Calendar Algorithms". https://arxiv.org/abs/2102.06959
 
-This commit fixes tcp_packet_delayed() to ignore zero retrans_stamp
-values for non-SACK connections when snd_una is at or above high_seq,
-because tcp_is_non_sack_preventing_reopen() clears retrans_stamp in
-this case, so it's not a valid signal that we can undo.
-
-Note that the commit named in the Fixes footer restored long-present
-behavior from roughly 2005-2019, so apparently this bug was present
-for a while during that era, and this was simply not caught.
-
-Fixes: e37ab7373696 ("tcp: fix to allow timestamp undo if no retransmits were sent")
-Reported-by: Eric Wheeler <netdev@lists.ewheeler.net>
-Closes: https://lore.kernel.org/netdev/64ea9333-e7f9-0df-b0f2-8d566143acab@ewheeler.net/
-Signed-off-by: Neal Cardwell <ncardwell@google.com>
-Co-developed-by: Yuchung Cheng <ycheng@google.com>
-Signed-off-by: Yuchung Cheng <ycheng@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Cassio Neri <cassio.neri@gmail.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20210624201343.85441-1-cassio.neri@gmail.com
+Signed-off-by: Uwe Kleine-KÃ¶nig <u.kleine-koenig@baylibre.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 37 +++++++++++++++++++++++++------------
- 1 file changed, 25 insertions(+), 12 deletions(-)
+ drivers/rtc/Kconfig    |   10 ++++
+ drivers/rtc/Makefile   |    1 
+ drivers/rtc/lib.c      |  107 ++++++++++++++++++++++++++++++++++++-------------
+ drivers/rtc/lib_test.c |   79 ++++++++++++++++++++++++++++++++++++
+ 4 files changed, 170 insertions(+), 27 deletions(-)
+ create mode 100644 drivers/rtc/lib_test.c
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 2378d561d171d..6b3bb8a590353 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -2290,20 +2290,33 @@ static inline bool tcp_packet_delayed(const struct tcp_sock *tp)
- {
- 	const struct sock *sk = (const struct sock *)tp;
+--- a/drivers/rtc/Kconfig
++++ b/drivers/rtc/Kconfig
+@@ -10,6 +10,16 @@ config RTC_MC146818_LIB
+ 	bool
+ 	select RTC_LIB
  
--	if (tp->retrans_stamp &&
--	    tcp_tsopt_ecr_before(tp, tp->retrans_stamp))
--		return true;  /* got echoed TS before first retransmission */
++config RTC_LIB_KUNIT_TEST
++	tristate "KUnit test for RTC lib functions" if !KUNIT_ALL_TESTS
++	depends on KUNIT
++	default KUNIT_ALL_TESTS
++	select RTC_LIB
++	help
++	  Enable this option to test RTC library functions.
++
++	  If unsure, say N.
++
+ menuconfig RTC_CLASS
+ 	bool "Real Time Clock"
+ 	default n
+--- a/drivers/rtc/Makefile
++++ b/drivers/rtc/Makefile
+@@ -183,3 +183,4 @@ obj-$(CONFIG_RTC_DRV_WM8350)	+= rtc-wm83
+ obj-$(CONFIG_RTC_DRV_X1205)	+= rtc-x1205.o
+ obj-$(CONFIG_RTC_DRV_XGENE)	+= rtc-xgene.o
+ obj-$(CONFIG_RTC_DRV_ZYNQMP)	+= rtc-zynqmp.o
++obj-$(CONFIG_RTC_LIB_KUNIT_TEST)	+= lib_test.o
+--- a/drivers/rtc/lib.c
++++ b/drivers/rtc/lib.c
+@@ -6,6 +6,8 @@
+  * Author: Alessandro Zummo <a.zummo@towertech.it>
+  *
+  * based on arch/arm/common/rtctime.c and other bits
++ *
++ * Author: Cassio Neri <cassio.neri@gmail.com> (rtc_time64_to_tm)
+  */
+ 
+ #include <linux/export.h>
+@@ -22,8 +24,6 @@ static const unsigned short rtc_ydays[2]
+ 	{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
+ };
+ 
+-#define LEAPS_THRU_END_OF(y) ((y) / 4 - (y) / 100 + (y) / 400)
 -
--	/* Check if nothing was retransmitted (retrans_stamp==0), which may
--	 * happen in fast recovery due to TSQ. But we ignore zero retrans_stamp
--	 * in TCP_SYN_SENT, since when we set FLAG_SYN_ACKED we also clear
--	 * retrans_stamp even if we had retransmitted the SYN.
-+	/* Received an echoed timestamp before the first retransmission? */
-+	if (tp->retrans_stamp)
-+		return tcp_tsopt_ecr_before(tp, tp->retrans_stamp);
-+
-+	/* We set tp->retrans_stamp upon the first retransmission of a loss
-+	 * recovery episode, so normally if tp->retrans_stamp is 0 then no
-+	 * retransmission has happened yet (likely due to TSQ, which can cause
-+	 * fast retransmits to be delayed). So if snd_una advanced while
-+	 * (tp->retrans_stamp is 0 then apparently a packet was merely delayed,
-+	 * not lost. But there are exceptions where we retransmit but then
-+	 * clear tp->retrans_stamp, so we check for those exceptions.
- 	 */
--	if (!tp->retrans_stamp &&	   /* no record of a retransmit/SYN? */
--	    sk->sk_state != TCP_SYN_SENT)  /* not the FLAG_SYN_ACKED case? */
--		return true;  /* nothing was retransmitted */
- 
--	return false;
-+	/* (1) For non-SACK connections, tcp_is_non_sack_preventing_reopen()
-+	 * clears tp->retrans_stamp when snd_una == high_seq.
-+	 */
-+	if (!tcp_is_sack(tp) && !before(tp->snd_una, tp->high_seq))
-+		return false;
-+
-+	/* (2) In TCP_SYN_SENT tcp_clean_rtx_queue() clears tp->retrans_stamp
-+	 * when setting FLAG_SYN_ACKED is set, even if the SYN was
-+	 * retransmitted.
-+	 */
-+	if (sk->sk_state == TCP_SYN_SENT)
-+		return false;
-+
-+	return true;	/* tp->retrans_stamp is zero; no retransmit yet */
+ /*
+  * The number of days in the month.
+  */
+@@ -42,42 +42,95 @@ int rtc_year_days(unsigned int day, unsi
  }
+ EXPORT_SYMBOL(rtc_year_days);
  
- /* Undo procedures. */
--- 
-2.39.5
-
+-/*
+- * rtc_time64_to_tm - Converts time64_t to rtc_time.
+- * Convert seconds since 01-01-1970 00:00:00 to Gregorian date.
++/**
++ * rtc_time64_to_tm - converts time64_t to rtc_time.
++ *
++ * @time:	The number of seconds since 01-01-1970 00:00:00.
++ *		(Must be positive.)
++ * @tm:		Pointer to the struct rtc_time.
+  */
+ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
+ {
+-	unsigned int month, year, secs;
++	unsigned int secs;
+ 	int days;
+ 
++	u64 u64tmp;
++	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
++		day_of_year, month, day;
++	bool is_Jan_or_Feb, is_leap_year;
++
+ 	/* time must be positive */
+ 	days = div_s64_rem(time, 86400, &secs);
+ 
+ 	/* day of the week, 1970-01-01 was a Thursday */
+ 	tm->tm_wday = (days + 4) % 7;
+ 
+-	year = 1970 + days / 365;
+-	days -= (year - 1970) * 365
+-		+ LEAPS_THRU_END_OF(year - 1)
+-		- LEAPS_THRU_END_OF(1970 - 1);
+-	while (days < 0) {
+-		year -= 1;
+-		days += 365 + is_leap_year(year);
+-	}
+-	tm->tm_year = year - 1900;
+-	tm->tm_yday = days + 1;
+-
+-	for (month = 0; month < 11; month++) {
+-		int newdays;
+-
+-		newdays = days - rtc_month_days(month, year);
+-		if (newdays < 0)
+-			break;
+-		days = newdays;
+-	}
+-	tm->tm_mon = month;
+-	tm->tm_mday = days + 1;
++	/*
++	 * The following algorithm is, basically, Proposition 6.3 of Neri
++	 * and Schneider [1]. In a few words: it works on the computational
++	 * (fictitious) calendar where the year starts in March, month = 2
++	 * (*), and finishes in February, month = 13. This calendar is
++	 * mathematically convenient because the day of the year does not
++	 * depend on whether the year is leap or not. For instance:
++	 *
++	 * March 1st		0-th day of the year;
++	 * ...
++	 * April 1st		31-st day of the year;
++	 * ...
++	 * January 1st		306-th day of the year; (Important!)
++	 * ...
++	 * February 28th	364-th day of the year;
++	 * February 29th	365-th day of the year (if it exists).
++	 *
++	 * After having worked out the date in the computational calendar
++	 * (using just arithmetics) it's easy to convert it to the
++	 * corresponding date in the Gregorian calendar.
++	 *
++	 * [1] "Euclidean Affine Functions and Applications to Calendar
++	 * Algorithms". https://arxiv.org/abs/2102.06959
++	 *
++	 * (*) The numbering of months follows rtc_time more closely and
++	 * thus, is slightly different from [1].
++	 */
++
++	udays		= ((u32) days) + 719468;
++
++	u32tmp		= 4 * udays + 3;
++	century		= u32tmp / 146097;
++	day_of_century	= u32tmp % 146097 / 4;
++
++	u32tmp		= 4 * day_of_century + 3;
++	u64tmp		= 2939745ULL * u32tmp;
++	year_of_century	= upper_32_bits(u64tmp);
++	day_of_year	= lower_32_bits(u64tmp) / 2939745 / 4;
++
++	year		= 100 * century + year_of_century;
++	is_leap_year	= year_of_century != 0 ?
++		year_of_century % 4 == 0 : century % 4 == 0;
++
++	u32tmp		= 2141 * day_of_year + 132377;
++	month		= u32tmp >> 16;
++	day		= ((u16) u32tmp) / 2141;
++
++	/*
++	 * Recall that January 01 is the 306-th day of the year in the
++	 * computational (not Gregorian) calendar.
++	 */
++	is_Jan_or_Feb	= day_of_year >= 306;
++
++	/* Converts to the Gregorian calendar. */
++	year		= year + is_Jan_or_Feb;
++	month		= is_Jan_or_Feb ? month - 12 : month;
++	day		= day + 1;
++
++	day_of_year	= is_Jan_or_Feb ?
++		day_of_year - 306 : day_of_year + 31 + 28 + is_leap_year;
++
++	/* Converts to rtc_time's format. */
++	tm->tm_year	= (int) (year - 1900);
++	tm->tm_mon	= (int) month;
++	tm->tm_mday	= (int) day;
++	tm->tm_yday	= (int) day_of_year + 1;
+ 
+ 	tm->tm_hour = secs / 3600;
+ 	secs -= tm->tm_hour * 3600;
+--- /dev/null
++++ b/drivers/rtc/lib_test.c
+@@ -0,0 +1,79 @@
++// SPDX-License-Identifier: LGPL-2.1+
++
++#include <kunit/test.h>
++#include <linux/rtc.h>
++
++/*
++ * Advance a date by one day.
++ */
++static void advance_date(int *year, int *month, int *mday, int *yday)
++{
++	if (*mday != rtc_month_days(*month - 1, *year)) {
++		++*mday;
++		++*yday;
++		return;
++	}
++
++	*mday = 1;
++	if (*month != 12) {
++		++*month;
++		++*yday;
++		return;
++	}
++
++	*month = 1;
++	*yday  = 1;
++	++*year;
++}
++
++/*
++ * Checks every day in a 160000 years interval starting on 1970-01-01
++ * against the expected result.
++ */
++static void rtc_time64_to_tm_test_date_range(struct kunit *test)
++{
++	/*
++	 * 160000 years	= (160000 / 400) * 400 years
++	 *		= (160000 / 400) * 146097 days
++	 *		= (160000 / 400) * 146097 * 86400 seconds
++	 */
++	time64_t total_secs = ((time64_t) 160000) / 400 * 146097 * 86400;
++
++	int year	= 1970;
++	int month	= 1;
++	int mday	= 1;
++	int yday	= 1;
++
++	struct rtc_time result;
++	time64_t secs;
++	s64 days;
++
++	for (secs = 0; secs <= total_secs; secs += 86400) {
++
++		rtc_time64_to_tm(secs, &result);
++
++		days = div_s64(secs, 86400);
++
++		#define FAIL_MSG "%d/%02d/%02d (%2d) : %ld", \
++			year, month, mday, yday, days
++
++		KUNIT_ASSERT_EQ_MSG(test, year - 1900, result.tm_year, FAIL_MSG);
++		KUNIT_ASSERT_EQ_MSG(test, month - 1, result.tm_mon, FAIL_MSG);
++		KUNIT_ASSERT_EQ_MSG(test, mday, result.tm_mday, FAIL_MSG);
++		KUNIT_ASSERT_EQ_MSG(test, yday, result.tm_yday, FAIL_MSG);
++
++		advance_date(&year, &month, &mday, &yday);
++	}
++}
++
++static struct kunit_case rtc_lib_test_cases[] = {
++	KUNIT_CASE(rtc_time64_to_tm_test_date_range),
++	{}
++};
++
++static struct kunit_suite rtc_lib_test_suite = {
++	.name = "rtc_lib_test_cases",
++	.test_cases = rtc_lib_test_cases,
++};
++
++kunit_test_suite(rtc_lib_test_suite);
 
 
 
