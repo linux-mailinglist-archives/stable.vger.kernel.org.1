@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFE07AE4F99
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B508DAE4EE6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7CDF217EF23
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51D8717D855
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF11225A23;
-	Mon, 23 Jun 2025 21:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3942F21CA07;
+	Mon, 23 Jun 2025 21:10:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xgsgf0pP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zx3gXC63"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882A42248B5;
-	Mon, 23 Jun 2025 21:16:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4D370838;
+	Mon, 23 Jun 2025 21:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713414; cv=none; b=bOT6y0nCrxxK4yFqXhWcpPhhdNjX/OpkmMksaw9gEiJYTm0dEIwKQ64DRP/z8SDrBj4UH+6PZJ4QAV1Dzxz52gCHLaHAAxrdivpNbEukYUMjKjgtqt5IccPoHH+sL/u1SBDjJewRl/p6gXX9hzx9enmXt5hu3BmrSCsNzti0VQA=
+	t=1750713020; cv=none; b=iUU5mruQfyLOdyakF6Z+plvDQSqokyvRHXuErAYAGfk+iUnaVwIFgf6VbftMTG7Fa8NTGz82krGZIt8YVa3vbsxO54Z+nUNqUkEhlwKmPLHJqxtqf+qr0uSyZON0X+U2PrT6UJhS2FaqCaNNWhzYj4iIiKgCsdvnobmYkLTQ2qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713414; c=relaxed/simple;
-	bh=o36r7+0CyjjffX+Q68pCVAECiBXLa6sxm7S1atlZqoQ=;
+	s=arc-20240116; t=1750713020; c=relaxed/simple;
+	bh=MpXmZYp/ICXk9m/3jZJmaShlK97VTXfD6/BcahOxevI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VROSS2wQJJraQGYoLnX6AUs/RUZ9GR/v2X9Jq+q9+XNDcldz+Wbz6tKrdwYinaEGKMzNgFqjTKF6+CBOHvBbklKZhsovR76teSUV1GgqYhbARRJb6l/F/PsG1nBLH70+v9rMTw+bw25amIVmgnCU780SryzV2rBgbToxtmAnSIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xgsgf0pP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F199C4CEEA;
-	Mon, 23 Jun 2025 21:16:53 +0000 (UTC)
+	 MIME-Version; b=Se8S8qH8jVuKMgolQLmDtxeje+/uV2P3PFwcGvk0aQMKmzV+uOefn0nAhUwRn6f85iDVHerSmYLKdy/dn97IIoAuJa90oCTufYWuRWfP2Bn3h5edHIo9CLW/nl2kHAVoQeko0lTA/5Mr65KYIwPRCrjb7sc5gNIu+UqifRwK3dw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zx3gXC63; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8183AC4CEEA;
+	Mon, 23 Jun 2025 21:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713414;
-	bh=o36r7+0CyjjffX+Q68pCVAECiBXLa6sxm7S1atlZqoQ=;
+	s=korg; t=1750713019;
+	bh=MpXmZYp/ICXk9m/3jZJmaShlK97VTXfD6/BcahOxevI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xgsgf0pPoIhoW2gZbDAxgmixB9ACXSrA1oMOWtK8P5vH0dLMkhvOSuAHbdY2zU+Ih
-	 Hw+lGNsLMGKZq3zWqEcw/DfchHMmIAvvTaCPbrKwNGSP37dHVbG1/NhRLpDpGxMXcB
-	 E4GvPikyEk4hn/cmMNu6ZJ1+HkIY6lLEJzUtNczo=
+	b=zx3gXC63+IQx39PYvnw9arXkyBr9MOBEbjdOLSls88uOmTRgLTz3PrOV3JdIyKkfS
+	 umK6JLQV7tAt3QzfSSjn5v6BVph4v0wjE7YA3zu0ct+g5LC8u0sDuDaXUpfshTJS1f
+	 vmb/cKyadVPv40AnFgYe+UVfz8a2f+yB7hAoE8wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 346/592] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 043/290] media: imx-jpeg: Move mxc_jpeg_free_slot_data() ahead
 Date: Mon, 23 Jun 2025 15:05:04 +0200
-Message-ID: <20250623130708.678600663@linuxfoundation.org>
+Message-ID: <20250623130628.303760198@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
+commit 46e9c092f850bd7b4d06de92d3d21877f49a3fcb upstream.
 
-tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
-before the call to tcp_init_transfer() / tcp_init_buffer_space().
+Move function mxc_jpeg_free_slot_data() above mxc_jpeg_alloc_slot_data()
+allowing to call that function during allocation failures.
+No functional changes are made.
 
-Otherwise tp->rcvq_space.space is off by 120 bytes
-(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Wei Wang <weiwan@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |   40 ++++++++++++-------------
+ 1 file changed, 20 insertions(+), 20 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 4dfdde48ab503..ed5f0ffab60dc 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6867,6 +6867,9 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		if (!tp->srtt_us)
- 			tcp_synack_rtt_meas(sk, req);
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -752,6 +752,26 @@ static int mxc_get_free_slot(struct mxc_
+ 	return -1;
+ }
  
-+		if (tp->rx_opt.tstamp_ok)
-+			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
++static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
++{
++	/* free descriptor for decoding/encoding phase */
++	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
++			  jpeg->slot_data.desc,
++			  jpeg->slot_data.desc_handle);
 +
- 		if (req) {
- 			tcp_rcv_synrecv_state_fastopen(sk);
- 		} else {
-@@ -6892,9 +6895,6 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
- 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
++	/* free descriptor for encoder configuration phase / decoder DHT */
++	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
++			  jpeg->slot_data.cfg_desc,
++			  jpeg->slot_data.cfg_desc_handle);
++
++	/* free configuration stream */
++	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
++			  jpeg->slot_data.cfg_stream_vaddr,
++			  jpeg->slot_data.cfg_stream_handle);
++
++	jpeg->slot_data.used = false;
++}
++
+ static bool mxc_jpeg_alloc_slot_data(struct mxc_jpeg_dev *jpeg)
+ {
+ 	struct mxc_jpeg_desc *desc;
+@@ -798,26 +818,6 @@ err:
+ 	return false;
+ }
  
--		if (tp->rx_opt.tstamp_ok)
--			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
+-static void mxc_jpeg_free_slot_data(struct mxc_jpeg_dev *jpeg)
+-{
+-	/* free descriptor for decoding/encoding phase */
+-	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+-			  jpeg->slot_data.desc,
+-			  jpeg->slot_data.desc_handle);
 -
- 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
- 			tcp_update_pacing_rate(sk);
- 
--- 
-2.39.5
-
+-	/* free descriptor for encoder configuration phase / decoder DHT */
+-	dma_free_coherent(jpeg->dev, sizeof(struct mxc_jpeg_desc),
+-			  jpeg->slot_data.cfg_desc,
+-			  jpeg->slot_data.cfg_desc_handle);
+-
+-	/* free configuration stream */
+-	dma_free_coherent(jpeg->dev, MXC_JPEG_MAX_CFG_STREAM,
+-			  jpeg->slot_data.cfg_stream_vaddr,
+-			  jpeg->slot_data.cfg_stream_handle);
+-
+-	jpeg->slot_data.used = false;
+-}
+-
+ static void mxc_jpeg_check_and_set_last_buffer(struct mxc_jpeg_ctx *ctx,
+ 					       struct vb2_v4l2_buffer *src_buf,
+ 					       struct vb2_v4l2_buffer *dst_buf)
 
 
 
