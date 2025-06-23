@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-157442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157449-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AF66AE53F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FD9AE5407
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8E60916253C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D18184449BB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 107DC222581;
-	Mon, 23 Jun 2025 21:57:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B9921F4628;
+	Mon, 23 Jun 2025 21:58:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zRrpDOcp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQ6vTWED"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29773FB1B;
-	Mon, 23 Jun 2025 21:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE84F21FF2B;
+	Mon, 23 Jun 2025 21:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715875; cv=none; b=NcEwpV9TNL8fEiUZjsVjw6ewz/NMOyzt4ds/R+TYDzDswm//dA0IKMZkV/Zl5lk1LhgR4YhlenZEnngCVr/1cWzp7nIia0Px4jmLVxJRWvF1ZLMTzIKjmBiCvCOnpBHVc1KwIqKUsadDPgN6yd4x6NLm78L3MNtLPlQgJHIawUU=
+	t=1750715895; cv=none; b=Q0zyGZjC9AIC39CsnrH2OkbnnEWYAHL0Sg+74fydFACgs61fg9TMq6p8J7rJJbfAnxiCYFpYsZ/dL2hsRwVipL+V8FsnBFB95bGErpEKjhuywinUOJ9xl/tkBpkGIYARZd19+L7ulw9Um48M+FesyIUO74X5dH3d91AK300V5hU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715875; c=relaxed/simple;
-	bh=iEMZNjC06qrXF3t6zz0WdLuEbEK6caZVMM0LApbUYKY=;
+	s=arc-20240116; t=1750715895; c=relaxed/simple;
+	bh=Uj8qY3wSRxUtpW44zE1rFzwSf7R1jYNe+ZpR4MfFXpQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eehZc3d22GGmDEwJhSBQcd55mNDfh1AW6rzXstfWG6m3Xtt+UYfpzKReNyC1VjyeYt5xjl/ztMibRdxK9XUHih+JsBi4vRzhmqg9/14o393tIKUzkJJ1luvSKEl8EagwtWW+he6WjEHXwOMPae5KdN1wPeTMXAINk1L/fKtsD+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zRrpDOcp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5919AC4CEEA;
-	Mon, 23 Jun 2025 21:57:55 +0000 (UTC)
+	 MIME-Version; b=DFRldLepbu2dJ/qUzJUeIpfKXYtlrzQNuft5CFCmEVGgwnZr1oQuqWFjCwBaGOEKvON3jL/IYd/ZAHt+AihnuXeqkG6uHR/Nh8HYjAwHU9MilXf5tQsOm8WgZDn3Ny6TzRlw2q3g94LqYbBRihvPS1TtFxBOmE1QiAF378Ceirg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQ6vTWED; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F691C4CEEA;
+	Mon, 23 Jun 2025 21:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715875;
-	bh=iEMZNjC06qrXF3t6zz0WdLuEbEK6caZVMM0LApbUYKY=;
+	s=korg; t=1750715892;
+	bh=Uj8qY3wSRxUtpW44zE1rFzwSf7R1jYNe+ZpR4MfFXpQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zRrpDOcpenT1Y4CFMbHDiM4Eccjr1hHMtxr6W44st4sRNrAeFTaJ54Wb/M0vXcmW7
-	 j7PiwFf1r+d0wwDIYQIMw60qmm+MEbJle+UC5efjLhufRfBGmWYi1J7QF6rcGSVqCp
-	 /BqgxFb9XIZoTLBJtgNIV+A9N9kqibEfri8PKWxg=
+	b=PQ6vTWEDdwvsWesud9WCTCk+FE+37Su7RbWOIkY/HuafudSIJX+ReBEunfhSSnaOr
+	 uN3BOmY2gsqB9hpKnJxnTK+MgDxuiGSeityC6X1WXyvw4eLhCGpAKNEJnFeoM9Eiy5
+	 aZtErqpqgEy7GuZkOljED266VFILvyJmyaI2m4cY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Timur Tabi <ttabi@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Danilo Krummrich <dakr@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 247/290] drm/nouveau/bl: increase buffer size to avoid truncate warning
-Date: Mon, 23 Jun 2025 15:08:28 +0200
-Message-ID: <20250623130634.354061196@linuxfoundation.org>
+Subject: [PATCH 6.6 248/290] drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
+Date: Mon, 23 Jun 2025 15:08:29 +0200
+Message-ID: <20250623130634.384920476@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
 References: <20250623130626.910356556@linuxfoundation.org>
@@ -62,83 +62,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 61b2b3737499f1fb361a54a16828db24a8345e85 ]
+[ Upstream commit a7137b1825b535eb7258b25beeb0d5425e0037d2 ]
 
-The nouveau_get_backlight_name() function generates a unique name for the
-backlight interface, appending an id from 1 to 99 for all backlight devices
-after the first.
+i915_pmu.c may fail to build with GCOV and AutoFDO enabled.
 
-GCC 15 (and likely other compilers) produce the following
--Wformat-truncation warning:
+../drivers/gpu/drm/i915/i915_pmu.c:116:3: error: call to '__compiletime_assert_487' declared with 'error' attribute: BUILD_BUG_ON failed: bit > BITS_PER_TYPE(typeof_member(struct i915_pmu, enable)) - 1
+  116 |                 BUILD_BUG_ON(bit >
+      |                 ^
 
-nouveau_backlight.c: In function ‘nouveau_backlight_init’:
-nouveau_backlight.c:56:69: error: ‘%d’ directive output may be truncated writing between 1 and 10 bytes into a region of size 3 [-Werror=format-truncation=]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                                     ^~
-In function ‘nouveau_get_backlight_name’,
-    inlined from ‘nouveau_backlight_init’ at nouveau_backlight.c:351:7:
-nouveau_backlight.c:56:56: note: directive argument in the range [1, 2147483647]
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                                                        ^~~~~~~~~~~~~~~~
-nouveau_backlight.c:56:17: note: ‘snprintf’ output between 14 and 23 bytes into a destination of size 15
-   56 |                 snprintf(backlight_name, BL_NAME_SIZE, "nv_backlight%d", nb);
-      |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Here is a way to reproduce the issue:
+$ git checkout v6.15
+$ mkdir build
+$ ./scripts/kconfig/merge_config.sh -O build -n -m <(cat <<EOF
+CONFIG_DRM=y
+CONFIG_PCI=y
+CONFIG_DRM_I915=y
 
-The warning started appearing after commit ab244be47a8f ("drm/nouveau:
-Fix a potential theorical leak in nouveau_get_backlight_name()") This fix
-for the ida usage removed the explicit value check for ids larger than 99.
-The compiler is unable to intuit that the ida_alloc_max() limits the
-returned value range between 0 and 99.
+CONFIG_PERF_EVENTS=y
 
-Because the compiler can no longer infer that the number ranges from 0 to
-99, it thinks that it could use as many as 11 digits (10 + the potential -
-sign for negative numbers).
+CONFIG_DEBUG_FS=y
+CONFIG_GCOV_KERNEL=y
+CONFIG_GCOV_PROFILE_ALL=y
 
-The warning has gone unfixed for some time, with at least one kernel test
-robot report. The code breaks W=1 builds, which is especially frustrating
-with the introduction of CONFIG_WERROR.
+CONFIG_AUTOFDO_CLANG=y
+EOF
+)
+$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
+       olddefconfig
+$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
+       CLANG_AUTOFDO_PROFILE=...PATH_TO_SOME_AFDO_PROFILE... \
+       drivers/gpu/drm/i915/i915_pmu.o
 
-The string is stored temporarily on the stack and then copied into the
-device name. Its not a big deal to use 11 more bytes of stack rounding out
-to an even 24 bytes. Increase BL_NAME_SIZE to 24 to avoid the truncation
-warning. This fixes the W=1 builds that include this driver.
+Although not super sure what happened, by reviewing the code, it should
+depend on `__builtin_constant_p(bit)` directly instead of assuming
+`__builtin_constant_p(config)` makes `bit` a builtin constant.
 
-Compile tested only.
+Also fix a nit, to reuse the `bit` local variable.
 
-Fixes: ab244be47a8f ("drm/nouveau: Fix a potential theorical leak in nouveau_get_backlight_name()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202312050324.0kv4PnfZ-lkp@intel.com/
-Suggested-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://lore.kernel.org/r/20250610-jk-nouveua-drm-bl-snprintf-fix-v2-1-7fdd4b84b48e@intel.com
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Fixes: a644fde77ff7 ("drm/i915/pmu: Change bitmask of enabled events to u32")
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20250612083023.562585-1-tzungbi@kernel.org
+(cherry picked from commit 686d773186bf72b739bab7e12eb8665d914676ee)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/nouveau/nouveau_backlight.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_pmu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/nouveau/nouveau_backlight.c b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-index 91b5ecc575380..4e6f305c9e504 100644
---- a/drivers/gpu/drm/nouveau/nouveau_backlight.c
-+++ b/drivers/gpu/drm/nouveau/nouveau_backlight.c
-@@ -42,7 +42,7 @@
- #include "nouveau_acpi.h"
+diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
+index 7b1076b5e748c..33ab82c334a88 100644
+--- a/drivers/gpu/drm/i915/i915_pmu.c
++++ b/drivers/gpu/drm/i915/i915_pmu.c
+@@ -105,7 +105,7 @@ static u32 config_mask(const u64 config)
+ {
+ 	unsigned int bit = config_bit(config);
  
- static struct ida bl_ida;
--#define BL_NAME_SIZE 15 // 12 for name + 2 for digits + 1 for '\0'
-+#define BL_NAME_SIZE 24 // 12 for name + 11 for digits + 1 for '\0'
+-	if (__builtin_constant_p(config))
++	if (__builtin_constant_p(bit))
+ 		BUILD_BUG_ON(bit >
+ 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
+ 							 enable)) - 1);
+@@ -114,7 +114,7 @@ static u32 config_mask(const u64 config)
+ 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
+ 							 enable)) - 1);
  
- static bool
- nouveau_get_backlight_name(char backlight_name[BL_NAME_SIZE],
+-	return BIT(config_bit(config));
++	return BIT(bit);
+ }
+ 
+ static bool is_engine_event(struct perf_event *event)
 -- 
 2.39.5
 
