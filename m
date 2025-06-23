@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52A04AE567D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AABB3AE5556
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DD903B74D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B370D3A36C8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96CC223DE8;
-	Mon, 23 Jun 2025 22:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76DB223316;
+	Mon, 23 Jun 2025 22:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1A2K1FZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DccZCozz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 643BB1F6667;
-	Mon, 23 Jun 2025 22:17:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7220421B8F6;
+	Mon, 23 Jun 2025 22:09:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717060; cv=none; b=HZfVf2WIInFg/qXH9ZO0CQjwQVaUPVgVQU2iDWhAa+Y9N2vY9zwPSibpqduxxbHf49yfHb+XkWl0o+PZ0bwezY7lAtFpSgDkZY9E//b8/GXRNnkSyl8CqChuxBi8QU4+9DJJWCfhkKyjW5x7xewNnZNYPlJlES9vlxUFeS0fOTY=
+	t=1750716571; cv=none; b=hrhfv0tJjg/JopWt8chMB7rLjDnPP5fcVp36L8yG7vHjFDlHRPTuNYqpGzOl2WzRI/vZ9ISp0diFUNiBV9pqWUZJgvzVIBGjvbuHpZuX71s9sju66Bu4AqzAnxEHFvnTyzbvCVNKQh03ZjK/OWvzcbqyWf76zUrLe1xrAYnif74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717060; c=relaxed/simple;
-	bh=KBUcKLvGpzMn4m7Qt+8TRCStTos4GBVYRrt09jt1JDg=;
+	s=arc-20240116; t=1750716571; c=relaxed/simple;
+	bh=jHBtBRDzmVT/Rzh9HbsYzgf+fJ9wGaCHWbZztLJ5AC4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rf7Cp2VTgsQ0ZoDVnWZNfc5vRwyBaP/eBuVNtT6TbDbKahJ71PmHOgWdl3M3VgS0ktsU8Ld/Q+aLXScPKJuBWcGPbGKLUEjTMtt5N1cgV3DbChjQkiLZvgRd0lzdksohtNmlU3aUqIbAgdmI8jLo1D7Sep5GAN/IyHoq1PFtI+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1A2K1FZt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0827C4CEEA;
-	Mon, 23 Jun 2025 22:17:39 +0000 (UTC)
+	 MIME-Version; b=KckW1uHUiDz7yAQxTW5CXjMKXNL/fpbQqnbnjPiaH7XTuOAKvGLSh9cGy5ryFdshfI/itJ3Fd22yXb9mSD19i4zOzzxcG65wTBeqbn9iUf9R6xXSZ25Erk3nUt5igrDfBy8Ie3b/eOmwcBtJl/O/mkLWpFleBw+F8kIC7SQv4fE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DccZCozz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E60C4CEEA;
+	Mon, 23 Jun 2025 22:09:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717060;
-	bh=KBUcKLvGpzMn4m7Qt+8TRCStTos4GBVYRrt09jt1JDg=;
+	s=korg; t=1750716571;
+	bh=jHBtBRDzmVT/Rzh9HbsYzgf+fJ9wGaCHWbZztLJ5AC4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1A2K1FZtNlhDDBSJhwjd4ABKZQ0gSjBnCelQAj3ojGLZRS1MTawFh/ZfUrnaCMQUu
-	 Po8xWikG4ui5OexE2bVThefOFfQ6TXqFZaNSKWUUE08NY2g2Rhspcj16s2tBfpt/sV
-	 92ESZe2652udRzCQI3KbY6Y7pyiv3kRGaQqejiBQ=
+	b=DccZCozzzGp0qaMA4hK4g/sLFAhRuFf8wEnpkgfCYe7Z+yvHspa5hAxSJfyvilUq1
+	 ncd5KUkQ+qRyOp79PB+cU93PSHspwK6RS2O0nblyAbTx4CLCkX8ta9B2+v2r9L0xwf
+	 yoiMnezJto3HEangLBCMSRyagHz0bZMVTkfWEFSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>,
-	Qasim Ijaz <qasdev00@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 358/508] net: ch9200: fix uninitialised access during mii_nway_restart
+	Daniel Wagner <wagi@kernel.org>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 266/414] scsi: lpfc: Use memcpy() for BIOS version
 Date: Mon, 23 Jun 2025 15:06:43 +0200
-Message-ID: <20250623130654.171068163@linuxfoundation.org>
+Message-ID: <20250623130648.682993973@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,74 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qasim Ijaz <qasdev00@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-commit 9ad0452c0277b816a435433cca601304cfac7c21 upstream.
+[ Upstream commit ae82eaf4aeea060bb736c3e20c0568b67c701d7d ]
 
-In mii_nway_restart() the code attempts to call
-mii->mdio_read which is ch9200_mdio_read(). ch9200_mdio_read()
-utilises a local buffer called "buff", which is initialised
-with control_read(). However "buff" is conditionally
-initialised inside control_read():
+The strlcat() with FORTIFY support is triggering a panic because it
+thinks the target buffer will overflow although the correct target
+buffer size is passed in.
 
-        if (err == size) {
-                memcpy(data, buf, size);
-        }
+Anyway, instead of memset() with 0 followed by a strlcat(), just use
+memcpy() and ensure that the resulting buffer is NULL terminated.
 
-If the condition of "err == size" is not met, then
-"buff" remains uninitialised. Once this happens the
-uninitialised "buff" is accessed and returned during
-ch9200_mdio_read():
+BIOSVersion is only used for the lpfc_printf_log() which expects a
+properly terminated string.
 
-        return (buff[0] | buff[1] << 8);
-
-The problem stems from the fact that ch9200_mdio_read()
-ignores the return value of control_read(), leading to
-uinit-access of "buff".
-
-To fix this we should check the return value of
-control_read() and return early on error.
-
-Reported-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=3361c2d6f78a3e0892f9
-Tested-by: syzbot <syzbot+3361c2d6f78a3e0892f9@syzkaller.appspotmail.com>
-Fixes: 4a476bd6d1d9 ("usbnet: New driver for QinHeng CH9200 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qasim Ijaz <qasdev00@gmail.com>
-Link: https://patch.msgid.link/20250526183607.66527-1-qasdev00@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Link: https://lore.kernel.org/r/20250409-fix-lpfc-bios-str-v1-1-05dac9e51e13@kernel.org
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/ch9200.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/scsi/lpfc/lpfc_sli.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/net/usb/ch9200.c
-+++ b/drivers/net/usb/ch9200.c
-@@ -178,6 +178,7 @@ static int ch9200_mdio_read(struct net_d
- {
- 	struct usbnet *dev = netdev_priv(netdev);
- 	unsigned char buff[2];
-+	int ret;
+diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
+index 6748fba48a07e..4dccbaeb63283 100644
+--- a/drivers/scsi/lpfc/lpfc_sli.c
++++ b/drivers/scsi/lpfc/lpfc_sli.c
+@@ -6020,9 +6020,9 @@ lpfc_sli4_get_ctl_attr(struct lpfc_hba *phba)
+ 	phba->sli4_hba.flash_id = bf_get(lpfc_cntl_attr_flash_id, cntl_attr);
+ 	phba->sli4_hba.asic_rev = bf_get(lpfc_cntl_attr_asic_rev, cntl_attr);
  
- 	netdev_dbg(netdev, "%s phy_id:%02x loc:%02x\n",
- 		   __func__, phy_id, loc);
-@@ -185,8 +186,10 @@ static int ch9200_mdio_read(struct net_d
- 	if (phy_id != 0)
- 		return -ENODEV;
+-	memset(phba->BIOSVersion, 0, sizeof(phba->BIOSVersion));
+-	strlcat(phba->BIOSVersion, (char *)cntl_attr->bios_ver_str,
++	memcpy(phba->BIOSVersion, cntl_attr->bios_ver_str,
+ 		sizeof(phba->BIOSVersion));
++	phba->BIOSVersion[sizeof(phba->BIOSVersion) - 1] = '\0';
  
--	control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
--		     CONTROL_TIMEOUT_MS);
-+	ret = control_read(dev, REQUEST_READ, 0, loc * 2, buff, 0x02,
-+			   CONTROL_TIMEOUT_MS);
-+	if (ret < 0)
-+		return ret;
- 
- 	return (buff[0] | buff[1] << 8);
- }
+ 	lpfc_printf_log(phba, KERN_INFO, LOG_SLI,
+ 			"3086 lnk_type:%d, lnk_numb:%d, bios_ver:%s, "
+-- 
+2.39.5
+
 
 
 
