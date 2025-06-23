@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC4B5AE5167
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A792AE4F11
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444BD17ECE1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5B0301B604EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F1521B8F6;
-	Mon, 23 Jun 2025 21:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B7D2222A9;
+	Mon, 23 Jun 2025 21:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZm2iGiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oHGY0W6g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37D51EEA5D;
-	Mon, 23 Jun 2025 21:33:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F8FD1F582A;
+	Mon, 23 Jun 2025 21:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714416; cv=none; b=S4dnr5/bUc5zoK5HzwXM/dV+snWssyZgeOjJlU2VDYwD7OR3UGibXC4M35qcwNiZiQouzv8g5GyeXvazElCELRy6zx4wRAXQaQcq8Fp75/rShk4mR131JhqEJETbNPQ58QFFA6mg4QEKkZYD8GmGDdcME3MI9LGyg02XpSPmhLU=
+	t=1750713118; cv=none; b=OvS6OvpOx5MkS0tcQ1rdMRJJ/TTBQSkMiqynLx8/zuzyZ0ALe0UTRNX4DTaeQTogSSUS9Ot4efxXU+S2PvhyL21MrINwE/Km7RAyLucllB7ZHCUX/OkMv4fUYZw8iXQcqqHc0BvxbdKvT6LoP81Lboa4tQ0bYQrPBi/R9/Nir6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714416; c=relaxed/simple;
-	bh=lcuiz/aoXTGTUV8JqrlOedB9uk445hbnTv1Ly45Muik=;
+	s=arc-20240116; t=1750713118; c=relaxed/simple;
+	bh=U9+nZoZ3Ay8Fp8YEHNksWYW03FyN6jfEWyWB+5cc1Ew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n+P+kcZrSVaAW/2mygnYM5XWzr2WHwrlHDVaA4smPJYSD21K2Cqj+j9BqG8faSXeZbFTtpj+NjdGnYErREO4IYN9HPcWCayq+pxEH6DBK9fVWmRL4ilSBzma034vFH/Eb0CtrpriHkHPN4cC5qJz2xU9LhfZ4PN80yoX3ctEaFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZm2iGiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3672EC4CEEA;
-	Mon, 23 Jun 2025 21:33:36 +0000 (UTC)
+	 MIME-Version; b=lxM3D/r2axWOOQP6s0ObGV3XaGkC21mMPBoMWAnJlUwzi482YD70XkvVfCHTPFu/Kb9jzUUlqaSO8m7/bs912O81dW217IFkUJhMtV/3kZ8ATrLKELq+KgQ5oVQOCEcBHsFf3UHYjC//UigJQcq6omQMW1Vsvw+BFKR9Avgywjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oHGY0W6g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7F1C4CEF1;
+	Mon, 23 Jun 2025 21:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714416;
-	bh=lcuiz/aoXTGTUV8JqrlOedB9uk445hbnTv1Ly45Muik=;
+	s=korg; t=1750713118;
+	bh=U9+nZoZ3Ay8Fp8YEHNksWYW03FyN6jfEWyWB+5cc1Ew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZm2iGiZ3Dixe/AuDNxbjyFyTXST+6OetcgeVrHbA8uHa1yque4dJs7NgZhMP05js
-	 pg5r8YtyUvI7TusrmTA0lM984ZDf5oRbWYacKhgrcyhsW9l5HiljH/9+rVwkPYQt5W
-	 rh4LujKHMNHWiaYclpD3noHu9vj1iiitATExelEw=
+	b=oHGY0W6gGamYDz0JRzkKvH4yD/udCzcBKI3y/G3kcDNxYtyRxqz3JDGzKtHiV3VW0
+	 AzBTHjEkhmtQQxH+mYUitTdvxpxCWBJ97Osq/73pXfMw3J5VeWW8/dWwLVd2Eki2Jr
+	 bOy9Pq8hhlTusVFcPrZwxo4kbZoCXQNlQyPNPAA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muna Sinada <muna.sinada@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 389/592] wifi: mac80211: VLAN traffic in multicast path
+	Nathan Chancellor <nathan@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 146/355] mips: Include KBUILD_CPPFLAGS in CHECKFLAGS invocation
 Date: Mon, 23 Jun 2025 15:05:47 +0200
-Message-ID: <20250623130709.695815742@linuxfoundation.org>
+Message-ID: <20250623130631.100605001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muna Sinada <muna.sinada@oss.qualcomm.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 1a4a6a22552ca9d723f28a1fe35eab1b9b3d8b33 ]
+commit 08f6554ff90ef189e6b8f0303e57005bddfdd6a7 upstream.
 
-Currently for MLO, sending out multicast frames on each link is handled by
-mac80211 only when IEEE80211_HW_MLO_MCAST_MULTI_LINK_TX flag is not set.
+A future change will move CLANG_FLAGS from KBUILD_{A,C}FLAGS to
+KBUILD_CPPFLAGS so that '--target' is available while preprocessing.
+When that occurs, the following error appears when building ARCH=mips
+with clang (tip of tree error shown):
 
-Dynamic VLAN multicast traffic utilizes software encryption.
-Due to this, mac80211 should handle transmitting multicast frames on
-all links for multicast VLAN traffic.
+  clang: error: unsupported option '-mabi=' for target 'x86_64-pc-linux-gnu'
 
-Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250325213125.1509362-4-muna.sinada@oss.qualcomm.com
-[remove unnecessary parentheses]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add KBUILD_CPPFLAGS in the CHECKFLAGS invocation to keep everything
+working after the move.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/mips/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 20179db88c4a6..d6af02a524af3 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4526,8 +4526,10 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
- 						     IEEE80211_TX_CTRL_MLO_LINK_UNSPEC,
- 						     NULL);
- 	} else if (ieee80211_vif_is_mld(&sdata->vif) &&
--		   sdata->vif.type == NL80211_IFTYPE_AP &&
--		   !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) {
-+		   ((sdata->vif.type == NL80211_IFTYPE_AP &&
-+		     !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) ||
-+		    (sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
-+		     !sdata->wdev.use_4addr))) {
- 		ieee80211_mlo_multicast_tx(dev, skb);
- 	} else {
- normal:
--- 
-2.39.5
-
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -319,7 +319,7 @@ KBUILD_CFLAGS += -fno-asynchronous-unwin
+ KBUILD_LDFLAGS		+= -m $(ld-emul)
+ 
+ ifdef CONFIG_MIPS
+-CHECKFLAGS += $(shell $(CC) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
++CHECKFLAGS += $(shell $(CC) $(KBUILD_CPPFLAGS) $(KBUILD_CFLAGS) -dM -E -x c /dev/null | \
+ 	egrep -vw '__GNUC_(MINOR_|PATCHLEVEL_)?_' | \
+ 	sed -e "s/^\#define /-D'/" -e "s/ /'='/" -e "s/$$/'/" -e 's/\$$/&&/g')
+ endif
 
 
 
