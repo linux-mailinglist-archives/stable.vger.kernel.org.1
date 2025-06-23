@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC243AE4F61
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF3AAE54D2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D8D17E938
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0C52A4C2628
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156D41E521E;
-	Mon, 23 Jun 2025 21:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B608C222590;
+	Mon, 23 Jun 2025 22:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrVVPAqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B7l4ji/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A304C62;
-	Mon, 23 Jun 2025 21:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71BDE3FB1B;
+	Mon, 23 Jun 2025 22:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713321; cv=none; b=kfi3OfMB1XEYZmP42HBcWnkvBiiEZFKkPj7/IIgKFFTEFdl6L0q9NJtGSyAxb5+nuMkLVKKpNdMUOnfzWtQtTAm5VAStTzUD6AYNUa503yWo8j67x9mrqCOBFgRgOYwlrrtCnGiQNGdfCrcmfYnYuneP65v1a1XFNCn9h72+Nw4=
+	t=1750716294; cv=none; b=dNQ8IAye1Lqez7rDDW2noLrwesg07h9ol3MrrhygspdWbL0XzIrQZ9eM0gToS9HyiTLlSeufqymd9cwDxUK4EEVikE5Yx2qwdHayRf2cnTOilLQmspGbHI2B3uyBailzgyouJvm1nWpAGv0GxULJKL8JZubf7kYZVQNJ8UUux3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713321; c=relaxed/simple;
-	bh=edsxRqTjSlbm4uApd3sWjNlfKhOjVcaPbdCRCb5utGk=;
+	s=arc-20240116; t=1750716294; c=relaxed/simple;
+	bh=ioFG+NfGpGSMNl88S/VkEkRX5wAdlUsV76C3KowqE9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=obDb9ldrLNwzTnwGmSLNyIOdn8xnj2evtMQEPt5M4R3CsRYVFAm/SrKrJ/UBzyuchwUmwKhVsq3RoNXIoBmdi9GXSlZWd1UkE+bj1ScamYLtnFXGrXQJOFNNtYkN/d9JD4ZLlEmsxRaBGiyEyoRRbaOdM5dKq3V9oTYWKDCAzYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrVVPAqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C35FC4CEEA;
-	Mon, 23 Jun 2025 21:15:18 +0000 (UTC)
+	 MIME-Version; b=plgbuxgy7BwgMSe9/qn7x/J/SDcRSOMnmw17eL23MXazcDRUPG0TkggcVrzcERWKIBKMQ71gxvZ40G65bUBtNSUBJjxlE9PZ4YsvcsXXrSrcyr/TZ9kFTAL7MvMOVVqPiGp20scTmCe07bEYeh5kGm/7jKKDbL+pCB8rUyThEwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B7l4ji/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02161C4CEEA;
+	Mon, 23 Jun 2025 22:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713319;
-	bh=edsxRqTjSlbm4uApd3sWjNlfKhOjVcaPbdCRCb5utGk=;
+	s=korg; t=1750716294;
+	bh=ioFG+NfGpGSMNl88S/VkEkRX5wAdlUsV76C3KowqE9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrVVPAqMSRm/pmpRl/kOTpVZnLTIcIQQBm/dX4+lMncTpqT+7LnlVBNKliwfLWa6h
-	 2aMa+mu7twnROOgXcpvzhnzfj9Qg0EwGILZtH6PFYQbQg1mLDlO2Z/j5SPhT8Fl1fC
-	 +YKdivLayd/VVw2bygKp3PRRWIKMoOYVDyhbCa7U=
+	b=B7l4ji/Uu78eoxhKy68ym00qpee5Eilm47T3zGKtjSATOd+HgOmkhhi+jQyEHjONU
+	 kP1RELdKmqvUi53yjSOeJGukkvPpfY2GDgSIlds470UtvkqY4ygZ76Fv9poCRXbbVj
+	 xIXolE1/3Pc6SPEsmU29asnqv5+anjP/U4FGemhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sukrut Bellary <sbellary@baylibre.com>,
-	Judith Mendez <jm@ti.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Gil Fine <gil.fine@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 180/222] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
+Subject: [PATCH 6.6 254/290] e1000e: set fixed clock frequency indication for Nahum 11 and Nahum 13
 Date: Mon, 23 Jun 2025 15:08:35 +0200
-Message-ID: <20250623130617.581185512@linuxfoundation.org>
+Message-ID: <20250623130634.565741466@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +64,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sukrut Bellary <sbellary@baylibre.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
+[ Upstream commit 688a0d61b2d7427189c4eb036ce485d8fc957cbb ]
 
-Don't put the l4ls clk domain to sleep in case of standby.
-Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
-upon wake-up, CM3 PM FW fails to wake-up the MPU.
+On some systems with Nahum 11 and Nahum 13 the value of the XTAL clock in
+the software STRAP is incorrect. This causes the PTP timer to run at the
+wrong rate and can lead to synchronization issues.
 
-[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
+The STRAP value is configured by the system firmware, and a firmware
+update is not always possible. Since the XTAL clock on these systems
+always runs at 38.4MHz, the driver may ignore the STRAP and just set
+the correct value.
 
-Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
-Tested-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Fixes: cc23f4f0b6b9 ("e1000e: Add support for Meteor Lake")
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Reviewed-by: Gil Fine <gil.fine@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/mach-omap2/clockdomain.h           |  1 +
- arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
- arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
- 3 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 14 +++++++++++---
+ drivers/net/ethernet/intel/e1000e/ptp.c    |  8 +++++---
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
-index 68550b23c938d..eb6ca2ea80679 100644
---- a/arch/arm/mach-omap2/clockdomain.h
-+++ b/arch/arm/mach-omap2/clockdomain.h
-@@ -48,6 +48,7 @@
- #define CLKDM_NO_AUTODEPS			(1 << 4)
- #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
- #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
-+#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
- 
- #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
- #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
-diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
-index 32c90fd9eba26..3303c41dcefe8 100644
---- a/arch/arm/mach-omap2/clockdomains33xx_data.c
-+++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
-@@ -27,7 +27,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
- 	.pwrdm		= { .name = "per_pwrdm" },
- 	.cm_inst	= AM33XX_CM_PER_MOD,
- 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
--	.flags		= CLKDM_CAN_SWSUP,
-+	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
- };
- 
- static struct clockdomain l3s_am33xx_clkdm = {
-diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
-index 084d454f60748..430a9de563a4e 100644
---- a/arch/arm/mach-omap2/cm33xx.c
-+++ b/arch/arm/mach-omap2/cm33xx.c
-@@ -28,6 +28,9 @@
- #include "cm-regbits-34xx.h"
- #include "cm-regbits-33xx.h"
- #include "prm33xx.h"
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+#include <linux/suspend.h>
-+#endif
- 
- /*
-  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
-@@ -336,8 +339,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
- {
- 	bool hwsup = false;
- 
-+#if IS_ENABLED(CONFIG_SUSPEND)
-+	/*
-+	 * In case of standby, Don't put the l4ls clk domain to sleep.
-+	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
-+	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
-+	 */
-+	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
-+	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
-+		return 0;
-+#endif
- 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
--
- 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
- 		am33xx_clkdm_sleep(clkdm);
- 
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 721c098f2bb1b..7e4fea0e186b6 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -3540,9 +3540,6 @@ s32 e1000e_get_base_timinca(struct e1000_adapter *adapter, u32 *timinca)
+ 	case e1000_pch_cnp:
+ 	case e1000_pch_tgp:
+ 	case e1000_pch_adp:
+-	case e1000_pch_mtp:
+-	case e1000_pch_lnp:
+-	case e1000_pch_ptp:
+ 	case e1000_pch_nvp:
+ 		if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI) {
+ 			/* Stable 24MHz frequency */
+@@ -3558,6 +3555,17 @@ s32 e1000e_get_base_timinca(struct e1000_adapter *adapter, u32 *timinca)
+ 			adapter->cc.shift = shift;
+ 		}
+ 		break;
++	case e1000_pch_mtp:
++	case e1000_pch_lnp:
++	case e1000_pch_ptp:
++		/* System firmware can misreport this value, so set it to a
++		 * stable 38400KHz frequency.
++		 */
++		incperiod = INCPERIOD_38400KHZ;
++		incvalue = INCVALUE_38400KHZ;
++		shift = INCVALUE_SHIFT_38400KHZ;
++		adapter->cc.shift = shift;
++		break;
+ 	case e1000_82574:
+ 	case e1000_82583:
+ 		/* Stable 25MHz frequency */
+diff --git a/drivers/net/ethernet/intel/e1000e/ptp.c b/drivers/net/ethernet/intel/e1000e/ptp.c
+index bbcfd529399b0..d039dea48ca32 100644
+--- a/drivers/net/ethernet/intel/e1000e/ptp.c
++++ b/drivers/net/ethernet/intel/e1000e/ptp.c
+@@ -294,15 +294,17 @@ void e1000e_ptp_init(struct e1000_adapter *adapter)
+ 	case e1000_pch_cnp:
+ 	case e1000_pch_tgp:
+ 	case e1000_pch_adp:
+-	case e1000_pch_mtp:
+-	case e1000_pch_lnp:
+-	case e1000_pch_ptp:
+ 	case e1000_pch_nvp:
+ 		if (er32(TSYNCRXCTL) & E1000_TSYNCRXCTL_SYSCFI)
+ 			adapter->ptp_clock_info.max_adj = MAX_PPB_24MHZ;
+ 		else
+ 			adapter->ptp_clock_info.max_adj = MAX_PPB_38400KHZ;
+ 		break;
++	case e1000_pch_mtp:
++	case e1000_pch_lnp:
++	case e1000_pch_ptp:
++		adapter->ptp_clock_info.max_adj = MAX_PPB_38400KHZ;
++		break;
+ 	case e1000_82574:
+ 	case e1000_82583:
+ 		adapter->ptp_clock_info.max_adj = MAX_PPB_25MHZ;
 -- 
 2.39.5
 
