@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158119-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52531AE570C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 720C4AE569D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D39137B10D9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DF20188C560
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 568B0223DE5;
-	Mon, 23 Jun 2025 22:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CD69223DF0;
+	Mon, 23 Jun 2025 22:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpJ9zY3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atcz+HME"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13389221543;
-	Mon, 23 Jun 2025 22:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B196199FBA;
+	Mon, 23 Jun 2025 22:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717531; cv=none; b=RvQn9kUnjEtS25RJMFSRUl79TsPgUdVJMeuHeK3CPljEZ652BA2K/pyxuey5ssUIUCGiAZ8zsxrMoONHiqP1y5VZRqXhA8zvJMbJ6muK/173jqA3HQtK/LBX1JfjKIZJVoOSD3TdHHdXpKpDO76ar1u2yZ1mjPc+JB5sTU8OmWY=
+	t=1750717297; cv=none; b=pNrVc/NXh4ai5szbVEyuiQEVOswV59EtYmTPO4Sdv5LBOgg0pVVXr13oZVjetQp4f67Zkh0FssXtSwXrcC5lnLmYcCt7f3huq6/h/NuunMxTYaBuki9NeCfI7i+ablXUxNy63moQpFD3t+3cA3p2tEUwz4WTmVdVXuHJY4mEbwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717531; c=relaxed/simple;
-	bh=ZOO5Ump9dVPclXqI2qVr96ZK6iUvG18lGy5/XH7r+LA=;
+	s=arc-20240116; t=1750717297; c=relaxed/simple;
+	bh=FaALA4ius8zCVnyifv0jU7dnA0O/2DzBJqtSEpmUX2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cr1KUU7qtuCoCG/7ZzFcdT3qAij/9bw4TLQhExn6aUcodvsTKgaq99Xy51LCAWJSSxOxs76WTU8Z50paIhTk1l+9K4Cl4R6DeE7Y2l1x6tzTqeZSlQjGVXInnKUNzMBmW5eI2cSNMFvxbLknUSmt0rIjfZUJOw7KZLAbPMXSZCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpJ9zY3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFD6C4CEEA;
-	Mon, 23 Jun 2025 22:25:30 +0000 (UTC)
+	 MIME-Version; b=tK9EhQt+1WabGMrc7+RrIg4isyQycsL9R8TQs6XvnPpVZVT8ziJD58YtIlhro0VzTfymK5kgsqPnGWOjUWWmcGmzqKea6gKUcUfWnNZLGXqZsMkAkgPQK/0n8q70JBF0LJ/Ki1Q23KSR8e/iFehmEsLB+nfJIRJrlm0upzqKJyw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atcz+HME; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94578C4CEEA;
+	Mon, 23 Jun 2025 22:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717530;
-	bh=ZOO5Ump9dVPclXqI2qVr96ZK6iUvG18lGy5/XH7r+LA=;
+	s=korg; t=1750717296;
+	bh=FaALA4ius8zCVnyifv0jU7dnA0O/2DzBJqtSEpmUX2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpJ9zY3+Q2eU9awag0M2TBScHHF/bvS6reSguzcLVK/87nE8rj+olvYUFo0rjeM3Y
-	 rf7iVo3CjSHDnFM/juqAmdY6bcTsX0MhNJCfmv/kBtA/3J9KF+Ltnh8MVjXy7h6oIz
-	 wd6vxqB7J+4EQAh9LOu3061nBJdMsXzu/Fum/TKg=
+	b=atcz+HMEEoAK1HrOS5Q2GYAbLqE8qMuQD1GieB670tXFzy+kSFz7wq4a2JBve4EOz
+	 LWhfNTkflBU6HVSCGkOleOOmq9NtgcK9J4Kx1FVpNqWd9r8KwAtgAgTvktlQYe9+Kt
+	 JzBw7OnmDc638pJtlPHCzwUbGPe3/UUSptLCutN4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fedor Pchelkin <pchelkin@ispras.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 6.1 447/508] jffs2: check jffs2_prealloc_raw_node_refs() result in few other places
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 355/414] drm/msm: Fix CP_RESET_CONTEXT_STATE bitfield names
 Date: Mon, 23 Jun 2025 15:08:12 +0200
-Message-ID: <20250623130656.151979080@linuxfoundation.org>
+Message-ID: <20250623130650.847514247@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Connor Abbott <cwabbott0@gmail.com>
 
-commit 2b6d96503255a3ed676cd70f8368870c6d6a25c6 upstream.
+[ Upstream commit b1c9e797ad37d188675505b66a3a4bbeea5d9560 ]
 
-Fuzzing hit another invalid pointer dereference due to the lack of
-checking whether jffs2_prealloc_raw_node_refs() completed successfully.
-Subsequent logic implies that the node refs have been allocated.
+Based on kgsl.
 
-Handle that. The code is ready for propagating the error upwards.
-
-KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
-CPU: 1 PID: 5835 Comm: syz-executor145 Not tainted 5.10.234-syzkaller #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:jffs2_link_node_ref+0xac/0x690 fs/jffs2/nodelist.c:600
-Call Trace:
- jffs2_mark_erased_block fs/jffs2/erase.c:460 [inline]
- jffs2_erase_pending_blocks+0x688/0x1860 fs/jffs2/erase.c:118
- jffs2_garbage_collect_pass+0x638/0x1a00 fs/jffs2/gc.c:253
- jffs2_reserve_space+0x3f4/0xad0 fs/jffs2/nodemgmt.c:167
- jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
- jffs2_write_end+0x712/0x1110 fs/jffs2/file.c:302
- generic_perform_write+0x2c2/0x500 mm/filemap.c:3347
- __generic_file_write_iter+0x252/0x610 mm/filemap.c:3465
- generic_file_write_iter+0xdb/0x230 mm/filemap.c:3497
- call_write_iter include/linux/fs.h:2039 [inline]
- do_iter_readv_writev+0x46d/0x750 fs/read_write.c:740
- do_iter_write+0x18c/0x710 fs/read_write.c:866
- vfs_writev+0x1db/0x6a0 fs/read_write.c:939
- do_pwritev fs/read_write.c:1036 [inline]
- __do_sys_pwritev fs/read_write.c:1083 [inline]
- __se_sys_pwritev fs/read_write.c:1078 [inline]
- __x64_sys_pwritev+0x235/0x310 fs/read_write.c:1078
- do_syscall_64+0x30/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
-Fixes: f560928baa60 ("[JFFS2] Allocate node_ref for wasted space when skipping to page boundary")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
+Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/654922/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/erase.c |    4 +++-
- fs/jffs2/scan.c  |    4 +++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/jffs2/erase.c
-+++ b/fs/jffs2/erase.c
-@@ -425,7 +425,9 @@ static void jffs2_mark_erased_block(stru
- 			.totlen =	cpu_to_je32(c->cleanmarker_size)
- 		};
+diff --git a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
+index c6cdc5c003dc0..2ca0ad6efc96e 100644
+--- a/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
++++ b/drivers/gpu/drm/msm/registers/adreno/adreno_pm4.xml
+@@ -2260,7 +2260,8 @@ opcode: CP_LOAD_STATE4 (30) (4 dwords)
+ 	<reg32 offset="0" name="0">
+ 		<bitfield name="CLEAR_ON_CHIP_TS" pos="0" type="boolean"/>
+ 		<bitfield name="CLEAR_RESOURCE_TABLE" pos="1" type="boolean"/>
+-		<bitfield name="CLEAR_GLOBAL_LOCAL_TS" pos="2" type="boolean"/>
++		<bitfield name="CLEAR_BV_BR_COUNTER" pos="2" type="boolean"/>
++		<bitfield name="RESET_GLOBAL_LOCAL_TS" pos="3" type="boolean"/>
+ 	</reg32>
+ </domain>
  
--		jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+		if (ret)
-+			goto filebad;
- 
- 		marker.hdr_crc = cpu_to_je32(crc32(0, &marker, sizeof(struct jffs2_unknown_node)-4));
- 
---- a/fs/jffs2/scan.c
-+++ b/fs/jffs2/scan.c
-@@ -256,7 +256,9 @@ int jffs2_scan_medium(struct jffs2_sb_in
- 
- 		jffs2_dbg(1, "%s(): Skipping %d bytes in nextblock to ensure page alignment\n",
- 			  __func__, skip);
--		jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		ret = jffs2_prealloc_raw_node_refs(c, c->nextblock, 1);
-+		if (ret)
-+			goto out;
- 		jffs2_scan_dirty_space(c, c->nextblock, skip);
- 	}
- #endif
+-- 
+2.39.5
+
 
 
 
