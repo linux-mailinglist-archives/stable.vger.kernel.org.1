@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157180-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E6DAE52E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE187AE52B8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D33CF3BB18B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7A0437AFA66
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D472223714;
-	Mon, 23 Jun 2025 21:47:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E28E221545;
+	Mon, 23 Jun 2025 21:45:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uxaq7ta3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MhIWH9nK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECA173FB1B;
-	Mon, 23 Jun 2025 21:47:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFFCF221FBE;
+	Mon, 23 Jun 2025 21:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715233; cv=none; b=VSlqGF1RLRx5hsivpUN30x7i9ikiwkWjUd6WwfaOn0AzLZPZKOyG9Lr8f7a8BAvgKXTvt+XTjXQagVju/j4/vU/oKTwOazBVjEyWZl0efhYZWq3Rcq6568s6nlXmhhrZ0wKCUBtoeKGpzjzcLz2HEXwkEGOkP5zgCL+bMleCnLM=
+	t=1750715145; cv=none; b=kzxTTUM0RaosrSOn8X2AC5YgEj/5RR+kx/CcxurSeyDXSjq9DHC4yx5KZMPf7Td5D+6GpCfa2Pz4XZkvIhPkGLOEi8EOHob/aKf07E8fmBQPe+DWtOBykH0RQqhfdGTLz1izwZgd+6vuyjfK5yayM8fW+PTTPz4TJ+1Dg6aDu1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715233; c=relaxed/simple;
-	bh=xLIQz4jWVbcav8f/VVkCqPsbQcdYzATvWmQ/fybU03k=;
+	s=arc-20240116; t=1750715145; c=relaxed/simple;
+	bh=TAXIn/xfzdeGVPS55ow9w2WxgRESXuSqYMWLGC5gamQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WW3DECRE77g5d8TaQTTLASsHbM8mZCjgua/9rapNR/5apU1g7h26jRx5ZxWGIfqJaTqppEOk0P0LgngyyX3v0dNKIH8lseHAny7kBMekFop6ARghfAF/nDonsXPBmHiK9wOwxlKtn6Qj5/suK6Xkt3sWWrDG7muK4gsyXQuCghQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uxaq7ta3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85F39C4CEEA;
-	Mon, 23 Jun 2025 21:47:12 +0000 (UTC)
+	 MIME-Version:Content-Type; b=MXPYJ4GmM/euvHsIJK6ztcOR76F+JSV3W0/ZtiYvI7uAAfpbmU2lTxnITjUwNLRoe42BeZM+SkMJ0/wBMSKvKqfw0nmuqUwdOpa6MvtoREb+1R1Nlg3U8T3IA7P8NlDrSwYAusuYUucKRowToW8LJzSTzri1H4WtmKszm4/uwY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MhIWH9nK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A97C4CEEA;
+	Mon, 23 Jun 2025 21:45:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715232;
-	bh=xLIQz4jWVbcav8f/VVkCqPsbQcdYzATvWmQ/fybU03k=;
+	s=korg; t=1750715144;
+	bh=TAXIn/xfzdeGVPS55ow9w2WxgRESXuSqYMWLGC5gamQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uxaq7ta3DjtSejNMxr4OaR+lQvtUoZ5WZC/pTRVFmoEJCIOGvz7UAX6MitqsLP6bf
-	 Pxe7gZK2kBr4XmZRzKg0uHFn/FRZzbkUG8V16EtrvjNsBvBL0UUUO353aWqOF6DRZu
-	 A6+KCJTNjGrd0GqnC5X4hbvdkW1NqodImUQeyYQA=
+	b=MhIWH9nK7BIqQ2kbmZ5fCpmQywArdOpN+4uQrHRhiWVyUw7t1JyCm161dF570rpDk
+	 TdvJc+4EDTgYqh/+dKCzDXM550qLtGJO1tF+rYcypr0l/gBo+JKdLHOPwFnvcxX6bf
+	 s/qXN17erKcZgH79hmob1kUgWHvy9MiRCARtliyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 262/355] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
+Subject: [PATCH 6.6 202/290] platform/x86: dell_rbu: Fix list usage
 Date: Mon, 23 Jun 2025 15:07:43 +0200
-Message-ID: <20250623130634.630624437@linuxfoundation.org>
+Message-ID: <20250623130633.009912944@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
+[ Upstream commit 61ce04601e0d8265ec6d2ffa6df5a7e1bce64854 ]
 
-The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
-propagate their error values back to the stack instead of silently
-ignoring those.
+Pass the correct list head to list_for_each_entry*() when looping through
+the packet list.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Without this patch, reading the packet data via sysfs will show the data
+incorrectly (because it starts at the wrong packet), and clearing the
+packet list will result in a NULL pointer dereference.
+
+Fixes: d19f359fbdc6 ("platform/x86: dell_rbu: don't open code list_for_each_entry*()")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-3-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/platform/x86/dell/dell_rbu.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 1cb3bcb41684e..bd3eebf564236 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -468,16 +468,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
+diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
+index 9f51e0fcab04e..4d2b5f6dd513f 100644
+--- a/drivers/platform/x86/dell/dell_rbu.c
++++ b/drivers/platform/x86/dell/dell_rbu.c
+@@ -292,7 +292,7 @@ static int packet_read_list(char *data, size_t * pread_length)
+ 	remaining_bytes = *pread_length;
+ 	bytes_read = rbu_data.packet_read_count;
+ 
+-	list_for_each_entry(newpacket, (&packet_data_head.list)->next, list) {
++	list_for_each_entry(newpacket, &packet_data_head.list, list) {
+ 		bytes_copied = do_packet_read(pdest, newpacket,
+ 			remaining_bytes, bytes_read, &temp_count);
+ 		remaining_bytes -= bytes_copied;
+@@ -315,7 +315,7 @@ static void packet_empty_list(void)
  {
- 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct gpio_chip *chip = range->gc;
-+	int ret;
+ 	struct packet_data *newpacket, *tmp;
  
- 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
- 		offset, range->name, offset, input ? "input" : "output");
+-	list_for_each_entry_safe(newpacket, tmp, (&packet_data_head.list)->next, list) {
++	list_for_each_entry_safe(newpacket, tmp, &packet_data_head.list, list) {
+ 		list_del(&newpacket->list);
  
- 	if (input)
--		armada_37xx_gpio_direction_input(chip, offset);
-+		ret = armada_37xx_gpio_direction_input(chip, offset);
- 	else
--		armada_37xx_gpio_direction_output(chip, offset, 0);
-+		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
- 
--	return 0;
-+	return ret;
- }
- 
- static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
+ 		/*
 -- 
 2.39.5
 
