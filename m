@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6613FAE53CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 970E1AE4E9F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EF981B67F62
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2EE3E17C2FA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2FA2225776;
-	Mon, 23 Jun 2025 21:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5BFD217668;
+	Mon, 23 Jun 2025 21:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMlSLdGj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIfb+JRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B471E22E6;
-	Mon, 23 Jun 2025 21:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3F7C70838;
+	Mon, 23 Jun 2025 21:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715729; cv=none; b=sBhWF/aw7Liqb3LRqkGZO5+06Le3dF6OeTK1/XpbE/tOgYM7jfQ6E4ZQeh03/EkU8k7A7kVs09DtB4/gK1HU36hb/Sogjnv2k/1rGJMxH96fRXfVaQzPrBhWW2O/+i2ShsRb0FnSWMtQXMZTp4gYdPfcf+KiQJbhbYtM91/ebRg=
+	t=1750712856; cv=none; b=Pwy6B4rJxdEbbBiZ9L3emER5pNMrWiTESQ26NTKLzuaBPkK9CznRT2fq5zcTSljKi68h3RoLtTbXdrC1sqBjLE6Z6JJGIqu0p61TPLrvft5ezEV35JZuLZAlDoEjCsebHWV+EwedTNDFZS61fTOsE5ikJNVeLIXFRaI/tfiP0nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715729; c=relaxed/simple;
-	bh=LtwW+5GRnQzfM9SBa/5kAARD5A3BbOWuPrrKOW/NLAY=;
+	s=arc-20240116; t=1750712856; c=relaxed/simple;
+	bh=bRIo/ISUytMp/6GPtCwB8XbEsy2jEl+S+Lgl8941z+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qz5VJOgrprMlMo1R4sahW8mKvmooAE8BaNtHKvHDWxZbUuPJNuvZPLnfK7Dpp7nmgm535CijjkoIUa+parKPBfcXPX10BYTLpeeD+MDZ5foN2M5nTi3mPPiU6PdHIM/eSaHNKUqDI2cEh9kTeoGOByst7sHcq1Wo/FIAOr0IdOo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMlSLdGj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA140C4CEED;
-	Mon, 23 Jun 2025 21:55:28 +0000 (UTC)
+	 MIME-Version; b=ceXIMZzkSDlK24fdtXh63pgvn1wfPsWGfWv46XKGNPYn1FJM2YCbxtxn5bbAybWchpi9yMs1wOnrQTRKbQTuRVxA1Oq84XGZCXJr/OYsv4eCPDjYeHGew0+bxZrtrE8U0fZWD9I8/zTjbpl/uhM6BzJZnNtgoq4uHVyizFcMwl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIfb+JRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C513C4CEEA;
+	Mon, 23 Jun 2025 21:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715729;
-	bh=LtwW+5GRnQzfM9SBa/5kAARD5A3BbOWuPrrKOW/NLAY=;
+	s=korg; t=1750712856;
+	bh=bRIo/ISUytMp/6GPtCwB8XbEsy2jEl+S+Lgl8941z+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMlSLdGjSsfx9vcGTEqs5vesHzB5/XSJtFPgT5+ZqVUoVYqwFStSxEIanPSJtytXM
-	 biPReQmypSRfP86SBaP3M37YKEIgZNFX0XCuopRsoHEa0Sv3c0C/IeyaoYOl2J6uUu
-	 xIRuWu/UirJyc6+fdGuQD6IvvI8Y1SNiGUd4ycvY=
+	b=VIfb+JRPGFxPQzZ0Ce6l3cgi56p24dcBakrc+P6N6H69TsY6CwcWsFtfStd0fEiI5
+	 80yYwYTtaOabu3kGAvuS/YUGOYyABFMQX4RlFt8T0AR/UBII12nVdyXL0rRwIundxm
+	 GmxBX/aWGH98TmayrSYApH2IbRNzJJu/jFqQ1Tdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 258/508] net_sched: prio: fix a race in prio_tune()
+Subject: [PATCH 5.10 102/355] Bluetooth: L2CAP: Fix not responding with L2CAP_CR_LE_ENCRYPTION
 Date: Mon, 23 Jun 2025 15:05:03 +0200
-Message-ID: <20250623130651.598400832@linuxfoundation.org>
+Message-ID: <20250623130629.849426323@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d35acc1be3480505b5931f17e4ea9b7617fea4d3 ]
+[ Upstream commit 03dba9cea72f977e873e4e60e220fa596959dd8f ]
 
-Gerrard Tai reported a race condition in PRIO, whenever SFQ perturb timer
-fires at the wrong time.
+Depending on the security set the response to L2CAP_LE_CONN_REQ shall be
+just L2CAP_CR_LE_ENCRYPTION if only encryption when BT_SECURITY_MEDIUM
+is selected since that means security mode 2 which doesn't require
+authentication which is something that is covered in the qualification
+test L2CAP/LE/CFC/BV-25-C.
 
-The race is as follows:
-
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 7b8e0b6e6599 ("net: sched: prio: delay destroying child qdiscs on change")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://github.com/bluez/bluez/issues/1270
+Fixes: 27e2d4c8d28b ("Bluetooth: Add basic LE L2CAP connect request receiving support")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_prio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/l2cap_core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_prio.c b/net/sched/sch_prio.c
-index fdc5ef52c3ee9..fdd9caa41e80f 100644
---- a/net/sched/sch_prio.c
-+++ b/net/sched/sch_prio.c
-@@ -211,7 +211,7 @@ static int prio_tune(struct Qdisc *sch, struct nlattr *opt,
- 	memcpy(q->prio2band, qopt->priomap, TC_PRIO_MAX+1);
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index be281a95a0a8b..08d91a3d3460d 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5861,7 +5861,8 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
  
- 	for (i = q->bands; i < oldbands; i++)
--		qdisc_tree_flush_backlog(q->queues[i]);
-+		qdisc_purge_queue(q->queues[i]);
- 
- 	for (i = oldbands; i < q->bands; i++) {
- 		q->queues[i] = queues[i];
+ 	if (!smp_sufficient_security(conn->hcon, pchan->sec_level,
+ 				     SMP_ALLOW_STK)) {
+-		result = L2CAP_CR_LE_AUTHENTICATION;
++		result = pchan->sec_level == BT_SECURITY_MEDIUM ?
++			L2CAP_CR_LE_ENCRYPTION : L2CAP_CR_LE_AUTHENTICATION;
+ 		chan = NULL;
+ 		goto response_unlock;
+ 	}
 -- 
 2.39.5
 
