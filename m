@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CEDDAE5343
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:44 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29491AE4F05
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FA8A3A79FD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0EE07AC53B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA0721B9C9;
-	Mon, 23 Jun 2025 21:51:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1F421CA07;
+	Mon, 23 Jun 2025 21:11:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tp8Qw8UY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MzNYonly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC22136348;
-	Mon, 23 Jun 2025 21:51:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3481ACEDA;
+	Mon, 23 Jun 2025 21:11:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715487; cv=none; b=Yy/2F1iprsBbdSHNRL5WFKz3z07QWuIuYaiHfd3Kyt2GRJtk/Ltr8EhdTMmeeFeoQ4VUJHRT4brFDH9yTIIda+ddNfN/uI8RfEWbMyUUrQA4MVJ7b5L9eR4skllGKceYc9yLfvUDeXanHUnWDFM+th8g06HHcP4Kx49zaF5NKiY=
+	t=1750713099; cv=none; b=AGTPbkpXGhyiq78yOWRzkJAGhGbL+9ccy9YfJRGBK9dHatrrNPvBdfPRpdri3Oyv2bKkp6+3l3Akkb6pO6YPYV2BRhvijaj1fZfScRu5j47AYV/X6COEYxeLUub7Gxv9+4nmPRmytuUwrwSUJmilqy3+ojsKpedMUcP2k9QirrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715487; c=relaxed/simple;
-	bh=YaoyhqXInuD943DPzPvLM1W+vhqeobS446ZLauqWAFU=;
+	s=arc-20240116; t=1750713099; c=relaxed/simple;
+	bh=q1NAvCfxOMHaE1mPFmcG3nOu05BvI7CWNysTNqYzXp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ofy56+2/4o76Ft8Cdv10U3f9Vry+TlmXDD95SKMhIQ4Q4NhSYfXzwuxM/QDkBXIJe5j4LXNunqFNBowLt8af3T86v+hb75YktgnmuGeFNBMGgCxNHR2f/+2+1Z0qhvZ12cAtJHw+7vIZC/nA0TC7SGRxPnFKRXOX67QjNO2zAfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tp8Qw8UY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89307C4CEEA;
-	Mon, 23 Jun 2025 21:51:26 +0000 (UTC)
+	 MIME-Version; b=L319/fC8MUN2qP4+kIiGOPtwC0t93rhUr3PxEfE2PgXefykQ7atUtzvD8W7cT66xp/ngsU86TJRo9hIv/8w/X6jJ8Hl/CFehGAo69xo4JEXWVSYNqYeZWYyWQCulK2qiKDjoaXugjGBDatn3Ldje590MyYttPwhn5h+VFiE/yVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MzNYonly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE2CC4CEEA;
+	Mon, 23 Jun 2025 21:11:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715486;
-	bh=YaoyhqXInuD943DPzPvLM1W+vhqeobS446ZLauqWAFU=;
+	s=korg; t=1750713098;
+	bh=q1NAvCfxOMHaE1mPFmcG3nOu05BvI7CWNysTNqYzXp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tp8Qw8UYd1fqeMTEkMXbioA1bLLCLFgX1UtMhSfNX8zoALN8ngLFI8aReenDDCjjf
-	 v0c9soiOdamgAVBjkwmnLIDq7rU0NcTKFFg7eFZRgTpQwMt+Lr3BkcNzGiQlT0+f6U
-	 KeC0pJh7+JcZylGNw3iv0q784d8s77+RothRpL0I=
+	b=MzNYonlyXW21RErTvt8zfM4JbI13N7XyERwmOd5FW0RwjGzQMPi6V0CaIa1/A2WGP
+	 /t4zSjSrdE2cfrzmzYAdMoi8XjkQ8lsPm/dZNWK3cnyw/hTC9JpTqA1pkP5mGdHjoH
+	 bPZff0r+62m6GFzbwB6CXqj9soPHRbu7wOTPHQAI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tali Perry <tali.perry1@gmail.com>,
-	Mohammed Elbadry <mohammed.0.elbadry@gmail.com>,
-	Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 209/414] i2c: npcm: Add clock toggle recovery
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 145/355] drm/amd/display: Do not add -mhard-float to dml_ccflags for clang
 Date: Mon, 23 Jun 2025 15:05:46 +0200
-Message-ID: <20250623130647.233393165@linuxfoundation.org>
+Message-ID: <20250623130631.068243045@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tali Perry <tali.perry1@gmail.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 38010591a0fc3203f1cee45b01ab358b72dd9ab2 ]
+commit 7db038d9790eda558dd6c1dde4cdd58b64789c47 upstream.
 
-During init of the bus, the module checks that the bus is idle.
-If one of the lines are stuck try to recover them first before failing.
-Sometimes SDA and SCL are low if improper reset occurs (e.g., reboot).
+When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
+warns:
 
-Signed-off-by: Tali Perry <tali.perry1@gmail.com>
-Signed-off-by: Mohammed Elbadry <mohammed.0.elbadry@gmail.com>
-Reviewed-by: Mukesh Kumar Savaliya <quic_msavaliy@quicinc.com>
-Link: https://lore.kernel.org/r/20250328193252.1570811-1-mohammed.0.elbadry@gmail.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  clang-16: error: argument unused during compilation: '-mhard-float' [-Werror,-Wunused-command-line-argument]
+
+Similar to commit 84edc2eff827 ("selftest/fpu: avoid clang warning"),
+just add this flag to GCC builds. Commit 0f0727d971f6 ("drm/amd/display:
+readd -msse2 to prevent Clang from emitting libcalls to undefined SW FP
+routines") added '-msse2' to prevent clang from emitting software
+floating point routines.
+
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-npcm7xx.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/Makefile |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-npcm7xx.c b/drivers/i2c/busses/i2c-npcm7xx.c
-index a693ebb64edf4..7b6eb2bfb412e 100644
---- a/drivers/i2c/busses/i2c-npcm7xx.c
-+++ b/drivers/i2c/busses/i2c-npcm7xx.c
-@@ -1969,10 +1969,14 @@ static int npcm_i2c_init_module(struct npcm_i2c *bus, enum i2c_mode mode,
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -26,7 +26,8 @@
+ # subcomponents.
  
- 	/* Check HW is OK: SDA and SCL should be high at this point. */
- 	if ((npcm_i2c_get_SDA(&bus->adap) == 0) || (npcm_i2c_get_SCL(&bus->adap) == 0)) {
--		dev_err(bus->dev, "I2C%d init fail: lines are low\n", bus->num);
--		dev_err(bus->dev, "SDA=%d SCL=%d\n", npcm_i2c_get_SDA(&bus->adap),
--			npcm_i2c_get_SCL(&bus->adap));
--		return -ENXIO;
-+		dev_warn(bus->dev, " I2C%d SDA=%d SCL=%d, attempting to recover\n", bus->num,
-+				 npcm_i2c_get_SDA(&bus->adap), npcm_i2c_get_SCL(&bus->adap));
-+		if (npcm_i2c_recovery_tgclk(&bus->adap)) {
-+			dev_err(bus->dev, "I2C%d init fail: SDA=%d SCL=%d\n",
-+				bus->num, npcm_i2c_get_SDA(&bus->adap),
-+				npcm_i2c_get_SCL(&bus->adap));
-+			return -ENXIO;
-+		}
- 	}
+ ifdef CONFIG_X86
+-dml_ccflags := -mhard-float -msse
++dml_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
++dml_ccflags := $(dml_ccflags-y) -msse
+ endif
  
- 	npcm_i2c_int_enable(bus, true);
--- 
-2.39.5
-
+ ifdef CONFIG_PPC64
 
 
 
