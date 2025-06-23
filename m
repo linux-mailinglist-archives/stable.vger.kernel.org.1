@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 421EFAE4F13
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF593AE52DF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE6E517DD59
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BD797B01D6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3EFA22256B;
-	Mon, 23 Jun 2025 21:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777662222B7;
+	Mon, 23 Jun 2025 21:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAizX2hD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCPnGVlm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5ED88221DBD;
-	Mon, 23 Jun 2025 21:12:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA1F16D9BF;
+	Mon, 23 Jun 2025 21:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713121; cv=none; b=HPq8H95NHeYkDaf7OQs7QxUgiY8KNUJE9NL+8gYIV2hc9H3rqxsepmSyf1b64pbfcHl8QCduFet/WrksXb8AJGBH6x6zNG6sAfYiPSp8Fnq3Vd+TPWwLkHP48DCFymoeUOl2MxLS/PX6uFrCCk6UvlPDwkH7nUJcug2HNdo6Tis=
+	t=1750715218; cv=none; b=W2O9iEFT/RATFk+NjXH/0nC1am1Vkp4VSWEjF8Qi9yez8ktZGAyb3uMFT/GQIROiA0dpwaVXAY6D0Qj4ZGnV+/nHAJqnhxXIvdPGySeoySFLdUORm3Mas4m3/U72PGmEdfQk05eCy+YTPA//ztExJrQElLUOE4+HqtiF0weYSTI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713121; c=relaxed/simple;
-	bh=IUweiyndjZKi56cDYhwCMtgEtoBujf4njWWugTxl+do=;
+	s=arc-20240116; t=1750715218; c=relaxed/simple;
+	bh=9DYfyOEKnUaXPDCjBQewdLnj1g7+/DZeEx2wcNfyhSs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o89tufNJk1RT0Gd1hGYSLr9lY+N9W2etkSvpus8QAXZ+8neU82aYNXdWKkzThyKpW66jlqjmrvBLa8wGUj/wVB7iszHYElXmeaHuCbizMTy+ODlCZPeFGtZZ13hfVODDwYKfSz5kJBsxdAZXzQH9y2Y1xhRG0Vtnhmse6ILILLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAizX2hD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 910D8C4CEEA;
-	Mon, 23 Jun 2025 21:12:00 +0000 (UTC)
+	 MIME-Version; b=WGuW5RwjxEUn2TH3x+jHd26eMyvn3ykjcCUhyLvrNZMkX+lroiw3ZGy65AdPRtQTCndHM/99MLwLCu6sYbxf8WXTtIF+zxeyWTGHrO9xbV0z9zx7UzBVxcuBZx5WDeXJrmQASPZMMlkoR1eO0qSSWux46AYRIvxxSK6VpyOaQAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCPnGVlm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7EA5C4CEEA;
+	Mon, 23 Jun 2025 21:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713120;
-	bh=IUweiyndjZKi56cDYhwCMtgEtoBujf4njWWugTxl+do=;
+	s=korg; t=1750715218;
+	bh=9DYfyOEKnUaXPDCjBQewdLnj1g7+/DZeEx2wcNfyhSs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qAizX2hDVp9bz1NkJOwEg1w6rL/OzFM0F34aoEjWXl5xx1outtznvOaPpMfpeCI0m
-	 Ir5MFnyV0ikGEjchl5z0G3gJjZ+au0IZbqLEoVhkX98V2/SkeMysimCGKJlq7rCRtr
-	 aHWtQyMP3QASdGAEFInP+7LzyHchtY/WwGfkcjj4=
+	b=eCPnGVlmB9Ms5XAGsLONO23/nIaRnueq2yqoXgYOqS1M2v6gbzJNZGKpJTntS+sXd
+	 RibjmB0e34TeR1H+g1XFiExAbv7wFe4TR8QHMqjtsbzTl8Ui+judHohsQZHKKANch/
+	 B4/sUhoIu0G+nGn/IN4KJLrKTeD63N8/UbNGqppM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Malat <oss@malat.biz>,
-	Xin Long <lucien.xin@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 329/592] sctp: Do not wake readers in __sctp_write_space()
+Subject: [PATCH 6.1 242/508] drm/meson: fix debug log statement when setting the HDMI clocks
 Date: Mon, 23 Jun 2025 15:04:47 +0200
-Message-ID: <20250623130708.282928653@linuxfoundation.org>
+Message-ID: <20250623130651.208240015@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Malat <oss@malat.biz>
+From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
 
-[ Upstream commit af295892a7abbf05a3c2ba7abc4d81bb448623d6 ]
+[ Upstream commit d17e61ab63fb7747b340d6a66bf1408cd5c6562b ]
 
-Function __sctp_write_space() doesn't set poll key, which leads to
-ep_poll_callback() waking up all waiters, not only these waiting
-for the socket being writable. Set the key properly using
-wake_up_interruptible_poll(), which is preferred over the sync
-variant, as writers are not woken up before at least half of the
-queue is available. Also, TCP does the same.
+The "phy" and "vclk" frequency labels were swapped, making it more
+difficult to debug driver errors. Swap the label order to make them
+match with the actual frequencies printed to correct this.
 
-Signed-off-by: Petr Malat <oss@malat.biz>
-Acked-by: Xin Long <lucien.xin@gmail.com>
-Link: https://patch.msgid.link/20250516081727.1361451-1-oss@malat.biz
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e5fab2ec9ca4 ("drm/meson: vclk: add support for YUV420 setup")
+Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20250606203729.3311592-1-martin.blumenstingl@googlemail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sctp/socket.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 53725ee7ba06d..b301d64d9d80f 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -9100,7 +9100,8 @@ static void __sctp_write_space(struct sctp_association *asoc)
- 		wq = rcu_dereference(sk->sk_wq);
- 		if (wq) {
- 			if (waitqueue_active(&wq->wait))
--				wake_up_interruptible(&wq->wait);
-+				wake_up_interruptible_poll(&wq->wait, EPOLLOUT |
-+						EPOLLWRNORM | EPOLLWRBAND);
+diff --git a/drivers/gpu/drm/meson/meson_encoder_hdmi.c b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+index c1401ec1354d1..e34dc1e405882 100644
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -106,7 +106,7 @@ static void meson_encoder_hdmi_set_vclk(struct meson_encoder_hdmi *encoder_hdmi,
+ 		venc_freq /= 2;
  
- 			/* Note that we try to include the Async I/O support
- 			 * here by modeling from the current TCP/UDP code.
+ 	dev_dbg(priv->dev,
+-		"vclk:%lluHz phy=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
++		"phy:%lluHz vclk=%lluHz venc=%lluHz hdmi=%lluHz enci=%d\n",
+ 		phy_freq, vclk_freq, venc_freq, hdmi_freq,
+ 		priv->venc.hdmi_use_enci);
+ 
 -- 
 2.39.5
 
