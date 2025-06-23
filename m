@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 790AFAE5675
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82AA2AE5548
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5D8E17BC8D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2C054C3F26
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF1F226CF1;
-	Mon, 23 Jun 2025 22:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27211221DA8;
+	Mon, 23 Jun 2025 22:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u8lBP+CB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MUEvTj+C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A78B81E3DCD;
-	Mon, 23 Jun 2025 22:20:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51D51FC0E3;
+	Mon, 23 Jun 2025 22:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717202; cv=none; b=hJTy5hYhpd3GcNiEShTXfSN8auswpmH2dpvH8Q5vkRsLpf5QsGVGc1YkyGsxJ3WQRlaFQOTnZRtM+VhefRj6W858eM+GgKrHExVgnezpTiKue8/OSDLBe0VW5l1NevUBClC0BdcCRuo2aOMhoAZAXXsppPH81X9UcaxoEBZ5Qnw=
+	t=1750716551; cv=none; b=OrN98djjFC/qJ7Q3KWoQkSvfB5vvIXXfaUJ1EiGp6obfSlpcZyjwGPN2oS0Fmu73v7B4FDt986jZmVU6dFMzqhhtkmulBqtCeW3MegVD0Wx95WDngD83EASaQ0BoBgwtSEPju3dc6vzIp/gYDGIZuzrPbtMbeBLqwKzAfTFJKCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717202; c=relaxed/simple;
-	bh=LitO0OxKGtlSkjSXkxY5mnyyGX7Ypgkfr90+7s9JI/U=;
+	s=arc-20240116; t=1750716551; c=relaxed/simple;
+	bh=+yiwIwLNiwMyoBtuCXiNP/Ugwsj1U4lGl6yitWrGjw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kbFvJzy7G4GKbsALApdtKJ/CII2XHlsNtwSHBZuuhuZTz9dx3OzBIJLHYz0hK+xyNEpeZGa+Y6RrW06Pmka6ItU07SS8JTqxyXEgA3QSGM0TMhz0srQESX7IgZlnjuJ12B42MtDEYdQdAz+xM+fhOmI9Pv4oCPOGDDT/3aBA16c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u8lBP+CB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1167C4CEED;
-	Mon, 23 Jun 2025 22:20:01 +0000 (UTC)
+	 MIME-Version; b=DMzOhnO9o1VcaJqWxoqOmRcX3ieoOHvpmDxpRqL17Au7RFVdqrfwDJ9tnBKqBC3ZaCOX0l9ONAYE+z4wu95mJ5ddkjBl+nKiMD8Tct9RdhcIZGYK3UTi1gmlsXkS2jPQhqxvfEDejvuSXvIG51jbErLl/mjvs6tCcUfdjvfj4ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MUEvTj+C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C949C4CEEA;
+	Mon, 23 Jun 2025 22:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717202;
-	bh=LitO0OxKGtlSkjSXkxY5mnyyGX7Ypgkfr90+7s9JI/U=;
+	s=korg; t=1750716551;
+	bh=+yiwIwLNiwMyoBtuCXiNP/Ugwsj1U4lGl6yitWrGjw0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u8lBP+CBDas9T6ws5WZb7s6EYEUfJPNz7CB462LgMfSV1cSzuMBlFCZcIVa2uO5kD
-	 a8kKCymgVBD0yjfIVBCPlNntN057a7dllunEXZ+Zx6G7sojVQmSLuABqKim1TYGcZf
-	 qSH9nqruMTl12N+oS9vGscKv5SYct6BWakqV2MOY=
+	b=MUEvTj+C4dDFAkRUaXxAN803XIVH+Mak0mO6klAzXAgk5ScmZ8Zg39S/pQkjqazx+
+	 IKe2baK3Vhe32umzCmAlnc08gsX+P4npDGBlcsrCQ0xkuwb81D1jqAl90jvBcaeg1f
+	 M2whFgUJx5Y35hE8oIIuzJhkzxng/2HT1Pm6/tXE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Collin Funk <collin.funk1@gmail.com>,
+	Paul Eggert <eggert@cs.ucla.edu>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 380/508] ACPI: bus: Bail out if acpi_kobj registration fails
+Subject: [PATCH 6.12 288/414] fs/xattr.c: fix simple_xattr_list()
 Date: Mon, 23 Jun 2025 15:07:05 +0200
-Message-ID: <20250623130654.659919095@linuxfoundation.org>
+Message-ID: <20250623130649.216347688@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-[ Upstream commit 94a370fc8def6038dbc02199db9584b0b3690f1a ]
+[ Upstream commit 800d0b9b6a8b1b354637b4194cc167ad1ce2bdd3 ]
 
-The ACPI sysfs code will fail to initialize if acpi_kobj is NULL,
-together with some ACPI drivers.
+commit 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always
+include security.* xattrs") failed to reset err after the call to
+security_inode_listsecurity(), which returns the length of the
+returned xattr name. This results in simple_xattr_list() incorrectly
+returning this length even if a POSIX acl is also set on the inode.
 
-Follow the other firmware subsystems and bail out if the kobject
-cannot be registered.
+Reported-by: Collin Funk <collin.funk1@gmail.com>
+Closes: https://lore.kernel.org/selinux/8734ceal7q.fsf@gmail.com/
+Reported-by: Paul Eggert <eggert@cs.ucla.edu>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2369561
+Fixes: 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always include security.* xattrs")
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20250518185111.3560-2-W_Armin@gmx.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/20250605165116.2063-1-stephen.smalley.work@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/bus.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/xattr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/acpi/bus.c b/drivers/acpi/bus.c
-index a16b7de73d164..fafa15507b141 100644
---- a/drivers/acpi/bus.c
-+++ b/drivers/acpi/bus.c
-@@ -1389,8 +1389,10 @@ static int __init acpi_init(void)
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 4f5a45338a83a..0191ac2590e09 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -1341,6 +1341,7 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+ 		buffer += err;
  	}
+ 	remaining_size -= err;
++	err = 0;
  
- 	acpi_kobj = kobject_create_and_add("acpi", firmware_kobj);
--	if (!acpi_kobj)
--		pr_debug("%s: kset create error\n", __func__);
-+	if (!acpi_kobj) {
-+		pr_err("Failed to register kobject\n");
-+		return -ENOMEM;
-+	}
- 
- 	init_prmt();
- 	acpi_init_pcc();
+ 	read_lock(&xattrs->lock);
+ 	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
 -- 
 2.39.5
 
