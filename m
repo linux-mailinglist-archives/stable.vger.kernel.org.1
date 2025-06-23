@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 541D3AE5052
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13BADAE5466
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B70A7AEAA2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F3FB4C0D97
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CB7B1EFFA6;
-	Mon, 23 Jun 2025 21:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA7D1D86DC;
+	Mon, 23 Jun 2025 22:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w6diXQf9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PMdw1JuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18D862628C;
-	Mon, 23 Jun 2025 21:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E974409;
+	Mon, 23 Jun 2025 22:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713781; cv=none; b=hWs0m6nW6fifOT+GgS3zyjgY00V/b/gmx8DJ2BDq0Bmrvk6OVaW3MI1MaIxkFAfuMOCVLUl0AU9LO4MwjV35TlSA5omcR5eTeZztV0rFYfUaCuiNMgx8fhGykxjuFMUChBv8laWXxQtfD9dvXbLMGBob/bpL3cj+F0m73eUZQHg=
+	t=1750716071; cv=none; b=eUP764pCCTy75mvVSjF8jSF9DbDbokKryT/w5dND9L4jdL1py6vYqGVFek144Xj4tYmObGZHGKYZ5hzgFCZFnMLIgBiuQtELzf4qWEKseylN3HF7OOCE63QVGmN4djQU2z7CFSBN3qJmDdudj3zX5a2LWSCe/0uGdMkTVhUOgCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713781; c=relaxed/simple;
-	bh=bNo6Q/Kl+EZgRz5zFiov81yNQUFscwuY8+BExovazMc=;
+	s=arc-20240116; t=1750716071; c=relaxed/simple;
+	bh=6MtmlYvRPFQ0z3YFbS0Pkq6epcJFKaAmmKxEZUm63QE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y4mRBhFAmmRUHkFVlsb05EQaNuJ6ZGD1+8Y+j90jqEPweuS1QiYV5UWvAXF4pFQxSEuuGr1BNyCIyn0jkN+mJnygqif7/b+9ai7cf17S9pYLbrrQw3t1D9uLOjZmObUonr6lKV/+ZnlDwRO2GXT/dIqg35HIIepXTaSVD3snVec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w6diXQf9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5787C4CEF0;
-	Mon, 23 Jun 2025 21:23:00 +0000 (UTC)
+	 MIME-Version; b=M9pol5OHfvOis+1PFNgwBLjre7cGbRoX1uyMTs4Q/A/fX7uDR4gYWvMW6C1vo4mpYP8Wf5FG4hz4w6gKmEw4XqniP62VGw3ke4nlXB0nYP3hK4IJUZZ0eZ3mJk9mMIhjqa/+0VJhQsszeqGeLRh4D+xvw+/F40OBuBPVslXgtkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PMdw1JuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8814AC4CEEA;
+	Mon, 23 Jun 2025 22:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713781;
-	bh=bNo6Q/Kl+EZgRz5zFiov81yNQUFscwuY8+BExovazMc=;
+	s=korg; t=1750716070;
+	bh=6MtmlYvRPFQ0z3YFbS0Pkq6epcJFKaAmmKxEZUm63QE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w6diXQf906kaeWDPAZM2clST8BXs3Z/9EKS/yRFJ5H7ePYGXf8U6M9a2xP880IUQo
-	 q1FQBxJEsfck/G7ymL4LMBReQDCi/uP9uaayIE3EPekngbJHCPYuE4sIhgOOGbIClN
-	 fi60g8rogPdgU1H8OVu+RoU673dRZvAKfFENJCf0=
+	b=PMdw1JuC0HDfisZvbAMCh10N6H8nI28wi64h9PXe2liHE1QgA67V/bljJNR9SDOe6
+	 HX7tGAOX/Mn5KNqR/sYbd60lJEIxeDSgb+phrOxaTZmDahEq7zKwG33D8sdAlY8Of6
+	 9lerVkLXrHdPV2ve+WdpBdDE/VSKLWhXJXb/Dumc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 365/592] wifi: iwlwifi: mld: call thermal exit without wiphy lock held
+	stable <stable@kernel.org>,
+	Pawel Laszczak <pawell@cadence.com>,
+	Peter Chen <peter.chen@kernel.org>
+Subject: [PATCH 6.1 278/508] usb: cdnsp: Fix issue with detecting command completion event
 Date: Mon, 23 Jun 2025 15:05:23 +0200
-Message-ID: <20250623130709.124320241@linuxfoundation.org>
+Message-ID: <20250623130652.090134499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,79 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-[ Upstream commit 83128399f3b4926ab73ce8e5081ce6595e9230e9 ]
+commit f4ecdc352646f7d23f348e5c544dbe3212c94fc8 upstream.
 
-The driver must not hold the wiphy mutex when unregistering the thermal
-devices. Do not hold the lock for the call to iwl_mld_thermal_exit and
-only do a lock/unlock to cancel the ct_kill_exit_wk work.
+In some cases, there is a small-time gap in which CMD_RING_BUSY can be
+cleared by controller but adding command completion event to event ring
+will be delayed. As the result driver will return error code.
 
-The problem is that iwl_mld_tzone_get_temp needs to take the wiphy lock
-while the thermal code is holding its own locks already. When
-unregistering the device, the reverse would happen as the driver was
-calling thermal_cooling_device_unregister with the wiphy mutex already
-held.
+This behavior has been detected on usbtest driver (test 9) with
+configuration including ep1in/ep1out bulk and ep2in/ep2out isoc
+endpoint.
 
-It is not likely to trigger this deadlock as it can only happen if the
-thermal code is polling the temperature while the driver is being
-unloaded. However, lockdep reported it so fix it.
+Probably this gap occurred because controller was busy with adding some
+other events to event ring.
 
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20250506194102.3407967-12-miriam.rachel.korenblit@intel.com
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The CMD_RING_BUSY is cleared to '0' when the Command Descriptor has been
+executed and not when command completion event has been added to event
+ring.
+
+To fix this issue for this test the small delay is sufficient less than
+10us) but to make sure the problem doesn't happen again in the future
+the patch introduces 10 retries to check with delay about 20us before
+returning error code.
+
+Fixes: 3d82904559f4 ("usb: cdnsp: cdns3 Add main part of Cadence USBSSP DRD Driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Acked-by: Peter Chen <peter.chen@kernel.org>
+Link: https://lore.kernel.org/r/PH7PR07MB9538AA45362ACCF1B94EE9B7DD96A@PH7PR07MB9538.namprd07.prod.outlook.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mld/mld.c     | 3 ++-
- drivers/net/wireless/intel/iwlwifi/mld/thermal.c | 4 ++++
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/cdnsp-gadget.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/mld.c b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-index 7a098942dc802..21f65442638dd 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/mld.c
-@@ -475,8 +475,9 @@ iwl_op_mode_mld_stop(struct iwl_op_mode *op_mode)
- 	iwl_mld_ptp_remove(mld);
- 	iwl_mld_leds_exit(mld);
+--- a/drivers/usb/cdns3/cdnsp-gadget.c
++++ b/drivers/usb/cdns3/cdnsp-gadget.c
+@@ -546,6 +546,7 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 	dma_addr_t cmd_deq_dma;
+ 	union cdnsp_trb *event;
+ 	u32 cycle_state;
++	u32 retry = 10;
+ 	int ret, val;
+ 	u64 cmd_dma;
+ 	u32  flags;
+@@ -577,8 +578,23 @@ int cdnsp_wait_for_cmd_compl(struct cdns
+ 		flags = le32_to_cpu(event->event_cmd.flags);
  
--	wiphy_lock(mld->wiphy);
- 	iwl_mld_thermal_exit(mld);
+ 		/* Check the owner of the TRB. */
+-		if ((flags & TRB_CYCLE) != cycle_state)
++		if ((flags & TRB_CYCLE) != cycle_state) {
++			/*
++			 * Give some extra time to get chance controller
++			 * to finish command before returning error code.
++			 * Checking CMD_RING_BUSY is not sufficient because
++			 * this bit is cleared to '0' when the Command
++			 * Descriptor has been executed by controller
++			 * and not when command completion event has
++			 * be added to event ring.
++			 */
++			if (retry--) {
++				udelay(20);
++				continue;
++			}
 +
-+	wiphy_lock(mld->wiphy);
- 	iwl_mld_low_latency_stop(mld);
- 	iwl_mld_deinit_time_sync(mld);
- 	wiphy_unlock(mld->wiphy);
-diff --git a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-index 1909953a9be98..670ac43528006 100644
---- a/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mld/thermal.c
-@@ -419,6 +419,8 @@ static void iwl_mld_cooling_device_unregister(struct iwl_mld *mld)
+ 			return -EINVAL;
++		}
  
- void iwl_mld_thermal_initialize(struct iwl_mld *mld)
- {
-+	lockdep_assert_not_held(&mld->wiphy->mtx);
-+
- 	wiphy_delayed_work_init(&mld->ct_kill_exit_wk, iwl_mld_exit_ctkill);
+ 		cmd_dma = le64_to_cpu(event->event_cmd.cmd_trb);
  
- #ifdef CONFIG_THERMAL
-@@ -429,7 +431,9 @@ void iwl_mld_thermal_initialize(struct iwl_mld *mld)
- 
- void iwl_mld_thermal_exit(struct iwl_mld *mld)
- {
-+	wiphy_lock(mld->wiphy);
- 	wiphy_delayed_work_cancel(mld->wiphy, &mld->ct_kill_exit_wk);
-+	wiphy_unlock(mld->wiphy);
- 
- #ifdef CONFIG_THERMAL
- 	iwl_mld_cooling_device_unregister(mld);
--- 
-2.39.5
-
 
 
 
