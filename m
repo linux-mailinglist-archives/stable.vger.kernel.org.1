@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-155705-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6544BAE437F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D94D5AE4343
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134F317ACD7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F37F173AC4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A9C4C7F;
-	Mon, 23 Jun 2025 13:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4EFC25523C;
+	Mon, 23 Jun 2025 13:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FhrjDoua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ULhsGxjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC9723A9BE;
-	Mon, 23 Jun 2025 13:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63D5A23A9BE;
+	Mon, 23 Jun 2025 13:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685118; cv=none; b=jfqHEIhGQqnOGMmXv5pja+6dNrwIeH2i0MWax/XQeeOiTQ94pYcolMhRgewviRAF/8z2xLmf4aaHUAvF73JcjhmOqarMuOYpxMLhlTe63cJYK9Se3V4WjNj+NuPEA83RAjvohjcPlIPGW/iZvIv99C+YTMLCwy0riiVtPkfj9yU=
+	t=1750684960; cv=none; b=cvjYHeuWtvv8W+zfJ3eAUy/5QSVl3o16O/Ap9G59Z5kV60cSYq/d3VoEjttAPN/deKxCODMmsI5o/Fcoa3ZsoOZwFKBk9GSs0g+XgylHpfXhVBcIt5xVRa+UJHIkfc9tRUX8lLLEBNJioQTAwwnROVAjZI/JvfUW3qrrJwBZgpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685118; c=relaxed/simple;
-	bh=J0Xb7TQgtU1jvyUMUY9641wBtpDthUMMJ5A0N298Fjk=;
+	s=arc-20240116; t=1750684960; c=relaxed/simple;
+	bh=BwwFDHWdEaPN+CuFuKA4Z6GdLx+lrbltHzQ9iH3Yk34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jZSXd+6rjSddISaOtVNTenc2JGFSp+djDyJ+GwdQTo3G6LUHID+1PvyyOh5fYGOH1BG9e97e4PcDzsFwsPaxgXa+WqjtK2FsGqkqdQ97tNu+PDEs+1FJoulLFzvp6Djfx4pZ4KHJPrvaXiOazzZf0q6gOpRpMvoENDHJIdsUio8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FhrjDoua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D6F2C4CEEA;
-	Mon, 23 Jun 2025 13:25:17 +0000 (UTC)
+	 MIME-Version; b=bfUdeHiuffj2rU1fwZ28FAfvvyeyqQxyGgc/3ZgSPfpzAdtw0GeywNPg13NZvnAdIKcIPcg+fQ759+1eCjA3RLf+gJgz6kmN5Y/254s+OC2sAcoCNOqT+UbIhoptfP7tWjv7vw4cjvQGSnTwt0meVVDKKRdt6ZKnHQKj7fnznHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ULhsGxjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB7EC4CEEA;
+	Mon, 23 Jun 2025 13:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685118;
-	bh=J0Xb7TQgtU1jvyUMUY9641wBtpDthUMMJ5A0N298Fjk=;
+	s=korg; t=1750684960;
+	bh=BwwFDHWdEaPN+CuFuKA4Z6GdLx+lrbltHzQ9iH3Yk34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FhrjDoua+Xgb18mdsIXZdiCbK5P280Fjw6PKZvmwV3MF2HPfKWQbAmeFXf8pFwO9s
-	 BDdddL4Ed6c8P7X3KlenGHDalSe4plXymPG0AUOlOy1H6Cuq0uCTvAEZVz6cBsFAAQ
-	 yqAvH4+CaGu0/t6VJx/dU3ggfil5UByALIxuxwkM=
+	b=ULhsGxjjD70J1yYmBbCHj/g+NiFtnvoKd9WQWLK3Yzko67sa7wYbxrS4sOqejok95
+	 PCK8yikh6nK/b/RIrLx2s/CZqlpLjt1ea126VXsczU1UYNT+28YKr9oOPqtiRDv9S3
+	 ZMhMoHhTWln2uxTEHn+ggU/x6stchGd5BfklQ4ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Yeh <charlesyeh522@gmail.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.15 009/411] USB: serial: pl2303: add new chip PL2303GC-Q20 and PL2303GT-2AB
+	Christian Mazakas <christian.mazakas@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 195/592] io_uring/net: only consider msg_inq if larger than 1
 Date: Mon, 23 Jun 2025 15:02:33 +0200
-Message-ID: <20250623130633.272094972@linuxfoundation.org>
+Message-ID: <20250623130704.928707695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,36 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Yeh <charlesyeh522@gmail.com>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit d3a889482bd5abf2bbdc1ec3d2d49575aa160c9c upstream.
+commit 2c7f023219966777be0687e15b57689894304cd3 upstream.
 
-Add new bcd (0x905) to support PL2303GT-2AB (TYPE_HXN).
-Add new bcd (0x1005) to support PL2303GC-Q20 (TYPE_HXN).
+Currently retry and general validity of msg_inq is gated on it being
+larger than zero, but it's entirely possible for this to be slightly
+inaccurate. In particular, if FIN is received, it'll return 1.
 
-Signed-off-by: Charles Yeh <charlesyeh522@gmail.com>
+Just use larger than 1 as the check. This covers both the FIN case, and
+at the same time, it doesn't make much sense to retry a recv immediately
+if there's even just a single 1 byte of valid data in the socket.
+
+Leave the SOCK_NONEMPTY flagging when larger than 0 still, as an app may
+use that for the final receive.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reported-by: Christian Mazakas <christian.mazakas@gmail.com>
+Fixes: 7c71a0af81ba ("io_uring/net: improve recv bundles")
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/pl2303.c |    2 ++
- 1 file changed, 2 insertions(+)
+ io_uring/net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/pl2303.c
-+++ b/drivers/usb/serial/pl2303.c
-@@ -457,6 +457,8 @@ static int pl2303_detect_type(struct usb
- 		case 0x605:
- 		case 0x700:	/* GR */
- 		case 0x705:
-+		case 0x905:	/* GT-2AB */
-+		case 0x1005:	/* GC-Q20 */
- 			return TYPE_HXN;
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -840,7 +840,7 @@ static inline bool io_recv_finish(struct
+ 		 * If more is available AND it was a full transfer, retry and
+ 		 * append to this one
+ 		 */
+-		if (!sr->retry && kmsg->msg.msg_inq > 0 && this_ret > 0 &&
++		if (!sr->retry && kmsg->msg.msg_inq > 1 && this_ret > 0 &&
+ 		    !iov_iter_count(&kmsg->msg.msg_iter)) {
+ 			req->cqe.flags = cflags & ~CQE_F_MASK;
+ 			sr->len = kmsg->msg.msg_inq;
+@@ -1077,7 +1077,7 @@ static int io_recv_buf_select(struct io_
+ 			arg.mode |= KBUF_MODE_FREE;
  		}
- 		break;
+ 
+-		if (kmsg->msg.msg_inq > 0)
++		if (kmsg->msg.msg_inq > 1)
+ 			arg.max_len = min_not_zero(sr->len, kmsg->msg.msg_inq);
+ 
+ 		ret = io_buffers_peek(req, &arg);
 
 
 
