@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-157213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156605-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB331AE52FC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD02AE5048
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4325A178B4F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 66ACC4A0868
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294CC3FD4;
-	Mon, 23 Jun 2025 21:48:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6901F3B96;
+	Mon, 23 Jun 2025 21:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSvCN9Lf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnrwP9++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7EB4315A;
-	Mon, 23 Jun 2025 21:48:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECAE61E5B71;
+	Mon, 23 Jun 2025 21:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715317; cv=none; b=G8Ap2lQ9bcWRcEzCCEu1WN7fVnGCcpUBh4OoRPG9NUOv9rfPMSxPPV06c7LkVorWGwdbHTB9IRllfSGYlKqXEAL3N0xGCPtenHN/iMcvIfLum/p6m8ytRPPXC7ozbNLgdO9h/G21N2emY2I3kvTyU350rB9xWDGspbzT2JF5Oqc=
+	t=1750713823; cv=none; b=kJywKn5qdQVUIn4N9ep/jTj7Kj/Os17UkYv+okxexm7lMRAgmmV5ROminzlpu+eJNwa/zpgrYj0BdVlm9896XeIX0hjB7P2UFqbBxfG7xCuhzdZHg1w3PZsiolVWslpS/DqCpFynMviaiMVvUtcE/hitC8nHvnFBGATnUus8NaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715317; c=relaxed/simple;
-	bh=mDjbuPyaVCd5awQDBMesFhcZEg8r8C9R9GCm0lXTo5U=;
+	s=arc-20240116; t=1750713823; c=relaxed/simple;
+	bh=1XGppuLFuU2T0+4Lawc8zSDoQioEjiVMNtfCWwMiEAM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFhYJwhRrPQsxI9YdgM4Va+CP0o/GG+nRZxrF+ftB5nvS3DOoYFDVM0VQo8BsuST5lwGour96JFkuLvm96Rf+H4oXDYBVlN2UQxaWFSD7IG9YlAneYj9QU1OcvfoBrjIUU3Gq5tS4xlVFIMJ4gPesQLQbhURmEITbniq3TCIDAY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSvCN9Lf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7339FC4CEEA;
-	Mon, 23 Jun 2025 21:48:36 +0000 (UTC)
+	 MIME-Version; b=S/71r/gyih+LmTJKUAPoLvKxUsxQW/XMBmYY9INhxtezFK0wXUHSB+SP2baESxKWTyJF6UnjRWCeRCoX6FE0spWfQnHvL6ra/A1Qc86DkS5Z3Z/qve93q+I7ZbK5zcbbbcY01g4OX05zTayHBfF/C/J7QyEDIjzMaWsFmQwfn6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnrwP9++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 844FBC4CEEA;
+	Mon, 23 Jun 2025 21:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715316;
-	bh=mDjbuPyaVCd5awQDBMesFhcZEg8r8C9R9GCm0lXTo5U=;
+	s=korg; t=1750713822;
+	bh=1XGppuLFuU2T0+4Lawc8zSDoQioEjiVMNtfCWwMiEAM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lSvCN9Lflf+hy/MXUvLaF7wfqCyf9cBoYtq2YyNLw3gPkS2J5JjBO/ssjL8dW6h6Z
-	 PTP3R0EbRVxNHT7MV64xawiThKJZ1ZLAegWIg169seWWvcT4PrZSbA7rLDtJYo78tD
-	 H8YSLXLxybgIUBKyAXmkCp4ZiW32V8vNtRduy1b8=
+	b=KnrwP9++IDa8sN0GNxuNdCYDqk9nVrYDWp12ufMej0vi3MiAd9VJVNseFVTvy2mti
+	 yXEs2nM2ckLo9wsknP/e2g8wGiXbotJ1hkvJ0JqopxgpEhf+9nRgpdbW3qF9D+kbpp
+	 GIY4aJGJtDm8qdzuHrGPXxzXqOOhtThFbss55Tm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 245/411] dm-mirror: fix a tiny race condition
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.10 188/355] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
 Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130639.820900172@linuxfoundation.org>
+Message-ID: <20250623130632.333978802@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
+commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
 
-There's a tiny race condition in dm-mirror. The functions queue_bio and
-write_callback grab a spinlock, add a bio to the list, drop the spinlock
-and wake up the mirrord thread that processes bios in the list.
+The "len" variable comes from the firmware and we generally do
+trust firmware, but it's always better to double check.  If the "len"
+is too large it could result in memory corruption when we do
+"memcpy(fragment->data, rec->data, len);"
 
-It may be possible that the mirrord thread processes the bio just after
-spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
-wake-up is normally harmless, however if the device mapper device is
-unloaded just after the bio was processed, it may be possible that
-wakeup_mirrord(ms) uses invalid "ms" pointer.
-
-Fix this bug by moving wakeup_mirrord inside the spinlock.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
 Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/input/misc/ims-pcu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/md/dm-raid1.c
-+++ b/drivers/md/dm-raid1.c
-@@ -128,10 +128,9 @@ static void queue_bio(struct mirror_set
- 	spin_lock_irqsave(&ms->lock, flags);
- 	should_wake = !(bl->head);
- 	bio_list_add(bl, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
--
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
+ 		addr = be32_to_cpu(rec->addr) / 2;
+ 		len = be16_to_cpu(rec->len);
  
- static void dispatch_bios(void *context, struct bio_list *bio_list)
-@@ -638,9 +637,9 @@ static void write_callback(unsigned long
- 	if (!ms->failures.head)
- 		should_wake = 1;
- 	bio_list_add(&ms->failures, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
- 
- static void do_write(struct mirror_set *ms, struct bio *bio)
++		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
++			dev_err(pcu->dev,
++				"Invalid record length in firmware: %d\n", len);
++			return -EINVAL;
++		}
++
+ 		fragment = (void *)&pcu->cmd_buf[1];
+ 		put_unaligned_le32(addr, &fragment->addr);
+ 		fragment->len = len;
 
 
 
