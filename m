@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-157035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157361-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62250AE5231
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B7A9AE53AC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1351A7AB14C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6482B18817C7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AADAA221FC7;
-	Mon, 23 Jun 2025 21:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7FF31E22E6;
+	Mon, 23 Jun 2025 21:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e4TIE4/L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ug87ZktS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B5C4315A;
-	Mon, 23 Jun 2025 21:41:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 674931FECBA;
+	Mon, 23 Jun 2025 21:54:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714875; cv=none; b=d9FAB/R8tDEN/xC9/oqfD9twW19PaDDlfY5+0ugcKxt0HUcDA8gTPjJfDz16/kwB/znfpZbIYGWiCce3OqfaLbaC6N0b6z/Ood7ERaJ4T8kVptsRVs7bT9JN8nKyL8w6vtKiJ2uB6oi7AOhDOdRTZV+LvRb5SRc1/72RYQao6J4=
+	t=1750715680; cv=none; b=tMw4lci3MaEucg2iPMiDT+wSewW79XjhS7uUUUYkPTKR8bF97iieEbcZ9iUbipzGfluanhRyKFirgBMtVRHOqLE30jAnjfVu8IIAvOsb9KK1ap1yTek3tePBYjX8Gctu/XBPlhhPkFr1pPr3vwUxDOON/mAerUhg5c/cwR2bIkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714875; c=relaxed/simple;
-	bh=stGUxqe74GuuiVWq6gUgttU7opMJKdQqjaEMs+gDoT8=;
+	s=arc-20240116; t=1750715680; c=relaxed/simple;
+	bh=DFdoh5armBVdxZMr4K9P8jIK67TTXZj0UeWxp4Awkn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XAOhadgcWQ+2aThr4qcRK9bRX3B1UDm8akHEfh7u9zrqVI9/k3njB4xER0/XhRaS6tew532cwUehC7JjFQGqc7oyg+P6Kixr2uESC9/K6btycFyE3lhWTdnB4kYm2OqlkTOo8wpD7BZO6pRL8Tsq1iq9ecaU+VK/6209JrUDS3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e4TIE4/L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 053CBC4CEEA;
-	Mon, 23 Jun 2025 21:41:14 +0000 (UTC)
+	 MIME-Version; b=KwESUx5MygetSZBA2J16ABhx4mhzIPI9VIC2Yx1APc8cR9X+KxpY7I6AfM/OFR8gCkGwp/0Z8iRn9Di76drS9L2Vz8uCcftaQF2S1C5+aT3PK0gH/euQyKP2g6AFyWFD02yZQjAJXflq3vdT/JjtFe82mCUZxvbPN5Cnhiq8EPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ug87ZktS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00EB2C4CEEA;
+	Mon, 23 Jun 2025 21:54:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714875;
-	bh=stGUxqe74GuuiVWq6gUgttU7opMJKdQqjaEMs+gDoT8=;
+	s=korg; t=1750715680;
+	bh=DFdoh5armBVdxZMr4K9P8jIK67TTXZj0UeWxp4Awkn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e4TIE4/Ll7bWLHkeUAS6x3SglUOxHXOEfxF4nIASalaLhCdQ6vAaF+0Bjf+sPaIfD
-	 gG3RJbEzjcs6DoBc64jhacvoLQm7YdPEzxSQzH2Gl9m5VjTFQQCq5wW+zvgQt01PVg
-	 4zGwyHkYpviYX1Lxhz3OYrDSdtgssjl6lp6Rw3zU=
+	b=ug87ZktSRWP5dBUE6w10V6qIam4TGqxck0LexA7ZkYPlUnXD8RKjbaVjqNzyH+ca6
+	 4mB3Di1irycVkGiTScf18UPKIixLPGijy4mgufjUsmL5bHjdHt+FyvE3/Ah6IBG6NI
+	 v3q/BKE6GBmqU9s7Rhy6YcFDxqaUQTUvBLXlUf5c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.12 162/414] mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race
-Date: Mon, 23 Jun 2025 15:04:59 +0200
-Message-ID: <20250623130646.086903834@linuxfoundation.org>
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 255/508] net/mlx5: Ensure fw pages are always allocated on same NUMA
+Date: Mon, 23 Jun 2025 15:05:00 +0200
+Message-ID: <20250623130651.527591951@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-commit 1013af4f585fccc4d3e5c5824d174de2257f7d6d upstream.
+[ Upstream commit f37258133c1e95e61db532e14067e28b4881bf24 ]
 
-huge_pmd_unshare() drops a reference on a page table that may have
-previously been shared across processes, potentially turning it into a
-normal page table used in another process in which unrelated VMAs can
-afterwards be installed.
+When firmware asks the driver to allocate more pages, using event of
+give_pages, the driver should always allocate it from same NUMA, the
+original device NUMA. Current code uses dev_to_node() which can result
+in different NUMA as it is changed by other driver flows, such as
+mlx5_dma_zalloc_coherent_node(). Instead, use saved numa node for
+allocating firmware pages.
 
-If this happens in the middle of a concurrent gup_fast(), gup_fast() could
-end up walking the page tables of another process.  While I don't see any
-way in which that immediately leads to kernel memory corruption, it is
-really weird and unexpected.
-
-Fix it with an explicit broadcast IPI through tlb_remove_table_sync_one(),
-just like we do in khugepaged when removing page tables for a THP
-collapse.
-
-Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-2-1329349bad1a@google.com
-Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-2-f4136f5ec58a@google.com
-Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 311c7c71c9bb ("net/mlx5e: Allocate DMA coherent memory on reader NUMA node")
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-2-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7252,6 +7252,13 @@ int huge_pmd_unshare(struct mm_struct *m
- 		return 0;
- 
- 	pud_clear(pud);
-+	/*
-+	 * Once our caller drops the rmap lock, some other process might be
-+	 * using this page table as a normal, non-hugetlb page table.
-+	 * Wait for pending gup_fast() in other threads to finish before letting
-+	 * that happen.
-+	 */
-+	tlb_remove_table_sync_one();
- 	ptdesc_pmd_pts_dec(virt_to_ptdesc(ptep));
- 	mm_dec_nr_pmds(mm);
- 	return 1;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+index 95dc67fb30015..99909c74a2144 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/pagealloc.c
+@@ -285,7 +285,7 @@ static void free_4k(struct mlx5_core_dev *dev, u64 addr, u32 function)
+ static int alloc_system_page(struct mlx5_core_dev *dev, u32 function)
+ {
+ 	struct device *device = mlx5_core_dma_dev(dev);
+-	int nid = dev_to_node(device);
++	int nid = dev->priv.numa_node;
+ 	struct page *page;
+ 	u64 zero_addr = 1;
+ 	u64 addr;
+-- 
+2.39.5
+
 
 
 
