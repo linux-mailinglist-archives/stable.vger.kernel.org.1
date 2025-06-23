@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93EA4AE5014
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2F8BAE54A8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4256A7ADB6A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C764B16931C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D502B1E521E;
-	Mon, 23 Jun 2025 21:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A716421FF50;
+	Mon, 23 Jun 2025 22:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQPaMP+H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw/39mA5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9291F2C9D;
-	Mon, 23 Jun 2025 21:19:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C934C74;
+	Mon, 23 Jun 2025 22:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713582; cv=none; b=r3hMW75CpgaF0Dz2nco+VeF1AqaLRPrmNOvrPwX4BPUE9eS8NjxQ7lKNhUu2B6IjgadhwYyt902igq21tv0NRh7PnPmlo773KTUWBTGYdaChwRDNhIoCMa2kWnKDJ7mx5BsrQ1jnVzTQ9YK8tyxLny9miqKY6cGigIAJMsJUGwA=
+	t=1750716186; cv=none; b=cHXcGkd+mQ8PFTs1m5zZjz/KY0aHWkL184djDy7h4XpS/L5ExOFUsk3/pPQ/59SWaXMNTpOVjer+8X36xwV3R8EfAEKAS4DuNmr6AVE8u336by+cur0CP7KZWtBFd6G/eg1oOywQozv/wjamMsSyVHXgd2UVOJ53Xz5+EihSv9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713582; c=relaxed/simple;
-	bh=5VLbTJBEgicg2VcUihydbkRZbeXp8z1lkR7dC1G242A=;
+	s=arc-20240116; t=1750716186; c=relaxed/simple;
+	bh=ji2VDsUfqvCOMlc6gEWClhCJG5oMrCrYXNTUFbg5tB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGmtnyDnnSCD5xn0P2y4dKC2TCmVjmWPQyhCdA123x1zt/wRcnGvoFjcL/ds9k99iptP8PBtarZOXaCVKFCjmIaRKZ9BCxDur2uQ8b+Wbo8lTrO0ByeDKd/TwI5qb+nKxxrZfSjzmuPpJWoL8cz1VgnRQv7PpOo2ptQ4039VsuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQPaMP+H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B168C4CEEA;
-	Mon, 23 Jun 2025 21:19:42 +0000 (UTC)
+	 MIME-Version; b=P1RnAiQpHdPiM5zIt1dssS1oxdgvREfNf1vq2RNdo18o+taSWhLp0z+grxkxD+ILPFR+TYnQ7bWhmDggSPD3uZT0yPftNvHI1Iy+eD6hLcyZ9rqZG6nx92UVk7zWIYDxPeaPDmaahYAmYTfi9oJY90qISY1DGFBk+x8JbKdNhmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw/39mA5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3FEC4CEEA;
+	Mon, 23 Jun 2025 22:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713582;
-	bh=5VLbTJBEgicg2VcUihydbkRZbeXp8z1lkR7dC1G242A=;
+	s=korg; t=1750716186;
+	bh=ji2VDsUfqvCOMlc6gEWClhCJG5oMrCrYXNTUFbg5tB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQPaMP+Hrap46R7XSctoXcttAB4YpznTmX7JMk3iuyUotJY19PMFkA6HwappZGKvh
-	 N+7XEnPyfUQpz2OR0KFyvpqDBV0LIyqz0qou9nx46lNMFFW1jfSmDpoWF/xADMiabB
-	 NF1DNG4IbhEbfk6/JKA2yposqdCF5PLZUmOjFe3Y=
+	b=Lw/39mA5JKH3YjLYXgK58xOsrHJDkxmNNNWY5AtqgvxT4wfvNqVAFqsNnfn/A7sww
+	 LE6haurpGA4bx0lFsl6j0SvogwcV2Gn6xGJpAKAGD5RsqEITa0nY8z8nErnXhVdudL
+	 9bUdQ4TBBjht4Mc/Y5RqEN0Ydh3T2Ih9KWjq7Lt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.4 194/222] HID: usbhid: Eliminate recurrent out-of-bounds bug in usbhid_parse()
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Francois Romieu <romieu@fr.zoreil.com>
+Subject: [PATCH 6.6 268/290] net: atm: fix /proc/net/atm/lec handling
 Date: Mon, 23 Jun 2025 15:08:49 +0200
-Message-ID: <20250623130618.065680119@linuxfoundation.org>
+Message-ID: <20250623130634.979983378@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,172 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Terry Junge <linuxhid@cosmicgizmosystems.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit fe7f7ac8e0c708446ff017453add769ffc15deed upstream.
+[ Upstream commit d03b79f459c7935cff830d98373474f440bd03ae ]
 
-Update struct hid_descriptor to better reflect the mandatory and
-optional parts of the HID Descriptor as per USB HID 1.11 specification.
-Note: the kernel currently does not parse any optional HID class
-descriptors, only the mandatory report descriptor.
+/proc/net/atm/lec must ensure safety against dev_lec[] changes.
 
-Update all references to member element desc[0] to rpt_desc.
+It appears it had dev_put() calls without prior dev_hold(),
+leading to imbalance and UAF.
 
-Add test to verify bLength and bNumDescriptors values are valid.
-
-Replace the for loop with direct access to the mandatory HID class
-descriptor member for the report descriptor. This eliminates the
-possibility of getting an out-of-bounds fault.
-
-Add a warning message if the HID descriptor contains any unsupported
-optional HID class descriptors.
-
-Reported-by: syzbot+c52569baf0c843f35495@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=c52569baf0c843f35495
-Fixes: f043bfc98c19 ("HID: usbhid: fix out-of-bounds bug")
-Cc: stable@vger.kernel.org
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Acked-by: Francois Romieu <romieu@fr.zoreil.com> # Minor atm contributor
+Link: https://patch.msgid.link/20250618140844.1686882-3-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-hyperv.c            |    5 +++--
- drivers/hid/usbhid/hid-core.c       |   25 ++++++++++++++-----------
- drivers/usb/gadget/function/f_hid.c |   12 ++++++------
- include/linux/hid.h                 |    3 ++-
- 4 files changed, 25 insertions(+), 20 deletions(-)
+ net/atm/lec.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/hid/hid-hyperv.c
-+++ b/drivers/hid/hid-hyperv.c
-@@ -197,7 +197,8 @@ static void mousevsc_on_receive_device_i
- 	if (!input_device->hid_desc)
- 		goto cleanup;
- 
--	input_device->report_desc_size = desc->desc[0].wDescriptorLength;
-+	input_device->report_desc_size = le16_to_cpu(
-+					desc->rpt_desc.wDescriptorLength);
- 	if (input_device->report_desc_size == 0) {
- 		input_device->dev_info_status = -EINVAL;
- 		goto cleanup;
-@@ -213,7 +214,7 @@ static void mousevsc_on_receive_device_i
- 
- 	memcpy(input_device->report_desc,
- 	       ((unsigned char *)desc) + desc->bLength,
--	       desc->desc[0].wDescriptorLength);
-+	       le16_to_cpu(desc->rpt_desc.wDescriptorLength));
- 
- 	/* Send the ack */
- 	memset(&ack, 0, sizeof(struct mousevsc_prt_msg));
---- a/drivers/hid/usbhid/hid-core.c
-+++ b/drivers/hid/usbhid/hid-core.c
-@@ -984,12 +984,11 @@ static int usbhid_parse(struct hid_devic
- 	struct usb_host_interface *interface = intf->cur_altsetting;
- 	struct usb_device *dev = interface_to_usbdev (intf);
- 	struct hid_descriptor *hdesc;
-+	struct hid_class_descriptor *hcdesc;
- 	u32 quirks = 0;
- 	unsigned int rsize = 0;
- 	char *rdesc;
--	int ret, n;
--	int num_descriptors;
--	size_t offset = offsetof(struct hid_descriptor, desc);
-+	int ret;
- 
- 	quirks = hid_lookup_quirk(hid);
- 
-@@ -1011,20 +1010,19 @@ static int usbhid_parse(struct hid_devic
- 		return -ENODEV;
+diff --git a/net/atm/lec.c b/net/atm/lec.c
+index d4ac1488eca6f..b7fa48a9b7205 100644
+--- a/net/atm/lec.c
++++ b/net/atm/lec.c
+@@ -909,7 +909,6 @@ static void *lec_itf_walk(struct lec_state *state, loff_t *l)
+ 	v = (dev && netdev_priv(dev)) ?
+ 		lec_priv_walk(state, l, netdev_priv(dev)) : NULL;
+ 	if (!v && dev) {
+-		dev_put(dev);
+ 		/* Partial state reset for the next time we get called */
+ 		dev = NULL;
  	}
+@@ -933,6 +932,7 @@ static void *lec_seq_start(struct seq_file *seq, loff_t *pos)
+ {
+ 	struct lec_state *state = seq->private;
  
--	if (hdesc->bLength < sizeof(struct hid_descriptor)) {
--		dbg_hid("hid descriptor is too short\n");
-+	if (!hdesc->bNumDescriptors ||
-+	    hdesc->bLength != sizeof(*hdesc) +
-+			      (hdesc->bNumDescriptors - 1) * sizeof(*hcdesc)) {
-+		dbg_hid("hid descriptor invalid, bLen=%hhu bNum=%hhu\n",
-+			hdesc->bLength, hdesc->bNumDescriptors);
- 		return -EINVAL;
++	mutex_lock(&lec_mutex);
+ 	state->itf = 0;
+ 	state->dev = NULL;
+ 	state->locked = NULL;
+@@ -950,8 +950,9 @@ static void lec_seq_stop(struct seq_file *seq, void *v)
+ 	if (state->dev) {
+ 		spin_unlock_irqrestore(&state->locked->lec_arp_lock,
+ 				       state->flags);
+-		dev_put(state->dev);
++		state->dev = NULL;
  	}
++	mutex_unlock(&lec_mutex);
+ }
  
- 	hid->version = le16_to_cpu(hdesc->bcdHID);
- 	hid->country = hdesc->bCountryCode;
- 
--	num_descriptors = min_t(int, hdesc->bNumDescriptors,
--	       (hdesc->bLength - offset) / sizeof(struct hid_class_descriptor));
--
--	for (n = 0; n < num_descriptors; n++)
--		if (hdesc->desc[n].bDescriptorType == HID_DT_REPORT)
--			rsize = le16_to_cpu(hdesc->desc[n].wDescriptorLength);
-+	if (hdesc->rpt_desc.bDescriptorType == HID_DT_REPORT)
-+		rsize = le16_to_cpu(hdesc->rpt_desc.wDescriptorLength);
- 
- 	if (!rsize || rsize > HID_MAX_DESCRIPTOR_SIZE) {
- 		dbg_hid("weird size of report descriptor (%u)\n", rsize);
-@@ -1052,6 +1050,11 @@ static int usbhid_parse(struct hid_devic
- 		goto err;
- 	}
- 
-+	if (hdesc->bNumDescriptors > 1)
-+		hid_warn(intf,
-+			"%u unsupported optional hid class descriptors\n",
-+			(int)(hdesc->bNumDescriptors - 1));
-+
- 	hid->quirks |= quirks;
- 
- 	return 0;
---- a/drivers/usb/gadget/function/f_hid.c
-+++ b/drivers/usb/gadget/function/f_hid.c
-@@ -114,8 +114,8 @@ static struct hid_descriptor hidg_desc =
- 	.bcdHID				= cpu_to_le16(0x0101),
- 	.bCountryCode			= 0x00,
- 	.bNumDescriptors		= 0x1,
--	/*.desc[0].bDescriptorType	= DYNAMIC */
--	/*.desc[0].wDescriptorLenght	= DYNAMIC */
-+	/*.rpt_desc.bDescriptorType	= DYNAMIC */
-+	/*.rpt_desc.wDescriptorLength	= DYNAMIC */
- };
- 
- /* Super-Speed Support */
-@@ -730,8 +730,8 @@ static int hidg_setup(struct usb_functio
- 			struct hid_descriptor hidg_desc_copy = hidg_desc;
- 
- 			VDBG(cdev, "USB_REQ_GET_DESCRIPTOR: HID\n");
--			hidg_desc_copy.desc[0].bDescriptorType = HID_DT_REPORT;
--			hidg_desc_copy.desc[0].wDescriptorLength =
-+			hidg_desc_copy.rpt_desc.bDescriptorType = HID_DT_REPORT;
-+			hidg_desc_copy.rpt_desc.wDescriptorLength =
- 				cpu_to_le16(hidg->report_desc_length);
- 
- 			length = min_t(unsigned short, length,
-@@ -972,8 +972,8 @@ static int hidg_bind(struct usb_configur
- 	 * We can use hidg_desc struct here but we should not relay
- 	 * that its content won't change after returning from this function.
- 	 */
--	hidg_desc.desc[0].bDescriptorType = HID_DT_REPORT;
--	hidg_desc.desc[0].wDescriptorLength =
-+	hidg_desc.rpt_desc.bDescriptorType = HID_DT_REPORT;
-+	hidg_desc.rpt_desc.wDescriptorLength =
- 		cpu_to_le16(hidg->report_desc_length);
- 
- 	hidg_hs_in_ep_desc.bEndpointAddress =
---- a/include/linux/hid.h
-+++ b/include/linux/hid.h
-@@ -672,8 +672,9 @@ struct hid_descriptor {
- 	__le16 bcdHID;
- 	__u8  bCountryCode;
- 	__u8  bNumDescriptors;
-+	struct hid_class_descriptor rpt_desc;
- 
--	struct hid_class_descriptor desc[1];
-+	struct hid_class_descriptor opt_descs[];
- } __attribute__ ((packed));
- 
- #define HID_DEVICE(b, g, ven, prod)					\
+ static void *lec_seq_next(struct seq_file *seq, void *v, loff_t *pos)
+-- 
+2.39.5
+
 
 
 
