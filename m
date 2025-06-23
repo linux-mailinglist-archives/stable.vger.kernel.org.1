@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9048AAE42AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76F3FAE433A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55EE91899FD0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 811B03BA685
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F307254844;
-	Mon, 23 Jun 2025 13:19:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 067A325178C;
+	Mon, 23 Jun 2025 13:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsL4Ef/8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sBT8cxy/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D14ED253924;
-	Mon, 23 Jun 2025 13:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B837B2367B0;
+	Mon, 23 Jun 2025 13:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684743; cv=none; b=M8vDI1faYFZvVT75BYZa8yiHALgNDnl+RB2fgjNaORPpW33KL4BC7SbPIlV3T1snIlNys+tbO87CSqjj+ChtKOxmuW/FfVBJSzvIATajpOJ/dSGiYoXxooGNY4Uvhhx0ohT9N07/jgTYScVGJaGRlD+ErjcWydJSejzC0Cy0rOM=
+	t=1750685031; cv=none; b=pK5/xp0UJMVtHoGicIJptb1ceJc+00dqkDjeoKQyo+dccKLg9RugSPllDwCL/1FBshs7X3u8XNzY/mRb7zFW8lINAbbcKiAPkWR7jXGH9339FPn6GiwmpPaXUiSAT1rGvhSujmHJFPGDQSF5Dyg3FeYZlpiXVPBv+IWoNNJJUvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684743; c=relaxed/simple;
-	bh=bbXdAdImmPT+Te8fye4PpdTBbR6TfFSjSznkhex9ySU=;
+	s=arc-20240116; t=1750685031; c=relaxed/simple;
+	bh=IWQRb9HfVos8uTXhh3cis8K0ja5QSvwEmklWIPai36I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o2ILvZXCOpQZj2JC+BCucC86k4J05KxRRttUHQymZTN2ra+7zOFmH8CUB6sPeBO/L6NPVEIUarTbJqjdH2pmj8vNtZK7ZiSFdMRrolGi9wHfKt5e4moR4hDsx+5EgYU8hnsQA4TlcUPAHqGVlUmBKI7AhgLbeuPTQ782JHPUkKI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsL4Ef/8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21091C4CEEA;
-	Mon, 23 Jun 2025 13:19:02 +0000 (UTC)
+	 MIME-Version; b=unmotbkDV2agTpTUiaaSe5/HnoUzslIKsD4Oq95T57A2IstllrmPC3k8yY1sE+VC6q40AFYf5yCfz1vhHMLQdtjrHQENajBJUCjfoWfRF5Y7gcaVd32oe56yHFPXZvUsjPmtKNbvIalUCMLmJgVDVnThXF2lExrgPGxEwSvnlkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sBT8cxy/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5C7C4CEEA;
+	Mon, 23 Jun 2025 13:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684743;
-	bh=bbXdAdImmPT+Te8fye4PpdTBbR6TfFSjSznkhex9ySU=;
+	s=korg; t=1750685031;
+	bh=IWQRb9HfVos8uTXhh3cis8K0ja5QSvwEmklWIPai36I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsL4Ef/8Mb6NhO0wWownKjd5ASXYbZOzTxHrrA7Ajq+F9XUwIQP0GQj1sPx3109SB
-	 uvt2SdTffIkYdUoRaD4cpdm2OYh2R7uhPw+1C47HgI2gfaxOqJnJ9w4db9pPCx2pg3
-	 n7+mHIaQpQ6XnPGr007JYeeHO2ce53O1NbyACxug=
+	b=sBT8cxy/6zx7Sru5xQuhC7Zb5EG4r30siZQBIAnP9iRqCQnaMCTuhdKgHR0jBHhgU
+	 NsrE8iC7gKoNLZ7G6pl+hn2PnrR+dQG+ADQ6hsy/WK0QMvTbYh7IRfpab46tH5aK8E
+	 GUIax6yDqRbBb2tbiqBZDVygHBv5Z1WNPzhGZzNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	Joshua Thompson <funaho@jurai.org>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/222] drm/vmwgfx: Add seqno waiter for sync_files
-Date: Mon, 23 Jun 2025 15:05:54 +0200
-Message-ID: <20250623130612.482312429@linuxfoundation.org>
+Subject: [PATCH 5.4 020/222] m68k: mac: Fix macintosh_config for Mac II
+Date: Mon, 23 Jun 2025 15:05:55 +0200
+Message-ID: <20250623130612.510589846@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,87 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
+[ Upstream commit 52ae3f5da7e5adbe3d1319573b55dac470abb83c ]
 
-Because sync_files are passive waiters they do not participate in
-the processing of fences like the traditional vmw_fence_wait IOCTL.
-If userspace exclusively uses sync_files for synchronization then
-nothing in the kernel actually processes fence updates as interrupts
-for fences are masked and ignored if the kernel does not indicate to the
-SVGA device that there are active waiters.
+When booted on my Mac II, the kernel prints this:
 
-This oversight results in a bug where the entire GUI can freeze waiting
-on a sync_file that will never be signalled as we've masked the interrupts
-to signal its completion. This bug is incredibly racy as any process which
-interacts with the fencing code via the 3D stack can process the stuck
-fences on behalf of the stuck process causing it to run again. Even a
-simple app like eglinfo is enough to resume the stuck process. Usually
-this bug is seen at a login screen like GDM because there are no other
-3D apps running.
+    Detected Macintosh model: 6
+    Apple Macintosh Unknown
 
-By adding a seqno waiter we re-enable interrupt based processing of the
-dma_fences associated with the sync_file which is signalled as part of a
-dma_fence_callback.
+The catch-all entry ("Unknown") is mac_data_table[0] which is only needed
+in the unlikely event that the bootinfo model ID can't be matched.
+When model ID is 6, the search should begin and end at mac_data_table[1].
+Fix the off-by-one error that causes this problem.
 
-This has likely been broken since it was initially added to the kernel in
-2017 but has gone unnoticed until mutter recently started using sync_files
-heavily over the course of 2024 as part of their explicit sync support.
-
-Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
+Cc: Joshua Thompson <funaho@jurai.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/d0f30a551064ca4810b1c48d5a90954be80634a9.1745453246.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ arch/m68k/mac/config.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 8db3b3ddbb644..0d29fe6f60358 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -3621,6 +3621,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
- 	return 0;
- }
- 
-+/*
-+ * DMA fence callback to remove a seqno_waiter
-+ */
-+struct seqno_waiter_rm_context {
-+	struct dma_fence_cb base;
-+	struct vmw_private *dev_priv;
-+};
-+
-+static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
-+{
-+	struct seqno_waiter_rm_context *ctx =
-+		container_of(cb, struct seqno_waiter_rm_context, base);
-+
-+	vmw_seqno_waiter_remove(ctx->dev_priv);
-+	kfree(ctx);
-+}
-+
- int vmw_execbuf_process(struct drm_file *file_priv,
- 			struct vmw_private *dev_priv,
- 			void __user *user_commands, void *kernel_commands,
-@@ -3814,6 +3831,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
- 		} else {
- 			/* Link the fence with the FD created earlier */
- 			fd_install(out_fence_fd, sync_file->file);
-+			struct seqno_waiter_rm_context *ctx =
-+				kmalloc(sizeof(*ctx), GFP_KERNEL);
-+			ctx->dev_priv = dev_priv;
-+			vmw_seqno_waiter_add(dev_priv);
-+			if (dma_fence_add_callback(&fence->base, &ctx->base,
-+						   seqno_waiter_rm_cb) < 0) {
-+				vmw_seqno_waiter_remove(dev_priv);
-+				kfree(ctx);
-+			}
- 		}
+diff --git a/arch/m68k/mac/config.c b/arch/m68k/mac/config.c
+index d0126ab01360b..41041c4422331 100644
+--- a/arch/m68k/mac/config.c
++++ b/arch/m68k/mac/config.c
+@@ -804,7 +804,7 @@ static void __init mac_identify(void)
  	}
  
+ 	macintosh_config = mac_data_table;
+-	for (m = macintosh_config; m->ident != -1; m++) {
++	for (m = &mac_data_table[1]; m->ident != -1; m++) {
+ 		if (m->ident == model) {
+ 			macintosh_config = m;
+ 			break;
 -- 
 2.39.5
 
