@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44812AE573E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1215EAE5624
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ACF054A2A24
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E1A87B22D5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEDD223DCC;
-	Mon, 23 Jun 2025 22:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1301F7580;
+	Mon, 23 Jun 2025 22:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AtgRKPn7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1JApUKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10352192EC;
-	Mon, 23 Jun 2025 22:25:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47EEA15ADB4;
+	Mon, 23 Jun 2025 22:17:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717507; cv=none; b=Ka/ewfDmRppzOlgM7k3F83rXBrmdzcjWa6s1YMO+wjWW7GnywFTHJW3yHaabV9iEDi/33O7xxau1CbA9xHeb0AlthDp3uFE8uwEk/ANte0S3sCVwG+8quE3BsCfgw91PZL3qeeXcrSw7t37kvq/xg+jA1D+uTCOaTINPcYg5/eM=
+	t=1750717065; cv=none; b=EG/iZH+YCrZ9R5RvDhEC7DSkH0FnqC6xRCdGm5ud2tZf8mhqQSIhHdfBjFkcJjhqpD7vmNt2U9/4vcpst168qeb6XdSifibtJFdaleYX5N2ymzNkraESf0u6QciNKQKs2JB2ZUnY54xq8rCUOYlSaKFOvX0FZS+EQ8pgV6VKmgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717507; c=relaxed/simple;
-	bh=trchWf5yb7xeXi1FMsV8k0opzSOVlFP63+7o20dmV/s=;
+	s=arc-20240116; t=1750717065; c=relaxed/simple;
+	bh=ikyWWYLsuEK1B0GlV7/KvuHgXFJAmtDjhkgCBlmsCz0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QpUumeMMqHHrYIaSV2MY1DRgccujiMrSlePftAaf7Md5pU/wvTzr8bff8E3kWfN85GkDH0VsQpqGNYQBsP4oFzUwEyEDy1VctOvTlblcLyZJ0FRj7Ixa4pqSxvxbnfbIbtf+IdIoiLeATbOmuehDB4IwxbPbvPq1sEYTIsa4XkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AtgRKPn7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEA8C4CEEA;
-	Mon, 23 Jun 2025 22:25:06 +0000 (UTC)
+	 MIME-Version; b=nfrzDjkmWCn0Js3LBhJW+9ELtMONFxVV15HvM9jL3TQNnpFjKalRaJfntrrZV8EWIgeKiCgASd96aTsCbhSCyVgSUMuOTidu+kZ899+auzE3DFWafYAHLjCZ0/ornlmfluWMRkyTSL1CTa3g9O/M/kWmTIWPOXOwP6Jmbr9bPcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1JApUKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18BAC4CEEA;
+	Mon, 23 Jun 2025 22:17:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717506;
-	bh=trchWf5yb7xeXi1FMsV8k0opzSOVlFP63+7o20dmV/s=;
+	s=korg; t=1750717065;
+	bh=ikyWWYLsuEK1B0GlV7/KvuHgXFJAmtDjhkgCBlmsCz0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AtgRKPn71+RL4ts/20LNRtXcSNnhF940xiWmXljobRevLGeUnffhL2HMvMvsTsiSO
-	 bMjHtOjoELR93b7tUYtsXZy5lRV1540riSQB4nwmXCNsR8OhLmlkWDm3qn+UttdmwQ
-	 fYSJ2GMjKrexBk9nj6KIb5YVfxzixm4PZXW3aaQQ=
+	b=Y1JApUKT7Pcsibnyj3AyAfrUTpok6oaFb4iiRUbgh1hYTEjyPstD2naRJn3attrzC
+	 ytE9U9/a4Q0GE+/qW5Y9q6ohneHhZex9ppOQvWQ06XP7HJhNhCDKI6IkW8ZKVhBj2Z
+	 c1wSC/2nr/sfmOJNNdNngoifScpZySqikhRQicok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baisheng Gao <baisheng.gao@unisoc.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Tudor Ambarus <tudor.ambarus@linaro.org>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 403/414] perf: Fix sample vs do_exit()
+Subject: [PATCH 6.15 582/592] mtd: spinand: Use more specific naming for the (single) read from cache ops
 Date: Mon, 23 Jun 2025 15:09:00 +0200
-Message-ID: <20250623130652.015423381@linuxfoundation.org>
+Message-ID: <20250623130714.279532291@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +62,319 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-[ Upstream commit 4f6fc782128355931527cefe3eb45338abd8ab39 ]
+[ Upstream commit ea2087d4e66d0b927918cc9048576aca6a0446ad ]
 
-Baisheng Gao reported an ARM64 crash, which Mark decoded as being a
-synchronous external abort -- most likely due to trying to access
-MMIO in bad ways.
+SPI operations have been initially described through macros implicitly
+implying the use of a single SPI SDR bus. Macros for supporting dual and
+quad I/O transfers have been added on top, generally inspired by vendor
+naming, followed by DTR operations. Soon we might see octal
+and even octal DTR operations as well (including the opcode byte).
 
-The crash further shows perf trying to do a user stack sample while in
-exit_mmap()'s tlb_finish_mmu() -- i.e. while tearing down the address
-space it is trying to access.
+Let's clarify what the macro really mean by describing the expected bus
+topology in the (single) read from cache macro names.
 
-It turns out that we stop perf after we tear down the userspace mm; a
-receipie for disaster, since perf likes to access userspace for
-various reasons.
-
-Flip this order by moving up where we stop perf in do_exit().
-
-Additionally, harden PERF_SAMPLE_CALLCHAIN and PERF_SAMPLE_STACK_USER
-to abort when the current task does not have an mm (exit_mm() makes
-sure to set current->mm = NULL; before commencing with the actual
-teardown). Such that CPU wide events don't trip on this same problem.
-
-Fixes: c5ebcedb566e ("perf: Add ability to attach user stack dump to sample")
-Reported-by: Baisheng Gao <baisheng.gao@unisoc.com>
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250605110815.GQ39944@noisy.programming.kicks-ass.net
+Acked-by: Tudor Ambarus <tudor.ambarus@linaro.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Stable-dep-of: dba90f5a79c1 ("mtd: spinand: winbond: Prevent unsupported frequencies on dual/quad I/O variants")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c |  7 +++++++
- kernel/exit.c        | 17 +++++++++--------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/mtd/nand/spi/alliancememory.c |  4 ++--
+ drivers/mtd/nand/spi/ato.c            |  4 ++--
+ drivers/mtd/nand/spi/esmt.c           |  4 ++--
+ drivers/mtd/nand/spi/foresee.c        |  4 ++--
+ drivers/mtd/nand/spi/gigadevice.c     | 16 ++++++++--------
+ drivers/mtd/nand/spi/macronix.c       |  4 ++--
+ drivers/mtd/nand/spi/micron.c         |  8 ++++----
+ drivers/mtd/nand/spi/paragon.c        |  4 ++--
+ drivers/mtd/nand/spi/skyhigh.c        |  4 ++--
+ drivers/mtd/nand/spi/toshiba.c        |  4 ++--
+ drivers/mtd/nand/spi/winbond.c        | 10 +++++-----
+ drivers/mtd/nand/spi/xtx.c            |  4 ++--
+ include/linux/mtd/spinand.h           | 12 ++++++------
+ 13 files changed, 41 insertions(+), 41 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 9ce82904f761d..ed3bc2e390511 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -7097,6 +7097,10 @@ perf_sample_ustack_size(u16 stack_size, u16 header_size,
- 	if (!regs)
- 		return 0;
+diff --git a/drivers/mtd/nand/spi/alliancememory.c b/drivers/mtd/nand/spi/alliancememory.c
+index 6046c73f8424e..723c740308d26 100644
+--- a/drivers/mtd/nand/spi/alliancememory.c
++++ b/drivers/mtd/nand/spi/alliancememory.c
+@@ -21,8 +21,8 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
  
-+	/* No mm, no stack, no dump. */
-+	if (!current->mm)
-+		return 0;
-+
- 	/*
- 	 * Check if we fit in with the requested stack size into the:
- 	 * - TASK_SIZE
-@@ -7808,6 +7812,9 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
- 	const u32 max_stack = event->attr.sample_max_stack;
- 	struct perf_callchain_entry *callchain;
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 			   SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/ato.c b/drivers/mtd/nand/spi/ato.c
+index bb5298911137f..9026a14aca07c 100644
+--- a/drivers/mtd/nand/spi/ato.c
++++ b/drivers/mtd/nand/spi/ato.c
+@@ -15,8 +15,8 @@
  
-+	if (!current->mm)
-+		user = false;
-+
- 	if (!kernel && !user)
- 		return &__empty_callchain;
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
  
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 56b8bd9487b4b..d465b36bcc869 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -923,6 +923,15 @@ void __noreturn do_exit(long code)
- 	tsk->exit_code = code;
- 	taskstats_exit(tsk, group_dead);
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/esmt.c b/drivers/mtd/nand/spi/esmt.c
+index a164d821464d2..1cba83651afb7 100644
+--- a/drivers/mtd/nand/spi/esmt.c
++++ b/drivers/mtd/nand/spi/esmt.c
+@@ -20,8 +20,8 @@
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 			   SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 			   SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-			   SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-			   SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++			   SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++			   SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
  
-+	/*
-+	 * Since sampling can touch ->mm, make sure to stop everything before we
-+	 * tear it down.
-+	 *
-+	 * Also flushes inherited counters to the parent - before the parent
-+	 * gets woken up by child-exit notifications.
-+	 */
-+	perf_event_exit_task(tsk);
-+
- 	exit_mm();
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 			   SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/foresee.c b/drivers/mtd/nand/spi/foresee.c
+index ecd5f6bffa334..8a9725ea29bac 100644
+--- a/drivers/mtd/nand/spi/foresee.c
++++ b/drivers/mtd/nand/spi/foresee.c
+@@ -14,8 +14,8 @@
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
  
- 	if (group_dead)
-@@ -939,14 +948,6 @@ void __noreturn do_exit(long code)
- 	exit_task_work(tsk);
- 	exit_thread(tsk);
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/gigadevice.c b/drivers/mtd/nand/spi/gigadevice.c
+index d620bb02a20a0..cb03472682492 100644
+--- a/drivers/mtd/nand/spi/gigadevice.c
++++ b/drivers/mtd/nand/spi/gigadevice.c
+@@ -28,32 +28,32 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
  
--	/*
--	 * Flush inherited counters to the parent - before the parent
--	 * gets woken up by child-exit notifications.
--	 *
--	 * because of cgroup mode, must be called before cgroup_exit()
--	 */
--	perf_event_exit_task(tsk);
--
- 	sched_autogroup_exit_task(tsk);
- 	cgroup_exit(tsk);
+ static SPINAND_OP_VARIANTS(read_cache_variants_f,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP_3A(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP_3A(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP_3A(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP_3A(0, 0, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_3A_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_3A_1S_1S_1S_OP(0, 0, NULL, 0));
  
+ static SPINAND_OP_VARIANTS(read_cache_variants_1gq5,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(read_cache_variants_2gq5,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 4, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 2, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/macronix.c b/drivers/mtd/nand/spi/macronix.c
+index 1ef08ad850a2f..b885e62a57535 100644
+--- a/drivers/mtd/nand/spi/macronix.c
++++ b/drivers/mtd/nand/spi/macronix.c
+@@ -30,8 +30,8 @@ struct macronix_priv {
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/micron.c b/drivers/mtd/nand/spi/micron.c
+index 691f8a2e0791d..daa396a7c39a2 100644
+--- a/drivers/mtd/nand/spi/micron.c
++++ b/drivers/mtd/nand/spi/micron.c
+@@ -39,8 +39,8 @@ static SPINAND_OP_VARIANTS(quadio_read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(x4_write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+@@ -54,8 +54,8 @@ static SPINAND_OP_VARIANTS(x4_update_cache_variants,
+ static SPINAND_OP_VARIANTS(x4_read_cache_variants,
+ 			   SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 			   SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-			   SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-			   SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++			   SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++			   SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(x1_write_cache_variants,
+ 			   SPINAND_PROG_LOAD(true, 0, NULL, 0));
+diff --git a/drivers/mtd/nand/spi/paragon.c b/drivers/mtd/nand/spi/paragon.c
+index 6e7cc6995380c..ae3527d6d5fa3 100644
+--- a/drivers/mtd/nand/spi/paragon.c
++++ b/drivers/mtd/nand/spi/paragon.c
+@@ -26,8 +26,8 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/skyhigh.c b/drivers/mtd/nand/spi/skyhigh.c
+index 961df0d74984a..ffbedb8d92f65 100644
+--- a/drivers/mtd/nand/spi/skyhigh.c
++++ b/drivers/mtd/nand/spi/skyhigh.c
+@@ -21,8 +21,8 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 2, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/toshiba.c b/drivers/mtd/nand/spi/toshiba.c
+index 2e2106b2705f0..398e391bf2d7d 100644
+--- a/drivers/mtd/nand/spi/toshiba.c
++++ b/drivers/mtd/nand/spi/toshiba.c
+@@ -17,8 +17,8 @@
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_x4_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/winbond.c b/drivers/mtd/nand/spi/winbond.c
+index 8394a1b1fb0c1..1630c14f8ecd5 100644
+--- a/drivers/mtd/nand/spi/winbond.c
++++ b/drivers/mtd/nand/spi/winbond.c
+@@ -32,17 +32,17 @@ static SPINAND_OP_VARIANTS(read_cache_dtr_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_DTR_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_DTR_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0, 54 * HZ_PER_MHZ));
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1D_1D_OP(0, 2, NULL, 0, 80 * HZ_PER_MHZ),
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0, 54 * HZ_PER_MHZ));
+ 
+ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_QUADIO_OP(0, 2, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/drivers/mtd/nand/spi/xtx.c b/drivers/mtd/nand/spi/xtx.c
+index 3f539ca0de861..a0003f52ae8f5 100644
+--- a/drivers/mtd/nand/spi/xtx.c
++++ b/drivers/mtd/nand/spi/xtx.c
+@@ -27,8 +27,8 @@ static SPINAND_OP_VARIANTS(read_cache_variants,
+ 		SPINAND_PAGE_READ_FROM_CACHE_X4_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_DUALIO_OP(0, 1, NULL, 0),
+ 		SPINAND_PAGE_READ_FROM_CACHE_X2_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(0, 1, NULL, 0),
+-		SPINAND_PAGE_READ_FROM_CACHE_OP(0, 1, NULL, 0));
++		SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(0, 1, NULL, 0),
++		SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(0, 1, NULL, 0));
+ 
+ static SPINAND_OP_VARIANTS(write_cache_variants,
+ 		SPINAND_PROG_LOAD_X4(true, 0, NULL, 0),
+diff --git a/include/linux/mtd/spinand.h b/include/linux/mtd/spinand.h
+index 311f145eb4e84..dd30a7beb9c63 100644
+--- a/include/linux/mtd/spinand.h
++++ b/include/linux/mtd/spinand.h
+@@ -62,32 +62,32 @@
+ 		   SPI_MEM_OP_NO_DUMMY,					\
+ 		   SPI_MEM_OP_NO_DATA)
+ 
+-#define SPINAND_PAGE_READ_FROM_CACHE_OP(addr, ndummy, buf, len, ...) \
++#define SPINAND_PAGE_READ_FROM_CACHE_1S_1S_1S_OP(addr, ndummy, buf, len, ...) \
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(0x03, 1),				\
+ 		   SPI_MEM_OP_ADDR(2, addr, 1),				\
+ 		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
+ 		   SPI_MEM_OP_DATA_IN(len, buf, 1),			\
+ 		   SPI_MEM_OP_MAX_FREQ(__VA_ARGS__ + 0))
+ 
+-#define SPINAND_PAGE_READ_FROM_CACHE_FAST_OP(addr, ndummy, buf, len) \
+-	SPI_MEM_OP(SPI_MEM_OP_CMD(0x0b, 1),			\
++#define SPINAND_PAGE_READ_FROM_CACHE_FAST_1S_1S_1S_OP(addr, ndummy, buf, len) \
++	SPI_MEM_OP(SPI_MEM_OP_CMD(0x0b, 1),				\
+ 			 SPI_MEM_OP_ADDR(2, addr, 1),			\
+ 			 SPI_MEM_OP_DUMMY(ndummy, 1),			\
+ 			 SPI_MEM_OP_DATA_IN(len, buf, 1))
+ 
+-#define SPINAND_PAGE_READ_FROM_CACHE_OP_3A(addr, ndummy, buf, len) \
++#define SPINAND_PAGE_READ_FROM_CACHE_3A_1S_1S_1S_OP(addr, ndummy, buf, len) \
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(0x03, 1),				\
+ 		   SPI_MEM_OP_ADDR(3, addr, 1),				\
+ 		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
+ 		   SPI_MEM_OP_DATA_IN(len, buf, 1))
+ 
+-#define SPINAND_PAGE_READ_FROM_CACHE_FAST_OP_3A(addr, ndummy, buf, len) \
++#define SPINAND_PAGE_READ_FROM_CACHE_FAST_3A_1S_1S_1S_OP(addr, ndummy, buf, len) \
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(0x0b, 1),				\
+ 		   SPI_MEM_OP_ADDR(3, addr, 1),				\
+ 		   SPI_MEM_OP_DUMMY(ndummy, 1),				\
+ 		   SPI_MEM_OP_DATA_IN(len, buf, 1))
+ 
+-#define SPINAND_PAGE_READ_FROM_CACHE_DTR_OP(addr, ndummy, buf, len, freq) \
++#define SPINAND_PAGE_READ_FROM_CACHE_1S_1D_1D_OP(addr, ndummy, buf, len, freq) \
+ 	SPI_MEM_OP(SPI_MEM_OP_CMD(0x0d, 1),				\
+ 		   SPI_MEM_DTR_OP_ADDR(2, addr, 1),			\
+ 		   SPI_MEM_DTR_OP_DUMMY(ndummy, 1),			\
 -- 
 2.39.5
 
