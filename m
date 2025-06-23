@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157609-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EAD9AE54CC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67612AE53E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 588D54A031C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 968891B67C11
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABFB9223DD0;
-	Mon, 23 Jun 2025 22:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E13220686;
+	Mon, 23 Jun 2025 21:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0yX86+L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmC/16qr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69C23218580;
-	Mon, 23 Jun 2025 22:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569DC3FB1B;
+	Mon, 23 Jun 2025 21:56:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716287; cv=none; b=rb50jYPE607fFcRvk1shS63i/CoF8QA33h3KPXbdQhtRuuwfXk66Lwt6C4wwYY2HpNbRPnawuZM2IAuceTNbKV6iWJQKYZ1YCrr65MGmaFJAmPQPfy5QauwBa+lwUiiMGE6J5f/83xVCwWAu6jEIV5zO/ha6omA51IgtVcihVeA=
+	t=1750715817; cv=none; b=DSaBDOVMkjS4rbECcKyVw3KG/xTyvten1hJ5HdJ7arX4aQ4pqJVkvBJyf6UwMV0QMTWgtFh/MG3iLT43R15MeTDpT0sPSGEHkA/SBGnlETi5V8lqnpvELy0LsZDVuN71FE9cc9hxwyAtTmTdL7m5aU2EgFmh+sBByuBTz1wIfxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716287; c=relaxed/simple;
-	bh=HWzGtFxdmTOiYY3Ha7nAdLTpEwj5JUXd1KHbcuwOdOc=;
+	s=arc-20240116; t=1750715817; c=relaxed/simple;
+	bh=GngQU8SYndPBYKr0bqyZ+rDvaDIzX6EKwDMt8tl0OpI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UNJFS6isSTm/Vd10u0mgC51gIoYnV7VRmciTcU/Y2cz3GpPyiDTtj0co0O4Fwij9SkkGDqAsTT0xw12H64p4WhPixiBnluLDF0ejLEk5awr/lScBc73Q1LRuI/DEemdAn3RQI22X+JWX8F2aUJ2N19DMaOMl2izJHumAXrEnQN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0yX86+L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61F6C4CEEA;
-	Mon, 23 Jun 2025 22:04:46 +0000 (UTC)
+	 MIME-Version; b=FHJmI8niWr9E23xMqgiDxjFU+5ALcWWvgadHxPKa7fxbKKfl+wZxzKpqpa1iOGBgCVail+ue2PeUUH1r4zsYMffTyJIz7j34FWT9vdkT4iANPqdDvBs/XG9ADuvlLExOGIMRAkmIDehcJzJ0AxW0YqQL8Wa85uWuJRvWN9cKAPc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmC/16qr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB38EC4CEEA;
+	Mon, 23 Jun 2025 21:56:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716287;
-	bh=HWzGtFxdmTOiYY3Ha7nAdLTpEwj5JUXd1KHbcuwOdOc=;
+	s=korg; t=1750715817;
+	bh=GngQU8SYndPBYKr0bqyZ+rDvaDIzX6EKwDMt8tl0OpI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r0yX86+LsjISeKMu23h9mkg4qlNWkgTGpJ/XkvdyA3vrJTtJWm9X0ItkYFX2NLJ/t
-	 jogfQJdmQ13t9i790/BTilRDwWtrf+pBy1vgpq9ox26YQOE05AbLQ66OrrPEF9uShA
-	 HvNnTIKzJp/wbk18hatmv7cMJpprmARh7S3CXTHA=
+	b=OmC/16qrjPhxkPKZCa/JzAwq5uSbSE75hDU7rHlkxShkInMhubAkawhIVWmghmUiK
+	 2bI+/+RoNxmAnDg70HeBWDSyTaZNEBez+z3kd25iiHGiWrwD7RfBl7b4d6onS5yf2W
+	 WoR2hA5iY0xvM4vH/zUu9VEr25fHK48omOLZDZ1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"James A. MacInnes" <james.a.macinnes@gmail.com>,
+	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 319/411] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get_direction()
+Subject: [PATCH 6.15 505/592] drm/msm/dp: Disable wide bus support for SDM845
 Date: Mon, 23 Jun 2025 15:07:43 +0200
-Message-ID: <20250623130641.665513567@linuxfoundation.org>
+Message-ID: <20250623130712.446993054@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +64,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: James A. MacInnes <james.a.macinnes@gmail.com>
 
-[ Upstream commit 6481c0a83367b0672951ccc876fbae7ee37b594b ]
+[ Upstream commit 83c4c67076c209787515e06fffd41dd0bdab09b9 ]
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+When widebus was enabled for DisplayPort in commit c7c412202623
+("drm/msm/dp: enable widebus on all relevant chipsets") it was clarified
+that it is only supported on DPU 5.0.0 onwards which includes SC7180 on
+DPU revision 6.2.  However, this patch missed that the description
+structure for SC7180 is also reused for SDM845 (because of identical
+io_start address) which is only DPU 4.0.0, leading to a wrongly enbled
+widebus feature and corruption on that platform.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-6-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Create a separate msm_dp_desc_sdm845 structure for this SoC compatible,
+with the wide_bus_supported flag turned off.
+
+Fixes: c7c412202623 ("drm/msm/dp: enable widebus on all relevant chipsets")
+Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
+[DB: reworded commit text following Marijn's suggestion]
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/636944/
+Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-1-4954e51458f4@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dp/dp_display.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index e95d30ef5711b..3a9a3a1d5d4be 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -396,10 +396,13 @@ static int armada_37xx_gpio_get_direction(struct gpio_chip *chip,
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = OUTPUT_EN;
- 	unsigned int val, mask;
-+	int ret;
+diff --git a/drivers/gpu/drm/msm/dp/dp_display.c b/drivers/gpu/drm/msm/dp/dp_display.c
+index ab8c1f19dcb42..c7503a7a6123f 100644
+--- a/drivers/gpu/drm/msm/dp/dp_display.c
++++ b/drivers/gpu/drm/msm/dp/dp_display.c
+@@ -127,6 +127,11 @@ static const struct msm_dp_desc msm_dp_desc_sa8775p[] = {
+ 	{}
+ };
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
- 
- 	if (val & mask)
- 		return GPIO_LINE_DIRECTION_OUT;
++static const struct msm_dp_desc msm_dp_desc_sdm845[] = {
++	{ .io_start = 0x0ae90000, .id = MSM_DP_CONTROLLER_0 },
++	{}
++};
++
+ static const struct msm_dp_desc msm_dp_desc_sc7180[] = {
+ 	{ .io_start = 0x0ae90000, .id = MSM_DP_CONTROLLER_0, .wide_bus_supported = true },
+ 	{}
+@@ -179,7 +184,7 @@ static const struct of_device_id msm_dp_dt_match[] = {
+ 	{ .compatible = "qcom,sc8180x-edp", .data = &msm_dp_desc_sc8180x },
+ 	{ .compatible = "qcom,sc8280xp-dp", .data = &msm_dp_desc_sc8280xp },
+ 	{ .compatible = "qcom,sc8280xp-edp", .data = &msm_dp_desc_sc8280xp },
+-	{ .compatible = "qcom,sdm845-dp", .data = &msm_dp_desc_sc7180 },
++	{ .compatible = "qcom,sdm845-dp", .data = &msm_dp_desc_sdm845 },
+ 	{ .compatible = "qcom,sm8350-dp", .data = &msm_dp_desc_sc7180 },
+ 	{ .compatible = "qcom,sm8650-dp", .data = &msm_dp_desc_sm8650 },
+ 	{ .compatible = "qcom,x1e80100-dp", .data = &msm_dp_desc_x1e80100 },
 -- 
 2.39.5
 
