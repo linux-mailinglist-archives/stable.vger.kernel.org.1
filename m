@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157564-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67665AE5144
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44983AE54A5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D661B63731
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F031166B79
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0D81C5D46;
-	Mon, 23 Jun 2025 21:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9C621FF2B;
+	Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ru372Qel"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="im/+BoHv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EDCC2E0;
-	Mon, 23 Jun 2025 21:32:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA97821D3F6;
+	Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714343; cv=none; b=Yq06wNPj8mjRkeGob/bNrbdL91JyjNHmHxap1w9alX2Sv5nHwm/wXL0AgMjsEivA2ArD1m1/XmGG1pC1/fcYP+BJ2LOAXkK1Ot5Cgg76OAMYPw2WEyJ8tI5YcCzzcoi0g/kbbLHDXVO/c1g0A7l7O2dfYbVmeXboFchfcvvzezo=
+	t=1750716176; cv=none; b=Hp/Qf6a8A6hyPgcEQ6ECnB2T4w4YiDQCxIcLcghEMj7jhtjClpkL6ML6+4WEFgw/SIaToc3194IuNpw9Re7o6n4l00OLHnxUtH2ElZxNYsmRMsBDaKzRDuohOR0TCX6Oq+HfyZKB8Z2kFyzpSioKRPpb0ENZwnqsf2/RircJE+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714343; c=relaxed/simple;
-	bh=tlF2eB5lqLWZJUUU33fJXY2J4b2ivL2axKfSXt+JMv0=;
+	s=arc-20240116; t=1750716176; c=relaxed/simple;
+	bh=dDANdip0xdvv9GP+Zhack2KLo0P2DQmhRWCLXNmyN3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9VlQi6RVKiyw0nO1O/Wzj23mTe+WG3Qcf9q7yBQncZhjiyEaoojqKlw5AlGi+qhvtKRsLmBXC9w1tttBGFdUfKk09y3VwjbvkoMltFKIXsBMafXz3Cs5BimZleoGGHPBUDJBC5/134UmAEaUx69fvGHc/EZHKFMlE1Cnz6MjTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ru372Qel; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B7BC4CEEA;
-	Mon, 23 Jun 2025 21:32:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j0I1wGtNW4YKYXIEAA/GacukVV2GlDz9I0ZMCVMoaNl8fla0NLv9z+MzSWqViRgliuKqcRM1Vfrq0hLVg5RA1hXpDFuV/qbyfDnYbQThL8IvTjw8hAEhv+o86iZHmEdziMTuzqL3F7Cn4pnXs13AlO21WYT9EsWjsrmyecx0NvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=im/+BoHv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D51C4CEEA;
+	Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714343;
-	bh=tlF2eB5lqLWZJUUU33fJXY2J4b2ivL2axKfSXt+JMv0=;
+	s=korg; t=1750716176;
+	bh=dDANdip0xdvv9GP+Zhack2KLo0P2DQmhRWCLXNmyN3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ru372QelzUgVaqlK+oBGlv3y8YVOe4etcZgbXwJd3Zh7Ggxdxx40nC8OZ05V6t0ja
-	 66oRmyBabw6m+8K2JqGiHTwIhbwgShrWAQbAdY7Y23rssjTzulQIn2Cej1vFgXe1j5
-	 ODb7IRZOoXCAh123Bm1Xw2eCkYbGwglxothuXVbQ=
+	b=im/+BoHvTWSJrl4SiJr8/PHzU4XjiarQuTxBy+zUKdpVhFUt0r0QiD64SzZ7b2Qft
+	 YFQUzpjsCzYG0YRgQLVRFVw9OlRRjE8oXhOBUvVlA798g+0EQXvtihdfSQr/29q6F7
+	 VBgGOIounHE6XVlCRD+AYP534EQkL111ridOupKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrick Daly <quic_pdaly@quicinc.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	=?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 131/290] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
+Subject: [PATCH 6.12 255/414] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
 Date: Mon, 23 Jun 2025 15:06:32 +0200
-Message-ID: <20250623130630.860443420@linuxfoundation.org>
+Message-ID: <20250623130648.418172234@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
 
-[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
+[ Upstream commit 2b801487ac3be7bec561ae62d1a6c4d6f5283f8c ]
 
-pm_runtime_put_autosuspend() schedules a hrtimer to expire
-at "dev->power.timer_expires". If the hrtimer's callback,
-pm_suspend_timer_fn(), observes that the current time equals
-"dev->power.timer_expires", it unexpectedly bails out instead of
-proceeding with runtime suspend.
+The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
 
-pm_suspend_timer_fn():
-
- if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
- 	dev->power.timer_expires = 0;
- 	rpm_suspend(..)
- }
-
-Additionally, as ->timer_expires is not cleared, all the future auto
-suspend requests will not schedule hrtimer to perform auto suspend.
-
-rpm_suspend():
-
- if ((rpmflags & RPM_AUTO) &&...) {
- 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
- 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
- 	}
- }
-
-Fix this by as well checking if current time reaches the set expiration.
-
-Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
-Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+Link: https://patch.msgid.link/20240313180227.2224780-1-victor.gonzalo@anddroptable.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 0af26cf8c0059..0d43bf5b6cecb 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1001,7 +1001,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
- 	 * If 'expires' is after the current time, we've been called
- 	 * too early.
- 	 */
--	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
-+	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
- 		dev->power.timer_expires = 0;
- 		rpm_suspend(dev, dev->power.timer_autosuspends ?
- 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
+diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+index 2e2fcb3807efb..10d647fbc971e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
++++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
+@@ -44,6 +44,8 @@
+ 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
+ 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
++#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
++	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
+ #define IWL_CC_A_MODULE_FIRMWARE(api)			\
+ 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
+ 
+@@ -423,6 +425,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
+ MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
++MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
+ MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
 -- 
 2.39.5
 
