@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D580AE43F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E4CFAE4259
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D3DC17EA3A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 584501891E7C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD24F2561C5;
-	Mon, 23 Jun 2025 13:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A723624BBE4;
+	Mon, 23 Jun 2025 13:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aZAsTfEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1rUSD/X8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACD12561A8;
-	Mon, 23 Jun 2025 13:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65B5422FF35;
+	Mon, 23 Jun 2025 13:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685443; cv=none; b=bRibqTEQR/SRCFkkVZZMxEkMnCzzGEYoBkk9YPMObxJBxDr1TcmLRNegUd5a+M3ZzD6T4MFOryPG3ASPLjwkiqoufQqxD1dtKdBIJwn6fIOtYzR2nNjH+gqzT9ETS7dnOct5EcFvAPcXoRNLbCxkjlL8tsTcZtFEtNCdc+zm334=
+	t=1750684619; cv=none; b=CmjJ9PlLEFjPdpTDz/yMWDCY1BQWruwzSZoh9rBVBSRsKthQwzekMC2gPBZP4z638lN7a+Vk8uPHysSx5/2qGpoQHgrGLJO8WRpxi6pFgC7NgLe7lptvFsV3g4/veEwtVqcIIEWyMFgZ14Zo0CltDmnLDpNaAh4Wdgnh1nHpTc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685443; c=relaxed/simple;
-	bh=8/v1/soUdKqH7ew+TVHQHvIDXbY8oOEpUxv8qRA7Eh4=;
+	s=arc-20240116; t=1750684619; c=relaxed/simple;
+	bh=DnrPAZA7rOmmwBAijl3QvTQ7VRFrDqihiokSMyAFGlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V67pzmSjqciUOaaL61ErXT1vl8YtB2pfJSy9iZLbxtkeRDfp8zh1LIj2+Whj8TH/upyvvV2CxFvCzcxzc74j5d0P9VV6JMsUa1Q2XtcN60HNNND+z5++jL8bebDP3dcuTaw2WxMPYPlEwe9aYPCSh0RCDy9lHccO7tsemBIgnJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aZAsTfEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17251C4CEEA;
-	Mon, 23 Jun 2025 13:30:42 +0000 (UTC)
+	 MIME-Version; b=HdzzDCwHQ7Yipy2WnluJAXk0dioCV7pOxoOYdmj17gWo4lj1BCWijCv2X5vbLvIWZb/qCSo8JIy7mDKVQqj4HWAtJLpVi8RtXdQv1timHXHkCQTJRhRfoC1rJzjxusLEhqh2FWzDFQuv8hLjU8osIfmXRGOTwdNive9xF0ep5+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1rUSD/X8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB3F9C4CEEA;
+	Mon, 23 Jun 2025 13:16:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685443;
-	bh=8/v1/soUdKqH7ew+TVHQHvIDXbY8oOEpUxv8qRA7Eh4=;
+	s=korg; t=1750684619;
+	bh=DnrPAZA7rOmmwBAijl3QvTQ7VRFrDqihiokSMyAFGlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aZAsTfEoRXoek55GwHBPR+ik4bGmUoN2ERjd4/Jb6K76j51952gVXLfFHsL9ZS+ty
-	 ImhX0RZVxD4UjXFJcuaRtbbkpAvFyW2lJ7fhraZECTx+9yYh2+PuDEkj3JyA58lMY5
-	 o8luopqPivLbgvLpjjsF6ysAT2yhgxR8D+qwtyw0=
+	b=1rUSD/X8wWi1tNcJdZCE66x75DOcN+deFDR++KNMfWlbXSIAt+ytkr6lWXIok4iAa
+	 c/bt0+PvgSuHf3QyYDHjXC1d0cazOmd9cI/70boLATW4XP0eeQ62pbCq88i1I0T/zF
+	 dKcn0y/m96FXHMpxEB2SO4yLn8WoGzrhUzCDguE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 032/508] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Fabrice Gasnier <fabrice.gasnier@foss.st.com>,
+	Gatien Chevallier <gatien.chevallier@foss.st.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.15 119/592] Input: gpio-keys - fix a sleep while atomic with PREEMPT_RT
 Date: Mon, 23 Jun 2025 15:01:17 +0200
-Message-ID: <20250623130646.037118987@linuxfoundation.org>
+Message-ID: <20250623130703.100917577@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+From: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
 
-[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
+commit f4a8f561d08e39f7833d4a278ebfb12a41eef15f upstream.
 
-When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
-to save fixed-range MTRRs.
+When enabling PREEMPT_RT, the gpio_keys_irq_timer() callback runs in
+hard irq context, but the input_event() takes a spin_lock, which isn't
+allowed there as it is converted to a rt_spin_lock().
 
-On platforms without fixed-range MTRRs like the ACRN hypervisor which
-has removed fixed-range MTRR emulation, accessing these MSRs will
-trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
-supported before access to prevent such error.
+[ 4054.289999] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+[ 4054.290028] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/0
+...
+[ 4054.290195]  __might_resched+0x13c/0x1f4
+[ 4054.290209]  rt_spin_lock+0x54/0x11c
+[ 4054.290219]  input_event+0x48/0x80
+[ 4054.290230]  gpio_keys_irq_timer+0x4c/0x78
+[ 4054.290243]  __hrtimer_run_queues+0x1a4/0x438
+[ 4054.290257]  hrtimer_interrupt+0xe4/0x240
+[ 4054.290269]  arch_timer_handler_phys+0x2c/0x44
+[ 4054.290283]  handle_percpu_devid_irq+0x8c/0x14c
+[ 4054.290297]  handle_irq_desc+0x40/0x58
+[ 4054.290307]  generic_handle_domain_irq+0x1c/0x28
+[ 4054.290316]  gic_handle_irq+0x44/0xcc
 
-Since mtrr_state.have_fixed is only set when MTRRs are present and
-enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
-unnecessary.
+Considering the gpio_keys_irq_isr() can run in any context, e.g. it can
+be threaded, it seems there's no point in requesting the timer isr to
+run in hard irq context.
 
-Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
-Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Relax the hrtimer not to use the hard context.
+
+Fixes: 019002f20cb5 ("Input: gpio-keys - use hrtimer for release timer")
+Suggested-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Fabrice Gasnier <fabrice.gasnier@foss.st.com>
+Signed-off-by: Gatien Chevallier <gatien.chevallier@foss.st.com>
+Link: https://lore.kernel.org/r/20250528-gpio_keys_preempt_rt-v2-1-3fc55a9c3619@foss.st.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/keyboard/gpio_keys.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
-index 558108296f3cf..31549e7f6b7c6 100644
---- a/arch/x86/kernel/cpu/mtrr/generic.c
-+++ b/arch/x86/kernel/cpu/mtrr/generic.c
-@@ -349,7 +349,7 @@ static void get_fixed_ranges(mtrr_type *frs)
- 
- void mtrr_save_fixed_ranges(void *info)
- {
--	if (boot_cpu_has(X86_FEATURE_MTRR))
-+	if (mtrr_state.have_fixed)
- 		get_fixed_ranges(mtrr_state.fixed_ranges);
+--- a/drivers/input/keyboard/gpio_keys.c
++++ b/drivers/input/keyboard/gpio_keys.c
+@@ -486,7 +486,7 @@ static irqreturn_t gpio_keys_irq_isr(int
+ 	if (bdata->release_delay)
+ 		hrtimer_start(&bdata->release_timer,
+ 			      ms_to_ktime(bdata->release_delay),
+-			      HRTIMER_MODE_REL_HARD);
++			      HRTIMER_MODE_REL);
+ out:
+ 	return IRQ_HANDLED;
  }
+@@ -628,7 +628,7 @@ static int gpio_keys_setup_key(struct pl
  
--- 
-2.39.5
-
+ 		bdata->release_delay = button->debounce_interval;
+ 		hrtimer_setup(&bdata->release_timer, gpio_keys_irq_timer,
+-			      CLOCK_REALTIME, HRTIMER_MODE_REL_HARD);
++			      CLOCK_REALTIME, HRTIMER_MODE_REL);
+ 
+ 		isr = gpio_keys_irq_isr;
+ 		irqflags = 0;
 
 
 
