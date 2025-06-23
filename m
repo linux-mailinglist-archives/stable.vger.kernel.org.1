@@ -1,56 +1,71 @@
-Return-Path: <stable+bounces-156516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E57EAE4FE0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAD79AE50DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D9CB1B61D70
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00849440BE4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7981E5B71;
-	Mon, 23 Jun 2025 21:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAC81221723;
+	Mon, 23 Jun 2025 21:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beoVkZ5w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYiranEz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8870C2C9D;
-	Mon, 23 Jun 2025 21:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5990F22172C;
+	Mon, 23 Jun 2025 21:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713604; cv=none; b=lmzEoTYVaCaSUs0OfliekGwgCsjbejrQgIAp01L+tP1EHl6cxfjnj9kY50BGCAEv2QrG0z+UL36EGzu+02Sla+90pJEbSdfuqUbUZVW9QSRDD8c3zDAPz7ldwhakj52MG0qaaZs7i+PnQTEkgOSpSrS8faoXGFtbfwhGmS66HmI=
+	t=1750714106; cv=none; b=Yqy88R6ziyVE5OMihEgrehjN/iQXTGBUBe7T/Zx6gcc5Ub53a27RnC/8E5wPL0yF/oty+3IBfhCRL6BcnJ43K+7bCIOnWz6g3otOYrsHxF6rJS32gDDMrABkamcmcIv8htRCsRpll9Ng0+W1DjgAF13GtdDk/lDo1mA9uIo9EBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713604; c=relaxed/simple;
-	bh=dfZ9gEoy+aEpbxKhT2wmFWr+38lM5ZGb01xxdm3Ydfw=;
+	s=arc-20240116; t=1750714106; c=relaxed/simple;
+	bh=hwQN4wTpJkibGQqFCM5m9FoVZIDj9I2jR0hpQmyhww8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NdBNXCqrqHkg4A4mkSk9NKTKcLbPhdtsSAGx2ItLTUaXIVWANUPiAkpvRYvB2wmhmmWAg7eilyYSlP70XuVMaHlSu8+Oox0wh4a9taYuGgs8VachxOllWe+Tw8TXBoZwqqHMPwdxuOyVao561Ax0gzfMdaYhIvXEnfjpvQ7zb+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beoVkZ5w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214CEC4CEEA;
-	Mon, 23 Jun 2025 21:20:03 +0000 (UTC)
+	 MIME-Version; b=OFNPhDFwVARBU5rgfrGYWZPbGii1xaAEMmg5O4hnsAPQ6wyOwrAyqTkup/d8eHkr0VR2eDo1eSsYYggZc+F5xu7dYVDsMAr7a+Y4f+L95tM6tnq6rdhf2QJwTmTt6Tve4Fi2FovMtYWWgL4NbfjmFd4xSChTGRR9SSYDaJ5DMRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYiranEz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9E90C4CEEA;
+	Mon, 23 Jun 2025 21:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713604;
-	bh=dfZ9gEoy+aEpbxKhT2wmFWr+38lM5ZGb01xxdm3Ydfw=;
+	s=korg; t=1750714106;
+	bh=hwQN4wTpJkibGQqFCM5m9FoVZIDj9I2jR0hpQmyhww8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=beoVkZ5wNrwVPzsT62bLn8RvU364QNXDr0C3exaeeygCBm/XVSqlgRWVoMMo/uTYB
-	 5Oo+o58MsiCZ7s7WvBX0Z+NCDiaSH3OY3t7p71H6FbAAa3dAuuBeeAUJitJPm9CCH6
-	 rH+VQXwT0xkSBPZHqaEOJMPCNzL0WTc3HiCh+Ojg=
+	b=fYiranEzi3wFyxiEyq5OCXekwdr3lnSR2whEHjyxAkiY5e0ixefMWfZWO6sxHlcwx
+	 MkSFEFNOZSy2hHkiu106mwd+i8YbMPzFzEKmiXsZL+0g22ZKiJFvApSKbg7Vi6nq+i
+	 ahsY1mZNpFNUU0TaTwDEaeu5vf+3UJ6fZ4ia6k4k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 155/355] net: usb: aqc111: debug info before sanitation
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>,
+	kernel test robot <lkp@intel.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Claudio Imbrenda <imbrenda@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	James Houghton <jthoughton@google.com>,
+	Janosch Frank <frankja@linux.ibm.com>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 095/290] KVM: s390: rename PROT_NONE to PROT_TYPE_DUMMY
 Date: Mon, 23 Jun 2025 15:05:56 +0200
-Message-ID: <20250623130631.364766263@linuxfoundation.org>
+Message-ID: <20250623130629.826816867@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +77,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
+commit 15ac613f124e51a6623975efad9657b1f3ee47e7 upstream.
 
-If we sanitize error returns, the debug statements need
-to come before that so that we don't lose information.
+The enum type prot_type declared in arch/s390/kvm/gaccess.c declares an
+unfortunate identifier within it - PROT_NONE.
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This clashes with the protection bit define from the uapi for mmap()
+declared in include/uapi/asm-generic/mman-common.h, which is indeed what
+those casually reading this code would assume this to refer to.
+
+This means that any changes which subsequently alter headers in any way
+which results in the uapi header being imported here will cause build
+errors.
+
+Resolve the issue by renaming PROT_NONE to PROT_TYPE_DUMMY.
+
+Link: https://lkml.kernel.org/r/20250519145657.178365-1-lorenzo.stoakes@oracle.com
+Fixes: b3cefd6bf16e ("KVM: s390: Pass initialized arg even if unused")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Suggested-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202505140943.IgHDa9s7-lkp@intel.com/
+Acked-by: Christian Borntraeger <borntraeger@linux.ibm.com>
+Acked-by: Ignacio Moreno Gonzalez <Ignacio.MorenoGonzalez@kuka.com>
+Acked-by: Yang Shi <yang@os.amperecomputing.com>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Acked-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: <stable@vger.kernel.org>
+Cc: Alexander Gordeev <agordeev@linux.ibm.com>
+Cc: Heiko Carstens <hca@linux.ibm.com>
+Cc: James Houghton <jthoughton@google.com>
+Cc: Janosch Frank <frankja@linux.ibm.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Cc: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/aqc111.c |    8 ++++----
+ arch/s390/kvm/gaccess.c |    8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/net/usb/aqc111.c
-+++ b/drivers/net/usb/aqc111.c
-@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
- 				   USB_RECIP_DEVICE, value, index, data, size);
+--- a/arch/s390/kvm/gaccess.c
++++ b/arch/s390/kvm/gaccess.c
+@@ -490,7 +490,7 @@ enum prot_type {
+ 	PROT_TYPE_DAT  = 3,
+ 	PROT_TYPE_IEP  = 4,
+ 	/* Dummy value for passing an initialized value when code != PGM_PROTECTION */
+-	PROT_NONE,
++	PROT_TYPE_DUMMY,
+ };
  
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
+ static int trans_exc_ending(struct kvm_vcpu *vcpu, int code, unsigned long gva, u8 ar,
+@@ -506,7 +506,7 @@ static int trans_exc_ending(struct kvm_v
+ 	switch (code) {
+ 	case PGM_PROTECTION:
+ 		switch (prot) {
+-		case PROT_NONE:
++		case PROT_TYPE_DUMMY:
+ 			/* We should never get here, acts like termination */
+ 			WARN_ON_ONCE(1);
+ 			break;
+@@ -976,7 +976,7 @@ static int guest_range_to_gpas(struct kv
+ 			gpa = kvm_s390_real_to_abs(vcpu, ga);
+ 			if (kvm_is_error_gpa(vcpu->kvm, gpa)) {
+ 				rc = PGM_ADDRESSING;
+-				prot = PROT_NONE;
++				prot = PROT_TYPE_DUMMY;
+ 			}
+ 		}
+ 		if (rc)
+@@ -1134,7 +1134,7 @@ int access_guest_with_key(struct kvm_vcp
+ 		if (rc == PGM_PROTECTION)
+ 			prot = PROT_TYPE_KEYC;
+ 		else
+-			prot = PROT_NONE;
++			prot = PROT_TYPE_DUMMY;
+ 		rc = trans_exc_ending(vcpu, rc, ga, ar, mode, prot, terminate);
  	}
- 
- 	return ret;
-@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
- 			      USB_RECIP_DEVICE, value, index, data, size);
- 
- 	if (unlikely(ret < size)) {
--		ret = ret < 0 ? ret : -ENODATA;
--
- 		netdev_warn(dev->net,
- 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
- 			    cmd, index, ret);
-+
-+		ret = ret < 0 ? ret : -ENODATA;
- 	}
- 
- 	return ret;
+ out_unlock:
 
 
 
