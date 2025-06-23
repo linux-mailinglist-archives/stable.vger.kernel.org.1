@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4394CAE54F1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF873AE4FBB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73E484C216B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 033173A973D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E35D222590;
-	Mon, 23 Jun 2025 22:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4BE222587;
+	Mon, 23 Jun 2025 21:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPR6xdVh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvVy7OLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB292236E9;
-	Mon, 23 Jun 2025 22:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9789B38DE1;
+	Mon, 23 Jun 2025 21:18:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716365; cv=none; b=i4LwHWu5hN4m5ulkoSH8LiM4sCld8f7uDQvDLat1CN+b2Ku04LRrqQo3SK+8RBhRDWYnFcW59MGNC/PKVminsFpU6jV3LZICELle9mQCFcUUxXjk9a7JE85MFpOmHQZLKDNXHpvUpMAQ7U60uJA/Qpo01wVfLX/21uk97cqMlRg=
+	t=1750713516; cv=none; b=n3viGzN77ODWSgVwky0xrR8FLvU5K4DDOGHGvCnoBlFSqfz5omW8+fioYTvOnmp+leI/IuioD4nxjAl1JhwHjISr7mG4qgP8l+5BNs6PhrUkmiWYgZtvYq6yYalb+N7tX+xDYGUypOgT/R62/ea7YqWgoCL7c4183x6bzBhEy8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716365; c=relaxed/simple;
-	bh=ydRjmduTEGXzuuJlHQuhU3J0qKILa/RK7o8V1lDtKDk=;
+	s=arc-20240116; t=1750713516; c=relaxed/simple;
+	bh=ZVpBjR/kpeL/5/zvVmu9EDOr6aCAQEJE3HzpyFFXi2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3Oap+ylpvLNke1VgiTZMqp38r5132inxJh5loa2TZkfeC7/+1ieT5AQrr3fvk64oytXp06yhFJ53i1+Fwn0+XSm07kkDG+2KWVQKM9LNK1EH3cVMnhByNRmWRhPrYwXmNLSKWWaVk5BxdZQGDiiF7jsbn1/8WRF8mRHueP84Js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPR6xdVh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 982B1C4CEEA;
-	Mon, 23 Jun 2025 22:06:04 +0000 (UTC)
+	 MIME-Version; b=JScW2zjn3cSFxPxIaCvSAxi7oMqMn2IiGFLj9r4JZUFPU9JonAg5pMGbdTeU+MVlOyrvatpQkKfpiydN4erByz0AfT6rVnLRz7qjUnf3MLTH7vQtd+6JQl3iJf13ZomaJ56ahY1bBdetv6qAcQTiQ7R8SQauDP4aTg7/Fa374aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvVy7OLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3016CC4CEEA;
+	Mon, 23 Jun 2025 21:18:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716364;
-	bh=ydRjmduTEGXzuuJlHQuhU3J0qKILa/RK7o8V1lDtKDk=;
+	s=korg; t=1750713516;
+	bh=ZVpBjR/kpeL/5/zvVmu9EDOr6aCAQEJE3HzpyFFXi2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPR6xdVhz1zO+xatoFN1z+zsvFWg5BAJosQO8NkqXwMoYG50Alq3Cn05FePlGi+0z
-	 rXyQ356nal5StGxlVrvgJBCMkf9Hs9xR/tGB7tF6Qmo7Fc5mwQTeylqGMTmZC/16q3
-	 K3e7MlKhOhopyW2xpeQFK5hWhZ6RO573sBnhP2qs=
+	b=VvVy7OLvuWofEtTRVE0LAevGOfTQcn9RI5OrM4OlEDQ6P+npYSScjtflfw08zM2Rp
+	 4G6dn9yCSyZD0ICfdxdI6urV86+C3YRFBn9gOj/UwUSQ2fhiXRUuQeLADZaOvm5jtT
+	 HdHJV6sCddyt8PJWLqS4MLI3ILcfNtcB3vdTcNK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.10 344/355] net_sched: sch_sfq: use a temporary work area for validating configuration
+	Robert Nelson <robertcnelson@gmail.com>,
+	Shengyu Qu <wiagn233@outlook.com>,
+	Tony Lindgren <tony@atomide.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 5.4 210/222] ARM: dts: am335x-bone-common: Add GPIO PHY reset on revision C3 board
 Date: Mon, 23 Jun 2025 15:09:05 +0200
-Message-ID: <20250623130637.066080103@linuxfoundation.org>
+Message-ID: <20250623130618.617190550@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Shengyu Qu <wiagn233@outlook.com>
 
-[ Upstream commit 8c0cea59d40cf6dd13c2950437631dd614fbade6 ]
+commit 623cef652768860bd5f205fb7b741be278585fba upstream.
 
-Many configuration parameters have influence on others (e.g. divisor
--> flows -> limit, depth -> limit) and so it is difficult to correctly
-do all of the validation before applying the configuration. And if a
-validation error is detected late it is difficult to roll back a
-partially applied configuration.
+This patch adds ethernet PHY reset GPIO config for Beaglebone Black
+series boards with revision C3. This fixes a random phy startup failure
+bug discussed at [1]. The GPIO pin used for reset is not used on older
+revisions, so it is ok to apply to all board revisions. The reset timing
+was discussed and tested at [2].
 
-To avoid these issues use a temporary work area to update and validate
-the configuration and only then apply the configuration to the
-internal state.
+[1] https://forum.digikey.com/t/ethernet-device-is-not-detecting-on-ubuntu-20-04-lts-on-bbg/19948
+[2] https://forum.beagleboard.org/t/recognizing-a-beaglebone-black-rev-c3-board/31249/
 
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
+Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
+Message-ID: <TY3P286MB26113797A3B2EC7E0348BBB2980FA@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_sfq.c |   56 ++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 44 insertions(+), 12 deletions(-)
+ arch/arm/boot/dts/am335x-bone-common.dtsi |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -631,6 +631,15 @@ static int sfq_change(struct Qdisc *sch,
- 	struct red_parms *p = NULL;
- 	struct sk_buff *to_free = NULL;
- 	struct sk_buff *tail = NULL;
-+	unsigned int maxflows;
-+	unsigned int quantum;
-+	unsigned int divisor;
-+	int perturb_period;
-+	u8 headdrop;
-+	u8 maxdepth;
-+	int limit;
-+	u8 flags;
-+
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -145,6 +145,8 @@
+ 			/* MDIO */
+ 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
+ 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
++			/* Added to support GPIO controlled PHY reset */
++			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE7)
+ 		>;
+ 	};
  
- 	if (opt->nla_len < nla_attr_size(sizeof(*ctl)))
- 		return -EINVAL;
-@@ -656,36 +665,59 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
- 		return -EINVAL;
- 	}
-+
- 	sch_tree_lock(sch);
-+
-+	limit = q->limit;
-+	divisor = q->divisor;
-+	headdrop = q->headdrop;
-+	maxdepth = q->maxdepth;
-+	maxflows = q->maxflows;
-+	perturb_period = q->perturb_period;
-+	quantum = q->quantum;
-+	flags = q->flags;
-+
-+	/* update and validate configuration */
- 	if (ctl->quantum)
--		q->quantum = ctl->quantum;
--	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
-+		quantum = ctl->quantum;
-+	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
--		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-+		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
--		q->divisor = ctl->divisor;
--		q->maxflows = min_t(u32, q->maxflows, q->divisor);
-+		divisor = ctl->divisor;
-+		maxflows = min_t(u32, maxflows, divisor);
- 	}
- 	if (ctl_v1) {
- 		if (ctl_v1->depth)
--			q->maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
-+			maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
- 		if (p) {
--			swap(q->red_parms, p);
--			red_set_parms(q->red_parms,
-+			red_set_parms(p,
- 				      ctl_v1->qth_min, ctl_v1->qth_max,
- 				      ctl_v1->Wlog,
- 				      ctl_v1->Plog, ctl_v1->Scell_log,
- 				      NULL,
- 				      ctl_v1->max_P);
- 		}
--		q->flags = ctl_v1->flags;
--		q->headdrop = ctl_v1->headdrop;
-+		flags = ctl_v1->flags;
-+		headdrop = ctl_v1->headdrop;
- 	}
- 	if (ctl->limit) {
--		q->limit = min_t(u32, ctl->limit, q->maxdepth * q->maxflows);
--		q->maxflows = min_t(u32, q->maxflows, q->limit);
-+		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
-+		maxflows = min_t(u32, maxflows, limit);
- 	}
+@@ -153,6 +155,8 @@
+ 			/* MDIO reset value */
+ 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
+ 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
++			/* Added to support GPIO controlled PHY reset */
++			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7)
+ 		>;
+ 	};
  
-+	/* commit configuration */
-+	q->limit = limit;
-+	q->divisor = divisor;
-+	q->headdrop = headdrop;
-+	q->maxdepth = maxdepth;
-+	q->maxflows = maxflows;
-+	WRITE_ONCE(q->perturb_period, perturb_period);
-+	q->quantum = quantum;
-+	q->flags = flags;
-+	if (p)
-+		swap(q->red_parms, p);
-+
- 	qlen = sch->q.qlen;
- 	while (sch->q.qlen > q->limit) {
- 		dropped += sfq_drop(sch, &to_free);
+@@ -396,6 +400,10 @@
+ 
+ 	ethphy0: ethernet-phy@0 {
+ 		reg = <0>;
++		/* Support GPIO reset on revision C3 boards */
++		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <300>;
++		reset-deassert-us = <6500>;
+ 	};
+ };
+ 
 
 
 
