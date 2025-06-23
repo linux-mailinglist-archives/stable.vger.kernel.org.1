@@ -1,56 +1,65 @@
-Return-Path: <stable+bounces-156415-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5A9BAE4F70
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E41F0AE505E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE75E3BF316
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 730F44A0C8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CB321B9C9;
-	Mon, 23 Jun 2025 21:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7484D1EDA0F;
+	Mon, 23 Jun 2025 21:24:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6+QG0Rf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yqiFIrQ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2331F3FF8;
-	Mon, 23 Jun 2025 21:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 323DC1ACEDA;
+	Mon, 23 Jun 2025 21:24:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713358; cv=none; b=G2odq4jsDn73x92S+J0zLNT3ZxktSZCqXnPYBj/ZN4yBVKUBe6AM7uhOBoCxYqVMlLkK4YNM5aivXiEttMDQsJWn8qMnTB6txlpLbHEw9HFb/HgQwdCehkYkseeg7YKS4canR635IWUalNogglEzXaPEy02ytH1qnjkz2/agGCw=
+	t=1750713878; cv=none; b=cqwyrxF/B7dOJDxRBX2SGK9x52qlT97fIi4pQ8aY+eVcJLclkRmSB5UA/Z03j64dt+Iqv7SBHXhg723wXbON6aTJywqRUrUvKkdAxMCKYvdN023Eii3hBA30lmREAghxj+CA3ZRdbTE7YwZRJJzUrdRcw8dyR8QVfiObvaRXfJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713358; c=relaxed/simple;
-	bh=n60aG+bdWOQWMeXyzoQMf7igex74wJaH9odel6WjSDU=;
+	s=arc-20240116; t=1750713878; c=relaxed/simple;
+	bh=DBEB/hLvPj7hOlreuH71AudPO6rKJc3aHIWWCBZvHAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IrBC0cLa+ja6hnaw2msl1SIkCla2wXNW0HxTccrCrK0CPTPXPaUEDho+tQBpXdfa/+F+qx47vPlDnig+iC/xLWUy4jzeJ53guq7H7KQ6VoAl4pggX+SCcGFXv6IB5S0D89qqJt8T+FscJ8v8KX/SGk560hIeZsnmI3UL9BBnpUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6+QG0Rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230C4C4CEED;
-	Mon, 23 Jun 2025 21:15:57 +0000 (UTC)
+	 MIME-Version; b=CQ+RscLj3yWeomykpnzc1qSQMDjyantijkd7IWfiLdEbmcjOqDGu0XAypWkmFHMXN/kIYb4gl1ONdJ5fkTbDxOXsX93Tx9WP+qdazGA02anRyNJIx610nAbOD6F0R06IskdknF1oqX9MgYdsnxoeng5msAm+CSY+noH8bNoZcXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yqiFIrQ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38F17C4CEEA;
+	Mon, 23 Jun 2025 21:24:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713358;
-	bh=n60aG+bdWOQWMeXyzoQMf7igex74wJaH9odel6WjSDU=;
+	s=korg; t=1750713876;
+	bh=DBEB/hLvPj7hOlreuH71AudPO6rKJc3aHIWWCBZvHAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6+QG0RfMgA5eMzvPao0EJmSTtmSCAt5eJ1LLB2LEDpQqgawtddlvH3fyfoJUDbhz
-	 HYZZc0zJBi4AAd/Mu/k9AbrZ/oZu9PdOh/XIkoMjih418a+GS8gHvE27b4GIeLVls6
-	 tqiuZu7EwHNJOl0kblXjGlJZdhsJ8KZTDrpBoU4M=
+	b=yqiFIrQ0NJ7eenU9NNmRPSa+a/p9W0EgO+jxORWS284h1jwcZT3X9a1p2FDmKzPxx
+	 /mg2FlUd3MLvVr7pjhG4pYD+0+HbLlmHzptwsdFIawBlxihKoxG7OPJlLc8koRSacP
+	 sDW9rVagZI+MB/1cjFmWs+JverzQ3tvtK5iqx9Q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liangliang Zou <rawdiamondmc@outlook.com>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.12 040/414] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Dmitriy Vyukov <dvyukov@google.com>,
+	Howard Chu <howardchu95@gmail.com>,
+	Ian Rogers <irogers@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	"Frank Ch. Eigler" <fche@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 132/508] perf build: Warn when libdebuginfod devel files are not available
 Date: Mon, 23 Jun 2025 15:02:57 +0200
-Message-ID: <20250623130643.038705788@linuxfoundation.org>
+Message-ID: <20250623130648.538214385@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +71,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingcong Bai <jeffbai@aosc.io>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit 77a6407c6ab240527166fb19ee96e95f5be4d3cd upstream.
+[ Upstream commit 4fce4b91fd1aabb326c46e237eb4b19ab72598f8 ]
 
-RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
-subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
-errors during and after boot up, causing heavy lags and at times lock-ups:
+While working on 'perf version --build-options' I noticed that:
 
-  pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
-  pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
-  pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
-  pcieport 0000:00:1c.5:    [ 0] RxErr
+  $ perf version --build-options
+  perf version 6.15.rc1.g312a07a00d31
+                   aio: [ on  ]  # HAVE_AIO_SUPPORT
+                   bpf: [ on  ]  # HAVE_LIBBPF_SUPPORT
+         bpf_skeletons: [ on  ]  # HAVE_BPF_SKEL
+            debuginfod: [ OFF ]  # HAVE_DEBUGINFOD_SUPPORT
+  <SNIP>
 
-Disable ASPM on this combo as a quirk.
+And looking at tools/perf/Makefile.config I also noticed that it is not
+opt-in, meaning we will attempt to build with it in all normal cases.
 
-This patch is a revision of a previous patch (linked below) which
-attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
-PCIe bridges. I take a more conservative approach as all known reports
-point to ASUSTek laptops of these two generations with this particular
-wireless card.
+So add the usual warning at build time to let the user know that
+something recommended is missing, now we see:
 
-Please note, however, before the rtl8723be finishes probing, the AER
-errors remained. After the module finishes probing, all AER errors would
-indeed be eliminated, along with heavy lags, poor network throughput,
-and/or occasional lock-ups.
+  Makefile.config:563: No elfutils/debuginfod.h found, no debuginfo server support, please install elfutils-debuginfod-client-devel or equivalent
 
-Cc: <stable@vger.kernel.org>
-Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
-Reported-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218127
-Link: https://lore.kernel.org/lkml/05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net/T/
-Tested-by: Liangliang Zou <rawdiamondmc@outlook.com>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250422061755.356535-1-jeffbai@aosc.io
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+And after following the recommendation:
+
+  $ perf check feature debuginfod
+            debuginfod: [ on  ]  # HAVE_DEBUGINFOD_SUPPORT
+  $ ldd ~/bin/perf | grep debuginfo
+	libdebuginfod.so.1 => /lib64/libdebuginfod.so.1 (0x00007fee5cf5f000)
+  $
+
+With this feature on several perf tools will fetch what is needed and
+not require all the contents of the debuginfo packages, for instance:
+
+  # rpm -qa | grep kernel-debuginfo
+  # pahole --running_kernel_vmlinux
+  pahole: couldn't find a vmlinux that matches the running kernel
+  HINT: Maybe you're inside a container or missing a debuginfo package?
+  #
+  # perf trace -e open* perf probe --vars icmp_rcv
+      0.000 ( 0.005 ms): perf/97391 openat(dfd: CWD, filename: "/etc/ld.so.cache", flags: RDONLY|CLOEXEC) = 3
+      0.014 ( 0.004 ms): perf/97391 openat(dfd: CWD, filename: "/lib64/libm.so.6", flags: RDONLY|CLOEXEC) = 3
+  <SNIP>
+  32130.100 ( 0.008 ms): perf/97391 openat(dfd: CWD, filename: "/root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo") = 3
+  <SNIP>
+  Available variables at icmp_rcv
+        @<icmp_rcv+0>
+                struct sk_buff* skb
+  <SNIP>
+  #
+  # pahole --running_kernel_vmlinux
+  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  # file /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), statically linked, BuildID[sha1]=aa3c82b4a13f9c0e0301bebb20fe958c4db6f362, with debug_info, not stripped
+  # ls -la /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  -r--------. 1 root root 475401512 Mar 27 21:00 /root/.cache/debuginfod_client/aa3c82b4a13f9c0e0301bebb20fe958c4db6f362/debuginfo
+  #
+
+Then, cached:
+
+  # perf stat --null perf probe --vars icmp_rcv
+  Available variables at icmp_rcv
+        @<icmp_rcv+0>
+                struct sk_buff* skb
+
+   Performance counter stats for 'perf probe --vars icmp_rcv':
+
+       0.671389041 seconds time elapsed
+
+       0.519176000 seconds user
+       0.150860000 seconds sys
+
+Fixes: c7a14fdcb3fa7736 ("perf build-ids: Fall back to debuginfod query if debuginfo not found")
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Dmitriy Vyukov <dvyukov@google.com>
+Cc: Howard Chu <howardchu95@gmail.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Frank Ch. Eigler <fche@redhat.com>
+Link: https://lore.kernel.org/r/Z_dkNDj9EPFwPqq1@gmail.com
+[ Folded patch from Ingo to have the debian/ubuntu devel package added build warning message ]
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtlwifi/pci.c |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ tools/perf/Makefile.config | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/realtek/rtlwifi/pci.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
-@@ -155,6 +155,16 @@ static void _rtl_pci_update_default_sett
- 	    ((u8)init_aspm) == (PCI_EXP_LNKCTL_ASPM_L0S |
- 				PCI_EXP_LNKCTL_ASPM_L1 | PCI_EXP_LNKCTL_CCC))
- 		ppsc->support_aspm = false;
-+
-+	/* RTL8723BE found on some ASUSTek laptops, such as F441U and
-+	 * X555UQ with subsystem ID 11ad:1723 are known to output large
-+	 * amounts of PCIe AER errors during and after boot up, causing
-+	 * heavy lags, poor network throughput, and occasional lock-ups.
-+	 */
-+	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8723BE &&
-+	    (rtlpci->pdev->subsystem_vendor == 0x11ad &&
-+	     rtlpci->pdev->subsystem_device == 0x1723))
-+		ppsc->support_aspm = false;
- }
+diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+index fac6ba07eacdb..249f3d8415634 100644
+--- a/tools/perf/Makefile.config
++++ b/tools/perf/Makefile.config
+@@ -545,6 +545,8 @@ ifndef NO_LIBELF
+     ifeq ($(feature-libdebuginfod), 1)
+       CFLAGS += -DHAVE_DEBUGINFOD_SUPPORT
+       EXTLIBS += -ldebuginfod
++    else
++      $(warning No elfutils/debuginfod.h found, no debuginfo server support, please install libdebuginfod-dev/elfutils-debuginfod-client-devel or equivalent)
+     endif
+   endif
  
- static bool _rtl_pci_platform_switch_device_pci_aspm(
+-- 
+2.39.5
+
 
 
 
