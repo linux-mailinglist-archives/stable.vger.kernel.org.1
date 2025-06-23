@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156554-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8FCAAE4FF9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A612AE5001
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7621117FE57
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C61D64A0033
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39E21E5B71;
-	Mon, 23 Jun 2025 21:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABF7B38DE1;
+	Mon, 23 Jun 2025 21:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSqsPTJV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZzkbQmY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05C3219E0;
-	Mon, 23 Jun 2025 21:21:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D7A7482;
+	Mon, 23 Jun 2025 21:21:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713680; cv=none; b=ZDZjG9myNkbyND1R59FLVJ6GecyIoqQggKjnZc81lcX/euzbrZ7qunMGhetBSz7265xmVCvAVXTTRLPHLUpztB5FurJ/5RCVGdXTjD0fR3SZZwuoTwUznq637GDjC8yPvF+bc2aSSbNx2IZrWbhZNmHoFUmiMBQ9CqvjlbwG6ss=
+	t=1750713697; cv=none; b=m6RvbTHNKXuT3/yDj60OsyDlGuMwtWuxsxWd/MB3eom+NGY6w1cZCc2CCHUjVCrypLwvZn5nCo4WnXdU3YhG343V52T+slHy+rFKc6XvXIOaDqUy57k183kydBtyBOdlyNMEcofgDm35lfe6UbhUCpZvT9qJ3iqZ/Fmhsm1QoRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713680; c=relaxed/simple;
-	bh=XdnJRX5irk/hrTGcQDMfMrGPzOly8PncyZ75GGg1nnw=;
+	s=arc-20240116; t=1750713697; c=relaxed/simple;
+	bh=26HJsaD6H+2aAg5SJNMfFWGu2ud3PTqM8aVdzEN4iqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kAXixbyDvtid+iV/mG/0SwlNk3QboMialgyKOMHdjWA8/F56Y7/fphm2oZkMWLXlM5hZgIXiMrOw9yHboCU4+mQYzYfkt5s/ke/BJJFCjsHK7/yZZxrgmi0cDHSQok1hZnwHXblI/DVG2xbUJE87s0oKz5Uk/wMBhJzLjCCTFkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSqsPTJV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91BFC4CEEA;
-	Mon, 23 Jun 2025 21:21:19 +0000 (UTC)
+	 MIME-Version; b=hnJkZ8Iqtn+KOwk+XQCDWWAcr7JhSrs0Lj3U8u7flu5wMMB/a86SfGQwBg8mx/KFeaKf5N6xzWpN/oJQgPx/R39lT2SIxxwLeUv76Bmf0Cq8PWxIe5hVnVtgeAOSkaN0wGZW380Z2oWBNcddNyiQrQjp0ruktDJJ7oPnZ0FTLvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZzkbQmY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F30F1C4CEEA;
+	Mon, 23 Jun 2025 21:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713680;
-	bh=XdnJRX5irk/hrTGcQDMfMrGPzOly8PncyZ75GGg1nnw=;
+	s=korg; t=1750713697;
+	bh=26HJsaD6H+2aAg5SJNMfFWGu2ud3PTqM8aVdzEN4iqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GSqsPTJV0C8z77cTe181F2YrYirDSHAPWi3p9bNT0HZWjLk12bboA6Hi1AKv92F94
-	 Gj88bvQ8P34wlJ6QjW8sIa1SKj0IKnfZYTJFYSJ8uj9Yg/KHl/oUl6OWbQLHMovUC1
-	 SdW8rzyFviXDX9Hl727aLATt1slxE3xwh5sT4wAs=
+	b=pZzkbQmYoNIq2ZMFknNaI/TYCJvkeJPXPWXVqSgjXtah2S4H7oYT+ep1FdfdDC0yZ
+	 Dx+hRuZgSG9lPGs0f3H5zQP5gvPquvCR/DQsiTfq4ErzwRcbFzbsWcZaFSbh9GwdPJ
+	 54mu4ZRFR9gPQORIi6MTXNKrlz01gEK/7T+nF9BE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Yao <hao.yao@intel.com>,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Fei Shao <fshao@chromium.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 057/414] media: ipu6: Remove workaround for Meteor Lake ES2
-Date: Mon, 23 Jun 2025 15:03:14 +0200
-Message-ID: <20250623130643.495232022@linuxfoundation.org>
+Subject: [PATCH 6.12 058/414] media: mediatek: vcodec: Correct vsi_core framebuffer size
+Date: Mon, 23 Jun 2025 15:03:15 +0200
+Message-ID: <20250623130643.523961767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,43 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hao Yao <hao.yao@intel.com>
+From: Fei Shao <fshao@chromium.org>
 
-commit d471fb06b21ae54bf76464731ae1dcb26ef1ca68 upstream.
+commit f19035b86382f635a0d13d177b601babaf263a12 upstream.
 
-There was a hardware bug which need IPU6 driver to disable the ATS. This
-workaround is not needed anymore as the bug was fixed in hardware level.
+The framebuffer size for decoder instances was being incorrectly set -
+inst->vsi_core->fb.y.size was assigned twice consecutively.
 
-Additionally, Arrow Lake has the same IPU6 PCI ID and x86 stepping but
-does not have the bug. Removing the Meteor Lake workaround is also
-required for the driver to function on Arrow Lake.
+Assign the second picinfo framebuffer size to the C framebuffer instead,
+which appears to be the intended target based on the surrounding code.
 
-Signed-off-by: Hao Yao <hao.yao@intel.com>
-Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Fixes: 25fedc021985 ("media: intel/ipu6: add Intel IPU6 PCI device driver")
+Fixes: 2674486aac7d ("media: mediatek: vcodec: support stateless hevc decoder")
 Cc: stable@vger.kernel.org
-[Sakari Ailus: Added tags and explanation of what is fixed.]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6.c |    5 -----
- 1 file changed, 5 deletions(-)
+ drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/pci/intel/ipu6/ipu6.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6.c
-@@ -463,11 +463,6 @@ static int ipu6_pci_config_setup(struct
- {
- 	int ret;
+--- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
++++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
+@@ -821,7 +821,7 @@ static int vdec_hevc_slice_setup_core_bu
+ 	inst->vsi_core->fb.y.dma_addr = y_fb_dma;
+ 	inst->vsi_core->fb.y.size = ctx->picinfo.fb_sz[0];
+ 	inst->vsi_core->fb.c.dma_addr = c_fb_dma;
+-	inst->vsi_core->fb.y.size = ctx->picinfo.fb_sz[1];
++	inst->vsi_core->fb.c.size = ctx->picinfo.fb_sz[1];
  
--	/* disable IPU6 PCI ATS on mtl ES2 */
--	if (is_ipu6ep_mtl(hw_ver) && boot_cpu_data.x86_stepping == 0x2 &&
--	    pci_ats_supported(dev))
--		pci_disable_ats(dev);
--
- 	/* No PCI msi capability for IPU6EP */
- 	if (is_ipu6ep(hw_ver) || is_ipu6ep_mtl(hw_ver)) {
- 		/* likely do nothing as msi not enabled by default */
+ 	inst->vsi_core->dec.vdec_fb_va = (unsigned long)fb;
+ 
 
 
 
