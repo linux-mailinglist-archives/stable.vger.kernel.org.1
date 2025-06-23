@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15B82AE52D3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87855AE53FB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3288E3B60F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D65491B6828E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8F7225413;
-	Mon, 23 Jun 2025 21:46:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E038921FF2B;
+	Mon, 23 Jun 2025 21:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWKbIf9W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gE2oRlZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DDFB676;
-	Mon, 23 Jun 2025 21:46:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F07E1F4628;
+	Mon, 23 Jun 2025 21:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715196; cv=none; b=XhpLs6d+eHMLDlGtWfZUzufAMrz9fy/BqEHw+lGIuV4B4fVxQw4/PniEE7eMjL8NxknlW/3FPoweMOfMjjEhes4kmDCwWhiWz3Gx2BganIu03yQguad688uWQvE14XmV6USunqrDhb/QxVwbHfmnMq1qEMBSLLHqwImTLcX+nxM=
+	t=1750715880; cv=none; b=QO24P4z7L2sNQjeChEfq6BhW/FXFxhC+aV+ncLE4pumhtWAXsILTmn42drMKcYu6DwcqmGSgnN544qCqpDeWgYvkIt51JtSzeiEp79tY5SZL+Cf/BjS3Jc2FnvIvbE9F3ZcEGr0/MHCOkKPXDNq60RV2IzB9TclQsKyuvPnnocQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715196; c=relaxed/simple;
-	bh=E0K3v1Q0MwFqomMLaPmOMWWVhvIZN1gUzhLQe7dQkWI=;
+	s=arc-20240116; t=1750715880; c=relaxed/simple;
+	bh=/xLHP2nHAySBHmrYRMWmjPyt6iiQLibHMMJWYax8xx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=REObHvfUzqSRqxg7Xory0OF/3YzowsmxPJt4ScvOE6gi/vYNAxvr9qCMCDI6XnJwTHtVSdDD//vijglaS159Jr3WJv5Tet4DvvnxDOmKksRoBQsvfhg53SwjYGOD3Q5JuDdV78zjFBexXybDphq3AyaL39h6jbjtvoQBvhJMeL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWKbIf9W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811B0C4CEEA;
-	Mon, 23 Jun 2025 21:46:35 +0000 (UTC)
+	 MIME-Version; b=d626NHcXOhEF0FjbgS3Fp/TA3XvaN74knJo8kGHbZQ/0TvUthiKc04DUjG4SHmptcXEP7YBzKZhi2CoCzDeylOtJL9UzBXXwuxPRKy34+6Ut7RemusiwTmAxajYo+LXFXJ5K0pBC/1GkYL5UIfU9mhx7JNyy6vaxMZHgD7j14qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gE2oRlZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33FD6C4CEEA;
+	Mon, 23 Jun 2025 21:58:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715195;
-	bh=E0K3v1Q0MwFqomMLaPmOMWWVhvIZN1gUzhLQe7dQkWI=;
+	s=korg; t=1750715880;
+	bh=/xLHP2nHAySBHmrYRMWmjPyt6iiQLibHMMJWYax8xx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dWKbIf9W8VaH3Y1XTk/50GaS+5J2+7b1EcGASUg6+iPlEPdnfUUraa9cgIAZZ8yfe
-	 6fBpVBBDubW+JEKt4gMitJ0YSXW6wmyKYIpDL8gHNMS/tsU8dbwW2WhxTx8yNsXZzX
-	 66y1aUsxxi7/qdAfS4t3A3FxA0sYpcrlWi+lb4F4=
+	b=gE2oRlZx8H3tQNoQY1dvwtwmJxHxsyEYypWFKHfpybQsCGYdCEiL2ccXIAbrwCFlJ
+	 DfavJD1Y0rEKsSDx1VAwyJ4zJWOerOyP8WzVezTO0KrRYbGPwldFubmzwBf5MP60F2
+	 FHglvAuenuw7IRCWEOG7rtH2lT3BkhJ1hvaqGWh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Connor Abbott <cwabbott0@gmail.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 205/290] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
-Date: Mon, 23 Jun 2025 15:07:46 +0200
-Message-ID: <20250623130633.094741964@linuxfoundation.org>
+Subject: [PATCH 6.15 509/592] drm/msm/a7xx: Call CP_RESET_CONTEXT_STATE
+Date: Mon, 23 Jun 2025 15:07:47 +0200
+Message-ID: <20250623130712.543269399@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Connor Abbott <cwabbott0@gmail.com>
 
-[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
+[ Upstream commit 2b520c6104f34e3a548525173c38ebca4402cac3 ]
 
-VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-platforms due to missing host-side PE bridge reconfiguration. In the
-current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-bridge reconfiguration for native host devices, but skips it entirely for
-PEs managed through VFIO in guest passthrough scenarios.
+Calling this packet is necessary when we switch contexts because there
+are various pieces of state used by userspace to synchronize between BR
+and BV that are persistent across submits and we need to make sure that
+they are in a "safe" state when switching contexts. Otherwise a
+userspace submission in one context could cause another context to
+function incorrectly and hang, effectively a denial of service (although
+without leaking data). This was missed during initial a7xx bringup.
 
-This leads to incomplete EEH recovery when a PCI error affects a
-passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-bridge reconfiguration step is silently bypassed. As a result, the PE's
-config space is not fully restored, causing subsequent config space access
-failures or EEH freeze-on-access errors inside the guest.
-
-This patch fixes the issue by ensuring that eeh_pe_configure() always
-invokes the platform's configure_bridge() callback (e.g.,
-pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
-that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
-on the host side, restoring the PE's configuration space after an EEH
-event.
-
-This fix is essential for reliable EEH recovery in QEMU/KVM guests using
-VFIO PCI passthrough on PowerNV and pseries systems.
-
-Tested with:
-- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
-- Injected EEH errors with pseries EEH errinjct tool on host, recovery
-  verified on qemu guest.
-- Verified successful config space access and CAP_EXP DevCtl restoration
-  after recovery
-
-Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
+Fixes: af66706accdf ("drm/msm/a6xx: Add skeleton A7xx support")
+Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
+Patchwork: https://patchwork.freedesktop.org/patch/654924/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index ab316e155ea9f..2e286bba2f645 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1516,6 +1516,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
- 	/* Invalid PE ? */
- 	if (!pe)
- 		return -ENODEV;
-+	else
-+		ret = eeh_ops->configure_bridge(pe);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+index 90991ba5a4ae1..742132feb19cc 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu.c
+@@ -130,6 +130,20 @@ static void a6xx_set_pagetable(struct a6xx_gpu *a6xx_gpu,
+ 		OUT_RING(ring, lower_32_bits(rbmemptr(ring, fence)));
+ 		OUT_RING(ring, upper_32_bits(rbmemptr(ring, fence)));
+ 		OUT_RING(ring, submit->seqno - 1);
++
++		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
++		OUT_RING(ring, CP_SET_THREAD_BOTH);
++
++		/* Reset state used to synchronize BR and BV */
++		OUT_PKT7(ring, CP_RESET_CONTEXT_STATE, 1);
++		OUT_RING(ring,
++			 CP_RESET_CONTEXT_STATE_0_CLEAR_ON_CHIP_TS |
++			 CP_RESET_CONTEXT_STATE_0_CLEAR_RESOURCE_TABLE |
++			 CP_RESET_CONTEXT_STATE_0_CLEAR_BV_BR_COUNTER |
++			 CP_RESET_CONTEXT_STATE_0_RESET_GLOBAL_LOCAL_TS);
++
++		OUT_PKT7(ring, CP_THREAD_CONTROL, 1);
++		OUT_RING(ring, CP_SET_THREAD_BR);
+ 	}
  
- 	return ret;
- }
+ 	if (!sysprof) {
 -- 
 2.39.5
 
