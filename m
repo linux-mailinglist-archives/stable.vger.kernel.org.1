@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-155664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155737-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E02AE4323
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE1F4AE438E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8610418918EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A9E23AB63E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15FDE253950;
-	Mon, 23 Jun 2025 13:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97BFA2517AF;
+	Mon, 23 Jun 2025 13:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T5+3pEmH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XUZNBpjE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A81253F2D;
-	Mon, 23 Jun 2025 13:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C71FE471;
+	Mon, 23 Jun 2025 13:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685013; cv=none; b=JBBVeQzkzdulkPYd54vHtrrRS+EOm0lyZPAGGbTXnWEXdcKHaMhdBbaX4D5NOqxmtiXff6pVyEy+bQO20BxT1mN9E1iuigrx0TeEYX/qm62vj9GHgjRjEqYP1I5OWDb8FnXdbwwHBUunKXwNfmMrAIL7LREYesZtS3Pqsdm36uY=
+	t=1750685206; cv=none; b=mYHk212Nvau7TXFOc3FQZfw4ssGNw2xt568d2L/EMHVw+aWqNSS+z2G10QCY1s82QVuznB1kaoIxR+WIRIo1j+sRcHk1+UZTgUpFyn/5q4EGK9L4CYbi7otOb/NtmDL0gXYfaAXXlcSwt61l3+Etf+yDRX9qNlqUgBjlnnzofZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685013; c=relaxed/simple;
-	bh=99WlCNPA5r2f6EJSsqUmEzwYyPmoHMYj5QQcWJv8QWY=;
+	s=arc-20240116; t=1750685206; c=relaxed/simple;
+	bh=8OYFSUadody3n17+mRkyPo63rzSoKyGFTQVIUMA+99s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d8xJVUcRhBnDHDVJ0345HsqL9lErCYycPVJN0Jvec6/eoPkfFP93swWDmhUTlvUb9VwBJCGODlakAs8B/6gbH+k+SQkPXDxYlQBX+dh5CC7sMJ8t28xX2YZcNtbDg7iW2sQ5DnhWzUrd2P1jd/MAJmfexqmWzkEL+VF7FpIz5OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T5+3pEmH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA0AC4CEEA;
-	Mon, 23 Jun 2025 13:23:33 +0000 (UTC)
+	 MIME-Version; b=FT/cdfZLcqmYc0Gglb/rS0qX2roPtcfrS7qjsDV+1LMhfp5jmKslBhYLn1PEXdRmAAi1lM0WVIkEh4JF6z5vlcKB3dOcDabXlhbtvBTGLilifGzxzIfqXljK46bbE4eVjhKIsMtO00CTTM8Wt0uLBHkA+2xktXhMvMOxfmmL82o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XUZNBpjE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC08FC4CEEA;
+	Mon, 23 Jun 2025 13:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685013;
-	bh=99WlCNPA5r2f6EJSsqUmEzwYyPmoHMYj5QQcWJv8QWY=;
+	s=korg; t=1750685206;
+	bh=8OYFSUadody3n17+mRkyPo63rzSoKyGFTQVIUMA+99s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T5+3pEmH4iJhw2UDlX2HOBF6x0zMPWKBWQyJDSwZn91yXRyfYmzV+xKCaUSYztHiI
-	 RGEpHaOp/Ea923cw5LBr+fYsElg8ZfI04M7ZTglB59qZnAJUO4vd0MyGceqRk7cowJ
-	 KJnHw05bLbIkc1wPALYOMPEwS4Vv8Mo+FsLpZBM4=
+	b=XUZNBpjEjbAgKGqieiGWSKT87HopnZpGQmWpcoloB561AbGG8ijTHYcQ/23zcrcx5
+	 euIQZtXJ0xkog99Acc1LMgdIZZfa3hzyJKi1qdwZwE0Ee7uh+YhJ+w0QhnCe/DDOXX
+	 Eae8htNKHH8QMVlP94xz1MIlGOs7AUPw2WFWbvZ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.15 201/592] iio: adc: ad7944: mask high bits on direct read
-Date: Mon, 23 Jun 2025 15:02:39 +0200
-Message-ID: <20250623130705.070217678@linuxfoundation.org>
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 016/411] crypto: marvell/cesa - Handle zero-length skcipher requests
+Date: Mon, 23 Jun 2025 15:02:40 +0200
+Message-ID: <20250623130633.480005043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +59,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 7cdfbc0113d087348b8e65dd79276d0f57b89a10 upstream.
+[ Upstream commit 8a4e047c6cc07676f637608a9dd675349b5de0a7 ]
 
-Apply a mask to the raw value received over the SPI bus for unsigned
-direct reads. As we found recently, SPI controllers may not set unused
-bits to 0 when reading with bits_per_word != {8,16,32}. The ad7944 uses
-bits_per_word of 14 and 18, so we need to mask the value to be sure we
-returning the correct value to userspace during a direct read.
+Do not access random memory for zero-length skcipher requests.
+Just return 0.
 
-Fixes: d1efcf8871db ("iio: adc: ad7944: add driver for AD7944/AD7985/AD7986")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250505-iio-adc-ad7944-max-high-bits-on-direct-read-v1-1-b173facceefe@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f63601fd616a ("crypto: marvell/cesa - add a new driver for Marvell's CESA")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7944.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/crypto/marvell/cesa/cipher.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -377,6 +377,8 @@ static int ad7944_single_conversion(stru
+diff --git a/drivers/crypto/marvell/cesa/cipher.c b/drivers/crypto/marvell/cesa/cipher.c
+index 0f37dfd42d850..3876e3ce822f4 100644
+--- a/drivers/crypto/marvell/cesa/cipher.c
++++ b/drivers/crypto/marvell/cesa/cipher.c
+@@ -459,6 +459,9 @@ static int mv_cesa_skcipher_queue_req(struct skcipher_request *req,
+ 	struct mv_cesa_skcipher_req *creq = skcipher_request_ctx(req);
+ 	struct mv_cesa_engine *engine;
  
- 	if (chan->scan_type.sign == 's')
- 		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
-+	else
-+		*val &= GENMASK(chan->scan_type.realbits - 1, 0);
- 
- 	return IIO_VAL_INT;
- }
++	if (!req->cryptlen)
++		return 0;
++
+ 	ret = mv_cesa_skcipher_req_init(req, tmpl);
+ 	if (ret)
+ 		return ret;
+-- 
+2.39.5
+
 
 
 
