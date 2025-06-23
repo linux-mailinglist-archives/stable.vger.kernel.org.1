@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3588AAE4F7F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 377B1AE5241
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02A001B60E07
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:16:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0A77B1B64B49
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B432236FA;
-	Mon, 23 Jun 2025 21:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76096221FCC;
+	Mon, 23 Jun 2025 21:41:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARjzQPRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dkhVVHBe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F89A223335;
-	Mon, 23 Jun 2025 21:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D174315A;
+	Mon, 23 Jun 2025 21:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713373; cv=none; b=i/b97RU+NE4UplrwGp7ojcdvG8APgKIEmaNq47YyFlKyW7HdylkV+HIJWRoclsrYzB7z4qdeiU46J3mndnowUkju7KhXrCk4bF/ElldQ+pqETvef+6LIvmZcPk0MbUHfyKuTZkuqyqmu2wrrd0NP3QyeRoE/Wbuko2pwHsxqxR4=
+	t=1750714917; cv=none; b=G0gN7fw68SMarUKrv3d1lPbLc46lkI/FtBYrpi3yczMmY3GuxCkhzx2ovYuYXwCi5wiRqSpIWyz3w8Q+Xwt11T9T0mp6n9DGdL5QGjkmnlWK2umcoAqTqiG8cvwYsGinnRgeTF/lcKrb8vBrDnAgt32g11pvo1XQ+WV8ErYi/f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713373; c=relaxed/simple;
-	bh=Gja8w+ntt8tAoshszK5eYegeiTzXt+zv3cfPgUHXe1E=;
+	s=arc-20240116; t=1750714917; c=relaxed/simple;
+	bh=dhaCsYbXtocCG8sRDBVWLrke1+pq2ZPLTpga4Xyrfv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKQrOnVkb3PRX31w7mRY37oKv/xbvgAjbAzvykLtZl1h3KEIKoAjousNhlhVHnZ2aQFrRAmnl424CRx5o00Fjj0gQ3RThFm+/EIfsW1fIfPKcR/BxEh4U8RBq3bsTsDwpqLvSJ1FQeNv4I3m97367EvCPXWT5xkr0O0ae5t6ONc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARjzQPRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9ABEC4CEF4;
-	Mon, 23 Jun 2025 21:16:12 +0000 (UTC)
+	 MIME-Version; b=Lpid0FsZCaykNW+dch37HW2h0kjOuhXF+KnWM+W2c6BCOK63ivSvnbTcrg/lB89RUuxSadtYNFcwZPHZlfVu9Y9bz9t6YO0OQiKeFMP5vTlrC/oQN7aLDGn2Xnw5h4lpkNLLDHuEzV4TrNVWfqOX+QVrwW4AWzrwXq435xvds/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dkhVVHBe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6150AC4CEEA;
+	Mon, 23 Jun 2025 21:41:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713373;
-	bh=Gja8w+ntt8tAoshszK5eYegeiTzXt+zv3cfPgUHXe1E=;
+	s=korg; t=1750714916;
+	bh=dhaCsYbXtocCG8sRDBVWLrke1+pq2ZPLTpga4Xyrfv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARjzQPRHFYyUR+pQX4HnkUqU2rcUh4Qac2Mn6wN9u+G3SNOTSoY5JRGSBj9qpp9xS
-	 ezPbviQG0sZXkZTbRwDR41AnfXnfsrooKE2mTK5GVX2vpVLvcMAfZ8sQusmY+tpQkF
-	 HhG5yqr0VCEybczvhMDs+xgnS16KCYSX8kSVxtd8=
+	b=dkhVVHBetr/XpEFc5IYUygsBHUYR6r8ifL15z+r5k0wP0RGhUJNNKC/aVR9/vUxyi
+	 PrWwTKL4njXOgsTeO3exeTBVaAy0d2FzSkUlFVjUz963IazJKVjhLcwsmbjq5nwM0N
+	 2H4hwDp/C42taO/xMK1J63vksYAMRr+PGSd4u1Qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 323/592] Bluetooth: btmtksdio: Fix wakeup source leaks on device unbind
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 144/414] cifs: update dstaddr whenever channel iface is updated
 Date: Mon, 23 Jun 2025 15:04:41 +0200
-Message-ID: <20250623130708.129183024@linuxfoundation.org>
+Message-ID: <20250623130645.654101876@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit ee3e4209e66d44180a41d5ca7271361a2a28fccf ]
+commit c1846893991f3b4ec8a0cc12219ada153f0814d6 upstream.
 
-Device can be unbound or probe can fail, so driver must also release
-memory for the wakeup source.
+When the server interface info changes (more common in clustered
+servers like Azure Files), the per-channel iface gets updated.
+However, this did not update the corresponding dstaddr. As a result
+these channels will still connect (or try connecting) to older addresses.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b54034a73baf ("cifs: during reconnect, update interface if necessary")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmtksdio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/sess.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/bluetooth/btmtksdio.c b/drivers/bluetooth/btmtksdio.c
-index 1d26207b2ba70..c16a3518b8ffa 100644
---- a/drivers/bluetooth/btmtksdio.c
-+++ b/drivers/bluetooth/btmtksdio.c
-@@ -1414,7 +1414,7 @@ static int btmtksdio_probe(struct sdio_func *func,
- 	 */
- 	pm_runtime_put_noidle(bdev->dev);
+--- a/fs/smb/client/sess.c
++++ b/fs/smb/client/sess.c
+@@ -473,6 +473,10 @@ cifs_chan_update_iface(struct cifs_ses *
  
--	err = device_init_wakeup(bdev->dev, true);
-+	err = devm_device_init_wakeup(bdev->dev);
- 	if (err)
- 		bt_dev_err(hdev, "failed to initialize device wakeup");
+ 	ses->chans[chan_index].iface = iface;
+ 	spin_unlock(&ses->chan_lock);
++
++	spin_lock(&server->srv_lock);
++	memcpy(&server->dstaddr, &iface->sockaddr, sizeof(server->dstaddr));
++	spin_unlock(&server->srv_lock);
+ }
  
--- 
-2.39.5
-
+ static int
 
 
 
