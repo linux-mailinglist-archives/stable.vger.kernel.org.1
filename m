@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5972AE54A2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24ECCAE4FDE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 14EF4447F26
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F361B61CCF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4041B221543;
-	Mon, 23 Jun 2025 22:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F8802628C;
+	Mon, 23 Jun 2025 21:20:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="asOzydUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P1lkR62N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F13103FB1B;
-	Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23A57482;
+	Mon, 23 Jun 2025 21:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716201; cv=none; b=WWjCAkmoeX5ccBt11MBInwrbJDt+iMqkKKYgdOC5Mk3AOhYCXFYpYKC/pJqapcpSDfL/zxUcIfwgCUtolZ4M1zminrfGeAxxtnHN2kFaNzG0VblL7x2bFdagkmbMPfQDQdEMSL9NygC5JiY7gMcUNsP4zzh2O+H3P1mg85u1sO0=
+	t=1750713600; cv=none; b=WMP61LD0OfdnEG7R68VGZujFhq0HXvcYJiKb28HEstv9TahoM4m2N5HgX1Bn/nfKcpMyCofDuOWtRznJrvAnFVE+YVUIZLOKlW4q3ZeEHeaHOcdaUUpI7BpqJppCkAs/Viqga5G/e9wiCmeSxmUlu6rowdBO+dDzOMBtJcIkl7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716201; c=relaxed/simple;
-	bh=eu0QKKpzEzV8IoYkraRC9xVozvtltxbeEoG5LdJRi+k=;
+	s=arc-20240116; t=1750713600; c=relaxed/simple;
+	bh=k3tk2kV5pw81kwJkZRoPMGRVoYvWmK1NobW9Oy/RPZs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3SX25msmptZDh/f5q8PP5xgzI1luMyRa37MHelQLPH9NNnjD3SrcObjf4KynADVKS0fsLjdIWF8lMDr2ctXTx0ojbFhwEh0WbJrsCbICXYhRpRkVFQrgf8ToaxoXRW/X+xFT4PgpWsQAbS3+NwwMdVOEV+8QrqAOYkg74ifr1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=asOzydUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 890B3C4CEEA;
-	Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
+	 MIME-Version; b=Czf+VxVW5mHKJrhT3X2bFkyH+Ep3R7tG1N4RcHy12jL5oVLOsmuf/APtLA4XS8l8BQqC6+Yfx8WFojUh8WctuJhgk0REKFWUEtHwV6/8mdgP9/kwSwXHooOkiuk+HvaYY1QQNpEWR2fIJfxBOGp0r5flp+P4g0IQxuagEhSLHFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P1lkR62N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A855C4CEEA;
+	Mon, 23 Jun 2025 21:19:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716200;
-	bh=eu0QKKpzEzV8IoYkraRC9xVozvtltxbeEoG5LdJRi+k=;
+	s=korg; t=1750713599;
+	bh=k3tk2kV5pw81kwJkZRoPMGRVoYvWmK1NobW9Oy/RPZs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=asOzydUokwYFXT9tWGnqdGMp0i896sNavQ0JA4kuO+YZeF9g+byFW3LCgm1l54UyC
-	 hLlqjJH3q8o5Zy9H/R1Ml1IIzR4MhcL2CWsSPWBYNyqCA0PMY9mXYdZcM1d8hl+dXU
-	 G2Z1rqNBK2bpae79JGd2ksC7M6Qf2qzcsk081WFE=
+	b=P1lkR62NbXuQ8ZHhyAsceRJzy87ZORGUsHXXpj90Eb/KZ9QVKnjUEOkQGBGpVEwU0
+	 dWUetHb23XG/gQ8oNQ+d7YVYVdLmj2qVCc8zP07c85wP4NEHECFq2t5JdbIeMUF1fk
+	 GQf6XJXCy+X+16vdxgRQxTQIaJprGLP/yVjdmGWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	reox <mailinglist@reox.at>,
-	Avadhut Naik <avadhut.naik@amd.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	stable@kernel.org
-Subject: [PATCH 6.6 269/290] EDAC/amd64: Correct number of UMCs for family 19h models 70h-7fh
+	WangYuli <wangyuli@uniontech.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 195/222] Input: sparcspkr - avoid unannotated fall-through
 Date: Mon, 23 Jun 2025 15:08:50 +0200
-Message-ID: <20250623130635.009294286@linuxfoundation.org>
+Message-ID: <20250623130618.094956393@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Avadhut Naik <avadhut.naik@amd.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-commit b2e673ae53ef4b943f68585207a5f21cfc9a0714 upstream.
+commit 8b1d858cbd4e1800e9336404ba7892b5a721230d upstream.
 
-AMD's Family 19h-based Models 70h-7fh support 4 unified memory controllers
-(UMC) per processor die.
+Fix follow warnings with clang-21i (and reformat for clarity):
+  drivers/input/misc/sparcspkr.c:78:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+     78 |                 case SND_TONE: break;
+        |                 ^
+  drivers/input/misc/sparcspkr.c:78:3: note: insert 'break;' to avoid fall-through
+     78 |                 case SND_TONE: break;
+        |                 ^
+        |                 break;
+  drivers/input/misc/sparcspkr.c:113:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+    113 |                 case SND_TONE: break;
+        |                 ^
+  drivers/input/misc/sparcspkr.c:113:3: note: insert 'break;' to avoid fall-through
+    113 |                 case SND_TONE: break;
+        |                 ^
+        |                 break;
+  2 warnings generated.
 
-The amd64_edac driver, however, assumes only 2 UMCs are supported since
-max_mcs variable for the models has not been explicitly set to 4. The same
-results in incomplete or incorrect memory information being logged to dmesg by
-the module during initialization in some instances.
-
-Fixes: 6c79e42169fe ("EDAC/amd64: Add support for ECC on family 19h model 60h-7Fh")
-Closes: https://lore.kernel.org/all/27dc093f-ce27-4c71-9e81-786150a040b6@reox.at/
-Reported-by: reox <mailinglist@reox.at>
-Signed-off-by: Avadhut Naik <avadhut.naik@amd.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250613005233.2330627-1-avadhut.naik@amd.com
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/6730E40353C76908+20250415052439.155051-1-wangyuli@uniontech.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/amd64_edac.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/misc/sparcspkr.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
---- a/drivers/edac/amd64_edac.c
-+++ b/drivers/edac/amd64_edac.c
-@@ -4130,6 +4130,7 @@ static int per_family_init(struct amd64_
- 			break;
- 		case 0x70 ... 0x7f:
- 			pvt->ctl_name			= "F19h_M70h";
-+			pvt->max_mcs			= 4;
- 			pvt->flags.zn_regs_v2		= 1;
- 			break;
- 		case 0xa0 ... 0xaf:
+--- a/drivers/input/misc/sparcspkr.c
++++ b/drivers/input/misc/sparcspkr.c
+@@ -74,9 +74,14 @@ static int bbc_spkr_event(struct input_d
+ 		return -1;
+ 
+ 	switch (code) {
+-		case SND_BELL: if (value) value = 1000;
+-		case SND_TONE: break;
+-		default: return -1;
++	case SND_BELL:
++		if (value)
++			value = 1000;
++		break;
++	case SND_TONE:
++		break;
++	default:
++		return -1;
+ 	}
+ 
+ 	if (value > 20 && value < 32767)
+@@ -112,9 +117,14 @@ static int grover_spkr_event(struct inpu
+ 		return -1;
+ 
+ 	switch (code) {
+-		case SND_BELL: if (value) value = 1000;
+-		case SND_TONE: break;
+-		default: return -1;
++	case SND_BELL:
++		if (value)
++			value = 1000;
++		break;
++	case SND_TONE:
++		break;
++	default:
++		return -1;
+ 	}
+ 
+ 	if (value > 20 && value < 32767)
 
 
 
