@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F506AE52D0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 857A2AE501D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86D81B65CAB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84EC1B62087
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41781C84A0;
-	Mon, 23 Jun 2025 21:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FB61222599;
+	Mon, 23 Jun 2025 21:22:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRT2aUcW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyWnTbfR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B064A3FD4;
-	Mon, 23 Jun 2025 21:47:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0EA4221727;
+	Mon, 23 Jun 2025 21:22:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715247; cv=none; b=bbuiLXubry5CSUpZfrrJE4r/zs6sdkPvqbS0vcgo53YFtmIZ3snUSJOWeiWi4OKr4RzkqCj9dRAo9caIPTPViJOWHZkqJJsgMx+8kV+E/X0q11Jjnxhh5KX3Mt7k1aNl1Q1pwNP+llqLUeaSBeS59e2Gt/A1u5rvBFL5zKDhHeU=
+	t=1750713736; cv=none; b=EqSERMxD3FcOeHyELa7fFqrDrXDTHTtapMO6AC6xhJT8byGCb6pnvBvyfGwChhkjc8qzXMrz0Uql1x/7sez8uMFvE5vYe5TdfF1dids54a6U1+RHfmgQf8k4L/ZeIlwP2LgmeCagAiyYS9FFkFiT73eITbm+/27V9UF8lMaVunk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715247; c=relaxed/simple;
-	bh=G3Igq2K1nZHvQjogmBft5hRBAjwUfGdD54DfMAyUWiA=;
+	s=arc-20240116; t=1750713736; c=relaxed/simple;
+	bh=vtVVhxiZ9TSO7LAMpS+X90BzgqAfmEkbxBbdwtAfDso=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GJpP6ei5beeEJvWqPIwtqIbEUAYMX9BMCWwTxZ9lDNStb8+4eGTQk8iUB28p+m+Aj63sXgOmQwck1jwHtRLXl4cFmFAleUkqu2nqHJdBNThbtWtYpf0vAgsU0fkC4fpj4nfJV3cwuwjQR4JbVSUpg0401TBeMorBq68RF+uod6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRT2aUcW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488DBC4CEEA;
-	Mon, 23 Jun 2025 21:47:27 +0000 (UTC)
+	 MIME-Version; b=npnf4eQoExogfrbYQlmwOWecgWlxXBEk/FQsS3r/c2af0MX1WqxO7h9/9Kl8APZpCBYg+KaL/mNf6YVQ8oNiyLdztQBmtI/MAIRinZeqJNzUvQ/LTq36CnwNyI8kdr7EViBDWIJESfjT+/oA+O3yxprUCNHUm5judXQDE2Uvx78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyWnTbfR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DB1C4CEEA;
+	Mon, 23 Jun 2025 21:22:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715247;
-	bh=G3Igq2K1nZHvQjogmBft5hRBAjwUfGdD54DfMAyUWiA=;
+	s=korg; t=1750713736;
+	bh=vtVVhxiZ9TSO7LAMpS+X90BzgqAfmEkbxBbdwtAfDso=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BRT2aUcWmRhnKqZPkj7uGafyXOrhjkr6Zsy9xAXTUBW9D8aUZozthOl9ZEdgKcStj
-	 Ll+q3TJinur4b/ixggblBSeUSGmLzubIWMVt36GNW1G/t+htRwmN0KRXOvOGRalfBz
-	 WFC86RKgPnAHNOW1i9Z+Igxim5jx+rQy+ogCOVJo=
+	b=IyWnTbfRqXG/aFo5Qg4APlTOzbLnHyBiEChv/cXpyaxcVcfWyHzVyyg3nJORRkx4a
+	 EykN4rVRES3UERTvkps8XVsrykDzb8Lq/P2nKF11M5mBq0oCqXEeq5+vOr7ksla3Mi
+	 0CQtVixUQhEEmIVi26dFlyP5u18laX0bigAiVoZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur-Prince <r2.arthur.prince@gmail.com>,
-	=?UTF-8?q?Mariana=20Val=C3=A9rio?= <mariana.valerio2@hotmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 165/414] iio: adc: ti-ads1298: Kconfig: add kfifo dependency to fix module build
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 344/592] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
 Date: Mon, 23 Jun 2025 15:05:02 +0200
-Message-ID: <20250623130646.158602910@linuxfoundation.org>
+Message-ID: <20250623130708.632356767@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +60,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arthur-Prince <r2.arthur.prince@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 3c5dfea39a245b2dad869db24e2830aa299b1cf2 upstream.
+[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
 
-Add dependency to Kconfig’s ti-ads1298 because compiling it as a module
-failed with an undefined kfifo symbol.
+tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
+in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
 
-Fixes: 00ef7708fa60 ("iio: adc: ti-ads1298: Add driver")
-Signed-off-by: Arthur-Prince <r2.arthur.prince@gmail.com>
-Co-developed-by: Mariana Valério <mariana.valerio2@hotmail.com>
-Signed-off-by: Mariana Valério <mariana.valerio2@hotmail.com>
-Link: https://patch.msgid.link/20250430191131.120831-1-r2.arthur.prince@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When TCP TS are enabled, tcp_rcv_rtt_update() is using
+EWMA to smooth the samples.
+
+Change this to immediately latch the incoming value if it
+is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
+does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ net/ipv4/tcp_input.c | 22 ++++++++--------------
+ 1 file changed, 8 insertions(+), 14 deletions(-)
 
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -1452,6 +1452,7 @@ config TI_ADS1298
- 	tristate "Texas Instruments ADS1298"
- 	depends on SPI
- 	select IIO_BUFFER
-+	select IIO_KFIFO_BUF
- 	help
- 	  If you say yes here you get support for Texas Instruments ADS1298
- 	  medical ADC chips
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index a35018e2d0ba2..45177758faeaa 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -664,10 +664,12 @@ EXPORT_IPV6_MOD(tcp_initialize_rcv_mss);
+  */
+ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ {
+-	u32 new_sample = tp->rcv_rtt_est.rtt_us;
+-	long m = sample;
++	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
++	long m = sample << 3;
+ 
+-	if (new_sample != 0) {
++	if (old_sample == 0 || m < old_sample) {
++		new_sample = m;
++	} else {
+ 		/* If we sample in larger samples in the non-timestamp
+ 		 * case, we could grossly overestimate the RTT especially
+ 		 * with chatty applications or bulk transfer apps which
+@@ -678,17 +680,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+ 		 * else with timestamps disabled convergence takes too
+ 		 * long.
+ 		 */
+-		if (!win_dep) {
+-			m -= (new_sample >> 3);
+-			new_sample += m;
+-		} else {
+-			m <<= 3;
+-			if (m < new_sample)
+-				new_sample = m;
+-		}
+-	} else {
+-		/* No previous measure. */
+-		new_sample = m << 3;
++		if (win_dep)
++			return;
++		new_sample = old_sample - (old_sample >> 3) + sample;
+ 	}
+ 
+ 	tp->rcv_rtt_est.rtt_us = new_sample;
+-- 
+2.39.5
+
 
 
 
