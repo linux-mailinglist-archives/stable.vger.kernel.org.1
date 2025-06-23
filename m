@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F46AE42F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 939AAAE4384
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B608188BAFE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E6F03A288C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D2D2512D1;
-	Mon, 23 Jun 2025 13:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F9224E4C3;
+	Mon, 23 Jun 2025 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vot51BdD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MO9kizh7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 880622367B0;
-	Mon, 23 Jun 2025 13:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8134B248191;
+	Mon, 23 Jun 2025 13:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684927; cv=none; b=J+68v+8JxjnJGT3GHQiA0Z09bE5PCWjFCj549z1Xiwnpyj2ZypvGDHcCGk7gWiWC1HsWwUzy9SKLytQJUUEZ4NnETlBdwo0SW8qOkl2yerVa0P82h3kApeY4LFrucJ296R/wuPEsah8klAspfTk9SIdir97FqXkNtTUqVinEv4c=
+	t=1750685193; cv=none; b=myGH1ZN523PyoxWVkUPqmHbIAKgyP0Idooikg5TNaMt1z6wQ9TeFvnl/rZZU82R2vexyfYHCGJoH098Ie7t6jGha2k2Rdh9tk/faYXQi+xgCJQP8Z9NWmuQSsJsmzeb7nBXjazHke2YgCoKFOS0nwlPILPLl56a+zDsZ11cPjPo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684927; c=relaxed/simple;
-	bh=Bwr+bU+p+WwJVRjrN2WAdbC+Y5d4Ty2X77qBBkM8sDk=;
+	s=arc-20240116; t=1750685193; c=relaxed/simple;
+	bh=VPiYl4LlpNNfO6sBILxslKfFKwYofJtged8FE0Myy/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IK/+s7Owbh7THErZzW3fOYmwt+TCEVHGUb+KbdBdhoyPYDcx/0ienj45IpHwbO1cjBJLO0xgQD54pk/9zvguR6ZYrGiENITwUVuWHRo4e3FkSyz/8WaUzrl0zCl/GF0knUmm8SnRmujxMzrYX/336kXb5WSvN5+f5/LIWW10z2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vot51BdD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89D7C4CEEA;
-	Mon, 23 Jun 2025 13:22:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=IHWKST7XokP2LqEtQsDnxSTGQmuTQq5cMpGXRkS60kIBjYJDbEZ6YC1AIyaNVoj6ayIfvsa2iLP0o4Buu7PB7k2wwT4nRM8jrXwE1iLyc7vUGxeLi1dFlYLRGazprrfsb6lm1eDvB1jNwS79r1OpiD0ihhst6CXKbEMXLecJF/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MO9kizh7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168D7C4CEEA;
+	Mon, 23 Jun 2025 13:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684927;
-	bh=Bwr+bU+p+WwJVRjrN2WAdbC+Y5d4Ty2X77qBBkM8sDk=;
+	s=korg; t=1750685193;
+	bh=VPiYl4LlpNNfO6sBILxslKfFKwYofJtged8FE0Myy/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vot51BdDymxmPWSTqvn2HqlNtlDRhRbUQkFn9/H6oHFlvjNZA1gfOyVZIlCMEIKBx
-	 VPR+/W6s0/a2bHLOxonbrKbwhxlmI4V0xoOa1Bl3r9mLiuicl+CuT1YDmUC/F2khrd
-	 s6biwbhlRlnb/qJIepJo+2KEbhqiiAa135+Vp4QM=
+	b=MO9kizh7lDFi//nWYirKH+5Xne5cq4Bplo6vUAgA5JJ7SLpBhcPWhDK+5wApWaHtP
+	 kGp/LGvT/sYpMYwr4QbJlen5D0SO6saHIhwTXPx5WHQapRLUw4LiRwi73lbIq5tJ2m
+	 l3uzjneXdNSxSo0iD8+OX7yoFFcPf61xcrdmeflk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Subject: [PATCH 6.15 191/592] accel/ivpu: Use firmware names from upstream repo
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 5.15 005/411] rtc: Make rtc_time64_to_tm() support dates before 1970
 Date: Mon, 23 Jun 2025 15:02:29 +0200
-Message-ID: <20250623130704.829403024@linuxfoundation.org>
+Message-ID: <20250623130633.154795253@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +60,90 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-commit 1c2c0e29f24360b3130c005a3c261cb8c7b363c6 upstream.
+commit 7df4cfef8b351fec3156160bedfc7d6d29de4cce upstream.
 
-Use FW names from linux-firmware repo instead of deprecated ones.
-The vpu_37xx.bin style names were never released and were only used for
-internal testing, so it is safe to remove them.
+Conversion of dates before 1970 is still relevant today because these
+dates are reused on some hardwares to store dates bigger than the
+maximal date that is representable in the device's native format.
+This prominently and very soon affects the hardware covered by the
+rtc-mt6397 driver that can only natively store dates in the interval
+1900-01-01 up to 2027-12-31. So to store the date 2028-01-01 00:00:00
+to such a device, rtc_time64_to_tm() must do the right thing for
+time=-2208988800.
 
-Fixes: c140244f0cfb ("accel/ivpu: Add initial Panther Lake support")
-Cc: stable@vger.kernel.org # v6.13+
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Jacek Lawrynowicz <jacek.lawrynowicz@linux.intel.com>
-Link: https://lore.kernel.org/r/20250506092030.280276-1-jacek.lawrynowicz@linux.intel.com
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-1-2b2f7e3f9349@baylibre.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/accel/ivpu/ivpu_fw.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/rtc/lib.c |   24 +++++++++++++++++++-----
+ 1 file changed, 19 insertions(+), 5 deletions(-)
 
---- a/drivers/accel/ivpu/ivpu_fw.c
-+++ b/drivers/accel/ivpu/ivpu_fw.c
-@@ -55,18 +55,18 @@ static struct {
- 	int gen;
- 	const char *name;
- } fw_names[] = {
--	{ IVPU_HW_IP_37XX, "vpu_37xx.bin" },
-+	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v1.bin" },
- 	{ IVPU_HW_IP_37XX, "intel/vpu/vpu_37xx_v0.0.bin" },
--	{ IVPU_HW_IP_40XX, "vpu_40xx.bin" },
-+	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v1.bin" },
- 	{ IVPU_HW_IP_40XX, "intel/vpu/vpu_40xx_v0.0.bin" },
--	{ IVPU_HW_IP_50XX, "vpu_50xx.bin" },
-+	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v1.bin" },
- 	{ IVPU_HW_IP_50XX, "intel/vpu/vpu_50xx_v0.0.bin" },
- };
- 
- /* Production fw_names from the table above */
--MODULE_FIRMWARE("intel/vpu/vpu_37xx_v0.0.bin");
--MODULE_FIRMWARE("intel/vpu/vpu_40xx_v0.0.bin");
--MODULE_FIRMWARE("intel/vpu/vpu_50xx_v0.0.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_37xx_v1.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_40xx_v1.bin");
-+MODULE_FIRMWARE("intel/vpu/vpu_50xx_v1.bin");
- 
- static int ivpu_fw_request(struct ivpu_device *vdev)
+--- a/drivers/rtc/lib.c
++++ b/drivers/rtc/lib.c
+@@ -46,24 +46,38 @@ EXPORT_SYMBOL(rtc_year_days);
+  * rtc_time64_to_tm - converts time64_t to rtc_time.
+  *
+  * @time:	The number of seconds since 01-01-1970 00:00:00.
+- *		(Must be positive.)
++ *		Works for values since at least 1900
+  * @tm:		Pointer to the struct rtc_time.
+  */
+ void rtc_time64_to_tm(time64_t time, struct rtc_time *tm)
  {
+-	unsigned int secs;
+-	int days;
++	int days, secs;
+ 
+ 	u64 u64tmp;
+ 	u32 u32tmp, udays, century, day_of_century, year_of_century, year,
+ 		day_of_year, month, day;
+ 	bool is_Jan_or_Feb, is_leap_year;
+ 
+-	/* time must be positive */
++	/*
++	 * Get days and seconds while preserving the sign to
++	 * handle negative time values (dates before 1970-01-01)
++	 */
+ 	days = div_s64_rem(time, 86400, &secs);
+ 
++	/*
++	 * We need 0 <= secs < 86400 which isn't given for negative
++	 * values of time. Fixup accordingly.
++	 */
++	if (secs < 0) {
++		days -= 1;
++		secs += 86400;
++	}
++
+ 	/* day of the week, 1970-01-01 was a Thursday */
+ 	tm->tm_wday = (days + 4) % 7;
++	/* Ensure tm_wday is always positive */
++	if (tm->tm_wday < 0)
++		tm->tm_wday += 7;
+ 
+ 	/*
+ 	 * The following algorithm is, basically, Proposition 6.3 of Neri
+@@ -93,7 +107,7 @@ void rtc_time64_to_tm(time64_t time, str
+ 	 * thus, is slightly different from [1].
+ 	 */
+ 
+-	udays		= ((u32) days) + 719468;
++	udays		= days + 719468;
+ 
+ 	u32tmp		= 4 * udays + 3;
+ 	century		= u32tmp / 146097;
 
 
 
