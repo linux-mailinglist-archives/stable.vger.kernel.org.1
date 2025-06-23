@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CF2FAE54DE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CB570AE5133
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D6D54C2347
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6867F4A3116
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 453B6221DA8;
-	Mon, 23 Jun 2025 22:05:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A9421E1A05;
+	Mon, 23 Jun 2025 21:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0d8bt8Z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WnwAp7lU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CC91A4F12;
-	Mon, 23 Jun 2025 22:05:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72C9C2E0;
+	Mon, 23 Jun 2025 21:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716326; cv=none; b=gFCcpmGe9kFf36Lm00MPcgiHpNtI0uXjpOqA77Gw69kOSGxPsjUGunKYrA+5AR3d17mDPER9BomTM0B7d4/W4xa3tQN6lGhFnruUt9hdeZ1Mgd6jEM6Gc9Gii9bZaHfCtSN34Ss/klUgd1Axbil7Zlpab1KUXEe8z4tN2GKjAaI=
+	t=1750714301; cv=none; b=sLqFJSmEOdt9/ZNar/d2PcIIA387+oMCaaVQhEpafetZFmc+hrsYmUQtb1CxTh08yCknXFjqsQVEgYKrlDwiS56W9OUczHH1aK+q5SAC7pEBEwfBB74U4Ac1OQIarA1Mf2ql9ZifQkeVw6ptlUhESJ7qkDJt/dwSb08LHE0FGVU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716326; c=relaxed/simple;
-	bh=2DipuLCzwhlVxRkMEA0DlpZkOTi+eDsqbmxqkBvgJeY=;
+	s=arc-20240116; t=1750714301; c=relaxed/simple;
+	bh=lZPpmI71g/UchR0G1Q4bqrJB/VA4gKLCwze9QvJ4Qs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CK7mIcdwtZSn0EIAvdbQd460v4DvXjq+V5qf8A8B93DYtn8z0nL8emMvdhXPYtJnxXnh5e5q56gYF96VJ0U2NrjBTo0a/g8qAyFks27NWYOWIRIlBC0+YyfficVwqLV8ttP8LfIiBE5Dh81cxz2pCnoR0RfsPP5cHSYsyQeC9hM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0d8bt8Z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBBEC4CEEA;
-	Mon, 23 Jun 2025 22:05:25 +0000 (UTC)
+	 MIME-Version; b=GD7yJQGpxZQDHP6l58XM2Iayz6KATPN910MWzzHiLrBIISODfbS+Cltjq9Wmt4fNvF/16lfbtVv//0kY2CM415gjGGnFHvJ6ZtnQ0nMFtmdSm49KwKSOY6P8FeJFnZXhOV9Pu4MiFhM1qXKSW+buiESQxG98kZBWNikpOaxFYa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WnwAp7lU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC18C4CEEA;
+	Mon, 23 Jun 2025 21:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716325;
-	bh=2DipuLCzwhlVxRkMEA0DlpZkOTi+eDsqbmxqkBvgJeY=;
+	s=korg; t=1750714301;
+	bh=lZPpmI71g/UchR0G1Q4bqrJB/VA4gKLCwze9QvJ4Qs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0d8bt8Z6kvnGaOHKmmOLWM3worc2KX0PONlIwRL1cv9rS/icU+1CK5crHZRfyd9iv
-	 yFGIdZPLQ7Zzskg4xcfqTg5yaRLc+I6KmU+lPE9usYIT9v/C45U6lHFuwLcSnTpoar
-	 Jcp9NaeemTY10GWH2g1rqerRGOEg3brGHXK+cfnA=
+	b=WnwAp7lUMb7kg08sEagedyKXTa9Xn1H1verDbrNwPATTxzOPx2G1y4vARCztHhteO
+	 xF24WsN/OnKSFi1UTkILkjVJJmt98LjkSxSzsc+4hRZP7Vw5+PluPKfKDSYTPrWAsC
+	 330UZiAU/GnFhxALKXJwz5MlB6ZKHbUqYgtGKpbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 295/508] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
+	Sean Christopherson <seanjc@google.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 382/592] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
 Date: Mon, 23 Jun 2025 15:05:40 +0200
-Message-ID: <20250623130652.546644539@linuxfoundation.org>
+Message-ID: <20250623130709.528376775@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 9cc0eafd28c7faef300822992bb08d79cab2a36c upstream.
+[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
 
-When a system is being suspended to RAM, the PCI devices are also
-suspended and the PPC code ends up calling pseries_msi_compose_msg() and
-this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
-this point is in reduced power state. In reduced power state, the memory
-mapped registers of the PCI device are not accessible.
+Synchronize RCU when unregistering KVM's GA log notifier to ensure all
+in-flight interrupt handlers complete before KVM-the module is unloaded.
 
-To replicate the bug:
-1. Make sure deep sleep is selected
-	# cat /sys/power/mem_sleep
-	s2idle [deep]
-
-2. Make sure console is not suspended (so that dmesg logs are visible)
-	echo N > /sys/module/printk/parameters/console_suspend
-
-3. Suspend the system
-	echo mem > /sys/power/state
-
-To fix this behaviour, read the cached msi message of the device when the
-device is not in PCI_D0 power state instead of touching the hardware.
-
-Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250305090237.294633-1-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/msi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/iommu/amd/iommu.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -522,7 +522,12 @@ static struct msi_domain_info pseries_ms
- 
- static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
+diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
+index a05e0eb1729bf..31f8d208dedb7 100644
+--- a/drivers/iommu/amd/iommu.c
++++ b/drivers/iommu/amd/iommu.c
+@@ -1005,6 +1005,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
  {
--	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
-+
-+	if (dev->current_state == PCI_D0)
-+		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	else
-+		get_cached_msi_msg(data->irq, msg);
- }
+ 	iommu_ga_log_notifier = notifier;
  
- static struct irq_chip pseries_msi_irq_chip = {
++	/*
++	 * Ensure all in-flight IRQ handlers run to completion before returning
++	 * to the caller, e.g. to ensure module code isn't unloaded while it's
++	 * being executed in the IRQ handler.
++	 */
++	if (!notifier)
++		synchronize_rcu();
++
+ 	return 0;
+ }
+ EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
+-- 
+2.39.5
+
 
 
 
