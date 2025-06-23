@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157952-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DC88AE55A9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58AA1AE5655
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F34DD1BC557B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 242A71736E8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CFAD22AE5D;
-	Mon, 23 Jun 2025 22:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6EDE224B1F;
+	Mon, 23 Jun 2025 22:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i6bf1wq9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GkQdlhm+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAAFD22A7EF;
-	Mon, 23 Jun 2025 22:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9302E222599;
+	Mon, 23 Jun 2025 22:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716754; cv=none; b=H1WFTFSH616jimH05ea6n/6YDwQIDZIzuG9MsuCBsJ5ff1O84eri1Qa7KS/s/OqU+C+7aCtYs5/rosdiKmI6pNKNyzN1GMXzw2dBKgrE5QClWP8jPBLiGIWoxuAq426bFiRxCSdijlTeASZ1XTzkNOwrC0a3H6/cTvdArpwooGA=
+	t=1750717121; cv=none; b=fOnve6K1eMxBmWdMu9Q50vOtQb2Fo07nU370L6v/4ihlCj74uZnDTnFmHaxRWFDVuvat5QVbu31ApuOd/54iMv5Y2yeUV1CPbjMG/Gkji1gHX1D+/1gJlOEqyKAKUxa0M8CiBfyLauIgaft1dVXs8Yf0cYsRYVfGIPVsvqXfscY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716754; c=relaxed/simple;
-	bh=b4lcvd9K8FZPzIUVdVzzNi2TDPffRPQO7gK7OsY/yc4=;
+	s=arc-20240116; t=1750717121; c=relaxed/simple;
+	bh=G9dtbWEbSAkSB2hFrz456tRDksHhdfZl6iDoVK8HkyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GLEaW9NzA2Eq8UBMHpWpqMv8DbvNmcORmnc5X1mZHJfVRu0btZSmJRY5ok0IIh2UhYNXfncl6wzhEuuMwpKGIHd+I2vz8uBBN0sVA369OzsUaHaPb5M+CKWHWo2vVP40PVfbX0IwLIXMGLEOA+FFnuvTOQm/3ssZecd6/+qpw5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i6bf1wq9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B700C4CEEA;
-	Mon, 23 Jun 2025 22:12:34 +0000 (UTC)
+	 MIME-Version; b=XyB3B9so54wh5vxFoUHKIzVwv4xWN/PCtrQE69fOke5atIPzTTHT7gHNZbmyaMCGxlgtIJeURGt3R1fttF2VTO7zbXV6/7ytKP9utPlcCuzSETfDB2rdlU/TKwLf7Ri41CQG6jPTxlUuwrpCymzWwgogpPNxltONXSNPeRuUcFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GkQdlhm+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B374C4CEEA;
+	Mon, 23 Jun 2025 22:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716754;
-	bh=b4lcvd9K8FZPzIUVdVzzNi2TDPffRPQO7gK7OsY/yc4=;
+	s=korg; t=1750717121;
+	bh=G9dtbWEbSAkSB2hFrz456tRDksHhdfZl6iDoVK8HkyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6bf1wq9X08zdChxpzlgViEe4CXYooxDCbM2VFjb7A59D7io277srYa3+2e2RO/Th
-	 burrM4+U8LJRF0Ubivsh5nwmk5Jc88P8sN1vAvaNo04KutV2I0Gj/93NS89+cH0SGF
-	 Ew6vpuroDoBMXVax7z30eKQFbcqybjTtYMvfzVps=
+	b=GkQdlhm+yJsfbITRGMDPkXAKbBdR25QtSheYXl437c04sKYZ4kWUsW9o7C0UGGu15
+	 4XDcelGM6r85uCfq5FfxWA5GdTLW8njhn2OTDg+quR/IKbNkJNaz1hZFJJaJpPyQPF
+	 sDNqfOgiVn3SDZ23Y462wG5E+5uNHw1Qh4iN5uKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/290] RISC-V: KVM: Dont treat SBI HFENCE calls as NOPs
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	Amir Goldstein <amir73il@gmail.com>
+Subject: [PATCH 5.15 404/411] ext4: make abort mount option handling standard
 Date: Mon, 23 Jun 2025 15:09:08 +0200
-Message-ID: <20250623130635.553624885@linuxfoundation.org>
+Message-ID: <20250623130643.851641431@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 2e7be162996640bbe3b6da694cc064c511b8a5d9 ]
+commit 22b8d707b07e6e06f50fe1d9ca8756e1f894eb0d upstream.
 
-The SBI specification clearly states that SBI HFENCE calls should
-return SBI_ERR_NOT_SUPPORTED when one of the target hart doesn’t
-support hypervisor extension (aka nested virtualization in-case
-of KVM RISC-V).
+'abort' mount option is the only mount option that has special handling
+and sets a bit in sbi->s_mount_flags. There is not strong reason for
+that so just simplify the code and make 'abort' set a bit in
+sbi->s_mount_opt2 as any other mount option. This simplifies the code
+and will allow us to drop EXT4_MF_FS_ABORTED completely in the following
+patch.
 
-Fixes: c7fa3c48de86 ("RISC-V: KVM: Treat SBI HFENCE calls as NOPs")
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250605061458.196003-3-apatel@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230616165109.21695-4-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: 76486b104168 ("ext4: avoid remount errors with 'abort' mount option")
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/ext4/ext4.h  |    1 +
+ fs/ext4/super.c |    6 ++----
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
-index 960836e0cac74..36f5386c60db7 100644
---- a/arch/riscv/kvm/vcpu_sbi_replace.c
-+++ b/arch/riscv/kvm/vcpu_sbi_replace.c
-@@ -127,9 +127,9 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
- 	case SBI_EXT_RFENCE_REMOTE_HFENCE_VVMA_ASID:
- 		/*
- 		 * Until nested virtualization is implemented, the
--		 * SBI HFENCE calls should be treated as NOPs
-+		 * SBI HFENCE calls should return not supported
-+		 * hence fallthrough.
- 		 */
--		break;
- 	default:
- 		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -1255,6 +1255,7 @@ struct ext4_inode_info {
+ #define EXT4_MOUNT2_MB_OPTIMIZE_SCAN	0x00000080 /* Optimize group
+ 						    * scanning in mballoc
+ 						    */
++#define EXT4_MOUNT2_ABORT		0x00000100 /* Abort filesystem */
+ 
+ #define clear_opt(sb, opt)		EXT4_SB(sb)->s_mount_opt &= \
+ 						~EXT4_MOUNT_##opt
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2023,6 +2023,7 @@ static const struct mount_opts {
+ 	 MOPT_SET | MOPT_2 | MOPT_EXT4_ONLY},
+ 	{Opt_fc_debug_max_replay, 0, MOPT_GTE0},
+ #endif
++	{Opt_abort, EXT4_MOUNT2_ABORT, MOPT_SET | MOPT_2},
+ 	{Opt_err, 0, 0}
+ };
+ 
+@@ -2143,9 +2144,6 @@ static int handle_mount_opt(struct super
+ 	case Opt_removed:
+ 		ext4_msg(sb, KERN_WARNING, "Ignoring removed %s option", opt);
+ 		return 1;
+-	case Opt_abort:
+-		ext4_set_mount_flag(sb, EXT4_MF_FS_ABORTED);
+-		return 1;
+ 	case Opt_i_version:
+ 		sb->s_flags |= SB_I_VERSION;
+ 		return 1;
+@@ -5851,7 +5849,7 @@ static int ext4_remount(struct super_blo
+ 		goto restore_opts;
  	}
--- 
-2.39.5
-
+ 
+-	if (ext4_test_mount_flag(sb, EXT4_MF_FS_ABORTED))
++	if (test_opt2(sb, ABORT))
+ 		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
+ 
+ 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
 
 
 
