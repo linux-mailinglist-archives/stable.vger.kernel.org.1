@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156449-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCAD8AE4F9F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC564AE4F3A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3167A3BE137
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5847B17C336
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51031221FDC;
-	Mon, 23 Jun 2025 21:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3A6B22156B;
+	Mon, 23 Jun 2025 21:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XvpRRGoj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6QhyzYp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BBFA1EDA0F;
-	Mon, 23 Jun 2025 21:17:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F1AF221F34;
+	Mon, 23 Jun 2025 21:13:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713439; cv=none; b=NnE12VimLkCUkyDYxNFzYoSy2QFhd9QFOrjP68JNreb/m+GWPIq64eHQoWofkHeDDJo+M1tMBsvbx7qABuT2gEJVv+QrFykJuSatc6i49aR/yAWN3DfRUuwBIfzvq4JF3nCRJEte8FbyYCsZcCdeHsax5Ggz08CgnEFR9tEQ418=
+	t=1750713209; cv=none; b=juh6fgYmfDzKrdS2MG2AA34ZzNTmAQH6oC6CeCV+keMqs9pvzplurSOVjoL5DPJUxgP2EyhI+fbNEecZWnfcMK1zzF8E+83YAgEy3HaWLuhGEnwLIwHuDh31LI5fim8I80uVQR569BZgi8FPZHUGw3ls8Tk4JWmjV3XJCJyrDLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713439; c=relaxed/simple;
-	bh=fO2qcASyEXtm0u3ir/qxoUPZ6zsl658aWwz8gPWG6fQ=;
+	s=arc-20240116; t=1750713209; c=relaxed/simple;
+	bh=pCSuUchl7TkKHEy25ai5t6KZ+wpmSks7wF8YXm/v8r8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=od54/ulcSLQdEGSJiC+T3wtWLtIXEGFYgzXlEe+gE4InF3BS6cZ+qj9aGxzMIs+IjfJv+GO6SuZeOgE9N0lkbo0ddVA2b9CZM/Q3ZVJ2mLr6cZKwNiaUooWwgpemYOLcOj9aSw+N2QNF+uMpJ87mmJJYh4BymDOVlJHk0KrEIw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XvpRRGoj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97755C4CEEA;
-	Mon, 23 Jun 2025 21:17:18 +0000 (UTC)
+	 MIME-Version; b=InJRHnGni8sSwkw8x7nndXlscUcmuZc5DwTBkhkCkeMdne1YESjOBRebgA9Y55szoeZg5bbp+LU9Uf8bwnGMh3T6LnMrZyoAvFczwXKcYy9YLe8DRGeN0gSxMeUBtkHlBWRsP5RiIkj4nxGNMj9Zuk9LFycNlTuaDj/HsCJrfdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6QhyzYp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29CD4C4CEEA;
+	Mon, 23 Jun 2025 21:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713438;
-	bh=fO2qcASyEXtm0u3ir/qxoUPZ6zsl658aWwz8gPWG6fQ=;
+	s=korg; t=1750713209;
+	bh=pCSuUchl7TkKHEy25ai5t6KZ+wpmSks7wF8YXm/v8r8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XvpRRGojm779VBC+je8ofvzLU591JdQMtOhpeqktPFP8k7noM7q2Re6LThX0JOxqw
-	 PHh/qSH7nccEUpIKYHbilbxnkaY+Z40E26w2OWizL3491kxRe2sLBt5U+wUqgjpjnZ
-	 RKUM983QKmGPTzYyadfBdysr3cHBMp+s3d76Qeqo=
+	b=D6QhyzYppftl3R2gSGJFmw8siSoH+l0tohNxVxQju1ABhqDoMf1qJGk+DiHZ9FouS
+	 W6NG46F2dNO41EdvqFhuWtkIxoxP2N/pa2iMcu0FhQPwWLB8a7HobLzrqNz6jNQGH4
+	 lpYzzmt5Rm+L5MxGqJBZe1vU+pNQ1mtZNBiIZneI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Vignesh Raman <vignesh.raman@collabora.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/508] arm64: defconfig: mediatek: enable PHY drivers
-Date: Mon, 23 Jun 2025 15:02:48 +0200
-Message-ID: <20250623130648.322277931@linuxfoundation.org>
+	Jeff Layton <jlayton@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 032/414] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
+Date: Mon, 23 Jun 2025 15:02:49 +0200
+Message-ID: <20250623130642.829629561@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vignesh Raman <vignesh.raman@collabora.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit f52cd248d844f9451858992f924988ac413fdc7e ]
+commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
 
-The mediatek display driver fails to probe on mt8173-elm-hana and
-mt8183-kukui-jacuzzi-juniper-sku16 in v6.14-rc4 due to missing PHY
-configurations.
+In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
+nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
+this can cause NULL pointer dereference.
 
-Commit 924d66011f24 ("drm/mediatek: stop selecting foreign drivers")
-stopped selecting the MediaTek PHY drivers, requiring them to be
-explicitly enabled in defconfig.
+Normally the delayed start of laundromat_work allows sufficient time for
+nfsd_ssc initialization to complete. However, when the kernel waits too
+long for userspace responses (e.g. in nfs4_state_start_net ->
+nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
+cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
+delayed work may start before nfsd_ssc initialization finishes.
 
-Enable the following PHY drivers for MediaTek platforms:
-CONFIG_PHY_MTK_HDMI=m for HDMI display
-CONFIG_PHY_MTK_MIPI_DSI=m for DSI display
-CONFIG_PHY_MTK_DP=m for DP display
+Fix this by moving nfsd_ssc initialization before starting laundromat_work.
 
-Fixes: 924d66011f24 ("drm/mediatek: stop selecting foreign drivers")
-Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Vignesh Raman <vignesh.raman@collabora.com>
-Link: https://lore.kernel.org/r/20250512131933.1247830-1-vignesh.raman@collabora.com
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/configs/defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/nfssvc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index 623e9f308f38a..4543b292b50b4 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -1230,6 +1230,9 @@ CONFIG_PHY_HISTB_COMBPHY=y
- CONFIG_PHY_HISI_INNO_USB2=y
- CONFIG_PHY_MVEBU_CP110_COMPHY=y
- CONFIG_PHY_MTK_TPHY=y
-+CONFIG_PHY_MTK_HDMI=m
-+CONFIG_PHY_MTK_MIPI_DSI=m
-+CONFIG_PHY_MTK_DP=m
- CONFIG_PHY_QCOM_EDP=m
- CONFIG_PHY_QCOM_PCIE2=m
- CONFIG_PHY_QCOM_QMP=m
--- 
-2.39.5
-
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -406,13 +406,13 @@ static int nfsd_startup_net(struct net *
+ 	if (ret)
+ 		goto out_filecache;
+ 
++#ifdef CONFIG_NFSD_V4_2_INTER_SSC
++	nfsd4_ssc_init_umount_work(nn);
++#endif
+ 	ret = nfs4_state_start_net(net);
+ 	if (ret)
+ 		goto out_reply_cache;
+ 
+-#ifdef CONFIG_NFSD_V4_2_INTER_SSC
+-	nfsd4_ssc_init_umount_work(nn);
+-#endif
+ 	nn->nfsd_net_up = true;
+ 	return 0;
+ 
 
 
 
