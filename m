@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27A1EAE44A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82ACAAE434F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0715517F061
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 05986189BDBB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 522A42561AA;
-	Mon, 23 Jun 2025 13:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5880324BBE4;
+	Mon, 23 Jun 2025 13:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCEeAtjV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkCS2DsS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED282561A7;
-	Mon, 23 Jun 2025 13:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17926248176;
+	Mon, 23 Jun 2025 13:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685865; cv=none; b=hJYrUxm1B3t+6999kZUeUjuTjpnP+o2lZNLm1rDovUrKC15Z+KwZYf2e5bQfR2es18hDr7zDtRT1/AjDF5lCR+Yw4p4mkERhYWMXj0MhTPIhmAevJrM9RDqTTF6boy6LSTsmVbNl6KtrlTYZlhbPWrL5yIiFhMcM+TKbPKsCsdU=
+	t=1750685150; cv=none; b=b/XP3HexNGd2gXXjUZwnE+q9lBC+Jh070ZCdXhO7b6SgmK6ETbHGwo8RaT/iFIiSdxC7ShyCkf+0WTHHPAXRLXo035fUFZ8Yj1UnFGVrIwBcBQEzMtJPCDeIhxxw3cNdhG6NFQlmXkuw1Ag00dhK1bDKZLEkPQjLucLMd4GjXgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685865; c=relaxed/simple;
-	bh=CeLvkVZFiiZy34EzcxoXBdYS9yZXYjnrjKtYll1/ZHw=;
+	s=arc-20240116; t=1750685150; c=relaxed/simple;
+	bh=e0I2vE1KiqK3z92GL6hPuZozyKw4NC6f0KbmI8HwyrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qPhFvb/AcOmnUozRjmVqmMzW/HzuESwhpJ4QcbDwU9w1vry1WAhutFvHeStqwaDyoH11rHX90RTcxK0YFP8iyj6DOrng4vIzG9EgjqlcasuEVA1DyZ+s8imrTtWXjKBCeiIrcxeFykkYI4+wsr8nIkzoqZvHEOyShB6nAox4NAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCEeAtjV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95C32C4CEEA;
-	Mon, 23 Jun 2025 13:37:44 +0000 (UTC)
+	 MIME-Version; b=nYXsbLG6qes5swa3S34g4A+b0NZNilhBEe4ROngZTuXx45mOrlMRvczAbRrR1mmuyVQQi80KbjKqNPiDlJL2GpbUW7OKLwhGIvVB5FwJrIYqJ5DoclI1KI+fTftVnUnUi/efeCFEMViMH5XSZHsu02xZyUWhJFK4+8KL2fV5m5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkCS2DsS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBFCC4CEEA;
+	Mon, 23 Jun 2025 13:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685864;
-	bh=CeLvkVZFiiZy34EzcxoXBdYS9yZXYjnrjKtYll1/ZHw=;
+	s=korg; t=1750685150;
+	bh=e0I2vE1KiqK3z92GL6hPuZozyKw4NC6f0KbmI8HwyrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eCEeAtjVx1tT9uy9ieL2GwMfCGwoX0wZL9kw/kLtYqK+Lx/Vi5aS5KTlWJwlIcI0l
-	 73s4csYhOAw3cOHcJqOjat8C/z/j0ZofSvJE+DQXpPvO0y/yzZWe0wA6pMZ4iGbUJM
-	 ujxrBeKIyLdXa8oYUAT/O2W6N2ivBWfpsI19Pb4o=
+	b=zkCS2DsSOSM35mPcXcryvFesrTLjl280BiZMCD3EmPkL1OYdw6MjzLxYagLjynuA4
+	 zq223oun1bPLuJVNd8qC7eVlwt6GXNB/6sssjpMCuB8HXH3h1D3984ao/RXaexvvbD
+	 C/7N1QSpfFJw99iRCmoj7g6IOO5MnwwZyQkqVi1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 087/411] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
+Subject: [PATCH 5.10 030/355] drm: rcar-du: Fix memory leak in rcar_du_vsps_init()
 Date: Mon, 23 Jun 2025 15:03:51 +0200
-Message-ID: <20250623130635.620197022@linuxfoundation.org>
+Message-ID: <20250623130627.716697729@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
+[ Upstream commit 91e3bf09a90bb4340c0c3c51396e7531555efda4 ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-aspeed_lpc_enable_snoop() does not check for this case, which results in a
-NULL pointer dereference.
+The rcar_du_vsps_init() doesn't free the np allocated by
+of_parse_phandle_with_fixed_args() for the non-error case.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+Fix memory leak for the non-error case.
 
-Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
-[arj: Fix Fixes: tag to use subject from 3772e5da4454]
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+While at it, replace the label 'error'->'done' as it applies to non-error
+case as well and update the error check condition for rcar_du_vsp_init()
+to avoid breakage in future, if it returns positive value.
+
+Fixes: 3e81374e2014 ("drm: rcar-du: Support multiple sources from the same VSP")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20231116122424.80136-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen+renesas@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/rcar-du/rcar_du_kms.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index d9bdc2e084086..22619b853f449 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -201,11 +201,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
- 	lpc_snoop->chan[channel].miscdev.name =
- 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
-+	if (!lpc_snoop->chan[channel].miscdev.name) {
-+		rc = -ENOMEM;
-+		goto err_free_fifo;
-+	}
- 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
- 	lpc_snoop->chan[channel].miscdev.parent = dev;
- 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
- 	if (rc)
--		return rc;
-+		goto err_free_fifo;
+diff --git a/drivers/gpu/drm/rcar-du/rcar_du_kms.c b/drivers/gpu/drm/rcar-du/rcar_du_kms.c
+index 7015e22872bbe..41b4a6715dad5 100644
+--- a/drivers/gpu/drm/rcar-du/rcar_du_kms.c
++++ b/drivers/gpu/drm/rcar-du/rcar_du_kms.c
+@@ -626,7 +626,7 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
+ 		ret = of_parse_phandle_with_fixed_args(np, vsps_prop_name,
+ 						       cells, i, &args);
+ 		if (ret < 0)
+-			goto error;
++			goto done;
  
- 	/* Enable LPC snoop channel at requested port */
- 	switch (channel) {
-@@ -222,7 +226,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		hicrb_en = HICRB_ENSNP1D;
- 		break;
- 	default:
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto err_misc_deregister;
+ 		/*
+ 		 * Add the VSP to the list or update the corresponding existing
+@@ -664,13 +664,11 @@ static int rcar_du_vsps_init(struct rcar_du_device *rcdu)
+ 		vsp->dev = rcdu;
+ 
+ 		ret = rcar_du_vsp_init(vsp, vsps[i].np, vsps[i].crtcs_mask);
+-		if (ret < 0)
+-			goto error;
++		if (ret)
++			goto done;
  	}
  
- 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
-@@ -232,6 +237,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	return 0;
-+
-+err_misc_deregister:
-+	misc_deregister(&lpc_snoop->chan[channel].miscdev);
-+err_free_fifo:
-+	kfifo_free(&lpc_snoop->chan[channel].fifo);
- 	return rc;
- }
+-	return 0;
+-
+-error:
++done:
+ 	for (i = 0; i < ARRAY_SIZE(vsps); ++i)
+ 		of_node_put(vsps[i].np);
  
 -- 
 2.39.5
