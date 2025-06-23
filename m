@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B93FCAE5731
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22233AE5742
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A7784E30C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B7B394E3406
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA8F22422F;
-	Mon, 23 Jun 2025 22:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8265222581;
+	Mon, 23 Jun 2025 22:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jh2Rwh6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vRCV5C6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1042222B2;
-	Mon, 23 Jun 2025 22:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7747B223DE5;
+	Mon, 23 Jun 2025 22:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717626; cv=none; b=JL59hhz4UMIV8CWRWf4gdq3i7nLj+GXtBl5N4Tdr01q8TD35qDiJtX144iVny/7ZP4wr1utbhjk1HJfIQjhzrHE4SHKpi9W0IIzfxzJjVrdelYDyodEtAMBG9rrTQxoGxhhAUwENfQGcPspC98XfPj0NQ1HWP1FvFVi+cAPJNxU=
+	t=1750717656; cv=none; b=KhrP8CuMcNfFMVaOOQiM0A8TmcJ/tJdatVfwCwuwEMeDOit6saDF5x3lhdH7Zn8dbycvJ0EatvGaJmteqX1sPv3znw9i14XKHXPCymHCSjxfJusybybS4cayyEw3ee79vXrtVCABKGOZDtkKVE/dRqNIV3wiF1sd/B6Mn3nu7Uc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717626; c=relaxed/simple;
-	bh=A61kyApMLT3NLDDEAvljlD4CLlkwSUJtakXRvyYPjxA=;
+	s=arc-20240116; t=1750717656; c=relaxed/simple;
+	bh=yd/ogOvrDv5aUqAg4afDkxWUjmpCzKfePPWj9xBkMho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lq+qZE5wp0v4g5KBS9kcnLDWWyLO/HEjNg6FSI70sdX6ro0iBTBmr8rm+gNW3KM6SQl5Xm7TcBx/0IEWGffh5/PWMA+b6KFemyeMQD61XMqMzyMLRCY8ejr/R8RzKOBKX+1nP5BicIVQ4EZjNXDjUu7crpozYDd1uoli9LSyH0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jh2Rwh6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65482C4CEEA;
-	Mon, 23 Jun 2025 22:27:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=j3/O7KFFxm6NFvJGoOKjm5/UrGGLN7sP8tH8oqzmHlVdWgCfcynsGKLS2fodg5JUIOjiZyLbwuL/EZnv5Oh6ItMYNZHqvhozEQfDDEsRpftTSk3v13Ob2bWs3WLl4ByE8rZsh5dA4IBYWMYB4DtqAGVIHzjM6ZSviM9fzfCZX98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vRCV5C6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12400C4CEEA;
+	Mon, 23 Jun 2025 22:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717626;
-	bh=A61kyApMLT3NLDDEAvljlD4CLlkwSUJtakXRvyYPjxA=;
+	s=korg; t=1750717656;
+	bh=yd/ogOvrDv5aUqAg4afDkxWUjmpCzKfePPWj9xBkMho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jh2Rwh6P8zei/GClBM9X1am/gaZbC5bFgi+BK0NjY7e9JueNJIA+h4+PYIRSJHgPd
-	 6hDfzmIeKbCEvZHdz2JB8QxY4MWyovAYXze/r6engPsHAqrph1lLO+Bv2wHcOtMREr
-	 On1HtyWPE2nJDZBXsLksrbMgUd6cW1Un6AA5fKJk=
+	b=vRCV5C6eN07cyQ0A4k6cWUWoPudotz7mkCwBB8f+Z2f92gGxwUCHYi+B/xK5KKX2i
+	 n5GLP/vRCdHqJgYlEZ51RDphlgcMSNa7wPa705RuUH9uT19ZmQXZ3i/EYn/z5Y5a2V
+	 32GpYJsHiQkO/+GDLgvYkeW3H/UCTTIh9v/IPViY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Meetakshi Setiya <msetiya@microsoft.com>,
-	zhangjian <zhangjian496@huawei.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 400/414] smb: client: fix first command failure during re-negotiation
+	Akhil R <akhilrajeev@nvidia.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Andi Shyti <andi@smida.it>
+Subject: [PATCH 6.1 492/508] dt-bindings: i2c: nvidia,tegra20-i2c: Specify the required properties
 Date: Mon, 23 Jun 2025 15:08:57 +0200
-Message-ID: <20250623130651.939293304@linuxfoundation.org>
+Message-ID: <20250623130657.141796138@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhangjian <zhangjian496@huawei.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit 34331d7beed7576acfc98e991c39738b96162499 upstream.
+commit 903cc7096db22f889d48e2cee8840709ce04fdac upstream.
 
-after fabc4ed200f9, server_unresponsive add a condition to check whether client
-need to reconnect depending on server->lstrp. When client failed to reconnect
-for some time and abort connection, server->lstrp is updated for the last time.
-In the following scene, server->lstrp is too old. This cause next command
-failure in re-negotiation rather than waiting for re-negotiation done.
+Specify the properties which are essential and which are not for the
+Tegra I2C driver to function correctly. This was not added correctly when
+the TXT binding was converted to yaml. All the existing DT nodes have
+these properties already and hence this does not break the ABI.
 
-1. mount -t cifs -o username=Everyone,echo_internal=10 //$server_ip/export /mnt
-2. ssh $server_ip "echo b > /proc/sysrq-trigger &"
-3. ls /mnt
-4. sleep 21s
-5. ssh $server_ip "service firewalld stop"
-6. ls # return EHOSTDOWN
+dmas and dma-names which were specified as a must in the TXT binding
+is now made optional since the driver can work in PIO mode if dmas are
+missing.
 
-If the interval between 5 and 6 is too small, 6 may trigger sending negotiation
-request. Before backgrounding cifsd thread try to receive negotiation response
-from server in cifs_readv_from_socket, server_unresponsive may trigger
-cifs_reconnect which cause 6 to be failed:
-
-ls thread
-----------------
-  smb2_negotiate
-    server->tcpStatus = CifsInNegotiate
-    compound_send_recv
-      wait_for_compound_request
-
-cifsd thread
-----------------
-  cifs_readv_from_socket
-    server_unresponsive
-      server->tcpStatus == CifsInNegotiate && jiffies > server->lstrp + 20s
-        cifs_reconnect
-          cifs_abort_connection: mid_state = MID_RETRY_NEEDED
-
-ls thread
-----------------
-      cifs_sync_mid_result return EAGAIN
-  smb2_negotiate return EHOSTDOWN
-
-Though server->lstrp means last server response time, it is updated in
-cifs_abort_connection and cifs_get_tcp_session. We can also update server->lstrp
-before switching into CifsInNegotiate state to avoid failure in 6.
-
-Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Acked-by: Meetakshi Setiya <msetiya@microsoft.com>
-Signed-off-by: zhangjian <zhangjian496@huawei.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: f10a9b722f80 ("dt-bindings: i2c: tegra: Convert to json-schema”)
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.17+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Andi Shyti <andi@smida.it>
+Link: https://lore.kernel.org/r/20250603153022.39434-1-akhilrajeev@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml |   24 +++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -3993,6 +3993,7 @@ retry:
- 		return 0;
- 	}
+--- a/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
+@@ -103,7 +103,10 @@ properties:
  
-+	server->lstrp = jiffies;
- 	server->tcpStatus = CifsInNegotiate;
- 	spin_unlock(&server->srv_lock);
+   resets:
+     items:
+-      - description: module reset
++      - description:
++          Module reset. This property is optional for controllers in Tegra194,
++          Tegra234 etc where an internal software reset is available as an
++          alternative.
  
+   reset-names:
+     items:
+@@ -119,6 +122,13 @@ properties:
+       - const: rx
+       - const: tx
+ 
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
+ allOf:
+   - $ref: /schemas/i2c/i2c-controller.yaml
+   - if:
+@@ -172,6 +182,18 @@ allOf:
+           items:
+             - description: phandle to the VENC power domain
+ 
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - nvidia,tegra194-i2c
++    then:
++      required:
++        - resets
++        - reset-names
++
+ unevaluatedProperties: false
+ 
+ examples:
 
 
 
