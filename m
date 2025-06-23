@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-155905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43568AE4446
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BF1DEAE4491
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32F4544357F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6D33A324D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B4E225393A;
-	Mon, 23 Jun 2025 13:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAC1255F5E;
+	Mon, 23 Jun 2025 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJ9l/1BC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jihywH/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074E24C6E;
-	Mon, 23 Jun 2025 13:33:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932A72550D3;
+	Mon, 23 Jun 2025 13:34:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685639; cv=none; b=KuY3Z95Nj0uYfzHwReJPyj2JNeldFc3LHew/sO6TX7dJRx8mupIkkapsYDO7b9sGhuhNe5B3Gp+/IhVAKn/Tm3EzOEWNvG9ueYm+3reDeRdiL1owGtVLVaG2NXRxq2hCbCXY50eLqCaECyJ/0CrQd0dQGT/0LR6AlV4kGYDV1+o=
+	t=1750685654; cv=none; b=kMQc9bhyLDCFx5p/W5FhFdCw85GGRhmcwUYLOea3V2IjN1tzX5k2lb0G5Bs1yY61CXWacDB6rNB0BUwLA+u3B4bIDddS5ZXevshjN+UGd85T2rXplDiCrFiYHl+3u9ae5f5MMNLVAqgkInqO6OZ+1+uHBuvaJ9/PgPzyefkCy6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685639; c=relaxed/simple;
-	bh=aKhRvcCin2B7rdpY+S3UGfMp8sbczUXmta9QyxSZWGg=;
+	s=arc-20240116; t=1750685654; c=relaxed/simple;
+	bh=zgI3tEJzyMhFfbCPg0SFMj8wcr2R1CRzwxXrtp3jM4w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+yZjHqUG/OKb1HFmQTyaUZ7Aet6S8eBOxePh4ZMacPEDPPFQVS9QZQiKMDgQ2DvCSGXRe6UUqVDo0SdJ50qDHFeDF7shIjG/lnyvq7yxsikbqjB12eXAVuYa231zOlc52w/RbGfUq1M9zCYkcZ8upZ/WOEVNMnwgZw99pn5CnU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJ9l/1BC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 908ADC4CEEA;
-	Mon, 23 Jun 2025 13:33:58 +0000 (UTC)
+	 MIME-Version; b=eydr7TGj+DMliAciuwqJBDSxw4Nrf8+rNgX1a6y8qYlGeDuWsIeinDQBWF4gigczaZWo429sqPeyokvjUNbMXrJNb7n1kWS/LuLmmAe+ESggv8qJW6X+GmyeYDBhsx3wlgYaVul5t1w5gBmvkeNaXeKb5K4lcdZvIrrxafpCq04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jihywH/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB0BC4CEF1;
+	Mon, 23 Jun 2025 13:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685638;
-	bh=aKhRvcCin2B7rdpY+S3UGfMp8sbczUXmta9QyxSZWGg=;
+	s=korg; t=1750685654;
+	bh=zgI3tEJzyMhFfbCPg0SFMj8wcr2R1CRzwxXrtp3jM4w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dJ9l/1BC8FUR41n7qupXRfcZ4mX5davBp18REuWxu1zO0ue2GCYqmKOG16miFAm9A
-	 YMPXf0Q7+Wpmm+z+Pf88qYiMzJKuzNfqlPKCgecaNwnm67rWOK1dF6aiMHf1o+1bEl
-	 8Tv6xEnrOXBiANYClHEAst3KRs5LtigXCRuvm1Do=
+	b=0jihywH/l0JidRBcdH1HUdk8UOOT4L7X4h/TE4CqI8HPnxnDz9aMhREKtxpvA5TWS
+	 HVgB4MexX8ANd4CWLVGxWYX2+fmokbjtg43fmGw19tb9I9rKaGQ8mN33eRgHN0h7Tl
+	 mXngTFyscWDrpnB37PIh8yBE7BM8EUC1mUwagLJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Stutterheim <ross.stutterheim@garmin.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
-Subject: [PATCH 5.4 109/222] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
-Date: Mon, 23 Jun 2025 15:07:24 +0200
-Message-ID: <20250623130615.390266422@linuxfoundation.org>
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.4 110/222] ata: pata_via: Force PIO for ATAPI devices on VT6415/VT6330
+Date: Mon, 23 Jun 2025 15:07:25 +0200
+Message-ID: <20250623130615.417424433@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -68,49 +65,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ross Stutterheim <ross.stutterheim@garmin.com>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
+commit d29fc02caad7f94b62d56ee1b01c954f9c961ba7 upstream.
 
-arm/memremap: fix arch_memremap_can_ram_remap()
+The controller has a hardware bug that can hard hang the system when
+doing ATAPI DMAs without any trace of what happened. Depending on the
+device attached, it can also prevent the system from booting.
 
-commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
-presence of linear map") added the definition of
-arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
-can be used from the linear mapping. memblock_is_map_memory() was called
-with the pfn of the address given to arch_memremap_can_ram_remap();
-however, memblock_is_map_memory() expects to be given an address for arm,
-not a pfn.
+In this case, the system hangs when reading the ATIP from optical media
+with cdrecord -vvv -atip on an _NEC DVD_RW ND-4571A 1-01 and an
+Optiarc DVD RW AD-7200A 1.06 attached to an ASRock 990FX Extreme 4,
+running at UDMA/33.
 
-This results in calls to memremap() returning a newly mapped area when
-it should return an address in the existing linear mapping.
+The issue can be reproduced by running the same command with a cygwin
+build of cdrecord on WinXP, although it requires more attempts to cause
+it. The hang in that case is also resolved by forcing PIO. It doesn't
+appear that VIA has produced any drivers for that OS, thus no known
+workaround exists.
 
-Fix this by removing the address to pfn translation and pass the
-address directly.
+HDDs attached to the controller do not suffer from any DMA issues.
 
-Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
-Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
-Cc: Mike Rapoport <rppt@kernel.org>
 Cc: stable@vger.kernel.org
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/916677
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250519085508.1398701-1-tasos@tasossah.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mm/ioremap.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/ata/pata_via.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm/mm/ioremap.c
-+++ b/arch/arm/mm/ioremap.c
-@@ -504,7 +504,5 @@ void __init early_ioremap_init(void)
- bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
- 				 unsigned long flags)
- {
--	unsigned long pfn = PHYS_PFN(offset);
--
--	return memblock_is_map_memory(pfn);
-+	return memblock_is_map_memory(offset);
- }
+--- a/drivers/ata/pata_via.c
++++ b/drivers/ata/pata_via.c
+@@ -368,7 +368,8 @@ static unsigned long via_mode_filter(str
+ 	}
+ 
+ 	if (dev->class == ATA_DEV_ATAPI &&
+-	    dmi_check_system(no_atapi_dma_dmi_table)) {
++	    (dmi_check_system(no_atapi_dma_dmi_table) ||
++	     config->id == PCI_DEVICE_ID_VIA_6415)) {
+ 		ata_dev_warn(dev, "controller locks up on ATAPI DMA, forcing PIO\n");
+ 		mask &= ATA_MASK_PIO;
+ 	}
 
 
 
