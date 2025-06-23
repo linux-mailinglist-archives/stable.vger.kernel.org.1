@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157040-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB51AE5405
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB25AE5236
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA72446A62
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E94BB4A549B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA72321FF2B;
-	Mon, 23 Jun 2025 21:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9F6C221FC7;
+	Mon, 23 Jun 2025 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxhLmb4I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXMWGinC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DEC1F4628;
-	Mon, 23 Jun 2025 21:58:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788004315A;
+	Mon, 23 Jun 2025 21:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715890; cv=none; b=ACIK8mAD6i6deWMwcWrLtGr/X1y6EPHyic/if5VZ8aAee3/dZlfc1qm+bGQdPrxNWxR+EB/TpUQlA5zyGibUCZNjN7D2it5MXeBXi4mPd5do4m/y2l4b79h4tQgACjrR7IaPpLJGg2Uanzj5QPgoWYsB8KludbJt7fUKGN1iWSQ=
+	t=1750714887; cv=none; b=ZuxxrQvsfAYMYTO30c4xB38a1K22Ae+ptH7Mk6KWD+trHXKvQPbwsNZRSJIhNuXHgX1M4VMkj27cxrLlhpnSrLY4LIhYd9Y+IWI1bZ/UEJOs0DS1Bt8AapL4DXAnQXTdOdCO1GQcD2qHjp6WwdSn6mPcxryGisfnum3hMP+7VUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715890; c=relaxed/simple;
-	bh=4PQ5rpz48z46VkUeVwAZkhY0eupgBwETDP7B3rvaVds=;
+	s=arc-20240116; t=1750714887; c=relaxed/simple;
+	bh=FxFiiJSGBjPcdxeQ9jZ1hZx/Y1b2vGj9AYmFHach9kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaWjgztf2lNCLxT6i0zuh77iSvkZe/hmdbsxbov0vZJIvi84wEpULGO34EtGmeMd2ikV5jkKCCqrmCZYaVdK7VOh5/gOw4maPVqmgRkcofp2XvPEi9jn8joGgAchZ9FL8VyRbMAT1XbAtqnu8bYlbXrkshxe7vlIx3NCEbDbAx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxhLmb4I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F357BC4CEEA;
-	Mon, 23 Jun 2025 21:58:09 +0000 (UTC)
+	 MIME-Version; b=DOP1cbzmR0QP1IiDjbdi0y3oqw/m+6ZWJWCxe3/8wv7R4IHQRnGO9Lv9nJtUNIAvvS4B0FyEM5j6BDuegFcEo8BSzOww+xAGq4JNbHZvh2P+i+q7yV1qhA5ryCPSKs3oo1BWrIuJElufNGyfPVQiWrnSPk+Rwk8n+Rx0q5WMJZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXMWGinC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A7BC4CEEA;
+	Mon, 23 Jun 2025 21:41:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715890;
-	bh=4PQ5rpz48z46VkUeVwAZkhY0eupgBwETDP7B3rvaVds=;
+	s=korg; t=1750714887;
+	bh=FxFiiJSGBjPcdxeQ9jZ1hZx/Y1b2vGj9AYmFHach9kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LxhLmb4Ik959ad03U9coQc6H3RVgspwQ0xOxbYTCZNbDLcGiDEbWjb6OLHbXt+CQy
-	 0S7OMyas6pARRpiXQNqM2BeS6SWa4kgha6aFpnCOyiz5dMOtcUCJyC2KiJn8vyBPcG
-	 1ChzF/VPk5hXSxwOXlDVm73A7tn++gJOuMDcWx9Q=
+	b=qXMWGinCgIZlOsPiART8u0OrhfhaCG5D4rRqtccd8Q3QnmX4iVEXc7+S+Nc51LPCF
+	 iCUn1CRQLafFAkyxjBFh/vRfSqH46lSHJzYforNrSedLbHRKfEDVYT1dRFnx+rciwW
+	 l+fEmXo7/cJ+GYuYSOtadxnVxNIQ3zNCEpKmoekk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	wangdicheng <wangdicheng@kylinos.cn>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 490/592] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 187/290] bpf, sockmap: Fix data lost during EAGAIN retries
 Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130712.088501371@linuxfoundation.org>
+Message-ID: <20250623130632.493431199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: wangdicheng <wangdicheng@kylinos.cn>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
+[ Upstream commit 7683167196bd727ad5f3c3fc6a9ca70f54520a81 ]
 
-PCM1 not in Pulseaudio's control list; standardize control to
-"Speaker" and "Headphone".
+We call skb_bpf_redirect_clear() to clean _sk_redir before handling skb in
+backlog, but when sk_psock_handle_skb() return EAGAIN due to sk_rcvbuf
+limit, the redirect info in _sk_redir is not recovered.
 
-Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix skb redir loss during EAGAIN retries by restoring _sk_redir
+information using skb_bpf_set_redir().
+
+Before this patch:
+'''
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
+Setting up benchmark 'sockmap'...
+create socket fd c1:13 p1:14 c2:15 p2:16
+Benchmark 'sockmap' started.
+Send Speed 1343.172 MB/s, BPF Speed 1343.238 MB/s, Rcv Speed   65.271 MB/s
+Send Speed 1352.022 MB/s, BPF Speed 1352.088 MB/s, Rcv Speed   0 MB/s
+Send Speed 1354.105 MB/s, BPF Speed 1354.105 MB/s, Rcv Speed   0 MB/s
+Send Speed 1355.018 MB/s, BPF Speed 1354.887 MB/s, Rcv Speed   0 MB/s
+'''
+Due to the high send rate, the RX processing path may frequently hit the
+sk_rcvbuf limit. Once triggered, incorrect _sk_redir will cause the flow
+to mistakenly enter the "!ingress" path, leading to send failures.
+(The Rcv speed depends on tcp_rmem).
+
+After this patch:
+'''
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
+Setting up benchmark 'sockmap'...
+create socket fd c1:13 p1:14 c2:15 p2:16
+Benchmark 'sockmap' started.
+Send Speed 1347.236 MB/s, BPF Speed 1347.367 MB/s, Rcv Speed   65.402 MB/s
+Send Speed 1353.320 MB/s, BPF Speed 1353.320 MB/s, Rcv Speed   65.536 MB/s
+Send Speed 1353.186 MB/s, BPF Speed 1353.121 MB/s, Rcv Speed   65.536 MB/s
+'''
+
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20250407142234.47591-2-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_maps.c |   12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ net/core/skmsg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/usb/mixer_maps.c
-+++ b/sound/usb/mixer_maps.c
-@@ -383,6 +383,13 @@ static const struct usbmix_name_map ms_u
- 	{ 0 }   /* terminator */
- };
- 
-+/* KTMicro USB */
-+static struct usbmix_name_map s31b2_0022_map[] = {
-+	{ 23, "Speaker Playback" },
-+	{ 18, "Headphone Playback" },
-+	{ 0 }
-+};
-+
- /* ASUS ROG Zenith II with Realtek ALC1220-VB */
- static const struct usbmix_name_map asus_zenith_ii_map[] = {
- 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
-@@ -692,6 +699,11 @@ static const struct usbmix_ctl_map usbmi
- 		.id = USB_ID(0x045e, 0x083c),
- 		.map = ms_usb_link_map,
- 	},
-+	{
-+		/* KTMicro USB */
-+		.id = USB_ID(0X31b2, 0x0022),
-+		.map = s31b2_0022_map,
-+	},
- 	{ 0 } /* terminator */
- };
- 
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 2076db464e936..c3169e1e63524 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -689,7 +689,8 @@ static void sk_psock_backlog(struct work_struct *work)
+ 			if (ret <= 0) {
+ 				if (ret == -EAGAIN) {
+ 					sk_psock_skb_state(psock, state, len, off);
+-
++					/* Restore redir info we cleared before */
++					skb_bpf_set_redir(skb, psock->sk, ingress);
+ 					/* Delay slightly to prioritize any
+ 					 * other work that might be here.
+ 					 */
+-- 
+2.39.5
+
 
 
 
