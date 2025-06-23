@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-156535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B35BAE5036
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2EFAAE51C0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 825077AE4A3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9BF541B641A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5828E2628C;
-	Mon, 23 Jun 2025 21:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F0D2221FDD;
+	Mon, 23 Jun 2025 21:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yPthL2hH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RlE2STQW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1649E7482;
-	Mon, 23 Jun 2025 21:20:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC446136;
+	Mon, 23 Jun 2025 21:37:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713651; cv=none; b=GtNvutIJj6lcCizAtoUeBOSrbdSVUYPMv3ka1R7wK6NpFWkf031SIJL6uyrl1ocpdpfgIegLo7D4Yl/pe7VmSqp+La/wkyZV3Hjrt+iIDyjfj0WUCJliJqJgYXGS1g49/9cxJtltbLQaAd2J5xJxznaVjGnczZNUpU5AdSbE/5A=
+	t=1750714625; cv=none; b=ZNOS2cO4rbZu5ZFbYDqXwG1p4lk47E2CXh4V00CBfhlQvpTSe+4xpoiNfT8lrriXYg5QBq2pqgIc8No4wORuwI54NA5Jv73T/bUPZ3mLYKp+cFLHR0Pi4eIIj2U9yrneihrznR4JAiNyy5KWGO/iooRt5kbwG+p1XSwuKJJFzVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713651; c=relaxed/simple;
-	bh=0bDdZBL8Lv8FKk1oKevTzcM4h9hJjbzDnao2atXlZKY=;
+	s=arc-20240116; t=1750714625; c=relaxed/simple;
+	bh=tkW2pAKz755nCcj6NrMrkaAKC1QlvxZtyfkpTy3eqNc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EzzS6RHS5rdTHg8HPsgGdtx6mfdDSBqHxnvHLQDTysw/gvNKoZ5+SyzALuKx06lS4HohBWhc1YFde+RQnGNAE1dovTscd+jl7Rzdl3ul/19M6hXDYNl0MHyf+lwHo98/Ua2O4Sz3aROcSKxaSNByIhHOEG3Bz/4ITmNJpjypAYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yPthL2hH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A1A4C4CEEA;
-	Mon, 23 Jun 2025 21:20:50 +0000 (UTC)
+	 MIME-Version; b=BwffpaEB+jR3De/82x5PrvN+uMf8UohWJtzX84TDwd4ijo7EbLKR/2Y0Zsa3U2unsWtQPcRbw5K7y9ya5W7OBRCx+5b9lMG2NcsEaTjz3LYT37TttIwbDBKtVFsPnjbvVMlkej/GrUBNuU6nRRwaALwA6FLFcaY016siZKO+MCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RlE2STQW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5137C4CEEA;
+	Mon, 23 Jun 2025 21:37:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713650;
-	bh=0bDdZBL8Lv8FKk1oKevTzcM4h9hJjbzDnao2atXlZKY=;
+	s=korg; t=1750714625;
+	bh=tkW2pAKz755nCcj6NrMrkaAKC1QlvxZtyfkpTy3eqNc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yPthL2hHe+3nWMuJLW2XOHvAYFmecdFReBDoVEwAzctBAAqTTjdjrja1iJ4T8zmSq
-	 K53p8rCmRkdFE3DDTyt1Dg31J5oObWAL+mrQnqapXf7qW0oPF4kmjQgKGfrKewnFHI
-	 RYbWHRpvikuouTa6E5oLWGvuDd7ajllKySMcoq4E=
+	b=RlE2STQW1d/HrKdTzZ1tTdpAkN3Mrv/Tvvk2JdIpFeio0UBP4Mt6ZUlSvGHJ3MXcX
+	 YKjBCBS4Gn/1QXrob+7QRucm61cNKI4+KEQVmZBRYZUIuH2xTmyulP99BrPhaVzUiJ
+	 F3qJ55q30FKeSQykcic9qpVTvFmNHjlILfHHyFIY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Doug Anderson <dianders@chromium.org>,
-	Joel Granados <joel.granados@kernel.org>,
-	Song Liu <song@kernel.org>,
-	Thomas Gleinxer <tglx@linutronix.de>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 082/290] watchdog: fix watchdog may detect false positive of softlockup
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 199/411] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
 Date: Mon, 23 Jun 2025 15:05:43 +0200
-Message-ID: <20250623130629.452390701@linuxfoundation.org>
+Message-ID: <20250623130638.684475340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,210 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 7123dbbef88cfd9f09e8a7899b0911834600cfa3 upstream.
+commit c6bb8a21cdad8c975a3a646b9e5c8df01ad29783 upstream.
 
-When updating `watchdog_thresh`, there is a race condition between writing
-the new `watchdog_thresh` value and stopping the old watchdog timer.  If
-the old timer triggers during this window, it may falsely detect a
-softlockup due to the old interval and the new `watchdog_thresh` value
-being used.  The problem can be described as follow:
+The function mlx5_query_nic_vport_node_guid() calls the function
+mlx5_query_nic_vport_context() but does not check its return value.
+A proper implementation can be found in mlx5_nic_vport_query_local_lb().
 
- # We asuume previous watchdog_thresh is 60, so the watchdog timer is
- # coming every 24s.
-echo 10 > /proc/sys/kernel/watchdog_thresh (User space)
-|
-+------>+ update watchdog_thresh (We are in kernel now)
-	|
-	|	  # using old interval and new `watchdog_thresh`
-	+------>+ watchdog hrtimer (irq context: detect softlockup)
-		|
-		|
-	+-------+
-	|
-	|
-	+ softlockup_stop_all
+Add error handling for mlx5_query_nic_vport_context(). If it fails, free
+the out buffer via kvfree() and return error code.
 
-To fix this problem, introduce a shadow variable for `watchdog_thresh`.
-The update to the actual `watchdog_thresh` is delayed until after the old
-timer is stopped, preventing false positives.
-
-The following testcase may help to understand this problem.
-
----------------------------------------------
-echo RT_RUNTIME_SHARE > /sys/kernel/debug/sched/features
-echo -1 > /proc/sys/kernel/sched_rt_runtime_us
-echo 0 > /sys/kernel/debug/sched/fair_server/cpu3/runtime
-echo 60 > /proc/sys/kernel/watchdog_thresh
-taskset -c 3 chrt -r 99 /bin/bash -c "while true;do true; done" &
-echo 10 > /proc/sys/kernel/watchdog_thresh &
----------------------------------------------
-
-The test case above first removes the throttling restrictions for
-real-time tasks.  It then sets watchdog_thresh to 60 and executes a
-real-time task ,a simple while(1) loop, on cpu3.  Consequently, the final
-command gets blocked because the presence of this real-time thread
-prevents kworker:3 from being selected by the scheduler.  This eventually
-triggers a softlockup detection on cpu3 due to watchdog_timer_fn operating
-with inconsistent variable - using both the old interval and the updated
-watchdog_thresh simultaneously.
-
-[nysal@linux.ibm.com: fix the SOFTLOCKUP_DETECTOR=n case]
-  Link: https://lkml.kernel.org/r/20250502111120.282690-1-nysal@linux.ibm.com
-Link: https://lkml.kernel.org/r/20250421035021.3507649-1-luogengkun@huaweicloud.com
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Cc: Doug Anderson <dianders@chromium.org>
-Cc: Joel Granados <joel.granados@kernel.org>
-Cc: Song Liu <song@kernel.org>
-Cc: Thomas Gleinxer <tglx@linutronix.de>
-Cc: "Nysal Jan K.A." <nysal@linux.ibm.com>
-Cc: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
+Cc: stable@vger.kernel.org # v4.5
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250524163425.1695-1-vulab@iscas.ac.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/watchdog.c |   41 +++++++++++++++++++++++++++--------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
---- a/kernel/watchdog.c
-+++ b/kernel/watchdog.c
-@@ -40,6 +40,7 @@ int __read_mostly watchdog_user_enabled
- static int __read_mostly watchdog_hardlockup_user_enabled = WATCHDOG_HARDLOCKUP_DEFAULT;
- static int __read_mostly watchdog_softlockup_user_enabled = 1;
- int __read_mostly watchdog_thresh = 10;
-+static int __read_mostly watchdog_thresh_next;
- static int __read_mostly watchdog_hardlockup_available;
- 
- struct cpumask watchdog_cpumask __read_mostly;
-@@ -627,12 +628,20 @@ int lockup_detector_offline_cpu(unsigned
- 	return 0;
- }
- 
--static void __lockup_detector_reconfigure(void)
-+static void __lockup_detector_reconfigure(bool thresh_changed)
+--- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
+@@ -441,19 +441,22 @@ int mlx5_query_nic_vport_node_guid(struc
  {
- 	cpus_read_lock();
- 	watchdog_hardlockup_stop();
+ 	u32 *out;
+ 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
++	int err;
  
- 	softlockup_stop_all();
-+	/*
-+	 * To prevent watchdog_timer_fn from using the old interval and
-+	 * the new watchdog_thresh at the same time, which could lead to
-+	 * false softlockup reports, it is necessary to update the
-+	 * watchdog_thresh after the softlockup is completed.
-+	 */
-+	if (thresh_changed)
-+		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
- 	set_sample_period();
- 	lockup_detector_update_enable();
- 	if (watchdog_enabled && watchdog_thresh)
-@@ -650,7 +659,7 @@ static void __lockup_detector_reconfigur
- void lockup_detector_reconfigure(void)
- {
- 	mutex_lock(&watchdog_mutex);
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- 	mutex_unlock(&watchdog_mutex);
+ 	out = kvzalloc(outlen, GFP_KERNEL);
+ 	if (!out)
+ 		return -ENOMEM;
+ 
+-	mlx5_query_nic_vport_context(mdev, 0, out);
++	err = mlx5_query_nic_vport_context(mdev, 0, out);
++	if (err)
++		goto out;
+ 
+ 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
+ 				nic_vport_context.node_guid);
+-
++out:
+ 	kvfree(out);
+ 
+-	return 0;
++	return err;
  }
+ EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
  
-@@ -670,27 +679,29 @@ static __init void lockup_detector_setup
- 		return;
- 
- 	mutex_lock(&watchdog_mutex);
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- 	softlockup_initialized = true;
- 	mutex_unlock(&watchdog_mutex);
- }
- 
- #else /* CONFIG_SOFTLOCKUP_DETECTOR */
--static void __lockup_detector_reconfigure(void)
-+static void __lockup_detector_reconfigure(bool thresh_changed)
- {
- 	cpus_read_lock();
- 	watchdog_hardlockup_stop();
-+	if (thresh_changed)
-+		watchdog_thresh = READ_ONCE(watchdog_thresh_next);
- 	lockup_detector_update_enable();
- 	watchdog_hardlockup_start();
- 	cpus_read_unlock();
- }
- void lockup_detector_reconfigure(void)
- {
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- }
- static inline void lockup_detector_setup(void)
- {
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(false);
- }
- #endif /* !CONFIG_SOFTLOCKUP_DETECTOR */
- 
-@@ -726,11 +737,11 @@ void lockup_detector_soft_poweroff(void)
- #ifdef CONFIG_SYSCTL
- 
- /* Propagate any changes to the watchdog infrastructure */
--static void proc_watchdog_update(void)
-+static void proc_watchdog_update(bool thresh_changed)
- {
- 	/* Remove impossible cpus to keep sysctl output clean. */
- 	cpumask_and(&watchdog_cpumask, &watchdog_cpumask, cpu_possible_mask);
--	__lockup_detector_reconfigure();
-+	__lockup_detector_reconfigure(thresh_changed);
- }
- 
- /*
-@@ -763,7 +774,7 @@ static int proc_watchdog_common(int whic
- 		old = READ_ONCE(*param);
- 		err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 		if (!err && old != READ_ONCE(*param))
--			proc_watchdog_update();
-+			proc_watchdog_update(false);
- 	}
- 	mutex_unlock(&watchdog_mutex);
- 	return err;
-@@ -812,11 +823,13 @@ int proc_watchdog_thresh(struct ctl_tabl
- 
- 	mutex_lock(&watchdog_mutex);
- 
--	old = READ_ONCE(watchdog_thresh);
-+	watchdog_thresh_next = READ_ONCE(watchdog_thresh);
-+
-+	old = watchdog_thresh_next;
- 	err = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 
--	if (!err && write && old != READ_ONCE(watchdog_thresh))
--		proc_watchdog_update();
-+	if (!err && write && old != READ_ONCE(watchdog_thresh_next))
-+		proc_watchdog_update(true);
- 
- 	mutex_unlock(&watchdog_mutex);
- 	return err;
-@@ -837,7 +850,7 @@ int proc_watchdog_cpumask(struct ctl_tab
- 
- 	err = proc_do_large_bitmap(table, write, buffer, lenp, ppos);
- 	if (!err && write)
--		proc_watchdog_update();
-+		proc_watchdog_update(false);
- 
- 	mutex_unlock(&watchdog_mutex);
- 	return err;
-@@ -857,7 +870,7 @@ static struct ctl_table watchdog_sysctls
- 	},
- 	{
- 		.procname	= "watchdog_thresh",
--		.data		= &watchdog_thresh,
-+		.data		= &watchdog_thresh_next,
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
- 		.proc_handler	= proc_watchdog_thresh,
 
 
 
