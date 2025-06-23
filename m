@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69BC6AE44D2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5A95AE4385
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C18A3B88B9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE3907AC186
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 344CF253951;
-	Mon, 23 Jun 2025 13:34:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC657255E34;
+	Mon, 23 Jun 2025 13:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sYP9MFXF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y5oy6f8x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56C12F24;
-	Mon, 23 Jun 2025 13:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9860A4C7F;
+	Mon, 23 Jun 2025 13:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685691; cv=none; b=dPtakn728wqpEaqPz5uWiJuJjsXDNRamMNo3+Bfs3/Crvq+bQ6yDLxPApqNcIqbU558z7e7ibQBSr5/h/b7vHzBHcrqGNxRZUSaODAZ6esvde30BWV4D8ohltj/9WzwxQX5kopVwnzMb6A7jFKL6UCgQ+cdC5pVnNNaWJ2S25xc=
+	t=1750685394; cv=none; b=sltbiLM76VbE7/QiDSUt1r/+PG9TRYZVBgtw0qqQt/1YANuIJw2wOosba7e/PyFbTpehB6RBupRRF4HvrAYERrFWV1DcgSC9OyTZUcR4Gl0rcuvKgDIuK9NeE0/h1JjYgyPx3QMQIJ4ITVjbKpGKRkRW9TLdyBv0jZC4hLzLa5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685691; c=relaxed/simple;
-	bh=EJqUg7LF5GkDQ49URHUIl9Nz0khY9Ey/bs5YR0Qs7BE=;
+	s=arc-20240116; t=1750685394; c=relaxed/simple;
+	bh=APbQiXVDJiPDV5bOf2xaTGwZngAWfxgGbVCTPoVUBhg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jx4D9EKbwgUboK9M82PDCjZTVFx01XVfm4JzfKnOMIdlQum5D7b3WOWdwbsnpipTMUVCCTjoBQQMfg2n4XdZTYTnlni1a0mj2sPOjyp6eTRZ4rRIRUY7SRYIDZJsQJlGcsNCQqhzzvYFiVVG+eghdAWUvTQatbYyIT/A9m7WtwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sYP9MFXF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F8AC4CEEA;
-	Mon, 23 Jun 2025 13:34:49 +0000 (UTC)
+	 MIME-Version; b=Ch4K4J3KC/RtO3uJaF08U7HraQSyFb2T1TG3jkbkVX5yu/oinc0QQRRBOK+j6YUexuTsnsXAIkU5bjUO5hcfMqt9GmfbKOqDxl+3rytkz5/u6Y0NH59HsaXkxhjEVF5G2cGntN1qACmity0TifFabpZ4khcRVL4Pa6RKEZp1aj8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y5oy6f8x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C735C4CEEA;
+	Mon, 23 Jun 2025 13:29:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685690;
-	bh=EJqUg7LF5GkDQ49URHUIl9Nz0khY9Ey/bs5YR0Qs7BE=;
+	s=korg; t=1750685394;
+	bh=APbQiXVDJiPDV5bOf2xaTGwZngAWfxgGbVCTPoVUBhg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sYP9MFXFqZcCSKd4TdcUyMpWV3waVPX/mJQHwYOA/vRmoD0Nha3ljBNBQcIcmaK5+
-	 /db0mdvEVaPHTrbKuVkX/EMZJ+1gntZ1iLBNAtEnReGM2ZljWhn9oz/1qTJL1tIE6k
-	 KEy2mQnZPKhDzXd0NNiWMbKtqhsd3SIBWtLKiPpQ=
+	b=y5oy6f8x0RuvVTVx9kOLlSflnumAtGZWxoREhMx4tZ+LqS5mAjiyTq64ISUPUFYpP
+	 itgjs38Ft1KObbyrBncguiJpsxo4I/BwXNicTh6a2hPF1lwe15cEbi6l+hX6FidMO8
+	 0kLzepzG1bQnwBdIpxuRPsNSToVK60uDVQ+7adnI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Andy Yan <andy.yan@rock-chips.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 052/411] bpf: Fix uninitialized values in BPF_{CORE,PROBE}_READ
+Subject: [PATCH 6.15 238/592] drm/rockchip: inno-hdmi: Fix video timing HSYNC/VSYNC polarity setting for rk3036
 Date: Mon, 23 Jun 2025 15:03:16 +0200
-Message-ID: <20250623130634.553858290@linuxfoundation.org>
+Message-ID: <20250623130705.949364848@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Andy Yan <andy.yan@rock-chips.com>
 
-[ Upstream commit 41d4ce6df3f4945341ec509a840cc002a413b6cc ]
+[ Upstream commit ad10b82c2bcac7f87ac6eaecfca33378b43425ee ]
 
-With the latest LLVM bpf selftests build will fail with
-the following error message:
+The HSYNC/VSYNC polarity of rk3036 HDMI are controlled by GRF.
+Without the polarity configuration in GRF, it can be observed
+from the HDMI protocol analyzer that the H/V front/back timing
+output by RK3036 HDMI are currently not in line with the specifications.
 
-    progs/profiler.inc.h:710:31: error: default initialization of an object of type 'typeof ((parent_task)->real_cred->uid.val)' (aka 'const unsigned int') leaves the object uninitialized and is incompatible with C++ [-Werror,-Wdefault-const-init-unsafe]
-      710 |         proc_exec_data->parent_uid = BPF_CORE_READ(parent_task, real_cred, uid.val);
-          |                                      ^
-    tools/testing/selftests/bpf/tools/include/bpf/bpf_core_read.h:520:35: note: expanded from macro 'BPF_CORE_READ'
-      520 |         ___type((src), a, ##__VA_ARGS__) __r;                               \
-          |                                          ^
-
-This happens because BPF_CORE_READ (and other macro) declare the
-variable __r using the ___type macro which can inherit const modifier
-from intermediate types.
-
-Fix this by using __typeof_unqual__, when supported. (And when it
-is not supported, the problem shouldn't appear, as older compilers
-haven't complained.)
-
-Fixes: 792001f4f7aa ("libbpf: Add user-space variants of BPF_CORE_READ() family of macros")
-Fixes: a4b09a9ef945 ("libbpf: Add non-CO-RE variants of BPF_CORE_READ() macro family")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250502193031.3522715-1-a.s.protopopov@gmail.com
+Signed-off-by: Andy Yan <andy.yan@rock-chips.com>
+Tested-by: Heiko Stuebner <heiko@sntech.de> #rk3036-kylin
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20250422070455.432666-5-andyshrk@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/rockchip/inno_hdmi.c | 36 +++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index b8e68a17f3f1b..442551a501762 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -272,7 +272,13 @@ enum bpf_enum_value_kind {
- #define ___arrow10(a, b, c, d, e, f, g, h, i, j) a->b->c->d->e->f->g->h->i->j
- #define ___arrow(...) ___apply(___arrow, ___narg(__VA_ARGS__))(__VA_ARGS__)
+diff --git a/drivers/gpu/drm/rockchip/inno_hdmi.c b/drivers/gpu/drm/rockchip/inno_hdmi.c
+index 483ecfeaebb08..87dfd30001583 100644
+--- a/drivers/gpu/drm/rockchip/inno_hdmi.c
++++ b/drivers/gpu/drm/rockchip/inno_hdmi.c
+@@ -10,10 +10,12 @@
+ #include <linux/delay.h>
+ #include <linux/err.h>
+ #include <linux/hdmi.h>
++#include <linux/mfd/syscon.h>
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/platform_device.h>
++#include <linux/regmap.h>
  
-+#if defined(__clang__) && (__clang_major__ >= 19)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#elif defined(__GNUC__) && (__GNUC__ >= 14)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#else
- #define ___type(...) typeof(___arrow(__VA_ARGS__))
-+#endif
+ #include <drm/drm_atomic.h>
+ #include <drm/drm_atomic_helper.h>
+@@ -29,8 +31,19 @@
  
- #define ___read(read_fn, dst, src_type, src, accessor)			    \
- 	read_fn((void *)(dst), sizeof(*(dst)), &((src_type)(src))->accessor)
+ #include "inno_hdmi.h"
+ 
++#define HIWORD_UPDATE(val, mask)	((val) | (mask) << 16)
++
+ #define INNO_HDMI_MIN_TMDS_CLOCK  25000000U
+ 
++#define RK3036_GRF_SOC_CON2	0x148
++#define RK3036_HDMI_PHSYNC	BIT(4)
++#define RK3036_HDMI_PVSYNC	BIT(5)
++
++enum inno_hdmi_dev_type {
++	RK3036_HDMI,
++	RK3128_HDMI,
++};
++
+ struct inno_hdmi_phy_config {
+ 	unsigned long pixelclock;
+ 	u8 pre_emphasis;
+@@ -38,6 +51,7 @@ struct inno_hdmi_phy_config {
+ };
+ 
+ struct inno_hdmi_variant {
++	enum inno_hdmi_dev_type dev_type;
+ 	struct inno_hdmi_phy_config *phy_configs;
+ 	struct inno_hdmi_phy_config *default_phy_config;
+ };
+@@ -58,6 +72,7 @@ struct inno_hdmi {
+ 	struct clk *pclk;
+ 	struct clk *refclk;
+ 	void __iomem *regs;
++	struct regmap *grf;
+ 
+ 	struct drm_connector	connector;
+ 	struct rockchip_encoder	encoder;
+@@ -374,7 +389,15 @@ static int inno_hdmi_config_video_csc(struct inno_hdmi *hdmi)
+ static int inno_hdmi_config_video_timing(struct inno_hdmi *hdmi,
+ 					 struct drm_display_mode *mode)
+ {
+-	int value;
++	int value, psync;
++
++	if (hdmi->variant->dev_type == RK3036_HDMI) {
++		psync = mode->flags & DRM_MODE_FLAG_PHSYNC ? RK3036_HDMI_PHSYNC : 0;
++		value = HIWORD_UPDATE(psync, RK3036_HDMI_PHSYNC);
++		psync = mode->flags & DRM_MODE_FLAG_PVSYNC ? RK3036_HDMI_PVSYNC : 0;
++		value |= HIWORD_UPDATE(psync, RK3036_HDMI_PVSYNC);
++		regmap_write(hdmi->grf, RK3036_GRF_SOC_CON2, value);
++	}
+ 
+ 	/* Set detail external video timing polarity and interlace mode */
+ 	value = v_EXTERANL_VIDEO(1);
+@@ -911,6 +934,15 @@ static int inno_hdmi_bind(struct device *dev, struct device *master,
+ 		goto err_disable_pclk;
+ 	}
+ 
++	if (hdmi->variant->dev_type == RK3036_HDMI) {
++		hdmi->grf = syscon_regmap_lookup_by_phandle(dev->of_node, "rockchip,grf");
++		if (IS_ERR(hdmi->grf)) {
++			ret = dev_err_probe(dev, PTR_ERR(hdmi->grf),
++					    "Unable to get rockchip,grf\n");
++			goto err_disable_clk;
++		}
++	}
++
+ 	irq = platform_get_irq(pdev, 0);
+ 	if (irq < 0) {
+ 		ret = irq;
+@@ -995,11 +1027,13 @@ static void inno_hdmi_remove(struct platform_device *pdev)
+ }
+ 
+ static const struct inno_hdmi_variant rk3036_inno_hdmi_variant = {
++	.dev_type = RK3036_HDMI,
+ 	.phy_configs = rk3036_hdmi_phy_configs,
+ 	.default_phy_config = &rk3036_hdmi_phy_configs[1],
+ };
+ 
+ static const struct inno_hdmi_variant rk3128_inno_hdmi_variant = {
++	.dev_type = RK3128_HDMI,
+ 	.phy_configs = rk3128_hdmi_phy_configs,
+ 	.default_phy_config = &rk3128_hdmi_phy_configs[1],
+ };
 -- 
 2.39.5
 
