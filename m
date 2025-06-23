@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-155529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17FFEAE426C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AD3AE427C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:20:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6CAB3B3D68
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C650188F154
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F2D0253F2C;
-	Mon, 23 Jun 2025 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3EEE25486D;
+	Mon, 23 Jun 2025 13:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q90Lnfcm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKhc8y0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF85253F1D;
-	Mon, 23 Jun 2025 13:17:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A219F13A265;
+	Mon, 23 Jun 2025 13:17:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684669; cv=none; b=cOy7J+hiCjvqWOeI9LGseLCLjXJzRINCQ0ACe+B/uVhiJ8C+msnjYKCfln7F4BK/qV43XH7gL6vPSCVmsDNL2tKO2FKrb+eSkh6+o2t6Ds2r9V2tywsMqHH/AMeIFk5QxRjfP7IOBNcbs84t9sH5xWxBWsuyRa0OR0+dwR253Xg=
+	t=1750684674; cv=none; b=nUKOfnOex7EmhbItmJpe0UBE3w0EhpZRimIlS3XrqEKkO8dCP/OX83jDshaH3tuY4Mea5e6ENRSLppNXkOcgfw/gDVcQxk8vg71w2Vk/8KbqxvAOwXDXRtbeqLY4DcE+Sinxzl/uQraB8zN8gq4i1p2GM0HoCXtBVLz4LZXPozA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684669; c=relaxed/simple;
-	bh=4GyHpOOMqRBpZaB67q6Kr8Wr9HZZbiYoksOhd9xFVPM=;
+	s=arc-20240116; t=1750684674; c=relaxed/simple;
+	bh=4ptBMOAwoTXM116T6qHVFLllOiDf/VT0+Cd29Pd3wsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EgvOMneJGTvLNyQULFDzpFX/daw44g/YY97EVuFL2W1hwMjbJMJdZiVBMiyMsTvmnC0kbocbQIE7DtmyVYj4KFWFiWxWR3wf5eIoIKqRzAqGCJsXBCym0aRzDe1sD+PdR1qe8kAuzBNVwvBbx6kpo+BnXS1ltRFgD49HVUMfphM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q90Lnfcm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33FEC4CEEA;
-	Mon, 23 Jun 2025 13:17:48 +0000 (UTC)
+	 MIME-Version; b=NctHwtNLuW1fqChU5E7AraPjdEgtfrP4w9WsvGhYznx5nmSKIEXN4h+vPF4XO+G8cqxS+0QKebShn2n5Y/Z++oruCQ6A/tU8d/sb0WUUoG+9sQhedeIXJYpLzS6pn+Fi6NPfWOm/qTiGcSaTZjbKtjVZ9UUfIfXbOPkalIs07uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKhc8y0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3399C4CEEA;
+	Mon, 23 Jun 2025 13:17:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684669;
-	bh=4GyHpOOMqRBpZaB67q6Kr8Wr9HZZbiYoksOhd9xFVPM=;
+	s=korg; t=1750684674;
+	bh=4ptBMOAwoTXM116T6qHVFLllOiDf/VT0+Cd29Pd3wsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q90LnfcmuJA5aHeFdVvBvH7f1MEzO/Bh3MC5etY5hbzz60wXlTxOEfZ9/iNvKfsD1
-	 1BdaNnAJewqW2vxlj6rEc588oyysUjvButzndT7/3JudHoD1Dm2UaRAxPakhHh+tQR
-	 AKRXCCIlAtiU7g0oLsacyaLFdHwCjFMUd6PEZDwU=
+	b=VKhc8y0WLGcpzrmZj20ZgBL49jOQFZAqZBovsSN5NPtiP/LuHxQJCqZgBsONaAoWa
+	 qvqL/rdCLDm/cCTPK9iQxuVs2lOWn1T0JZRzoVFyXc6Lu9qper2GDIuYtu9Jn86zY3
+	 bro1QSoanpBM0Fx0kTPAbS2hlGta/lYh6FnbFxcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 5.4 006/222] usb: usbtmc: Fix timeout value in get_stb
-Date: Mon, 23 Jun 2025 15:05:41 +0200
-Message-ID: <20250623130612.091086329@linuxfoundation.org>
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>
+Subject: [PATCH 5.4 007/222] thunderbolt: Do not double dequeue a configuration request
+Date: Mon, 23 Jun 2025 15:05:42 +0200
+Message-ID: <20250623130612.120933859@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -64,48 +65,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
 
-commit 342e4955a1f1ce28c70a589999b76365082dbf10 upstream.
+commit 0f73628e9da1ee39daf5f188190cdbaee5e0c98c upstream.
 
-wait_event_interruptible_timeout requires a timeout argument
-in units of jiffies. It was being called in usbtmc_get_stb
-with the usb timeout value which is in units of milliseconds.
+Some of our devices crash in tb_cfg_request_dequeue():
 
-Pass the timeout argument converted to jiffies.
+ general protection fault, probably for non-canonical address 0xdead000000000122
 
-Fixes: 048c6d88a021 ("usb: usbtmc: Add ioctls to set/get usb timeout")
+ CPU: 6 PID: 91007 Comm: kworker/6:2 Tainted: G U W 6.6.65
+ RIP: 0010:tb_cfg_request_dequeue+0x2d/0xa0
+ Call Trace:
+ <TASK>
+ ? tb_cfg_request_dequeue+0x2d/0xa0
+ tb_cfg_request_work+0x33/0x80
+ worker_thread+0x386/0x8f0
+ kthread+0xed/0x110
+ ret_from_fork+0x38/0x50
+ ret_from_fork_asm+0x1b/0x30
+
+The circumstances are unclear, however, the theory is that
+tb_cfg_request_work() can be scheduled twice for a request:
+first time via frame.callback from ring_work() and second
+time from tb_cfg_request().  Both times kworkers will execute
+tb_cfg_request_dequeue(), which results in double list_del()
+from the ctl->request_queue (the list poison deference hints
+at it: 0xdead000000000122).
+
+Do not dequeue requests that don't have TB_CFG_REQUEST_ACTIVE
+bit set.
+
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-4-dpenkler@gmail.com
+Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/usbtmc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/thunderbolt/ctl.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -486,6 +486,7 @@ static int usbtmc488_ioctl_read_stb(stru
- 	__u8 stb;
- 	int rv;
- 	long wait_rv;
-+	unsigned long expire;
+--- a/drivers/thunderbolt/ctl.c
++++ b/drivers/thunderbolt/ctl.c
+@@ -131,6 +131,11 @@ static void tb_cfg_request_dequeue(struc
+ 	struct tb_ctl *ctl = req->ctl;
  
- 	dev_dbg(dev, "Enter ioctl_read_stb iin_ep_present: %d\n",
- 		data->iin_ep_present);
-@@ -528,10 +529,11 @@ static int usbtmc488_ioctl_read_stb(stru
- 	}
- 
- 	if (data->iin_ep_present) {
-+		expire = msecs_to_jiffies(file_data->timeout);
- 		wait_rv = wait_event_interruptible_timeout(
- 			data->waitq,
- 			atomic_read(&data->iin_data_valid) != 0,
--			file_data->timeout);
-+			expire);
- 		if (wait_rv < 0) {
- 			dev_dbg(dev, "wait interrupted %ld\n", wait_rv);
- 			rv = wait_rv;
+ 	mutex_lock(&ctl->request_queue_lock);
++	if (!test_bit(TB_CFG_REQUEST_ACTIVE, &req->flags)) {
++		mutex_unlock(&ctl->request_queue_lock);
++		return;
++	}
++
+ 	list_del(&req->list);
+ 	clear_bit(TB_CFG_REQUEST_ACTIVE, &req->flags);
+ 	if (test_bit(TB_CFG_REQUEST_CANCELED, &req->flags))
 
 
 
