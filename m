@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-155752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B04EAE43A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C003AE44DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F418B3B9257
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2716D7A1842
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA02A25392D;
-	Mon, 23 Jun 2025 13:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1B474C6E;
+	Mon, 23 Jun 2025 13:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvfCJmdS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LqrC8xLa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7EC9254869;
-	Mon, 23 Jun 2025 13:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2ED2472A2;
+	Mon, 23 Jun 2025 13:42:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685244; cv=none; b=AZeXWy2wBs07q4MzT+M1TOpkOc/IxkyP2rm/QgrbBCjPc382q7vmmp+/QnywaojaQpiPU0OxgxVGnpttMM1smzuept2Vi9CmD1UIjbQlwGmQQnao9KboVhDjLVC+QX1b6zvoCiFOfx6/9vhEmWgGfHd1qb/1fmSpmyrWz467+hk=
+	t=1750686127; cv=none; b=fC0HNEVYgDcRI+Auxt17rEVLQzdGkv+BBsWVFx/gTQPhcipE/fd518ZsNzUvSIeqYRMHzSP4+rRkRyCJMzO9W30gDnh9MBYA/jYKJwMHQOJ5tJPhtyIgGVU9tu9YBsDcD7rkarg/F9kdDM3h5RsHVCqZBvwtnmlWboXfUsdV8iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685244; c=relaxed/simple;
-	bh=HBXEaJKB7AiYNRAieSXYGwti5OHU0rGeuFqteoZ/Rr4=;
+	s=arc-20240116; t=1750686127; c=relaxed/simple;
+	bh=eMsDe9FnF3YlqsyhCZUpzlW31T1j+i54axV+gWK5yKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQKaqcpA6HgpqrkPbgozJeG8mFks5x3Rq4hdOz8AwlsWKKjAy/v75c4tBd7FQxac+bd7jiSTNVydd/UgUz7UkL6LOxLvUjFFknvDkI3vS7wLe9p/Fnzh/K0EMDk9RaXK3V6atwq+32fbXYuiwEGdD3ycnNK7ptVDBoeyAVhAY2c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvfCJmdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A396C4CEF0;
-	Mon, 23 Jun 2025 13:27:24 +0000 (UTC)
+	 MIME-Version; b=rIEUNZ5gSOODyWuqd56PWXknUMPc7Gwmz7dvjQmA3T4bNvgkNqUg1plSa9RoCtwkgov5bCUnjyA3mm6vpJd07yhoCFNEuzetrjx0HzOVLZLeQYDFl9/GTRSyK3/hWB351Eo5TvPY6/vqBQD4fielR0c+gWcFbKdoyJZTAJ2ZkWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LqrC8xLa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D566EC4CEEA;
+	Mon, 23 Jun 2025 13:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685244;
-	bh=HBXEaJKB7AiYNRAieSXYGwti5OHU0rGeuFqteoZ/Rr4=;
+	s=korg; t=1750686127;
+	bh=eMsDe9FnF3YlqsyhCZUpzlW31T1j+i54axV+gWK5yKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cvfCJmdSrlp5YxK0MlvUuf4bawrOnwNQBTXa6d8eTcCVQ2kJTkbP4MFqAx9C/oufE
-	 O6T2IpAFW0Qnm2BIahWHyROVsOv7zyQdrHC5+sr9/YMlQxv30CocWC9/Vb4o/BQNCD
-	 s9he+O+FrxvckZarloBPkR4RoPcrZtaKGpQT/Ts4=
+	b=LqrC8xLavj6a6cBHA7gwYyjpcx8bf5bwpjc8D38EuanWPn85AYsQQVBAMul0ouK90
+	 H30KqV/8aCqIeHKKjoQHVGTtWEp8MNrYjSL3TyCjERmtSR4uPwVrYaA3q3N0e2p9GF
+	 BgLIOr/JXNitkh1TgWwysEYtDYc9ACZVyT9WqY9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junxian Huang <huangjunxian6@hisilicon.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Charlene Liu <charlene.liu@amd.com>,
+	Kevin Gao <kevin.gao3@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/355] RDMA/hns: Include hnae3.h in hns_roce_hw_v2.h
-Date: Mon, 23 Jun 2025 15:03:59 +0200
-Message-ID: <20250623130627.970447775@linuxfoundation.org>
+Subject: [PATCH 6.15 282/592] drm/amd/display: Correct SSC enable detection for DCN351
+Date: Mon, 23 Jun 2025 15:04:00 +0200
+Message-ID: <20250623130707.055764256@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,82 +65,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Kevin Gao <kevin.gao3@amd.com>
 
-[ Upstream commit 2b11d33de23262cb20d1dcb24b586dbb8f54d463 ]
+[ Upstream commit d01a7306e1bec9c02268793f58144e3e42695bf0 ]
 
-hns_roce_hw_v2.h has a direct dependency on hnae3.h due to the
-inline function hns_roce_write64(), but it doesn't include this
-header currently. This leads to that files including
-hns_roce_hw_v2.h must also include hnae3.h to avoid compilation
-errors, even if they themselves don't really rely on hnae3.h.
-This doesn't make sense, hns_roce_hw_v2.h should include hnae3.h
-directly.
+[Why]
+Due to very small clock register delta between DCN35 and DCN351, clock
+spread is being checked on the wrong register for DCN351, causing the
+display driver to believe that DPREFCLK downspread to be disabled when
+in some stacks it is enabled. This causes the clock values for audio to
+be incorrect.
 
-Fixes: d3743fa94ccd ("RDMA/hns: Fix the chip hanging caused by sending doorbell during reset")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://patch.msgid.link/20250421132750.1363348-6-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+[How]
+Both DCN351 and DCN35 use the same clk_mgr, so we modify the DCN35
+function that checks for SSC enable to read CLK6 instead of CLK5 when
+using DCN351. This allows us to read for DPREFCLK downspread correctly
+so the clock can properly compensate when setting values.
+
+Reviewed-by: Charlene Liu <charlene.liu@amd.com>
+Signed-off-by: Kevin Gao <kevin.gao3@amd.com>
+Signed-off-by: Roman Li <roman.li@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c    | 1 -
- drivers/infiniband/hw/hns/hns_roce_hw_v2.h    | 1 +
- drivers/infiniband/hw/hns/hns_roce_main.c     | 1 -
- drivers/infiniband/hw/hns/hns_roce_restrack.c | 1 -
- 4 files changed, 1 insertion(+), 3 deletions(-)
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c | 1 +
+ .../gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c  | 8 +++++++-
+ drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h  | 3 ++-
+ 3 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index 13aa8dd42f7d6..bb744ba155e2b 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -42,7 +42,6 @@
- #include <rdma/ib_umem.h>
- #include <rdma/uverbs_ioctl.h>
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c
+index 6a6ae618650b6..4607eff07253c 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn351_clk_mgr.c
+@@ -65,6 +65,7 @@
+ #define mmCLK1_CLK5_ALLOW_DS 0x16EB1
  
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_cmd.h"
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-index 8948d2b5577d5..80d14261cc4e1 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.h
-@@ -34,6 +34,7 @@
- #define _HNS_ROCE_HW_V2_H
+ #define mmCLK5_spll_field_8 0x1B04B
++#define mmCLK6_spll_field_8 0x1B24B
+ #define mmDENTIST_DISPCLK_CNTL 0x0124
+ #define regDENTIST_DISPCLK_CNTL 0x0064
+ #define regDENTIST_DISPCLK_CNTL_BASE_IDX 1
+diff --git a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+index 142de8938d7c3..bb1ac12a2b095 100644
+--- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
++++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn35/dcn35_clk_mgr.c
+@@ -90,6 +90,7 @@
+ #define mmCLK1_CLK5_ALLOW_DS 0x16EB1
  
- #include <linux/bitops.h>
-+#include "hnae3.h"
+ #define mmCLK5_spll_field_8 0x1B24B
++#define mmCLK6_spll_field_8 0x1B24B
+ #define mmDENTIST_DISPCLK_CNTL 0x0124
+ #define regDENTIST_DISPCLK_CNTL 0x0064
+ #define regDENTIST_DISPCLK_CNTL_BASE_IDX 1
+@@ -116,6 +117,7 @@
+ #define DENTIST_DISPCLK_CNTL__DENTIST_DPPCLK_WDIVIDER_MASK 0x7F000000L
  
- #define HNS_ROCE_VF_QPC_BT_NUM			256
- #define HNS_ROCE_VF_SCCC_BT_NUM			64
-diff --git a/drivers/infiniband/hw/hns/hns_roce_main.c b/drivers/infiniband/hw/hns/hns_roce_main.c
-index 3c79668c6b3b5..9078855aad184 100644
---- a/drivers/infiniband/hw/hns/hns_roce_main.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_main.c
-@@ -37,7 +37,6 @@
- #include <rdma/ib_smi.h>
- #include <rdma/ib_user_verbs.h>
- #include <rdma/ib_cache.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include <rdma/hns-abi.h>
-diff --git a/drivers/infiniband/hw/hns/hns_roce_restrack.c b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-index 259444c0a6301..8acab99f7ea6a 100644
---- a/drivers/infiniband/hw/hns/hns_roce_restrack.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_restrack.c
-@@ -4,7 +4,6 @@
- #include <rdma/rdma_cm.h>
- #include <rdma/restrack.h>
- #include <uapi/rdma/rdma_netlink.h>
--#include "hnae3.h"
- #include "hns_roce_common.h"
- #include "hns_roce_device.h"
- #include "hns_roce_hw_v2.h"
+ #define CLK5_spll_field_8__spll_ssc_en_MASK 0x00002000L
++#define CLK6_spll_field_8__spll_ssc_en_MASK 0x00002000L
+ 
+ #define SMU_VER_THRESHOLD 0x5D4A00 //93.74.0
+ #undef FN
+@@ -596,7 +598,11 @@ static bool dcn35_is_spll_ssc_enabled(struct clk_mgr *clk_mgr_base)
+ 
+ 	uint32_t ssc_enable;
+ 
+-	ssc_enable = REG_READ(CLK5_spll_field_8) & CLK5_spll_field_8__spll_ssc_en_MASK;
++	if (clk_mgr_base->ctx->dce_version == DCN_VERSION_3_51) {
++		ssc_enable = REG_READ(CLK6_spll_field_8) & CLK6_spll_field_8__spll_ssc_en_MASK;
++	} else {
++		ssc_enable = REG_READ(CLK5_spll_field_8) & CLK5_spll_field_8__spll_ssc_en_MASK;
++	}
+ 
+ 	return ssc_enable != 0;
+ }
+diff --git a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+index 221645c023b50..bac8febad69a5 100644
+--- a/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
++++ b/drivers/gpu/drm/amd/display/dc/inc/hw/clk_mgr_internal.h
+@@ -199,6 +199,7 @@ enum dentist_divider_range {
+ 	CLK_SR_DCN35(CLK1_CLK4_ALLOW_DS), \
+ 	CLK_SR_DCN35(CLK1_CLK5_ALLOW_DS), \
+ 	CLK_SR_DCN35(CLK5_spll_field_8), \
++	CLK_SR_DCN35(CLK6_spll_field_8), \
+ 	SR(DENTIST_DISPCLK_CNTL), \
+ 
+ #define CLK_COMMON_MASK_SH_LIST_DCN32(mask_sh) \
+@@ -307,7 +308,7 @@ struct clk_mgr_registers {
+ 	uint32_t CLK1_CLK4_ALLOW_DS;
+ 	uint32_t CLK1_CLK5_ALLOW_DS;
+ 	uint32_t CLK5_spll_field_8;
+-
++	uint32_t CLK6_spll_field_8;
+ };
+ 
+ struct clk_mgr_shift {
 -- 
 2.39.5
 
