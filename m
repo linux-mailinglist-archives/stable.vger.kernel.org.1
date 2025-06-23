@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-157344-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED062AE5389
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7387AE5202
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E45474A4649
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E4B54A4EBB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E22B8220686;
-	Mon, 23 Jun 2025 21:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281A3222599;
+	Mon, 23 Jun 2025 21:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qo6Ehrc9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaR9Jxhe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A03B419049B;
-	Mon, 23 Jun 2025 21:53:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90E4221FC7;
+	Mon, 23 Jun 2025 21:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715638; cv=none; b=Bk5YBuh6+YlonkjWxLzaCuzjm2KbRgujuIZB68PBCkHTkPXwEf41QSCEGDDiy7pUQ9alr4H4pkExVWukFIXoy6oqreO1KG7RdKYhvuRWAtlSCdLueu/b7Q4VMRvZPFJG395PjsT9NDk69Pi2OhHzD1V7Gq5ZDHd6eJXcLhlXlsk=
+	t=1750714774; cv=none; b=QaB9Y+0uSf2FJbqPuvpValygihLH0RBjim+tpmQS67Bnbv+XJfGS/N3lvFzZY7aBwgmtUbZhTvNK3v7/9usT2aPpYrmTbzxIScwvSnkuUhFSDl+VUOLtzNbdpKlU1APdvYPN6HYVxs8YD+XxRqovsvR/suvrOQZIHjpjk+Uhh0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715638; c=relaxed/simple;
-	bh=Se58K0ai9N83XnbqaQ84PcIsS6aoPHZw+AoBOTNAq1k=;
+	s=arc-20240116; t=1750714774; c=relaxed/simple;
+	bh=M+M/mpFSf1B96yv0qS5wvOHS+OVe4Z19aM7/+VpQhb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+rdKBthrt8MgYGYPaHbm9Lhecn/xoQ0bv6K0iJN2UcgD6BcxBs5YvIbAApHnuWdrttF9vfHaH7+UpbTYnOIB26zCkYAY2wgv5SZTf/luty3jNOWbpGLehqtzGqfzXEHO+ATKGwZq9MhfUxvwWKX1kaMqJPBS712Id51xovmbxk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qo6Ehrc9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36CB8C4CEEA;
-	Mon, 23 Jun 2025 21:53:58 +0000 (UTC)
+	 MIME-Version; b=l7JVUunisS0e3DTHLcg+Q0TKMHOxxUpy19mdeZ9MUQRs0YvU7DXLEGupjWZfJClKA5Nf2QoNL43ZbmgrkeytsLA2X/i/LCPSacnfQSXO6589ZXoSU+iRJJBYd97Zss5hF213J1xgAl2GEEGfsh9FcwS22lrNBoldPjsNbc/WLD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaR9Jxhe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691BDC4CEEA;
+	Mon, 23 Jun 2025 21:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715638;
-	bh=Se58K0ai9N83XnbqaQ84PcIsS6aoPHZw+AoBOTNAq1k=;
+	s=korg; t=1750714774;
+	bh=M+M/mpFSf1B96yv0qS5wvOHS+OVe4Z19aM7/+VpQhb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qo6Ehrc9akS3Zw1TuRYbJzVeRITgCbzk7wnRfy3x8lsINcsPxvDFS8nSnIPcJXMoj
-	 +Q685yc+Ueacg6sDlpDd53AutlA0Sssz1SQg8+cTUAcY5ACUTl70YPLhx8lXY9x77o
-	 w/Nvi42n0FhVWRYP5skEu9GiSc+mvJjErjXr2KLg=
+	b=eaR9JxhepUDIpUcZ+5S6aB0I5vAKGm1f27j/WVQLtwkAxDa0UykeXWD4mxg5q2hXn
+	 m0eKdjv6yXzEIv9UTpPRUVSGpW1ZwIaIyMa9ab8DUvN0Cai4iUDOmXsH1liE9Razp9
+	 DfTJ1fI9akaXr5Vh6VJo+iDINc4Um1JNY0IdNhq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>
-Subject: [PATCH 6.15 471/592] x86/mm/pat: dont collapse pages without PSE set
+	Harry Wentland <harry.wentland@amd.com>,
+	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 228/355] drm/amd/display: Add NULL pointer checks in dm_force_atomic_commit()
 Date: Mon, 23 Jun 2025 15:07:09 +0200
-Message-ID: <20250623130711.635882104@linuxfoundation.org>
+Message-ID: <20250623130633.600880106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +68,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-commit 1dbf30fdb5e57fb2c39f17f35f2b544d5de34397 upstream.
+[ Upstream commit 3f397cd203f247879c2f1a061e90d4c8d23655de ]
 
-Collapsing pages to a leaf PMD or PUD should be done only if
-X86_FEATURE_PSE is available, which is not the case when running e.g.
-as a Xen PV guest.
+This commit updates the dm_force_atomic_commit function to replace the
+usage of PTR_ERR_OR_ZERO with IS_ERR for checking error states after
+retrieving the Connector (drm_atomic_get_connector_state), CRTC
+(drm_atomic_get_crtc_state), and Plane (drm_atomic_get_plane_state)
+states.
 
-Fixes: 41d88484c71c ("x86/mm/pat: restore large ROX pages after fragmentation")
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250528123557.12847-3-jgross@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The function utilized PTR_ERR_OR_ZERO for error checking. However, this
+approach is inappropriate in this context because the respective
+functions do not return NULL; they return pointers that encode errors.
+
+This change ensures that error pointers are properly checked using
+IS_ERR before attempting to dereference.
+
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/mm/pat/set_memory.c | 3 +++
- 1 file changed, 3 insertions(+)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/mm/pat/set_memory.c b/arch/x86/mm/pat/set_memory.c
-index 46edc11726b7..8834c76f91c9 100644
---- a/arch/x86/mm/pat/set_memory.c
-+++ b/arch/x86/mm/pat/set_memory.c
-@@ -1257,6 +1257,9 @@ static int collapse_pmd_page(pmd_t *pmd, unsigned long addr,
- 	pgprot_t pgprot;
- 	int i = 0;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 260133562db53..45420968e5f12 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -8098,16 +8098,20 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
+ 	 */
+ 	conn_state = drm_atomic_get_connector_state(state, connector);
  
-+	if (!cpu_feature_enabled(X86_FEATURE_PSE))
-+		return 0;
-+
- 	addr &= PMD_MASK;
- 	pte = pte_offset_kernel(pmd, addr);
- 	first = *pte;
+-	ret = PTR_ERR_OR_ZERO(conn_state);
+-	if (ret)
++	/* Check for error in getting connector state */
++	if (IS_ERR(conn_state)) {
++		ret = PTR_ERR(conn_state);
+ 		goto out;
++	}
+ 
+ 	/* Attach crtc to drm_atomic_state*/
+ 	crtc_state = drm_atomic_get_crtc_state(state, &disconnected_acrtc->base);
+ 
+-	ret = PTR_ERR_OR_ZERO(crtc_state);
+-	if (ret)
++	/* Check for error in getting crtc state */
++	if (IS_ERR(crtc_state)) {
++		ret = PTR_ERR(crtc_state);
+ 		goto out;
++	}
+ 
+ 	/* force a restore */
+ 	crtc_state->mode_changed = true;
+@@ -8115,9 +8119,11 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
+ 	/* Attach plane to drm_atomic_state */
+ 	plane_state = drm_atomic_get_plane_state(state, plane);
+ 
+-	ret = PTR_ERR_OR_ZERO(plane_state);
+-	if (ret)
++	/* Check for error in getting plane state */
++	if (IS_ERR(plane_state)) {
++		ret = PTR_ERR(plane_state);
+ 		goto out;
++	}
+ 
+ 	/* Call commit internally with the state we just constructed */
+ 	ret = drm_atomic_commit(state);
 -- 
-2.50.0
+2.39.5
 
 
 
