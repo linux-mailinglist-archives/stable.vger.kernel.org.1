@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157949-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D546FAE5637
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10EC6AE5500
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E4BF7A5040
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DE723A777A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D7022192EC;
-	Mon, 23 Jun 2025 22:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6960A221FD6;
+	Mon, 23 Jun 2025 22:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1H5gJmnk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GnIkDjQk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6601F6667;
-	Mon, 23 Jun 2025 22:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 271771A4F12;
+	Mon, 23 Jun 2025 22:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717114; cv=none; b=t9p6CpLe5qU/GIijtGDH4XbxlGaRSaqjMdKKopbYeYVQxB7MAwCT5CkcCO3bR+P/gy5KsXZZHcr3WDgoyQ42po3mnVIF34K2zLqdmnUXX6O6lWYJkkLJTs2MTfsSgnII6fCskOYeRGJiD2USyFOYOP8oBb7szNZm135d8RqGHpE=
+	t=1750716397; cv=none; b=bPe3/D3TTCLqyM74hoazgxweB2mCxB/nautWnJL7zfuQgBdQQ4JRr79Oger4YzAFkOglGbxId2TcR81hSvaVrIT4hk5dgVjrTU0OEfSCHHTJtJzwDsjoHE+9I4w5mjSODS2pxgtaAGsBQfz2pGpNtai7Vhd0eAB0iBXHgnrlflc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717114; c=relaxed/simple;
-	bh=dVBgv5nk7ht8ypmlsElD5XYY43j+95Of+JPbbzwJOQU=;
+	s=arc-20240116; t=1750716397; c=relaxed/simple;
+	bh=ZUzYO9ldCxGnis+EKKTlVRrc3fYKuA+nc6u7PSxKJzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHF6Qn/5sD1OzUomOSGzWVb1CvAfgcaOAjW/cAjW/b5GfJ72fhvKxcpLEs6kKSKF2VGO5ZNDPZpZTsoGNQL9ssEArgdnCjKsaJsLfASi3QJYAxMn5M4fPPm4dDYDWvmAZOK2XwUMptxMAG2VtRKCQy004RbKcaHRN0Djm1ly1n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1H5gJmnk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DA2C4CEEA;
-	Mon, 23 Jun 2025 22:18:33 +0000 (UTC)
+	 MIME-Version; b=YwbfvVUG/ILafSkbzlZDp4LL4XeJy/FI641QrStdCSUtaZ0FE4OF0demb8mxN4hd0HlklNKsNdaQFMWV/qvR+yWBr/r0rNiepH6kWkqjn4hUjERAcPlEggTTJHAHd8iGzO9i8X+ZsvB5UkTXEkp6TalZtaNHxHsr7WlQDqrJ7nQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GnIkDjQk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1D3FC4CEF2;
+	Mon, 23 Jun 2025 22:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717114;
-	bh=dVBgv5nk7ht8ypmlsElD5XYY43j+95Of+JPbbzwJOQU=;
+	s=korg; t=1750716397;
+	bh=ZUzYO9ldCxGnis+EKKTlVRrc3fYKuA+nc6u7PSxKJzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1H5gJmnkPWYIMxm2BXPDjZGVFAM5IPFI2VcVMP+RJPhjlWDnSp4OpBwnNCOfL9fa9
-	 rd//K2ABjtxTFVKg0kFqLQ0oWx0W1midtKB3XUet2xrjMsFuoXoowVoc0vckO4in+r
-	 yERJLRQcMSqkGffH6TnoKtruvN4hhgJ+9MM4BHeE=
+	b=GnIkDjQkNTXU6piakyuUvNvkTEFOqjoiX3bh7bLbwrLlYSmhmxHBBlyyhLwAmB1vt
+	 44dcuRwn8GAfz5dtcNQ3WXquNohkXSKif3LmXqwaclCmFVHI66Balr6w8qiRCiH12G
+	 lUipwUyeaIm5pUiZJFnLmyTvmrqJmK3zwGZMzrCg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -51,12 +51,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
 	Miaohe Lin <linmiaohe@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 403/411] mm/huge_memory: fix dereferencing invalid pmd migration entry
+Subject: [PATCH 5.10 346/355] mm/huge_memory: fix dereferencing invalid pmd migration entry
 Date: Mon, 23 Jun 2025 15:09:07 +0200
-Message-ID: <20250623130643.824952354@linuxfoundation.org>
+Message-ID: <20250623130637.130239273@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,7 +68,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -134,7 +134,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/mm/huge_memory.c
 +++ b/mm/huge_memory.c
-@@ -2161,7 +2161,7 @@ void __split_huge_pmd(struct vm_area_str
+@@ -2227,7 +2227,7 @@ void __split_huge_pmd(struct vm_area_str
  	VM_BUG_ON(freeze && !page);
  	if (page) {
  		VM_WARN_ON_ONCE(!PageLocked(page));
