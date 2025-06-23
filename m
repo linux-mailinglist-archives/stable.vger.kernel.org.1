@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-157696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B0BBAE5520
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBFCAE572B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7B29A1BC3B80
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C541C241AA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9A48221FCA;
-	Mon, 23 Jun 2025 22:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB8F225A47;
+	Mon, 23 Jun 2025 22:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bEQt+TCv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRGPVkp7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769D17080E;
-	Mon, 23 Jun 2025 22:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8893B22370A;
+	Mon, 23 Jun 2025 22:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716500; cv=none; b=CSN9vPXY0kXgMG2qJnUjCMsh2x0TTKHXPIIVZTcVquYOWpsN4JMkIpf87/XfSdwWbTwM08P1ACbf1Ig/CWTVTCjWiLCPdMC6NKHn2uD8au+3BXvYtq0VdoXgQlFfZgBzFXK1pJs3xVGmpqw2/RQ7l1aQDCrzfb6A2L8VCN+uvy8=
+	t=1750717609; cv=none; b=Q9IfRsRfukwoMhj8GgQjoUH8eCscWtHQkjkOUafJOfT3a0CGYc2P/g3V2qxhyCBplgorh2AbiUPfS09K80uZczkegpFCn1cJcVfChG3rL6LCJ0s55UKweXsZe7NKHGI2AeChcJZWqfDSghc5r94bX3KahkLQsCVuFtJlRwj/Dqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716500; c=relaxed/simple;
-	bh=vn71yLkYt256x5+9dncPhHS0Sach/z0PyUCcAk9Q5Ec=;
+	s=arc-20240116; t=1750717609; c=relaxed/simple;
+	bh=R7G44ye1t2TaNZxxJiVeZPVXZZFIh/VXAyiClm4Hx2Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AIeYc8MxOCKpCpi99/cLweYERc38HMOQ7UWKWBX3+o/90Xjddq3xW854p/OOJL/0lgs4FqgtTQvuGCbPSd+guwU2nUbn0wHqtdeaypCxPBBhAaMGm47r54KYRKrvENiPch2k+Lb4hqtIRxSgD0D3DT5RmnypKDfVu26eCsGhJ9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bEQt+TCv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA3AC4CEEA;
-	Mon, 23 Jun 2025 22:08:19 +0000 (UTC)
+	 MIME-Version; b=BSgAZeVmdJAdS9Dw/86F+qNQ+tq4byBYmOcmSi5eg2wHbrP5tOUUILzfQEOqJu15QjS47U2qZxTDi3IbO3MdxeuE3LUGWTepNGGqypkjAwRF5GSJZ6SC6XODcii92xLFe5gsN3MK2UVZxvee9VjUyJ64L6D5RF67PUSNVngzDug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRGPVkp7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2093BC4CEEA;
+	Mon, 23 Jun 2025 22:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716500;
-	bh=vn71yLkYt256x5+9dncPhHS0Sach/z0PyUCcAk9Q5Ec=;
+	s=korg; t=1750717609;
+	bh=R7G44ye1t2TaNZxxJiVeZPVXZZFIh/VXAyiClm4Hx2Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bEQt+TCv12G0/C2eNdU9MV083YfXggMKazF+m6dc1ay3pyL77rRIIV8hfBHgKyT5P
-	 m+nlDWxYaqrmZERMIhfLzKN7VP1QB1OGJqC/E4/4RPeFBuSABS46I2brIOTUCdR83d
-	 Kyri5ofSIhiGdlANZhKut0rly5eg9BHUQdRDdFAU=
+	b=CRGPVkp7IJJhVCmzSuNIg1riI281G4vdkf1Yic2I27e9HRyIEhQKqeIjMpawxfWdd
+	 A1fUz3Jjiboz+tpFlGUqOxFQ8x0QDBe0Mu6hTiXvBadwh5o4hIa/DfzcPG+9ZlhS9F
+	 QqlD+H3u/2xx2mj3y0k8Rt4lnYDe2lGANokyKn/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mark Rutland <mark.rutland@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Mark Brown <broonie@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Will Deacon <will@kernel.org>
-Subject: [PATCH 6.15 556/592] KVM: arm64: VHE: Synchronize restore of host debug registers
+	Steven Rostedt <rostedt@goodmis.org>,
+	Hongbo Li <lihongbo22@huawei.com>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 469/508] erofs: remove unused trace event erofs_destroy_inode
 Date: Mon, 23 Jun 2025 15:08:34 +0200
-Message-ID: <20250623130713.668998481@linuxfoundation.org>
+Message-ID: <20250623130656.639073656@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,54 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Rutland <mark.rutland@arm.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit cade3d57e456e69f67aa9894bf89dc8678796bb7 upstream.
+commit 30b58444807c93bffeaba7d776110f2a909d2f9a upstream.
 
-When KVM runs in non-protected VHE mode, there's no context
-synchronization event between __debug_switch_to_host() restoring the
-host debug registers and __kvm_vcpu_run() unmasking debug exceptions.
-Due to this, it's theoretically possible for the host to take an
-unexpected debug exception due to the stale guest configuration.
+The trace event `erofs_destroy_inode` was added but remains unused. This
+unused event contributes approximately 5KB to the kernel module size.
 
-This cannot happen in NVHE/HVHE mode as debug exceptions are masked in
-the hyp code, and the exception return to the host will provide the
-necessary context synchronization before debug exceptions can be taken.
-
-For now, avoid the problem by adding an ISB after VHE hyp code restores
-the host debug registers.
-
-Signed-off-by: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Fuad Tabba <tabba@google.com>
-Cc: Marc Zyngier <maz@kernel.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Oliver Upton <oliver.upton@linux.dev>
-Cc: Will Deacon <will@kernel.org>
+Reported-by: Steven Rostedt <rostedt@goodmis.org>
+Closes: https://lore.kernel.org/r/20250612224906.15000244@batman.local.home
+Fixes: 13f06f48f7bf ("staging: erofs: support tracepoint")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250617133718.4014181-2-mark.rutland@arm.com
-Signed-off-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250617054056.3232365-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/kvm/hyp/include/hyp/debug-sr.h |    3 +++
- 1 file changed, 3 insertions(+)
+ include/trace/events/erofs.h |   18 ------------------
+ 1 file changed, 18 deletions(-)
 
---- a/arch/arm64/kvm/hyp/include/hyp/debug-sr.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/debug-sr.h
-@@ -167,6 +167,9 @@ static inline void __debug_switch_to_hos
+--- a/include/trace/events/erofs.h
++++ b/include/trace/events/erofs.h
+@@ -232,24 +232,6 @@ DEFINE_EVENT(erofs__map_blocks_exit, z_e
+ 	TP_ARGS(inode, map, flags, ret)
+ );
  
- 	__debug_save_state(guest_dbg, guest_ctxt);
- 	__debug_restore_state(host_dbg, host_ctxt);
-+
-+	if (has_vhe())
-+		isb();
- }
+-TRACE_EVENT(erofs_destroy_inode,
+-	TP_PROTO(struct inode *inode),
+-
+-	TP_ARGS(inode),
+-
+-	TP_STRUCT__entry(
+-		__field(	dev_t,		dev		)
+-		__field(	erofs_nid_t,	nid		)
+-	),
+-
+-	TP_fast_assign(
+-		__entry->dev	= inode->i_sb->s_dev;
+-		__entry->nid	= EROFS_I(inode)->nid;
+-	),
+-
+-	TP_printk("dev = (%d,%d), nid = %llu", show_dev_nid(__entry))
+-);
+-
+ #endif /* _TRACE_EROFS_H */
  
- #endif /* __ARM64_KVM_HYP_DEBUG_SR_H__ */
+  /* This part must be outside protection */
 
 
 
