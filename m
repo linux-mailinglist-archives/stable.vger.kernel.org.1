@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-157140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96369AE52AA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02E30AE52BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69D131B65890
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0FD77AEA6C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A7D223DCE;
-	Mon, 23 Jun 2025 21:45:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B75DC226CF1;
+	Mon, 23 Jun 2025 21:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdOxqGV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1qWGh5A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8768226CF8;
-	Mon, 23 Jun 2025 21:45:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BCC223DE5;
+	Mon, 23 Jun 2025 21:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715132; cv=none; b=XiDJYypIY8UAgbcGBD30xEBmy4Wwspz0AGxhJ4fh2cAhrXighlf/BbUsuvFPwbQ8pXU4X7Ae/wrWQItrdKQ+m3TmhXXAOgIiwAXMDvOkk9MYCI3RnOYU/yYndGiDq5zTrOX/aO4qlEMlx0EWE3VVVeFy9QsZBCaHk+27JfYc02o=
+	t=1750715147; cv=none; b=j8tpDVXTi/IlPcF9ToS59iHrY9cEYuiPtBTbcSuWujxIGNAeuxHt0r948fUQJznHgAI4CMrsQ1nsRzY+YXg9WypP9wJICVyPK3H/5K47pvgWSgx/o/COhTVrQ+Fs3hFFFsAqe3Ar/FU6v3Xe1r0g+KAIpDbmRzQ5lbKrdXErobI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715132; c=relaxed/simple;
-	bh=/DY4sYPvdMCE94NM93uGY38tmoPmZpStEeXuw92qS9k=;
+	s=arc-20240116; t=1750715147; c=relaxed/simple;
+	bh=FDQICdolJtT/3eRNjvzhUz7+OMLQNPl6MfxyZ4apQzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VTsteZaLzNxsT28BW0jp8czslCGhs0syS11KMKyQSycsg5uY+egTiIKagt/R1uReCileeBCco+WLwXJ/yyfunnDLmtTEI2e/yyuVvqAmBM17W6k2x71lcN7LyzbyzRiap67zRhbhB+hAFlBgnYz/3kO1ZpeBqwNDqH/fF3rLk6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdOxqGV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12390C4CEEA;
-	Mon, 23 Jun 2025 21:45:31 +0000 (UTC)
+	 MIME-Version; b=IvtOz0QXtURNEtTYlhKSGTITc8j8m2x+S9kVC988ZsWB7GdUc96du39Hgqb6gbN5LtPBdJS0BMlfO7+DJM1tWGMIUNArX0dqI6l/U3nIXssxMnjNv/GGJC9zRycb6t+JD1BimykE3uvxxB//GQRrnwKnyXDtsja+nK1mFipYb40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1qWGh5A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3999C4CEEA;
+	Mon, 23 Jun 2025 21:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715132;
-	bh=/DY4sYPvdMCE94NM93uGY38tmoPmZpStEeXuw92qS9k=;
+	s=korg; t=1750715147;
+	bh=FDQICdolJtT/3eRNjvzhUz7+OMLQNPl6MfxyZ4apQzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdOxqGV7w9NOHgkvxeNO0tt7SucI+WypGjzcV207E5tCWnR7MaRInydsgwLgKVmTB
-	 NXIT7YtfHS/41p3+ucctV0cDtYiDVQGXoirIbb+MSF+s2/WQBLbCS11MiLNQHSe/ua
-	 wk6IZotA73DZrOifGW0H2SNHCFFJpr7i6Qfv8Iww=
+	b=u1qWGh5AYKyyKQHks1XUqHMeMUJtA3VRcIze0S+FyHw9U4zEpg5Zl0kHEtD9q1rKX
+	 lz7eHjVHTkgMsa36iZXouO3cT1t9n0BuJpVmku+Mad1ngIuIpflHvLa4AQReG16SZy
+	 nq8J0pBP1+3qOzYKRil5SpaT0GltCPzluJZW834c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Jens Wiklander <jens.wiklander@linaro.org>,
-	Rouven Czerwinski <rouven.czerwinski@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/355] tee: Prevent size calculation wraparound on 32-bit kernels
-Date: Mon, 23 Jun 2025 15:07:58 +0200
-Message-ID: <20250623130635.101910078@linuxfoundation.org>
+	Tony Lindgren <tony@atomide.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH 5.10 278/355] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
+Date: Mon, 23 Jun 2025 15:07:59 +0200
+Message-ID: <20250623130635.132509950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -67,85 +68,109 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 39bb67edcc582b3b386a9ec983da67fa8a10ec03 ]
+[ Upstream commit 36305857b1ead8f6ca033a913162ebc09bee0b43 ]
 
-The current code around TEE_IOCTL_PARAM_SIZE() is a bit wrong on
-32-bit kernels: Multiplying a user-provided 32-bit value with the
-size of a structure can wrap around on such platforms.
+This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
 
-Fix it by using saturating arithmetic for the size calculation.
+It breaks target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
+when minimally-configured system tries to network-boot:
 
-This has no security consequences because, in all users of
-TEE_IOCTL_PARAM_SIZE(), the subsequent kcalloc() implicitly checks
-for wrapping.
+[    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
+[   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
+[   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
+[   26.878471] Waiting up to 100 more seconds for network.
 
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Jens Wiklander <jens.wiklander@linaro.org>
-Tested-by: Rouven Czerwinski <rouven.czerwinski@linaro.org>
+There are minimal configurations possible when the deferred device is not
+being probed any more (because everything else has been successfully
+probed) and deferral lists are not processed any more.
+
+Stable mmc enumeration can be achieved by filling /aliases node properly
+(4700a00755fb commit's rationale).
+
+After revert:
+
+[    9.006816] IP-Config: Complete:
+[    9.010058]      device=lan0, ...
+
+Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04, Panda, BT200
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20250401090643.2776793-1-alexander.sverdlin@siemens.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tee/tee_core.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/bus/ti-sysc.c | 49 -------------------------------------------
+ 1 file changed, 49 deletions(-)
 
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index 9cc4a7b63b0d6..e6de0e80b793e 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -10,6 +10,7 @@
- #include <linux/fs.h>
- #include <linux/idr.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/tee_drv.h>
- #include <linux/uaccess.h>
-@@ -19,7 +20,7 @@
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index b1aa793b9eeda..ed38c25fb0c5e 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -687,51 +687,6 @@ static int sysc_parse_and_check_child_range(struct sysc *ddata)
+ 	return 0;
+ }
  
- #define TEE_NUM_DEVICES	32
+-/* Interconnect instances to probe before l4_per instances */
+-static struct resource early_bus_ranges[] = {
+-	/* am3/4 l4_wkup */
+-	{ .start = 0x44c00000, .end = 0x44c00000 + 0x300000, },
+-	/* omap4/5 and dra7 l4_cfg */
+-	{ .start = 0x4a000000, .end = 0x4a000000 + 0x300000, },
+-	/* omap4 l4_wkup */
+-	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
+-	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
+-	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
+-};
+-
+-static atomic_t sysc_defer = ATOMIC_INIT(10);
+-
+-/**
+- * sysc_defer_non_critical - defer non_critical interconnect probing
+- * @ddata: device driver data
+- *
+- * We want to probe l4_cfg and l4_wkup interconnect instances before any
+- * l4_per instances as l4_per instances depend on resources on l4_cfg and
+- * l4_wkup interconnects.
+- */
+-static int sysc_defer_non_critical(struct sysc *ddata)
+-{
+-	struct resource *res;
+-	int i;
+-
+-	if (!atomic_read(&sysc_defer))
+-		return 0;
+-
+-	for (i = 0; i < ARRAY_SIZE(early_bus_ranges); i++) {
+-		res = &early_bus_ranges[i];
+-		if (ddata->module_pa >= res->start &&
+-		    ddata->module_pa <= res->end) {
+-			atomic_set(&sysc_defer, 0);
+-
+-			return 0;
+-		}
+-	}
+-
+-	atomic_dec_if_positive(&sysc_defer);
+-
+-	return -EPROBE_DEFER;
+-}
+-
+ static struct device_node *stdout_path;
  
--#define TEE_IOCTL_PARAM_SIZE(x) (sizeof(struct tee_param) * (x))
-+#define TEE_IOCTL_PARAM_SIZE(x) (size_mul(sizeof(struct tee_param), (x)))
+ static void sysc_init_stdout_path(struct sysc *ddata)
+@@ -956,10 +911,6 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
+ 	if (error)
+ 		return error;
  
- #define TEE_UUID_NS_NAME_SIZE	128
+-	error = sysc_defer_non_critical(ddata);
+-	if (error)
+-		return error;
+-
+ 	sysc_check_children(ddata);
  
-@@ -492,7 +493,7 @@ static int tee_ioctl_open_session(struct tee_context *ctx,
- 	if (copy_from_user(&arg, uarg, sizeof(arg)))
- 		return -EFAULT;
- 
--	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	if (arg.num_params) {
-@@ -570,7 +571,7 @@ static int tee_ioctl_invoke(struct tee_context *ctx,
- 	if (copy_from_user(&arg, uarg, sizeof(arg)))
- 		return -EFAULT;
- 
--	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+	if (size_add(sizeof(arg), TEE_IOCTL_PARAM_SIZE(arg.num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	if (arg.num_params) {
-@@ -704,7 +705,7 @@ static int tee_ioctl_supp_recv(struct tee_context *ctx,
- 	if (get_user(num_params, &uarg->num_params))
- 		return -EFAULT;
- 
--	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) != buf.buf_len)
-+	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) != buf.buf_len)
- 		return -EINVAL;
- 
- 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
-@@ -803,7 +804,7 @@ static int tee_ioctl_supp_send(struct tee_context *ctx,
- 	    get_user(num_params, &uarg->num_params))
- 		return -EFAULT;
- 
--	if (sizeof(*uarg) + TEE_IOCTL_PARAM_SIZE(num_params) > buf.buf_len)
-+	if (size_add(sizeof(*uarg), TEE_IOCTL_PARAM_SIZE(num_params)) > buf.buf_len)
- 		return -EINVAL;
- 
- 	params = kcalloc(num_params, sizeof(struct tee_param), GFP_KERNEL);
+ 	error = sysc_parse_registers(ddata);
 -- 
 2.39.5
 
