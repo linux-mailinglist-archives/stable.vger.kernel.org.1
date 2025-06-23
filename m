@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-155640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77FFDAE4309
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FF89AE44C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2857A189F9F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3C0C1BC103B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 942482550B3;
-	Mon, 23 Jun 2025 13:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A7DE253939;
+	Mon, 23 Jun 2025 13:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xe1QF2vp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vAC/y3Lt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52994254B1F;
-	Mon, 23 Jun 2025 13:22:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3C6253340;
+	Mon, 23 Jun 2025 13:39:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684955; cv=none; b=EJ92e6CmV/8trtSxDbQQahhlc4Ijc5ZK1BW+e5qFAF2GSLmkS8T2+84tq2d6LuM2Vj9MqO7FaSz77hyyzhQ9ysVOfKHnFwkXQHvjBs2qWvKqGNYqKt0Ic5EuJhiCkv7XD/Mc5Zndbd6Sz5QZ4Ue7u3OzqQFnXF5Zsb4pDoj4+48=
+	t=1750685969; cv=none; b=T6K/W7fck7FrJA4dGD0ubFg7UE3362rU7mJZ5TDlhaWEzOGaHV5//3bBmS+viCJs6PhGAm/4pAeNnsLWcNAP1lkwsIMV9tBuKUkZR0RAUBR4N885mAMI6NG1geKNA+V8MU8xGcdSuKCDaH34cJKRIaf35qTsMwkwdl7mP4naW8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684955; c=relaxed/simple;
-	bh=7Je3O1RkMwdrHk2r6nzXA0YvRZWzFardXVjoBE9GpdM=;
+	s=arc-20240116; t=1750685969; c=relaxed/simple;
+	bh=kLpPKFCub7HbLf5mlmxtx4fl2u98inDsqqPORiKukZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyIn7dXIlNNRmUswQW8UZFxzyRbNb4jOcgG0Y6+jF8pK7ldCARqKOkbykBLiMlLvoHn1VBwpzkRdNdaU1tpkth9JHNe07cZLhU+zKx1/8eZ6LVPsx3zV+LoFprcvep0Dr2yAqb68YeQbVnm2iFThN6wuQFiMUny/CW9mK92Q7nM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xe1QF2vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB8C7C4CEEA;
-	Mon, 23 Jun 2025 13:22:34 +0000 (UTC)
+	 MIME-Version; b=iceEVOSydoZiZkeACE5BEYMBp46IBjouVp52eLjoZmvJtaTp2DWSF6hPGn+0crlq3PEdOd5nhg2PoDR8PjAuzxN8c0rX6cKV/GEPxOTzkoaxGF/B0kuSpUR64ftPqlJ67B4ajHcMbwHcVkbNHeZFtm+cuAfvCSl0R34FmCznnaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vAC/y3Lt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71F75C4CEEA;
+	Mon, 23 Jun 2025 13:39:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684955;
-	bh=7Je3O1RkMwdrHk2r6nzXA0YvRZWzFardXVjoBE9GpdM=;
+	s=korg; t=1750685968;
+	bh=kLpPKFCub7HbLf5mlmxtx4fl2u98inDsqqPORiKukZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xe1QF2vptNIyEnLH4Mfbryt22EE41/FO7B7aQZMAavxfIGRgE3eKWoVCeeFXhzgbJ
-	 dy9R0qOxYq4D5l+qe/yoxUp/F+7QvaWXwVFAK7KZ2hn9RfkyzSy0vrBHTZkumOrIcB
-	 gTe/fsC/SqCDBsRiRvEKjLIxBsQAu2ljRapAebrM=
+	b=vAC/y3LtAbi7AiDgicOb/ofcBzOkPByDRX6d9/e1b32jqiLEK3xOpwe4fjqKbyEnN
+	 V1GJIC0qebkZEpfXn+y+PGeqoa7nAuGlGnY3gPXSJeYemenPwztW0TL/9ZQ4nX+G76
+	 PjfBbauvbmq83Q+i5ScKgNbvesApkz5Var4UEaVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 015/355] crypto: marvell/cesa - Avoid empty transfer descriptor
+Subject: [PATCH 5.15 072/411] net: phy: mscc: Stop clearing the the UDPv4 checksum for L2 frames
 Date: Mon, 23 Jun 2025 15:03:36 +0200
-Message-ID: <20250623130627.235218709@linuxfoundation.org>
+Message-ID: <20250623130635.169282470@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,38 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit 1bafd82d9a40cf09c6c40f1c09cc35b7050b1a9f ]
+[ Upstream commit 57a92d14659df3e7e7e0052358c8cc68bbbc3b5e ]
 
-The user may set req->src even if req->nbytes == 0.  If there
-is no data to hash from req->src, do not generate an empty TDMA
-descriptor.
+We have noticed that when PHY timestamping is enabled, L2 frames seems
+to be modified by changing two 2 bytes with a value of 0. The place were
+these 2 bytes seems to be random(or I couldn't find a pattern).  In most
+of the cases the userspace can ignore these frames but if for example
+those 2 bytes are in the correction field there is nothing to do.  This
+seems to happen when configuring the HW for IPv4 even that the flow is
+not enabled.
+These 2 bytes correspond to the UDPv4 checksum and once we don't enable
+clearing the checksum when using L2 frames then the frame doesn't seem
+to be changed anymore.
 
-Fixes: db509a45339f ("crypto: marvell/cesa - add TDMA support")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 7d272e63e0979d ("net: phy: mscc: timestamping and PHC support")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250523082716.2935895-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/marvell/cesa/hash.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc_ptp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/marvell/cesa/hash.c b/drivers/crypto/marvell/cesa/hash.c
-index 8441c3198d460..823a8fb114bbb 100644
---- a/drivers/crypto/marvell/cesa/hash.c
-+++ b/drivers/crypto/marvell/cesa/hash.c
-@@ -639,7 +639,7 @@ static int mv_cesa_ahash_dma_req_init(struct ahash_request *req)
- 	if (ret)
- 		goto err_free_tdma;
+diff --git a/drivers/net/phy/mscc/mscc_ptp.c b/drivers/net/phy/mscc/mscc_ptp.c
+index edb951695b13e..7a3a8cce02d3d 100644
+--- a/drivers/net/phy/mscc/mscc_ptp.c
++++ b/drivers/net/phy/mscc/mscc_ptp.c
+@@ -943,7 +943,9 @@ static int vsc85xx_ip1_conf(struct phy_device *phydev, enum ts_blk blk,
+ 	/* UDP checksum offset in IPv4 packet
+ 	 * according to: https://tools.ietf.org/html/rfc768
+ 	 */
+-	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26) | IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
++	val |= IP1_NXT_PROT_UDP_CHKSUM_OFF(26);
++	if (enable)
++		val |= IP1_NXT_PROT_UDP_CHKSUM_CLEAR;
+ 	vsc85xx_ts_write_csr(phydev, blk, MSCC_ANA_IP1_NXT_PROT_UDP_CHKSUM,
+ 			     val);
  
--	if (iter.src.sg) {
-+	if (iter.base.len > iter.src.op_offset) {
- 		/*
- 		 * Add all the new data, inserting an operation block and
- 		 * launch command between each full SRAM block-worth of
 -- 
 2.39.5
 
