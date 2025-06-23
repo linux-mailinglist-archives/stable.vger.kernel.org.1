@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-156202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EF58AE4E93
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9732BAE4F30
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 212A97AAB47
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:05:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEF503A9323
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65F121638A;
-	Mon, 23 Jun 2025 21:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95D9722069F;
+	Mon, 23 Jun 2025 21:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ahTl/PTG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aDROdpFJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B5970838;
-	Mon, 23 Jun 2025 21:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526ED1DF98B;
+	Mon, 23 Jun 2025 21:13:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712834; cv=none; b=qiQ54qAGTH/hEUqrTL0cWwD7C+DqV+yf78/3VZ4sCdVT7uvhfbQ7ZaGW2zmPyNVg9y1OgSDi9AacTK5ND2oxX39TYuttfCZx6G+o81vqjFZUvb8IHA3C5mi14V9W/mrQ2QjP0YEGcI0K5uBtPKB84lEi3PnnX5DDwhC6K/Oane0=
+	t=1750713197; cv=none; b=aRDVrJ4gLLn49JgqQZGAT6ktkOOESFlfLTFuEYQsbeIqY/PEkDOAwRbS6MlmMsWj0szs7sMujGIxgc2QbaiYY//EFD1awdxOJJmgJXon7HvcBq5etlJ012Tm/GXa0bH9rwqBSvfzxVQe9y9eqA/4NvZZj/F2sfHiOztau4SKKg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712834; c=relaxed/simple;
-	bh=61XPAPFhdQUYQLV9OdNyJtMS48aiJXw7w7jdhiAIC/E=;
+	s=arc-20240116; t=1750713197; c=relaxed/simple;
+	bh=wu5bOlmuVJBj09hPlqwyWGi2FFn/WW6mMgeOVBufFxY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWD/ElIqVne//7Tv19x9NfAaxwD5TfDg5KLILFkD7dMX3F5qTFlY/eV/8Gdr9VmSlVn09sV2gXxgjyMQC8eXSPwvFVtGMBol5Yn5jNa9zl943IFg7FP1pXeYJEWOSZ3h9uvKjSnRp48JhMJswysQ/5Ah4Dbfhy2o4a8DqrJFA2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ahTl/PTG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2FCC4CEEA;
-	Mon, 23 Jun 2025 21:07:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RYKpRzd7TwrIZrXKoGWiAz052GWIJbMRsYWX7gFdNgT4VKb4ntb3W499dHLzqntU247eBxsOm1EOO4XVKltgu6R+F47cr2KGpxQihGM8CyNSFHDzYG2a/1uhxF2P8m7ljIteJG5uADYPXbz9uEECa04C1/M5kUPAj9uuL9s1m1M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aDROdpFJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E085DC4CEEA;
+	Mon, 23 Jun 2025 21:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712834;
-	bh=61XPAPFhdQUYQLV9OdNyJtMS48aiJXw7w7jdhiAIC/E=;
+	s=korg; t=1750713197;
+	bh=wu5bOlmuVJBj09hPlqwyWGi2FFn/WW6mMgeOVBufFxY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ahTl/PTGyd8O4wixYagOr8XMM9QNCG9VpbjKieSI0DIahyczY14PvFjOf5E3JqCMB
-	 +7B+WNnsLDRUvuuCtgt+K/wGeHVpUEjswi64XNXOBUxpEtg+d8WsKom7qgCJPJuJXJ
-	 0BwbQk+bmRmW216VEXLgLEt3T6k5APnxGh4ifbm8=
+	b=aDROdpFJFVmK+RBMIOz9Jbto8swmVSnowvqbAKBP6/xTvGmBaGQGGTleERJg7zWp9
+	 zc0A3lAUMeQHLlWKWrsO4iUDC/hLqR6rA37ffkWX0STpntc5oaEvCmVwBfbQHuwKa+
+	 izu/7lrQSTM/E9DFJ3/ATcGtPUgs7UeUFcrOx5OM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	TungYu Lu <tungyu.lu@amd.com>,
-	Zaeem Mohamed <zaeem.mohamed@amd.com>,
-	Mark Broadworth <mark.broadworth@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	WangYuli <wangyuli@uniontech.com>,
+	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 296/592] drm/amd/display: Correct prefetch calculation
+Subject: [PATCH 5.15 110/411] MIPS: Loongson64: Add missing #interrupt-cells for loongson64c_ls7a
 Date: Mon, 23 Jun 2025 15:04:14 +0200
-Message-ID: <20250623130707.422599012@linuxfoundation.org>
+Message-ID: <20250623130636.291861839@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +61,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: TungYu Lu <tungyu.lu@amd.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 33bc89949b4366dff2dca30bc61ba1c0cbcd2ab2 ]
+[ Upstream commit 6d223b8ffcd1593d032b71875def2daa71c53111 ]
 
-[Why]
-The minimum value of the dst_y_prefetch_equ was not correct
-in prefetch calculation whice causes OPTC underflow.
+Similar to commit 98a9e2ac3755 ("MIPS: Loongson64: DTS: Fix msi node for ls7a").
 
-[How]
-Add the min operation of dst_y_prefetch_equ in prefetch calculation
-for legacy DML.
+Fix follow warnings:
+  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts:28.31-36.4: Warning (interrupt_provider): /bus@10000000/msi-controller@2ff00000: Missing '#interrupt-cells' in interrupt provider
+  arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dtb: Warning (interrupt_map): Failed prerequisite 'interrupt_provider'
 
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: TungYu Lu <tungyu.lu@amd.com>
-Signed-off-by: Zaeem Mohamed <zaeem.mohamed@amd.com>
-Tested-by: Mark Broadworth <mark.broadworth@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 24af105962c8 ("MIPS: Loongson64: DeviceTree for LS7A PCH")
+Tested-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c   | 1 +
- drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c   | 1 +
- drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c | 1 +
- 3 files changed, 3 insertions(+)
+ arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-index f1fe49401bc0a..8d24763938ea6 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn30/display_mode_vba_30.c
-@@ -1002,6 +1002,7 @@ static bool CalculatePrefetchSchedule(
- 
- 	dst_y_prefetch_equ = VStartup - (Tsetup + dml_max(TWait + TCalc, *Tdmdl)) / LineTime
- 			- (*DSTYAfterScaler + *DSTXAfterScaler / myPipe->HTotal);
-+	dst_y_prefetch_equ = dml_min(dst_y_prefetch_equ, 63.75); // limit to the reg limit of U6.2 for DST_Y_PREFETCH
- 
- 	Lsw_oto = dml_max(PrefetchSourceLinesY, PrefetchSourceLinesC);
- 	Tsw_oto = Lsw_oto * LineTime;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-index f567a9023682d..ed59c77bc6f60 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn31/display_mode_vba_31.c
-@@ -1105,6 +1105,7 @@ static bool CalculatePrefetchSchedule(
- 	Tr0_oto_lines = dml_ceil(4.0 * Tr0_oto / LineTime, 1) / 4.0;
- 	dst_y_prefetch_oto = Tvm_oto_lines + 2 * Tr0_oto_lines + Lsw_oto;
- 	dst_y_prefetch_equ =  VStartup - (*TSetup + dml_max(TWait + TCalc, *Tdmdl)) / LineTime - (*DSTYAfterScaler + *DSTXAfterScaler / myPipe->HTotal);
-+	dst_y_prefetch_equ = dml_min(dst_y_prefetch_equ, 63.75); // limit to the reg limit of U6.2 for DST_Y_PREFETCH
- 	dst_y_prefetch_equ = dml_floor(4.0 * (dst_y_prefetch_equ + 0.125), 1) / 4.0;
- 	Tpre_rounded = dst_y_prefetch_equ * LineTime;
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
-index 5865e8fa2d8e8..9f3938a50240f 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/display_mode_vba_314.c
-@@ -1123,6 +1123,7 @@ static bool CalculatePrefetchSchedule(
- 	Tr0_oto_lines = dml_ceil(4.0 * Tr0_oto / LineTime, 1) / 4.0;
- 	dst_y_prefetch_oto = Tvm_oto_lines + 2 * Tr0_oto_lines + Lsw_oto;
- 	dst_y_prefetch_equ =  VStartup - (*TSetup + dml_max(TWait + TCalc, *Tdmdl)) / LineTime - (*DSTYAfterScaler + *DSTXAfterScaler / myPipe->HTotal);
-+	dst_y_prefetch_equ = dml_min(dst_y_prefetch_equ, 63.75); // limit to the reg limit of U6.2 for DST_Y_PREFETCH
- 	dst_y_prefetch_equ = dml_floor(4.0 * (dst_y_prefetch_equ + 0.125), 1) / 4.0;
- 	Tpre_rounded = dst_y_prefetch_equ * LineTime;
- 
+diff --git a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
+index c7ea4f1c0bb21..6c277ab83d4b9 100644
+--- a/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
++++ b/arch/mips/boot/dts/loongson/loongson64c_4core_ls7a.dts
+@@ -29,6 +29,7 @@
+ 		compatible = "loongson,pch-msi-1.0";
+ 		reg = <0 0x2ff00000 0 0x8>;
+ 		interrupt-controller;
++		#interrupt-cells = <1>;
+ 		msi-controller;
+ 		loongson,msi-base-vec = <64>;
+ 		loongson,msi-num-vecs = <64>;
 -- 
 2.39.5
 
