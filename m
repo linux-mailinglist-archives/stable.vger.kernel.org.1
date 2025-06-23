@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157261-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82BB8AE5330
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29CEDAE51A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B378188CC99
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D042B7AE4E0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35AF8223DE5;
-	Mon, 23 Jun 2025 21:50:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA2E221F17;
+	Mon, 23 Jun 2025 21:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="es6dYSXa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTWRPQEQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E74A32222C2;
-	Mon, 23 Jun 2025 21:50:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FE01EEA5D;
+	Mon, 23 Jun 2025 21:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715436; cv=none; b=czZ8m8sm8hczQNUtxMXCi0tMRm+DENYzPONRI8bKs1BNAHbSkf/3WtrN1uXtgH7n0vorkuau0E4rA7KcR7Yoi/WK6Kcuh+vPrhHbX7GGsyiPuuWI8GVbn5gJId/32RobwqenQ/rtOU1PVP9alyAKri80RIUROlAgWRtE8dSlKQg=
+	t=1750714561; cv=none; b=XxL+KONzenNx5b5h8vcVS3KOl5dlUDuthQOgYtH2uABwUjomg0mCtTr3LfIiUAcNcTiQO2UconJ7eO28uZLt5KvLvSmVMrVaJ42moZQyHhlGbrVHdmYv3LV5KvHJ5KDntNPSXFK/Plz7H3XaqfrrKY3/I1v5OTewqc/KxthsEKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715436; c=relaxed/simple;
-	bh=GkxsvDIq5AtESo7A4XNveNWGHtV0gH1y7bBx5Bd7o7E=;
+	s=arc-20240116; t=1750714561; c=relaxed/simple;
+	bh=XKoDa5HUIa8twybGlKBtc6agnS9sLqu8eS16RQE50/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=juzx9Xfu4V9KzYFSPYgmmekP3erZDpTFfq63lSRGyLqnbTGok2MIH1aTIw7TUlAp+XBvRVojSIEHvElaIVd7bxigbmadxfaj+Ge0EIImffOuIkyzvW6R5Cycg7sOBXuAPWgsDnlc6I8IIb5nqdjKBnkcJRctFgvH0sR0LLI9RM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=es6dYSXa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA36C4CEF1;
-	Mon, 23 Jun 2025 21:50:35 +0000 (UTC)
+	 MIME-Version; b=BFi+I+0kajEPufyz6cfnmXTgy3j4+2CAVKWSkysjGX+RO/ZQICg8PttPoqGzHFeKX4TsVO0q8ts7p9LiZN/U5GvJh0AF+5Qfwh/Drfb3dfEvJkglusWNLWtegmbVhGY05t79Drn2oLKDu2DX6CbL59zldY1MrNLjAqEgSgRVhww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTWRPQEQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A27EFC4CEEA;
+	Mon, 23 Jun 2025 21:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715435;
-	bh=GkxsvDIq5AtESo7A4XNveNWGHtV0gH1y7bBx5Bd7o7E=;
+	s=korg; t=1750714561;
+	bh=XKoDa5HUIa8twybGlKBtc6agnS9sLqu8eS16RQE50/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=es6dYSXamSTGywSS/fusqenqcpE1euEMPaVsNqsHCl3UD62IQ0mn58O1Fo4TawtHY
-	 ETvuutNe42fAtvclM1a8UhXFVi6X97akKV3l5TgIV7wK2+yJ+ANL41KI34BJXx5RL8
-	 yXRgFfuoxmUsduzDVotwIj6hPXIW+YuTAGMrQ7sc=
+	b=xTWRPQEQ6OijMYTeh8nSrk4bqc7BcRn7TomwLrqmAi9Zcsr67D4XREMpaH8j1DPin
+	 NSXSSQ66nLKdN7oJFDDjMCOWx3UAK0z7Wytn0bFp3eNpYFa2gnjvp/70e3SOt/1w/r
+	 JCUkYBy0PctCNe+NMFhNruN9jfQ/1x0l01mIF0y0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 458/592] cifs: deal with the channel loading lag while picking channels
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 215/355] ASoC: tas2770: Power cycle amp on ISENSE/VSENSE change
 Date: Mon, 23 Jun 2025 15:06:56 +0200
-Message-ID: <20250623130711.323524488@linuxfoundation.org>
+Message-ID: <20250623130633.210296882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,83 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit 66d590b828b1fd9fa337047ae58fe1c4c6f43609 upstream.
+[ Upstream commit f529c91be8a34ac12e7599bf87c65b6f4a2c9f5c ]
 
-Our current approach to select a channel for sending requests is this:
-1. iterate all channels to find the min and max queue depth
-2. if min and max are not the same, pick the channel with min depth
-3. if min and max are same, round robin, as all channels are equally loaded
+The ISENSE/VSENSE blocks are only powered up when the amplifier
+transitions from shutdown to active. This means that if those controls
+are flipped on while the amplifier is already playing back audio, they
+will have no effect.
 
-The problem with this approach is that there's a lag between selecting
-a channel and sending the request (that increases the queue depth on the channel).
-While these numbers will eventually catch up, there could be a skew in the
-channel usage, depending on the application's I/O parallelism and the server's
-speed of handling requests.
+Fix this by forcing a power cycle around transitions in those controls.
 
-With sufficient parallelism, this lag can artificially increase the queue depth,
-thereby impacting the performance negatively.
-
-This change will change the step 1 above to start the iteration from the last
-selected channel. This is to reduce the skew in channel usage even in the presence
-of this lag.
-
-Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-1-50a00ec850a3@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/transport.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ sound/soc/codecs/tas2770.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/transport.c
-+++ b/fs/smb/client/transport.c
-@@ -1018,14 +1018,16 @@ struct TCP_Server_Info *cifs_pick_channe
- 	uint index = 0;
- 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
- 	struct TCP_Server_Info *server = NULL;
--	int i;
-+	int i, start, cur;
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index 1928c1616a52d..629cc24d51c3d 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -158,11 +158,37 @@ static const struct snd_kcontrol_new isense_switch =
+ static const struct snd_kcontrol_new vsense_switch =
+ 	SOC_DAPM_SINGLE("Switch", TAS2770_PWR_CTRL, 2, 1, 1);
  
- 	if (!ses)
- 		return NULL;
- 
- 	spin_lock(&ses->chan_lock);
-+	start = atomic_inc_return(&ses->chan_seq);
- 	for (i = 0; i < ses->chan_count; i++) {
--		server = ses->chans[i].server;
-+		cur = (start + i) % ses->chan_count;
-+		server = ses->chans[cur].server;
- 		if (!server || server->terminate)
- 			continue;
- 
-@@ -1042,17 +1044,15 @@ struct TCP_Server_Info *cifs_pick_channe
- 		 */
- 		if (server->in_flight < min_in_flight) {
- 			min_in_flight = server->in_flight;
--			index = i;
-+			index = cur;
- 		}
- 		if (server->in_flight > max_in_flight)
- 			max_in_flight = server->in_flight;
- 	}
- 
- 	/* if all channels are equally loaded, fall back to round-robin */
--	if (min_in_flight == max_in_flight) {
--		index = (uint)atomic_inc_return(&ses->chan_seq);
--		index %= ses->chan_count;
--	}
-+	if (min_in_flight == max_in_flight)
-+		index = (uint)start % ses->chan_count;
- 
- 	server = ses->chans[index].server;
- 	spin_unlock(&ses->chan_lock);
++static int sense_event(struct snd_soc_dapm_widget *w,
++			struct snd_kcontrol *kcontrol, int event)
++{
++	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
++	struct tas2770_priv *tas2770 = snd_soc_component_get_drvdata(component);
++
++	/*
++	 * Powering up ISENSE/VSENSE requires a trip through the shutdown state.
++	 * Do that here to ensure that our changes are applied properly, otherwise
++	 * we might end up with non-functional IVSENSE if playback started earlier,
++	 * which would break software speaker protection.
++	 */
++	switch (event) {
++	case SND_SOC_DAPM_PRE_REG:
++		return snd_soc_component_update_bits(component, TAS2770_PWR_CTRL,
++						    TAS2770_PWR_CTRL_MASK,
++						    TAS2770_PWR_CTRL_SHUTDOWN);
++	case SND_SOC_DAPM_POST_REG:
++		return tas2770_update_pwr_ctrl(tas2770);
++	default:
++		return 0;
++	}
++}
++
+ static const struct snd_soc_dapm_widget tas2770_dapm_widgets[] = {
+ 	SND_SOC_DAPM_AIF_IN("ASI1", "ASI1 Playback", 0, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_MUX("ASI1 Sel", SND_SOC_NOPM, 0, 0, &tas2770_asi1_mux),
+-	SND_SOC_DAPM_SWITCH("ISENSE", TAS2770_PWR_CTRL, 3, 1, &isense_switch),
+-	SND_SOC_DAPM_SWITCH("VSENSE", TAS2770_PWR_CTRL, 2, 1, &vsense_switch),
++	SND_SOC_DAPM_SWITCH_E("ISENSE", TAS2770_PWR_CTRL, 3, 1, &isense_switch,
++		sense_event, SND_SOC_DAPM_PRE_REG | SND_SOC_DAPM_POST_REG),
++	SND_SOC_DAPM_SWITCH_E("VSENSE", TAS2770_PWR_CTRL, 2, 1, &vsense_switch,
++		sense_event, SND_SOC_DAPM_PRE_REG | SND_SOC_DAPM_POST_REG),
+ 	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2770_dac_event,
+ 			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
+ 	SND_SOC_DAPM_OUTPUT("OUT"),
+-- 
+2.39.5
+
 
 
 
