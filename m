@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B73AE565C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4DEAAE5644
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858E017CEE3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E970C1BC764C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D65B224B07;
-	Mon, 23 Jun 2025 22:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC37F22422F;
+	Mon, 23 Jun 2025 22:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVpPX4zJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jqawiilU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFED31E3DCD;
-	Mon, 23 Jun 2025 22:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960531F7580;
+	Mon, 23 Jun 2025 22:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717129; cv=none; b=br+U2LVDoDVt0YRh2ZFG0mX+3sTmXpPR2zxk/OG7cHH3MA5W1zI8cXZGKyNpYP7gUQEwFW1dYKg6IeKd3biX3cebZFfuph3mTMp+AwWFCtUWQaQGTaX5zsCsgW127vdZhEonY46E89O0a2+SKoREED4TdOd20chF/BAf1hknu0U=
+	t=1750717087; cv=none; b=RAHE90t/9VukU8rxOtHUWfOb9ZKwmysKTCi4Ve3OK1Qnq34iihA7xqLj7ikWbUqTxbAIgQugGyJLiJ8DpEwbvP/TYFu/F8RAIFpk42RxY+ZQ8PHJs4anxSRmWnvtDSGZH4ezNF0xJab92nZKRPpRsDmQ6CD7XNrslus4JWe/6AU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717129; c=relaxed/simple;
-	bh=qJUhERNOBJE6lpUVFVPVVA/thXGy6R4+xG1Bqn8g9i8=;
+	s=arc-20240116; t=1750717087; c=relaxed/simple;
+	bh=TjWd+V1l18V0c9S/2KZjPRU655hf/50vGbtfz/QI+Mg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eJDfGH3mdIDXtYJI/gytzm0YxLbarB7hx3TBdX2V2OeD2gMr7wdumI3Kxy/Z1SmG9tbATOVeJvz2nf8LFS2bnfjPq4ALLdGyjstlgc5NpLYLjuA3SY/vZ/t1KgPtatPrF3uQbCW84jLeA5hI4boOzcHSDqs0cqGja/k0DO7i3Oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVpPX4zJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E8FC4CEEA;
-	Mon, 23 Jun 2025 22:18:48 +0000 (UTC)
+	 MIME-Version; b=fMfz9RC5cTqcfGgbocA23FNYa2WZdZzyK/3GMNmLo4hihTxxseCpfNbyTMeyxnIJbci41LcRFXxxWxLORVWsqm6cyeedhCTz9Jwtw2m1tI4oYkncrTM9kHSpTiV+wpvnwWuaBC/ulU79fXyz1CAluTeJZHm6EsXZUT4ZO6BhFjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jqawiilU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C307DC4CEEA;
+	Mon, 23 Jun 2025 22:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717128;
-	bh=qJUhERNOBJE6lpUVFVPVVA/thXGy6R4+xG1Bqn8g9i8=;
+	s=korg; t=1750717087;
+	bh=TjWd+V1l18V0c9S/2KZjPRU655hf/50vGbtfz/QI+Mg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tVpPX4zJ4P1j3VwpkVNgL5PTLwG0i371Jhpz5/4l6YbV00zJBXpH2rI2/F6vqbLWr
-	 IZc8PAoARjVF85l/IBP0o9GEYv6+xKyqIlFuJEsbrp5AH84+S0XC6ebosIvbdTY6Od
-	 SCxCR9Me0F+SGpK1ZBTZ8Jlx7y8RAIhg79Yd+1yQ=
+	b=jqawiilUp1/W2GpPLQzRVTsRzZHR3fDq2MY5ZMsTANw7q8AcOMlI32Kmt3pEhrtIq
+	 ll6gYeZHrjydLc7MwqasaC0u1GYsKRJVY0lOyPbvPcDRkfUKZFx9Xpnik7zXWqiOm9
+	 zIuiWKevcGVKRHoro8eKBhC3TjlfS8HStXTyfr1s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Stancek <jstancek@redhat.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	Amir Goldstein <amir73il@gmail.com>
-Subject: [PATCH 5.15 405/411] ext4: avoid remount errors with abort mount option
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Sasha Levin <sashal@kernel.org>,
+	syzbot+d8f000c609f05f52d9b5@syzkaller.appspotmail.com
+Subject: [PATCH 6.15 591/592] erofs: refuse crafted out-of-file-range encoded extents
 Date: Mon, 23 Jun 2025 15:09:09 +0200
-Message-ID: <20250623130643.878367959@linuxfoundation.org>
+Message-ID: <20250623130714.490959048@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 76486b104168ae59703190566e372badf433314b upstream.
+[ Upstream commit 7869738b6908eec7755818aaf6f3aa068b2f0e1b ]
 
-When we remount filesystem with 'abort' mount option while changing
-other mount options as well (as is LTP test doing), we can return error
-from the system call after commit d3476f3dad4a ("ext4: don't set
-SB_RDONLY after filesystem errors") because the application of mount
-option changes detects shutdown filesystem and refuses to do anything.
-The behavior of application of other mount options in presence of
-'abort' mount option is currently rather arbitary as some mount option
-changes are handled before 'abort' and some after it.
+Crafted encoded extents could record out-of-range `lstart`, which should
+not happen in normal cases.
 
-Move aborting of the filesystem to the end of remount handling so all
-requested changes are properly applied before the filesystem is shutdown
-to have a reasonably consistent behavior.
+It caused an iomap_iter_done() complaint [1] reported by syzbot.
 
-Fixes: d3476f3dad4a ("ext4: don't set SB_RDONLY after filesystem errors")
-Reported-by: Jan Stancek <jstancek@redhat.com>
-Link: https://lore.kernel.org/all/Zvp6L+oFnfASaoHl@t14s
-Signed-off-by: Jan Kara <jack@suse.cz>
-Tested-by: Jan Stancek <jstancek@redhat.com>
-Link: https://patch.msgid.link/20241004221556.19222-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[1] https://lore.kernel.org/r/684cb499.a00a0220.c6bd7.0010.GAE@google.com
+
+Fixes: 1d191b4ca51d ("erofs: implement encoded extent metadata")
+Reported-and-tested-by: syzbot+d8f000c609f05f52d9b5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8f000c609f05f52d9b5
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20250619032839.2642193-1-hsiangkao@linux.alibaba.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c |   11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+ fs/erofs/zmap.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -5849,9 +5849,6 @@ static int ext4_remount(struct super_blo
- 		goto restore_opts;
- 	}
+diff --git a/fs/erofs/zmap.c b/fs/erofs/zmap.c
+index 14ea47f954f55..6afcb054780d4 100644
+--- a/fs/erofs/zmap.c
++++ b/fs/erofs/zmap.c
+@@ -597,6 +597,10 @@ static int z_erofs_map_blocks_ext(struct inode *inode,
  
--	if (test_opt2(sb, ABORT))
--		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
--
- 	sb->s_flags = (sb->s_flags & ~SB_POSIXACL) |
- 		(test_opt(sb, POSIX_ACL) ? SB_POSIXACL : 0);
- 
-@@ -6027,6 +6024,14 @@ static int ext4_remount(struct super_blo
- 	 */
- 	*flags = (*flags & ~vfs_flags) | (sb->s_flags & vfs_flags);
- 
-+	/*
-+	 * Handle aborting the filesystem as the last thing during remount to
-+	 * avoid obsure errors during remount when some option changes fail to
-+	 * apply due to shutdown filesystem.
-+	 */
-+	if (test_opt2(sb, ABORT))
-+		ext4_abort(sb, ESHUTDOWN, "Abort forced by user");
-+
- 	ext4_msg(sb, KERN_INFO, "re-mounted. Opts: %s. Quota mode: %s.",
- 		 orig_data, ext4_quota_mode(sb));
- 	kfree(orig_data);
+ 			if (la > map->m_la) {
+ 				r = mid;
++				if (la > lend) {
++					DBG_BUGON(1);
++					return -EFSCORRUPTED;
++				}
+ 				lend = la;
+ 			} else {
+ 				l = mid + 1;
+-- 
+2.39.5
+
 
 
 
