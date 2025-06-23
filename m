@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE49AE50A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F506AE52D0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C01014406FF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B86D81B65CAB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B010A223DEA;
-	Mon, 23 Jun 2025 21:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F41781C84A0;
+	Mon, 23 Jun 2025 21:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NplnlTDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BRT2aUcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6675B223DDF;
-	Mon, 23 Jun 2025 21:26:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B064A3FD4;
+	Mon, 23 Jun 2025 21:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713979; cv=none; b=u7yAy66ObrYUKbyAq05vTiNb+LcCjGf3Yg1TZiL9VgWpo5D+loviv+a9qsg1K98ofTcF9zL2qAKBGPqxl7F5YQ+GjL3bknSBCI/CYvMfc+LIwAZ7UhQ8kVKnaSSY4uQwlbPrt0iK7Bp/Xf220lljGCItnVKPxfHCV4GB7zm1Fyg=
+	t=1750715247; cv=none; b=bbuiLXubry5CSUpZfrrJE4r/zs6sdkPvqbS0vcgo53YFtmIZ3snUSJOWeiWi4OKr4RzkqCj9dRAo9caIPTPViJOWHZkqJJsgMx+8kV+E/X0q11Jjnxhh5KX3Mt7k1aNl1Q1pwNP+llqLUeaSBeS59e2Gt/A1u5rvBFL5zKDhHeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713979; c=relaxed/simple;
-	bh=1VfBy5Ld9bBSPHmlOUlDYAB8oL0JrvzmiUg89TUoryA=;
+	s=arc-20240116; t=1750715247; c=relaxed/simple;
+	bh=G3Igq2K1nZHvQjogmBft5hRBAjwUfGdD54DfMAyUWiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G2ThxHMc+fFQT7Cx8v8KihR9GtlhkSy0nb1ivsjtUgeUsZlGnunDTD+y2pxN8qcD4CX79ucRn0IRNeDsdXf0ROaeLb5pjtp//HkTURe9g+2rTQ2KFQkKR1RHQOA8reKymh1B01ex8lApMO2JAZUm9bcLvVuCE2IUEqaeI6WmNoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NplnlTDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2108C4CEEA;
-	Mon, 23 Jun 2025 21:26:18 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GJpP6ei5beeEJvWqPIwtqIbEUAYMX9BMCWwTxZ9lDNStb8+4eGTQk8iUB28p+m+Aj63sXgOmQwck1jwHtRLXl4cFmFAleUkqu2nqHJdBNThbtWtYpf0vAgsU0fkC4fpj4nfJV3cwuwjQR4JbVSUpg0401TBeMorBq68RF+uod6A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BRT2aUcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488DBC4CEEA;
+	Mon, 23 Jun 2025 21:47:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713979;
-	bh=1VfBy5Ld9bBSPHmlOUlDYAB8oL0JrvzmiUg89TUoryA=;
+	s=korg; t=1750715247;
+	bh=G3Igq2K1nZHvQjogmBft5hRBAjwUfGdD54DfMAyUWiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NplnlTDh04uGfC0FYfRPosqFQHtZEbNEM7kopkUnLpGmWBjUoeXLDYXFcke0oww+t
-	 eMd84jWFsy4CrfCnWgh4F49OiZhM1fGLhyD5hpRCv9EdHms23ysBZnHmJtuzmo8CR4
-	 esxl8JMaCSbbA56bakoRD3RkxSsP8RWV2qozfbEo=
+	b=BRT2aUcWmRhnKqZPkj7uGafyXOrhjkr6Zsy9xAXTUBW9D8aUZozthOl9ZEdgKcStj
+	 Ll+q3TJinur4b/ixggblBSeUSGmLzubIWMVt36GNW1G/t+htRwmN0KRXOvOGRalfBz
+	 WFC86RKgPnAHNOW1i9Z+Igxim5jx+rQy+ogCOVJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 158/411] net_sched: prio: fix a race in prio_tune()
+	Arthur-Prince <r2.arthur.prince@gmail.com>,
+	=?UTF-8?q?Mariana=20Val=C3=A9rio?= <mariana.valerio2@hotmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.12 165/414] iio: adc: ti-ads1298: Kconfig: add kfifo dependency to fix module build
 Date: Mon, 23 Jun 2025 15:05:02 +0200
-Message-ID: <20250623130637.624472552@linuxfoundation.org>
+Message-ID: <20250623130646.158602910@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Arthur-Prince <r2.arthur.prince@gmail.com>
 
-[ Upstream commit d35acc1be3480505b5931f17e4ea9b7617fea4d3 ]
+commit 3c5dfea39a245b2dad869db24e2830aa299b1cf2 upstream.
 
-Gerrard Tai reported a race condition in PRIO, whenever SFQ perturb timer
-fires at the wrong time.
+Add dependency to Kconfig’s ti-ads1298 because compiling it as a module
+failed with an undefined kfifo symbol.
 
-The race is as follows:
-
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 7b8e0b6e6599 ("net: sched: prio: delay destroying child qdiscs on change")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-2-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 00ef7708fa60 ("iio: adc: ti-ads1298: Add driver")
+Signed-off-by: Arthur-Prince <r2.arthur.prince@gmail.com>
+Co-developed-by: Mariana Valério <mariana.valerio2@hotmail.com>
+Signed-off-by: Mariana Valério <mariana.valerio2@hotmail.com>
+Link: https://patch.msgid.link/20250430191131.120831-1-r2.arthur.prince@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_prio.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/adc/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_prio.c b/net/sched/sch_prio.c
-index 2e0b1e7f54668..b3defe09d9f7b 100644
---- a/net/sched/sch_prio.c
-+++ b/net/sched/sch_prio.c
-@@ -211,7 +211,7 @@ static int prio_tune(struct Qdisc *sch, struct nlattr *opt,
- 	memcpy(q->prio2band, qopt->priomap, TC_PRIO_MAX+1);
- 
- 	for (i = q->bands; i < oldbands; i++)
--		qdisc_tree_flush_backlog(q->queues[i]);
-+		qdisc_purge_queue(q->queues[i]);
- 
- 	for (i = oldbands; i < q->bands; i++) {
- 		q->queues[i] = queues[i];
--- 
-2.39.5
-
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -1452,6 +1452,7 @@ config TI_ADS1298
+ 	tristate "Texas Instruments ADS1298"
+ 	depends on SPI
+ 	select IIO_BUFFER
++	select IIO_KFIFO_BUF
+ 	help
+ 	  If you say yes here you get support for Texas Instruments ADS1298
+ 	  medical ADC chips
 
 
 
