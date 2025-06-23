@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92DC9AE44DB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A624BAE44B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 038527A1E2F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9480A444E6C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9968E2475E3;
-	Mon, 23 Jun 2025 13:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7D6A256C83;
+	Mon, 23 Jun 2025 13:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJ6hvTGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwnBxrIV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E17347DD;
-	Mon, 23 Jun 2025 13:42:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7554324DCFD;
+	Mon, 23 Jun 2025 13:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686132; cv=none; b=dPZWRMu+vwJRBAXIVUSx79Bz1HSExrJHE/PppCjeN+rfasfmv3Q3bAaOoDKlzJJhKWYCDPW055sBgWybp9gfagiFeEkmBcPmVpHYVSeuhlcI6o7IKE5wwUhfYMoEc63EYN4ldEx0og+rhr3vxl66zLQQYC3xe8l90NyjB+IspBo=
+	t=1750685755; cv=none; b=WA8L7Ydj2T1gZIzlBGv029Rl4+IOG0zWK81wJQ4wGdJw7hlepSMvskSpzJr3G+OEF9aNShG3LPDyu3kij0HUAoc9ihiLkYky8o9bFRhAdJjR+x2zhXkVYxDRRZ7V90w8HBkOEfffcoxsh+nF3lCaLIxrfCFKd32676wKJMoAMYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686132; c=relaxed/simple;
-	bh=II8ytU23JHN9MABiHzk4HsA01Z/rOG2b7qrMT/JV3Rk=;
+	s=arc-20240116; t=1750685755; c=relaxed/simple;
+	bh=LJYoa++gsuQw0NmD6/aHhzSKLXx8IK6ikfbxcgBDGmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TvyK4dvhINOnZZEWd3Txn9g4Iba9GiIaEDxkguOe0RED/z3BSPXXsznGf8E6+n5GJhZoBCxDz+K6wXzgIEDx+OvHfSov/G6Byhsnv/k3kyfeC5EKYfaC2o76mnWFAmeQcjYiHrWAV1FCLrzJNbj735saY52Ujn0sWaAbQlcjQ6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJ6hvTGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB428C4CEF1;
-	Mon, 23 Jun 2025 13:42:11 +0000 (UTC)
+	 MIME-Version; b=MjXY6ctCFBDf7Ntn9MQ+FqdUVGH/lv4585BSs2L+dkvePxKyzjhoMzHpq4GIlQgNnzvztId7EbhGOLubDyCXO06xd+nLjLCGdWhTdtZ9aMyIKNnrqygWazJbUFAc376Fb0yTcSIJuiGqIp2Evqh0OwplcFuxg7tZEvH70yw+HAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwnBxrIV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05DEC4CEEA;
+	Mon, 23 Jun 2025 13:35:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686132;
-	bh=II8ytU23JHN9MABiHzk4HsA01Z/rOG2b7qrMT/JV3Rk=;
+	s=korg; t=1750685755;
+	bh=LJYoa++gsuQw0NmD6/aHhzSKLXx8IK6ikfbxcgBDGmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJ6hvTGz7pq+d8tI2x5+PfcNwZFINBV1SYPRG82TUbVCoS6zysWlEU6NJgmC6kEPo
-	 D/Ps5nSp5+wmFJxnFeHMqZVxPMqezrudvaV/TJegUFtiCQ2I2avHN5VEvmusPzqnIH
-	 oqjSjT/spyQ5OZVLhs7fYBa5T11vJP3uldYD7GOM=
+	b=XwnBxrIV8uckCKiauoKYxMS5EYR0KmT3GIkwFeAY4LI8rZlgc0mrEaK0Sf8bWIVsi
+	 tGyD0LIvMdGnn1BGLOB78E9hGPiwQ46dSCUfFdSD2jgTHnd+H2fkXtRevE8GHBBjWf
+	 aZUoBUdHfVnUs6gMp3N1ON98hvt3AlhIEJlM3Ork=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrick Daly <quic_pdaly@quicinc.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
+	Peter Marheine <pmarheine@chromium.org>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/222] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
-Date: Mon, 23 Jun 2025 15:07:54 +0200
-Message-ID: <20250623130616.272714709@linuxfoundation.org>
+Subject: [PATCH 5.4 140/222] ACPI: battery: negate current when discharging
+Date: Mon, 23 Jun 2025 15:07:55 +0200
+Message-ID: <20250623130616.302223882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,59 +66,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Peter Marheine <pmarheine@chromium.org>
 
-[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
+[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
 
-pm_runtime_put_autosuspend() schedules a hrtimer to expire
-at "dev->power.timer_expires". If the hrtimer's callback,
-pm_suspend_timer_fn(), observes that the current time equals
-"dev->power.timer_expires", it unexpectedly bails out instead of
-proceeding with runtime suspend.
+The ACPI specification requires that battery rate is always positive,
+but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
+(Documentation/ABI/testing/sysfs-class-power) specifies that it should
+be negative when a battery is discharging. When reporting CURRENT_NOW,
+massage the value to match the documented ABI.
 
-pm_suspend_timer_fn():
+This only changes the sign of `current_now` and not `power_now` because
+documentation doesn't describe any particular meaning for `power_now` so
+leaving `power_now` unchanged is less likely to confuse userspace
+unnecessarily, whereas becoming consistent with the documented ABI is
+worth potentially confusing clients that read `current_now`.
 
- if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
- 	dev->power.timer_expires = 0;
- 	rpm_suspend(..)
- }
-
-Additionally, as ->timer_expires is not cleared, all the future auto
-suspend requests will not schedule hrtimer to perform auto suspend.
-
-rpm_suspend():
-
- if ((rpmflags & RPM_AUTO) &&...) {
- 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
- 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
- 	}
- }
-
-Fix this by as well checking if current time reaches the set expiration.
-
-Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
-Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
+Signed-off-by: Peter Marheine <pmarheine@chromium.org>
+Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/battery.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index d301a6de762df..7fa231076ad5f 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -982,7 +982,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
- 	 * If 'expires' is after the current time, we've been called
- 	 * too early.
- 	 */
--	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
-+	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
- 		dev->power.timer_expires = 0;
- 		rpm_suspend(dev, dev->power.timer_autosuspends ?
- 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index cf853e985d6d9..a5e120eca7f33 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -266,10 +266,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 		break;
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+ 	case POWER_SUPPLY_PROP_POWER_NOW:
+-		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
++		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
+ 			ret = -ENODEV;
+-		else
+-			val->intval = battery->rate_now * 1000;
++			break;
++		}
++
++		val->intval = battery->rate_now * 1000;
++		/*
++		 * When discharging, the current should be reported as a
++		 * negative number as per the power supply class interface
++		 * definition.
++		 */
++		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
++		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
++		    acpi_battery_handle_discharging(battery)
++				== POWER_SUPPLY_STATUS_DISCHARGING)
++			val->intval = -val->intval;
++
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
 -- 
 2.39.5
 
