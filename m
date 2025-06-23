@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-156393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1071AAE4F5D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D5AAE4F63
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D8A91B60AB4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4A063BF08E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C3C5221DAE;
-	Mon, 23 Jun 2025 21:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D4621B9C9;
+	Mon, 23 Jun 2025 21:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o/1Sd52P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwzQwOfH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F39771F582A;
-	Mon, 23 Jun 2025 21:15:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 673514315A;
+	Mon, 23 Jun 2025 21:15:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713305; cv=none; b=WwIQbB9fWiis6zrpN8Hqcw1kZy1qqOTwTjAO0seE08yRks1QD8W5ThFXJILBwtqYleI+mppn8A6HBJUYaKELcNUGbnK7ivfI3OfmGDTCLZxj1Mis0I+sk9QF9sce27a6peQznpJoLAxmBuZZudfMXeX/N4hUCEpSNRzUh4ys7Rg=
+	t=1750713324; cv=none; b=a0R46RtrG53O2hzzKD7EgIpJ4mQmHxVb0At6aXVzmN7i59lu2qxDcB+gV125lMC1auIK6yKDfVbQ3qr13BO4a7+tygfO+iVh66fvNfqrghU15Y+0Qq59bUH41uTF7cQ0a89U/x2voAO+hGk51PLUdhoVj7X4WabtEuOwdvK/mlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713305; c=relaxed/simple;
-	bh=TXfOg6V4Nusi8oRr9YjPcN8AV3lAW40IYlQUfeeEQvU=;
+	s=arc-20240116; t=1750713324; c=relaxed/simple;
+	bh=wGAUGCSOAoHLTROpp9CFyiqm/nPnMGUkNTbrCfpmoMY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hRuni3AIaiflGG3ST5ceK5ZtBZVW/7rXrQ/aMHCdMi+eiZw8OlCCl3rXht2PLyzCAoj7oOjne9FTwsrPO0yhvNJtpRsZU85I1DSbjjegHBImRBtlrijJsggvEX2d3/nksjEXZpqOmn5a7rNF6dl9VuxxT80/Mlmp0MTrqnzu7wY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o/1Sd52P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D9E6C4CEEA;
-	Mon, 23 Jun 2025 21:15:04 +0000 (UTC)
+	 MIME-Version:Content-Type; b=qYQDDeGkkK2I7gJsgAXC8pZ8PHbyWgKOkZCSnmpg2iAb7PpGHyp/+RCcW3uEAUm7857ESWS6q+iiD1jPx/UGD5TRBqpVk8l2RkTzX76D8XJDbkpUH08dVM1Eau7B4lNOZsULfRxHSrQoYHFjAVShw0okSh1twAGgv4BEAWECHzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwzQwOfH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B01C4CEEA;
+	Mon, 23 Jun 2025 21:15:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713304;
-	bh=TXfOg6V4Nusi8oRr9YjPcN8AV3lAW40IYlQUfeeEQvU=;
+	s=korg; t=1750713324;
+	bh=wGAUGCSOAoHLTROpp9CFyiqm/nPnMGUkNTbrCfpmoMY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o/1Sd52PS/CBB73Di+xWFXSL4VuKrTjLWKrjptoqDdMzdprj3drNw6Z+kfgReBcFK
-	 HMheNfs092YV1roi2X1L1okPKYaTX4vqPAN81lv7hArMcpDuZyIOKRTv4JD9/MJHxf
-	 6URB5H41c8vlsPWWI6NmSww94n8HrfDl6v/RALjU=
+	b=JwzQwOfHYtlL67rDjLuaqnvlkvRmNRCFT53BHpsAM2zNowLSfBf6mqp9KnMd+79f7
+	 IqZzjrC9Jf23nxpXdzYZWFUd9WL3vidV02Aj1pqxYadJnLZGliHhz1h2G6chXP62jD
+	 Df6AgP+n0U7FwL+1G0TK0DUXJtTF0JNpcDQa7uGY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Morris <rtm@csail.mit.edu>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/508] wifi: ath9k_htc: Abort software beacon handling if disabled
-Date: Mon, 23 Jun 2025 15:02:14 +0200
-Message-ID: <20250623130647.440808967@linuxfoundation.org>
+Subject: [PATCH 6.1 090/508] kernfs: Relax constraint in draining guard
+Date: Mon, 23 Jun 2025 15:02:15 +0200
+Message-ID: <20250623130647.468751562@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,43 +68,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@toke.dk>
+From: Michal Koutný <mkoutny@suse.com>
 
-[ Upstream commit ac4e317a95a1092b5da5b9918b7118759342641c ]
+[ Upstream commit 071d8e4c2a3b0999a9b822e2eb8854784a350f8a ]
 
-A malicious USB device can send a WMI_SWBA_EVENTID event from an
-ath9k_htc-managed device before beaconing has been enabled. This causes
-a device-by-zero error in the driver, leading to either a crash or an
-out of bounds read.
+The active reference lifecycle provides the break/unbreak mechanism but
+the active reference is not truly active after unbreak -- callers don't
+use it afterwards but it's important for proper pairing of kn->active
+counting. Assuming this mechanism is in place, the WARN check in
+kernfs_should_drain_open_files() is too sensitive -- it may transiently
+catch those (rightful) callers between
+kernfs_unbreak_active_protection() and kernfs_put_active() as found out by Chen
+Ridong:
 
-Prevent this by aborting the handling in ath9k_htc_swba() if beacons are
-not enabled.
+	kernfs_remove_by_name_ns	kernfs_get_active // active=1
+	__kernfs_remove					  // active=0x80000002
+	kernfs_drain			...
+	wait_event
+	//waiting (active == 0x80000001)
+					kernfs_break_active_protection
+					// active = 0x80000001
+	// continue
+					kernfs_unbreak_active_protection
+					// active = 0x80000002
+	...
+	kernfs_should_drain_open_files
+	// warning occurs
+					kernfs_put_active
 
-Reported-by: Robert Morris <rtm@csail.mit.edu>
-Closes: https://lore.kernel.org/r/88967.1743099372@localhost
-Fixes: 832f6a18fc2a ("ath9k_htc: Add beacon slots")
-Signed-off-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Link: https://patch.msgid.link/20250402112217.58533-1-toke@toke.dk
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+To avoid the false positives (mind panic_on_warn) remove the check altogether.
+(This is meant as quick fix, I think active reference break/unbreak may be
+simplified with larger rework.)
+
+Fixes: bdb2fd7fc56e1 ("kernfs: Skip kernfs_drain_open_files() more aggressively")
+Link: https://lore.kernel.org/r/kmmrseckjctb4gxcx2rdminrjnq2b4ipf7562nvfd432ld5v5m@2byj5eedkb2o/
+
+Cc: Chen Ridong <chenridong@huawei.com>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+Acked-by: Tejun Heo <tj@kernel.org>
+Link: https://lore.kernel.org/r/20250505121201.879823-1-mkoutny@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/htc_drv_beacon.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/kernfs/dir.c  | 5 +++--
+ fs/kernfs/file.c | 3 ++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-index 533471e694007..18c7654bc539d 100644
---- a/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-+++ b/drivers/net/wireless/ath/ath9k/htc_drv_beacon.c
-@@ -290,6 +290,9 @@ void ath9k_htc_swba(struct ath9k_htc_priv *priv,
- 	struct ath_common *common = ath9k_hw_common(priv->ah);
- 	int slot;
+diff --git a/fs/kernfs/dir.c b/fs/kernfs/dir.c
+index 2c74b24fc22aa..a259fe3471a98 100644
+--- a/fs/kernfs/dir.c
++++ b/fs/kernfs/dir.c
+@@ -1532,8 +1532,9 @@ void kernfs_break_active_protection(struct kernfs_node *kn)
+  * invoked before finishing the kernfs operation.  Note that while this
+  * function restores the active reference, it doesn't and can't actually
+  * restore the active protection - @kn may already or be in the process of
+- * being removed.  Once kernfs_break_active_protection() is invoked, that
+- * protection is irreversibly gone for the kernfs operation instance.
++ * being drained and removed.  Once kernfs_break_active_protection() is
++ * invoked, that protection is irreversibly gone for the kernfs operation
++ * instance.
+  *
+  * While this function may be called at any point after
+  * kernfs_break_active_protection() is invoked, its most useful location
+diff --git a/fs/kernfs/file.c b/fs/kernfs/file.c
+index adf3536cfec81..cf57b7cc3a430 100644
+--- a/fs/kernfs/file.c
++++ b/fs/kernfs/file.c
+@@ -820,8 +820,9 @@ bool kernfs_should_drain_open_files(struct kernfs_node *kn)
+ 	/*
+ 	 * @kn being deactivated guarantees that @kn->attr.open can't change
+ 	 * beneath us making the lockless test below safe.
++	 * Callers post kernfs_unbreak_active_protection may be counted in
++	 * kn->active by now, do not WARN_ON because of them.
+ 	 */
+-	WARN_ON_ONCE(atomic_read(&kn->active) != KN_DEACTIVATED_BIAS);
  
-+	if (!priv->cur_beacon_conf.enable_beacon)
-+		return;
-+
- 	if (swba->beacon_pending != 0) {
- 		priv->beacon.bmisscnt++;
- 		if (priv->beacon.bmisscnt > BSTUCK_THRESHOLD) {
+ 	rcu_read_lock();
+ 	on = rcu_dereference(kn->attr.open);
 -- 
 2.39.5
 
