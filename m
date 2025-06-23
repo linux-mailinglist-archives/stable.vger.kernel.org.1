@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BE9AE500C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C659AE4EBB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 263D37AD50A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18376189FB62
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 502D438DE1;
-	Mon, 23 Jun 2025 21:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60B5221F10;
+	Mon, 23 Jun 2025 21:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/NO0z31"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BwKqTOqi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD862C9D;
-	Mon, 23 Jun 2025 21:19:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62BFD221739;
+	Mon, 23 Jun 2025 21:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713563; cv=none; b=QnfoAAn404sjhzj+yc7I24Oc8XpXWokqE6fjhrv1E28KU9XJnDpWwnOrkKrltbLdD+L5r3ebTH5zwITArHh8H9GumQ6ksdiNxal4efJqdP2V4ebDrDpKwb/mlqbUR9ykJydylNa4a6Bz9LqbL/DTZmRgrb/0jfOSpj/XNmVm3Qo=
+	t=1750712913; cv=none; b=DZSa4e7zH1OuWOfy301dswFOVAdHFxkQFoPsAXMPBm+9aD3YfmhAJtHi/rLkITEzc5QeJSEE2y9NIrvnj4oJLVimQO2fQmQzQWp75GuqOFnwszfgzR8nrt2MYRzkE5SQAuK+8uNfgTvJWd6EbsTMkP5yPXInRGtoqzGlM0zWOrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713563; c=relaxed/simple;
-	bh=f6TwXNVxw/ZaZDyL2Bxl69BW4jEYhMQ93HTXJHWfxnM=;
+	s=arc-20240116; t=1750712913; c=relaxed/simple;
+	bh=CdzNXrb5z5zpnSl5McGntsBiw/j+J6JJfQyhQ7GiJTE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hKeyl/8EgbBf10+K0Y0nH3PhxojQcoTisebAIS0UM4x0U/gOKP926XJ6+Ii9nNwcijXyuY7toLnxEQ0JahBEbk/GlbnGAPO2tHrvb8E+RE23p+hYW6/F7cBlc1AVO3O1r95w8ulZrrD4pI3dw89zVkpqAXHGXLxcovxDhsOwCug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/NO0z31; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A30CC4CEEA;
-	Mon, 23 Jun 2025 21:19:22 +0000 (UTC)
+	 MIME-Version; b=jbTtT89b2HYJ3dvsdehOqjma0PyITcYrBEDJ340viev/7f/Tk31ZYYxYQO4eG3JPnLJEcLWcBDSTnE2LB/rzmlwJjzJBkvA1IOoEHzw2sd3TerKpKlR+jsTU+7XYjDgB+8Zts7lQu2l6pvEVR1lSdGvweL8gim1uqLy/mWCMbag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BwKqTOqi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEBB1C4CEEA;
+	Mon, 23 Jun 2025 21:08:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713562;
-	bh=f6TwXNVxw/ZaZDyL2Bxl69BW4jEYhMQ93HTXJHWfxnM=;
+	s=korg; t=1750712913;
+	bh=CdzNXrb5z5zpnSl5McGntsBiw/j+J6JJfQyhQ7GiJTE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d/NO0z31qi8zPYzoCrsUjx4JbYyusYIvTFJi/I0cIz6WuquZKSQijO0yFE03BG/kC
-	 b/wnv5H2BPMQl0+LW4d3F0vjbV6pvtQrWx5vbfJg6ZuTfDPgu9TUf0SlKlAXcjLqmt
-	 vKEb6cZB4kxPVzMa718kX83sMxxwtzRbVel6wlFg=
+	b=BwKqTOqipbSGxA39v5r+3fScW94wVCOQ48XkAQziUU27dqEnQuNVwOZK/u3+RC34v
+	 AaMpwgx1u+WY85gQMjh1rytI2spPW/7Hznf3KMEWN3dU2259+0Sb/ipQ60o6W0Y1qf
+	 rCzqYDxd06Ncw0vfbwP+e1NaNLJk1+U7oUyW3P7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Minnekhanov <alexeymin@postmarketos.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 110/508] arm64: dts: qcom: sdm660-xiaomi-lavender: Add missing SD card detect GPIO
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.12 018/414] s390/pci: Serialize device addition and removal
 Date: Mon, 23 Jun 2025 15:02:35 +0200
-Message-ID: <20250623130647.994163595@linuxfoundation.org>
+Message-ID: <20250623130642.481586483@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Minnekhanov <alexeymin@postmarketos.org>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 2eca6af66709de0d1ba14cdf8b6d200a1337a3a2 ]
+commit 774a1fa880bc949d88b5ddec9494a13be733dfa8 upstream.
 
-During initial porting these cd-gpios were missed. Having card detect is
-beneficial because driver does not need to do polling every second and it
-can just use IRQ. SD card detection in U-Boot is also fixed by this.
+Prior changes ensured that when zpci_release_device() is called and it
+removed the zdev from the zpci_list this instance can not be found via
+the zpci_list anymore even while allowing re-add of reserved devices.
+This only accounts for the overall lifetime and zpci_list addition and
+removal, it does not yet prevent concurrent add of a new instance for
+the same underlying device. Such concurrent add would subsequently cause
+issues such as attempted re-use of the same IOMMU sysfs directory and is
+generally undesired.
 
-Fixes: cf85e9aee210 ("arm64: dts: qcom: sdm660-xiaomi-lavender: Add eMMC and SD")
-Signed-off-by: Alexey Minnekhanov <alexeymin@postmarketos.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250415130101.1429281-1-alexeymin@postmarketos.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Introduce a new zpci_add_remove_lock mutex to serialize adding a new
+device with removal. Together this ensures that if a struct zpci_dev is
+not found in the zpci_list it was either already removed and torn down,
+or its removal and tear down is in progress with the
+zpci_add_remove_lock held.
+
+Cc: stable@vger.kernel.org
+Fixes: a46044a92add ("s390/pci: fix zpci_zdev_put() on reserve")
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/s390/pci/pci.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-index a3559f6e34a5e..9612671dc5afa 100644
---- a/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-+++ b/arch/arm64/boot/dts/qcom/sdm660-xiaomi-lavender.dts
-@@ -402,6 +402,8 @@
- &sdhc_2 {
- 	status = "okay";
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -44,6 +44,7 @@
+ /* list of all detected zpci devices */
+ static LIST_HEAD(zpci_list);
+ static DEFINE_SPINLOCK(zpci_list_lock);
++static DEFINE_MUTEX(zpci_add_remove_lock);
  
-+	cd-gpios = <&tlmm 54 GPIO_ACTIVE_HIGH>;
-+
- 	vmmc-supply = <&vreg_l5b_2p95>;
- 	vqmmc-supply = <&vreg_l2b_2p95>;
- };
--- 
-2.39.5
-
+ static DECLARE_BITMAP(zpci_domain, ZPCI_DOMAIN_BITMAP_SIZE);
+ static DEFINE_SPINLOCK(zpci_domain_lock);
+@@ -73,7 +74,9 @@ void zpci_zdev_put(struct zpci_dev *zdev
+ {
+ 	if (!zdev)
+ 		return;
++	mutex_lock(&zpci_add_remove_lock);
+ 	kref_put_lock(&zdev->kref, zpci_release_device, &zpci_list_lock);
++	mutex_unlock(&zpci_add_remove_lock);
+ }
+ 
+ struct zpci_dev *get_zdev_by_fid(u32 fid)
+@@ -838,6 +841,7 @@ int zpci_add_device(struct zpci_dev *zde
+ {
+ 	int rc;
+ 
++	mutex_lock(&zpci_add_remove_lock);
+ 	zpci_dbg(1, "add fid:%x, fh:%x, c:%d\n", zdev->fid, zdev->fh, zdev->state);
+ 	rc = zpci_init_iommu(zdev);
+ 	if (rc)
+@@ -851,12 +855,14 @@ int zpci_add_device(struct zpci_dev *zde
+ 	spin_lock(&zpci_list_lock);
+ 	list_add_tail(&zdev->entry, &zpci_list);
+ 	spin_unlock(&zpci_list_lock);
++	mutex_unlock(&zpci_add_remove_lock);
+ 	return 0;
+ 
+ error_destroy_iommu:
+ 	zpci_destroy_iommu(zdev);
+ error:
+ 	zpci_dbg(0, "add fid:%x, rc:%d\n", zdev->fid, rc);
++	mutex_unlock(&zpci_add_remove_lock);
+ 	return rc;
+ }
+ 
+@@ -947,6 +953,7 @@ void zpci_release_device(struct kref *kr
+ {
+ 	struct zpci_dev *zdev = container_of(kref, struct zpci_dev, kref);
+ 
++	lockdep_assert_held(&zpci_add_remove_lock);
+ 	WARN_ON(zdev->state != ZPCI_FN_STATE_RESERVED);
+ 	/*
+ 	 * We already hold zpci_list_lock thanks to kref_put_lock().
 
 
 
