@@ -1,56 +1,60 @@
-Return-Path: <stable+bounces-156435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F783AE4F94
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3745AE51CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 32D4B1B611B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A0B21B64142
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 789902236FA;
-	Mon, 23 Jun 2025 21:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63039222562;
+	Mon, 23 Jun 2025 21:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkSXzOot"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUwegUdi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C6B221727;
-	Mon, 23 Jun 2025 21:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20CB319CC11;
+	Mon, 23 Jun 2025 21:37:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713407; cv=none; b=AapKSbUQULa6GZHbW8zDgk/beqwzOXrlyOCehG5z3lVzjyDBhBhT1/4w21+KhwTD8rx1PAnJsGXu3R3tpX6AUH9qH1QBCEopaIAtyMkOSUFm3UPkbHljtqsSZ2QYZbXc3AfdJBaD80j+d4nweREsfwZRXktZqGmwQIrKcnF5XnI=
+	t=1750714650; cv=none; b=l0dBq1RhMv7ji44fCdR9iKIhLwxkiqfHStFJ2hJGNqn93UQfpIb/mVjxaWeArUnbQ3ZmmUXiK5IxOSMyM9BmyDJxCuqqWLMPZEjkXdMY1FmYzXYgAfNeHsEGiONsu97SLWsS9ev2VK+gdREQ+qeSbX/AQn8L3fY+wz2XebjKVtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713407; c=relaxed/simple;
-	bh=L7DE3K+fONCQtOc2ZZigid7OCm+2GNTXimjGUSeB5TU=;
+	s=arc-20240116; t=1750714650; c=relaxed/simple;
+	bh=6oVnTyZJ/ATTsZYHNzMTZnDoqcZE6RB0rf2/9Qs7sM8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojUiyPD35iTiS1odR5t4m3jfU7hdfEG0GszTgmd6vM1DA02o4udsT+LpRSU4VZsPzaCNU23rRIyKLDnTkKWcGDGti1berN11UYsKi7qLQLe1DVWGOYvhxC7D/SVWrL4tEvCs3xrOkmSnxK8unV1tUX6AcrNYehSw7IQtRwtDDrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkSXzOot; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C054BC4CEF0;
-	Mon, 23 Jun 2025 21:16:46 +0000 (UTC)
+	 MIME-Version; b=oFVJM+/mFuT+z3MDiorut1um65wiXo4/0Ivdg3QwxmUL+2L84UQxGPnjcw7IUQ9ZXiPE+NbxjctKpRAFmf/KqFYGxXg73BXZLF2bdsy+KbLr+S7DMOi0hSKKwc8I1OR03hgfgfY0u6KRTsBF6fswAtCBeXeNt732G1/qxxGt3TA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUwegUdi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A67C4CEEA;
+	Mon, 23 Jun 2025 21:37:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713407;
-	bh=L7DE3K+fONCQtOc2ZZigid7OCm+2GNTXimjGUSeB5TU=;
+	s=korg; t=1750714650;
+	bh=6oVnTyZJ/ATTsZYHNzMTZnDoqcZE6RB0rf2/9Qs7sM8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkSXzOot7NuSx56jJatwFTUHL1IDhUvOzqDw0Y07JY8XpdRkzZP8p70mNLzH8qWkd
-	 JqKppBUDhHyVIj0SNKJSSr2WyAryuzVRKZl78PZ9wxvGmtoN5wdnmvI6711XE/EKZc
-	 D8ERyTyiaNDZNoU/DQLaKDiVDfcxmxWFuyDUVIhU=
+	b=DUwegUdiabgOR14zwQbJ/ZOGqHKA+aoN79+xytlwHJu+kUXi228oy395W9iDtwsP/
+	 04+qWnlpIfI5fECOAH/xEIK4S+7IFUKtkWJMWfyQiy5/95A8bGV6SASwOXWqQDgRZB
+	 3m6z97Af/pe2XsVmWdx9fMSxGLavI0VYKKNpA670=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 164/355] net/mlx5_core: Add error handling inmlx5_query_nic_vport_qkey_viol_cntr()
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.15 407/592] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
 Date: Mon, 23 Jun 2025 15:06:05 +0200
-Message-ID: <20250623130631.631778245@linuxfoundation.org>
+Message-ID: <20250623130710.119162520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +66,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Kyungwook Boo <bookyungwook@gmail.com>
 
-commit f0b50730bdd8f2734e548de541e845c0d40dceb6 upstream.
+[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
 
-The function mlx5_query_nic_vport_qkey_viol_cntr() calls the function
-mlx5_query_nic_vport_context() but does not check its return value. This
-could lead to undefined behavior if the query fails. A proper
-implementation can be found in mlx5_nic_vport_query_local_lb().
+When the device sends a specific input, an integer underflow can occur, leading
+to MMIO write access to an invalid page.
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
+Prevent the integer underflow by changing the type of related variables.
 
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250521133620.912-1-vulab@iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
+Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -494,19 +494,22 @@ int mlx5_query_nic_vport_qkey_viol_cntr(
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index 370b4bddee441..b11c35e307ca9 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -817,10 +817,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
+ void i40e_clear_hw(struct i40e_hw *hw)
  {
- 	u32 *out;
- 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int err;
+ 	u32 num_queues, base_queue;
+-	u32 num_pf_int;
+-	u32 num_vf_int;
++	s32 num_pf_int;
++	s32 num_vf_int;
+ 	u32 num_vfs;
+-	u32 i, j;
++	s32 i;
++	u32 j;
+ 	u32 val;
+ 	u32 eol = 0x7ff;
  
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
- 
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	err = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (err)
-+		goto out;
- 
- 	*qkey_viol_cntr = MLX5_GET(query_nic_vport_context_out, out,
- 				   nic_vport_context.qkey_violation_counter);
--
-+out:
- 	kvfree(out);
- 
--	return 0;
-+	return err;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_qkey_viol_cntr);
- 
+-- 
+2.39.5
+
 
 
 
