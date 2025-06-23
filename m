@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EF6DAE50DB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56779AE516E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 785841B62DFC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7434B441E6C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643171F4628;
-	Mon, 23 Jun 2025 21:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE401218580;
+	Mon, 23 Jun 2025 21:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hDEfU1EM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="apFkAqIz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212E01E5B71;
-	Mon, 23 Jun 2025 21:28:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BC584409;
+	Mon, 23 Jun 2025 21:34:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714116; cv=none; b=IPc0uNjv/dZCQbYwmyMRyWWR0VbUyrb9n37ur6cpt2O/RoNPGNB8yZAqkeuwtLS1XDKxOlNAXmm8kKiZLCDXx9wwVrpkgtwEQ0cTsLM2QjqtKLicp4BJBpfy+yO6V/lCPCdXEVZB4aKMikRjzR4vx/gwtkC/LPAEDZ4b2iyYwpc=
+	t=1750714448; cv=none; b=aYn9XMPbIIAqC7iXod/BgbIzTa9Ix2YaW+RYmtbVoF151le4BFLwMZ7CggkRyljx0AENbk0aWQFW0eCEQuS/5BdIwIInIW2PI/Y6+QEGh/6gbCpZeql0IQgf8GEPrByV56zR8eGoIjNM10WpQfXGR5Rc8zX4reW6NDkyQ2ETzVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714116; c=relaxed/simple;
-	bh=MLPa6WBThknhFY0KRIEgnUTYjRs/CIu1KOimUgSCLvI=;
+	s=arc-20240116; t=1750714448; c=relaxed/simple;
+	bh=sAN/Kss2b+az1lSJ3R+3MnAWr5pkmYi9C/xcDSmLx8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nSdx/Aa3Vd0WwOXaiCAAwdDK+/skCQfuMC6grzf5XGNMj30wVLm93ZCnmSr/QlVJvCOzpq4LbHhF5j1/pjpiKf6Hf1TtA1o6qMqrt+RzfIXq+FkhhhgrMusNgcGjAVPb/NuOAUZVlxpNd4K3UGkJCUdsFjII+9JRJ0Y3hboFX60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hDEfU1EM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC2E1C4CEEA;
-	Mon, 23 Jun 2025 21:28:35 +0000 (UTC)
+	 MIME-Version; b=n7RzWzxysmqQ0dcAOWKXQ1arAsauur8OrDoiV64VJw9hTaqodkcHsyeQioSP35DGKWhqsw2hWdhZ5hw6WOdwUQlBmM5BzSIrX55lpJ9MPrzYT2pF2b+B3jyi2rxmjLpfKsgF1a+xnz58DptTOdSq5iPJy6fYXHiQsw0EPXS7ZLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=apFkAqIz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1621CC4CEEA;
+	Mon, 23 Jun 2025 21:34:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714116;
-	bh=MLPa6WBThknhFY0KRIEgnUTYjRs/CIu1KOimUgSCLvI=;
+	s=korg; t=1750714448;
+	bh=sAN/Kss2b+az1lSJ3R+3MnAWr5pkmYi9C/xcDSmLx8Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hDEfU1EMcd5oaiuxyZAUciJjC1LaCrlw98yex0oITD2RnCs7ewKDbG+tFtVvrL7ue
-	 fEsEcaxX7CtdBbhervbZ+PbUnkiiNck4g4YSb7ybhAoWz6ByVhILamaKJSjqE3bfDK
-	 usX7ElKftiH+eP1oGf06vTHZNAMa6DK3bd0mWNpY=
+	b=apFkAqIzywnJWOPh1T6c/lYw2WUTA0fkec1EchcAUYGwyMcl3xd2FyYqzpT8UjEZ0
+	 Yrj4BS5Jg7NwHCY16NPdx1m+sYwuR3rx5bxjrYou1SIakBgnmRflQEsCucQnQgQItJ
+	 AKMP3YtNdvu3MPmxDDBsp/zgGSfkM/j0s2PBmS6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 103/414] NFC: nci: uart: Set tty->disc_data only in success path
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 195/508] xfs: fix logdev fsmap query result filtering
 Date: Mon, 23 Jun 2025 15:04:00 +0200
-Message-ID: <20250623130644.677799536@linuxfoundation.org>
+Message-ID: <20250623130650.069741133@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit fc27ab48904ceb7e4792f0c400f1ef175edf16fe upstream.
+[ Upstream commit a949a1c2a198e048630a8b0741a99b85a5d88136 ]
 
-Setting tty->disc_data before opening the NCI device means we need to
-clean it up on error paths.  This also opens some short window if device
-starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
-(broken hardware?).  Close the window by exposing tty->disc_data only on
-the success path, when opening of the NCI device and try_module_get()
-succeeds.
+The external log device fsmap backend doesn't have an rmapbt to query,
+so it's wasteful to spend time initializing the rmap_irec objects.
+Worse yet, the log could (someday) be longer than 2^32 fsblocks, so
+using the rmap irec structure will result in integer overflows.
 
-The code differs in error path in one aspect: tty->disc_data won't be
-ever assigned thus NULL-ified.  This however should not be relevant
-difference, because of "tty->disc_data=NULL" in nci_uart_tty_open().
+Fix this mess by computing the start address that we want from keys[0]
+directly, and use the daddr-based record filtering algorithm that we
+also use for rtbitmap queries.
 
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20250618073649.25049-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e89c041338ed ("xfs: implement the GETFSMAP ioctl")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/nfc/nci/uart.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_fsmap.c | 30 ++++++++----------------------
+ 1 file changed, 8 insertions(+), 22 deletions(-)
 
---- a/net/nfc/nci/uart.c
-+++ b/net/nfc/nci/uart.c
-@@ -119,22 +119,22 @@ static int nci_uart_set_driver(struct tt
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index 202f162515bd5..cdd806d80b7cf 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -437,36 +437,22 @@ xfs_getfsmap_logdev(
+ 	struct xfs_mount		*mp = tp->t_mountp;
+ 	struct xfs_rmap_irec		rmap;
+ 	xfs_daddr_t			rec_daddr, len_daddr;
+-	xfs_fsblock_t			start_fsb;
+-	int				error;
++	xfs_fsblock_t			start_fsb, end_fsb;
++	uint64_t			eofs;
  
- 	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
- 	nu->tty = tty;
--	tty->disc_data = nu;
- 	skb_queue_head_init(&nu->tx_q);
- 	INIT_WORK(&nu->write_work, nci_uart_write_work);
- 	spin_lock_init(&nu->rx_lock);
+-	/* Set up search keys */
++	eofs = XFS_FSB_TO_BB(mp, mp->m_sb.sb_logblocks);
++	if (keys[0].fmr_physical >= eofs)
++		return 0;
+ 	start_fsb = XFS_BB_TO_FSBT(mp,
+ 				keys[0].fmr_physical + keys[0].fmr_length);
+-	info->low.rm_startblock = XFS_BB_TO_FSBT(mp, keys[0].fmr_physical);
+-	info->low.rm_offset = XFS_BB_TO_FSBT(mp, keys[0].fmr_offset);
+-	error = xfs_fsmap_owner_to_rmap(&info->low, keys);
+-	if (error)
+-		return error;
+-	info->low.rm_blockcount = 0;
+-	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
++	end_fsb = XFS_BB_TO_FSB(mp, min(eofs - 1, keys[1].fmr_physical));
  
- 	ret = nu->ops.open(nu);
- 	if (ret) {
--		tty->disc_data = NULL;
- 		kfree(nu);
-+		return ret;
- 	} else if (!try_module_get(nu->owner)) {
- 		nu->ops.close(nu);
--		tty->disc_data = NULL;
- 		kfree(nu);
- 		return -ENOENT;
- 	}
--	return ret;
-+	tty->disc_data = nu;
-+
-+	return 0;
- }
+ 	/* Adjust the low key if we are continuing from where we left off. */
+ 	if (keys[0].fmr_length > 0)
+ 		info->low_daddr = XFS_FSB_TO_BB(mp, start_fsb);
  
- /* ------ LDISC part ------ */
+-	error = xfs_fsmap_owner_to_rmap(&info->high, keys + 1);
+-	if (error)
+-		return error;
+-	info->high.rm_startblock = -1U;
+-	info->high.rm_owner = ULLONG_MAX;
+-	info->high.rm_offset = ULLONG_MAX;
+-	info->high.rm_blockcount = 0;
+-	info->high.rm_flags = XFS_RMAP_KEY_FLAGS | XFS_RMAP_REC_FLAGS;
+-	info->missing_owner = XFS_FMR_OWN_FREE;
+-
+-	trace_xfs_fsmap_low_key(mp, info->dev, NULLAGNUMBER, &info->low);
+-	trace_xfs_fsmap_high_key(mp, info->dev, NULLAGNUMBER, &info->high);
++	trace_xfs_fsmap_low_key_linear(mp, info->dev, start_fsb);
++	trace_xfs_fsmap_high_key_linear(mp, info->dev, end_fsb);
+ 
+ 	if (start_fsb > 0)
+ 		return 0;
+-- 
+2.39.5
+
 
 
 
