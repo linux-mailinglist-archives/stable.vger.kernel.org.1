@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D027DAE519E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D68FAE4F34
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B79121B63CAC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0CFA169C0D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF7D221FBE;
-	Mon, 23 Jun 2025 21:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E19721ADB5;
+	Mon, 23 Jun 2025 21:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofdp+uV5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZZZABE1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274851EE7C6;
-	Mon, 23 Jun 2025 21:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA691DF98B;
+	Mon, 23 Jun 2025 21:13:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714534; cv=none; b=mP4F+qU5mvz4eies/HCAwfcRzNhm9OgbL1nFYSd9LObr/lMWg2Pg/iQt+a6OFRcjkBl5Ufi7TPLpOnkpv9PNhVPfRrufE/6F62T9HObcMDjGCzO7qe9Y5KVvfOOz/jXIdsKQNqN1zu9wOqhSMmvanwAqV6uXpO/ONJKuMVil1WI=
+	t=1750713202; cv=none; b=dhKkeDYyL464FdSdgpmjJ2cLBiV0hPxcsTmZcvRki7GQsLIDkegs/+lv2YBk3RwAzPKpOM4AdXjydqUi+m8AGSn5AhNSO2lmMSakMYxZ+OZqwQdhwdHbb4bGUxQ8rxs5Pq7ayJNhExnAEWBwCvZBdChQyYBnRlC2EVPIYyoVuUU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714534; c=relaxed/simple;
-	bh=BfZQgCD8SkxSezfF3mVEoZ7cr9pQpK3ed0qRE+pGpso=;
+	s=arc-20240116; t=1750713202; c=relaxed/simple;
+	bh=J6+qwVZb/L8SiVAod0prgyiYXo5DtgHB3H1/kTg1tF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WBBpGU4CqtPQySiy2VnhOiNL1Md/tshSdlSNf0DFlOaibyWdArBgj6Uyis4Gd5PtswNurZZW2pEJ65NOVc/vn7V2gAHq51ClAOJaLAxmCeip06fhodQXsq/BFUVxPd9FPlBNkAWjlLq5u7Pue2CiRL7UPwrAtvGLCLgr0a5WNEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofdp+uV5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3787C4CEED;
-	Mon, 23 Jun 2025 21:35:33 +0000 (UTC)
+	 MIME-Version; b=PDJjsujA87Yiravuqykbi1PsYSzKve5DIzLsaYkXousjgvwTgEI5NvKzaztAwTwnVzf76bSRZUQajOPHpbMEI4jwuu7JdUx2Agbuffcof1INwoYUuTlb4/A2PsMoCT4SktKhVfv3QHlSyervfgnBkZSKujdDtckhoE2M2ecFoz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZZZABE1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F13C4CEEA;
+	Mon, 23 Jun 2025 21:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714534;
-	bh=BfZQgCD8SkxSezfF3mVEoZ7cr9pQpK3ed0qRE+pGpso=;
+	s=korg; t=1750713202;
+	bh=J6+qwVZb/L8SiVAod0prgyiYXo5DtgHB3H1/kTg1tF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ofdp+uV5D27unNcrxmzsB/rDw+Q8eyi/pcPxoFycGxNrWy/wA1Vk7yqg2TzlzJUl6
-	 YJkcCp6z/x08jFFHfl0ATiVZaiK/6FDxaf637OSyO2CsXz/dXxG2UOUmfLnPS6TmNp
-	 n4SWQjsZA/x0GjUOOAZ+4Eg9u8vz/JdjPIVaoykA=
+	b=UZZZABE1Svt1SWcijON8rFtN/OS0CBUbM1am4hGV59U4NwWIA9mxuEaLrfLujvb6g
+	 gdNpV9WD2EKt8lwJ4hSS8E99KDHUchon+767Bzcd+cKD3l05ymnjWPPjrG5/viu/r+
+	 o7/p7eoeR7gvPKizX3vvbzb8+RQOHZQZ7iwn0DAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.12 135/414] pwm: axi-pwmgen: fix missing separate external clock
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 314/592] f2fs: use vmalloc instead of kvmalloc in .init_{,de}compress_ctx
 Date: Mon, 23 Jun 2025 15:04:32 +0200
-Message-ID: <20250623130645.429816400@linuxfoundation.org>
+Message-ID: <20250623130707.889442312@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +60,162 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Chao Yu <chao@kernel.org>
 
-commit a8841dc3dfbf127a19c3612204bd336ee559b9a1 upstream.
+[ Upstream commit 70dd07c888451503c3e93b6821e10d1ea1ec9930 ]
 
-Add proper support for external clock to the AXI PWM generator driver.
+.init_{,de}compress_ctx uses kvmalloc() to alloc memory, it will try
+to allocate physically continuous page first, it may cause more memory
+allocation pressure, let's use vmalloc instead to mitigate it.
 
-In most cases, the HDL for this IP block is compiled with the default
-ASYNC_CLK_EN=1. With this option, there is a separate external clock
-that drives the PWM output separate from the peripheral clock. So the
-driver should be enabling the "axi" clock to power the peripheral and
-the "ext" clock to drive the PWM output.
+[Test]
+cd /data/local/tmp
+touch file
+f2fs_io setflags compression file
+f2fs_io getflags file
+for i in $(seq 1 10); do sync; echo 3 > /proc/sys/vm/drop_caches;\
+time f2fs_io write 512 0 4096 zero osync file; truncate -s 0 file;\
+done
 
-When ASYNC_CLK_EN=0, the "axi" clock is also used to drive the PWM
-output and there is no "ext" clock.
+[Result]
+Before		After		Delta
+21.243		21.694		-2.12%
 
-Previously, if there was a separate external clock, users had to specify
-only the external clock and (incorrectly) omit the AXI clock in order
-to get the correct operating frequency for the PWM output.
+For compression, we recommend to use ioctl to compress file data in
+background for workaround.
 
-The devicetree bindings are updated to fix this shortcoming and this
-patch changes the driver to match the new bindings. To preserve
-compatibility with any existing dtbs that specify only one clock, we
-don't require the clock name on the first clock.
+For decompression, only zstd will be affected.
 
-Fixes: 41814fe5c782 ("pwm: Add driver for AXI PWM generator")
-Cc: stable@vger.kernel.org
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20250529-pwm-axi-pwmgen-add-external-clock-v3-3-5d8809a7da91@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-axi-pwmgen.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ fs/f2fs/compress.c | 23 ++++++++++-------------
+ fs/f2fs/f2fs.h     |  5 +++++
+ 2 files changed, 15 insertions(+), 13 deletions(-)
 
---- a/drivers/pwm/pwm-axi-pwmgen.c
-+++ b/drivers/pwm/pwm-axi-pwmgen.c
-@@ -174,7 +174,7 @@ static int axi_pwmgen_probe(struct platf
- 	struct regmap *regmap;
- 	struct pwm_chip *chip;
- 	struct axi_pwmgen_ddata *ddata;
--	struct clk *clk;
-+	struct clk *axi_clk, *clk;
- 	void __iomem *io_base;
- 	int ret;
+diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
+index 9b94810675c19..5a9b6d5f3ae0a 100644
+--- a/fs/f2fs/compress.c
++++ b/fs/f2fs/compress.c
+@@ -178,8 +178,7 @@ void f2fs_compress_ctx_add_page(struct compress_ctx *cc, struct folio *folio)
+ #ifdef CONFIG_F2FS_FS_LZO
+ static int lzo_init_compress_ctx(struct compress_ctx *cc)
+ {
+-	cc->private = f2fs_kvmalloc(F2FS_I_SB(cc->inode),
+-				LZO1X_MEM_COMPRESS, GFP_NOFS);
++	cc->private = f2fs_vmalloc(LZO1X_MEM_COMPRESS);
+ 	if (!cc->private)
+ 		return -ENOMEM;
  
-@@ -197,9 +197,26 @@ static int axi_pwmgen_probe(struct platf
- 	ddata = pwmchip_get_drvdata(chip);
- 	ddata->regmap = regmap;
+@@ -189,7 +188,7 @@ static int lzo_init_compress_ctx(struct compress_ctx *cc)
  
--	clk = devm_clk_get_enabled(dev, NULL);
-+	/*
-+	 * Using NULL here instead of "axi" for backwards compatibility. There
-+	 * are some dtbs that don't give clock-names and have the "ext" clock
-+	 * as the one and only clock (due to mistake in the original bindings).
-+	 */
-+	axi_clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(axi_clk))
-+		return dev_err_probe(dev, PTR_ERR(axi_clk), "failed to get axi clock\n");
+ static void lzo_destroy_compress_ctx(struct compress_ctx *cc)
+ {
+-	kvfree(cc->private);
++	vfree(cc->private);
+ 	cc->private = NULL;
+ }
+ 
+@@ -246,7 +245,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
+ 		size = LZ4HC_MEM_COMPRESS;
+ #endif
+ 
+-	cc->private = f2fs_kvmalloc(F2FS_I_SB(cc->inode), size, GFP_NOFS);
++	cc->private = f2fs_vmalloc(size);
+ 	if (!cc->private)
+ 		return -ENOMEM;
+ 
+@@ -261,7 +260,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
+ 
+ static void lz4_destroy_compress_ctx(struct compress_ctx *cc)
+ {
+-	kvfree(cc->private);
++	vfree(cc->private);
+ 	cc->private = NULL;
+ }
+ 
+@@ -342,8 +341,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
+ 	params = zstd_get_params(level, cc->rlen);
+ 	workspace_size = zstd_cstream_workspace_bound(&params.cParams);
+ 
+-	workspace = f2fs_kvmalloc(F2FS_I_SB(cc->inode),
+-					workspace_size, GFP_NOFS);
++	workspace = f2fs_vmalloc(workspace_size);
+ 	if (!workspace)
+ 		return -ENOMEM;
+ 
+@@ -351,7 +349,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
+ 	if (!stream) {
+ 		f2fs_err_ratelimited(F2FS_I_SB(cc->inode),
+ 				"%s zstd_init_cstream failed", __func__);
+-		kvfree(workspace);
++		vfree(workspace);
+ 		return -EIO;
+ 	}
+ 
+@@ -364,7 +362,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
+ 
+ static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
+ {
+-	kvfree(cc->private);
++	vfree(cc->private);
+ 	cc->private = NULL;
+ 	cc->private2 = NULL;
+ }
+@@ -423,8 +421,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
+ 
+ 	workspace_size = zstd_dstream_workspace_bound(max_window_size);
+ 
+-	workspace = f2fs_kvmalloc(F2FS_I_SB(dic->inode),
+-					workspace_size, GFP_NOFS);
++	workspace = f2fs_vmalloc(workspace_size);
+ 	if (!workspace)
+ 		return -ENOMEM;
+ 
+@@ -432,7 +429,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
+ 	if (!stream) {
+ 		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
+ 				"%s zstd_init_dstream failed", __func__);
+-		kvfree(workspace);
++		vfree(workspace);
+ 		return -EIO;
+ 	}
+ 
+@@ -444,7 +441,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
+ 
+ static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
+ {
+-	kvfree(dic->private);
++	vfree(dic->private);
+ 	dic->private = NULL;
+ 	dic->private2 = NULL;
+ }
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 4f34a7d9760a1..34e4ae2a5f5ba 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -3527,6 +3527,11 @@ static inline void *f2fs_kvzalloc(struct f2fs_sb_info *sbi,
+ 	return f2fs_kvmalloc(sbi, size, flags | __GFP_ZERO);
+ }
+ 
++static inline void *f2fs_vmalloc(size_t size)
++{
++	return vmalloc(size);
++}
 +
-+	clk = devm_clk_get_optional_enabled(dev, "ext");
- 	if (IS_ERR(clk))
--		return dev_err_probe(dev, PTR_ERR(clk), "failed to get clock\n");
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get ext clock\n");
-+
-+	/*
-+	 * If there is no "ext" clock, it means the HDL was compiled with
-+	 * ASYNC_CLK_EN=0. In this case, the AXI clock is also used for the
-+	 * PWM output clock.
-+	 */
-+	if (!clk)
-+		clk = axi_clk;
- 
- 	ret = devm_clk_rate_exclusive_get(dev, clk);
- 	if (ret)
+ static inline int get_extra_isize(struct inode *inode)
+ {
+ 	return F2FS_I(inode)->i_extra_isize / sizeof(__le32);
+-- 
+2.39.5
+
 
 
 
