@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-158068-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A994AE56DE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD55AAE5627
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A734B4C0F0B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 319BB188D163
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A0B4225792;
-	Mon, 23 Jun 2025 22:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B80C22333B;
+	Mon, 23 Jun 2025 22:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PQlL2Rnq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ebg3U3AN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56FAA22577C;
-	Mon, 23 Jun 2025 22:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F260421FF2B;
+	Mon, 23 Jun 2025 22:16:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717404; cv=none; b=o8A/ma4AAHAzv3eTc5FnPA7OcP7VYNYNFMUgch5IlJLMTPX298s/OolroTzb3ZsKx+iKE4lwfN5AneYgni9f7gPZSFjfNBYNeZSxEYwWBIo22moRLjW+eNv4oTAN23mIZBzWbihqgCgBNsqvLxAsv4bfLRIxCBAPIayGF6niV90=
+	t=1750717011; cv=none; b=bOsrAlqBQDGE1DNIlBUI5BYxuu36aTIEEdutKuU1U3Vrt2J5l8oDKa+qhRn0ru9oee4kMljHluUYyV1qQjAFXU/wNn8xcHsoWDWk5CeZ7MhRG1N9pihjans9jF1uwH3V+OZwme3b2/ucuYTXKr4lfVvtSyrN4IzRh1P99uAPy9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717404; c=relaxed/simple;
-	bh=fxfVKLWsEf8OkA1nIuvKZvvW9Lj45jZSKkOP56qWuIs=;
+	s=arc-20240116; t=1750717011; c=relaxed/simple;
+	bh=ON22bM1KqggAPa7Xf4r40gg96wa4ab2P25TNmaoXpgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FdcU0uzdT+3qjr08M+WNPUmt/gmOU+pLFtktZB1/3gzAWBsSEwpmHMKTN+PVS9c69GrCnkHydkHujHhIm1T1lasQgK/oc4/ap+Ep3a/YVC7qON+fEk9k9jhSCXMA05beMWinOtL1TUEG1u1PdI901yaKd9/nPjUNYZEoSUp9K9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PQlL2Rnq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E506BC4CEED;
-	Mon, 23 Jun 2025 22:23:23 +0000 (UTC)
+	 MIME-Version; b=Qbo5dhEzlCu4w/Q8vtYI9gd4JDU4BodwResBRrmUQWbkemXuJCbeMF9AHdrMTpzIV9Eox3uBzV42Yv/jEFw8rp2JnPAH/b7HGp+hdTV0DA5zPowryGBhPn9lDCECtG2t0G+SCrZIni8tkDosLr/uJzsNGlIOj2WCtqAtpJB23hY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ebg3U3AN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C0A5C4CEEA;
+	Mon, 23 Jun 2025 22:16:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717404;
-	bh=fxfVKLWsEf8OkA1nIuvKZvvW9Lj45jZSKkOP56qWuIs=;
+	s=korg; t=1750717008;
+	bh=ON22bM1KqggAPa7Xf4r40gg96wa4ab2P25TNmaoXpgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PQlL2RnqMQlVJqKXKhu8wSEo8YPxCFDsx8icSb4Iph/czv+T382g9F1jrSA+v0A9j
-	 2IkgOr7z7GkmckHUwaH4xAbmFigtOvFtln/Ff9IfJ6ykLtACYaW5m9p9U2ulRF9Ylc
-	 UZofSRh2PpEDLBIoH6lLX1pKg9xRGwvWUeHlTvfc=
+	b=Ebg3U3ANWofhSn8fkz/dttDg+ET+Wmcq5J2wJoPOrzU5qBmcZ2q3GI8Gh3BD8Jert
+	 b5Psi7jbtSmOzJKIwoHZebiA38/koBCy1HZITTrHKtBRyHVjHDxuTfH4QdL/++WMca
+	 4U82UUHbUYDAfCL+7oVC9GIWe96ChlxFQzGiVjkY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 397/508] i2c: tegra: check msg length in SMBUS block read
-Date: Mon, 23 Jun 2025 15:07:22 +0200
-Message-ID: <20250623130655.027896004@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 306/414] cifs: deal with the channel loading lag while picking channels
+Date: Mon, 23 Jun 2025 15:07:23 +0200
+Message-ID: <20250623130649.652581965@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit a6e04f05ce0b070ab39d5775580e65c7d943da0b ]
+commit 66d590b828b1fd9fa337047ae58fe1c4c6f43609 upstream.
 
-For SMBUS block read, do not continue to read if the message length
-passed from the device is '0' or greater than the maximum allowed bytes.
+Our current approach to select a channel for sending requests is this:
+1. iterate all channels to find the min and max queue depth
+2. if min and max are not the same, pick the channel with min depth
+3. if min and max are same, round robin, as all channels are equally loaded
 
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250424053320.19211-1-akhilrajeev@nvidia.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The problem with this approach is that there's a lag between selecting
+a channel and sending the request (that increases the queue depth on the channel).
+While these numbers will eventually catch up, there could be a skew in the
+channel usage, depending on the application's I/O parallelism and the server's
+speed of handling requests.
+
+With sufficient parallelism, this lag can artificially increase the queue depth,
+thereby impacting the performance negatively.
+
+This change will change the step 1 above to start the iteration from the last
+selected channel. This is to reduce the skew in channel usage even in the presence
+of this lag.
+
+Fixes: ea90708d3cf3 ("cifs: use the least loaded channel for sending requests")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-tegra.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/smb/client/transport.c |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
-index f7b4977d66496..b8726167cf739 100644
---- a/drivers/i2c/busses/i2c-tegra.c
-+++ b/drivers/i2c/busses/i2c-tegra.c
-@@ -1425,6 +1425,11 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
- 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
- 			if (ret)
- 				break;
-+
-+			/* Validate message length before proceeding */
-+			if (msgs[i].buf[0] == 0 || msgs[i].buf[0] > I2C_SMBUS_BLOCK_MAX)
-+				break;
-+
- 			/* Set the msg length from first byte */
- 			msgs[i].len += msgs[i].buf[0];
- 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
--- 
-2.39.5
-
+--- a/fs/smb/client/transport.c
++++ b/fs/smb/client/transport.c
+@@ -1029,14 +1029,16 @@ struct TCP_Server_Info *cifs_pick_channe
+ 	uint index = 0;
+ 	unsigned int min_in_flight = UINT_MAX, max_in_flight = 0;
+ 	struct TCP_Server_Info *server = NULL;
+-	int i;
++	int i, start, cur;
+ 
+ 	if (!ses)
+ 		return NULL;
+ 
+ 	spin_lock(&ses->chan_lock);
++	start = atomic_inc_return(&ses->chan_seq);
+ 	for (i = 0; i < ses->chan_count; i++) {
+-		server = ses->chans[i].server;
++		cur = (start + i) % ses->chan_count;
++		server = ses->chans[cur].server;
+ 		if (!server || server->terminate)
+ 			continue;
+ 
+@@ -1053,17 +1055,15 @@ struct TCP_Server_Info *cifs_pick_channe
+ 		 */
+ 		if (server->in_flight < min_in_flight) {
+ 			min_in_flight = server->in_flight;
+-			index = i;
++			index = cur;
+ 		}
+ 		if (server->in_flight > max_in_flight)
+ 			max_in_flight = server->in_flight;
+ 	}
+ 
+ 	/* if all channels are equally loaded, fall back to round-robin */
+-	if (min_in_flight == max_in_flight) {
+-		index = (uint)atomic_inc_return(&ses->chan_seq);
+-		index %= ses->chan_count;
+-	}
++	if (min_in_flight == max_in_flight)
++		index = (uint)start % ses->chan_count;
+ 
+ 	server = ses->chans[index].server;
+ 	spin_unlock(&ses->chan_lock);
 
 
 
