@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-155982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89E25AE4508
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44D0AE44F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F7A34455B6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 959593BF133
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 059DF255E2F;
-	Mon, 23 Jun 2025 13:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53DA224DFF3;
+	Mon, 23 Jun 2025 13:39:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WQD9gikq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ofs4P2uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DE725524C;
-	Mon, 23 Jun 2025 13:37:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 107B61E480;
+	Mon, 23 Jun 2025 13:39:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685841; cv=none; b=SgDa8Llq5kvxAM1HK+mObG4W6P+YgzorrQi9xpC+d/bGqBwMsA1g2gI1a4g0MyNA1nrDdSZ4/ufqKxHnA32EFibiw01aT38s0CRdP+HpySh0UPQ49V35Wo96J38uqCr8w0+kLKfXgww9o0eKIszagtF6mLIu0BJkqYfy4dB3m4E=
+	t=1750685944; cv=none; b=AOTFc1r0f4oXBTNrWwfG+ykEa+W8//Alun2H4ehw7dajLjVeAy6JQsiYXDYluK6fhojY5n1LhZ6EkpSlQhruTdratdicsCjDT9s6RzjCU5VC/H7RkQ8V7/gjyPbg9KEBNnYFbJ5ODozmPf/9TT8hlf1aCQuwgyROohQ5Wl9VxCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685841; c=relaxed/simple;
-	bh=Nqum986AksRmpxbMDQe6hIHgBF7cRd61f9RVJEiNoRk=;
+	s=arc-20240116; t=1750685944; c=relaxed/simple;
+	bh=52U7i5tTdeK4hebS3AriLJUl8CpW3Ide2MdeesJ8bVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DRBv+JrBoOV0m24yErPixaDjfQ7M1+5fP3ZvduvtJDosPYRCqDsEkHErDEgAW+EC99xeLnhg3fGLFgRxez/p5tMkt2/T/AwqURO4CObIDimGQb3YjDcu9dYklMZ2ESXeCjazCNkNAzYfWUGZrzUSm2S2R0zJsQeVkHU1GQubF7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WQD9gikq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44A8DC4CEEA;
-	Mon, 23 Jun 2025 13:37:21 +0000 (UTC)
+	 MIME-Version; b=YMSgqNlYQCEIG0HDIjEQtSQ5xjEmz9gqckkPHXkqvagVnq2R0bePMwVHVi14e2T29C2iavgMBZ5Sb9eXqE9/Hx8i/bIFIq/Pde5UQnXKzCttMvUBUkTvEV9wNAyjxEmdRl+sAzdGzDVNL5tM7LY3Iz0sLmuPgBVDYkFZRqshcHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ofs4P2uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C999C4CEEA;
+	Mon, 23 Jun 2025 13:39:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685841;
-	bh=Nqum986AksRmpxbMDQe6hIHgBF7cRd61f9RVJEiNoRk=;
+	s=korg; t=1750685943;
+	bh=52U7i5tTdeK4hebS3AriLJUl8CpW3Ide2MdeesJ8bVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WQD9gikqzjzbqmj/hswC4mSGZNiQDxYh1wGpmk3L60pPpMwQC8x1tet5KzQebkkE5
-	 FfemEJYMct8SmwLJCGWGVbsOUu1RJcKGcZdK2kZ1p6PJ4VXnUHw/vB8aJCUZ/34Lw8
-	 NnUuxJVdc1UEIhlY+AxZtnrP9bnLHSGbDDJVcC1E=
+	b=Ofs4P2uy0nyN9+FMiOTxcmXY9uhHYNpjlBpOiJIsAjp4SN1qe1R1bc1StSeRXNjE/
+	 Yc64hLn0qIKWIu5qlgW3GZ7OYROAdKaGf/S5dxnYUNkzBF12cHiRt65VuJGkSgIo/b
+	 rEBkTJdPM7QjJhdpPlBl0zv3PLNmgShtwtmqRv4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Michael Tretter <m.tretter@pengutronix.de>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 086/411] soc: aspeed: lpc: Fix impossible judgment condition
+Subject: [PATCH 6.15 272/592] media: uapi: v4l: Change V4L2_TYPE_IS_CAPTURE condition
 Date: Mon, 23 Jun 2025 15:03:50 +0200
-Message-ID: <20250623130635.589070740@linuxfoundation.org>
+Message-ID: <20250623130706.798554925@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Nas Chung <nas.chung@chipsnmedia.com>
 
-[ Upstream commit d9f0a97e859bdcef51f9c187b1eb712eb13fd3ff ]
+[ Upstream commit ad2698efce37e910dcf3c3914263e6cb3e86f8cd ]
 
-smatch error：
-drivers/soc/aspeed/aspeed-lpc-snoop.c:169
-aspeed_lpc_snoop_config_irq() warn: platform_get_irq() does not return zero
+Explicitly compare a buffer type only with valid buffer types,
+to avoid matching a buffer type outside of the valid buffer type set.
 
-platform_get_irq() return non-zero IRQ number or negative error code,
-change '!lpc_snoop->irq' to 'lpc_snoop->irq < 0' to fix this.
-
-Fixes: 9f4f9ae81d0a ("drivers/misc: add Aspeed LPC snoop driver")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/20231027020703.1231875-1-suhui@nfschina.com
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Reviewed-by: Michael Tretter <m.tretter@pengutronix.de>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/videodev2.h | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index eceeaf8dfbeba..d9bdc2e084086 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -167,7 +167,7 @@ static int aspeed_lpc_snoop_config_irq(struct aspeed_lpc_snoop *lpc_snoop,
- 	int rc;
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index b0e1f660c5f72..af86ece741e94 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -153,10 +153,18 @@ enum v4l2_buf_type {
+ 	V4L2_BUF_TYPE_SDR_OUTPUT           = 12,
+ 	V4L2_BUF_TYPE_META_CAPTURE         = 13,
+ 	V4L2_BUF_TYPE_META_OUTPUT	   = 14,
++	/*
++	 * Note: V4L2_TYPE_IS_VALID and V4L2_TYPE_IS_OUTPUT must
++	 * be updated if a new type is added.
++	 */
+ 	/* Deprecated, do not use */
+ 	V4L2_BUF_TYPE_PRIVATE              = 0x80,
+ };
  
- 	lpc_snoop->irq = platform_get_irq(pdev, 0);
--	if (!lpc_snoop->irq)
-+	if (lpc_snoop->irq < 0)
- 		return -ENODEV;
++#define V4L2_TYPE_IS_VALID(type)		 \
++	((type) >= V4L2_BUF_TYPE_VIDEO_CAPTURE &&\
++	 (type) <= V4L2_BUF_TYPE_META_OUTPUT)
++
+ #define V4L2_TYPE_IS_MULTIPLANAR(type)			\
+ 	((type) == V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE	\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE)
+@@ -170,7 +178,8 @@ enum v4l2_buf_type {
+ 	 || (type) == V4L2_BUF_TYPE_SDR_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_META_OUTPUT)
  
- 	rc = devm_request_irq(dev, lpc_snoop->irq,
+-#define V4L2_TYPE_IS_CAPTURE(type) (!V4L2_TYPE_IS_OUTPUT(type))
++#define V4L2_TYPE_IS_CAPTURE(type)	\
++	(V4L2_TYPE_IS_VALID(type) && !V4L2_TYPE_IS_OUTPUT(type))
+ 
+ enum v4l2_tuner_type {
+ 	V4L2_TUNER_RADIO	     = 1,
 -- 
 2.39.5
 
