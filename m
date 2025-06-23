@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD164AE5181
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47B50AE53E6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2652C7AA0D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 482683AB23C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35FB02222CA;
-	Mon, 23 Jun 2025 21:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37879223714;
+	Mon, 23 Jun 2025 21:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AvKCakzK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QHKPfjH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E9E221DA8;
-	Mon, 23 Jun 2025 21:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7281AD3FA;
+	Mon, 23 Jun 2025 21:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714494; cv=none; b=utSgoKYAw1OdKcbCun1SVDehrEQ3O4CO73Tc273EbYpAL7uLuCZ9QyQoXf5E5Nd4Tsg58ZeUuzDMDV4+tLnLWnLG2zQ0pC6v8NNTpwVecga2/7MFEvpUVbv6rycMuz+zeHtqFl9Ht/MLVnqgAi7QZQhgLb/n2R2/F3vB6DrGMow=
+	t=1750715800; cv=none; b=D2lsij2dxXqJSktaopU3Ta6yS0uttQ9FofgnmV0nZWOMFWFfJxnQx4YQogDhefFiOvp2gyFdGDOJ22Oc4UdBcLZpwOIvBHlXyBhHpQzy8pM4cxMc2w8iG+L1mDO5+cWq6bTkSobZ9unSm2QOVFuwIMkdP7BphKsxVxzB/JShsvw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714494; c=relaxed/simple;
-	bh=R5vgOLPJJramIBCWOrkSVb6bFOztdwoyv1rp1/jDh3g=;
+	s=arc-20240116; t=1750715800; c=relaxed/simple;
+	bh=1setabICNrjYbrYEe06nyy04LeltsbD/X7eTWJVUfr8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mnAEAcXbwNblxZcoGPYAv/4u7s4ArYB+GsPpCeUVOLWBjbs2qsBqQgkhExz29eMA+7LDeZDYPvYjjoiMd0TjjOR35ICvfuCvzA7M6RZL25pdBWqSUnHZR7MLTk3BP1ISuFvNBMPbR1Z/CsigpVKOurGGEtRJIJDorVlawRLMrvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AvKCakzK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11870C4CEEA;
-	Mon, 23 Jun 2025 21:34:51 +0000 (UTC)
+	 MIME-Version; b=GEMkstdHSr5zdhxcRMYK5pVq5DgdWzVZRuxKaZa5wBEgggCaXDG3zvNrp6LEXrLBgTJuoeF9nQOjQt9cWUEZl9+iSkZm0umJkdzStFRdhz9LN7jwBhf0LSxL5EohtyN7I9eyS4DwkmSdvqboGIVZk18/8M6dogu9DMYGFZcRfVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QHKPfjH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF31C4CEEA;
+	Mon, 23 Jun 2025 21:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714492;
-	bh=R5vgOLPJJramIBCWOrkSVb6bFOztdwoyv1rp1/jDh3g=;
+	s=korg; t=1750715797;
+	bh=1setabICNrjYbrYEe06nyy04LeltsbD/X7eTWJVUfr8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AvKCakzKq3FifFQWd9/JSuu/n8uYT5UkE8Z/168MX36RcRLo8FopahfgKr2VX/gdF
-	 5vFhmKYJN5Ezd4IgaXRE8V1CW81SnvQ7W56uFLd4+y9GL3QBaJRN9rnzgmA3V1ED26
-	 jzgN/tnXN920WsSiKrzK8oD+3mK/PBRqOdQ0IX30=
+	b=1QHKPfjH/cTWdfmwd9poOKXA7t4JRk6oK0Kd227zuLgaSAcwjA2jxkYS1RwZ9EVgU
+	 DWGUFMmzhvj+0LG1SQUTLZBwDkDFf9jVA3d22EnzlSwVh2epWKks7UJKSUtGl5S19+
+	 WVpVTOEj+88081ZzlI2K8DDh1O8+Lc0TDwx0ZJEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nas Chung <nas.chung@chipsnmedia.com>,
+	Sebastian Fricke <sebastian.fricke@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 161/290] net: mlx4: add SOF_TIMESTAMPING_TX_SOFTWARE flag when getting ts info
-Date: Mon, 23 Jun 2025 15:07:02 +0200
-Message-ID: <20250623130631.740360382@linuxfoundation.org>
+Subject: [PATCH 5.15 279/411] media: uapi: v4l: Fix V4L2_TYPE_IS_OUTPUT condition
+Date: Mon, 23 Jun 2025 15:07:03 +0200
+Message-ID: <20250623130640.673647127@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Nas Chung <nas.chung@chipsnmedia.com>
 
-[ Upstream commit b86bcfee30576b752302c55693fff97242b35dfd ]
+[ Upstream commit f81f69a0e3da141bdd73a16b8676f4e542533d87 ]
 
-As mlx4 has implemented skb_tx_timestamp() in mlx4_en_xmit(), the
-SOFTWARE flag is surely needed when users are trying to get timestamp
-information.
+V4L2_TYPE_IS_OUTPUT() returns true for V4L2_BUF_TYPE_VIDEO_OVERLAY
+which definitely belongs to CAPTURE.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250510093442.79711-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
+Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/uapi/linux/videodev2.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-index 164a13272faa2..07dced3c2b1c0 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-@@ -1916,6 +1916,7 @@ static int mlx4_en_get_ts_info(struct net_device *dev,
- 	if (mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_TS) {
- 		info->so_timestamping |=
- 			SOF_TIMESTAMPING_TX_HARDWARE |
-+			SOF_TIMESTAMPING_TX_SOFTWARE |
- 			SOF_TIMESTAMPING_RX_HARDWARE |
- 			SOF_TIMESTAMPING_RAW_HARDWARE;
- 
+diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
+index f5c6758464f25..4e305496edf27 100644
+--- a/include/uapi/linux/videodev2.h
++++ b/include/uapi/linux/videodev2.h
+@@ -164,7 +164,6 @@ enum v4l2_buf_type {
+ #define V4L2_TYPE_IS_OUTPUT(type)				\
+ 	((type) == V4L2_BUF_TYPE_VIDEO_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE		\
+-	 || (type) == V4L2_BUF_TYPE_VIDEO_OVERLAY		\
+ 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY	\
+ 	 || (type) == V4L2_BUF_TYPE_VBI_OUTPUT			\
+ 	 || (type) == V4L2_BUF_TYPE_SLICED_VBI_OUTPUT		\
 -- 
 2.39.5
 
