@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-156521-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C518FAE4FE3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61F35AE54B4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A09211B61952
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3626217963E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0922538DE1;
-	Mon, 23 Jun 2025 21:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6F621FF50;
+	Mon, 23 Jun 2025 22:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPevE2Cc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bs35Px8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE762C9D;
-	Mon, 23 Jun 2025 21:20:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA853FB1B;
+	Mon, 23 Jun 2025 22:03:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713616; cv=none; b=Kohd4FSwSp6G2bPZd6kygvyiHKtTeMZ+5e8nFzh9qB9jdzMUgJrqyNTKhqUvZgrjgq3toEjdQI84nEOZ6iFmsQpg1g3JcuAKItb+Q69R4NeWgQ7wsle1ANKv7/y10u2lhxpO5HLT1joZdYrlVtoL9cTQqYKD9Z102fLyOyk8X5w=
+	t=1750716218; cv=none; b=Kn8AGmChzgfpl7WOVtx9Rlz8GqNiGi1wVjx7HBiWRiFfDwcBl+T6ZrH33AXBquOG6mLI1DWzluElpxwcT1fxa/jSIQ++TtVbtuWWoXS5oQJuiyykpiF3lM7MH4ZPTMulelb2ree/hGkRSGz5RaS4imd/KA8GPXnsANhFiy2LThU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713616; c=relaxed/simple;
-	bh=1AyLYxWJpO2hPIqKYwQxOUQczggIFYHhWVVzYHsxJiU=;
+	s=arc-20240116; t=1750716218; c=relaxed/simple;
+	bh=CgyTfuQl2hmEWqShy78Fc8SU995ri327z/uZwPI8o2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DKq8bEVi5lXWyjrGPaIPvjmY7241sfDolgcLdMJr1pppon1b07CoEw0313S+ah8F5gB7L7QdubHLvyO3btMYacTqU9fQSgNKEqJ+YDnzlDT8gQ/y/d+8Uh10xuj3BI5HIQ0+xM4Yq1QGyLvihR8JNyDGIXVeM2U535LkWKLtPj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPevE2Cc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5361DC4CEEA;
-	Mon, 23 Jun 2025 21:20:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=t3UukMOA5FLaipV4+RZWDJd/RbbhozujGz2XvyYpbKS7nzX8ChT5ktKUZgj3VOVIHhthWlSa9yKZgR/O6T5R9X3f0Y2K5nmZVESQPv52wm9MUNShRTmv4lz0PhFpeeMPqV/32CuEVeiossV2DBqU95cLzCQ4t0ShS3tPv6gsQNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bs35Px8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44610C4CEEA;
+	Mon, 23 Jun 2025 22:03:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713616;
-	bh=1AyLYxWJpO2hPIqKYwQxOUQczggIFYHhWVVzYHsxJiU=;
+	s=korg; t=1750716218;
+	bh=CgyTfuQl2hmEWqShy78Fc8SU995ri327z/uZwPI8o2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPevE2CciOJThtsYBQMWzPrPHyif9ZKEQJPm1e92hnF1S+tyyN2Ix1iFf9CotavIJ
-	 XpROwE6DZMlVj9wCoxxjN2lUKcTAZ6kRfSf5Rcmi7dpXYiQk/OoiIvWH30bEIW0unO
-	 zqZXz5arPtOUHXWMywnCES12H6AyUIF9Dk1olaMg=
+	b=Bs35Px8Kr0J4oii5GSWHBtj2wuC7OYi/13Ts6mAVNc7rxN44LGZgre+d3Ib33nsLh
+	 ig+dJ3stIH7741+ZxoJHmVNDhksUH0BOfi8QjXsOZ660ODyi6jDRjsO7h3KInJa2L5
+	 V6OgHaPbH3KU4Z2COgHpvtiVPfgYsuFQ11TD7pvM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 196/222] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+	Akhil R <akhilrajeev@nvidia.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Andi Shyti <andi@smida.it>
+Subject: [PATCH 6.6 270/290] dt-bindings: i2c: nvidia,tegra20-i2c: Specify the required properties
 Date: Mon, 23 Jun 2025 15:08:51 +0200
-Message-ID: <20250623130618.125610299@linuxfoundation.org>
+Message-ID: <20250623130635.041165950@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,40 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
+commit 903cc7096db22f889d48e2cee8840709ce04fdac upstream.
 
-Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
-noises after runtime-PM suspend.  Disable the codec runtime PM as a
-workaround.
+Specify the properties which are essential and which are not for the
+Tegra I2C driver to function correctly. This was not added correctly when
+the TXT binding was converted to yaml. All the existing DT nodes have
+these properties already and hence this does not break the ABI.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+dmas and dma-names which were specified as a must in the TXT binding
+is now made optional since the driver can work in PIO mode if dmas are
+missing.
+
+Fixes: f10a9b722f80 ("dt-bindings: i2c: tegra: Convert to json-schema”)
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.17+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Andi Shyti <andi@smida.it>
+Link: https://lore.kernel.org/r/20250603153022.39434-1-akhilrajeev@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml |   24 +++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2261,6 +2261,8 @@ static struct snd_pci_quirk power_save_b
- 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	/* Dell ALC3271 */
- 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
-+	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+--- a/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
+@@ -103,7 +103,10 @@ properties:
+ 
+   resets:
+     items:
+-      - description: module reset
++      - description:
++          Module reset. This property is optional for controllers in Tegra194,
++          Tegra234 etc where an internal software reset is available as an
++          alternative.
+ 
+   reset-names:
+     items:
+@@ -119,6 +122,13 @@ properties:
+       - const: rx
+       - const: tx
+ 
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
+ allOf:
+   - $ref: /schemas/i2c/i2c-controller.yaml
+   - if:
+@@ -172,6 +182,18 @@ allOf:
+           items:
+             - description: phandle to the VENC power domain
+ 
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - nvidia,tegra194-i2c
++    then:
++      required:
++        - resets
++        - reset-names
++
+ unevaluatedProperties: false
+ 
+ examples:
 
 
 
