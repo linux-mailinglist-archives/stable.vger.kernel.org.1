@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC21FAE42EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 293BDAE4308
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D71917E1F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD8E17E7EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4324253F2C;
-	Mon, 23 Jun 2025 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243FE253B58;
+	Mon, 23 Jun 2025 13:21:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdnNOzj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rItRYHQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715592F24;
-	Mon, 23 Jun 2025 13:20:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65E825394C;
+	Mon, 23 Jun 2025 13:21:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684825; cv=none; b=T8S87l0TKjKRTBMhwna9wIDM3HEjQAbR206Sy8sTKGWG0FWWyvKIuOM1op8UscAdn99KCms4MQ1/H1s6xG9G35dNwzhCh2cwNr9j997lswvea5EdVem0ewBez8F1A3YppGpcpZ125eub+kaNRcNo3n8uZLDPpP+8tUCfvH6x/Ac=
+	t=1750684889; cv=none; b=DXqUIck+NOSdxMqsaw+YHVl2SnYa24fUB5I48ngaq8yrBa89W8Cj3lSC7peg+xbuwYC5ZtFXDjcGAdlhhjzJ5/5Cfk9bGBu15/xIsMQTy2KSv6MFY23CorcXaKa098ORwu3tXmT3RK3jFdHw+h4zxIkBIZY4IUMVil47LPCYgf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684825; c=relaxed/simple;
-	bh=pbLut49AWNqItlqtWmEDnw4bHlSsuwuLW1lmRiL5TMY=;
+	s=arc-20240116; t=1750684889; c=relaxed/simple;
+	bh=zFV/inA/j+rQ9+2nR6x/C0kAUQdb7dZdLyIky80Qh2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JhZHszNjeoqTLo2r+PjnP+cIpVlAuL5MC2BtO7WJMSliMzda56WRWdmECOjEsXVgxxzwzhEEXwRRWjGs8RGFT8t7OhYz8tXVDIVRgnTT7OFg+S9fPaoQtsiptw/WldmGrdAPW4I6cXIVGp8uDzGJvw3PtqNA1hquK+1D2w3/4iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdnNOzj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03705C4CEEA;
-	Mon, 23 Jun 2025 13:20:24 +0000 (UTC)
+	 MIME-Version; b=C4L0ecB66LCUZUXLtNqTzguozFbw7dmX79C21JK2vYo/3ODL0nsOyDs+oc9+QSXnZPzI5KdjcGddws+GSySZ1ifIwXh9sYNL4XfDgBxUMZ9B5PF+Bnq7TQ8bc5QYXiDJQg+u+GO7hxo8bzLFafOlZTluuxAuFHm+Ic0RIPCzjGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rItRYHQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD38C4CEEA;
+	Mon, 23 Jun 2025 13:21:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684825;
-	bh=pbLut49AWNqItlqtWmEDnw4bHlSsuwuLW1lmRiL5TMY=;
+	s=korg; t=1750684889;
+	bh=zFV/inA/j+rQ9+2nR6x/C0kAUQdb7dZdLyIky80Qh2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zdnNOzj4DGmgTX63AWegnoagm6Z6v86CiA2WLsND/Z+rBX9f1VBZY+u3kJuAmN+DC
-	 aP8LKgr0wJyPYtxkbHaSPIwtF9tdeBJik3iKyk6Yw1oE1B+zdaHplBKw+6+5Hf3K/2
-	 XrshtFCpGBvMpYnVKt+m/9keNbv2oshjcU6rl1a4=
+	b=rItRYHQoHYhsRZbugH939ufDIcR+y6YRsa+7JwPJWqazwxMRs2WwP1bBNa0mNIgw3
+	 szh6mOmlY2G5kxlzlwXsIcZsVxLNmZ92LdyI03SED9jUWPOwwBVnQGlP2BkVMr2mGv
+	 Fl1bkE6APITSg6MhSaWtRuhUzPlKr124RwYCqR1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Trevor Gamblin <tgamblin@baylibre.com>,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.15 165/592] pwm: axi-pwmgen: fix missing separate external clock
-Date: Mon, 23 Jun 2025 15:02:03 +0200
-Message-ID: <20250623130704.205863511@linuxfoundation.org>
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 166/592] staging: iio: ad5933: Correct settling cycles encoding per datasheet
+Date: Mon, 23 Jun 2025 15:02:04 +0200
+Message-ID: <20250623130704.228030133@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -61,89 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-commit a8841dc3dfbf127a19c3612204bd336ee559b9a1 upstream.
+commit 60638e2a2d4bc03798f00d5ab65ce9b83cb8b03b upstream.
 
-Add proper support for external clock to the AXI PWM generator driver.
+The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
+(2044).
 
-In most cases, the HDL for this IP block is compiled with the default
-ASYNC_CLK_EN=1. With this option, there is a separate external clock
-that drives the PWM output separate from the peripheral clock. So the
-driver should be enabling the "axi" clock to power the peripheral and
-the "ext" clock to drive the PWM output.
+Clamp the user input to the maximum effective value of 0x7FC cycles.
 
-When ASYNC_CLK_EN=0, the "axi" clock is also used to drive the PWM
-output and there is no "ext" clock.
-
-Previously, if there was a separate external clock, users had to specify
-only the external clock and (incorrectly) omit the AXI clock in order
-to get the correct operating frequency for the PWM output.
-
-The devicetree bindings are updated to fix this shortcoming and this
-patch changes the driver to match the new bindings. To preserve
-compatibility with any existing dtbs that specify only one clock, we
-don't require the clock name on the first clock.
-
-Fixes: 41814fe5c782 ("pwm: Add driver for AXI PWM generator")
+Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
 Cc: stable@vger.kernel.org
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Reviewed-by: Trevor Gamblin <tgamblin@baylibre.com>
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://lore.kernel.org/r/20250529-pwm-axi-pwmgen-add-external-clock-v3-3-5d8809a7da91@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Link: https://patch.msgid.link/20250420013009.847851-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-axi-pwmgen.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pwm/pwm-axi-pwmgen.c
-+++ b/drivers/pwm/pwm-axi-pwmgen.c
-@@ -257,7 +257,7 @@ static int axi_pwmgen_probe(struct platf
- 	struct regmap *regmap;
- 	struct pwm_chip *chip;
- 	struct axi_pwmgen_ddata *ddata;
--	struct clk *clk;
-+	struct clk *axi_clk, *clk;
- 	void __iomem *io_base;
- 	int ret;
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct devic
+ 		ret = ad5933_cmd(st, 0);
+ 		break;
+ 	case AD5933_OUT_SETTLING_CYCLES:
+-		val = clamp(val, (u16)0, (u16)0x7FF);
++		val = clamp(val, (u16)0, (u16)0x7FC);
+ 		st->settling_cycles = val;
  
-@@ -280,9 +280,26 @@ static int axi_pwmgen_probe(struct platf
- 	ddata = pwmchip_get_drvdata(chip);
- 	ddata->regmap = regmap;
- 
--	clk = devm_clk_get_enabled(dev, NULL);
-+	/*
-+	 * Using NULL here instead of "axi" for backwards compatibility. There
-+	 * are some dtbs that don't give clock-names and have the "ext" clock
-+	 * as the one and only clock (due to mistake in the original bindings).
-+	 */
-+	axi_clk = devm_clk_get_enabled(dev, NULL);
-+	if (IS_ERR(axi_clk))
-+		return dev_err_probe(dev, PTR_ERR(axi_clk), "failed to get axi clock\n");
-+
-+	clk = devm_clk_get_optional_enabled(dev, "ext");
- 	if (IS_ERR(clk))
--		return dev_err_probe(dev, PTR_ERR(clk), "failed to get clock\n");
-+		return dev_err_probe(dev, PTR_ERR(clk), "failed to get ext clock\n");
-+
-+	/*
-+	 * If there is no "ext" clock, it means the HDL was compiled with
-+	 * ASYNC_CLK_EN=0. In this case, the AXI clock is also used for the
-+	 * PWM output clock.
-+	 */
-+	if (!clk)
-+		clk = axi_clk;
- 
- 	ret = devm_clk_rate_exclusive_get(dev, clk);
- 	if (ret)
+ 		/* 2x, 4x handling, see datasheet */
 
 
 
