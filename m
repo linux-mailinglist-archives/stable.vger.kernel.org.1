@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157411-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EDE6AE528A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 79024AE53E2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADB16188E24C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9264F1B6827B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8DD223337;
-	Mon, 23 Jun 2025 21:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52F4A223DC1;
+	Mon, 23 Jun 2025 21:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck3JzLto"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="shEUfusC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585F41E1A05;
-	Mon, 23 Jun 2025 21:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3EB220686;
+	Mon, 23 Jun 2025 21:56:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715075; cv=none; b=s496jgoGHQC9NtCjKWa3IKFvjUdWSUvBR3gyFlPtgrDXxtZhhLsqVGT7zKnGC7BlJfZYlmB1f4kxbwI0XGiFn1uWKJ2HTBVv7IGYBp3NsY3ArKI2YKVqmv/BgdYI6dFFsQXGc3yOEOZ5MSv57KLXl2Nho8ccj7+JHo0LQQzGvmg=
+	t=1750715800; cv=none; b=slKEvOpez4OPpdNRiwYbKa8jFkF7HWqEuzyWPvIKCefCDVW+gmUgl69csOUtwyLb1x3gUWMpv6W5y4j2dhwAj133AdTLp2d0srn8nnG6e0X4rE2o4KuIZucEXrmgOjthO6S28iGKW3jK2jkEeZpj3fyocbE2ql4LRxJK6dl6zIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715075; c=relaxed/simple;
-	bh=vQpEAsV+SHEVNdOhjk+0X5i7tRMpPGRNTEu4SaptXlE=;
+	s=arc-20240116; t=1750715800; c=relaxed/simple;
+	bh=nYZSaMi8OP0Wt0hjiOUufg7pRXWiGJcKkaxEi7v0C+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gzWAsD5Y9DaqbP2dLveeTIs0S/eFFBEl53zRS6CTUkgMEXDXNL5veoHHE14zzheS6cf1Dvhf4boBDUSNXP8M2LISK7tnR8BgtLkd68HUR+nI5i6bFE1ejOmwrrLfz7JEOO/b/c2ztSUw6Up121Oo/TaGm531vJGFkgE/Jdpl7oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck3JzLto; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6981C4CEEA;
-	Mon, 23 Jun 2025 21:44:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rMyvWovA76cGGl8EcnrcXWY4siwM2gNdiENAbCsDLW5sKKOyjEEVsi6AWIOb/m6QvMNFX8LLK0GFDbdJq3OBylVcBTLiepWQXxF45K54Grq7MfTE13lNFFzjN+WuvB0sAJk919CbPsu5O6q92t4qsI+sWYuSDxP9QLrHqMYGwaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=shEUfusC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B816C4CEED;
+	Mon, 23 Jun 2025 21:56:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715075;
-	bh=vQpEAsV+SHEVNdOhjk+0X5i7tRMpPGRNTEu4SaptXlE=;
+	s=korg; t=1750715799;
+	bh=nYZSaMi8OP0Wt0hjiOUufg7pRXWiGJcKkaxEi7v0C+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ck3JzLtoBk/G+51dnWljmkmg7HvMcNSYI/M+rSKB2XX+xfF25R3yZ9I+Er0Nm9VBk
-	 49HkfTMKkV/wlxavHG9paNs8jLVOlixXlDz8My+gOhNUhLwFv2HkA913yVuaTet1xU
-	 lfC08AQFQnSiPmspgk1sNnsTiLIiEldq3J1pCuj0=
+	b=shEUfusCUPkq6ucqGI1e94z1zCCNOTBgHRcUDDEUP9h7ryqVYpRDvID6g2ff7EVPT
+	 A0qWEQ2G7C4MmU6WGl/4/1lKH86ebZiTWj4M2FxX3+7Y8BoN1jtW17jBLbgVcsgpXN
+	 J11k1xCL5CHUQKMPt6Hln2u4IdalgAjYuFk/PxwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/290] software node: Correct a OOB check in software_node_get_reference_args()
+	Cihan Ozakca <cozakca@outlook.com>,
+	Kurt Borja <kuurtb@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.15 481/592] Revert "platform/x86: alienware-wmi-wmax: Add G-Mode support to Alienware m16 R1"
 Date: Mon, 23 Jun 2025 15:07:19 +0200
-Message-ID: <20250623130632.233087368@linuxfoundation.org>
+Message-ID: <20250623130711.875867743@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Kurt Borja <kuurtb@gmail.com>
 
-[ Upstream commit 31e4e12e0e9609850cefd4b2e1adf782f56337d6 ]
+commit e2468dc700743683e1d1793bbd855e2536fd3de2 upstream.
 
-software_node_get_reference_args() wants to get @index-th element, so
-the property value requires at least '(index + 1) * sizeof(*ref)' bytes
-but that can not be guaranteed by current OOB check, and may cause OOB
-for malformed property.
+This reverts commit 5ff79cabb23a2f14d2ed29e9596aec908905a0e6.
 
-Fix by using as OOB check '((index + 1) * sizeof(*ref) > prop->length)'.
+Although the Alienware m16 R1 AMD model supports G-Mode, it actually has
+a lower power ceiling than plain "performance" profile, which results in
+lower performance.
 
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250414-fix_swnode-v2-1-9c9e6ae11eab@quicinc.com
+Reported-by: Cihan Ozakca <cozakca@outlook.com>
+Cc: stable@vger.kernel.org # 6.15.x
+Signed-off-by: Kurt Borja <kuurtb@gmail.com>
+Link: https://lore.kernel.org/r/20250611-m16-rev-v1-1-72d13bad03c9@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/swnode.c | 2 +-
+ drivers/platform/x86/dell/alienware-wmi-wmax.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
-index 079bd14bdedc7..a7a3e3b66bb5e 100644
---- a/drivers/base/swnode.c
-+++ b/drivers/base/swnode.c
-@@ -518,7 +518,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
- 	if (prop->is_inline)
- 		return -EINVAL;
- 
--	if (index * sizeof(*ref) >= prop->length)
-+	if ((index + 1) * sizeof(*ref) > prop->length)
- 		return -ENOENT;
- 
- 	ref_array = prop->pointer;
--- 
-2.39.5
-
+--- a/drivers/platform/x86/dell/alienware-wmi-wmax.c
++++ b/drivers/platform/x86/dell/alienware-wmi-wmax.c
+@@ -91,7 +91,7 @@ static const struct dmi_system_id awcc_d
+ 			DMI_MATCH(DMI_SYS_VENDOR, "Alienware"),
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Alienware m16 R1 AMD"),
+ 		},
+-		.driver_data = &g_series_quirks,
++		.driver_data = &generic_quirks,
+ 	},
+ 	{
+ 		.ident = "Alienware m16 R2",
 
 
 
