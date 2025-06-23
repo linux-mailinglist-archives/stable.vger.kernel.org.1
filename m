@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-155565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81543AE42B3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7134CAE438C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B5C0C1893341
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BC137AC264
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1BD72550BB;
-	Mon, 23 Jun 2025 13:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FEAB254B03;
+	Mon, 23 Jun 2025 13:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwtVAAK/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGL9wZMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F91324DFF3;
-	Mon, 23 Jun 2025 13:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BFE02528F7;
+	Mon, 23 Jun 2025 13:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684756; cv=none; b=uKyaJNxSp6GJzx83Ov0UPFWwaUnJAafUbJaFkSQ4lTe8876HP4Dky1p7CRIl5geB83qIh7FyrwzHWia1P6tes4Hg/8V3NHpHXz1j5p+1AvmFqAdWeITR+W8oYFtORMFWFgdeKMhVjcb/6AIjfO1OhnO2wAIwrYBnm/ZMd/C9/14=
+	t=1750685410; cv=none; b=CZl9YexO+CxOHhFmDtHnUYy/oNcCwrjMTPmSQafx288Oe+kCVPb7e36D8aphY+2ncUQuhumEqD/QZ53wNDJJxHc+sosdKO7/XyPcTKJnYhvnZBOC6alXyIUmb75kE9FNq9kyeZK9genme6U9mQsC0Oa9VBssBQ7OleSiqhXbL8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684756; c=relaxed/simple;
-	bh=NueB2x7xpuNZcAlImugODigh8PWteU5465/o2XGIxnM=;
+	s=arc-20240116; t=1750685410; c=relaxed/simple;
+	bh=JrpR7PGDLhnfykZQWD6GAzXR4bJQFtbQ1gNtn1s9v+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0pTmKZ/SBiNwiV3hdS7vi6Xb0fJxmGGoct0tcddRO7dWA/ampYdG4l7+aWghIFWeVeRl+4e52fWHrBbkcD5pGxfS4g32VAgiwWH4QxySTani+xXbcYNFHqnGu8d4eLlC+igOovfvxQEQ0i1jq7zWg6uLUbEhdLV4CJlJBI9Qts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwtVAAK/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E803EC4CEEA;
-	Mon, 23 Jun 2025 13:19:15 +0000 (UTC)
+	 MIME-Version; b=tatLB0VhBZDHL0NOIk4lwvR7pjn6M1wbskReLNJBGq40YZ/oY/irJarbuyDMTbV+mB3TzOJ3A8h5HFdTvFc3Uiv5UZ6sYQ8Z+DIlXHg2DOyuhWL7hzjjWhAG4HOZEjpHgh/SWz9SNniSGo3W9NvP0jtOctywSSHMZCbqREafA4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGL9wZMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40FFC4CEEA;
+	Mon, 23 Jun 2025 13:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684756;
-	bh=NueB2x7xpuNZcAlImugODigh8PWteU5465/o2XGIxnM=;
+	s=korg; t=1750685410;
+	bh=JrpR7PGDLhnfykZQWD6GAzXR4bJQFtbQ1gNtn1s9v+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwtVAAK/ezQ9203XZWEkqBaQ0px78h92a3+1auCsKgc8RuJMqEMTT1OnaR1pKp7rN
-	 fdsZFRqposnKKjffSGDiD4DjIIADx9yjhM8YWbFGie1bTAtAQ86qCmHv8cQQmYcy/+
-	 3ubNLtO+t0MPRNkDONte4t+bV+esoVP65dXJG+7E=
+	b=SGL9wZMM3+IwFBiau0HmxXDhMx6YD1iq5qmclejYJ4lZpNqZ737eYVoRR0zG2AW9R
+	 WkLAV8eqpR2tVGz1EVSmjtMXYdn53gx8cLoZesEHOd9ZI0cAUsNAnWMmwkt+iZbnCl
+	 jby3JdKjotUMXORcIhaBKbJyz9y3osuGifTHpCrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.15 117/592] ext4: ensure i_size is smaller than maxbytes
+	Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 030/508] power: reset: at91-reset: Optimize at91_reset()
 Date: Mon, 23 Jun 2025 15:01:15 +0200
-Message-ID: <20250623130703.055553996@linuxfoundation.org>
+Message-ID: <20250623130645.988630758@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
 
-commit 1a77a028a392fab66dd637cdfac3f888450d00af upstream.
+[ Upstream commit 62d48983f215bf1dd48665913318101fa3414dcf ]
 
-The inode i_size cannot be larger than maxbytes, check it while loading
-inode from the disk.
+This patch adds a small optimization to the low-level at91_reset()
+function, which includes:
+- Removes the extra branch, since the following store operations
+  already have proper condition checks.
+- Removes the definition of the clobber register r4, since it is
+  no longer used in the code.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fcd0532fac2a ("power: reset: at91-reset: make at91sam9g45_restart() generic")
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20250307053809.20245-1-eagle.alexander923@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/power/reset/at91-reset.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4922,7 +4922,8 @@ struct inode *__ext4_iget(struct super_b
- 		ei->i_file_acl |=
- 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
- 	inode->i_size = ext4_isize(sb, raw_inode);
--	if ((size = i_size_read(inode)) < 0) {
-+	size = i_size_read(inode);
-+	if (size < 0 || size > ext4_get_maxbytes(inode)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "iget: bad i_size value: %lld", size);
- 		ret = -EFSCORRUPTED;
+diff --git a/drivers/power/reset/at91-reset.c b/drivers/power/reset/at91-reset.c
+index 741e44a017c3f..f47346a0f099f 100644
+--- a/drivers/power/reset/at91-reset.c
++++ b/drivers/power/reset/at91-reset.c
+@@ -128,12 +128,11 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
+ 		"	str	%4, [%0, %6]\n\t"
+ 		/* Disable SDRAM1 accesses */
+ 		"1:	tst	%1, #0\n\t"
+-		"	beq	2f\n\t"
+ 		"	strne	%3, [%1, #" __stringify(AT91_DDRSDRC_RTR) "]\n\t"
+ 		/* Power down SDRAM1 */
+ 		"	strne	%4, [%1, %6]\n\t"
+ 		/* Reset CPU */
+-		"2:	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
++		"	str	%5, [%2, #" __stringify(AT91_RSTC_CR) "]\n\t"
+ 
+ 		"	b	.\n\t"
+ 		:
+@@ -144,7 +143,7 @@ static int at91_reset(struct notifier_block *this, unsigned long mode,
+ 		  "r" cpu_to_le32(AT91_DDRSDRC_LPCB_POWER_DOWN),
+ 		  "r" (reset->data->reset_args),
+ 		  "r" (reset->ramc_lpr)
+-		: "r4");
++	);
+ 
+ 	return NOTIFY_DONE;
+ }
+-- 
+2.39.5
+
 
 
 
