@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67C6AAE4421
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6BA3AE4404
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E9A3944200D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502A718991F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC4A255F57;
-	Mon, 23 Jun 2025 13:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85FC253F12;
+	Mon, 23 Jun 2025 13:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jYbRfNv4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lECynv/g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 476582571C7;
-	Mon, 23 Jun 2025 13:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A623325393A;
+	Mon, 23 Jun 2025 13:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685514; cv=none; b=YYYO5jXEMzjTPQHFlWoqa6pwwGeH26SDv5Qmntwb73njeHWo026nEwlVGhzExNWUfySsQ2otpIDYwQGTxssH41HU0Ud+n56e+S1uQpCYmHIgI9PQQKKF47n4Aaj3m/q+cCPibj6+rc2YsSoPnXyYm5z4ZE7j7MK7gfFQ+ziuetY=
+	t=1750685526; cv=none; b=J5VQaCL3lmg+SXE3ZdXS4XxnVseD0vUyrX/PctZdsW1cGSlUCScKRKlFHvZaGbr8FZ+dYxZBwEBHya3KWa1NWrgPkqGUNDD1vNT3wNsXOlqYBL//o+DjGz2EBtP5wbESzXIjRijxf9WJxzxGET8DfqFg5HhjtumoaCDXNLUzMdM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685514; c=relaxed/simple;
-	bh=uvjuNTThKJA0OPDQ/gLhJgV9Vd7kC961hNdM8uey0JI=;
+	s=arc-20240116; t=1750685526; c=relaxed/simple;
+	bh=xiJtEoyUq5iEuWLQdn0sxcG87h+8Hmh3naCvLhFwdDk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKmZvBb2TNSIJja7ukQR2wzbPNDwk670v5Frkz+RhOyapmKnIvjODxPZ3BrDI3q+BS2BqMHSBYwk5/FYR3QnfbeqSVedYopbGZNq+nmV0QKWsj8m7adNZcPZ1A7CfddX1o0DFJ2n1y7U8KUY5G89VhW2aJQe7Flij94U913Ufek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jYbRfNv4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836FDC4CEEA;
-	Mon, 23 Jun 2025 13:31:53 +0000 (UTC)
+	 MIME-Version; b=bBQkGeOgEhWQz6KIQDl43WD7Twb0UHsEbmPks+n0GZgtpxqTeXlQV5pDj1vC+QhmjcwLYmhl7KT1Zt/OK8trcfjVEvBUHvXDOAzramr17K9EqaPKvV3CvnUa8/JHj6llVpTnBQFHRrdGTZrhqwlo4HhceB8rrsva7H654hGCbqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lECynv/g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317E8C4CEEA;
+	Mon, 23 Jun 2025 13:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685513;
-	bh=uvjuNTThKJA0OPDQ/gLhJgV9Vd7kC961hNdM8uey0JI=;
+	s=korg; t=1750685526;
+	bh=xiJtEoyUq5iEuWLQdn0sxcG87h+8Hmh3naCvLhFwdDk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jYbRfNv4E1FRGWdUBfQWJyahlhV5GzRPsbT4inENJ01geI2y+L6Eo+V5N2czciEIW
-	 SmaPmkW79f/MiK4gJgT4uyUUz1AC3iOa1rdlMuxO6mLFedKFWSz8EGRYLToK33oSrz
-	 WloRHmkm2XFTUh9VKysf6R5JInGV3Md5qes6BYrQ=
+	b=lECynv/gMouOTQvRsbgPfH1419OA7Lmvnxc/hLVFx2l/xWDt7mUXIqpL/dX2g+Bzd
+	 rTrp2x2jCWtqJ0ZruGzztyeJQb6yGNdQbl6ddWWjIKn7qljiXgrSF3AWlW/dVxocMg
+	 xJVOXO2fMR7NFK2/UmBAZO2zeIaoNRGSq6SGR4pw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/411] bpf, sockmap: fix duplicated data transmission
-Date: Mon, 23 Jun 2025 15:03:03 +0200
-Message-ID: <20250623130634.178442198@linuxfoundation.org>
+Subject: [PATCH 5.15 040/411] f2fs: fix to do sanity check on sbi->total_valid_block_count
+Date: Mon, 23 Jun 2025 15:03:04 +0200
+Message-ID: <20250623130634.210691462@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -66,66 +67,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jiayuan Chen <jiayuan.chen@linux.dev>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 3b4f14b794287be137ea2c6158765d1ea1e018a4 ]
+[ Upstream commit 05872a167c2cab80ef186ef23cc34a6776a1a30c ]
 
-In the !ingress path under sk_psock_handle_skb(), when sending data to the
-remote under snd_buf limitations, partial skb data might be transmitted.
+syzbot reported a f2fs bug as below:
 
-Although we preserved the partial transmission state (offset/length), the
-state wasn't properly consumed during retries. This caused the retry path
-to resend the entire skb data instead of continuing from the previous
-offset, resulting in data overlap at the receiver side.
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/f2fs.h:2521!
+RIP: 0010:dec_valid_block_count+0x3b2/0x3c0 fs/f2fs/f2fs.h:2521
+Call Trace:
+ f2fs_truncate_data_blocks_range+0xc8c/0x11a0 fs/f2fs/file.c:695
+ truncate_dnode+0x417/0x740 fs/f2fs/node.c:973
+ truncate_nodes+0x3ec/0xf50 fs/f2fs/node.c:1014
+ f2fs_truncate_inode_blocks+0x8e3/0x1370 fs/f2fs/node.c:1197
+ f2fs_do_truncate_blocks+0x840/0x12b0 fs/f2fs/file.c:810
+ f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:838
+ f2fs_truncate+0x417/0x720 fs/f2fs/file.c:888
+ f2fs_setattr+0xc4f/0x12f0 fs/f2fs/file.c:1112
+ notify_change+0xbca/0xe90 fs/attr.c:552
+ do_truncate+0x222/0x310 fs/open.c:65
+ handle_truncate fs/namei.c:3466 [inline]
+ do_open fs/namei.c:3849 [inline]
+ path_openat+0x2e4f/0x35d0 fs/namei.c:4004
+ do_filp_open+0x284/0x4e0 fs/namei.c:4031
+ do_sys_openat2+0x12b/0x1d0 fs/open.c:1429
+ do_sys_open fs/open.c:1444 [inline]
+ __do_sys_creat fs/open.c:1522 [inline]
+ __se_sys_creat fs/open.c:1516 [inline]
+ __x64_sys_creat+0x124/0x170 fs/open.c:1516
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
 
-Fixes: 405df89dd52c ("bpf, sockmap: Improved check for empty queue")
-Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Link: https://lore.kernel.org/r/20250407142234.47591-3-jiayuan.chen@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+The reason is: in fuzzed image, sbi->total_valid_block_count is
+inconsistent w/ mapped blocks indexed by inode, so, we should
+not trigger panic for such case, instead, let's print log and
+set fsck flag.
+
+Fixes: 39a53e0ce0df ("f2fs: add superblock and major in-memory structure")
+Reported-by: syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/67f3c0b2.050a0220.396535.0547.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skmsg.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ fs/f2fs/f2fs.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skmsg.c b/net/core/skmsg.c
-index a5947aa559837..f4186d4980b92 100644
---- a/net/core/skmsg.c
-+++ b/net/core/skmsg.c
-@@ -639,11 +639,6 @@ static void sk_psock_backlog(struct work_struct *work)
- 	int ret;
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 8b04e43356909..28db323dd4005 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -2260,8 +2260,14 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
+ 	blkcnt_t sectors = count << F2FS_LOG_SECTORS_PER_BLOCK;
  
- 	mutex_lock(&psock->work_mutex);
--	if (unlikely(state->len)) {
--		len = state->len;
--		off = state->off;
--	}
--
- 	while ((skb = skb_peek(&psock->ingress_skb))) {
- 		len = skb->len;
- 		off = 0;
-@@ -653,6 +648,13 @@ static void sk_psock_backlog(struct work_struct *work)
- 			off = stm->offset;
- 			len = stm->full_len;
- 		}
-+
-+		/* Resume processing from previous partial state */
-+		if (unlikely(state->len)) {
-+			len = state->len;
-+			off = state->off;
-+		}
-+
- 		ingress = skb_bpf_ingress(skb);
- 		skb_bpf_redirect_clear(skb);
- 		do {
-@@ -680,6 +682,8 @@ static void sk_psock_backlog(struct work_struct *work)
- 			len -= ret;
- 		} while (len);
- 
-+		/* The entire skb sent, clear state */
-+		sk_psock_skb_state(psock, state, 0, 0);
- 		skb = skb_dequeue(&psock->ingress_skb);
- 		if (!ingress) {
- 			kfree_skb(skb);
+ 	spin_lock(&sbi->stat_lock);
+-	f2fs_bug_on(sbi, sbi->total_valid_block_count < (block_t) count);
+-	sbi->total_valid_block_count -= (block_t)count;
++	if (unlikely(sbi->total_valid_block_count < count)) {
++		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%lu, count:%u",
++			  sbi->total_valid_block_count, inode->i_ino, count);
++		sbi->total_valid_block_count = 0;
++		set_sbi_flag(sbi, SBI_NEED_FSCK);
++	} else {
++		sbi->total_valid_block_count -= count;
++	}
+ 	if (sbi->reserved_blocks &&
+ 		sbi->current_reserved_blocks < sbi->reserved_blocks)
+ 		sbi->current_reserved_blocks = min(sbi->reserved_blocks,
 -- 
 2.39.5
 
