@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-155534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07AA9AE4273
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62745AE428D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B89563B6275
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 25578174EAE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:18:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7452517AF;
-	Mon, 23 Jun 2025 13:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555A41E87B;
+	Mon, 23 Jun 2025 13:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sr8p3IeN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uf64fRX1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1579248895;
-	Mon, 23 Jun 2025 13:18:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131711798F;
+	Mon, 23 Jun 2025 13:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684682; cv=none; b=o81ik2Vbjxorojfn1f2mXrAwtHGxQU9M9EUE3BcawS0RStzpa00k4fGATLcYTyR1E5WTDwW1BLx1Vy4Fd6W6ywv42lBiOqdLiA3MjthUZGx0AZdkfAAFeexIsn/taAtYCB5JBaDGHWBHxWW/kMNKuT6F5gGPhuPee9HRGet114k=
+	t=1750684687; cv=none; b=Tzbd7ln6GMcXROh0f4LASFilEicpcKf+WbdcXNVysP+IQsMhg/UKgBaoNmM/liObnY3xU/SgAloRa+JSAqFMhx78fErktNg8NLQf+s7YQmLbFmgWU6Vezb5Jj43/GRKnWRbVwvXdqLfpsHynuKBOWRJzfBc2ctnCgVDLfwD2Gzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684682; c=relaxed/simple;
-	bh=n9+PdzRWSJx7wBJ/wPTkv7a5o6NOHK/mdlS3IZgP0pE=;
+	s=arc-20240116; t=1750684687; c=relaxed/simple;
+	bh=mcRS7goReYCGXXbGXmVZ/juEpUftEjh8GAj6MwWixVg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iTYSD05hI3tlg/cJYDtOwlxJT6O1jTFEyfLABgP/PUadjIHMKMbIsLtTUaTv1I3FGfW4aT8kEhtMXToY2c13XNcbhxI1/VJThuK1WFjEUTn1s6LL8X8DZaq/NsBSlJFDXmu/Q5dfdLzpmmvBrE+mAc+ANGRx7xz+/vTEtG+5cQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sr8p3IeN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 780EDC4CEEA;
-	Mon, 23 Jun 2025 13:18:01 +0000 (UTC)
+	 MIME-Version; b=sz9vmQrdYVx4yc418NFt62AwsJUu580/VuAf3jeqW35HIBkPVUWmWWgxw3c4BEACMw/FfQuKvCo4ybLpHHnHDCpcjHVwnl1PIntS4j12IXH/JkhAX8rRRZBSAeNJTNmEPC6jQx3SPlVt4VQMIcP/yZYeCXPeIKVHpNvq/MLJ/u8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uf64fRX1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A2EDC4CEEA;
+	Mon, 23 Jun 2025 13:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684681;
-	bh=n9+PdzRWSJx7wBJ/wPTkv7a5o6NOHK/mdlS3IZgP0pE=;
+	s=korg; t=1750684686;
+	bh=mcRS7goReYCGXXbGXmVZ/juEpUftEjh8GAj6MwWixVg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sr8p3IeN/BAneYlKRAWttMf4YAoB2IlZZ5yyO1JCw8EdinuA7jAyTKtU8DfSss41P
-	 Lug83QohHWKgXi3Z0AGJ6IaykTcGUWyI4iVfT63aNsWcIt1NYfOq9SyCimuHTMdSDB
-	 0bhNHhstoKE2W7IoqhsHDMeY547h1lni4vPpWDAI=
+	b=Uf64fRX14O8H6Ewsq9/fdSBTnOy6OwkTNwDMcwOFJOlrgxcX0S3nBtgjcCGd0oua4
+	 6V5F8ST2LePFkRfdsnG1L4Jml6ITupGJmR5c2/66TecW53WMUMXBq8wuX8TNNEE+PS
+	 lCbeI+NjsPTEHnkDAKiL2YGZLmqe+fFOTU+1p1U0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.4 008/222] netfilter: nft_socket: fix sk refcount leaks
-Date: Mon, 23 Jun 2025 15:05:43 +0200
-Message-ID: <20250623130612.150097773@linuxfoundation.org>
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 009/222] gfs2: gfs2_create_inode error handling fix
+Date: Mon, 23 Jun 2025 15:05:44 +0200
+Message-ID: <20250623130612.179770164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,39 +65,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c upstream.
+[ Upstream commit af4044fd0b77e915736527dd83011e46e6415f01 ]
 
-We must put 'sk' reference before returning.
+When gfs2_create_inode() finds a directory, make sure to return -EISDIR.
 
-Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 571a4b57975a ("GFS2: bugger off early if O_CREAT open finds a directory")
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_socket.c |    3 ++-
+ fs/gfs2/inode.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -69,7 +69,7 @@ static void nft_socket_eval(const struct
- 			*dest = sk->sk_mark;
- 		} else {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
+diff --git a/fs/gfs2/inode.c b/fs/gfs2/inode.c
+index 4e0c933e08002..496449fccc828 100644
+--- a/fs/gfs2/inode.c
++++ b/fs/gfs2/inode.c
+@@ -616,7 +616,8 @@ static int gfs2_create_inode(struct inode *dir, struct dentry *dentry,
+ 	if (!IS_ERR(inode)) {
+ 		if (S_ISDIR(inode->i_mode)) {
+ 			iput(inode);
+-			inode = ERR_PTR(-EISDIR);
++			inode = NULL;
++			error = -EISDIR;
+ 			goto fail_gunlock;
  		}
- 		break;
- 	default:
-@@ -77,6 +77,7 @@ static void nft_socket_eval(const struct
- 		regs->verdict.code = NFT_BREAK;
- 	}
- 
-+out_put_sk:
- 	if (sk != skb->sk)
- 		sock_gen_put(sk);
- }
+ 		d_instantiate(dentry, inode);
+-- 
+2.39.5
+
 
 
 
