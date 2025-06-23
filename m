@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54526AE5512
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1374CAE562B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DBB4C3046
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A178D4A2171
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23579221FD6;
-	Mon, 23 Jun 2025 22:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F127228CB5;
+	Mon, 23 Jun 2025 22:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMc2Nvyl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvg5vtaG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21123597E;
-	Mon, 23 Jun 2025 22:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FF19E7F9;
+	Mon, 23 Jun 2025 22:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716458; cv=none; b=HOLw+j3DTnOfapB3j3EJfza0cj7/k7guHy+HV/YB5ID7QH/pTbBfB5wFFvhW5rmIlhOy5ANZiLDtKb9jrtjwu3JuZCsvvvn8Pj3DZc5xBbrBghTWo8/HT8jxIDDBO623haPMYqQZJhLUUYW+QAH6/fo7F0OTBTth5ja/cs51lQ4=
+	t=1750716908; cv=none; b=m/bdW9XcCqWW3h4yYBGXdCn3UOTclvRyo13kdn/emnOz5r2riRdWpSnVd+SSZjCB2JQxMkfmb4GwPp1qcGKTkH2tL8YUIhkT0qinHzN378k6cJiCM1siyF43VtF5puP8MdZ58mB/0thWMSilmRwaZvR+Dmom/sQi1J8f1xneAgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716458; c=relaxed/simple;
-	bh=P0UKYy1OvxLb8/zMsoUUjeJktRa/BGfgebAHpVAGLx0=;
+	s=arc-20240116; t=1750716908; c=relaxed/simple;
+	bh=KFObIQj5YmzuYI6PitpfxYYFkbW1tCVxtAKo++AdFy8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u7Pvs5+DSSX4yUMH1vkzAf/jQcvh+v+mldNRv4a+tU75TRK9L+23GSSvPfyBl8MEq+Ls6wZkZNdD+QX7qlpnelvKtOY4tqWb3bYREpVurq6eif5vFhmgDrGg1BXvSnwKBna1EzDcsibOEhr0WxX9eHxBVDcela8+bl+Ef+0JhYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMc2Nvyl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D5CC4CEEA;
-	Mon, 23 Jun 2025 22:07:38 +0000 (UTC)
+	 MIME-Version; b=DXxJ56XoyKsWLmh2V4QtQbXQeKhZ+GRVFXELGVXm7q5LpCphTylUP998PbtPy0sH8zgLrsF08Ig+zHBHTl3rnQOsrEFUk0u0b0ftGYutkaDkz54HQmFOwV4sofeUIpwc9W9TLhVHS/e6msEjyRQ9X8L1ia4TLXkqRMDj8p93zz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvg5vtaG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EEFC4CEEA;
+	Mon, 23 Jun 2025 22:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716458;
-	bh=P0UKYy1OvxLb8/zMsoUUjeJktRa/BGfgebAHpVAGLx0=;
+	s=korg; t=1750716908;
+	bh=KFObIQj5YmzuYI6PitpfxYYFkbW1tCVxtAKo++AdFy8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMc2Nvyl1BwkL8D3vQ6TP8A1k2J6SInBKjQ9SqEIKF8hI5eyd0ybnnHKvnXq1B8Nf
-	 Ia/CNlnJy/MAkm5LzXTh1l0hdfFzzx/4Ch4jMdyyJrCvuFpEzTDcttb/JALxRqQ04c
-	 erHFs8Lzz7u8y3bXPqbeUbrAUGMnWD0HR1pnnEhM=
+	b=vvg5vtaGOecYGBsAXLsQ708q81FPjBb9c+3R4ke95gaQnzuP2N5/zOuOlUsxDo9VI
+	 vxgmie0QBEN9rO+hk8SXTQWW/MEFIuHjxr7jgRQlY/ROgqfodEg0zrNB9umpI320pz
+	 t9KJiunGtDWcAAJj8/P3VRTZ3BxnCmVAijIPuYSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 252/414] bpf: Use proper type to calculate bpf_raw_tp_null_args.mask index
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 6.1 344/508] EDAC/altera: Use correct write width with the INTTEST register
 Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130648.345660390@linuxfoundation.org>
+Message-ID: <20250623130653.808913882@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-[ Upstream commit 53ebef53a657d7957d35dc2b953db64f1bb28065 ]
+commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
 
-The calculation of the index used to access the mask field in 'struct
-bpf_raw_tp_null_args' is done with 'int' type, which could overflow when
-the tracepoint being attached has more than 8 arguments.
+On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
+A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
 
-While none of the tracepoints mentioned in raw_tp_null_args[] currently
-have more than 8 arguments, there do exist tracepoints that had more
-than 8 arguments (e.g. iocost_iocg_forgive_debt), so use the correct
-type for calculation and avoid Smatch static checker warning.
+  [ bp: AI-massage the commit message. ]
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/bpf/20250418074946.35569-1-shung-hsi.yu@suse.com
-
-Closes: https://lore.kernel.org/r/843a3b94-d53d-42db-93d4-be10a4090146@stanley.mountain/
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/btf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/edac/altera_edac.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-index 2c54c148a94f3..f83bd019db141 100644
---- a/kernel/bpf/btf.c
-+++ b/kernel/bpf/btf.c
-@@ -6684,10 +6684,10 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
- 			/* Is this a func with potential NULL args? */
- 			if (strcmp(tname, raw_tp_null_args[i].func))
- 				continue;
--			if (raw_tp_null_args[i].mask & (0x1 << (arg * 4)))
-+			if (raw_tp_null_args[i].mask & (0x1ULL << (arg * 4)))
- 				info->reg_type |= PTR_MAYBE_NULL;
- 			/* Is the current arg IS_ERR? */
--			if (raw_tp_null_args[i].mask & (0x2 << (arg * 4)))
-+			if (raw_tp_null_args[i].mask & (0x2ULL << (arg * 4)))
- 				ptr_err_raw_tp = true;
- 			break;
- 		}
--- 
-2.39.5
-
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1756,9 +1756,9 @@ altr_edac_a10_device_trig(struct file *f
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	else
+-		writel(priv->ce_set_mask, set_addr);
++		writew(priv->ce_set_mask, set_addr);
+ 
+ 	/* Ensure the interrupt test bits are set */
+ 	wmb();
+@@ -1788,7 +1788,7 @@ altr_edac_a10_device_trig2(struct file *
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	} else {
+ 		/* Setup read/write of 4 bytes */
+ 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
 
 
 
