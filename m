@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF2FFAE5394
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6549FAE51AA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C94B3B704A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B05451B63E9F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A7A224B07;
-	Mon, 23 Jun 2025 21:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C624F223DD0;
+	Mon, 23 Jun 2025 21:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dqA5/zRj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EhLvsd5W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82388224AFA;
-	Mon, 23 Jun 2025 21:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 831F72236FA;
+	Mon, 23 Jun 2025 21:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715643; cv=none; b=RitS+FG9omjqewnupzoQv6aTZqQAKY0YsBjfRRmqFPVDH4lmLzXvc9kHuhKFU+ID3Atr9zTTuJDFjxLBL5ALsRl8sb/BU38IxV2mQtsPCdU2NbCNdPoRlpqRlip8VVdCSdrWCI6XRkBufi0I6dHQhsmZPgInUNP+8zRq3nprAX8=
+	t=1750714570; cv=none; b=r9urBJQ+PTLcY8mzwhqzaW0k6bjtr1VzzH2tarxACNadYCfillxdu51zHv7kpMY9diY2p0QJ5Cp1hZcogTy+DM4dzv7i/KDypgLXekWy/XiiePxyGG8cZNzibUcd5+T6KkQONrdNgCJ9QncJLhM5d5jGWzoxUdycHert2Y41vhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715643; c=relaxed/simple;
-	bh=3kjVySsLvELg5ilfpMZH/lqC57ymWAA71Al1m2uA1hM=;
+	s=arc-20240116; t=1750714570; c=relaxed/simple;
+	bh=B4firUipvnfULHElf7u1LRZUjlBIF+CXd7KNmujRmP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DlLfNHh8jzz+Dg06ztoCUv1YJ47no1mVkHzuuXbskANSOFPbDMRMpWknXmgz8NRBNA3a+h1jvzCycyW6ybtO8hrJvquJvAU5+ekopyy28TExefATAMsEE8hRUsbnF9cTS2S7jJkG5zQWyfS+7u25+dAiFgd5RQ3uO0yoK+GGANY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dqA5/zRj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D2AFC4CEEA;
-	Mon, 23 Jun 2025 21:54:02 +0000 (UTC)
+	 MIME-Version; b=pebQSi1NVCEa4S1XyoFAXPdQMpKPuJzWzw3nFyNTW5kb4HVacTWyX9YC+Vagg2eRfu7u6zn8mabO+Ml992hX14z5iRXy87sRjj5o5nMlfP+N+2fQ7cJQAIwP2+xb8ZI5LfTF4f1p0D+W/O4ySL1Pk+EPVa7DW9mhLkFMPUcYWFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EhLvsd5W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A4D5C4CEED;
+	Mon, 23 Jun 2025 21:36:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715643;
-	bh=3kjVySsLvELg5ilfpMZH/lqC57ymWAA71Al1m2uA1hM=;
+	s=korg; t=1750714570;
+	bh=B4firUipvnfULHElf7u1LRZUjlBIF+CXd7KNmujRmP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dqA5/zRjS53Y3L44iJLeuLMDfrSj5RgSbk5j8xjDH6LIdqyQg1kQSUTa8EOlE3m6E
-	 0V6do6U8wnko3WSZhzBV/XyiwLTKH85E4wiozkjJ3G4DjGXOnGe5kF7/lzR1fgaIoz
-	 MTEcgUIPjxKo32C6i901Tt6F6+CPYT9UunFbUP2U=
+	b=EhLvsd5WZpjOHlqQqe4myTEGYuawucmoS/G763BH83uvopVVHaZwODEvVBxw1wJx1
+	 00TWG2897s6RRuu1RkAonhsdnSFVT8ujUnYHJN6151iubu3PidnxrtJdrL8M5rAzzy
+	 c+7yqHCoUlT/Lj5KB3je3MwXU4jjab7EpetufcHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
-	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akhil R <akhilrajeev@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 262/411] clocksource: Fix the CPUs choice in the watchdog per CPU verification
+Subject: [PATCH 6.6 145/290] i2c: tegra: check msg length in SMBUS block read
 Date: Mon, 23 Jun 2025 15:06:46 +0200
-Message-ID: <20250623130640.252407875@linuxfoundation.org>
+Message-ID: <20250623130631.258318249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,61 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guilherme G. Piccoli <gpiccoli@igalia.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
+[ Upstream commit a6e04f05ce0b070ab39d5775580e65c7d943da0b ]
 
-Right now, if the clocksource watchdog detects a clocksource skew, it might
-perform a per CPU check, for example in the TSC case on x86.  In other
-words: supposing TSC is detected as unstable by the clocksource watchdog
-running at CPU1, as part of marking TSC unstable the kernel will also run a
-check of TSC readings on some CPUs to be sure it is synced between them
-all.
+For SMBUS block read, do not continue to read if the message length
+passed from the device is '0' or greater than the maximum allowed bytes.
 
-But that check happens only on some CPUs, not all of them; this choice is
-based on the parameter "verify_n_cpus" and in some random cpumask
-calculation. So, the watchdog runs such per CPU checks on up to
-"verify_n_cpus" random CPUs among all online CPUs, with the risk of
-repeating CPUs (that aren't double checked) in the cpumask random
-calculation.
-
-But if "verify_n_cpus" > num_online_cpus(), it should skip the random
-calculation and just go ahead and check the clocksource sync between
-all online CPUs, without the risk of skipping some CPUs due to
-duplicity in the random cpumask calculation.
-
-Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
-CPU verification skipping some CPU even with verify_n_cpus=8, due to the
-duplicity on random cpumask generation. Skipping the randomization when the
-number of online CPUs is smaller than verify_n_cpus, solves that.
-
-Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Link: https://lore.kernel.org/r/20250424053320.19211-1-akhilrajeev@nvidia.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/clocksource.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i2c/busses/i2c-tegra.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
-index 32efc87c41f20..57575be840c5a 100644
---- a/kernel/time/clocksource.c
-+++ b/kernel/time/clocksource.c
-@@ -279,7 +279,7 @@ static void clocksource_verify_choose_cpus(void)
- {
- 	int cpu, i, n = verify_n_cpus;
- 
--	if (n < 0) {
-+	if (n < 0 || n >= num_online_cpus()) {
- 		/* Check all of the CPUs. */
- 		cpumask_copy(&cpus_chosen, cpu_online_mask);
- 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
+diff --git a/drivers/i2c/busses/i2c-tegra.c b/drivers/i2c/busses/i2c-tegra.c
+index 91be04b534fe6..08a81daedc115 100644
+--- a/drivers/i2c/busses/i2c-tegra.c
++++ b/drivers/i2c/busses/i2c-tegra.c
+@@ -1397,6 +1397,11 @@ static int tegra_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msgs[],
+ 			ret = tegra_i2c_xfer_msg(i2c_dev, &msgs[i], MSG_END_CONTINUE);
+ 			if (ret)
+ 				break;
++
++			/* Validate message length before proceeding */
++			if (msgs[i].buf[0] == 0 || msgs[i].buf[0] > I2C_SMBUS_BLOCK_MAX)
++				break;
++
+ 			/* Set the msg length from first byte */
+ 			msgs[i].len += msgs[i].buf[0];
+ 			dev_dbg(i2c_dev->dev, "reading %d bytes\n", msgs[i].len);
 -- 
 2.39.5
 
