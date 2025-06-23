@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F16D0AE543F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0700FAE51CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1843A1BC0E1D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9796D4A4843
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01E8822424C;
-	Mon, 23 Jun 2025 21:59:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD8026136;
+	Mon, 23 Jun 2025 21:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iRLoxggv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXyYvVZ/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B33A96136;
-	Mon, 23 Jun 2025 21:59:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2DC19CC11;
+	Mon, 23 Jun 2025 21:37:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715968; cv=none; b=npX4pTMrT5BNMkNdV6pcX+ca8QQs3o+lK/4+XhsQmIP/ldpbT8qytk0rRYVMID+zngzhiGvMIf4IkYnc/MYenZJaFqwieQK6HNXCX44Y57Qw8I1EGHgfZDnNweaRZjK0RPU/Ov62y0YIV6R47D/wfjzv9jrSmVws/IsUp3YcV4M=
+	t=1750714647; cv=none; b=uB8KCHE78gtQd2EczWDx+PlPWmr4fdgDm2OlmsJgFR4qzNf5el6Q7mft/5RnOvr51OPLrb+UeWdOZo78GEz0mqvztghLerkmrexhnVvFDKHVWa17PGFT5XxUypQtd/KOkQNR+SNk1d1gWMlt2KFfM8CwGlOCyxyZdHTxZfGgiNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715968; c=relaxed/simple;
-	bh=brQqDQ6+++D4kTPrpH31un9rnK8vmyYfs/290yQ+RCg=;
+	s=arc-20240116; t=1750714647; c=relaxed/simple;
+	bh=cpbNPYuJFq6rJMXYLNHt/u4YJkDc4mRLvTplvfL+s6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+2gDQfyAUi1O0Jky4qzIgpRuea63Lkw+aljFkfsw6CMrBElVSIxZVkT9/CyqLQUHK3sn2q/VqtG9ZSjEboxXO2EmutB42AZaQ9oiupBye/hDVu+Wxs4BbsSc02n38ORHZuBpmd7wWfGkCY+sqEJWeqNiX1eqBWgQSEFYqC/VM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iRLoxggv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 072DCC4CEEA;
-	Mon, 23 Jun 2025 21:59:27 +0000 (UTC)
+	 MIME-Version; b=nPBwrGPkRFZINTDfZa/bcVujrEKpaCL/8thkNNonpHtJ3120a/vng0+RkN1GoTqFwg0JK5X7wXrQH0qFWyxw9OLvzNOZFqJb0hC9CHVrekLeZNlRFxm1Z3jcvwD5uYACFbVaXO8UPDG/W9YHB5xAL3szYrqqqS0oxnJcdMzDEds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXyYvVZ/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C82C4CEEA;
+	Mon, 23 Jun 2025 21:37:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715968;
-	bh=brQqDQ6+++D4kTPrpH31un9rnK8vmyYfs/290yQ+RCg=;
+	s=korg; t=1750714647;
+	bh=cpbNPYuJFq6rJMXYLNHt/u4YJkDc4mRLvTplvfL+s6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iRLoxggvUCMG4U+8RVTviNolsWES92bQl0tUSgW28iEAqScVuGzMKUXKtBj9GqssI
-	 jPVaUecVsX0O5VHNqZEF2DadgABQM+if0OSpsPMFiNXYs5Z0QiMPHMPLAesYDo4D1K
-	 +N3jNOSOCII+4jwCexmFAfVmgKM9rcCv7jBrsoCE=
+	b=SXyYvVZ/Y9Z+w42xNg1E+ahn6nw+oJpLoAQuCkucYlzNyg5qP4g0w19M2OXdp8JbR
+	 mzaERIgwEw0GeBJOqVL5Zn6KP+0bTcsapSa9wQS/66j9Jf3TM0/x0rsON11qU7kHV3
+	 S6rM4P+mtHk7ssPy8QodHlunylk1H5kARzEcln4s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sarika Sharma <quic_sarishar@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 219/414] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
+Subject: [PATCH 6.15 398/592] wifi: ath12k: using msdu end descriptor to check for rx multicast packets
 Date: Mon, 23 Jun 2025 15:05:56 +0200
-Message-ID: <20250623130647.492629993@linuxfoundation.org>
+Message-ID: <20250623130709.910486001@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sarika Sharma <quic_sarishar@quicinc.com>
 
-[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
+[ Upstream commit cb7433cc5cd4d07175dbc41f5a19966e9fae48be ]
 
-tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
-before the call to tcp_init_transfer() / tcp_init_buffer_space().
+Currently, the RX multicast broadcast packet check is performed using
+bit 15 from the info6 field of the MPDU start descriptor. This check
+can also be done using bit 9 from the info5 field of the MSDU end
+descriptor. However, in some scenarios multicast bit is not set when
+fetched from MPDU start descriptor.
+Therefore, checking the RX multicast broadcast packet from the MSDU
+end descriptor is more reliable as it is per MSDU.
 
-Otherwise tp->rcvq_space.space is off by 120 bytes
-(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.4.1-00199-QCAHKSWPL_SILICONZ-1
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Wei Wang <weiwan@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sarika Sharma <quic_sarishar@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250411061523.859387-2-quic_sarishar@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/wireless/ath/ath12k/hal.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 61ada4682094f..7e772b6cb45b6 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6835,6 +6835,9 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		if (!tp->srtt_us)
- 			tcp_synack_rtt_meas(sk, req);
+diff --git a/drivers/net/wireless/ath/ath12k/hal.c b/drivers/net/wireless/ath/ath12k/hal.c
+index 49b4c5648aed3..faf74b5459410 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.c
++++ b/drivers/net/wireless/ath/ath12k/hal.c
+@@ -449,8 +449,8 @@ static u8 *ath12k_hw_qcn9274_rx_desc_mpdu_start_addr2(struct hal_rx_desc *desc)
  
-+		if (tp->rx_opt.tstamp_ok)
-+			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
-+
- 		if (req) {
- 			tcp_rcv_synrecv_state_fastopen(sk);
- 		} else {
-@@ -6860,9 +6863,6 @@ tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
- 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
+ static bool ath12k_hw_qcn9274_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
+ {
+-	return __le32_to_cpu(desc->u.qcn9274.mpdu_start.info6) &
+-	       RX_MPDU_START_INFO6_MCAST_BCAST;
++	return __le16_to_cpu(desc->u.qcn9274.msdu_end.info5) &
++	       RX_MSDU_END_INFO5_DA_IS_MCBC;
+ }
  
--		if (tp->rx_opt.tstamp_ok)
--			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
--
- 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
- 			tcp_update_pacing_rate(sk);
+ static void ath12k_hw_qcn9274_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
+@@ -902,8 +902,8 @@ static u8 *ath12k_hw_qcn9274_compact_rx_desc_mpdu_start_addr2(struct hal_rx_desc
  
+ static bool ath12k_hw_qcn9274_compact_rx_desc_is_da_mcbc(struct hal_rx_desc *desc)
+ {
+-	return __le32_to_cpu(desc->u.qcn9274_compact.mpdu_start.info6) &
+-	       RX_MPDU_START_INFO6_MCAST_BCAST;
++	return __le16_to_cpu(desc->u.qcn9274_compact.msdu_end.info5) &
++	       RX_MSDU_END_INFO5_DA_IS_MCBC;
+ }
+ 
+ static void ath12k_hw_qcn9274_compact_rx_desc_get_dot11_hdr(struct hal_rx_desc *desc,
 -- 
 2.39.5
 
