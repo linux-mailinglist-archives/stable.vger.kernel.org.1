@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32960AE52D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5753CAE4EF5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 974FA3B73BE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF9EA7AC2F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366CD223DE1;
-	Mon, 23 Jun 2025 21:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FF3202983;
+	Mon, 23 Jun 2025 21:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeK36ZTD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlUcgXsM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7060221DA8;
-	Mon, 23 Jun 2025 21:46:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2286970838;
+	Mon, 23 Jun 2025 21:10:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715206; cv=none; b=UHoo0jDXRV8gpr+05WwNQrx5Jd2zzapV6DAUCw2wsXzmuKfIwGgtacOEzs0jEP2yPnsoActptX4JVIntDaAY8AwDsxb5gI5dVSFDZsWqZlU+d94TrMvpyLSfAV3TQm4i9rSNb3aorwIywYQatR6WWzWEjzWwuMqpcFBNNow/Cb0=
+	t=1750713057; cv=none; b=km2qVGk4swYWT0hYIcsPTbgpGXF2eGsJvwfb/RhDCRWYVegks6xN+G3je2Ptn5GDxBIxFBbeBrLnfM622y717sf5wttMep0E8F4DoOdUU6uVtB+gMv8RU7PI9Qo0BnK9eOTaIHfUjhv3SqnJ8INlomlneq97TDfL1d7af/rDXSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715206; c=relaxed/simple;
-	bh=mS/yFNb3fUKAqImUZhfu1giKB3u1amHd2YDt1A2i9pY=;
+	s=arc-20240116; t=1750713057; c=relaxed/simple;
+	bh=8x2yZrlPykSoY0Yof8Mv3j9KzQ7j/HIbLyZDEB/oDxk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X3xA2ECfbDubuEV0qBn9r2kFrCkyKTa7vhgkoq5ALn2VaMwdtH6mdcl0C+85oJ7Yue654ReqEUc5VmLUPAroM8mZlor/fJB71Ra0W2BCaRZZMOmPCuteDzYKiHHq00gqd/fFFxKyP3seZYrCwC+KA1jix3sFAhL6bdlTtWceQu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeK36ZTD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E695C4CEEA;
-	Mon, 23 Jun 2025 21:46:45 +0000 (UTC)
+	 MIME-Version; b=G0KGx+T34QANqzqJsXr9pOk+hvUzBW1X4C8Vr6rDSaWnVMqNcGMtOow3mWDLVeg30BkUZV7mdrK5Gq6T1fnoR7i0isupMnozScJtQnV8nyH93TMZ3nH/LxS9GLJ+oxwRQh8i4MDIciPLDMEpXYkMAy0XPBSYGb/VcDDKDFU2dQc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlUcgXsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAD5C4CEEA;
+	Mon, 23 Jun 2025 21:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715205;
-	bh=mS/yFNb3fUKAqImUZhfu1giKB3u1amHd2YDt1A2i9pY=;
+	s=korg; t=1750713057;
+	bh=8x2yZrlPykSoY0Yof8Mv3j9KzQ7j/HIbLyZDEB/oDxk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EeK36ZTDNU+wLZmdOFFSXAQOZV703y8/XAQCYKUudf4Tkyn9jZKD9TVa0WktQvg1X
-	 956YeuGBidaxkEwUU6tpKQY7gUxjOEnp+e3PIL4Xhz9ubb6WRP3KPY9GPKTYsexv1m
-	 b/5SDugmfBac4Yid2rrdCvbaNDqK0fwZNZn4CaMM=
+	b=OlUcgXsMVBeHB9wv1dKYblrZ8B2y0Qfg+8nZuN6gwDujWkNcr9u7akERbY2X4ACHF
+	 /HLfgYQLvfLZu6e8hoLOrqZedrrGNumuB5cQUIDDWzJEAG1aqO1A0znvl6fHZ4cSDA
+	 ecEcrPC0618l41NCo8gug7YDmTLkkwweFfmU1jD8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Ryhel <clamor95@gmail.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 189/414] power: supply: max17040: adjust thermal channel scaling
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 065/290] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
 Date: Mon, 23 Jun 2025 15:05:26 +0200
-Message-ID: <20250623130646.743280089@linuxfoundation.org>
+Message-ID: <20250623130628.956722260@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Ryhel <clamor95@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit d055f51731744243b244aafb1720f793a5b61f7b ]
+commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
 
-IIO thermal channel is in millidegree while power supply framework expects
-decidegree values. Adjust scaling to get correct readings.
+The "len" variable comes from the firmware and we generally do
+trust firmware, but it's always better to double check.  If the "len"
+is too large it could result in memory corruption when we do
+"memcpy(fragment->data, rec->data, len);"
 
-Signed-off-by: Svyatoslav Ryhel <clamor95@gmail.com>
-Link: https://lore.kernel.org/r/20250430060239.12085-2-clamor95@gmail.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/power/supply/max17040_battery.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/input/misc/ims-pcu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/power/supply/max17040_battery.c b/drivers/power/supply/max17040_battery.c
-index 51310f6e4803b..c1640bc6accd2 100644
---- a/drivers/power/supply/max17040_battery.c
-+++ b/drivers/power/supply/max17040_battery.c
-@@ -410,8 +410,9 @@ static int max17040_get_property(struct power_supply *psy,
- 		if (!chip->channel_temp)
- 			return -ENODATA;
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
+ 		addr = be32_to_cpu(rec->addr) / 2;
+ 		len = be16_to_cpu(rec->len);
  
--		iio_read_channel_processed_scale(chip->channel_temp,
--						 &val->intval, 10);
-+		iio_read_channel_processed(chip->channel_temp, &val->intval);
-+		val->intval /= 100; /* Convert from milli- to deci-degree */
++		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
++			dev_err(pcu->dev,
++				"Invalid record length in firmware: %d\n", len);
++			return -EINVAL;
++		}
 +
- 		break;
- 	default:
- 		return -EINVAL;
--- 
-2.39.5
-
+ 		fragment = (void *)&pcu->cmd_buf[1];
+ 		put_unaligned_le32(addr, &fragment->addr);
+ 		fragment->len = len;
 
 
 
