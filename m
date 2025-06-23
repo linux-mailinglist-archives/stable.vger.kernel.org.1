@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C30DAE5571
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEFCEAE56FB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70A991BC4C78
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 628003AC9A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67DE8229B1F;
-	Mon, 23 Jun 2025 22:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA93225785;
+	Mon, 23 Jun 2025 22:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwNTa1L7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t44AnT1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23166225417;
-	Mon, 23 Jun 2025 22:10:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1DA223DCC;
+	Mon, 23 Jun 2025 22:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716630; cv=none; b=RcBISoaDnr71p2sc2ADGdFth69N3FH87Xjww8Gi05fJZPa+mRHKhVPtYUyewVNLRAk6CKm5tHNi33uIriCEvozuapFk1dabKmBY9Z3pxriSN8fbe44SocDND/UXxegTVuZL1xAmGy5T6/GKgGNQx2ZTr1ToTkI0sNITh1UDi488=
+	t=1750717314; cv=none; b=oOO1O7NS0IdIxuHNJawpCnQ2KBDbbh0+EkqUGBSIDT2MtmLnDOVQMRlgmPmYQA6cyrBxZrFu3DtypI31U2u0HuhAq28TJgy+5YvJc2OVkHg5Vmg5XO4sFV/VkjaOJlLt3rC7aztY+NVZmok+SCCfss9kRGyHXjEH+KullIj+mAA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716630; c=relaxed/simple;
-	bh=3WNK9dK4T+zjeZ9M55ASDhKwnUxM6Eru7EDJ6dENMdQ=;
+	s=arc-20240116; t=1750717314; c=relaxed/simple;
+	bh=VC50sow1A/Dk5d/H/YmvhLyVoEnodfFMeVF9SaIwdOI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=og7unYGgXoFQFvvhXVKePsfxZBKMvp21d1JaWZ1gm8OnuBpYpAIu6Z8funRtHQ7EmcF58YiUv3lcjKf14BQjyEdN7Wm67g5lMsXaRUKTcrPPotiNb9aQ2ow9j6f/r+xm8OsJpL8+eYY3gYl6OVCkWAo8Fie/Dj7iaFpYtPApZmU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwNTa1L7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A68FBC4CEF1;
-	Mon, 23 Jun 2025 22:10:29 +0000 (UTC)
+	 MIME-Version; b=uYlQRnCYO8/20UPZb9nJzJj+B1B+W5fhF2dLUEbnhZEypxGkQ2ckRzJTVylH8yN020qP3XMkOv9qcOqE+HzWWHi67VQfr1gs59gZzg3d2jXt88KlAdeTG9A60Iq6y1FcPcAcwtYiH7kZ9FysvsLzhD5kCSQAk8l0wS+vq2ySzlE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t44AnT1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41E7C4CEEA;
+	Mon, 23 Jun 2025 22:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716630;
-	bh=3WNK9dK4T+zjeZ9M55ASDhKwnUxM6Eru7EDJ6dENMdQ=;
+	s=korg; t=1750717314;
+	bh=VC50sow1A/Dk5d/H/YmvhLyVoEnodfFMeVF9SaIwdOI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PwNTa1L7otfJLKRrk4e7yLFV1MGkYPTdsE21V74488HXz+22VoLcwZfwidfgPnCLg
-	 a3qcnkJNVJIw6evnU+oN04HREFSwc8sQOw6/ORaGn+XTknENdYuVl9Il/iIu0fIPWl
-	 igHlHn0o16R7BC7Qo8Sy1saIVzhHNvZWTQAM0Mo0=
+	b=t44AnT1PZWpR7/gHLYZ0W2yKwfUwpkDH75HnL7eo8aIEdtM9bisy34kwicR55vgoM
+	 xBm9SQXTaXlUFn/l1MP1aqLtVIP1LpPUb6d0bmPMFM0WuGhHuzKrkqIKu66xHDG/Z0
+	 48ptqqucMCLYNETLW7SN77v5NiCfA+XtLtAxy7A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hariprasad Kelam <hkelam@marvell.com>,
 	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 543/592] Octeontx2-pf: Fix Backpresure configuration
+Subject: [PATCH 6.12 364/414] pldmfw: Select CRC32 when PLDMFW is selected
 Date: Mon, 23 Jun 2025 15:08:21 +0200
-Message-ID: <20250623130713.356619217@linuxfoundation.org>
+Message-ID: <20250623130651.065125980@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 9ac8d0c640a161486eaf71d1999ee990fad62947 ]
+[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
 
-NIX block can receive packets from multiple links such as
-MAC (RPM), LBK and CPT.
+pldmfw calls crc32 code and depends on it being enabled, else
+there is a link error as follows. So PLDMFW should select CRC32.
 
-       -----------------
- RPM --|     NIX       |
-       -----------------
-             |
-             |
-            LBK
+  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
+  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
 
-Each link supports multiple channels for example RPM link supports
-16 channels. In case of link oversubsribe, NIX will assert backpressure
-on receive channels.
+This problem was introduced by commit b8265621f488 ("Add pldmfw library
+for PLDM firmware update").
 
-The previous patch considered a single channel per link, resulting in
-backpressure not being enabled on the remaining channels
+It manifests as of commit d69ea414c9b4 ("ice: implement device flash
+update via devlink").
 
-Fixes: a7ef63dbd588 ("octeontx2-af: Disable backpressure between CPT and NIX")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250617063403.3582210-1-hkelam@marvell.com
+And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
+unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
+
+Found by chance while exercising builds based on tinyconfig.
+
+Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-index 84cd029a85aab..1b3004ba4493e 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
-@@ -1822,7 +1822,7 @@ int otx2_nix_config_bp(struct otx2_nic *pfvf, bool enable)
- 		req->chan_cnt = IEEE_8021QAZ_MAX_TCS;
- 		req->bpid_per_chan = 1;
- 	} else {
--		req->chan_cnt = 1;
-+		req->chan_cnt = pfvf->hw.rx_chan_cnt;
- 		req->bpid_per_chan = 0;
- 	}
+diff --git a/lib/Kconfig b/lib/Kconfig
+index b38849af6f130..b893c9288c140 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -767,6 +767,7 @@ config GENERIC_LIB_DEVMEM_IS_ALLOWED
  
-@@ -1847,7 +1847,7 @@ int otx2_nix_cpt_config_bp(struct otx2_nic *pfvf, bool enable)
- 		req->chan_cnt = IEEE_8021QAZ_MAX_TCS;
- 		req->bpid_per_chan = 1;
- 	} else {
--		req->chan_cnt = 1;
-+		req->chan_cnt = pfvf->hw.rx_chan_cnt;
- 		req->bpid_per_chan = 0;
- 	}
+ config PLDMFW
+ 	bool
++	select CRC32
+ 	default n
  
+ config ASN1_ENCODER
 -- 
 2.39.5
 
