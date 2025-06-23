@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25528AE509E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C957AE53EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2942A4A16C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96A041B67D5F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60C652248B0;
-	Mon, 23 Jun 2025 21:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE67223335;
+	Mon, 23 Jun 2025 21:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhj2BxGk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCqbwKGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1C61E5B71;
-	Mon, 23 Jun 2025 21:26:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2621FF2B;
+	Mon, 23 Jun 2025 21:57:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713994; cv=none; b=BlDfgP1wQgHLFAnBFgvQ+Y+VGZ2hYr1ugFAVI4N11k96TrjXMnK2AB/s2SOY5cg36Jy7eKrWnbSyQslPFz3KpBRZB2lPn/fWQW72BaXTNskqb14G/iP4/Naf43292mHnagjPdqgDKSff4OD5qZaa6D6ofDEjfKBB+aYzymvvXtM=
+	t=1750715824; cv=none; b=EQ+sPaKhma3qRUeQAVszVuxyiiha1Rcwl6BQf+FGlsO/OB2NsiaYDhanfp51SDF5+GYihRoTso1G6kgbyADOhwJNlUawvJcDshCICOq5hMtHEW4c5rPu8XMZZi+XhMUgturjbaZiNSJiKr+bc+QUipss3RamusA7lYB2Dg0AARY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713994; c=relaxed/simple;
-	bh=IX5b/56yxLxgfqIDSOpx5toxc7XYwUBxvfGz+ziNfxU=;
+	s=arc-20240116; t=1750715824; c=relaxed/simple;
+	bh=e9/ZiQBbvZ9yeQPMeh3+F0f2ksoI3IimYlMr98W8pqc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oiuLrI0N54u6m5gYQFIIF6sBvpKCW47m+KK6XPxt4jNfxvACfWuKPad+yQ5SaM8KsN1vPWCPUiAgjmUsTFXoibgN07nazHJm0sVYmIi6Z9Pg+ih21BQt5dA0PUbMG+eV+ewI3TE2AbhtpBabWMrxFSJzdUc+J+18GRvWgZYYOiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhj2BxGk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A86EAC4CEEA;
-	Mon, 23 Jun 2025 21:26:33 +0000 (UTC)
+	 MIME-Version; b=jlD2GP7sOn9OM/Fdrs4NDfflr0qp+AGoh94NwQGMypn3Y31Feuh5tu0UnCrzsQ5sKBAC++ZbvRg1tk54uSt6Wu2Le/w2VNiRaVHolmvJDqyj8hN1ur3byITocDT9taf5N+qUBlKSK3Z8iEhAUjWZ0SOD5unoXjkUaWNdoBarUzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCqbwKGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37CC0C4CEEA;
+	Mon, 23 Jun 2025 21:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713994;
-	bh=IX5b/56yxLxgfqIDSOpx5toxc7XYwUBxvfGz+ziNfxU=;
+	s=korg; t=1750715824;
+	bh=e9/ZiQBbvZ9yeQPMeh3+F0f2ksoI3IimYlMr98W8pqc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jhj2BxGk0SRWeNDFo+gI80FoqLWzG8vLetvnfth03wt1FiR2oT4ofgHFFk1/ujlVD
-	 ht1KnHCGKspbEX7pIjQ7oW4hOYOk8JXGixfX6Enc9I+K2QLr3tumxnUIWHqzung7SE
-	 nd98CDBWje4vcPSG3kJcmLILvroIbnXk8EAwa4Xg=
+	b=jCqbwKGdcKsj4eany9betNgRNB6X92cgbrrrHWXEDhMNR5k2nI+6TywDfXdIkyiZ1
+	 H3hr2pQQMksSx3hl/nCy76FMdqGgJvP1y19SLJzFVg3VL+UEl5JVPHd3WmAYkS+SCH
+	 SEiQk8mxtx7vKiQ19esdOwMoeV6S7F7Y2bSdYdHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.6 107/290] uio_hv_generic: Use correct size for interrupt and monitor pages
+	Mykyta Yatsenko <yatsenko@meta.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 231/414] libbpf: Check bpf_map_skeleton link for NULL
 Date: Mon, 23 Jun 2025 15:06:08 +0200
-Message-ID: <20250623130630.170043531@linuxfoundation.org>
+Message-ID: <20250623130647.812645893@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Mykyta Yatsenko <yatsenko@meta.com>
 
-commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
+[ Upstream commit d0445d7dd3fd9b15af7564c38d7aa3cbc29778ee ]
 
-Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
-This can be different from the system page size.
+Avoid dereferencing bpf_map_skeleton's link field if it's NULL.
+If BPF map skeleton is created with the size, that indicates containing
+link field, but the field was not actually initialized with valid
+bpf_link pointer, libbpf crashes. This may happen when using libbpf-rs
+skeleton.
+Skeleton loading may still progress, but user needs to attach struct_ops
+map separately.
 
-This size is read and used by the user-mode program to determine the
-mapped data region. An example of such user-mode program is the VMBus
-driver in DPDK.
-
-Cc: stable@vger.kernel.org
-Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mykyta Yatsenko <yatsenko@meta.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20250514113220.219095-1-mykyta.yatsenko5@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/lib/bpf/libbpf.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -288,13 +288,13 @@ hv_uio_probe(struct hv_device *dev,
- 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
- 	pdata->info.mem[INT_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.int_page;
--	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
+diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
+index bb24f6bac2073..1290314da6761 100644
+--- a/tools/lib/bpf/libbpf.c
++++ b/tools/lib/bpf/libbpf.c
+@@ -13971,6 +13971,12 @@ int bpf_object__attach_skeleton(struct bpf_object_skeleton *s)
+ 		}
  
- 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
- 	pdata->info.mem[MON_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.monitor_pages[1];
--	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
+ 		link = map_skel->link;
++		if (!link) {
++			pr_warn("map '%s': BPF map skeleton link is uninitialized\n",
++				bpf_map__name(map));
++			continue;
++		}
++
+ 		if (*link)
+ 			continue;
  
- 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
+-- 
+2.39.5
+
 
 
 
