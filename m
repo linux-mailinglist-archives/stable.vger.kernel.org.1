@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-156453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9775FAE4FAA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92561AE50BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 695EB1B61404
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2BF687AC65B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AA262236FB;
-	Mon, 23 Jun 2025 21:17:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63CA81EEA3C;
+	Mon, 23 Jun 2025 21:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CLggA5Rd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gL/uUnpV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA86C221299;
-	Mon, 23 Jun 2025 21:17:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BB21E51FA;
+	Mon, 23 Jun 2025 21:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713449; cv=none; b=Y8owHoj/7Q8WAWPAsx8xrGCm1SLlkJAOT4hQOichhuL7hYc1FZMDpgHxA5160NXeYhS37IR3xk3lJAoCCaiKXhmqXg+ZaeARr4yPheg41yC/7ZcHIa6Azd2U6DB+ZnBsErcNchEMCCW9lvIGBQy0crbw2z6rbWU5h1Nobfve76g=
+	t=1750714050; cv=none; b=ERMyKUE2QS24Qw210FrX2mZIhwQkyYu0Ym13/syOQ+9Jpiyt+mBHpJ2ejaUeQKmcoLvEHEYmSbkTIz0e8exZdfcdFSZ5sExIJPlVllRUqYaJ6Vw4fh4mG5Jv7pXjmKnpA865zkcZUvlZJcwUp1u6oaC7l1vuOlgj5Et7oDiEftA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713449; c=relaxed/simple;
-	bh=txSxS7S1Tk8O5KyF8jOuzm6f9+VOYzEjmBJoorVz37A=;
+	s=arc-20240116; t=1750714050; c=relaxed/simple;
+	bh=NmcXHfJHKz4CH0mvhJdI/D8IBE5cqimV2TvEOeezJMk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e8vmn/SMSWhHzELE8yq1G5YPUhRxOz5prEdPSgv4BSnocmRqux9hMeH8nbYUbqB1nQD+3QHNjPdHiprIWk5sg6nhaiuumcM4qGaHmCZqFAEOG+39t7fZmiG7wjaB1Wgo66Rr/QK9gBcayOv4xVXSpA3H9Kegfb3Rdl070fsSKcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CLggA5Rd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56167C4CEEA;
-	Mon, 23 Jun 2025 21:17:28 +0000 (UTC)
+	 MIME-Version; b=X7gbPJ0duHfaZSOJnTzVNRHbgD1XRjga54adKEQL5yVweWdm8Fqi8ISgOt4VdfINLTloijtPQ0bQ1T0G7cHWAQDwEi9VsGPHF2stkY9xIGlK0r2ZyJkyCOjW/fr4O6u28/pC28wQHW22DngEb/D4AAyrVnE1oBj9o2Zu0/FEU+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gL/uUnpV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9F3C4CEEA;
+	Mon, 23 Jun 2025 21:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713448;
-	bh=txSxS7S1Tk8O5KyF8jOuzm6f9+VOYzEjmBJoorVz37A=;
+	s=korg; t=1750714050;
+	bh=NmcXHfJHKz4CH0mvhJdI/D8IBE5cqimV2TvEOeezJMk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CLggA5RdiaAIm04pwAN6eVRFEJ2tZvkgHG1p4oxWsa3b9Yb7MS0nk76GmDfYAOLit
-	 KS+smvnroMNXh9JQCB48aav9kGiLTWpQcS8DRh3hHB4Hw85STnnnt1H5OfERYqhG/r
-	 xc/vpcrFCicT3ujujB7Ki6CHjk7uA+/89Bz8nnjM=
+	b=gL/uUnpVLniZK+jDyUzqRPG0X4NxjGeCGQFTILFe8kylPRY5uou/dzVtCBabHAv1N
+	 7QLaB5IAFn1U0Ps8UKyXmHVLo1SP8Ont0yOlRc8HAM4GVkw2YHTpbxme6+Mys6JGf1
+	 CU6//4+qSNkbBM7Gc58RegjCrvOXXaxnQPabC98s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Zaborowski <andrew.zaborowski@intel.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Tony Luck <tony.luck@intel.com>,
-	balrogg@gmail.com,
-	linux-sgx@vger.kernel.org,
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 348/592] x86/sgx: Prevent attempts to reclaim poisoned pages
+Subject: [PATCH 5.15 162/411] net_sched: ets: fix a race in ets_qdisc_change()
 Date: Mon, 23 Jun 2025 15:05:06 +0200
-Message-ID: <20250623130708.726165552@linuxfoundation.org>
+Message-ID: <20250623130637.731511765@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,89 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Zaborowski <andrew.zaborowski@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit ed16618c380c32c68c06186d0ccbb0d5e0586e59 ]
+[ Upstream commit d92adacdd8c2960be856e0b82acc5b7c5395fddb ]
 
-TL;DR: SGX page reclaim touches the page to copy its contents to
-secondary storage. SGX instructions do not gracefully handle machine
-checks. Despite this, the existing SGX code will try to reclaim pages
-that it _knows_ are poisoned. Avoid even trying to reclaim poisoned pages.
+Gerrard Tai reported a race condition in ETS, whenever SFQ perturb timer
+fires at the wrong time.
 
-The longer story:
+The race is as follows:
 
-Pages used by an enclave only get epc_page->poison set in
-arch_memory_failure() but they currently stay on sgx_active_page_list until
-sgx_encl_release(), with the SGX_EPC_PAGE_RECLAIMER_TRACKED flag untouched.
+CPU 0                                 CPU 1
+[1]: lock root
+[2]: qdisc_tree_flush_backlog()
+[3]: unlock root
+ |
+ |                                    [5]: lock root
+ |                                    [6]: rehash
+ |                                    [7]: qdisc_tree_reduce_backlog()
+ |
+[4]: qdisc_put()
 
-epc_page->poison is not checked in the reclaimer logic meaning that, if other
-conditions are met, an attempt will be made to reclaim an EPC page that was
-poisoned.  This is bad because 1. we don't want that page to end up added
-to another enclave and 2. it is likely to cause one core to shut down
-and the kernel to panic.
+This can be abused to underflow a parent's qlen.
 
-Specifically, reclaiming uses microcode operations including "EWB" which
-accesses the EPC page contents to encrypt and write them out to non-SGX
-memory.  Those operations cannot handle MCEs in their accesses other than
-by putting the executing core into a special shutdown state (affecting
-both threads with HT.)  The kernel will subsequently panic on the
-remaining cores seeing the core didn't enter MCE handler(s) in time.
+Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
+should fix the race, because all packets will be purged from the qdisc
+before releasing the lock.
 
-Call sgx_unmark_page_reclaimable() to remove the affected EPC page from
-sgx_active_page_list on memory error to stop it being considered for
-reclaiming.
-
-Testing epc_page->poison in sgx_reclaim_pages() would also work but I assume
-it's better to add code in the less likely paths.
-
-The affected EPC page is not added to &node->sgx_poison_page_list until
-later in sgx_encl_release()->sgx_free_epc_page() when it is EREMOVEd.
-Membership on other lists doesn't change to avoid changing any of the
-lists' semantics except for sgx_active_page_list.  There's a "TBD" comment
-in arch_memory_failure() about pre-emptive actions, the goal here is not
-to address everything that it may imply.
-
-This also doesn't completely close the time window when a memory error
-notification will be fatal (for a not previously poisoned EPC page) --
-the MCE can happen after sgx_reclaim_pages() has selected its candidates
-or even *inside* a microcode operation (actually easy to trigger due to
-the amount of time spent in them.)
-
-The spinlock in sgx_unmark_page_reclaimable() is safe because
-memory_failure() runs in process context and no spinlocks are held,
-explicitly noted in a mm/memory-failure.c comment.
-
-Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: H. Peter Anvin <hpa@zytor.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: balrogg@gmail.com
-Cc: linux-sgx@vger.kernel.org
-Link: https://lore.kernel.org/r/20250508230429.456271-1-andrew.zaborowski@intel.com
+Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250611111515.1983366-5-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/main.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_ets.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
-index 8ce352fc72ac3..7c199773705a7 100644
---- a/arch/x86/kernel/cpu/sgx/main.c
-+++ b/arch/x86/kernel/cpu/sgx/main.c
-@@ -719,6 +719,8 @@ int arch_memory_failure(unsigned long pfn, int flags)
- 		goto out;
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index a37979ec78f88..b49e1a9775865 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -675,7 +675,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 	for (i = q->nbands; i < oldbands; i++) {
+ 		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+ 			list_del_init(&q->classes[i].alist);
+-		qdisc_tree_flush_backlog(q->classes[i].qdisc);
++		qdisc_purge_queue(q->classes[i].qdisc);
  	}
- 
-+	sgx_unmark_page_reclaimable(page);
-+
- 	/*
- 	 * TBD: Add additional plumbing to enable pre-emptive
- 	 * action for asynchronous poison notification. Until
+ 	q->nstrict = nstrict;
+ 	memcpy(q->prio2band, priomap, sizeof(priomap));
 -- 
 2.39.5
 
