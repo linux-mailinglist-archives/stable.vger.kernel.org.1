@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7CC7AE5755
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7428BAE5717
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B64B81C24A14
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 150454E28FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19B32223DE5;
-	Mon, 23 Jun 2025 22:28:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6490224B1F;
+	Mon, 23 Jun 2025 22:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b0m70AsE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RBaSN4Og"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAAE4B676;
-	Mon, 23 Jun 2025 22:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85214221543;
+	Mon, 23 Jun 2025 22:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717695; cv=none; b=CuCBclBhPoBejGmzrWomsYeq8QY8vx37Snp250KmIUp/x8b+Qk9kMF/q0Ony5gqRzBRpRVPkPhYNn0QQMgZytQ1Md3sxc5nfyW+OrdhHsYI903rAI6LfzlKvDMBzNHGBVo8x/PgyZ2FjwHB2kirAlB1RIeuv+Whf8VfGXWsty9c=
+	t=1750717565; cv=none; b=M48SJMRyKrnczbicN5/rQ4gt/tfoPX1tEDqwGVi3DAnod5Oyx6Eym5sg8uHLpSkmQRLON8PrFJoGiZfi2SJ0p1m6dbZ1rX3syKvMapmF5xCeEoOvQZ5cbIFpEmDSovQiRIpVbiblIFFoe4kj8AgjUzwBf/lNJ4VibEmsr11tLM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717695; c=relaxed/simple;
-	bh=NSnahcZ36qcfJOc+2TLmn21QvJTwx3oXk3rzv5JvF5A=;
+	s=arc-20240116; t=1750717565; c=relaxed/simple;
+	bh=Dc0ovY08yk3v/5VJWqqM3jA3tQBxoPKTxMzaRJC2II8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=treqC6lU86Zv1UI7497eujSxOIbRhFH38PUwG0fSoUPG1wSIThxQ5m4QVRGfgVlctELqvr179zMIZ1k6HBU0kyQtwfEzmrnvS7KNWd9MkueRPYNnkQv9jETLPCf4lg+h4qOSLcP6TphP77OKBiWvpVw3pWndDRSUt61sjR2NgAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b0m70AsE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DBEC4CEEA;
-	Mon, 23 Jun 2025 22:28:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YT1zLJkZPe8R9PvyPG4OU3tXE8TX9uGAV/9JxhD1VwsEqscQBshKRyIljeMk+HRQ2UTr46Lxh9UP/U7+xKD5YbGSCY5KFwv0/+GPtF0EbihO1yxxiorZDdINeP2ZLDBmdW29zpcVvcmCwumJR283crDwUOuCzI3p7+Gvg9GcSL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RBaSN4Og; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA38C4CEED;
+	Mon, 23 Jun 2025 22:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717695;
-	bh=NSnahcZ36qcfJOc+2TLmn21QvJTwx3oXk3rzv5JvF5A=;
+	s=korg; t=1750717565;
+	bh=Dc0ovY08yk3v/5VJWqqM3jA3tQBxoPKTxMzaRJC2II8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b0m70AsEyY07cDtjTO5KOvHv3vFDiydp21BW8XF8ZWhMxaImgnxq+85rDwQeXVzZS
-	 WtTbXFtNdnmZyQHMu7/ZVswqNmoqIBtNweWyVufj681An4qipoLB/EDEa8eSm98+Rc
-	 Dz0DwpW8IgyOeoonzG7CueQUjBqSo6Z+B4ij1RWc=
+	b=RBaSN4OgPnvKaOt/j+tSNZKRy6nnhYP10Bu0OKflXQS5UDipdUWUfiUG635VvXUKM
+	 xQk5fo4WhMLYXTYN2OoL+SACZkf1jlFOY00vaoOJGZAIj7sgyUsMqCas6yTjjpByRq
+	 elLfzRDoqL+n6NFpmJFKlS2WylVriX+boPnjrYK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
-	Daniel Wagner <dwagner@suse.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 506/508] scsi: elx: efct: Fix memory leak in efct_hw_parse_filter()
+Subject: [PATCH 6.12 414/414] cifs: Remove duplicate fattr->cf_dtype assignment from wsl_to_fattr() function
 Date: Mon, 23 Jun 2025 15:09:11 +0200
-Message-ID: <20250623130657.446430274@linuxfoundation.org>
+Message-ID: <20250623130652.306228496@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +60,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 2a8a5a5dd06eef580f9818567773fd75057cb875 ]
+[ Upstream commit 840738eae94864993a735ab677b9795bb8f3b961 ]
 
-strsep() modifies the address of the pointer passed to it so that it no
-longer points to the original address. This means kfree() gets the wrong
-pointer.
+Commit 8bd25b61c5a5 ("smb: client: set correct d_type for reparse DFS/DFSR
+and mount point") deduplicated assignment of fattr->cf_dtype member from
+all places to end of the function cifs_reparse_point_to_fattr(). The only
+one missing place which was not deduplicated is wsl_to_fattr(). Fix it.
 
-Fix this by passing unmodified pointer returned from kstrdup() to
-kfree().
-
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
-Link: https://lore.kernel.org/r/20250612163616.24298-1-v.shevtsov@mt-integration.ru
-Reviewed-by: Daniel Wagner <dwagner@suse.de>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 8bd25b61c5a5 ("smb: client: set correct d_type for reparse DFS/DFSR and mount point")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/elx/efct/efct_hw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/smb/client/reparse.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
-index 5a5525054d71c..5b079b8b7a082 100644
---- a/drivers/scsi/elx/efct/efct_hw.c
-+++ b/drivers/scsi/elx/efct/efct_hw.c
-@@ -1120,7 +1120,7 @@ int
- efct_hw_parse_filter(struct efct_hw *hw, void *value)
- {
- 	int rc = 0;
--	char *p = NULL;
-+	char *p = NULL, *pp = NULL;
- 	char *token;
- 	u32 idx = 0;
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index b6556fe3dfa11..4d45c31336df1 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -738,7 +738,6 @@ static bool wsl_to_fattr(struct cifs_open_info_data *data,
+ 	if (!have_xattr_dev && (tag == IO_REPARSE_TAG_LX_CHR || tag == IO_REPARSE_TAG_LX_BLK))
+ 		return false;
  
-@@ -1132,6 +1132,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
- 		efc_log_err(hw->os, "p is NULL\n");
- 		return -ENOMEM;
- 	}
-+	pp = p;
- 
- 	idx = 0;
- 	while ((token = strsep(&p, ",")) && *token) {
-@@ -1144,7 +1145,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
- 		if (idx == ARRAY_SIZE(hw->config.filter_def))
- 			break;
- 	}
--	kfree(p);
-+	kfree(pp);
- 
- 	return rc;
+-	fattr->cf_dtype = S_DT(fattr->cf_mode);
+ 	return true;
  }
+ 
 -- 
 2.39.5
 
