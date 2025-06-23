@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-156963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156970-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A2BAE51E6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AD18AE51ED
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE2B94A2375
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12B807A1D58
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B629221FD2;
-	Mon, 23 Jun 2025 21:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F922222C2;
+	Mon, 23 Jun 2025 21:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEgNbp+a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xUTKP4Pl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08A986136;
-	Mon, 23 Jun 2025 21:38:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D73F21D3DD;
+	Mon, 23 Jun 2025 21:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714699; cv=none; b=WbqVdifNUSoQbH5+1EF5b5aR5fBP2ZC7uDtvDNs2eWCFV49NYvpO6zxwjdfOHDvrADbVNPCPOhpzkVUMDNsSGZ6w1TbJUStf0iwlO50plo52GIPV/8+gSeAOjxCsL/qzzaA3zlaBr4ODwjrE6T0K3vhq59Nu0CLmgn4UFGzAt60=
+	t=1750714716; cv=none; b=E9fnGqGw+buWexFfLsysoqzQCPnXvEYasWMTQN/lky3G+M3JwWKFCf3UJXH0AuYAds24dHUfry/aj9PTeWh4uxs1Q+MP8A6pgSFcxBgmkxvjStK1vzq6Qq7r5ZHYEEzO3XvfrV1UKLZVCNCEFWRr9sdhgh8xn+MPH2ZKkXFjlPI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714699; c=relaxed/simple;
-	bh=1igaAS4iEdkmcZ2uGfsZF/Br/izmVdZjl1EmHJuBZD4=;
+	s=arc-20240116; t=1750714716; c=relaxed/simple;
+	bh=qSHkR1Q1CN6aB70ZnU+deOJK7evF6wa+KToqM5rLv+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s3OC0p1JU6IUdqoYkv9l2oafDvXUH7RC+bqd6q0XcZw7OnzWD171HoPti8NHkqjTuO+V0kPcxMxHxnPMvonguIJ1w/P25codxRS/nMrSQYc7WRcJAyLBm1XDd7FWBumLXlZrgWdSeDwIWhyIjGnCeYdWPVFXSMN55ALFR6pZFF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEgNbp+a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BA8C4CEEA;
-	Mon, 23 Jun 2025 21:38:18 +0000 (UTC)
+	 MIME-Version; b=TmfNptEMaGpSL9bH+zwfNQsxmMg2iq5tzEaOYNpq6JFBwb0u+x4NgpYrluxOw4GetovsKwPzvzXpSL5HkC/cINZWC9j92p9uRBJyXHMw1EDbl7kGi+489BJpVS/dprxTcvCZH18fMc97gp/6uFgl3Dpm/Ese59XSvm93pSd8oDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xUTKP4Pl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A47C4CEEA;
+	Mon, 23 Jun 2025 21:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714698;
-	bh=1igaAS4iEdkmcZ2uGfsZF/Br/izmVdZjl1EmHJuBZD4=;
+	s=korg; t=1750714716;
+	bh=qSHkR1Q1CN6aB70ZnU+deOJK7evF6wa+KToqM5rLv+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CEgNbp+a6VT9RBnZ/iOePcEU4Ru+qfHTAZypDIiAfaK0QgaRzFlYpY/cUnDdYexe+
-	 nsfP8yyStIf2GYiy6PLfBgyW9db5vDASAGuS69P66cH4p6DO4uR3PkmnAF8s0MrU8Q
-	 FRZplftb0VkhtvW7j1CYqHQyLiPC1jkVtSCPKkZI=
+	b=xUTKP4Plipoc1CH5LiUM8/r+64HWthSe3AsTtwICsrG1RjgB4gZpzC/W4qCb/VMoL
+	 Sa8Zd/Jx0HJtQnWnIZ+6Vxs4tJNUt4BUZpvFjseLUVLFzG+AaCF4cKKhJzhGhT15Nk
+	 20pRgMt5QMhFZa+gy0oSbkNorfubJwH3EvpcFS5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andrew Zaborowski <andrew.zaborowski@intel.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Tony Luck <tony.luck@intel.com>,
+	balrogg@gmail.com,
+	linux-sgx@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 153/290] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
-Date: Mon, 23 Jun 2025 15:06:54 +0200
-Message-ID: <20250623130631.497732283@linuxfoundation.org>
+Subject: [PATCH 6.6 154/290] x86/sgx: Prevent attempts to reclaim poisoned pages
+Date: Mon, 23 Jun 2025 15:06:55 +0200
+Message-ID: <20250623130631.526388501@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
 References: <20250623130626.910356556@linuxfoundation.org>
@@ -67,49 +72,85 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andrew Zaborowski <andrew.zaborowski@intel.com>
 
-[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
+[ Upstream commit ed16618c380c32c68c06186d0ccbb0d5e0586e59 ]
 
-tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
-before the call to tcp_init_transfer() / tcp_init_buffer_space().
+TL;DR: SGX page reclaim touches the page to copy its contents to
+secondary storage. SGX instructions do not gracefully handle machine
+checks. Despite this, the existing SGX code will try to reclaim pages
+that it _knows_ are poisoned. Avoid even trying to reclaim poisoned pages.
 
-Otherwise tp->rcvq_space.space is off by 120 bytes
-(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
+The longer story:
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Wei Wang <weiwan@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Pages used by an enclave only get epc_page->poison set in
+arch_memory_failure() but they currently stay on sgx_active_page_list until
+sgx_encl_release(), with the SGX_EPC_PAGE_RECLAIMER_TRACKED flag untouched.
+
+epc_page->poison is not checked in the reclaimer logic meaning that, if other
+conditions are met, an attempt will be made to reclaim an EPC page that was
+poisoned.  This is bad because 1. we don't want that page to end up added
+to another enclave and 2. it is likely to cause one core to shut down
+and the kernel to panic.
+
+Specifically, reclaiming uses microcode operations including "EWB" which
+accesses the EPC page contents to encrypt and write them out to non-SGX
+memory.  Those operations cannot handle MCEs in their accesses other than
+by putting the executing core into a special shutdown state (affecting
+both threads with HT.)  The kernel will subsequently panic on the
+remaining cores seeing the core didn't enter MCE handler(s) in time.
+
+Call sgx_unmark_page_reclaimable() to remove the affected EPC page from
+sgx_active_page_list on memory error to stop it being considered for
+reclaiming.
+
+Testing epc_page->poison in sgx_reclaim_pages() would also work but I assume
+it's better to add code in the less likely paths.
+
+The affected EPC page is not added to &node->sgx_poison_page_list until
+later in sgx_encl_release()->sgx_free_epc_page() when it is EREMOVEd.
+Membership on other lists doesn't change to avoid changing any of the
+lists' semantics except for sgx_active_page_list.  There's a "TBD" comment
+in arch_memory_failure() about pre-emptive actions, the goal here is not
+to address everything that it may imply.
+
+This also doesn't completely close the time window when a memory error
+notification will be fatal (for a not previously poisoned EPC page) --
+the MCE can happen after sgx_reclaim_pages() has selected its candidates
+or even *inside* a microcode operation (actually easy to trigger due to
+the amount of time spent in them.)
+
+The spinlock in sgx_unmark_page_reclaimable() is safe because
+memory_failure() runs in process context and no spinlocks are held,
+explicitly noted in a mm/memory-failure.c comment.
+
+Signed-off-by: Andrew Zaborowski <andrew.zaborowski@intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: H. Peter Anvin <hpa@zytor.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: balrogg@gmail.com
+Cc: linux-sgx@vger.kernel.org
+Link: https://lore.kernel.org/r/20250508230429.456271-1-andrew.zaborowski@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/kernel/cpu/sgx/main.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 994c563b35f32..66d6ad6d633c5 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6699,6 +6699,9 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		if (!tp->srtt_us)
- 			tcp_synack_rtt_meas(sk, req);
+diff --git a/arch/x86/kernel/cpu/sgx/main.c b/arch/x86/kernel/cpu/sgx/main.c
+index c7f8c3200e8d7..0db6eeeeb6720 100644
+--- a/arch/x86/kernel/cpu/sgx/main.c
++++ b/arch/x86/kernel/cpu/sgx/main.c
+@@ -718,6 +718,8 @@ int arch_memory_failure(unsigned long pfn, int flags)
+ 		goto out;
+ 	}
  
-+		if (tp->rx_opt.tstamp_ok)
-+			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
++	sgx_unmark_page_reclaimable(page);
 +
- 		if (req) {
- 			tcp_rcv_synrecv_state_fastopen(sk);
- 		} else {
-@@ -6723,9 +6726,6 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
- 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
- 
--		if (tp->rx_opt.tstamp_ok)
--			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
--
- 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
- 			tcp_update_pacing_rate(sk);
- 
+ 	/*
+ 	 * TBD: Add additional plumbing to enable pre-emptive
+ 	 * action for asynchronous poison notification. Until
 -- 
 2.39.5
 
