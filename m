@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 673E3AE54DB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C66DAE52B5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0BA8616922C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5AA324A697D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE6192222C2;
-	Mon, 23 Jun 2025 22:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5F7E223316;
+	Mon, 23 Jun 2025 21:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NI5Vlizn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TWtqXB2S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB9971A4F12;
-	Mon, 23 Jun 2025 22:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93E261F5820;
+	Mon, 23 Jun 2025 21:46:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716316; cv=none; b=kgXkvm4g/ZHbmbg6OkJcit6c2fCOWIvfv9mhOiPUi9ItdtmHoWrpbJN9Px1Sdiu0E+KxoNRnjG4it/ew8cKEi9+hFz2VtpPYD3i1pvPOFLvfebpJ/ftA73ZeVzxmVKljuECfkOgpuPKcTJ9tsl3A+Xw3ytFBREvQXWnJ5qC4NiU=
+	t=1750715178; cv=none; b=hSc042Tnnke79A+XgAZKoIvl8J2Cf9O8tbsm9gIsI77oavgpJuBq+YRygcEeNvLURBwKkE4VXU6kBMAdNwE9RJy6Yk8zGUGGar/c+2b7wiTJ7InF83RNvdseabZVxmcn8ifxpPY5C7zwzlqWxj4Lyj3gSw+jVM5fQ+WIsLoXdoE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716316; c=relaxed/simple;
-	bh=uvHpC2pDmVMqpcAZWA2MUUBSEqnkLnr0YPoZsQceyDQ=;
+	s=arc-20240116; t=1750715178; c=relaxed/simple;
+	bh=lGL0YL0NKd2OM5VEdMCG3mjykieoZce5UxpQtmXo4hE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVjbdgSqcCie0rkW6frvdvMBVaZKqL0FDHz/L+xUc5YBiCz+Rfq9u8zf3A2p/jwn0EJNfSsFGmjPamB4m7+r6u8LeFlJkdM5cia8Hm1gpO6ozSBBymlEAjEXEMY+K6XRgvFxjRXNxeSBTj81IaKzF4YgEvKJBSxuQL3iFxXr6ck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NI5Vlizn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B30C4CEEA;
-	Mon, 23 Jun 2025 22:05:15 +0000 (UTC)
+	 MIME-Version; b=IAPK9nMkREi2k1y+npsY/gC5VFJPRhfymYB/h8nSNz5+IxVTvWQznePr+zgZzW5FLN/I639RuSwZFM6RBWN3dLgC+072vRxHxkRd9306fOgrau6i8fHdlHCbf6aSOfT0h+PLYk2Lt16MR4641Iw3j3UnHlyQLmIK9LLWu6ulIac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TWtqXB2S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C3B7C4CEEA;
+	Mon, 23 Jun 2025 21:46:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716316;
-	bh=uvHpC2pDmVMqpcAZWA2MUUBSEqnkLnr0YPoZsQceyDQ=;
+	s=korg; t=1750715178;
+	bh=lGL0YL0NKd2OM5VEdMCG3mjykieoZce5UxpQtmXo4hE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NI5VliznNcZq2mgAHI44gjiWg+a/HTy+Od/BIayDUIzbNSYJTHzId4hzFlscvwYYW
-	 dPEe4WAKD5wL3CEPqVbclS5cjVPZ6ZNj16ycjuMQOcrVGmirbAaCsa8UCxgmKGjI/g
-	 MrmaF0WaH6/00wYdnXUZlG8SqoARlYmr7m2T0sYg=
+	b=TWtqXB2SwhAIpk0zrQRYXSK7hccaIIgSrd56N9AxhqALjcTx9SUda7T1oLy4xQPTJ
+	 3g+PCewWOAxiPiGA8mjilXilwX/ACQt6JlJoBKnHpki6OT4VV7wa+LgZFl9HsCyU3p
+	 HK6aB9DhitYVYjKREXw7B33JEjITmCDzdqx6hqYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 321/411] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get()
+Subject: [PATCH 6.6 204/290] powerpc/vdso: Fix build of VDSO32 with pcrel
 Date: Mon, 23 Jun 2025 15:07:45 +0200
-Message-ID: <20250623130641.714964287@linuxfoundation.org>
+Message-ID: <20250623130633.065796733@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit 57273ff8bb16f3842c2597b5bbcd49e7fa12edf7 ]
+[ Upstream commit b93755f408325170edb2156c6a894ed1cae5f4f6 ]
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+Building vdso32 on power10 with pcrel leads to following errors:
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-4-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+	  VDSO32A arch/powerpc/kernel/vdso/gettimeofday-32.o
+	arch/powerpc/kernel/vdso/gettimeofday.S: Assembler messages:
+	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: syntax error; found `@', expected `,'
+	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
+	arch/powerpc/kernel/vdso/gettimeofday.S:40: Error: junk at end of line: `@notoc'
+	arch/powerpc/kernel/vdso/gettimeofday.S:71:  Info: macro invoked from here
+	 ...
+	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:85: arch/powerpc/kernel/vdso/gettimeofday-32.o] Error 1
+	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
+
+Once the above is fixed, the following happens:
+
+	  VDSO32C arch/powerpc/kernel/vdso/vgettimeofday-32.o
+	cc1: error: '-mpcrel' requires '-mcmodel=medium'
+	make[2]: *** [arch/powerpc/kernel/vdso/Makefile:89: arch/powerpc/kernel/vdso/vgettimeofday-32.o] Error 1
+	make[1]: *** [arch/powerpc/Makefile:388: vdso_prepare] Error 2
+	make: *** [Makefile:251: __sub-make] Error 2
+
+Make sure pcrel version of CFUNC() macro is used only for powerpc64
+builds and remove -mpcrel for powerpc32 builds.
+
+Fixes: 7e3a68be42e1 ("powerpc/64: vmlinux support building with PCREL addresing")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/1fa3453f07d42a50a70114da9905bf7b73304fca.1747073669.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/powerpc/include/asm/ppc_asm.h | 2 +-
+ arch/powerpc/kernel/vdso/Makefile  | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 9c8ed5a03a825..e0dbac0c9227a 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -439,11 +439,14 @@ static int armada_37xx_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = INPUT_VAL;
- 	unsigned int val, mask;
-+	int ret;
+diff --git a/arch/powerpc/include/asm/ppc_asm.h b/arch/powerpc/include/asm/ppc_asm.h
+index e7792aa135105..fa79265328665 100644
+--- a/arch/powerpc/include/asm/ppc_asm.h
++++ b/arch/powerpc/include/asm/ppc_asm.h
+@@ -183,7 +183,7 @@
+ /*
+  * Used to name C functions called from asm
+  */
+-#ifdef CONFIG_PPC_KERNEL_PCREL
++#if defined(__powerpc64__) && defined(CONFIG_PPC_KERNEL_PCREL)
+ #define CFUNC(name) name@notoc
+ #else
+ #define CFUNC(name) name
+diff --git a/arch/powerpc/kernel/vdso/Makefile b/arch/powerpc/kernel/vdso/Makefile
+index d5defff8472da..47a9533a4dc1d 100644
+--- a/arch/powerpc/kernel/vdso/Makefile
++++ b/arch/powerpc/kernel/vdso/Makefile
+@@ -50,7 +50,7 @@ ldflags-$(CONFIG_LD_ORPHAN_WARN) += -Wl,--orphan-handling=$(CONFIG_LD_ORPHAN_WAR
+ ldflags-y += $(filter-out $(CC_AUTO_VAR_INIT_ZERO_ENABLER) $(CC_FLAGS_FTRACE) -Wa$(comma)%, $(KBUILD_CFLAGS))
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
- 
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
- 
- 	return (val & mask) != 0;
- }
+ CC32FLAGS := -m32
+-CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc
++CC32FLAGSREMOVE := -mcmodel=medium -mabi=elfv1 -mabi=elfv2 -mcall-aixdesc -mpcrel
+ ifdef CONFIG_CC_IS_CLANG
+ # This flag is supported by clang for 64-bit but not 32-bit so it will cause
+ # an unused command line flag warning for this file.
 -- 
 2.39.5
 
