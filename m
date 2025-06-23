@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157905-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E368CAE5625
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1227FAE556F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EDF581BC8093
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 970117AA570
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273F4227574;
-	Mon, 23 Jun 2025 22:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D45FA226888;
+	Mon, 23 Jun 2025 22:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkYp/xu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7AYYSJf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF64226D16;
-	Mon, 23 Jun 2025 22:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902C11F7580;
+	Mon, 23 Jun 2025 22:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717006; cv=none; b=GPohmYFJrDkex+qXPwizfvj7wD/J1ibUsF9bGgn06Ffzh7U7cFEvRkJM+sH1aBMTyP7P0dqTW9jCRvBR7hf/OPWR9YBncMgH6STckwoSLN3l6FDnd7deldawTaH1v+ArBXVhnMBJjA3WmEbY2tnza7yOm966Fso7Tqg/aGW7gWM=
+	t=1750716654; cv=none; b=UAlHlix0WkNNePsDjiy/Epy9V6mDdvrls0JjllkBAkRT5RX1D24ztA+xJ9BPIkYqrMR67xmWdMejzgeYT5APK3d12i+3IbdSq4GpywzhGQaO6pGbhrd/iTFrhxHTrSrSiIkNQL2R3zKdViQgnHILbu2DMvhsFVqIBqtVdiOx/bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717006; c=relaxed/simple;
-	bh=6VlYEcICRamv/xiRV3EQHshopDB4vX9OwoNcA/Imyss=;
+	s=arc-20240116; t=1750716654; c=relaxed/simple;
+	bh=obGHq2lTw32fpqjrNLFgi9wwM9p55lZtSPR/o/+gvJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O7wDn+zxQ9hTfcLw5qQI7nelpZqQm2d41xPcbvDzRYxGOLo4glNAFAwGhYq5OLpgWufcnXQZd/U6ofsiLi6k/klpCqKGtCaeJSTmIcfCsftf+ixg3RdbViDgZygL7AiF4oR+65gip5xvPU5TK5+dmNBmynZWXZqjdAvtVym0AdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkYp/xu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A7AC4CEED;
-	Mon, 23 Jun 2025 22:16:45 +0000 (UTC)
+	 MIME-Version; b=MZM1bbSKYD2n1hS7dRLqafRVg6huu/hZIBIgLq2yWKv81q/WS4EoJtCS0pT5mx91MjqFF5kXXe+yymH7ET9gNd8qfAFUEPK23+1s1v5FcAK565eqKJ8xuoKFtEQ/OPO57p/gk/7eOa8TncTlDStC3DF5e7AIcvIk6RGwjUFTjvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7AYYSJf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A8D2C4CEEA;
+	Mon, 23 Jun 2025 22:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717006;
-	bh=6VlYEcICRamv/xiRV3EQHshopDB4vX9OwoNcA/Imyss=;
+	s=korg; t=1750716654;
+	bh=obGHq2lTw32fpqjrNLFgi9wwM9p55lZtSPR/o/+gvJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkYp/xu8wLPAtXfQeZg7qu55XFm1N76XSmuZw9oAZR0/wD8ewB7+ObVqmSc2u+Z8F
-	 ohDyFJYgjZg9pAA41F4FiH520uKFP3pH7y+HKxbHBYLHhIGFvEeA206/gXhGHifX8D
-	 DPDSG8yZ03X9s80uneOBprz7Eyf3ODXhn6Ytu/0w=
+	b=Z7AYYSJf6A2ns1HeHbr49O0ILcbo0JIrdaSZP1eVlXNYiEQXUyNQii2Gb5CsTiqmd
+	 rZARbpzntH65s8Do1PuF7/Li8SeBDkV0FZcP+vOd/S9XnjJ7xCfqavJPidq8eWDpEN
+	 zx7NbLXLKh99VLOV5qwi8hV5PPif9H22XharEqPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.1 353/508] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
-Date: Mon, 23 Jun 2025 15:06:38 +0200
-Message-ID: <20250623130654.041317759@linuxfoundation.org>
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 262/414] software node: Correct a OOB check in software_node_get_reference_args()
+Date: Mon, 23 Jun 2025 15:06:39 +0200
+Message-ID: <20250623130648.585564644@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
+[ Upstream commit 31e4e12e0e9609850cefd4b2e1adf782f56337d6 ]
 
-The function sunxi_nfc_hw_ecc_write_chunk() calls the
-sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
-function sunxi_nfc_randomizer_config(). Consequently, the randomization
-might not conduct correctly, which will affect the lifespan of NAND flash.
-A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
+software_node_get_reference_args() wants to get @index-th element, so
+the property value requires at least '(index + 1) * sizeof(*ref)' bytes
+but that can not be guaranteed by current OOB check, and may cause OOB
+for malformed property.
 
-Add the sunxi_nfc_randomizer_config() to config randomizer.
+Fix by using as OOB check '((index + 1) * sizeof(*ref) > prop->length)'.
 
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250414-fix_swnode-v2-1-9c9e6ae11eab@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/swnode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1061,6 +1061,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
- 	if (ret)
- 		return ret;
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index eb6eb25b343ba..53b3f0061ad12 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -529,7 +529,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+ 	if (prop->is_inline)
+ 		return -EINVAL;
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
+-	if (index * sizeof(*ref) >= prop->length)
++	if ((index + 1) * sizeof(*ref) > prop->length)
+ 		return -ENOENT;
  
+ 	ref_array = prop->pointer;
+-- 
+2.39.5
+
 
 
 
