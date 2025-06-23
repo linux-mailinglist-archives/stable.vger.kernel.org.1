@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-157097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B41FAE526F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD59BAE5248
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C5DA4A440C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B5BD7AF05C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B286D22256B;
-	Mon, 23 Jun 2025 21:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF76419D084;
+	Mon, 23 Jun 2025 21:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCpg4ZIE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I06ABZ/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDE84315A;
-	Mon, 23 Jun 2025 21:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F6764315A;
+	Mon, 23 Jun 2025 21:42:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715026; cv=none; b=rOADngJunqgFom1DXMFRItghbqe/xB/EM0tI7CJl9VU52eGD7OMRN6xNsw38Csm/mkDYPfemMraX6nTNUcoSOVEubFqG8PLsXpUZPgMJ2lxFKKAYNR413Fn38o+c7Vuv9SITVgrhwL5lFHmIRhwmSxwH8b2BDDkjSgg0njceinc=
+	t=1750714931; cv=none; b=GhCq9lNuEsX8MPPdbhOdB0M+RidvVmkFTjoQ4Asdo8clphdKVYCHmV1X5jX3oVH784Dl1TzfZJ/uNwg4dXBKwCLPrSUtidcdKTiJJ5Iga0RwSKJHmNcvTbzXacogtoZe5I6wRjkzogdSu5LeFgjLWmyUfUz4qJHZUJRBEAaQM1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715026; c=relaxed/simple;
-	bh=M6Pq4mtalZ0EDXvGIuc3ScqTsZGUSO3ZKTGC8oZO4gk=;
+	s=arc-20240116; t=1750714931; c=relaxed/simple;
+	bh=rQZJHsp5LCekWbfwsm9373SsLUusTxe42V1s//S6KO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DGqFhXtnUY5r5MCJ6amuzxjIf4ULwNwNfTvDAod1q/WPH8WcilTNdAp+SJ4EkMmP6fjbrzwHg6m9b18iHpiqscXTOZLT8av3gI5xwIIRFYitr0MlipaiyKEe3Lrpp79Jwby/VKQJtoT60BVAg0FkfTZtg5EdecY4P1PU3F6Ueo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCpg4ZIE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07E8AC4CEEA;
-	Mon, 23 Jun 2025 21:43:45 +0000 (UTC)
+	 MIME-Version; b=P4D33acO1AVWFzUsntjaT3hnyKyqgz75ylPVLg1Z1o+nrmGyl5C2v8OvwSkCc7EkuoH2l7408SZgZN0L+yYBeVuMhGYHSZAVV47Z9Ho3YIgw/vhVSnpGK8wUCUDKUeLI5BO949OvXkwic96FcPpPFoLWH5inYwy3UcgDYCppNzw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I06ABZ/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 167C2C4CEEA;
+	Mon, 23 Jun 2025 21:42:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715026;
-	bh=M6Pq4mtalZ0EDXvGIuc3ScqTsZGUSO3ZKTGC8oZO4gk=;
+	s=korg; t=1750714931;
+	bh=rQZJHsp5LCekWbfwsm9373SsLUusTxe42V1s//S6KO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCpg4ZIEmVPxCn+IDXMANsGJ2cjq2mhpJj4p4WqiNIPpIW67VnTCMGpL71CH2MbBN
-	 woho6w76RIEVmnq6zKlnrJEm1gBd2dmcXv9djc2699g7+Re2kOZmOHS0QZiwMvP0Wp
-	 CBqDWh6gG+Bpq+LuM5xDHqMDr4zTgFrjJ89gWTls=
+	b=I06ABZ/c76jQtd5DskYhUIBbLh/78MhFwfVaUZTpwWIU4ptZ56V7vx993Y4Wcw5Fi
+	 NtjnpHKIlZDX5fq0B2bK/zJV3fDat3ZIV2HGoeX6Ne0BfJQj1chB7BhKoDFwNhsVOz
+	 qaqUuvfsLE0+QhvpOZe27lDi8bZKauSHdLF6r4qk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wang <yongwang@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/290] net: bridge: mcast: re-implement br_multicast_{enable, disable}_port functions
+Subject: [PATCH 5.10 235/355] media: rkvdec: Initialize the m2m context before the controls
 Date: Mon, 23 Jun 2025 15:07:16 +0200
-Message-ID: <20250623130632.148950599@linuxfoundation.org>
+Message-ID: <20250623130633.815639326@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,174 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong Wang <yongwang@nvidia.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-[ Upstream commit 4b30ae9adb047dd0a7982975ec3933c529537026 ]
+[ Upstream commit d43d7db3c8a1868dcbc6cb8de90a3cdf309d6cbb ]
 
-When a bridge port STP state is changed from BLOCKING/DISABLED to
-FORWARDING, the port's igmp query timer will NOT re-arm itself if the
-bridge has been configured as per-VLAN multicast snooping.
+Setting up the control handler calls into .s_ctrl ops. While validating
+the controls the ops may need to access some of the context state, which
+could lead to a crash if not properly initialized.
 
-Solve this by choosing the correct multicast context(s) to enable/disable
-port multicast based on whether per-VLAN multicast snooping is enabled or
-not, i.e. using per-{port, VLAN} context in case of per-VLAN multicast
-snooping by re-implementing br_multicast_enable_port() and
-br_multicast_disable_port() functions.
-
-Before the patch, the IGMP query does not happen in the last step of the
-following test sequence, i.e. no growth for tx counter:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # bridge link set dev swp1 state 0
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge link set dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
-
-After the patch, the IGMP query happens in the last step of the test:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # bridge link set dev swp1 state 0
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge link set dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-3
-
-Signed-off-by: Yong Wang <yongwang@nvidia.com>
-Reviewed-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_multicast.c | 77 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 69 insertions(+), 8 deletions(-)
+ drivers/staging/media/rkvdec/rkvdec.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index ea71a64f915f9..fa16ee88ec396 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -2104,12 +2104,17 @@ static void __br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
- 	}
- }
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index a5eca08ff2597..3266f1d78e882 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -827,24 +827,24 @@ static int rkvdec_open(struct file *filp)
+ 	rkvdec_reset_decoded_fmt(ctx);
+ 	v4l2_fh_init(&ctx->fh, video_devdata(filp));
  
--void br_multicast_enable_port(struct net_bridge_port *port)
-+static void br_multicast_enable_port_ctx(struct net_bridge_mcast_port *pmctx)
- {
--	struct net_bridge *br = port->br;
-+	struct net_bridge *br = pmctx->port->br;
- 
- 	spin_lock_bh(&br->multicast_lock);
--	__br_multicast_enable_port_ctx(&port->multicast_ctx);
-+	if (br_multicast_port_ctx_is_vlan(pmctx) &&
-+	    !(pmctx->vlan->priv_flags & BR_VLFLAG_MCAST_ENABLED)) {
-+		spin_unlock_bh(&br->multicast_lock);
-+		return;
-+	}
-+	__br_multicast_enable_port_ctx(pmctx);
- 	spin_unlock_bh(&br->multicast_lock);
- }
- 
-@@ -2136,11 +2141,67 @@ static void __br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
- 	br_multicast_rport_del_notify(pmctx, del);
- }
- 
-+static void br_multicast_disable_port_ctx(struct net_bridge_mcast_port *pmctx)
-+{
-+	struct net_bridge *br = pmctx->port->br;
-+
-+	spin_lock_bh(&br->multicast_lock);
-+	if (br_multicast_port_ctx_is_vlan(pmctx) &&
-+	    !(pmctx->vlan->priv_flags & BR_VLFLAG_MCAST_ENABLED)) {
-+		spin_unlock_bh(&br->multicast_lock);
-+		return;
-+	}
-+
-+	__br_multicast_disable_port_ctx(pmctx);
-+	spin_unlock_bh(&br->multicast_lock);
-+}
-+
-+static void br_multicast_toggle_port(struct net_bridge_port *port, bool on)
-+{
-+#if IS_ENABLED(CONFIG_BRIDGE_VLAN_FILTERING)
-+	if (br_opt_get(port->br, BROPT_MCAST_VLAN_SNOOPING_ENABLED)) {
-+		struct net_bridge_vlan_group *vg;
-+		struct net_bridge_vlan *vlan;
-+
-+		rcu_read_lock();
-+		vg = nbp_vlan_group_rcu(port);
-+		if (!vg) {
-+			rcu_read_unlock();
-+			return;
-+		}
-+
-+		/* iterate each vlan, toggle vlan multicast context */
-+		list_for_each_entry_rcu(vlan, &vg->vlan_list, vlist) {
-+			struct net_bridge_mcast_port *pmctx =
-+						&vlan->port_mcast_ctx;
-+			u8 state = br_vlan_get_state(vlan);
-+			/* enable vlan multicast context when state is
-+			 * LEARNING or FORWARDING
-+			 */
-+			if (on && br_vlan_state_allowed(state, true))
-+				br_multicast_enable_port_ctx(pmctx);
-+			else
-+				br_multicast_disable_port_ctx(pmctx);
-+		}
-+		rcu_read_unlock();
-+		return;
-+	}
-+#endif
-+	/* toggle port multicast context when vlan snooping is disabled */
-+	if (on)
-+		br_multicast_enable_port_ctx(&port->multicast_ctx);
-+	else
-+		br_multicast_disable_port_ctx(&port->multicast_ctx);
-+}
-+
-+void br_multicast_enable_port(struct net_bridge_port *port)
-+{
-+	br_multicast_toggle_port(port, true);
-+}
-+
- void br_multicast_disable_port(struct net_bridge_port *port)
- {
--	spin_lock_bh(&port->br->multicast_lock);
--	__br_multicast_disable_port_ctx(&port->multicast_ctx);
--	spin_unlock_bh(&port->br->multicast_lock);
-+	br_multicast_toggle_port(port, false);
- }
- 
- static int __grp_src_delete_marked(struct net_bridge_port_group *pg)
-@@ -4329,9 +4390,9 @@ int br_multicast_toggle_vlan_snooping(struct net_bridge *br, bool on,
- 		__br_multicast_open(&br->multicast_ctx);
- 	list_for_each_entry(p, &br->port_list, list) {
- 		if (on)
--			br_multicast_disable_port(p);
-+			br_multicast_disable_port_ctx(&p->multicast_ctx);
- 		else
--			br_multicast_enable_port(p);
-+			br_multicast_enable_port_ctx(&p->multicast_ctx);
+-	ret = rkvdec_init_ctrls(ctx);
+-	if (ret)
+-		goto err_free_ctx;
+-
+ 	ctx->fh.m2m_ctx = v4l2_m2m_ctx_init(rkvdec->m2m_dev, ctx,
+ 					    rkvdec_queue_init);
+ 	if (IS_ERR(ctx->fh.m2m_ctx)) {
+ 		ret = PTR_ERR(ctx->fh.m2m_ctx);
+-		goto err_cleanup_ctrls;
++		goto err_free_ctx;
  	}
  
- 	list_for_each_entry(vlan, &vg->vlan_list, vlist)
++	ret = rkvdec_init_ctrls(ctx);
++	if (ret)
++		goto err_cleanup_m2m_ctx;
++
+ 	filp->private_data = &ctx->fh;
+ 	v4l2_fh_add(&ctx->fh);
+ 
+ 	return 0;
+ 
+-err_cleanup_ctrls:
+-	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
++err_cleanup_m2m_ctx:
++	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+ 
+ err_free_ctx:
+ 	kfree(ctx);
 -- 
 2.39.5
 
