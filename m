@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 276BEAE4F75
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 90571AE5218
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B83DC17EB5B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:16:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2763D4A5159
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977A64315A;
-	Mon, 23 Jun 2025 21:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A262222A9;
+	Mon, 23 Jun 2025 21:40:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xg/hnxqX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jc3xw9IH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD307482;
-	Mon, 23 Jun 2025 21:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B420119D084;
+	Mon, 23 Jun 2025 21:40:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713368; cv=none; b=eVbqkZWMMrCE67282xHaCJ9Q6VR6osQPb596QgZ+SP+iFT2q4pi560EIXLrHZpAbAe40Mzwiqd+R8WnAYfiG5iGwJ/9RR5Ti4CEEDx5/JGE61OyOp8T6I3G0ZzQIAFQph0sRrSPR32ykfe4Bj98VXsLaDA8tLNk+cRBicpZ8yPc=
+	t=1750714821; cv=none; b=WYvWPzpwHmCeccsSyOjCo1zQjoybTqsYIP4Hl9Wk4Xr7iuVLnV/XdD+sTfiSbMlIlGV4LsxeZ7h7KH0JjU3PflVbZLxex9u7PXH4zf9tbmXUd95wAYc1skbhWEapD1R2K7nipQVevXHblmyWZHQnOdGXL7/c0RlnxHCZCwIC8/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713368; c=relaxed/simple;
-	bh=ghr7hRWRO76EnU3eccUabx6rV6EnIFmQ4VSgQHu9c80=;
+	s=arc-20240116; t=1750714821; c=relaxed/simple;
+	bh=fk4MNMz6+SwfTI+wFoI25W3CFnwtkha7LIA0JRQLORQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gubeJZgOsp8BWeeGisagxg8oPPJWqs9WOyS7TEwGjp+ZscpXx8Q0lsrUihZiy7qWtBVBOYuRBV5DF1fbkX8mJx5xN+RD+ykip1IsRi7D9kQ1X++Cxg3w/ICIuiBZrJE5SVpWI31PBlbUnD+QCz//fp9oc6znbhof3KSqV6lnY20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xg/hnxqX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D64A5C4CEEA;
-	Mon, 23 Jun 2025 21:16:07 +0000 (UTC)
+	 MIME-Version; b=chbTIcmLo2pVA4VYWK+A+0hBGFnYQnDZCpR2MKurG+7RD/UXIl8DiAhobJW2FETC7kcpwaGNvPKBfJj5Sikktp6pNo5NWOuFUUp4prsNFwZY3UYt1ICeXN8q7feDrQHDg8yMvXoo7APLBNwvNc3/+sUjKG7/sVQt8jfkiAgOirE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jc3xw9IH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492BBC4CEEA;
+	Mon, 23 Jun 2025 21:40:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713368;
-	bh=ghr7hRWRO76EnU3eccUabx6rV6EnIFmQ4VSgQHu9c80=;
+	s=korg; t=1750714821;
+	bh=fk4MNMz6+SwfTI+wFoI25W3CFnwtkha7LIA0JRQLORQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xg/hnxqXriT77bMR53aOuwcXZMuJ0k73LaJtQUs5LjOcEmot8g+i/jj5PC6lgH3Cg
-	 ornJQDnP1AMYl9oXpzQTprkhFNx1mQpXQhS3w78z4Q314MHN6TUvSUQX4+rG4B7nJR
-	 hFll1s/3o3JEVy1MU0T3o0Rw/Fmj5ahMP+H/fr6o=
+	b=jc3xw9IHDVr6Cl3+v744CJ5JgwzIwHTzPyG5nGFJaZ8dXRFQBFPPHzhNeSItNN4GH
+	 gESmVLFNeblUV+luUokvS2LWwxvtoh+/gOoagCJDSg3zFB5JU0A+CmESqDlBRVpEZe
+	 HlMyQuMvA3gRdfz933bcsS0griz7DRGChfJHZV5A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Judith Mendez <jm@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 119/411] Bluetooth: L2CAP: Fix not responding with L2CAP_CR_LE_ENCRYPTION
+Subject: [PATCH 6.1 218/508] arm64: dts: ti: k3-am65-main: Fix sdhci node properties
 Date: Mon, 23 Jun 2025 15:04:23 +0200
-Message-ID: <20250623130636.543023582@linuxfoundation.org>
+Message-ID: <20250623130650.626231772@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +62,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 03dba9cea72f977e873e4e60e220fa596959dd8f ]
+[ Upstream commit 8ffe9cb889f2b831a9d5bbb1f7ad42d30e31170f ]
 
-Depending on the security set the response to L2CAP_LE_CONN_REQ shall be
-just L2CAP_CR_LE_ENCRYPTION if only encryption when BT_SECURITY_MEDIUM
-is selected since that means security mode 2 which doesn't require
-authentication which is something that is covered in the qualification
-test L2CAP/LE/CFC/BV-25-C.
+Update otap-del-sel properties as per datasheet [0].
 
-Link: https://github.com/bluez/bluez/issues/1270
-Fixes: 27e2d4c8d28b ("Bluetooth: Add basic LE L2CAP connect request receiving support")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Add missing clkbuf-sel and itap-del-sel values also as per
+datasheet [0].
+
+Move clkbuf-sel and ti,trm-icp above the otap-del-sel properties
+so the sdhci nodes could be more uniform across platforms.
+
+[0] https://www.ti.com/lit/ds/symlink/am6548.pdf
+
+Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
+Fixes: d7600d070fb0 ("arm64: dts: ti: k3-am65-main: Add support for sdhci1")
+Signed-off-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20240423151732.3541894-2-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Stable-dep-of: f55c9f087cc2 ("arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 872a0249f53c8..89021b3b8f443 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -5859,7 +5859,8 @@ static int l2cap_le_connect_req(struct l2cap_conn *conn,
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index 9854cf0e7f7b4..c09457fef2db0 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -262,6 +262,8 @@ sdhci0: mmc@4f80000 {
+ 		interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
+ 		mmc-ddr-1_8v;
+ 		mmc-hs200-1_8v;
++		ti,clkbuf-sel = <0x7>;
++		ti,trm-icp = <0x8>;
+ 		ti,otap-del-sel-legacy = <0x0>;
+ 		ti,otap-del-sel-mmc-hs = <0x0>;
+ 		ti,otap-del-sel-sd-hs = <0x0>;
+@@ -272,8 +274,7 @@ sdhci0: mmc@4f80000 {
+ 		ti,otap-del-sel-ddr50 = <0x5>;
+ 		ti,otap-del-sel-ddr52 = <0x5>;
+ 		ti,otap-del-sel-hs200 = <0x5>;
+-		ti,otap-del-sel-hs400 = <0x0>;
+-		ti,trm-icp = <0x8>;
++		ti,itap-del-sel-ddr52 = <0x0>;
+ 		dma-coherent;
+ 	};
  
- 	if (!smp_sufficient_security(conn->hcon, pchan->sec_level,
- 				     SMP_ALLOW_STK)) {
--		result = L2CAP_CR_LE_AUTHENTICATION;
-+		result = pchan->sec_level == BT_SECURITY_MEDIUM ?
-+			L2CAP_CR_LE_ENCRYPTION : L2CAP_CR_LE_AUTHENTICATION;
- 		chan = NULL;
- 		goto response_unlock;
- 	}
+@@ -284,18 +285,22 @@ sdhci1: mmc@4fa0000 {
+ 		clocks = <&k3_clks 48 0>, <&k3_clks 48 1>;
+ 		clock-names = "clk_ahb", "clk_xin";
+ 		interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
++		ti,clkbuf-sel = <0x7>;
++		ti,trm-icp = <0x8>;
+ 		ti,otap-del-sel-legacy = <0x0>;
+ 		ti,otap-del-sel-mmc-hs = <0x0>;
+ 		ti,otap-del-sel-sd-hs = <0x0>;
+-		ti,otap-del-sel-sdr12 = <0x0>;
+-		ti,otap-del-sel-sdr25 = <0x0>;
++		ti,otap-del-sel-sdr12 = <0xf>;
++		ti,otap-del-sel-sdr25 = <0xf>;
+ 		ti,otap-del-sel-sdr50 = <0x8>;
+ 		ti,otap-del-sel-sdr104 = <0x7>;
+ 		ti,otap-del-sel-ddr50 = <0x4>;
+ 		ti,otap-del-sel-ddr52 = <0x4>;
+ 		ti,otap-del-sel-hs200 = <0x7>;
+-		ti,clkbuf-sel = <0x7>;
+-		ti,trm-icp = <0x8>;
++		ti,itap-del-sel-legacy = <0xa>;
++		ti,itap-del-sel-sd-hs = <0x1>;
++		ti,itap-del-sel-sdr12 = <0xa>;
++		ti,itap-del-sel-sdr25 = <0x1>;
+ 		dma-coherent;
+ 	};
+ 
 -- 
 2.39.5
 
