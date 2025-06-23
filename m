@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A698AE4332
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39595AE4336
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4078D189A476
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9AA189A8DD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C42B23BF9F;
-	Mon, 23 Jun 2025 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646FA23A9BE;
+	Mon, 23 Jun 2025 13:24:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TyDroQlz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnjNEtg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B4024E4C3;
-	Mon, 23 Jun 2025 13:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C1F23BF9F;
+	Mon, 23 Jun 2025 13:24:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685070; cv=none; b=tmF6s65nL7kLXt/+1CQOF2UrriT34wD3yBtr4GvBzuWCRxsgRdIhMYc94ugFU7mR55BCDP9A3YUYmLqC7cen0CTWV2kzwe/s7QbdFKh4Y/He+Ux+hkkFbKPi9xkzzaFiT/5adhpcaJHXs6jrDUcCtnttUT1AACJaWfJRCHN5Iu4=
+	t=1750685085; cv=none; b=e98X7cSqXnr+7hch0mkuv9xoUIi3oDU1iXCWLHlnH6eMGSveeV7hLprRsmpYFMTvKynlo0xS74LnrHY58MrbLAZfNDCuP1b4/LaPzgV+kAlSMryZ4qHjSXBxWtSM1jjmseOU7/gbe+fdlo7Na47uYtlVxzLR3yw49etRgyNgMyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685070; c=relaxed/simple;
-	bh=ksdcIksyoFK/9kWDKVSq8W48Y5Sx+BgfC6SsI03op54=;
+	s=arc-20240116; t=1750685085; c=relaxed/simple;
+	bh=jjrJ8rmTosgrQ8aPeFFoUZXKBWM+mm4ouS2G0prpcxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EG1U/Z0RcQE9AeVkAJdWrvVJXxBY5YUjDfDQKzXLeMPhQpIYwKbvkeCBuloBlQ/oeauX1sIONWYNO3VuxDdZ4+Z0mZwBL5iIgX3bTZMWX2InCTfb42Mhky1u+pM/T4Tyl+EgMzlx0tkVAOTXwywvtN1xBC9Hn6tM49EmNBp+09g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TyDroQlz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F47CC4CEEA;
-	Mon, 23 Jun 2025 13:24:29 +0000 (UTC)
+	 MIME-Version; b=HmsGNq0c4/tGAuIgBMlLFxOwee+gaglZUDg9Jp6w6ezNo0mY6FKmLFvgz8rKmtS69OgOJjx2p7VOJcrG1+TcZbh4KXDYfRtt6GvUwrAEUNbqFRyv3fmu1uRuT+8jALF4Ak8kNI8gRO5LK0d2nQS8lQUs9YVwe2pqm9u48moVj+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnjNEtg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54921C4CEEA;
+	Mon, 23 Jun 2025 13:24:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685069;
-	bh=ksdcIksyoFK/9kWDKVSq8W48Y5Sx+BgfC6SsI03op54=;
+	s=korg; t=1750685082;
+	bh=jjrJ8rmTosgrQ8aPeFFoUZXKBWM+mm4ouS2G0prpcxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TyDroQlz3b6KiKCtzD+hvscLH4QyKDMTiaHS9O7sY/NlixtAguma2FN9vCxAsE4Ex
-	 lUfMF8aBTaOUoOvg+71ia4wTPrOU/FXvLUWz81MLkg2f8h2uYopcyWvwtUXvV77FcU
-	 tS4kj2A3dI+LehW8r/1+dzIgf6xnFxrm1eb/WSug=
+	b=jnjNEtg+hPZfB0PCGnSs8gbmuOPttUQfdpcS17MlVKxYcBislaUJH1necHCKbLK7S
+	 uumuEGyiA4E+ZNzNwrAWBWTAFF64eYIybgZGyTPDe91cAqy9RoOcKNxdCmhAeE9udu
+	 qh7FWdaSTja4GLEys3ldnk0C1HA6Ys0zBzuVpUZA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Patrick Daly <quic_pdaly@quicinc.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 230/592] gpiolib: of: Add polarity quirk for s5m8767
-Date: Mon, 23 Jun 2025 15:03:08 +0200
-Message-ID: <20250623130705.762381138@linuxfoundation.org>
+Subject: [PATCH 6.15 231/592] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
+Date: Mon, 23 Jun 2025 15:03:09 +0200
+Message-ID: <20250623130705.784658558@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,44 +67,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-[ Upstream commit 4e310626eb4df52a31a142c1360fead0fcbd3793 ]
+[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
 
-This is prepare patch for switching s5m8767 regulator driver to
-use GPIO descriptor. DTS for exynos5250 spring incorrectly specifies
-"active low" polarity for the DVS and DS line. But per datasheet,
-they are actually active high. So add polarity quirk for it.
+pm_runtime_put_autosuspend() schedules a hrtimer to expire
+at "dev->power.timer_expires". If the hrtimer's callback,
+pm_suspend_timer_fn(), observes that the current time equals
+"dev->power.timer_expires", it unexpectedly bails out instead of
+proceeding with runtime suspend.
 
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20250327004945.563765-1-peng.fan@oss.nxp.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+pm_suspend_timer_fn():
+
+ if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
+ 	dev->power.timer_expires = 0;
+ 	rpm_suspend(..)
+ }
+
+Additionally, as ->timer_expires is not cleared, all the future auto
+suspend requests will not schedule hrtimer to perform auto suspend.
+
+rpm_suspend():
+
+ if ((rpmflags & RPM_AUTO) &&...) {
+ 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
+ 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
+ 	}
+ }
+
+Fix this by as well checking if current time reaches the set expiration.
+
+Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpiolib-of.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/base/power/runtime.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpiolib-of.c b/drivers/gpio/gpiolib-of.c
-index 65f6a7177b78e..17802d97492fa 100644
---- a/drivers/gpio/gpiolib-of.c
-+++ b/drivers/gpio/gpiolib-of.c
-@@ -224,6 +224,15 @@ static void of_gpio_try_fixup_polarity(const struct device_node *np,
- 		 */
- 		{ "lantiq,pci-xway",	"gpio-reset",	false },
- #endif
-+#if IS_ENABLED(CONFIG_REGULATOR_S5M8767)
-+		/*
-+		 * According to S5M8767, the DVS and DS pin are
-+		 * active-high signals. However, exynos5250-spring.dts use
-+		 * active-low setting.
-+		 */
-+		{ "samsung,s5m8767-pmic", "s5m8767,pmic-buck-dvs-gpios", true },
-+		{ "samsung,s5m8767-pmic", "s5m8767,pmic-buck-ds-gpios", true },
-+#endif
- #if IS_ENABLED(CONFIG_TOUCHSCREEN_TSC2005)
- 		/*
- 		 * DTS for Nokia N900 incorrectly specified "active high"
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 205a4f8828b0a..c55a7c70bc1a8 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1011,7 +1011,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
+ 	 * If 'expires' is after the current time, we've been called
+ 	 * too early.
+ 	 */
+-	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
++	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
+ 		dev->power.timer_expires = 0;
+ 		rpm_suspend(dev, dev->power.timer_autosuspends ?
+ 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
 -- 
 2.39.5
 
