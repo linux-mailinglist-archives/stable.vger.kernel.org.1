@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-157026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40584AE5225
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04E17AE5203
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B75991B647E9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F390C442E4B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1EE3221FDC;
-	Mon, 23 Jun 2025 21:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDDD222562;
+	Mon, 23 Jun 2025 21:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RGV8D1PS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c8fsGqzU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C99519D084;
-	Mon, 23 Jun 2025 21:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59C6119D084;
+	Mon, 23 Jun 2025 21:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714853; cv=none; b=NKfYXc5INQFSLhjVlepLWgi0RcCFXKWkKGsaBqPxRXbF0v+egU7fVaWcGjuvmweGHJRmwHpuRcO6VYWDxyzUYMLERnx1y86kCPiN62LyOj1Ahpu87rxCsGd/qMgAiA34nBYIaIE+zCvdgEAl9TUSv90IcKbH7HXC//fBfvEk5ao=
+	t=1750714772; cv=none; b=h9df+TlTQLRrIPKB3bZRMCTytSad/AOKQeYcoAkmDMON5DMIfQST1QeanfWndnPJ270vupdWHP8T0e2SHNNGRwM3QNnnZjIULvTjjpv8SkXckbrC1HonU4x2+Jp8fnqY3dsaYRWxC/JnEIMY3P9Da4V+zQm36B4DV9saS+bkjRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714853; c=relaxed/simple;
-	bh=8HdFSrtkt7nfxVr04OWKaaEAxjiX2W7XuPlXXRwI4Gw=;
+	s=arc-20240116; t=1750714772; c=relaxed/simple;
+	bh=J6kKIfbHq8GqxJzxoR6MxYjyrGFqD7bVn8k4MV0518M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9LJLPhhuWalt7ZwZ6aWRHb04XWuzuR64M6aFqVgvWHBlQwmba47HRwzVgyptYRgUKUFQ21CFQH7N6/X0t4Y2X0Fa0WQqpRvgNMQQ9oF9VNK83O4ZP33ZBxX5Cck7biGcinyfCb1AQtOVvJqaV970Qt67xY1Rb/9MpvMausCWho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RGV8D1PS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1292BC4CEEA;
-	Mon, 23 Jun 2025 21:40:52 +0000 (UTC)
+	 MIME-Version; b=VO3QTe1DkNYutNqCVJo2jAaYdWffeLW+Fa3KUlKnykIiuYjc4vayRfC7XhcA/Su23UepuGY9/zrjDYxDbhyFymJHXDn7iWKpPr3+9k+/CthjjFycKGmhwhIcEKTxkQ0N22QYILGCXQ/7hey2GIrKnzU7b3BzN83izcmR+bQLhw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c8fsGqzU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4D55C4CEEA;
+	Mon, 23 Jun 2025 21:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714853;
-	bh=8HdFSrtkt7nfxVr04OWKaaEAxjiX2W7XuPlXXRwI4Gw=;
+	s=korg; t=1750714772;
+	bh=J6kKIfbHq8GqxJzxoR6MxYjyrGFqD7bVn8k4MV0518M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RGV8D1PSfYdNtFzYaP/ZxXd4L/jSwsksbeQMq6MKIpw5tgWdwaWBD4aHvSmwE6mng
-	 iWzVQiKZ+gG6yZC2xMy2Q6R7bNx64h+XSj9cdTYzB1BC+bkHU6a96vxica9jOjVNe1
-	 3XpMF08z/gJcycWMINrTbgRgKIkhLvOF/tbyUhMQ=
+	b=c8fsGqzUGI0PiHcZK0KhJa86hMqOL94dgLgSwPXzUGUQRkophLDY4OKKKHu2ZtY27
+	 8ZKwE3ZUsSEBQL50AaJpxYzi0udOvRCUS/Wgd85y/985zdV+syy0MnXMomMJrAKNma
+	 YnHjnR30oPuy8GYZe40E04qcj4hgI1Na2MTd2AEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 220/508] serial: sh-sci: Check if TX data was written to device in .tx_empty()
-Date: Mon, 23 Jun 2025 15:04:25 +0200
-Message-ID: <20250623130650.676281137@linuxfoundation.org>
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.12 129/414] dm: lock limits when reading them
+Date: Mon, 23 Jun 2025 15:04:26 +0200
+Message-ID: <20250623130645.283563731@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,160 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 7cc0e0a43a91052477c2921f924a37d9c3891f0c upstream.
+commit abb4cf2f4c1c1b637cad04d726f2e13fd3051e03 upstream.
 
-On the Renesas RZ/G3S, when doing suspend to RAM, the uart_suspend_port()
-is called. The uart_suspend_port() calls 3 times the
-struct uart_port::ops::tx_empty() before shutting down the port.
+Lock queue limits when reading them, so that we don't read halfway
+modified values.
 
-According to the documentation, the struct uart_port::ops::tx_empty()
-API tests whether the transmitter FIFO and shifter for the port is
-empty.
-
-The Renesas RZ/G3S SCIFA IP reports the number of data units stored in the
-transmit FIFO through the FDR (FIFO Data Count Register). The data units
-in the FIFOs are written in the shift register and transmitted from there.
-The TEND bit in the Serial Status Register reports if the data was
-transmitted from the shift register.
-
-In the previous code, in the tx_empty() API implemented by the sh-sci
-driver, it is considered that the TX is empty if the hardware reports the
-TEND bit set and the number of data units in the FIFO is zero.
-
-According to the HW manual, the TEND bit has the following meaning:
-
-0: Transmission is in the waiting state or in progress.
-1: Transmission is completed.
-
-It has been noticed that when opening the serial device w/o using it and
-then switch to a power saving mode, the tx_empty() call in the
-uart_port_suspend() function fails, leading to the "Unable to drain
-transmitter" message being printed on the console. This is because the
-TEND=0 if nothing has been transmitted and the FIFOs are empty. As the
-TEND=0 has double meaning (waiting state, in progress) we can't
-determined the scenario described above.
-
-Add a software workaround for this. This sets a variable if any data has
-been sent on the serial console (when using PIO) or if the DMA callback has
-been called (meaning something has been transmitted). In the tx_empty()
-API the status of the DMA transaction is also checked and if it is
-completed or in progress the code falls back in checking the hardware
-registers instead of relying on the software variable.
-
-Fixes: 73a19e4c0301 ("serial: sh-sci: Add DMA support.")
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20241125115856.513642-1-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[claudiu.beznea: fixed conflict by:
- - keeping serial_port_out() instead of sci_port_out() in
-   sci_transmit_chars()
- - keeping !uart_circ_empty(xmit) condition in sci_dma_tx_complete(),
-   after s->tx_occurred = true; assignement]
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 29 +++++++++++++++++++++++++++++
- 1 file changed, 29 insertions(+)
+ drivers/md/dm-table.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index ed468b676f0b9..f8f301db84339 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -175,6 +175,7 @@ struct sci_port {
- 
- 	bool has_rtscts;
- 	bool autorts;
-+	bool tx_occurred;
- };
- 
- #define SCI_NPORTS CONFIG_SERIAL_SH_SCI_NR_UARTS
-@@ -825,6 +826,7 @@ static void sci_transmit_chars(struct uart_port *port)
- {
- 	struct circ_buf *xmit = &port->state->xmit;
- 	unsigned int stopped = uart_tx_stopped(port);
-+	struct sci_port *s = to_sci_port(port);
- 	unsigned short status;
- 	unsigned short ctrl;
- 	int count;
-@@ -856,6 +858,7 @@ static void sci_transmit_chars(struct uart_port *port)
- 		}
- 
- 		serial_port_out(port, SCxTDR, c);
-+		s->tx_occurred = true;
- 
- 		port->icount.tx++;
- 	} while (--count > 0);
-@@ -1208,6 +1211,8 @@ static void sci_dma_tx_complete(void *arg)
- 	if (uart_circ_chars_pending(xmit) < WAKEUP_CHARS)
- 		uart_write_wakeup(port);
- 
-+	s->tx_occurred = true;
-+
- 	if (!uart_circ_empty(xmit)) {
- 		s->cookie_tx = 0;
- 		schedule_work(&s->work_tx);
-@@ -1688,6 +1693,19 @@ static void sci_flush_buffer(struct uart_port *port)
- 		s->cookie_tx = -EINVAL;
+--- a/drivers/md/dm-table.c
++++ b/drivers/md/dm-table.c
+@@ -431,6 +431,7 @@ static int dm_set_device_limits(struct d
+ 		return 0;
  	}
- }
-+
-+static void sci_dma_check_tx_occurred(struct sci_port *s)
-+{
-+	struct dma_tx_state state;
-+	enum dma_status status;
-+
-+	if (!s->chan_tx)
-+		return;
-+
-+	status = dmaengine_tx_status(s->chan_tx, s->cookie_tx, &state);
-+	if (status == DMA_COMPLETE || status == DMA_IN_PROGRESS)
-+		s->tx_occurred = true;
-+}
- #else /* !CONFIG_SERIAL_SH_SCI_DMA */
- static inline void sci_request_dma(struct uart_port *port)
- {
-@@ -1697,6 +1715,10 @@ static inline void sci_free_dma(struct uart_port *port)
- {
+ 
++	mutex_lock(&q->limits_lock);
+ 	if (blk_stack_limits(limits, &q->limits,
+ 			get_start_sect(bdev) + start) < 0)
+ 		DMWARN("%s: adding target device %pg caused an alignment inconsistency: "
+@@ -448,6 +449,7 @@ static int dm_set_device_limits(struct d
+ 	 */
+ 	if (!dm_target_has_integrity(ti->type))
+ 		queue_limits_stack_integrity_bdev(limits, bdev);
++	mutex_unlock(&q->limits_lock);
+ 	return 0;
  }
  
-+static void sci_dma_check_tx_occurred(struct sci_port *s)
-+{
-+}
-+
- #define sci_flush_buffer	NULL
- #endif /* !CONFIG_SERIAL_SH_SCI_DMA */
- 
-@@ -2009,6 +2031,12 @@ static unsigned int sci_tx_empty(struct uart_port *port)
+@@ -1734,8 +1736,12 @@ static int device_not_write_zeroes_capab
+ 					   sector_t start, sector_t len, void *data)
  {
- 	unsigned short status = serial_port_in(port, SCxSR);
- 	unsigned short in_tx_fifo = sci_txfill(port);
-+	struct sci_port *s = to_sci_port(port);
-+
-+	sci_dma_check_tx_occurred(s);
-+
-+	if (!s->tx_occurred)
-+		return TIOCSER_TEMT;
+ 	struct request_queue *q = bdev_get_queue(dev->bdev);
++	int b;
  
- 	return (status & SCxSR_TEND(port)) && !in_tx_fifo ? TIOCSER_TEMT : 0;
+-	return !q->limits.max_write_zeroes_sectors;
++	mutex_lock(&q->limits_lock);
++	b = !q->limits.max_write_zeroes_sectors;
++	mutex_unlock(&q->limits_lock);
++	return b;
  }
-@@ -2179,6 +2207,7 @@ static int sci_startup(struct uart_port *port)
  
- 	dev_dbg(port->dev, "%s(%d)\n", __func__, port->line);
- 
-+	s->tx_occurred = false;
- 	sci_request_dma(port);
- 
- 	ret = sci_request_irq(s);
--- 
-2.39.5
-
+ static bool dm_table_supports_write_zeroes(struct dm_table *t)
 
 
 
