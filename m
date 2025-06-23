@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-157063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAF7BAE524D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7580AAE4E74
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7DE8B7AF0E4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 089BD17972C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F07C11F5820;
-	Mon, 23 Jun 2025 21:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DECE1F582A;
+	Mon, 23 Jun 2025 21:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxH3lBy+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ag/XibzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA744315A;
-	Mon, 23 Jun 2025 21:42:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30428219E0;
+	Mon, 23 Jun 2025 21:05:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714943; cv=none; b=Oz6Wuj5UV/paMP7a3rkYkqV716Z2TPZF0UGG1Ibn4ApjSLAVu3nhUNP2ZoHnNGXJ3BNmdb9rtac9g1NeeuPiLY6EF3OVbKvPvo/MEqRiDr/HrI8oSZ2BCvdZoi8aivzzFN8PgtyM6heO3xKiVZZaWqI69XgHrTJCCVQ1107sQwY=
+	t=1750712756; cv=none; b=NqdDhSCapkJMzCrC+L6OibDf2CE8Gpqq00F394jYsbJvxb2b9o96GPjT5NP0Oue7oQPgR/8AAP8D7TfI6wUPhW//ZA+aVguQQWtOiN65Bcs8rMTIUiMv49GS74x5XIBE0bfCwIayAyL1hCRIRdxGDqkHvhgclifHSHU8lywuxHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714943; c=relaxed/simple;
-	bh=O3bWtmSlz1g0nkQtng8NZBrjMfP4UyXcBt+eG9/s/l8=;
+	s=arc-20240116; t=1750712756; c=relaxed/simple;
+	bh=CKx+Hb3Td+bELceguDVxpsykqo1GAefXT/cNEgyfz6s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JkXKZIZnH5vcNdQJiUcrPaad4ubQ/q6uKQGxZqPZvjRPxXihKDNBY5nrnL6pvE40fWmiD50gAHKfphGqekFuhvkIr2He4qpTuWr0wf4InhbpoYObDjcbOdCzFDCIu3UgIzed7Y72nJwi0ELamYpCInTjh7WnMJNl1z1Yn2f1Mk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxH3lBy+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D15EC4CEEA;
-	Mon, 23 Jun 2025 21:42:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=L5sGLl6WmXFQYOUhpPhICEL0DyeoxjsL6C7FgMVEk1UIqp/eYvoV+/ukyI+HZJuE9IQ5GHJ6XJ/cqEkNpYFqERaVdr+SoA19BNYR9awr3L7lgOomU8x/t7MC0aLVpl+V+uwtU2lTfku+BAuE31Co74d3iQ3JuthZOunCzemCGI0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ag/XibzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6E7C4CEEA;
+	Mon, 23 Jun 2025 21:05:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714943;
-	bh=O3bWtmSlz1g0nkQtng8NZBrjMfP4UyXcBt+eG9/s/l8=;
+	s=korg; t=1750712755;
+	bh=CKx+Hb3Td+bELceguDVxpsykqo1GAefXT/cNEgyfz6s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxH3lBy+09xdXJO54tvzeMf/xQWdZokvEkfsc4IiFux6WbyT3POLpO1wflDd7tcG5
-	 Iz9yu3UOI4rnKkcX1kiB/YTf13aR0eskQLh7KRWst7jVcLtBgLWqheURLez7q57tgO
-	 PAzJxOnKMAhplDl9W2zkkNOzfym7NTYI+gVtGZPA=
+	b=ag/XibzW/2JaE2VgfQTW7zi5/a2VMnX8eA4oCN8bUDh/K1dBSDqa1sTtRC/vYrsdI
+	 jaGUuRPziqsumEVEXk/tiBZ8+3UpJqGAyi1F36NDHN/jTVF1WGHYooCAxXF9C9Hwro
+	 /ombnYFwNCD7PYRtds1h1whWefvjIE1L8LXLxUI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 205/508] xfs: Fix xfs_prepare_shift() range for RT
+Subject: [PATCH 5.15 106/411] PCI/DPC: Initialize aer_err_info before using it
 Date: Mon, 23 Jun 2025 15:04:10 +0200
-Message-ID: <20250623130650.311867123@linuxfoundation.org>
+Message-ID: <20250623130636.185117099@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Garry <john.g.garry@oracle.com>
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-[ Upstream commit f23660f059470ec7043748da7641e84183c23bc8 ]
+[ Upstream commit a424b598e6a6c1e69a2bb801d6fd16e805ab2c38 ]
 
-The RT extent range must be considered in the xfs_flush_unmap_range() call
-to stabilize the boundary.
+Previously the struct aer_err_info "info" was allocated on the stack
+without being initialized, so it contained junk except for the fields we
+explicitly set later.
 
-This code change is originally from Dave Chinner.
+Initialize "info" at declaration so it starts as all zeros.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: John Garry <john.g.garry@oracle.com>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Fixes: 8aefa9b0d910 ("PCI/DPC: Print AER status in DPC event handling")
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Link: https://patch.msgid.link/20250522232339.1525671-2-helgaas@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_bmap_util.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/pci/pcie/dpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_bmap_util.c b/fs/xfs/xfs_bmap_util.c
-index dabae6323c503..bab8ba224e10d 100644
---- a/fs/xfs/xfs_bmap_util.c
-+++ b/fs/xfs/xfs_bmap_util.c
-@@ -1059,7 +1059,7 @@ xfs_prepare_shift(
- 	struct xfs_inode	*ip,
- 	loff_t			offset)
+diff --git a/drivers/pci/pcie/dpc.c b/drivers/pci/pcie/dpc.c
+index ab83f78f3eb1d..cabbaacdb6e61 100644
+--- a/drivers/pci/pcie/dpc.c
++++ b/drivers/pci/pcie/dpc.c
+@@ -263,7 +263,7 @@ static int dpc_get_aer_uncorrect_severity(struct pci_dev *dev,
+ void dpc_process_error(struct pci_dev *pdev)
  {
--	struct xfs_mount	*mp = ip->i_mount;
-+	unsigned int		rounding;
- 	int			error;
+ 	u16 cap = pdev->dpc_cap, status, source, reason, ext_reason;
+-	struct aer_err_info info;
++	struct aer_err_info info = {};
  
- 	/*
-@@ -1077,11 +1077,13 @@ xfs_prepare_shift(
- 	 * with the full range of the operation. If we don't, a COW writeback
- 	 * completion could race with an insert, front merge with the start
- 	 * extent (after split) during the shift and corrupt the file. Start
--	 * with the block just prior to the start to stabilize the boundary.
-+	 * with the allocation unit just prior to the start to stabilize the
-+	 * boundary.
- 	 */
--	offset = round_down(offset, mp->m_sb.sb_blocksize);
-+	rounding = xfs_inode_alloc_unitsize(ip);
-+	offset = rounddown_64(offset, rounding);
- 	if (offset)
--		offset -= mp->m_sb.sb_blocksize;
-+		offset -= rounding;
- 
- 	/*
- 	 * Writeback and invalidate cache for the remainder of the file as we're
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_STATUS, &status);
+ 	pci_read_config_word(pdev, cap + PCI_EXP_DPC_SOURCE_ID, &source);
 -- 
 2.39.5
 
