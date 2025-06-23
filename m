@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-158179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69C0AE5757
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 071BAAE568E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 035B01689D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77FB7447AA0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 056D522422F;
-	Mon, 23 Jun 2025 22:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E59219A7A;
+	Mon, 23 Jun 2025 22:18:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZ1TiU7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjGb1LZD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E9122370A;
-	Mon, 23 Jun 2025 22:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D736319E7F9;
+	Mon, 23 Jun 2025 22:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717678; cv=none; b=NgmILE9Bbw5qrL+VxYSFU01pGdLPE3G7fOn0r9lUkLB5T4OdHdTtOT62jm3Yr4BOzbhv4gvh0EZaxyLaoepXy/+I/+t5SI+5YHEL7nWI1kcD0a0lHhmowWev6+3CHyljsrjWnEtMtPz22h1P9QcmmUN3c5OQtPguN6/3Tz0KdGU=
+	t=1750717096; cv=none; b=GNzwSWESVt7ULE4mBxT4diaupBfpCAudlciRSKQqdIIh+5AdztJHo7OcasFS0ujWIKoTgdy5jgu1+crlgWufsMRRqRDZW8MpYYHjiSAa6WbNEz8X8lfW4+0gccXdlziJuO0PVdYDFsC6YsREPehisI4mEa67OoDbElWEO0SiIJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717678; c=relaxed/simple;
-	bh=omfFhS7QX1lR7+bORn1tVTkEVB/TaS7nj3PnJaW8/Ko=;
+	s=arc-20240116; t=1750717096; c=relaxed/simple;
+	bh=j4wxZQiVX78ICj7XfTSZrp75cc+K0kD5BlO7+a4qMJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BpwPIA/oPoPH+pAI/kE2zHUyjcfLJfIEo9QbRNf1enyzFblL9cioJGmlvFGZrvyff/JRttzHh6zNnZ9YvX8JSFEiJLGFShS+fLNvOTy+eu05mnh53C+GC9b4srzkteQxngUOdrqHutERmNNMKase0g87d9qjf5ETOgX8qcLUUUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZ1TiU7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44137C4CEEA;
-	Mon, 23 Jun 2025 22:27:58 +0000 (UTC)
+	 MIME-Version; b=g9Xnz+NEV+Hx+0UGfrLtjXY6pxJpTcJEXmdDnSfHkHvn8YiVSfuMZ2evmLGwcBoASTF2fb1fTL7zbMUY+Cdkx0bhhTdmST5/YH4koSA/yX36leBv3LS/CrV490R2zMZl3C6x5meaFW8yxRwn42M6OxeORfguZp8xdyo6oiJYHYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjGb1LZD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F351C4CEED;
+	Mon, 23 Jun 2025 22:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717678;
-	bh=omfFhS7QX1lR7+bORn1tVTkEVB/TaS7nj3PnJaW8/Ko=;
+	s=korg; t=1750717096;
+	bh=j4wxZQiVX78ICj7XfTSZrp75cc+K0kD5BlO7+a4qMJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZ1TiU7xaDyfhqd5Zduri2ZwlVYNJkQ8Uv07fuewPv84Ajda8GyIvYldhQJELvH/o
-	 f8Kgmdhv3QrYpI+FEJ4rm+SenJTbdCsTCxYATSqLiu311a4sPMsh0T1zNQ7MDo8BgD
-	 e12bNVzzgsEatNmw1NPq74fwlZqwDh7/3Uy272F8=
+	b=DjGb1LZD/xCcW7cfTlgrVU2/UbJjZh+uDW3DiTqeIJe6YGh+Y4WtPumyynrK/dFJM
+	 PZLNIa2KdMDPHXJ+b2eYXajhfwwDfYMG/wkGZe2H5vyUzEy5uCp9dB3eg7D+bpHJw9
+	 w4joqg5WPURVb2Xv+jL9Gr1mks4ZXdwlvUeNz+bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>
-Subject: [PATCH 6.1 500/508] Revert "cpufreq: tegra186: Share policy per cluster"
+	syzbot <syzkaller@googlegroups.com>,
+	Octavian Purdila <tavip@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 401/411] net_sched: sch_sfq: move the limit validation
 Date: Mon, 23 Jun 2025 15:09:05 +0200
-Message-ID: <20250623130657.316779217@linuxfoundation.org>
+Message-ID: <20250623130643.773672785@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +63,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Octavian Purdila <tavip@google.com>
 
-This reverts commit 89172666228de1cefcacf5bc6f61c6281751d2ed which is
-upstream commit be4ae8c19492cd6d5de61ccb34ffb3f5ede5eec8.
+commit b3bf8f63e6179076b57c9de660c9f80b5abefe70 upstream.
 
-This commit is causing a suspend regression on Tegra186 Jetson TX2 with
-Linux v6.12.y kernels. This is not seen with Linux v6.15 that includes
-this change but indicates that there are there changes missing.
-Therefore, revert this change.
+It is not sufficient to directly validate the limit on the data that
+the user passes as it can be updated based on how the other parameters
+are changed.
 
-Link: https://lore.kernel.org/linux-tegra/bf1dabf7-0337-40e9-8b8e-4e93a0ffd4cc@nvidia.com/
-Fixes: 89172666228d ("cpufreq: tegra186: Share policy per cluster")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Move the check at the end of the configuration update process to also
+catch scenarios where the limit is indirectly updated, for example
+with the following configurations:
+
+tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
+tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 divisor 1
+
+This fixes the following syzkaller reported crash:
+
+------------[ cut here ]------------
+UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:6
+index 65535 is out of range for type 'struct sfq_head[128]'
+CPU: 1 UID: 0 PID: 3037 Comm: syz.2.16 Not tainted 6.14.0-rc2-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x201/0x300 lib/dump_stack.c:120
+ ubsan_epilogue lib/ubsan.c:231 [inline]
+ __ubsan_handle_out_of_bounds+0xf5/0x120 lib/ubsan.c:429
+ sfq_link net/sched/sch_sfq.c:203 [inline]
+ sfq_dec+0x53c/0x610 net/sched/sch_sfq.c:231
+ sfq_dequeue+0x34e/0x8c0 net/sched/sch_sfq.c:493
+ sfq_reset+0x17/0x60 net/sched/sch_sfq.c:518
+ qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
+ tbf_reset+0x41/0x110 net/sched/sch_tbf.c:339
+ qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
+ dev_reset_queue+0x100/0x1b0 net/sched/sch_generic.c:1311
+ netdev_for_each_tx_queue include/linux/netdevice.h:2590 [inline]
+ dev_deactivate_many+0x7e5/0xe70 net/sched/sch_generic.c:1375
+
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Fixes: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/tegra186-cpufreq.c |    7 -------
- 1 file changed, 7 deletions(-)
+ net/sched/sch_sfq.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/cpufreq/tegra186-cpufreq.c
-+++ b/drivers/cpufreq/tegra186-cpufreq.c
-@@ -73,18 +73,11 @@ static int tegra186_cpufreq_init(struct
- {
- 	struct tegra186_cpufreq_data *data = cpufreq_get_driver_data();
- 	unsigned int cluster = data->cpus[policy->cpu].bpmp_cluster_id;
--	u32 cpu;
- 
- 	policy->freq_table = data->clusters[cluster].table;
- 	policy->cpuinfo.transition_latency = 300 * 1000;
- 	policy->driver_data = NULL;
- 
--	/* set same policy for all cpus in a cluster */
--	for (cpu = 0; cpu < ARRAY_SIZE(tegra186_cpus); cpu++) {
--		if (data->cpus[cpu].bpmp_cluster_id == cluster)
--			cpumask_set_cpu(cpu, policy->cpus);
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -661,10 +661,6 @@ static int sfq_change(struct Qdisc *sch,
+ 		if (!p)
+ 			return -ENOMEM;
+ 	}
+-	if (ctl->limit == 1) {
+-		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
+-		return -EINVAL;
 -	}
--
- 	return 0;
- }
  
+ 	sch_tree_lock(sch);
+ 
+@@ -705,6 +701,12 @@ static int sfq_change(struct Qdisc *sch,
+ 		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
+ 		maxflows = min_t(u32, maxflows, limit);
+ 	}
++	if (limit == 1) {
++		sch_tree_unlock(sch);
++		kfree(p);
++		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
++		return -EINVAL;
++	}
+ 
+ 	/* commit configuration */
+ 	q->limit = limit;
 
 
 
