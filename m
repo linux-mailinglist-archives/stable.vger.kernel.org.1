@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59602AE54A9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A3CCAE5103
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 346E2447C7E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 413CE1B62370
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67CCF22173D;
-	Mon, 23 Jun 2025 22:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDAD221299;
+	Mon, 23 Jun 2025 21:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q5GXVbUk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v9Ja/A4E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2445321FF2B;
-	Mon, 23 Jun 2025 22:03:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4251E5B71;
+	Mon, 23 Jun 2025 21:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716221; cv=none; b=VYGr+EWVYt/fMo0X6d2VXxIG31esmVMPG3eTV8+d71Nq1t9FNwmfaFslDpcxDR4Jvhlvyi3upAX4qxzqblrVTbKctLc7QwRKPIUo+9NND8qMfZ6UGXRzSXWCfbEYzOUoGBrWn8sKTGdUe4BVMdNdFHB6gotdscZCgfXeD6NCuVk=
+	t=1750714199; cv=none; b=iHVDyxks+UHIQzRMV/Ab7XvCDKyKvDa44183iQ5wt2us3exhMA3Ue6Bxtwm1NicXzSUulpJGom4s2iM0BcSR4XtmXJgm0uqfRzLXVrzt/TTD4PyeHzyGAvHucqL4kzGPbmikutPtcHT4/B7xP1AJ6PklQ3Nk3pcXBp5iOae8VVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716221; c=relaxed/simple;
-	bh=C5u4euelvUVii2V+pzSRDrCirSNPytNkezlWIDL++Hc=;
+	s=arc-20240116; t=1750714199; c=relaxed/simple;
+	bh=hdmhUxNwkGtZ/lWyj/yzCSNbeGaZg5Sw4n4DFpsB/x4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMpSMOOAU4yd2RSZau118fEfRTj20BVo471isZB4edRxIPm3RGpfnsIlBp+JUpXfuj10wD4wLZpHeTnXo3RrSfg2sDPB+52RCgpxhdV9IxiBU0GXlyPbDVP7CRYKaEoHmTyDLa+y0E/lnrh5xcx8VpqY0sDR6sRKK/yTi5jTR1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q5GXVbUk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA318C4CEEA;
-	Mon, 23 Jun 2025 22:03:40 +0000 (UTC)
+	 MIME-Version; b=Gl/4zpG5hbmoCOlFMKGYz0H3CUo5vxQUemf9jevhfDifwHwx76cizRgN6xXla/FzLXwUizbCLJWHc86VJgHkgHbahb0L3qyYnFrq7pb6kya62fY6yy+PIi1fugyN+8Mu7X7Ftb6c3hKvBfFF/EnXkW/X2iUizh90vCM+XKW7XiY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v9Ja/A4E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A67B0C4CEEA;
+	Mon, 23 Jun 2025 21:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716221;
-	bh=C5u4euelvUVii2V+pzSRDrCirSNPytNkezlWIDL++Hc=;
+	s=korg; t=1750714199;
+	bh=hdmhUxNwkGtZ/lWyj/yzCSNbeGaZg5Sw4n4DFpsB/x4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q5GXVbUkKa0r6uISk48hkiejXCTAFCpTjKusnEVYb1EH9hmG5ir3/iW1+NxCRRjDh
-	 fkVowXuQDhIHnOD9IixzOXK8h6Fs1Mi5KyIx7oLf4ysnb3orbNmeHBWEt9/2aZvWUc
-	 Mt4fnspt8kTcOLl2vc7GpN2iunu+FEl29+GbPOsQ=
+	b=v9Ja/A4EYRvnYkBoAi8mvewWZvk+DClWVUCawI02XAPq3FsvNLI6kg7EFRgK6Hu9n
+	 GgFNaEQhV1wq4NsXjkQG63jea2oL6aJcutIsv6H5R1KIxvrm6pqPPDbuoQ2+6bxmyp
+	 Hu12Q4VSQVk0zws2PlWGTZhpTW3Zq3L1qEFsZXAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.1 309/508] media: ccs-pll: Start OP pre-PLL multiplier search from correct value
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 396/592] vxlan: Add RCU read-side critical sections in the Tx path
 Date: Mon, 23 Jun 2025 15:05:54 +0200
-Message-ID: <20250623130652.915121130@linuxfoundation.org>
+Message-ID: <20250623130709.862324530@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,99 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 660e613d05e449766784c549faf5927ffaf281f1 upstream.
+[ Upstream commit 804b09be09f8af4eda5346a72361459ba21fcf1b ]
 
-The ccs_pll_calculate() function does a search over possible PLL
-configurations to find the "best" one. If the sensor does not support odd
-pre-PLL divisors and the minimum value (with constraints) isn't 1, other
-odd values could be errorneously searched (and selected) for the pre-PLL
-divisor. Fix this.
+The Tx path does not run from an RCU read-side critical section which
+makes the current lockless accesses to FDB entries invalid. As far as I
+am aware, this has not been a problem in practice, but traces will be
+generated once we transition the FDB lookup to rhashtable_lookup().
 
-Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add rcu_read_{lock,unlock}() around the handling of FDB entries in the
+Tx path. Remove the RCU read-side critical section from vxlan_xmit_nh()
+as now the function is always called from an RCU read-side critical
+section.
+
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20250415121143.345227-2-idosch@nvidia.com
+Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/vxlan/vxlan_core.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -817,6 +817,8 @@ int ccs_pll_calculate(struct device *dev
- 			      one_or_more(
- 				      DIV_ROUND_UP(op_lim_fr->max_pll_op_clk_freq_hz,
- 						   pll->ext_clk_freq_hz))));
-+	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
-+		min_op_pre_pll_clk_div = clk_div_even(min_op_pre_pll_clk_div);
- 	dev_dbg(dev, "pll_op check: min / max op_pre_pll_clk_div: %u / %u\n",
- 		min_op_pre_pll_clk_div, max_op_pre_pll_clk_div);
+diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
+index e83197fac1e0f..edbf1088c7d74 100644
+--- a/drivers/net/vxlan/vxlan_core.c
++++ b/drivers/net/vxlan/vxlan_core.c
+@@ -1916,12 +1916,15 @@ static int arp_reduce(struct net_device *dev, struct sk_buff *skb, __be32 vni)
+ 			goto out;
+ 		}
  
++		rcu_read_lock();
+ 		f = vxlan_find_mac(vxlan, n->ha, vni);
+ 		if (f && vxlan_addr_any(&(first_remote_rcu(f)->remote_ip))) {
+ 			/* bridge-local neighbor */
+ 			neigh_release(n);
++			rcu_read_unlock();
+ 			goto out;
+ 		}
++		rcu_read_unlock();
+ 
+ 		reply = arp_create(ARPOP_REPLY, ETH_P_ARP, sip, dev, tip, sha,
+ 				n->ha, sha);
+@@ -2648,14 +2651,10 @@ static void vxlan_xmit_nh(struct sk_buff *skb, struct net_device *dev,
+ 	memset(&nh_rdst, 0, sizeof(struct vxlan_rdst));
+ 	hash = skb_get_hash(skb);
+ 
+-	rcu_read_lock();
+ 	nh = rcu_dereference(f->nh);
+-	if (!nh) {
+-		rcu_read_unlock();
++	if (!nh)
+ 		goto drop;
+-	}
+ 	do_xmit = vxlan_fdb_nh_path_select(nh, hash, &nh_rdst);
+-	rcu_read_unlock();
+ 
+ 	if (likely(do_xmit))
+ 		vxlan_xmit_one(skb, dev, vni, &nh_rdst, did_rsc);
+@@ -2782,6 +2781,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 
+ 	eth = eth_hdr(skb);
++	rcu_read_lock();
+ 	f = vxlan_find_mac(vxlan, eth->h_dest, vni);
+ 	did_rsc = false;
+ 
+@@ -2804,7 +2804,7 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			vxlan_vnifilter_count(vxlan, vni, NULL,
+ 					      VXLAN_VNI_STATS_TX_DROPS, 0);
+ 			kfree_skb_reason(skb, SKB_DROP_REASON_NO_TX_TARGET);
+-			return NETDEV_TX_OK;
++			goto out;
+ 		}
+ 	}
+ 
+@@ -2829,6 +2829,8 @@ static netdev_tx_t vxlan_xmit(struct sk_buff *skb, struct net_device *dev)
+ 			kfree_skb_reason(skb, SKB_DROP_REASON_NO_TX_TARGET);
+ 	}
+ 
++out:
++	rcu_read_unlock();
+ 	return NETDEV_TX_OK;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
