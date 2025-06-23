@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-157507-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10907AE546E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:29 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1E1AE50D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94CE91BC1137
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 839B67AD482
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9D62940B;
-	Mon, 23 Jun 2025 22:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65B4D223339;
+	Mon, 23 Jun 2025 21:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSs0oZKT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJZKE+FG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08C94409;
-	Mon, 23 Jun 2025 22:00:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21AC921B9C9;
+	Mon, 23 Jun 2025 21:28:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716036; cv=none; b=hReKD0vduT++LFKQFu3dYlQpFBsftZ771WCav8P+HzN/+naTTrR9qceno1lQ6e6EUWvVkEDhRUhwqBJ0aclLO64KPN7JXBWnhwZF+GBzaTwRisr59NOjFOC/gIWWlbgc6DEHN2O7zn/5LJFI5eKDzh81VpSy0kInIY7q3pYqmBc=
+	t=1750714094; cv=none; b=I3Ds38ZqYgcKEJnWgKrl//QqjEISZJKcue4KC8c/N0MHbSjRfzWsKsPJWIDHEdCYUB1oiO1ak3YppGDSTufvTAlMgmRHs1EJjopgg3D6gqTA4WbXoUh3g7CRkWt2gvHomBbhWWVSQ3QRiHfHqCPphar99BiHJjmFlukWLIX6RrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716036; c=relaxed/simple;
-	bh=TW8YTqmdDvJur5+BS8PXd/1UNGAv0goyYm/WBjgyhnw=;
+	s=arc-20240116; t=1750714094; c=relaxed/simple;
+	bh=Ehi01Hri5nfR8qca0PI9J2pbObGKmkyShDWPJ+E0XQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rx2Ajo5yt25TKEHXXbdxbDgSoJVWz4rbKPfrLU4T8JXEfkQkbPLbh4CdUQFEvTWwoJROuc9aMcjItQRNF/AG1zqGMgtwNvkSU4FTQFHrfBU767iygq4O0Ek9DCJEfmNEhCW2MxOpufNKlPMP8ktGT6TDZjAxa45VblPq8QBE9sc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSs0oZKT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BA3C4CEEA;
-	Mon, 23 Jun 2025 22:00:36 +0000 (UTC)
+	 MIME-Version; b=dxfgIGpQFn4cBKcmcAamjiMORzJAXU11S+/7hhVDNq4tG2QCT+CNViK6ClOwkRZahSSij41/6EnTgpUFSZ2JStbtv4InymHYrXtQhpr7QG9k58FVgUgri4nzFxU0aeDrdkx/Xo31f+njVcjr7PdTj33MkUzKyxkq997Uo5T8K6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJZKE+FG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7ADC4CEEA;
+	Mon, 23 Jun 2025 21:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716036;
-	bh=TW8YTqmdDvJur5+BS8PXd/1UNGAv0goyYm/WBjgyhnw=;
+	s=korg; t=1750714094;
+	bh=Ehi01Hri5nfR8qca0PI9J2pbObGKmkyShDWPJ+E0XQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uSs0oZKTJe5xDRrkE884D2FPBwmG0TR2Fx+ka0dImQRpcyUI/Zu313oBwa6pB4Ga/
-	 qQFZqUHhHkwWk8yf9VP8A8UNz4XpIYUh5j4yh7QXairjbDFoINSxr7ZdgLRPE/V2US
-	 TKBxrTCQNVcbfcjJB9D3Pwu/2hjvyN6NO/QVWzpE=
+	b=vJZKE+FG+zFupW4//nVhEU5JZP2R5tx8XHKVx5bRIxBFzMBTTckLKmNgXHP1RICDm
+	 eUA+RKfsTiMmjxeSKdg4ba0uzvxO2+GSv00NzsrVBZcKjM9c0HXG8HnwyYwAVo+S9b
+	 oGe0ZtFrYexyg/HpL5tejXwVu986gsFwuu8pQNi4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Penkler <dpenkler@gmail.com>
-Subject: [PATCH 6.1 276/508] usb: usbtmc: Fix read_stb function and get_stb ioctl
+	Stefan Wahren <wahrenst@gmx.net>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 363/592] net: vertexcom: mse102x: Return code for mse102x_rx_pkt_spi
 Date: Mon, 23 Jun 2025 15:05:21 +0200
-Message-ID: <20250623130652.039487571@linuxfoundation.org>
+Message-ID: <20250623130709.078525499@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Penkler <dpenkler@gmail.com>
+From: Stefan Wahren <wahrenst@gmx.net>
 
-commit acb3dac2805d3342ded7dbbd164add32bbfdf21c upstream.
+[ Upstream commit 4ecf56f4b66011b583644bf9a62188d05dfcd78c ]
 
-The usbtmc488_ioctl_read_stb function relied on a positive return from
-usbtmc_get_stb to reset the srq condition in the driver. The
-USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
-to the user.
+The MSE102x doesn't provide any interrupt register, so the only way
+to handle the level interrupt is to fetch the whole packet from
+the MSE102x internal buffer via SPI. So in cases the interrupt
+handler fails to do this, it should return IRQ_NONE. This allows
+the core to disable the interrupt in case the issue persists
+and prevent an interrupt storm.
 
-Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
-error returns") changed the return value of usbtmc_get_stb to 0 on
-success instead of returning the value of usb_control_msg which is
-positive in the normal case. This change caused the function
-usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
-longer function correctly.
-
-Change the test in usbtmc488_ioctl_read_stb to test for failure
-first and return the failure code immediately.
-Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
-instead of a positive value.
-
-Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dave Penkler <dpenkler@gmail.com>
-Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+Link: https://patch.msgid.link/20250509120435.43646-6-wahrenst@gmx.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/class/usbtmc.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/vertexcom/mse102x.c | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
---- a/drivers/usb/class/usbtmc.c
-+++ b/drivers/usb/class/usbtmc.c
-@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(stru
- 
- 	rv = usbtmc_get_stb(file_data, &stb);
- 
--	if (rv > 0) {
--		srq_asserted = atomic_xchg(&file_data->srq_asserted,
--					srq_asserted);
--		if (srq_asserted)
--			stb |= 0x40; /* Set RQS bit */
-+	if (rv < 0)
-+		return rv;
-+
-+	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
-+	if (srq_asserted)
-+		stb |= 0x40; /* Set RQS bit */
-+
-+	rv = put_user(stb, (__u8 __user *)arg);
- 
--		rv = put_user(stb, (__u8 __user *)arg);
--	}
- 	return rv;
- 
+diff --git a/drivers/net/ethernet/vertexcom/mse102x.c b/drivers/net/ethernet/vertexcom/mse102x.c
+index e4d993f313740..545177e84c0eb 100644
+--- a/drivers/net/ethernet/vertexcom/mse102x.c
++++ b/drivers/net/ethernet/vertexcom/mse102x.c
+@@ -306,7 +306,7 @@ static void mse102x_dump_packet(const char *msg, int len, const char *data)
+ 		       data, len, true);
  }
-@@ -2201,7 +2202,7 @@ static long usbtmc_ioctl(struct file *fi
  
- 	case USBTMC_IOCTL_GET_STB:
- 		retval = usbtmc_get_stb(file_data, &tmp_byte);
--		if (retval > 0)
-+		if (!retval)
- 			retval = put_user(tmp_byte, (__u8 __user *)arg);
- 		break;
+-static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
++static irqreturn_t mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ {
+ 	struct sk_buff *skb;
+ 	unsigned int rxalign;
+@@ -327,7 +327,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 		mse102x_tx_cmd_spi(mse, CMD_CTR);
+ 		ret = mse102x_rx_cmd_spi(mse, (u8 *)&rx);
+ 		if (ret)
+-			return;
++			return IRQ_NONE;
  
+ 		cmd_resp = be16_to_cpu(rx);
+ 		if ((cmd_resp & CMD_MASK) != CMD_RTS) {
+@@ -360,7 +360,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	rxalign = ALIGN(rxlen + DET_SOF_LEN + DET_DFT_LEN, 4);
+ 	skb = netdev_alloc_skb_ip_align(mse->ndev, rxalign);
+ 	if (!skb)
+-		return;
++		return IRQ_NONE;
+ 
+ 	/* 2 bytes Start of frame (before ethernet header)
+ 	 * 2 bytes Data frame tail (after ethernet frame)
+@@ -370,7 +370,7 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 	if (mse102x_rx_frame_spi(mse, rxpkt, rxlen, drop)) {
+ 		mse->ndev->stats.rx_errors++;
+ 		dev_kfree_skb(skb);
+-		return;
++		return IRQ_HANDLED;
+ 	}
+ 
+ 	if (netif_msg_pktdata(mse))
+@@ -381,6 +381,8 @@ static void mse102x_rx_pkt_spi(struct mse102x_net *mse)
+ 
+ 	mse->ndev->stats.rx_packets++;
+ 	mse->ndev->stats.rx_bytes += rxlen;
++
++	return IRQ_HANDLED;
+ }
+ 
+ static int mse102x_tx_pkt_spi(struct mse102x_net *mse, struct sk_buff *txb,
+@@ -512,12 +514,13 @@ static irqreturn_t mse102x_irq(int irq, void *_mse)
+ {
+ 	struct mse102x_net *mse = _mse;
+ 	struct mse102x_net_spi *mses = to_mse102x_spi(mse);
++	irqreturn_t ret;
+ 
+ 	mutex_lock(&mses->lock);
+-	mse102x_rx_pkt_spi(mse);
++	ret = mse102x_rx_pkt_spi(mse);
+ 	mutex_unlock(&mses->lock);
+ 
+-	return IRQ_HANDLED;
++	return ret;
+ }
+ 
+ static int mse102x_net_open(struct net_device *ndev)
+-- 
+2.39.5
+
 
 
 
