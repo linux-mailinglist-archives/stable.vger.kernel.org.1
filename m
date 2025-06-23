@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-156994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7387AE5202
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53618AE5172
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E4B54A4EBB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 705E6441EB6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 281A3222599;
-	Mon, 23 Jun 2025 21:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79FA41F3B96;
+	Mon, 23 Jun 2025 21:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eaR9Jxhe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7uUsHfx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90E4221FC7;
-	Mon, 23 Jun 2025 21:39:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36FA64409;
+	Mon, 23 Jun 2025 21:34:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714774; cv=none; b=QaB9Y+0uSf2FJbqPuvpValygihLH0RBjim+tpmQS67Bnbv+XJfGS/N3lvFzZY7aBwgmtUbZhTvNK3v7/9usT2aPpYrmTbzxIScwvSnkuUhFSDl+VUOLtzNbdpKlU1APdvYPN6HYVxs8YD+XxRqovsvR/suvrOQZIHjpjk+Uhh0o=
+	t=1750714456; cv=none; b=LVD/JoCI+06NkO3OFoLVq2S6Rh3cayGcpJlKP6zWTFT5wSbW5kJtQHco1eDLaVd32BI3LCVHmCEFLqqwdYXnUKQ5P0PbhQ205VcVigjEcamK71IdoQIq6XF8hyLTxZqta2RabCeLF5Dl0pc9m0f+HuLw0s2Gf6mEBgr0S+rdWF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714774; c=relaxed/simple;
-	bh=M+M/mpFSf1B96yv0qS5wvOHS+OVe4Z19aM7/+VpQhb8=;
+	s=arc-20240116; t=1750714456; c=relaxed/simple;
+	bh=7UCIz925KQrrAr+yuVy+QHu8ohW+JI5Tijjc8bx9Fl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7JVUunisS0e3DTHLcg+Q0TKMHOxxUpy19mdeZ9MUQRs0YvU7DXLEGupjWZfJClKA5Nf2QoNL43ZbmgrkeytsLA2X/i/LCPSacnfQSXO6589ZXoSU+iRJJBYd97Zss5hF213J1xgAl2GEEGfsh9FcwS22lrNBoldPjsNbc/WLD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eaR9Jxhe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 691BDC4CEEA;
-	Mon, 23 Jun 2025 21:39:34 +0000 (UTC)
+	 MIME-Version; b=fOOGy32S/mbklqxsVHmJ0KJe/uHoZiwLLyY79E1C04WhkTugnyY0LckaLkscW7rFMnT0DdmSS7w2TaY+hqzebWgTaFhRktBphWwDNBEps4AKAXz9RIZZXXhuZOPo6kN5jrFC3c9cLO7ACItmfa2qdbuLzx0A5wm7G4uK3h0wfDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7uUsHfx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 779E6C4CEEA;
+	Mon, 23 Jun 2025 21:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714774;
-	bh=M+M/mpFSf1B96yv0qS5wvOHS+OVe4Z19aM7/+VpQhb8=;
+	s=korg; t=1750714455;
+	bh=7UCIz925KQrrAr+yuVy+QHu8ohW+JI5Tijjc8bx9Fl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eaR9JxhepUDIpUcZ+5S6aB0I5vAKGm1f27j/WVQLtwkAxDa0UykeXWD4mxg5q2hXn
-	 m0eKdjv6yXzEIv9UTpPRUVSGpW1ZwIaIyMa9ab8DUvN0Cai4iUDOmXsH1liE9Razp9
-	 DfTJ1fI9akaXr5Vh6VJo+iDINc4Um1JNY0IdNhq4=
+	b=T7uUsHfxsyj1Kb9WN8cQtp0Ik5Hq7h86Pd/y3IEZM4v9kvL9Vpn1n/BXXJylZXVXY
+	 yl84ZaAn+A+6o2fTl6XF3LMX1enzrFOflTrEw8I0beY1Re7imYQh3GU2uh7Z9rG+RD
+	 lnF4SX0hynXtx3XJ4zBk4FXoWq+Bj73C9vZIRxxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Maya Matuszczyk <maccraft123mc@gmail.com>,
+	Anthony Ruhier <aruhier@mailbox.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 228/355] drm/amd/display: Add NULL pointer checks in dm_force_atomic_commit()
-Date: Mon, 23 Jun 2025 15:07:09 +0200
-Message-ID: <20250623130633.600880106@linuxfoundation.org>
+Subject: [PATCH 5.10 229/355] drm/msm/a6xx: Increase HFI response timeout
+Date: Mon, 23 Jun 2025 15:07:10 +0200
+Message-ID: <20250623130633.631436877@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -72,80 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Akhil P Oommen <quic_akhilpo@quicinc.com>
 
-[ Upstream commit 3f397cd203f247879c2f1a061e90d4c8d23655de ]
+[ Upstream commit 5f02f5e78ec9688e29b6857813185b1181796abe ]
 
-This commit updates the dm_force_atomic_commit function to replace the
-usage of PTR_ERR_OR_ZERO with IS_ERR for checking error states after
-retrieving the Connector (drm_atomic_get_connector_state), CRTC
-(drm_atomic_get_crtc_state), and Plane (drm_atomic_get_plane_state)
-states.
+When ACD feature is enabled, it triggers some internal calibrations
+which result in a pretty long delay during the first HFI perf vote.
+So, increase the HFI response timeout to match the downstream driver.
 
-The function utilized PTR_ERR_OR_ZERO for error checking. However, this
-approach is inappropriate in this context because the respective
-functions do not return NULL; they return pointers that encode errors.
-
-This change ensures that error pointers are properly checked using
-IS_ERR before attempting to dereference.
-
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Tested-by: Maya Matuszczyk <maccraft123mc@gmail.com>
+Tested-by: Anthony Ruhier <aruhier@mailbox.org>
+Patchwork: https://patchwork.freedesktop.org/patch/649344/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c  | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 260133562db53..45420968e5f12 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -8098,16 +8098,20 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
- 	 */
- 	conn_state = drm_atomic_get_connector_state(state, connector);
+diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
+index ccd44d0418f83..8bcf87726ec66 100644
+--- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
+@@ -102,7 +102,7 @@ static int a6xx_hfi_wait_for_ack(struct a6xx_gmu *gmu, u32 id, u32 seqnum,
  
--	ret = PTR_ERR_OR_ZERO(conn_state);
--	if (ret)
-+	/* Check for error in getting connector state */
-+	if (IS_ERR(conn_state)) {
-+		ret = PTR_ERR(conn_state);
- 		goto out;
-+	}
+ 	/* Wait for a response */
+ 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_GMU2HOST_INTR_INFO, val,
+-		val & A6XX_GMU_GMU2HOST_INTR_INFO_MSGQ, 100, 5000);
++		val & A6XX_GMU_GMU2HOST_INTR_INFO_MSGQ, 100, 1000000);
  
- 	/* Attach crtc to drm_atomic_state*/
- 	crtc_state = drm_atomic_get_crtc_state(state, &disconnected_acrtc->base);
- 
--	ret = PTR_ERR_OR_ZERO(crtc_state);
--	if (ret)
-+	/* Check for error in getting crtc state */
-+	if (IS_ERR(crtc_state)) {
-+		ret = PTR_ERR(crtc_state);
- 		goto out;
-+	}
- 
- 	/* force a restore */
- 	crtc_state->mode_changed = true;
-@@ -8115,9 +8119,11 @@ static int dm_force_atomic_commit(struct drm_connector *connector)
- 	/* Attach plane to drm_atomic_state */
- 	plane_state = drm_atomic_get_plane_state(state, plane);
- 
--	ret = PTR_ERR_OR_ZERO(plane_state);
--	if (ret)
-+	/* Check for error in getting plane state */
-+	if (IS_ERR(plane_state)) {
-+		ret = PTR_ERR(plane_state);
- 		goto out;
-+	}
- 
- 	/* Call commit internally with the state we just constructed */
- 	ret = drm_atomic_commit(state);
+ 	if (ret) {
+ 		DRM_DEV_ERROR(gmu->dev,
 -- 
 2.39.5
 
