@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156657-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 870F0AE4EF9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA0AAE5095
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 23C7017DA69
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5E2F1B62B0B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8DCA220F50;
-	Mon, 23 Jun 2025 21:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468F9221299;
+	Mon, 23 Jun 2025 21:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNuAvpp4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IzNt7QB4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AF670838;
-	Mon, 23 Jun 2025 21:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046BE227E8F;
+	Mon, 23 Jun 2025 21:25:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713069; cv=none; b=B6SYBTvtoaM4nrroO6OjBtuFqrT0w53Ia2mtLuUzWPKBw2zKe27D+/t+vKmois0OYGkQ5mnIriVfgYZau7dMXTwnYQgOQamKAiXmlkx2EIamf5KbwPKVzffYFZAY5VDWITLY4VcbzmCKjAhlqTTowxK8GwUxdgIk5U1KAh1xhYQ=
+	t=1750713950; cv=none; b=TS6gmxfKnj72ZgkkTIdWMW9Gw0hsIZsot0flBDAWrKvWZSF0jjM0WmSjea2e78mkkTC0RWd9QrBUplp1V10zj+2APtWyAZUmPEOT9PUqLXsJMggQJL9BSCAbE2pOnU9y8/2Hsq2LL0fvgQyv8hVg0qefGXSjotiWysL8lwILKRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713069; c=relaxed/simple;
-	bh=Pt+JI9ez0YkfQ5OYgk4ljxNpkSgZg2aMs/g5h1dxtfQ=;
+	s=arc-20240116; t=1750713950; c=relaxed/simple;
+	bh=hXaMSKxYkWG6jH8uKdGeJ0EpzdPF3Wec2ADQiaAyIeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MRpNkfP3WBk447fcgyQgy57PMaTCkSwtO39hj8M4ZTHcd0Wq93Dexw3fibxcg5RZiVVd3hvZ0RHc1q4ucEDZ/p+r8IHaewZyYJum5X82xj0KRFzKSHrGgiejYrwBi2P4wGpgblcsDxhbug1hBs05AI6eQYEya/RlxFycLYs5kds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNuAvpp4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01BBAC4CEEA;
-	Mon, 23 Jun 2025 21:11:08 +0000 (UTC)
+	 MIME-Version; b=OPuktHcvnz15xG6nT4iV7QQzNtULgEWIyfTGkSa1sblq9qgjGmurwUmte17jpdri3i/Op50yVb9RKV5AbknbiXRmhvfL+GVvULcZjS9eGm1zSb3ASH+1w8TuHjzNpp4ahHVHh4srmkAouBJ8CRumqUIqjKvjnxgBA6w4+EANppg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IzNt7QB4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90803C4CEF0;
+	Mon, 23 Jun 2025 21:25:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713069;
-	bh=Pt+JI9ez0YkfQ5OYgk4ljxNpkSgZg2aMs/g5h1dxtfQ=;
+	s=korg; t=1750713949;
+	bh=hXaMSKxYkWG6jH8uKdGeJ0EpzdPF3Wec2ADQiaAyIeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNuAvpp4L5p6XpFz7ChzpN0L3sX8x+oAk7qDJCCpEFZil3GQBlSUEQXausEVOZsxL
-	 53ulArEaGApB5TlgnzuahfMRjyt847aAuWjLMb/uwooTxht5iIzBjEGRbhEOYylEp0
-	 usP5gJMFPNDbnoBH3fv8Dnzn8jSJZ8AYea2yNtxM=
+	b=IzNt7QB45/3MnhF6sb9JY2RqtpXUe3SeZ1p3CQ+okCphY99Od565fRJtjofbU+u+D
+	 aqaQBMeg8c9PvW7ZBeawOVNkaZJ84YoigpkUg8N1a0jamjRzr7YemQxH3p2UjXM06U
+	 aUSu7sHetsxZx9mS5bE8JP81qzuQOo25r4oQmymg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Subject: [PATCH 6.12 044/414] media: nxp: imx8-isi: better handle the m2m usage_count
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 136/508] backlight: pm8941: Add NULL check in wled_configure()
 Date: Mon, 23 Jun 2025 15:03:01 +0200
-Message-ID: <20250623130643.139718437@linuxfoundation.org>
+Message-ID: <20250623130648.635562953@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit 910efa649076be9c2e1326059830327cf4228cf6 upstream.
+[ Upstream commit e12d3e1624a02706cdd3628bbf5668827214fa33 ]
 
-Currently, if streamon/streamoff calls are imbalanced we can either end up
-with a negative ISI m2m usage_count (if streamoff() is called more times
-than streamon()) in which case we'll not be able to restart the ISI pipe
-next time, or the usage_count never gets to 0 and the pipe is never
-switched off.
+devm_kasprintf() returns NULL when memory allocation fails. Currently,
+wled_configure() does not check for this case, which results in a NULL
+pointer dereference.
 
-To avoid that, add a 'streaming' flag to mxc_isi_m2m_ctx_queue_data and use it
-in the streamon/streamoff to avoid incrementing/decrementing the usage_count
-uselessly, if called multiple times from the same context.
+Add NULL check after devm_kasprintf() to prevent this issue.
 
-Fixes: cf21f328fcafac ("media: nxp: Add i.MX8 ISI driver")
-Cc: stable@vger.kernel.org
-Suggested-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Laurentiu Palcu <laurentiu.palcu@oss.nxp.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20241023085643.978729-1-laurentiu.palcu@oss.nxp.com
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f86b77583d88 ("backlight: pm8941: Convert to using %pOFn instead of device_node.name")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: "Daniel Thompson (RISCstar)" <danielt@kernel.org>
+Link: https://lore.kernel.org/r/20250401091647.22784-1-bsdhenrymartin@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c |   14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/video/backlight/qcom-wled.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-+++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-m2m.c
-@@ -43,6 +43,7 @@ struct mxc_isi_m2m_ctx_queue_data {
- 	struct v4l2_pix_format_mplane format;
- 	const struct mxc_isi_format_info *info;
- 	u32 sequence;
-+	bool streaming;
- };
+diff --git a/drivers/video/backlight/qcom-wled.c b/drivers/video/backlight/qcom-wled.c
+index 527210e857959..434c6c499fdef 100644
+--- a/drivers/video/backlight/qcom-wled.c
++++ b/drivers/video/backlight/qcom-wled.c
+@@ -1406,9 +1406,11 @@ static int wled_configure(struct wled *wled)
+ 	wled->ctrl_addr = be32_to_cpu(*prop_addr);
  
- struct mxc_isi_m2m_ctx {
-@@ -486,15 +487,18 @@ static int mxc_isi_m2m_streamon(struct f
- 				enum v4l2_buf_type type)
- {
- 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
- 	const struct v4l2_pix_format_mplane *out_pix = &ctx->queues.out.format;
- 	const struct v4l2_pix_format_mplane *cap_pix = &ctx->queues.cap.format;
- 	const struct mxc_isi_format_info *cap_info = ctx->queues.cap.info;
- 	const struct mxc_isi_format_info *out_info = ctx->queues.out.info;
- 	struct mxc_isi_m2m *m2m = ctx->m2m;
- 	bool bypass;
+ 	rc = of_property_read_string(dev->of_node, "label", &wled->name);
+-	if (rc)
++	if (rc) {
+ 		wled->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFn", dev->of_node);
 -
- 	int ret;
- 
-+	if (q->streaming)
-+		return 0;
-+
- 	mutex_lock(&m2m->lock);
- 
- 	if (m2m->usage_count == INT_MAX) {
-@@ -547,6 +551,8 @@ static int mxc_isi_m2m_streamon(struct f
- 		goto unchain;
- 	}
- 
-+	q->streaming = true;
-+
- 	return 0;
- 
- unchain:
-@@ -569,10 +575,14 @@ static int mxc_isi_m2m_streamoff(struct
- 				 enum v4l2_buf_type type)
- {
- 	struct mxc_isi_m2m_ctx *ctx = to_isi_m2m_ctx(fh);
-+	struct mxc_isi_m2m_ctx_queue_data *q = mxc_isi_m2m_ctx_qdata(ctx, type);
- 	struct mxc_isi_m2m *m2m = ctx->m2m;
- 
- 	v4l2_m2m_ioctl_streamoff(file, fh, type);
- 
-+	if (!q->streaming)
-+		return 0;
-+
- 	mutex_lock(&m2m->lock);
- 
- 	/*
-@@ -598,6 +608,8 @@ static int mxc_isi_m2m_streamoff(struct
- 
- 	mutex_unlock(&m2m->lock);
- 
-+	q->streaming = false;
-+
- 	return 0;
- }
- 
++		if (!wled->name)
++			return -ENOMEM;
++	}
+ 	switch (wled->version) {
+ 	case 3:
+ 		u32_opts = wled3_opts;
+-- 
+2.39.5
+
 
 
 
