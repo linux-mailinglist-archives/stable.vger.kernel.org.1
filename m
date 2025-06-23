@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC79AAE454A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:54 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76C2EAE44C7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6202C4461ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E310A7A9BF2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CDBD253356;
-	Mon, 23 Jun 2025 13:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF8025178C;
+	Mon, 23 Jun 2025 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zintskfU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTp6dNH4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00FC246BC9;
-	Mon, 23 Jun 2025 13:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D952246BC9;
+	Mon, 23 Jun 2025 13:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686033; cv=none; b=UpKzJyMdl7S7VJvAQQK5hJIoznR5XMkADeewYlLFim1zXNYvDs8dWGDN0nTHRymdB447FSW4F5PQ4EBoegIJ5BribPytlSNt9PYYqQISdSnAmfuDPt4o+ZiT6AD8fZCfoKj8mTBTI5bMP+76UnUptGM1AdEdu8XhDI/SBIATPi4=
+	t=1750686050; cv=none; b=qkBylEC3sDsCsfX8j4X30z97TiVRlLtXY4w5ufVynq1hORjY9SxBXZjmUV8LTVs6+Ii1pcyyE3x/N3PTaZ/6UzING2zIZ+vW71zs85wqKBIaa6EzsttAo+JPn/vUW2+Jh6xCC0bvS4iPpE0mtiwtWOQbtCACDBeJ67XBjvSiiPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686033; c=relaxed/simple;
-	bh=eiFgL8f3IONlwXQGdQGBD8Nkvvl4zzIn9gE/ecZFDBY=;
+	s=arc-20240116; t=1750686050; c=relaxed/simple;
+	bh=R24aPHOc5v3nKIaqLkAU69VK+VdaO8m/4S2cr+i6pQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n2bDtuOnUH8ZLKYNmheog6G7GwEeND5YR9y7IeIG8EfWKKphTvjMFcbbZ1ekNOd7hjjpGbXLpJC2QQO94aEHsNz04jQooxgNEnHoGbrOJ82CKgp2biuGzt0f45zeP8KqUlrGaCkd4m4b6ChNFR2KOu4M1jKvcrcUjMkwShhSRS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zintskfU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A93C4CEEA;
-	Mon, 23 Jun 2025 13:40:32 +0000 (UTC)
+	 MIME-Version; b=eiVhUMLK0UXNNdcrBgumyiwyQbvS8TrHcVv5u/o9FRq3qgujr5+/tKuHv42yjeICrAmM3RFOjVdT5p8RFtwu1Bs0FgFvZQbsugB4QUrYjJL3D/RcQgka9L2sF++kxI2BGgvDuxRwC9FQ2OEZCmHz0a04julVv7jvVhM+SyMIzgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTp6dNH4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E671AC4CEEA;
+	Mon, 23 Jun 2025 13:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686032;
-	bh=eiFgL8f3IONlwXQGdQGBD8Nkvvl4zzIn9gE/ecZFDBY=;
+	s=korg; t=1750686050;
+	bh=R24aPHOc5v3nKIaqLkAU69VK+VdaO8m/4S2cr+i6pQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zintskfUfCt/iXTLtG1euq6xx1R/6HoZTVuFLE8n7QYawGdX3vAf2O5QLbHk1sRmn
-	 C5ZV2cygP27IUXR47iymGF2tvC3SGwHM5ojCZJwodRzJ+ZzjGP7afpyUFbyJLJANtK
-	 MitXvR2aVHbKoIN8rOXGi0e092Qa6kOzw3bBRAYQ=
+	b=MTp6dNH4FpmSjnGL0ddOXhpAmNy86QT3AL9wd0YBwDAqFVHDVX+Z1gYsEFGv8eJzO
+	 ufGFKPE/hqYu+CmV9f4YqkJrryATdT2D/Ht44+OL4j1b8/j9m46md79dSsX4WE5ias
+	 Nk3WNNQmoDJIkSGZCNPBEA+Y3og4qTGk13LrdfB4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.4 134/222] iio: adc: ad7606_spi: fix reg write value mask
-Date: Mon, 23 Jun 2025 15:07:49 +0200
-Message-ID: <20250623130616.122337950@linuxfoundation.org>
+	Seunghun Han <kkamagui@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 135/222] ACPICA: fix acpi operand cache leak in dswstate.c
+Date: Mon, 23 Jun 2025 15:07:50 +0200
+Message-ID: <20250623130616.154376900@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,36 +66,111 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Seunghun Han <kkamagui@gmail.com>
 
-commit 89944d88f8795c6c89b9514cb365998145511cd4 upstream.
+[ Upstream commit 156fd20a41e776bbf334bd5e45c4f78dfc90ce1c ]
 
-Fix incorrect value mask for register write. Register values are 8-bit,
-not 9. If this function was called with a value > 0xFF and an even addr,
-it would cause writing to the next register.
+ACPICA commit 987a3b5cf7175916e2a4b6ea5b8e70f830dfe732
 
-Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+I found an ACPI cache leak in ACPI early termination and boot continuing case.
+
+When early termination occurs due to malicious ACPI table, Linux kernel
+terminates ACPI function and continues to boot process. While kernel terminates
+ACPI function, kmem_cache_destroy() reports Acpi-Operand cache leak.
+
+Boot log of ACPI operand cache leak is as follows:
+>[    0.585957] ACPI: Added _OSI(Module Device)
+>[    0.587218] ACPI: Added _OSI(Processor Device)
+>[    0.588530] ACPI: Added _OSI(3.0 _SCP Extensions)
+>[    0.589790] ACPI: Added _OSI(Processor Aggregator Device)
+>[    0.591534] ACPI Error: Illegal I/O port address/length above 64K: C806E00000004002/0x2 (20170303/hwvalid-155)
+>[    0.594351] ACPI Exception: AE_LIMIT, Unable to initialize fixed events (20170303/evevent-88)
+>[    0.597858] ACPI: Unable to start the ACPI Interpreter
+>[    0.599162] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
+>[    0.601836] kmem_cache_destroy Acpi-Operand: Slab cache still has objects
+>[    0.603556] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.12.0-rc5 #26
+>[    0.605159] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS virtual_box 12/01/2006
+>[    0.609177] Call Trace:
+>[    0.610063]  ? dump_stack+0x5c/0x81
+>[    0.611118]  ? kmem_cache_destroy+0x1aa/0x1c0
+>[    0.612632]  ? acpi_sleep_proc_init+0x27/0x27
+>[    0.613906]  ? acpi_os_delete_cache+0xa/0x10
+>[    0.617986]  ? acpi_ut_delete_caches+0x3f/0x7b
+>[    0.619293]  ? acpi_terminate+0xa/0x14
+>[    0.620394]  ? acpi_init+0x2af/0x34f
+>[    0.621616]  ? __class_create+0x4c/0x80
+>[    0.623412]  ? video_setup+0x7f/0x7f
+>[    0.624585]  ? acpi_sleep_proc_init+0x27/0x27
+>[    0.625861]  ? do_one_initcall+0x4e/0x1a0
+>[    0.627513]  ? kernel_init_freeable+0x19e/0x21f
+>[    0.628972]  ? rest_init+0x80/0x80
+>[    0.630043]  ? kernel_init+0xa/0x100
+>[    0.631084]  ? ret_from_fork+0x25/0x30
+>[    0.633343] vgaarb: loaded
+>[    0.635036] EDAC MC: Ver: 3.0.0
+>[    0.638601] PCI: Probing PCI hardware
+>[    0.639833] PCI host bridge to bus 0000:00
+>[    0.641031] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+> ... Continue to boot and log is omitted ...
+
+I analyzed this memory leak in detail and found acpi_ds_obj_stack_pop_and_
+delete() function miscalculated the top of the stack. acpi_ds_obj_stack_push()
+function uses walk_state->operand_index for start position of the top, but
+acpi_ds_obj_stack_pop_and_delete() function considers index 0 for it.
+Therefore, this causes acpi operand memory leak.
+
+This cache leak causes a security threat because an old kernel (<= 4.9) shows
+memory locations of kernel functions in stack dump. Some malicious users
+could use this information to neutralize kernel ASLR.
+
+I made a patch to fix ACPI operand cache leak.
+
+Link: https://github.com/acpica/acpica/commit/987a3b5c
+Signed-off-by: Seunghun Han <kkamagui@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4999480.31r3eYUQgx@rjwysocki.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606_spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/dsutils.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -151,7 +151,7 @@ static int ad7606_spi_reg_write(struct a
- 	struct spi_device *spi = to_spi_device(st->dev);
+diff --git a/drivers/acpi/acpica/dsutils.c b/drivers/acpi/acpica/dsutils.c
+index fb9ed5e1da89d..2bdae8a25e084 100644
+--- a/drivers/acpi/acpica/dsutils.c
++++ b/drivers/acpi/acpica/dsutils.c
+@@ -668,6 +668,8 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+ 	union acpi_parse_object *arguments[ACPI_OBJ_NUM_OPERANDS];
+ 	u32 arg_count = 0;
+ 	u32 index = walk_state->num_operands;
++	u32 prev_num_operands = walk_state->num_operands;
++	u32 new_num_operands;
+ 	u32 i;
  
- 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
--				  (val & 0x1FF));
-+				  (val & 0xFF));
+ 	ACPI_FUNCTION_TRACE_PTR(ds_create_operands, first_arg);
+@@ -696,6 +698,7 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
  
- 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
- }
+ 	/* Create the interpreter arguments, in reverse order */
+ 
++	new_num_operands = index;
+ 	index--;
+ 	for (i = 0; i < arg_count; i++) {
+ 		arg = arguments[index];
+@@ -720,7 +723,11 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+ 	 * pop everything off of the operand stack and delete those
+ 	 * objects
+ 	 */
+-	acpi_ds_obj_stack_pop_and_delete(arg_count, walk_state);
++	walk_state->num_operands = i;
++	acpi_ds_obj_stack_pop_and_delete(new_num_operands, walk_state);
++
++	/* Restore operand count */
++	walk_state->num_operands = prev_num_operands;
+ 
+ 	ACPI_EXCEPTION((AE_INFO, status, "While creating Arg %u", index));
+ 	return_ACPI_STATUS(status);
+-- 
+2.39.5
+
 
 
 
