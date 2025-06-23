@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156407-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66DEAE4F7E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EB7AE53EF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDF577AD44E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8BD1E3B7D96
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554B61F582A;
-	Mon, 23 Jun 2025 21:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57632223DEE;
+	Mon, 23 Jun 2025 21:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PP5wDpX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ka9OfhaL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D74C62;
-	Mon, 23 Jun 2025 21:15:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BC43FB1B;
+	Mon, 23 Jun 2025 21:57:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713339; cv=none; b=YtW5JSkWnD2Wf0ucz4wAIy2WTfWBkf/cMkSSm2cB3jl791anQe1Yg6AWF1vqap08i7XV7AKsoJlTD+MOOOZFsPAULP4rhEdNNKWCn2KV3IMytN6B4VstN2M/X4JVjc+wuBwDH6QzJwZRF7HpFK9NhV828gFGOWofG28jCNH0FAE=
+	t=1750715827; cv=none; b=Up64l5B/bSj0FQaxT1hCAyzJYUZtimVgmArKxEa8vFwMahOul+QrnzUs5/NUIeMmWCwXELV7JuP3Zdbn4i5x5kLbcQjKQHT1Mc/CKrjUpxUEacEQ1/DtLaMMLF/Iwzlwtw1ynSK9aq2k9QtIM9LGeOk3cRXbOxRhP/1g0b9Jyx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713339; c=relaxed/simple;
-	bh=Vur2IcnS41a1tdoZZJ4D4yT9iw8xfITamPST31lBDOw=;
+	s=arc-20240116; t=1750715827; c=relaxed/simple;
+	bh=am+gENgPEoAH2gHsqG1n7jGrb6VDEFw6W4u4Gb5ZAWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LPcQ5yhJ9EKzIXk4fPaX2bJQDX4QMJmJn3I3w1bYdGkO7YUKa/H7XIpWoS8CnjGsbovfwMezwHgXGIuRS450XVbpZY6QBFPvMiq2Rzhgjmv1ZLmx2MQP+ZLlcd/C4StkGdO1YNsKQo4N3T1DWzxmNCeYgKobu5cQZoTiJ+uf/ic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PP5wDpX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97593C4CEEA;
-	Mon, 23 Jun 2025 21:15:38 +0000 (UTC)
+	 MIME-Version; b=R6ZV6MtR6imlD/Cg5BgT3t3GEdw3IIFDmkxlDXXyWbYwI3euWRGXuojqRHmNbp6D7FJXMiZ4PyF42gdn6xRnaRA+1HgpD9p7M+PhuD/GqcjcLUb1bVgUbXVIpZO0rxwRSve5Y8BvLizVORcjTTZ0+8yrGjEvbKK6cPMnWvCTsw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ka9OfhaL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0618C4CEEA;
+	Mon, 23 Jun 2025 21:57:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713338;
-	bh=Vur2IcnS41a1tdoZZJ4D4yT9iw8xfITamPST31lBDOw=;
+	s=korg; t=1750715827;
+	bh=am+gENgPEoAH2gHsqG1n7jGrb6VDEFw6W4u4Gb5ZAWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PP5wDpX7h1ExYWf2h8ztqfqj2rEmH5xSw1Snunn78wUwvs+IIZ8tqVunknp8zmhsR
-	 PvdJcngYZmEsVyPEFY+IH/HChXtEgcV1qqj2SrFN0IooGkX32UVsC6PR9nxpNNXYfl
-	 l+u0Vj8nzvxrmhCy1mQ8WKvAdiBLoOfZqk4e+e/A=
+	b=ka9OfhaLczQn2e/xw/07zN7k9TrKwfj4yF2RxK/FkA158eR+YAU8Imi5T/aVp6S7o
+	 Ghbf/MP0MSzpA8yxvW052YWu57Dpf6xu0AMq73lEuI6RdK8B5bhSTXIUyrEe5u4IRR
+	 dSx7oAnL98MsQYkzqpQi1dDZUWu2hyuVWd/torAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	"James A. MacInnes" <james.a.macinnes@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 170/222] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get()
+Subject: [PATCH 6.6 244/290] drm/msm/disp: Correct porch timing for SDM845
 Date: Mon, 23 Jun 2025 15:08:25 +0200
-Message-ID: <20250623130617.186242318@linuxfoundation.org>
+Message-ID: <20250623130634.266574600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: James A. MacInnes <james.a.macinnes@gmail.com>
 
-[ Upstream commit 57273ff8bb16f3842c2597b5bbcd49e7fa12edf7 ]
+[ Upstream commit 146e87f3e11de0dfa091ff87e34b4bc6eec761a4 ]
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+Type-C DisplayPort inoperable due to incorrect porch settings.
+- Re-used wide_bus_en as flag to prevent porch shifting
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-4-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/636945/
+Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-2-4954e51458f4@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 4df9dbad0e977..46e7e78d37632 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -435,11 +435,14 @@ static int armada_37xx_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = INPUT_VAL;
- 	unsigned int val, mask;
-+	int ret;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index 20c8b9af7a219..2cda9bbf68f96 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -93,17 +93,21 @@ static void drm_mode_to_intf_timing_params(
+ 		timing->vsync_polarity = 0;
+ 	}
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
+-	/* for DP/EDP, Shift timings to align it to bottom right */
+-	if (phys_enc->hw_intf->cap->type == INTF_DP) {
++	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
++	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
++
++	/*
++	 *  For DP/EDP, Shift timings to align it to bottom right.
++	 *  wide_bus_en is set for everything excluding SDM845 &
++	 *  porch changes cause DisplayPort failure and HDMI tearing.
++	 */
++	if (phys_enc->hw_intf->cap->type == INTF_DP && timing->wide_bus_en) {
+ 		timing->h_back_porch += timing->h_front_porch;
+ 		timing->h_front_porch = 0;
+ 		timing->v_back_porch += timing->v_front_porch;
+ 		timing->v_front_porch = 0;
+ 	}
  
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
- 
- 	return (val & mask) != 0;
- }
+-	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
+-	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
+-
+ 	/*
+ 	 * for DP, divide the horizonal parameters by 2 when
+ 	 * widebus is enabled
 -- 
 2.39.5
 
