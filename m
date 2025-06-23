@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156101-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7755AE4578
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:54:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FCD8AE4570
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:53:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F301F3BB708
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:43:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F7963B275F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:42:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40D362475E3;
-	Mon, 23 Jun 2025 13:43:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B2D248891;
+	Mon, 23 Jun 2025 13:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAj0F4kP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hnl03+9s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F310A4C6E;
-	Mon, 23 Jun 2025 13:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 759E224A06D;
+	Mon, 23 Jun 2025 13:42:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686239; cv=none; b=fCpKp31wlTH0KUGQR9cV4BPGnLoTHQfFFL+kwtjXZAaMDRNL8SpHaoyFiY5T78xHYkFC2OGthp7ZgZDOzZ3+x1eE73/IqD2mYN0zJNV7lqv8fRHB2IkJv/uND+Yuo5S231D7ZdJrtAnpJRz9VXNFpjFNU9PkOoiCQRZ+lgcsU5o=
+	t=1750686152; cv=none; b=kH0qpqLMPcdLqE4mV/o4oGGk1zxMiV3jTN+zul4wyCqf2EIKR01IE6SvVQ7wwoM7kDWXSDlsxlQ4KGnSdTNkZAvyzPB77PzpcCSL7qUP6vlevnkJ2Luk1pMiJ156ZtUGKp3Dlc8oILrqvWQ3oy3UBzC0yIAOuiDOSB4wfrXnX6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686239; c=relaxed/simple;
-	bh=1TSK3iwUZHBHWt1xRIO6rBsc6Sgd4wdPVged1+ZB+JQ=;
+	s=arc-20240116; t=1750686152; c=relaxed/simple;
+	bh=sKB4isgO2/S79vNhdNFck6svYvunJ806LREd6TOi8ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TZMVtXs4Vg1yqwMHzghSt2P+C8Bmzf0neayT5PzpE30rESMM+Y5ttDCJkFo4/yNpha6F4XuKO4oZJwf/asaNcjkdkK+R/sj/zEdDdanLA5zmjb0TfBdz6QmAuolNePeO7KpfSxpw2sJbvt7Jo2X8ThiQSo8s3xp7MuppM6T18Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAj0F4kP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F6C1C4CEEA;
-	Mon, 23 Jun 2025 13:43:58 +0000 (UTC)
+	 MIME-Version; b=D+FV83jfIflKtY5/mgEefQNzQkKMciQ1KYucpxT6pq8AMo/pX2W3N9Y45LFYgy5RzjmL71DKPI573prcH+KGQ+bl8fpFKOq8qCgTLkG+x8oHnLA0gTaQzp2FmvmP8K/DW8H9v/esq1w8t4k6hpuvLEij2j2jAluaTbuB17MSVF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hnl03+9s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A988C4CEEA;
+	Mon, 23 Jun 2025 13:42:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686238;
-	bh=1TSK3iwUZHBHWt1xRIO6rBsc6Sgd4wdPVged1+ZB+JQ=;
+	s=korg; t=1750686152;
+	bh=sKB4isgO2/S79vNhdNFck6svYvunJ806LREd6TOi8ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAj0F4kPNN1/vTM43lxf57AQtwC5qmqZgC698ZGj0MsEPImPTIcmpRLQhQPQLOOXo
-	 aWkKYEvMAFPintOfYfyh6Mu8LuD//3sbfTVox3vPkFLchv5uUxtkLIme3gi6o45DoH
-	 wCZy4w4QeGKbCGCCUavM5jgy76/nlC6yNQbqXCT4=
+	b=hnl03+9sgrKtRCITos4mje3FIPMFCPWzTjW4GeGt40Ven733TV6VZluXdnjWNfso9
+	 CHWe54kb/bfyaeODZuPOUlQttPLs+WKaVdK8f7BtJTN65xhUrrWeHjazc9Rk28D4S3
+	 v19ba3oYi2Z/uE7GwiWlw77P3dDsIPYW3V291lUU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 048/290] media: uvcvideo: Fix deferred probing error
-Date: Mon, 23 Jun 2025 15:05:09 +0200
-Message-ID: <20250623130628.453510222@linuxfoundation.org>
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 118/355] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
+Date: Mon, 23 Jun 2025 15:05:19 +0200
+Message-ID: <20250623130630.306900349@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,105 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-commit 387e8939307192d5a852a2afeeb83427fa477151 upstream.
+[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
 
-uvc_gpio_parse() can return -EPROBE_DEFER when the GPIOs it depends on
-have not yet been probed. This return code should be propagated to the
-caller of uvc_probe() to ensure that probing is retried when the required
-GPIOs become available.
+In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
+recovery flow, but we still unconditionally call enable again in
+ath10k_snoc_hif_start().
 
-Currently, this error code is incorrectly converted to -ENODEV,
-causing some internal cameras to be ignored.
+We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
+before hif_start() is called, so instead check the
+ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
+recovery.
 
-This commit fixes this issue by propagating the -EPROBE_DEFER error.
+This fixes unbalanced IRQ enable splats that happen after recovering from
+a crash.
 
-Cc: stable@vger.kernel.org
-Fixes: 2886477ff987 ("media: uvcvideo: Implement UVC_EXT_GPIO_UNIT")
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250313-uvc-eprobedefer-v3-1-a1d312708eef@chromium.org>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   27 +++++++++++++++++++--------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -2217,13 +2217,16 @@ static int uvc_probe(struct usb_interfac
- #endif
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 513794099f03f..616fcaed061f9 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -935,7 +935,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
  
- 	/* Parse the Video Class control descriptor. */
--	if (uvc_parse_control(dev) < 0) {
-+	ret = uvc_parse_control(dev);
-+	if (ret < 0) {
-+		ret = -ENODEV;
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC descriptors\n");
- 		goto error;
- 	}
+ 	ath10k_core_napi_enable(ar);
+-	ath10k_snoc_irq_enable(ar);
++	/* IRQs are left enabled when we restart due to a firmware crash */
++	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
++		ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
  
- 	/* Parse the associated GPIOs. */
--	if (uvc_gpio_parse(dev) < 0) {
-+	ret = uvc_gpio_parse(dev);
-+	if (ret < 0) {
- 		uvc_dbg(dev, PROBE, "Unable to parse UVC GPIOs\n");
- 		goto error;
- 	}
-@@ -2249,24 +2252,32 @@ static int uvc_probe(struct usb_interfac
- 	}
- 
- 	/* Register the V4L2 device. */
--	if (v4l2_device_register(&intf->dev, &dev->vdev) < 0)
-+	ret = v4l2_device_register(&intf->dev, &dev->vdev);
-+	if (ret < 0)
- 		goto error;
- 
- 	/* Scan the device for video chains. */
--	if (uvc_scan_device(dev) < 0)
-+	if (uvc_scan_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Initialize controls. */
--	if (uvc_ctrl_init_device(dev) < 0)
-+	if (uvc_ctrl_init_device(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- 	/* Register video device nodes. */
--	if (uvc_register_chains(dev) < 0)
-+	if (uvc_register_chains(dev) < 0) {
-+		ret = -ENODEV;
- 		goto error;
-+	}
- 
- #ifdef CONFIG_MEDIA_CONTROLLER
- 	/* Register the media device node */
--	if (media_device_register(&dev->mdev) < 0)
-+	ret = media_device_register(&dev->mdev);
-+	if (ret < 0)
- 		goto error;
- #endif
- 	/* Save our data pointer in the interface data. */
-@@ -2300,7 +2311,7 @@ static int uvc_probe(struct usb_interfac
- error:
- 	uvc_unregister_video(dev);
- 	kref_put(&dev->ref, uvc_delete);
--	return -ENODEV;
-+	return ret;
- }
- 
- static void uvc_disconnect(struct usb_interface *intf)
+ 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
+-- 
+2.39.5
+
 
 
 
