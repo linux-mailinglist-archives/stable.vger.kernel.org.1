@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A907AE41C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:12:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 33ED7AE423E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C9EC11742AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:11:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90ECC177A0A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58823255F26;
-	Mon, 23 Jun 2025 13:10:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C0BF24DD0A;
+	Mon, 23 Jun 2025 13:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnS/7YMk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WH+8ILsp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13417253358;
-	Mon, 23 Jun 2025 13:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34CED24E019;
+	Mon, 23 Jun 2025 13:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684211; cv=none; b=SBppSi4CFnQTunmnziEOCDGz3C2eBpeH1U0eaSIc7HXIOmUU0/IQGhLZgUb2o4beJ08Pc0fpcNZL7MewEcAYlJqHh/i91jpDdZKeIltfHlgzJ3hwDPrB3lH2J/zR+4HC0vKmBHIE1V+Auk06EJyh2IzYANRZ7kutEBWOkwpjSl0=
+	t=1750684492; cv=none; b=SaLc6FXIDzaIYw025fV8KzK3jjellYbCgKWXPpKmPEY0Auw/whV8Rnc529LEqoUKjoBUEOwXbRtq5qBnoLFXvc3jnB47QBgntcpbI34CLgKLtZ8joGwlqkmRHc3WVmV468QeazK+6+2K3Xgu8lmEzqr9DSQ6m13ePmynM0np9cg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684211; c=relaxed/simple;
-	bh=B46BNj6+pNi2fpZ3+wmaY1gKAZKN5AnFh3U7QkbuqaQ=;
+	s=arc-20240116; t=1750684492; c=relaxed/simple;
+	bh=uA0Rb6wLROCmO0/p0xhg1w9rQPTGkAODQEU5i2CqtfE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iY3KJND+M9CMYEVjBuj3mVqGbT6vDIabPs5chTeakdMh8NDbi//+0fVRNRF4XwMCQBKk2wDE02cy8TrPLURaNeUja5rTTYm6C2DuXp4rBfwMuU3XPYRjLaqUz00aA+lv1j36YQXxYU7FILghY5b6/ks40H9lspgj3W8NbtezL/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnS/7YMk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81467C4CEF0;
-	Mon, 23 Jun 2025 13:10:10 +0000 (UTC)
+	 MIME-Version; b=IT3b8Reup2t8qXu3AwHhk4RJKb9FbMwPiYsvAevwDc5N22ppIqmsFJEHIUn2dCLbr+E8/lt5zO9sCVwiGY+x1OaPgi1Cx++GgdovUVqAr2LccNc937cyjUCQIPO4zci29cZ1MCpmfCSYDoW6vzA/h2jBKqyFkfagptn36ZZHEmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WH+8ILsp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD2A4C4CEF1;
+	Mon, 23 Jun 2025 13:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684210;
-	bh=B46BNj6+pNi2fpZ3+wmaY1gKAZKN5AnFh3U7QkbuqaQ=;
+	s=korg; t=1750684492;
+	bh=uA0Rb6wLROCmO0/p0xhg1w9rQPTGkAODQEU5i2CqtfE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnS/7YMkfkt+PdBEjaQm8pEYsRorlk7Tf6RotMGmPgRuXQutZcHHUYLrQrVu4Dl44
-	 bQueHswNFm9d9yHSn4yFs5t4iGoSgFEJvAphO82ZPx8MNMpq9s2synrDmgJSUL5q1i
-	 FwV2hyIGVI0H8AOVwZJIIjJ0BDeOGZUzpfH35aVg=
+	b=WH+8ILsplhq7519esVvN0zBeOSzMFuUJKloYV3/UiA/Y24VZM81Df6l5bSsw77nYq
+	 yngvmAgsKn6h/i8habTuh5N1QCChrHUt02chfyTQ2NI9Rj84AdzU7Vp4YwuYCajCrG
+	 oCmBfkjNNi/vXPnKnplsv+weilq5/8KbsYRKEEOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Pan Taixi <pantaixi@huaweicloud.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.1 002/508] tracing: Fix compilation warning on arm32
-Date: Mon, 23 Jun 2025 15:00:47 +0200
-Message-ID: <20250623130645.319493615@linuxfoundation.org>
+	stable@kernel.org,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.15 090/592] media: uvcvideo: Send control events for partial succeeds
+Date: Mon, 23 Jun 2025 15:00:48 +0200
+Message-ID: <20250623130702.421572324@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pan Taixi <pantaixi@huaweicloud.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
+commit 5c791467aea6277430da5f089b9b6c2a9d8a4af7 upstream.
 
-On arm32, size_t is defined to be unsigned int, while PAGE_SIZE is
-unsigned long. This hence triggers a compilation warning as min()
-asserts the type of two operands to be equal. Casting PAGE_SIZE to size_t
-solves this issue and works on other target architectures as well.
+Today, when we are applying a change to entities A, B. If A succeeds and B
+fails the events for A are not sent.
 
-Compilation warning details:
+This change changes the code so the events for A are send right after
+they happen.
 
-kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
-./include/linux/minmax.h:20:28: warning: comparison of distinct pointer types lacks a cast
-  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
-                            ^
-./include/linux/minmax.h:26:4: note: in expansion of macro '__typecheck'
-   (__typecheck(x, y) && __no_side_effects(x, y))
-    ^~~~~~~~~~~
-
-...
-
-kernel/trace/trace.c:6771:8: note: in expansion of macro 'min'
-        min((size_t)trace_seq_used(&iter->seq),
-        ^~~
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
-Fixes: f5178c41bb43 ("tracing: Fix oob write in trace_seq_to_buffer()")
-Reviewed-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Pan Taixi <pantaixi@huaweicloud.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Cc: stable@kernel.org
+Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Message-ID: <20250224-uvc-data-backup-v2-2-de993ed9823b@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_ctrl.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -7050,7 +7050,7 @@ static ssize_t tracing_splice_read_pipe(
- 		ret = trace_seq_to_buffer(&iter->seq,
- 					  page_address(spd.pages[i]),
- 					  min((size_t)trace_seq_used(&iter->seq),
--						  PAGE_SIZE));
-+						  (size_t)PAGE_SIZE));
- 		if (ret < 0) {
- 			__free_page(spd.pages[i]);
- 			break;
+--- a/drivers/media/usb/uvc/uvc_ctrl.c
++++ b/drivers/media/usb/uvc/uvc_ctrl.c
+@@ -1943,7 +1943,9 @@ static bool uvc_ctrl_xctrls_has_control(
+ }
+ 
+ static void uvc_ctrl_send_events(struct uvc_fh *handle,
+-	const struct v4l2_ext_control *xctrls, unsigned int xctrls_count)
++				 struct uvc_entity *entity,
++				 const struct v4l2_ext_control *xctrls,
++				 unsigned int xctrls_count)
+ {
+ 	struct uvc_control_mapping *mapping;
+ 	struct uvc_control *ctrl;
+@@ -1955,6 +1957,9 @@ static void uvc_ctrl_send_events(struct
+ 		s32 value;
+ 
+ 		ctrl = uvc_find_control(handle->chain, xctrls[i].id, &mapping);
++		if (ctrl->entity != entity)
++			continue;
++
+ 		if (ctrl->info.flags & UVC_CTRL_FLAG_ASYNCHRONOUS)
+ 			/* Notification will be sent from an Interrupt event. */
+ 			continue;
+@@ -2198,11 +2203,12 @@ int __uvc_ctrl_commit(struct uvc_fh *han
+ 					uvc_ctrl_find_ctrl_idx(entity, ctrls,
+ 							       err_ctrl);
+ 			goto done;
++		} else if (ret > 0 && !rollback) {
++			uvc_ctrl_send_events(handle, entity,
++					     ctrls->controls, ctrls->count);
+ 		}
+ 	}
+ 
+-	if (!rollback)
+-		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
+ 	ret = 0;
+ done:
+ 	mutex_unlock(&chain->ctrl_mutex);
 
 
 
