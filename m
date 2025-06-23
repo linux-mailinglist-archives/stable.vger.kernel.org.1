@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DA4CAE55E2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40F84AE572D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C2491BC2C53
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D26E57B3D84
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEC9C225417;
-	Mon, 23 Jun 2025 22:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5803B22652D;
+	Mon, 23 Jun 2025 22:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a3aNK/R3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMKKA18T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4F3226D04;
-	Mon, 23 Jun 2025 22:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07D86223DE5;
+	Mon, 23 Jun 2025 22:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716842; cv=none; b=PlpeIyzITvhDLb3ftUhtwnK2sroTY6qlIFcbREzLnD8SHf9932hmzsYFgI+jSEFU+Nwgh4DAnbSTE4uVhYVKfxliza3FNi4QphXJ/yYhD096K0Wyrnl+eweDq0T5+bxiKhdu7Spyq5d0jDCQzEY/+bbFmKqhVjHtzSoIBGDFA4A=
+	t=1750717612; cv=none; b=bqsIKmDQOcPFkXkwebnNdYqfxTgePsxOdxZRvlIVkAMfMR5i255k1lZ0ai1ZjoM7rHtsg1DkA5jdRO/rl2MMRJkPrmlW0MdE3JtyZDq0N8cNalTdAnCzWNbMTVvoeQN4fcZdd91vSR1ZDi7r5+yVLvNFtHhItrDa6jxOkwQ+ihQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716842; c=relaxed/simple;
-	bh=eTu5cT0CBhKcggywb2OrWWihVwQ3uzmzzCN5qs0OnlA=;
+	s=arc-20240116; t=1750717612; c=relaxed/simple;
+	bh=ZkXNZmSS9I15eJZbe9iPihMzRSC17FqFkNlY3E/aYfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HdTaYJqJJ453XfPWJFYvF2lDWt2LEM3AcSlQaGsDbnPL98ILtV00iy00mkNP0n6KXwZWXs+yE5GmN4KrcOanhENmvS3R93GkO9voSp9uAsx1G3vp8IiOBaTLDpcTjkWE/aue7QsUp6jhviCPuYv5ADo8fJ9f+sl1nbQW3Fka6eo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a3aNK/R3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C94C4CEF1;
-	Mon, 23 Jun 2025 22:14:02 +0000 (UTC)
+	 MIME-Version; b=uEXxmoDBni4+jOOO3PYIJ+kXaZeslOs8Ib5ar3NPd0/rlCubHqq+F6YGKqCbjiyB9Elb/TRf4/muj9WFegG21/7y8M749fxzQSJ7b51zDyslKcjRAQDZP/BUcHycCWpC0fWHkGbZgRouiUOWi9+AmcBwUfnW+9HdyCug8yB6gRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMKKA18T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9556EC4CEEA;
+	Mon, 23 Jun 2025 22:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716842;
-	bh=eTu5cT0CBhKcggywb2OrWWihVwQ3uzmzzCN5qs0OnlA=;
+	s=korg; t=1750717611;
+	bh=ZkXNZmSS9I15eJZbe9iPihMzRSC17FqFkNlY3E/aYfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a3aNK/R3UxTU9OW14T5LUoRJ7szgL1aNdRntLA8wpsS6lH3CIGrJLW14GfiS1sXCN
-	 bPnfuUgOQCcj/YAAZaLc7x6U3rl75FVxxZrAoMGHKTPA1lUL0XBaIj65LK1Lly8QFT
-	 N3dnKbDyITnZf6uJCLRDl4OEPqt3Aj7tMaM/qxDI=
+	b=qMKKA18TOIETbsFd0njaoVi/3cqypGMyeL0XSTda5rgDdDeJVNKcTG8nD1wJtzBdT
+	 Z77zN2LL1lEDgOZyeRvYmTwTatan3dMnqIFnJI+vRTqI4gQ5LKFwCpn3BkUGolnNuz
+	 Y/SO9lQh7yVUiZLg1lKqLYxwMbvnWwq0P40SMcI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	"James A. MacInnes" <james.a.macinnes@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 371/411] pldmfw: Select CRC32 when PLDMFW is selected
+Subject: [PATCH 6.1 470/508] drm/msm/disp: Correct porch timing for SDM845
 Date: Mon, 23 Jun 2025 15:08:35 +0200
-Message-ID: <20250623130642.981357387@linuxfoundation.org>
+Message-ID: <20250623130656.660819548@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: James A. MacInnes <james.a.macinnes@gmail.com>
 
-[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
+[ Upstream commit 146e87f3e11de0dfa091ff87e34b4bc6eec761a4 ]
 
-pldmfw calls crc32 code and depends on it being enabled, else
-there is a link error as follows. So PLDMFW should select CRC32.
+Type-C DisplayPort inoperable due to incorrect porch settings.
+- Re-used wide_bus_en as flag to prevent porch shifting
 
-  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
-  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
-
-This problem was introduced by commit b8265621f488 ("Add pldmfw library
-for PLDM firmware update").
-
-It manifests as of commit d69ea414c9b4 ("ice: implement device flash
-update via devlink").
-
-And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
-unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
-
-Found by chance while exercising builds based on tinyconfig.
-
-Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/636945/
+Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-2-4954e51458f4@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index baa977e003b76..66e1505e238e5 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -721,6 +721,7 @@ config GENERIC_LIB_DEVMEM_IS_ALLOWED
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index aba2488c32fa1..4b7952c4e639f 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -91,17 +91,21 @@ static void drm_mode_to_intf_timing_params(
+ 		timing->vsync_polarity = 0;
+ 	}
  
- config PLDMFW
- 	bool
-+	select CRC32
- 	default n
+-	/* for DP/EDP, Shift timings to align it to bottom right */
+-	if (phys_enc->hw_intf->cap->type == INTF_DP) {
++	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
++	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
++
++	/*
++	 *  For DP/EDP, Shift timings to align it to bottom right.
++	 *  wide_bus_en is set for everything excluding SDM845 &
++	 *  porch changes cause DisplayPort failure and HDMI tearing.
++	 */
++	if (phys_enc->hw_intf->cap->type == INTF_DP && timing->wide_bus_en) {
+ 		timing->h_back_porch += timing->h_front_porch;
+ 		timing->h_front_porch = 0;
+ 		timing->v_back_porch += timing->v_front_porch;
+ 		timing->v_front_porch = 0;
+ 	}
  
- config ASN1_ENCODER
+-	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
+-	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
+-
+ 	/*
+ 	 * for DP, divide the horizonal parameters by 2 when
+ 	 * widebus is enabled
 -- 
 2.39.5
 
