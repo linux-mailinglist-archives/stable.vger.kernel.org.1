@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-155824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155850-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 49F6FAE43D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDC4AE43F2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8065C1891C72
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4A451898636
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486A52550CA;
-	Mon, 23 Jun 2025 13:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38590254B09;
+	Mon, 23 Jun 2025 13:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBs8DTHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpGvYSKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CCC254B09;
-	Mon, 23 Jun 2025 13:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACDC4C6E;
+	Mon, 23 Jun 2025 13:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685423; cv=none; b=jL/tTJXVJiEaF8Y46Y9WyYjw7zRW3CVOzl5a2o1OAaMVsnmx5xpfQ44u7Pi5JWLfteyqXpESSHtVU9KfVo0YIz7un+WTz3gmdATKQZLm0F7XOOB/bjr5DhM5hposnsjM0VAdJ9AVdFz/ly0ZTIpIvJUyWzWmPSyOte2EftGJMlg=
+	t=1750685499; cv=none; b=pjgvoSzBNvuVxr3gwpTU1hH/IA24B7CVk1qC4CMKm8e7b2+WPIEO3zWtAG2EWFDQEEb2NaS04pEmFulb2MRFEFHzRtNN2ULwPCQUEqLm/ixC1YAEMc2Pin0s9pawNvE3CnVC5esJW+DbQbjC9+xgNvNKltMuLju4I8174j6zrfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685423; c=relaxed/simple;
-	bh=g0U+tGD+JPZ0LHpNGbRSAXbMSZONrFk/7BFBdhzqLZM=;
+	s=arc-20240116; t=1750685499; c=relaxed/simple;
+	bh=8XwaaIDzQF7K68/pboADPyLnQX++tQ69Zf2MN36JiJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MOZBBMpsF/JgU0tZjN4bVv7fB+fBqNsSjDArlmMVEc5vaCm753k3U7+kN1y0cl9FtvavehbUdO35/j1vky7z/JNquHV/IIiOWY5AKwIkEBeTTR09CYLCnTnv0G6SESKR3V/4xOC4C6hdGEva0NY/M0epemPR00zg0LuJHH2VdQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBs8DTHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804C3C4CEF1;
-	Mon, 23 Jun 2025 13:30:22 +0000 (UTC)
+	 MIME-Version; b=CY0EOcpzeJ7LPjdvjnUGrtRxWgsiLLwmit9b3Nibd/odel1HH11AtWutJ6oq3cwyRVSJeM+OosTa5RTuQhYdO7yHfHQN9XU6kW6wzvTfIZvKBVghojd/5pwVAcpTzYXYJubmqPBqyC939jEYDeC6XjFu+SiN20g8BBY/XKCNBNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpGvYSKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35306C4CEEA;
+	Mon, 23 Jun 2025 13:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685422;
-	bh=g0U+tGD+JPZ0LHpNGbRSAXbMSZONrFk/7BFBdhzqLZM=;
+	s=korg; t=1750685498;
+	bh=8XwaaIDzQF7K68/pboADPyLnQX++tQ69Zf2MN36JiJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YBs8DTHeDjtTPFFJQuF49GF6UfZ0ZcopbXUuEPrcXO5WOTBX5zZc6STVuTHlq4gCl
-	 nc8gRXdm9mzQJTpLM8UYmg5uHgHUesaYBxN4plVtvpftJlKwAQcrU0teWSCIVANNY6
-	 Rz9x7I/lW0JABcLEXIa4eZEhMAux52yNzwp1gHI8=
+	b=wpGvYSKZdkf28mTe9sWFoxxOSghiSRos46SHRXv2jbipqQriEy7Lk0Wm8mPvh/izf
+	 DDReC70nYgJt6RRYvuIlb2Ngh7SkwfP6UmnqXcp7LUcSGQ277BA5P8yZRz4KloqIFf
+	 I3ps7cz0bCUaP/OoHrNyXVSRTG8KuEPUxS2orOcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stone Zhang <quic_stonez@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Jacob Moroni <jmoroni@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 037/411] wifi: ath11k: fix node corruption in ar->arvifs list
-Date: Mon, 23 Jun 2025 15:03:01 +0200
-Message-ID: <20250623130634.119462288@linuxfoundation.org>
+Subject: [PATCH 5.15 038/411] IB/cm: use rwlock for MAD agent lock
+Date: Mon, 23 Jun 2025 15:03:02 +0200
+Message-ID: <20250623130634.150041202@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -66,81 +68,115 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stone Zhang <quic_stonez@quicinc.com>
+From: Jacob Moroni <jmoroni@google.com>
 
-[ Upstream commit 31e98e277ae47f56632e4d663b1d4fd12ba33ea8 ]
+[ Upstream commit 4dab26bed543584577b64b36aadb8b5b165bf44f ]
 
-In current WLAN recovery code flow, ath11k_core_halt() only
-reinitializes the "arvifs" list head. This will cause the
-list node immediately following the list head to become an
-invalid list node. Because the prev of that node still points
-to the list head "arvifs", but the next of the list head "arvifs"
-no longer points to that list node.
+In workloads where there are many processes establishing connections using
+RDMA CM in parallel (large scale MPI), there can be heavy contention for
+mad_agent_lock in cm_alloc_msg.
 
-When a WLAN recovery occurs during the execution of a vif
-removal, and it happens before the spin_lock_bh(&ar->data_lock)
-in ath11k_mac_op_remove_interface(), list_del() will detect the
-previously mentioned situation, thereby triggering a kernel panic.
+This contention can occur while inside of a spin_lock_irq region, leading
+to interrupts being disabled for extended durations on many
+cores. Furthermore, it leads to the serialization of rdma_create_ah calls,
+which has negative performance impacts for NICs which are capable of
+processing multiple address handle creations in parallel.
 
-The fix is to remove and reinitialize all vif list nodes from the
-list head "arvifs" during WLAN halt. The reinitialization is to make
-the list nodes valid, ensuring that the list_del() in
-ath11k_mac_op_remove_interface() can execute normally.
+The end result is the machine becoming unresponsive, hung task warnings,
+netdev TX timeouts, etc.
 
-Call trace:
-__list_del_entry_valid_or_report+0xb8/0xd0
-ath11k_mac_op_remove_interface+0xb0/0x27c [ath11k]
-drv_remove_interface+0x48/0x194 [mac80211]
-ieee80211_do_stop+0x6e0/0x844 [mac80211]
-ieee80211_stop+0x44/0x17c [mac80211]
-__dev_close_many+0xac/0x150
-__dev_change_flags+0x194/0x234
-dev_change_flags+0x24/0x6c
-devinet_ioctl+0x3a0/0x670
-inet_ioctl+0x200/0x248
-sock_do_ioctl+0x60/0x118
-sock_ioctl+0x274/0x35c
-__arm64_sys_ioctl+0xac/0xf0
-invoke_syscall+0x48/0x114
-...
+Since the lock appears to be only for protection from cm_remove_one, it
+can be changed to a rwlock to resolve these issues.
 
-Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04591-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+Reproducer:
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Signed-off-by: Stone Zhang <quic_stonez@quicinc.com>
-Link: https://patch.msgid.link/20250320053145.3445187-1-quic_stonez@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Server:
+  for i in $(seq 1 512); do
+    ucmatose -c 32 -p $((i + 5000)) &
+  done
+
+Client:
+  for i in $(seq 1 512); do
+    ucmatose -c 32 -p $((i + 5000)) -s 10.2.0.52 &
+  done
+
+Fixes: 76039ac9095f ("IB/cm: Protect cm_dev, cm_ports and mad_agent with kref and lock")
+Link: https://patch.msgid.link/r/20250220175612.2763122-1-jmoroni@google.com
+Signed-off-by: Jacob Moroni <jmoroni@google.com>
+Acked-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/infiniband/core/cm.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 48a449fbd2bcc..e86ecdf433de5 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -968,6 +968,7 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
- void ath11k_core_halt(struct ath11k *ar)
- {
- 	struct ath11k_base *ab = ar->ab;
-+	struct list_head *pos, *n;
+diff --git a/drivers/infiniband/core/cm.c b/drivers/infiniband/core/cm.c
+index c8a7fe5fbc233..96e00e86ebbf6 100644
+--- a/drivers/infiniband/core/cm.c
++++ b/drivers/infiniband/core/cm.c
+@@ -166,7 +166,7 @@ struct cm_port {
+ struct cm_device {
+ 	struct kref kref;
+ 	struct list_head list;
+-	spinlock_t mad_agent_lock;
++	rwlock_t mad_agent_lock;
+ 	struct ib_device *ib_device;
+ 	u8 ack_delay;
+ 	int going_down;
+@@ -283,7 +283,7 @@ static struct ib_mad_send_buf *cm_alloc_msg(struct cm_id_private *cm_id_priv)
+ 	if (!cm_id_priv->av.port)
+ 		return ERR_PTR(-EINVAL);
  
- 	lockdep_assert_held(&ar->conf_mutex);
+-	spin_lock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
++	read_lock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
+ 	mad_agent = cm_id_priv->av.port->mad_agent;
+ 	if (!mad_agent) {
+ 		m = ERR_PTR(-EINVAL);
+@@ -314,7 +314,7 @@ static struct ib_mad_send_buf *cm_alloc_msg(struct cm_id_private *cm_id_priv)
+ 	m->context[0] = cm_id_priv;
  
-@@ -981,7 +982,12 @@ void ath11k_core_halt(struct ath11k *ar)
- 
- 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
- 	synchronize_rcu();
--	INIT_LIST_HEAD(&ar->arvifs);
-+
-+	spin_lock_bh(&ar->data_lock);
-+	list_for_each_safe(pos, n, &ar->arvifs)
-+		list_del_init(pos);
-+	spin_unlock_bh(&ar->data_lock);
-+
- 	idr_init(&ar->txmgmt_idr);
+ out:
+-	spin_unlock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
++	read_unlock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
+ 	return m;
  }
  
+@@ -1310,10 +1310,10 @@ static __be64 cm_form_tid(struct cm_id_private *cm_id_priv)
+ 	if (!cm_id_priv->av.port)
+ 		return cpu_to_be64(low_tid);
+ 
+-	spin_lock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
++	read_lock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
+ 	if (cm_id_priv->av.port->mad_agent)
+ 		hi_tid = ((u64)cm_id_priv->av.port->mad_agent->hi_tid) << 32;
+-	spin_unlock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
++	read_unlock(&cm_id_priv->av.port->cm_dev->mad_agent_lock);
+ 	return cpu_to_be64(hi_tid | low_tid);
+ }
+ 
+@@ -4365,7 +4365,7 @@ static int cm_add_one(struct ib_device *ib_device)
+ 		return -ENOMEM;
+ 
+ 	kref_init(&cm_dev->kref);
+-	spin_lock_init(&cm_dev->mad_agent_lock);
++	rwlock_init(&cm_dev->mad_agent_lock);
+ 	cm_dev->ib_device = ib_device;
+ 	cm_dev->ack_delay = ib_device->attrs.local_ca_ack_delay;
+ 	cm_dev->going_down = 0;
+@@ -4481,9 +4481,9 @@ static void cm_remove_one(struct ib_device *ib_device, void *client_data)
+ 		 * The above ensures no call paths from the work are running,
+ 		 * the remaining paths all take the mad_agent_lock.
+ 		 */
+-		spin_lock(&cm_dev->mad_agent_lock);
++		write_lock(&cm_dev->mad_agent_lock);
+ 		port->mad_agent = NULL;
+-		spin_unlock(&cm_dev->mad_agent_lock);
++		write_unlock(&cm_dev->mad_agent_lock);
+ 		ib_unregister_mad_agent(mad_agent);
+ 		ib_port_unregister_client_groups(ib_device, i,
+ 						 cm_counter_groups);
 -- 
 2.39.5
 
