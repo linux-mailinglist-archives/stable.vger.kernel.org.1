@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-155788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA5A4AE4363
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61796AE43A0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 664BB7A44C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 431FA3B80B4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356D62512EE;
-	Mon, 23 Jun 2025 13:28:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEEB425291B;
+	Mon, 23 Jun 2025 13:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHP3IR6s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d74S0xv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8381250BEC;
-	Mon, 23 Jun 2025 13:28:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF5324C060;
+	Mon, 23 Jun 2025 13:27:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685334; cv=none; b=ZowkpZO17dfmpsrBZG3qj0S17OrZo8iwRub4GOHQ9ZiDaWR0c/Eya1j3kHPCxK48h3Q1YYzQ8yW39NBj1h6bxSyAKCpwChfRX9ISXQ55MPYbf6lS7nh4kI7zGhIFxp3QuZxfzSwkIegxpcRKhvHiwNu6w++qzrlONhfvEgUAmLg=
+	t=1750685239; cv=none; b=RNO/sHNO+VBH24I1BYyXAgt0YG3RxCKYt9TQCG9ecIiizOXOhKWPyrC3zTnbKaNqwK4imCdRutGtvhsYjngPPYHIO/Z60Bzb3Wl9577R1+z41bc3FxILxymuO2I1djymeiYFoCvotUlPoLe7cECV8BHd8ILb1DKOnCk2Sk8A3fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685334; c=relaxed/simple;
-	bh=1uFZ9p0FNSvAOxAYlURTk7HQ/TF0x5O5fdiT1GvxWS4=;
+	s=arc-20240116; t=1750685239; c=relaxed/simple;
+	bh=rj0GAkXWr99NSUfViMLe+Qc3VP8oVwK2nYpox0dT+eM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q/XiBNCAXKOx5X5Ya8j8t7jTJnTZGiYwHcxRSk+SDKdq2xfP4vnXE3uzE7zOXYiD2Eecy4jFZTDUwst55eDUdDA7gAb7Jt+nstuHL/YKledcGvxltEYN3psL7jIcYsAn7VWKZ2ITvb9yonVFF8C+OTmeGmt08JHT/E+dXvzwNU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHP3IR6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB86C4CEEA;
-	Mon, 23 Jun 2025 13:28:53 +0000 (UTC)
+	 MIME-Version; b=fXgzQnz1uWmYRoDlkiPU86tyarTroKfiOS4Wzw7R8sbnBfgXqurSZbUP2aWzVfsi9WbNW0I3XUh5kT3fx6sUMr7rTmeh7Oonevpej0Jl0AN6XHBdgLzqdN/rLVIvFMWDJtVYBs9Oc6whQuCcfT9WKNM/axBXjftGdgQyhytwvM8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d74S0xv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FD1AC4CEEA;
+	Mon, 23 Jun 2025 13:27:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685333;
-	bh=1uFZ9p0FNSvAOxAYlURTk7HQ/TF0x5O5fdiT1GvxWS4=;
+	s=korg; t=1750685239;
+	bh=rj0GAkXWr99NSUfViMLe+Qc3VP8oVwK2nYpox0dT+eM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHP3IR6sA1hbPakG3OHWns9CsusZakwH2tYJmZOb5e8WWmU17c+hdYOThjXD6o4B8
-	 Yz9akTFWozBZJoP2kde7kCT5XAtIvfxCauMElDynfKzExQw6kgqtv+Htc8ic3GWFbi
-	 2uGlZxp9ev6H3+TkM9Xbtcy/LWA0jzVXZ95LykJg=
+	b=d74S0xv25w6plxgtqlAATeGuQ9XI/RRKjL/kROoXYlLOW8+d56I2qMExW232edGkp
+	 hm4LENba9utDU4dXXMQpW5hjzd+s/6KmjyWXRad/LA4LXJ/yiOW4fk/pr3nRWWNgJK
+	 npjX6hVxC8JV1L9fih/QPefet4QtvkFCfMiYxtyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.15 205/592] iio: adc: ad7606: fix raw read for 18-bit chips
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 019/411] crypto: xts - Only add ecb if it is not already there
 Date: Mon, 23 Jun 2025 15:02:43 +0200
-Message-ID: <20250623130705.164726490@linuxfoundation.org>
+Message-ID: <20250623130633.578958933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-commit 3f5fd1717ae9497215f22aa748fc2c09df88b0e3 upstream.
+[ Upstream commit 270b6f13454cb7f2f7058c50df64df409c5dcf55 ]
 
-Fix 18-bit raw read for 18-bit chips by applying a mask to the value
-we receive from the SPI controller.
+Only add ecb to the cipher name if it isn't already ecb.
 
-SPI controllers either return 1, 2 or 4 bytes per word depending on the
-bits_per_word. For 16-bit chips, there was no problem since they raw
-data fit exactly in the 2 bytes received from the SPI controller. But
-now that we have 18-bit chips and we are using bits_per_word = 18, we
-cannot assume that the extra bits in the 32-bit word are always zero.
-In fact, with the AXI SPI Engine controller, these bits are not always
-zero which caused the raw values to read 10s of 1000s of volts instead
-of the correct value. Therefore, we need to mask the value we receive
-from the SPI controller to ensure that only the 18 bits of real data
-are used.
+Also use memcmp instead of strncmp since these strings are all
+stored in an array of length CRYPTO_MAX_ALG_NAME.
 
-Fixes: f3838e934dff ("iio: adc: ad7606: add support for AD7606C-{16,18} parts")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Link: https://patch.msgid.link/20250502-iio-adc-ad7606-fix-raw-read-for-18-bit-chips-v1-1-06caa92d8f11@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f1c131b45410 ("crypto: xts - Convert to skcipher")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c | 21 ++++++++++-----------
- 1 file changed, 10 insertions(+), 11 deletions(-)
+ crypto/xts.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
-index 703556eb7257..8ed65a35b486 100644
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -727,17 +727,16 @@ static int ad7606_scan_direct(struct iio_dev *indio_dev, unsigned int ch,
- 		goto error_ret;
+diff --git a/crypto/xts.c b/crypto/xts.c
+index b05020657cdc8..1972f40333f04 100644
+--- a/crypto/xts.c
++++ b/crypto/xts.c
+@@ -361,7 +361,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
  
- 	chan = &indio_dev->channels[ch + 1];
--	if (chan->scan_type.sign == 'u') {
--		if (realbits > 16)
--			*val = st->data.buf32[ch];
--		else
--			*val = st->data.buf16[ch];
--	} else {
--		if (realbits > 16)
--			*val = sign_extend32(st->data.buf32[ch], realbits - 1);
--		else
--			*val = sign_extend32(st->data.buf16[ch], realbits - 1);
--	}
-+
-+	if (realbits > 16)
-+		*val = st->data.buf32[ch];
-+	else
-+		*val = st->data.buf16[ch];
-+
-+	*val &= GENMASK(realbits - 1, 0);
-+
-+	if (chan->scan_type.sign == 's')
-+		*val = sign_extend32(*val, realbits - 1);
+ 	err = crypto_grab_skcipher(&ctx->spawn, skcipher_crypto_instance(inst),
+ 				   cipher_name, 0, mask);
+-	if (err == -ENOENT) {
++	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
+ 		err = -ENAMETOOLONG;
+ 		if (snprintf(ctx->name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
+ 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
+@@ -395,7 +395,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 	/* Alas we screwed up the naming so we have to mangle the
+ 	 * cipher name.
+ 	 */
+-	if (!strncmp(cipher_name, "ecb(", 4)) {
++	if (!memcmp(cipher_name, "ecb(", 4)) {
+ 		int len;
  
- error_ret:
- 	if (!st->gpio_convst) {
+ 		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
 -- 
-2.50.0
+2.39.5
 
 
 
