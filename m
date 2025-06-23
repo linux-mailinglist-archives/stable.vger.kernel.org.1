@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27FD2AE4EB3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9A67AE4FCD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25000189FAE8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 93FC4189CF6C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAFB2222B0;
-	Mon, 23 Jun 2025 21:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5916221DAE;
+	Mon, 23 Jun 2025 21:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmV7wD0y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNg2cFzW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6BD1F582A;
-	Mon, 23 Jun 2025 21:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607BF155C87;
+	Mon, 23 Jun 2025 21:19:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712894; cv=none; b=f9pH2TtCg+GpKdTJJkqaDRYZ+HCeDCZBzDtKc7P7Z28z4eVcd8VH5DC75M3PdFzQFnIwT3XOkpLBEoqsj9rk4/l7niyNjZgmK1wUhOp5bKisHv2QCrrviDT6zQUWACXRA4IKGuDZtuUbqProayFcDJQYaEXXULHXTEtB5Emwa7o=
+	t=1750713548; cv=none; b=K9Tx2f2L2yNDZd0BwVTTpP/LM08LVAeFLzIg08EpkyRWcepPcmM5OJQ6J++JMwe8siy5f2V6YIQZ7OobduaaCbmeFciv7d0Pogc472J6Vgg8RlngWvYLIit1yb72tsVWpJoIpyXyP2hnlGXO4yD+zVRXztvZWG9f2kglZSeAnu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712894; c=relaxed/simple;
-	bh=jvczHRpVcVKlib/fVypvLHINBCowIzY/U5pN89rVtaQ=;
+	s=arc-20240116; t=1750713548; c=relaxed/simple;
+	bh=vyl3XLwQcgfisnexRzg5axcwET6Cphp6yugSyd7+aBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZSgzwUhhuJ04Kwm2jOU1B0O7Dv0jSqduA3mKyoHCbwSQzPY8G4WFkNcpNVCEsr/zjlJFnUzXVTr36BeB2IH+R2Osuf1A/SUPeqs5/vL0WM9M9P9LL7tsjZjt9Uy3JHeodBKKSvF/owhazkJ+Wg7daUYVxhBH/4sf/kbdNobCw+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmV7wD0y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46685C4CEEA;
-	Mon, 23 Jun 2025 21:08:13 +0000 (UTC)
+	 MIME-Version; b=F1x+hoLd91/H1j0BDJTemx0iCcqzbkgpgNz358fFr0w1a2Z1WLqqLNUyEH1q3gzbOTJVIuHwjZ5KkY0XnW4u9/FnK/jqfKMDGZiBnCMCO0EVEeH+4ldOXqXxer1PemJ43ZcTRstHatXFsQoaG7IVGM8TMC2o175QcALEM81AZ0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNg2cFzW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC830C4CEEA;
+	Mon, 23 Jun 2025 21:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712893;
-	bh=jvczHRpVcVKlib/fVypvLHINBCowIzY/U5pN89rVtaQ=;
+	s=korg; t=1750713548;
+	bh=vyl3XLwQcgfisnexRzg5axcwET6Cphp6yugSyd7+aBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmV7wD0y1gc66LWWxZguUDdlOnEcJ64zhDN+ENCAAwYEHVqZuBsoIWA31FRhC4/4/
-	 wiKD0LNs9KVcHBABh05UXt6vasuABsl7ZcD5ugiVqs4S58KaFFHLS2byXaqjdAEaD0
-	 Pn7SPYXrUdg6Vxfj8zcZKtPbL7xPYkGF0oFb4dTI=
+	b=uNg2cFzW1ZFsJqkVSbXcy4gWV9e5yZQ1yD7dx+QleuKUIoivpsWltE/+67DDfm7vy
+	 WSLBG8FEg0i9SOOk+yIVhH6v73wY4ZXy0aneTW+eDGIgqKWlav69NcVNqhNiCX7sXv
+	 hrfDjDHaeV8PLmnZLFkKnWvdTXFcHuq1IjgusQkE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerd Bayer <gbayer@linux.ibm.com>,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.12 017/414] s390/pci: Allow re-add of a reserved but not yet removed device
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 109/508] arm64: dts: mediatek: mt8195: Reparent vdec1/2 and venc1 power domains
 Date: Mon, 23 Jun 2025 15:02:34 +0200
-Message-ID: <20250623130642.457126357@linuxfoundation.org>
+Message-ID: <20250623130647.965875000@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,183 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Schnelle <schnelle@linux.ibm.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-commit 4b1815a52d7eb03b3e0e6742c6728bc16a4b2d1d upstream.
+[ Upstream commit 394f29033324e2317bfd6a7ed99b9a60832b36a2 ]
 
-The architecture assumes that PCI functions can be removed synchronously
-as PCI events are processed. This however clashes with the reference
-counting of struct pci_dev which allows device drivers to hold on to a
-struct pci_dev reference even as the underlying device is removed. To
-bridge this gap commit 2a671f77ee49 ("s390/pci: fix use after free of
-zpci_dev") keeps the struct zpci_dev in ZPCI_FN_STATE_RESERVED state
-until common code releases the struct pci_dev. Only when all references
-are dropped, the struct zpci_dev can be removed and freed.
+By hardware, the first and second core of the video decoder IP
+need the VDEC_SOC to be powered up in order to be able to be
+accessed (both internally, by firmware, and externally, by the
+kernel).
+Similarly, for the video encoder IP, the second core needs the
+first core to be powered up in order to be accessible.
 
-Later commit a46044a92add ("s390/pci: fix zpci_zdev_put() on reserve")
-moved the deletion of the struct zpci_dev from the zpci_list in
-zpci_release_device() to the point where the device is reserved. This
-was done to prevent handling events for a device that is already being
-removed, e.g. when the platform generates both PCI event codes 0x304
-and 0x308. In retrospect, deletion from the zpci_list in the release
-function without holding the zpci_list_lock was also racy.
+Fix that by reparenting the VDEC1/2 power domains to be children
+of VDEC0 (VDEC_SOC), and the VENC1 to be a child of VENC0.
 
-A side effect of this handling is that if the underlying device
-re-appears while the struct zpci_dev is in the ZPCI_FN_STATE_RESERVED
-state, the new and old instances of the struct zpci_dev and/or struct
-pci_dev may clash. For example when trying to create the IOMMU sysfs
-files for the new instance. In this case, re-adding the new instance is
-aborted. The old instance is removed, and the device will remain absent
-until the platform issues another event.
-
-Fix this by allowing the struct zpci_dev to be brought back up right
-until it is finally removed. To this end also keep the struct zpci_dev
-in the zpci_list until it is finally released when all references have
-been dropped.
-
-Deletion from the zpci_list from within the release function is made
-safe by using kref_put_lock() with the zpci_list_lock. This ensures that
-the releasing code holds the last reference.
-
-Cc: stable@vger.kernel.org
-Fixes: a46044a92add ("s390/pci: fix zpci_zdev_put() on reserve")
-Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
-Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2b515194bf0c ("arm64: dts: mt8195: Add power domains controller")
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20250402090615.25871-3-angelogioacchino.delregno@collabora.com
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci.c       |   32 ++++++++++++++++++++++----------
- arch/s390/pci/pci_bus.h   |    7 ++-----
- arch/s390/pci/pci_event.c |   22 +++++++++++++++++++++-
- 3 files changed, 45 insertions(+), 16 deletions(-)
+ arch/arm64/boot/dts/mediatek/mt8195.dtsi | 50 +++++++++++++-----------
+ 1 file changed, 27 insertions(+), 23 deletions(-)
 
---- a/arch/s390/pci/pci.c
-+++ b/arch/s390/pci/pci.c
-@@ -69,6 +69,13 @@ EXPORT_SYMBOL_GPL(zpci_aipb);
- struct airq_iv *zpci_aif_sbv;
- EXPORT_SYMBOL_GPL(zpci_aif_sbv);
+diff --git a/arch/arm64/boot/dts/mediatek/mt8195.dtsi b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+index 274edce5d5e6e..6f92451671355 100644
+--- a/arch/arm64/boot/dts/mediatek/mt8195.dtsi
++++ b/arch/arm64/boot/dts/mediatek/mt8195.dtsi
+@@ -461,22 +461,6 @@
+ 					#size-cells = <0>;
+ 					#power-domain-cells = <1>;
  
-+void zpci_zdev_put(struct zpci_dev *zdev)
-+{
-+	if (!zdev)
-+		return;
-+	kref_put_lock(&zdev->kref, zpci_release_device, &zpci_list_lock);
-+}
+-					power-domain@MT8195_POWER_DOMAIN_VDEC1 {
+-						reg = <MT8195_POWER_DOMAIN_VDEC1>;
+-						clocks = <&vdecsys CLK_VDEC_LARB1>;
+-						clock-names = "vdec1-0";
+-						mediatek,infracfg = <&infracfg_ao>;
+-						#power-domain-cells = <0>;
+-					};
+-
+-					power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
+-						reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
+-						clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
+-						clock-names = "venc1-larb";
+-						mediatek,infracfg = <&infracfg_ao>;
+-						#power-domain-cells = <0>;
+-					};
+-
+ 					power-domain@MT8195_POWER_DOMAIN_VDOSYS0 {
+ 						reg = <MT8195_POWER_DOMAIN_VDOSYS0>;
+ 						clocks = <&topckgen CLK_TOP_CFG_VDO0>,
+@@ -522,15 +506,25 @@
+ 							clocks = <&vdecsys_soc CLK_VDEC_SOC_LARB1>;
+ 							clock-names = "vdec0-0";
+ 							mediatek,infracfg = <&infracfg_ao>;
++							#address-cells = <1>;
++							#size-cells = <0>;
+ 							#power-domain-cells = <0>;
+-						};
+ 
+-						power-domain@MT8195_POWER_DOMAIN_VDEC2 {
+-							reg = <MT8195_POWER_DOMAIN_VDEC2>;
+-							clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
+-							clock-names = "vdec2-0";
+-							mediatek,infracfg = <&infracfg_ao>;
+-							#power-domain-cells = <0>;
++							power-domain@MT8195_POWER_DOMAIN_VDEC1 {
++								reg = <MT8195_POWER_DOMAIN_VDEC1>;
++								clocks = <&vdecsys CLK_VDEC_LARB1>;
++								clock-names = "vdec1-0";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
 +
- struct zpci_dev *get_zdev_by_fid(u32 fid)
- {
- 	struct zpci_dev *tmp, *zdev = NULL;
-@@ -919,21 +926,20 @@ int zpci_deconfigure_device(struct zpci_
-  * @zdev: the zpci_dev that was reserved
-  *
-  * Handle the case that a given zPCI function was reserved by another system.
-- * After a call to this function the zpci_dev can not be found via
-- * get_zdev_by_fid() anymore but may still be accessible via existing
-- * references though it will not be functional anymore.
-  */
- void zpci_device_reserved(struct zpci_dev *zdev)
- {
--	/*
--	 * Remove device from zpci_list as it is going away. This also
--	 * makes sure we ignore subsequent zPCI events for this device.
--	 */
--	spin_lock(&zpci_list_lock);
--	list_del(&zdev->entry);
--	spin_unlock(&zpci_list_lock);
-+	lockdep_assert_held(&zdev->state_lock);
-+	/* We may declare the device reserved multiple times */
-+	if (zdev->state == ZPCI_FN_STATE_RESERVED)
-+		return;
- 	zdev->state = ZPCI_FN_STATE_RESERVED;
- 	zpci_dbg(3, "rsv fid:%x\n", zdev->fid);
-+	/*
-+	 * The underlying device is gone. Allow the zdev to be freed
-+	 * as soon as all other references are gone by accounting for
-+	 * the removal as a dropped reference.
-+	 */
- 	zpci_zdev_put(zdev);
- }
++							power-domain@MT8195_POWER_DOMAIN_VDEC2 {
++								reg = <MT8195_POWER_DOMAIN_VDEC2>;
++								clocks = <&vdecsys_core1 CLK_VDEC_CORE1_LARB1>;
++								clock-names = "vdec2-0";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
+ 						};
  
-@@ -942,6 +948,12 @@ void zpci_release_device(struct kref *kr
- 	struct zpci_dev *zdev = container_of(kref, struct zpci_dev, kref);
- 
- 	WARN_ON(zdev->state != ZPCI_FN_STATE_RESERVED);
-+	/*
-+	 * We already hold zpci_list_lock thanks to kref_put_lock().
-+	 * This makes sure no new reference can be taken from the list.
-+	 */
-+	list_del(&zdev->entry);
-+	spin_unlock(&zpci_list_lock);
- 
- 	if (zdev->has_hp_slot)
- 		zpci_exit_slot(zdev);
---- a/arch/s390/pci/pci_bus.h
-+++ b/arch/s390/pci/pci_bus.h
-@@ -17,11 +17,8 @@ int zpci_bus_scan_device(struct zpci_dev
- void zpci_bus_remove_device(struct zpci_dev *zdev, bool set_error);
- 
- void zpci_release_device(struct kref *kref);
--static inline void zpci_zdev_put(struct zpci_dev *zdev)
--{
--	if (zdev)
--		kref_put(&zdev->kref, zpci_release_device);
--}
+ 						power-domain@MT8195_POWER_DOMAIN_VENC {
+@@ -538,7 +532,17 @@
+ 							clocks = <&vencsys CLK_VENC_LARB>;
+ 							clock-names = "venc0-larb";
+ 							mediatek,infracfg = <&infracfg_ao>;
++							#address-cells = <1>;
++							#size-cells = <0>;
+ 							#power-domain-cells = <0>;
 +
-+void zpci_zdev_put(struct zpci_dev *zdev);
++							power-domain@MT8195_POWER_DOMAIN_VENC_CORE1 {
++								reg = <MT8195_POWER_DOMAIN_VENC_CORE1>;
++								clocks = <&vencsys_core1 CLK_VENC_CORE1_LARB>;
++								clock-names = "venc1-larb";
++								mediatek,infracfg = <&infracfg_ao>;
++								#power-domain-cells = <0>;
++							};
+ 						};
  
- static inline void zpci_zdev_get(struct zpci_dev *zdev)
- {
---- a/arch/s390/pci/pci_event.c
-+++ b/arch/s390/pci/pci_event.c
-@@ -322,6 +322,22 @@ static void zpci_event_hard_deconfigured
- 	zdev->state = ZPCI_FN_STATE_STANDBY;
- }
- 
-+static void zpci_event_reappear(struct zpci_dev *zdev)
-+{
-+	lockdep_assert_held(&zdev->state_lock);
-+	/*
-+	 * The zdev is in the reserved state. This means that it was presumed to
-+	 * go away but there are still undropped references. Now, the platform
-+	 * announced its availability again. Bring back the lingering zdev
-+	 * to standby. This is safe because we hold a temporary reference
-+	 * now so that it won't go away. Account for the re-appearance of the
-+	 * underlying device by incrementing the reference count.
-+	 */
-+	zdev->state = ZPCI_FN_STATE_STANDBY;
-+	zpci_zdev_get(zdev);
-+	zpci_dbg(1, "rea fid:%x, fh:%x\n", zdev->fid, zdev->fh);
-+}
-+
- static void __zpci_event_availability(struct zpci_ccdf_avail *ccdf)
- {
- 	struct zpci_dev *zdev = get_zdev_by_fid(ccdf->fid);
-@@ -345,8 +361,10 @@ static void __zpci_event_availability(st
- 				break;
- 			}
- 		} else {
-+			if (zdev->state == ZPCI_FN_STATE_RESERVED)
-+				zpci_event_reappear(zdev);
- 			/* the configuration request may be stale */
--			if (zdev->state != ZPCI_FN_STATE_STANDBY)
-+			else if (zdev->state != ZPCI_FN_STATE_STANDBY)
- 				break;
- 			zdev->state = ZPCI_FN_STATE_CONFIGURED;
- 		}
-@@ -362,6 +380,8 @@ static void __zpci_event_availability(st
- 				break;
- 			}
- 		} else {
-+			if (zdev->state == ZPCI_FN_STATE_RESERVED)
-+				zpci_event_reappear(zdev);
- 			zpci_update_fh(zdev, ccdf->fh);
- 		}
- 		break;
+ 						power-domain@MT8195_POWER_DOMAIN_VDOSYS1 {
+-- 
+2.39.5
+
 
 
 
