@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-158166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57934AE573C
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97CAAAE56F8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC624E330F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 353497ABB0B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2127223DF0;
-	Mon, 23 Jun 2025 22:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D2C224B1F;
+	Mon, 23 Jun 2025 22:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVAZ9y+x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0JIdjax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F2C72222B2;
-	Mon, 23 Jun 2025 22:27:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625B62222B2;
+	Mon, 23 Jun 2025 22:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717646; cv=none; b=OT/KgE18jceO60zrm7skXhxSndFMZDzmIGDv6sQdHaa5SXFjt0RfqB5/SNVySxn2Ef140DBX3Wf+MKb7XLzyohKDGN321umGv+fL+4R2GnI7UHyCSpgGytuN9fZmB8nttyeW8mqVkICqa6OIBHIbFqKFcxYlzNTBBxZY+i5gcr8=
+	t=1750717489; cv=none; b=ZyWY4n57KOdBbWvWSs+653dZIQ8VL4eK2CXgl4i9fwegB8XLlv5DuZbeaQtCmtAL6aBY1rRziHglkV7YdA+F5zk9MPECi1NtEs3xr+c4MMDEzadVTwhaGJ9NyrUzWF2F3d0qTTpfhFvSN7cL5/ysEJ8SNPxKXyGcnO4cgKNQfuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717646; c=relaxed/simple;
-	bh=Zrvech6VcXItwKza2DRvOygS1m7VHhXXUUB9Fhxkmu8=;
+	s=arc-20240116; t=1750717489; c=relaxed/simple;
+	bh=W2i6nV0Kk/B8WZvBFvxYnkRRWQ1z/MW+UMzNGkuz7WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oxO32JQXbva/Oc57sTQZ+G7Hk0oO5vJoH56KzMejU7hyAyPS5sa6NsdVK0YeFzCY5MyQpWKYazWetOl3voSmAQs6yS4QuqMQJivCVdEcwryitRSjD3ZthTXGdZWbyj0nAcRhlPafBgt2J2MH2a7uZ7aDKpuYFZI9uCtUTQLEWtU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVAZ9y+x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D3BEC4CEEA;
-	Mon, 23 Jun 2025 22:27:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Pn4jFCDDiK39yCD4YCzGJB0E1rPfTMLnKmM2SKfT6GpJFfsBZNwozNqRKWByWo27T2jIwth8t3NWJncszDWRwPRWDMus5vzaYnMXMJW85bBK/4OLM4waiylncHDM5b2fGIE2zdR7VCMUxJawFZED+jD+G14krAklkvXkyRDRclA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0JIdjax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93EDC4CEEA;
+	Mon, 23 Jun 2025 22:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717646;
-	bh=Zrvech6VcXItwKza2DRvOygS1m7VHhXXUUB9Fhxkmu8=;
+	s=korg; t=1750717489;
+	bh=W2i6nV0Kk/B8WZvBFvxYnkRRWQ1z/MW+UMzNGkuz7WA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zVAZ9y+xvGMXK5dsQx9Y4xLLeS/l2Qy0rQc3Oirm8yINN2PyVKbHWVdd5WMSXtVi6
-	 V3exxw0Obwuwg7OzTDvCDnIYppazbxf77FNZ+1UUQTaDb5fKxr/GpMSkRRu0FGihQN
-	 CD9V9R1CTm0dC8VaTt9aqmfUScf9tsCW4USfhYGI=
+	b=R0JIdjax7Pex/CeLkRdwG7eo5hEqSTL40KWFLieKjcAA196Qw0IbHmgy8VW78AldT
+	 aqEoC+lZPMEes5X5VBt+i902eSjH7FIKSr+fpfNeusagAETzIERGo1X/gi7/uhWWUg
+	 mX4zpF9Jnp1fhhvxrPmw9qKf2Fn+HSgaGCmIFxxI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rengarajan S <rengarajan.s@microchip.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 488/508] net: lan743x: fix potential out-of-bounds write in lan743x_ptp_io_event_clock_get()
+	Akhil R <akhilrajeev@nvidia.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Andi Shyti <andi@smida.it>
+Subject: [PATCH 6.12 396/414] dt-bindings: i2c: nvidia,tegra20-i2c: Specify the required properties
 Date: Mon, 23 Jun 2025 15:08:53 +0200
-Message-ID: <20250623130657.054266157@linuxfoundation.org>
+Message-ID: <20250623130651.838612722@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +60,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Akhil R <akhilrajeev@nvidia.com>
 
-[ Upstream commit e353b0854d3a1a31cb061df8d022fbfea53a0f24 ]
+commit 903cc7096db22f889d48e2cee8840709ce04fdac upstream.
 
-Before calling lan743x_ptp_io_event_clock_get(), the 'channel' value
-is checked against the maximum value of PCI11X1X_PTP_IO_MAX_CHANNELS(8).
-This seems correct and aligns with the PTP interrupt status register
-(PTP_INT_STS) specifications.
+Specify the properties which are essential and which are not for the
+Tegra I2C driver to function correctly. This was not added correctly when
+the TXT binding was converted to yaml. All the existing DT nodes have
+these properties already and hence this does not break the ABI.
 
-However, lan743x_ptp_io_event_clock_get() writes to ptp->extts[] with
-only LAN743X_PTP_N_EXTTS(4) elements, using channel as an index:
+dmas and dma-names which were specified as a must in the TXT binding
+is now made optional since the driver can work in PIO mode if dmas are
+missing.
 
-    lan743x_ptp_io_event_clock_get(..., u8 channel,...)
-    {
-        ...
-        /* Update Local timestamp */
-        extts = &ptp->extts[channel];
-        extts->ts.tv_sec = sec;
-        ...
-    }
-
-To avoid an out-of-bounds write and utilize all the supported GPIO
-inputs, set LAN743X_PTP_N_EXTTS to 8.
-
-Detected using the static analysis tool - Svace.
-Fixes: 60942c397af6 ("net: lan743x: Add support for PTP-IO Event Input External Timestamp (extts)")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Rengarajan S <rengarajan.s@microchip.com>
-Link: https://patch.msgid.link/20250616113743.36284-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f10a9b722f80 ("dt-bindings: i2c: tegra: Convert to json-schema”)
+Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
+Cc: <stable@vger.kernel.org> # v5.17+
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Andi Shyti <andi@smida.it>
+Link: https://lore.kernel.org/r/20250603153022.39434-1-akhilrajeev@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan743x_ptp.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml |   24 +++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_ptp.h b/drivers/net/ethernet/microchip/lan743x_ptp.h
-index 0d29914cd4606..225e8232474d7 100644
---- a/drivers/net/ethernet/microchip/lan743x_ptp.h
-+++ b/drivers/net/ethernet/microchip/lan743x_ptp.h
-@@ -18,9 +18,9 @@
-  */
- #define LAN743X_PTP_N_EVENT_CHAN	2
- #define LAN743X_PTP_N_PEROUT		LAN743X_PTP_N_EVENT_CHAN
--#define LAN743X_PTP_N_EXTTS		4
--#define LAN743X_PTP_N_PPS		0
- #define PCI11X1X_PTP_IO_MAX_CHANNELS	8
-+#define LAN743X_PTP_N_EXTTS		PCI11X1X_PTP_IO_MAX_CHANNELS
-+#define LAN743X_PTP_N_PPS		0
- #define PTP_CMD_CTL_TIMEOUT_CNT		50
+--- a/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
++++ b/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
+@@ -97,7 +97,10 @@ properties:
  
- struct lan743x_adapter;
--- 
-2.39.5
-
+   resets:
+     items:
+-      - description: module reset
++      - description:
++          Module reset. This property is optional for controllers in Tegra194,
++          Tegra234 etc where an internal software reset is available as an
++          alternative.
+ 
+   reset-names:
+     items:
+@@ -116,6 +119,13 @@ properties:
+       - const: rx
+       - const: tx
+ 
++required:
++  - compatible
++  - reg
++  - interrupts
++  - clocks
++  - clock-names
++
+ allOf:
+   - $ref: /schemas/i2c/i2c-controller.yaml
+   - if:
+@@ -169,6 +179,18 @@ allOf:
+       properties:
+         power-domains: false
+ 
++  - if:
++      not:
++        properties:
++          compatible:
++            contains:
++              enum:
++                - nvidia,tegra194-i2c
++    then:
++      required:
++        - resets
++        - reset-names
++
+ unevaluatedProperties: false
+ 
+ examples:
 
 
 
