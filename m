@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6E066AE524F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80DF3AE4FEF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03DC24A585E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5ED211B616D9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3602222CA;
-	Mon, 23 Jun 2025 21:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F6F51E521E;
+	Mon, 23 Jun 2025 21:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gmm+9K0L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0IREKER"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A5A4315A;
-	Mon, 23 Jun 2025 21:42:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EB9F2C9D;
+	Mon, 23 Jun 2025 21:20:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714948; cv=none; b=SaE0Jv4cAB6xCIwc2Nn15/Ex01Qp9V5eg1fqzs7npegye7ADqd8dD2x/9jcaDZtZ2ylXtbGZIcMkf06LX3mbx6OHeXlnurHPfJ21Zi5bl8WWs02nC8Xs873P7zWQKfa4veX9VBsvaUVDRDLjxFZmCGV5XkFc6fXB82f4Bjik5+8=
+	t=1750713658; cv=none; b=U4tStjtX5e+s610bYFAuFy1rLVBaoxovpkpBn/p/hBGopg8mLrVzoiwWzF70KiYuyxQCiA7wpwv5873Q5EUcoSTWDwgCv0YtY3zgjCpYcKVBR4dVPl2L2oUFSGSL5BkodhKTbHDAsXXHOAKj0q6+fikU17WZIKY6DSaAM9TWW28=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714948; c=relaxed/simple;
-	bh=sML0BeunbdRebnl/6289ymJwidDXJQcxr2wQcN5OvL0=;
+	s=arc-20240116; t=1750713658; c=relaxed/simple;
+	bh=JOqHwdsZIFsU7eiEutb7A8Tc51G4CtOYRAPlHTO65Vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xq01Mqh1feXDkTpRzpINazZai4Bz6HyyAnWwGcBkSA3ut/DF15my68zsVQ0TA+cY45VdjAZht4wCnS/UF3FXsafV2uM5PsS24RtAMRYvsrT95NKtjpkHs6WsLAH+COPfCnmKSql/gRXBFlFrudB+Lkoye/ikJ3h/jI/R0jkfSz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gmm+9K0L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3371EC4CEEA;
-	Mon, 23 Jun 2025 21:42:28 +0000 (UTC)
+	 MIME-Version; b=JTF6go3U/9kVOXWhhbBuPt8S+iQx9cc/ZwZrXbcLzO7s+ypjqS/OFvSnXal0CUmkLTT83n4cAO3rnGrtsWw4kvV9EABKavXL/6wi1pwmmcQEcoluWC4Oc3PKyJ5YJ5pt/V6TsntoFOQwWOwzHenGFPGLTbXYV6Lc0W36szMC+/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0IREKER; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FC0C4CEEA;
+	Mon, 23 Jun 2025 21:20:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714948;
-	bh=sML0BeunbdRebnl/6289ymJwidDXJQcxr2wQcN5OvL0=;
+	s=korg; t=1750713658;
+	bh=JOqHwdsZIFsU7eiEutb7A8Tc51G4CtOYRAPlHTO65Vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gmm+9K0L1cubaKMYnF3AhqwnjjdXej7lX+9W2iLK7n2h2FkEq84TGzm0W0UhRSizO
-	 4XUI3piKTC3TDwkYuGWWRfVvnQnoXIZF9Ey7enjQB49EVawKMu2DqieeCgNTZO/qY6
-	 bttUrqqswugsvgoXQ/r40trV/xjBqhjmDoLVN4Ik=
+	b=p0IREKERybE9Y6PjTwH6Clpv8jDPEE0rAFZGbURqvK/lwYIVljiSEPC74KU/eielw
+	 Xy2YfZoVaEmSQ/jYqsuq+S6Gb/FTE4LZDHy+zhc/qA459xGylF5ATiofZ0KwFAoM/Q
+	 tbC2Fm21ed3zL3+rBiB6reDSogc8ezLLevmzKHBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruben Devos <devosruben6@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.12 146/414] smb: client: add NULL check in automount_fullpath
+	Sanjeev Yadav <sanjeev.y@mediatek.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Peter Wang <peter.wang@mediatek.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 139/411] scsi: core: ufs: Fix a hang in the error handler
 Date: Mon, 23 Jun 2025 15:04:43 +0200
-Message-ID: <20250623130645.702208127@linuxfoundation.org>
+Message-ID: <20250623130637.092890380@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruben Devos <devosruben6@gmail.com>
+From: Sanjeev Yadav <sanjeev.y@mediatek.com>
 
-commit f1e7a277a1736e12cc4bd6d93b8a5c439b8ca20c upstream.
+[ Upstream commit 8a3514d348de87a9d5e2ac00fbac4faae0b97996 ]
 
-page is checked for null in __build_path_from_dentry_optional_prefix
-when tcon->origin_fullpath is not set. However, the check is missing when
-it is set.
-Add a check to prevent a potential NULL pointer dereference.
+ufshcd_err_handling_prepare() calls ufshcd_rpm_get_sync(). The latter
+function can only succeed if UFSHCD_EH_IN_PROGRESS is not set because
+resuming involves submitting a SCSI command and ufshcd_queuecommand()
+returns SCSI_MLQUEUE_HOST_BUSY if UFSHCD_EH_IN_PROGRESS is set. Fix this
+hang by setting UFSHCD_EH_IN_PROGRESS after ufshcd_rpm_get_sync() has
+been called instead of before.
 
-Signed-off-by: Ruben Devos <devosruben6@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Backtrace:
+__switch_to+0x174/0x338
+__schedule+0x600/0x9e4
+schedule+0x7c/0xe8
+schedule_timeout+0xa4/0x1c8
+io_schedule_timeout+0x48/0x70
+wait_for_common_io+0xa8/0x160 //waiting on START_STOP
+wait_for_completion_io_timeout+0x10/0x20
+blk_execute_rq+0xe4/0x1e4
+scsi_execute_cmd+0x108/0x244
+ufshcd_set_dev_pwr_mode+0xe8/0x250
+__ufshcd_wl_resume+0x94/0x354
+ufshcd_wl_runtime_resume+0x3c/0x174
+scsi_runtime_resume+0x64/0xa4
+rpm_resume+0x15c/0xa1c
+__pm_runtime_resume+0x4c/0x90 // Runtime resume ongoing
+ufshcd_err_handler+0x1a0/0xd08
+process_one_work+0x174/0x808
+worker_thread+0x15c/0x490
+kthread+0xf4/0x1ec
+ret_from_fork+0x10/0x20
+
+Signed-off-by: Sanjeev Yadav <sanjeev.y@mediatek.com>
+[ bvanassche: rewrote patch description ]
+Fixes: 62694735ca95 ("[SCSI] ufs: Add runtime PM support for UFS host controller driver")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20250523201409.1676055-1-bvanassche@acm.org
+Reviewed-by: Peter Wang <peter.wang@mediatek.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/namespace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/ufs/ufshcd.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/namespace.c
-+++ b/fs/smb/client/namespace.c
-@@ -146,6 +146,9 @@ static char *automount_fullpath(struct d
+diff --git a/drivers/scsi/ufs/ufshcd.c b/drivers/scsi/ufs/ufshcd.c
+index e199abc4e6176..2b78cc96ccef6 100644
+--- a/drivers/scsi/ufs/ufshcd.c
++++ b/drivers/scsi/ufs/ufshcd.c
+@@ -6073,9 +6073,14 @@ static void ufshcd_err_handler(struct work_struct *work)
+ 		up(&hba->host_sem);
+ 		return;
  	}
- 	spin_unlock(&tcon->tc_lock);
- 
-+	if (unlikely(!page))
-+		return ERR_PTR(-ENOMEM);
+-	ufshcd_set_eh_in_progress(hba);
+ 	spin_unlock_irqrestore(hba->host->host_lock, flags);
 +
- 	s = dentry_path_raw(dentry, page, PATH_MAX);
- 	if (IS_ERR(s))
- 		return s;
+ 	ufshcd_err_handling_prepare(hba);
++
++	spin_lock_irqsave(hba->host->host_lock, flags);
++	ufshcd_set_eh_in_progress(hba);
++	spin_unlock_irqrestore(hba->host->host_lock, flags);
++
+ 	/* Complete requests that have door-bell cleared by h/w */
+ 	ufshcd_complete_requests(hba);
+ 	spin_lock_irqsave(hba->host->host_lock, flags);
+-- 
+2.39.5
+
 
 
 
