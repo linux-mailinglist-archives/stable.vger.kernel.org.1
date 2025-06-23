@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155728-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E70AE437A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57B46AE431F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6397B3AF138
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A7CDD188E810
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C59F25486A;
-	Mon, 23 Jun 2025 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659AD253B52;
+	Mon, 23 Jun 2025 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="awdkZKac"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPro/KLG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A67D252910;
-	Mon, 23 Jun 2025 13:26:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 205AC2528F3;
+	Mon, 23 Jun 2025 13:23:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685183; cv=none; b=PKJdkuvc1q35Jf2eWas2JAMci/qEefBSnlbtP00JmyqEbe9L6pUA4S1IqVqX8nr/rD2nrbxWXXwqutxmbO13SDWGIdVhA0XvaHx6tTx3hslmjXFzb5hxckKNJ4Njky7lCNI/0vy3/U0z9qbRQcBV+6eN9PJ3Zch6Jft1TcHaWS8=
+	t=1750685006; cv=none; b=O+rHGBTi4fqg3xDFlhL7DSjmVOo7D+v2vYraScvP4SJte1YDa/cLKdlPAXWBjITUS6q7BhEYJfRUdF6CopcmAuMSuf1U6uOBLqmw/2WJXHx3Z1W32zhtCa/2e1liLExziRb1w3UWvM1ud2ZG5kj2PwQ9Ip1JHKUj2sx4M+xADSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685183; c=relaxed/simple;
-	bh=gPqpNsv2vvVKeB+4HQdU0nL9IRL4W3DFkUuc3aKvCxM=;
+	s=arc-20240116; t=1750685006; c=relaxed/simple;
+	bh=zpgVYh3K7PxcNgmpNm77YjyDoEkFWichbOfbu+GQ6lk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DxRoCJ98fXxCDt6TfCOWuYibKrnJfTedRIXjVNpbAtYeKrgrA+B+txVo0zUk8q2W3T1/M5QtMcq7m8DzuUvVTL2IaHf+wHUo02XWDAF3EAfWMeA2hngsOOQmJIHwPMmisomPNOOR43VquHQ3Dg9YVX/wY2UYcHpopKwePKLm+Wk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=awdkZKac; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E40C4CEF0;
-	Mon, 23 Jun 2025 13:26:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JcJpxkKFyGieiAlfFlVtIuU/3HS+qk5FI8DW1mG2Hgchgak4bU9OXwUYWmbdDG9gPtDpgAX7/4yHXLy1B1O3pYhz0ddXj64F89Vkmg4Frqr/86pTlntJU4XpPC9UfXmqEC8AYj78dMLfbI1OiNUGESGx7ykNIMifrwvfRDAC9TI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPro/KLG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8ECBC4CEEA;
+	Mon, 23 Jun 2025 13:23:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685183;
-	bh=gPqpNsv2vvVKeB+4HQdU0nL9IRL4W3DFkUuc3aKvCxM=;
+	s=korg; t=1750685006;
+	bh=zpgVYh3K7PxcNgmpNm77YjyDoEkFWichbOfbu+GQ6lk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=awdkZKacB+d30LX9b+PCR7gCuXKMiJkkpM/a2RnaAX8B3CxpsiMoqqt3wHDs/z9qk
-	 5vBz/mGXPl3rN+AprbRKjDfLReK4BmPTl3TE0BjPpumRzYUDhXnDdtrg8VKwqdSVQn
-	 ma7Es8Rm2SsNEs650EvV1jIZxh1cuMK46E0ETyZ8=
+	b=gPro/KLGNH9Jy0D9+2cYfaI+BcvisiEqgtEMSA/HZ55vmbpNc8XyqPqrlBdv0nu2q
+	 Rc98p/SryI2rTXRNiKqkzBnhvaDx8o5psnd5KmKe7bNFT8rstQjAoA8gUfVgUyFtIK
+	 xYK/IqsA/+mH3fEAAf5nNlie8RY3rOn/bPv5wPBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corentin Labbe <clabbe.montjoie@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 014/411] crypto: sun8i-ss - do not use sg_dma_len before calling DMA functions
+	Sean Nyekjaer <sean@geanix.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 200/592] iio: imu: inv_icm42600: Fix temperature calculation
 Date: Mon, 23 Jun 2025 15:02:38 +0200
-Message-ID: <20250623130633.420984626@linuxfoundation.org>
+Message-ID: <20250623130705.047194495@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corentin Labbe <clabbe.montjoie@gmail.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit 2dfc7cd74a5e062a5405560447517e7aab1c7341 ]
+commit e2f820014239df9360064079ae93f838ff3b7f8c upstream.
 
-When testing sun8i-ss with multi_v7_defconfig, all CBC algorithm fail crypto
-selftests.
-This is strange since on sunxi_defconfig, everything was ok.
-The problem was in the IV setup loop which never run because sg_dma_len
-was 0.
+>From the documentation:
+"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
+Offset should be applied before multiplying scale, so divide offset by
+scale to make this correct.
 
-Fixes: 359e893e8af4 ("crypto: sun8i-ss - rework handling of IV")
-Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-index 0cc8cafdde27c..3bf56ac1132fd 100644
---- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-+++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
-@@ -117,7 +117,7 @@ static int sun8i_ss_setup_ivs(struct skcipher_request *areq)
- 
- 	/* we need to copy all IVs from source in case DMA is bi-directionnal */
- 	while (sg && len) {
--		if (sg_dma_len(sg) == 0) {
-+		if (sg->length == 0) {
- 			sg = sg_next(sg);
- 			continue;
- 		}
--- 
-2.39.5
-
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct ii
+ 		return IIO_VAL_INT;
+ 	/*
+ 	 * T°C = (temp / 132.48) + 25
+-	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
++	 * Tm°C = 1000 * ((temp / 132.48) + 25)
++	 * Tm°C = 7.548309 * temp + 25000
++	 * Tm°C = (temp + 3312) * 7.548309
+ 	 * scale: 100000 / 13248 ~= 7.548309
+-	 * offset: 25000
++	 * offset: 3312
+ 	 */
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 7;
+ 		*val2 = 548309;
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = 25000;
++		*val = 3312;
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 
 
 
