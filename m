@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AEB8AE52C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44374AE50F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692B53B101F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5B018440F4B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D9121FC0E3;
-	Mon, 23 Jun 2025 21:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E901EFF9F;
+	Mon, 23 Jun 2025 21:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEnK19a/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WIPUdfl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B7E9218AC1;
-	Mon, 23 Jun 2025 21:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB7292222CA;
+	Mon, 23 Jun 2025 21:29:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715171; cv=none; b=G/cdVtFGWOIW342HuSaKcEECfagpzRb8dc8TQz0VCUPWWIXdSRu5zYQSJrOJNTjKsM4/xT3wJ0ek2bBQPkvuOV+3271IQZhGiWIFV3+G37OXvDP3YQ+Q5Yu6re8azPl5LsbYyFAHh3RC0ZBQ3FKJUGec48XXfskRv70yyHyjOW0=
+	t=1750714174; cv=none; b=IBZ1tJ8odmHcNkr6IZc1DQzd7MYKFZAY8CVrY0i7oZaF0C6G4uY1Us9VWgA0Z8ceZANkEH4XnNmtUP/cnecy/z4BiX3DfX84C2ybVBUSeiOKIH323djrlL1kNwHZNL3poieykCthz0VZCcJ88G+wo1ObVgEWC+nrKBzzRzw0xQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715171; c=relaxed/simple;
-	bh=gxYpF7Et4d0HBwxQ2MCyCUrOoJ7lIDgECAt12083sIw=;
+	s=arc-20240116; t=1750714174; c=relaxed/simple;
+	bh=miQOrr3Fwf1xm/DRqT1MyBH/gFKBW+pR77ff4VpyIsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mdB1ZksY+FRJJst4aAyPpOj3jTuEnTgKI9O+A/ywGv7uLWqeX12czltzNVCuByr1vctVHuKWv2h4p2xDhxYWF5ejXjU3vlOal2+YSUrlU3utcId2WVQVYW7r7eNFjSfEdCgDxbmxhirY5dj23oQCfj1sS40ic8YPKchbTb+Nkag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEnK19a/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B3BC4CEEA;
-	Mon, 23 Jun 2025 21:46:10 +0000 (UTC)
+	 MIME-Version; b=gp7btStRR8jk3954DdCU2gho5TpVLFiWXSl2qpcIPzWmaN0i1JIX4Z/V8Vjytsf6//ju5bGb2ZLovGk4GEColviI1wPnc7hvzcMLZML6cm+p7FMKRDKViqqWruNsHPhfLF2cjRfJgGmB5zPeUJbb7mHf1d3J8waDiC06zYyUvOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WIPUdfl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C71C4CEEA;
+	Mon, 23 Jun 2025 21:29:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715171;
-	bh=gxYpF7Et4d0HBwxQ2MCyCUrOoJ7lIDgECAt12083sIw=;
+	s=korg; t=1750714174;
+	bh=miQOrr3Fwf1xm/DRqT1MyBH/gFKBW+pR77ff4VpyIsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YEnK19a/sTrrExPMAWivTQSJtf0nD4apMtAXZFM+Dpj58naxzPYlBA/FfMifBL4ag
-	 TkEQytnqN/B6QteAXcuJVWF1LI63dzrXHh827hZlb2U+vpNL70EmqSnb6Lg5pK4pVa
-	 umYkU0FoLWqAODfzWkpYd9Qvxk0+S/fCTjegKJg8=
+	b=WIPUdfl02sXoq8T8WSe81DsMhH9zhMoWJ8meHEol2fdkv1iS/tjPoq3cteXK5PCyn
+	 93gz1mYS6rF7PeRkLWFO7SVqDLweh3R8UQz14TRsY0W9gZlKjxfDJ1b163VSRYfhTE
+	 G8NJ5WA191riuGBW3ewc2AR32NhyhIS7TslziiqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 5.15 257/411] PCI: dw-rockchip: Fix PHY function call sequence in rockchip_pcie_phy_deinit()
-Date: Mon, 23 Jun 2025 15:06:41 +0200
-Message-ID: <20250623130640.114086998@linuxfoundation.org>
+	Henk Vergonet <henk.vergonet@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 141/290] wifi: mt76: mt76x2: Add support for LiteOn WN4516R,WN4519R
+Date: Mon, 23 Jun 2025 15:06:42 +0200
+Message-ID: <20250623130631.143312542@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: Henk Vergonet <henk.vergonet@gmail.com>
 
-commit 286ed198b899739862456f451eda884558526a9d upstream.
+[ Upstream commit 3c0e4f606d8693795a2c965d6f4987b1bfc31097 ]
 
-The documentation for the phy_power_off() function explicitly says that it
-must be called before phy_exit().
+Adds support for:
+ - LiteOn WN4516R
+ - LiteOn WN4519R
+ Both use:
+ - A nonstandard USB connector
+ - Mediatek chipset MT7600U
+ - ASIC revision: 76320044
 
-Hence, follow the same rule in rockchip_pcie_phy_deinit().
+Disabled VHT support on ASIC revision 76320044:
 
-Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-[mani: commit message change]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org	# v5.15+
-Link: https://patch.msgid.link/20250417142138.1377451-1-didi.debian@cknow.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+ This fixes the 5G connectibity issue on LiteOn WN4519R module
+ see https://github.com/openwrt/mt76/issues/971
+
+ And may also fix the 5G issues on the XBox One Wireless Adapter
+ see https://github.com/openwrt/mt76/issues/200
+
+ I have looked at the FCC info related to the MT7632U chip as mentioned in here:
+ https://github.com/openwrt/mt76/issues/459
+ These confirm the chipset does not support 'ac' mode and hence VHT should be turned of.
+
+Signed-off-by: Henk Vergonet <henk.vergonet@gmail.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20250418143914.31384-1-henk.vergonet@gmail.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76x2/usb.c     |  2 ++
+ .../net/wireless/mediatek/mt76/mt76x2/usb_init.c    | 13 ++++++++++++-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -178,8 +178,8 @@ static int rockchip_pcie_phy_init(struct
- 
- static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+index 70d3895762b4c..00248e2b21ea7 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
+@@ -17,6 +17,8 @@ static const struct usb_device_id mt76x2u_device_table[] = {
+ 	{ USB_DEVICE(0x057c, 0x8503) },	/* Avm FRITZ!WLAN AC860 */
+ 	{ USB_DEVICE(0x7392, 0xb711) },	/* Edimax EW 7722 UAC */
+ 	{ USB_DEVICE(0x0e8d, 0x7632) },	/* HC-M7662BU1 */
++	{ USB_DEVICE(0x0471, 0x2126) }, /* LiteOn WN4516R module, nonstandard USB connector */
++	{ USB_DEVICE(0x0471, 0x7600) }, /* LiteOn WN4519R module, nonstandard USB connector */
+ 	{ USB_DEVICE(0x2c4e, 0x0103) },	/* Mercury UD13 */
+ 	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
+ 	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
+diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
+index 33a14365ec9b9..3b55628115115 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
+@@ -191,6 +191,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
  {
--	phy_exit(rockchip->phy);
- 	phy_power_off(rockchip->phy);
-+	phy_exit(rockchip->phy);
- }
+ 	struct ieee80211_hw *hw = mt76_hw(dev);
+ 	struct mt76_usb *usb = &dev->mt76.usb;
++	bool vht;
+ 	int err;
  
- static int rockchip_pcie_reset_control_release(struct rockchip_pcie *rockchip)
+ 	INIT_DELAYED_WORK(&dev->cal_work, mt76x2u_phy_calibrate);
+@@ -217,7 +218,17 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
+ 
+ 	/* check hw sg support in order to enable AMSDU */
+ 	hw->max_tx_fragments = dev->mt76.usb.sg_en ? MT_TX_SG_MAX_SIZE : 1;
+-	err = mt76_register_device(&dev->mt76, true, mt76x02_rates,
++	switch (dev->mt76.rev) {
++	case 0x76320044:
++		/* these ASIC revisions do not support VHT */
++		vht = false;
++		break;
++	default:
++		vht = true;
++		break;
++	}
++
++	err = mt76_register_device(&dev->mt76, vht, mt76x02_rates,
+ 				   ARRAY_SIZE(mt76x02_rates));
+ 	if (err)
+ 		goto fail;
+-- 
+2.39.5
+
 
 
 
