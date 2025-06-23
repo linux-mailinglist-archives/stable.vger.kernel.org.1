@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C698AAE529D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06868AE4ED2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 632BD4A6361
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB2DA7AAF4F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304A223DEE;
-	Mon, 23 Jun 2025 21:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 390A21F582A;
+	Mon, 23 Jun 2025 21:09:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrdzkDWb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RG3WV8g/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906C222A4CC;
-	Mon, 23 Jun 2025 21:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9ACF70838;
+	Mon, 23 Jun 2025 21:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715105; cv=none; b=ltaoU4/47jzjv6wMjh9gN8t29ICcRkOSOjMM2/pfhCxd/N0auZweLjhtKYz1vdODL6TiFjU/oPyPWl4yTv8t+9rdUc+UCjaAjAlLfuSTugOClCDo3c4mFpuEnv8NT+u9E+8czJLahKLchdAP47NCxFNk+E4ygKhYRfTI5Q9l0B0=
+	t=1750712968; cv=none; b=PAVfuCeHhoNNkKOtcT4IkNpX9df6oXUP2QK3Ho1kFy2+nZFkvhneSjIuYfOxlxBmu/NZFQZD8dRGPMl+hDvepdiDWHTB/0tILLWjjt1MMF3A4DYAR+Rb4sM35TRE/I5VTOlfQ4gC6Wz45hbAJg5KezpPO+sTw1/NpCLBBYN1NjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715105; c=relaxed/simple;
-	bh=bemz+0MAxbLCSPtoaMTUubjGS9rxENpYEJnzlhNIRus=;
+	s=arc-20240116; t=1750712968; c=relaxed/simple;
+	bh=/jiBKIQ3tpcAhvLcIXEditknz2z2wbouulhjk9QeOKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mkoFTo4hok5TrgefBJLDPIyQy17z1BEm+jUqIl6Jnbe0IP+42wLFOKBl1DXOGRxxdODoPmiN9BninUJ08UVUClt4/5RutM27d0ZLizJoCQ8eKZ9jRvN+HAX7Fl09YY+ft169ll8FSFPg/BL4Lx+XpFD9i+aLwuoNP30bk8LfK8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrdzkDWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 267DDC4CEEA;
-	Mon, 23 Jun 2025 21:45:05 +0000 (UTC)
+	 MIME-Version; b=Bwfvt2mfIN2stuX6O6F0v2GZYsx/z0wIcC+v7ORFr/SX1A+EKJ1NI8PFnKB68EiDGoe+VpIgKxugLaDQJC0qL9LE11ZCqIle7zf7Fm3WE1/CuqzcyEjKnHTHhsiaSPg3U3cnQTTf44qmdqFWX/7jwHBfJC47NQr+2jJ9XrWeDZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RG3WV8g/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81FECC4CEEA;
+	Mon, 23 Jun 2025 21:09:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715105;
-	bh=bemz+0MAxbLCSPtoaMTUubjGS9rxENpYEJnzlhNIRus=;
+	s=korg; t=1750712967;
+	bh=/jiBKIQ3tpcAhvLcIXEditknz2z2wbouulhjk9QeOKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rrdzkDWb2O1l0tJ11BEM1ghAI0/apFLxabG3drLl1wMP+mfW2VvhCV+ZbHWLcopZG
-	 hsh8m17YdQ6YlRI5vkOUHPg78y/adxZTmIHcepodEa1cjwD88IbxrqCdyuKelQnlXQ
-	 91PUgwv5HH6tWOnVuX/8TYsVUu7UsG6RnnCjhQ9I=
+	b=RG3WV8g/oi27owGwtLtlhqWe8yT0Wka8UpPSkn9TB4Z9P3QrholWaudHZHHR9niGC
+	 HlVkxKUbBirlF7FtBOxB6MLue/Rbp1Pqh+rJUuD3nAvpqeVbpZv6qCTAIHXFs3v1oU
+	 zNLryKRvqwaNqM2pXi6WqbP4AS6i6/BoCMi9eQgc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Gregory CLEMENT <gregory.clement@bootlin.com>,
+	Shravan Chippa <shravan.chippa@microchip.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/508] arm64: dts: marvell: uDPU: define pinctrl state for alarm LEDs
-Date: Mon, 23 Jun 2025 15:04:20 +0200
-Message-ID: <20250623130650.553628698@linuxfoundation.org>
+Subject: [PATCH 6.15 303/592] media: i2c: imx334: update mode_3840x2160_regs array
+Date: Mon, 23 Jun 2025 15:04:21 +0200
+Message-ID: <20250623130707.603660365@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Shravan Chippa <shravan.chippa@microchip.com>
 
-[ Upstream commit b04f0d89e880bc2cca6a5c73cf287082c91878da ]
+[ Upstream commit 35132d039c566b0e9d8e53f76f512b22607c2405 ]
 
-The two alarm LEDs of on the uDPU board are stopped working since
-commit 78efa53e715e ("leds: Init leds class earlier").
+The 3840x2160 mode operates with the imx334 reset values.
+If we switch to other modes and then return to the 3840x2160 mode,
+it should function correctly. so updated the mode_3840x2160_regs
+array with the imx334 reset values.
 
-The LEDs are driven by the GPIO{15,16} pins of the North Bridge
-GPIO controller. These pins are part of the 'spi_quad' pin group
-for which the 'spi' function is selected via the default pinctrl
-state of the 'spi' node. This is wrong however, since in order to
-allow controlling the LEDs, the pins should use the 'gpio' function.
-
-Before the commit mentined above, the 'spi' function is selected
-first by the pinctrl core before probing the spi driver, but then
-it gets overridden to 'gpio' implicitly via the
-devm_gpiod_get_index_optional() call from the 'leds-gpio' driver.
-
-After the commit, the LED subsystem gets initialized before the
-SPI subsystem, so the function of the pin group remains 'spi'
-which in turn prevents controlling of the LEDs.
-
-Despite the change of the initialization order, the root cause is
-that the pinctrl state definition is wrong since its initial commit
-0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board"),
-
-To fix the problem, override the function in the 'spi_quad_pins'
-node to 'gpio' and move the pinctrl state definition from the
-'spi' node into the 'leds' node.
-
-Cc: stable@vger.kernel.org # needs adjustment for < 6.1
-Fixes: 0d45062cfc89 ("arm64: dts: marvell: Add device tree for uDPU board")
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
+Signed-off-by: Shravan Chippa <shravan.chippa@microchip.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/media/i2c/imx334.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-index 3f79923376fb2..37244e8816d9e 100644
---- a/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-+++ b/arch/arm64/boot/dts/marvell/armada-3720-uDPU.dtsi
-@@ -26,6 +26,8 @@ memory@0 {
- 
- 	leds {
- 		compatible = "gpio-leds";
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&spi_quad_pins>;
- 
- 		led-power1 {
- 			label = "udpu:green:power";
-@@ -82,8 +84,6 @@ &sdhci0 {
- 
- &spi0 {
- 	status = "okay";
--	pinctrl-names = "default";
--	pinctrl-0 = <&spi_quad_pins>;
- 
- 	flash@0 {
- 		compatible = "jedec,spi-nor";
-@@ -108,6 +108,10 @@ partition@180000 {
- 	};
- };
- 
-+&spi_quad_pins {
-+	function = "gpio";
-+};
-+
- &pinctrl_nb {
- 	i2c2_recovery_pins: i2c2-recovery-pins {
- 		groups = "i2c2";
+diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
+index 63d812a41542f..b47cb3b8f3689 100644
+--- a/drivers/media/i2c/imx334.c
++++ b/drivers/media/i2c/imx334.c
+@@ -352,6 +352,12 @@ static const struct imx334_reg mode_3840x2160_regs[] = {
+ 	{0x302d, 0x00},
+ 	{0x302e, 0x00},
+ 	{0x302f, 0x0f},
++	{0x3074, 0xb0},
++	{0x3075, 0x00},
++	{0x308e, 0xb1},
++	{0x308f, 0x00},
++	{0x30d8, 0x20},
++	{0x30d9, 0x12},
+ 	{0x3076, 0x70},
+ 	{0x3077, 0x08},
+ 	{0x3090, 0x70},
 -- 
 2.39.5
 
