@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-158183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA9F4AE576D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:30:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 317F7AE5507
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1410D3BE3EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F31DF1BC31FA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8679223DE5;
-	Mon, 23 Jun 2025 22:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A60B222581;
+	Mon, 23 Jun 2025 22:07:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSQgntyU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LByLwjrt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75117222581;
-	Mon, 23 Jun 2025 22:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0422721B8F6;
+	Mon, 23 Jun 2025 22:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717688; cv=none; b=Q1ITWOM05ryBMUFPm3J812K5wOYEkrKGjYa7094mmSjhi0cfrkRdszW/eFLMbs9eJmsnes+l1Tn/pciTECiU7lOWhrbIbraQtJ7OrvX77RXQTnA+Ed3gEtjjxnvu+Nu9w2TwajMiduxQnFUGtTFPKupL/Fo5fSYUO5n4nG+/amc=
+	t=1750716432; cv=none; b=jh7PqCJ/DTSVHg5b/lKLkIFlhW+UwwRLt50HkCvLqwrtnnuImB9DpUlI20F0n+fV8fs3/08iOcLZNov1zPeO79ULJmUA91x8yDj0MFIxGOSNIeXBzuQ/O8GPfgAI3YCcsY4/mUXs0tmWFyk2QNdKqxC1jedM7rMTYv9Choirz0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717688; c=relaxed/simple;
-	bh=HJz0v9++paOruyBaCIh7GIqksMoDO4OWDoLXrdR5kDE=;
+	s=arc-20240116; t=1750716432; c=relaxed/simple;
+	bh=OjvRTt5T147mI1LbwGC4Wxe8S1ZL93BsOpYsHuRK4lw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EMXOAB6bSHzSgTj0O8FAKspOakVR6c0zWzdls+7sqvA/WdUJXAlNk3hYGF6/hDoJ+9lRC+o2iP7BvyjBZ0ESh/TNmPNCT+xPsWQKp9V8b+Og2Ctxv27E+uPWA6sfMyb5O1+QJ4zykKBDMC8olLBU6g1lcwoAytBYkpW/DNxT9Ng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSQgntyU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D033C4CEEA;
-	Mon, 23 Jun 2025 22:28:07 +0000 (UTC)
+	 MIME-Version; b=m3iJO3iNNFSWidiAZfENzyjUswCF+8SB6d/XUXzcGyAk2UY///Q4OlS6lMSTeVCVoBdV5Rb6oaW7ixniirGCbtBGAobg7qROnthz0Z9x6Rny54ltTfM7tLrr2AZdYbRvTGIzRu/UETvlXqI4KTqsfpLu3DCKVTG1Y3dskmzKJsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LByLwjrt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 883A0C4CEEA;
+	Mon, 23 Jun 2025 22:07:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717688;
-	bh=HJz0v9++paOruyBaCIh7GIqksMoDO4OWDoLXrdR5kDE=;
+	s=korg; t=1750716431;
+	bh=OjvRTt5T147mI1LbwGC4Wxe8S1ZL93BsOpYsHuRK4lw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pSQgntyUF8LDqWFardv9QXtk7Fjl2Uxr/B8r+UDYS0zh9fdsDtwG4GcPuZZskyYRF
-	 CVk1DPUglT46muOeGmZdzBr9tJQs5pwmeJd1c0p2QEiKMQqotmLGAXhTMz8hrY4prH
-	 UQBWn8psF+TbHf48/aNuwq1h6I+OscGPs4SkcqXc=
+	b=LByLwjrtKEoO+TJPxJKdYeSf2SimO/8y2uL80+c2GN7srzwOFzE+D9LfgB0KyhlwV
+	 bCpdsi8KISCPQ4DKFr89X71q/JkNo7nFjg/yu6FyxmuPTJfCwTCnej33pfOqVZ7kxP
+	 VCr/ew6A5SU3FnoRyl7bCZaeDYj2I/v6MfCOVAIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baisheng Gao <baisheng.gao@unisoc.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 504/508] perf: Fix sample vs do_exit()
+	David Gow <davidgow@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Justin Stitt <justinstitt@google.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.10 348/355] rtc: test: Fix invalid format specifier.
 Date: Mon, 23 Jun 2025 15:09:09 +0200
-Message-ID: <20250623130657.402867158@linuxfoundation.org>
+Message-ID: <20250623130637.187910642@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +64,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Gow <davidgow@google.com>
 
-[ Upstream commit 4f6fc782128355931527cefe3eb45338abd8ab39 ]
+commit 8a904a3caa88118744062e872ae90f37748a8fd8 upstream.
 
-Baisheng Gao reported an ARM64 crash, which Mark decoded as being a
-synchronous external abort -- most likely due to trying to access
-MMIO in bad ways.
+'days' is a s64 (from div_s64), and so should use a %lld specifier.
 
-The crash further shows perf trying to do a user stack sample while in
-exit_mmap()'s tlb_finish_mmu() -- i.e. while tearing down the address
-space it is trying to access.
+This was found by extending KUnit's assertion macros to use gcc's
+__printf attribute.
 
-It turns out that we stop perf after we tear down the userspace mm; a
-receipie for disaster, since perf likes to access userspace for
-various reasons.
-
-Flip this order by moving up where we stop perf in do_exit().
-
-Additionally, harden PERF_SAMPLE_CALLCHAIN and PERF_SAMPLE_STACK_USER
-to abort when the current task does not have an mm (exit_mm() makes
-sure to set current->mm = NULL; before commencing with the actual
-teardown). Such that CPU wide events don't trip on this same problem.
-
-Fixes: c5ebcedb566e ("perf: Add ability to attach user stack dump to sample")
-Reported-by: Baisheng Gao <baisheng.gao@unisoc.com>
-Suggested-by: Mark Rutland <mark.rutland@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250605110815.GQ39944@noisy.programming.kicks-ass.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1d1bb12a8b18 ("rtc: Improve performance of rtc_time64_to_tm(). Add tests.")
+Signed-off-by: David Gow <davidgow@google.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c |  7 +++++++
- kernel/exit.c        | 17 +++++++++--------
- 2 files changed, 16 insertions(+), 8 deletions(-)
+ drivers/rtc/lib_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 25df8971a56ed..2761db0365ddc 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -6800,6 +6800,10 @@ perf_sample_ustack_size(u16 stack_size, u16 header_size,
- 	if (!regs)
- 		return 0;
+--- a/drivers/rtc/lib_test.c
++++ b/drivers/rtc/lib_test.c
+@@ -54,7 +54,7 @@ static void rtc_time64_to_tm_test_date_r
  
-+	/* No mm, no stack, no dump. */
-+	if (!current->mm)
-+		return 0;
-+
- 	/*
- 	 * Check if we fit in with the requested stack size into the:
- 	 * - TASK_SIZE
-@@ -7485,6 +7489,9 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
- 	const u32 max_stack = event->attr.sample_max_stack;
- 	struct perf_callchain_entry *callchain;
+ 		days = div_s64(secs, 86400);
  
-+	if (!current->mm)
-+		user = false;
-+
- 	if (!kernel && !user)
- 		return &__empty_callchain;
+-		#define FAIL_MSG "%d/%02d/%02d (%2d) : %ld", \
++		#define FAIL_MSG "%d/%02d/%02d (%2d) : %lld", \
+ 			year, month, mday, yday, days
  
-diff --git a/kernel/exit.c b/kernel/exit.c
-index 156283b3c1bf6..10af26a4ab010 100644
---- a/kernel/exit.c
-+++ b/kernel/exit.c
-@@ -855,6 +855,15 @@ void __noreturn do_exit(long code)
- 	tsk->exit_code = code;
- 	taskstats_exit(tsk, group_dead);
- 
-+	/*
-+	 * Since sampling can touch ->mm, make sure to stop everything before we
-+	 * tear it down.
-+	 *
-+	 * Also flushes inherited counters to the parent - before the parent
-+	 * gets woken up by child-exit notifications.
-+	 */
-+	perf_event_exit_task(tsk);
-+
- 	exit_mm();
- 
- 	if (group_dead)
-@@ -871,14 +880,6 @@ void __noreturn do_exit(long code)
- 	exit_task_work(tsk);
- 	exit_thread(tsk);
- 
--	/*
--	 * Flush inherited counters to the parent - before the parent
--	 * gets woken up by child-exit notifications.
--	 *
--	 * because of cgroup mode, must be called before cgroup_exit()
--	 */
--	perf_event_exit_task(tsk);
--
- 	sched_autogroup_exit_task(tsk);
- 	cgroup_exit(tsk);
- 
--- 
-2.39.5
-
+ 		KUNIT_ASSERT_EQ_MSG(test, year - 1900, result.tm_year, FAIL_MSG);
 
 
 
