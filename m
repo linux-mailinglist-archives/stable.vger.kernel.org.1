@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 089B6AE53A9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B086DAE549A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528AE445DA9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E23C01BC1E03
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB0A223DE1;
-	Mon, 23 Jun 2025 21:55:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD6661E22E6;
+	Mon, 23 Jun 2025 22:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w4ec0QY1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5wPukeC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17D01AD3FA;
-	Mon, 23 Jun 2025 21:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 889701D86DC;
+	Mon, 23 Jun 2025 22:03:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715709; cv=none; b=Vwx4L6bOc+g5yH+yzF4KxS4fs0C2x/zoxBDs2TSsCS6n1HTJjzNGi0bt/qs6/sTIjzOm7Bd9RbsIgDKtT0tgQm/1ZZvudYLJi6hJuT/B+AJAV3fA2UAhbdqsdSY7pUzUayL/cM1KCvRVc0Zn/ssqhv18KULhb3VXhTPKOuvHjUQ=
+	t=1750716181; cv=none; b=FYRZCye4yDLKp27FFtIPXde3K3RuTio5/F5ktMVuAkaTJ/pknqnyEMkmQttAIlfB3nkMpH4SI5aSKD3pb3Wkx1itBENUTcVA+W4oVsNKxYonnG16mJR0wxZZ9vGNxqxX7jnUcLoHYK+jAmULbBqbvglmlHEocW8IEMZi8zqTftg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715709; c=relaxed/simple;
-	bh=S9560ulDtBoigIQOXmxYViV8gfEmqU+4A229dB6rrIM=;
+	s=arc-20240116; t=1750716181; c=relaxed/simple;
+	bh=lB9mwtL7KOVSoS/R9SjNlo8JEgZ48euPZcmRGoLh5dU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JEh+XM5fjRuXdYJyoZfDzagWyRg7Fk3CN8tOPKbX95LQBolgTSFs590jsPmqSi7GzrMhPI2wIspOplcOEYUHgCoEBRtT9auk0V65jPwyRFGGuTPB2WS/YhbUL3DOWNeMsFHtNVBK1QtXwga7IMLeMZ3u67/ssFeC1j7gkmTLLT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w4ec0QY1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B287C4CEEA;
-	Mon, 23 Jun 2025 21:55:09 +0000 (UTC)
+	 MIME-Version; b=rZFHJaY5cFQjFMHqq9lJaHSyeWkOsEAsf9XWd25kaObjTE6Wve4V+flKlfsAULwxnh0+/nH80eGauFGejYyWv6+4QEyEb9GA06urr2haNVf9TtKfWXIGlIi4dCbhBOGcCr9ZkhRh0eJzX1lAYXIiMBpdLWzC/UwtU0SJGe1F6fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5wPukeC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20BF2C4CEF1;
+	Mon, 23 Jun 2025 22:03:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715709;
-	bh=S9560ulDtBoigIQOXmxYViV8gfEmqU+4A229dB6rrIM=;
+	s=korg; t=1750716181;
+	bh=lB9mwtL7KOVSoS/R9SjNlo8JEgZ48euPZcmRGoLh5dU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w4ec0QY1zgq287KHHnkesw4EyKaND4PUEGeLN9tSFOmN5D0rZfE612DPs+UU1JTsU
-	 VEY3WdKR+uT+mLatfMaBL3cEfAoPqDxhwaKvEpwcE5SeZl2XXxlMrXk6jLcl4CE8Fu
-	 Q2QWzB5TTq1cgLQhEDFc5e5IXH8Dudm5oZOqaz1o=
+	b=m5wPukeCbohLBEYvBCLdyalX0jYLSbMwG4CUoDqJBypJTbC3oW0Oubxvfj7WNVGI+
+	 zLWeB45nMXLjtkUNQH2NGnaSdii23Tgrp00S8XDLhhP9UWDWdedWDZ58DS6zhtKyzO
+	 AoD+w4qauZu0PI+Ww/Tifn7Xv2eKyM7vfW+DbUkM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 216/290] cifs: serialize other channels when query server interfaces is pending
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 333/411] sock: Correct error checking condition for (assign|release)_proto_idx()
 Date: Mon, 23 Jun 2025 15:07:57 +0200
-Message-ID: <20250623130633.426054991@linuxfoundation.org>
+Message-ID: <20250623130642.033190587@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,91 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit b5e3e6e28cf3853566ba5d816f79aba5be579158 upstream.
+[ Upstream commit faeefc173be40512341b102cf1568aa0b6571acd ]
 
-Today, during smb2_reconnect, session_mutex is released as soon as
-the tcon is reconnected and is in a good state. However, in case
-multichannel is enabled, there is also a query of server interfaces that
-follows. We've seen that this query can race with reconnects of other
-channels, causing them to step on each other with reconnects.
+(assign|release)_proto_idx() wrongly check find_first_zero_bit() failure
+by condition '(prot->inuse_idx == PROTO_INUSE_NR - 1)' obviously.
 
-This change extends the hold of session_mutex till after the query of
-server interfaces is complete. In order to avoid recursive smb2_reconnect
-checks during query ioctl, this change also introduces a session flag
-for sessions where such a query is in progress.
+Fix by correcting the condition to '(prot->inuse_idx == PROTO_INUSE_NR)'
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20250410-fix_net-v2-1-d69e7c5739a4@quicinc.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/cifsglob.h |    1 +
- fs/smb/client/smb2pdu.c  |   24 ++++++++++++++++++------
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ net/core/sock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/cifsglob.h
-+++ b/fs/smb/client/cifsglob.h
-@@ -1053,6 +1053,7 @@ struct cifs_chan {
- };
- 
- #define CIFS_SES_FLAG_SCALE_CHANNELS (0x1)
-+#define CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES (0x2)
- 
- /*
-  * Session structure.  One of these for each uid session with a particular host
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -425,14 +425,19 @@ skip_sess_setup:
- 	if (!rc &&
- 	    (server->capabilities & SMB2_GLOBAL_CAP_MULTI_CHANNEL) &&
- 	    server->ops->query_server_interfaces) {
--		mutex_unlock(&ses->session_mutex);
--
- 		/*
--		 * query server network interfaces, in case they change
-+		 * query server network interfaces, in case they change.
-+		 * Also mark the session as pending this update while the query
-+		 * is in progress. This will be used to avoid calling
-+		 * smb2_reconnect recursively.
- 		 */
-+		ses->flags |= CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
- 		xid = get_xid();
- 		rc = server->ops->query_server_interfaces(xid, tcon, false);
- 		free_xid(xid);
-+		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
-+
-+		mutex_unlock(&ses->session_mutex);
- 
- 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
- 			/*
-@@ -574,11 +579,18 @@ static int smb2_ioctl_req_init(u32 opcod
- 			       struct TCP_Server_Info *server,
- 			       void **request_buf, unsigned int *total_len)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 7f7f02a01f2dd..3634a4f1f76c6 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -3571,7 +3571,7 @@ static int assign_proto_idx(struct proto *prot)
  {
--	/* Skip reconnect only for FSCTL_VALIDATE_NEGOTIATE_INFO IOCTLs */
--	if (opcode == FSCTL_VALIDATE_NEGOTIATE_INFO) {
-+	/*
-+	 * Skip reconnect in one of the following cases:
-+	 * 1. For FSCTL_VALIDATE_NEGOTIATE_INFO IOCTLs
-+	 * 2. For FSCTL_QUERY_NETWORK_INTERFACE_INFO IOCTL when called from
-+	 * smb2_reconnect (indicated by CIFS_SES_FLAG_SCALE_CHANNELS ses flag)
-+	 */
-+	if (opcode == FSCTL_VALIDATE_NEGOTIATE_INFO ||
-+	    (opcode == FSCTL_QUERY_NETWORK_INTERFACE_INFO &&
-+	     (tcon->ses->flags & CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES)))
- 		return __smb2_plain_req_init(SMB2_IOCTL, tcon, server,
- 					     request_buf, total_len);
--	}
-+
- 	return smb2_plain_req_init(SMB2_IOCTL, tcon, server,
- 				   request_buf, total_len);
+ 	prot->inuse_idx = find_first_zero_bit(proto_inuse_idx, PROTO_INUSE_NR);
+ 
+-	if (unlikely(prot->inuse_idx == PROTO_INUSE_NR - 1)) {
++	if (unlikely(prot->inuse_idx == PROTO_INUSE_NR)) {
+ 		pr_err("PROTO_INUSE_NR exhausted\n");
+ 		return -ENOSPC;
+ 	}
+@@ -3582,7 +3582,7 @@ static int assign_proto_idx(struct proto *prot)
+ 
+ static void release_proto_idx(struct proto *prot)
+ {
+-	if (prot->inuse_idx != PROTO_INUSE_NR - 1)
++	if (prot->inuse_idx != PROTO_INUSE_NR)
+ 		clear_bit(prot->inuse_idx, proto_inuse_idx);
  }
+ #else
+-- 
+2.39.5
+
 
 
 
