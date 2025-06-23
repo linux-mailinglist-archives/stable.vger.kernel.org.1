@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82F09AE5350
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC4B5AE5167
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23E813B68EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 444BD17ECE1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 600C3223714;
-	Mon, 23 Jun 2025 21:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F1521B8F6;
+	Mon, 23 Jun 2025 21:33:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFOLd3Hv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZm2iGiZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E83B19049B;
-	Mon, 23 Jun 2025 21:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C37D51EEA5D;
+	Mon, 23 Jun 2025 21:33:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715504; cv=none; b=Zfcym3Ck0lbAVgLY967XC38ZCkf6fgJ4ik5m2DDJaj9T8yYpRLfvRRUea5fqD/qUsFY0dCE6sNkAB59V9ZqykaAA8jNRM8HDohKEHU0tHrbFwP4lx3AVBuybZhV66CIzGE/Hb0h2F9FCqITmChtGXh3eH24p/N4DI27ITNqK9ac=
+	t=1750714416; cv=none; b=S4dnr5/bUc5zoK5HzwXM/dV+snWssyZgeOjJlU2VDYwD7OR3UGibXC4M35qcwNiZiQouzv8g5GyeXvazElCELRy6zx4wRAXQaQcq8Fp75/rShk4mR131JhqEJETbNPQ58QFFA6mg4QEKkZYD8GmGDdcME3MI9LGyg02XpSPmhLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715504; c=relaxed/simple;
-	bh=wMkvFMrWauqMirl0oE3OCBorj/1NVQ20v6++lNcGD1s=;
+	s=arc-20240116; t=1750714416; c=relaxed/simple;
+	bh=lcuiz/aoXTGTUV8JqrlOedB9uk445hbnTv1Ly45Muik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3kq7022oyAlAPg5ILRrYFrbCQ/C+qwtcRM2Lc5pKfigqGbd6oDWQXT3Hl66eCBvGcq05Y4N/CFTVqwkNoJ+hJTvEUWRxn1jtTddH6f4r5afsCZiOlwhFiwqHjOZrMvaqWmgA0iRbLwAv0vKOM4K5AfTGgPKg+N1AaMJY5npF1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFOLd3Hv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA209C4CEEA;
-	Mon, 23 Jun 2025 21:51:43 +0000 (UTC)
+	 MIME-Version; b=n+P+kcZrSVaAW/2mygnYM5XWzr2WHwrlHDVaA4smPJYSD21K2Cqj+j9BqG8faSXeZbFTtpj+NjdGnYErREO4IYN9HPcWCayq+pxEH6DBK9fVWmRL4ilSBzma034vFH/Eb0CtrpriHkHPN4cC5qJz2xU9LhfZ4PN80yoX3ctEaFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZm2iGiZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3672EC4CEEA;
+	Mon, 23 Jun 2025 21:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715504;
-	bh=wMkvFMrWauqMirl0oE3OCBorj/1NVQ20v6++lNcGD1s=;
+	s=korg; t=1750714416;
+	bh=lcuiz/aoXTGTUV8JqrlOedB9uk445hbnTv1Ly45Muik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFOLd3Hv7WYpnFIY6xR6DXO13JvhN4hHQ7pdiKD3l7zrqwZLTSf2/mT/8vUtK4NZ2
-	 c40ar1GmmMbTsvhtzBOisaa8j0PAnUD8WNx1nYRexs5XEApM82wVzzVSjDM4hecFzF
-	 gKQhsORJJYiCyV6G+zViP5qLOpybqHAlP4lDQ/10=
+	b=tZm2iGiZ3Dixe/AuDNxbjyFyTXST+6OetcgeVrHbA8uHa1yque4dJs7NgZhMP05js
+	 pg5r8YtyUvI7TusrmTA0lM984ZDf5oRbWYacKhgrcyhsW9l5HiljH/9+rVwkPYQt5W
+	 rh4LujKHMNHWiaYclpD3noHu9vj1iiitATExelEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Imran Shaik <quic_imrashai@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Muna Sinada <muna.sinada@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 210/414] clk: qcom: gcc-x1e80100: Set FORCE MEM CORE for UFS clocks
+Subject: [PATCH 6.15 389/592] wifi: mac80211: VLAN traffic in multicast path
 Date: Mon, 23 Jun 2025 15:05:47 +0200
-Message-ID: <20250623130647.259860315@linuxfoundation.org>
+Message-ID: <20250623130709.695815742@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taniya Das <quic_tdas@quicinc.com>
+From: Muna Sinada <muna.sinada@oss.qualcomm.com>
 
-[ Upstream commit 201bf08ba9e26eeb0a96ba3fd5c026f531b31aed ]
+[ Upstream commit 1a4a6a22552ca9d723f28a1fe35eab1b9b3d8b33 ]
 
-Update the force mem core bit for UFS ICE clock and UFS PHY AXI clock to
-force the core on signal to remain active during halt state of the clk.
-If force mem core bit of the clock is not set, the memories of the
-subsystem will not retain the logic across power states. This is
-required for the MCQ feature of UFS.
+Currently for MLO, sending out multicast frames on each link is handled by
+mac80211 only when IEEE80211_HW_MLO_MCAST_MULTI_LINK_TX flag is not set.
 
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Reviewed-by: Imran Shaik <quic_imrashai@quicinc.com>
-Link: https://lore.kernel.org/r/20250414-gcc_ufs_mem_core-v1-2-67b5529b9b5d@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Dynamic VLAN multicast traffic utilizes software encryption.
+Due to this, mac80211 should handle transmitting multicast frames on
+all links for multicast VLAN traffic.
+
+Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250325213125.1509362-4-muna.sinada@oss.qualcomm.com
+[remove unnecessary parentheses]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/mac80211/tx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index 009f39139b644..3e44757e25d32 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -6753,6 +6753,10 @@ static int gcc_x1e80100_probe(struct platform_device *pdev)
- 	/* Clear GDSC_SLEEP_ENA_VOTE to stop votes being auto-removed in sleep. */
- 	regmap_write(regmap, 0x52224, 0x0);
- 
-+	/* FORCE_MEM_CORE_ON for ufs phy ice core and gcc ufs phy axi clocks  */
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_ice_core_clk, true);
-+	qcom_branch_set_force_mem_core(regmap, gcc_ufs_phy_axi_clk, true);
-+
- 	return qcom_cc_really_probe(&pdev->dev, &gcc_x1e80100_desc, regmap);
- }
- 
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 20179db88c4a6..d6af02a524af3 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -4526,8 +4526,10 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
+ 						     IEEE80211_TX_CTRL_MLO_LINK_UNSPEC,
+ 						     NULL);
+ 	} else if (ieee80211_vif_is_mld(&sdata->vif) &&
+-		   sdata->vif.type == NL80211_IFTYPE_AP &&
+-		   !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) {
++		   ((sdata->vif.type == NL80211_IFTYPE_AP &&
++		     !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) ||
++		    (sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
++		     !sdata->wdev.use_4addr))) {
+ 		ieee80211_mlo_multicast_tx(dev, skb);
+ 	} else {
+ normal:
 -- 
 2.39.5
 
