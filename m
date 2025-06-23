@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-156604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156340-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65AD9AE5047
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E99AE4F24
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AEAD93BFB13
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 645EE3BEF37
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C663D2628C;
-	Mon, 23 Jun 2025 21:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52FA31E8324;
+	Mon, 23 Jun 2025 21:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m1FAZGym"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AQ0qwqmt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 825CA1EDA0F;
-	Mon, 23 Jun 2025 21:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104371DF98B;
+	Mon, 23 Jun 2025 21:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713820; cv=none; b=XEKMOWloFH3ODD5JZ6kCzdlg7Ws3kA6j+PaBbdEnKXgcNE6/atWe/XNU7d00I2cHgniAMOXnhdWzHEs7O+QE4T6SYYWD9LFM8FuZ1lAQMFlqOv7ucW1+P/gJB5NVobc0zgPl1uop3K9tMnt0cDwDCzehopKveBP8XZpDrtIuvrk=
+	t=1750713175; cv=none; b=l7VN/4BAua5e7kWn3mshJdxDO6G8YUwYmZWm2JZ3mT3TmroQ5qZVm2e/qpONMMRapJDvxw6xepbXLiPJpnrklLJQqA3xwkwpL/+lfexY4eg687dFZSFaRgskbGaDgluatUKsmVFsnu7KcUEmTSv06f8De0U0SrEzp3KVkGCN5jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713820; c=relaxed/simple;
-	bh=u2I54/01iM1pA+7C5OSSdFrZQwDn4FhfD0H/8optDE0=;
+	s=arc-20240116; t=1750713175; c=relaxed/simple;
+	bh=iEWthbzeKpMWyEIKOCKVK/MRP4NkatHK0sckSouOzIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtXakO9ZWrNVdKcVjkVN14U2U8wOKs3KG0IYfreG6wPgPFidHyZUa1TtT7QHPk4nm64nCZaTj0/QsVYb9ErTQ794Ul8Bv+cjBGBGkjsEe2xbxjE+9/cXH2YsGjuK/X+2i/l8TNammWhl3eLHAeHlmFmoZu86kUU2DkulRG2YP6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m1FAZGym; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B491C4CEEA;
-	Mon, 23 Jun 2025 21:23:39 +0000 (UTC)
+	 MIME-Version; b=H7qQ8dhx379eo3kGdJORz+9NGBH/YR0wtBXFHPRRP2DWPNurtS4UT3ntK2eJ7CihJN5nwFBek3TOD7WIAk30JCeWizXz1D4N0jKCFA86ihMMpQzWlkXwwFYrx7jE+JCz1eAUsztXgvNtiSa02KlGLz5BZFQLpx8OYUffoJSGvSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AQ0qwqmt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A18CC4CEEA;
+	Mon, 23 Jun 2025 21:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713820;
-	bh=u2I54/01iM1pA+7C5OSSdFrZQwDn4FhfD0H/8optDE0=;
+	s=korg; t=1750713174;
+	bh=iEWthbzeKpMWyEIKOCKVK/MRP4NkatHK0sckSouOzIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m1FAZGymZ55PyUmfe4ZQiS44lgVfuXzFO5p5Gj0NtICg2qY5HsV6EwTiR+z0uLt62
-	 0marTvbdKfwWYLGuHSt1xVAUoupXRoMBRs44zX9u2oPUpOm7u/UrqCYv8ZYlxfYOJj
-	 iz5qY1EE15v+LIFQzFZs4Dp49dCEhDhCDS6D2sI8=
+	b=AQ0qwqmtp2O9OTDXoaq/RPlespLC/eJ/3cf7s6dpBFVgFhA0fz5/pzdwLyIt6Fnr4
+	 +csTaMS9u7y7p2wVyeP8mY7mLNPKnz9O2hyLwCd78kYfzhMkNYxRW4DDBSMILGO0bG
+	 YIbIeQ08zmguP8RiH9GEGF6E5r9n16et6K0ZB/SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: [PATCH 5.15 169/411] MIPS: Move -Wa,-msoft-float check from as-option to cc-option
+	Youssef Samir <quic_yabdulra@quicinc.com>,
+	Sumit Kumar <quic_sumk@quicinc.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.6 052/290] bus: mhi: ep: Update read pointer only after buffer is written
 Date: Mon, 23 Jun 2025 15:05:13 +0200
-Message-ID: <20250623130637.949923111@linuxfoundation.org>
+Message-ID: <20250623130628.568533042@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +64,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Sumit Kumar <quic_sumk@quicinc.com>
 
-This patch is for linux-6.1.y and earlier, it has no direct mainline
-equivalent.
+commit 6f18d174b73d0ceeaa341f46c0986436b3aefc9a upstream.
 
-In order to backport commit d5c8d6e0fa61 ("kbuild: Update assembler
-calls to use proper flags and language target") to resolve a separate
-issue regarding PowerPC, the problem noticed and fixed by
-commit 80a20d2f8288 ("MIPS: Always use -Wa,-msoft-float and eliminate
-GAS_HAS_SET_HARDFLOAT") needs to be addressed. Unfortunately, 6.1 and
-earlier do not contain commit e4412739472b ("Documentation: raise
-minimum supported version of binutils to 2.25"), so it cannot be assumed
-that all supported versions of GNU as have support for -msoft-float.
+Inside mhi_ep_ring_add_element, the read pointer (rd_offset) is updated
+before the buffer is written, potentially causing race conditions where
+the host sees an updated read pointer before the buffer is actually
+written. Updating rd_offset prematurely can lead to the host accessing
+an uninitialized or incomplete element, resulting in data corruption.
 
-In order to switch from KBUILD_CFLAGS to KBUILD_AFLAGS in as-option
-without consequence, move the '-Wa,-msoft-float' check to cc-option,
-including '$(cflags-y)' directly to avoid the issue mentioned in
-commit 80a20d2f8288 ("MIPS: Always use -Wa,-msoft-float and eliminate
-GAS_HAS_SET_HARDFLOAT").
+Invoke the buffer write before updating rd_offset to ensure the element
+is fully written before signaling its availability.
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Fixes: bbdcba57a1a2 ("bus: mhi: ep: Add support for ring management")
+cc: stable@vger.kernel.org
+Co-developed-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Signed-off-by: Youssef Samir <quic_yabdulra@quicinc.com>
+Signed-off-by: Sumit Kumar <quic_sumk@quicinc.com>
+Reviewed-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Reviewed-by: Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://patch.msgid.link/20250409-rp_fix-v1-1-8cf1fa22ed28@quicinc.com
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/mhi/ep/ring.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -110,7 +110,7 @@ endif
- # (specifically newer than 2.24.51.20140728) we then also need to explicitly
- # set ".set hardfloat" in all files which manipulate floating point registers.
- #
--ifneq ($(call as-option,-Wa$(comma)-msoft-float,),)
-+ifneq ($(call cc-option,$(cflags-y) -Wa$(comma)-msoft-float,),)
- 	cflags-y		+= -DGAS_HAS_SET_HARDFLOAT -Wa,-msoft-float
- endif
+--- a/drivers/bus/mhi/ep/ring.c
++++ b/drivers/bus/mhi/ep/ring.c
+@@ -131,19 +131,23 @@ int mhi_ep_ring_add_element(struct mhi_e
+ 	}
  
+ 	old_offset = ring->rd_offset;
+-	mhi_ep_ring_inc_index(ring);
+ 
+ 	dev_dbg(dev, "Adding an element to ring at offset (%zu)\n", ring->rd_offset);
++	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
++	buf_info.dev_addr = el;
++	buf_info.size = sizeof(*el);
++
++	ret = mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
++	if (ret)
++		return ret;
++
++	mhi_ep_ring_inc_index(ring);
+ 
+ 	/* Update rp in ring context */
+ 	rp = cpu_to_le64(ring->rd_offset * sizeof(*el) + ring->rbase);
+ 	memcpy_toio((void __iomem *) &ring->ring_ctx->generic.rp, &rp, sizeof(u64));
+ 
+-	buf_info.host_addr = ring->rbase + (old_offset * sizeof(*el));
+-	buf_info.dev_addr = el;
+-	buf_info.size = sizeof(*el);
+-
+-	return mhi_cntrl->write_sync(mhi_cntrl, &buf_info);
++	return ret;
+ }
+ 
+ void mhi_ep_ring_init(struct mhi_ep_ring *ring, enum mhi_ep_ring_type type, u32 id)
 
 
 
