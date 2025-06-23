@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03AC3AE524E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CD8AE5465
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB914A5822
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6B8F5188D152
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9E02222A9;
-	Mon, 23 Jun 2025 21:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 133FA2248B5;
+	Mon, 23 Jun 2025 22:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a86uD0Q5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YujigLZu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD4C4315A;
-	Mon, 23 Jun 2025 21:42:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBCB6136;
+	Mon, 23 Jun 2025 22:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714946; cv=none; b=kKu/5s99wzm3TLFlwJtM/DVOecAe38+wlIh+qRXXf8ZBWZ3GePz6tBrOKk36V9nL298B+XKTA75O+BdYnymxbRqJ4n1EPVggEcSh3kTCCpOnhz9vbjKxxZd53Uxr/HqcEoStGnH05/tZH9YPxm1KT10ec5LnTajvMlBIIaBIs2w=
+	t=1750716012; cv=none; b=bOYc8w1hZbxoCQpEO523ri7nmazFeK67iY4mfGE/RQOzVUxX9Dir0zHEb2rBD3WkUnloMNNNCoBct/jyUz7L84e97MW3D7ZLcJrHciQ6pe2/eU6Txr9hGq2M4xiz1UaPMRCG20CpHcJ50JxgSoPQwQwDvpZaJfsE7V0jgq9lBSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714946; c=relaxed/simple;
-	bh=svCL+OTkgEEzgFO1anx3htOtiNuXJNnIIKtYtFJHFCY=;
+	s=arc-20240116; t=1750716012; c=relaxed/simple;
+	bh=NZZB60gwxp3hFxpv5Ud9Nt3nefDRGv2zDLjUt3X17Cg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrXDZRMmIhUNZmIlncBFunv2BpmMRVvxKJqLIKmL2YJvt7cgplI+Wz8s0nDPGKFtsm3MbfPmFTWvXRJkkGxGuC5OVeCWWZLR7tCElnRkx7/tLl7w7ofiivQ580IjlHSXBwEcFQjNC2ZuUzl1cwwpWjyQmtX3ThhgmZSmjC5cjJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a86uD0Q5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8501C4CEEA;
-	Mon, 23 Jun 2025 21:42:25 +0000 (UTC)
+	 MIME-Version; b=VfiwcrOBjrkmEcaA2USO+plJchCed47QrMXilpWTfUGN+ck9hOtixr1itHpwo3DZ8bIXTqPbrSjkM8IZ9bzBPDUEMlzYwY/UeRh4FBSgzJ/sasECPP7Nfp85oCxeRhsSMKm+KRnYBIEszJIIeIqBm1tqyN6fGVG/FysrZfdkG5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YujigLZu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA38BC4CEEA;
+	Mon, 23 Jun 2025 22:00:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714946;
-	bh=svCL+OTkgEEzgFO1anx3htOtiNuXJNnIIKtYtFJHFCY=;
+	s=korg; t=1750716012;
+	bh=NZZB60gwxp3hFxpv5Ud9Nt3nefDRGv2zDLjUt3X17Cg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a86uD0Q59iu4yRmEi8HSdx4hWzB5QQmPW4nGbz1NGhQkz2hr8zUQpzXbksSpJ86OS
-	 WOWJ67X7gWcH0/UrR6cg1TQEzvKcjTzicCC+F//egskWfICwwRG9AgQVx9D4cDqzQc
-	 TR119rOI+s/NfuGcrVtTqL+gKkI45ASgbbPSN+uE=
+	b=YujigLZu4xDSSPkSxz3R6JcdlHdAnQ/wE9JtJ90Q/LcDV00hqsTjPaja6mksAq1IB
+	 RWPJJ3zshhqQPpO4YiwXprFbvykDlqAKIE0T9/0FuGOC/7Nz2eeaNd+9/rDz+inQrH
+	 AIqZDUHJi3f5tl1Ku0ZauFX7wd8O4/hQ7orkg8Pg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com,
+	Aditya Dutt <duttaditya18@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/290] wifi: iwlwifi: pcie: make sure to lock rxq->read
-Date: Mon, 23 Jun 2025 15:07:11 +0200
-Message-ID: <20250623130632.006060708@linuxfoundation.org>
+Subject: [PATCH 5.15 288/411] jfs: fix array-index-out-of-bounds read in add_missing_indices
+Date: Mon, 23 Jun 2025 15:07:12 +0200
+Message-ID: <20250623130640.896647940@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Aditya Dutt <duttaditya18@gmail.com>
 
-[ Upstream commit 1cc2c48c4af81bed5ddbe9f2c9d6e20fa163acf9 ]
+[ Upstream commit 5dff41a86377563f7a2b968aae00d25b4ceb37c9 ]
 
-rxq->read is accessed without the rxq->lock in a few places,
-Make sure to have the lock there.
+stbl is s8 but it must contain offsets into slot which can go from 0 to
+127.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Tested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20250424153620.73725f207aaa.I1a3e4b6c5fd370e029fdacfcdc9ee335788afa98@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Added a bound check for that error and return -EIO if the check fails.
+Also make jfs_readdir return with error if add_missing_indices returns
+with an error.
+
+Reported-by: syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com./bug?extid=b974bd41515f770c608b
+Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/jfs/jfs_dtree.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-index e9807fcca6ad1..5c2e8d2883976 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
-@@ -2701,6 +2701,8 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
- 	for (i = 0; i < trans->num_rx_queues && pos < bufsz; i++) {
- 		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 417d1c2fc2911..27ca98614b0bb 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -2909,7 +2909,7 @@ void dtInitRoot(tid_t tid, struct inode *ip, u32 idotdot)
+  *	     fsck.jfs should really fix this, but it currently does not.
+  *	     Called from jfs_readdir when bad index is detected.
+  */
+-static void add_missing_indices(struct inode *inode, s64 bn)
++static int add_missing_indices(struct inode *inode, s64 bn)
+ {
+ 	struct ldtentry *d;
+ 	struct dt_lock *dtlck;
+@@ -2918,7 +2918,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+ 	struct lv *lv;
+ 	struct metapage *mp;
+ 	dtpage_t *p;
+-	int rc;
++	int rc = 0;
+ 	s8 *stbl;
+ 	tid_t tid;
+ 	struct tlock *tlck;
+@@ -2943,6 +2943,16 @@ static void add_missing_indices(struct inode *inode, s64 bn)
  
-+		spin_lock_bh(&rxq->lock);
+ 	stbl = DT_GETSTBL(p);
+ 	for (i = 0; i < p->header.nextindex; i++) {
++		if (stbl[i] < 0) {
++			jfs_err("jfs: add_missing_indices: Invalid stbl[%d] = %d for inode %ld, block = %lld",
++				i, stbl[i], (long)inode->i_ino, (long long)bn);
++			rc = -EIO;
 +
- 		pos += scnprintf(buf + pos, bufsz - pos, "queue#: %2d\n",
- 				 i);
- 		pos += scnprintf(buf + pos, bufsz - pos, "\tread: %u\n",
-@@ -2721,6 +2723,7 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
- 			pos += scnprintf(buf + pos, bufsz - pos,
- 					 "\tclosed_rb_num: Not Allocated\n");
++			DT_PUTPAGE(mp);
++			txAbort(tid, 0);
++			goto end;
++		}
++
+ 		d = (struct ldtentry *) &p->slot[stbl[i]];
+ 		index = le32_to_cpu(d->index);
+ 		if ((index < 2) || (index >= JFS_IP(inode)->next_index)) {
+@@ -2960,6 +2970,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+ 	(void) txCommit(tid, 1, &inode, 0);
+ end:
+ 	txEnd(tid);
++	return rc;
+ }
+ 
+ /*
+@@ -3313,7 +3324,8 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
  		}
-+		spin_unlock_bh(&rxq->lock);
- 	}
- 	ret = simple_read_from_buffer(user_buf, count, ppos, buf, pos);
- 	kfree(buf);
-@@ -3385,8 +3388,11 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans,
- 		/* Dump RBs is supported only for pre-9000 devices (1 queue) */
- 		struct iwl_rxq *rxq = &trans_pcie->rxq[0];
- 		/* RBs */
-+		spin_lock_bh(&rxq->lock);
- 		num_rbs = iwl_get_closed_rb_stts(trans, rxq);
- 		num_rbs = (num_rbs - rxq->read) & RX_QUEUE_MASK;
-+		spin_unlock_bh(&rxq->lock);
-+
- 		len += num_rbs * (sizeof(*data) +
- 				  sizeof(struct iwl_fw_error_dump_rb) +
- 				  (PAGE_SIZE << trans_pcie->rx_page_order));
+ 
+ 		if (fix_page) {
+-			add_missing_indices(ip, bn);
++			if ((rc = add_missing_indices(ip, bn)))
++				goto out;
+ 			page_fixed = 1;
+ 		}
+ 
 -- 
 2.39.5
 
