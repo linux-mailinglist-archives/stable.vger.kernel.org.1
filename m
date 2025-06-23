@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1345EAE4FAF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0124EAE50E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBD931B61365
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 278AF3BFA65
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29657223DED;
-	Mon, 23 Jun 2025 21:17:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 593AD1EDA0F;
+	Mon, 23 Jun 2025 21:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vBgVVbQl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZR9HEySi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF0A7223DE5;
-	Mon, 23 Jun 2025 21:17:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16AA02206BB;
+	Mon, 23 Jun 2025 21:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713465; cv=none; b=cHNMVbiug/CEL5+JtAXVld6l+YA0odHrclo54Tww4ZY2xiRpaVDq1RPvroZBCgGeFJc+TXhSiJWRSB6leDJ+mR8FUsvZ9VzWA1WJPaccXfx8dy8WznGkfDLVLDI+l8w9/PSKf+27tDzf84masemFByOsrrNhN419T5rbOH2IX7k=
+	t=1750714138; cv=none; b=UVWpKGPDTSFNNOqQ6d+iLcffnNwaUgKATcSL/jS7v25rFHkIGdShLkU/vm71ca5bNhvzhDRRQJQ2ZgwV2/iMY7MS0FLkO4uXVW7HaZGAdjTTKpHC8KPo9mJYkYaIsN0+Z4tCcXgSQlXlY8bAk4+uNCM5Ja/rHcArEUGJUtyUc+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713465; c=relaxed/simple;
-	bh=mt7B4K+gcv/9qIujptitBaEZl6SKqBDFabLLy53olOw=;
+	s=arc-20240116; t=1750714138; c=relaxed/simple;
+	bh=xkYvq/0vzUk9lLnTR7nvpFLO2CUPFuA5QBQPioT4fTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T7hEr2xo+7Kyn54hxS/NJmcOTA03n2KJ6ZXAg3hMufQ8L7gQfxeFqMFo05zdcM9NIzZrlOKKM+Ewd6cqhyaC3dpRcRPVp882EEoMcHpqfY/267zHeC/wMWA1Ac2ET5YXdBaY86THB7TgnSQe46ApsxGO15gOKfAaSbqSWjXYzGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vBgVVbQl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B3F1C4CEEA;
-	Mon, 23 Jun 2025 21:17:45 +0000 (UTC)
+	 MIME-Version; b=Y6cN9vGPjId92YORR34sIlDaumwPzm0AFcgjL76PlnkomgO4uIZgzOKDTUt4pOZOsf/aqw87jQYLa4lkRGjlSYURAuwL0tF38tsY0B+q9LqlUk7KcRXKiesec3VyyUruAMNRHEqa36frPp3zZGYraqAF3wLwjbE/FwQrCwm71+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZR9HEySi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A56BFC4CEEA;
+	Mon, 23 Jun 2025 21:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713465;
-	bh=mt7B4K+gcv/9qIujptitBaEZl6SKqBDFabLLy53olOw=;
+	s=korg; t=1750714138;
+	bh=xkYvq/0vzUk9lLnTR7nvpFLO2CUPFuA5QBQPioT4fTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vBgVVbQlb7lmQWYoJGYsK7VhTHP5k9CWPGX4y7XBraCfI39FQ+wmXw3hPeUHGa32s
-	 32fP+ytrf7Yx3NMYoe8455XkgNGMuJI9CVhsjFfjYzULgrwOTAntxfhsBfUCBUf66r
-	 tVtrdQ/IQk2hVUb+8YB66HyarC551B7dJO0VbIn0=
+	b=ZR9HEySiqnfLGsR68HDvs5y3vOHKFXUHt+RNgY6oU4+VQyq7un1t2AuiHnJ9hSIth
+	 I3fDMHuFWk8sHjRTCF6NrdGHNn4v8VRFylEME4Nz6VRKHZFVdu+782UKBhrZabPHjL
+	 VUFWHxO35q3kfJKZtmeq5uSzrhU5bzoMocjG35iY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Qian <ming.qian@oss.nxp.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 065/414] media: imx-jpeg: Drop the first error frames
+	Henry Martin <bsdhenrymartin@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 157/508] serial: Fix potential null-ptr-deref in mlb_usio_probe()
 Date: Mon, 23 Jun 2025 15:03:22 +0200
-Message-ID: <20250623130643.696252420@linuxfoundation.org>
+Message-ID: <20250623130649.142561268@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@oss.nxp.com>
+From: Henry Martin <bsdhenrymartin@gmail.com>
 
-commit d52b9b7e2f10d22a49468128540533e8d76910cd upstream.
+[ Upstream commit 86bcae88c9209e334b2f8c252f4cc66beb261886 ]
 
-When an output buffer contains error frame header,
-v4l2_jpeg_parse_header() will return error, then driver will mark this
-buffer and a capture buffer done with error flag in device_run().
+devm_ioremap() can return NULL on error. Currently, mlb_usio_probe()
+does not check for this case, which could result in a NULL pointer
+dereference.
 
-But if the error occurs in the first frames, before setup the capture
-queue, there is no chance to schedule device_run(), and there may be no
-capture to mark error.
+Add NULL check after devm_ioremap() to prevent this issue.
 
-So we need to drop this buffer with error flag, and make the decoding
-can continue.
-
-Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Fixes: ba44dc043004 ("serial: Add Milbeaut serial control")
+Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
+Link: https://lore.kernel.org/r/20250403070339.64990-1-bsdhenrymartin@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/tty/serial/milbeaut_usio.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-+++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
-@@ -1918,9 +1918,19 @@ static void mxc_jpeg_buf_queue(struct vb
- 	jpeg_src_buf = vb2_to_mxc_buf(vb);
- 	jpeg_src_buf->jpeg_parse_error = false;
- 	ret = mxc_jpeg_parse(ctx, vb);
--	if (ret)
-+	if (ret) {
- 		jpeg_src_buf->jpeg_parse_error = true;
- 
-+		/*
-+		 * if the capture queue is not setup, the device_run() won't be scheduled,
-+		 * need to drop the error buffer, so that the decoding can continue
-+		 */
-+		if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ctx))) {
-+			v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
-+			return;
-+		}
+diff --git a/drivers/tty/serial/milbeaut_usio.c b/drivers/tty/serial/milbeaut_usio.c
+index c15e0d84dc7e3..c604c21e7fa33 100644
+--- a/drivers/tty/serial/milbeaut_usio.c
++++ b/drivers/tty/serial/milbeaut_usio.c
+@@ -524,7 +524,10 @@ static int mlb_usio_probe(struct platform_device *pdev)
+ 	}
+ 	port->membase = devm_ioremap(&pdev->dev, res->start,
+ 				resource_size(res));
+-
++	if (!port->membase) {
++		ret = -ENOMEM;
++		goto failed;
 +	}
-+
- end:
- 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
- }
+ 	ret = platform_get_irq_byname(pdev, "rx");
+ 	mlb_usio_irq[index][RX] = ret;
+ 
+-- 
+2.39.5
+
 
 
 
