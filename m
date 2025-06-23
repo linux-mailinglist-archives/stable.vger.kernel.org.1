@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF225AE53D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66DEAE4F7E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 71FA07A4F07
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDF577AD44E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82AD1222576;
-	Mon, 23 Jun 2025 21:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 554B61F582A;
+	Mon, 23 Jun 2025 21:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pejXEkFU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PP5wDpX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA621AD3FA;
-	Mon, 23 Jun 2025 21:56:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 131D74C62;
+	Mon, 23 Jun 2025 21:15:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715812; cv=none; b=VVKfZnErrIrpFAcLMZuYx7jon1WZya7IkTJdNxp+CMM7Ie+1Qxzd8MhtalXiw7PBby1BAvkewPiSXcFhsEVMXWmarb68wcGQexLVjv+dTEY7EoZi9/jtL98gdXSDlN1tXrwkIIu211zG2gePyaYFhmmyNtMwkPblxhy1ekqYd9c=
+	t=1750713339; cv=none; b=YtW5JSkWnD2Wf0ucz4wAIy2WTfWBkf/cMkSSm2cB3jl791anQe1Yg6AWF1vqap08i7XV7AKsoJlTD+MOOOZFsPAULP4rhEdNNKWCn2KV3IMytN6B4VstN2M/X4JVjc+wuBwDH6QzJwZRF7HpFK9NhV828gFGOWofG28jCNH0FAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715812; c=relaxed/simple;
-	bh=iP1lvqWEtLgW4WJFisZvsOM3fRm0YqKH6lEhqvX+iJI=;
+	s=arc-20240116; t=1750713339; c=relaxed/simple;
+	bh=Vur2IcnS41a1tdoZZJ4D4yT9iw8xfITamPST31lBDOw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SVzks0Y6vZEO5Ormn8kyUdvnI/3RPjnK9NQtTOyAkES0aE5oSd2KpgUu6alAG2greR7n2D4ceqe0NTIncXJjqsFibQgtNk/fTjinG6glrcQt8LDKMNdGP1QCYABmjXh/uitgM1p0HT5WCPsr3QkgVS3bZadkfgd/9EQcVMlvnpM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pejXEkFU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC954C4CEEA;
-	Mon, 23 Jun 2025 21:56:51 +0000 (UTC)
+	 MIME-Version; b=LPcQ5yhJ9EKzIXk4fPaX2bJQDX4QMJmJn3I3w1bYdGkO7YUKa/H7XIpWoS8CnjGsbovfwMezwHgXGIuRS450XVbpZY6QBFPvMiq2Rzhgjmv1ZLmx2MQP+ZLlcd/C4StkGdO1YNsKQo4N3T1DWzxmNCeYgKobu5cQZoTiJ+uf/ic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PP5wDpX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97593C4CEEA;
+	Mon, 23 Jun 2025 21:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715812;
-	bh=iP1lvqWEtLgW4WJFisZvsOM3fRm0YqKH6lEhqvX+iJI=;
+	s=korg; t=1750713338;
+	bh=Vur2IcnS41a1tdoZZJ4D4yT9iw8xfITamPST31lBDOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pejXEkFU2uGd9WMLghu0oKtnZWHfQG7cvHeJBE/XcXF3k989vfqiLoLCWdCJCVup4
-	 IIBVzYOGid6aPf0BlFebc6vowEXTa2pHkqzB5EXAex7jdD99iOCuLZ7b7tBowgvc7t
-	 Twp6JsdkAbU4ncJJn14BkRq0+7wcI/osye6yrHPw=
+	b=PP5wDpX7h1ExYWf2h8ztqfqj2rEmH5xSw1Snunn78wUwvs+IIZ8tqVunknp8zmhsR
+	 PvdJcngYZmEsVyPEFY+IH/HChXtEgcV1qqj2SrFN0IooGkX32UVsC6PR9nxpNNXYfl
+	 l+u0Vj8nzvxrmhCy1mQ8WKvAdiBLoOfZqk4e+e/A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Bharath SM <bharathsm@microsoft.com>,
-	xfuren <xfuren@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 243/290] smb: fix secondary channel creation issue with kerberos by populating hostname when adding channels
-Date: Mon, 23 Jun 2025 15:08:24 +0200
-Message-ID: <20250623130634.238623418@linuxfoundation.org>
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 170/222] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get()
+Date: Mon, 23 Jun 2025 15:08:25 +0200
+Message-ID: <20250623130617.186242318@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +64,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bharath SM <bharathsm@microsoft.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 306cb65bb0cb243389fcbd0a66907d5bdea07d1e upstream.
+[ Upstream commit 57273ff8bb16f3842c2597b5bbcd49e7fa12edf7 ]
 
-When mounting a share with kerberos authentication with multichannel
-support, share mounts correctly, but fails to create secondary
-channels. This occurs because the hostname is not populated when
-adding the channels. The hostname is necessary for the userspace
-cifs.upcall program to retrieve the required credentials and pass
-it back to kernel, without hostname secondary channels fails
-establish.
+The regmap_read() function can fail, so propagate its error up to
+the stack instead of silently ignoring that.
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Bharath SM <bharathsm@microsoft.com>
-Reported-by: xfuren <xfuren@gmail.com>
-Link: https://bugzilla.samba.org/show_bug.cgi?id=15824
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-4-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/sess.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -558,8 +558,7 @@ cifs_ses_add_channel(struct cifs_ses *se
- 	ctx->domainauto = ses->domainAuto;
- 	ctx->domainname = ses->domainName;
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index 4df9dbad0e977..46e7e78d37632 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -435,11 +435,14 @@ static int armada_37xx_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
+ 	unsigned int reg = INPUT_VAL;
+ 	unsigned int val, mask;
++	int ret;
  
--	/* no hostname for extra channels */
--	ctx->server_hostname = "";
-+	ctx->server_hostname = ses->server->hostname;
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
  
- 	ctx->username = ses->user_name;
- 	ctx->password = ses->password;
+-	regmap_read(info->regmap, reg, &val);
++	ret = regmap_read(info->regmap, reg, &val);
++	if (ret)
++		return ret;
+ 
+ 	return (val & mask) != 0;
+ }
+-- 
+2.39.5
+
 
 
 
