@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158175-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157836-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CB78AE5747
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4F85AE55D8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 008D81C2476E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C73E165A85
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22596223DE5;
-	Mon, 23 Jun 2025 22:27:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0E222652D;
+	Mon, 23 Jun 2025 22:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wgouupAI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/DKSrHp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D14222581;
-	Mon, 23 Jun 2025 22:27:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA6FB676;
+	Mon, 23 Jun 2025 22:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717668; cv=none; b=pFi0n/B6bu8TERXPYSwYAVMc56a7ZVfmBZtQdHO/5nPcSsvmjFc6lOZYMRLYtkJ/LKhB1lZgoxbwuMXZYvEQLRQhparJUSd9m4BK8chnOYNLp93Z2u/uImM2U4FJP0wocIpZTCpX+oG17GjFmQsKMkn5C0yGqc/8r5UGWB1OEaA=
+	t=1750716838; cv=none; b=opXHl7PSK0Bq2dnYz8Px8xKypSjFltxgtIiGgAIndlXlgoOREU7c6wedWsZWe8RsoWyOAdRiPHBZZNMUjoCKE5lygONaK5KjXH2IEGH/7cPiFn4YGqeMCtd5yMKnMYVrh0Gjq+XC84MF2QM/VCxE1K5GxO79lO8r/KiC/1kS33w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717668; c=relaxed/simple;
-	bh=NEz3t3xOSYFufqe2sYyAy2gsSsszzwDsezeDqi+jwpE=;
+	s=arc-20240116; t=1750716838; c=relaxed/simple;
+	bh=IOGfq2LA4wZwFPzRXCvo2Og5awG/v4URlQmv8+jeL84=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CLpmYCRREi5utSmsCckuugkastLcnvgj6s1BKYYLX4WiWhaOAdyYZnIL5luShdCVXvUTOQNC4yDOgniFVN8UEASfeU5OqsyFmwxwdMiyfBZbQvzYwXFsnjxKGKLypRTruPf5CVkSqK1desZldIX0MiHRZK6lkbVZDZak7kvkCsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wgouupAI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC21C4CEEA;
-	Mon, 23 Jun 2025 22:27:48 +0000 (UTC)
+	 MIME-Version; b=j5A8a/DsCqI5iaRbOndGJUNvSdIE2lrrWtkcu6E5zIpPiox2TfZYp3PRXyqd64/+Waq+Im9L44KJ5zOSPKMNmoY7Eu4LjfW3hdM8XCPaoTDAtkhrsXwU155CmfmiM2OzlBsnDqtD49agNYyUW/6Sxg7113prpLtgW/+LbGNq5WU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/DKSrHp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E35C4CEF1;
+	Mon, 23 Jun 2025 22:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717668;
-	bh=NEz3t3xOSYFufqe2sYyAy2gsSsszzwDsezeDqi+jwpE=;
+	s=korg; t=1750716837;
+	bh=IOGfq2LA4wZwFPzRXCvo2Og5awG/v4URlQmv8+jeL84=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wgouupAI+SfspwQlXrkcy97j9JvqsmzClU79zSSgAGnBK71ZQVL/ZRybUMCulTiEm
-	 tT0+m8lBG1Av63NFW5ZgmGqZVAr3hnhVBKHIiOSEkm6+8j+nH36/kYsjGNqwCqGoFU
-	 cxF5wUfhU8ywhWuFDwqI0skbvTiE2JsTtgd//dU0=
+	b=r/DKSrHpkecrK3dSJOhAv2rED/jlGw57NpUmSmVFXJ7GffIN+V+6mbhrluveAZXzv
+	 AWWgxJotCO9f3m0JOVbvZoil4LAkj4FH1B1lAoSawePdiOosks/wQgKNzLwPrtYMVx
+	 dXYwQ9stgTbpyVveRWLW18lDbl4AZ5PRnIaf38E8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Roger Quadros <rogerq@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 6.1 496/508] ARM: dts: am335x-bone-common: Increase MDIO reset deassert delay to 50ms
+	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 397/411] net_sched: sch_sfq: annotate data-races around q->perturb_period
 Date: Mon, 23 Jun 2025 15:09:01 +0200
-Message-ID: <20250623130657.230010207@linuxfoundation.org>
+Message-ID: <20250623130643.672026695@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 929d8490f8790164f5f63671c1c58d6c50411cb2 upstream.
+commit a17ef9e6c2c1cf0fc6cd6ca6a9ce525c67d1da7f upstream.
 
-Commit b9bf5612610aa7e3 ("ARM: dts: am335x-bone-common: Increase MDIO
-reset deassert time") already increased the MDIO reset deassert delay
-from 6.5 to 13 ms, but this may still cause Ethernet PHY probe failures:
+sfq_perturbation() reads q->perturb_period locklessly.
+Add annotations to fix potential issues.
 
-    SMSC LAN8710/LAN8720 4a101000.mdio:00: probe with driver SMSC LAN8710/LAN8720 failed with error -5
-
-On BeagleBone Black Rev. C3, ETH_RESETn is controlled by an open-drain
-AND gate.  It is pulled high by a 10K resistor, and has a 4.7µF
-capacitor to ground, giving an RC time constant of 47ms.  As it takes
-0.7RC to charge the capacitor above the threshold voltage of a CMOS
-input (VDD/2), the delay should be at least 33ms.  Considering the
-typical tolerance of 20% on capacitors, 40ms would be safer.  Add an
-additional safety margin and settle for 50ms.
-
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Roger Quadros <rogerq@kernel.org>
-Link: https://lore.kernel.org/r/9002a58daa1b2983f39815b748ee9d2f8dcc4829.1730366936.git.geert+renesas@glider.be
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20240430180015.3111398-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sched/sch_sfq.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -384,7 +384,7 @@
- 		/* Support GPIO reset on revision C3 boards */
- 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		reset-assert-us = <300>;
--		reset-deassert-us = <13000>;
-+		reset-deassert-us = <50000>;
- 	};
- };
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -611,6 +611,7 @@ static void sfq_perturbation(struct time
+ 	struct Qdisc *sch = q->sch;
+ 	spinlock_t *root_lock = qdisc_lock(qdisc_root_sleeping(sch));
+ 	siphash_key_t nkey;
++	int period;
  
+ 	get_random_bytes(&nkey, sizeof(nkey));
+ 	spin_lock(root_lock);
+@@ -619,8 +620,12 @@ static void sfq_perturbation(struct time
+ 		sfq_rehash(sch);
+ 	spin_unlock(root_lock);
+ 
+-	if (q->perturb_period)
+-		mod_timer(&q->perturb_timer, jiffies + q->perturb_period);
++	/* q->perturb_period can change under us from
++	 * sfq_change() and sfq_destroy().
++	 */
++	period = READ_ONCE(q->perturb_period);
++	if (period)
++		mod_timer(&q->perturb_timer, jiffies + period);
+ }
+ 
+ static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
+@@ -662,7 +667,7 @@ static int sfq_change(struct Qdisc *sch,
+ 		q->quantum = ctl->quantum;
+ 		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
+ 	}
+-	q->perturb_period = ctl->perturb_period * HZ;
++	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
+ 	if (ctl->flows)
+ 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
+@@ -724,7 +729,7 @@ static void sfq_destroy(struct Qdisc *sc
+ 	struct sfq_sched_data *q = qdisc_priv(sch);
+ 
+ 	tcf_block_put(q->block);
+-	q->perturb_period = 0;
++	WRITE_ONCE(q->perturb_period, 0);
+ 	del_timer_sync(&q->perturb_timer);
+ 	sfq_free(q->ht);
+ 	sfq_free(q->slots);
 
 
 
