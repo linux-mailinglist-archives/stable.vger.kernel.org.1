@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156913-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 164CFAE51AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8713AE54E7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FD7A1B64097
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C14284C290A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C90221FD2;
-	Mon, 23 Jun 2025 21:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77100221DAE;
+	Mon, 23 Jun 2025 22:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S2Mi3Z/w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x9uiGypz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A661EE7C6;
-	Mon, 23 Jun 2025 21:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BF62222C2;
+	Mon, 23 Jun 2025 22:05:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714575; cv=none; b=DXHz45WGuYlJNX6JNohAR8FOmWmfk35uYlXsW52vrVdxZE/1NYjT2ZON//Hhn8kiOJIqePHFrexOw+IsGIHu51AS+SE5Ju8JNYXLPm8EK4r+hfIRoNcofFBSuGD/eWx17cRSgzev6pwE48yHRe9pUJBfC41u5ZpddipnsgYerQc=
+	t=1750716338; cv=none; b=a/pNFHDWREoG38ftHf9hg6K3dodnXbAwcAP+0AF5YeZfPlq0UfOeAti2Lz0JEu6ntbOiJXE8llL+tyUBmqX4uCu2YIDx5/uAUeuD7uii5xf2Y23SY+ofcCY+iMASBmNsiTR4jThhNUGegluSjVxRqmVcK1T0+QCTiQkzrnemU+Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714575; c=relaxed/simple;
-	bh=808r7me2KcAD9UFyMPNK/wwF3Gro/BI97fYHG8qXCHc=;
+	s=arc-20240116; t=1750716338; c=relaxed/simple;
+	bh=6ob2bAmSXbsBrLdeuxo6DI1njkvBM6aAUxAQVMa3tD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=koIWyHoconcerhWGbaAuIslO6zmxvZUny9KQC1hehbu6wQBINT293FSoBcwprNtj8D721qaCNibztJtyNogrppoJldXs7lroKZJ8UAw6z0ALc+RlqjMzaZy+7Vp53eBcRuxV9VIwZPm3MUdvpj5Os+qGzbybW4BvTrzOHuYaGRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S2Mi3Z/w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07817C4CEEA;
-	Mon, 23 Jun 2025 21:36:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UtoHKbVisXAw02C0+B3eC1UGshqRioYihqtu9KFLgnGBGmgMemQfi1+zOqFtiJaaGGhYa/dyJQXLgJB/Hi+iIjw5+YrnoZLmszhOCRfZS6SBVRO+fIoGpaRqaffHgPyqa0dBHvlFuqjljGNZGy1mf5Js5HRhR9s/HZ9I7qscjA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x9uiGypz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE53C4CEEA;
+	Mon, 23 Jun 2025 22:05:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714575;
-	bh=808r7me2KcAD9UFyMPNK/wwF3Gro/BI97fYHG8qXCHc=;
+	s=korg; t=1750716338;
+	bh=6ob2bAmSXbsBrLdeuxo6DI1njkvBM6aAUxAQVMa3tD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S2Mi3Z/ww6TRd9eh52EGdgSvrol/X/W87blBgzZSX4LPJQZXMggnkYWD/JDWZF7k1
-	 7g2s5RRIYkZdtqbMj7/6bTk5H6e/fcgr6EPeV7ND6dO9OS43UQPM6kqOGIUMv6ds2S
-	 El3hRQNBRABUYkmm/cGg9J9JrRHYqXit7UzKM5+o=
+	b=x9uiGypzQnv6SYsC/Ea6pDaBQE4oBDkq+QNp6IlIYgBaDn2J6xtp7vwMLJOv8EoFN
+	 SMu7K8pBHCdK91RvY5HrDuiuO3OpPhwgPzJOu4hdXjcyaTjcHT9iUIyjC6nvIcgAKd
+	 KMgNAYW3i5VMvuJm0uZ+R7DP6FHMytjNYaShio4o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
 	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.15 196/411] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
-Date: Mon, 23 Jun 2025 15:05:40 +0200
-Message-ID: <20250623130638.610467341@linuxfoundation.org>
+Subject: [PATCH 6.1 296/508] regulator: max20086: Fix MAX200086 chip id
+Date: Mon, 23 Jun 2025 15:05:41 +0200
+Message-ID: <20250623130652.574273463@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +59,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
 
-commit 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 upstream.
+commit 71406b6d1155d883c80c1b4405939a52f723aa05 upstream.
 
-Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
-non-boolean properties") added a warning when trying to parse a property
-with a value (boolean properties are defined as: absent = false, present
-without any value = true). This causes a warning from meson-card-utils.
+>From MAX20086-MAX20089 datasheet, the id for a MAX20086 is 0x30 and not
+0x40. With the current code, the driver will fail on probe when the
+driver tries to identify the chip id from a MAX20086 device over I2C.
 
-meson-card-utils needs to know about the existence of the
-"audio-routing" and/or "audio-widgets" properties in order to properly
-parse them. Switch to of_property_present() in order to silence the
-following warning messages during boot:
-  OF: /sound: Read of boolean property 'audio-routing' with a value.
-  OF: /sound: Read of boolean property 'audio-widgets' with a value.
-
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Tested-by: Christian Hewitt <christianshewitt@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
+Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
+Signed-off-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
+Link: https://patch.msgid.link/20250420-fix-max20086-v1-1-8cc9ee0d5a08@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/meson/meson-card-utils.c |    2 +-
+ drivers/regulator/max20086-regulator.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/meson/meson-card-utils.c
-+++ b/sound/soc/meson/meson-card-utils.c
-@@ -245,7 +245,7 @@ static int meson_card_parse_of_optional(
- 						    const char *p))
- {
- 	/* If property is not provided, don't fail ... */
--	if (!of_property_read_bool(card->dev->of_node, propname))
-+	if (!of_property_present(card->dev->of_node, propname))
- 		return 0;
+--- a/drivers/regulator/max20086-regulator.c
++++ b/drivers/regulator/max20086-regulator.c
+@@ -30,7 +30,7 @@
+ #define	MAX20086_REG_ADC4		0x09
  
- 	/* ... but do fail if it is provided and the parsing fails */
+ /* DEVICE IDs */
+-#define MAX20086_DEVICE_ID_MAX20086	0x40
++#define MAX20086_DEVICE_ID_MAX20086	0x30
+ #define MAX20086_DEVICE_ID_MAX20087	0x20
+ #define MAX20086_DEVICE_ID_MAX20088	0x10
+ #define MAX20086_DEVICE_ID_MAX20089	0x00
 
 
 
