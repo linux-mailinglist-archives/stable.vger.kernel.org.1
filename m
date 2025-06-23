@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 847F9AE5034
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0CDAAE4EAD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AE4937A34A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 99E223BE3EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FB938DE1;
-	Mon, 23 Jun 2025 21:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8641221DAC;
+	Mon, 23 Jun 2025 21:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bubAicHr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mL/H10+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D95EB7482;
-	Mon, 23 Jun 2025 21:20:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78C5A1F582A;
+	Mon, 23 Jun 2025 21:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713645; cv=none; b=uJLLhmxoecCD/bjf5pgEcoiosnEq3oQepWny8fuwpM5kb2wh7wdQLHfbpq+1ttxnBK2/1La+gYIUdtLacGF6EfHUF4Nz16SaoUbL+jyX1lsqCrkN9CE7tyVngs++EmIz7xCG4JAwkQpyXbF4qFAvjM0hGAs6Zb62KZf8AGFodsA=
+	t=1750712886; cv=none; b=CanB7WCEwapuCPd2URCOONcvyBblKzEEDul2Vvpy/VH/MXWN+Vlg8A3YfuBQn7WEfG+hikjh/g+WwLYeGooXHpV7xlKB/mJmOe76ZKhSwSV/D02HdaVIGKY0rNfELozNnIvmXuETaUlU+oXVHBkHK90uZb+qXpoZmLM/SFMcbIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713645; c=relaxed/simple;
-	bh=0/XhOuyWdAagkMygfXSRDbV9L1+aWbb2pGnZbPVSCwo=;
+	s=arc-20240116; t=1750712886; c=relaxed/simple;
+	bh=tobbKLm9EnzWHTg1cK4xnW3rWXlS6qOwzGsP/PxK5ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JU6atsIzFRBsMpxNoYlxpVp2vOiYX4QTcI3Eoc5IgSxiOLekA9ZI3Jlz7+oEWaL4FDSyQnG9NW6+IRCaEq9HciE5N8Bqcir5GayZcf0aen46CqXIbdEsP/CirOqgdiz8R7G/w5XK1POzNbBJ4R7H+W4fXlqGioa7QBnRakS9nUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bubAicHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72425C4CEEA;
-	Mon, 23 Jun 2025 21:20:45 +0000 (UTC)
+	 MIME-Version; b=FDYwE9sS+YrZZmJEXndHAbIlhYpZZ899bfzBZPKwaZ4GhoTiJflkMcXfzudcHZDLQsITXxTpFVnyOdJjESsVjf7fvLuMaNtGboGzK8nmasjb1ezPViqC+QJ8Pp8yg/ZbpcOekz8E6GuPVlaXu0DNaeeptt5Q1t7xt2wOSQclhqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mL/H10+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB19FC4CEED;
+	Mon, 23 Jun 2025 21:08:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713645;
-	bh=0/XhOuyWdAagkMygfXSRDbV9L1+aWbb2pGnZbPVSCwo=;
+	s=korg; t=1750712886;
+	bh=tobbKLm9EnzWHTg1cK4xnW3rWXlS6qOwzGsP/PxK5ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bubAicHrLyWM1kKbFRmZtE7MkbLAsQHdSgcDHUhs2kRHjKXkB0BVXv+XfUTvAfN7w
-	 sCEzxIK5KehWt8T3eJLWrtUxHFPrcJxtLcmoTdXgYLMAt8xikuM0FCpObhuVYVipfk
-	 xXkNF/8DenLwzfev9DMynE2xaR9T+4VnVk5VEB+U=
+	b=mL/H10+M2Wu8LP6rERyONiuZ8yclo+sOBSeROi7ilxKkQbiE07p/PyMKJDRvb48/F
+	 oC8W6aMiYZSrKEZ9/ze9ou/X8JTv0tP9GbmSvybGBqf9TmRy786prXg/h3ohG3m6Xt
+	 egS1PQNHcmjJGE3vFuncHdGrtv9LDuDpvj5cnmwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kang Yang <kang.yang@oss.qualcomm.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 339/592] wifi: ath12k: fix macro definition HAL_RX_MSDU_PKT_LENGTH_GET
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 036/290] media: omap3isp: use sgtable-based scatterlist wrappers
 Date: Mon, 23 Jun 2025 15:04:57 +0200
-Message-ID: <20250623130708.516821258@linuxfoundation.org>
+Message-ID: <20250623130628.081340098@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <kang.yang@oss.qualcomm.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit a69bbf89d751ba2d6da21d773c4e29c91c5e53c4 ]
+commit 3de572fe2189a4a0bd80295e1f478401e739498e upstream.
 
-Currently, HAL_RX_MSDU_PKT_LENGTH_GET uses u32_get_bits to obtain the
-MSDU length from the MSDU description.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgtable's nents.
 
-This is not right. Because all halphy descriptions are little endian.
-
-So use le32_get_bits for HAL_RX_MSDU_PKT_LENGTH_GET.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
-
-Signed-off-by: Kang Yang <kang.yang@oss.qualcomm.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250421023444.1778-9-kang.yang@oss.qualcomm.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d33186d0be18 ("[media] omap3isp: ccdc: Use the DMA API for LSC")
+Fixes: 0e24e90f2ca7 ("[media] omap3isp: stat: Use the DMA API")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/hal_desc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/ti/omap3isp/ispccdc.c |    8 ++++----
+ drivers/media/platform/ti/omap3isp/ispstat.c |    6 ++----
+ 2 files changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/hal_desc.h b/drivers/net/wireless/ath/ath12k/hal_desc.h
-index 63d279fab3224..f8a51aa0217a8 100644
---- a/drivers/net/wireless/ath/ath12k/hal_desc.h
-+++ b/drivers/net/wireless/ath/ath12k/hal_desc.h
-@@ -707,7 +707,7 @@ enum hal_rx_msdu_desc_reo_dest_ind {
- #define RX_MSDU_DESC_INFO0_DECAP_FORMAT		GENMASK(30, 29)
+--- a/drivers/media/platform/ti/omap3isp/ispccdc.c
++++ b/drivers/media/platform/ti/omap3isp/ispccdc.c
+@@ -446,8 +446,8 @@ static int ccdc_lsc_config(struct isp_cc
+ 		if (ret < 0)
+ 			goto done;
  
- #define HAL_RX_MSDU_PKT_LENGTH_GET(val)		\
--	(u32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
-+	(le32_get_bits((val), RX_MSDU_DESC_INFO0_MSDU_LENGTH))
+-		dma_sync_sg_for_cpu(isp->dev, req->table.sgt.sgl,
+-				    req->table.sgt.nents, DMA_TO_DEVICE);
++		dma_sync_sgtable_for_cpu(isp->dev, &req->table.sgt,
++					 DMA_TO_DEVICE);
  
- struct rx_msdu_desc {
- 	__le32 info0;
--- 
-2.39.5
-
+ 		if (copy_from_user(req->table.addr, config->lsc,
+ 				   req->config.size)) {
+@@ -455,8 +455,8 @@ static int ccdc_lsc_config(struct isp_cc
+ 			goto done;
+ 		}
+ 
+-		dma_sync_sg_for_device(isp->dev, req->table.sgt.sgl,
+-				       req->table.sgt.nents, DMA_TO_DEVICE);
++		dma_sync_sgtable_for_device(isp->dev, &req->table.sgt,
++					    DMA_TO_DEVICE);
+ 	}
+ 
+ 	spin_lock_irqsave(&ccdc->lsc.req_lock, flags);
+--- a/drivers/media/platform/ti/omap3isp/ispstat.c
++++ b/drivers/media/platform/ti/omap3isp/ispstat.c
+@@ -161,8 +161,7 @@ static void isp_stat_buf_sync_for_device
+ 	if (ISP_STAT_USES_DMAENGINE(stat))
+ 		return;
+ 
+-	dma_sync_sg_for_device(stat->isp->dev, buf->sgt.sgl,
+-			       buf->sgt.nents, DMA_FROM_DEVICE);
++	dma_sync_sgtable_for_device(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
+ }
+ 
+ static void isp_stat_buf_sync_for_cpu(struct ispstat *stat,
+@@ -171,8 +170,7 @@ static void isp_stat_buf_sync_for_cpu(st
+ 	if (ISP_STAT_USES_DMAENGINE(stat))
+ 		return;
+ 
+-	dma_sync_sg_for_cpu(stat->isp->dev, buf->sgt.sgl,
+-			    buf->sgt.nents, DMA_FROM_DEVICE);
++	dma_sync_sgtable_for_cpu(stat->isp->dev, &buf->sgt, DMA_FROM_DEVICE);
+ }
+ 
+ static void isp_stat_buf_clear(struct ispstat *stat)
 
 
 
