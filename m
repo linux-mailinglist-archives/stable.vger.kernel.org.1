@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-155907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1576DAE4475
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB33AE4390
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:33:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1EA824435E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D284A7A2FA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B769253B52;
-	Mon, 23 Jun 2025 13:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177CE24DCFD;
+	Mon, 23 Jun 2025 13:30:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1UcqllA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GedZY+eZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 399664C6E;
-	Mon, 23 Jun 2025 13:34:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DD22550CF;
+	Mon, 23 Jun 2025 13:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685644; cv=none; b=JdhXZFQPS2MBtjr2O/WCI9Gdcn0/9lMNinhJEQVg0vTnuvxLrz41F7R7NHrXlkQygfBo+WpTXlTNQTiRWevxoNrVXXlPovWJ8XAmhctgSOTKJXe6uhaAYCEintW9R6ewdX7+v1C5ECU1OyLCikfC3vgIbNVzpafY/XuIBQzJfsA=
+	t=1750685412; cv=none; b=d67Zl/h5gHfYQ+MHS2uccNcN8m5KFrD6KDIzUIxAHCw4G0CpGlCJs/k6GNGY1X6jtK3fLBsfOWeFtkmsUkeULiO+xVuVgej1x2s+PBo0B43x2IoLk3hh3ByxhnNScjSqI1yjFojEVYys4Xq6ZYDN+uHAtrt54MqeR0uGV6ZMib0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685644; c=relaxed/simple;
-	bh=e+vFM7mvgdCkvdPkEYcF7qSuLkAayb8japHDBUUVVko=;
+	s=arc-20240116; t=1750685412; c=relaxed/simple;
+	bh=vtXEEAFGflJ+Z6K+yZvZuycwBQe0iakKewGJLmjon68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPU1f1+RuPdT5NJar7EFDuPXYaPO9MoWidlXGEtpp3eDa+hSA8CvWfBbpqSxwybQ5PvpYa5a/M1D06bCrloAH2/suqiWAL4QbiFqSzgFcK0V3N+8HOF0nYp9XgbWmQv/woNbjvYeZpyThqDGplEAjKwxxnkURdxjW5Z9GghWLq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1UcqllA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C01DEC4CEEA;
-	Mon, 23 Jun 2025 13:34:03 +0000 (UTC)
+	 MIME-Version; b=RUHNgD3wj9PdoW8e79loG+b+CwxJjqQ6L0OgbO1WwcWWHanI6Ugbs9Fv4SNRDlJl5rMt2HnsDbqQ2HaNOGubLMI7Z4WXs927iMmdel0Bdlb0yZIuhKwTT94swng60U/1fp3YlR/Y6cquuDrr/B2lRaNdqaNhWLs1g6uC4gooPig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GedZY+eZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D992C4CEEA;
+	Mon, 23 Jun 2025 13:30:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685644;
-	bh=e+vFM7mvgdCkvdPkEYcF7qSuLkAayb8japHDBUUVVko=;
+	s=korg; t=1750685412;
+	bh=vtXEEAFGflJ+Z6K+yZvZuycwBQe0iakKewGJLmjon68=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1UcqllAiY46L/RjBb1jP/c3N8NHAAAvqRJ3R44oNxOUcFq/fT6eb3SLa4rMXlit6
-	 HizoHg3TYe5HZ0mG/7Mn+1IxUGu4ZS4aIBmmL1FBg1rztszHQYyZJEENYAQ6z6uhBz
-	 qGgMskc28vYOhUzLVwoMQrmuk5eV4cOjWAoh17h8=
+	b=GedZY+eZQoc0PZEFRNvStUrgWhmFLI92mui9lDmYbmcT4Cux7nSBdIB9D/sD8bcf5
+	 r3KGWOTYzUzFTxrFrrjVpm3B35xQnAI6aq7gtXoaCxgQtosnqZxGPr7QTcPxTXXluy
+	 IfvOjgid5NbW9s6AzqC191Ssx8lTmJE53oKJgBEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 065/355] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
-Date: Mon, 23 Jun 2025 15:04:26 +0200
-Message-ID: <20250623130628.782265225@linuxfoundation.org>
+	Pavel Begunkov <asml.silence@gmail.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 006/290] io_uring: account drain memory to cgroup
+Date: Mon, 23 Jun 2025 15:04:27 +0200
+Message-ID: <20250623130627.144078049@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
+commit f979c20547e72568e3c793bc92c7522bc3166246 upstream.
 
-In preparation for writing logs, in nilfs_btree_propagate(), which makes
-parent and ancestor node blocks dirty starting from a modified data block
-or b-tree node block, if the starting block does not belong to the b-tree,
-i.e.  is isolated, nilfs_btree_do_lookup() called within the function
-fails with -ENOENT.
+Account drain allocations against memcg. It's not a big problem as each
+such allocation is paired with a request, which is accounted, but it's
+nicer to follow the limits more closely.
 
-In this case, even though -ENOENT is an internal code, it is propagated to
-the log writer via nilfs_bmap_propagate() and may be erroneously returned
-to system calls such as fsync().
-
-Fix this issue by changing the error code to -EINVAL in this case, and
-having the bmap layer detect metadata corruption and convert the error
-code appropriately.
-
-Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
-Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.1
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/f8dfdbd755c41fd9c75d12b858af07dfba5bbb68.1746788718.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/btree.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index 7c9f4d79bdbc5..4a5e8495fa674 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -2097,11 +2097,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1808,7 +1808,7 @@ queue:
+ 	spin_unlock(&ctx->completion_lock);
  
- 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
- 	if (ret < 0) {
--		if (unlikely(ret == -ENOENT))
-+		if (unlikely(ret == -ENOENT)) {
- 			nilfs_crit(btree->b_inode->i_sb,
- 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
- 				   btree->b_inode->i_ino,
- 				   (unsigned long long)key, level);
-+			ret = -EINVAL;
-+		}
- 		goto out;
- 	}
- 
--- 
-2.39.5
-
+ 	io_prep_async_link(req);
+-	de = kmalloc(sizeof(*de), GFP_KERNEL);
++	de = kmalloc(sizeof(*de), GFP_KERNEL_ACCOUNT);
+ 	if (!de) {
+ 		ret = -ENOMEM;
+ 		io_req_defer_failed(req, ret);
 
 
 
