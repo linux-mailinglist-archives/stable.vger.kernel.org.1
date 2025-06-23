@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C454EAE54EF
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D9E9AE5475
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E49B1BC2B1F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC2D63A3CD1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC5E0221FD6;
-	Mon, 23 Jun 2025 22:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA821A4F12;
+	Mon, 23 Jun 2025 22:01:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/uB9qtd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ug4o0lWk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778E921FF2B;
-	Mon, 23 Jun 2025 22:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D97D4409;
+	Mon, 23 Jun 2025 22:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716367; cv=none; b=kiKNyzH+hhXIb3sI21J9wX93CHAKnJ9eTJP8rBIcbFzl/6WL42blAkhFc4eNdL9UYWwEe4DTwGWMULSM6kvomlUNIJYbxspOz/XMrRCS1DY+Ko+Q+QxYuF8IGsFz6g1T2zHtl0VFc8uAXJVan5qD4G0ywl+iwzyrV1SiYgxFcTs=
+	t=1750716078; cv=none; b=kPXPmBs5mMyTN2UMLtb57NLCDSylJR8Slh3gAdR9BkBB3wJlQjx+wsCaHupuX4XQWONp0T1+Nzz+BtO/cM+7INvuYYQfbeSnUkKz8PemSsPoRofqP1Z0b1XjmBhrl/FoFpmwHOdNsCJ+LGZfys5ZFNC3/ZzHq/piIRQwWNKauX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716367; c=relaxed/simple;
-	bh=nXp6BAWyqygqrHZLeWjf2s+bU6QUUH5LxY4Wjyzh9lU=;
+	s=arc-20240116; t=1750716078; c=relaxed/simple;
+	bh=FfDRAXG3LVtJCBWRgSl+WhBu6iWCXvOuSJ0uIsQR6lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5htZglAjO8aUaQwIh+el9OH49GRAFutiR87PYWwQe4muhf/X5Hgh630RwflcQEPYbtQXneIpV8wLcH2QeEGA6ajHxfl3I9UJQqgKIE6BRMKoIM3QsaupNapuXHADpaHk4gvlLpgthzKNhw5SV7w5ERN1Rb5lxVcdB+vX73/8/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/uB9qtd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FAC6C4CEEA;
-	Mon, 23 Jun 2025 22:06:06 +0000 (UTC)
+	 MIME-Version; b=vCh6YPOIFZi+LR/yyjdxcKKucPmYrP0GhJkTBI1P/fQRdGR1nl/FueDDceupd6xNtvO6zjZ+pkc0mQ+vPrITr3Gm/aXdMqNoUN4aq/RaytWSInfzWse4Ztypnis/1MDbV+MsWAMGoJuxs4+oy71bIFAs5PQR2qe0g5lLSzVQelQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ug4o0lWk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D42AC4CEEA;
+	Mon, 23 Jun 2025 22:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716367;
-	bh=nXp6BAWyqygqrHZLeWjf2s+bU6QUUH5LxY4Wjyzh9lU=;
+	s=korg; t=1750716075;
+	bh=FfDRAXG3LVtJCBWRgSl+WhBu6iWCXvOuSJ0uIsQR6lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J/uB9qtd75M3Yo1HHeWcTNQGORyT+xmoAkzvTTX/3+zMzC91aTH7UKivn5oAFFPln
-	 JNC6Vf5qhlzrh3jM/4sFJ7lR2O/sE2ElpZexm9SvP/VRC9KzdP7fe1eov+khSc0Ioz
-	 FivnWi/kQxOGdWyy01xBgE3mfz+nj50pqxKks9W0=
+	b=Ug4o0lWktwkpUC8ed2w7m9/jbadUDZJv+UvcXJnaSlrsNrYHZjt3Igsxru1BNPofX
+	 Pz3L3Vx1il/eFW2Zbri46/3x9rJm/rIcppXg7bcMt3W7Auy1HQpUBvheK37BkpmMsk
+	 srSA7dKlJklJoHRrpczfwC06q0sJCGJCqSnsmGaU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d3c235276f62963e93a@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 259/290] atm: atmtcp: Free invalid length skb in atmtcp_c_send().
+	Colin Foster <colin.foster@in-advantage.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH 5.10 319/355] ARM: dts: am335x-bone-common: Increase MDIO reset deassert time
 Date: Mon, 23 Jun 2025 15:08:40 +0200
-Message-ID: <20250623130634.705622639@linuxfoundation.org>
+Message-ID: <20250623130636.357762234@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Colin Foster <colin.foster@in-advantage.com>
 
-[ Upstream commit 2f370ae1fb6317985f3497b1bb80d457508ca2f7 ]
+commit b9bf5612610aa7e38d58fee16f489814db251c01 upstream.
 
-syzbot reported the splat below. [0]
+Prior to commit df16c1c51d81 ("net: phy: mdio_device: Reset device only
+when necessary") MDIO reset deasserts were performed twice during boot.
+Now that the second deassert is no longer performed, device probe
+failures happen due to the change in timing with the following error
+message:
 
-vcc_sendmsg() copies data passed from userspace to skb and passes
-it to vcc->dev->ops->send().
+SMSC LAN8710/LAN8720: probe of 4a101000.mdio:00 failed with error -5
 
-atmtcp_c_send() accesses skb->data as struct atmtcp_hdr after
-checking if skb->len is 0, but it's not enough.
+Restore the original effective timing, which resolves the probe
+failures.
 
-Also, when skb->len == 0, skb and sk (vcc) were leaked because
-dev_kfree_skb() is not called and sk_wmem_alloc adjustment is missing
-to revert atm_account_tx() in vcc_sendmsg(), which is expected
-to be done in atm_pop_raw().
-
-Let's properly free skb with an invalid length in atmtcp_c_send().
-
-[0]:
-BUG: KMSAN: uninit-value in atmtcp_c_send+0x255/0xed0 drivers/atm/atmtcp.c:294
- atmtcp_c_send+0x255/0xed0 drivers/atm/atmtcp.c:294
- vcc_sendmsg+0xd7c/0xff0 net/atm/common.c:644
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x330/0x3d0 net/socket.c:727
- ____sys_sendmsg+0x7e0/0xd80 net/socket.c:2566
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
- __sys_sendmsg net/socket.c:2652 [inline]
- __do_sys_sendmsg net/socket.c:2657 [inline]
- __se_sys_sendmsg net/socket.c:2655 [inline]
- __x64_sys_sendmsg+0x211/0x3e0 net/socket.c:2655
- x64_sys_call+0x32fb/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-Uninit was created at:
- slab_post_alloc_hook mm/slub.c:4154 [inline]
- slab_alloc_node mm/slub.c:4197 [inline]
- kmem_cache_alloc_node_noprof+0x818/0xf00 mm/slub.c:4249
- kmalloc_reserve+0x13c/0x4b0 net/core/skbuff.c:579
- __alloc_skb+0x347/0x7d0 net/core/skbuff.c:670
- alloc_skb include/linux/skbuff.h:1336 [inline]
- vcc_sendmsg+0xb40/0xff0 net/atm/common.c:628
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg+0x330/0x3d0 net/socket.c:727
- ____sys_sendmsg+0x7e0/0xd80 net/socket.c:2566
- ___sys_sendmsg+0x271/0x3b0 net/socket.c:2620
- __sys_sendmsg net/socket.c:2652 [inline]
- __do_sys_sendmsg net/socket.c:2657 [inline]
- __se_sys_sendmsg net/socket.c:2655 [inline]
- __x64_sys_sendmsg+0x211/0x3e0 net/socket.c:2655
- x64_sys_call+0x32fb/0x3db0 arch/x86/include/generated/asm/syscalls_64.h:47
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xd9/0x210 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-CPU: 1 UID: 0 PID: 5798 Comm: syz-executor192 Not tainted 6.16.0-rc1-syzkaller-00010-g2c4a1f3fe03e #0 PREEMPT(undef)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+1d3c235276f62963e93a@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1d3c235276f62963e93a
-Tested-by: syzbot+1d3c235276f62963e93a@syzkaller.appspotmail.com
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-2-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
+Link: https://lore.kernel.org/r/20240531183817.2698445-1-colin.foster@in-advantage.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/atmtcp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/am335x-bone-common.dtsi |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/atm/atmtcp.c b/drivers/atm/atmtcp.c
-index 96bea1ab1eccf..ff558908897f3 100644
---- a/drivers/atm/atmtcp.c
-+++ b/drivers/atm/atmtcp.c
-@@ -288,7 +288,9 @@ static int atmtcp_c_send(struct atm_vcc *vcc,struct sk_buff *skb)
- 	struct sk_buff *new_skb;
- 	int result = 0;
+--- a/arch/arm/boot/dts/am335x-bone-common.dtsi
++++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
+@@ -381,7 +381,7 @@
+ 		/* Support GPIO reset on revision C3 boards */
+ 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
+ 		reset-assert-us = <300>;
+-		reset-deassert-us = <6500>;
++		reset-deassert-us = <13000>;
+ 	};
+ };
  
--	if (!skb->len) return 0;
-+	if (skb->len < sizeof(struct atmtcp_hdr))
-+		goto done;
-+
- 	dev = vcc->dev_data;
- 	hdr = (struct atmtcp_hdr *) skb->data;
- 	if (hdr->length == ATMTCP_HDR_MAGIC) {
--- 
-2.39.5
-
 
 
 
