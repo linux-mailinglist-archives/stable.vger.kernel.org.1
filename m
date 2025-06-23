@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-155652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155655-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4487AE4356
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E176CAE4325
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4C31E179C40
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0B7B3BA117
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 770EE254854;
-	Mon, 23 Jun 2025 13:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0E125486A;
+	Mon, 23 Jun 2025 13:23:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="018sbvNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifdmpgD6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3304323BF9F;
-	Mon, 23 Jun 2025 13:23:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26652522B1;
+	Mon, 23 Jun 2025 13:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684983; cv=none; b=pWvcw+OE4xwBQfpJm8+9dKbvdxO0zmVXlpGku14U3aJfXJIiwZQAGGDUVAJGnDH6XOj7DwgMwnBiVhgBTk2JerZbCf31sjFIwaaNIaEjMBx9VugJLtilu/4Q4v05rvHAFWfQwOWVEU7OnoKqlLyUghYu+V2F41e5qzDQFhpcyuI=
+	t=1750684991; cv=none; b=d/yW6qQvEPcAA8HrMdx8hCGk7GD2qJImpPAjHxptJh4wogeNa9gM5zU49s9RuvJOqOw/+Y3cplxmwaBuoI5Fn4RGWUxRTHwZcxY1o8WKxBGHIlujn/z73uM7Ith9/4hb/JGeLjhnaSHymdZT3JiXZCJy35Juo3S1NQNO0skzj/g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684983; c=relaxed/simple;
-	bh=d/95gODfWirA1JUXIS71Omcn3IOiNYiEFDLGTzXKVIU=;
+	s=arc-20240116; t=1750684991; c=relaxed/simple;
+	bh=QZEDmWcLpkbehJ++I9YbxbeuKOOzT+zuctK/ylRCk/U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GbOTwKnECHvCM3pvXUt3XUCpSFs22lAecUGUE2vu79EkEZ6v0EtGBF/32HtYzo3ow9Vt/R5LTolaZmGNBW/5Q/DwHpeiVC6cDvOM+5cQO9xfjGV5fYAJ92KQIEFBfPHos0FoShoMaaiDc3/jQPsK2wO2s3RyFDSVP7jhwEnqrOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=018sbvNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBB0C4CEEA;
-	Mon, 23 Jun 2025 13:23:02 +0000 (UTC)
+	 MIME-Version; b=PoitwjxVd4iv8IK4Eds1RQvHJxP9V8cjBxLEAcXNVCuQDic6L9ufM5pdvKXkvHW8qRGKdI9DhIfYUVzcYQNEO8o8jSvWkva0H5+htAeNoQP2AlMySWP7mtOukoVr9Jfl6G2rT6PEtHTORGlxBRGCk8WKwdqpCYXLEe0kUOv1wZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifdmpgD6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865C1C4CEEA;
+	Mon, 23 Jun 2025 13:23:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684983;
-	bh=d/95gODfWirA1JUXIS71Omcn3IOiNYiEFDLGTzXKVIU=;
+	s=korg; t=1750684990;
+	bh=QZEDmWcLpkbehJ++I9YbxbeuKOOzT+zuctK/ylRCk/U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=018sbvNLANRtlyIH4x8y/2vuSLwHuetk7dSVTEDzGkcdl3fK79zGLkvvQvd/IuPNW
-	 bLCwp00/acnNnRC+z24NXfRnm63cjEoktno1Jva3gjCL8ln2YKQ+9gATKTu6dOOLQl
-	 3VJ6BW5DpXRt7U6p4KQyMPbr8ckVkB3G17PsSUlo=
+	b=ifdmpgD6vJoa2Zj9APVXYV6DpxitZSfmZpgY+AFPpus1nRUOLe/GEfwyn69BfAr3w
+	 Fa36cavdbrswrE38P8DAR+NzpqUu9vUxTWtM1UEN1NOmzVEVUFYoE/5Vp5uOZ00taw
+	 LA5BxpQf5ZaBZApYHKonpbgOVyvjko+Zb7jaRXVs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Ingo Saitz <ingo@hannover.ccc.de>,
-	Kees Cook <kees@kernel.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 054/222] randstruct: gcc-plugin: Fix attribute addition
-Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130613.722055603@linuxfoundation.org>
+Subject: [PATCH 5.4 055/222] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
+Date: Mon, 23 Jun 2025 15:06:30 +0200
+Message-ID: <20250623130613.756816382@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,132 +72,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
+[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
 
-Based on changes in the 2021 public version of the randstruct
-out-of-tree GCC plugin[1], more carefully update the attributes on
-resulting decls, to avoid tripping checks in GCC 15's
-comptypes_check_enum_int() when it has been configured with
-"--enable-checking=misc":
+In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
+perf_hpp_list") it assumes that act->thread is set prior to calling
+do_zoom_thread().
 
-arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
-  132 | const struct kexec_file_ops kexec_image_ops = {
-      |              ^~~~~~~~~~~~~~
- internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
- fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
- comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
- ...
+This doesn't happen when we use ESC or the Left arrow key to Zoom out of
+a specific thread, making this operation not to work and we get stuck
+into the thread zoom.
 
-Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
-Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Closes: https://github.com/KSPP/linux/issues/367
-Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
-Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
+In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
+pstack_peek()") it says no need to set actions->thread, and at that
+point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
+check was added before the zoom out of thread could kick in.
+
+We can zoom out using the alternative 't' thread zoom toggle hotkey to
+finally set actions->thread before calling do_zoom_thread() and zoom
+out, but lets also fix the ESC/Zoom out of thread case.
+
+Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gcc-plugins/gcc-common.h              | 32 +++++++++++++++++++
- scripts/gcc-plugins/randomize_layout_plugin.c | 22 ++++++-------
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
-index 0907ab19202a1..6ec887ae71b64 100644
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -182,6 +182,38 @@ static inline tree build_const_char_string(int len, const char *str)
- 	return cstr;
- }
- 
-+static inline void __add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree oldattr;
-+
-+	if (type == NULL_TREE)
-+		return;
-+	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
-+	if (oldattr != NULL_TREE) {
-+		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
-+		return;
-+	}
-+
-+	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
-+	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
-+}
-+
-+static inline void add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree main_variant = TYPE_MAIN_VARIANT(type);
-+
-+	__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
-+	__add_type_attr(main_variant, attr, args);
-+
-+	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
-+		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
-+			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
-+
-+		__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	}
-+}
-+
- #define PASS_INFO(NAME, REF, ID, POS)		\
- struct register_pass_info NAME##_pass_info = {	\
- 	.pass = make_##NAME##_pass(),		\
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index a5aea51ecca99..472427f169a4a 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -95,6 +95,9 @@ static tree handle_randomize_layout_attr(tree *node, tree name, tree args, int f
- 
- 	if (TYPE_P(*node)) {
- 		type = *node;
-+	} else if (TREE_CODE(*node) == FIELD_DECL) {
-+		*no_add_attrs = false;
-+		return NULL_TREE;
- 	} else {
- 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
- 		type = TREE_TYPE(*node);
-@@ -381,15 +384,14 @@ static int relayout_struct(tree type)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
- 
-+	add_type_attr(type, "randomize_performed", NULL_TREE);
-+	add_type_attr(type, "designated_init", NULL_TREE);
-+	if (has_flexarray)
-+		add_type_attr(type, "has_flexarray", NULL_TREE);
-+
- 	main_variant = TYPE_MAIN_VARIANT(type);
--	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
-+	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
- 		TYPE_FIELDS(variant) = newtree[0];
--		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		if (has_flexarray)
--			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
- 
- 	/*
- 	 * force a re-layout of the main variant
-@@ -457,10 +459,8 @@ static void randomize_type(tree type)
- 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
- 		relayout_struct(type);
- 
--	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
--		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
-+	add_type_attr(type, "randomize_considered", NULL_TREE);
-+
- #ifdef __DEBUG_PLUGIN
- 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
- #ifdef __DEBUG_VERBOSE
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index 3461fa8cf4400..2a38140391c44 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -3065,10 +3065,10 @@ static int perf_evsel__hists_browse(struct evsel *evsel, int nr_events,
+ 				/*
+ 				 * No need to set actions->dso here since
+ 				 * it's just to remove the current filter.
+-				 * Ditto for thread below.
+ 				 */
+ 				do_zoom_dso(browser, actions);
+ 			} else if (top == &browser->hists->thread_filter) {
++				actions->thread = thread;
+ 				do_zoom_thread(browser, actions);
+ 			} else if (top == &browser->hists->socket_filter) {
+ 				do_zoom_socket(browser, actions);
 -- 
 2.39.5
 
