@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCF91AE4EFD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AA919AE5171
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5A903BEC9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B562F441E92
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2068621CA07;
-	Mon, 23 Jun 2025 21:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF0A41EEA5D;
+	Mon, 23 Jun 2025 21:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gUeXi3k6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enR0oSO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C897D70838;
-	Mon, 23 Jun 2025 21:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8C24409;
+	Mon, 23 Jun 2025 21:34:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713076; cv=none; b=RMcmXJurob/iCwHhDMYroi7gCooHwIwTUJI9T0ZLpHEp4UbzIrP4CD00FXh5zDbYezKMYg2Vk5Tjxqn2LwF/DfcVyX9Uaa8EQkqVsKH08UAV6DPEoXd+KfXEVbJrClyC08MjR+HFDcVWTY5W+Yd1C/O3l8M/LIjl2LHHT+b2UoA=
+	t=1750714453; cv=none; b=Qp0cGtaXf/+JYakBgyhxwBTdv+7ss4l9rIvYpWtkFmncAAuxIYsMuh7n1vDuHSZV2jyCkaohTR6a8ciKI9DkBtNBJufiftOjgyg/eK96zUin16g9JNodV1yfAUvW808s1X7QenKLZcJSeGzm8pT7cOgtJ+eRX5H6Nlpdg9AX6Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713076; c=relaxed/simple;
-	bh=L8YBMyxjGo8VVGneLNSZXkpalbBYNCcYITPcRzqQ7Qs=;
+	s=arc-20240116; t=1750714453; c=relaxed/simple;
+	bh=z7EuPlmFvE2p+On/LoJBvfZOvJmHGywXZHwMf3Elbdc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qNlTCmvp2nmCC9FshNjVZhMGRlDMFoCReepVGHtAGmsUc20nEV5Ld+VhfAvC4dmmaFRAtsNV6qgiHeYCEc5tBVNKJjI0P0usFdKn5AaJFa7BIWNd66viQre6XY+mnAqJ3DhZQLq+8bkqkEl8UgpNTRvzwQQ1E8yq6aUCZN9CZ/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gUeXi3k6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FD3BC4CEEA;
-	Mon, 23 Jun 2025 21:11:16 +0000 (UTC)
+	 MIME-Version; b=o+Jq6UuyfPcDDS42x2MHaGsEs7LutHj7jh8+zzb+wj3hfZZjmG1rwYfYGqQeR960b/ZpdV5No7TBBcDflw5Og2GUovwRgYVJGSM7GBZlPSA6JI4/6Qj06v7Zwb6i8mZrNp9syDOun4hthUwXXHf2C7fI+JNISBfwA6GS6JJ8qMQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enR0oSO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B95BC4CEEA;
+	Mon, 23 Jun 2025 21:34:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713076;
-	bh=L8YBMyxjGo8VVGneLNSZXkpalbBYNCcYITPcRzqQ7Qs=;
+	s=korg; t=1750714453;
+	bh=z7EuPlmFvE2p+On/LoJBvfZOvJmHGywXZHwMf3Elbdc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gUeXi3k63t3tMUMmDjfX2pmmlgBK1CxEA/mPmkmHHH3Uf4MMwdwx6gGjZS1uxwk2P
-	 sma4KRvp87lkgjT8jE7c1MwUro4YOwva2fSLbzgbmrZmj8XujaZeNTD5IAgaiZm0uP
-	 d3DPstQXpqnf2zFyTgj8ptMfr0zhew5m2rWRH2PE=
+	b=enR0oSO9u7I5S/gOQz0P+KGe3x2kmza90lIKTkWu1iDHGr+1KVyNt9lUbMA+tt/Ez
+	 wlmXaJZb0aS/oqt7xcsGF1CokskjQcaNvsQwPVaU30S0JGmVoZP2w15VlJSS55rbG3
+	 xYSPNrmO4JTwx2odRjtfmE6lLjybL+QW9q6i0zRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>
-Subject: [PATCH 5.15 123/411] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
+	Jun Li <jun.li@nxp.com>,
+	Xu Yang <xu.yang_2@nxp.com>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 6.12 130/414] phy: fsl-imx8mq-usb: fix phy_tx_vboost_level_from_property()
 Date: Mon, 23 Jun 2025 15:04:27 +0200
-Message-ID: <20250623130636.653112180@linuxfoundation.org>
+Message-ID: <20250623130645.308206841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
+commit b15ee09ddb987a122e74fb0fdf1bd6e864959fd3 upstream.
 
-Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
-set on errors") caused power.is_suspended to be set for devices with
-power.direct_complete set, but it forgot to ensure the clearing of that
-flag for them in device_resume(), so power.is_suspended is still set for
-them during the next system suspend-resume cycle.
+The description of TX_VBOOST_LVL is wrong in register PHY_CTRL3
+bit[31:29].
 
-If that cycle is aborted in dpm_suspend(), the subsequent invocation of
-dpm_resume() will trigger a device_resume() call for every device and
-because power.is_suspended is set for the devices in question, they will
-not be skipped by device_resume() as expected which causes scary error
-messages to be logged (as appropriate).
+The updated description as below:
+  011: Corresponds to a launch amplitude of 0.844 V.
+  100: Corresponds to a launch amplitude of 1.008 V.
+  101: Corresponds to a launch amplitude of 1.156 V.
 
-To address this issue, move the clearing of power.is_suspended in
-device_resume() immediately after the power.is_suspended check so it
-will be always cleared for all devices processed by that function.
+This will fix the parsing function
+phy_tx_vboost_level_from_property() to return correct value.
 
-Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
-Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 63c85ad0cd81 ("phy: fsl-imx8mp-usb: add support for phy tuning")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jun Li <jun.li@nxp.com>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Link: https://lore.kernel.org/r/20250430094502.2723983-3-xu.yang_2@nxp.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/power/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index d77ab224b861a..c784de10b494e 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -900,6 +900,8 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
- 	if (!dev->power.is_suspended)
- 		goto Complete;
+--- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
++++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
+@@ -95,12 +95,12 @@ static u32 phy_tx_preemp_amp_tune_from_p
+ static u32 phy_tx_vboost_level_from_property(u32 microvolt)
+ {
+ 	switch (microvolt) {
+-	case 0 ... 960:
+-		return 0;
+-	case 961 ... 1160:
+-		return 2;
+-	default:
++	case 1156:
++		return 5;
++	case 844:
+ 		return 3;
++	default:
++		return 4;
+ 	}
+ }
  
-+	dev->power.is_suspended = false;
-+
- 	if (dev->power.direct_complete) {
- 		/* Match the pm_runtime_disable() in __device_suspend(). */
- 		pm_runtime_enable(dev);
-@@ -955,7 +957,6 @@ static void __device_resume(struct device *dev, pm_message_t state, bool async)
- 
-  End:
- 	error = dpm_run_callback(callback, dev, state, info);
--	dev->power.is_suspended = false;
- 
- 	device_unlock(dev);
- 	dpm_watchdog_clear(&wd);
--- 
-2.39.5
-
 
 
 
