@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-156799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45273AE5130
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB331AE52FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D0DAD4A30B5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4325A178B4F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAF7C7080C;
-	Mon, 23 Jun 2025 21:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 294CC3FD4;
+	Mon, 23 Jun 2025 21:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BEXhy291"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lSvCN9Lf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6941AC2E0;
-	Mon, 23 Jun 2025 21:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7EB4315A;
+	Mon, 23 Jun 2025 21:48:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714294; cv=none; b=dkx5maFO1GhS1UFNsh/cmVtsTLhFq73MXuZcqEmzoSes49t2RQaOfCSQTqkhOVHrJ/Jfprv4ckmkCSbM9WAuYI0qFGjy/4VtFv5eTU90YVHXeU8MtQUJXmvBu185OLpGyrQTnFuSNCSnTNRB1mz6JjbD/bx0vvRRJak3BkgIV8I=
+	t=1750715317; cv=none; b=G8Ap2lQ9bcWRcEzCCEu1WN7fVnGCcpUBh4OoRPG9NUOv9rfPMSxPPV06c7LkVorWGwdbHTB9IRllfSGYlKqXEAL3N0xGCPtenHN/iMcvIfLum/p6m8ytRPPXC7ozbNLgdO9h/G21N2emY2I3kvTyU350rB9xWDGspbzT2JF5Oqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714294; c=relaxed/simple;
-	bh=Ub8PjA/HF98iFhbpZHsCQTNRvGqDDUMdODXkxtYAn9g=;
+	s=arc-20240116; t=1750715317; c=relaxed/simple;
+	bh=mDjbuPyaVCd5awQDBMesFhcZEg8r8C9R9GCm0lXTo5U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aSZWOKA9/gNwBtrdPFrO990SH5/ZcGS2P5K8L8mWeR6IflHLAwYAlSx8Pan+UIoOhGKNctL/5XCEuFpTOPTEGp1HfZeCPT4qgJQZONzqxVEeikH7K/OzUwzrIdZ7Eh5yj1L2w8MVh34jZr9NQn4EFDNh79ZGQSZpXrvRo4pd1Y0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BEXhy291; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC91FC4CEEA;
-	Mon, 23 Jun 2025 21:31:33 +0000 (UTC)
+	 MIME-Version; b=EFhYJwhRrPQsxI9YdgM4Va+CP0o/GG+nRZxrF+ftB5nvS3DOoYFDVM0VQo8BsuST5lwGour96JFkuLvm96Rf+H4oXDYBVlN2UQxaWFSD7IG9YlAneYj9QU1OcvfoBrjIUU3Gq5tS4xlVFIMJ4gPesQLQbhURmEITbniq3TCIDAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lSvCN9Lf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7339FC4CEEA;
+	Mon, 23 Jun 2025 21:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714294;
-	bh=Ub8PjA/HF98iFhbpZHsCQTNRvGqDDUMdODXkxtYAn9g=;
+	s=korg; t=1750715316;
+	bh=mDjbuPyaVCd5awQDBMesFhcZEg8r8C9R9GCm0lXTo5U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BEXhy2917sDqKGzSGGwqHraTWpVYaDtxz0QJnrwej/qCfMErjulzVyS2SINYXZFSG
-	 +bOiusbS0QhJNf7sqykHIHbOIEqmEyoMTJ+ZNcOGyTQgEckNif7fSibQOpDxAsPd79
-	 vhlPWuI7n1gYjyY68Y1zHWDXL60tPZkFgntXV46w=
+	b=lSvCN9Lflf+hy/MXUvLaF7wfqCyf9cBoYtq2YyNLw3gPkS2J5JjBO/ssjL8dW6h6Z
+	 PTP3R0EbRVxNHT7MV64xawiThKJZ1ZLAegWIg169seWWvcT4PrZSbA7rLDtJYo78tD
+	 H8YSLXLxybgIUBKyAXmkCp4ZiW32V8vNtRduy1b8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	gldrk <me@rarity.fan>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 128/290] ACPICA: utilities: Fix overflow check in vsnprintf()
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.15 245/411] dm-mirror: fix a tiny race condition
 Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130630.775583833@linuxfoundation.org>
+Message-ID: <20250623130639.820900172@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: gldrk <me@rarity.fan>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
+commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
 
-ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
+There's a tiny race condition in dm-mirror. The functions queue_bio and
+write_callback grab a spinlock, add a bio to the list, drop the spinlock
+and wake up the mirrord thread that processes bios in the list.
 
-The old version breaks sprintf on 64-bit systems for buffers
-outside [0..UINT32_MAX].
+It may be possible that the mirrord thread processes the bio just after
+spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
+wake-up is normally harmless, however if the device mapper device is
+unloaded just after the bio was processed, it may be possible that
+wakeup_mirrord(ms) uses invalid "ms" pointer.
 
-Link: https://github.com/acpica/acpica/commit/d9d59b79
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
-Signed-off-by: gldrk <me@rarity.fan>
-[ rjw: Added the tag from gldrk ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this bug by moving wakeup_mirrord inside the spinlock.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/utprint.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ drivers/md/dm-raid1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
-index 42b30b9f93128..7fad03c5252c3 100644
---- a/drivers/acpi/acpica/utprint.c
-+++ b/drivers/acpi/acpica/utprint.c
-@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
+--- a/drivers/md/dm-raid1.c
++++ b/drivers/md/dm-raid1.c
+@@ -128,10 +128,9 @@ static void queue_bio(struct mirror_set
+ 	spin_lock_irqsave(&ms->lock, flags);
+ 	should_wake = !(bl->head);
+ 	bio_list_add(bl, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+-
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
  
- 	pos = string;
+ static void dispatch_bios(void *context, struct bio_list *bio_list)
+@@ -638,9 +637,9 @@ static void write_callback(unsigned long
+ 	if (!ms->failures.head)
+ 		should_wake = 1;
+ 	bio_list_add(&ms->failures, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
  
--	if (size != ACPI_UINT32_MAX) {
--		end = string + size;
--	} else {
--		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
--	}
-+	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
-+	end = string + size;
- 
- 	for (; *format; ++format) {
- 		if (*format != '%') {
--- 
-2.39.5
-
+ static void do_write(struct mirror_set *ms, struct bio *bio)
 
 
 
