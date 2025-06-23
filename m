@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3782AE44E6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABB0AE42F9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5D4445AD2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6402D1898002
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B417B248895;
-	Mon, 23 Jun 2025 13:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A1E23BF9F;
+	Mon, 23 Jun 2025 13:22:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsAXzLD5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x2uQ77JJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E7A238C19;
-	Mon, 23 Jun 2025 13:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C905A2517A0;
+	Mon, 23 Jun 2025 13:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685918; cv=none; b=ONp9h7ohRZedVFjw1lIJCABKUVM5tmTLcAqJwAqdiwXuRZf67yVmstEYc4h7ZU8hoG8UrblaEiNlK18hrj2s4+oDla2o6Vn8jZkX69oS4qYtGzN3sFGQVinWWt/oxD47wlOuzhjXKzeOv31tQoKRZxfRHTu6yzAMJJX1aPQXUmk=
+	t=1750684929; cv=none; b=KUKx4k9Xl7qO0aEdc8yhUaXN8tsLCPBZbHdFXZp9kq+TCaZujzFTKjR1zs8XAl6O56HzakTByaKOqXgrdDS4JYNXm9PY4nG3065hjzptTJihrJe9fyZcKDOGPkGRL3w9Xoba+UPfIoFQ/xG+UbfvArIdkgFSKCyW0zourdzQ0cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685918; c=relaxed/simple;
-	bh=h4WsBxgo5ydhSw3mt78JvODGfULnEd5HB3Q4vjF3i5c=;
+	s=arc-20240116; t=1750684929; c=relaxed/simple;
+	bh=F8fH2rhX7Xg5DhtZ9T2hpgEshiTlZtiZlUsL//rh6Xc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TYQMu2NpdCRl7CrB6tRv71GDen9PWGKx+eKrJspwP0VYAGehsgMjbHxoAfYfKnB36fg4BywHIsomgusVwVGCEB54UlZPSwjxGcfOgA4QtOdCRDQXjaHggBaJ0ETiQcoMIl7AomGy1xpgUQgQtlyscKkroZj0+bsT/5aezKdNqfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsAXzLD5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08781C4CEEA;
-	Mon, 23 Jun 2025 13:38:37 +0000 (UTC)
+	 MIME-Version; b=bgd4YkogmH24AdqRE6QaMPDKrTICrY61NnGHBm5ZQIn88SrdHXJ4BCE3Occb6VA/qNL6pwLGu/fNJ75K2IJ7Oc/tknJ+ceXLG15CAUFGlNg8cWFET+l6ddKNhxb8X7HzR42bRBgkBaF8eM0RtV45V1esXvzhY1YTuPIbHCegyXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x2uQ77JJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D243C4CEEA;
+	Mon, 23 Jun 2025 13:22:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685918;
-	bh=h4WsBxgo5ydhSw3mt78JvODGfULnEd5HB3Q4vjF3i5c=;
+	s=korg; t=1750684929;
+	bh=F8fH2rhX7Xg5DhtZ9T2hpgEshiTlZtiZlUsL//rh6Xc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hsAXzLD5qM99EhUodfe9hmKnA4gRYIUT1qHpohRclnI5/YcA+L3No2WW0nZCqX95J
-	 WvjDfGTHsRMc8MQAfqbqYV7RezdK9S8W4ggS9Bxh9Ne6Y6ayW1yMyNQ0EWBHc0Bf8A
-	 KKLTh0wx7Ltdynm20E1lbAPodDD4R9mmdz2uGJAo=
+	b=x2uQ77JJwjGO10TViByG7Uf+O5y18EnftgFfesW6jPLiPKFNev3Klg1bXZAaNUKe5
+	 +kA9eQOrYp8KZ8jGyqhJQphXwaNP6k9U/B+X6gSgE77GvN2FVEyemEs93xw+6hRJTH
+	 DlGCShiJc1+DljUZDrME5QagR0KqBUjXT65Fn68Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thangaraj Samynathan <thangaraj.s@microchip.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Corentin Labbe <clabbe.montjoie@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/411] net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
+Subject: [PATCH 5.10 012/355] crypto: sun8i-ss - do not use sg_dma_len before calling DMA functions
 Date: Mon, 23 Jun 2025 15:03:33 +0200
-Message-ID: <20250623130635.069630256@linuxfoundation.org>
+Message-ID: <20250623130627.128440081@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thangaraj Samynathan <thangaraj.s@microchip.com>
+From: Corentin Labbe <clabbe.montjoie@gmail.com>
 
-[ Upstream commit 68927eb52d0af04863584930db06075d2610e194 ]
+[ Upstream commit 2dfc7cd74a5e062a5405560447517e7aab1c7341 ]
 
-rename the function to lan743x_hw_reset_phy to better describe it
-operation.
+When testing sun8i-ss with multi_v7_defconfig, all CBC algorithm fail crypto
+selftests.
+This is strange since on sunxi_defconfig, everything was ok.
+The problem was in the IV setup loop which never run because sg_dma_len
+was 0.
 
-Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
-Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20250526053048.287095-2-thangaraj.s@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 359e893e8af4 ("crypto: sun8i-ss - rework handling of IV")
+Signed-off-by: Corentin Labbe <clabbe.montjoie@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan743x_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
-index fe919c1974505..49d40685136d4 100644
---- a/drivers/net/ethernet/microchip/lan743x_main.c
-+++ b/drivers/net/ethernet/microchip/lan743x_main.c
-@@ -910,7 +910,7 @@ static int lan743x_mac_set_mtu(struct lan743x_adapter *adapter, int new_mtu)
- }
+diff --git a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
+index 8a94f812e6d29..f8603b931b9bb 100644
+--- a/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
++++ b/drivers/crypto/allwinner/sun8i-ss/sun8i-ss-cipher.c
+@@ -117,7 +117,7 @@ static int sun8i_ss_setup_ivs(struct skcipher_request *areq)
  
- /* PHY */
--static int lan743x_phy_reset(struct lan743x_adapter *adapter)
-+static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
- {
- 	u32 data;
- 
-@@ -944,7 +944,7 @@ static void lan743x_phy_update_flowcontrol(struct lan743x_adapter *adapter,
- 
- static int lan743x_phy_init(struct lan743x_adapter *adapter)
- {
--	return lan743x_phy_reset(adapter);
-+	return lan743x_hw_reset_phy(adapter);
- }
- 
- static void lan743x_phy_link_status_change(struct net_device *netdev)
+ 	/* we need to copy all IVs from source in case DMA is bi-directionnal */
+ 	while (sg && len) {
+-		if (sg_dma_len(sg) == 0) {
++		if (sg->length == 0) {
+ 			sg = sg_next(sg);
+ 			continue;
+ 		}
 -- 
 2.39.5
 
