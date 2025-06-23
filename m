@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157195-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D5AE5379
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF41DAE52DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C4134A7D1F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48E751B65B83
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEE0A2222C2;
-	Mon, 23 Jun 2025 21:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7090E1C84A0;
+	Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cn68lgRM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajv7cZZx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AC3972624;
-	Mon, 23 Jun 2025 21:53:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE6C3FD4;
+	Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715589; cv=none; b=osbr8wjJuHP//QW7BadTjHy04WrLj1m/4Xh1Dl2Z8RifnEYTvogEQuRi2We2lSLVN+d79owgsaum1GO5+BYCRkDC+eF28e9ItMIcs3h1mpALEvwySI/CsYf4U6iJtwvl7PmLNEBFpDZG/UZDhwWGa5Q9FzuaLQ5Ebfin0fFWbo8=
+	t=1750715272; cv=none; b=iVH1WSFC2HAPMzBjVFCHSVArFXXTc+rtPJZ5P5CQ0nOeAl1ks6l1GQmwrbT9nLUx0LiijFmsegGR2PFrrDD2CJn3E060xJ0r8uznxrSQTkzCtkejZo6Um+fabbaSGOA8jreKUeNIVl6IWsD5ytP99GQOszlrTQoYBcX2Zj8HX4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715589; c=relaxed/simple;
-	bh=rrlGJpZmLIAz5KiiFakrMZSbY6ivtDk5kqJ1acc10KU=;
+	s=arc-20240116; t=1750715272; c=relaxed/simple;
+	bh=CrMtvfuYVA5OJUPJ2/KA+jpGbhoCHCDev9rfe5Oa4Zc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRLP29BxEJBUTwvOTcH9ZD3FoauS9L2BMMKtbS8O7jN35zjTUZi6bFRb6yPhUppmF3AKvFYNtNluUR/uD1HPgh5qta90h5MuuspLqLqZe/Qh6uLyauqnqLn2XHZ0kWNE66DIzTM7t78UiP5tIfEujmIXWVx9Zo2EJcqpXhLajBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cn68lgRM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2439AC4CEEA;
-	Mon, 23 Jun 2025 21:53:08 +0000 (UTC)
+	 MIME-Version; b=Wnfub9hd4A5rLX38MGRRS7oHf+1kzzsJ79ynV4FywrOCrF99+pdOp1cYFqyn9zjOKp3qb6YATcxRY9Je0hdSKYeWEifUxpr/7TXeCeaUvqI+Vlz+dptFP9C0DYujyIu2O04Yv6McKk360RRIpx22TYFWyr96LzZT9Iwml2YjcPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajv7cZZx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9831C4CEEA;
+	Mon, 23 Jun 2025 21:47:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715589;
-	bh=rrlGJpZmLIAz5KiiFakrMZSbY6ivtDk5kqJ1acc10KU=;
+	s=korg; t=1750715272;
+	bh=CrMtvfuYVA5OJUPJ2/KA+jpGbhoCHCDev9rfe5Oa4Zc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cn68lgRM/0w9gikTovREIEvR3qTHt9pUhHrlBI8H4l52oxRmXKZfp2GhKcQ6OUWQC
-	 FD1U1J455B1s12g2ZV5BjLQ0K8k21pJBeebiJ/sx5M2KoIjZmuBoYsC7pcxlZeHk8o
-	 dy2GKffwfF6Imyy1hK0SyFB2D+RcWD7jHHuP/T20=
+	b=ajv7cZZxOhXJotAWMvPZ9oWLxq++2mZ/NKG+rCXLDFPNmO5P+4ARjFv/C+dMo3n0e
+	 ocMjKObr49RksZIEOF+qCRRdDjlWXP7pI1x3utUOI60JfWuhEXyFZLqU/WGKxZDQ4g
+	 yWibQsbToTMJ7p0HpIl70A0/TxNOHbUQnf0H2JxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghun Han <kkamagui@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 261/411] ACPICA: fix acpi operand cache leak in dswstate.c
-Date: Mon, 23 Jun 2025 15:06:45 +0200
-Message-ID: <20250623130640.224936096@linuxfoundation.org>
+	Yao Zi <ziyao@disroot.org>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.15 448/592] platform/loongarch: laptop: Get brightness setting from EC on probe
+Date: Mon, 23 Jun 2025 15:06:46 +0200
+Message-ID: <20250623130711.085198960@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghun Han <kkamagui@gmail.com>
+From: Yao Zi <ziyao@disroot.org>
 
-[ Upstream commit 156fd20a41e776bbf334bd5e45c4f78dfc90ce1c ]
+commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
 
-ACPICA commit 987a3b5cf7175916e2a4b6ea5b8e70f830dfe732
+Previously during driver probe, 1 is unconditionally taken as current
+brightness value and set to props.brightness, which will be considered
+as the brightness before suspend and restored to EC on resume. Since a
+brightness value of 1 almost never matches EC's state on coldboot (my
+laptop's EC defaults to 80), this causes surprising changes of screen
+brightness on the first time of resume after coldboot.
 
-I found an ACPI cache leak in ACPI early termination and boot continuing case.
+Let's get brightness from EC and take it as the current brightness on
+probe of the laptop driver to avoid the surprising behavior. Tested on
+TongFang L860-T2 Loongson-3A5000 laptop.
 
-When early termination occurs due to malicious ACPI table, Linux kernel
-terminates ACPI function and continues to boot process. While kernel terminates
-ACPI function, kmem_cache_destroy() reports Acpi-Operand cache leak.
-
-Boot log of ACPI operand cache leak is as follows:
->[    0.585957] ACPI: Added _OSI(Module Device)
->[    0.587218] ACPI: Added _OSI(Processor Device)
->[    0.588530] ACPI: Added _OSI(3.0 _SCP Extensions)
->[    0.589790] ACPI: Added _OSI(Processor Aggregator Device)
->[    0.591534] ACPI Error: Illegal I/O port address/length above 64K: C806E00000004002/0x2 (20170303/hwvalid-155)
->[    0.594351] ACPI Exception: AE_LIMIT, Unable to initialize fixed events (20170303/evevent-88)
->[    0.597858] ACPI: Unable to start the ACPI Interpreter
->[    0.599162] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
->[    0.601836] kmem_cache_destroy Acpi-Operand: Slab cache still has objects
->[    0.603556] CPU: 0 PID: 1 Comm: swapper/0 Not tainted 4.12.0-rc5 #26
->[    0.605159] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS virtual_box 12/01/2006
->[    0.609177] Call Trace:
->[    0.610063]  ? dump_stack+0x5c/0x81
->[    0.611118]  ? kmem_cache_destroy+0x1aa/0x1c0
->[    0.612632]  ? acpi_sleep_proc_init+0x27/0x27
->[    0.613906]  ? acpi_os_delete_cache+0xa/0x10
->[    0.617986]  ? acpi_ut_delete_caches+0x3f/0x7b
->[    0.619293]  ? acpi_terminate+0xa/0x14
->[    0.620394]  ? acpi_init+0x2af/0x34f
->[    0.621616]  ? __class_create+0x4c/0x80
->[    0.623412]  ? video_setup+0x7f/0x7f
->[    0.624585]  ? acpi_sleep_proc_init+0x27/0x27
->[    0.625861]  ? do_one_initcall+0x4e/0x1a0
->[    0.627513]  ? kernel_init_freeable+0x19e/0x21f
->[    0.628972]  ? rest_init+0x80/0x80
->[    0.630043]  ? kernel_init+0xa/0x100
->[    0.631084]  ? ret_from_fork+0x25/0x30
->[    0.633343] vgaarb: loaded
->[    0.635036] EDAC MC: Ver: 3.0.0
->[    0.638601] PCI: Probing PCI hardware
->[    0.639833] PCI host bridge to bus 0000:00
->[    0.641031] pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
-> ... Continue to boot and log is omitted ...
-
-I analyzed this memory leak in detail and found acpi_ds_obj_stack_pop_and_
-delete() function miscalculated the top of the stack. acpi_ds_obj_stack_push()
-function uses walk_state->operand_index for start position of the top, but
-acpi_ds_obj_stack_pop_and_delete() function considers index 0 for it.
-Therefore, this causes acpi operand memory leak.
-
-This cache leak causes a security threat because an old kernel (<= 4.9) shows
-memory locations of kernel functions in stack dump. Some malicious users
-could use this information to neutralize kernel ASLR.
-
-I made a patch to fix ACPI operand cache leak.
-
-Link: https://github.com/acpica/acpica/commit/987a3b5c
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/4999480.31r3eYUQgx@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
+Signed-off-by: Yao Zi <ziyao@disroot.org>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/dsutils.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/platform/loongarch/loongson-laptop.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/acpica/dsutils.c b/drivers/acpi/acpica/dsutils.c
-index fb9ed5e1da89d..2bdae8a25e084 100644
---- a/drivers/acpi/acpica/dsutils.c
-+++ b/drivers/acpi/acpica/dsutils.c
-@@ -668,6 +668,8 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
- 	union acpi_parse_object *arguments[ACPI_OBJ_NUM_OPERANDS];
- 	u32 arg_count = 0;
- 	u32 index = walk_state->num_operands;
-+	u32 prev_num_operands = walk_state->num_operands;
-+	u32 new_num_operands;
- 	u32 i;
+--- a/drivers/platform/loongarch/loongson-laptop.c
++++ b/drivers/platform/loongarch/loongson-laptop.c
+@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
+ 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
+ 		return -EIO;
  
- 	ACPI_FUNCTION_TRACE_PTR(ds_create_operands, first_arg);
-@@ -696,6 +698,7 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
+-	props.brightness = 1;
+ 	props.max_brightness = status;
++	props.brightness = ec_get_brightness();
+ 	props.type = BACKLIGHT_PLATFORM;
  
- 	/* Create the interpreter arguments, in reverse order */
- 
-+	new_num_operands = index;
- 	index--;
- 	for (i = 0; i < arg_count; i++) {
- 		arg = arguments[index];
-@@ -720,7 +723,11 @@ acpi_ds_create_operands(struct acpi_walk_state *walk_state,
- 	 * pop everything off of the operand stack and delete those
- 	 * objects
- 	 */
--	acpi_ds_obj_stack_pop_and_delete(arg_count, walk_state);
-+	walk_state->num_operands = i;
-+	acpi_ds_obj_stack_pop_and_delete(new_num_operands, walk_state);
-+
-+	/* Restore operand count */
-+	walk_state->num_operands = prev_num_operands;
- 
- 	ACPI_EXCEPTION((AE_INFO, status, "While creating Arg %u", index));
- 	return_ACPI_STATUS(status);
--- 
-2.39.5
-
+ 	backlight_device_register("loongson_laptop",
 
 
 
