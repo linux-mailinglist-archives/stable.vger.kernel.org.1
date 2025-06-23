@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B055AE520E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC53CAE5173
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61BC9442EE1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456754A3A2B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7A7C2222C2;
-	Mon, 23 Jun 2025 21:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A998C21D3DD;
+	Mon, 23 Jun 2025 21:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1ZCTd71"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZX/je4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6447B221FC7;
-	Mon, 23 Jun 2025 21:39:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65A014409;
+	Mon, 23 Jun 2025 21:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714797; cv=none; b=spjtpPXC0FF0dWggbuDbAmetnv1qPGxQudTUBzt3D9pmGJ0JJthkrXugOJLszSwU4KoTcflqIndre69wNR9mRmHSrYwCl/x4sD9dSL+SZZ0eh1blD1/6nxxfePXacEIS/NGZnshcZuMetsb74YzO6MSkRw4cVazBPtcFUigizDo=
+	t=1750714458; cv=none; b=QeqcTVTPiEx8KlLaNvOMbFc2BDYA2ytYUzWMKCqazOjXflaHTVdpsNke7viQTFNM56McWC7k+JKkdyBOheYCOESxHY6/OGof8NxNMgy+3m82r93d12VMoX0xEpn4tnjdHHvuHVXxTaxCmjri0TMrHfwXp+mPJuj4WdtZ3BF+skU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714797; c=relaxed/simple;
-	bh=lzO5t60tP/ZPLbdB4KPUCZ5OFBmWxFddo1EmWOkGTBQ=;
+	s=arc-20240116; t=1750714458; c=relaxed/simple;
+	bh=yVJ1P7CKIC4tFgoO95019y3F2+Sjz7cWOKeR7PvYKGc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e19OTFkpW3ZQfsg08sqrZ62Mh4qF60UnCnVu9qUEBJhVKtHQ1F9yiojABDm+PSm/wMvkPxiyf+25F6Oow51ob46TFqnOOi/af+U+lBYiaH68wnUx5tm4jvCFtk0ydG3teFgJvQG2Jx3M8SRWEY+AP7+C1sAJemvJYI2dL7LlkBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1ZCTd71; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DAE4C4CEEA;
-	Mon, 23 Jun 2025 21:39:56 +0000 (UTC)
+	 MIME-Version; b=aG/AceIeFEMj+JzIatdaMbTV9C5txyKfs6YcMBvB+3YUw3/HNqBoYxWI/NrZ+6ILAMuWrHk9QQBg5KiQ1ya122oYYr+V490QC+rDXHDJUd7WYO7dNE7BTEhONGcWPKhH6gNQ8DWv9eDPdZaWgSdx7CBZ/MhZnkccpaHq2zQOV9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZX/je4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6AF7C4CEEA;
+	Mon, 23 Jun 2025 21:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714797;
-	bh=lzO5t60tP/ZPLbdB4KPUCZ5OFBmWxFddo1EmWOkGTBQ=;
+	s=korg; t=1750714458;
+	bh=yVJ1P7CKIC4tFgoO95019y3F2+Sjz7cWOKeR7PvYKGc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y1ZCTd71yePWJxsZs6jl4kfQKNG1S94RiVB8m/BiPXhYwC8W5JVP09E/sHQPGYiV4
-	 6GUigQ7900p0zKAcyLhsVH7k9EvSjsgReHZN6h3BW7KKUi7XWPaKoiyNYarTPb96IU
-	 r+LAcEyyytqkfo6XMLy3i8HPkb40NQY9SLQKE0Kw=
+	b=LZX/je4ReRXU8WZ+aU6hxrbkYqN3lkLM6/URMRK7IdlRH+7HFjudBJCu9ix0f4xce
+	 BPHAOb+LtwBh1DixQHKppf+3x057lb/jQ59/242ACLGxhv/fA6iIGMkBC5bvk5amUv
+	 hC40gsbvRwQDLfb1zpuJrYiZZc1wJ7KixoiK+7hE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 230/411] ext4: ensure i_size is smaller than maxbytes
+	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 416/592] wifi: rtw88: Set AMPDU factor to hardware for RTL8814A
 Date: Mon, 23 Jun 2025 15:06:14 +0200
-Message-ID: <20250623130639.449807147@linuxfoundation.org>
+Message-ID: <20250623130710.332828449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +62,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
 
-commit 1a77a028a392fab66dd637cdfac3f888450d00af upstream.
+[ Upstream commit 0d2a88690e583168effb03c64fd217a323b2c444 ]
 
-The inode i_size cannot be larger than maxbytes, check it while loading
-inode from the disk.
+Tell the chip the maximum AMPDU size supported by the AP. This greatly
+improves the TX speed of RTL8814AU in the 2.4 GHz band. Before: ~90
+Mbps. After: ~300 Mbps.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/4edc2a63-81b3-431c-9a37-5a7d899a6cc2@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/realtek/rtw88/mac80211.c |  2 ++
+ drivers/net/wireless/realtek/rtw88/main.c     | 32 +++++++++++++++++++
+ drivers/net/wireless/realtek/rtw88/main.h     |  3 ++
+ drivers/net/wireless/realtek/rtw88/rtw8703b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8723d.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8812a.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8814a.c | 11 +++++++
+ drivers/net/wireless/realtek/rtw88/rtw8821a.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8821c.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822b.c |  1 +
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c |  1 +
+ 11 files changed, 55 insertions(+)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4785,7 +4785,8 @@ struct inode *__ext4_iget(struct super_b
- 		ei->i_file_acl |=
- 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
- 	inode->i_size = ext4_isize(sb, raw_inode);
--	if ((size = i_size_read(inode)) < 0) {
-+	size = i_size_read(inode);
-+	if (size < 0 || size > ext4_get_maxbytes(inode)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "iget: bad i_size value: %lld", size);
- 		ret = -EFSCORRUPTED;
+diff --git a/drivers/net/wireless/realtek/rtw88/mac80211.c b/drivers/net/wireless/realtek/rtw88/mac80211.c
+index 026fbf4ad9cce..77f9fbe1870c6 100644
+--- a/drivers/net/wireless/realtek/rtw88/mac80211.c
++++ b/drivers/net/wireless/realtek/rtw88/mac80211.c
+@@ -396,6 +396,8 @@ static void rtw_ops_bss_info_changed(struct ieee80211_hw *hw,
+ 			if (rtw_bf_support)
+ 				rtw_bf_assoc(rtwdev, vif, conf);
+ 
++			rtw_set_ampdu_factor(rtwdev, vif, conf);
++
+ 			rtw_fw_beacon_filter_config(rtwdev, true, vif);
+ 		} else {
+ 			rtw_leave_lps(rtwdev);
+diff --git a/drivers/net/wireless/realtek/rtw88/main.c b/drivers/net/wireless/realtek/rtw88/main.c
+index 959f56a3cc1ab..bc2c1a5a30b37 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.c
++++ b/drivers/net/wireless/realtek/rtw88/main.c
+@@ -2447,6 +2447,38 @@ void rtw_core_enable_beacon(struct rtw_dev *rtwdev, bool enable)
+ 	}
+ }
+ 
++void rtw_set_ampdu_factor(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
++			  struct ieee80211_bss_conf *bss_conf)
++{
++	const struct rtw_chip_ops *ops = rtwdev->chip->ops;
++	struct ieee80211_sta *sta;
++	u8 factor = 0xff;
++
++	if (!ops->set_ampdu_factor)
++		return;
++
++	rcu_read_lock();
++
++	sta = ieee80211_find_sta(vif, bss_conf->bssid);
++	if (!sta) {
++		rcu_read_unlock();
++		rtw_warn(rtwdev, "%s: failed to find station %pM\n",
++			 __func__, bss_conf->bssid);
++		return;
++	}
++
++	if (sta->deflink.vht_cap.vht_supported)
++		factor = u32_get_bits(sta->deflink.vht_cap.cap,
++				      IEEE80211_VHT_CAP_MAX_A_MPDU_LENGTH_EXPONENT_MASK);
++	else if (sta->deflink.ht_cap.ht_supported)
++		factor = sta->deflink.ht_cap.ampdu_factor;
++
++	rcu_read_unlock();
++
++	if (factor != 0xff)
++		ops->set_ampdu_factor(rtwdev, factor);
++}
++
+ MODULE_AUTHOR("Realtek Corporation");
+ MODULE_DESCRIPTION("Realtek 802.11ac wireless core module");
+ MODULE_LICENSE("Dual BSD/GPL");
+diff --git a/drivers/net/wireless/realtek/rtw88/main.h b/drivers/net/wireless/realtek/rtw88/main.h
+index 02343e059fd97..f410c554da58a 100644
+--- a/drivers/net/wireless/realtek/rtw88/main.h
++++ b/drivers/net/wireless/realtek/rtw88/main.h
+@@ -878,6 +878,7 @@ struct rtw_chip_ops {
+ 			   u32 antenna_rx);
+ 	void (*cfg_ldo25)(struct rtw_dev *rtwdev, bool enable);
+ 	void (*efuse_grant)(struct rtw_dev *rtwdev, bool enable);
++	void (*set_ampdu_factor)(struct rtw_dev *rtwdev, u8 factor);
+ 	void (*false_alarm_statistics)(struct rtw_dev *rtwdev);
+ 	void (*phy_calibration)(struct rtw_dev *rtwdev);
+ 	void (*dpk_track)(struct rtw_dev *rtwdev);
+@@ -2272,4 +2273,6 @@ void rtw_update_channel(struct rtw_dev *rtwdev, u8 center_channel,
+ void rtw_core_port_switch(struct rtw_dev *rtwdev, struct ieee80211_vif *vif);
+ bool rtw_core_check_sta_active(struct rtw_dev *rtwdev);
+ void rtw_core_enable_beacon(struct rtw_dev *rtwdev, bool enable);
++void rtw_set_ampdu_factor(struct rtw_dev *rtwdev, struct ieee80211_vif *vif,
++			  struct ieee80211_bss_conf *bss_conf);
+ #endif
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8703b.c b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+index 1d232adbdd7e3..5e59cfe4dfdf5 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8703b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8703b.c
+@@ -1904,6 +1904,7 @@ static const struct rtw_chip_ops rtw8703b_ops = {
+ 	.set_antenna		= NULL,
+ 	.cfg_ldo25		= rtw8723x_cfg_ldo25,
+ 	.efuse_grant		= rtw8723x_efuse_grant,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw8723x_false_alarm_statistics,
+ 	.phy_calibration	= rtw8703b_phy_calibration,
+ 	.dpk_track		= NULL,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.c b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+index 87715bd54860a..31876e708f9ef 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.c
+@@ -1404,6 +1404,7 @@ static const struct rtw_chip_ops rtw8723d_ops = {
+ 	.set_antenna		= NULL,
+ 	.cfg_ldo25		= rtw8723x_cfg_ldo25,
+ 	.efuse_grant		= rtw8723x_efuse_grant,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw8723x_false_alarm_statistics,
+ 	.phy_calibration	= rtw8723d_phy_calibration,
+ 	.cck_pd_set		= rtw8723d_phy_cck_pd_set,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8812a.c b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
+index f9ba2aa2928a4..adbfb37105d05 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8812a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8812a.c
+@@ -925,6 +925,7 @@ static const struct rtw_chip_ops rtw8812a_ops = {
+ 	.set_tx_power_index	= rtw88xxa_set_tx_power_index,
+ 	.cfg_ldo25		= rtw8812a_cfg_ldo25,
+ 	.efuse_grant		= rtw88xxa_efuse_grant,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw88xxa_false_alarm_statistics,
+ 	.phy_calibration	= rtw8812a_phy_calibration,
+ 	.cck_pd_set		= rtw88xxa_phy_cck_pd_set,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8814a.c b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
+index cfd35d40d46e2..ce8d4e4c6c57b 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8814a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8814a.c
+@@ -1332,6 +1332,16 @@ static void rtw8814a_cfg_ldo25(struct rtw_dev *rtwdev, bool enable)
+ {
+ }
+ 
++/* Without this RTL8814A sends too many frames and (some?) 11n AP
++ * can't handle it, resulting in low TX speed. Other chips seem fine.
++ */
++static void rtw8814a_set_ampdu_factor(struct rtw_dev *rtwdev, u8 factor)
++{
++	factor = min_t(u8, factor, IEEE80211_VHT_MAX_AMPDU_256K);
++
++	rtw_write32(rtwdev, REG_AMPDU_MAX_LENGTH, (8192 << factor) - 1);
++}
++
+ static void rtw8814a_false_alarm_statistics(struct rtw_dev *rtwdev)
+ {
+ 	struct rtw_dm_info *dm_info = &rtwdev->dm_info;
+@@ -2051,6 +2061,7 @@ static const struct rtw_chip_ops rtw8814a_ops = {
+ 	.set_antenna		= NULL,
+ 	.cfg_ldo25		= rtw8814a_cfg_ldo25,
+ 	.efuse_grant		= rtw8814a_efuse_grant,
++	.set_ampdu_factor	= rtw8814a_set_ampdu_factor,
+ 	.false_alarm_statistics	= rtw8814a_false_alarm_statistics,
+ 	.phy_calibration	= rtw8814a_phy_calibration,
+ 	.cck_pd_set		= rtw8814a_phy_cck_pd_set,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821a.c b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+index f68239b073191..4d81fb29c9fcd 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821a.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821a.c
+@@ -871,6 +871,7 @@ static const struct rtw_chip_ops rtw8821a_ops = {
+ 	.set_tx_power_index	= rtw88xxa_set_tx_power_index,
+ 	.cfg_ldo25		= rtw8821a_cfg_ldo25,
+ 	.efuse_grant		= rtw88xxa_efuse_grant,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw88xxa_false_alarm_statistics,
+ 	.phy_calibration	= rtw8821a_phy_calibration,
+ 	.cck_pd_set		= rtw88xxa_phy_cck_pd_set,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8821c.c b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+index 0ade7f11cbd2e..f68b0041dcc06 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8821c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8821c.c
+@@ -1668,6 +1668,7 @@ static const struct rtw_chip_ops rtw8821c_ops = {
+ 	.set_antenna		= NULL,
+ 	.set_tx_power_index	= rtw8821c_set_tx_power_index,
+ 	.cfg_ldo25		= rtw8821c_cfg_ldo25,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw8821c_false_alarm_statistics,
+ 	.phy_calibration	= rtw8821c_phy_calibration,
+ 	.cck_pd_set		= rtw8821c_phy_cck_pd_set,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822b.c b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+index b4934da88e33a..0da212e27d55b 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822b.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822b.c
+@@ -2158,6 +2158,7 @@ static const struct rtw_chip_ops rtw8822b_ops = {
+ 	.set_tx_power_index	= rtw8822b_set_tx_power_index,
+ 	.set_antenna		= rtw8822b_set_antenna,
+ 	.cfg_ldo25		= rtw8822b_cfg_ldo25,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw8822b_false_alarm_statistics,
+ 	.phy_calibration	= rtw8822b_phy_calibration,
+ 	.pwr_track		= rtw8822b_pwr_track,
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 8937a7b656edb..a7dc79773f624 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -4969,6 +4969,7 @@ static const struct rtw_chip_ops rtw8822c_ops = {
+ 	.set_tx_power_index	= rtw8822c_set_tx_power_index,
+ 	.set_antenna		= rtw8822c_set_antenna,
+ 	.cfg_ldo25		= rtw8822c_cfg_ldo25,
++	.set_ampdu_factor	= NULL,
+ 	.false_alarm_statistics	= rtw8822c_false_alarm_statistics,
+ 	.dpk_track		= rtw8822c_dpk_track,
+ 	.phy_calibration	= rtw8822c_phy_calibration,
+-- 
+2.39.5
+
 
 
 
