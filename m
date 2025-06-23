@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-157956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA08AE565A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A103BAE565E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 600EF188CCDE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9680C4C0D1C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98BAF1E3DCD;
-	Mon, 23 Jun 2025 22:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63B9B16D9BF;
+	Mon, 23 Jun 2025 22:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUQTOH1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqZqS5Wk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5698F221FC7;
-	Mon, 23 Jun 2025 22:18:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2236219E7F9;
+	Mon, 23 Jun 2025 22:19:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717131; cv=none; b=bMF2IoPi0NE4O24uKvatjKrIGRypWNAoTgBT+9Gnq8W4z5OSF4vLlB5TsHZJAaQNverWYtzhtxsMEH0VyoeD3oX+aAloMdc7MVHCOvcF9h33L537ZbncOHc87ujBxsf//2u7U0d+yqwgQKKB3hzevdGVIxCpq2WANdgE2fFiwCs=
+	t=1750717141; cv=none; b=Vtu5FXi47QOiXy46FZMoXutma+8MVPO6yHIRuZGtPqfXhsrI8oThOCMTJh1Kiu8W1paFjIcVayURK1IiG25lMnkmGFQkjvSFN1lY1/2lMJYWgfZmkrPiz82H8Spj+EGieVM+xV1Ckkn7tSxKe8TsrSluSiR49Md1kyVGmV+Qexc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717131; c=relaxed/simple;
-	bh=fvRCe91wRLrjMl0VswqNTkYxKbq6j8REdSGpjYZXE7M=;
+	s=arc-20240116; t=1750717141; c=relaxed/simple;
+	bh=7c4x0Wd+2uP4bwFRv73uJFJ4b6w39t9hAUf9TGNeG44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UkU4X/0oI6j7I5Vbjqi/DoeRozXPhj5xV22nXxt/+VARtTOIKZYzaxSlzT+Eb/3V9YFzJEx1gCxIGhxrQT3MTVW8+THNOr+r0sbHEYEw015MJE+pzf1jX9SjxL7FusGBBoWlquSewLCVLi7WwWnf3eT9eilIEY1jN9U4KXw435U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUQTOH1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AE7C4CEEA;
-	Mon, 23 Jun 2025 22:18:50 +0000 (UTC)
+	 MIME-Version; b=WgncJXLwvx2a4gCJ9DKyqTJHb7szeDeXfWYnGmjMAni+QPBSyTiDZg8kxR5agKcDm2OKYxOd8H+o5bhT3bFme0KYsO43X+8yCTOIKmPH4aaeKy/+bMpL1b9nrcbkIIk2XVNkagT8My+O/fC9h1aYBJ37yrn9Y50tsT/7GxEFV78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqZqS5Wk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE3FC4CEEA;
+	Mon, 23 Jun 2025 22:19:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717131;
-	bh=fvRCe91wRLrjMl0VswqNTkYxKbq6j8REdSGpjYZXE7M=;
+	s=korg; t=1750717141;
+	bh=7c4x0Wd+2uP4bwFRv73uJFJ4b6w39t9hAUf9TGNeG44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUQTOH1magBlsh0ccu9szqB91/4YyRIHTGVJc5yjoU0XmlUaVUBIgTNtBRAmg40Ob
-	 +cv9GbOo4Ga9+4EVWonyYR4ggrsci+y7UDefK/BKqiik0Dswwn1W2eTfpDqAcr/dTJ
-	 yrNGBDj4mSsHfNVD0I0Ud3zkvAKxABeGQLNoToNM=
+	b=NqZqS5WkPwrrgj9gBa0uvh+1yYz5R65XVLGUxVjLCf8v+8Tv2vRfNQc1aAQ9t4Fqq
+	 Jb94TU8uJuod0Fw+bfY6ZHrW7IQmUopJenQg23oLINGgBKHAa/wtuk2rqDXGnnS/3T
+	 aRNLzgrv5+6d6cjEFVyWZQhz2TQDUlQU3mNhgRNo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Diederik de Haas <didi.debian@cknow.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Dragan Simic <dsimic@manjaro.org>,
-	Shawn Lin <shawn.lin@rock-chips.com>
-Subject: [PATCH 6.1 370/508] PCI: dw-rockchip: Fix PHY function call sequence in rockchip_pcie_phy_deinit()
-Date: Mon, 23 Jun 2025 15:06:55 +0200
-Message-ID: <20250623130654.446652976@linuxfoundation.org>
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 371/508] iio: accel: fxls8962af: Fix temperature scan element sign
+Date: Mon, 23 Jun 2025 15:06:56 +0200
+Message-ID: <20250623130654.469139821@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,41 +66,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Diederik de Haas <didi.debian@cknow.org>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 286ed198b899739862456f451eda884558526a9d upstream.
+commit 9c78317b42e7c32523c91099859bc4721e9f75dd upstream.
 
-The documentation for the phy_power_off() function explicitly says that it
-must be called before phy_exit().
+Mark the temperature element signed, data read from the TEMP_OUT register
+is in two's complement format.
+This will avoid the temperature being mishandled and miss displayed.
 
-Hence, follow the same rule in rockchip_pcie_phy_deinit().
-
-Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
-Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
-[mani: commit message change]
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Dragan Simic <dsimic@manjaro.org>
-Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
-Cc: stable@vger.kernel.org	# v5.15+
-Link: https://patch.msgid.link/20250417142138.1377451-1-didi.debian@cknow.org
+Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
+Suggested-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250505-fxls-v4-2-a38652e21738@geanix.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/fxls8962af-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-+++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
-@@ -275,8 +275,8 @@ static int rockchip_pcie_phy_init(struct
- 
- static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
- {
--	phy_exit(rockchip->phy);
- 	phy_power_off(rockchip->phy);
-+	phy_exit(rockchip->phy);
- }
- 
- static const struct dw_pcie_ops dw_pcie_ops = {
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -738,6 +738,7 @@ static const struct iio_event_spec fxls8
+ 			      BIT(IIO_CHAN_INFO_OFFSET),\
+ 	.scan_index = -1, \
+ 	.scan_type = { \
++		.sign = 's', \
+ 		.realbits = 8, \
+ 		.storagebits = 8, \
+ 	}, \
 
 
 
