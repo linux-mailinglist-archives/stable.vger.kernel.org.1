@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C161AE52EF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1DCD1AE541E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 511D1443FE2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DA2E446AA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661731C84A0;
-	Mon, 23 Jun 2025 21:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B8922579E;
+	Mon, 23 Jun 2025 21:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fH/0FGys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyq+IOap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21FA93FD4;
-	Mon, 23 Jun 2025 21:48:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133AE225785;
+	Mon, 23 Jun 2025 21:59:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715292; cv=none; b=uaChvof+AseM+ucnnAMCSlWgJiAWSbCpEFrjs7KkonUYrVjhqvijtoX3S84zpXDdSkttEUPf1sUuJ4HqqUEvNq+qH3MAGGYZBfE20oG/fYdrI1Xxm3TMI6mZysmi0v8TLntoZCrVX9gYYbK/vIMJLKCelkWPbNCzAC4DcWYJz9I=
+	t=1750715954; cv=none; b=lyS39bW9DtZA22xHTExjzfflAyEZnukzsDNuxq94s4c1IMzIiX3Tz2Lh/YaQKrF9kM4aiGnOqmQHvbAy1O9lrwrhmNALH+mllJKufV0gGit38tUx8FHC86weXXgJZJYDVHLSYZTi8nmy/I1riEchUrkrnvMt+tz2Ma96z8PUnhE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715292; c=relaxed/simple;
-	bh=J96NFk5Mk7Koh/1mFm87XvblCvyGNL16CyMUTwU+m5w=;
+	s=arc-20240116; t=1750715954; c=relaxed/simple;
+	bh=UuQ29DWcrfBsX/fe+HKGGrpB0Cjyef1sJr/3TPslSeE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z1zdzI1lZYDj5Qgv1RCN9JdL/tW8Vs9BMdF1gLIDXPZyB7mkUaMYrBPuRPx1UfdWLM6JJr4CPylagk4K5Ye7+E4Bo377S6jBrMVTYiqoHaX1Tn345HIBfHCncW6Qwv9hxbXcIVdQsxjoXMC+fv/OJcS/CxgHb9Mv3OcfAQO12/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fH/0FGys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4A78C4CEEA;
-	Mon, 23 Jun 2025 21:48:11 +0000 (UTC)
+	 MIME-Version; b=VDpr0b9COsEgpuHOUv2rw9SRNu4Cf1rXSBEUOzscDdu1wTK/dNE+MUO9q755KiiZvkS9wYYKm0vJF27zrzhNBcDpZeQ3G2Rv9xIf2FKHloyNzzbCxXo6NkCyBCPWksPDxXq5ybA9wxFF3rnQ53aKoMV1kLuneb3zmSPzkY213ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyq+IOap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A92C4CEF1;
+	Mon, 23 Jun 2025 21:59:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715292;
-	bh=J96NFk5Mk7Koh/1mFm87XvblCvyGNL16CyMUTwU+m5w=;
+	s=korg; t=1750715953;
+	bh=UuQ29DWcrfBsX/fe+HKGGrpB0Cjyef1sJr/3TPslSeE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fH/0FGys8l7B9lAt/HuuwLSZ4ZX4w5NofuYtgMhQPvqC07XQCaAnxXNljJ/GkbX7l
-	 Rh30Vm6Vg3rzOCSw/hUvMUoxLx0hiWG6FPtR2ckGzSm8pWwQ5Vr/DK5BvgbOAdwgqp
-	 L5UdQ08Ch3TwYSLp9v3pfwjavnutNbYu2bz++eHc=
+	b=yyq+IOap7ljxNDVbzPLwCIVE3Uxsm5OZdYV7MsgaGARkOgD2pzo3dpHsYlTkgbjVq
+	 xZXXg/BAW+2w4yrSC15nbgXZ1qfPEwrlg2Vtagcj2gXpp1P/c4ZBOo5RrYP7ohd0S4
+	 VDMZTv49yWPjjJWyv0QuTq6roWR+o/pDWbZdnZ2Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 190/290] wifi: ath11k: determine PM policy based on machine model
+	Jonathan Lane <jon@borg.moe>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.15 493/592] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
 Date: Mon, 23 Jun 2025 15:07:31 +0200
-Message-ID: <20250623130632.578545666@linuxfoundation.org>
+Message-ID: <20250623130712.157327830@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,145 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Jonathan Lane <jon@borg.moe>
 
-[ Upstream commit ce8669a27016354dfa8bf3c954255cb9f3583bae ]
+commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
 
-To handle the Lenovo unexpected wakeup issue [1], previously we revert
-commit 166a490f59ac ("wifi: ath11k: support hibernation"). So currently
-WLAN target is put into WoWLAN mode during suspend. This is a temporary
-solution as it does not work on machines where WLAN power is cut off.
+Like many Dell laptops, the 3.5mm port by default can not detect a
+combined headphones+mic headset or even a pure microphone.  This
+change enables the port's functionality.
 
-The thought here is that we do WoWLAN suspend on Lenovo machines while
-do non-WoWLAN suspend (which is done in the reverted commit) on other
-machines. This requires us to identify Lenovo machines from others.
-For that purpose, read board vendor and product name from DMI interface,
-match it against all known affected machines. If there is a match, choose
-WoWLAN suspend mode, else choose non-WoWLAN mode. Save the mode in ab
-for later reference.
-
-[1] https://bugzilla.kernel.org/show_bug.cgi?id=219196
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Tested-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Tested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250328-ath11k-bring-hibernation-back-v3-1-23405ae23431@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jonathan Lane <jon@borg.moe>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/core.c | 55 ++++++++++++++++++++++++++
- drivers/net/wireless/ath/ath11k/core.h |  7 ++++
- 2 files changed, 62 insertions(+)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
-index 609d8387c41f3..0e8ff839cae23 100644
---- a/drivers/net/wireless/ath/ath11k/core.c
-+++ b/drivers/net/wireless/ath/ath11k/core.c
-@@ -704,6 +704,52 @@ static const struct ath11k_hw_params ath11k_hw_params[] = {
- 	},
- };
- 
-+static const struct dmi_system_id ath11k_pm_quirk_table[] = {
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21J4"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K4"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K6"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21K8"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21KA"),
-+		},
-+	},
-+	{
-+		.driver_data = (void *)ATH11K_PM_WOW,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "21F9"),
-+		},
-+	},
-+	{}
-+};
-+
- static inline struct ath11k_pdev *ath11k_core_get_single_pdev(struct ath11k_base *ab)
- {
- 	WARN_ON(!ab->hw_params.single_pdev_only);
-@@ -2018,8 +2064,17 @@ EXPORT_SYMBOL(ath11k_core_pre_init);
- 
- int ath11k_core_init(struct ath11k_base *ab)
- {
-+	const struct dmi_system_id *dmi_id;
- 	int ret;
- 
-+	dmi_id = dmi_first_match(ath11k_pm_quirk_table);
-+	if (dmi_id)
-+		ab->pm_policy = (kernel_ulong_t)dmi_id->driver_data;
-+	else
-+		ab->pm_policy = ATH11K_PM_DEFAULT;
-+
-+	ath11k_dbg(ab, ATH11K_DBG_BOOT, "pm policy %u\n", ab->pm_policy);
-+
- 	ret = ath11k_core_soc_create(ab);
- 	if (ret) {
- 		ath11k_err(ab, "failed to create soc core: %d\n", ret);
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index 555deafd8399a..812a174f74c0b 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -842,6 +842,11 @@ struct ath11k_msi_config {
- 	u16 hw_rev;
- };
- 
-+enum ath11k_pm_policy {
-+	ATH11K_PM_DEFAULT,
-+	ATH11K_PM_WOW,
-+};
-+
- /* Master structure to hold the hw data which may be used in core module */
- struct ath11k_base {
- 	enum ath11k_hw_rev hw_rev;
-@@ -994,6 +999,8 @@ struct ath11k_base {
- 	} testmode;
- #endif
- 
-+	enum ath11k_pm_policy pm_policy;
-+
- 	/* must be last */
- 	u8 drv_priv[] __aligned(sizeof(void *));
- };
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10509,6 +10509,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
++	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
 
 
 
