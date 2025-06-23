@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-158031-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEFCEAE56FB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E75D5AE571C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 628003AC9A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAFC61C23DB7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EA93225785;
-	Mon, 23 Jun 2025 22:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E532224B1F;
+	Mon, 23 Jun 2025 22:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t44AnT1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVzwOtZF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B1DA223DCC;
-	Mon, 23 Jun 2025 22:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD5C221543;
+	Mon, 23 Jun 2025 22:26:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717314; cv=none; b=oOO1O7NS0IdIxuHNJawpCnQ2KBDbbh0+EkqUGBSIDT2MtmLnDOVQMRlgmPmYQA6cyrBxZrFu3DtypI31U2u0HuhAq28TJgy+5YvJc2OVkHg5Vmg5XO4sFV/VkjaOJlLt3rC7aztY+NVZmok+SCCfss9kRGyHXjEH+KullIj+mAA=
+	t=1750717575; cv=none; b=rJ5jPKwojrmrS1fTJNfrsWnczmNn0GEkzxLzvNh50EQlnQ+ZTxIXRiqVhJBwAJQA4p93fL0eTlyG50nlukSGfHayJmfJuUnCh204diA41OZb9AjXPEYmrTxgj8YlJmAOatHTZ+QrGDAA4xOcomxbX4bEgwB6QMtF06UjlKhojKQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717314; c=relaxed/simple;
-	bh=VC50sow1A/Dk5d/H/YmvhLyVoEnodfFMeVF9SaIwdOI=;
+	s=arc-20240116; t=1750717575; c=relaxed/simple;
+	bh=mQN1tauPCmBlEbyjuCT5LcTa2vZscAwl12UJE6dDnYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYlQRnCYO8/20UPZb9nJzJj+B1B+W5fhF2dLUEbnhZEypxGkQ2ckRzJTVylH8yN020qP3XMkOv9qcOqE+HzWWHi67VQfr1gs59gZzg3d2jXt88KlAdeTG9A60Iq6y1FcPcAcwtYiH7kZ9FysvsLzhD5kCSQAk8l0wS+vq2ySzlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t44AnT1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B41E7C4CEEA;
-	Mon, 23 Jun 2025 22:21:53 +0000 (UTC)
+	 MIME-Version; b=lDIQBhXYaX2MNVLooS/UKBFg8e8CEXnUXxOfaqCHOmQ2bxqpl+nY1HQtolFsJ6Z3tDdXu2VkZn/O0yytALxH3r7fNN8LP4QaOdj9KfFVyyyUkVlcS8PGYjii2YZsXxizzgpcQrjAQlLRfzMvhWssTCVVE3GehwT07vG4E0KPH2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVzwOtZF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8856C4CEEA;
+	Mon, 23 Jun 2025 22:26:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717314;
-	bh=VC50sow1A/Dk5d/H/YmvhLyVoEnodfFMeVF9SaIwdOI=;
+	s=korg; t=1750717575;
+	bh=mQN1tauPCmBlEbyjuCT5LcTa2vZscAwl12UJE6dDnYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t44AnT1PZWpR7/gHLYZ0W2yKwfUwpkDH75HnL7eo8aIEdtM9bisy34kwicR55vgoM
-	 xBm9SQXTaXlUFn/l1MP1aqLtVIP1LpPUb6d0bmPMFM0WuGhHuzKrkqIKu66xHDG/Z0
-	 48ptqqucMCLYNETLW7SN77v5NiCfA+XtLtAxy7A4=
+	b=fVzwOtZF11jkFf/WqKSAggq+/KUN5RBUj1zky2dSPB1fIWA3Ri4A8PD1MhJW3lov3
+	 Vwz/Xg4NgUyxjjInTnl0KScERAAGEIe9bAdVriXR5H2vKSu671SJopObcN0ehKoepo
+	 NjPy4CqjXUnhNb12N+1tS2n9rk2FXeAaB4cG7pRc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 364/414] pldmfw: Select CRC32 when PLDMFW is selected
-Date: Mon, 23 Jun 2025 15:08:21 +0200
-Message-ID: <20250623130651.065125980@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 457/508] Input: sparcspkr - avoid unannotated fall-through
+Date: Mon, 23 Jun 2025 15:08:22 +0200
+Message-ID: <20250623130656.377718412@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
+commit 8b1d858cbd4e1800e9336404ba7892b5a721230d upstream.
 
-pldmfw calls crc32 code and depends on it being enabled, else
-there is a link error as follows. So PLDMFW should select CRC32.
+Fix follow warnings with clang-21i (and reformat for clarity):
+  drivers/input/misc/sparcspkr.c:78:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+     78 |                 case SND_TONE: break;
+        |                 ^
+  drivers/input/misc/sparcspkr.c:78:3: note: insert 'break;' to avoid fall-through
+     78 |                 case SND_TONE: break;
+        |                 ^
+        |                 break;
+  drivers/input/misc/sparcspkr.c:113:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+    113 |                 case SND_TONE: break;
+        |                 ^
+  drivers/input/misc/sparcspkr.c:113:3: note: insert 'break;' to avoid fall-through
+    113 |                 case SND_TONE: break;
+        |                 ^
+        |                 break;
+  2 warnings generated.
 
-  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
-  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
-
-This problem was introduced by commit b8265621f488 ("Add pldmfw library
-for PLDM firmware update").
-
-It manifests as of commit d69ea414c9b4 ("ice: implement device flash
-update via devlink").
-
-And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
-unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
-
-Found by chance while exercising builds based on tinyconfig.
-
-Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/6730E40353C76908+20250415052439.155051-1-wangyuli@uniontech.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/misc/sparcspkr.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index b38849af6f130..b893c9288c140 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -767,6 +767,7 @@ config GENERIC_LIB_DEVMEM_IS_ALLOWED
+--- a/drivers/input/misc/sparcspkr.c
++++ b/drivers/input/misc/sparcspkr.c
+@@ -74,9 +74,14 @@ static int bbc_spkr_event(struct input_d
+ 		return -1;
  
- config PLDMFW
- 	bool
-+	select CRC32
- 	default n
+ 	switch (code) {
+-		case SND_BELL: if (value) value = 1000;
+-		case SND_TONE: break;
+-		default: return -1;
++	case SND_BELL:
++		if (value)
++			value = 1000;
++		break;
++	case SND_TONE:
++		break;
++	default:
++		return -1;
+ 	}
  
- config ASN1_ENCODER
--- 
-2.39.5
-
+ 	if (value > 20 && value < 32767)
+@@ -112,9 +117,14 @@ static int grover_spkr_event(struct inpu
+ 		return -1;
+ 
+ 	switch (code) {
+-		case SND_BELL: if (value) value = 1000;
+-		case SND_TONE: break;
+-		default: return -1;
++	case SND_BELL:
++		if (value)
++			value = 1000;
++		break;
++	case SND_TONE:
++		break;
++	default:
++		return -1;
+ 	}
+ 
+ 	if (value > 20 && value < 32767)
 
 
 
