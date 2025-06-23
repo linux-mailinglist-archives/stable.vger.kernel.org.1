@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E30F5AE53F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16AB1AE51EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4279D3A27E6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A47354A4999
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AD30221DA8;
-	Mon, 23 Jun 2025 21:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1C82222CA;
+	Mon, 23 Jun 2025 21:38:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZK8liZsD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOZBl0Mm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465CC3FB1B;
-	Mon, 23 Jun 2025 21:57:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB7E221734;
+	Mon, 23 Jun 2025 21:38:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715856; cv=none; b=V9eqPZtByeqiMnr7klER3NYsaEuZvLmdZDSeWvUbDpWsYbkWUTJH9A+lPYM7ma1qI/PCYjlbNT0biPQe8s2fCEyezeXei83iiU69diP8QkGSPDtVRdFNvvcuGySf6jXBEW/9IW8YAMeKf9gZzY73Qx6e8fIyFHBmPSLlUnOcprY=
+	t=1750714731; cv=none; b=DL5IcgBlMTrY7Eu1KZBpbao1P0RZpAsYlOivkNux7cekR90rhzYou2/sb0uxM3NSXJH8J5r2dYC7gTi/5bFJzDTEP4B18x/tGhk1ylJuYwzik1GsVmZL8Wzwcp5+QQ75O2neKsewW4tq5s6VFNFNg8zUZIq04/Ss/iM3f0t8SaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715856; c=relaxed/simple;
-	bh=s2bhXbp9T4zIubjWFg99eFT1+MGX4O8bEkoiLYXwqK0=;
+	s=arc-20240116; t=1750714731; c=relaxed/simple;
+	bh=YHwyWGE6AYUwEwpIE5mM6RU05a6hUWmLC1dBFqIDopw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IAoSUpadLXLQvOAlwCjrk3SxJJm+J5vW0Vt+DXagLetAHw9wAnOvPsUjFQYHgykLlmUUJBeZ5Ss0Z4fieYUXTvVBrb3c1vVqOfbZ/rPqrR50hnnKdnUvlN7IylNOZMTNFT7TcnxgrFMiKRXqKPQwRJy6CouFzyP0HE61ZcF2Ufw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZK8liZsD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1AFC4CEEA;
-	Mon, 23 Jun 2025 21:57:35 +0000 (UTC)
+	 MIME-Version; b=cDBO0O/OwZ9uHqVWyuumL2/alSK9mcx6ZJxaFX1It0Z5fb6LWjhTAVdx2yHeXVMrJoyxnOGvnLB/qNuROsfpnXwcMf77TpczacnG1hx8mORFABN1cEXVokabp1nI5V4ebWa3p+ZIFrXHYKuQTXHo5qNFKqGN4ja5OMpZYpFil9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOZBl0Mm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84CE8C4CEEA;
+	Mon, 23 Jun 2025 21:38:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715856;
-	bh=s2bhXbp9T4zIubjWFg99eFT1+MGX4O8bEkoiLYXwqK0=;
+	s=korg; t=1750714730;
+	bh=YHwyWGE6AYUwEwpIE5mM6RU05a6hUWmLC1dBFqIDopw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZK8liZsDdmbmq3d5h1I+lBHtDq3vWACMLaqxHwHzSD5axG5HskzJrBQvNi7JQD8wC
-	 sPcg3SAGXLe72GMJgmN2aSpvFXjLHitEwUZOAl/V1c5vWu0h3iLnerkjk2UznGwPsT
-	 BMDuqf6TIIlMZfKC80cUYAqaELnuDNmnReyJfmeQ=
+	b=jOZBl0Mmmu/VFvYYaki0nfI62BVxhjhKAeqzzMkD20tw42gGbZHNwKm6UmYriiOYS
+	 QuXqVwTUGX1jdqsBg2ne3Rti1DuQjZWuTIDmqaHnVAWiKXv/7NkmV8edqNzHGY9aDM
+	 9P0a7gSgBPYbIbPcZdfTA07tS9A1bXNFxYaNtDuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Daeho Jeong <daehojeong@google.com>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 233/414] net: mlx4: add SOF_TIMESTAMPING_TX_SOFTWARE flag when getting ts info
+Subject: [PATCH 6.15 412/592] f2fs: fix to set atomic write status more clear
 Date: Mon, 23 Jun 2025 15:06:10 +0200
-Message-ID: <20250623130647.864332596@linuxfoundation.org>
+Message-ID: <20250623130710.235647453@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit b86bcfee30576b752302c55693fff97242b35dfd ]
+[ Upstream commit db03c20c0850dc8d2bcabfa54b9438f7d666c863 ]
 
-As mlx4 has implemented skb_tx_timestamp() in mlx4_en_xmit(), the
-SOFTWARE flag is surely needed when users are trying to get timestamp
-information.
+1. After we start atomic write in a database file, before committing
+all data, we'd better not set inode w/ vfs dirty status to avoid
+redundant updates, instead, we only set inode w/ atomic dirty status.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250510093442.79711-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+2. After we commit all data, before committing metadata, we need to
+clear atomic dirty status, and set vfs dirty status to allow vfs flush
+dirty inode.
+
+Cc: Daeho Jeong <daehojeong@google.com>
+Reported-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Reviewed-by: Daeho Jeong <daehojeong@google.com>
+Reviewed-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/inode.c   | 4 +++-
+ fs/f2fs/segment.c | 6 ++++++
+ fs/f2fs/super.c   | 4 +++-
+ 3 files changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-index cd17a3f4faf83..a68cd3f0304c6 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-@@ -1897,6 +1897,7 @@ static int mlx4_en_get_ts_info(struct net_device *dev,
- 	if (mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_TS) {
- 		info->so_timestamping |=
- 			SOF_TIMESTAMPING_TX_HARDWARE |
-+			SOF_TIMESTAMPING_TX_SOFTWARE |
- 			SOF_TIMESTAMPING_RX_HARDWARE |
- 			SOF_TIMESTAMPING_RAW_HARDWARE;
+diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
+index 5c8634eaef7be..f5991e8751b9b 100644
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -34,7 +34,9 @@ void f2fs_mark_inode_dirty_sync(struct inode *inode, bool sync)
+ 	if (f2fs_inode_dirtied(inode, sync))
+ 		return;
  
+-	if (f2fs_is_atomic_file(inode))
++	/* only atomic file w/ FI_ATOMIC_COMMITTED can be set vfs dirty */
++	if (f2fs_is_atomic_file(inode) &&
++			!is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
+ 		return;
+ 
+ 	mark_inode_dirty_sync(inode);
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index c5d29c58f3d3e..876e97ec5f570 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -376,7 +376,13 @@ static int __f2fs_commit_atomic_write(struct inode *inode)
+ 	} else {
+ 		sbi->committed_atomic_block += fi->atomic_write_cnt;
+ 		set_inode_flag(inode, FI_ATOMIC_COMMITTED);
++
++		/*
++		 * inode may has no FI_ATOMIC_DIRTIED flag due to no write
++		 * before commit.
++		 */
+ 		if (is_inode_flag_set(inode, FI_ATOMIC_DIRTIED)) {
++			/* clear atomic dirty status and set vfs dirty status */
+ 			clear_inode_flag(inode, FI_ATOMIC_DIRTIED);
+ 			f2fs_mark_inode_dirty_sync(inode, true);
+ 		}
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index ee039bf02c148..bc510c91f3eba 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1531,7 +1531,9 @@ int f2fs_inode_dirtied(struct inode *inode, bool sync)
+ 	}
+ 	spin_unlock(&sbi->inode_lock[DIRTY_META]);
+ 
+-	if (!ret && f2fs_is_atomic_file(inode))
++	/* if atomic write is not committed, set inode w/ atomic dirty */
++	if (!ret && f2fs_is_atomic_file(inode) &&
++			!is_inode_flag_set(inode, FI_ATOMIC_COMMITTED))
+ 		set_inode_flag(inode, FI_ATOMIC_DIRTIED);
+ 
+ 	return ret;
 -- 
 2.39.5
 
