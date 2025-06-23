@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157363-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 792AFAE51F2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB5FFAE53AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F0C27A2C3E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D88C1B677C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D2EF222581;
-	Mon, 23 Jun 2025 21:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95F4322258C;
+	Mon, 23 Jun 2025 21:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ediI2v8d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S5tnZtf4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE90A21D3DD;
-	Mon, 23 Jun 2025 21:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5306E1E22E6;
+	Mon, 23 Jun 2025 21:54:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714733; cv=none; b=oVtBP/1555adNIZ1XgsPJdGnDllvrNSJHan77dc2KaiFYcTU3nMw8hb68R7jOk6MWKiodv/RlIGdqjjrpT/m6BHXZkPTAHmkdMd17HNjZ7ZnJDjBjVX6AZRm9m85CImU7mLbBMxi8ri7XY//LkxYW5ldPcTD+O0o0hzCfD2g46Y=
+	t=1750715685; cv=none; b=YLDnfTO3v/ZqqjdvrEFhSLW+zJmeArqbiWjWrKW0iR3vl+rNvLCvIL4FcbXKTvZNABszuBhn6z03fvEwrvUewzpB6zXmG+jvHZAzV7BlFzCnv+D119GR8RUzYgjfkIw/4Jtkuib77+mNPSbh0ZGngPAA8CMw2C5gJwNzolDThgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714733; c=relaxed/simple;
-	bh=rhLXm+WWBbOSlKUHJTnTh7O0nX0rqe2BsdhbciaT5kc=;
+	s=arc-20240116; t=1750715685; c=relaxed/simple;
+	bh=4+rCPzgeO4qcYZQmquDI9VH0PEmU0kHjb8FDhFJsiQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IxTZlmsdT5lmW0Ij9OER4vC2QML+t8G1nvekD7FiM8RBkN6wWixyFLdIfKgwjvtqj7kTnTBGNZYbZlWaDzpda8vn1Vxp18z2v46OfR52JpnQmYe+1i6TgsYvsXJYrLNhaygzob9o3QLor5LM1t2Qn+bvdwyxxhfmhJzfTnmGGx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ediI2v8d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3170C4CEEA;
-	Mon, 23 Jun 2025 21:38:52 +0000 (UTC)
+	 MIME-Version; b=Ep5PXicJzXGXCWtz9JzuQdq/cemlCsd9cbe20owFgwWsSIuRsS1cCJwzaI/G9wdbi0D5CL9lV827StvsVxNs7KeLOgBqeK433m8OZCtPz+mrECPylGNpq6tahIanI+qEmykFGDG33R7ByHEs21ty17xJHYcKspOLcexCOFi3j0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S5tnZtf4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0B69C4CEEA;
+	Mon, 23 Jun 2025 21:54:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714733;
-	bh=rhLXm+WWBbOSlKUHJTnTh7O0nX0rqe2BsdhbciaT5kc=;
+	s=korg; t=1750715685;
+	bh=4+rCPzgeO4qcYZQmquDI9VH0PEmU0kHjb8FDhFJsiQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ediI2v8dS3+x4kwxeAepcImE5M4awxrdEWp+DvfvMcOl9gW7JrGZoxz3v3fOkG4tJ
-	 v/9SkXYzTmE7ImMM4lIAlX06ZX3rgRcv10tWNgYNwEt0Kg3mdTGTANSYg28OqafgnN
-	 Ji5V+rg8M2XV37unH/OFf2z+ul0UqqXbN1/CRb4Q=
+	b=S5tnZtf4NLmKf1GIxBnK84+5fdCKAO+fYiRMqLaWe1N4Ck6/+zMqWVOEGxOMYQZMf
+	 WZFceJRhwK5hHbtTjFbrFWly/kELJMIq0eV22+qwQ6BcS+LmT8yqyqakeABiqPZmHc
+	 jnpDwc6xQSmrC+id/4xw24Ke381u3T+ctaENE8JI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/290] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
+Subject: [PATCH 5.15 272/411] drm/amdgpu/gfx6: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:06:56 +0200
-Message-ID: <20250623130631.554617445@linuxfoundation.org>
+Message-ID: <20250623130640.502276211@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 1c0829788a6e6e165846b9bedd0b908ef16260b6 ]
+[ Upstream commit 8307ebc15c1ea98a8a0b7837af1faa6c01514577 ]
 
-The statistics are incremented with raw_cpu_inc() assuming it always
-happens with bottom half disabled. Without per-CPU locking in
-local_bh_disable() on PREEMPT_RT this is no longer true.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-Use this_cpu_inc() on PREEMPT_RT for the increment to not worry about
-preemption.
-
-Cc: David Ahern <dsahern@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250512092736.229935-4-bigeasy@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/route.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index 97dc30a03dbf2..8ee1ad2d8c13f 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -192,7 +192,11 @@ const __u8 ip_tos2prio[16] = {
- EXPORT_SYMBOL(ip_tos2prio);
- 
- static DEFINE_PER_CPU(struct rt_cache_stat, rt_cache_stat);
-+#ifndef CONFIG_PREEMPT_RT
- #define RT_CACHE_STAT_INC(field) raw_cpu_inc(rt_cache_stat.field)
-+#else
-+#define RT_CACHE_STAT_INC(field) this_cpu_inc(rt_cache_stat.field)
-+#endif
- 
- #ifdef CONFIG_PROC_FS
- static void *rt_cache_seq_start(struct seq_file *seq, loff_t *pos)
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+index 6a8dadea40f92..79074d22959b9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v6_0.c
+@@ -2897,8 +2897,6 @@ static void gfx_v6_0_get_csb_buffer(struct amdgpu_device *adev,
+ 				buffer[count++] = cpu_to_le32(ext->reg_index - 0xa000);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.39.5
 
