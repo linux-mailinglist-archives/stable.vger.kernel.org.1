@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157414-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9479EAE5247
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C535DAE53D7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B30314408B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4306A7A4DBF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CCB42222C2;
-	Mon, 23 Jun 2025 21:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21612222CC;
+	Mon, 23 Jun 2025 21:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Th01mgP9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fxC6OIf0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4234315A;
-	Mon, 23 Jun 2025 21:42:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601511AD3FA;
+	Mon, 23 Jun 2025 21:56:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714929; cv=none; b=NrcXxOZ4Ipk4R26jMIPXwekbUN0+/MbVOV1SlokK8xnlXSNDHPvn8dVeZFg7luHIkt5rgsFTc2SzM4sMThUfL9Q/Bazg7UgmPB1J2wNz9IKZV/Ys4cBeQ6Bp60Ziu90iQe/WB9acKTplqYgMajs84VYcc1lc4joWdisfEbJLo3s=
+	t=1750715807; cv=none; b=fDQB/hUHTdrVoiL8WZp9dctwt59azTD2Wp7LZWxxoa1XB86NyyQ9G4hzAUXHMybQQ+ZbmT9uFpQlWqQVwwnlAM7k3PlqWbQELRXh2ZAVKENHO4x9f74fcs4nDabYo4HIkTdQgLj1Df38O9NYxXjazRC72TqJ3SsUg5ilQ7p6gIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714929; c=relaxed/simple;
-	bh=PLwdwgWSE4ctemOaWl9CO3KzkLbNOB9DA4fgl/ialWM=;
+	s=arc-20240116; t=1750715807; c=relaxed/simple;
+	bh=DpTXsGOY8YcZoPv+/aD4FF8I9T/638ihWlTQdmpITdE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFeHSFyU3d2bM/tn3yShSsNnkr1oN4otQ+GbYXuSlzfN8/jw6gdsGn+zwaUNLJEa+9rV+pc1GGcJyVSn/tCM6YSmCHctB0qmPMcwDhOBWGX06uwMCoRScHrLn2S94u8fC8YA6dsqWoQyc1Pc+G5oRqd2hcUYDxkRSzs8+3ksGEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Th01mgP9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BF3FC4CEEA;
-	Mon, 23 Jun 2025 21:42:08 +0000 (UTC)
+	 MIME-Version; b=jXAnqcBHNg2SP4SH4vH3btstNZaw6TI2P0usCV6OHJWjBncFkwvkhA/akpzreilz4lDAnIi9wdFunkJX4S51u08xwKFNrdMKLQgcis+Mme3RGeyXYZCPGR/5y8+i9gqbdAgVvhHl+awEkzfG0zdBUsDeKEvPoQjHyRoxxqnsZ4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fxC6OIf0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDFAAC4CEEA;
+	Mon, 23 Jun 2025 21:56:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714928;
-	bh=PLwdwgWSE4ctemOaWl9CO3KzkLbNOB9DA4fgl/ialWM=;
+	s=korg; t=1750715807;
+	bh=DpTXsGOY8YcZoPv+/aD4FF8I9T/638ihWlTQdmpITdE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Th01mgP93qhH0IeDsSo55MKuRD5v2LFQpAPURldLhzjBz0A03yqLhFxXXstsZxs8n
-	 9NJ72+1IxraDxKKSNocmx7HbaBfVzZ50gmPPAByBwHFwyZjaVfBcQjA0cgIZ3HdYTd
-	 iiaz81kQcGGDGdAXq0EsCT1WZNcujJgNL8U+gixg=
+	b=fxC6OIf0phDrMO/8xOihUUjozHbOY9+6DcyS6ctWrw3XyttdPrtDsOd4GXaK6Bxlt
+	 DDlNukZr07xYfNrn8c+yUYajHZNkl3czi66u+yJe/js2vxX0fIIX7dNurJXK8P7t9d
+	 /QM2yrtS4ueeiavD7RlCTlOrmHMmIguydwym7zac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>,
-	Joerg Roedel <jroedel@suse.de>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 169/290] iommu/amd: Ensure GA log notifier callbacks finish running before module unload
+Subject: [PATCH 5.15 286/411] drm/amdgpu/gfx7: fix CSIB handling
 Date: Mon, 23 Jun 2025 15:07:10 +0200
-Message-ID: <20250623130631.974962608@linuxfoundation.org>
+Message-ID: <20250623130640.847515289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit 94c721ea03c7078163f41dbaa101ac721ddac329 ]
+[ Upstream commit be7652c23d833d1ab2c67b16e173b1a4e69d1ae6 ]
 
-Synchronize RCU when unregistering KVM's GA log notifier to ensure all
-in-flight interrupt handlers complete before KVM-the module is unloaded.
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Link: https://lore.kernel.org/r/20250315031048.2374109-1-seanjc@google.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/iommu/amd/iommu.c b/drivers/iommu/amd/iommu.c
-index 83c5d786686d0..a5d6d786dba52 100644
---- a/drivers/iommu/amd/iommu.c
-+++ b/drivers/iommu/amd/iommu.c
-@@ -780,6 +780,14 @@ int amd_iommu_register_ga_log_notifier(int (*notifier)(u32))
- {
- 	iommu_ga_log_notifier = notifier;
- 
-+	/*
-+	 * Ensure all in-flight IRQ handlers run to completion before returning
-+	 * to the caller, e.g. to ensure module code isn't unloaded while it's
-+	 * being executed in the IRQ handler.
-+	 */
-+	if (!notifier)
-+		synchronize_rcu();
-+
- 	return 0;
- }
- EXPORT_SYMBOL(amd_iommu_register_ga_log_notifier);
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
+index 37b4a3db63602..b6e5599c8b3cd 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v7_0.c
+@@ -4005,8 +4005,6 @@ static void gfx_v7_0_get_csb_buffer(struct amdgpu_device *adev,
+ 				buffer[count++] = cpu_to_le32(ext->reg_index - PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.39.5
 
