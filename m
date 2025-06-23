@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-157685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC97DAE551E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3798DAE5607
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D31A7446CD9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 986E116993A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAA19221DAE;
-	Mon, 23 Jun 2025 22:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F21A226533;
+	Mon, 23 Jun 2025 22:15:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCt1SFRp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AXIeToJ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96190218580;
-	Mon, 23 Jun 2025 22:07:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF719223DF0;
+	Mon, 23 Jun 2025 22:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716473; cv=none; b=HXQ+sjZOAlTF4qLUDLrlxE9WD3Iau9Ww2w+GiQ99bp6Lhm9pS6ByVkvw7aWK8pcxiXnNIjWcUpsWSq4+B3/ymw1eN4RRM8CULTepS1RNvAKmw6h+P7OCJLkLgvSP8mcUG4BbiAZmbEh8ulC5CnmeIDXcIvPU7KtriWnDtARE/2M=
+	t=1750716930; cv=none; b=YxtY0Mp96pvLIhteK3+klxqmlmbQWz2extXcd/wQRdyjXVV2z2B4ov5xaIMEO1MRFh4q6ZxVqFhBD8HtMuGhaGaSl8a4SRF0mEgehK0aVWATM/CFml4T19kcfEDJrdK6s6RwcJcJTqk9CZ9M01zanwJa17gdPKqqTKgPwgTOj+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716473; c=relaxed/simple;
-	bh=kl55pLFmAbHK5F4tWdhEZ/aQfrC7Dky2BfD3e1yLaUg=;
+	s=arc-20240116; t=1750716930; c=relaxed/simple;
+	bh=u+2jIa8uslOwvNX+lzfmXfscJiQ0eWtOKtUMlz7KMio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ana4n+eEdaaDl0o0TlCyEN8R2ZeCsinNP/XQrfG/oLQB1jSPfHkMDSXc8Kffk12vumwS/V83Ej4zCgfg7HP1W+9GjG52X83G4+FXcP6emdTBRnlHfFJbWD5fzf/jKfN3s7W2mVQJE1RYdaW2dq5Ka8Drx3jGubCRKvngS5KPO6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCt1SFRp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E575C4CEEA;
-	Mon, 23 Jun 2025 22:07:53 +0000 (UTC)
+	 MIME-Version; b=q2CL/7mNC1pCVQ335e9+JY4J3fTMEJmu/+zUrTfTNuunyd1BsLzVzVx2aswkNKQEb6AtxaXlxWWSmi7xAXXTX+lllSVi65Rwh5EOK5wl/UimsyvXL3h0qiv42N9JMlSe3I3vG0uCG964JSMxXtTR5eQ+LikuRDwDvQ3HrZR9J+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AXIeToJ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 693F2C4CEEA;
+	Mon, 23 Jun 2025 22:15:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716473;
-	bh=kl55pLFmAbHK5F4tWdhEZ/aQfrC7Dky2BfD3e1yLaUg=;
+	s=korg; t=1750716930;
+	bh=u+2jIa8uslOwvNX+lzfmXfscJiQ0eWtOKtUMlz7KMio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCt1SFRpU2qwejroc7yoH8xMJ/aHqXXCE3rfC+tBcSyHO23IHsp7gW66p7WwGlvlj
-	 LPQVDE2XTvt3TrIJjqXz7t5rezVh5labOjGF2fIIgB+WPhvB8BNlb97swr4C5OuaZO
-	 7+RWFTD5wegcq0+L/YXQznfDMha0Q4c+BHFGJ7x0=
+	b=AXIeToJ6daWH6hEneMyxfUeds2mEUrcxsSbkAYeoO7+LCTWRNOREzh8gDwtga1Gqi
+	 zEltJec74XhZw2XfnTgxHACrvEaXBd7ldrWLLk42eotgRqpw+a/Zv1c7sYxgZb8Rf5
+	 gqEVF/vXkLCha1qHXbYg7HdI8Vaucil0HF3WWoqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muna Sinada <muna.sinada@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 253/414] wifi: mac80211: VLAN traffic in multicast path
-Date: Mon, 23 Jun 2025 15:06:30 +0200
-Message-ID: <20250623130648.371291478@linuxfoundation.org>
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 346/508] parisc/unaligned: Fix hex output to show 8 hex chars
+Date: Mon, 23 Jun 2025 15:06:31 +0200
+Message-ID: <20250623130653.860949662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muna Sinada <muna.sinada@oss.qualcomm.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 1a4a6a22552ca9d723f28a1fe35eab1b9b3d8b33 ]
+commit 213205889d5ffc19cb8df06aa6778b2d4724c887 upstream.
 
-Currently for MLO, sending out multicast frames on each link is handled by
-mac80211 only when IEEE80211_HW_MLO_MCAST_MULTI_LINK_TX flag is not set.
+Change back printk format to 0x%08lx instead of %#08lx, since the latter
+does not seem to reliably format the value to 8 hex chars.
 
-Dynamic VLAN multicast traffic utilizes software encryption.
-Due to this, mac80211 should handle transmitting multicast frames on
-all links for multicast VLAN traffic.
-
-Signed-off-by: Muna Sinada <muna.sinada@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250325213125.1509362-4-muna.sinada@oss.qualcomm.com
-[remove unnecessary parentheses]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.18+
+Fixes: e5e9e7f222e5b ("parisc/unaligned: Enhance user-space visible output")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/tx.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/parisc/kernel/unaligned.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index 0ff8b56f58070..ef16ff149730a 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -4523,8 +4523,10 @@ netdev_tx_t ieee80211_subif_start_xmit(struct sk_buff *skb,
- 						     IEEE80211_TX_CTRL_MLO_LINK_UNSPEC,
- 						     NULL);
- 	} else if (ieee80211_vif_is_mld(&sdata->vif) &&
--		   sdata->vif.type == NL80211_IFTYPE_AP &&
--		   !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) {
-+		   ((sdata->vif.type == NL80211_IFTYPE_AP &&
-+		     !ieee80211_hw_check(&sdata->local->hw, MLO_MCAST_MULTI_LINK_TX)) ||
-+		    (sdata->vif.type == NL80211_IFTYPE_AP_VLAN &&
-+		     !sdata->wdev.use_4addr))) {
- 		ieee80211_mlo_multicast_tx(dev, skb);
- 	} else {
- normal:
--- 
-2.39.5
-
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -22,7 +22,7 @@
+ #define DPRINTF(fmt, args...)
+ #endif
+ 
+-#define RFMT "%#08lx"
++#define RFMT "0x%08lx"
+ 
+ /* 1111 1100 0000 0000 0001 0011 1100 0000 */
+ #define OPCODE1(a,b,c)	((a)<<26|(b)<<12|(c)<<6) 
 
 
 
