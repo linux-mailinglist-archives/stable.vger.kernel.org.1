@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156487-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 334F5AE4FFF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E38AE4EA7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BD6F7ABFD6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A78617C3E4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00A511EDA0F;
-	Mon, 23 Jun 2025 21:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45AC72153C1;
+	Mon, 23 Jun 2025 21:07:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhKCnZSl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouWUSgqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23EA4C62;
-	Mon, 23 Jun 2025 21:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E51E71ACEDA;
+	Mon, 23 Jun 2025 21:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713533; cv=none; b=YHiCez+p1KteR8PMk5UDUFND7pUZs1WKBPpYj1NH3OW+86+cH/gLd6tkSnZCIsu+WGBwdjbeqvjt7PsjDeuVYu3e7KEcaRn3fiKmPV4w2GuqERGKX8qu2Iyb3n5q/hr7Uvj8dYKYdmsSL7WXngB55LERILCn1QIKUc3Ubg0PZPs=
+	t=1750712874; cv=none; b=UZraIcf3pxE/I8fYMoZl0tUsyjcxdJLz2Jz65nv0HTDfmfS37dndHIPK1ym7h1QSdov3ZdTJEtmglRcGkoUgMsmhHnMnXAhbqJStkYCd/hIbPQ9mxVS/TfDt81RnYdoPOEMnSdiyOfRQHhlLO7eU7QO4MrZx1tluQmiJEB8SU9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713533; c=relaxed/simple;
-	bh=M2khXdaYOcGTLUyREynsLh+eIwXmNbZFOSlP+Knii/w=;
+	s=arc-20240116; t=1750712874; c=relaxed/simple;
+	bh=xDtnv/gZqkWAmSXqIxfvmEZE0yqmbaVLW8rOpJ+9cKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwB69TQqdgjBceEk95I89I9vNXcCBd3lFzOamO4WGrO9SF+BtgKbfyXG7Iddaxuv6pe3hSjFEYUS/GAqVpAOOD3DAyRXSuU11QMygp1/P49WdDLf2jW4rQm2n1brvHw9osefS17TWyI571jqqPixv06aZKHPhn9E2DRh1qCVvUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhKCnZSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4926EC4CEEA;
-	Mon, 23 Jun 2025 21:18:53 +0000 (UTC)
+	 MIME-Version; b=A8HNm6k6ftQg4vxy04Lk+jZJhLJz54a3whYmC1/7b9vZLQcimuELCgIxkHhjnEs7jbT769EyMXC73GbAsgleQQLG1Xa1ZOoQeh+/HCDBXqqt2jbJqaQdNuJuKxPDwoJJ1V1vF+q8z9u76cPZQ8xqT7tLc8xyfAjg8/PcQgFxZao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouWUSgqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E0BFC4CEEA;
+	Mon, 23 Jun 2025 21:07:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713533;
-	bh=M2khXdaYOcGTLUyREynsLh+eIwXmNbZFOSlP+Knii/w=;
+	s=korg; t=1750712873;
+	bh=xDtnv/gZqkWAmSXqIxfvmEZE0yqmbaVLW8rOpJ+9cKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhKCnZSlMaPgDwez2com8PcV5ECg0BoQe3jdqIa0idHd89dTD0y1HH64oyZrREcr7
-	 sDDY/EYpZ7c5Adi1kU0bohEbj7whzM1S9wzB/pRVe/XtP/i5VZ38X2xz/Kf1LKN7n3
-	 fepR/ntSBIqs9bjo0OTxNJs2zKT7QnZIczeTYW14=
+	b=ouWUSgqW914Cwq4Qjkgdll3mgLV8V2tBdP4MfQpA/KGQ5ggKALtXEyvqHiHRJbDJ+
+	 9PPtGGyyG1QV+zwqy6sVkDpF45hYUGH0urWjvAP/IBzU/OqAbSwUbVXllJjYVQo8eA
+	 qJ2V+ZqHfz5rJmCt3g05GAUdCOjFOYGThTztD9iA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/508] ARM: dts: at91: at91sam9263: fix NAND chip selects
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.12 016/414] s390/pci: Prevent self deletion in disable_slot()
 Date: Mon, 23 Jun 2025 15:02:33 +0200
-Message-ID: <20250623130647.940499032@linuxfoundation.org>
+Message-ID: <20250623130642.433721986@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit c72ede1c24be689733bcd2233a3a56f2478429c8 ]
+commit 47c397844869ad0e6738afb5879c7492f4691122 upstream.
 
-NAND did not work on my USB-A9263. I discovered that the offending
-commit converted the PIO bank for chip selects wrongly, so all A9263
-boards need to be fixed.
+As disable_slot() takes a struct zpci_dev from the Configured to the
+Standby state. In Standby there is still a hotplug slot so this is not
+usually a case of sysfs self deletion. This is important because self
+deletion gets very hairy in terms of locking (see for example
+recover_store() in arch/s390/pci/pci_sysfs.c).
 
-Fixes: 1004a2977bdc ("ARM: dts: at91: Switch to the new NAND bindings")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Reviewed-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20250402210446.5972-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Because the pci_dev_put() is not within the critical section of the
+zdev->state_lock however, disable_slot() can turn into a case of self
+deletion if zPCI device event handling slips between the mutex_unlock()
+and the pci_dev_put(). If the latter is the last put and
+zpci_release_device() is called this then tries to remove the hotplug
+slot via zpci_exit_slot() which will try to remove the hotplug slot
+directory the disable_slot() is part of i.e. self deletion.
+
+Prevent this by widening the zdev->state_lock critical section to
+include the pci_dev_put() which is then guaranteed to happen with the
+struct zpci_dev still in Standby state ensuring it will not lead to
+a zpci_release_device() call as at least the zPCI event handling code
+still holds a reference.
+
+Cc: stable@vger.kernel.org
+Fixes: a46044a92add ("s390/pci: fix zpci_zdev_put() on reserve")
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/at91sam9263ek.dts | 2 +-
- arch/arm/boot/dts/tny_a9263.dts     | 2 +-
- arch/arm/boot/dts/usb_a9263.dts     | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/pci/hotplug/s390_pci_hpc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/at91sam9263ek.dts b/arch/arm/boot/dts/at91sam9263ek.dts
-index ce8baff6a9f4e..e42e1a75a715d 100644
---- a/arch/arm/boot/dts/at91sam9263ek.dts
-+++ b/arch/arm/boot/dts/at91sam9263ek.dts
-@@ -152,7 +152,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/tny_a9263.dts b/arch/arm/boot/dts/tny_a9263.dts
-index 62b7d9f9a926c..c8b6318aaa838 100644
---- a/arch/arm/boot/dts/tny_a9263.dts
-+++ b/arch/arm/boot/dts/tny_a9263.dts
-@@ -64,7 +64,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index c9d0058e90813..83d0b98dd287b 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -84,7 +84,7 @@
- 				nand@3 {
- 					reg = <0x3 0x0 0x800000>;
- 					rb-gpios = <&pioA 22 GPIO_ACTIVE_HIGH>;
--					cs-gpios = <&pioA 15 GPIO_ACTIVE_HIGH>;
-+					cs-gpios = <&pioD 15 GPIO_ACTIVE_HIGH>;
- 					nand-bus-width = <8>;
- 					nand-ecc-mode = "soft";
- 					nand-on-flash-bbt;
--- 
-2.39.5
-
+--- a/drivers/pci/hotplug/s390_pci_hpc.c
++++ b/drivers/pci/hotplug/s390_pci_hpc.c
+@@ -65,9 +65,9 @@ static int disable_slot(struct hotplug_s
+ 
+ 	rc = zpci_deconfigure_device(zdev);
+ out:
+-	mutex_unlock(&zdev->state_lock);
+ 	if (pdev)
+ 		pci_dev_put(pdev);
++	mutex_unlock(&zdev->state_lock);
+ 	return rc;
+ }
+ 
 
 
 
