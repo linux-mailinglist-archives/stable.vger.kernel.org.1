@@ -1,64 +1,58 @@
-Return-Path: <stable+bounces-156271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05AA6AE4EE0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59916AE5197
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1D9473BE9A3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0B1601B62B1B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CA2721CA07;
-	Mon, 23 Jun 2025 21:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60967221734;
+	Mon, 23 Jun 2025 21:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pDD+GFyI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEU2vgKY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A36570838;
-	Mon, 23 Jun 2025 21:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AF0E1EE7C6;
+	Mon, 23 Jun 2025 21:35:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713005; cv=none; b=FpcOAdk9Eyy7UwAtlyx6nHzT7bnxj34LjhCAbzvZlJJlWabewm5eLk/U08Xxf9TCA58rvrjS4Toa6QTSq/nLWtPwzQJEhg1Shx0OjcEKg4QhHBaE8yPNA0w34jWoKXueX3yv+V1FrjHbnF8almcR//l/xgJLUIAKKXe1Fy3Jl9Q=
+	t=1750714512; cv=none; b=tUQqOkgskN5OWBnGYwrtGtesmHJnbKkM4SMHk/N0duqWS0+be0AvlUWZvpMtcR8z/xd+driP331vF8/PR8bxyFn4nfJbGDRQuFfAIYp1dalBWGvoUKBofAD0z1O5Tn1mCp8Rhv38DnOwA2TONJPiB0X5RrhQP3ykLYIdPOagS3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713005; c=relaxed/simple;
-	bh=NlJWI5s7kNfxQcrVFPfLwbwJU/JAAsSLI1ewjvmHfGY=;
+	s=arc-20240116; t=1750714512; c=relaxed/simple;
+	bh=LC67OP72wzebpQ0+IgzWeHCKzhmVbm2CbPAnxW0b1x0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jnBGrDTeB+P/BaZdWsG4XsDy9OTEnNZszhvLz+59Q4aOhQI03FLYbxKJPE6Om9d3ypShcmGD6DU70JVBmBROsUZBfqMJxHOu3Zk8Uxk+CHcNNl24V6wbu5BXrdP+J9tcqYGl5i/HSM/2MYa/LhvvqGYichdFlrrGeG4Z9jrJWp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pDD+GFyI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DF7C4CEEA;
-	Mon, 23 Jun 2025 21:10:04 +0000 (UTC)
+	 MIME-Version; b=qdvbp1A7z19He+3CIIke9hyGjb319I/o0fxDpRgmBQPBb9Je9snRdfv6iQQA181L/LiKSnzNFqN2VZ8LB9U65BCELWe1BhHrBMkW0dESXwl7asWfgj5zPunNX8Wws85Ylq72cEI0Kcsqexy9mmOfelEKkSQxUC3oII/lsT2vagI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEU2vgKY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B28C4CEEA;
+	Mon, 23 Jun 2025 21:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713004;
-	bh=NlJWI5s7kNfxQcrVFPfLwbwJU/JAAsSLI1ewjvmHfGY=;
+	s=korg; t=1750714512;
+	bh=LC67OP72wzebpQ0+IgzWeHCKzhmVbm2CbPAnxW0b1x0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pDD+GFyIYFk4vBfay4afZ3Y80aIcDYjaSY2D6VOAuGf8LXZxixM9NbZtwA408sHsT
-	 OZq/1LGr8wDEgWDEdyTztAIJJIrCb//M9gmEvJwgnoHlBhkr0noShVxqaIwvxCYQec
-	 UAOy7H8JbaXi+l10BwvGV70Ro0BEPSPopfBRx/GU=
+	b=dEU2vgKYFIuLvnXSqHyvLnlvtMIdLVwWtkq1AyDpWoPnPWUQpTXNqNth5iay8bfJW
+	 J87lY06ggR4y288yn4KUv5sRpGi46WTHpFdgAzBmDYsmt8hkqcsroL1sGCDfuss3hh
+	 bluBtyfnZb4snEjlq10YsGE+KXwBE1kqSVGtZiBU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 100/411] perf record: Fix incorrect --user-regs comments
+Subject: [PATCH 6.1 199/508] xfs: fix the contact address for the sysfs ABI documentation
 Date: Mon, 23 Jun 2025 15:04:04 +0200
-Message-ID: <20250623130636.014127177@linuxfoundation.org>
+Message-ID: <20250623130650.166431332@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,48 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit a4a859eb6704a8aa46aa1cec5396c8d41383a26b ]
+[ Upstream commit 9ff4490e2ab364ec433f15668ef3f5edfb53feca ]
 
-The comment of "--user-regs" option is not correct, fix it.
+oss.sgi.com is long dead, refer to the current linux-xfs list instead.
 
-"on interrupt," -> "in user space,"
-
-Fixes: 84c417422798c897 ("perf record: Support direct --user-regs arguments")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20250403060810.196028-1-dapeng1.mi@linux.intel.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-record.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/ABI/testing/sysfs-fs-xfs | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/tools/perf/builtin-record.c b/tools/perf/builtin-record.c
-index b92c26f6aa1d7..701592342d150 100644
---- a/tools/perf/builtin-record.c
-+++ b/tools/perf/builtin-record.c
-@@ -2547,7 +2547,7 @@ static struct option __record_options[] = {
- 		    "sample selected machine registers on interrupt,"
- 		    " use '-I?' to list register names", parse_intr_regs),
- 	OPT_CALLBACK_OPTARG(0, "user-regs", &record.opts.sample_user_regs, NULL, "any register",
--		    "sample selected machine registers on interrupt,"
-+		    "sample selected machine registers in user space,"
- 		    " use '--user-regs=?' to list register names", parse_user_regs),
- 	OPT_BOOLEAN(0, "running-time", &record.opts.running_time,
- 		    "Record running/enabled time of read (:S) events"),
+diff --git a/Documentation/ABI/testing/sysfs-fs-xfs b/Documentation/ABI/testing/sysfs-fs-xfs
+index f704925f6fe93..82d8e2f79834b 100644
+--- a/Documentation/ABI/testing/sysfs-fs-xfs
++++ b/Documentation/ABI/testing/sysfs-fs-xfs
+@@ -1,7 +1,7 @@
+ What:		/sys/fs/xfs/<disk>/log/log_head_lsn
+ Date:		July 2014
+ KernelVersion:	3.17
+-Contact:	xfs@oss.sgi.com
++Contact:	linux-xfs@vger.kernel.org
+ Description:
+ 		The log sequence number (LSN) of the current head of the
+ 		log. The LSN is exported in "cycle:basic block" format.
+@@ -10,7 +10,7 @@ Users:		xfstests
+ What:		/sys/fs/xfs/<disk>/log/log_tail_lsn
+ Date:		July 2014
+ KernelVersion:	3.17
+-Contact:	xfs@oss.sgi.com
++Contact:	linux-xfs@vger.kernel.org
+ Description:
+ 		The log sequence number (LSN) of the current tail of the
+ 		log. The LSN is exported in "cycle:basic block" format.
+@@ -18,7 +18,7 @@ Description:
+ What:		/sys/fs/xfs/<disk>/log/reserve_grant_head
+ Date:		July 2014
+ KernelVersion:	3.17
+-Contact:	xfs@oss.sgi.com
++Contact:	linux-xfs@vger.kernel.org
+ Description:
+ 		The current state of the log reserve grant head. It
+ 		represents the total log reservation of all currently
+@@ -29,7 +29,7 @@ Users:		xfstests
+ What:		/sys/fs/xfs/<disk>/log/write_grant_head
+ Date:		July 2014
+ KernelVersion:	3.17
+-Contact:	xfs@oss.sgi.com
++Contact:	linux-xfs@vger.kernel.org
+ Description:
+ 		The current state of the log write grant head. It
+ 		represents the total log reservation of all currently
 -- 
 2.39.5
 
