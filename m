@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0BF4AE5573
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C34CAE574D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC317AC9D0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621A24A6FB4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7BD229B0D;
-	Mon, 23 Jun 2025 22:11:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2D5223DF0;
+	Mon, 23 Jun 2025 22:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o11z8B0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAL4pSjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE64223DEF;
-	Mon, 23 Jun 2025 22:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E929F2222B2;
+	Mon, 23 Jun 2025 22:25:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716671; cv=none; b=nxv0gUHMhSekXcyEfcpFsv6rfe7ZSdEZkhOo2ymyiFmRHsbJhHy3s7Zm1yUIcIckwtgZGqC02sngqvHHdOPCRPGrfeV1nYheBywPAVwrmIu53nKsfDIavEH4/hef5JQjptcyxqRfWfahetUIy368mQFEL0dA3T9u9sAlcjR9ir0=
+	t=1750717541; cv=none; b=iTsR51WL/DdHVBUFBnwSZp68rRwYSoTw2OML/XHoiaDfUZ/i9fP8nlupTRFUkZvAM+6VjNZIS1xMZ/YyKyNfq8xhnpsdJHjJGVS5At3udoNyL5UKq/LvcmKsoKxJPiQ+heMCFPbyx7TftkgNZETOCDSZTHJ7Vf66joX39kjJAJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716671; c=relaxed/simple;
-	bh=+H/icuFlwsUQPzrYjNBP+FeQwMR3XwEwvn+pMa3JIF4=;
+	s=arc-20240116; t=1750717541; c=relaxed/simple;
+	bh=gxo5bcogfSEkzGMn9gMHwcpcgUQygaOiW44ognuHwIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p0wd70oFNNWIJel6cIF9sYXoSStzrnHJz1HQEeWyEztzW6d88ZIMVTIV0teGllJAN+/P60WnxTmtyLrW+A0JdnBZGf6A2SxFNViANkj6uP0Jpt0fkpDwJlAONwRWcMWV4Z45SlfDE8cazbAh9arvYC1nvsg9sys8nEXiqP1H+5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o11z8B0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 455CCC4CEEA;
-	Mon, 23 Jun 2025 22:11:11 +0000 (UTC)
+	 MIME-Version; b=pn1GGpEp3ZUm9cxV4zyDCGZik/ro07XGFmnYEqAPUgxBY1YDF8uxbPR56FPzw3RJyd9Lm36oIZDEDLHrOV77g5uW/oGnFcY29oBlCeQ4fzzAO834IhgXqfnRPbqb2G7mWVxn/MIFCcDka/F4YXoogMLSYR0GzwFHAi2LrH0Suec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAL4pSjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7939EC4CEED;
+	Mon, 23 Jun 2025 22:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716671;
-	bh=+H/icuFlwsUQPzrYjNBP+FeQwMR3XwEwvn+pMa3JIF4=;
+	s=korg; t=1750717540;
+	bh=gxo5bcogfSEkzGMn9gMHwcpcgUQygaOiW44ognuHwIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o11z8B0xzgPDE5DsmtjHJ2Ek9gss68u1h0ZBal8FC+cbtKGAoipsRkV2AneDymDZy
-	 oIDf+PrUzEXHWetd27hdctjIwU09etQByiehuPJ3Xo7Co2lovtbTNYA5NraD6rsinc
-	 yzraptiLDY/2dFnxe7RHFjBnKGBIi2GnzJC+po8c=
+	b=XAL4pSjRwoWe20m0T6WAUam2969nwKLyE6kdog/gpTPiYkZjUr25NzOz/A9wBmlYA
+	 2J1+UugIq+Bn9A0Zhmb7M2lJXJKKARdxTzGQkPwxUpOAa6aGOzzr3rr6zcXr5EuGzz
+	 lDfHvjwDehj2UZ1eGEgC+MRlaBpklU8CI6XTKtRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dexuan Cui <decui@microsoft.com>,
 	Long Li <longli@microsoft.com>,
 	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.15 349/411] scsi: storvsc: Increase the timeouts to storvsc_timeout
-Date: Mon, 23 Jun 2025 15:08:13 +0200
-Message-ID: <20250623130642.432437050@linuxfoundation.org>
+Subject: [PATCH 6.1 449/508] scsi: storvsc: Increase the timeouts to storvsc_timeout
+Date: Mon, 23 Jun 2025 15:08:14 +0200
+Message-ID: <20250623130656.201354636@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -93,7 +93,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/scsi/storvsc_drv.c
 +++ b/drivers/scsi/storvsc_drv.c
-@@ -399,7 +399,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
+@@ -358,7 +358,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
  /*
   * Timeout in seconds for all devices managed by this driver.
   */
@@ -102,7 +102,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
  static struct scsi_transport_template *fc_transport_template;
-@@ -819,7 +819,7 @@ static void  handle_multichannel_storage
+@@ -764,7 +764,7 @@ static void  handle_multichannel_storage
  		return;
  	}
  
@@ -111,7 +111,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (t == 0) {
  		dev_err(dev, "Failed to create sub-channel: timed out\n");
  		return;
-@@ -885,7 +885,7 @@ static int storvsc_execute_vstor_op(stru
+@@ -829,7 +829,7 @@ static int storvsc_execute_vstor_op(stru
  	if (ret != 0)
  		return ret;
  
@@ -120,7 +120,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  	if (t == 0)
  		return -ETIMEDOUT;
  
-@@ -1398,6 +1398,8 @@ static int storvsc_connect_to_vsp(struct
+@@ -1342,6 +1342,8 @@ static int storvsc_connect_to_vsp(struct
  		return ret;
  
  	ret = storvsc_channel_init(device, is_fc);
@@ -129,7 +129,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
  
  	return ret;
  }
-@@ -1719,7 +1721,7 @@ static int storvsc_host_reset_handler(st
+@@ -1659,7 +1661,7 @@ static int storvsc_host_reset_handler(st
  	if (ret != 0)
  		return FAILED;
  
