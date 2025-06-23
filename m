@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A14AE56F6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E482AE5719
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 148CF3AAE31
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E42637B17DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3D0A223DE8;
-	Mon, 23 Jun 2025 22:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BBA223DF0;
+	Mon, 23 Jun 2025 22:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhDc8dpJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lVZc2Doc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6245A2192EC;
-	Mon, 23 Jun 2025 22:21:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473A1221543;
+	Mon, 23 Jun 2025 22:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717304; cv=none; b=vBMxjluonuD8I6PVUfQ0TtxdObjLbEzW3wIL2qFSldxsZgwm1zBuT0wijny2ar+BvqcTCZJoBHEWYlK0YhpFZiq3j5Nk/omL/VH6eSzIjucV/6DDEt06FwyCkazMAjo5qXPL0Fh2yo2AyruUYXVVarfJHk3m0URjrFtRNAvIxhE=
+	t=1750717568; cv=none; b=Qp4+QrQSmcOONlonie49BE3yR++2glxVuEVjozghB9iA7jh0JVQUOX1OWiTZ+2QxommVjBnNO63WMeeeWttYuvde8Jh2DtbNbh/74cWfMswfiaUduBtCTuS8DejleW1h27SrFGgrSoX7ROINhwim4G0LvGiGThxfaFPihRWlBUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717304; c=relaxed/simple;
-	bh=y2w6YAwagjSdx3Ex9I/hqCcLqschHAjKa/vYGyDTNXI=;
+	s=arc-20240116; t=1750717568; c=relaxed/simple;
+	bh=DTprlywP+mMIOaBbe4uZI+w9Kmq4Cp45tsW5ePyHL6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CUCA+fwT+5NROXIatasXMWM1vEu7ayhbgGdC3tQtBYsvqrpPfXmrWVlLQz3q0vIFZHVqbBGFIahrKGYpFoUliR4DkGV7iBhXLTuEgfsefGInn56xqiPzRpIFTRl2Ks78RG8cLV2UlJDn+7HWVrVWhEPhAowL7ZzHd3an4Ne1jP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhDc8dpJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED59BC4CEEA;
-	Mon, 23 Jun 2025 22:21:43 +0000 (UTC)
+	 MIME-Version; b=ftUoaYub+dB8XFq4JlZY5zUD4t5MiXbTyI0DRod18Im1GfKwKZ+K4+eFjwqnYjmu2uOXACGBsMIs0nV/WMvhTq6EdeWm/WAz/gnkomyHyuEXbZFYm5h+uNXtI7KePNFpbcEtwXgYTElttstrqx4V3iX+zLwHfpyo5EeTsKUYqg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lVZc2Doc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B613C4CEEA;
+	Mon, 23 Jun 2025 22:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717304;
-	bh=y2w6YAwagjSdx3Ex9I/hqCcLqschHAjKa/vYGyDTNXI=;
+	s=korg; t=1750717567;
+	bh=DTprlywP+mMIOaBbe4uZI+w9Kmq4Cp45tsW5ePyHL6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KhDc8dpJHU/I+SIFLpHukuSGpw01PA2Fc1/funzIVDHhHszHDaauOsSZjZK2ATHVk
-	 d7okBzQHva5oVZibeTtFFUS5b8wzQGE4aYsgquwSNcXum6zdIQPqW3zjjmZ50Ce4ik
-	 GId6CCyZxPeb5MuTpryZ3y13u4zNyUmYQ9buphts=
+	b=lVZc2DockwNoVgAQnfDpEHmVXXjJh07MsJou2kV4DK6WSDhU/jZcZYAIOGPSOvKDV
+	 SslKb29B2dcRxn/o+O0bo8fdt10IhNZ0BiFL1V+oTJ17FiNN46o6taQntNKfQzc8n+
+	 OejewLTx7PniBYz9zrPAG/6VR2nEC3Iw1mJP9F2c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arnd Bergmann <arnd@arndb.de>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 362/414] hwmon: (occ) fix unaligned accesses
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.1 454/508] ksmbd: fix null pointer dereference in destroy_previous_session
 Date: Mon, 23 Jun 2025 15:08:19 +0200
-Message-ID: <20250623130651.016984324@linuxfoundation.org>
+Message-ID: <20250623130656.309667489@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,114 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 2c021b45c154958566aad0cae9f74ab26a2d5732 ]
+commit 7ac5b66acafcc9292fb935d7e03790f2b8b2dc0e upstream.
 
-Passing a pointer to an unaligned integer as a function argument is
-undefined behavior:
+If client set ->PreviousSessionId on kerberos session setup stage,
+NULL pointer dereference error will happen. Since sess->user is not
+set yet, It can pass the user argument as NULL to destroy_previous_session.
+sess->user will be set in ksmbd_krb5_authenticate(). So this patch move
+calling destroy_previous_session() after ksmbd_krb5_authenticate().
 
-drivers/hwmon/occ/common.c:492:27: warning: taking address of packed member 'accumulator' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
-  492 |   val = occ_get_powr_avg(&power->accumulator,
-      |                           ^~~~~~~~~~~~~~~~~~
-drivers/hwmon/occ/common.c:493:13: warning: taking address of packed member 'update_tag' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
-  493 |            &power->update_tag);
-      |             ^~~~~~~~~~~~~~~~~
-
-Move the get_unaligned() calls out of the function and pass these
-through argument registers instead.
-
-Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20250610092553.2641094-1-arnd@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27391
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/occ/common.c | 28 +++++++++++++---------------
- 1 file changed, 13 insertions(+), 15 deletions(-)
+ fs/smb/server/smb2pdu.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
-index 9029ad53790b1..b3694a4209b97 100644
---- a/drivers/hwmon/occ/common.c
-+++ b/drivers/hwmon/occ/common.c
-@@ -459,12 +459,10 @@ static ssize_t occ_show_power_1(struct device *dev,
- 	return sysfs_emit(buf, "%llu\n", val);
- }
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1610,17 +1610,18 @@ static int krb5_authenticate(struct ksmb
+ 	out_len = work->response_sz -
+ 		(le16_to_cpu(rsp->SecurityBufferOffset) + 4);
  
--static u64 occ_get_powr_avg(u64 *accum, u32 *samples)
-+static u64 occ_get_powr_avg(u64 accum, u32 samples)
- {
--	u64 divisor = get_unaligned_be32(samples);
+-	/* Check previous session */
+-	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
+-	if (prev_sess_id && prev_sess_id != sess->id)
+-		destroy_previous_session(conn, sess->user, prev_sess_id);
 -
--	return (divisor == 0) ? 0 :
--		div64_u64(get_unaligned_be64(accum) * 1000000ULL, divisor);
-+	return (samples == 0) ? 0 :
-+		mul_u64_u32_div(accum, 1000000UL, samples);
- }
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
+ 		ksmbd_debug(SMB, "krb5 authentication failed\n");
+ 		return -EINVAL;
+ 	}
++
++	/* Check previous session */
++	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
++	if (prev_sess_id && prev_sess_id != sess->id)
++		destroy_previous_session(conn, sess->user, prev_sess_id);
++
+ 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
  
- static ssize_t occ_show_power_2(struct device *dev,
-@@ -489,8 +487,8 @@ static ssize_t occ_show_power_2(struct device *dev,
- 				  get_unaligned_be32(&power->sensor_id),
- 				  power->function_id, power->apss_channel);
- 	case 1:
--		val = occ_get_powr_avg(&power->accumulator,
--				       &power->update_tag);
-+		val = occ_get_powr_avg(get_unaligned_be64(&power->accumulator),
-+				       get_unaligned_be32(&power->update_tag));
- 		break;
- 	case 2:
- 		val = (u64)get_unaligned_be32(&power->update_tag) *
-@@ -527,8 +525,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
- 		return sysfs_emit(buf, "%u_system\n",
- 				  get_unaligned_be32(&power->sensor_id));
- 	case 1:
--		val = occ_get_powr_avg(&power->system.accumulator,
--				       &power->system.update_tag);
-+		val = occ_get_powr_avg(get_unaligned_be64(&power->system.accumulator),
-+				       get_unaligned_be32(&power->system.update_tag));
- 		break;
- 	case 2:
- 		val = (u64)get_unaligned_be32(&power->system.update_tag) *
-@@ -541,8 +539,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
- 		return sysfs_emit(buf, "%u_proc\n",
- 				  get_unaligned_be32(&power->sensor_id));
- 	case 5:
--		val = occ_get_powr_avg(&power->proc.accumulator,
--				       &power->proc.update_tag);
-+		val = occ_get_powr_avg(get_unaligned_be64(&power->proc.accumulator),
-+				       get_unaligned_be32(&power->proc.update_tag));
- 		break;
- 	case 6:
- 		val = (u64)get_unaligned_be32(&power->proc.update_tag) *
-@@ -555,8 +553,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
- 		return sysfs_emit(buf, "%u_vdd\n",
- 				  get_unaligned_be32(&power->sensor_id));
- 	case 9:
--		val = occ_get_powr_avg(&power->vdd.accumulator,
--				       &power->vdd.update_tag);
-+		val = occ_get_powr_avg(get_unaligned_be64(&power->vdd.accumulator),
-+				       get_unaligned_be32(&power->vdd.update_tag));
- 		break;
- 	case 10:
- 		val = (u64)get_unaligned_be32(&power->vdd.update_tag) *
-@@ -569,8 +567,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
- 		return sysfs_emit(buf, "%u_vdn\n",
- 				  get_unaligned_be32(&power->sensor_id));
- 	case 13:
--		val = occ_get_powr_avg(&power->vdn.accumulator,
--				       &power->vdn.update_tag);
-+		val = occ_get_powr_avg(get_unaligned_be64(&power->vdn.accumulator),
-+				       get_unaligned_be32(&power->vdn.update_tag));
- 		break;
- 	case 14:
- 		val = (u64)get_unaligned_be32(&power->vdn.update_tag) *
--- 
-2.39.5
-
+ 	if ((conn->sign || server_conf.enforced_signing) ||
 
 
 
