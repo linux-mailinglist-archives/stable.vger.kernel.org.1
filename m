@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92DAAE522B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3296BAE50A2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88D9B7A9B9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5C0C1B62B5A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14B8B221FC7;
-	Mon, 23 Jun 2025 21:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23479223DE5;
+	Mon, 23 Jun 2025 21:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hgp5trTV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yWSRD3LO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4DC64315A;
-	Mon, 23 Jun 2025 21:41:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E0E222581;
+	Mon, 23 Jun 2025 21:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714860; cv=none; b=M5QGznJeoXYQNLRcj8rdP8L2qmn58U0D0CXIs86mZZ2uIfEKLUvNO+xabGl1E+0bqOJf0j9u6eMcYRO4ZfQowGmqdYLTcMZBbbLBrh6ah1jp5vQk2U8pUXl1i67LvBskkU+CRevzmvKHNWu9gvTAptz59sU0+1TQI/qGH1aZQ7s=
+	t=1750713981; cv=none; b=LFS+MA+vzYMavwKPJwuDkNYksOXNmsiIWvMTyILjob9j0DQI5i8lPSn9cRfuXu1a0tcfjWqhz8fbpTCjNOiSnFGz2yHeIX2ui7iyYSMKckE9/xQRYez9BocsOJWBzU8F1+bGLCUEg5M77q8C8MFCUTOtcpZ19wBtiPjv6SkQMJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714860; c=relaxed/simple;
-	bh=FRxTu3fHfYEum/TFb2S78o6VxtHCtIm9X4jkiAxPZQ4=;
+	s=arc-20240116; t=1750713981; c=relaxed/simple;
+	bh=ltcq/BHxEZKqI8VQwHOA+LftBfKL7CKIzOAZF/XTATk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KwALObCcUI48H37ttwHLnLM1uaqmeXGUeAvYSDrhJiQ06NUmcKzZtKU1fZ+jD3XzASI7D6TLQ8dPpZ62LsIvLI3NntJtdMIZEiNV7vFJfGakIpPmwCzf0ztThiVysSS6iTo4E3RsxEUcaL6kYRaw+RogxBsbIDbvQibP8bncjLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hgp5trTV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E730C4CEEA;
-	Mon, 23 Jun 2025 21:41:00 +0000 (UTC)
+	 MIME-Version; b=pxiZU7Gk9dFt9We4yClLFK2Sruja7IPR5ALCQ5WPfxYAlprId/WCZiFgAw+YC/CcMJQQTlXd4kV9T0WlYL632Yc7Gs5wFJaUtviiGQVWB6RPC8AvlBc0N5+8/t8PQf792zIaeQW+koVyzeeqYgdYcqon8tdBAjicEMZv8xZsFNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yWSRD3LO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 696B7C4CEEA;
+	Mon, 23 Jun 2025 21:26:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714860;
-	bh=FRxTu3fHfYEum/TFb2S78o6VxtHCtIm9X4jkiAxPZQ4=;
+	s=korg; t=1750713981;
+	bh=ltcq/BHxEZKqI8VQwHOA+LftBfKL7CKIzOAZF/XTATk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hgp5trTVYukxYtM0pJA5Ts+ULd1i0cUhK+OAKT8ZG5Zhs6HmfeBq/fTf6gSpBFpLP
-	 5wtulOQmXHpU+ZHCaaydNq/o84KOcxS0eHZB3IZLd0QAnWKVG3NHJo+BkO1r7R1st9
-	 fWSldPTzjSlvaviG+2viFu5oyKNus+7wzE8kLcog=
+	b=yWSRD3LO+JzJ4toOm2Z3T18+v8slIaFpzJwz5MCZBphvLYTG9b9WynbQi/MmUrZH9
+	 X47fvTSRhgUaZd3lbdbgSBbqMcyXE7CGk4/4b/kz+A45FIUYzeKx3BvC5Fay0zEOJg
+	 wH1nQqZSlPWy0r/aL++tvwfrimrmBWJMrNcdFPWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 234/411] NFC: nci: uart: Set tty->disc_data only in success path
+	syzbot+0d33ab192bd50b6c91e6@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.10 177/355] media: vidtv: Terminating the subsequent process of initialization failure
 Date: Mon, 23 Jun 2025 15:06:18 +0200
-Message-ID: <20250623130639.547496418@linuxfoundation.org>
+Message-ID: <20250623130632.022938756@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,153 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit fc27ab48904ceb7e4792f0c400f1ef175edf16fe upstream.
+commit 1d5f88f053480326873115092bc116b7d14916ba upstream.
 
-Setting tty->disc_data before opening the NCI device means we need to
-clean it up on error paths.  This also opens some short window if device
-starts sending data, even before NCIUARTSETDRIVER IOCTL succeeded
-(broken hardware?).  Close the window by exposing tty->disc_data only on
-the success path, when opening of the NCI device and try_module_get()
-succeeds.
+syzbot reported a slab-use-after-free Read in vidtv_mux_init. [1]
 
-The code differs in error path in one aspect: tty->disc_data won't be
-ever assigned thus NULL-ified.  This however should not be relevant
-difference, because of "tty->disc_data=NULL" in nci_uart_tty_open().
+After PSI initialization fails, the si member is accessed again, resulting
+in this uaf.
 
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Fixes: 9961127d4bce ("NFC: nci: add generic uart support")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Link: https://patch.msgid.link/20250618073649.25049-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+After si initialization fails, the subsequent process needs to be exited.
+
+[1]
+BUG: KASAN: slab-use-after-free in vidtv_mux_pid_ctx_init drivers/media/test-drivers/vidtv/vidtv_mux.c:78 [inline]
+BUG: KASAN: slab-use-after-free in vidtv_mux_init+0xac2/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:524
+Read of size 8 at addr ffff88802fa42acc by task syz.2.37/6059
+
+CPU: 0 UID: 0 PID: 6059 Comm: syz.2.37 Not tainted 6.14.0-rc5-syzkaller #0
+Hardware name: Google Compute Engine, BIOS Google 02/12/2025
+Call Trace:
+<TASK>
+__dump_stack lib/dump_stack.c:94 [inline]
+dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+print_address_description mm/kasan/report.c:408 [inline]
+print_report+0xc3/0x670 mm/kasan/report.c:521
+kasan_report+0xd9/0x110 mm/kasan/report.c:634
+vidtv_mux_pid_ctx_init drivers/media/test-drivers/vidtv/vidtv_mux.c:78
+vidtv_mux_init+0xac2/0xbe0 drivers/media/test-drivers/vidtv/vidtv_mux.c:524
+vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194
+vidtv_start_feed drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
+dmx_section_feed_start_filtering drivers/media/dvb-core/dvb_demux.c:973
+dvb_dmxdev_feed_start drivers/media/dvb-core/dmxdev.c:508 [inline]
+dvb_dmxdev_feed_restart.isra.0 drivers/media/dvb-core/dmxdev.c:537
+dvb_dmxdev_filter_stop+0x2b4/0x3a0 drivers/media/dvb-core/dmxdev.c:564
+dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
+dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
+__fput+0x3ff/0xb70 fs/file_table.c:464
+task_work_run+0x14e/0x250 kernel/task_work.c:227
+exit_task_work include/linux/task_work.h:40 [inline]
+do_exit+0xad8/0x2d70 kernel/exit.c:938
+do_group_exit+0xd3/0x2a0 kernel/exit.c:1087
+__do_sys_exit_group kernel/exit.c:1098 [inline]
+__se_sys_exit_group kernel/exit.c:1096 [inline]
+__x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1096
+x64_sys_call+0x151f/0x1720 arch/x86/include/generated/asm/syscalls_64.h:232
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f871d58d169
+Code: Unable to access opcode bytes at 0x7f871d58d13f.
+RSP: 002b:00007fff4b19a788 EFLAGS: 00000246 ORIG_RAX: 00000000000000e7
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f871d58d169
+RDX: 0000000000000064 RSI: 0000000000000000 RDI: 0000000000000000
+RBP: 00007fff4b19a7ec R08: 0000000b4b19a87f R09: 00000000000927c0
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000003
+R13: 00000000000927c0 R14: 000000000001d553 R15: 00007fff4b19a840
+ </TASK>
+
+Allocated by task 6059:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ poison_kmalloc_redzone mm/kasan/common.c:377 [inline]
+ __kasan_kmalloc+0xaa/0xb0 mm/kasan/common.c:394
+ kmalloc_noprof include/linux/slab.h:901 [inline]
+ kzalloc_noprof include/linux/slab.h:1037 [inline]
+ vidtv_psi_pat_table_init drivers/media/test-drivers/vidtv/vidtv_psi.c:970
+ vidtv_channel_si_init drivers/media/test-drivers/vidtv/vidtv_channel.c:423
+ vidtv_mux_init drivers/media/test-drivers/vidtv/vidtv_mux.c:519
+ vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194
+ vidtv_start_feed drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
+ dmx_section_feed_start_filtering drivers/media/dvb-core/dvb_demux.c:973
+ dvb_dmxdev_feed_start drivers/media/dvb-core/dmxdev.c:508 [inline]
+ dvb_dmxdev_feed_restart.isra.0 drivers/media/dvb-core/dmxdev.c:537
+ dvb_dmxdev_filter_stop+0x2b4/0x3a0 drivers/media/dvb-core/dmxdev.c:564
+ dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
+ dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
+ __fput+0x3ff/0xb70 fs/file_table.c:464
+ task_work_run+0x14e/0x250 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0xad8/0x2d70 kernel/exit.c:938
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1087
+ __do_sys_exit_group kernel/exit.c:1098 [inline]
+ __se_sys_exit_group kernel/exit.c:1096 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1096
+ x64_sys_call arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Freed by task 6059:
+ kasan_save_stack+0x33/0x60 mm/kasan/common.c:47
+ kasan_save_track+0x14/0x30 mm/kasan/common.c:68
+ kasan_save_free_info+0x3b/0x60 mm/kasan/generic.c:576
+ poison_slab_object mm/kasan/common.c:247 [inline]
+ __kasan_slab_free+0x51/0x70 mm/kasan/common.c:264
+ kasan_slab_free include/linux/kasan.h:233 [inline]
+ slab_free_hook mm/slub.c:2353 [inline]
+ slab_free mm/slub.c:4609 [inline]
+ kfree+0x2c4/0x4d0 mm/slub.c:4757
+ vidtv_channel_si_init drivers/media/test-drivers/vidtv/vidtv_channel.c:499
+ vidtv_mux_init drivers/media/test-drivers/vidtv/vidtv_mux.c:519
+ vidtv_start_streaming drivers/media/test-drivers/vidtv/vidtv_bridge.c:194
+ vidtv_start_feed drivers/media/test-drivers/vidtv/vidtv_bridge.c:239
+ dmx_section_feed_start_filtering drivers/media/dvb-core/dvb_demux.c:973
+ dvb_dmxdev_feed_start drivers/media/dvb-core/dmxdev.c:508 [inline]
+ dvb_dmxdev_feed_restart.isra.0 drivers/media/dvb-core/dmxdev.c:537
+ dvb_dmxdev_filter_stop+0x2b4/0x3a0 drivers/media/dvb-core/dmxdev.c:564
+ dvb_dmxdev_filter_free drivers/media/dvb-core/dmxdev.c:840 [inline]
+ dvb_demux_release+0x92/0x550 drivers/media/dvb-core/dmxdev.c:1246
+ __fput+0x3ff/0xb70 fs/file_table.c:464
+ task_work_run+0x14e/0x250 kernel/task_work.c:227
+ exit_task_work include/linux/task_work.h:40 [inline]
+ do_exit+0xad8/0x2d70 kernel/exit.c:938
+ do_group_exit+0xd3/0x2a0 kernel/exit.c:1087
+ __do_sys_exit_group kernel/exit.c:1098 [inline]
+ __se_sys_exit_group kernel/exit.c:1096 [inline]
+ __x64_sys_exit_group+0x3e/0x50 kernel/exit.c:1096
+ x64_sys_call arch/x86/include/generated/asm/syscalls_64.h:232
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 3be8037960bc ("media: vidtv: add error checks")
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+0d33ab192bd50b6c91e6@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=0d33ab192bd50b6c91e6
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/nci/uart.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/test-drivers/vidtv/vidtv_channel.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/nfc/nci/uart.c
-+++ b/net/nfc/nci/uart.c
-@@ -131,22 +131,22 @@ static int nci_uart_set_driver(struct tt
- 
- 	memcpy(nu, nci_uart_drivers[driver], sizeof(struct nci_uart));
- 	nu->tty = tty;
--	tty->disc_data = nu;
- 	skb_queue_head_init(&nu->tx_q);
- 	INIT_WORK(&nu->write_work, nci_uart_write_work);
- 	spin_lock_init(&nu->rx_lock);
- 
- 	ret = nu->ops.open(nu);
- 	if (ret) {
--		tty->disc_data = NULL;
- 		kfree(nu);
-+		return ret;
- 	} else if (!try_module_get(nu->owner)) {
- 		nu->ops.close(nu);
--		tty->disc_data = NULL;
- 		kfree(nu);
- 		return -ENOENT;
- 	}
--	return ret;
-+	tty->disc_data = nu;
-+
-+	return 0;
+--- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+@@ -497,7 +497,7 @@ free_sdt:
+ 	vidtv_psi_sdt_table_destroy(m->si.sdt);
+ free_pat:
+ 	vidtv_psi_pat_table_destroy(m->si.pat);
+-	return 0;
++	return -EINVAL;
  }
  
- /* ------ LDISC part ------ */
+ void vidtv_channel_si_destroy(struct vidtv_mux *m)
 
 
 
