@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6BA3AE4404
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1369FAE4365
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 502A718991F8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 44A137A51D7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E85FC253F12;
-	Mon, 23 Jun 2025 13:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42A152528F7;
+	Mon, 23 Jun 2025 13:28:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lECynv/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gPAg8cvB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A623325393A;
-	Mon, 23 Jun 2025 13:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018B0248191;
+	Mon, 23 Jun 2025 13:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685526; cv=none; b=J5VQaCL3lmg+SXE3ZdXS4XxnVseD0vUyrX/PctZdsW1cGSlUCScKRKlFHvZaGbr8FZ+dYxZBwEBHya3KWa1NWrgPkqGUNDD1vNT3wNsXOlqYBL//o+DjGz2EBtP5wbESzXIjRijxf9WJxzxGET8DfqFg5HhjtumoaCDXNLUzMdM=
+	t=1750685339; cv=none; b=fhIiKJVW5ulSacbipxT4vnzhszQR0PXZnYQ+nSpDYP5jDWU7+dLtpNPrzFVtW5bifTJBzcX+ebuXARGDy7mK+5wgP1PrJd7qYFsemgpXCA9/XSRzISGExYc/Ag9OSPHN4WkEt7GAuUCFfBoKAhyoaYkKIlQVBV7HcrmPx1xzGJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685526; c=relaxed/simple;
-	bh=xiJtEoyUq5iEuWLQdn0sxcG87h+8Hmh3naCvLhFwdDk=;
+	s=arc-20240116; t=1750685339; c=relaxed/simple;
+	bh=LIOpDhz1LJs06GTxgStJCg18DFJG+h63wyyJASj8RC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBQkGeOgEhWQz6KIQDl43WD7Twb0UHsEbmPks+n0GZgtpxqTeXlQV5pDj1vC+QhmjcwLYmhl7KT1Zt/OK8trcfjVEvBUHvXDOAzramr17K9EqaPKvV3CvnUa8/JHj6llVpTnBQFHRrdGTZrhqwlo4HhceB8rrsva7H654hGCbqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lECynv/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 317E8C4CEEA;
-	Mon, 23 Jun 2025 13:32:06 +0000 (UTC)
+	 MIME-Version; b=eHWM+0QpnUu/k2x5HOC50r3F32vYihLTlsJ3kTzvYFBE4kBA8luS3+51SadSSYpKgD7PLK+/YU9N1CBCOnJYBdcvemRjvkM0hJb6/NiPWF+pkcIKcBotExpzoWlmlg/hweumihzzpfpOFf2pi+s5bjl4y5VU11yPhJ2hGaz2dDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gPAg8cvB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFABC4CEEA;
+	Mon, 23 Jun 2025 13:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685526;
-	bh=xiJtEoyUq5iEuWLQdn0sxcG87h+8Hmh3naCvLhFwdDk=;
+	s=korg; t=1750685338;
+	bh=LIOpDhz1LJs06GTxgStJCg18DFJG+h63wyyJASj8RC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lECynv/gMouOTQvRsbgPfH1419OA7Lmvnxc/hLVFx2l/xWDt7mUXIqpL/dX2g+Bzd
-	 rTrp2x2jCWtqJ0ZruGzztyeJQb6yGNdQbl6ddWWjIKn7qljiXgrSF3AWlW/dVxocMg
-	 xJVOXO2fMR7NFK2/UmBAZO2zeIaoNRGSq6SGR4pw=
+	b=gPAg8cvBqcaPvy7Jybpfi2WyNNkZ+qBkgyq9+PE8TC1YopMd0FVlnDQlp5OjmU4Kg
+	 JEA3+cxKnVSSJ9bwGQ0nGVa+W/QhaAF9HLe7M33bww3mazGkJdwaPTMVv7DqeD9zZv
+	 3s7JfHKVaYDMLKQcEda+zEdteebYqvCqcLLqX/UM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	gldrk <me@rarity.fan>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/411] f2fs: fix to do sanity check on sbi->total_valid_block_count
+Subject: [PATCH 6.15 226/592] ACPICA: utilities: Fix overflow check in vsnprintf()
 Date: Mon, 23 Jun 2025 15:03:04 +0200
-Message-ID: <20250623130634.210691462@linuxfoundation.org>
+Message-ID: <20250623130705.667911199@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,78 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: gldrk <me@rarity.fan>
 
-[ Upstream commit 05872a167c2cab80ef186ef23cc34a6776a1a30c ]
+[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
 
-syzbot reported a f2fs bug as below:
+ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
 
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/f2fs.h:2521!
-RIP: 0010:dec_valid_block_count+0x3b2/0x3c0 fs/f2fs/f2fs.h:2521
-Call Trace:
- f2fs_truncate_data_blocks_range+0xc8c/0x11a0 fs/f2fs/file.c:695
- truncate_dnode+0x417/0x740 fs/f2fs/node.c:973
- truncate_nodes+0x3ec/0xf50 fs/f2fs/node.c:1014
- f2fs_truncate_inode_blocks+0x8e3/0x1370 fs/f2fs/node.c:1197
- f2fs_do_truncate_blocks+0x840/0x12b0 fs/f2fs/file.c:810
- f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:838
- f2fs_truncate+0x417/0x720 fs/f2fs/file.c:888
- f2fs_setattr+0xc4f/0x12f0 fs/f2fs/file.c:1112
- notify_change+0xbca/0xe90 fs/attr.c:552
- do_truncate+0x222/0x310 fs/open.c:65
- handle_truncate fs/namei.c:3466 [inline]
- do_open fs/namei.c:3849 [inline]
- path_openat+0x2e4f/0x35d0 fs/namei.c:4004
- do_filp_open+0x284/0x4e0 fs/namei.c:4031
- do_sys_openat2+0x12b/0x1d0 fs/open.c:1429
- do_sys_open fs/open.c:1444 [inline]
- __do_sys_creat fs/open.c:1522 [inline]
- __se_sys_creat fs/open.c:1516 [inline]
- __x64_sys_creat+0x124/0x170 fs/open.c:1516
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX].
 
-The reason is: in fuzzed image, sbi->total_valid_block_count is
-inconsistent w/ mapped blocks indexed by inode, so, we should
-not trigger panic for such case, instead, let's print log and
-set fsck flag.
-
-Fixes: 39a53e0ce0df ("f2fs: add superblock and major in-memory structure")
-Reported-by: syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/67f3c0b2.050a0220.396535.0547.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Link: https://github.com/acpica/acpica/commit/d9d59b79
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: gldrk <me@rarity.fan>
+[ rjw: Added the tag from gldrk ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/utprint.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 8b04e43356909..28db323dd4005 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -2260,8 +2260,14 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
- 	blkcnt_t sectors = count << F2FS_LOG_SECTORS_PER_BLOCK;
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index 42b30b9f93128..7fad03c5252c3 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
  
- 	spin_lock(&sbi->stat_lock);
--	f2fs_bug_on(sbi, sbi->total_valid_block_count < (block_t) count);
--	sbi->total_valid_block_count -= (block_t)count;
-+	if (unlikely(sbi->total_valid_block_count < count)) {
-+		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%lu, count:%u",
-+			  sbi->total_valid_block_count, inode->i_ino, count);
-+		sbi->total_valid_block_count = 0;
-+		set_sbi_flag(sbi, SBI_NEED_FSCK);
-+	} else {
-+		sbi->total_valid_block_count -= count;
-+	}
- 	if (sbi->reserved_blocks &&
- 		sbi->current_reserved_blocks < sbi->reserved_blocks)
- 		sbi->current_reserved_blocks = min(sbi->reserved_blocks,
+ 	pos = string;
+ 
+-	if (size != ACPI_UINT32_MAX) {
+-		end = string + size;
+-	} else {
+-		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
+-	}
++	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
++	end = string + size;
+ 
+ 	for (; *format; ++format) {
+ 		if (*format != '%') {
 -- 
 2.39.5
 
