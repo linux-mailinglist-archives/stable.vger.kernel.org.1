@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61A18AE51A3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12151AE5240
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE6D14A41B3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2AE674420C9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFBA622068B;
-	Mon, 23 Jun 2025 21:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7C5221FC7;
+	Mon, 23 Jun 2025 21:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OGvWgeIl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CBaZzksH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3D71EEA5D;
-	Mon, 23 Jun 2025 21:36:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED9454315A;
+	Mon, 23 Jun 2025 21:41:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714563; cv=none; b=K/fniRUZn7TCwlo7AprPW+FK7A1wqRoPOc460ddsEF2Ld2oFb4TqV+9UC8iu3OgbMJvxNiGuMdgJOjIzuzkMkw7nYxHCOWp7AG1TrB4r40TEhbhYkFhc45Ny3lZc/qx9kTox+MFsgVBoUhIueEhcGLEVMHOdtdUIow9+ROcFEYE=
+	t=1750714912; cv=none; b=fyRJ0MI6//4hoG1jSwQtDfpzOiEFpm42brX1FRE5RVBVEV9gIj476w4F+FuDlpbjXC+H7hS3hYymQyppmb1aIRLTHvLmF+DzN7bl/T5VUDQ94u8mJTZEKhaHzTUzEG3nHY3XPHKDDoDeF1tkKA2Is3VcyUEQox3WPXt/fZ/3ymw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714563; c=relaxed/simple;
-	bh=ljwIztz9yrt5BLWjJXkeKCqMePLScNWGdDfJ+RR3KLk=;
+	s=arc-20240116; t=1750714912; c=relaxed/simple;
+	bh=cnjJIRBz5fc76CdJsCR6cOMMaTX/eN50mxN/+/MjHWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nthk+1cCozEWIQHb+YEpKfFdJc1oz/XBvhkc8+2UYBc5l3FhHT6IDmVM00uJ4YYjy+uJQQsnCOAAlXQkR+QlE0rAdHw0qXKczcOFKlchGmnVQuKaS4EpTNInWl9c+8wbbbUVI5Xbcs60EHVO2y+sK5aaFI1bMPuyRsdYGKxChGU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OGvWgeIl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1631FC4CEEA;
-	Mon, 23 Jun 2025 21:36:02 +0000 (UTC)
+	 MIME-Version; b=NIHhChve/eioyIjUZwbl5M+0RZ0Vvg5Hh+omTSwBx2u3wetiIMym1ZrKE/jNtvCG7gl0f6A+6lawXRGjK3UvATUmyjNisSfTTXst7Um9LK/gapAAg7NnBft43YKpkuU4Qr5E/ELRSOYHfs3fM54QcLSNNtyiWoSXRwBDYp+dwSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CBaZzksH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C1FAC4CEEA;
+	Mon, 23 Jun 2025 21:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714563;
-	bh=ljwIztz9yrt5BLWjJXkeKCqMePLScNWGdDfJ+RR3KLk=;
+	s=korg; t=1750714911;
+	bh=cnjJIRBz5fc76CdJsCR6cOMMaTX/eN50mxN/+/MjHWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OGvWgeIlGSA+OHbWoYrjY/YTm8RePfFwY/omH7ij9MqM7pXLVq3FZO2RtBDeTLgSF
-	 oKdHcT6Oy9IJj19crnq9AZw3AvvhxOs4Xd8/w3NIUF+eKGOBAepePNkYCgYN507nqp
-	 jkLiqmPFMcuiMeQ7fGSYMTlHZgdLPIeyj5bg9GQc=
+	b=CBaZzksHkz67ZYIR0XL2mutVGQX/FKQKVyRPN7WvMSpNowKJc0gp/nQDocvSwBZZn
+	 ay/BhoTSFRrZpz0JC09e0nb66H843GwV7K2gRyyXjBhbCVCVSvX2cNgdCqHZMnPHsh
+	 Ad0VRZfxSqgSMgIBLQH883hq48LGoH0ekIx5Mi8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+9c09fda97a1a65ea859b@syzkaller.appspotmail.com,
-	Yi Yang <yiyang13@huawei.com>,
-	GONG Ruiqi <gongruiqi1@huawei.com>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.12 111/414] vgacon: Add check for vc_origin address range in vgacon_scroll()
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 203/508] xfs: create a new helper to return a files allocation unit
 Date: Mon, 23 Jun 2025 15:04:08 +0200
-Message-ID: <20250623130644.865920958@linuxfoundation.org>
+Message-ID: <20250623130650.263510763@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,189 +63,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: GONG Ruiqi <gongruiqi1@huawei.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-commit 864f9963ec6b4b76d104d595ba28110b87158003 upstream.
+[ Upstream commit ee20808d848c87a51e176706d81b95a21747d6cf ]
 
-Our in-house Syzkaller reported the following BUG (twice), which we
-believed was the same issue with [1]:
+Create a new helper function to calculate the fundamental allocation
+unit (i.e. the smallest unit of space we can allocate) of a file.
+Things are going to get hairy with range-exchange on the realtime
+device, so prepare for this now.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in vcs_scr_readw+0xc2/0xd0 drivers/tty/vt/vt.c:4740
-Read of size 2 at addr ffff88800f5bef60 by task syz.7.2620/12393
-...
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x72/0xa0 lib/dump_stack.c:106
- print_address_description.constprop.0+0x6b/0x3d0 mm/kasan/report.c:364
- print_report+0xba/0x280 mm/kasan/report.c:475
- kasan_report+0xa9/0xe0 mm/kasan/report.c:588
- vcs_scr_readw+0xc2/0xd0 drivers/tty/vt/vt.c:4740
- vcs_write_buf_noattr drivers/tty/vt/vc_screen.c:493 [inline]
- vcs_write+0x586/0x840 drivers/tty/vt/vc_screen.c:690
- vfs_write+0x219/0x960 fs/read_write.c:584
- ksys_write+0x12e/0x260 fs/read_write.c:639
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
- ...
- </TASK>
+Remove the static attribute from xfs_is_falloc_aligned since the next
+patch will need it.
 
-Allocated by task 5614:
- kasan_save_stack+0x20/0x40 mm/kasan/common.c:45
- kasan_set_track+0x25/0x30 mm/kasan/common.c:52
- ____kasan_kmalloc mm/kasan/common.c:374 [inline]
- __kasan_kmalloc+0x8f/0xa0 mm/kasan/common.c:383
- kasan_kmalloc include/linux/kasan.h:201 [inline]
- __do_kmalloc_node mm/slab_common.c:1007 [inline]
- __kmalloc+0x62/0x140 mm/slab_common.c:1020
- kmalloc include/linux/slab.h:604 [inline]
- kzalloc include/linux/slab.h:721 [inline]
- vc_do_resize+0x235/0xf40 drivers/tty/vt/vt.c:1193
- vgacon_adjust_height+0x2d4/0x350 drivers/video/console/vgacon.c:1007
- vgacon_font_set+0x1f7/0x240 drivers/video/console/vgacon.c:1031
- con_font_set drivers/tty/vt/vt.c:4628 [inline]
- con_font_op+0x4da/0xa20 drivers/tty/vt/vt.c:4675
- vt_k_ioctl+0xa10/0xb30 drivers/tty/vt/vt_ioctl.c:474
- vt_ioctl+0x14c/0x1870 drivers/tty/vt/vt_ioctl.c:752
- tty_ioctl+0x655/0x1510 drivers/tty/tty_io.c:2779
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:871 [inline]
- __se_sys_ioctl+0x12d/0x190 fs/ioctl.c:857
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-Last potentially related work creation:
- kasan_save_stack+0x20/0x40 mm/kasan/common.c:45
- __kasan_record_aux_stack+0x94/0xa0 mm/kasan/generic.c:492
- __call_rcu_common.constprop.0+0xc3/0xa10 kernel/rcu/tree.c:2713
- netlink_release+0x620/0xc20 net/netlink/af_netlink.c:802
- __sock_release+0xb5/0x270 net/socket.c:663
- sock_close+0x1e/0x30 net/socket.c:1425
- __fput+0x408/0xab0 fs/file_table.c:384
- __fput_sync+0x4c/0x60 fs/file_table.c:465
- __do_sys_close fs/open.c:1580 [inline]
- __se_sys_close+0x68/0xd0 fs/open.c:1565
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-Second to last potentially related work creation:
- kasan_save_stack+0x20/0x40 mm/kasan/common.c:45
- __kasan_record_aux_stack+0x94/0xa0 mm/kasan/generic.c:492
- __call_rcu_common.constprop.0+0xc3/0xa10 kernel/rcu/tree.c:2713
- netlink_release+0x620/0xc20 net/netlink/af_netlink.c:802
- __sock_release+0xb5/0x270 net/socket.c:663
- sock_close+0x1e/0x30 net/socket.c:1425
- __fput+0x408/0xab0 fs/file_table.c:384
- task_work_run+0x154/0x240 kernel/task_work.c:239
- exit_task_work include/linux/task_work.h:45 [inline]
- do_exit+0x8e5/0x1320 kernel/exit.c:874
- do_group_exit+0xcd/0x280 kernel/exit.c:1023
- get_signal+0x1675/0x1850 kernel/signal.c:2905
- arch_do_signal_or_restart+0x80/0x3b0 arch/x86/kernel/signal.c:310
- exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0x1b3/0x1e0 kernel/entry/common.c:218
- do_syscall_64+0x66/0x110 arch/x86/entry/common.c:87
- entry_SYSCALL_64_after_hwframe+0x78/0xe2
-
-The buggy address belongs to the object at ffff88800f5be000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 2656 bytes to the right of
- allocated 1280-byte region [ffff88800f5be000, ffff88800f5be500)
-
-...
-
-Memory state around the buggy address:
- ffff88800f5bee00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88800f5bee80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff88800f5bef00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                                                       ^
- ffff88800f5bef80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88800f5bf000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
-==================================================================
-
-By analyzing the vmcore, we found that vc->vc_origin was somehow placed
-one line prior to vc->vc_screenbuf when vc was in KD_TEXT mode, and
-further writings to /dev/vcs caused out-of-bounds reads (and writes
-right after) in vcs_write_buf_noattr().
-
-Our further experiments show that in most cases, vc->vc_origin equals to
-vga_vram_base when the console is in KD_TEXT mode, and it's around
-vc->vc_screenbuf for the KD_GRAPHICS mode. But via triggerring a
-TIOCL_SETVESABLANK ioctl beforehand, we can make vc->vc_origin be around
-vc->vc_screenbuf while the console is in KD_TEXT mode, and then by
-writing the special 'ESC M' control sequence to the tty certain times
-(depends on the value of `vc->state.y - vc->vc_top`), we can eventually
-move vc->vc_origin prior to vc->vc_screenbuf. Here's the PoC, tested on
-QEMU:
-
-```
-int main() {
-	const int RI_NUM = 10; // should be greater than `vc->state.y - vc->vc_top`
-	int tty_fd, vcs_fd;
-	const char *tty_path = "/dev/tty0";
-	const char *vcs_path = "/dev/vcs";
-	const char escape_seq[] = "\x1bM";  // ESC + M
-	const char trigger_seq[] = "Let's trigger an OOB write.";
-	struct vt_sizes vt_size = { 70, 2 };
-	int blank = TIOCL_BLANKSCREEN;
-
-	tty_fd = open(tty_path, O_RDWR);
-
-	char vesa_mode[] = { TIOCL_SETVESABLANK, 1 };
-	ioctl(tty_fd, TIOCLINUX, vesa_mode);
-
-	ioctl(tty_fd, TIOCLINUX, &blank);
-	ioctl(tty_fd, VT_RESIZE, &vt_size);
-
-	for (int i = 0; i < RI_NUM; ++i)
-		write(tty_fd, escape_seq, sizeof(escape_seq) - 1);
-
-	vcs_fd = open(vcs_path, O_RDWR);
-	write(vcs_fd, trigger_seq, sizeof(trigger_seq));
-
-	close(vcs_fd);
-	close(tty_fd);
-	return 0;
-}
-```
-
-To solve this problem, add an address range validation check in
-vgacon_scroll(), ensuring vc->vc_origin never precedes vc_screenbuf.
-
-Reported-by: syzbot+9c09fda97a1a65ea859b@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9c09fda97a1a65ea859b [1]
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Co-developed-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/console/vgacon.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_file.c  | 32 ++++++++++++--------------------
+ fs/xfs/xfs_file.h  |  3 +++
+ fs/xfs/xfs_inode.c | 13 +++++++++++++
+ fs/xfs/xfs_inode.h |  2 ++
+ 4 files changed, 30 insertions(+), 20 deletions(-)
 
---- a/drivers/video/console/vgacon.c
-+++ b/drivers/video/console/vgacon.c
-@@ -1168,7 +1168,7 @@ static bool vgacon_scroll(struct vc_data
- 				     c->vc_screenbuf_size - delta);
- 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
- 			vga_rolled_over = 0;
--		} else
-+		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
- 			c->vc_origin -= delta;
- 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
- 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
+diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
+index 6f7522977f7f7..3c910e36da69b 100644
+--- a/fs/xfs/xfs_file.c
++++ b/fs/xfs/xfs_file.c
+@@ -39,33 +39,25 @@ static const struct vm_operations_struct xfs_file_vm_ops;
+  * Decide if the given file range is aligned to the size of the fundamental
+  * allocation unit for the file.
+  */
+-static bool
++bool
+ xfs_is_falloc_aligned(
+ 	struct xfs_inode	*ip,
+ 	loff_t			pos,
+ 	long long int		len)
+ {
+-	struct xfs_mount	*mp = ip->i_mount;
+-	uint64_t		mask;
+-
+-	if (XFS_IS_REALTIME_INODE(ip)) {
+-		if (!is_power_of_2(mp->m_sb.sb_rextsize)) {
+-			u64	rextbytes;
+-			u32	mod;
+-
+-			rextbytes = XFS_FSB_TO_B(mp, mp->m_sb.sb_rextsize);
+-			div_u64_rem(pos, rextbytes, &mod);
+-			if (mod)
+-				return false;
+-			div_u64_rem(len, rextbytes, &mod);
+-			return mod == 0;
+-		}
+-		mask = XFS_FSB_TO_B(mp, mp->m_sb.sb_rextsize) - 1;
+-	} else {
+-		mask = mp->m_sb.sb_blocksize - 1;
++	unsigned int		alloc_unit = xfs_inode_alloc_unitsize(ip);
++
++	if (!is_power_of_2(alloc_unit)) {
++		u32	mod;
++
++		div_u64_rem(pos, alloc_unit, &mod);
++		if (mod)
++			return false;
++		div_u64_rem(len, alloc_unit, &mod);
++		return mod == 0;
+ 	}
+ 
+-	return !((pos | len) & mask);
++	return !((pos | len) & (alloc_unit - 1));
+ }
+ 
+ /*
+diff --git a/fs/xfs/xfs_file.h b/fs/xfs/xfs_file.h
+index 7d39e3eca56dc..2ad91f755caf3 100644
+--- a/fs/xfs/xfs_file.h
++++ b/fs/xfs/xfs_file.h
+@@ -9,4 +9,7 @@
+ extern const struct file_operations xfs_file_operations;
+ extern const struct file_operations xfs_dir_file_operations;
+ 
++bool xfs_is_falloc_aligned(struct xfs_inode *ip, loff_t pos,
++		long long int len);
++
+ #endif /* __XFS_FILE_H__ */
+diff --git a/fs/xfs/xfs_inode.c b/fs/xfs/xfs_inode.c
+index 88d0a088fa862..3ccbc31767b3c 100644
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -3775,3 +3775,16 @@ xfs_inode_reload_unlinked(
+ 
+ 	return error;
+ }
++
++/* Returns the size of fundamental allocation unit for a file, in bytes. */
++unsigned int
++xfs_inode_alloc_unitsize(
++	struct xfs_inode	*ip)
++{
++	unsigned int		blocks = 1;
++
++	if (XFS_IS_REALTIME_INODE(ip))
++		blocks = ip->i_mount->m_sb.sb_rextsize;
++
++	return XFS_FSB_TO_B(ip->i_mount, blocks);
++}
+diff --git a/fs/xfs/xfs_inode.h b/fs/xfs/xfs_inode.h
+index c177c92f3aa57..c4f426eadf8e2 100644
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -622,4 +622,6 @@ xfs_inode_unlinked_incomplete(
+ int xfs_inode_reload_unlinked_bucket(struct xfs_trans *tp, struct xfs_inode *ip);
+ int xfs_inode_reload_unlinked(struct xfs_inode *ip);
+ 
++unsigned int xfs_inode_alloc_unitsize(struct xfs_inode *ip);
++
+ #endif	/* __XFS_INODE_H__ */
+-- 
+2.39.5
+
 
 
 
