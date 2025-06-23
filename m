@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157522-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71354AE5224
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 384ABAE5468
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F8B27A8C1A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3C344C0DC8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0281221FDC;
-	Mon, 23 Jun 2025 21:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0665199FBA;
+	Mon, 23 Jun 2025 22:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idXk/zHc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0uSwxoeb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D75D1E22E6;
-	Mon, 23 Jun 2025 21:40:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E4A94409;
+	Mon, 23 Jun 2025 22:01:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714848; cv=none; b=mvYMj3XzBu22SQfPzGlo6zCaAHhRytNig84ciC1EZwQcRlS8GqSbRy5jgkU1gRYmGOZ+ZFjpRJ6+3lJ40TRsnI1WUKW3PDdX23oIu+qdov1MdRmmXee0ZXZnjTYcD4MsBQFETDaYcRfeNhrqqsGz9FKTMu2u4FGrVwfu/xL++8Q=
+	t=1750716073; cv=none; b=VyHB3a7rq1ROq6VbqKMuZY0ZTJG1UNwiZ5rn9sw27dvpdyQ2Fr1hv4nZMceHrbHj8WrLpIEN24At6rS2rfmHLpihEr+N1zvDByVwzZ4UEMbdTM9txkudrpAemXGzRmJpm4dpAJO4/Q4eXxCMrVTeNbvi8iUoRooU7iKpxWj8o7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714848; c=relaxed/simple;
-	bh=xH/dWtXBTnOp/bItFjyOXyWT/pQMcmN2o0xR0A5CGrs=;
+	s=arc-20240116; t=1750716073; c=relaxed/simple;
+	bh=BntU0rwWl1a/639FYeruWVy8FKnACTGpBHPw17oZmjI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=djBcmoiYSPaXR/5nB3A7OMixdqRQpxA55DzUYIKJ8AGnrpb9a4CrxfppbSFIhThlEu8zrB9FihhYceYXcmYqB75yyj7sjY3CyXOO+k0Iu0/dOpGq6ti0tuuYdXDRHMFuIBYGcitsghyQlP4M3PKDJRoNRo971bMLmyzJHOsY+ZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idXk/zHc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D959C4CEEA;
-	Mon, 23 Jun 2025 21:40:48 +0000 (UTC)
+	 MIME-Version; b=sabenXfgfJt3lHC0OrtSdyBrmyk3Lgj20Xr1yLw1AF/CIwdKdBjPvOrUwHppwY62DRV+R/TzbReZQtGO9uRbSnCMuDc2aPjbOjZRivHUTpjoZQhv2tCr5OHgltJTp0BPL7SSL/Tt9E5XC7dam6FfhMdka5iOJ0vZtAKoj7oi+yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0uSwxoeb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F6BC4CEEA;
+	Mon, 23 Jun 2025 22:01:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714848;
-	bh=xH/dWtXBTnOp/bItFjyOXyWT/pQMcmN2o0xR0A5CGrs=;
+	s=korg; t=1750716073;
+	bh=BntU0rwWl1a/639FYeruWVy8FKnACTGpBHPw17oZmjI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idXk/zHcCNLP4yXXpvzvrnfYNfL94EME3XypCwT/at1PrbZc64WTjBsl2FUBR2iaD
-	 U1K0RnYrOC4jw2k+/sxAP2uvVBzlfxxTAKRmZgkzz2GBunuPJBYS0G4DI1yJGpCMBG
-	 ZZzF3Q/ldW8d3DeVLrGB9eUHUcbawQwPGtE5SU48=
+	b=0uSwxoeb90FsF3lzlLixvVwulxwHTyFYGSsIfloNb2QvHwIrgym2ZqK2h28GV+Ezn
+	 xKs11ZYq5WKY2ZDVSpvvk/0FBuwYsPP9huqt7d/LQT3CEcUCQc6hkBHPHSdv7YuGEY
+	 ck934HRCsYcU54dyAzzHMwLE5zzHYxsVwsc7kHYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Wei Wang <weiwan@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 257/355] tcp: fix initial tp->rcvq_space.space value for passive TS enabled flows
+	stable@kernel.org,
+	tianshuo han <hantianshuo233@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.15 500/592] sunrpc: handle SVC_GARBAGE during svc auth processing as auth error
 Date: Mon, 23 Jun 2025 15:07:38 +0200
-Message-ID: <20250623130634.482489182@linuxfoundation.org>
+Message-ID: <20250623130712.324662799@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit cd171461b90a2d2cf230943df60d580174633718 ]
+commit 94d10a4dba0bc482f2b01e39f06d5513d0f75742 upstream.
 
-tcp_rcv_state_process() must tweak tp->advmss for TS enabled flows
-before the call to tcp_init_transfer() / tcp_init_buffer_space().
+tianshuo han reported a remotely-triggerable crash if the client sends a
+kernel RPC server a specially crafted packet. If decoding the RPC reply
+fails in such a way that SVC_GARBAGE is returned without setting the
+rq_accept_statp pointer, then that pointer can be dereferenced and a
+value stored there.
 
-Otherwise tp->rcvq_space.space is off by 120 bytes
-(TCP_INIT_CWND * TCPOLEN_TSTAMP_ALIGNED).
+If it's the first time the thread has processed an RPC, then that
+pointer will be set to NULL and the kernel will crash. In other cases,
+it could create a memory scribble.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Wei Wang <weiwan@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-7-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The server sunrpc code treats a SVC_GARBAGE return from svc_authenticate
+or pg_authenticate as if it should send a GARBAGE_ARGS reply. RFC 5531
+says that if authentication fails that the RPC should be rejected
+instead with a status of AUTH_ERR.
+
+Handle a SVC_GARBAGE return as an AUTH_ERROR, with a reason of
+AUTH_BADCRED instead of returning GARBAGE_ARGS in that case. This
+sidesteps the whole problem of touching the rpc_accept_statp pointer in
+this situation and avoids the crash.
+
+Cc: stable@kernel.org
+Fixes: 29cd2927fb91 ("SUNRPC: Fix encoding of accepted but unsuccessful RPC replies")
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_input.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sunrpc/svc.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index ad91377f6cfae..f239310e91590 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -6512,6 +6512,9 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		if (!tp->srtt_us)
- 			tcp_synack_rtt_meas(sk, req);
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1369,7 +1369,8 @@ svc_process_common(struct svc_rqst *rqst
+ 	case SVC_OK:
+ 		break;
+ 	case SVC_GARBAGE:
+-		goto err_garbage_args;
++		rqstp->rq_auth_stat = rpc_autherr_badcred;
++		goto err_bad_auth;
+ 	case SVC_SYSERR:
+ 		goto err_system_err;
+ 	case SVC_DENIED:
+@@ -1510,14 +1511,6 @@ err_bad_proc:
+ 	*rqstp->rq_accept_statp = rpc_proc_unavail;
+ 	goto sendit;
  
-+		if (tp->rx_opt.tstamp_ok)
-+			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
-+
- 		if (req) {
- 			tcp_rcv_synrecv_state_fastopen(sk);
- 		} else {
-@@ -6536,9 +6539,6 @@ int tcp_rcv_state_process(struct sock *sk, struct sk_buff *skb)
- 		tp->snd_wnd = ntohs(th->window) << tp->rx_opt.snd_wscale;
- 		tcp_init_wl(tp, TCP_SKB_CB(skb)->seq);
- 
--		if (tp->rx_opt.tstamp_ok)
--			tp->advmss -= TCPOLEN_TSTAMP_ALIGNED;
+-err_garbage_args:
+-	svc_printk(rqstp, "failed to decode RPC header\n");
 -
- 		if (!inet_csk(sk)->icsk_ca_ops->cong_control)
- 			tcp_update_pacing_rate(sk);
- 
--- 
-2.39.5
-
+-	if (serv->sv_stats)
+-		serv->sv_stats->rpcbadfmt++;
+-	*rqstp->rq_accept_statp = rpc_garbage_args;
+-	goto sendit;
+-
+ err_system_err:
+ 	if (serv->sv_stats)
+ 		serv->sv_stats->rpcbadfmt++;
 
 
 
