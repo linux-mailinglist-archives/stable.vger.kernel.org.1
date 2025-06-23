@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-156304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9044AE4F01
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D78ADAE5477
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A767A1B6037A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:44 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6EC644C105C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E515A1F3FF8;
-	Mon, 23 Jun 2025 21:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C4A31A4F12;
+	Mon, 23 Jun 2025 22:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gXYquqbK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="snMrE9GI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A340570838;
-	Mon, 23 Jun 2025 21:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B664409;
+	Mon, 23 Jun 2025 22:01:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713086; cv=none; b=r3WXQsYhQEIYXJJKtSvOzFGJgG7y6oQSRHwEFnv233EeNe4UGfIJSSS4+OWMbjqcUCzj4kZCcTLcqzDthHGzk9kIBdWoZnz5K8v5GXiNsGEFCFCOnMBTzZ9svpbFgWYWnhq8RUSlH68283JrFa6Yjov4SMBrQVbqc3hsuYNfjoE=
+	t=1750716108; cv=none; b=mAlX7h36vymXfVjXxxailBuf9SmwP3VCk3W2VWRM5BAjBEBxUnTPLktvI+ar4rdWgdLJNYZzQ7fJXt0CanE7bWHMEbFNcCgej3/kKdCOLCH24AG+jiaZYa7HhFKcvyy+WTivItS+6NvmcdhgcTrPB46ZkD6khg4jUW6X8jiaDM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713086; c=relaxed/simple;
-	bh=nQaptao/yuM/HtDNcHSg7+fWB8stsz+HrErnrjb6E7o=;
+	s=arc-20240116; t=1750716108; c=relaxed/simple;
+	bh=EXd/rNYvzxUvxr61621OUGLbNfe67YoTBJg5mDN3qaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cmg/y+wffeAARUrqWAPztPjv3+84Q/P4lVTStLpCI/pur9k1cCabcofrbknkwXyrrvIkQpXCA/Gc68cDNLKfccCQS6XCQAVCJfit3Di1u4VclZKsmzdqlW7Ycz0vqJlwo2EvOBWQ3+RZTvC0l+wX5eS2fh12R0olGH5Y/1NbzNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gXYquqbK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE35C4CEEA;
-	Mon, 23 Jun 2025 21:11:26 +0000 (UTC)
+	 MIME-Version; b=KCQaV8iocHQm+EliCIOmCKRifZSjuck8pdDlRvHxgvyoe0XWwJEdZaodtnheqwoytBmR30dSKZQkKqRax0CSjnQs6GHWXqgK8R7wHHMlrNfm2EzagDffJXPdFPw0SkDfSr5Ro/PjK/xY8/oWk8W1xOLSQv4qli5b72SyGqPG4NM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=snMrE9GI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FFE0C4CEEA;
+	Mon, 23 Jun 2025 22:01:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713086;
-	bh=nQaptao/yuM/HtDNcHSg7+fWB8stsz+HrErnrjb6E7o=;
+	s=korg; t=1750716108;
+	bh=EXd/rNYvzxUvxr61621OUGLbNfe67YoTBJg5mDN3qaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gXYquqbKD+f21LXgv9wmE/2Vvl46XenmTtDtEA0lWYhc3NHzgFKvzzf6KjPx0CkhG
-	 pkStFwEg9hvqFQmxIDgNHn6Ol/PJP4S/bM0PkAdt9vMIerjg7eOD7HMqsaIcbJzoUp
-	 WROnxbVTzh6tDbMIpRJPmBlAN25T/XV9/GY9O2A8=
+	b=snMrE9GI7xK4vG0fTDDjzlAtdeAmJ0vaV848aZpMpZl7g1g1WKTExD303WIsO6AVT
+	 k3lTkS0/w4/AqUUUBe6G35juG8FKXrKjG3t/2INqYZS+RX5k93sYDw2mNWX9B1Ujq+
+	 LTZ/kz9lJrACpl5SMcJ1I5qwjhErRqW5Mj/zOxhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	maher azz <maherazz04@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 187/222] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 5.10 321/355] serial: sh-sci: Increment the runtime usage counter for the earlycon device
 Date: Mon, 23 Jun 2025 15:08:42 +0200
-Message-ID: <20250623130617.858752164@linuxfoundation.org>
+Message-ID: <20250623130636.414481713@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +60,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
+commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
 
-In
+In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
+with earlycon mapped at index zero.
 
-riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
-   -> cm_chan_msg_send()
-      -> riocm_ch_send()
+The uart_add_one_port() function eventually calls __device_attach(),
+which, in turn, calls pm_request_idle(). The identified code path is as
+follows:
 
-cm_chan_msg_send() checks that userspace didn't send too much data but
-riocm_ch_send() failed to check that userspace sent sufficient data.  The
-result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
-which were outside the bounds of the space which cm_chan_msg_send()
-allocated.
+uart_add_one_port() ->
+  serial_ctrl_register_port() ->
+    serial_core_register_port() ->
+      serial_core_port_device_add() ->
+        serial_base_port_add() ->
+          device_add() ->
+            bus_probe_device() ->
+              device_initial_probe() ->
+                __device_attach() ->
+                  // ...
+                  if (dev->p->dead) {
+                    // ...
+                  } else if (dev->driver) {
+                    // ...
+                  } else {
+                    // ...
+                    pm_request_idle(dev);
+                    // ...
+                  }
 
-Address this by teaching riocm_ch_send() to check that the entire
-rio_ch_chan_hdr was copied in from userspace.
+The earlycon device clocks are enabled by the bootloader. However, the
+pm_request_idle() call in __device_attach() disables the SCI port clocks
+while earlycon is still active.
 
-Reported-by: maher azz <maherazz04@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The earlycon write function, serial_console_write(), calls
+sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
+are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
+remain unset indefinitely, causing the while loop in sci_poll_put_char()
+to never exit. On single-core SoCs, this can result in the system being
+blocked during boot when this issue occurs.
+
+To resolve this, increment the runtime PM usage counter for the earlycon
+SCI device before registering the UART port.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rapidio/rio_cm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/sh-sci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/rapidio/rio_cm.c
-+++ b/drivers/rapidio/rio_cm.c
-@@ -787,6 +787,9 @@ static int riocm_ch_send(u16 ch_id, void
- 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
- 		return -EINVAL;
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3359,6 +3359,22 @@ static int sci_probe_single(struct platf
  
-+	if (len < sizeof(struct rio_ch_chan_hdr))
-+		return -EINVAL;		/* insufficient data from user */
+ 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
+ 		/*
++		 * In case:
++		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
++		 * - it now maps to an alias other than zero and
++		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
++		 *   available in bootargs)
++		 *
++		 * we need to avoid disabling clocks and PM domains through the runtime
++		 * PM APIs called in __device_attach(). For this, increment the runtime
++		 * PM reference counter (the clocks and PM domains were already enabled
++		 * by the bootloader). Otherwise the earlycon may access the HW when it
++		 * has no clocks enabled leading to failures (infinite loop in
++		 * sci_poll_put_char()).
++		 */
++		pm_runtime_get_noresume(&dev->dev);
 +
- 	ch = riocm_get_channel(ch_id);
- 	if (!ch) {
- 		riocm_error("%s(%d) ch_%d not found", current->comm,
++		/*
+ 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
+ 		 * port is the same as the earlycon one.
+ 		 */
 
 
 
