@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57BF6AE50D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD96AE516A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE4521B62E9C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4419E441DE7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F94E22172C;
-	Mon, 23 Jun 2025 21:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A841F5820;
+	Mon, 23 Jun 2025 21:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UKYti3Ly"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfF6yN67"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4E81EDA0F;
-	Mon, 23 Jun 2025 21:28:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71A31DDC04;
+	Mon, 23 Jun 2025 21:33:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714089; cv=none; b=qrwvKl1oEdxW98xfeqbvotserCO4K0fGDwV05bY32/6+xtHEu0r9FOBmc63vq7IBibhkRpkm3QR6L1YeaVDP1EbygmeTXUVt1xhc4+kAJx/LVno4XU20f1bKloFWvhbgPc8V+/X10vWV7VaLY0qC7oWuYWmuq6JuhMBro/Sb4cs=
+	t=1750714433; cv=none; b=p1dXTyo4/UTDAT/gsMuC6v+OxrsSyGYulmYWSZI5glJD2L06IGg4NbGqMBlGtGA1dOPjoEsmW1zcG6wLNa/VI7tNDymY5iDrhEZR9s9M2szYTQSv6ewHKDnKAeN+Lel/AVyRazjjYcEzaiL5PetpH65ADBAHKqW3ykwIpSeVg7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714089; c=relaxed/simple;
-	bh=fwTPkSvxFG+JQ5WBPzVHcH/+k2YEbLRNehxaavToFxs=;
+	s=arc-20240116; t=1750714433; c=relaxed/simple;
+	bh=JVNNcEkRlrX/M0UV4Y0wvQ9EqjEDYMeZPU6BauaEgbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sjY5SuNtGXfZPPz8YXI4xRnB1oXgg2T8nJ/GUmw0BpZ8BT06eFOxeaS0Ais3DwhuQXL194uhFbYOy46u8SzcLvlLpGbkoU78t42v2gYH30mxCwqb0Yyo0EW8rTmRCVPH5s0YmiuvM+BqPpVazBILghlRFaSRfyxYqW+icZSKU8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UKYti3Ly; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8B7AC4CEEA;
-	Mon, 23 Jun 2025 21:28:08 +0000 (UTC)
+	 MIME-Version; b=codUpWSrn87eaAQYgNzt/l7vJHvSaEEt+/hxxCfFkOmvbGhEWswV2iD4oE2JCuOe6VM24Jm+Mvo98M43S/7WMl3NQ6Qw04An8tTn6rEqx4X2x4cHL4hLYbXJaJL9KeyWPHR6oNnM+cb8DjLn9nM/QMIfQYjix0jxRqaPK5LzEKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfF6yN67; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70CDCC4CEEA;
+	Mon, 23 Jun 2025 21:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714089;
-	bh=fwTPkSvxFG+JQ5WBPzVHcH/+k2YEbLRNehxaavToFxs=;
+	s=korg; t=1750714433;
+	bh=JVNNcEkRlrX/M0UV4Y0wvQ9EqjEDYMeZPU6BauaEgbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UKYti3LyneZSDGPdfIwu6rcBvbkSObpl7PFwN4tXxRXyEucw+SuwZN/9TyuVRnuzY
-	 40sc9pLX9ONia0nbIZbrlJyip+OtwU6ju4u58rVoFznk9yqe+bHcbim1U3s2B0y59S
-	 TjTzFpf4UlNptZZkQheSCVJvEhV+ONM3CYtvPBnY=
+	b=SfF6yN67ftxlmV7VTY836hla9VYPxX/b3jSSV1BYOR4n0ViRZId15mg0FEnFB19z7
+	 9ZLT3fNt+V9fHOtM09Tcxz3nzpT7X2J0urpH7tI+JEGFq+Mz50//y0Hj1GKb15veiw
+	 GIvYIGVy64hlTAFo+Nd+5ytF7aPRE0q8eCKSOt+0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeffrey Hugo <quic_jhugo@quicinc.com>,
-	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Troy Hanson <quic_thanson@quicinc.com>
-Subject: [PATCH 6.12 080/414] bus: mhi: host: Fix conflict between power_up and SYSERR
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 172/508] net: lan966x: Make sure to insert the vlan tags also in host mode
 Date: Mon, 23 Jun 2025 15:03:37 +0200
-Message-ID: <20250623130644.082752934@linuxfoundation.org>
+Message-ID: <20250623130649.505861969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Hugo <quic_jhugo@quicinc.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-commit 4d92e7c5ccadc79764674ffc2c88d329aabbb7e0 upstream.
+[ Upstream commit 27eab4c644236a9324084a70fe79e511cbd07393 ]
 
-When mhi_async_power_up() enables IRQs, it is possible that we could
-receive a SYSERR notification from the device if the firmware has crashed
-for some reason. Then the SYSERR notification queues a work item that
-cannot execute until the pm_mutex is released by mhi_async_power_up().
+When running these commands on DUT (and similar at the other end)
+ip link set dev eth0 up
+ip link add link eth0 name eth0.10 type vlan id 10
+ip addr add 10.0.0.1/24 dev eth0.10
+ip link set dev eth0.10 up
+ping 10.0.0.2
 
-So the SYSERR work item will be pending. If mhi_async_power_up() detects
-the SYSERR, it will handle it. If the device is in PBL, then the PBL state
-transition event will be queued, resulting in a work item after the
-pending SYSERR work item. Once mhi_async_power_up() releases the pm_mutex,
-the SYSERR work item can run. It will blindly attempt to reset the MHI
-state machine, which is the recovery action for SYSERR. PBL/SBL are not
-interrupt driven and will ignore the MHI Reset unless SYSERR is actively
-advertised. This will cause the SYSERR work item to timeout waiting for
-reset to be cleared, and will leave the host state in SYSERR processing.
-The PBL transition work item will then run, and immediately fail because
-SYSERR processing is not a valid state for PBL transition.
+The ping will fail.
 
-This leaves the device uninitialized.
+The reason why is failing is because, the network interfaces for lan966x
+have a flag saying that the HW can insert the vlan tags into the
+frames(NETIF_F_HW_VLAN_CTAG_TX). Meaning that the frames that are
+transmitted don't have the vlan tag inside the skb data, but they have
+it inside the skb. We already get that vlan tag and put it in the IFH
+but the problem is that we don't configure the HW to rewrite the frame
+when the interface is in host mode.
+The fix consists in actually configuring the HW to insert the vlan tag
+if it is different than 0.
 
-This issue has a fairly unique signature in the kernel log:
-
-	mhi mhi3: Requested to power ON
-	Qualcomm Cloud AI 100 0000:36:00.0: Fatal error received from
-	device.  Attempting to recover
-	mhi mhi3: Power on setup success
-	mhi mhi3: Device failed to exit MHI Reset state
-	mhi mhi3: Device MHI is not in valid state
-
-We cannot remove the SYSERR handling from mhi_async_power_up() because the
-device may be in the SYSERR state, but we missed the notification as the
-irq was fired before irqs were enabled. We also can't queue the SYSERR work
-item from mhi_async_power_up() if SYSERR is detected because that may
-result in a duplicate work item, and cause the same issue since the
-duplicate item will blindly issue MHI reset even if SYSERR is no longer
-active.
-
-Instead, add a check in the SYSERR work item to make sure that MHI reset is
-only issued if the device is in SYSERR state for PBL or SBL EEs.
-
-Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
-Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250328163526.3365497-1-jeff.hugo@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Fixes: 6d2c186afa5d ("net: lan966x: Add vlan support.")
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20250528093619.3738998-1-horatiu.vultur@microchip.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/mhi/host/pm.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ .../ethernet/microchip/lan966x/lan966x_main.c |  1 +
+ .../ethernet/microchip/lan966x/lan966x_main.h |  1 +
+ .../microchip/lan966x/lan966x_switchdev.c     |  1 +
+ .../ethernet/microchip/lan966x/lan966x_vlan.c | 21 +++++++++++++++++++
+ 4 files changed, 24 insertions(+)
 
---- a/drivers/bus/mhi/host/pm.c
-+++ b/drivers/bus/mhi/host/pm.c
-@@ -602,6 +602,7 @@ static void mhi_pm_sys_error_transition(
- 	struct mhi_cmd *mhi_cmd;
- 	struct mhi_event_ctxt *er_ctxt;
- 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
-+	bool reset_device = false;
- 	int ret, i;
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+index 9ce46588aaf03..8c048ffde23d6 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.c
+@@ -811,6 +811,7 @@ static int lan966x_probe_port(struct lan966x *lan966x, u32 p,
+ 	lan966x_vlan_port_set_vlan_aware(port, 0);
+ 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
+ 	lan966x_vlan_port_apply(port);
++	lan966x_vlan_port_rew_host(port);
  
- 	dev_dbg(dev, "Transitioning from PM state: %s to: %s\n",
-@@ -630,8 +631,23 @@ static void mhi_pm_sys_error_transition(
- 	/* Wake up threads waiting for state transition */
- 	wake_up_all(&mhi_cntrl->state_event);
+ 	return 0;
+ }
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+index 4ec33999e4df6..ff5736d2c7a6b 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_main.h
+@@ -388,6 +388,7 @@ void lan966x_vlan_port_apply(struct lan966x_port *port);
+ bool lan966x_vlan_cpu_member_cpu_vlan_mask(struct lan966x *lan966x, u16 vid);
+ void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
+ 				      bool vlan_aware);
++void lan966x_vlan_port_rew_host(struct lan966x_port *port);
+ int lan966x_vlan_port_set_vid(struct lan966x_port *port,
+ 			      u16 vid,
+ 			      bool pvid,
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
+index 1c88120eb291a..bcb4db76b75cd 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_switchdev.c
+@@ -297,6 +297,7 @@ static void lan966x_port_bridge_leave(struct lan966x_port *port,
+ 	lan966x_vlan_port_set_vlan_aware(port, false);
+ 	lan966x_vlan_port_set_vid(port, HOST_PVID, false, false);
+ 	lan966x_vlan_port_apply(port);
++	lan966x_vlan_port_rew_host(port);
+ }
  
--	/* Trigger MHI RESET so that the device will not access host memory */
- 	if (MHI_REG_ACCESS_VALID(prev_state)) {
-+		/*
-+		 * If the device is in PBL or SBL, it will only respond to
-+		 * RESET if the device is in SYSERR state. SYSERR might
-+		 * already be cleared at this point.
-+		 */
-+		enum mhi_state cur_state = mhi_get_mhi_state(mhi_cntrl);
-+		enum mhi_ee_type cur_ee = mhi_get_exec_env(mhi_cntrl);
+ int lan966x_port_changeupper(struct net_device *dev,
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
+index 3c44660128dae..ffb245fb7d678 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_vlan.c
+@@ -149,6 +149,27 @@ void lan966x_vlan_port_set_vlan_aware(struct lan966x_port *port,
+ 	port->vlan_aware = vlan_aware;
+ }
+ 
++/* When the interface is in host mode, the interface should not be vlan aware
++ * but it should insert all the tags that it gets from the network stack.
++ * The tags are not in the data of the frame but actually in the skb and the ifh
++ * is configured already to get this tag. So what we need to do is to update the
++ * rewriter to insert the vlan tag for all frames which have a vlan tag
++ * different than 0.
++ */
++void lan966x_vlan_port_rew_host(struct lan966x_port *port)
++{
++	struct lan966x *lan966x = port->lan966x;
++	u32 val;
 +
-+		if (cur_state == MHI_STATE_SYS_ERR)
-+			reset_device = true;
-+		else if (cur_ee != MHI_EE_PBL && cur_ee != MHI_EE_SBL)
-+			reset_device = true;
-+	}
++	/* Tag all frames except when VID=0*/
++	val = REW_TAG_CFG_TAG_CFG_SET(2);
 +
-+	/* Trigger MHI RESET so that the device will not access host memory */
-+	if (reset_device) {
- 		u32 in_reset = -1;
- 		unsigned long timeout = msecs_to_jiffies(mhi_cntrl->timeout_ms);
- 
++	/* Update only some bits in the register */
++	lan_rmw(val,
++		REW_TAG_CFG_TAG_CFG,
++		lan966x, REW_TAG_CFG(port->chip_port));
++}
++
+ void lan966x_vlan_port_apply(struct lan966x_port *port)
+ {
+ 	struct lan966x *lan966x = port->lan966x;
+-- 
+2.39.5
+
 
 
 
