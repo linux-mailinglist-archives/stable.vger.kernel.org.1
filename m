@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-158103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B65D8AE5737
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B8AAE562F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 045284A1842
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF1D11BC77C0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E1D5223DE5;
-	Mon, 23 Jun 2025 22:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25979221FC7;
+	Mon, 23 Jun 2025 22:17:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AJnbI8J9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCedoDrZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D119F2192EC;
-	Mon, 23 Jun 2025 22:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C481F7580;
+	Mon, 23 Jun 2025 22:17:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717491; cv=none; b=sMQdCL9f7FTsA1S04WJnqKEFou7zv9OPiMMUIzaEHtlb23ZdBO+0HbHpFObh0N7piYHrDXU+BsPe+2RB6s3VHjyNsf+826LDMXsOKBjBpeMtbxe+0D2Q8+VBCwCmV7ZvLITTSQFh4mqWajKx1drQR942va3dYvFk0Hg4p8fUXRc=
+	t=1750717030; cv=none; b=CJYEI/rwj3UckjiYRwwn9JEGZv0+TXzF/cNaSD6zzaDdQ1LcLd0RGACdX8kIXBtW0FOKKHazYfV4btWNH2+GJGBKiEvQDbefrB9y/IYw8Zb1P7YjqWJjG5NVr+Pch+/3VB3eentxEpj28nXhKJOgJMh0fcN1sAqSOdwSS0fNLbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717491; c=relaxed/simple;
-	bh=w6UUME25Uibp4ViFL28wwPhZ8YcIbeQrBZjO8sclqE4=;
+	s=arc-20240116; t=1750717030; c=relaxed/simple;
+	bh=j9fSHw8MJhC3PHK6sjrfKrie1kyFmEn5zQurGVWHEDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JOtFVU9syndkWEG4ZTVSbKpgyipHR/sJWXxe3S6o1rvdGryz6++W+hC85Rx9xhBHTGEGjr+M3w0Wf3tPNEGhY85m29Pug8Hc8c7EfNeSgBz4So3khhkpDTd0aA5MqDDRm07SmsOBMaebALaEF9lSvcaoUrbtwQ/RG0SCIC0NNY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AJnbI8J9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66D08C4CEEA;
-	Mon, 23 Jun 2025 22:24:51 +0000 (UTC)
+	 MIME-Version; b=jC9ZxSALdDc1DRuSluhr3K8YveIZa6x3S4oVr0cVQ/lru6+PwV4sDSD09OHrV5hc7KDd9WOB4dLkH3W2mPGFXixLGh8LxZdB0uDl+Hid2ArCPEVQ3ktsPFwF/9uiZbV6g9rUYay9o3Dp403QFyVgei5PGkaTlpbYdvc7hYKM58Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCedoDrZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 711DCC4CEEA;
+	Mon, 23 Jun 2025 22:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717491;
-	bh=w6UUME25Uibp4ViFL28wwPhZ8YcIbeQrBZjO8sclqE4=;
+	s=korg; t=1750717030;
+	bh=j9fSHw8MJhC3PHK6sjrfKrie1kyFmEn5zQurGVWHEDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AJnbI8J9y0yFaRCbpZQJN2gyybQ+AX18Unh91TZcV21rA1iKh6ZXHcUK81Z8BPHZ8
-	 pfbALnMMoGdZ5TBsRkFzeWEjg0rV4Vx0gE3d3fv7SlZpF+VGk2VS6NDaivdj8Gnei+
-	 pJnkMYESEep9j/KuhQjdCwwfUHXi7rlUQ6gmEPNQ=
+	b=eCedoDrZ0MIjL8mg/Xph4peHex1Rh+D2v7TNGkg8UY4sN1eAmireVfhH+0gQTJFUf
+	 V4NS4z6mZS35c8fcJxHvsdUp5NGd1j61K+ecZoJUMnVp+ErV60mTKu0Ixyd69zn5ce
+	 KhJBTvHfNptj54lE07tZK8llFkanJCqCm19ilZ9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 399/508] net: dlink: add synchronization for stats update
-Date: Mon, 23 Jun 2025 15:07:24 +0200
-Message-ID: <20250623130655.070696957@linuxfoundation.org>
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 308/414] cifs: do not disable interface polling on failure
+Date: Mon, 23 Jun 2025 15:07:25 +0200
+Message-ID: <20250623130649.702139795@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,107 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 12889ce926e9a9baf6b83d809ba316af539b89e2 ]
+commit 42ca547b13a20e7cbb04fbdf8d5f089ac4bb35b7 upstream.
 
-This patch synchronizes code that accesses from both user-space
-and IRQ contexts. The `get_stats()` function can be called from both
-context.
+When a server has multichannel enabled, we keep polling the server
+for interfaces periodically. However, when this query fails, we
+disable the polling. This can be problematic as it takes away the
+chance for the server to start advertizing again.
 
-`dev->stats.tx_errors` and `dev->stats.collisions` are also updated
-in the `tx_errors()` function. Therefore, these fields must also be
-protected by synchronized.
+This change reschedules the delayed work, even if the current call
+failed. That way, multichannel sessions can recover.
 
-There is no code that accessses `dev->stats.tx_errors` between the
-previous and updated lines, so the updating point can be moved.
-
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Link: https://patch.msgid.link/20250515075333.48290-1-yyyynoom@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/dlink/dl2k.c | 14 +++++++++++++-
- drivers/net/ethernet/dlink/dl2k.h |  2 ++
- 2 files changed, 15 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c |    6 +-----
+ fs/smb/client/smb2pdu.c |    9 +++++----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/dlink/dl2k.c b/drivers/net/ethernet/dlink/dl2k.c
-index 71cb7fe63de3c..dfc23cc173097 100644
---- a/drivers/net/ethernet/dlink/dl2k.c
-+++ b/drivers/net/ethernet/dlink/dl2k.c
-@@ -146,6 +146,8 @@ rio_probe1 (struct pci_dev *pdev, const struct pci_device_id *ent)
- 	np->ioaddr = ioaddr;
- 	np->chip_id = chip_idx;
- 	np->pdev = pdev;
-+
-+	spin_lock_init(&np->stats_lock);
- 	spin_lock_init (&np->tx_lock);
- 	spin_lock_init (&np->rx_lock);
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -132,13 +132,9 @@ static void smb2_query_server_interfaces
+ 	rc = server->ops->query_server_interfaces(xid, tcon, false);
+ 	free_xid(xid);
  
-@@ -868,7 +870,6 @@ tx_error (struct net_device *dev, int tx_status)
- 	frame_id = (tx_status & 0xffff0000);
- 	printk (KERN_ERR "%s: Transmit error, TxStatus %4.4x, FrameId %d.\n",
- 		dev->name, tx_status, frame_id);
--	dev->stats.tx_errors++;
- 	/* Ttransmit Underrun */
- 	if (tx_status & 0x10) {
- 		dev->stats.tx_fifo_errors++;
-@@ -905,9 +906,15 @@ tx_error (struct net_device *dev, int tx_status)
- 		rio_set_led_mode(dev);
- 		/* Let TxStartThresh stay default value */
- 	}
-+
-+	spin_lock(&np->stats_lock);
- 	/* Maximum Collisions */
- 	if (tx_status & 0x08)
- 		dev->stats.collisions++;
-+
-+	dev->stats.tx_errors++;
-+	spin_unlock(&np->stats_lock);
-+
- 	/* Restart the Tx */
- 	dw32(MACCtrl, dr16(MACCtrl) | TxEnable);
- }
-@@ -1076,7 +1083,9 @@ get_stats (struct net_device *dev)
- 	int i;
- #endif
- 	unsigned int stat_reg;
-+	unsigned long flags;
+-	if (rc) {
+-		if (rc == -EOPNOTSUPP)
+-			return;
+-
++	if (rc)
+ 		cifs_dbg(FYI, "%s: failed to query server interfaces: %d\n",
+ 				__func__, rc);
+-	}
  
-+	spin_lock_irqsave(&np->stats_lock, flags);
- 	/* All statistics registers need to be acknowledged,
- 	   else statistic overflow could cause problems */
+ 	queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+ 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -440,6 +440,10 @@ skip_sess_setup:
+ 		free_xid(xid);
+ 		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
  
-@@ -1126,6 +1135,9 @@ get_stats (struct net_device *dev)
- 	dr16(TCPCheckSumErrors);
- 	dr16(UDPCheckSumErrors);
- 	dr16(IPCheckSumErrors);
++		/* regardless of rc value, setup polling */
++		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
++				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
 +
-+	spin_unlock_irqrestore(&np->stats_lock, flags);
-+
- 	return &dev->stats;
- }
+ 		mutex_unlock(&ses->session_mutex);
  
-diff --git a/drivers/net/ethernet/dlink/dl2k.h b/drivers/net/ethernet/dlink/dl2k.h
-index 0e33e2eaae960..56aff2f0bdbfa 100644
---- a/drivers/net/ethernet/dlink/dl2k.h
-+++ b/drivers/net/ethernet/dlink/dl2k.h
-@@ -372,6 +372,8 @@ struct netdev_private {
- 	struct pci_dev *pdev;
- 	void __iomem *ioaddr;
- 	void __iomem *eeprom_addr;
-+	// To ensure synchronization when stats are updated.
-+	spinlock_t stats_lock;
- 	spinlock_t tx_lock;
- 	spinlock_t rx_lock;
- 	unsigned int rx_buf_sz;		/* Based on MTU+slack. */
--- 
-2.39.5
-
+ 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
+@@ -460,11 +464,8 @@ skip_sess_setup:
+ 		if (ses->chan_max > ses->chan_count &&
+ 		    ses->iface_count &&
+ 		    !SERVER_IS_CHAN(server)) {
+-			if (ses->chan_count == 1) {
++			if (ses->chan_count == 1)
+ 				cifs_server_dbg(VFS, "supports multichannel now\n");
+-				queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+-						 (SMB_INTERFACE_POLL_INTERVAL * HZ));
+-			}
+ 
+ 			cifs_try_adding_channels(ses);
+ 		}
 
 
 
