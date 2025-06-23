@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156672-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1D9FAE4F09
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C211BAE50A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4EFD617DC65
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 615521B629F1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75F591F7580;
-	Mon, 23 Jun 2025 21:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4708F223DEF;
+	Mon, 23 Jun 2025 21:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hw5RRedn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA0ASY7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32BBC3FB1B;
-	Mon, 23 Jun 2025 21:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02F6C222571;
+	Mon, 23 Jun 2025 21:26:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713106; cv=none; b=I1Av3VfjBHSTbiDcW5gyeAIfCzDvmnMEMoOrQKl9gW+urdyXhAjkoP7zTeESkvnNMGuaFtwaTJPI5ghWSrqsSSZ3Vg2xSBO8WzQj5vDboRxILMvxhajhnbzFyEpdIQk/S21OGdVxoaLHLhIyin/Onvbih2JTzUfCFNX60TAbuBs=
+	t=1750713987; cv=none; b=f4KQ+uxjhNAouUPvSXsq13y6fBqcbpbqr7XXLGi33OjyR4QHc/TpbSfaVlLIrhMdh4Uf7WLMTDhI8KZIZTODRkLUeL6sTAjb21JjpDSSp8Wogq/xVlTnvipsXmrdtSIyIBNDazLiM7MpYxrc6ImTqSocyLXvhD5CXx8QRUubXt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713106; c=relaxed/simple;
-	bh=3WlHP742llEs5h+kU+HBwg3Aft2WRKNsQCRiMqekei4=;
+	s=arc-20240116; t=1750713987; c=relaxed/simple;
+	bh=/kY9JAhOjZT5XFBsG+fplxM92l6/MLSAmB1KOe5hbLA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s97GvpRnKA7cJJpz7qmbvPrc7abXFeoTWYifxs6gIbOp/aZw/LdNjZ01sCbmCyBR3qlrFmfa4KykujxM8qP/QVpUn50Si6PUkGbC+Y2CF99mUbAJjHi0eFZN/u5PGIyRFfGn0n+Gh1v0I/R4BL6ubQbNahS9/66+TVI+z2hYIk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hw5RRedn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0E3CC4CEEA;
-	Mon, 23 Jun 2025 21:11:45 +0000 (UTC)
+	 MIME-Version; b=HVDkzNsuJ8prRLAGo289RQFuPCoAtdAdPDZ1wDCH3QJ59i4mCJS5WcPQKhcuy781uoQmbkf0bwOXAQ6qZMqingJNKBc6qNTCm+GiWIVMZyn2pp+m0aCWBItU3Xr4lhXKhO2EDtSMuI9jjybO+2zA/jr3MdcWvq1Duyg6LP+lmQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA0ASY7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46BA9C4CEEA;
+	Mon, 23 Jun 2025 21:26:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713106;
-	bh=3WlHP742llEs5h+kU+HBwg3Aft2WRKNsQCRiMqekei4=;
+	s=korg; t=1750713986;
+	bh=/kY9JAhOjZT5XFBsG+fplxM92l6/MLSAmB1KOe5hbLA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hw5RRedn1ZYm5eBFyIzeSry5QIWpGUgo7XqFiekDqdyEppseUHoSxRnI4TI98fjGd
-	 7S8TeoEie1mPGTAr6qktSIMnvSNZ1QIKlv1duAOxs2YF14roo3YTHBNiFBZg7+yl+e
-	 CfiG+H3sHLkbA/8KrqD2REhsd/TnCyZfUg6ad5ms=
+	b=gA0ASY7nN/UwmeRdZWuTeRtrnQ2oO5re0MX5CHj2TqthA5/cLUbp0xFxUjsjJ0flr
+	 gu4vYoOeMF/20cL6fUn3fx2fn/wmgqcLF2KRAxNZbgDlB87U/oAKXLB/w2tOFSIeJO
+	 kyfN0F2nA/z0JXbMgp1wnoWzo9bLcKQxsumTZ2AA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 046/414] media: ccs-pll: Start VT pre-PLL multiplier search from correct value
+	Alexei Safin <a.safin@rosa.ru>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 138/508] hwmon: (asus-ec-sensors) check sensor index in read_string()
 Date: Mon, 23 Jun 2025 15:03:03 +0200
-Message-ID: <20250623130643.191320412@linuxfoundation.org>
+Message-ID: <20250623130648.682926546@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Alexei Safin <a.safin@rosa.ru>
 
-commit 06d2d478b09e6764fb6161d1621fc10d9f0f2860 upstream.
+[ Upstream commit 25be318324563c63cbd9cb53186203a08d2f83a1 ]
 
-The ccs_pll_calculate_vt_tree() function does a search over possible VT
-PLL configurations to find the "best" one. If the sensor does not support
-odd pre-PLL divisors and the minimum value (with constraints) isn't 1,
-other odd values could be errorneously searched (and selected) for the
-pre-PLL divisor. Fix this.
+Prevent a potential invalid memory access when the requested sensor
+is not found.
 
-Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+find_ec_sensor_index() may return a negative value (e.g. -ENOENT),
+but its result was used without checking, which could lead to
+undefined behavior when passed to get_sensor_info().
+
+Add a proper check to return -EINVAL if sensor_index is negative.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: d0ddfd241e57 ("hwmon: (asus-ec-sensors) add driver for ASUS EC")
+Signed-off-by: Alexei Safin <a.safin@rosa.ru>
+Link: https://lore.kernel.org/r/20250424202654.5902-1-a.safin@rosa.ru
+[groeck: Return error code returned from find_ec_sensor_index]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/asus-ec-sensors.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -397,6 +397,8 @@ static int ccs_pll_calculate_vt_tree(str
- 	min_pre_pll_clk_div = max_t(u16, min_pre_pll_clk_div,
- 				    pll->ext_clk_freq_hz /
- 				    lim_fr->max_pll_ip_clk_freq_hz);
-+	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
-+		min_pre_pll_clk_div = clk_div_even(min_pre_pll_clk_div);
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index d893cfd1cb829..6f20b55f41f2e 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -839,6 +839,10 @@ static int asus_ec_hwmon_read_string(struct device *dev,
+ {
+ 	struct ec_sensors_data *state = dev_get_drvdata(dev);
+ 	int sensor_index = find_ec_sensor_index(state, type, channel);
++
++	if (sensor_index < 0)
++		return sensor_index;
++
+ 	*str = get_sensor_info(state, sensor_index)->label;
  
- 	dev_dbg(dev, "vt min/max_pre_pll_clk_div: %u,%u\n",
- 		min_pre_pll_clk_div, max_pre_pll_clk_div);
+ 	return 0;
+-- 
+2.39.5
+
 
 
 
