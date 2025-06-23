@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-156342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19062AE4F26
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5819EAE5266
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 267361B6084B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0789B17E898
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA3222156B;
-	Mon, 23 Jun 2025 21:13:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAAF822257E;
+	Mon, 23 Jun 2025 21:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rThK1twZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pUDiGJbZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED28B1DF98B;
-	Mon, 23 Jun 2025 21:12:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71F7A1E1A05;
+	Mon, 23 Jun 2025 21:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713180; cv=none; b=H4lYQZjOQysOOkhkikvYjdxIYroQyFsv3PRpV/CVBsB8URagCiD1aRZHLt5AkoTVaoIb9/JmgeOmIgfzEbK6rK04MirPCrHszxX5/WJyuYe1P8mcBiWK5y12yS/aNUkoz8sffWkMjkfud2KdsjCIK6vDfRvHFqRdMyWALwhueAM=
+	t=1750714992; cv=none; b=B5EhnGQjeqmHTb2B6adKB/29bCfO8s0FzrW6voIxpt+2ac6d4BHvYcFxpj6aX57TWk3HLZYvzaZcF6dCcnmt0Ua1uLzqfAcNiC38GfCqHg5SbCPVkUhPZpsDy90pG9Vrnu6eHF2gv2vNvjx91k3UiuSFJ4fCg7sFjNcOoM6N5dw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713180; c=relaxed/simple;
-	bh=WrYFip44DvSEzzFWsN0c5Zo9h+C1RlQbW6WhPB1aA2Y=;
+	s=arc-20240116; t=1750714992; c=relaxed/simple;
+	bh=K5qo4OHiO7hIVDbZMJCrpsBVPXj2gFBaw+3CT7k/EyA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UTG6+HGuvxatlvwWFw4d2jiPxn8JsQgFCZch+v0PGs9uqpL8GcA1Ay8tLGRylzMwebqpby/A2riH/j6KJi0q8XFad5EOE5KA9pnIVzhrK62Q5XbDlY+BoDT+sT8spTDIujpGrfQV0jqiPtR9o9bQAiZVXBRfn/FTMrljBBn/MuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rThK1twZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85CD8C4CEEA;
-	Mon, 23 Jun 2025 21:12:59 +0000 (UTC)
+	 MIME-Version; b=sDQwXynTdgEoolKZSxIj3xNF7FR1BRtZJJMQXZERROm+68/K+TnsHgGGmo/LC0Ph2mJs1nXnHz1D63LtVndsHHG3mpuX8vOsbW8XH3QLdnTDXUxyXxEbxWVnVPtr/qSWe5jFZ0yYh9WQSPtS6Y8J/Ar3aPjfan440nVRi5L9ZL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pUDiGJbZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08A5EC4CEED;
+	Mon, 23 Jun 2025 21:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713179;
-	bh=WrYFip44DvSEzzFWsN0c5Zo9h+C1RlQbW6WhPB1aA2Y=;
+	s=korg; t=1750714992;
+	bh=K5qo4OHiO7hIVDbZMJCrpsBVPXj2gFBaw+3CT7k/EyA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rThK1twZoWhGZFfjuZdvpjkcVXkdE1kXncyoVvOxTEVzxbkOusMEN7QDKcEQ41d37
-	 xhS7StfPss/QT1+HWtIIEGmZmeSBpiUjoqt7IFeMBCcBfq7YWONths70hRweSyMOmU
-	 dWPTpL2Pk0lbpWbeNHxoi8LkpbKGwQVrZHwMyuvM=
+	b=pUDiGJbZ+rJ5GNCBl3vwni0aw6g49DwjWgWFgkOYcKIaFwiOnCVnQ0tOwBDRhM9cr
+	 ur4VsW9BYpwon6+z99mI/rUs3uu70ZEYos/1Qdm8M+PQDSlUviIkvVikdLvuTfp3aa
+	 T7g+s6cOKhEcoABrK5QWrgx/dURCo8U2ENwXpc+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Marcelo Schmitt <marcelo.schmitt@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/411] iio: adc: ad7124: Fix 3dB filter frequency reading
+Subject: [PATCH 6.1 208/508] xfs: attr forks require attr, not attr2
 Date: Mon, 23 Jun 2025 15:04:13 +0200
-Message-ID: <20250623130636.265246540@linuxfoundation.org>
+Message-ID: <20250623130650.385031884@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 8712e4986e7ce42a14c762c4c350f290989986a5 ]
+[ Upstream commit 73c34b0b85d46bf9c2c0b367aeaffa1e2481b136 ]
 
-The sinc4 filter has a factor 0.23 between Output Data Rate and f_{3dB}
-and for sinc3 the factor is 0.272 according to the data sheets for
-ad7124-4 (Rev. E.) and ad7124-8 (Rev. F).
+It turns out that I misunderstood the difference between the attr and
+attr2 feature bits.  "attr" means that at some point an attr fork was
+created somewhere in the filesystem.  "attr2" means that inodes have
+variable-sized forks, but says nothing about whether or not there
+actually /are/ attr forks in the system.
 
-Fixes: cef2760954cf ("iio: adc: ad7124: add 3db filter")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt@analog.com>
-Link: https://patch.msgid.link/20250317115247.3735016-6-u.kleine-koenig@baylibre.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+If we have an attr fork, we only need to check that attr is set.
+
+Fixes: 99d9d8d05da26 ("xfs: scrub inode block mappings")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/xfs/scrub/bmap.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 31c8cb3bf811b..c018437177ba6 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -297,9 +297,9 @@ static int ad7124_get_3db_filter_freq(struct ad7124_state *st,
- 
- 	switch (st->channels[channel].cfg.filter_type) {
- 	case AD7124_SINC3_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 272, 1000);
- 	case AD7124_SINC4_FILTER:
--		return DIV_ROUND_CLOSEST(fadc * 262, 1000);
-+		return DIV_ROUND_CLOSEST(fadc * 230, 1000);
+diff --git a/fs/xfs/scrub/bmap.c b/fs/xfs/scrub/bmap.c
+index f0b9cb6506fdd..45b135929144e 100644
+--- a/fs/xfs/scrub/bmap.c
++++ b/fs/xfs/scrub/bmap.c
+@@ -647,7 +647,13 @@ xchk_bmap(
+ 		}
+ 		break;
+ 	case XFS_ATTR_FORK:
+-		if (!xfs_has_attr(mp) && !xfs_has_attr2(mp))
++		/*
++		 * "attr" means that an attr fork was created at some point in
++		 * the life of this filesystem.  "attr2" means that inodes have
++		 * variable-sized data/attr fork areas.  Hence we only check
++		 * attr here.
++		 */
++		if (!xfs_has_attr(mp))
+ 			xchk_ino_set_corrupt(sc, sc->ip->i_ino);
+ 		break;
  	default:
- 		return -EINVAL;
- 	}
 -- 
 2.39.5
 
