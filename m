@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63EA1AE42A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BF6AE4280
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:21:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1498217524B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66C683B898B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B053613A265;
-	Mon, 23 Jun 2025 13:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B1A24BD00;
+	Mon, 23 Jun 2025 13:18:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gl53lkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkdO3xf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6430024EF8C;
-	Mon, 23 Jun 2025 13:18:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC4C219E0;
+	Mon, 23 Jun 2025 13:18:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684715; cv=none; b=K955ZxLtnntlmGK1NS1BdFTBQeJV7N6jKJL6639i4bmAdkBMBwFKSuioviveo/YSbT2vT9zXtV4ZnlQon58mlfZf+UQ7H12MUdtk/gjwfWMjjIUc0ICcPlcpZgD9s64oRAUy4ime6D7dZS+d81I4t1h6UDZp4E5yVu9rfBwMs7k=
+	t=1750684720; cv=none; b=X9lh6+BnVj9XaHCrtcS8Dr+e3XDwntWKZPPCh1k57UNh1b9+KmI68azk+ecASM6Rdxl83zGgP3LT8AnMYHvFmlphF4k6CT6HWivJtnZeYYBk3BfgfFfkbNCj5qdMf8+dwNSVf6Sc9EkVD+JHWuNQon13AuybNSquxolXF7IIYsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684715; c=relaxed/simple;
-	bh=ZjcE3OcaTvEe4SejCWBRGp/4qxPpv1vLJ/W0bNU7nXk=;
+	s=arc-20240116; t=1750684720; c=relaxed/simple;
+	bh=9ljnX3PWmwgZfNNlPSP7/4CgiiTktTfFMGs7PZg6AFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gbcTA+s/fGFq2LmXjUHl5dRbBksYz2RrOK+YcRaQst/4BCqfTdcufEOQEiEZlaPU7/iqScbNwRZNB8CiQ3poDVDg3B0zM576wt6rnXdQ/BQ0qS1JkFEub8g4i4NtA0eA4HTA40YJ3ldbcc0PPi6mpEy1CP5vZFR4Ww3i9nkTMf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gl53lkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE552C4CEEA;
-	Mon, 23 Jun 2025 13:18:34 +0000 (UTC)
+	 MIME-Version; b=IGLyNZL7zWR0x3hcUBZZnyejmQyvsjpau2h4POQAAtf5FDRFaSWlyNl71iZsYuIhj3K3RbXMsfpQQEIQMLA5yLd4fPPxsGhEhsTROwFq7J9nWzR0OrFm02SzPpxYa/eKN6UdhcoFVT7jSNocauVgPtUrH8QaiDHA8unva/5064o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkdO3xf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051A6C4CEEA;
+	Mon, 23 Jun 2025 13:18:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684715;
-	bh=ZjcE3OcaTvEe4SejCWBRGp/4qxPpv1vLJ/W0bNU7nXk=;
+	s=korg; t=1750684720;
+	bh=9ljnX3PWmwgZfNNlPSP7/4CgiiTktTfFMGs7PZg6AFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0gl53lkYOyXwfsi2wG1Wk8ovwTUx0G8JKK7OFQalUTHrfy31Y2TEL71n+MmC/fIQ0
-	 Da+umVdd5mXPQUh8+eqVrd7X3rpfjHYi4Xvh2y3dvwr4L+DAzvTFPMoOz/Run8Ojce
-	 zTs9TbAUr5dOuWwkl52bLjG2od99jAeevqIhArYg=
+	b=lkdO3xf/dYRuSr3gyQMKCcGmKDXh8Tef8+4O7sbNQxJTNzW7gxfvScFFAHkprpg5d
+	 PHFfuFFteey47Z/mdi1VbJ1hZ7N/TLg6TebZ9WByMhqd6HNUODK+vSaQvII8i0LQsm
+	 SfC6NBxGvEh93ZYY1AWtDcVZBS3zsxyJq4aDZ7EY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Feng Xu <feng.f.xu@intel.com>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-	Tony Luck <tony.luck@intel.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/222] EDAC/skx_common: Fix general protection fault
-Date: Mon, 23 Jun 2025 15:05:49 +0200
-Message-ID: <20250623130612.328321121@linuxfoundation.org>
+Subject: [PATCH 5.4 015/222] PM: wakeup: Delete space in the end of string shown by pm_show_wakelocks()
+Date: Mon, 23 Jun 2025 15:05:50 +0200
+Message-ID: <20250623130612.358838831@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,66 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 20d2d476b3ae18041be423671a8637ed5ffd6958 ]
+[ Upstream commit f0050a3e214aa941b78ad4caf122a735a24d81a6 ]
 
-After loading i10nm_edac (which automatically loads skx_edac_common), if
-unload only i10nm_edac, then reload it and perform error injection testing,
-a general protection fault may occur:
+pm_show_wakelocks() is called to generate a string when showing
+attributes /sys/power/wake_(lock|unlock), but the string ends
+with an unwanted space that was added back by mistake by commit
+c9d967b2ce40 ("PM: wakeup: simplify the output logic of
+pm_show_wakelocks()").
 
-  mce: [Hardware Error]: Machine check events logged
-  Oops: general protection fault ...
-  ...
-  Workqueue: events mce_gen_pool_process
-  RIP: 0010:string+0x53/0xe0
-  ...
-  Call Trace:
-  <TASK>
-  ? die_addr+0x37/0x90
-  ? exc_general_protection+0x1e7/0x3f0
-  ? asm_exc_general_protection+0x26/0x30
-  ? string+0x53/0xe0
-  vsnprintf+0x23e/0x4c0
-  snprintf+0x4d/0x70
-  skx_adxl_decode+0x16a/0x330 [skx_edac_common]
-  skx_mce_check_error.part.0+0xf8/0x220 [skx_edac_common]
-  skx_mce_check_error+0x17/0x20 [skx_edac_common]
-  ...
+Remove the unwanted space.
 
-The issue arose was because the variable 'adxl_component_count' (inside
-skx_edac_common), which counts the ADXL components, was not reset. During
-the reloading of i10nm_edac, the count was incremented by the actual number
-of ADXL components again, resulting in a count that was double the real
-number of ADXL components. This led to an out-of-bounds reference to the
-ADXL component array, causing the general protection fault above.
-
-Fix this issue by resetting the 'adxl_component_count' in adxl_put(),
-which is called during the unloading of {skx,i10nm}_edac.
-
-Fixes: 123b15863550 ("EDAC, i10nm: make skx_common.o a separate module")
-Reported-by: Feng Xu <feng.f.xu@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Tested-by: Feng Xu <feng.f.xu@intel.com>
-Link: https://lore.kernel.org/r/20250417150724.1170168-2-qiuxu.zhuo@intel.com
+Fixes: c9d967b2ce40 ("PM: wakeup: simplify the output logic of pm_show_wakelocks()")
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://patch.msgid.link/20250505-fix_power-v1-1-0f7f2c2f338c@quicinc.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/skx_common.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/power/wakelock.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
-index b298b189bdf35..37d76d591745c 100644
---- a/drivers/edac/skx_common.c
-+++ b/drivers/edac/skx_common.c
-@@ -112,6 +112,7 @@ EXPORT_SYMBOL_GPL(skx_adxl_get);
+diff --git a/kernel/power/wakelock.c b/kernel/power/wakelock.c
+index 52571dcad768b..4e941999a53ba 100644
+--- a/kernel/power/wakelock.c
++++ b/kernel/power/wakelock.c
+@@ -49,6 +49,9 @@ ssize_t pm_show_wakelocks(char *buf, bool show_active)
+ 			len += sysfs_emit_at(buf, len, "%s ", wl->name);
+ 	}
  
- void skx_adxl_put(void)
- {
-+	adxl_component_count = 0;
- 	kfree(adxl_values);
- 	kfree(adxl_msg);
- }
++	if (len > 0)
++		--len;
++
+ 	len += sysfs_emit_at(buf, len, "\n");
+ 
+ 	mutex_unlock(&wakelocks_lock);
 -- 
 2.39.5
 
