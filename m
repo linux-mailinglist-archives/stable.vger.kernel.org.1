@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-157865-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157870-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1374CAE562B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41417AE5603
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A178D4A2171
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FD3A1897FAB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F127228CB5;
-	Mon, 23 Jun 2025 22:15:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F93D22A1E6;
+	Mon, 23 Jun 2025 22:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvg5vtaG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fLyVx7sK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03FF19E7F9;
-	Mon, 23 Jun 2025 22:15:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB9C229B36;
+	Mon, 23 Jun 2025 22:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716908; cv=none; b=m/bdW9XcCqWW3h4yYBGXdCn3UOTclvRyo13kdn/emnOz5r2riRdWpSnVd+SSZjCB2JQxMkfmb4GwPp1qcGKTkH2tL8YUIhkT0qinHzN378k6cJiCM1siyF43VtF5puP8MdZ58mB/0thWMSilmRwaZvR+Dmom/sQi1J8f1xneAgY=
+	t=1750716921; cv=none; b=XJMUVI5Pnm64NAxftNpJy8uCO5cf2O1iOHlGHQb3o+mmJAqqtsE9Cqn5Iw0K3m2R//UEPW0z49yznuZJvs2tuwZi51APxl0QeRl1Es/cLs5Kv22dFdnYi3GrPC/mQ22PG7By7iirtbpLbrrpi3gAVzdQHLRDBSy2DI0rdN6qmig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716908; c=relaxed/simple;
-	bh=KFObIQj5YmzuYI6PitpfxYYFkbW1tCVxtAKo++AdFy8=;
+	s=arc-20240116; t=1750716921; c=relaxed/simple;
+	bh=AofiIEFQiDx5hwUwMxltV+T1RrXKVUR9i3DlUqPABbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DXxJ56XoyKsWLmh2V4QtQbXQeKhZ+GRVFXELGVXm7q5LpCphTylUP998PbtPy0sH8zgLrsF08Ig+zHBHTl3rnQOsrEFUk0u0b0ftGYutkaDkz54HQmFOwV4sofeUIpwc9W9TLhVHS/e6msEjyRQ9X8L1ia4TLXkqRMDj8p93zz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvg5vtaG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EEFC4CEEA;
-	Mon, 23 Jun 2025 22:15:08 +0000 (UTC)
+	 MIME-Version; b=VcGiw08pWBGfPKQoOZMNsgZKtHxqJ9wDn4KxZfasVZ5caKvNSCdh25A+YbCOKUYy8yqVjoihrEHsoe7Q4x/ah1tP0cbGd8eWDJZDcdmf483gd/Cst7E5awkYeMOsHR5fC/iU0x2xvwul0Fz85dxhyWeHkzOLY2Xum4V6gaeojFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fLyVx7sK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9E49C4CEF1;
+	Mon, 23 Jun 2025 22:15:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716908;
-	bh=KFObIQj5YmzuYI6PitpfxYYFkbW1tCVxtAKo++AdFy8=;
+	s=korg; t=1750716921;
+	bh=AofiIEFQiDx5hwUwMxltV+T1RrXKVUR9i3DlUqPABbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vvg5vtaGOecYGBsAXLsQ708q81FPjBb9c+3R4ke95gaQnzuP2N5/zOuOlUsxDo9VI
-	 vxgmie0QBEN9rO+hk8SXTQWW/MEFIuHjxr7jgRQlY/ROgqfodEg0zrNB9umpI320pz
-	 t9KJiunGtDWcAAJj8/P3VRTZ3BxnCmVAijIPuYSs=
+	b=fLyVx7sK7hQtILC6b+NlKMSvHhkeQzqoJueeCkWaXzFw1yDmIP1vVffXdeUkwH2aj
+	 BBW6gDWguFWq4ygDjHXsaz8PAmrz93TkABzhzS0kFHmKcgp2sUbXhs2EnQF9YlADbc
+	 0/XDJ/HJ71ZK4ezF0P+Dl5tJ6YYIXBTw/nSJQvoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.1 344/508] EDAC/altera: Use correct write width with the INTTEST register
-Date: Mon, 23 Jun 2025 15:06:29 +0200
-Message-ID: <20250623130653.808913882@linuxfoundation.org>
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 345/508] fbdev: Fix fb_set_var to prevent null-ptr-deref in fb_videomode_to_var
+Date: Mon, 23 Jun 2025 15:06:30 +0200
+Message-ID: <20250623130653.835742632@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,50 +65,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
+commit 05f6e183879d9785a3cdf2f08a498bc31b7a20aa upstream.
 
-On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
-A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
+If fb_add_videomode() in fb_set_var() fails to allocate memory for
+fb_videomode, later it may lead to a null-ptr dereference in
+fb_videomode_to_var(), as the fb_info is registered while not having the
+mode in modelist that is expected to be there, i.e. the one that is
+described in fb_info->var.
 
-  [ bp: AI-massage the commit message. ]
+================================================================
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
+Call Trace:
+ display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
+ fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
+ resize_screen drivers/tty/vt/vt.c:1176 [inline]
+ vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
+ fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
+ fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
+ do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
+ fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+================================================================
 
-Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
+The reason is that fb_info->var is being modified in fb_set_var(), and
+then fb_videomode_to_var() is called. If it fails to add the mode to
+fb_info->modelist, fb_set_var() returns error, but does not restore the
+old value of fb_info->var. Restore fb_info->var on failure the same way
+it is done earlier in the function.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/edac/altera_edac.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/core/fbmem.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1756,9 +1756,9 @@ altr_edac_a10_device_trig(struct file *f
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -1061,8 +1061,10 @@ fb_set_var(struct fb_info *info, struct
+ 	    !list_empty(&info->modelist))
+ 		ret = fb_add_videomode(&mode, &info->modelist);
  
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	else
--		writel(priv->ce_set_mask, set_addr);
-+		writew(priv->ce_set_mask, set_addr);
+-	if (ret)
++	if (ret) {
++		info->var = old_var;
+ 		return ret;
++	}
  
- 	/* Ensure the interrupt test bits are set */
- 	wmb();
-@@ -1788,7 +1788,7 @@ altr_edac_a10_device_trig2(struct file *
- 
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	} else {
- 		/* Setup read/write of 4 bytes */
- 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
+ 	event.info = info;
+ 	event.data = &mode;
 
 
 
