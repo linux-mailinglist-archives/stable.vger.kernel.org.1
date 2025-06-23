@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C59AE4EB8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8EDAE4F4E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D92CF189FD1C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8966217E492
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E14821FF2B;
-	Mon, 23 Jun 2025 21:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A3D22069F;
+	Mon, 23 Jun 2025 21:14:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlQGXNUx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wlz53oHJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEAA41ACEDA;
-	Mon, 23 Jun 2025 21:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE981DF98B;
+	Mon, 23 Jun 2025 21:14:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712908; cv=none; b=bEFpnZGa1ObhZTW+W2b6kIqgoe+W4/iLkNaDZvuNGZmCgdI4g5/ID2wm6SCDg9yt5u6kfFpD01ZRIUK0oqbBB2mAojUJ01E3J013wYsoauYVZri+l27bqxsTQTzPncASWI2jx62qYY2eaSY7ZpQk4lE0tq6T2hcJR5KaMqF7Crk=
+	t=1750713272; cv=none; b=PV5Fwg7Of5fYq6IHsv1ooc7Wuv/uM7JfDw87Q5AQWvkhDxFBpTsu2b14YRNUoQ9itZQHoY39ON4HgyZi+xnH2ew9m2OTVSnQdMwXwoi/f86e1cuoNltk3QCEBmQWsZxet7gYDxpdwOfcwD6Aox0Bq7upVjZ/HncI1BTg62Zr8h4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712908; c=relaxed/simple;
-	bh=SbgKOSHaynTdD91CfpivsZvfrOui6cFg33hbaCL+wZE=;
+	s=arc-20240116; t=1750713272; c=relaxed/simple;
+	bh=vgsja0pqPyTp0x0s0/cSlezVo6Nbd23SNWs3O1hAzPM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y50VfmV40pd9eG7e7fQUjyXCROTE2MSpN0FTN/t57fwNLU1wkg0qRdUzvScv9pibyhmbUcz9etfkXnp9vIENqdGaMGGsMLQKYfCbU9FaQ7yL3yo6zrprc6cNW7W9C6yIHeBno1wxM0MSBhq3FIDITsuznW+ALdAtUHNcxCIV5NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlQGXNUx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14A34C4CEEA;
-	Mon, 23 Jun 2025 21:08:27 +0000 (UTC)
+	 MIME-Version; b=d7cXXhyghx+FsD6EF/1aKb4xq1hg/bL6/KGX//5MTiLiI5p/NpaPz9Yx1YHsFPrqx0ZkDOohlRDMUdxts9MNaE3bqIW2v/ZzWSd/9+u4lHPVThcY0/+cokQ4n8dKZDC0BYvYKMcND9V4LNw9n2GDqtmOVwtOp9MNJf9iWOCT+p4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wlz53oHJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5535FC4CEEA;
+	Mon, 23 Jun 2025 21:14:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712908;
-	bh=SbgKOSHaynTdD91CfpivsZvfrOui6cFg33hbaCL+wZE=;
+	s=korg; t=1750713272;
+	bh=vgsja0pqPyTp0x0s0/cSlezVo6Nbd23SNWs3O1hAzPM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TlQGXNUxUgaj/jKTGYEAJ7KO7Vffze0se839rjlL4wFdc8zrkM2J+OFgnSdOH0veE
-	 tg4LY8y8D3OAMb2ggMea0ISiDrJVoefwtz5L+0lYB9s8RzqFzfM0Ck0dQH54Am/8C8
-	 r5xIFKh0Qs0ZiigwpgwmgFbHDje4ho78VIYcG0vo=
+	b=Wlz53oHJyZtK5PF14zRfyci7lrlQ+/TodXyQnsh2fQ6QCubWMyO7jIPMS7Tl8GrU8
+	 pVkUJ7oa8rSjyntScalmHXX3PtKp3Y6zNCOF9OnLF0xDHYahU9nA48q21HiutteKmn
+	 vRTAMz7C4h50rr6x+Whsyry9jPnsiw6aR0RrxcP0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amber Lin <Amber.Lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 300/592] drm/amdkfd: Set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB
+Subject: [PATCH 5.15 114/411] net: tipc: fix refcount warning in tipc_aead_encrypt
 Date: Mon, 23 Jun 2025 15:04:18 +0200
-Message-ID: <20250623130707.528389969@linuxfoundation.org>
+Message-ID: <20250623130636.402005532@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amber Lin <Amber.Lin@amd.com>
+From: Charalampos Mitrodimas <charmitro@posteo.net>
 
-[ Upstream commit ab9fcc6362e0699fc1150aa1d8503c40fce2c1e1 ]
+[ Upstream commit f29ccaa07cf3d35990f4d25028cc55470d29372b ]
 
-When submitting MQD to CP, set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB bit so
-it'll allow SDMA preemption if there is a massive command buffer of
-long-running SDMA commands.
+syzbot reported a refcount warning [1] caused by calling get_net() on
+a network namespace that is being destroyed (refcount=0). This happens
+when a TIPC discovery timer fires during network namespace cleanup.
 
-Signed-off-by: Amber Lin <Amber.Lin@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The recently added get_net() call in commit e279024617134 ("net/tipc:
+fix slab-use-after-free Read in tipc_aead_encrypt_done") attempts to
+hold a reference to the network namespace. However, if the namespace
+is already being destroyed, its refcount might be zero, leading to the
+use-after-free warning.
+
+Replace get_net() with maybe_get_net(), which safely checks if the
+refcount is non-zero before incrementing it. If the namespace is being
+destroyed, return -ENODEV early, after releasing the bearer reference.
+
+[1]: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
+
+Reported-by: syzbot+f0c4a4aba757549ae26c@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68342b55.a70a0220.253bc2.0091.GAE@google.com/T/#m12019cf9ae77e1954f666914640efa36d52704a2
+Fixes: e27902461713 ("net/tipc: fix slab-use-after-free Read in tipc_aead_encrypt_done")
+Signed-off-by: Charalampos Mitrodimas <charmitro@posteo.net>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250527-net-tipc-warning-v2-1-df3dc398a047@posteo.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ net/tipc/crypto.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-index 80320a6c8854a..97933d2a38032 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-@@ -495,6 +495,10 @@ static void update_mqd_sdma(struct mqd_manager *mm, void *mqd,
- 	m->sdma_engine_id = q->sdma_engine_id;
- 	m->sdma_queue_id = q->sdma_queue_id;
- 	m->sdmax_rlcx_dummy_reg = SDMA_RLC_DUMMY_DEFAULT;
-+	/* Allow context switch so we don't cross-process starve with a massive
-+	 * command buffer of long-running SDMA commands
-+	 */
-+	m->sdmax_rlcx_ib_cntl |= SDMA0_GFX_IB_CNTL__SWITCH_INSIDE_IB_MASK;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 35e0ffa1bd84b..07f35c48bd3a2 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -829,7 +829,11 @@ static int tipc_aead_encrypt(struct tipc_aead *aead, struct sk_buff *skb,
+ 	}
  
- 	q->is_active = QUEUE_IS_ACTIVE(*q);
- }
+ 	/* Get net to avoid freed tipc_crypto when delete namespace */
+-	get_net(aead->crypto->net);
++	if (!maybe_get_net(aead->crypto->net)) {
++		tipc_bearer_put(b);
++		rc = -ENODEV;
++		goto exit;
++	}
+ 
+ 	/* Now, do encrypt */
+ 	rc = crypto_aead_encrypt(req);
 -- 
 2.39.5
 
