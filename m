@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156598-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3105AE503F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF0A1AE5263
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16BCA3BF3CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE8CF17CDFE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DFF21EDA0F;
-	Mon, 23 Jun 2025 21:23:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C9CA2222CA;
+	Mon, 23 Jun 2025 21:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QNkleaFF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2WvGaabM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD8BD1E5B71;
-	Mon, 23 Jun 2025 21:23:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5604B4315A;
+	Mon, 23 Jun 2025 21:43:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713806; cv=none; b=WQWByXulY/l5PCZY6fXlDBHjRKmaBI10er2TRQTBFsG9dYYr4p0YUd+YgrJ0vO896mbR4jYnWyhVDB60uDeHWysdrRVZpd35rP70/iNNf4azYHMNY2MdRXb6iLDdkjs5iSC46qKqu1xgcesF9E5iSLvjpu44nxS1jgs1uMI/TrA=
+	t=1750714992; cv=none; b=ZdnWVyO5HJ9JY457cbHQ3Q6dHEEv07asiYOLCMv1kTN68tG8ZfbV/L2MB45W7Raaxup3Ejw8bZS4sD5Efp76nprpG3MK55I+eiMI98PFS/P3OeCn+v4ze68K1t8rvUTqw6z0u452vd0/dTZYvWNgn70SDFQD9VdVc8agERM6k1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713806; c=relaxed/simple;
-	bh=60WXOnePn0R5sMHXq0mfY5YzwClIIYbt/9avyCRiTI0=;
+	s=arc-20240116; t=1750714992; c=relaxed/simple;
+	bh=iIQPAj8vuQovK5CES3gWrC5JadHSAHHUrxqzYMfy6cM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kYMg5babR6bPpp/2UYd/SGlqSjvRR98/oZn5nm1SC556E+aYY90FdyrFNf1eIvwTwQoMdZKDVw04gdFSQhz0NlbmW3hwLTnZYJTiZe6sX+b4bAblmS57dyEfU7E8ye7F9brm50XxcolcLsACk/ybQ9OtSrZvIoIabXNy55xCWX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QNkleaFF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75A13C4CEEA;
-	Mon, 23 Jun 2025 21:23:25 +0000 (UTC)
+	 MIME-Version; b=mTPwCOoAlY2QndyhCfH3i4BGqGJss/F9RmCjvjBaZcQHEyWArpECqrSwAS0HMe6GhI5iu4Aor9wpeculLsBuLjEOvjgzJFrr5VqdKqqQGLgCKSvNjmsCrq+1PjEij4eO6yIgl2PNwJjHqWegN+oHK5QJCoLbyRsTlc0Uo+Dg9aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2WvGaabM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9330AC4CEEA;
+	Mon, 23 Jun 2025 21:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713805;
-	bh=60WXOnePn0R5sMHXq0mfY5YzwClIIYbt/9avyCRiTI0=;
+	s=korg; t=1750714989;
+	bh=iIQPAj8vuQovK5CES3gWrC5JadHSAHHUrxqzYMfy6cM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QNkleaFFCBAGGNTQGKjZwol0G8pk75/4penW7yw/YDLh68nR4523+/GFWn91xtSdS
-	 JGYJ/xg1n9RKNUu81m1r6zGRZYKW/C2A+AsMgCga+rHV2tcUXIlQba7ZqnFTupJJdT
-	 OF8lz2rPi4sdtIsfekBA8R/cckc19+veXEZR6o9o=
+	b=2WvGaabM3amziZyyJlVBnwJz7uFw9HAGIwpit1dUD7Q3m2G7sWjl+i0roPMxy5qUN
+	 N2cSeKp6HvigmhWiBpIc7XvG5i+zX0kJ+/zEzQatEDdwxW9IY1f1W92sNFD1nNro+G
+	 pSrjeHERNBOinDSYP2/XzZorFVNKlLc1emd2ysIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 187/355] ext4: ensure i_size is smaller than maxbytes
+	Laurentiu Tudor <laurentiu.tudor@nxp.com>,
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 430/592] bus: fsl-mc: increase MC_CMD_COMPLETION_TIMEOUT_MS value
 Date: Mon, 23 Jun 2025 15:06:28 +0200
-Message-ID: <20250623130632.304865916@linuxfoundation.org>
+Message-ID: <20250623130710.662899012@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Laurentiu Tudor <laurentiu.tudor@nxp.com>
 
-commit 1a77a028a392fab66dd637cdfac3f888450d00af upstream.
+[ Upstream commit 23d060136841c58c2f9ee8c08ad945d1879ead4b ]
 
-The inode i_size cannot be larger than maxbytes, check it while loading
-inode from the disk.
+In case the MC firmware runs in debug mode with extensive prints pushed
+to the console, the current timeout of 500ms is not enough.
+Increase the timeout value so that we don't have any chance of wrongly
+assuming that the firmware is not responding when it's just taking more
+time.
 
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Laurentiu Tudor <laurentiu.tudor@nxp.com>
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
+Link: https://lore.kernel.org/r/20250408105814.2837951-7-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bus/fsl-mc/mc-sys.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4868,7 +4868,8 @@ struct inode *__ext4_iget(struct super_b
- 		ei->i_file_acl |=
- 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
- 	inode->i_size = ext4_isize(sb, raw_inode);
--	if ((size = i_size_read(inode)) < 0) {
-+	size = i_size_read(inode);
-+	if (size < 0 || size > ext4_get_maxbytes(inode)) {
- 		ext4_error_inode(inode, function, line, 0,
- 				 "iget: bad i_size value: %lld", size);
- 		ret = -EFSCORRUPTED;
+diff --git a/drivers/bus/fsl-mc/mc-sys.c b/drivers/bus/fsl-mc/mc-sys.c
+index f2052cd0a0517..b22c59d57c8f0 100644
+--- a/drivers/bus/fsl-mc/mc-sys.c
++++ b/drivers/bus/fsl-mc/mc-sys.c
+@@ -19,7 +19,7 @@
+ /*
+  * Timeout in milliseconds to wait for the completion of an MC command
+  */
+-#define MC_CMD_COMPLETION_TIMEOUT_MS	500
++#define MC_CMD_COMPLETION_TIMEOUT_MS	15000
+ 
+ /*
+  * usleep_range() min and max values used to throttle down polling
+-- 
+2.39.5
+
 
 
 
