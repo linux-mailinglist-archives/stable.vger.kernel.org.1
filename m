@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-156952-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E69AE51D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B64FAE515D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B23A04A49C0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98993441C29
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B53F221FC7;
-	Mon, 23 Jun 2025 21:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0EDA1DDC04;
+	Mon, 23 Jun 2025 21:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmJeJQW6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pJaR7ki+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 293B94409;
-	Mon, 23 Jun 2025 21:37:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B947223DE5;
+	Mon, 23 Jun 2025 21:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714672; cv=none; b=T3qUYN7ZMAGIp/zEwwc37PUPPIogd+V7ojQnm0oojfce9DSi3W0x5C+6Seg7Tb0AOBR0Qi4qt2VZNB+yWbC7ohE+r0GhhttXkpVBU9StOGJodZ61fHxhhEL4wnYYZ/NoCyWRtODJb19cI1xDT/D4rYkfgpNdP+JlY9dF2MkvE3M=
+	t=1750714399; cv=none; b=OKHxKyFPlWBvaiZgrEKUdyx97LIuO6wrqDy9MQZhu0Q56k/Hts6t+WY3LLku0JxoqNTmOmgYkYok8dzOWvz675F+jl0DYZdVmoBuaa9uT2AK3YuZjOD2DpDF0gL1p5mtNQC95TjyKE7F72M5QzoBG2sQma50IcdKhINuKCsrrxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714672; c=relaxed/simple;
-	bh=tXmSukYVWJlgmenilJ2w6BWTXAAwCf6R+3jtIeZVgpg=;
+	s=arc-20240116; t=1750714399; c=relaxed/simple;
+	bh=ukJdL4S3hZ1QhniTjFZALP930kdsiAuyeM/FQNvy9L4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bra+e3AEX+pRPOJVZ8FZGWDm5WDW4xAGCtJJg+L5/cn9ybJlSX9eBG3h+vxGNjB0L8iYINmqFKPMD9JVMKsMBlQrLvieoxohOjJaWQwA28uJYqIMJqUn7FVymSmLvjBjGLndy24o2ED41Ehx2T4dgdtU6LJ1pwBgXS54JSlRyG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmJeJQW6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C58C4CEEA;
-	Mon, 23 Jun 2025 21:37:51 +0000 (UTC)
+	 MIME-Version; b=PpDRc6ihxgsSxz2GUqDQs5yUURXewGH/wUYJK8LAoUWm64V/u6AFCu35jIlY0VIrgt6MEUYryIy6sQXqeCDoqRUWslaBbMuo9cEKluD50NTB1AdjcMEC/WWazXJP9NBWHAmWuiUlRXpJH6jV9GVqKX7qUScfBL7TH1CX0UOQYr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pJaR7ki+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EDA8C4CEEA;
+	Mon, 23 Jun 2025 21:33:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714672;
-	bh=tXmSukYVWJlgmenilJ2w6BWTXAAwCf6R+3jtIeZVgpg=;
+	s=korg; t=1750714399;
+	bh=ukJdL4S3hZ1QhniTjFZALP930kdsiAuyeM/FQNvy9L4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XmJeJQW6NMlqIbI/+ZGiToc/TOffj7GAt/emHzogHSBTUwo2ljWHIfMctLkxDEN/k
-	 3mJHVPyewfW7wE3rNrccCWMZROxNEJXQ8DoLlo6GDS5UhsC0maa3yPR1q0H7jBnE1X
-	 nGuZVk6ZvMFPaTp3RZ7mR+Nj3XFOxwBRz8mhw3Z0=
+	b=pJaR7ki+yg02MOQV34umj5KCKO2JmGFIN7C9cFaaZIR6Qf2myq8i9tnaRO5vFm7c7
+	 yujt9FIh7HyezaPjkoiXd7NpCZZ/tzsdtelXMdEkTry3B6lYqacvlo9I4VfhWiB98x
+	 pPtdLXrXxjUUjGSIRg0H1x0mVp34aOLbPCqDyfs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 202/411] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 388/592] bpf: Use proper type to calculate bpf_raw_tp_null_args.mask index
 Date: Mon, 23 Jun 2025 15:05:46 +0200
-Message-ID: <20250623130638.757990072@linuxfoundation.org>
+Message-ID: <20250623130709.671459333@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
+[ Upstream commit 53ebef53a657d7957d35dc2b953db64f1bb28065 ]
 
-In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
-nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
-this can cause NULL pointer dereference.
+The calculation of the index used to access the mask field in 'struct
+bpf_raw_tp_null_args' is done with 'int' type, which could overflow when
+the tracepoint being attached has more than 8 arguments.
 
-Normally the delayed start of laundromat_work allows sufficient time for
-nfsd_ssc initialization to complete. However, when the kernel waits too
-long for userspace responses (e.g. in nfs4_state_start_net ->
-nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
-cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
-delayed work may start before nfsd_ssc initialization finishes.
+While none of the tracepoints mentioned in raw_tp_null_args[] currently
+have more than 8 arguments, there do exist tracepoints that had more
+than 8 arguments (e.g. iocost_iocg_forgive_debt), so use the correct
+type for calculation and avoid Smatch static checker warning.
 
-Fix this by moving nfsd_ssc initialization before starting laundromat_work.
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/bpf/20250418074946.35569-1-shung-hsi.yu@suse.com
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Closes: https://lore.kernel.org/r/843a3b94-d53d-42db-93d4-be10a4090146@stanley.mountain/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ kernel/bpf/btf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -427,13 +427,13 @@ static int nfsd_startup_net(struct net *
- 	if (ret)
- 		goto out_filecache;
- 
-+#ifdef CONFIG_NFSD_V4_2_INTER_SSC
-+	nfsd4_ssc_init_umount_work(nn);
-+#endif
- 	ret = nfs4_state_start_net(net);
- 	if (ret)
- 		goto out_reply_cache;
- 
--#ifdef CONFIG_NFSD_V4_2_INTER_SSC
--	nfsd4_ssc_init_umount_work(nn);
--#endif
- 	nn->nfsd_net_up = true;
- 	return 0;
- 
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 16ba36f34dfab..656ee11aff676 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6829,10 +6829,10 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
+ 			/* Is this a func with potential NULL args? */
+ 			if (strcmp(tname, raw_tp_null_args[i].func))
+ 				continue;
+-			if (raw_tp_null_args[i].mask & (0x1 << (arg * 4)))
++			if (raw_tp_null_args[i].mask & (0x1ULL << (arg * 4)))
+ 				info->reg_type |= PTR_MAYBE_NULL;
+ 			/* Is the current arg IS_ERR? */
+-			if (raw_tp_null_args[i].mask & (0x2 << (arg * 4)))
++			if (raw_tp_null_args[i].mask & (0x2ULL << (arg * 4)))
+ 				ptr_err_raw_tp = true;
+ 			break;
+ 		}
+-- 
+2.39.5
+
 
 
 
