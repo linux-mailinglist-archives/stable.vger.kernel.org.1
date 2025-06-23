@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157135-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE53AE52A2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7433EAE4F3E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 85AA44A63E4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B6473A5F73
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96500223337;
-	Mon, 23 Jun 2025 21:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0546C221FC7;
+	Mon, 23 Jun 2025 21:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0or7/Snx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9np1Elu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 546C71C84A0;
-	Mon, 23 Jun 2025 21:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3660202983;
+	Mon, 23 Jun 2025 21:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715120; cv=none; b=RgYMYKFqjcPehfEktRTWQah5l6aX6ZRCAEPaHQA2R90698WlhkCqy9WAaRkqRJPAhyxjHYRfvdMimNtdr+mvPfQdxJs3Hqxf1uwzdIWxmI5xex6r/0UOtk3OR0goaTJOKdasB7VSU81/tx+KYIonnEhxDkzsXTv0MWAhpx1JZSs=
+	t=1750713221; cv=none; b=KCj3vQGKiIjsRuRVW3yQm3SGsuyn7grOwc0aKXc4eg1QyAzBWzWppa8rgq0FA2BsCBK9xmeeFUehzNx7kRRoQVQ1JiJlaJFquoL8wWTQvTdh4cVwRH3mT2IEpCGTYaY814vSjDSgvweUxB2CIdN1W34kqSE2hKel6GaUj2dXedM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715120; c=relaxed/simple;
-	bh=WJukbBUoMyLenn/vEXupiiNhG8iyB3/rcODJYw5TKgo=;
+	s=arc-20240116; t=1750713221; c=relaxed/simple;
+	bh=PC3CuU6ga4b/qPC+GyYUc6hrXBYVmnFGGt+mnpuw6EQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NntcFQ1InhGwhis/3wd1PLkcQvNhpaSuBzjhGzA4wRh6e5YMq7y/L/QqiFua9YvTjQ1TMVWiy2ZwjSusu1IToEarM1RvIyCbWWUKnKlby1KTkM8c9Sg7/ENebMPYf2qgUHy7n4Bdwl8VydQtE8yuUKB3ceShAO1iemrt3IxY480=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0or7/Snx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CF8C4CEEA;
-	Mon, 23 Jun 2025 21:45:19 +0000 (UTC)
+	 MIME-Version; b=MUXPVrbyKtxBEx3tfHpVD+63MbBngRNjGX/Ksh5zXERPEctRLEB6roTEOQFFm10RoqhVVhkKqj6rzPevfSoWLbp0vNA+MZf/g9fc8152jyhnur5ta0SN9juJBmWkZEpH2JUuIDcjx1Hva5+ZnWAed4dyNwlUp1MZLVv67ZWP7DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9np1Elu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7BFC4CEEA;
+	Mon, 23 Jun 2025 21:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715120;
-	bh=WJukbBUoMyLenn/vEXupiiNhG8iyB3/rcODJYw5TKgo=;
+	s=korg; t=1750713221;
+	bh=PC3CuU6ga4b/qPC+GyYUc6hrXBYVmnFGGt+mnpuw6EQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0or7/SnxzgNBFQ1/NBIFBqRGl/RUkt9yNkOqHPC5fMPd5mXRZRwN+ufb95eH4YFRy
-	 0VVoJ1/gxFksylPTA2Xt/kxgi5swVrprKlZzqKQHODWaP9gCyj4P/tS8Le+u0wnWAv
-	 wJzPHLFWQW1WvpMR88OHFrTHaVbVO9aaCob3D2iw=
+	b=p9np1Elu17IcSO8+TOIopBxBDCpBT1SCP2tO/v+BhkepaQA77i0Xmpw30TQdbS3RV
+	 sTe8oQcxSipXJ9PSQMpAaMHldpazQa5L+LPWFqDyKNpvgKj35gBHNKmAOHv6fU1K8a
+	 ZcTeho2jet+SAJ5X4UrZHOa/jcbsQ9bGvfFJ8gxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 136/414] staging: iio: ad5933: Correct settling cycles encoding per datasheet
+	syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 315/592] bpf: Check rcu_read_lock_trace_held() in bpf_map_lookup_percpu_elem()
 Date: Mon, 23 Jun 2025 15:04:33 +0200
-Message-ID: <20250623130645.454835958@linuxfoundation.org>
+Message-ID: <20250623130707.915806376@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 60638e2a2d4bc03798f00d5ab65ce9b83cb8b03b upstream.
+[ Upstream commit d4965578267e2e81f67c86e2608481e77e9c8569 ]
 
-The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
-(2044).
+bpf_map_lookup_percpu_elem() helper is also available for sleepable bpf
+program. When BPF JIT is disabled or under 32-bit host,
+bpf_map_lookup_percpu_elem() will not be inlined. Using it in a
+sleepable bpf program will trigger the warning in
+bpf_map_lookup_percpu_elem(), because the bpf program only holds
+rcu_read_lock_trace lock. Therefore, add the missed check.
 
-Clamp the user input to the maximum effective value of 0x7FC cycles.
-
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Link: https://patch.msgid.link/20250420013009.847851-1-gshahrouzi@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000176a130617420310@google.com/
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20250526062534.1105938-1-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/helpers.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct devic
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)0x7FC);
- 		st->settling_cycles = val;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index e3a2662f4e336..a71aa4cb85fae 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -129,7 +129,8 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
  
- 		/* 2x, 4x handling, see datasheet */
+ BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
+ }
+ 
+-- 
+2.39.5
+
 
 
 
