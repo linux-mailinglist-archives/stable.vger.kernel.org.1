@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155649-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 470CFAE4348
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BBA7AE42A0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CAFEB17534B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F2A593B8685
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9BCC2550D7;
-	Mon, 23 Jun 2025 13:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF282550D2;
+	Mon, 23 Jun 2025 13:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fYlkO20e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBumQtRs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97264253F3A;
-	Mon, 23 Jun 2025 13:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B00253356;
+	Mon, 23 Jun 2025 13:19:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684975; cv=none; b=W32LRWCf47u5n1484Rqww1KAg7nnmvmgztEqKn1gXT4CdoKtFC6sugXIDRy+RRc+QB7yscJu9lR4+2xzZJLyiO+lJ1LSWsxT2vdfvOpbxFsGA/MY5aBnndM0QB/GPNPNdyIMwo1Gar6HZ+lSOw2lt/+t6ZWTf5y4UXZ0y7/CQKo=
+	t=1750684761; cv=none; b=bdI+pqXLHvJTDw55uxJ63AuNV004BeonMu0neq5GHLljoiZYrOnvBq3UzOmrldB7bPcVj1EYRoKFgMwBYyY6IoBxWz+OGVTsfddJUpyqtyl5Ok93hoSVjV8z1K3WYOnwpbzY7TPE22MWYyybhdElKnxvfTk85/leWpQG7rZpraQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684975; c=relaxed/simple;
-	bh=3ScfD/jPzSY6mk9VvE/JnJHPCZsnlXxp3lRvr5FfuKU=;
+	s=arc-20240116; t=1750684761; c=relaxed/simple;
+	bh=NnrRyp7Mt80byEK9ukF+fmIKIg93nGIDqhar1l/YGn0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sbgCBIcggJtbG/j74whhtLcClBH9kfwXdmZyHB7ob320rt0ziZuwJYWyP5BY9GSrL+Y/Jq31NAurHdujxYGnilJTht0OBEQjvW7YT5hyEmtTo/ZvROagoKu+MgwKnNNgfSXI6XtZ99eeV6zjV6+JHvStwBRJ/XZ4J0Fqq3eJVWc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fYlkO20e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A67BC4CEEA;
-	Mon, 23 Jun 2025 13:22:55 +0000 (UTC)
+	 MIME-Version; b=HsjsTspCQ7ru36fTb3eq0KZN73mdCPcuw+sL2KNZqq+MRvTM527b++i7LCgp89TJAKQTatYDRcHTw6M12S5r38LlPQ/uou7YNTMMoXfWunS/p0jFtAuPP3rrdhGx3mHzRlSjP5HCAj17eI4jwzgzvZo81yBGskTBUHmzv4jPxZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBumQtRs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA08C4CEEA;
+	Mon, 23 Jun 2025 13:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684975;
-	bh=3ScfD/jPzSY6mk9VvE/JnJHPCZsnlXxp3lRvr5FfuKU=;
+	s=korg; t=1750684761;
+	bh=NnrRyp7Mt80byEK9ukF+fmIKIg93nGIDqhar1l/YGn0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fYlkO20e+k5PV0bfcuiCrIRXjt3kRNWA+n4ZugOh3MdTnmTU9r+Z++pP0VqVFqMKM
-	 NRqKeZ7C+sAVd44+cvFnsrWPCkDWpoj4EEBFx1Il0OAJOg2a8F9zzykyysJsyIvK7x
-	 kXlL9vMX3IPSDNy1HqJp5rtnxKlkewdkVoNDb12Y=
+	b=VBumQtRsacWlM4PRj/XgGc9+3bc7UShlfclBlYgV0DSpj7JsXN22VoLUWDdmLpaOS
+	 tBNlwd/rsGfGa42ohd9WAgztEl2EA1Z09egBsJfHnj6LR1VI3m/Eh/rE1SUP2/dyo4
+	 haxb2pOOrodLadmD8mji+FypiSE3N8Ds5Fjs9yG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Biju Das <biju.das.jz@bp.renesas.com>,
-	Thierry Reding <treding@nvidia.com>,
+	syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/222] drm/tegra: rgb: Fix the unbound reference count
-Date: Mon, 23 Jun 2025 15:06:00 +0200
-Message-ID: <20250623130612.656503433@linuxfoundation.org>
+Subject: [PATCH 5.4 026/222] f2fs: fix to do sanity check on sbi->total_valid_block_count
+Date: Mon, 23 Jun 2025 15:06:01 +0200
+Message-ID: <20250623130612.684004811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,55 +67,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 3c3642335065c3bde0742b0edc505b6ea8fdc2b3 ]
+[ Upstream commit 05872a167c2cab80ef186ef23cc34a6776a1a30c ]
 
-The of_get_child_by_name() increments the refcount in tegra_dc_rgb_probe,
-but the driver does not decrement the refcount during unbind. Fix the
-unbound reference count using devm_add_action_or_reset() helper.
+syzbot reported a f2fs bug as below:
 
-Fixes: d8f4a9eda006 ("drm: Add NVIDIA Tegra20 support")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250205112137.36055-1-biju.das.jz@bp.renesas.com
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/f2fs.h:2521!
+RIP: 0010:dec_valid_block_count+0x3b2/0x3c0 fs/f2fs/f2fs.h:2521
+Call Trace:
+ f2fs_truncate_data_blocks_range+0xc8c/0x11a0 fs/f2fs/file.c:695
+ truncate_dnode+0x417/0x740 fs/f2fs/node.c:973
+ truncate_nodes+0x3ec/0xf50 fs/f2fs/node.c:1014
+ f2fs_truncate_inode_blocks+0x8e3/0x1370 fs/f2fs/node.c:1197
+ f2fs_do_truncate_blocks+0x840/0x12b0 fs/f2fs/file.c:810
+ f2fs_truncate_blocks+0x10d/0x300 fs/f2fs/file.c:838
+ f2fs_truncate+0x417/0x720 fs/f2fs/file.c:888
+ f2fs_setattr+0xc4f/0x12f0 fs/f2fs/file.c:1112
+ notify_change+0xbca/0xe90 fs/attr.c:552
+ do_truncate+0x222/0x310 fs/open.c:65
+ handle_truncate fs/namei.c:3466 [inline]
+ do_open fs/namei.c:3849 [inline]
+ path_openat+0x2e4f/0x35d0 fs/namei.c:4004
+ do_filp_open+0x284/0x4e0 fs/namei.c:4031
+ do_sys_openat2+0x12b/0x1d0 fs/open.c:1429
+ do_sys_open fs/open.c:1444 [inline]
+ __do_sys_creat fs/open.c:1522 [inline]
+ __se_sys_creat fs/open.c:1516 [inline]
+ __x64_sys_creat+0x124/0x170 fs/open.c:1516
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/syscall_64.c:94
+
+The reason is: in fuzzed image, sbi->total_valid_block_count is
+inconsistent w/ mapped blocks indexed by inode, so, we should
+not trigger panic for such case, instead, let's print log and
+set fsck flag.
+
+Fixes: 39a53e0ce0df ("f2fs: add superblock and major in-memory structure")
+Reported-by: syzbot+8b376a77b2f364097fbe@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/67f3c0b2.050a0220.396535.0547.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/tegra/rgb.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ fs/f2fs/f2fs.h | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/tegra/rgb.c b/drivers/gpu/drm/tegra/rgb.c
-index 4be4dfd4a68a3..a2168866f5520 100644
---- a/drivers/gpu/drm/tegra/rgb.c
-+++ b/drivers/gpu/drm/tegra/rgb.c
-@@ -211,6 +211,11 @@ static const struct drm_encoder_helper_funcs tegra_rgb_encoder_helper_funcs = {
- 	.atomic_check = tegra_rgb_encoder_atomic_check,
- };
+diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
+index 44c849bebd2ef..1b8f41daddbaa 100644
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1867,8 +1867,14 @@ static inline void dec_valid_block_count(struct f2fs_sb_info *sbi,
+ 	blkcnt_t sectors = count << F2FS_LOG_SECTORS_PER_BLOCK;
  
-+static void tegra_dc_of_node_put(void *data)
-+{
-+	of_node_put(data);
-+}
-+
- int tegra_dc_rgb_probe(struct tegra_dc *dc)
- {
- 	struct device_node *np;
-@@ -218,7 +223,14 @@ int tegra_dc_rgb_probe(struct tegra_dc *dc)
- 	int err;
- 
- 	np = of_get_child_by_name(dc->dev->of_node, "rgb");
--	if (!np || !of_device_is_available(np))
-+	if (!np)
-+		return -ENODEV;
-+
-+	err = devm_add_action_or_reset(dc->dev, tegra_dc_of_node_put, np);
-+	if (err < 0)
-+		return err;
-+
-+	if (!of_device_is_available(np))
- 		return -ENODEV;
- 
- 	rgb = devm_kzalloc(dc->dev, sizeof(*rgb), GFP_KERNEL);
+ 	spin_lock(&sbi->stat_lock);
+-	f2fs_bug_on(sbi, sbi->total_valid_block_count < (block_t) count);
+-	sbi->total_valid_block_count -= (block_t)count;
++	if (unlikely(sbi->total_valid_block_count < count)) {
++		f2fs_warn(sbi, "Inconsistent total_valid_block_count:%u, ino:%lu, count:%u",
++			  sbi->total_valid_block_count, inode->i_ino, count);
++		sbi->total_valid_block_count = 0;
++		set_sbi_flag(sbi, SBI_NEED_FSCK);
++	} else {
++		sbi->total_valid_block_count -= count;
++	}
+ 	if (sbi->reserved_blocks &&
+ 		sbi->current_reserved_blocks < sbi->reserved_blocks)
+ 		sbi->current_reserved_blocks = min(sbi->reserved_blocks,
 -- 
 2.39.5
 
