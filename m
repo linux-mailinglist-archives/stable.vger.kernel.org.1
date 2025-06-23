@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A893EAE526C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB51AE5405
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07F787A14F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7DA72446A62
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E362AEE4;
-	Mon, 23 Jun 2025 21:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA72321FF2B;
+	Mon, 23 Jun 2025 21:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kvto9Fd8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LxhLmb4I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340011E1A05;
-	Mon, 23 Jun 2025 21:43:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68DEC1F4628;
+	Mon, 23 Jun 2025 21:58:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715019; cv=none; b=SXVsCU4+tTA3m7NuOs5kxRAKWKhqHWugWNWK8+ebV+veRqoZpL3b5oND2Zot8EOTGE7q7BiXFwu4Hcz7v93NdoCf7lrr1NZi8jxTLfPdV9ev17BA64BOmgDASZGPEg49Vxr1Tvbc0q5Wkc3glgQePSKto+7Lh7Wt8+1BU/d7tPk=
+	t=1750715890; cv=none; b=ACIK8mAD6i6deWMwcWrLtGr/X1y6EPHyic/if5VZ8aAee3/dZlfc1qm+bGQdPrxNWxR+EB/TpUQlA5zyGibUCZNjN7D2it5MXeBXi4mPd5do4m/y2l4b79h4tQgACjrR7IaPpLJGg2Uanzj5QPgoWYsB8KludbJt7fUKGN1iWSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715019; c=relaxed/simple;
-	bh=YXPkIjaKo18GCwllx+9+n5VzIh9ZiU6PrzNHSXndLJ8=;
+	s=arc-20240116; t=1750715890; c=relaxed/simple;
+	bh=4PQ5rpz48z46VkUeVwAZkhY0eupgBwETDP7B3rvaVds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GYCA7O5aLq8PRqwSUsw/9BdaUmhMQirC0az+NSWlXGqUhAC2OFnqjwwIOE0VP+4YDDkMA4HVWFx6MlVMbKysXsxBEkGZu+ayukov84+JYulnXTk9SxGRQwDgfsGSBNwy3nW2mdUMxL2iYGPTR14p32SiCfZymQJYNvgmOkLB7VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kvto9Fd8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEE91C4CEEA;
-	Mon, 23 Jun 2025 21:43:38 +0000 (UTC)
+	 MIME-Version; b=OaWjgztf2lNCLxT6i0zuh77iSvkZe/hmdbsxbov0vZJIvi84wEpULGO34EtGmeMd2ikV5jkKCCqrmCZYaVdK7VOh5/gOw4maPVqmgRkcofp2XvPEi9jn8joGgAchZ9FL8VyRbMAT1XbAtqnu8bYlbXrkshxe7vlIx3NCEbDbAx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LxhLmb4I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F357BC4CEEA;
+	Mon, 23 Jun 2025 21:58:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715019;
-	bh=YXPkIjaKo18GCwllx+9+n5VzIh9ZiU6PrzNHSXndLJ8=;
+	s=korg; t=1750715890;
+	bh=4PQ5rpz48z46VkUeVwAZkhY0eupgBwETDP7B3rvaVds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kvto9Fd8IZQneXzqcZFHE8WHaRorhaZrz75/Ph+fKt3jW86cwXyd1PKkDVU4Z0brJ
-	 /oi3VHKIv2EFL6jx4rxMOfTLGyvSS5NQ7IZL90RK4bj480PRTx7Sypo+lLX109ZXlZ
-	 cZZ7s7D43gjATvf8/wtHNNZgIB67GvsJtm2fR9aA=
+	b=LxhLmb4Ik959ad03U9coQc6H3RVgspwQ0xOxbYTCZNbDLcGiDEbWjb6OLHbXt+CQy
+	 0S7OMyas6pARRpiXQNqM2BeS6SWa4kgha6aFpnCOyiz5dMOtcUCJyC2KiJn8vyBPcG
+	 1ChzF/VPk5hXSxwOXlDVm73A7tn++gJOuMDcWx9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lifeng Zheng <zhenglifeng1@huawei.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 247/355] cpufreq: Force sync policy boost with global boost on sysfs update
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.15 490/592] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
 Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130634.177670277@linuxfoundation.org>
+Message-ID: <20250623130712.088501371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viresh Kumar <viresh.kumar@linaro.org>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-[ Upstream commit 121baab7b88ed865532dadb7ef1aee6e2bea86f5 ]
+commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
 
-If the global boost flag is enabled and policy boost flag is disabled, a
-call to `cpufreq_boost_trigger_state(true)` must enable the policy's
-boost state.
+PCM1 not in Pulseaudio's control list; standardize control to
+"Speaker" and "Headphone".
 
-The current code misses that because of an optimization. Fix it.
-
-Suggested-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Reviewed-by: Lifeng Zheng <zhenglifeng1@huawei.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Link: https://patch.msgid.link/852ff11c589e6300730d207baac195b2d9d8b95f.1745511526.git.viresh.kumar@linaro.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/usb/mixer_maps.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index d13139497da44..6294e10657b46 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -2637,8 +2637,10 @@ int cpufreq_boost_trigger_state(int state)
- 	unsigned long flags;
- 	int ret = 0;
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -383,6 +383,13 @@ static const struct usbmix_name_map ms_u
+ 	{ 0 }   /* terminator */
+ };
  
--	if (cpufreq_driver->boost_enabled == state)
--		return 0;
-+	/*
-+	 * Don't compare 'cpufreq_driver->boost_enabled' with 'state' here to
-+	 * make sure all policies are in sync with global boost flag.
-+	 */
++/* KTMicro USB */
++static struct usbmix_name_map s31b2_0022_map[] = {
++	{ 23, "Speaker Playback" },
++	{ 18, "Headphone Playback" },
++	{ 0 }
++};
++
+ /* ASUS ROG Zenith II with Realtek ALC1220-VB */
+ static const struct usbmix_name_map asus_zenith_ii_map[] = {
+ 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
+@@ -692,6 +699,11 @@ static const struct usbmix_ctl_map usbmi
+ 		.id = USB_ID(0x045e, 0x083c),
+ 		.map = ms_usb_link_map,
+ 	},
++	{
++		/* KTMicro USB */
++		.id = USB_ID(0X31b2, 0x0022),
++		.map = s31b2_0022_map,
++	},
+ 	{ 0 } /* terminator */
+ };
  
- 	write_lock_irqsave(&cpufreq_driver_lock, flags);
- 	cpufreq_driver->boost_enabled = state;
--- 
-2.39.5
-
 
 
 
