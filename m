@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C78B7AE50AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 664C9AE4EDF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE64D440B5E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3995B189FF45
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 532B6224AFA;
-	Mon, 23 Jun 2025 21:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6A7B202983;
+	Mon, 23 Jun 2025 21:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DQgdNi6H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfLKnOgb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03A942248B5;
-	Mon, 23 Jun 2025 21:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932A770838;
+	Mon, 23 Jun 2025 21:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713999; cv=none; b=B5zUNod92XHVsV+yIbTI8sIBakzPCwxRKEedULhcy2EPnP1ciCyS+cpkHjYHej3aTIY14SHS9r1Hzlp9+0aF6WDZgePIsh/gmxmt3mN6UrdKDnoYnbPk0zJdLPNLdlhi8Pe1Fut8O2pcW+IOj5/Sas2b0BkywH4zeIH4ASgPhMU=
+	t=1750713002; cv=none; b=E74FykG34MMkHF89kppLHIdLNLm/WZCbUuJK/zeRYT7i/JMUBEDCqS6FJ2yA8pp1tT9vW7g5cy/Mj8OReIAuUUTpucIxoEzKsydHEbgXGY6CdbrNB71Fixjd+FSgFMFDTD0/cRJmbP0heIunTb1KKNcQMQ5aHpUQm905cCqI/LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713999; c=relaxed/simple;
-	bh=srEeAfRmOEL0kMaFzOggX8jDMuaYhnAGZmp6T5qQ8cE=;
+	s=arc-20240116; t=1750713002; c=relaxed/simple;
+	bh=yKOZEguaj330kMOYROtUNSaRPJJxPJmJtRgFl4K2SPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FZ1nOm/qv2wWbYv70J+PHxOWOdWQC3pLf0bf/fsYeVQQb8O5qeSf/orRTqETD+v3mJS1evF2LW6wjfkX8L37ZMiyx+QbwU9sQ9NlfZ2MWBIM8MBR+h4GgjwXGzxQYPoSGk+NrE+Y9wtcAkFn0enJPxIIkOL5mF3TbjCsXWHLKdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DQgdNi6H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CBB5C4CEEA;
-	Mon, 23 Jun 2025 21:26:35 +0000 (UTC)
+	 MIME-Version; b=sPhM84VjckN5ib62sQjVaaky2NgFeS7KGEIzXyBUx5YGTomtutl828HYxoSCV0b40Di2+tfoliLTTj5N9HczWWD+LaNJW/X5oYDOiieCZyEr+uPz41auSC0QEBB/EcCfT6J+IvgHJHmjxcdP79/bX/ROUweX0U46WsGGeGECFHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfLKnOgb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C5ECC4CEEA;
+	Mon, 23 Jun 2025 21:10:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713996;
-	bh=srEeAfRmOEL0kMaFzOggX8jDMuaYhnAGZmp6T5qQ8cE=;
+	s=korg; t=1750713002;
+	bh=yKOZEguaj330kMOYROtUNSaRPJJxPJmJtRgFl4K2SPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DQgdNi6HSa/0E8uZjjuNz/tzslQ34Oyh6URbzy+0NnD7SjSNGSUG1tBXMeDNAs2wo
-	 x1xlqs/bxt0bc2cdsstREz8BMa96NeVOE4/yKo9a2SATA2BP/d6SRm0/B9e4ZanA5H
-	 Ek90PMaSWIxg6QGEwY6oiXUaoDuQAo86hIN/AlFY=
+	b=tfLKnOgbzAT8XJUkcy1FRA5srkdEPHimrjPnpCF7bbgoDQQ5uZHCwjYoI5cuUGERL
+	 KaCSvWMASiMdlNtKaSe8cqY07V7JinrKNNaqFeMAkO1M23JDn7iqe0rz20mFbmakjA
+	 171uI2QtdV077/szVfnZGi/RV+uQgkQQD4gIakBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 159/411] net_sched: red: fix a race in __red_change()
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 042/290] media: imx-jpeg: Drop the first error frames
 Date: Mon, 23 Jun 2025 15:05:03 +0200
-Message-ID: <20250623130637.650051592@linuxfoundation.org>
+Message-ID: <20250623130628.273979125@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ming Qian <ming.qian@oss.nxp.com>
 
-[ Upstream commit 85a3e0ede38450ea3053b8c45d28cf55208409b8 ]
+commit d52b9b7e2f10d22a49468128540533e8d76910cd upstream.
 
-Gerrard Tai reported a race condition in RED, whenever SFQ perturb timer
-fires at the wrong time.
+When an output buffer contains error frame header,
+v4l2_jpeg_parse_header() will return error, then driver will mark this
+buffer and a capture buffer done with error flag in device_run().
 
-The race is as follows:
+But if the error occurs in the first frames, before setup the capture
+queue, there is no chance to schedule device_run(), and there may be no
+capture to mark error.
 
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
+So we need to drop this buffer with error flag, and make the decoding
+can continue.
 
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: 0c8d13ac9607 ("net: sched: red: delay destroying child qdisc on replace")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250611111515.1983366-3-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2db16c6ed72c ("media: imx-jpeg: Add V4L2 driver for i.MX8 JPEG Encoder/Decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ming Qian <ming.qian@oss.nxp.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_red.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/net/sched/sch_red.c b/net/sched/sch_red.c
-index 935d90874b1b7..1b69b7b90d858 100644
---- a/net/sched/sch_red.c
-+++ b/net/sched/sch_red.c
-@@ -283,7 +283,7 @@ static int __red_change(struct Qdisc *sch, struct nlattr **tb,
- 	q->userbits = userbits;
- 	q->limit = ctl->limit;
- 	if (child) {
--		qdisc_tree_flush_backlog(q->qdisc);
-+		qdisc_purge_queue(q->qdisc);
- 		old_child = q->qdisc;
- 		q->qdisc = child;
- 	}
--- 
-2.39.5
-
+--- a/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
++++ b/drivers/media/platform/nxp/imx-jpeg/mxc-jpeg.c
+@@ -1913,9 +1913,19 @@ static void mxc_jpeg_buf_queue(struct vb
+ 	jpeg_src_buf = vb2_to_mxc_buf(vb);
+ 	jpeg_src_buf->jpeg_parse_error = false;
+ 	ret = mxc_jpeg_parse(ctx, vb);
+-	if (ret)
++	if (ret) {
+ 		jpeg_src_buf->jpeg_parse_error = true;
+ 
++		/*
++		 * if the capture queue is not setup, the device_run() won't be scheduled,
++		 * need to drop the error buffer, so that the decoding can continue
++		 */
++		if (!vb2_is_streaming(v4l2_m2m_get_dst_vq(ctx->fh.m2m_ctx))) {
++			v4l2_m2m_buf_done(vbuf, VB2_BUF_STATE_ERROR);
++			return;
++		}
++	}
++
+ end:
+ 	v4l2_m2m_buf_queue(ctx->fh.m2m_ctx, vbuf);
+ }
 
 
 
