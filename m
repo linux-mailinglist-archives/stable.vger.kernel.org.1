@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156948-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C682AE51D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F531AE52BC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC244287E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AEA681B65D0C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967B92222CA;
-	Mon, 23 Jun 2025 21:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECDC170838;
+	Mon, 23 Jun 2025 21:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4ShHlZ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ftJoYCP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535BF21D3DD;
-	Mon, 23 Jun 2025 21:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EB72253B0;
+	Mon, 23 Jun 2025 21:46:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714662; cv=none; b=V6/1FW8jg9EUa84mZSdnqXxMMJ7rI5FOpfgeQM6hNBn2nkUB8KpVnOaNn7vbRP6YeO8M47lRFeo6PgpOYwkMQ9ftvssEhzyyk7SYRVm6p9r3MfP9vK+eMjZ6M47S8qxiP1mHrSp1x9nPZfnrrAHJ1Q6Ox1RjgY2AQC0MbOlkm10=
+	t=1750715193; cv=none; b=qQqEb9xHOg1Mfltfs3pEEJllC9atR5VDFnh51UA3vdVlvKC96hN3p6NP4C3Sn8WAk76ZvwDLc44ft05sK2rLUzbDto5J/8VBao2IHr4jY3oPQZbCx1zX35zgzdVEIit8C+ITiIdXuSa2VGcs6Z761tnZIYhuCVKkkQ/2RpI1DEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714662; c=relaxed/simple;
-	bh=p3/qNWRPkj5EQOUeAePKdBsS8dUB9B6qeYiC/LiOUyQ=;
+	s=arc-20240116; t=1750715193; c=relaxed/simple;
+	bh=Ml12dc+ib7BucN+WZnDE8emFO1KpI1AshJmthd7KEhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKugeSZdB/KHvNl9p7lHrttJF2Z8Dfxb9GsHFABSRWIandt6kpHD5Lm2iP7JFAmpXDReE4vrcnt7ylcpGnHpTz+ojQZsXkMo4+k7CCG78V2CAAQoH1Ickm41ifn2CYbeHAStxceMvSppIWFMDOiur/vYx9/89YmDMSQ5SgVANww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4ShHlZ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD19C4CEEA;
-	Mon, 23 Jun 2025 21:37:41 +0000 (UTC)
+	 MIME-Version; b=WysPU5676N6dOVAsD0aJPHLebfwjOrCG7D/bRUlJ75BcK6aNnCe4uAHqYX4hJOaoUQRhmHm/BVNizqxy5wTSeNs0lBwc4Ct9YZGp8kgMgxknDCCJ18I/uEEgAu0kd9TnFVjpXTX4P3dclNG1ab3ogYLwstWh0Gmd6iW940nd7rg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ftJoYCP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AFFDC4CEEA;
+	Mon, 23 Jun 2025 21:46:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714662;
-	bh=p3/qNWRPkj5EQOUeAePKdBsS8dUB9B6qeYiC/LiOUyQ=;
+	s=korg; t=1750715193;
+	bh=Ml12dc+ib7BucN+WZnDE8emFO1KpI1AshJmthd7KEhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4ShHlZ4rHP+ivnP/P4zcNj03937XTI0UVxxbYnLODkgTM/6gSaXKz1dyZZsfGj7/
-	 BQZ/LqhfvCmDnzqMsFNtBHP12Rp7sH+IvW3eWTlm/xrVUf2Tf2FzXaAT6q+aHckdSE
-	 M17L0P9uyvet5o0DwFrDiPfMSr4phpr8rOoSCBt0=
+	b=ftJoYCP85tD+re5Xse1aFv7lr4SCkOUXUUo6YXsz6Yz2jo1gIesfYbqfwYE/s0Tb/
+	 YVoWc5DmC3NkZnaRtRrpkxWi7cz+X9HfTpUm2t/iU4fEON94IjDA0Zfyz+EU052CTk
+	 T5puRIt3NBA8LoJY4KKmtX06HdApNUXZ6Eabg+lE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Marheine <pmarheine@chromium.org>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 221/355] ACPI: battery: negate current when discharging
+	M Nikhil <nikh1092@linux.ibm.com>,
+	Nihar Panda <niharp@linux.ibm.com>,
+	Peter Oberparleiter <oberpar@linux.ibm.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.15 464/592] scsi: s390: zfcp: Ensure synchronous unit_add
 Date: Mon, 23 Jun 2025 15:07:02 +0200
-Message-ID: <20250623130633.385516249@linuxfoundation.org>
+Message-ID: <20250623130711.465168480@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Marheine <pmarheine@chromium.org>
+From: Peter Oberparleiter <oberpar@linux.ibm.com>
 
-[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
+commit 9697ca0d53e3db357be26d2414276143c4a2cd49 upstream.
 
-The ACPI specification requires that battery rate is always positive,
-but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
-(Documentation/ABI/testing/sysfs-class-power) specifies that it should
-be negative when a battery is discharging. When reporting CURRENT_NOW,
-massage the value to match the documented ABI.
+Improve the usability of the unit_add sysfs attribute by ensuring that
+the associated FCP LUN scan processing is completed synchronously.  This
+enables configuration tooling to consistently determine the end of the
+scan process to allow for serialization of follow-on actions.
 
-This only changes the sign of `current_now` and not `power_now` because
-documentation doesn't describe any particular meaning for `power_now` so
-leaving `power_now` unchanged is less likely to confuse userspace
-unnecessarily, whereas becoming consistent with the documented ABI is
-worth potentially confusing clients that read `current_now`.
+While the scan process associated with unit_add typically completes
+synchronously, it is deferred to an asynchronous background process if
+unit_add is used before initial remote port scanning has completed.  This
+occurs when unit_add is used immediately after setting the associated FCP
+device online.
 
-Signed-off-by: Peter Marheine <pmarheine@chromium.org>
-Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To ensure synchronous unit_add processing, wait for remote port scanning
+to complete before initiating the FCP LUN scan.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: M Nikhil <nikh1092@linux.ibm.com>
+Reviewed-by: Nihar Panda <niharp@linux.ibm.com>
+Signed-off-by: Peter Oberparleiter <oberpar@linux.ibm.com>
+Signed-off-by: Nihar Panda <niharp@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250603182252.2287285-2-niharp@linux.ibm.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/battery.c | 19 ++++++++++++++++---
- 1 file changed, 16 insertions(+), 3 deletions(-)
+ drivers/s390/scsi/zfcp_sysfs.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
-index f9fb092f33a26..4a188cc28b5ce 100644
---- a/drivers/acpi/battery.c
-+++ b/drivers/acpi/battery.c
-@@ -255,10 +255,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
- 		break;
- 	case POWER_SUPPLY_PROP_CURRENT_NOW:
- 	case POWER_SUPPLY_PROP_POWER_NOW:
--		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
-+		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
- 			ret = -ENODEV;
--		else
--			val->intval = battery->rate_now * 1000;
-+			break;
-+		}
+--- a/drivers/s390/scsi/zfcp_sysfs.c
++++ b/drivers/s390/scsi/zfcp_sysfs.c
+@@ -449,6 +449,8 @@ static ssize_t zfcp_sysfs_unit_add_store
+ 	if (kstrtoull(buf, 0, (unsigned long long *) &fcp_lun))
+ 		return -EINVAL;
+ 
++	flush_work(&port->rport_work);
 +
-+		val->intval = battery->rate_now * 1000;
-+		/*
-+		 * When discharging, the current should be reported as a
-+		 * negative number as per the power supply class interface
-+		 * definition.
-+		 */
-+		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
-+		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
-+		    acpi_battery_handle_discharging(battery)
-+				== POWER_SUPPLY_STATUS_DISCHARGING)
-+			val->intval = -val->intval;
-+
- 		break;
- 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
- 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
--- 
-2.39.5
-
+ 	retval = zfcp_unit_add(port, fcp_lun);
+ 	if (retval)
+ 		return retval;
 
 
 
