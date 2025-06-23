@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 071BAAE568E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D39CDAE574A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77FB7447AA0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A1E13B7355
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24E59219A7A;
-	Mon, 23 Jun 2025 22:18:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5DF722577C;
+	Mon, 23 Jun 2025 22:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjGb1LZD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZE3pL9Dk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D736319E7F9;
-	Mon, 23 Jun 2025 22:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84C81221543;
+	Mon, 23 Jun 2025 22:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717096; cv=none; b=GNzwSWESVt7ULE4mBxT4diaupBfpCAudlciRSKQqdIIh+5AdztJHo7OcasFS0ujWIKoTgdy5jgu1+crlgWufsMRRqRDZW8MpYYHjiSAa6WbNEz8X8lfW4+0gccXdlziJuO0PVdYDFsC6YsREPehisI4mEa67OoDbElWEO0SiIJ8=
+	t=1750717533; cv=none; b=Au7g4KHG/zRNlpJOZDRvD7kV7sjlXlCaklSclU4iZCnmhFIANm7BzTkMy9dqtc4HQhZ0Z1WYLvmNCb+8BL3aSrEpI1WE8Fqs678Fm7QsPNAOnMk3Rk8zNZTtinO9SWSmrQyu9d8GkOc5LERz20UUG8PlGymBLpbpdkA1JJhn5bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717096; c=relaxed/simple;
-	bh=j4wxZQiVX78ICj7XfTSZrp75cc+K0kD5BlO7+a4qMJg=;
+	s=arc-20240116; t=1750717533; c=relaxed/simple;
+	bh=h2ESqK2WhJoIF47qLaO9/LWsJ6meponAZsQ3Xb78no8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g9Xnz+NEV+Hx+0UGfrLtjXY6pxJpTcJEXmdDnSfHkHvn8YiVSfuMZ2evmLGwcBoASTF2fb1fTL7zbMUY+Cdkx0bhhTdmST5/YH4koSA/yX36leBv3LS/CrV490R2zMZl3C6x5meaFW8yxRwn42M6OxeORfguZp8xdyo6oiJYHYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjGb1LZD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F351C4CEED;
-	Mon, 23 Jun 2025 22:18:16 +0000 (UTC)
+	 MIME-Version; b=QdeWCZve8LwUL/lGI3Z8+Ju6mEb8PRtSesz79c8OR8HAgCnjHi+HkqUrDsLFtk93WP6fRkDpnQG7BqwDSmjk7hXjfbHsxc3wjIWVWGCpoD/4Qt66Ndqj2cuIx0JiO7erq36Kedw/DjtdeE201+yFFDad3dk2iLCTDEC25hODlDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZE3pL9Dk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC40C4CEEA;
+	Mon, 23 Jun 2025 22:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717096;
-	bh=j4wxZQiVX78ICj7XfTSZrp75cc+K0kD5BlO7+a4qMJg=;
+	s=korg; t=1750717533;
+	bh=h2ESqK2WhJoIF47qLaO9/LWsJ6meponAZsQ3Xb78no8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjGb1LZD/xCcW7cfTlgrVU2/UbJjZh+uDW3DiTqeIJe6YGh+Y4WtPumyynrK/dFJM
-	 PZLNIa2KdMDPHXJ+b2eYXajhfwwDfYMG/wkGZe2H5vyUzEy5uCp9dB3eg7D+bpHJw9
-	 w4joqg5WPURVb2Xv+jL9Gr1mks4ZXdwlvUeNz+bQ=
+	b=ZE3pL9DkZgIkBMUh3ZEhcDcaF+e++nwkzkB/fuS+V4GilWgTgndVSIwE6v6G19w8j
+	 0mFpE/trTm7hihLSzVZCt9S47vjhkUFNaJ8hcBCR77EJx9r71e051/QjeiCD2yi5hu
+	 4Ayx9T+vCexFKHMvk4EmF1XYO3d6+Ofbp5GJWCVc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 401/411] net_sched: sch_sfq: move the limit validation
+	Atish Patra <atishp@rivosinc.com>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 408/414] RISC-V: KVM: Fix the size parameter check in SBI SFENCE calls
 Date: Mon, 23 Jun 2025 15:09:05 +0200
-Message-ID: <20250623130643.773672785@linuxfoundation.org>
+Message-ID: <20250623130652.147953373@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,85 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Anup Patel <apatel@ventanamicro.com>
 
-commit b3bf8f63e6179076b57c9de660c9f80b5abefe70 upstream.
+[ Upstream commit 6aba0cb5bba6141158d5449f2cf53187b7f755f9 ]
 
-It is not sufficient to directly validate the limit on the data that
-the user passes as it can be updated based on how the other parameters
-are changed.
+As-per the SBI specification, an SBI remote fence operation applies
+to the entire address space if either:
+1) start_addr and size are both 0
+2) size is equal to 2^XLEN-1
 
-Move the check at the end of the configuration update process to also
-catch scenarios where the limit is indirectly updated, for example
-with the following configurations:
+>From the above, only #1 is checked by SBI SFENCE calls so fix the
+size parameter check in SBI SFENCE calls to cover #2 as well.
 
-tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 depth 1
-tc qdisc add dev dummy0 handle 1: root sfq limit 2 flows 1 divisor 1
-
-This fixes the following syzkaller reported crash:
-
-------------[ cut here ]------------
-UBSAN: array-index-out-of-bounds in net/sched/sch_sfq.c:203:6
-index 65535 is out of range for type 'struct sfq_head[128]'
-CPU: 1 UID: 0 PID: 3037 Comm: syz.2.16 Not tainted 6.14.0-rc2-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 12/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x201/0x300 lib/dump_stack.c:120
- ubsan_epilogue lib/ubsan.c:231 [inline]
- __ubsan_handle_out_of_bounds+0xf5/0x120 lib/ubsan.c:429
- sfq_link net/sched/sch_sfq.c:203 [inline]
- sfq_dec+0x53c/0x610 net/sched/sch_sfq.c:231
- sfq_dequeue+0x34e/0x8c0 net/sched/sch_sfq.c:493
- sfq_reset+0x17/0x60 net/sched/sch_sfq.c:518
- qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
- tbf_reset+0x41/0x110 net/sched/sch_tbf.c:339
- qdisc_reset+0x12e/0x600 net/sched/sch_generic.c:1035
- dev_reset_queue+0x100/0x1b0 net/sched/sch_generic.c:1311
- netdev_for_each_tx_queue include/linux/netdevice.h:2590 [inline]
- dev_deactivate_many+0x7e5/0xe70 net/sched/sch_generic.c:1375
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Fixes: 10685681bafc ("net_sched: sch_sfq: don't allow 1 packet limit")
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 13acfec2dbcc ("RISC-V: KVM: Add remote HFENCE functions based on VCPU requests")
+Reviewed-by: Atish Patra <atishp@rivosinc.com>
+Signed-off-by: Anup Patel <apatel@ventanamicro.com>
+Link: https://lore.kernel.org/r/20250605061458.196003-2-apatel@ventanamicro.com
+Signed-off-by: Anup Patel <anup@brainfault.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -661,10 +661,6 @@ static int sfq_change(struct Qdisc *sch,
- 		if (!p)
- 			return -ENOMEM;
- 	}
--	if (ctl->limit == 1) {
--		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
--		return -EINVAL;
--	}
- 
- 	sch_tree_lock(sch);
- 
-@@ -705,6 +701,12 @@ static int sfq_change(struct Qdisc *sch,
- 		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
- 		maxflows = min_t(u32, maxflows, limit);
- 	}
-+	if (limit == 1) {
-+		sch_tree_unlock(sch);
-+		kfree(p);
-+		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
-+		return -EINVAL;
-+	}
- 
- 	/* commit configuration */
- 	q->limit = limit;
+diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
+index 5fbf3f94f1e85..9752d2ffff683 100644
+--- a/arch/riscv/kvm/vcpu_sbi_replace.c
++++ b/arch/riscv/kvm/vcpu_sbi_replace.c
+@@ -103,7 +103,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_FENCE_I_SENT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_all(vcpu->kvm, hbase, hmask);
+ 		else
+ 			kvm_riscv_hfence_vvma_gva(vcpu->kvm, hbase, hmask,
+@@ -111,7 +111,7 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
+ 		kvm_riscv_vcpu_pmu_incr_fw(vcpu, SBI_PMU_FW_HFENCE_VVMA_SENT);
+ 		break;
+ 	case SBI_EXT_RFENCE_REMOTE_SFENCE_VMA_ASID:
+-		if (cp->a2 == 0 && cp->a3 == 0)
++		if ((cp->a2 == 0 && cp->a3 == 0) || cp->a3 == -1UL)
+ 			kvm_riscv_hfence_vvma_asid_all(vcpu->kvm,
+ 						       hbase, hmask, cp->a4);
+ 		else
+-- 
+2.39.5
+
 
 
 
