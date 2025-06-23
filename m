@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157033-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B5BAE4EFC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:18 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87170AE522F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A20337A9B6D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 183EC7AAB53
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B06202983;
-	Mon, 23 Jun 2025 21:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF3CE1E22E6;
+	Mon, 23 Jun 2025 21:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/i9XJXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTkLsVc3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A6B70838;
-	Mon, 23 Jun 2025 21:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD3C4315A;
+	Mon, 23 Jun 2025 21:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713059; cv=none; b=JnQZHtKkJi7hk+QOloeNHqixYpnf4jJbwMTZYHkFPMNEL38HeIt1PddpG/FEY3yX/jWLakk2QdBBUMtZ9koGgi0x81chkNLdtYb8yygTKfUChpmXU41la9FAxrE5WVVfSeFkLcYM7Tbn6KdkLWh00+3Ks2NyuhPZ4QjCeY6MHH4=
+	t=1750714870; cv=none; b=milpbsU9UXXuFYIW6Eg83pRqr8W8wPecVTbsb9lqIXJEjTW/z8LuATGnXQFGX2mYVS7mciLQ5cJ6JUvmqycIo5fnrK525ySShgKUHydPjSNXCox81GZ768q0FuAwTLt+M2mVGkeSkX4yxQo5XQs6VFdUksPCQJ64rv7H+3GpfHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713059; c=relaxed/simple;
-	bh=Co5T8OF3vBfSULil1PZ9InU3aD4X0izpKdI6ZWgOi2A=;
+	s=arc-20240116; t=1750714870; c=relaxed/simple;
+	bh=JE1tA0vpwKeU4qhd3X/6ti3ah0lbB3UkdHaMUS2OycU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=frzOOEXNqiGhXfM3sNWutO4nlbm0CO+2xhIRLI1t5d/iYlEdcQ/jeLHGMfdRkkOBckIlr1t/0CgMJ5O9ZmVuTKNzb92w6/hlZ+VsqiRYuf5COYzEgzN2BYdVX0Jmn0zCq//TmqYl11/Br7rsCLYLfLayyi1UBO0KhCJp1iDlzMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/i9XJXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22958C4CEEA;
-	Mon, 23 Jun 2025 21:10:58 +0000 (UTC)
+	 MIME-Version; b=hoqZ4yzyYoy7xI946/KjVkn8tjpyOL2Y97sq1k5Udcrw4Pspg2wcPlvlcujlnNQ0+YLBRNzAfxSu+kptZbET7ZVhkgbuu2EvFd/1s+JWI/kJYbQqm8WRL0PU8FhbHGiG35N/rW9dW7ydNSYp+a3rlho4ezTumbnnpfTwnyYZd4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTkLsVc3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C24C4CEEA;
+	Mon, 23 Jun 2025 21:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713059;
-	bh=Co5T8OF3vBfSULil1PZ9InU3aD4X0izpKdI6ZWgOi2A=;
+	s=korg; t=1750714870;
+	bh=JE1tA0vpwKeU4qhd3X/6ti3ah0lbB3UkdHaMUS2OycU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z/i9XJXEl3lxQXOSL+AJ2/CxKwbZ5zaDTewoPRo/co7l939uVtmhXgcoKGJ2isjtm
-	 iZgmzoaqBJG4nb5Pq5g7qfKQT9dLHZhwAjOzFKq170N9h0r3cYa624YjRSQBaQxR6w
-	 lUOQYNWUoTUuEyV5/ZPAcd95m7gdLo/90ItzBJaM=
+	b=mTkLsVc3OAyXPE+/sTTPCqfQ1v2jncxAaUlkQh2EL83H1zOqMlsD/AdA42sahqlex
+	 ZyAgOu48TEK05SUPt90Imw3MA+X6zz087yiMHsDtuegF6NlMxMQvW3CfczCNmX7Gpe
+	 ay/8GBUsu/U/gJB9fNyBzoBi3rRR4WmyP7yXvWs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ronak Doshi <ronak.doshi@broadcom.com>,
-	Guolin Yang <guolin.yang@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 122/411] vmxnet3: correctly report gso type for UDP tunnels
+Subject: [PATCH 6.1 221/508] serial: sh-sci: Move runtime PM enable to sci_probe_single()
 Date: Mon, 23 Jun 2025 15:04:26 +0200
-Message-ID: <20250623130636.626152964@linuxfoundation.org>
+Message-ID: <20250623130650.701413987@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +62,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ronak Doshi <ronak.doshi@broadcom.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-[ Upstream commit 982d30c30eaa2ec723df42e3bf526c014c1dbb88 ]
+commit 239f11209e5f282e16f5241b99256e25dd0614b6 upstream.
 
-Commit 3d010c8031e3 ("udp: do not accept non-tunnel GSO skbs landing
-in a tunnel") added checks in linux stack to not accept non-tunnel
-GRO packets landing in a tunnel. This exposed an issue in vmxnet3
-which was not correctly reporting GRO packets for tunnel packets.
+Relocate the runtime PM enable operation to sci_probe_single(). This change
+prepares the codebase for upcoming fixes.
 
-This patch fixes this issue by setting correct GSO type for the
-tunnel packets.
+While at it, replace the existing logic with a direct call to
+devm_pm_runtime_enable() and remove sci_cleanup_single(). The
+devm_pm_runtime_enable() function automatically handles disabling runtime
+PM during driver removal.
 
-Currently, vmxnet3 does not support reporting inner fields for LRO
-tunnel packets. The issue is not seen for egress drivers that do not
-use skb inner fields. The workaround is to enable tnl-segmentation
-offload on the egress interfaces if the driver supports it. This
-problem pre-exists this patch fix and can be addressed as a separate
-future patch.
-
-Fixes: dacce2be3312 ("vmxnet3: add geneve and vxlan tunnel offload support")
-Signed-off-by: Ronak Doshi <ronak.doshi@broadcom.com>
-Acked-by: Guolin Yang <guolin.yang@broadcom.com>
-Link: https://patch.msgid.link/20250530152701.70354-1-ronak.doshi@broadcom.com
-[pabeni@redhat.com: dropped the changelog]
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vmxnet3/vmxnet3_drv.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ drivers/tty/serial/sh-sci.c | 24 ++++++------------------
+ 1 file changed, 6 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/net/vmxnet3/vmxnet3_drv.c b/drivers/net/vmxnet3/vmxnet3_drv.c
-index b88092a6bc851..78d8c04b00a7f 100644
---- a/drivers/net/vmxnet3/vmxnet3_drv.c
-+++ b/drivers/net/vmxnet3/vmxnet3_drv.c
-@@ -1361,6 +1361,30 @@ vmxnet3_get_hdr_len(struct vmxnet3_adapter *adapter, struct sk_buff *skb,
- 	return (hlen + (hdr.tcp->doff << 2));
+diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
+index f8f301db84339..48bc66e2c0444 100644
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -2982,10 +2982,6 @@ static int sci_init_single(struct platform_device *dev,
+ 		ret = sci_init_clocks(sci_port, &dev->dev);
+ 		if (ret < 0)
+ 			return ret;
+-
+-		port->dev = &dev->dev;
+-
+-		pm_runtime_enable(&dev->dev);
+ 	}
+ 
+ 	port->type		= p->type;
+@@ -3015,11 +3011,6 @@ static int sci_init_single(struct platform_device *dev,
+ 	return 0;
  }
  
-+static void
-+vmxnet3_lro_tunnel(struct sk_buff *skb, __be16 ip_proto)
-+{
-+	struct udphdr *uh = NULL;
+-static void sci_cleanup_single(struct sci_port *port)
+-{
+-	pm_runtime_disable(port->port.dev);
+-}
+-
+ #if defined(CONFIG_SERIAL_SH_SCI_CONSOLE) || \
+     defined(CONFIG_SERIAL_SH_SCI_EARLYCON)
+ static void serial_console_putchar(struct uart_port *port, unsigned char ch)
+@@ -3177,8 +3168,6 @@ static int sci_remove(struct platform_device *dev)
+ 	sci_ports_in_use &= ~BIT(port->port.line);
+ 	uart_remove_one_port(&sci_uart_driver, &port->port);
+ 
+-	sci_cleanup_single(port);
+-
+ 	if (port->port.fifosize > 1)
+ 		device_remove_file(&dev->dev, &dev_attr_rx_fifo_trigger);
+ 	if (type == PORT_SCIFA || type == PORT_SCIFB || type == PORT_HSCIF)
+@@ -3341,6 +3330,11 @@ static int sci_probe_single(struct platform_device *dev,
+ 	if (ret)
+ 		return ret;
+ 
++	sciport->port.dev = &dev->dev;
++	ret = devm_pm_runtime_enable(&dev->dev);
++	if (ret)
++		return ret;
 +
-+	if (ip_proto == htons(ETH_P_IP)) {
-+		struct iphdr *iph = (struct iphdr *)skb->data;
-+
-+		if (iph->protocol == IPPROTO_UDP)
-+			uh = (struct udphdr *)(iph + 1);
-+	} else {
-+		struct ipv6hdr *iph = (struct ipv6hdr *)skb->data;
-+
-+		if (iph->nexthdr == IPPROTO_UDP)
-+			uh = (struct udphdr *)(iph + 1);
-+	}
-+	if (uh) {
-+		if (uh->check)
-+			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL_CSUM;
-+		else
-+			skb_shinfo(skb)->gso_type |= SKB_GSO_UDP_TUNNEL;
-+	}
-+}
-+
- static int
- vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
- 		       struct vmxnet3_adapter *adapter, int quota)
-@@ -1615,6 +1639,8 @@ vmxnet3_rq_rx_complete(struct vmxnet3_rx_queue *rq,
- 			if (segCnt != 0 && mss != 0) {
- 				skb_shinfo(skb)->gso_type = rcd->v4 ?
- 					SKB_GSO_TCPV4 : SKB_GSO_TCPV6;
-+				if (encap_lro)
-+					vmxnet3_lro_tunnel(skb, skb->protocol);
- 				skb_shinfo(skb)->gso_size = mss;
- 				skb_shinfo(skb)->gso_segs = segCnt;
- 			} else if ((segCnt != 0 || skb->len > mtu) && !encap_lro) {
+ 	sciport->gpios = mctrl_gpio_init(&sciport->port, 0);
+ 	if (IS_ERR(sciport->gpios))
+ 		return PTR_ERR(sciport->gpios);
+@@ -3354,13 +3348,7 @@ static int sci_probe_single(struct platform_device *dev,
+ 		sciport->port.flags |= UPF_HARD_FLOW;
+ 	}
+ 
+-	ret = uart_add_one_port(&sci_uart_driver, &sciport->port);
+-	if (ret) {
+-		sci_cleanup_single(sciport);
+-		return ret;
+-	}
+-
+-	return 0;
++	return uart_add_one_port(&sci_uart_driver, &sciport->port);
+ }
+ 
+ static int sci_probe(struct platform_device *dev)
 -- 
 2.39.5
 
