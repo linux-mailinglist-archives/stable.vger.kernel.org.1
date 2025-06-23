@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157633-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F163CAE54E8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8981AAE531A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D47551BC2E61
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C165817189E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59F6218580;
-	Mon, 23 Jun 2025 22:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97AF8221545;
+	Mon, 23 Jun 2025 21:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udOQyuRP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9/hZvEW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848161E87B;
-	Mon, 23 Jun 2025 22:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B471DD0C7;
+	Mon, 23 Jun 2025 21:50:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716345; cv=none; b=XuHZZZTKsUdJbmOE+jpfYkUgzBAwbIK4ULXJq4lCiIm4QzwZOwgdYpGA46pHvrXedLZ7HNzp2yW6l8wgedZh9g5R8A8Am08rGF3ggFp/TxlDg8RtXiACdQdpiY4ayD1AZKu1ajXm46w04vwg9E7c6klkStiImSGx6T14f9vRkfc=
+	t=1750715406; cv=none; b=ZJUu/3qGEPZnRpgj5vt4CwCcMyoAwfqZEv1WUnIDlnvt0oBnwU9aSCF8IWrzPTjLcMnF4oCZQsjAZiDWc45dbqQ1ZzfWH8yhhYZLX9Y5DsrHSlbdOPdSBZJApLIKVvi3lK2sxkjpMzK+8DEMEZnxbsuWys+l8PceLtpbPLHr8k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716345; c=relaxed/simple;
-	bh=pYAkAbY2p6AsIoSksAXZ/HZHu2sbbd7pqzXfsFFNoWg=;
+	s=arc-20240116; t=1750715406; c=relaxed/simple;
+	bh=w1x3PDPh6JNeER33pv/6BaT4jdZJKg9VPo5RCqVAkOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFxQSTENKmmKGfryV+bwGt9Gjq9pCKb4Vz6VugqYoBrI3d6uaOJMBmMzQ5o7j2BAag51ATBM0Hc/Y0m3juKkEovGrG0w68VskYza0OYbF5uNe7UM8cjOpUTp/XXKd6eutc1Q7GZOcmw0to9YAX49tk+crVku1d+SHtdHvPF4NHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udOQyuRP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF0BC4CEEA;
-	Mon, 23 Jun 2025 22:05:44 +0000 (UTC)
+	 MIME-Version; b=q8gAVtv3dfSLITG1I8jhu/FKaHfPrevIU18ZmIpNTm8yTlTLclvIxtngC57OHJtI+cZPvfdO7NNQNAG+EDd6R8Zp+chCVXNo+8fHwcPugL3bmEeNM4oKxe//2Z7wOf8HPcKuJmOLxJDv+oDt6u510AbebtZ6njOlWsFI4fWrPxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9/hZvEW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E05BFC4CEEA;
+	Mon, 23 Jun 2025 21:50:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716345;
-	bh=pYAkAbY2p6AsIoSksAXZ/HZHu2sbbd7pqzXfsFFNoWg=;
+	s=korg; t=1750715406;
+	bh=w1x3PDPh6JNeER33pv/6BaT4jdZJKg9VPo5RCqVAkOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udOQyuRP1aSCaWjLORM/v/KA2qPj5xwi5Q3pD8yh0SC8aJ2Cm3DreOVvuQY9t7vG7
-	 C4BuEX/t1PuywQMWgJ/Q39wbhhelsbp+97fOearLVEmhSoHNZJRXqYGau3cHFe48i/
-	 i5g2irgfyECkof0+VyREb6oRLpXmvxpGAMN+ztXg=
+	b=g9/hZvEWNqRrpvPKyGc9U9BiCO/X53cX0koiq26sCm3UuGDafuOr+Nq9Ru4Q9wGU7
+	 fqA0dGD8pqPeadhXfmBEmpzbnta8KQGV8VREDF4p9P8Q9vfST1AuzA/NSM98EQTveM
+	 cg6qzCLyfJsOxEJ+jyTxmIxs+gBXgaOwVAEfh0yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sukrut Bellary <sbellary@baylibre.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 314/411] tcp: always seek for minimal rtt in tcp_rcv_rtt_update()
+Subject: [PATCH 6.6 197/290] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
 Date: Mon, 23 Jun 2025 15:07:38 +0200
-Message-ID: <20250623130641.544852370@linuxfoundation.org>
+Message-ID: <20250623130632.774412370@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Sukrut Bellary <sbellary@baylibre.com>
 
-[ Upstream commit b879dcb1aeeca278eacaac0b1e2425b1c7599f9f ]
+[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
 
-tcp_rcv_rtt_update() goal is to maintain an estimation of the RTT
-in tp->rcv_rtt_est.rtt_us, used by tcp_rcv_space_adjust()
+Don't put the l4ls clk domain to sleep in case of standby.
+Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
+upon wake-up, CM3 PM FW fails to wake-up the MPU.
 
-When TCP TS are enabled, tcp_rcv_rtt_update() is using
-EWMA to smooth the samples.
+[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
 
-Change this to immediately latch the incoming value if it
-is lower than tp->rcv_rtt_est.rtt_us, so that tcp_rcv_space_adjust()
-does not overshoot tp->rcvq_space.space and sk->sk_rcvbuf.
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250513193919.1089692-8-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_input.c | 22 ++++++++--------------
- 1 file changed, 8 insertions(+), 14 deletions(-)
+ arch/arm/mach-omap2/clockdomain.h           |  1 +
+ arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
+ arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
-index 8859a38b45d5e..000557f5c54bc 100644
---- a/net/ipv4/tcp_input.c
-+++ b/net/ipv4/tcp_input.c
-@@ -641,10 +641,12 @@ EXPORT_SYMBOL(tcp_initialize_rcv_mss);
-  */
- static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
+diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
+index c36fb27212615..86a2f9e5d0ef9 100644
+--- a/arch/arm/mach-omap2/clockdomain.h
++++ b/arch/arm/mach-omap2/clockdomain.h
+@@ -48,6 +48,7 @@
+ #define CLKDM_NO_AUTODEPS			(1 << 4)
+ #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
+ #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
++#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
+ 
+ #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
+ #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
+diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
+index 87f4e927eb183..c05a3c07d4486 100644
+--- a/arch/arm/mach-omap2/clockdomains33xx_data.c
++++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
+@@ -19,7 +19,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
+ 	.pwrdm		= { .name = "per_pwrdm" },
+ 	.cm_inst	= AM33XX_CM_PER_MOD,
+ 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
+-	.flags		= CLKDM_CAN_SWSUP,
++	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
+ };
+ 
+ static struct clockdomain l3s_am33xx_clkdm = {
+diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
+index c824d4e3db632..aaee67d097915 100644
+--- a/arch/arm/mach-omap2/cm33xx.c
++++ b/arch/arm/mach-omap2/cm33xx.c
+@@ -20,6 +20,9 @@
+ #include "cm-regbits-34xx.h"
+ #include "cm-regbits-33xx.h"
+ #include "prm33xx.h"
++#if IS_ENABLED(CONFIG_SUSPEND)
++#include <linux/suspend.h>
++#endif
+ 
+ /*
+  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
+@@ -328,8 +331,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
  {
--	u32 new_sample = tp->rcv_rtt_est.rtt_us;
--	long m = sample;
-+	u32 new_sample, old_sample = tp->rcv_rtt_est.rtt_us;
-+	long m = sample << 3;
+ 	bool hwsup = false;
  
--	if (new_sample != 0) {
-+	if (old_sample == 0 || m < old_sample) {
-+		new_sample = m;
-+	} else {
- 		/* If we sample in larger samples in the non-timestamp
- 		 * case, we could grossly overestimate the RTT especially
- 		 * with chatty applications or bulk transfer apps which
-@@ -655,17 +657,9 @@ static void tcp_rcv_rtt_update(struct tcp_sock *tp, u32 sample, int win_dep)
- 		 * else with timestamps disabled convergence takes too
- 		 * long.
- 		 */
--		if (!win_dep) {
--			m -= (new_sample >> 3);
--			new_sample += m;
--		} else {
--			m <<= 3;
--			if (m < new_sample)
--				new_sample = m;
--		}
--	} else {
--		/* No previous measure. */
--		new_sample = m << 3;
-+		if (win_dep)
-+			return;
-+		new_sample = old_sample - (old_sample >> 3) + sample;
- 	}
++#if IS_ENABLED(CONFIG_SUSPEND)
++	/*
++	 * In case of standby, Don't put the l4ls clk domain to sleep.
++	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
++	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
++	 */
++	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
++	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
++		return 0;
++#endif
+ 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
+-
+ 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
+ 		am33xx_clkdm_sleep(clkdm);
  
- 	tp->rcv_rtt_est.rtt_us = new_sample;
 -- 
 2.39.5
 
