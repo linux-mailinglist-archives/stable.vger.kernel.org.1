@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 615A0AE4F5A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF33AE526B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C647F189EFDB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9982017EED9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4D5F21ADB5;
-	Mon, 23 Jun 2025 21:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E03D221FCC;
+	Mon, 23 Jun 2025 21:43:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IO+LiluO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CxLsGzer"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 837E11DF98B;
-	Mon, 23 Jun 2025 21:14:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E12094315A;
+	Mon, 23 Jun 2025 21:43:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713297; cv=none; b=LLBHGHQWv0DN4dLKAPK1PCzo8b4W+dMd9oewEw4we0rzcZYUApp5e8WmD+O+AhVM2BCXNCDFbPC0n/QCQ1yxxCMnR0qQxg7lrea51hyNBmZ59MNpqKQ5vjLLmA+kmUKy3JOZjkDyyn8aq7tYQg+PlymBmx+ZH79UNzb3aDn9WDU=
+	t=1750715012; cv=none; b=AAEPowuS6MRk2wgLDdcgTQEbaWP/cpG5vQ0MXXNZHCYRrT2ZLxI4m9y11fxNm8Xt+EZZIf0uQuCz3nbeLOzY+6unOQduluhYRr7E9tEPGRxT5U+YEu+M4f5eaI+LYlzjXmu+A22Fkkdx6wFH8eRDoSBLmg9c1a/y/awSUMDlFBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713297; c=relaxed/simple;
-	bh=/avCw4HeFuQJFD0O9H0VZ3QVIoHMrMLIJD2K8mGRHJM=;
+	s=arc-20240116; t=1750715012; c=relaxed/simple;
+	bh=avdJkp5+b66eWCNkrlVBIqE8rk6FeMuNiuQ0lem0f8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mknnI8HEuNFeyBSYjgEVkGUzjGw2efxe/HKCh2vbnmZJ+WAxT38hSuZm7KTy5lEvSkdFRlFPBYJNCYkitM/NXMqpWXUhTvFk8SFK8THHawvZBdzNnol2OUslVQYnS5fvdEqOPKXtHj/gzR/M+/39qptlm4RrpRwuk5JgTDm8p50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IO+LiluO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D248C4CEEA;
-	Mon, 23 Jun 2025 21:14:56 +0000 (UTC)
+	 MIME-Version; b=qly9jxQILWP0WS3+Zn5PQ961DEBtWkens38Vgu2ixrd6npYh8ErguJ/6+f8n9pCf9rgD03a+sg1V3SC293ev+vm240R1AvZG931wUm8MUEo4xwmwcMcSl2M1sL/BIwetlISSVirDTTbRmboG/1gJxleeoEMJG6WJgsH+SK/xPDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CxLsGzer; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3C7C4CEEA;
+	Mon, 23 Jun 2025 21:43:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713297;
-	bh=/avCw4HeFuQJFD0O9H0VZ3QVIoHMrMLIJD2K8mGRHJM=;
+	s=korg; t=1750715011;
+	bh=avdJkp5+b66eWCNkrlVBIqE8rk6FeMuNiuQ0lem0f8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IO+LiluOZNZr1sbKeV5W0m79AbBn7Jm1/dLC2YvcMWA4nXbXea3qHN+nv8Mm2o7MI
-	 Yx31i5148ezMkNwCX+C3JT0G9dddkb18+uPnS38vdny3pc0AXhcgCMXKPa9esZ4V6s
-	 elHGUg0jkd8JiORga+09NEsy1mGBg9yXlCQV3QY0=
+	b=CxLsGzer6K30ARg4rxknhIfzKX+MNctosGfqXjMR9g7ZDb5DY/bXqqLeQgBnRRswC
+	 Z4778msoosdjGMrWP9XbGYXBaPSQ45ZYGz7/pG3o6P2UlK0mlOmsxnz5Stc7AE09TL
+	 umVYrhAR6BsdcjX7zJ1QQcl1rXYZ3tQwvapn3vzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 319/592] emulex/benet: correct command version selection in be_cmd_get_stats()
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Peng Fan <peng.fan@nxp.com>
+Subject: [PATCH 6.12 140/414] remoteproc: core: Cleanup acquired resources when rproc_handle_resources() fails in rproc_attach()
 Date: Mon, 23 Jun 2025 15:04:37 +0200
-Message-ID: <20250623130708.023897027@linuxfoundation.org>
+Message-ID: <20250623130645.555762866@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit edb888d29748cee674006a52e544925dacc7728e ]
+commit 7692c9fbedd9087dc9050903f58095915458d9b1 upstream.
 
-Logic here always sets hdr->version to 2 if it is not a BE3 or Lancer chip,
-even if it is BE2. Use 'else if' to prevent multiple assignments, setting
-version 0 for BE2, version 1 for BE3 and Lancer, and version 2 for others.
-Fixes potential incorrect version setting when BE2_chip and
-BE3_chip/lancer_chip checks could both be true.
+When rproc->state = RPROC_DETACHED and rproc_attach() is used
+to attach to the remote processor, if rproc_handle_resources()
+returns a failure, the resources allocated by imx_rproc_prepare()
+should be released, otherwise the following memory leak will occur.
 
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20250519141731.691136-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since almost the same thing is done in imx_rproc_prepare() and
+rproc_resource_cleanup(), Function rproc_resource_cleanup() is able
+to deal with empty lists so it is better to fix the "goto" statements
+in rproc_attach(). replace the "unprepare_device" goto statement with
+"clean_up_resources" and get rid of the "unprepare_device" label.
+
+unreferenced object 0xffff0000861c5d00 (size 128):
+comm "kworker/u12:3", pid 59, jiffies 4294893509 (age 149.220s)
+hex dump (first 32 bytes):
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
+00 00 02 88 00 00 00 00 00 00 10 00 00 00 00 00 ............
+backtrace:
+ [<00000000f949fe18>] slab_post_alloc_hook+0x98/0x37c
+ [<00000000adbfb3e7>] __kmem_cache_alloc_node+0x138/0x2e0
+ [<00000000521c0345>] kmalloc_trace+0x40/0x158
+ [<000000004e330a49>] rproc_mem_entry_init+0x60/0xf8
+ [<000000002815755e>] imx_rproc_prepare+0xe0/0x180
+ [<0000000003f61b4e>] rproc_boot+0x2ec/0x528
+ [<00000000e7e994ac>] rproc_add+0x124/0x17c
+ [<0000000048594076>] imx_rproc_probe+0x4ec/0x5d4
+ [<00000000efc298a1>] platform_probe+0x68/0xd8
+ [<00000000110be6fe>] really_probe+0x110/0x27c
+ [<00000000e245c0ae>] __driver_probe_device+0x78/0x12c
+ [<00000000f61f6f5e>] driver_probe_device+0x3c/0x118
+ [<00000000a7874938>] __device_attach_driver+0xb8/0xf8
+ [<0000000065319e69>] bus_for_each_drv+0x84/0xe4
+ [<00000000db3eb243>] __device_attach+0xfc/0x18c
+ [<0000000072e4e1a4>] device_initial_probe+0x14/0x20
+
+Fixes: 10a3d4079eae ("remoteproc: imx_rproc: move memory parsing to rproc_ops")
+Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250430092043.1819308-2-xiaolei.wang@windriver.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/remoteproc_core.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
-index 51b8377edd1d0..a89aa4ac0a064 100644
---- a/drivers/net/ethernet/emulex/benet/be_cmds.c
-+++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
-@@ -1609,7 +1609,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
- 	/* version 1 of the cmd is not supported only by BE2 */
- 	if (BE2_chip(adapter))
- 		hdr->version = 0;
--	if (BE3_chip(adapter) || lancer_chip(adapter))
-+	else if (BE3_chip(adapter) || lancer_chip(adapter))
- 		hdr->version = 1;
- 	else
- 		hdr->version = 2;
--- 
-2.39.5
-
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1617,7 +1617,7 @@ static int rproc_attach(struct rproc *rp
+ 	ret = rproc_set_rsc_table(rproc);
+ 	if (ret) {
+ 		dev_err(dev, "can't load resource table: %d\n", ret);
+-		goto unprepare_device;
++		goto clean_up_resources;
+ 	}
+ 
+ 	/* reset max_notifyid */
+@@ -1634,7 +1634,7 @@ static int rproc_attach(struct rproc *rp
+ 	ret = rproc_handle_resources(rproc, rproc_loading_handlers);
+ 	if (ret) {
+ 		dev_err(dev, "Failed to process resources: %d\n", ret);
+-		goto unprepare_device;
++		goto clean_up_resources;
+ 	}
+ 
+ 	/* Allocate carveout resources associated to rproc */
+@@ -1653,7 +1653,6 @@ static int rproc_attach(struct rproc *rp
+ 
+ clean_up_resources:
+ 	rproc_resource_cleanup(rproc);
+-unprepare_device:
+ 	/* release HW resources if needed */
+ 	rproc_unprepare_device(rproc);
+ disable_iommu:
 
 
 
