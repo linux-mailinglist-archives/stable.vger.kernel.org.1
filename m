@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5584AE4ED4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F720AE505D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B99A8189FE2E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8635F4A0A61
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21A0A1F582A;
-	Mon, 23 Jun 2025 21:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2271EF397;
+	Mon, 23 Jun 2025 21:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aqvItfU8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4XEfxXh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D448670838;
-	Mon, 23 Jun 2025 21:09:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F410B1E51FA;
+	Mon, 23 Jun 2025 21:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712972; cv=none; b=ewXsUeJwbNxpRzs20q7SYwYK3iSpTfWLcUhY2KxAg3nRE4NiAdp3xsDzaMcxoiTAH9XpoMpiECqoV04A1VjkO+5Y1qdwFs6uawpOu8vULFD0zbAL/Z0efkcbo6oBLyFE/JsVFVxwq/eHqwLFyDNQsW64fvj0fODO6QZBHv1Nz98=
+	t=1750713867; cv=none; b=K5QQIPTSrtmTPLpfNnnjJ0erjpA31KYeUcKg+7yx6XWnOWFe3nQDR0Lt7VaCKRl5LR6ntp7NUSSXGNXsBr4XLY0XS/FTqCOhlLcu6+qnSpmik5Qv31jT8xnOy5fmK2dXVOEIyN2KI3AE/sOoBeMMreueEMb5hkSO1ZvzTdPmqLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712972; c=relaxed/simple;
-	bh=AMf5fMA9UcUIBFwsdAkZzaxv7dyM3AjXJ3sAFZDK9Eo=;
+	s=arc-20240116; t=1750713867; c=relaxed/simple;
+	bh=ZYen/0EebK4z1OxkvbWv3NQ5TtyWGtAPK0ZkgZYBXjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KMp4ecSi4qpldt5y9u84WOTqVtJx2pV60ZGqAAb+cc7LTeVdjssD8tkiPeEuekrvoJxD9W/A87LCDm/OJZL2oC5suMTrDLKiFhKbVz95tK2yvSulFxwu/SsUSsLNO1P6dYjkIFxBUu/NwHINQQfsmXMMIbTulRLCN1NRR64W8n8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aqvItfU8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB95C4CEEA;
-	Mon, 23 Jun 2025 21:09:32 +0000 (UTC)
+	 MIME-Version; b=RuKgd1NGAqhZwWzpC+jPxO2i1MSJ5pWEgKnSLyS47G5dVIM6NXwO8pramkdQ8OZHkl8Kznx2swAF1uHszV8AuJJNX4m4TV+vhuI2h94wKe22sGgk8+S4Mhmi8xQmoHnATduR8Tc/9y5NjqcZ1+H3VG6O3BqQ51zUny0GmYTS7CU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4XEfxXh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C424C4CEEA;
+	Mon, 23 Jun 2025 21:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712972;
-	bh=AMf5fMA9UcUIBFwsdAkZzaxv7dyM3AjXJ3sAFZDK9Eo=;
+	s=korg; t=1750713866;
+	bh=ZYen/0EebK4z1OxkvbWv3NQ5TtyWGtAPK0ZkgZYBXjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aqvItfU8X8FPh8ms2EaCkCuoTYOKkLBEZMJshEfSzt9uA0RUEstmXFH8YhbSPEdq+
-	 vTJqjpEKqCieHYUJ/+uq0ceWg81qqRlzckkZyR9g5lmzdRviPqgxxFxU/R4x/KjDBt
-	 EvnoekHXdrG/FkS0hwy+lv4RZAcMPH+UU9Xffa5I=
+	b=y4XEfxXh/HrxrViDlVOanfiwugmFSlq0Lj4RQqRuDO9VPq8MoPb9TgJZpa40AZsQI
+	 a2RiIyYPi8ZGNbLRrSf4pPEBphcGNFLdtouaIpT9f3RlHi0hsMfAVZp2Nm4xDEwUAq
+	 0BGskoEzk9YhYEBqsO/duBkBOsMUusXv8GmjAAks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 115/355] serial: sh-sci: Clean sci_ports[0] after at earlycon exit
+	Nathan Chancellor <nathan@kernel.org>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.15 172/411] drm/amd/display: Do not add -mhard-float to dml_ccflags for clang
 Date: Mon, 23 Jun 2025 15:05:16 +0200
-Message-ID: <20250623130630.216733391@linuxfoundation.org>
+Message-ID: <20250623130638.021494118@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,130 +64,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 5f1017069933489add0c08659673443c9905659e upstream.
+commit 7db038d9790eda558dd6c1dde4cdd58b64789c47 upstream.
 
-The early_console_setup() function initializes sci_ports[0].port with an
-object of type struct uart_port obtained from the struct earlycon_device
-passed as an argument to early_console_setup().
+When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
+warns:
 
-Later, during serial port probing, the serial port used as earlycon
-(e.g., port A) might be remapped to a different position in the sci_ports[]
-array, and a different serial port (e.g., port B) might be assigned to slot
-0. For example:
+  clang-16: error: argument unused during compilation: '-mhard-float' [-Werror,-Wunused-command-line-argument]
 
-sci_ports[0] = port B
-sci_ports[X] = port A
+Similar to commit 84edc2eff827 ("selftest/fpu: avoid clang warning"),
+just add this flag to GCC builds. Commit 0f0727d971f6 ("drm/amd/display:
+readd -msse2 to prevent Clang from emitting libcalls to undefined SW FP
+routines") added '-msse2' to prevent clang from emitting software
+floating point routines.
 
-In this scenario, the new port mapped at index zero (port B) retains the
-data associated with the earlycon configuration. Consequently, after the
-Linux boot process, any access to the serial port now mapped to
-sci_ports[0] (port B) will block the original earlycon port (port A).
-
-To address this, introduce an early_console_exit() function to clean up
-sci_ports[0] when earlycon is exited.
-
-To prevent the cleanup of sci_ports[0] while the serial device is still
-being used by earlycon, introduce the struct sci_port::probing flag and
-account for it in early_console_exit().
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-5-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c | 32 ++++++++++++++++++++++++++++++--
- 1 file changed, 30 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/Makefile |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sh-sci.c b/drivers/tty/serial/sh-sci.c
-index 4ce6dd7c40928..7c574901ad1c5 100644
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -166,6 +166,7 @@ static struct sci_port sci_ports[SCI_NPORTS];
- static unsigned long sci_ports_in_use;
- static struct uart_driver sci_uart_driver;
- static bool sci_uart_earlycon;
-+static bool sci_uart_earlycon_dev_probing;
+--- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
++++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
+@@ -26,7 +26,8 @@
+ # subcomponents.
  
- static inline struct sci_port *
- to_sci_port(struct uart_port *uart)
-@@ -3308,7 +3309,8 @@ static struct plat_sci_port *sci_parse_dt(struct platform_device *pdev,
- static int sci_probe_single(struct platform_device *dev,
- 				      unsigned int index,
- 				      struct plat_sci_port *p,
--				      struct sci_port *sciport)
-+				      struct sci_port *sciport,
-+				      struct resource *sci_res)
- {
- 	int ret;
+ ifdef CONFIG_X86
+-dml_ccflags := -mhard-float -msse
++dml_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
++dml_ccflags := $(dml_ccflags-y) -msse
+ endif
  
-@@ -3355,6 +3357,14 @@ static int sci_probe_single(struct platform_device *dev,
- 		sciport->port.flags |= UPF_HARD_FLOW;
- 	}
- 
-+	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
-+		/*
-+		 * Skip cleanup the sci_port[0] in early_console_exit(), this
-+		 * port is the same as the earlycon one.
-+		 */
-+		sci_uart_earlycon_dev_probing = true;
-+	}
-+
- 	return uart_add_one_port(&sci_uart_driver, &sciport->port);
- }
- 
-@@ -3413,7 +3423,7 @@ static int sci_probe(struct platform_device *dev)
- 
- 	platform_set_drvdata(dev, sp);
- 
--	ret = sci_probe_single(dev, dev_id, p, sp);
-+	ret = sci_probe_single(dev, dev_id, p, sp, res);
- 	if (ret)
- 		return ret;
- 
-@@ -3496,6 +3506,22 @@ sh_early_platform_init_buffer("earlyprintk", &sci_driver,
- #ifdef CONFIG_SERIAL_SH_SCI_EARLYCON
- static struct plat_sci_port port_cfg;
- 
-+static int early_console_exit(struct console *co)
-+{
-+	struct sci_port *sci_port = &sci_ports[0];
-+
-+	/*
-+	 * Clean the slot used by earlycon. A new SCI device might
-+	 * map to this slot.
-+	 */
-+	if (!sci_uart_earlycon_dev_probing) {
-+		memset(sci_port, 0, sizeof(*sci_port));
-+		sci_uart_earlycon = false;
-+	}
-+
-+	return 0;
-+}
-+
- static int __init early_console_setup(struct earlycon_device *device,
- 				      int type)
- {
-@@ -3515,6 +3541,8 @@ static int __init early_console_setup(struct earlycon_device *device,
- 		       SCSCR_RE | SCSCR_TE | port_cfg.scscr);
- 
- 	device->con->write = serial_console_write;
-+	device->con->exit = early_console_exit;
-+
- 	return 0;
- }
- static int __init sci_early_console_setup(struct earlycon_device *device,
--- 
-2.39.5
-
+ ifdef CONFIG_PPC64
 
 
 
