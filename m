@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACECAAE4F0F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0FABAE4E75
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB89C3B048F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE414189E740
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CF32222B2;
-	Mon, 23 Jun 2025 21:11:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C2462206BB;
+	Mon, 23 Jun 2025 21:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/vkFm2b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SC9QuebX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E81B1221FDD;
-	Mon, 23 Jun 2025 21:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D19AB21CA07;
+	Mon, 23 Jun 2025 21:05:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713116; cv=none; b=mTwHquZ9e5YuQOjyZIakaH7CBwwAGEUBpy04cMVQ1apZFyqSMN/4lxcMMyTS9VfALSakgzzQlUigqTuLstb+1SjyV1XK68Ng3XcHRii4HR2SYR/ywhS/IzzP4SQm/5FWLVp8H4TPXqUcKQZDdr24DJE/ErfNz/D63Zgol7rA3is=
+	t=1750712758; cv=none; b=u3lX2WXKW1QPDTi7x98biAapOAlDB4bY8bqxXc+UYTxLSO/3zx7JWf07gPsZqQDI/rVSdKOT4d2Z+I92T0gt5F1Ew5JBTSDKw2QqYn8IMkXGNOnBXvOlV+gIL39A1BbXt790anXl9qzRvUkmU63Yo16972gpuz4xq0hcqK3Qmf0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713116; c=relaxed/simple;
-	bh=PIOjpPggg0uu3Ee9Dyhh3md3AhYhNxpEOnUkSxiqrBY=;
+	s=arc-20240116; t=1750712758; c=relaxed/simple;
+	bh=L5MJPlykFgrdaaNI97hdO/0crEf7fIkE0+z3TfRaP6o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXJ//swShEfvlB6f73dmjut1RQYP1q4sOkhEqExKM2SQ2fk62hFmsmFhvLWrZuA5fXxWv34vH+JEsApoFeaaZs9yVJ0D6NY2ExAgRWkrLg1EeLfhEMCMPAznY8dR3Px5kLQcPy+OW4hvmPFgFaMrPZwMzToUjof5rm6F7u3fUg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/vkFm2b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80D7EC4CEEA;
-	Mon, 23 Jun 2025 21:11:55 +0000 (UTC)
+	 MIME-Version; b=MhwMmrDpl1pzeLOs21QrummGSW7KNiR/gxj0fpgcaNelIUJa/yuJZ7HQhOHXf04jAixa4YsUYUNpC7ZWjAn8xcrcYy7WpxX6UabWYKXllshl/ViZLYvjcxtJxO5Lls+nxesX/TjWBGVbOAt8/kJ3e5MPr8GcWs8a5Fa7ssXuny4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SC9QuebX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07853C4CEEA;
+	Mon, 23 Jun 2025 21:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713115;
-	bh=PIOjpPggg0uu3Ee9Dyhh3md3AhYhNxpEOnUkSxiqrBY=;
+	s=korg; t=1750712758;
+	bh=L5MJPlykFgrdaaNI97hdO/0crEf7fIkE0+z3TfRaP6o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/vkFm2bPvWiURsIBR9TNTz+FS5c90lIrRL4iYb4yRQKBRVT5w9I2BieCuptkYnE2
-	 MkMBxq22H/rUa6viaFw3NjxwoLOubkK5PLUp/qtW4OsFTFOy/7gtcjnWZOgXLV2p9V
-	 jwe8vgbwlBqvLOutnM5hFKcGRYhy3qL1+LhgK9gE=
+	b=SC9QuebXBCfTG7DApt0OPV9KLXRFd9hpbGKZ81w+SBiTF+waY26pqS2GtM/GNBWNK
+	 SANyrvuowfEx9g6LQG4aHFqge2eO/8/2ln69eYcG5iS+BvQNUduP+CR465Mc7+yEki
+	 0pxWqr+2Mz1kOqbHpIooRLBgQA/YXbbMdrkdAOK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Stefano Brivio <sbrivio@redhat.com>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sergio Perez Gonzalez <sperezglz@gmail.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 125/411] netfilter: nf_set_pipapo_avx2: fix initial map fill
+Subject: [PATCH 6.15 311/592] net: macb: Check return value of dma_set_mask_and_coherent()
 Date: Mon, 23 Jun 2025 15:04:29 +0200
-Message-ID: <20250623130636.707570327@linuxfoundation.org>
+Message-ID: <20250623130707.811498408@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Sergio Perez Gonzalez <sperezglz@gmail.com>
 
-[ Upstream commit ea77c397bff8b6d59f6d83dae1425b08f465e8b5 ]
+[ Upstream commit 3920a758800762917177a6b5ab39707d8e376fe6 ]
 
-If the first field doesn't cover the entire start map, then we must zero
-out the remainder, else we leak those bits into the next match round map.
+Issue flagged by coverity. Add a safety check for the return value
+of dma_set_mask_and_coherent, go to a safe exit if it returns error.
 
-The early fix was incomplete and did only fix up the generic C
-implementation.
-
-A followup patch adds a test case to nft_concat_range.sh.
-
-Fixes: 791a615b7ad2 ("netfilter: nf_set_pipapo: fix initial map fill")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://scan7.scan.coverity.com/#/project-view/53936/11354?selectedIssue=1643754
+Signed-off-by: Sergio Perez Gonzalez <sperezglz@gmail.com>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://patch.msgid.link/20250526032034.84900-1-sperezglz@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo_avx2.c | 21 ++++++++++++++++++++-
- 1 file changed, 20 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/cadence/macb_main.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo_avx2.c b/net/netfilter/nft_set_pipapo_avx2.c
-index ecabe66368eab..cf5683afaf833 100644
---- a/net/netfilter/nft_set_pipapo_avx2.c
-+++ b/net/netfilter/nft_set_pipapo_avx2.c
-@@ -1115,6 +1115,25 @@ bool nft_pipapo_avx2_estimate(const struct nft_set_desc *desc, u32 features,
- 	return true;
- }
+diff --git a/drivers/net/ethernet/cadence/macb_main.c b/drivers/net/ethernet/cadence/macb_main.c
+index e1e8bd2ec155b..d1f1ae5ea161c 100644
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -5283,7 +5283,11 @@ static int macb_probe(struct platform_device *pdev)
  
-+/**
-+ * pipapo_resmap_init_avx2() - Initialise result map before first use
-+ * @m:		Matching data, including mapping table
-+ * @res_map:	Result map
-+ *
-+ * Like pipapo_resmap_init() but do not set start map bits covered by the first field.
-+ */
-+static inline void pipapo_resmap_init_avx2(const struct nft_pipapo_match *m, unsigned long *res_map)
-+{
-+	const struct nft_pipapo_field *f = m->f;
-+	int i;
-+
-+	/* Starting map doesn't need to be set to all-ones for this implementation,
-+	 * but we do need to zero the remaining bits, if any.
-+	 */
-+	for (i = f->bsize; i < m->bsize_max; i++)
-+		res_map[i] = 0ul;
-+}
-+
- /**
-  * nft_pipapo_avx2_lookup() - Lookup function for AVX2 implementation
-  * @net:	Network namespace
-@@ -1173,7 +1192,7 @@ bool nft_pipapo_avx2_lookup(const struct net *net, const struct nft_set *set,
- 	res  = scratch->map + (map_index ? m->bsize_max : 0);
- 	fill = scratch->map + (map_index ? 0 : m->bsize_max);
- 
--	/* Starting map doesn't need to be set for this implementation */
-+	pipapo_resmap_init_avx2(m, res);
- 
- 	nft_pipapo_avx2_prepare();
- 
+ #ifdef CONFIG_ARCH_DMA_ADDR_T_64BIT
+ 	if (GEM_BFEXT(DAW64, gem_readl(bp, DCFG6))) {
+-		dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
++		err = dma_set_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(44));
++		if (err) {
++			dev_err(&pdev->dev, "failed to set DMA mask\n");
++			goto err_out_free_netdev;
++		}
+ 		bp->hw_dma_cap |= HW_DMA_CAP_64B;
+ 	}
+ #endif
 -- 
 2.39.5
 
