@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 157BAAE563F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 491A4AE5738
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A413E4A34FD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDF9B4E3219
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC23227B88;
-	Mon, 23 Jun 2025 22:15:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8FE223DF0;
+	Mon, 23 Jun 2025 22:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YphnXuR1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YRJL/u37"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C2C52222AF;
-	Mon, 23 Jun 2025 22:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A452222B2;
+	Mon, 23 Jun 2025 22:27:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716958; cv=none; b=awy9+ffkp3d2fP2KNWfVFkDYO5R/bhP7FbbVuuhi0LFxHsVShPMF0N7jZItHf3J+M/YMyJSF8z2eEOSQFcUkBiy4VEUwz4QH8G7zA25lCTOIDSlDlxxNIg4tva853C4kekfSavwQQ6dY9XdkPRt+0nturQvXDEMyLr0aL8KZXZg=
+	t=1750717641; cv=none; b=Er0a1WX/7AJP+8rzclpJjf2Rc1cKX02qJZETxCkX1TFGAGyeIgnNshFjF4p1Mcjx5xfqJBEwo2qSdZh24aYM5ucfWZ6GMGGl9yaE6AMGGquRiHTYBi7wTzyDwzm19cb9rHpGpbTmr4pEMo/VrdNkJy5mvvjyvIb6fmZNFVFFGdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716958; c=relaxed/simple;
-	bh=ArbwSXxrS95yVHW2bZL2D5/dmWCiVhV0GrFBMWxC1TU=;
+	s=arc-20240116; t=1750717641; c=relaxed/simple;
+	bh=0jfwImt9BUfR1MMc5P4CTQel6Y6GK/ziGuucHoKIL10=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iOIBd/YX4TvjWsYP3Td32fIwZZHoJ1TXPDAk9J2GUNTMk1ZOhpGPueoa8rQ9elUv0sZlq6EXLa9KSNmw2pzayRqcD9lSyuu0PdnNpOikfO8ZbLMJn0P1iNQ3zDCz4RQkNwCfW3vw36NiYsCSSA1YmHkr1vdtYGx5mYVcwCVuyl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YphnXuR1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45685C4CEEA;
-	Mon, 23 Jun 2025 22:15:57 +0000 (UTC)
+	 MIME-Version; b=rqGuYot1lCyUQ+io5Fg/IvUCPKzuJ0DIaLEcQXuMx3z8uC5IloMZJT3UbApcqjj8ECPLePJNP/hIZOkmCeGINRhtpi2umwSIyK8S4GDgJ38ughwtAEgChloD5HWoiqlC+dtxF5iqmtuOjwxwhNcs/PYppPLf194nNS+qhyLOG3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YRJL/u37; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D7A2C4CEEA;
+	Mon, 23 Jun 2025 22:27:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716957;
-	bh=ArbwSXxrS95yVHW2bZL2D5/dmWCiVhV0GrFBMWxC1TU=;
+	s=korg; t=1750717641;
+	bh=0jfwImt9BUfR1MMc5P4CTQel6Y6GK/ziGuucHoKIL10=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YphnXuR1yKEgMbJUNg201hfRRAdM14Qxme++AH+p45sugBjHVBFmMXJGgdLobyQ5o
-	 ApXXmGsM4AnVvlpmMFt2SLi4HrsckeThVTemQIYE6A1tJYryRXE+Lx4QzaUGl78mY9
-	 qZTms8N09ZTShX3eVc49aYu0UMfwasR7s4E1mvM4=
+	b=YRJL/u37QaMbm0xV/PJhb2Msj/fCS/0NcKvgGTPg7L5Cr92cqp94BcmvDikswxIm6
+	 PboR/FsYAKiUXH5ZZPXueZtPsKBGLARi6Z16LD70EyMJ1awIw4WtGkpsfZVOx9Lmty
+	 QyvAzPo/iHKtDW7mBKusrw9N9dO84jaMyUyXGIFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	David Wei <dw@davidwei.uk>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 572/592] perf: Fix cgroup state vs ERROR
-Date: Mon, 23 Jun 2025 15:08:50 +0200
-Message-ID: <20250623130714.045423774@linuxfoundation.org>
+Subject: [PATCH 6.1 486/508] tcp: fix passive TFO socket having invalid NAPI ID
+Date: Mon, 23 Jun 2025 15:08:51 +0200
+Message-ID: <20250623130657.010065412@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,134 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: David Wei <dw@davidwei.uk>
 
-[ Upstream commit 61988e36dc5457cdff7ae7927e8d9ad1419ee998 ]
+[ Upstream commit dbe0ca8da1f62b6252e7be6337209f4d86d4a914 ]
 
-While chasing down a missing perf_cgroup_event_disable() elsewhere,
-Leo Yan found that both perf_put_aux_event() and
-perf_remove_sibling_event() were also missing one.
+There is a bug with passive TFO sockets returning an invalid NAPI ID 0
+from SO_INCOMING_NAPI_ID. Normally this is not an issue, but zero copy
+receive relies on a correct NAPI ID to process sockets on the right
+queue.
 
-Specifically, the rule is that events that switch to OFF,ERROR need to
-call perf_cgroup_event_disable().
+Fix by adding a sk_mark_napi_id_set().
 
-Unify the disable paths to ensure this.
-
-Fixes: ab43762ef010 ("perf: Allow normal events to output AUX data")
-Fixes: 9f0c4fa111dc ("perf/core: Add a new PERF_EV_CAP_SIBLING event capability")
-Reported-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250605123343.GD35970@noisy.programming.kicks-ass.net
+Fixes: e5907459ce7e ("tcp: Record Rx hash and NAPI ID in tcp_child_process")
+Signed-off-by: David Wei <dw@davidwei.uk>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250617212102.175711-5-dw@davidwei.uk
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 51 ++++++++++++++++++++++++++------------------
- 1 file changed, 30 insertions(+), 21 deletions(-)
+ net/ipv4/tcp_fastopen.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index ec77f641089a2..d2b548ef075f4 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -2145,8 +2145,9 @@ perf_aux_output_match(struct perf_event *event, struct perf_event *aux_event)
- }
+diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
+index cb01c770d8cf5..cbce1306bb08c 100644
+--- a/net/ipv4/tcp_fastopen.c
++++ b/net/ipv4/tcp_fastopen.c
+@@ -3,6 +3,7 @@
+ #include <linux/tcp.h>
+ #include <linux/rcupdate.h>
+ #include <net/tcp.h>
++#include <net/busy_poll.h>
  
- static void put_event(struct perf_event *event);
--static void event_sched_out(struct perf_event *event,
--			    struct perf_event_context *ctx);
-+static void __event_disable(struct perf_event *event,
-+			    struct perf_event_context *ctx,
-+			    enum perf_event_state state);
- 
- static void perf_put_aux_event(struct perf_event *event)
+ void tcp_fastopen_init_key_once(struct net *net)
  {
-@@ -2179,8 +2180,7 @@ static void perf_put_aux_event(struct perf_event *event)
- 		 * state so that we don't try to schedule it again. Note
- 		 * that perf_event_enable() will clear the ERROR status.
- 		 */
--		event_sched_out(iter, ctx);
--		perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
-+		__event_disable(iter, ctx, PERF_EVENT_STATE_ERROR);
- 	}
- }
+@@ -279,6 +280,8 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
  
-@@ -2238,18 +2238,6 @@ static inline struct list_head *get_event_list(struct perf_event *event)
- 				    &event->pmu_ctx->flexible_active;
- }
+ 	refcount_set(&req->rsk_refcnt, 2);
  
--/*
-- * Events that have PERF_EV_CAP_SIBLING require being part of a group and
-- * cannot exist on their own, schedule them out and move them into the ERROR
-- * state. Also see _perf_event_enable(), it will not be able to recover
-- * this ERROR state.
-- */
--static inline void perf_remove_sibling_event(struct perf_event *event)
--{
--	event_sched_out(event, event->ctx);
--	perf_event_set_state(event, PERF_EVENT_STATE_ERROR);
--}
--
- static void perf_group_detach(struct perf_event *event)
- {
- 	struct perf_event *leader = event->group_leader;
-@@ -2285,8 +2273,15 @@ static void perf_group_detach(struct perf_event *event)
- 	 */
- 	list_for_each_entry_safe(sibling, tmp, &event->sibling_list, sibling_list) {
- 
-+		/*
-+		 * Events that have PERF_EV_CAP_SIBLING require being part of
-+		 * a group and cannot exist on their own, schedule them out
-+		 * and move them into the ERROR state. Also see
-+		 * _perf_event_enable(), it will not be able to recover this
-+		 * ERROR state.
-+		 */
- 		if (sibling->event_caps & PERF_EV_CAP_SIBLING)
--			perf_remove_sibling_event(sibling);
-+			__event_disable(sibling, ctx, PERF_EVENT_STATE_ERROR);
- 
- 		sibling->group_leader = sibling;
- 		list_del_init(&sibling->sibling_list);
-@@ -2545,6 +2540,15 @@ static void perf_remove_from_context(struct perf_event *event, unsigned long fla
- 	event_function_call(event, __perf_remove_from_context, (void *)flags);
- }
- 
-+static void __event_disable(struct perf_event *event,
-+			    struct perf_event_context *ctx,
-+			    enum perf_event_state state)
-+{
-+	event_sched_out(event, ctx);
-+	perf_cgroup_event_disable(event, ctx);
-+	perf_event_set_state(event, state);
-+}
++	sk_mark_napi_id_set(child, skb);
 +
- /*
-  * Cross CPU call to disable a performance event
-  */
-@@ -2559,13 +2563,18 @@ static void __perf_event_disable(struct perf_event *event,
- 	perf_pmu_disable(event->pmu_ctx->pmu);
- 	ctx_time_update_event(ctx, event);
+ 	/* Now finish processing the fastopen child socket. */
+ 	tcp_init_transfer(child, BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB, skb);
  
-+	/*
-+	 * When disabling a group leader, the whole group becomes ineligible
-+	 * to run, so schedule out the full group.
-+	 */
- 	if (event == event->group_leader)
- 		group_sched_out(event, ctx);
--	else
--		event_sched_out(event, ctx);
- 
--	perf_event_set_state(event, PERF_EVENT_STATE_OFF);
--	perf_cgroup_event_disable(event, ctx);
-+	/*
-+	 * But only mark the leader OFF; the siblings will remain
-+	 * INACTIVE.
-+	 */
-+	__event_disable(event, ctx, PERF_EVENT_STATE_OFF);
- 
- 	perf_pmu_enable(event->pmu_ctx->pmu);
- }
 -- 
 2.39.5
 
