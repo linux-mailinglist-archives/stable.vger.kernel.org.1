@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8BEEAE5093
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DFF3AE4EBD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 406E74A1341
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 41FB3189FE38
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78752222B7;
-	Mon, 23 Jun 2025 21:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9271A70838;
+	Mon, 23 Jun 2025 21:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mvS2J9ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WPG+50v1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75C521E51FA;
-	Mon, 23 Jun 2025 21:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F9F51ACEDA;
+	Mon, 23 Jun 2025 21:08:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713952; cv=none; b=l3+g9PJKjxFGAdHG/zYf3yj5Zd6NRutPXkKWpUbp1k5/B9daVenDiuenX5E49CUmcaf76qPbQ+ueo38m8HZ1iu4emWlfCx0K0auR5jNogFOpaITxav+vT7YUvQ9jdVbnGw/eX+rQZ5BvvGnIYXY3uff58JqxAriG9WRb/EsukfY=
+	t=1750712916; cv=none; b=M0u9qTVr29T7s+PeP3RLwyLLCjm5BbU/qLZOcsRV/h1QG6abvwVbOgoaLtDQxou54KFX4TWduKpRltrjfTlxaLLxvm1QPpIISUwl5GealPe9sJIkqaUPyUKTCvcs7sqNkw9Qgt/BG1hOX2OmhjxeaV+gXd7fDBKRN/1msSbIlvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713952; c=relaxed/simple;
-	bh=TtG+AvkbL8DZ+J38Wj2YoVCC3NaNUzXvmo6CTwZh9c0=;
+	s=arc-20240116; t=1750712916; c=relaxed/simple;
+	bh=oHBHhDDgJLIwNP0T4wX9BmFRBUwLSXwQsSmH2bkLD3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mowyLeV+2G+ukbfBc4oflBmPjNNGBeQHCWS4HMHOJ0encoKJqUXubc5YNS+1qtQzvrS2yliisgylvNbc5eoFE5fqAEL+2CyunVhssYRUBj/b6GV/Z1EeSFyjvGvkzkEDfDLUMkJdtOmZAM59fmkGQPzs0S/4RC3/SojlTbDfH6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mvS2J9ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DF93C4CEEA;
-	Mon, 23 Jun 2025 21:25:51 +0000 (UTC)
+	 MIME-Version; b=DkApF7lJxlz8+ZChn8xyvyY3vmFAimThXKUmiiPkeLmfjBNrO6I1gIVxlZMM6mukC/P4XO2Qy2sdyWVHtUk0xwo218gjR6ObpYHdkQgs+eVtUFLUE6IOn8D0IncYwXudfQFsKe23VIJU7L7NgW4pqf6ax5XXObaHgAusDrWGxss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WPG+50v1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15E8C4CEEA;
+	Mon, 23 Jun 2025 21:08:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713952;
-	bh=TtG+AvkbL8DZ+J38Wj2YoVCC3NaNUzXvmo6CTwZh9c0=;
+	s=korg; t=1750712916;
+	bh=oHBHhDDgJLIwNP0T4wX9BmFRBUwLSXwQsSmH2bkLD3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mvS2J9ib1Hph7Zh/+WWuBZ7YQWvNUBwb2/w6Ej/Vrx9LaF8ywAbvIc2U3ALykGPi5
-	 G0iz8NMbvtF9OSkGu7wAWkxlBp2FEIJLFs/V04UFXusF0TwzVguVCsGiZa9pRqblSW
-	 xVgCL2hb+E3GymIqQcQqTgx/bRkQMy6njmlrC86Q=
+	b=WPG+50v1bsajxJz4eZ3HV1bvSrWePIWlZf8iw4ex3YxXkqFEkbAsAbx8DBhBJ7N7H
+	 ZQhI602FCarJl68/vdFK8+RdhLK5XeZ3xpoQmWpfesvVvq3n4I0NxE5xDHWkiIsVCN
+	 YjwuLw/7lq8Ksyu5s5DtP+nCC1vCcPyHvnDvIp74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Judith Mendez <jm@ti.com>,
+	Moteen Shah <m-shah@ti.com>,
+	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 355/592] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get_direction()
+Subject: [PATCH 5.10 112/355] arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0
 Date: Mon, 23 Jun 2025 15:05:13 +0200
-Message-ID: <20250623130708.886240783@linuxfoundation.org>
+Message-ID: <20250623130630.130894371@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Judith Mendez <jm@ti.com>
 
-[ Upstream commit 6481c0a83367b0672951ccc876fbae7ee37b594b ]
+[ Upstream commit f55c9f087cc2e2252d44ffd9d58def2066fc176e ]
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+For am65x, add missing ITAPDLYSEL values for Default Speed and High
+Speed SDR modes to sdhci0 node according to the device datasheet [0].
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-6-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+[0] https://www.ti.com/lit/gpn/am6548
+
+Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
+Cc: stable@vger.kernel.org
+Signed-off-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Moteen Shah <m-shah@ti.com>
+Link: https://lore.kernel.org/r/20250429173009.33994-1-jm@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 072bdd0d153ed..4ac514cfd8884 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -400,10 +400,13 @@ static int armada_37xx_gpio_get_direction(struct gpio_chip *chip,
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = OUTPUT_EN;
- 	unsigned int val, mask;
-+	int ret;
- 
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
- 
- 	if (val & mask)
- 		return GPIO_LINE_DIRECTION_OUT;
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index ec7b22fae7fd3..ec7d444b228d1 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -280,6 +280,8 @@ sdhci0: sdhci@4f80000 {
+ 		ti,otap-del-sel-ddr50 = <0x5>;
+ 		ti,otap-del-sel-ddr52 = <0x5>;
+ 		ti,otap-del-sel-hs200 = <0x5>;
++		ti,itap-del-sel-legacy = <0xa>;
++		ti,itap-del-sel-mmc-hs = <0x1>;
+ 		ti,itap-del-sel-ddr52 = <0x0>;
+ 		dma-coherent;
+ 	};
 -- 
 2.39.5
 
