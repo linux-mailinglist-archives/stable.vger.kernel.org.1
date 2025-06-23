@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F319AE4EAA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1721EAE536C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F9393BE41C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 946A01B66E3A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C0C8202983;
-	Mon, 23 Jun 2025 21:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9246221FBE;
+	Mon, 23 Jun 2025 21:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEoQAfQB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcRdn0kL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9B31F582A;
-	Mon, 23 Jun 2025 21:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E6619049B;
+	Mon, 23 Jun 2025 21:52:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712878; cv=none; b=sXm4YGTRv2FHWt0OQU3Dl+3BSM7foDhbZ6AXXcf8tA+lHpmzzsgAkzoGznY/SMXLCPLCbhyVUASRQ3lAMgeP98NY9NSSdSblfscbA2Exk/1YMTX6T8dCWvHdJMcDY1BQo/BOrmbM8lyY/G7ZYqvfMX5zWkIdWNTV+r5r9ZPyTFE=
+	t=1750715570; cv=none; b=WtJkCciiOgS3H/HwWRHKZa/DHziU7ghglV4/hqTcwk1PM1SZLXUVNpMP1kKE5jUe948hfFroi73HWPDemdxXFyypBtTAU+BIaIYUH36Oz1qlc3w9Rg5lYutHVOQyyFV4jKvRfUU+4GwfLiopW05TUA/0/2Af2SoDEgjdgxxpld8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712878; c=relaxed/simple;
-	bh=NkaBqmtOKMwnJKUsrFhAem4nzvZOJEYf6Zcsyh0QOfo=;
+	s=arc-20240116; t=1750715570; c=relaxed/simple;
+	bh=uzZhOOazN6youXg/acwxWY9FRaGDl+1G1a7HlYVvXqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HHZJ3T6ll+02i/RmLe6bRBSryT8jinK3mvebsGJXHij7GvbXyJixuBW/cAt56u2fSFpgb7GGaWljshkmhNzYCSTRobmWcDR24H2xMWxjvlmvH6cA/WffAP8FK6Jdt1KZ2QX8ODgjfDdRfjTuZx7tMr6jhw+SklM1V+8s+8oe5G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEoQAfQB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 682E9C4CEED;
-	Mon, 23 Jun 2025 21:07:58 +0000 (UTC)
+	 MIME-Version; b=GlAp+ZvYtGoXeFT7y94Usa0V2+AjAlsyJmDxqFz3lfWnld32+khzvApXo7dBRz1AxDG4cGwGSy1R5vjvpviPLO4zVVw9IOqiA/mxOv8rz4A90WmPqLxIXfFLtJkUKZj+0cANePh0oppiMIg3ueTRTMLJme5bmGrszTUI2yboGIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcRdn0kL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13D4C4CEEA;
+	Mon, 23 Jun 2025 21:52:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712878;
-	bh=NkaBqmtOKMwnJKUsrFhAem4nzvZOJEYf6Zcsyh0QOfo=;
+	s=korg; t=1750715570;
+	bh=uzZhOOazN6youXg/acwxWY9FRaGDl+1G1a7HlYVvXqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEoQAfQBNN9BxSUKNjn8fUayzmNoog/v9X3XNSn5E+UFkGJL96+GyKfYYTNMCoXQh
-	 NeCcipFlTyaRlRqK2Me144pmNPfyHrgnrc7QrXxq31LFnTms44ivcGAOUUuD6AeAni
-	 CQeUvVpEXjW1q7BEeCkwagNHNHoRxpeovVKy0JDU=
+	b=mcRdn0kLEMrqsQeCZJSt9SmzAdZyGooeoLOAWmWy8PYkZp3KN8S7+B+qs0hCmOIz3
+	 3oRcAQ6bzcPYqMdhUj3qqb28p83TcGKfifvZ8nisI6+UkFhqA8uu8X9YCx84H4FuGR
+	 BmG19mzSpGs/Jmv5Xqvzz2gKRhHS/x1wwqKiwbmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dylan J. Wolff" <wolffd@comp.nus.edu.sg>,
-	Jiacheng Xu <stitch@zju.edu.cn>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 153/222] jfs: Fix null-ptr-deref in jfs_ioc_trim
-Date: Mon, 23 Jun 2025 15:08:08 +0200
-Message-ID: <20250623130616.685571510@linuxfoundation.org>
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 228/290] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
+Date: Mon, 23 Jun 2025 15:08:09 +0200
+Message-ID: <20250623130633.787898841@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,124 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dylan Wolff <wolffd@comp.nus.edu.sg>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit a4685408ff6c3e2af366ad9a7274f45ff3f394ee ]
+commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
 
-[ Syzkaller Report ]
+In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
+atm_account_tx().
 
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000087: 0000 [#1
-KASAN: null-ptr-deref in range [0x0000000000000438-0x000000000000043f]
-CPU: 2 UID: 0 PID: 10614 Comm: syz-executor.0 Not tainted
-6.13.0-rc6-gfbfd64d25c7a-dirty #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Sched_ext: serialise (enabled+all), task: runnable_at=-30ms
-RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
-Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
-90 82 fe ff 4c 89 ff 31 f6
-RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
-RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
-RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
-R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
-FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-? __die_body+0x61/0xb0
-? die_addr+0xb1/0xe0
-? exc_general_protection+0x333/0x510
-? asm_exc_general_protection+0x26/0x30
-? jfs_ioc_trim+0x34b/0x8f0
-jfs_ioctl+0x3c8/0x4f0
-? __pfx_jfs_ioctl+0x10/0x10
-? __pfx_jfs_ioctl+0x10/0x10
-__se_sys_ioctl+0x269/0x350
-? __pfx___se_sys_ioctl+0x10/0x10
-? do_syscall_64+0xfb/0x210
-do_syscall_64+0xee/0x210
-? syscall_exit_to_user_mode+0x1e0/0x330
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe51f4903ad
-Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48
-89 f7 48 89 d6 48 89 ca 4d
-RSP: 002b:00007fe5202250c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fe51f5cbf80 RCX: 00007fe51f4903ad
-RDX: 0000000020000680 RSI: 00000000c0185879 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe520225640
-R13: 000000000000000e R14: 00007fe51f44fca0 R15: 00007fe52021d000
-</TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
-Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
-90 82 fe ff 4c 89 ff 31 f6
-RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
-RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
-RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
-R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
-FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Kernel panic - not syncing: Fatal exception
+It is expected to be reverted by atm_pop_raw() later called by
+vcc->dev->ops->send(vcc, skb).
 
-[ Analysis ]
+However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
+fails, and then we will leak a socket.
 
-We believe that we have found a concurrency bug in the `fs/jfs` module
-that results in a null pointer dereference. There is a closely related
-issue which has been fixed:
+Let's factorise the revert part as atm_return_tx() and call it in
+the failure path.
 
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234
+Note that the corresponding sk_wmem_alloc operation can be found in
+alloc_tx() as of the blamed commit.
 
-... but, unfortunately, the accepted patch appears to still be
-susceptible to a null pointer dereference under some interleavings.
+  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
 
-To trigger the bug, we think that `JFS_SBI(ipbmap->i_sb)->bmap` is set
-to NULL in `dbFreeBits` and then dereferenced in `jfs_ioc_trim`. This
-bug manifests quite rarely under normal circumstances, but is
-triggereable from a syz-program.
-
-Reported-and-tested-by: Dylan J. Wolff<wolffd@comp.nus.edu.sg>
-Reported-and-tested-by: Jiacheng Xu <stitch@zju.edu.cn>
-Signed-off-by: Dylan J. Wolff<wolffd@comp.nus.edu.sg>
-Signed-off-by: Jiacheng Xu <stitch@zju.edu.cn>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jfs/jfs_discard.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/atmdev.h |    6 ++++++
+ net/atm/common.c       |    1 +
+ net/atm/raw.c          |    2 +-
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
-index 5f4b305030ad5..4b660296caf39 100644
---- a/fs/jfs/jfs_discard.c
-+++ b/fs/jfs/jfs_discard.c
-@@ -86,7 +86,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
- 	down_read(&sb->s_umount);
- 	bmp = JFS_SBI(ip->i_sb)->bmap;
+--- a/include/linux/atmdev.h
++++ b/include/linux/atmdev.h
+@@ -249,6 +249,12 @@ static inline void atm_account_tx(struct
+ 	ATM_SKB(skb)->atm_options = vcc->atm_options;
+ }
  
--	if (minlen > bmp->db_agsize ||
-+	if (bmp == NULL ||
-+	    minlen > bmp->db_agsize ||
- 	    start >= bmp->db_mapsize ||
- 	    range->len < sb->s_blocksize) {
- 		up_read(&sb->s_umount);
--- 
-2.39.5
-
++static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
++{
++	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
++					   &sk_atm(vcc)->sk_wmem_alloc));
++}
++
+ static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
+ {
+ 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
+ 
+ 	skb->dev = NULL; /* for paths shared with net_device interfaces */
+ 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
++		atm_return_tx(vcc, skb);
+ 		kfree_skb(skb);
+ 		error = -EFAULT;
+ 		goto out;
+--- a/net/atm/raw.c
++++ b/net/atm/raw.c
+@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
+ 
+ 	pr_debug("(%d) %d -= %d\n",
+ 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
+-	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
++	atm_return_tx(vcc, skb);
+ 	dev_kfree_skb_any(skb);
+ 	sk->sk_write_space(sk);
+ }
 
 
 
