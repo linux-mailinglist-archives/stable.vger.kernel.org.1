@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156281-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D780AAE5472
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4FB2AE4EEA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B34E51B64F7D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9851B1B60112
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17AC86136;
-	Mon, 23 Jun 2025 22:00:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5631202983;
+	Mon, 23 Jun 2025 21:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYogEMjE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w94YJD8J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE4D1D86DC;
-	Mon, 23 Jun 2025 22:00:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E8870838;
+	Mon, 23 Jun 2025 21:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716058; cv=none; b=PXZaINLo4QMkRkPHmmJB6hlv2AjqWmYe7A/4OCVUl5n8yFsSFYK3tHEc7PLh5FL2U+kqZ+w6TEn4YrVW9rNm3fOmcYA8WSgVk7WibE6Xu0In7TZSxDqEq8PXcNBN/W35mlncKujgMiFPM/uBtZyKC/joyEJXldVqUu1t4mFXmH0=
+	t=1750713029; cv=none; b=BhlQvZ+fE24nX/s7e60DNKyhOQwMxWk+bOyqgOQg2kH7M95Zi3UVnOyQFdzwiS//LVzV7cwDw/taj9qs4e0oiF1ChPPVYFyXgG1inh9u/uTOu/iUYfKFh8KE/W3PiYhrdFDzQ7q4JKtTtkYzzqWDoDe0/RIPN0gsiSesnPDyNGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716058; c=relaxed/simple;
-	bh=egDrvzp8XcHaQOY1gqXhzTFWjbhIo+UWJLi98pG7pAc=;
+	s=arc-20240116; t=1750713029; c=relaxed/simple;
+	bh=IhuCOwyjFcwVRj1sg6TM84wAU/3euGhUOK55GhhLSrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CZequhNrI3Ls8li9KSGHFKiZy9mNkRFaw0znwmdeyV7IV24IkXJ7CFLNTMqzbJqYhoQjrFZd1EzQUxwmAQaqLtoBuUwfEs1Cyx2WHnUCH0oHsT/bEPpUShWpLL3meg/jRYFBP/7rssz3rnUHy5LMO+eTtEi5NxT7qtwFAFO/gG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYogEMjE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6117AC4CEEA;
-	Mon, 23 Jun 2025 22:00:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=eXG1AQXBuQScofHQe+hLjcJmTvOj4l3YyOWkgcEmMR+1//KPOpl5i1SFeRnIF/HQSceLiDJ0ojtdCP+ENR+VivVi/PDGJxw5i9eZBglPA+qK4NQM0ffmoepw5WCZbib12gqPhFBNhWWseZhuCnoxF5amJnuskP7PprjywArvW+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w94YJD8J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C6AFC4CEEA;
+	Mon, 23 Jun 2025 21:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716058;
-	bh=egDrvzp8XcHaQOY1gqXhzTFWjbhIo+UWJLi98pG7pAc=;
+	s=korg; t=1750713029;
+	bh=IhuCOwyjFcwVRj1sg6TM84wAU/3euGhUOK55GhhLSrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYogEMjEpZLOzgag0KJpl8Kip4+HuN4/QOuaph5DodS3130GEcLjmHTbSB3+XQ2cv
-	 XRGc8UDpUfu68dhPXhUNiGt8laQR4Vc5+o59JBqJr0fHuiJubztO7LL9HVh45JpljE
-	 iSJS8SLuM+n4pD1JtsnM6kiwnNtTAOh5W9JWyGZk=
+	b=w94YJD8JE4IVRjONp733djFSSsQ6ang8mCjywv/N2AzG9QO4s9o094OEky4ZEgMWe
+	 kwQs/u8/56Quc4SDF3dR5w4SBX9qSSs5s3s5TdwqsGWwhwVZVjHLl+s+bBmMwgXg55
+	 XjnRPHbcZ0LIq3W1z+eL1ZSMCGJDHqyHTYuXp/TE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Nelson <robertcnelson@gmail.com>,
-	Shengyu Qu <wiagn233@outlook.com>,
-	Tony Lindgren <tony@atomide.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 5.10 318/355] ARM: dts: am335x-bone-common: Add GPIO PHY reset on revision C3 board
+	Stuart Hayes <stuart.w.hayes@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 184/222] platform/x86: dell_rbu: Stop overwriting data buffer
 Date: Mon, 23 Jun 2025 15:08:39 +0200
-Message-ID: <20250623130636.330240630@linuxfoundation.org>
+Message-ID: <20250623130617.702715923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengyu Qu <wiagn233@outlook.com>
+From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-commit 623cef652768860bd5f205fb7b741be278585fba upstream.
+[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
 
-This patch adds ethernet PHY reset GPIO config for Beaglebone Black
-series boards with revision C3. This fixes a random phy startup failure
-bug discussed at [1]. The GPIO pin used for reset is not used on older
-revisions, so it is ok to apply to all board revisions. The reset timing
-was discussed and tested at [2].
+The dell_rbu driver will use memset() to clear the data held by each
+packet when it is no longer needed (when the driver is unloaded, the
+packet size is changed, etc).
 
-[1] https://forum.digikey.com/t/ethernet-device-is-not-detecting-on-ubuntu-20-04-lts-on-bbg/19948
-[2] https://forum.beagleboard.org/t/recognizing-a-beaglebone-black-rev-c3-board/31249/
+The amount of memory that is cleared (before this patch) is the normal
+packet size. However, the last packet in the list may be smaller.
 
-Signed-off-by: Robert Nelson <robertcnelson@gmail.com>
-Signed-off-by: Shengyu Qu <wiagn233@outlook.com>
-Message-ID: <TY3P286MB26113797A3B2EC7E0348BBB2980FA@TY3P286MB2611.JPNP286.PROD.OUTLOOK.COM>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this to only clear the memory actually used by each packet, to prevent
+it from writing past the end of data buffer.
+
+Because the packet data buffers are allocated with __get_free_pages() (in
+page-sized increments), this bug could only result in a buffer being
+overwritten when a packet size larger than one page is used. The only user
+of the dell_rbu module should be the Dell BIOS update program, which uses
+a packet size of 4096, so no issues should be seen without the patch, it
+just blocks the possiblity.
+
+Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
+Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
+Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/am335x-bone-common.dtsi |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/platform/x86/dell_rbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/am335x-bone-common.dtsi
-@@ -145,6 +145,8 @@
- 			/* MDIO */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLUP | SLEWCTRL_FAST, MUX_MODE0)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_OUTPUT_PULLUP, MUX_MODE0)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_OUTPUT_PULLUP, MUX_MODE7)
- 		>;
- 	};
- 
-@@ -153,6 +155,8 @@
- 			/* MDIO reset value */
- 			AM33XX_PADCONF(AM335X_PIN_MDIO, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 			AM33XX_PADCONF(AM335X_PIN_MDC, PIN_INPUT_PULLDOWN, MUX_MODE7)
-+			/* Added to support GPIO controlled PHY reset */
-+			AM33XX_PADCONF(AM335X_PIN_UART0_CTSN, PIN_INPUT_PULLDOWN, MUX_MODE7)
- 		>;
- 	};
- 
-@@ -374,6 +378,10 @@
- 
- 	ethphy0: ethernet-phy@0 {
- 		reg = <0>;
-+		/* Support GPIO reset on revision C3 boards */
-+		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
-+		reset-assert-us = <300>;
-+		reset-deassert-us = <6500>;
- 	};
- };
- 
+diff --git a/drivers/platform/x86/dell_rbu.c b/drivers/platform/x86/dell_rbu.c
+index 3691391fea6b1..16e4614ad3e47 100644
+--- a/drivers/platform/x86/dell_rbu.c
++++ b/drivers/platform/x86/dell_rbu.c
+@@ -344,7 +344,7 @@ static void packet_empty_list(void)
+ 		 * zero out the RBU packet memory before freeing
+ 		 * to make sure there are no stale RBU packets left in memory
+ 		 */
+-		memset(newpacket->data, 0, rbu_data.packetsize);
++		memset(newpacket->data, 0, newpacket->length);
+ 		set_memory_wb((unsigned long)newpacket->data,
+ 			1 << newpacket->ordernum);
+ 		free_pages((unsigned long) newpacket->data,
+-- 
+2.39.5
+
 
 
 
