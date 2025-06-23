@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5DF0AE4FF1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60F99AE50B1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E7827A5026
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1AB84A1A81
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46834223316;
-	Mon, 23 Jun 2025 21:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2FE221734;
+	Mon, 23 Jun 2025 21:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kz/5p0Ev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBDxEnkd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B9F7482;
-	Mon, 23 Jun 2025 21:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2FD1F4628;
+	Mon, 23 Jun 2025 21:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713502; cv=none; b=W4Qi+zSFNxwepdhRZuR2OY8ZkU/sEb1Cil/s0NJYyPvjFE8jx+JE4NTVhCCE6mkGw5gx3WKtPI4+Y+j/6ppNcDLC3zyY42/EDQE5MsnPyaZieAcJG7Vc08flYR6pKBUzj3051xJGagQAkb+Ecp9FdA2xz/7CrgXX/eFkQifXlO8=
+	t=1750714033; cv=none; b=BorZ9J0eWuh8j3xj2V0IChG8PBeHGe9yYdD03IeBvpBQ/zNNI1c8bJLKBt379htHU6akMNILGJFQoYNkFG9o3m+C1ZXKfiMTdteK47IXEJn0Z0pf5ALpQdIx8GA9ZupqaYZbZyJQBlnzbrjxcG4Ug0EOC0NOufQCTqOZR2AVISk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713502; c=relaxed/simple;
-	bh=ZP+JbBusfCKZ1VFFfJjZoTytByYze+us+fiyaOmPhpU=;
+	s=arc-20240116; t=1750714033; c=relaxed/simple;
+	bh=qol30QfYAgNZ2AtU8L6o0gTL9m1JNnGrtsWQnkaFhic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fJdfGvpypGp+68SUSPCjcbDGAEkRBxz6T4IQ+X3QAaLNSGANwD2huD29Vg5PK6fnDS2Xet7/aMYJUXQBrtBO6c2M5A/gvT1Qt/XsF/tc90HScrKKrZt0VZumYd6C91TsyKrvIme4zQdmVvhYiZRwPh2rOrRj/Wq2oYdUgrYNR0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kz/5p0Ev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8385DC4CEF0;
-	Mon, 23 Jun 2025 21:18:21 +0000 (UTC)
+	 MIME-Version; b=rupInPZyj8azSLn/jTdPef0yVg3zpfxzyaFxsLIa/mkhWCmEdhLMaTh/iGN51NttebVwJgKrlOdfq/HsTi0SUFlHtyNMF2vfmcSc+Zr4rGSkSaWRw83MrdRLbPRgtDG3ADKogj19chLiN2OsdSRrIuCHRlqnox1mXwgz6FCngIw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBDxEnkd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00C4C4CEEA;
+	Mon, 23 Jun 2025 21:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713501;
-	bh=ZP+JbBusfCKZ1VFFfJjZoTytByYze+us+fiyaOmPhpU=;
+	s=korg; t=1750714032;
+	bh=qol30QfYAgNZ2AtU8L6o0gTL9m1JNnGrtsWQnkaFhic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kz/5p0Ev9OBmwmkToO/gZmBJjBUbPwdXKKJA1tcOs0ObiyAfym4fhZ5dVSvpHFdHQ
-	 gJWYklMUpBy/SS/DCt7IZ0E4dzUsBfwQh77ePJfnhdmVSZr0dyKQvTYaz1mNKr3m4J
-	 igawrusGPz6KuIv2LGh7AmW4Op+r5pQmFoijxBD0=
+	b=fBDxEnkdFgEdBGO69Chcl25sDugXDedilw0526Ztl36YSyB3AQl+dkWEPSBTXFBUA
+	 hx4NG9SNLQU/4kTL9qo2AvFLstLVIwKDRfV36ie3MbeMhtgRl/bUeDcWRFIfNgGJ/K
+	 LCjNhrUOgZxKYAHbRcIUt75x+tSNcvb/XWUW5rVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.10 169/355] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.6 109/290] PCI: Add ACS quirk for Loongson PCIe
 Date: Mon, 23 Jun 2025 15:06:10 +0200
-Message-ID: <20250623130631.787516428@linuxfoundation.org>
+Message-ID: <20250623130630.232894131@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,87 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
+commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
 
-Since handle->h_transaction may be a NULL pointer, so we should change it
-to call is_handle_aborted(handle) first before dereferencing it.
+Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
+allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
+each Root Port can be in a separate IOMMU group.
 
-And the following data-race was reported in my fuzzer:
-
-==================================================================
-BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
-
-write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
- jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
- __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
- ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
- ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
- __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
- ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
-....
-
-read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
- jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
- __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
- ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
- ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
- __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
- ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
-....
-
-value changed: 0x00000000 -> 0x00000001
-==================================================================
-
-This issue is caused by missing data-race annotation for jh->b_modified.
-Therefore, the missing annotation needs to be added.
-
-Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
-Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1492,7 +1492,7 @@ int jbd2_journal_dirty_metadata(handle_t
- 				jh->b_next_transaction == transaction);
- 		spin_unlock(&jh->b_state_lock);
- 	}
--	if (jh->b_modified == 1) {
-+	if (data_race(jh->b_modified == 1)) {
- 		/* If it's in our transaction it must be in BJ_Metadata list. */
- 		if (data_race(jh->b_transaction == transaction &&
- 		    jh->b_jlist != BJ_Metadata)) {
-@@ -1511,7 +1511,6 @@ int jbd2_journal_dirty_metadata(handle_t
- 		goto out;
- 	}
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4988,6 +4988,18 @@ static int pci_quirk_brcm_acs(struct pci
+ 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ }
  
--	journal = transaction->t_journal;
- 	spin_lock(&jh->b_state_lock);
- 
- 	if (is_handle_aborted(handle)) {
-@@ -1526,6 +1525,8 @@ int jbd2_journal_dirty_metadata(handle_t
- 		goto out_unlock_bh;
- 	}
- 
-+	journal = transaction->t_journal;
++static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
++{
++	/*
++	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
++	 * they do not allow peer-to-peer transactions between Root Ports.
++	 * Allow each Root Port to be in a separate IOMMU group by masking
++	 * SV/RR/CR/UF bits.
++	 */
++	return pci_acs_ctrl_enabled(acs_flags,
++		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
++}
 +
- 	if (jh->b_modified == 0) {
- 		/*
- 		 * This buffer's got modified and becoming part
+ /*
+  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+  * multi-function devices, the hardware isolates the functions by
+@@ -5121,6 +5133,17 @@ static const struct pci_dev_acs_enabled
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
++	/* Loongson PCIe Root Ports */
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
+ 	/* Zhaoxin multi-function devices */
 
 
 
