@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-157181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E81FAAE52E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0346AE510A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 323573BB652
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A30714411A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD39E1EEA3C;
-	Mon, 23 Jun 2025 21:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4DB18DB1A;
+	Mon, 23 Jun 2025 21:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onxaT244"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BsAzVbIk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A8193FD4;
-	Mon, 23 Jun 2025 21:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C9AC224F6;
+	Mon, 23 Jun 2025 21:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715235; cv=none; b=cc48DHSbBIyS1/x8fM3NG/xWHypL/VL1M9aZQnFDQObrBAa6V2uGcD7pev0IFEMSzr5psdYHf1Y0Nqlctyme0XmPw8+FJ5aoHPvtsqezqBREpVHtuiYWSGYhytgzikHXE8FdfMaO6Uo2ecDv4iJatvJAChvcfoWhdfmSnLF2nGs=
+	t=1750714218; cv=none; b=kRg/5so+VVpOZbxqaF+XkMRqPZgGvFr/y2uiUDN/ffhTHtolLUOdXqaTHpF7fz5mJoo/m//MwCckDlue94FeFo80ubrYSR/V3y+rpTpgucw5QzeR4kNamGqskpYwfrpmVv8ONo1H/OyGjluxr7CN3K0cHnCL3hcIymWCViJv0iI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715235; c=relaxed/simple;
-	bh=7QCIAh3fvlk+yX8a9jTzWORE8AQGyO0D9YlVo+xYBkU=;
+	s=arc-20240116; t=1750714218; c=relaxed/simple;
+	bh=gVd/mcskyW6SBY6ut3W1D/Efc19v7iXWuWO28OuTmS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoWgDTgpjKsVnlRUdCoGFXY7pB/NIRwZ/MMVzXFSZMv2ztn2VKF4ghm/fTgkFSEkmioZNVMpHWSTr39REN8W3Cbo8GEnCWk/vhLE3ZecxgeaWm7WwiBhWjo58y4ib9g+JNBRQg7TPwZzY0cDQxtdrThwIzIIX4xND4StYVchL94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onxaT244; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02C62C4CEEA;
-	Mon, 23 Jun 2025 21:47:14 +0000 (UTC)
+	 MIME-Version; b=kc5Aurt5OMp6oAzFdsN9gYVYvyKU5pBzp8ShL1vvaZP9flckBTTRkqmgzxZYkNSfacY1mVt9CvLuFZ1v3owLUxzxXLBPd9lBlqMOQD1biUt/bYRDZyqIUcBzpO5mYa4wUe8eL5vaDFTDz3/7jP41yAXi3Uiio7fxLIe+Cui/FIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BsAzVbIk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3390EC4CEEA;
+	Mon, 23 Jun 2025 21:30:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715235;
-	bh=7QCIAh3fvlk+yX8a9jTzWORE8AQGyO0D9YlVo+xYBkU=;
+	s=korg; t=1750714218;
+	bh=gVd/mcskyW6SBY6ut3W1D/Efc19v7iXWuWO28OuTmS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onxaT244F4g1bSu7MIxnysU1SP6pFmF2crjMYZLXW3h5L5xCxZxIKQZq1orm9DNIp
-	 sU3bIkEwjCirnhtG0zpK0zBmQd6Shp5306GzmxNMKkLQgLkI8CDvgJn//tgI+FfN4j
-	 prK7bKaaMp/h/+4VTKTRoujMsoFZ9aJhXrUyay3s=
+	b=BsAzVbIkhAc2DPyuJKGiMxqSp0NqNgr7FPyjtErV7w0n79ZQFOo9QO9Eu3T7dX3As
+	 fDefNIwZgNhRLTtDTTc5GcSaWsxN5OpUdY6tstZX1cpujR7aQl3KOquXb8BjHYC99+
+	 koNiDNMpsewF9qwx7lPEyrm5/D98hv/zcBcL61+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Vasiliy Kulikov <segoon@openwall.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 240/411] ipc: fix to protect IPCS lookups using RCU
+	Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>,
+	James Calligeros <jcalligeros99@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 123/290] ASoC: tas2770: Power cycle amp on ISENSE/VSENSE change
 Date: Mon, 23 Jun 2025 15:06:24 +0200
-Message-ID: <20250623130639.697106544@linuxfoundation.org>
+Message-ID: <20250623130630.631533959@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +64,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Hector Martin <marcan@marcan.st>
 
-commit d66adabe91803ef34a8b90613c81267b5ded1472 upstream.
+[ Upstream commit f529c91be8a34ac12e7599bf87c65b6f4a2c9f5c ]
 
-syzbot reported that it discovered a use-after-free vulnerability, [0]
+The ISENSE/VSENSE blocks are only powered up when the amplifier
+transitions from shutdown to active. This means that if those controls
+are flipped on while the amplifier is already playing back audio, they
+will have no effect.
 
-[0]: https://lore.kernel.org/all/67af13f8.050a0220.21dd3.0038.GAE@google.com/
+Fix this by forcing a power cycle around transitions in those controls.
 
-idr_for_each() is protected by rwsem, but this is not enough.  If it is
-not protected by RCU read-critical region, when idr_for_each() calls
-radix_tree_node_free() through call_rcu() to free the radix_tree_node
-structure, the node will be freed immediately, and when reading the next
-node in radix_tree_for_each_slot(), the already freed memory may be read.
-
-Therefore, we need to add code to make sure that idr_for_each() is
-protected within the RCU read-critical region when we call it in
-shm_destroy_orphaned().
-
-Link: https://lkml.kernel.org/r/20250424143322.18830-1-aha310510@gmail.com
-Fixes: b34a6b1da371 ("ipc: introduce shm_rmid_forced sysctl")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reported-by: syzbot+a2b84e569d06ca3a949c@syzkaller.appspotmail.com
-Cc: Jeongjun Park <aha310510@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Vasiliy Kulikov <segoon@openwall.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Neal Gompa <neal@gompa.dev>
+Signed-off-by: Hector Martin <marcan@marcan.st>
+Signed-off-by: James Calligeros <jcalligeros99@gmail.com>
+Link: https://patch.msgid.link/20250406-apple-codec-changes-v5-1-50a00ec850a3@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- ipc/shm.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ sound/soc/codecs/tas2770.c | 30 ++++++++++++++++++++++++++++--
+ 1 file changed, 28 insertions(+), 2 deletions(-)
 
---- a/ipc/shm.c
-+++ b/ipc/shm.c
-@@ -417,8 +417,11 @@ static int shm_try_destroy_orphaned(int
- void shm_destroy_orphaned(struct ipc_namespace *ns)
- {
- 	down_write(&shm_ids(ns).rwsem);
--	if (shm_ids(ns).in_use)
-+	if (shm_ids(ns).in_use) {
-+		rcu_read_lock();
- 		idr_for_each(&shm_ids(ns).ipcs_idr, &shm_try_destroy_orphaned, ns);
-+		rcu_read_unlock();
-+	}
- 	up_write(&shm_ids(ns).rwsem);
- }
+diff --git a/sound/soc/codecs/tas2770.c b/sound/soc/codecs/tas2770.c
+index 5c6b825c757b3..181b16530e5bc 100644
+--- a/sound/soc/codecs/tas2770.c
++++ b/sound/soc/codecs/tas2770.c
+@@ -158,11 +158,37 @@ static const struct snd_kcontrol_new isense_switch =
+ static const struct snd_kcontrol_new vsense_switch =
+ 	SOC_DAPM_SINGLE("Switch", TAS2770_PWR_CTRL, 2, 1, 1);
  
++static int sense_event(struct snd_soc_dapm_widget *w,
++			struct snd_kcontrol *kcontrol, int event)
++{
++	struct snd_soc_component *component = snd_soc_dapm_to_component(w->dapm);
++	struct tas2770_priv *tas2770 = snd_soc_component_get_drvdata(component);
++
++	/*
++	 * Powering up ISENSE/VSENSE requires a trip through the shutdown state.
++	 * Do that here to ensure that our changes are applied properly, otherwise
++	 * we might end up with non-functional IVSENSE if playback started earlier,
++	 * which would break software speaker protection.
++	 */
++	switch (event) {
++	case SND_SOC_DAPM_PRE_REG:
++		return snd_soc_component_update_bits(component, TAS2770_PWR_CTRL,
++						    TAS2770_PWR_CTRL_MASK,
++						    TAS2770_PWR_CTRL_SHUTDOWN);
++	case SND_SOC_DAPM_POST_REG:
++		return tas2770_update_pwr_ctrl(tas2770);
++	default:
++		return 0;
++	}
++}
++
+ static const struct snd_soc_dapm_widget tas2770_dapm_widgets[] = {
+ 	SND_SOC_DAPM_AIF_IN("ASI1", "ASI1 Playback", 0, SND_SOC_NOPM, 0, 0),
+ 	SND_SOC_DAPM_MUX("ASI1 Sel", SND_SOC_NOPM, 0, 0, &tas2770_asi1_mux),
+-	SND_SOC_DAPM_SWITCH("ISENSE", TAS2770_PWR_CTRL, 3, 1, &isense_switch),
+-	SND_SOC_DAPM_SWITCH("VSENSE", TAS2770_PWR_CTRL, 2, 1, &vsense_switch),
++	SND_SOC_DAPM_SWITCH_E("ISENSE", TAS2770_PWR_CTRL, 3, 1, &isense_switch,
++		sense_event, SND_SOC_DAPM_PRE_REG | SND_SOC_DAPM_POST_REG),
++	SND_SOC_DAPM_SWITCH_E("VSENSE", TAS2770_PWR_CTRL, 2, 1, &vsense_switch,
++		sense_event, SND_SOC_DAPM_PRE_REG | SND_SOC_DAPM_POST_REG),
+ 	SND_SOC_DAPM_DAC_E("DAC", NULL, SND_SOC_NOPM, 0, 0, tas2770_dac_event,
+ 			   SND_SOC_DAPM_POST_PMU | SND_SOC_DAPM_PRE_PMD),
+ 	SND_SOC_DAPM_OUTPUT("OUT"),
+-- 
+2.39.5
+
 
 
 
