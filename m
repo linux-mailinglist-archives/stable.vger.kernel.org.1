@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-155920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD6F0AE449F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F6FAE43D8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9220B4401AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8065C1891C72
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C144D25291F;
-	Mon, 23 Jun 2025 13:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 486A52550CA;
+	Mon, 23 Jun 2025 13:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sFwQWHR5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YBs8DTHe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9C930E84D;
-	Mon, 23 Jun 2025 13:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CCC254B09;
+	Mon, 23 Jun 2025 13:30:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685677; cv=none; b=gn0C/UGQpI2pRFpSbCxBMp5rV3T4smvrJ/1EG2UXHmkIjcyo/HFELzVZyBZV5njByGwRlvXvQkcGndknZN6zT0aT3w4ivJtYufSccioRC9mkXT7ZgRlcPFIVObvIKTH5zyM4Yf6RhbyvmbrWOcca5VHJaXa9+xMIrws3LVgWoUw=
+	t=1750685423; cv=none; b=jL/tTJXVJiEaF8Y46Y9WyYjw7zRW3CVOzl5a2o1OAaMVsnmx5xpfQ44u7Pi5JWLfteyqXpESSHtVU9KfVo0YIz7un+WTz3gmdATKQZLm0F7XOOB/bjr5DhM5hposnsjM0VAdJ9AVdFz/ly0ZTIpIvJUyWzWmPSyOte2EftGJMlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685677; c=relaxed/simple;
-	bh=SAxtojSf+yuuZtNE6wCuoXcaAjS9kbQk7S13Aw91jNg=;
+	s=arc-20240116; t=1750685423; c=relaxed/simple;
+	bh=g0U+tGD+JPZ0LHpNGbRSAXbMSZONrFk/7BFBdhzqLZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Fw2ElBMRY118hJJh/v1W9M0hH1Gggt1NMgYnpOjulosu0itQvY1lfCCy2DG2vSL5yt5u9lktd3ALkq/nz7ZLkS2RmFkOMPIcSMxS0M5Ct/bGhp+YEROtmcGHenNbMfjB2QmhPXoDzOftp6NL25aFbNm+q+mciYzXiQJvM7DpBgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sFwQWHR5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12220C4CEF0;
-	Mon, 23 Jun 2025 13:34:36 +0000 (UTC)
+	 MIME-Version; b=MOZBBMpsF/JgU0tZjN4bVv7fB+fBqNsSjDArlmMVEc5vaCm753k3U7+kN1y0cl9FtvavehbUdO35/j1vky7z/JNquHV/IIiOWY5AKwIkEBeTTR09CYLCnTnv0G6SESKR3V/4xOC4C6hdGEva0NY/M0epemPR00zg0LuJHH2VdQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YBs8DTHe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804C3C4CEF1;
+	Mon, 23 Jun 2025 13:30:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685677;
-	bh=SAxtojSf+yuuZtNE6wCuoXcaAjS9kbQk7S13Aw91jNg=;
+	s=korg; t=1750685422;
+	bh=g0U+tGD+JPZ0LHpNGbRSAXbMSZONrFk/7BFBdhzqLZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sFwQWHR5+1Nc17oQ9sqgkY+keVsyEeHaWGrpUuHoMR4Veztz5veFxaIC2nReWKXda
-	 pEG/U0YcwQ+TLcpD4My9GZt1RJvW65C3dfN4crtZsUU8hOOh0uhTN5Fw0gxEp0vvvS
-	 ab/KhMkwy9WcDr6aaSLQpP+Vp8pK6wsG0aPrV17s=
+	b=YBs8DTHeDjtTPFFJQuF49GF6UfZ0ZcopbXUuEPrcXO5WOTBX5zZc6STVuTHlq4gCl
+	 nc8gRXdm9mzQJTpLM8UYmg5uHgHUesaYBxN4plVtvpftJlKwAQcrU0teWSCIVANNY6
+	 Rz9x7I/lW0JABcLEXIa4eZEhMAux52yNzwp1gHI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuai Xue <xueshuai@linux.alibaba.com>,
-	Huang Yiwei <quic_hyiwei@quicinc.com>,
-	Gavin Shan <gshan@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Will Deacon <will@kernel.org>,
+	Stone Zhang <quic_stonez@quicinc.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 036/411] firmware: SDEI: Allow sdei initialization without ACPI_APEI_GHES
-Date: Mon, 23 Jun 2025 15:03:00 +0200
-Message-ID: <20250623130634.089863809@linuxfoundation.org>
+Subject: [PATCH 5.15 037/411] wifi: ath11k: fix node corruption in ar->arvifs list
+Date: Mon, 23 Jun 2025 15:03:01 +0200
+Message-ID: <20250623130634.119462288@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -69,133 +66,80 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Huang Yiwei <quic_hyiwei@quicinc.com>
+From: Stone Zhang <quic_stonez@quicinc.com>
 
-[ Upstream commit 59529bbe642de4eb2191a541d9b4bae7eb73862e ]
+[ Upstream commit 31e98e277ae47f56632e4d663b1d4fd12ba33ea8 ]
 
-SDEI usually initialize with the ACPI table, but on platforms where
-ACPI is not used, the SDEI feature can still be used to handle
-specific firmware calls or other customized purposes. Therefore, it
-is not necessary for ARM_SDE_INTERFACE to depend on ACPI_APEI_GHES.
+In current WLAN recovery code flow, ath11k_core_halt() only
+reinitializes the "arvifs" list head. This will cause the
+list node immediately following the list head to become an
+invalid list node. Because the prev of that node still points
+to the list head "arvifs", but the next of the list head "arvifs"
+no longer points to that list node.
 
-In commit dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES
-in acpi_init()"), to make APEI ready earlier, sdei_init was moved
-into acpi_ghes_init instead of being a standalone initcall, adding
-ACPI_APEI_GHES dependency to ARM_SDE_INTERFACE. This restricts the
-flexibility and usability of SDEI.
+When a WLAN recovery occurs during the execution of a vif
+removal, and it happens before the spin_lock_bh(&ar->data_lock)
+in ath11k_mac_op_remove_interface(), list_del() will detect the
+previously mentioned situation, thereby triggering a kernel panic.
 
-This patch corrects the dependency in Kconfig and splits sdei_init()
-into two separate functions: sdei_init() and acpi_sdei_init().
-sdei_init() will be called by arch_initcall and will only initialize
-the platform driver, while acpi_sdei_init() will initialize the
-device from acpi_ghes_init() when ACPI is ready. This allows the
-initialization of SDEI without ACPI_APEI_GHES enabled.
+The fix is to remove and reinitialize all vif list nodes from the
+list head "arvifs" during WLAN halt. The reinitialization is to make
+the list nodes valid, ensuring that the list_del() in
+ath11k_mac_op_remove_interface() can execute normally.
 
-Fixes: dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
-Cc: Shuai Xue <xueshuai@linux.alibaba.com>
-Signed-off-by: Huang Yiwei <quic_hyiwei@quicinc.com>
-Reviewed-by: Shuai Xue <xueshuai@linux.alibaba.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://lore.kernel.org/r/20250507045757.2658795-1-quic_hyiwei@quicinc.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Call trace:
+__list_del_entry_valid_or_report+0xb8/0xd0
+ath11k_mac_op_remove_interface+0xb0/0x27c [ath11k]
+drv_remove_interface+0x48/0x194 [mac80211]
+ieee80211_do_stop+0x6e0/0x844 [mac80211]
+ieee80211_stop+0x44/0x17c [mac80211]
+__dev_close_many+0xac/0x150
+__dev_change_flags+0x194/0x234
+dev_change_flags+0x24/0x6c
+devinet_ioctl+0x3a0/0x670
+inet_ioctl+0x200/0x248
+sock_do_ioctl+0x60/0x118
+sock_ioctl+0x274/0x35c
+__arm64_sys_ioctl+0xac/0xf0
+invoke_syscall+0x48/0x114
+...
+
+Tested-on: QCA6698AQ hw2.1 PCI WLAN.HSP.1.1-04591-QCAHSPSWPL_V1_V2_SILICONZ_IOE-1
+
+Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Signed-off-by: Stone Zhang <quic_stonez@quicinc.com>
+Link: https://patch.msgid.link/20250320053145.3445187-1-quic_stonez@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/Kconfig   |  1 +
- drivers/acpi/apei/ghes.c    |  2 +-
- drivers/firmware/Kconfig    |  1 -
- drivers/firmware/arm_sdei.c | 11 ++++++++---
- include/linux/arm_sdei.h    |  4 ++--
- 5 files changed, 12 insertions(+), 7 deletions(-)
+ drivers/net/wireless/ath/ath11k/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/apei/Kconfig b/drivers/acpi/apei/Kconfig
-index 6b18f8bc7be35..71e0d64a7792e 100644
---- a/drivers/acpi/apei/Kconfig
-+++ b/drivers/acpi/apei/Kconfig
-@@ -23,6 +23,7 @@ config ACPI_APEI_GHES
- 	select ACPI_HED
- 	select IRQ_WORK
- 	select GENERIC_ALLOCATOR
-+	select ARM_SDE_INTERFACE if ARM64
- 	help
- 	  Generic Hardware Error Source provides a way to report
- 	  platform hardware errors (such as that from chipset). It
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index a6c8514110736..72087e05b5a5f 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -1478,7 +1478,7 @@ void __init ghes_init(void)
+diff --git a/drivers/net/wireless/ath/ath11k/core.c b/drivers/net/wireless/ath/ath11k/core.c
+index 48a449fbd2bcc..e86ecdf433de5 100644
+--- a/drivers/net/wireless/ath/ath11k/core.c
++++ b/drivers/net/wireless/ath/ath11k/core.c
+@@ -968,6 +968,7 @@ static int ath11k_core_reconfigure_on_crash(struct ath11k_base *ab)
+ void ath11k_core_halt(struct ath11k *ar)
  {
- 	int rc;
+ 	struct ath11k_base *ab = ar->ab;
++	struct list_head *pos, *n;
  
--	sdei_init();
-+	acpi_sdei_init();
+ 	lockdep_assert_held(&ar->conf_mutex);
  
- 	if (acpi_disabled)
- 		return;
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index b4d83c08acef8..059cb18f4bece 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -40,7 +40,6 @@ config ARM_SCPI_POWER_DOMAIN
- config ARM_SDE_INTERFACE
- 	bool "ARM Software Delegated Exception Interface (SDEI)"
- 	depends on ARM64
--	depends on ACPI_APEI_GHES
- 	help
- 	  The Software Delegated Exception Interface (SDEI) is an ARM
- 	  standard for registering callbacks from the platform firmware
-diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
-index 3e8051fe82965..71e2a9a89f6ad 100644
---- a/drivers/firmware/arm_sdei.c
-+++ b/drivers/firmware/arm_sdei.c
-@@ -1062,13 +1062,12 @@ static bool __init sdei_present_acpi(void)
- 	return true;
- }
+@@ -981,7 +982,12 @@ void ath11k_core_halt(struct ath11k *ar)
  
--void __init sdei_init(void)
-+void __init acpi_sdei_init(void)
- {
- 	struct platform_device *pdev;
- 	int ret;
- 
--	ret = platform_driver_register(&sdei_driver);
--	if (ret || !sdei_present_acpi())
-+	if (!sdei_present_acpi())
- 		return;
- 
- 	pdev = platform_device_register_simple(sdei_driver.driver.name,
-@@ -1081,6 +1080,12 @@ void __init sdei_init(void)
- 	}
- }
- 
-+static int __init sdei_init(void)
-+{
-+	return platform_driver_register(&sdei_driver);
-+}
-+arch_initcall(sdei_init);
+ 	rcu_assign_pointer(ab->pdevs_active[ar->pdev_idx], NULL);
+ 	synchronize_rcu();
+-	INIT_LIST_HEAD(&ar->arvifs);
 +
- int sdei_event_handler(struct pt_regs *regs,
- 		       struct sdei_registered_event *arg)
- {
-diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
-index 255701e1251b4..f652a5028b590 100644
---- a/include/linux/arm_sdei.h
-+++ b/include/linux/arm_sdei.h
-@@ -46,12 +46,12 @@ int sdei_unregister_ghes(struct ghes *ghes);
- /* For use by arch code when CPU hotplug notifiers are not appropriate. */
- int sdei_mask_local_cpu(void);
- int sdei_unmask_local_cpu(void);
--void __init sdei_init(void);
-+void __init acpi_sdei_init(void);
- void sdei_handler_abort(void);
- #else
- static inline int sdei_mask_local_cpu(void) { return 0; }
- static inline int sdei_unmask_local_cpu(void) { return 0; }
--static inline void sdei_init(void) { }
-+static inline void acpi_sdei_init(void) { }
- static inline void sdei_handler_abort(void) { }
- #endif /* CONFIG_ARM_SDE_INTERFACE */
++	spin_lock_bh(&ar->data_lock);
++	list_for_each_safe(pos, n, &ar->arvifs)
++		list_del_init(pos);
++	spin_unlock_bh(&ar->data_lock);
++
+ 	idr_init(&ar->txmgmt_idr);
+ }
  
 -- 
 2.39.5
