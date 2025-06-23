@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-155917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD200AE4439
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 470BFAE4510
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:48:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 41B4B7ADCFA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:35:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C8B73BBF77
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62DFF2528F3;
-	Mon, 23 Jun 2025 13:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FF0B253938;
+	Mon, 23 Jun 2025 13:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Js4FM2A/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QjUP8K38"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20C5D30E84D;
-	Mon, 23 Jun 2025 13:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC55253356;
+	Mon, 23 Jun 2025 13:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685670; cv=none; b=SSNR/cAv5lt4JBblkNPhIlkKrIsrLA9SzeIP9BTmvco9rmtSAx7/pI2Mbkb55w0o23DPisfhuGgM5sgY3h7DBm78K/3IY14I7RHVW5LJ9Cle7pI2cwaZHWqojP9AvvfMghJXM2hUhKdYS1x/q667YsIivtI8H+HQtl9GYKbGgUc=
+	t=1750685685; cv=none; b=IfKgLnmEXRFD2NtR3ZBOFj9crmMKh/pdEsUtKIxsHFHjAyqonrAiSkQl5PvsczQ8HM00A3omLMcZ5VYut/bHlTj8Hj5WOLL6RwQzyIzLuzyzF7fD8TuCNYfUjK/Zow8DJdWF3j/52ploHv9A06JYrKCHSia0SCG0RtIGBuO+K0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685670; c=relaxed/simple;
-	bh=hCMPgeZ/mr5MUr5T468U4aLJVrZN1+BA0D1Bv9PFd9U=;
+	s=arc-20240116; t=1750685685; c=relaxed/simple;
+	bh=myFPOPTbObbwNm63iOF+LVbD7D5BcqL4BpXAEoat1M4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoQTv2IoWagPUpk5TVcNMts2KaIiUAGeu1aSCIecT/c2etb1BSV9wA+JbYOK4suGqUe5MwCpgMXr3+PUpBfDnvaJlDA7AmfkK7O95dTVtwKFIa7SPh+HG2wlBGLfOYoncCug2jzEY0DK8pu0r7sk3wppWOHJqxVV+/feWYo+s6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Js4FM2A/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160C5C4CEEA;
-	Mon, 23 Jun 2025 13:34:28 +0000 (UTC)
+	 MIME-Version; b=X3w4bSnzfmFjqbQXJ2Mt0VA7zgBlM8NUDeF/WBW3Q8rh80WTvHlSdy3KUlefVgaIufB8shOx48JArh5eZEUKAa80Tk4CQlVK6e0QYvG5RGPHrYCZmxmb78DBOn4dU87peNVeOKPH1L1O1NetiTJ3u2Rbx4ovgKjnWvhHfCW7KF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QjUP8K38; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4480C4CEEA;
+	Mon, 23 Jun 2025 13:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685669;
-	bh=hCMPgeZ/mr5MUr5T468U4aLJVrZN1+BA0D1Bv9PFd9U=;
+	s=korg; t=1750685685;
+	bh=myFPOPTbObbwNm63iOF+LVbD7D5BcqL4BpXAEoat1M4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Js4FM2A/PyCjWp31YZbn/B7caFBesa043CNdk9k38+Lc4v2zKvs2vh/BuVMrl22ZD
-	 KtYmFjpo+VTPQ037u4Q4Ova6m/r0H6Rdkx+Zmf1ryr5b/mfrJM61ODU8Wwgz10p5E2
-	 FZczBalCJBPPD6o9UlS3VKijpIHOuhxyPPoqVYY0=
+	b=QjUP8K38P8MxXKI5JN6jrIAt3vKM0zUxrVPn1hRtE433kTaicxnnfs/kFleIUsHjt
+	 ZwcGZGoV8ZLozpOjt90q7vtkaLsRUF6g1DbHOwMF2/MnA1m1OBTWeNUIuZZfjzNCyl
+	 PBlgtIJxiW30u7R8+p/xS5X34FjEmGAqSnuwre8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Ovidiu Panait <ovidiu.panait.oss@gmail.com>,
 	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 023/508] crypto: xts - Only add ecb if it is not already there
-Date: Mon, 23 Jun 2025 15:01:08 +0200
-Message-ID: <20250623130645.821702239@linuxfoundation.org>
+Subject: [PATCH 6.1 024/508] crypto: sun8i-ce - move fallback ahash_request to the end of the struct
+Date: Mon, 23 Jun 2025 15:01:09 +0200
+Message-ID: <20250623130645.845133520@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -65,44 +66,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 
-[ Upstream commit 270b6f13454cb7f2f7058c50df64df409c5dcf55 ]
+[ Upstream commit c822831b426307a6ca426621504d3c7f99765a39 ]
 
-Only add ecb to the cipher name if it isn't already ecb.
+'struct ahash_request' has a flexible array at the end, so it must be the
+last member in a struct, to avoid overwriting other struct members.
 
-Also use memcmp instead of strncmp since these strings are all
-stored in an array of length CRYPTO_MAX_ALG_NAME.
+Therefore, move 'fallback_req' to the end of the 'sun8i_ce_hash_reqctx'
+struct.
 
-Fixes: f1c131b45410 ("crypto: xts - Convert to skcipher")
+Fixes: 56f6d5aee88d ("crypto: sun8i-ce - support hash algorithms")
+Signed-off-by: Ovidiu Panait <ovidiu.panait.oss@gmail.com>
 Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/xts.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/xts.c b/crypto/xts.c
-index b05020657cdc8..1972f40333f04 100644
---- a/crypto/xts.c
-+++ b/crypto/xts.c
-@@ -361,7 +361,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
+diff --git a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
+index 8177aaba44349..a1658722d886d 100644
+--- a/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
++++ b/drivers/crypto/allwinner/sun8i-ce/sun8i-ce.h
+@@ -297,8 +297,8 @@ struct sun8i_ce_hash_tfm_ctx {
+  * @flow:	the flow to use for this request
+  */
+ struct sun8i_ce_hash_reqctx {
+-	struct ahash_request fallback_req;
+ 	int flow;
++	struct ahash_request fallback_req; // keep at the end
+ };
  
- 	err = crypto_grab_skcipher(&ctx->spawn, skcipher_crypto_instance(inst),
- 				   cipher_name, 0, mask);
--	if (err == -ENOENT) {
-+	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
- 		err = -ENAMETOOLONG;
- 		if (snprintf(ctx->name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
- 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
-@@ -395,7 +395,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	/* Alas we screwed up the naming so we have to mangle the
- 	 * cipher name.
- 	 */
--	if (!strncmp(cipher_name, "ecb(", 4)) {
-+	if (!memcmp(cipher_name, "ecb(", 4)) {
- 		int len;
- 
- 		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
+ /*
 -- 
 2.39.5
 
