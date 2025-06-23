@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-156771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F447AE5116
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF67AE5025
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55401B631E0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B41661B61FC8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F5182236E5;
-	Mon, 23 Jun 2025 21:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E25B41EDA0F;
+	Mon, 23 Jun 2025 21:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmh/xxbq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yk2+EfeJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ABF1221734;
-	Mon, 23 Jun 2025 21:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0D9219E0;
+	Mon, 23 Jun 2025 21:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714226; cv=none; b=X4WV1d5cSPmQTU5cm0L9hLNRtsEi73Tex/CFUuOPxI+3KXV0bfqUpkGtAyhKQuBeqmjYR7/VMO+e3FcStka695KxcVgzhxiTDoLM+FQmowCwS/zCw/Eck+xLrUw4cSuUllMaV2RZXOWgrMaSXdXR1eU1w0uL4CBRLbLsvndJj+Y=
+	t=1750713751; cv=none; b=Ml9nhBXrablPlnKGSeo1fbrTvDxoawBKbLdVFPMt+qdOkuSXW2yHEv2UY5onxufyMzEBvexbb1g3MUpW970dBD+LBgGkKi4ICwIzm4/aKsqjQypzq02ho8eXgQjh6l706E9+yzxxz5c0RPc0uk9cXZLJ4gdvrC1I3nCmL6MPr90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714226; c=relaxed/simple;
-	bh=QH9IxPSWLqMQkdoI4kuDmg0NP0hb5lFQgEy1Tub6GlM=;
+	s=arc-20240116; t=1750713751; c=relaxed/simple;
+	bh=DBN2uk9PZuQYR26Dhm4YDhvyINgOl4VGPAhi1hKPAJ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=auIWKe4U/7OibC3knx7PkwBe8p1DhDOD8lc9VZzsGwv1qzjSKIbLfxw+8x9BE0akIacGb2skfpV0bgM0D2saNn5XcsbCtNEh9lWp5UJlXu050X4x3+ZPLK71hiw0RvspO5VtB49YLK07v8zxZHj6G1vcXmaSbIc6XwIlpo/iGsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmh/xxbq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94BF4C4CEEA;
-	Mon, 23 Jun 2025 21:30:25 +0000 (UTC)
+	 MIME-Version; b=YWFr3O3ILV1ZS+naea7RqBJ7P/wWPsm5UgJOdjWJ2+Nv9B8fs4Gi5BSC1BtKZY2n9xQyyU2veS9osWF0ZTRGr8OrK4rQsy/MwiFx51VyHQENhdiJKCRrJ5dxXDlsU+yae5nrfErRcFDf5xnB4OAQkUBRkmc4IRk6u7s1u4i3ttM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yk2+EfeJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FD37C4CEEA;
+	Mon, 23 Jun 2025 21:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714225;
-	bh=QH9IxPSWLqMQkdoI4kuDmg0NP0hb5lFQgEy1Tub6GlM=;
+	s=korg; t=1750713751;
+	bh=DBN2uk9PZuQYR26Dhm4YDhvyINgOl4VGPAhi1hKPAJ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qmh/xxbqCimPDldWYEVPDLjqhFnEXxWrdnymkHnFRWmaqSsamaO041aRjnVD7MXCB
-	 cOEinzLKs+JKndt/6QEK82UnvrTkPJt6AMJZcms/2BJ7ZCD2D7B9pDo64peMEpCLMR
-	 KGGYZzvL4buj8cp1VokqRYjTARQ+fseFzANIEsyI=
+	b=Yk2+EfeJw2mn32kF4l+Qu3hP96JLur/AcCHZckdqtdAJa+s0BGfdvcr7hAN6pls3O
+	 LMS8cohiykKE0C1GasPEWz9iXOCalEOMMe2bAMZ817j4m0kchfQPQ6Q3rAx9ozGrbP
+	 6P9ertpcJQ7Dp/Fhesm0B+3QS1+QiplvO0X801OY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chenyuan Yang <chenyuan0y@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/508] phy: qcom-qmp-usb: Fix an NULL vs IS_ERR() bug
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 061/414] media: venus: Fix probe error handling
 Date: Mon, 23 Jun 2025 15:03:18 +0200
-Message-ID: <20250623130649.045730615@linuxfoundation.org>
+Message-ID: <20250623130643.598984403@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenyuan Yang <chenyuan0y@gmail.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit d14402a38c2d868cacb1facaf9be908ca6558e59 ]
+commit 523cea3a19f0b3b020a4745344c136a636e6ffd7 upstream.
 
-The qmp_usb_iomap() helper function currently returns the raw result of
-devm_ioremap() for non-exclusive mappings. Since devm_ioremap() may return
-a NULL pointer and the caller only checks error pointers with IS_ERR(),
-NULL could bypass the check and lead to an invalid dereference.
+Video device registering has been moved earlier in the probe function,
+but the new order has not been propagated to error handling. This means
+we can end with unreleased resources on error (e.g dangling video device
+on missing firmware probe aborting).
 
-Fix the issue by checking if devm_ioremap() returns NULL. When it does,
-qmp_usb_iomap() now returns an error pointer via IOMEM_ERR_PTR(-ENOMEM),
-ensuring safe and consistent error handling.
-
-Signed-off-by: Chenyuan Yang <chenyuan0y@gmail.com>
-Fixes: a5d6b1ac56cb ("phy: qcom-qmp-usb: fix memleak on probe deferral")
-CC: Johan Hovold <johan@kernel.org>
-CC: Krzysztof Kozlowski <krzk@kernel.org>
-Reviewed-by: Johan Hovold <johan+linaro@kernel.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250414125050.2118619-1-chenyuan0y@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08b1cf474b7f7 ("media: venus: core, venc, vdec: Fix probe dependency error")
+Cc: stable@vger.kernel.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/media/platform/qcom/venus/core.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-index 605591314f256..a85bb0e1cd8c8 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
-@@ -2428,12 +2428,16 @@ static void __iomem *qmp_usb_iomap(struct device *dev, struct device_node *np,
- 					int index, bool exclusive)
- {
- 	struct resource res;
-+	void __iomem *mem;
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -354,7 +354,7 @@ static int venus_probe(struct platform_d
  
- 	if (!exclusive) {
- 		if (of_address_to_resource(np, index, &res))
- 			return IOMEM_ERR_PTR(-EINVAL);
+ 	ret = v4l2_device_register(dev, &core->v4l2_dev);
+ 	if (ret)
+-		goto err_core_deinit;
++		goto err_hfi_destroy;
  
--		return devm_ioremap(dev, res.start, resource_size(&res));
-+		mem = devm_ioremap(dev, res.start, resource_size(&res));
-+		if (!mem)
-+			return IOMEM_ERR_PTR(-ENOMEM);
-+		return mem;
+ 	platform_set_drvdata(pdev, core);
+ 
+@@ -386,24 +386,24 @@ static int venus_probe(struct platform_d
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_DEC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_ENC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = pm_runtime_put_sync(dev);
+ 	if (ret) {
+ 		pm_runtime_get_noresume(dev);
+-		goto err_dev_unregister;
++		goto err_core_deinit;
  	}
  
- 	return devm_of_iomap(dev, np, index, NULL);
--- 
-2.39.5
-
+ 	venus_dbgfs_init(core);
+ 
+ 	return 0;
+ 
+-err_dev_unregister:
+-	v4l2_device_unregister(&core->v4l2_dev);
++err_core_deinit:
++	hfi_core_deinit(core, false);
+ err_venus_shutdown:
+ 	venus_shutdown(core);
+ err_firmware_deinit:
+@@ -414,9 +414,9 @@ err_runtime_disable:
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_suspended(dev);
++	v4l2_device_unregister(&core->v4l2_dev);
++err_hfi_destroy:
+ 	hfi_destroy(core);
+-err_core_deinit:
+-	hfi_core_deinit(core, false);
+ err_core_put:
+ 	if (core->pm_ops->core_put)
+ 		core->pm_ops->core_put(core);
 
 
 
