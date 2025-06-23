@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D68FAE4F34
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39FEAAE531D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F0CFA169C0D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B3B77A742E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E19721ADB5;
-	Mon, 23 Jun 2025 21:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A60E225771;
+	Mon, 23 Jun 2025 21:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZZZABE1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uc/EGSpO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA691DF98B;
-	Mon, 23 Jun 2025 21:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45B8F136348;
+	Mon, 23 Jun 2025 21:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713202; cv=none; b=dhKkeDYyL464FdSdgpmjJ2cLBiV0hPxcsTmZcvRki7GQsLIDkegs/+lv2YBk3RwAzPKpOM4AdXjydqUi+m8AGSn5AhNSO2lmMSakMYxZ+OZqwQdhwdHbb4bGUxQ8rxs5Pq7ayJNhExnAEWBwCvZBdChQyYBnRlC2EVPIYyoVuUU=
+	t=1750715329; cv=none; b=AJ/gkV4/LXdooTb9Upu56oqOlZFdl1XgS/RRyZAnw14tQGtP8rnH/Mb3CEHlyyjJconrkz+j5IdHUQEGcZBNtrOMAkFSJSLapoWvD/VZu7dD/ly0X2qD2fx/hmxUvnm5ow3W6dvm/dAoNi2ESAGW4yWWPn4PSBMq11DVMFzridI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713202; c=relaxed/simple;
-	bh=J6+qwVZb/L8SiVAod0prgyiYXo5DtgHB3H1/kTg1tF8=;
+	s=arc-20240116; t=1750715329; c=relaxed/simple;
+	bh=EnHTfcbo39MC5bf9LEHjUpORicMi+0rGQihQJM0tnnE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PDJjsujA87Yiravuqykbi1PsYSzKve5DIzLsaYkXousjgvwTgEI5NvKzaztAwTwnVzf76bSRZUQajOPHpbMEI4jwuu7JdUx2Agbuffcof1INwoYUuTlb4/A2PsMoCT4SktKhVfv3QHlSyervfgnBkZSKujdDtckhoE2M2ecFoz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZZZABE1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8F13C4CEEA;
-	Mon, 23 Jun 2025 21:13:21 +0000 (UTC)
+	 MIME-Version; b=ZaZzJ7zYzNSsj/wfFPfDHe772mr3m7wVZ7ZyaHv9uRzeAPdvhf4JzEcK2OHTNr5HwTHGhT1BHAhDNsnrY9S3EW0M6b5w+HSoVG0k0ESKgNaQbl5xVxLwVeYO9GpGLU5MWF9rM3QEh+UYFaX0awCfR/TBk3lDiLyGMabzy1+B8gc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uc/EGSpO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D349CC4CEEA;
+	Mon, 23 Jun 2025 21:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713202;
-	bh=J6+qwVZb/L8SiVAod0prgyiYXo5DtgHB3H1/kTg1tF8=;
+	s=korg; t=1750715329;
+	bh=EnHTfcbo39MC5bf9LEHjUpORicMi+0rGQihQJM0tnnE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZZZABE1Svt1SWcijON8rFtN/OS0CBUbM1am4hGV59U4NwWIA9mxuEaLrfLujvb6g
-	 gdNpV9WD2EKt8lwJ4hSS8E99KDHUchon+767Bzcd+cKD3l05ymnjWPPjrG5/viu/r+
-	 o7/p7eoeR7gvPKizX3vvbzb8+RQOHZQZ7iwn0DAY=
+	b=Uc/EGSpO3ZlcExN8DDdfAqq/K+3ev/22b7gfX4tKVfkvi6w2SK25l8ebEGzTQI4TF
+	 JEvnU1h1FP3jVK3P63fB500n8NzdnrdEjp12oIB5PXoyXbcFMvX7NbZd6s/z1t/nJp
+	 RpwK2UjYzijDk5MHhPE++k+m5tIVyNVlCDTjYlYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Govindaraj Saminathan <quic_gsaminat@quicinc.com>,
+	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 314/592] f2fs: use vmalloc instead of kvmalloc in .init_{,de}compress_ctx
-Date: Mon, 23 Jun 2025 15:04:32 +0200
-Message-ID: <20250623130707.889442312@linuxfoundation.org>
+Subject: [PATCH 6.1 228/508] wifi: ath11k: remove unused function ath11k_tm_event_wmi()
+Date: Mon, 23 Jun 2025 15:04:33 +0200
+Message-ID: <20250623130650.870136066@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,157 +63,142 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
 
-[ Upstream commit 70dd07c888451503c3e93b6821e10d1ea1ec9930 ]
+[ Upstream commit 86f85575a3f6a20cef1c8bb98e78585fe3a53ccc ]
 
-.init_{,de}compress_ctx uses kvmalloc() to alloc memory, it will try
-to allocate physically continuous page first, it may cause more memory
-allocation pressure, let's use vmalloc instead to mitigate it.
+The function ath11k_tm_event_wmi() is only defined and it is not used
+anywhere. Hence remove the unused.
 
-[Test]
-cd /data/local/tmp
-touch file
-f2fs_io setflags compression file
-f2fs_io getflags file
-for i in $(seq 1 10); do sync; echo 3 > /proc/sys/vm/drop_caches;\
-time f2fs_io write 512 0 4096 zero osync file; truncate -s 0 file;\
-done
+Tested-on: IPQ8074 hw2.0 AHB WLAN.HK.2.7.0.1-01744-QCAHKSWPL_SILICONZ-1
 
-[Result]
-Before		After		Delta
-21.243		21.694		-2.12%
-
-For compression, we recommend to use ioctl to compress file data in
-background for workaround.
-
-For decompression, only zstd will be affected.
-
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Govindaraj Saminathan <quic_gsaminat@quicinc.com>
+Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230517135934.16408-2-quic_rajkbhag@quicinc.com
+Stable-dep-of: 9f6e82d11bb9 ("wifi: ath11k: avoid burning CPU in ath11k_debugfs_fw_stats_request()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/compress.c | 23 ++++++++++-------------
- fs/f2fs/f2fs.h     |  5 +++++
- 2 files changed, 15 insertions(+), 13 deletions(-)
+ drivers/net/wireless/ath/ath11k/testmode.c | 64 +---------------------
+ drivers/net/wireless/ath/ath11k/testmode.h |  8 +--
+ 2 files changed, 2 insertions(+), 70 deletions(-)
 
-diff --git a/fs/f2fs/compress.c b/fs/f2fs/compress.c
-index 9b94810675c19..5a9b6d5f3ae0a 100644
---- a/fs/f2fs/compress.c
-+++ b/fs/f2fs/compress.c
-@@ -178,8 +178,7 @@ void f2fs_compress_ctx_add_page(struct compress_ctx *cc, struct folio *folio)
- #ifdef CONFIG_F2FS_FS_LZO
- static int lzo_init_compress_ctx(struct compress_ctx *cc)
+diff --git a/drivers/net/wireless/ath/ath11k/testmode.c b/drivers/net/wireless/ath/ath11k/testmode.c
+index 4bf1931adbaae..ebeca5eb6a67a 100644
+--- a/drivers/net/wireless/ath/ath11k/testmode.c
++++ b/drivers/net/wireless/ath/ath11k/testmode.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: BSD-3-Clause-Clear
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
+ 
+ #include "testmode.h"
+@@ -20,69 +21,6 @@ static const struct nla_policy ath11k_tm_policy[ATH11K_TM_ATTR_MAX + 1] = {
+ 	[ATH11K_TM_ATTR_VERSION_MINOR]	= { .type = NLA_U32 },
+ };
+ 
+-/* Returns true if callee consumes the skb and the skb should be discarded.
+- * Returns false if skb is not used. Does not sleep.
+- */
+-bool ath11k_tm_event_wmi(struct ath11k *ar, u32 cmd_id, struct sk_buff *skb)
+-{
+-	struct sk_buff *nl_skb;
+-	bool consumed;
+-	int ret;
+-
+-	ath11k_dbg(ar->ab, ATH11K_DBG_TESTMODE,
+-		   "testmode event wmi cmd_id %d skb %pK skb->len %d\n",
+-		   cmd_id, skb, skb->len);
+-
+-	ath11k_dbg_dump(ar->ab, ATH11K_DBG_TESTMODE, NULL, "", skb->data, skb->len);
+-
+-	spin_lock_bh(&ar->data_lock);
+-
+-	consumed = true;
+-
+-	nl_skb = cfg80211_testmode_alloc_event_skb(ar->hw->wiphy,
+-						   2 * sizeof(u32) + skb->len,
+-						   GFP_ATOMIC);
+-	if (!nl_skb) {
+-		ath11k_warn(ar->ab,
+-			    "failed to allocate skb for testmode wmi event\n");
+-		goto out;
+-	}
+-
+-	ret = nla_put_u32(nl_skb, ATH11K_TM_ATTR_CMD, ATH11K_TM_CMD_WMI);
+-	if (ret) {
+-		ath11k_warn(ar->ab,
+-			    "failed to put testmode wmi event cmd attribute: %d\n",
+-			    ret);
+-		kfree_skb(nl_skb);
+-		goto out;
+-	}
+-
+-	ret = nla_put_u32(nl_skb, ATH11K_TM_ATTR_WMI_CMDID, cmd_id);
+-	if (ret) {
+-		ath11k_warn(ar->ab,
+-			    "failed to put testmode wmi even cmd_id: %d\n",
+-			    ret);
+-		kfree_skb(nl_skb);
+-		goto out;
+-	}
+-
+-	ret = nla_put(nl_skb, ATH11K_TM_ATTR_DATA, skb->len, skb->data);
+-	if (ret) {
+-		ath11k_warn(ar->ab,
+-			    "failed to copy skb to testmode wmi event: %d\n",
+-			    ret);
+-		kfree_skb(nl_skb);
+-		goto out;
+-	}
+-
+-	cfg80211_testmode_event(nl_skb, GFP_ATOMIC);
+-
+-out:
+-	spin_unlock_bh(&ar->data_lock);
+-
+-	return consumed;
+-}
+-
+ static int ath11k_tm_cmd_get_version(struct ath11k *ar, struct nlattr *tb[])
  {
--	cc->private = f2fs_kvmalloc(F2FS_I_SB(cc->inode),
--				LZO1X_MEM_COMPRESS, GFP_NOFS);
-+	cc->private = f2fs_vmalloc(LZO1X_MEM_COMPRESS);
- 	if (!cc->private)
- 		return -ENOMEM;
+ 	struct sk_buff *skb;
+diff --git a/drivers/net/wireless/ath/ath11k/testmode.h b/drivers/net/wireless/ath/ath11k/testmode.h
+index aaa122ed90697..ffdb0c30b276c 100644
+--- a/drivers/net/wireless/ath/ath11k/testmode.h
++++ b/drivers/net/wireless/ath/ath11k/testmode.h
+@@ -1,24 +1,18 @@
+ /* SPDX-License-Identifier: BSD-3-Clause-Clear */
+ /*
+  * Copyright (c) 2018-2019 The Linux Foundation. All rights reserved.
++ * Copyright (c) 2023 Qualcomm Innovation Center, Inc. All rights reserved.
+  */
  
-@@ -189,7 +188,7 @@ static int lzo_init_compress_ctx(struct compress_ctx *cc)
+ #include "core.h"
  
- static void lzo_destroy_compress_ctx(struct compress_ctx *cc)
- {
--	kvfree(cc->private);
-+	vfree(cc->private);
- 	cc->private = NULL;
- }
+ #ifdef CONFIG_NL80211_TESTMODE
  
-@@ -246,7 +245,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
- 		size = LZ4HC_MEM_COMPRESS;
- #endif
+-bool ath11k_tm_event_wmi(struct ath11k *ar, u32 cmd_id, struct sk_buff *skb);
+ int ath11k_tm_cmd(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+ 		  void *data, int len);
  
--	cc->private = f2fs_kvmalloc(F2FS_I_SB(cc->inode), size, GFP_NOFS);
-+	cc->private = f2fs_vmalloc(size);
- 	if (!cc->private)
- 		return -ENOMEM;
+ #else
  
-@@ -261,7 +260,7 @@ static int lz4_init_compress_ctx(struct compress_ctx *cc)
- 
- static void lz4_destroy_compress_ctx(struct compress_ctx *cc)
- {
--	kvfree(cc->private);
-+	vfree(cc->private);
- 	cc->private = NULL;
- }
- 
-@@ -342,8 +341,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
- 	params = zstd_get_params(level, cc->rlen);
- 	workspace_size = zstd_cstream_workspace_bound(&params.cParams);
- 
--	workspace = f2fs_kvmalloc(F2FS_I_SB(cc->inode),
--					workspace_size, GFP_NOFS);
-+	workspace = f2fs_vmalloc(workspace_size);
- 	if (!workspace)
- 		return -ENOMEM;
- 
-@@ -351,7 +349,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
- 	if (!stream) {
- 		f2fs_err_ratelimited(F2FS_I_SB(cc->inode),
- 				"%s zstd_init_cstream failed", __func__);
--		kvfree(workspace);
-+		vfree(workspace);
- 		return -EIO;
- 	}
- 
-@@ -364,7 +362,7 @@ static int zstd_init_compress_ctx(struct compress_ctx *cc)
- 
- static void zstd_destroy_compress_ctx(struct compress_ctx *cc)
- {
--	kvfree(cc->private);
-+	vfree(cc->private);
- 	cc->private = NULL;
- 	cc->private2 = NULL;
- }
-@@ -423,8 +421,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 
- 	workspace_size = zstd_dstream_workspace_bound(max_window_size);
- 
--	workspace = f2fs_kvmalloc(F2FS_I_SB(dic->inode),
--					workspace_size, GFP_NOFS);
-+	workspace = f2fs_vmalloc(workspace_size);
- 	if (!workspace)
- 		return -ENOMEM;
- 
-@@ -432,7 +429,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 	if (!stream) {
- 		f2fs_err_ratelimited(F2FS_I_SB(dic->inode),
- 				"%s zstd_init_dstream failed", __func__);
--		kvfree(workspace);
-+		vfree(workspace);
- 		return -EIO;
- 	}
- 
-@@ -444,7 +441,7 @@ static int zstd_init_decompress_ctx(struct decompress_io_ctx *dic)
- 
- static void zstd_destroy_decompress_ctx(struct decompress_io_ctx *dic)
- {
--	kvfree(dic->private);
-+	vfree(dic->private);
- 	dic->private = NULL;
- 	dic->private2 = NULL;
- }
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index 4f34a7d9760a1..34e4ae2a5f5ba 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3527,6 +3527,11 @@ static inline void *f2fs_kvzalloc(struct f2fs_sb_info *sbi,
- 	return f2fs_kvmalloc(sbi, size, flags | __GFP_ZERO);
- }
- 
-+static inline void *f2fs_vmalloc(size_t size)
-+{
-+	return vmalloc(size);
-+}
-+
- static inline int get_extra_isize(struct inode *inode)
- {
- 	return F2FS_I(inode)->i_extra_isize / sizeof(__le32);
+-static inline bool ath11k_tm_event_wmi(struct ath11k *ar, u32 cmd_id,
+-				       struct sk_buff *skb)
+-{
+-	return false;
+-}
+-
+ static inline int ath11k_tm_cmd(struct ieee80211_hw *hw,
+ 				struct ieee80211_vif *vif,
+ 				void *data, int len)
 -- 
 2.39.5
 
