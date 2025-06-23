@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6ABAE5377
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30C83AE5307
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9DF111B66F8B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E1B81B664CC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CA0119049B;
-	Mon, 23 Jun 2025 21:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DC32222B7;
+	Mon, 23 Jun 2025 21:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b6qBxGdr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqmUvtjR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58E58224B1F;
-	Mon, 23 Jun 2025 21:53:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26F421E5206;
+	Mon, 23 Jun 2025 21:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715587; cv=none; b=EvyOZLNn9+j0rg0vKukFWQc1qQvrA8vTsFLMv1dpHDOvDpPqiosgToy7MW8/s/37ZhyzpBlUgloiQ4GLEpzTAV17ryPDgwgfOdevVFqRBWJSYde1krG/mtSXbemCgjrGlSPnWLT6PAVVqhy7C3h1IUR4L1RVXamZx1E465hu+2M=
+	t=1750715339; cv=none; b=sVZ5YNDOGjc1ppYN4k/LwpQbv1Jomvkvlc4bzphIoFNk2VpPJTJY3Ip2y7zQw+29XrOwycQEpDtHSJi0GkBScFNjPEs55RLKAJ4N66staaiCHdmzeJ5kLAGFfpbTY0ugLyVR7vBmVjdUS+ZN9xbg8LqARdLx+1zcimSxhbFW7qA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715587; c=relaxed/simple;
-	bh=HZLF0Yo4KGzysqUbq3dExK1F/YEEVL5+HbyrtMSXY7A=;
+	s=arc-20240116; t=1750715339; c=relaxed/simple;
+	bh=bXxqvV/lcPiktTBWE8bZ9qDFnF2yS3hoFXlTRAJqMI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G6dUSI1lRusrd0aJnseW8tMyP17FXGniX6EtvaD1WpX/ASCEUV3mluWqgSQrzOjZj2SPXmpmoYiCddiQoDfw6XQJLgNhNU13u9gmC9OR1LosPV7AqYwhSdL0J6CVAw7LB0JhkqylqM1xu5wpgvwWRZr2Y1TU+kMckrWT7ERo33s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b6qBxGdr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD59AC4CEEA;
-	Mon, 23 Jun 2025 21:53:06 +0000 (UTC)
+	 MIME-Version; b=ox/EOevNiZ8eRZuQ6Z/wE1hXNriadU3OEWL4cUOpEnmCqKnttPY46scytK358qZ2cRDFkoo3c0CfLgao7kZiRa8H675qyoEHQBoaHIxU81WMJ2XHcwOYTnHoV1PW3SPYfuR6dZOThAVYkv6XkAV/NV/vqpA24A+tQFPs8EYBgdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqmUvtjR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B38C9C4CEEA;
+	Mon, 23 Jun 2025 21:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715587;
-	bh=HZLF0Yo4KGzysqUbq3dExK1F/YEEVL5+HbyrtMSXY7A=;
+	s=korg; t=1750715339;
+	bh=bXxqvV/lcPiktTBWE8bZ9qDFnF2yS3hoFXlTRAJqMI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b6qBxGdrF03qx/S9ciuY1dRnOuZj2NHaw2c3ga3gcrVXav5tuKxZz1a4T/2bd9BiW
-	 t4CkMC3qj+AFzd3JlorierPUiDyVUNCbywdp8Rdbogm+sZ+urO3jjRtu9olmZzK7Fc
-	 r2mOiqeAEcvXJVN4AppzCLuqVQpdKPwoqxQAmaPw=
+	b=QqmUvtjRK2fpKU/4tG5tT8idH8OkSckhhndSP45j2Q4kniNBQKBnajNextnkZYqVl
+	 9LMpaIpDClkIr0kEm+gSLbtcZDItWH8IpHI92T45NbcQu5gBEDlhJ1OUHHSPOQByZo
+	 U5XerCZlc41nFYY+vy7TP1Br422rQOvsRWsEHsFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghun Han <kkamagui@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 266/411] ACPICA: fix acpi parse and parseext cache leaks
+	Yanteng Si <si.yanteng@linux.dev>,
+	WANG Rui <wangrui@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.15 452/592] LoongArch: Avoid using $r0/$r1 as "mask" for csrxchg
 Date: Mon, 23 Jun 2025 15:06:50 +0200
-Message-ID: <20250623130640.352715699@linuxfoundation.org>
+Message-ID: <20250623130711.181150043@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,241 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghun Han <kkamagui@gmail.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit bed18f0bdcd6737a938264a59d67923688696fc4 ]
+commit 52c22661c79a7b6af7fad9f77200738fc6c51878 upstream.
 
-ACPICA commit 8829e70e1360c81e7a5a901b5d4f48330e021ea5
+When building kernel with LLVM there are occasionally such errors:
 
-I'm Seunghun Han, and I work for National Security Research Institute of
-South Korea.
+In file included from ./include/linux/spinlock.h:59:
+In file included from ./include/linux/irqflags.h:17:
+arch/loongarch/include/asm/irqflags.h:38:3: error: must not be $r0 or $r1
+   38 |                 "csrxchg %[val], %[mask], %[reg]\n\t"
+      |                 ^
+<inline asm>:1:16: note: instantiated into assembly here
+    1 |         csrxchg $a1, $ra, 0
+      |                       ^
 
-I have been doing a research on ACPI and found an ACPI cache leak in ACPI
-early abort cases.
+To prevent the compiler from allocating $r0 or $r1 for the "mask" of the
+csrxchg instruction, the 'q' constraint must be used but Clang < 21 does
+not support it. So force to use $t0 in the inline asm, in order to avoid
+using $r0/$r1 while keeping the backward compatibility.
 
-Boot log of ACPI cache leak is as follows:
-[    0.352414] ACPI: Added _OSI(Module Device)
-[    0.353182] ACPI: Added _OSI(Processor Device)
-[    0.353182] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.353182] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.356028] ACPI: Unable to start the ACPI Interpreter
-[    0.356799] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.360215] kmem_cache_destroy Acpi-State: Slab cache still has objects
-[    0.360648] CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #10
-[    0.361273] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.361873] Call Trace:
-[    0.362243]  ? dump_stack+0x5c/0x81
-[    0.362591]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.362944]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.363296]  ? acpi_os_delete_cache+0xa/0x10
-[    0.363646]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.364000]  ? acpi_terminate+0xa/0x14
-[    0.364000]  ? acpi_init+0x2af/0x34f
-[    0.364000]  ? __class_create+0x4c/0x80
-[    0.364000]  ? video_setup+0x7f/0x7f
-[    0.364000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.364000]  ? do_one_initcall+0x4e/0x1a0
-[    0.364000]  ? kernel_init_freeable+0x189/0x20a
-[    0.364000]  ? rest_init+0xc0/0xc0
-[    0.364000]  ? kernel_init+0xa/0x100
-[    0.364000]  ? ret_from_fork+0x25/0x30
-
-I analyzed this memory leak in detail. I found that “Acpi-State” cache and
-“Acpi-Parse” cache were merged because the size of cache objects was same
-slab cache size.
-
-I finally found “Acpi-Parse” cache and “Acpi-parse_ext” cache were leaked
-using SLAB_NEVER_MERGE flag in kmem_cache_create() function.
-
-Real ACPI cache leak point is as follows:
-[    0.360101] ACPI: Added _OSI(Module Device)
-[    0.360101] ACPI: Added _OSI(Processor Device)
-[    0.360101] ACPI: Added _OSI(3.0 _SCP Extensions)
-[    0.361043] ACPI: Added _OSI(Processor Aggregator Device)
-[    0.364016] ACPI: Unable to start the ACPI Interpreter
-[    0.365061] ACPI Error: Could not remove SCI handler (20170303/evmisc-281)
-[    0.368174] kmem_cache_destroy Acpi-Parse: Slab cache still has objects
-[    0.369332] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.371256] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.372000] Call Trace:
-[    0.372000]  ? dump_stack+0x5c/0x81
-[    0.372000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.372000]  ? acpi_ut_delete_caches+0x56/0x7b
-[    0.372000]  ? acpi_terminate+0xa/0x14
-[    0.372000]  ? acpi_init+0x2af/0x34f
-[    0.372000]  ? __class_create+0x4c/0x80
-[    0.372000]  ? video_setup+0x7f/0x7f
-[    0.372000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.372000]  ? do_one_initcall+0x4e/0x1a0
-[    0.372000]  ? kernel_init_freeable+0x189/0x20a
-[    0.372000]  ? rest_init+0xc0/0xc0
-[    0.372000]  ? kernel_init+0xa/0x100
-[    0.372000]  ? ret_from_fork+0x25/0x30
-[    0.388039] kmem_cache_destroy Acpi-parse_ext: Slab cache still has objects
-[    0.389063] CPU: 1 PID: 1 Comm: swapper/0 Tainted: G        W
-4.12.0-rc4-next-20170608+ #8
-[    0.390557] Hardware name: innotek gmb_h virtual_box/virtual_box, BIOS
-virtual_box 12/01/2006
-[    0.392000] Call Trace:
-[    0.392000]  ? dump_stack+0x5c/0x81
-[    0.392000]  ? kmem_cache_destroy+0x1aa/0x1c0
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? acpi_os_delete_cache+0xa/0x10
-[    0.392000]  ? acpi_ut_delete_caches+0x6d/0x7b
-[    0.392000]  ? acpi_terminate+0xa/0x14
-[    0.392000]  ? acpi_init+0x2af/0x34f
-[    0.392000]  ? __class_create+0x4c/0x80
-[    0.392000]  ? video_setup+0x7f/0x7f
-[    0.392000]  ? acpi_sleep_proc_init+0x27/0x27
-[    0.392000]  ? do_one_initcall+0x4e/0x1a0
-[    0.392000]  ? kernel_init_freeable+0x189/0x20a
-[    0.392000]  ? rest_init+0xc0/0xc0
-[    0.392000]  ? kernel_init+0xa/0x100
-[    0.392000]  ? ret_from_fork+0x25/0x30
-
-When early abort is occurred due to invalid ACPI information, Linux kernel
-terminates ACPI by calling acpi_terminate() function. The function calls
-acpi_ut_delete_caches() function to delete local caches (acpi_gbl_namespace_
-cache, state_cache, operand_cache, ps_node_cache, ps_node_ext_cache).
-
-But the deletion codes in acpi_ut_delete_caches() function only delete
-slab caches using kmem_cache_destroy() function, therefore the cache
-objects should be flushed before acpi_ut_delete_caches() function.
-
-"Acpi-Parse" cache and "Acpi-ParseExt" cache are used in an AML parse
-function, acpi_ps_parse_loop(). The function should complete all ops
-using acpi_ps_complete_final_op() when an error occurs due to invalid
-AML codes.
-However, the current implementation of acpi_ps_complete_final_op() does not
-complete all ops when it meets some errors and this cause cache leak.
-
-This cache leak has a security threat because an old kernel (<= 4.9) shows
-memory locations of kernel functions in stack dump. Some malicious users
-could use this information to neutralize kernel ASLR.
-
-To fix ACPI cache leak for enhancing security, I made a patch to complete all
-ops unconditionally for acpi_ps_complete_final_op() function.
-
-I hope that this patch improves the security of Linux kernel.
-
-Thank you.
-
-Link: https://github.com/acpica/acpica/commit/8829e70e
-Signed-off-by: Seunghun Han <kkamagui@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2363774.ElGaqSPkdT@rjwysocki.net
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://github.com/llvm/llvm-project/pull/141037
+Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
+Suggested-by: WANG Rui <wangrui@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/acpica/psobject.c | 52 ++++++++++------------------------
- 1 file changed, 15 insertions(+), 37 deletions(-)
+ arch/loongarch/include/asm/irqflags.h |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/acpica/psobject.c b/drivers/acpi/acpica/psobject.c
-index e4420cd6d2814..8fd191b363066 100644
---- a/drivers/acpi/acpica/psobject.c
-+++ b/drivers/acpi/acpica/psobject.c
-@@ -636,7 +636,8 @@ acpi_status
- acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  union acpi_parse_object *op, acpi_status status)
+--- a/arch/loongarch/include/asm/irqflags.h
++++ b/arch/loongarch/include/asm/irqflags.h
+@@ -14,40 +14,48 @@
+ static inline void arch_local_irq_enable(void)
  {
--	acpi_status status2;
-+	acpi_status return_status = status;
-+	u8 ascending = TRUE;
- 
- 	ACPI_FUNCTION_TRACE_PTR(ps_complete_final_op, walk_state);
- 
-@@ -650,7 +651,7 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 			  op));
- 	do {
- 		if (op) {
--			if (walk_state->ascending_callback != NULL) {
-+			if (ascending && walk_state->ascending_callback != NULL) {
- 				walk_state->op = op;
- 				walk_state->op_info =
- 				    acpi_ps_get_opcode_info(op->common.
-@@ -672,49 +673,26 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 				}
- 
- 				if (status == AE_CTRL_TERMINATE) {
--					status = AE_OK;
--
--					/* Clean up */
--					do {
--						if (op) {
--							status2 =
--							    acpi_ps_complete_this_op
--							    (walk_state, op);
--							if (ACPI_FAILURE
--							    (status2)) {
--								return_ACPI_STATUS
--								    (status2);
--							}
--						}
--
--						acpi_ps_pop_scope(&
--								  (walk_state->
--								   parser_state),
--								  &op,
--								  &walk_state->
--								  arg_types,
--								  &walk_state->
--								  arg_count);
--
--					} while (op);
--
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = AE_CTRL_TERMINATE;
- 				}
- 
- 				else if (ACPI_FAILURE(status)) {
- 
- 					/* First error is most important */
- 
--					(void)
--					    acpi_ps_complete_this_op(walk_state,
--								     op);
--					return_ACPI_STATUS(status);
-+					ascending = FALSE;
-+					return_status = status;
- 				}
- 			}
- 
--			status2 = acpi_ps_complete_this_op(walk_state, op);
--			if (ACPI_FAILURE(status2)) {
--				return_ACPI_STATUS(status2);
-+			status = acpi_ps_complete_this_op(walk_state, op);
-+			if (ACPI_FAILURE(status)) {
-+				ascending = FALSE;
-+				if (ACPI_SUCCESS(return_status) ||
-+				    return_status == AE_CTRL_TERMINATE) {
-+					return_status = status;
-+				}
- 			}
- 		}
- 
-@@ -724,5 +702,5 @@ acpi_ps_complete_final_op(struct acpi_walk_state *walk_state,
- 
- 	} while (op);
- 
--	return_ACPI_STATUS(status);
-+	return_ACPI_STATUS(return_status);
+ 	u32 flags = CSR_CRMD_IE;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
  }
--- 
-2.39.5
-
+ 
+ static inline void arch_local_irq_disable(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
+ static inline unsigned long arch_local_irq_save(void)
+ {
+ 	u32 flags = 0;
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ 	return flags;
+ }
+ 
+ static inline void arch_local_irq_restore(unsigned long flags)
+ {
++	register u32 mask asm("t0") = CSR_CRMD_IE;
++
+ 	__asm__ __volatile__(
+ 		"csrxchg %[val], %[mask], %[reg]\n\t"
+ 		: [val] "+r" (flags)
+-		: [mask] "r" (CSR_CRMD_IE), [reg] "i" (LOONGARCH_CSR_CRMD)
++		: [mask] "r" (mask), [reg] "i" (LOONGARCH_CSR_CRMD)
+ 		: "memory");
+ }
+ 
 
 
 
