@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-158122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1947AE574B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 771F1AE574C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 376214A6DF4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A0F61C248A4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE40B226533;
-	Mon, 23 Jun 2025 22:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E3CE223DF0;
+	Mon, 23 Jun 2025 22:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R9ysLjDs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+jnoAbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799D222370A;
-	Mon, 23 Jun 2025 22:25:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B0FA222581;
+	Mon, 23 Jun 2025 22:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717538; cv=none; b=iyqsWGG8e0rjvSZL3EOz4ZHFuIxClxl8Dx46d19GpO3IBTvJsB4eoTlLzZTckOC3ux+zNH5HCjKRPfSwRNZ+Y4EH+6lrRQX6/L7k1UROiG+tE+RQgvIODs6ibs8j08024O1rquf50vE1MUkynz4TZMmJGgsPRmfPVudoQ79bYP4=
+	t=1750717681; cv=none; b=ZYo/OqT5E30ODqFaNqzL7Aorh8KdjWxpq5PoNqxwn8uD0IxIqrjmEWeMK+PQ+xcJTrxWHGwnAfZr6zO4DcT0WR/81gjqJTRJSe73sx/XCITZrhQ/U7qZyypXJS3dik71dou7FtnWqJitUttIAU/nfS3dJuIfh4XmLJbmdtLdtnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717538; c=relaxed/simple;
-	bh=Ktb63+2mYSmP5oRxrQtR/ayfRwI02lHYeC27uYiZTwg=;
+	s=arc-20240116; t=1750717681; c=relaxed/simple;
+	bh=ZHPUfd4i4Pyn++jfnjY6C1dq5dn/GirV6owrXFys0ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SRwQHnuIlRjCub/lpkWMGgrVmRJKIgFSScKKQnaOceE3spedT6Q9f07xalz3fTcQKzp/235iCZAcLMGH40SQ/nJmws2hQoHVZrs5BB0m7llDExxw6yn6e0WkfH2kaPyhYvvfng8BrZ7xveLYywY+BkhyuT0fgrT4EO9gz8Yc8+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R9ysLjDs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11C18C4CEEA;
-	Mon, 23 Jun 2025 22:25:37 +0000 (UTC)
+	 MIME-Version; b=J1ZWfdaXn2BxodKHHQyJP+zmeqYs8BllZZG+BdGBh9GmYd1vJZFlMm5RY/D6mbWiGU4ZodWi30lo9kPcmlCwGaEOsGRjUT5vm8Zgj1pZn83Un/D4U4zlZybpUDo/5PXvIATurLCQmf2C21JSMuPghMtiJKPkDkCF662b2IRPAWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+jnoAbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E24C4CEEA;
+	Mon, 23 Jun 2025 22:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717538;
-	bh=Ktb63+2mYSmP5oRxrQtR/ayfRwI02lHYeC27uYiZTwg=;
+	s=korg; t=1750717681;
+	bh=ZHPUfd4i4Pyn++jfnjY6C1dq5dn/GirV6owrXFys0ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R9ysLjDs8Ur/K1viqCgmMdTTxWbZoTuCbhtr6p2kmzmFVLaaLZ08gF/ou7/jSXdfd
-	 rPky2pj7l/szO4TaNBEq+z9uZQQh61GKd0j5KlkcWwvkHKEkmJUqwyDUTl57NjQ7SQ
-	 GBhxw1B6kcKUbY7dnMjSRVrnH/YoM5nM0+2OM6to=
+	b=j+jnoAbAQDPcXT03W0iCQjj65RDQCwrdhHmrJ06/BDGC0NlIB4N3mLCCGNbSflB9o
+	 S3HjgYHTuZ8a3MZTlHWr67OUNufmcjshpf43vSAZUaMTVvRUkOUxU1pn3Uyjs6KHTW
+	 UJmLauRLv4VMlslw9FTFMXoNgbdu210bNTGdHyeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 409/414] RISC-V: KVM: Dont treat SBI HFENCE calls as NOPs
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Meetakshi Setiya <msetiya@microsoft.com>,
+	zhangjian <zhangjian496@huawei.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 501/508] smb: client: fix first command failure during re-negotiation
 Date: Mon, 23 Jun 2025 15:09:06 +0200
-Message-ID: <20250623130652.172819952@linuxfoundation.org>
+Message-ID: <20250623130657.337324070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,78 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anup Patel <apatel@ventanamicro.com>
+From: zhangjian <zhangjian496@huawei.com>
 
-[ Upstream commit 2e7be162996640bbe3b6da694cc064c511b8a5d9 ]
+commit 34331d7beed7576acfc98e991c39738b96162499 upstream.
 
-The SBI specification clearly states that SBI HFENCE calls should
-return SBI_ERR_NOT_SUPPORTED when one of the target hart doesn’t
-support hypervisor extension (aka nested virtualization in-case
-of KVM RISC-V).
+after fabc4ed200f9, server_unresponsive add a condition to check whether client
+need to reconnect depending on server->lstrp. When client failed to reconnect
+for some time and abort connection, server->lstrp is updated for the last time.
+In the following scene, server->lstrp is too old. This cause next command
+failure in re-negotiation rather than waiting for re-negotiation done.
 
-Fixes: c7fa3c48de86 ("RISC-V: KVM: Treat SBI HFENCE calls as NOPs")
-Reviewed-by: Atish Patra <atishp@rivosinc.com>
-Signed-off-by: Anup Patel <apatel@ventanamicro.com>
-Link: https://lore.kernel.org/r/20250605061458.196003-3-apatel@ventanamicro.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+1. mount -t cifs -o username=Everyone,echo_internal=10 //$server_ip/export /mnt
+2. ssh $server_ip "echo b > /proc/sysrq-trigger &"
+3. ls /mnt
+4. sleep 21s
+5. ssh $server_ip "service firewalld stop"
+6. ls # return EHOSTDOWN
+
+If the interval between 5 and 6 is too small, 6 may trigger sending negotiation
+request. Before backgrounding cifsd thread try to receive negotiation response
+from server in cifs_readv_from_socket, server_unresponsive may trigger
+cifs_reconnect which cause 6 to be failed:
+
+ls thread
+----------------
+  smb2_negotiate
+    server->tcpStatus = CifsInNegotiate
+    compound_send_recv
+      wait_for_compound_request
+
+cifsd thread
+----------------
+  cifs_readv_from_socket
+    server_unresponsive
+      server->tcpStatus == CifsInNegotiate && jiffies > server->lstrp + 20s
+        cifs_reconnect
+          cifs_abort_connection: mid_state = MID_RETRY_NEEDED
+
+ls thread
+----------------
+      cifs_sync_mid_result return EAGAIN
+  smb2_negotiate return EHOSTDOWN
+
+Though server->lstrp means last server response time, it is updated in
+cifs_abort_connection and cifs_get_tcp_session. We can also update server->lstrp
+before switching into CifsInNegotiate state to avoid failure in 6.
+
+Fixes: 7ccc1465465d ("smb: client: fix hang in wait_for_response() for negproto")
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Acked-by: Meetakshi Setiya <msetiya@microsoft.com>
+Signed-off-by: zhangjian <zhangjian496@huawei.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/kvm/vcpu_sbi_replace.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/riscv/kvm/vcpu_sbi_replace.c b/arch/riscv/kvm/vcpu_sbi_replace.c
-index 9752d2ffff683..b17fad091babd 100644
---- a/arch/riscv/kvm/vcpu_sbi_replace.c
-+++ b/arch/riscv/kvm/vcpu_sbi_replace.c
-@@ -127,9 +127,9 @@ static int kvm_sbi_ext_rfence_handler(struct kvm_vcpu *vcpu, struct kvm_run *run
- 	case SBI_EXT_RFENCE_REMOTE_HFENCE_VVMA_ASID:
- 		/*
- 		 * Until nested virtualization is implemented, the
--		 * SBI HFENCE calls should be treated as NOPs
-+		 * SBI HFENCE calls should return not supported
-+		 * hence fallthrough.
- 		 */
--		break;
- 	default:
- 		retdata->err_val = SBI_ERR_NOT_SUPPORTED;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -4217,6 +4217,7 @@ retry:
+ 		return 0;
  	}
--- 
-2.39.5
-
+ 
++	server->lstrp = jiffies;
+ 	server->tcpStatus = CifsInNegotiate;
+ 	spin_unlock(&server->srv_lock);
+ 
 
 
 
