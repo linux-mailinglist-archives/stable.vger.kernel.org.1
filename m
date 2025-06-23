@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158123-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C34CAE574D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:04 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52ADFAE5705
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 621A24A6FB4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C313D3B226E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C2D5223DF0;
-	Mon, 23 Jun 2025 22:25:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04EE5222599;
+	Mon, 23 Jun 2025 22:22:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAL4pSjR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JT6PQSz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E929F2222B2;
-	Mon, 23 Jun 2025 22:25:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B589C2222B2;
+	Mon, 23 Jun 2025 22:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717541; cv=none; b=iTsR51WL/DdHVBUFBnwSZp68rRwYSoTw2OML/XHoiaDfUZ/i9fP8nlupTRFUkZvAM+6VjNZIS1xMZ/YyKyNfq8xhnpsdJHjJGVS5At3udoNyL5UKq/LvcmKsoKxJPiQ+heMCFPbyx7TftkgNZETOCDSZTHJ7Vf66joX39kjJAJc=
+	t=1750717350; cv=none; b=QYGjorikhPHRj2oauu5lgwvs8osyGsgQp1wBuS/KEC1SK8OSurvaQ1LqR57T+sCwl/8uRhWolkXOpUrQ1ZqiV2IbwzryuVVUbe9gTO7uHkeDjm38+nYfvLJNAuZOg9pvQawrx7I0z/Xiw+Gdr5NQH9F0naue1oo/bJhb6MTZ72U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717541; c=relaxed/simple;
-	bh=gxo5bcogfSEkzGMn9gMHwcpcgUQygaOiW44ognuHwIg=;
+	s=arc-20240116; t=1750717350; c=relaxed/simple;
+	bh=m54C/IO5by1M4vBNOb0jLH1Ndact6q94lVfRKouMSXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pn1GGpEp3ZUm9cxV4zyDCGZik/ro07XGFmnYEqAPUgxBY1YDF8uxbPR56FPzw3RJyd9Lm36oIZDEDLHrOV77g5uW/oGnFcY29oBlCeQ4fzzAO834IhgXqfnRPbqb2G7mWVxn/MIFCcDka/F4YXoogMLSYR0GzwFHAi2LrH0Suec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAL4pSjR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7939EC4CEED;
-	Mon, 23 Jun 2025 22:25:40 +0000 (UTC)
+	 MIME-Version; b=KG/pZBAKWAJzJpSc4qd6XC7lPVn8qW0BxgSp0TZGjJCRo0wkP5CBUSrqIcESnhcYTjcObzi+1xUeN8VrVdFQSOvKkuUxS17GrpI41c6YdS5U6sVEraW8kAhqsAQOSQvq2FWrM4wnwTD/rMWDpgx8q8xMqwiTTOgXPf9pM1u9POI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JT6PQSz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDE4C4CEEA;
+	Mon, 23 Jun 2025 22:22:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717540;
-	bh=gxo5bcogfSEkzGMn9gMHwcpcgUQygaOiW44ognuHwIg=;
+	s=korg; t=1750717350;
+	bh=m54C/IO5by1M4vBNOb0jLH1Ndact6q94lVfRKouMSXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XAL4pSjRwoWe20m0T6WAUam2969nwKLyE6kdog/gpTPiYkZjUr25NzOz/A9wBmlYA
-	 2J1+UugIq+Bn9A0Zhmb7M2lJXJKKARdxTzGQkPwxUpOAa6aGOzzr3rr6zcXr5EuGzz
-	 lDfHvjwDehj2UZ1eGEgC+MRlaBpklU8CI6XTKtRE=
+	b=JT6PQSz5pG8a/Up9l7P0RF57q/wh+tw3OQ1gRyRhObRLWXG5MjXEiwhuzERvS/NVd
+	 aVkbZr/9Sx0wD1Fe/UtKe8o9a9qoUzPuhnAy4IR4J4YDwRKw5cvnQGUUUjOfKZX2Qn
+	 Gvm8374D9OrVOSQ4Gg991JZhnNksWCrjtzKeWWSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.1 449/508] scsi: storvsc: Increase the timeouts to storvsc_timeout
+	John Keeping <jkeeping@inmusicbrands.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 357/414] drm/ssd130x: fix ssd132x_clear_screen() columns
 Date: Mon, 23 Jun 2025 15:08:14 +0200
-Message-ID: <20250623130656.201354636@linuxfoundation.org>
+Message-ID: <20250623130650.892883331@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: John Keeping <jkeeping@inmusicbrands.com>
 
-commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
+[ Upstream commit e479da4054875c4cc53a7fb956ebff03d2dac939 ]
 
-Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
-5s and 10s are used elsewhere. It turns out that rarely the 5s is not
-enough on Azure, so let's use storvsc_timeout everywhere.
+The number of columns relates to the width, not the height.  Use the
+correct variable.
 
-In case a timeout happens and storvsc_channel_init() returns an error,
-close the VMBus channel so that any host-to-guest messages in the
-channel's ringbuffer, which might come late, can be safely ignored.
-
-Add a "const" to storvsc_timeout.
-
-Cc: stable@kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: John Keeping <jkeeping@inmusicbrands.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Fixes: fdd591e00a9c ("drm/ssd130x: Add support for the SSD132x OLED controller family")
+Link: https://lore.kernel.org/r/20250611111307.1814876-1-jkeeping@inmusicbrands.com
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/solomon/ssd130x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -358,7 +358,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
- /*
-  * Timeout in seconds for all devices managed by this driver.
-  */
--static int storvsc_timeout = 180;
-+static const int storvsc_timeout = 180;
+diff --git a/drivers/gpu/drm/solomon/ssd130x.c b/drivers/gpu/drm/solomon/ssd130x.c
+index 06f5057690bd8..e0fc12d514d76 100644
+--- a/drivers/gpu/drm/solomon/ssd130x.c
++++ b/drivers/gpu/drm/solomon/ssd130x.c
+@@ -974,7 +974,7 @@ static void ssd130x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
  
- #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
- static struct scsi_transport_template *fc_transport_template;
-@@ -764,7 +764,7 @@ static void  handle_multichannel_storage
- 		return;
- 	}
+ static void ssd132x_clear_screen(struct ssd130x_device *ssd130x, u8 *data_array)
+ {
+-	unsigned int columns = DIV_ROUND_UP(ssd130x->height, SSD132X_SEGMENT_WIDTH);
++	unsigned int columns = DIV_ROUND_UP(ssd130x->width, SSD132X_SEGMENT_WIDTH);
+ 	unsigned int height = ssd130x->height;
  
--	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0) {
- 		dev_err(dev, "Failed to create sub-channel: timed out\n");
- 		return;
-@@ -829,7 +829,7 @@ static int storvsc_execute_vstor_op(stru
- 	if (ret != 0)
- 		return ret;
- 
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return -ETIMEDOUT;
- 
-@@ -1342,6 +1342,8 @@ static int storvsc_connect_to_vsp(struct
- 		return ret;
- 
- 	ret = storvsc_channel_init(device, is_fc);
-+	if (ret)
-+		vmbus_close(device->channel);
- 
- 	return ret;
- }
-@@ -1659,7 +1661,7 @@ static int storvsc_host_reset_handler(st
- 	if (ret != 0)
- 		return FAILED;
- 
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return TIMEOUT_ERROR;
- 
+ 	memset(data_array, 0, columns * height);
+-- 
+2.39.5
+
 
 
 
