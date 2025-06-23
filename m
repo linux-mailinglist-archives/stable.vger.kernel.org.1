@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72E70AE4485
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0669CAE41B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:10:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D989917E7F4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:08 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9AB8E7A2F98
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97B02522A8;
-	Mon, 23 Jun 2025 13:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E6F253B52;
+	Mon, 23 Jun 2025 13:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbkNYgun"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u5w4vUHd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74EE347DD;
-	Mon, 23 Jun 2025 13:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3152924A06B;
+	Mon, 23 Jun 2025 13:09:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685807; cv=none; b=PJcDsYYaxsoUt+WbscCtERYGm/alXsLgTO2rPd4qd/6OVyYVO2LfO3qLXZvyqiv3v5CpBczGJRjiu8A8UhW7bbcT2vUlEkhS8xRSGgEQINamofWBOYbF5IJt82IqkRQjRbzYc7qlBTn78OysZPJSDCfXfsFYynyeHXX2mBh0Z5E=
+	t=1750684189; cv=none; b=VOOk/DTMgLJqKJjEgFvKKrn9xs8QFiSrKclxt41T6qyXclyLDOZ71xwkI293tpRiXUX/+28zJQkP+O2dN+sp4nIQU7i90Ol7TICblVd36Z+opCl08Eo9cvW0K6QO7pW4zChRFW3c8/2evE8wgxuPoZVwmAdeDm60ysuYTi2a4f8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685807; c=relaxed/simple;
-	bh=Vq3LdCtP41XH8ASslGrc1EgsHs+/UQIXG0fv3jUaD6E=;
+	s=arc-20240116; t=1750684189; c=relaxed/simple;
+	bh=nvMEiMBod2AI/COApO+A5gbiyXJm0kkJZ1JuYvywK0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jK3v5JDRqSU64+BLvb+nY1KYY2l7VyOEWDUNQCe03nmdtjMPJWKcg+h9W2YSj0eyeJ1U/1y9p9uy0kzi3yrL6qZpE3OwXiUpP8NUtus8sCuf+3CEq/p0FnCLIF9cka1290B932QPh65jCiLrkORzGYjsx9alvr4SP+DmHfnkFc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbkNYgun; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBBFC4CEEA;
-	Mon, 23 Jun 2025 13:36:47 +0000 (UTC)
+	 MIME-Version; b=KvKVEkwoYJQR/ni7d2fCzdzCr7LkinXg2NDNMcSgZEehp4PC1mNPUf4O1dq+62WJutdCvB/vyBA1p/I21Dkv5OEOMcB+yYJlKPvz+186fFoT2qQZs2Ne1XAYgq5SHVFLKXZ4c/xVcJ2z8jKkpcRGMMV6vF3vvWSSIOCfXAP0QY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u5w4vUHd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CDDC4CEEA;
+	Mon, 23 Jun 2025 13:09:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685807;
-	bh=Vq3LdCtP41XH8ASslGrc1EgsHs+/UQIXG0fv3jUaD6E=;
+	s=korg; t=1750684189;
+	bh=nvMEiMBod2AI/COApO+A5gbiyXJm0kkJZ1JuYvywK0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GbkNYgunemRWCzyDVKq/kGeF9z09RRaCHHQ6+7wD686IdwVGVcaC3GU8XQrkEPfW4
-	 BPPuYnsU7FubdA1yiFgrsNzQl1DooNooGob3ajJ1TaWh7n5p2m4y22yb5gIS4cHK0/
-	 fzcn792Y3DamL6kh7mO59a2NX5XnBMDu7D3GL2lU=
+	b=u5w4vUHdGTkWKNjYX6n9mXOmTp98XElkfI/z/j2NLDwrHPa4sfsa4Fvcb67oVejFl
+	 EtC4F2a7RJ60JYsfaDYr2ODs/7e1A8PTxiDA4YQHJLZUO4wIXQOKusrWKfSi3d4r4k
+	 9fcxCuLAiYOCVv6VmpwxgnlCy2Y7crGVvnJjVGfY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.12 008/414] crypto: qat - add shutdown handler to qat_dh895xcc
+	Jeongjun Park <aha310510@gmail.com>,
+	Pan Taixi <pantaixi@huaweicloud.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 001/411] tracing: Fix compilation warning on arm32
 Date: Mon, 23 Jun 2025 15:02:25 +0200
-Message-ID: <20250623130642.236469352@linuxfoundation.org>
+Message-ID: <20250623130633.039939418@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+From: Pan Taixi <pantaixi@huaweicloud.com>
 
-commit 2c4e8b228733bfbcaf49408fdf94d220f6eb78fc upstream.
+commit 2fbdb6d8e03b70668c0876e635506540ae92ab05 upstream.
 
-During a warm reset via kexec, the system bypasses the driver removal
-sequence, meaning that the remove() callback is not invoked.
-If a QAT device is not shutdown properly, the device driver will fail to
-load in a newly rebooted kernel.
+On arm32, size_t is defined to be unsigned int, while PAGE_SIZE is
+unsigned long. This hence triggers a compilation warning as min()
+asserts the type of two operands to be equal. Casting PAGE_SIZE to size_t
+solves this issue and works on other target architectures as well.
 
-This might result in output like the following after the kexec reboot:
+Compilation warning details:
 
-    QAT: AE0 is inactive!!
-    QAT: failed to get device out of reset
-    dh895xcc 0000:3f:00.0: qat_hal_clr_reset error
-    dh895xcc 0000:3f:00.0: Failed to init the AEs
-    dh895xcc 0000:3f:00.0: Failed to initialise Acceleration Engine
-    dh895xcc 0000:3f:00.0: Resetting device qat_dev0
-    dh895xcc 0000:3f:00.0: probe with driver dh895xcc failed with error -14
+kernel/trace/trace.c: In function 'tracing_splice_read_pipe':
+./include/linux/minmax.h:20:28: warning: comparison of distinct pointer types lacks a cast
+  (!!(sizeof((typeof(x) *)1 == (typeof(y) *)1)))
+                            ^
+./include/linux/minmax.h:26:4: note: in expansion of macro '__typecheck'
+   (__typecheck(x, y) && __no_side_effects(x, y))
+    ^~~~~~~~~~~
 
-Implement the shutdown() handler that hooks into the reboot notifier
-list. This brings down the QAT device and ensures it is shut down
-properly.
+...
 
-Cc: <stable@vger.kernel.org>
-Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+kernel/trace/trace.c:6771:8: note: in expansion of macro 'min'
+        min((size_t)trace_seq_used(&iter->seq),
+        ^~~
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20250526013731.1198030-1-pantaixi@huaweicloud.com
+Fixes: f5178c41bb43 ("tracing: Fix oob write in trace_seq_to_buffer()")
+Reviewed-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Pan Taixi <pantaixi@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/trace/trace.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-+++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
-@@ -19,6 +19,13 @@
- #include <adf_dbgfs.h>
- #include "adf_dh895xcc_hw_data.h"
- 
-+static void adf_shutdown(struct pci_dev *pdev)
-+{
-+	struct adf_accel_dev *accel_dev = adf_devmgr_pci_to_accel_dev(pdev);
-+
-+	adf_dev_down(accel_dev);
-+}
-+
- static const struct pci_device_id adf_pci_tbl[] = {
- 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_QAT_DH895XCC), },
- 	{ }
-@@ -33,6 +40,7 @@ static struct pci_driver adf_driver = {
- 	.name = ADF_DH895XCC_DEVICE_NAME,
- 	.probe = adf_probe,
- 	.remove = adf_remove,
-+	.shutdown = adf_shutdown,
- 	.sriov_configure = adf_sriov_configure,
- 	.err_handler = &adf_err_handler,
- };
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -7030,7 +7030,7 @@ static ssize_t tracing_splice_read_pipe(
+ 		ret = trace_seq_to_buffer(&iter->seq,
+ 					  page_address(spd.pages[i]),
+ 					  min((size_t)trace_seq_used(&iter->seq),
+-						  PAGE_SIZE));
++						  (size_t)PAGE_SIZE));
+ 		if (ret < 0) {
+ 			__free_page(spd.pages[i]);
+ 			break;
 
 
 
