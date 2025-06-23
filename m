@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DCA8AE43EB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD1FFAE42D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 878061BC06EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E30D91887774
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EBC925178C;
-	Mon, 23 Jun 2025 13:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F26232517A0;
+	Mon, 23 Jun 2025 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1iP2St2s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GxJ15Wma"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6D64C6E;
-	Mon, 23 Jun 2025 13:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF89024BD00;
+	Mon, 23 Jun 2025 13:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685481; cv=none; b=cEx1LyYtnycMunjzdiLEwkhIqJrwzLRiI+M6XN+Qbu7lEkx+hvOVHjyxu/HcY2vvQuVnfI2UUO5/xPVB3GoLT5G8hdyZ1enawQBVbs70QMikU5E/JhNQHS/g/apBFbt0Oq8O6dLa3VjObJNt/qaIixWwpcG0EUHKrlSSRh/qGB4=
+	t=1750684854; cv=none; b=g5l47CNxhFIHDFFozyH8nA6UJGhJiS7U2nkZ5RGIT3a6nQo/yo2pXO+fRhotBPQlJPL4d8v1dPYFKOptlUrcKjLxGDnYoj5EFSKCe3oS1dZexk56C+Yf1n/OyK/7+t9I38f3Dr63BXxiitt8ZHl6moal+GhK/EaaseMa+aD0MnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685481; c=relaxed/simple;
-	bh=dMSa/kFwN/iI0VdMhn0G64rvMvPc+wts/SIWBDdEP4I=;
+	s=arc-20240116; t=1750684854; c=relaxed/simple;
+	bh=wvTnu+Lz2a/rNAgYCazSz5QsSDpQeJ0WJTAdQ0InwO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Knmy5d91NCm2I1vUUqtcnEEM+t9X7Pzwn1uOfaVgVpnTRhbGP0FfDlUAgQ5Y8glPFgyZTnVl1Gs+6VxEcrm63LH6DQkN7+pJdzPQEA9kjcBEzvGVy+puiv8kWLcnrM97nU+flF1ubA8NtQCot50IabZ1D6SvNdYGvm2pBZS5kng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1iP2St2s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E54DC4CEF0;
-	Mon, 23 Jun 2025 13:31:20 +0000 (UTC)
+	 MIME-Version; b=pCOzx+HMw+I3W/twRF7OG9ouDcPIYU2wkktA23cQ+Xc3MG/PIEsTi0IvUXxprfHDFV/dgdroK3FxByPUIId/Fa8J/JELWDAEA9/LpKh5g4RHhmX5280V9BZLVU3Apt4+noWIZK8AuFFoTToZyItMuinDZMZxfD+jCWNw0zsy4Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GxJ15Wma; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3ED8C4CEEA;
+	Mon, 23 Jun 2025 13:20:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685480;
-	bh=dMSa/kFwN/iI0VdMhn0G64rvMvPc+wts/SIWBDdEP4I=;
+	s=korg; t=1750684854;
+	bh=wvTnu+Lz2a/rNAgYCazSz5QsSDpQeJ0WJTAdQ0InwO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1iP2St2sDq1C9brcYk1AiY78hF5L0EkwMhTk7DefBAvJKQxpRyZZn1vAICt3U6C6f
-	 6XZLfUrmT0m1LghZf6pB8ejaBp/Mj56clk7ieOjsgMDxYoOZ3FeRzQ6aQWIYvBCSlb
-	 MtqIFTXQbLa3tdXyf6+8EdD3CLdI1vkDBvgsi/2c=
+	b=GxJ15WmaDGHynfXh8Wd4ITxxZB9XKlPfFHPKrzBklkQN8Y9pdVHPkIrEywBXBYVTs
+	 qxuekuerLGMy+owdue+05VSJPtuilc0FKHoXt+Mv8NjsYo0hdF3M8LUPBxz79ROqft
+	 X/D+m14+61PPb0HiPvWNLvgwiObBiBXCIoa5o39I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/411] wifi: rtw88: fix the para buffer size to avoid reading out of bounds
+	Manu Bretelle <chantr4@gmail.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 004/355] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
 Date: Mon, 23 Jun 2025 15:03:25 +0200
-Message-ID: <20250623130634.820789377@linuxfoundation.org>
+Message-ID: <20250623130626.857452749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Gautham R. Shenoy <gautham.shenoy@amd.com>
 
-[ Upstream commit 4c2c372de2e108319236203cce6de44d70ae15cd ]
+commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
 
-Set the size to 6 instead of 2, since 'para' array is passed to
-'rtw_fw_bt_wifi_control(rtwdev, para[0], &para[1])', which reads
-5 bytes:
+commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+modified get_max_boost_ratio() to return the nominal_freq advertised
+in the _CPC object. This was for the purposes of computing the maximum
+frequency. The frequencies advertised in _CPC objects are in
+MHz. However, cpufreq expects the frequency to be in KHz. Since the
+nominal_freq returned by get_max_boost_ratio() was not in KHz but
+instead in MHz,the cpuinfo_max_frequency that was computed using this
+nominal_freq was incorrect and an invalid value which resulted in
+cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
 
-void rtw_fw_bt_wifi_control(struct rtw_dev *rtwdev, u8 op_code, u8 *data)
-{
-    ...
-    SET_BT_WIFI_CONTROL_DATA1(h2c_pkt, *data);
-    SET_BT_WIFI_CONTROL_DATA2(h2c_pkt, *(data + 1));
-    ...
-    SET_BT_WIFI_CONTROL_DATA5(h2c_pkt, *(data + 4));
+Fix this by converting the nominal_freq to KHz before returning the
+same from get_max_boost_ratio().
 
-Detected using the static analysis tool - Svace.
-Fixes: 4136214f7c46 ("rtw88: add BT co-existence support")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20250513121304.124141-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Manu Bretelle <chantr4@gmail.com>
+Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
+Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
+Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
+Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/realtek/rtw88/coex.c | 2 +-
+ drivers/cpufreq/acpi-cpufreq.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw88/coex.c b/drivers/net/wireless/realtek/rtw88/coex.c
-index 347fc36068edb..a37c963146a26 100644
---- a/drivers/net/wireless/realtek/rtw88/coex.c
-+++ b/drivers/net/wireless/realtek/rtw88/coex.c
-@@ -305,7 +305,7 @@ static void rtw_coex_tdma_timer_base(struct rtw_dev *rtwdev, u8 type)
- {
- 	struct rtw_coex *coex = &rtwdev->coex;
- 	struct rtw_coex_stat *coex_stat = &coex->stat;
--	u8 para[2] = {0};
-+	u8 para[6] = {};
- 	u8 times;
- 	u16 tbtt_interval = coex_stat->wl_beacon_interval;
+--- a/drivers/cpufreq/acpi-cpufreq.c
++++ b/drivers/cpufreq/acpi-cpufreq.c
+@@ -657,7 +657,7 @@ static u64 get_max_boost_ratio(unsigned
+ 	nominal_perf = perf_caps.nominal_perf;
  
--- 
-2.39.5
-
+ 	if (nominal_freq)
+-		*nominal_freq = perf_caps.nominal_freq;
++		*nominal_freq = perf_caps.nominal_freq * 1000;
+ 
+ 	if (!highest_perf || !nominal_perf) {
+ 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
 
 
 
