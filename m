@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D3FAE535A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B85A8AE4EA9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D07D81B66D8E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A4963BE31B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0744C223DD0;
-	Mon, 23 Jun 2025 21:52:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1CB221F0F;
+	Mon, 23 Jun 2025 21:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xhvFnIRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1YHHo1F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA06D220686;
-	Mon, 23 Jun 2025 21:52:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B74E70838;
+	Mon, 23 Jun 2025 21:07:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715523; cv=none; b=TXazF+UY5bpvLdEJf+4280fXhQbROSINVTDNxRABlAUjOkAyln0lryJ/w82cpE0djPfJZNzz6i6ao+0zLaz3OIAfxKU6gQ35mjg61vwrGLaXaYCefIq/q/ADQXH3hHUJtMn/L2oHxphUqBJ3drXFFQ+713wlIk92QlPZabjlq6g=
+	t=1750712876; cv=none; b=Ugv1vOGSIOT3fcWghn/dIy9iSPo0ipz/8tx6WpWfKLyo0UzeNCmSEfLjPAgqjAu+HfuDL9f/w/fkHlUC7aKLuLJUlRmucrV7Tsp4/unhewG1+e/yWsriDHTd8Lw0oUVcSOzvgyDjvSe7y7KqaFQqxjPh2nujLl4x6pXRKDpf1bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715523; c=relaxed/simple;
-	bh=FLJWTn27H8+xrnF2u7IOvHmD4yD8JHF702Z5yXILj/s=;
+	s=arc-20240116; t=1750712876; c=relaxed/simple;
+	bh=/GfKXri61+go0QAyXUmUAtqi9gRr2ATPGROl/zJO1Pk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=otuTkr9aYyNjHuGAFE6EVpOUw3ItXVztJkL305caQ2YlwZLjTCTtpZlPjsZ/SE/vC22DwHhVyaRkk0Fuvr0IpwqDjR/LjPGaGcU9WTpcnrHb6/spMo1C+hOLTLdfL++dpIi9s69GOfn8trRQHS3vaDttEaigFbCxnMIV7hKqQNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xhvFnIRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5067EC4CEEA;
-	Mon, 23 Jun 2025 21:52:03 +0000 (UTC)
+	 MIME-Version; b=uB+iVxMn28x00eBZRpjx2XW8fgX8U5aWJSHCMhrOCKssOenzj6DWodF7Y19l6cdUA7SyBVllyBmkPxYnq283tJzggZHGzZ5rOdIxEmW8G+p+3rNneC8Ave6gPLTVmb7h3TQZA7XOtfTkPSRC5I6viqRwQQ7Ygbj4rDFUzJZrNQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1YHHo1F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E996FC4CEF0;
+	Mon, 23 Jun 2025 21:07:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715523;
-	bh=FLJWTn27H8+xrnF2u7IOvHmD4yD8JHF702Z5yXILj/s=;
+	s=korg; t=1750712876;
+	bh=/GfKXri61+go0QAyXUmUAtqi9gRr2ATPGROl/zJO1Pk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xhvFnIRbRBGNTpKRyUosbiQ4Mabk0ypFFZAhKUVZTZThKVuhFVNFb8dt27Lrp9ZQ/
-	 S4zRWx8mN4ygCFO+suhEKZ4rAbA+bzZXNJpMWzxiiS8q3fJCvupIS9fBhxzFDiNcWa
-	 6pA/UaHd4FSPSq5SMUmepT8zdawAgdKyV26nOef4=
+	b=r1YHHo1Fx6B0DVV8lopGhXgBeyLfT3oae5TweHkkJ23NVzrctd8jlq1gCB5UmZiVn
+	 frNx98qF45uOf7UB5up3/AYIXBp/i8qule75zUzcJEsmD65/TMbuRCQQxSwr5NHaC/
+	 j5mTiaPfwlQ+A4B+m7AfeoLp03H2tjcMOG9zTJ7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suleiman Souhlal <suleiman@google.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 6.1 266/508] tools/resolve_btfids: Fix build when cross compiling kernel with clang.
+	Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 110/355] arm64: dts: ti: k3-am65-main: Drop deprecated ti,otap-del-sel property
 Date: Mon, 23 Jun 2025 15:05:11 +0200
-Message-ID: <20250623130651.789073638@linuxfoundation.org>
+Message-ID: <20250623130630.074464506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suleiman Souhlal <suleiman@google.com>
+From: Nishanth Menon <nm@ti.com>
 
-commit a298bbab903e3fb4cbe16d36d6195e68fad1b776 upstream.
+[ Upstream commit 2b9bb988742d1794e78d4297a99658f38477eedd ]
 
-When cross compiling the kernel with clang, we need to override
-CLANG_CROSS_FLAGS when preparing the step libraries.
+ti,otap-del-sel has been deprecated in favor of ti,otap-del-sel-legacy.
 
-Prior to commit d1d096312176 ("tools: fix annoying "mkdir -p ..." logs
-when building tools in parallel"), MAKEFLAGS would have been set to a
-value that wouldn't set a value for CLANG_CROSS_FLAGS, hiding the
-fact that we weren't properly overriding it.
+Drop the duplicate and misleading ti,otap-del-sel property.
 
-Fixes: 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
-Signed-off-by: Suleiman Souhlal <suleiman@google.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/bpf/20250606074538.1608546-1-suleiman@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Link: https://lore.kernel.org/r/20230607132043.3932726-3-nm@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Stable-dep-of: f55c9f087cc2 ("arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/resolve_btfids/Makefile |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/tools/bpf/resolve_btfids/Makefile
-+++ b/tools/bpf/resolve_btfids/Makefile
-@@ -19,7 +19,7 @@ endif
- 
- # Overrides for the prepare step libraries.
- HOST_OVERRIDES := AR="$(HOSTAR)" CC="$(HOSTCC)" LD="$(HOSTLD)" ARCH="$(HOSTARCH)" \
--		  CROSS_COMPILE="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
-+		  CROSS_COMPILE="" CLANG_CROSS_FLAGS="" EXTRA_CFLAGS="$(HOSTCFLAGS)"
- 
- RM      ?= rm
- HOSTCC  ?= gcc
+diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+index a3538279d7106..a4d35bc66f0b7 100644
+--- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
++++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
+@@ -301,7 +301,6 @@ sdhci1: sdhci@4fa0000 {
+ 		ti,otap-del-sel-ddr52 = <0x4>;
+ 		ti,otap-del-sel-hs200 = <0x7>;
+ 		ti,clkbuf-sel = <0x7>;
+-		ti,otap-del-sel = <0x2>;
+ 		ti,trm-icp = <0x8>;
+ 		dma-coherent;
+ 		no-1-8-v;
+-- 
+2.39.5
+
 
 
 
