@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0548AE527D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B86DDAE50B2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7758443B4E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69FAC188EA86
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07F021D3DD;
-	Mon, 23 Jun 2025 21:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC23A223335;
+	Mon, 23 Jun 2025 21:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5zktDvo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsu8sz7z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7E92AEE4;
-	Mon, 23 Jun 2025 21:44:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D3D1F4628;
+	Mon, 23 Jun 2025 21:26:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715065; cv=none; b=i8QZpyjyTIXxWwBz8m0lTEPAFggzSoDsdcYGgF6foc8pOuc1byNBblErxv59TJizNC0O2F5gv0POmS1CleyLGNjp3GunklkfIznR4TIWU6tymcGKz+Z3TBOT8r4oBTUQUUdiY6bkOGaiaUPbge0ht260fmCQ4qkmSirY/Zi1fts=
+	t=1750714018; cv=none; b=Nmcx0vpAJTDOX0MRdmnYJjOM1RyRh7K9ZJG/5OW82dViMWnbUqofNbyyVWdmlfDLc7C8IDDFksMfcDVzrPH5EwPljQHjYx3O0hcjMewWh0haASX6y4mtVwqvtD7ShHJ1Ogj9dIZvz00swz5bEV8JUcrFdBeDyDUJA/LyJokRqh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715065; c=relaxed/simple;
-	bh=UPe+qJRMNv3TrbWMwq77WBVSQrnaFxfRofdMtqYWRS0=;
+	s=arc-20240116; t=1750714018; c=relaxed/simple;
+	bh=z3VTJqxHJ5Qe/J/nLPl/2L2yzrxzSCGEqwU/B3/W5BQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gm5ocZ7AgHSeCHBYGk52es2Qg60PCF/qoE9LtCIOSDisaH93iKRfKuXBdCLR+/llD12M6unl3l1V3KaEh8CBA6Z2mDUDPH199AiWd8nMaU+4N1Wab9/NNcnMERXMYQZ7h6BaQxPBmB8dzRm30tokkvpGlReppG7aS3th+1yHxw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5zktDvo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 307CFC4CEEA;
-	Mon, 23 Jun 2025 21:44:25 +0000 (UTC)
+	 MIME-Version; b=OjKsDDKMEALiBpSO99h3Cs7GsfhyeDVR0Cf2hwLhxB6cKJvCQfTLKLtQMtwcZGyqXp2LKxh8PUt1e4yjkqepqXw//5qcqTFp66cqRwq2cVRq5IegYfgxlR26mNaO+b5sR25+/8BUFxnVvsTmotmWhek8c3GdtSkZ/k3Lx8DWE6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsu8sz7z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAE8C4CEEA;
+	Mon, 23 Jun 2025 21:26:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715065;
-	bh=UPe+qJRMNv3TrbWMwq77WBVSQrnaFxfRofdMtqYWRS0=;
+	s=korg; t=1750714018;
+	bh=z3VTJqxHJ5Qe/J/nLPl/2L2yzrxzSCGEqwU/B3/W5BQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5zktDvoJdBWwVT2JgOJxni9WItUK8PuobJ7fcqXVaBS8KIW8BWVHzkMUUMJlYeKE
-	 d0Lz9Gxs2x+MB25466PepIYux06EULc+j99a1wueZeQ1iSOMQLoD5hN2v9+Ir6L6Nl
-	 XyG4i5sDv01c+8FjHqDZ6FkRqO1LGd4RquRBMa5I=
+	b=qsu8sz7zxNVzLlW+k8u3u5qwkkaqneYHIZzDGyZGZEInb11tkI1kSBGoC9dgeY+jV
+	 ryOW2Xn1oQ/1L/QsUWfmYcUOJ3S5BqowHawctj56WojwpXC050jh9I0DPG8eZO0T09
+	 7uII6VIJ8E/FDE5f11D8x+qiKszG14fI62/nY9G8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Balamurugan S <quic_bselvara@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 422/592] wifi: ath12k: fix incorrect CE addresses
+	Ross Stutterheim <ross.stutterheim@garmin.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 5.10 179/355] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
 Date: Mon, 23 Jun 2025 15:06:20 +0200
-Message-ID: <20250623130710.473461080@linuxfoundation.org>
+Message-ID: <20250623130632.078584187@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Balamurugan S <quic_bselvara@quicinc.com>
+From: Ross Stutterheim <ross.stutterheim@garmin.com>
 
-[ Upstream commit 60031d9c3589c7983fd1deb4a4c0bebf0929890e ]
+commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
 
-In the current ath12k implementation, the CE addresses
-CE_HOST_IE_ADDRESS and CE_HOST_IE_2_ADDRESS are incorrect. These
-values were inherited from ath11k, but ath12k does not currently use
-them.
+arm/memremap: fix arch_memremap_can_ram_remap()
 
-However, the Ath12k AHB support relies on these addresses. Therefore,
-correct the CE addresses for ath12k.
+commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
+presence of linear map") added the definition of
+arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
+can be used from the linear mapping. memblock_is_map_memory() was called
+with the pfn of the address given to arch_memremap_can_ram_remap();
+however, memblock_is_map_memory() expects to be given an address for arm,
+not a pfn.
 
-Tested-on: IPQ5332 hw1.0 AHB WLAN.WBE.1.3.1-00130-QCAHKSWPL_SILICONZ-1
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.1.1-00210-QCAHKSWPL_SILICONZ-1
+This results in calls to memremap() returning a newly mapped area when
+it should return an address in the existing linear mapping.
 
-Signed-off-by: Balamurugan S <quic_bselvara@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Signed-off-by: Raj Kumar Bhagat <quic_rajkbhag@quicinc.com>
-Link: https://patch.msgid.link/20250321-ath12k-ahb-v12-2-bb389ed76ae5@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this by removing the address to pfn translation and pass the
+address directly.
+
+Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
+Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/ce.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/arm/mm/ioremap.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/ce.h b/drivers/net/wireless/ath/ath12k/ce.h
-index 1a14b9fb86b88..f85188af5de2f 100644
---- a/drivers/net/wireless/ath/ath12k/ce.h
-+++ b/drivers/net/wireless/ath/ath12k/ce.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: BSD-3-Clause-Clear */
- /*
-  * Copyright (c) 2018-2021 The Linux Foundation. All rights reserved.
-- * Copyright (c) 2021-2022, 2024 Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2021-2022, 2024-2025 Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #ifndef ATH12K_CE_H
-@@ -39,8 +39,8 @@
- #define PIPEDIR_INOUT_H2H	4 /* bidirectional, host to host */
- 
- /* CE address/mask */
--#define CE_HOST_IE_ADDRESS	0x00A1803C
--#define CE_HOST_IE_2_ADDRESS	0x00A18040
-+#define CE_HOST_IE_ADDRESS	0x75804C
-+#define CE_HOST_IE_2_ADDRESS	0x758050
- #define CE_HOST_IE_3_ADDRESS	CE_HOST_IE_ADDRESS
- 
- #define CE_HOST_IE_3_SHIFT	0xC
--- 
-2.39.5
-
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -483,7 +483,5 @@ void __init early_ioremap_init(void)
+ bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+ 				 unsigned long flags)
+ {
+-	unsigned long pfn = PHYS_PFN(offset);
+-
+-	return memblock_is_map_memory(pfn);
++	return memblock_is_map_memory(offset);
+ }
 
 
 
