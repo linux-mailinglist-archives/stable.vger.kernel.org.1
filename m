@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-158149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4928CAE572A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25444AE565D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4814E2D58
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:55 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 345543AADD1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2906225785;
-	Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFEDA223DE5;
+	Mon, 23 Jun 2025 22:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Df/UaCfW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UoZkeTvP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BA622370A;
-	Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DB02B676;
+	Mon, 23 Jun 2025 22:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717604; cv=none; b=f6jOXFfiwxFJVxsMU9lWhRg+IaZXBPru5JD6RLKUbjpKus7CF0MX/x5/iLcgSqQTU+GE/xEcENXkP+4Dj+dH3gUPMB49qbDebXfDEHyJ90SZnYz+V9ogczWDMX3J5EySL0DWpAvCBjZXH9O75TXMJwjty2OD+w+fsbdBDNlPKyU=
+	t=1750717021; cv=none; b=h0n3YPVACccSIRPQiYQ4bFExrk6lCmpe1B0CSkhdAXxglEs5uv7PrdsVXY9WfpmKEm8l+HRYgQz8H10eGGV3jm4/NzD6lfBzNI457gakwKw4YdF+OOwcGhaeCn5iQJp9ITn+ECUODSpBMqbtuveaS694bHTeCw6c36ed1albLrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717604; c=relaxed/simple;
-	bh=i5L+HbxuEhwwh8Y3q4oFmttZTqvW8MfEZUkliR54EJI=;
+	s=arc-20240116; t=1750717021; c=relaxed/simple;
+	bh=4wALQD21FIa1csLPWZDC54lR8KstQaPxTtQtIJw42Dg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bS52Huk16u9EyYN/xl8P/xOi3WgMwEyw5D82YzGFtiHzXfC5oBRuSCvQOQatpE8hDFYNJLf/cbtOQsDLf25eGdrknAInDIHYR4BY0OKkTQdkrsjTaZzNquATZdXPJnGJkS/Dr1GXJFwVw3RgXun0I8EIEp0yEW3Hs0AMwlFQsm4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df/UaCfW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C546C4CEED;
-	Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
+	 MIME-Version; b=K2/80fYSrvi9wYwFmyFLRVt5rk2pHDswlhlS5+UYAf55KiFkbvHeRk1k8ONBg1DEKkOUanJF9qkojqwRLVpC45CfWkBHJhtssW+2XhWjjwkT4KEC0j26qGPVj2E559W2p2jPQPwWJQ4vvVc7b+di2pzNP41d0Sf6E2RE0Mtk828=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UoZkeTvP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DFCC4CEEA;
+	Mon, 23 Jun 2025 22:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717604;
-	bh=i5L+HbxuEhwwh8Y3q4oFmttZTqvW8MfEZUkliR54EJI=;
+	s=korg; t=1750717021;
+	bh=4wALQD21FIa1csLPWZDC54lR8KstQaPxTtQtIJw42Dg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Df/UaCfWRr9qzYG1zLEObTMS5Y8MVaJOr77Y5xrtGmQeSGojEQ4qL2r+Z2pZ0d9oc
-	 7aJPlcoDOpTM9Enpw0Zb+VcnYljB9IO4Ta2r8njN4P1pz48pl8AAy9xNfCwpU+VCAU
-	 dw/cJ5Y/LpQbS3Nh0HTy4fOcLeuA04dHRuxsYf7Q=
+	b=UoZkeTvPjnu1a1d3wSAkyeXDAYGyvaL0lH4rGWiBqc438xKUpBz/GN8foR18Xafe4
+	 hdF+n2r7zEmhNIVj4ZsP55+sjpFOPzOsaNDNIKx+jwaBR+r11Te79Fq5H9zD7mJ6Wg
+	 vOqJWoygmN9V5ujRwuSY26olFxSi/wfvDBkIkwXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Subject: [PATCH 6.12 399/414] serial: sh-sci: Increment the runtime usage counter for the earlycon device
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 578/592] gpio: pca953x: fix wrong error probe return value
 Date: Mon, 23 Jun 2025 15:08:56 +0200
-Message-ID: <20250623130651.913249351@linuxfoundation.org>
+Message-ID: <20250623130714.184981382@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
+[ Upstream commit 0a1db19f66c0960eb00e1f2ccd40708b6747f5b1 ]
 
-In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
-with earlycon mapped at index zero.
+The second argument to dev_err_probe() is the error value. Pass the
+return value of devm_request_threaded_irq() there instead of the irq
+number.
 
-The uart_add_one_port() function eventually calls __device_attach(),
-which, in turn, calls pm_request_idle(). The identified code path is as
-follows:
-
-uart_add_one_port() ->
-  serial_ctrl_register_port() ->
-    serial_core_register_port() ->
-      serial_core_port_device_add() ->
-        serial_base_port_add() ->
-          device_add() ->
-            bus_probe_device() ->
-              device_initial_probe() ->
-                __device_attach() ->
-                  // ...
-                  if (dev->p->dead) {
-                    // ...
-                  } else if (dev->driver) {
-                    // ...
-                  } else {
-                    // ...
-                    pm_request_idle(dev);
-                    // ...
-                  }
-
-The earlycon device clocks are enabled by the bootloader. However, the
-pm_request_idle() call in __device_attach() disables the SCI port clocks
-while earlycon is still active.
-
-The earlycon write function, serial_console_write(), calls
-sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
-are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
-remain unset indefinitely, causing the while loop in sci_poll_put_char()
-to never exit. On single-core SoCs, this can result in the system being
-blocked during boot when this issue occurs.
-
-To resolve this, increment the runtime PM usage counter for the earlycon
-SCI device before registering the UART port.
-
-Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
-Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: c47f7ff0fe61 ("gpio: pca953x: Utilise dev_err_probe() where it makes sense")
+Link: https://lore.kernel.org/r/20250616134503.1201138-1-s.hauer@pengutronix.de
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sh-sci.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpio/gpio-pca953x.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/tty/serial/sh-sci.c
-+++ b/drivers/tty/serial/sh-sci.c
-@@ -3455,6 +3455,22 @@ static int sci_probe_single(struct platf
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 13cc120cf11f1..02da81ff1c0f1 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -952,7 +952,7 @@ static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
+ 					IRQF_ONESHOT | IRQF_SHARED, dev_name(dev),
+ 					chip);
+ 	if (ret)
+-		return dev_err_probe(dev, client->irq, "failed to request irq\n");
++		return dev_err_probe(dev, ret, "failed to request irq\n");
  
- 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
- 		/*
-+		 * In case:
-+		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
-+		 * - it now maps to an alias other than zero and
-+		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
-+		 *   available in bootargs)
-+		 *
-+		 * we need to avoid disabling clocks and PM domains through the runtime
-+		 * PM APIs called in __device_attach(). For this, increment the runtime
-+		 * PM reference counter (the clocks and PM domains were already enabled
-+		 * by the bootloader). Otherwise the earlycon may access the HW when it
-+		 * has no clocks enabled leading to failures (infinite loop in
-+		 * sci_poll_put_char()).
-+		 */
-+		pm_runtime_get_noresume(&dev->dev);
-+
-+		/*
- 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
- 		 * port is the same as the earlycon one.
- 		 */
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
