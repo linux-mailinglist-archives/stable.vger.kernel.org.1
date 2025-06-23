@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-157744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157812-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DF8DAE5578
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACCEAE55A8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4F9A14A215E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6123E7A1ED7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B951A226CF7;
-	Mon, 23 Jun 2025 22:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FE79227E97;
+	Mon, 23 Jun 2025 22:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wpkVgfEM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekHfVsa0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7678D223DEE;
-	Mon, 23 Jun 2025 22:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F303223DD0;
+	Mon, 23 Jun 2025 22:12:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716615; cv=none; b=Mjl78kRbDXkM3Tl+On4tYeYQngJvrdyLz6q7g/3vMf3E0jwC2jAbEfR9CZOWJ0KQ9AmNGSheBGIxyzJePPeTiE8tPOBp2/g+pD3zMVAiTuSxCgy0KpOwtACbC5w+6h6TUPGNL2ZUXu55CBWGeyo8W0QegLDrk8zN2cYdzqEqxAg=
+	t=1750716779; cv=none; b=Nhk8YshaX34aiRF0ADy1pcEcIhjYzdDm9vQYKB/oyOgJw7+3eYOxbU2D8Ae9tvExWi+cj7M65k7eUX4xyZiDw9jsbCFibam0nSfe1VXMP/ybPgz/TPkJ0RMc7MU0fUCWQTBMLxweYtkHr1pmzEip+0mD+g+p0aK9Qb69RX0ixZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716615; c=relaxed/simple;
-	bh=Jpn1IvxA10dqvZmKkRkG3bk9x1TtK8qmJbDJA+5LNOI=;
+	s=arc-20240116; t=1750716779; c=relaxed/simple;
+	bh=R09hTtvCR0F1D2oKh8qfe0w+SQM+B7SfDFqqtV6DgY8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lK3MWS2MWRASbjrOBurZJ7+E+SnGT1zUFvaIwL/edUnko7Sk8txBYymDwL7cqba1hCfZhYaFY9BNwVGtqOq3LWvOHIIYDLSt+kSgYYWL3q89YuQ85hlHtTHwYGEjptuMsdCE/8gWuI1E95KcCOAfDdwkfPSpTxYJnPgqbc4DIrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wpkVgfEM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10805C4CEEA;
-	Mon, 23 Jun 2025 22:10:14 +0000 (UTC)
+	 MIME-Version; b=K1QFZAhsbZ984ZH2Ge6EOZBsUGS0JeX+HVUeaFDk4wDsAs4aA4SLQH/f9Zfd9WM9hXSAqG9RnjVSxcl3q+n/MFef8TO09S6heZqPlQ3S6U1dIoIHmGj0vHVrPc6mrot3yjKGUfNbYEqNdyW8+DgIoEN+NG/vKLEBA+YtDUz9DMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekHfVsa0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCF8DC4CEEA;
+	Mon, 23 Jun 2025 22:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716615;
-	bh=Jpn1IvxA10dqvZmKkRkG3bk9x1TtK8qmJbDJA+5LNOI=;
+	s=korg; t=1750716779;
+	bh=R09hTtvCR0F1D2oKh8qfe0w+SQM+B7SfDFqqtV6DgY8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wpkVgfEMkCcMqFCvaqUnXhkqX2expHABeJoIrvQy0GlUxErDc22kwJCSd6l819mZJ
-	 wJ0Jk9pOKTFjBMJDIzOcCkDBwjYhgK7zczNSA9Y9DJDZOhRpCsavQbB7+7g58XS/0k
-	 JTdWLTc6BUutVAfOX0rkIyXxEvIJDWFXAfr+fHAg=
+	b=ekHfVsa0/+VQJhTG/iyvr7PJ7K2VHpx/y7FMELPTPShY78+RnWhAHKmMEClYSuKVO
+	 MV4DlAelsyy3/HkVrmhyWLowRLhtngEmSIf1XUPz4uRg0LlNheNqG1TkNYArmsk8/H
+	 /nlbHqylEElpBB9WVz9Qk1HYbCRz9AaWszEScFQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Kim <jonathan.kim@amd.com>,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 542/592] drm/amdkfd: move SDMA queue reset capability check to node_show
-Date: Mon, 23 Jun 2025 15:08:20 +0200
-Message-ID: <20250623130713.332739354@linuxfoundation.org>
+	WangYuli <wangyuli@uniontech.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 357/411] Input: sparcspkr - avoid unannotated fall-through
+Date: Mon, 23 Jun 2025 15:08:21 +0200
+Message-ID: <20250623130642.631165559@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: WangYuli <wangyuli@uniontech.com>
 
-[ Upstream commit a55737dab6ba63eb4241e9c6547629058af31e12 ]
+commit 8b1d858cbd4e1800e9336404ba7892b5a721230d upstream.
 
-Relocate the per-SDMA queue reset capability check from
-kfd_topology_set_capabilities() to node_show() to ensure we read the
-latest value of sdma.supported_reset after all IP blocks are initialized.
+Fix follow warnings with clang-21i (and reformat for clarity):
+  drivers/input/misc/sparcspkr.c:78:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+     78 |                 case SND_TONE: break;
+        |                 ^
+  drivers/input/misc/sparcspkr.c:78:3: note: insert 'break;' to avoid fall-through
+     78 |                 case SND_TONE: break;
+        |                 ^
+        |                 break;
+  drivers/input/misc/sparcspkr.c:113:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
+    113 |                 case SND_TONE: break;
+        |                 ^
+  drivers/input/misc/sparcspkr.c:113:3: note: insert 'break;' to avoid fall-through
+    113 |                 case SND_TONE: break;
+        |                 ^
+        |                 break;
+  2 warnings generated.
 
-Fixes: ceb7114c961b ("drm/amdkfd: flag per-sdma queue reset supported to user space")
-Reviewed-by: Jonathan Kim <jonathan.kim@amd.com>
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit e17df7b086cf908cedd919f448da9e00028419bb)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://lore.kernel.org/r/6730E40353C76908+20250415052439.155051-1-wangyuli@uniontech.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/input/misc/sparcspkr.c |   22 ++++++++++++++++------
+ 1 file changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-index 9bbee484d57cc..d6653e39e1477 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
-@@ -510,6 +510,10 @@ static ssize_t node_show(struct kobject *kobj, struct attribute *attr,
- 			dev->node_props.capability |=
- 					HSA_CAP_AQL_QUEUE_DOUBLE_MAP;
+--- a/drivers/input/misc/sparcspkr.c
++++ b/drivers/input/misc/sparcspkr.c
+@@ -74,9 +74,14 @@ static int bbc_spkr_event(struct input_d
+ 		return -1;
  
-+		if (KFD_GC_VERSION(dev->gpu) < IP_VERSION(10, 0, 0) &&
-+			(dev->gpu->adev->sdma.supported_reset & AMDGPU_RESET_TYPE_PER_QUEUE))
-+				dev->node_props.capability2 |= HSA_CAP2_PER_SDMA_QUEUE_RESET_SUPPORTED;
-+
- 		sysfs_show_32bit_prop(buffer, offs, "max_engine_clk_fcompute",
- 			dev->node_props.max_engine_clk_fcompute);
+ 	switch (code) {
+-		case SND_BELL: if (value) value = 1000;
+-		case SND_TONE: break;
+-		default: return -1;
++	case SND_BELL:
++		if (value)
++			value = 1000;
++		break;
++	case SND_TONE:
++		break;
++	default:
++		return -1;
+ 	}
  
-@@ -2001,8 +2005,6 @@ static void kfd_topology_set_capabilities(struct kfd_topology_device *dev)
- 		if (!amdgpu_sriov_vf(dev->gpu->adev))
- 			dev->node_props.capability |= HSA_CAP_PER_QUEUE_RESET_SUPPORTED;
+ 	if (value > 20 && value < 32767)
+@@ -112,9 +117,14 @@ static int grover_spkr_event(struct inpu
+ 		return -1;
  
--		if (dev->gpu->adev->sdma.supported_reset & AMDGPU_RESET_TYPE_PER_QUEUE)
--			dev->node_props.capability2 |= HSA_CAP2_PER_SDMA_QUEUE_RESET_SUPPORTED;
- 	} else {
- 		dev->node_props.debug_prop |= HSA_DBG_WATCH_ADDR_MASK_LO_BIT_GFX10 |
- 					HSA_DBG_WATCH_ADDR_MASK_HI_BIT;
--- 
-2.39.5
-
+ 	switch (code) {
+-		case SND_BELL: if (value) value = 1000;
+-		case SND_TONE: break;
+-		default: return -1;
++	case SND_BELL:
++		if (value)
++			value = 1000;
++		break;
++	case SND_TONE:
++		break;
++	default:
++		return -1;
+ 	}
+ 
+ 	if (value > 20 && value < 32767)
 
 
 
