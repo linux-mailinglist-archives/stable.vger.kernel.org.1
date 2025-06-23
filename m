@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-158088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DFD3AE56E6
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCFDBAE5604
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA641BC80A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE0C61BC7770
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87C71223DE5;
-	Mon, 23 Jun 2025 22:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46743224B1F;
+	Mon, 23 Jun 2025 22:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+fzYFAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d8xF/j4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 465382192EC;
-	Mon, 23 Jun 2025 22:24:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04DD4224B07;
+	Mon, 23 Jun 2025 22:15:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717453; cv=none; b=fJxYCUCEGJV8gGELTwu/kDSc40zZumfgqXAfsdc8kGvl4FbbzvaGEEy+4l/jLBpyFfqia/SbWxlZP5REBwUgVEHCvoD7igYppSVSDrP96vUaMYkFfckAZ110745bHsNXMm0eQxYvzH4G47EYNWBF+eouyzdT20D4hQx1qOkokDY=
+	t=1750716926; cv=none; b=dBx8EpcoakqqCakpNtd91iG7YX1lPsOah8dmXsEeQAtuBm5w4RsuWOO8AcnECHQlGtLsXeKirogx1xGrsj5+FrrtrjlvxMrbjh3teZuDNE3G4xy38psT7V6Kj8aMYVMcSgqB3QdhR3vSyG68lziTIkmmCqA2GrmBZjcoakCa4r8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717453; c=relaxed/simple;
-	bh=CC7jNw0J767dTgjthMI6sPU0jSsHD0sVESN13eDLCTc=;
+	s=arc-20240116; t=1750716926; c=relaxed/simple;
+	bh=gY0gfT6qWDb7GR8/cxmRFvmd7zoOhZV8QzIcmWD00wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r8sG7yerbXvvy/kzk0atVTfUk6t8McFjGiH9zqvV31fWDzYDKXgBrlgME2fOZ8lN3TSRBJtBPD7AGr9ICdeghda0hj999mdZguKUJdmBLoLwtNfUX1+cQoWQgD8+x2Xtwopjw0bDHFNpwudVMy98au5/Nz03oAsK0o+c4zY5S+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+fzYFAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E66C4CEEA;
-	Mon, 23 Jun 2025 22:24:12 +0000 (UTC)
+	 MIME-Version; b=GyKDs6TZEFogkK9IDjjAFMn+Us62fNCwawalDWarw8+WC3X2WBTtbkPYQ3sVKEFSLzdpdSSYhzU1pWvZJawmtUITHFGpmN1HSRuX6Zx9b68bWMsMQaiygZmdtHgaO5V6tQTylsuQ75QfCQbwyEN5LNdxVAKbM/4W20O991pON1U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d8xF/j4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 904D3C4CEEA;
+	Mon, 23 Jun 2025 22:15:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717453;
-	bh=CC7jNw0J767dTgjthMI6sPU0jSsHD0sVESN13eDLCTc=;
+	s=korg; t=1750716925;
+	bh=gY0gfT6qWDb7GR8/cxmRFvmd7zoOhZV8QzIcmWD00wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+fzYFAx5nYv9DtaQvx9GV4PGX5M9cwD6vcS7j35KTVM6i8Apxw1oO/OFKyqPNOwo
-	 lhP2Q0F02H5TCzBfbbQbAn68eIFCNfBn6d1/aeUFSp5TuOjymCgHjGwulf/fXM09zr
-	 /VbdFesqht6GpPzb85vJtxcJGHEMdWpBAVKoaWMc=
+	b=d8xF/j4Qh2SdCHep0LtwtTHvteQ1ebiaY9zkxuZQCnzIGSsgtDoOV7NpKB83SReLN
+	 h72PzMF0aarI2L7zT9UPoFDw4xvMEGt5N24YPTsDvt7ChQTLYmhxC9piyDvnbz2sjJ
+	 wgxXdScTxdAF5YDOBt3EBdFbZgdfVpHItoXo9on0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Vinay Belgaumkar <vinay.belgaumkar@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 390/414] drm/xe/bmg: Update Wa_16023588340
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.15 569/592] tracing: Do not free "head" on error path of filter_free_subsystem_filters()
 Date: Mon, 23 Jun 2025 15:08:47 +0200
-Message-ID: <20250623130651.694804352@linuxfoundation.org>
+Message-ID: <20250623130713.976149735@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 16c1241b08751a67cd7a0221ea9f82b0b02806f4 ]
+commit 8a157d8a00e815cab4432653cb50c9cedbbb4931 upstream.
 
-This allows for additional L2 caching modes.
+The variable "head" is allocated and initialized as a list before
+allocating the first "item" for the list. If the allocation of "item"
+fails, it frees "head" and then jumps to the label "free_now" which will
+process head and free it.
 
-Fixes: 01570b446939 ("drm/xe/bmg: implement Wa_16023588340")
-Cc: Matthew Auld <matthew.auld@intel.com>
-Reviewed-by: Matthew Auld <matthew.auld@intel.com>
-Signed-off-by: Vinay Belgaumkar <vinay.belgaumkar@intel.com>
-Link: https://lore.kernel.org/r/20250612-wa-14022085890-v4-2-94ba5dcc1e30@intel.com
-Signed-off-by: Lucas De Marchi <lucas.demarchi@intel.com>
-(cherry picked from commit 6ab42fa03d4c88a0ddf5e56e62794853b198e7bf)
-Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This will cause a UAF of "head", and it doesn't need to free it before
+jumping to the "free_now" label as that code will free it.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250610093348.33c5643a@gandalf.local.home
+Fixes: a9d0aab5eb33 ("tracing: Fix regression of filter waiting a long time on RCU synchronization")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Closes: https://lore.kernel.org/r/202506070424.lCiNreTI-lkp@intel.com/
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/xe/xe_gt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_events_filter.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_gt.c b/drivers/gpu/drm/xe/xe_gt.c
-index 335548e3b6b9c..231ed53cf907c 100644
---- a/drivers/gpu/drm/xe/xe_gt.c
-+++ b/drivers/gpu/drm/xe/xe_gt.c
-@@ -114,7 +114,7 @@ static void xe_gt_enable_host_l2_vram(struct xe_gt *gt)
- 		xe_gt_mcr_multicast_write(gt, XE2_GAMREQSTRM_CTRL, reg);
- 	}
+--- a/kernel/trace/trace_events_filter.c
++++ b/kernel/trace/trace_events_filter.c
+@@ -1435,10 +1435,8 @@ static void filter_free_subsystem_filter
+ 	INIT_LIST_HEAD(&head->list);
  
--	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0x3);
-+	xe_gt_mcr_multicast_write(gt, XEHPC_L3CLOS_MASK(3), 0xF);
- 	xe_force_wake_put(gt_to_fw(gt), fw_ref);
- }
+ 	item = kmalloc(sizeof(*item), GFP_KERNEL);
+-	if (!item) {
+-		kfree(head);
++	if (!item)
+ 		goto free_now;
+-	}
  
--- 
-2.39.5
-
+ 	item->filter = filter;
+ 	list_add_tail(&item->list, &head->list);
 
 
 
