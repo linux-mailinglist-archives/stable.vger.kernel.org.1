@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1413AE4EC3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B180AAE4FD6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7F343BE33F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13CC51B61B79
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545451F3FF8;
-	Mon, 23 Jun 2025 21:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687D71F4628;
+	Mon, 23 Jun 2025 21:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zz9C3+rQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r+FNoh11"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1228170838;
-	Mon, 23 Jun 2025 21:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A10219E0;
+	Mon, 23 Jun 2025 21:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712931; cv=none; b=gHiwRHvAnZd00MIGMumXYUjhfizlN2u9/D3db0cAraHv06XIWBK97TKg7k48DfozgI+u6T6/avrpCwhl3rJpbqWXcxfNkzLoAZCbonIsWGjtkPNsY6kWBswdjfDNHyRthZ+Sg5GwX66HMPGuvTmqlXsR9a7j6w78SwfleKMmcLs=
+	t=1750713580; cv=none; b=CTObSyzXsU5uhokKvnPRdenyEWMWW1TMD5ObFQztByxmP0LDkABU1pPnUlKCpwYIjNiq3Wvye0hCQHa7nk22OWGpS6EGhEEmGY3PXDruZqDdL257rXt46zvb8vJRbji9CTV4Eno+qyJPb5d4RnoPIkbvQP30UkdbkszhpP9M6rA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712931; c=relaxed/simple;
-	bh=95bZ4gvAFD2lTIWlFAmd8J3vugMD1xyBi/cCmpVRAaU=;
+	s=arc-20240116; t=1750713580; c=relaxed/simple;
+	bh=NmdJ3+UKWawHoQ7ciAMKBg27m1/GNTEpBVrso2xqRDY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KKlS/ozmyb4roEvtrZwtLlMHbMLAXUbKMpP/p68yHCOFWZp6ten+4aI3XfQ9xrpFJlHFhS5whpI0vRC32ZD+r9a12Rzj4GD7eO+uTjEMjimgfBy4Du998iA03QbT+Bj03ijbWZ4S1Z17TsnV2by+OzRWZJqFNmxkig1r5ZBpYKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zz9C3+rQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95299C4CEEA;
-	Mon, 23 Jun 2025 21:08:50 +0000 (UTC)
+	 MIME-Version; b=Ey4Kmkd0lwaGE3NN9AFOzpQkTS+XZjTqEyZG5SJ3BjAI/7Wx7ERXdgawJj5xxNd83KljoBH9SnTvZv4S3YOeY4UVyihl9uGP7c45GCU647KepPWh0uXjdlPaRaLzhiqZPvUEb+NMsiQW+EvpZnDhH+6qG+8Gd9FsMKY1lOW23iM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r+FNoh11; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4114C4CEEA;
+	Mon, 23 Jun 2025 21:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712930;
-	bh=95bZ4gvAFD2lTIWlFAmd8J3vugMD1xyBi/cCmpVRAaU=;
+	s=korg; t=1750713580;
+	bh=NmdJ3+UKWawHoQ7ciAMKBg27m1/GNTEpBVrso2xqRDY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zz9C3+rQIZPx/+4DrrDxUJrAcwBb7qspKMeDtYBk+FgNIBawREh3dRdtRc3LSeT5V
-	 HLwSy6Q7Ghrkq2qogUsW0ME2654nXLDwlr6+fIis5jvQtT0outPRa/AppBce7vpRGj
-	 KmfD3OdSiAZ6EEFxs3vTl88a3bPKqL0HAi8f23jg=
+	b=r+FNoh11s5cdP5xmE6Sxo36jjcTAEgunch2TS4MYX3wesXg4Zowt631ScRT0S5ukF
+	 y5fFEeyVPnraCLifaEtPRRWXcjEB0Tb4WIJFhQXBDNIwuv+PSH4RgMyORQPyzecg1s
+	 UimmVrHe5BL89eSziZ+h+PsFeKlgZcevhHIa9XYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Jo=C3=A3o=20Paulo=20Gon=C3=A7alves?= <jpaulo.silvagoncalves@gmail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 019/414] regulator: max20086: Fix MAX200086 chip id
+	Adam Ford <aford173@gmail.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 111/508] arm64: dts: imx8mm-beacon: Fix RTC capacitive load
 Date: Mon, 23 Jun 2025 15:02:36 +0200
-Message-ID: <20250623130642.506349980@linuxfoundation.org>
+Message-ID: <20250623130648.026537812@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
+From: Adam Ford <aford173@gmail.com>
 
-commit 71406b6d1155d883c80c1b4405939a52f723aa05 upstream.
+[ Upstream commit 2e98d456666d63f897ba153210bcef9d78ba0f3a ]
 
->From MAX20086-MAX20089 datasheet, the id for a MAX20086 is 0x30 and not
-0x40. With the current code, the driver will fail on probe when the
-driver tries to identify the chip id from a MAX20086 device over I2C.
+Although not noticeable when used every day, the RTC appears to drift when
+left to sit over time.  This is due to the capacitive load not being
+properly set. Fix RTC drift by correcting the capacitive load setting
+from 7000 to 12500, which matches the actual hardware configuration.
 
-Cc: stable@vger.kernel.org
-Fixes: bfff546aae50 ("regulator: Add MAX20086-MAX20089 driver")
-Signed-off-by: João Paulo Gonçalves <jpaulo.silvagoncalves@gmail.com>
-Link: https://patch.msgid.link/20250420-fix-max20086-v1-1-8cc9ee0d5a08@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 593816fa2f35 ("arm64: dts: imx: Add Beacon i.MX8m-Mini development kit")
+Signed-off-by: Adam Ford <aford173@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/max20086-regulator.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/regulator/max20086-regulator.c
-+++ b/drivers/regulator/max20086-regulator.c
-@@ -29,7 +29,7 @@
- #define	MAX20086_REG_ADC4		0x09
+diff --git a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+index cf07987ccc10b..140e251094fa4 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mm-beacon-som.dtsi
+@@ -231,6 +231,7 @@
+ 	rtc: rtc@51 {
+ 		compatible = "nxp,pcf85263";
+ 		reg = <0x51>;
++		quartz-load-femtofarads = <12500>;
+ 	};
+ };
  
- /* DEVICE IDs */
--#define MAX20086_DEVICE_ID_MAX20086	0x40
-+#define MAX20086_DEVICE_ID_MAX20086	0x30
- #define MAX20086_DEVICE_ID_MAX20087	0x20
- #define MAX20086_DEVICE_ID_MAX20088	0x10
- #define MAX20086_DEVICE_ID_MAX20089	0x00
+-- 
+2.39.5
+
 
 
 
