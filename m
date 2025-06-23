@@ -1,172 +1,190 @@
-Return-Path: <stable+bounces-156612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A36AE504D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F97AE50D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E976A4A0A64
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12D691B62E23
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AE8E1FE46D;
-	Mon, 23 Jun 2025 21:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41842222CA;
+	Mon, 23 Jun 2025 21:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WZVdoB0f"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NI3RtqmW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-il1-f179.google.com (mail-il1-f179.google.com [209.85.166.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 566581ACEDA
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 21:23:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EABC51EDA0F;
+	Mon, 23 Jun 2025 21:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713840; cv=none; b=E8pC/Xq2ByHuT9t+OYpdGcwUQ/yIGq5fxL71jS3TrGG0cTlVitz9uqiubgE6hSd7UheQnrzs7gEQ+DKaAFyNXD9nFya7ADlqbyHvayjmzSLPZbvOKhPXiY7LNh1jbloK704NGktJVdLSwrS2rzpLD7czMLVoAw3VkB/M41qnS5s=
+	t=1750714091; cv=none; b=DLWqOtzi47QGhoqeiGO02jKFiky9eWDgBzr4rJW47ckRMgwPGItcMJeYW9AMHHTAlfUwaefuiJ9hBHRKg4FFSbt1mUmu14ATiC2hOLNILExN9SEZ3ycyft3b5P0D2/4FL5BNJ/c7UD35didu+mGptkV7LBPGSs4dn1bGDeb0jrE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713840; c=relaxed/simple;
-	bh=/Kg0WRXw5VKnsXhRWYSpnatlSaD/D8BnYoR5CRjJ7wQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DpMhPQSEMTYOvrHg7JW8X57LwrQCy9pY+Ts/ZrJ0dOk8Fv3P/F54IsXOY3RYgj9Oe/DAJmzyy1SL9zBO9ILTSQn39Qm+R9JUehLoJRnGtIY1XSY49W9rX17TGgkFE/BgQGbnxcrZasMa93sAapISsfT7zNvGb4LUl8CtGCViZtM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WZVdoB0f; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-b31e076f714so3906354a12.0
-        for <stable@vger.kernel.org>; Mon, 23 Jun 2025 14:23:57 -0700 (PDT)
+	s=arc-20240116; t=1750714091; c=relaxed/simple;
+	bh=q+6mZDY66m9z8HN3uJ1Y6m6Uw15FIGzox4xTgErCUEE=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=PvZa1c1HogquEWSY3gkJKgkrstIVuA1vZtbvTl23Dyds9DXbT0yPLLQjRx6kzzGkczrp97MIE4cVWMSDpC/IEEJo4RuBoOrsuWMEhG/QFiw32fkEdAHtJzXde1q4+dQ3v/OF43o4VwDAcvAslaQ6bnMLGzyAByxfm0DLHMNdK4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NI3RtqmW; arc=none smtp.client-ip=209.85.166.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-il1-f179.google.com with SMTP id e9e14a558f8ab-3da73df6b6bso17432625ab.3;
+        Mon, 23 Jun 2025 14:28:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1750713836; x=1751318636; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=By+WfrXAyPyITn9F5TDk+hwemNBoK/rCwALmacNE1Jk=;
-        b=WZVdoB0fyoVXw3EsGHLLgIfQjvRPTHI+wEvh6ZXvoeexf9Z6i3zGBtNITHs0uELqox
-         qn8leBCKZjKL8wbfsKnw1TE+LB2OzlkljS3wnKw0HPZUiLPAEKRvB2k9JdoQY/9gK+og
-         VthX+QPbrWUDc985TplNTybxx2lYRlgr8WTMMCMPDWama4CL+kjQE0AE5i0e9f4AoGdt
-         w98mSnz7TwwX/TQMdNrdZU+lq/hS1DZ3cghabQSce93MzpzWx47niasFniCbFlyqK3Te
-         BKEoxyDstUm0YqAKZlc+mHqepB9U6uzqHILmE3AP8tgAKtyNIvF/E25J3els9RuwHZPD
-         C2FQ==
+        d=gmail.com; s=20230601; t=1750714089; x=1751318889; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=mmg3QjE2BdxChGIIWWePaatjao0EfwLXqcZXwwKYC+A=;
+        b=NI3RtqmWCFS/rQ8cHZina+/+8zjnKKoX8HyMtImhqXiO8pMlSW8co96hK9rs6+Dhb2
+         xyVfIftF1QZLFcHf6EuYzUzD9xpUE5cC5YcCQ/wxAd51TsTfhdqrrMCm1Ngze7raxvkf
+         0rhJ7K5+1ly5QD/zOoXhQdC30hnCpP44Fy5pGk+KZaetSWuHODJngsUrAiif1dzM7Z/G
+         4HzZqaNR81wEJ7ir5clZ1vYO+zKA2aF700EAY9Qzg5a4iMPJQm/QdkbUjFW9WqdZlZGj
+         NAfHg3YcYqH+cmemHCj8aPTYU1sr2WcgoZFLF54HEy4gbEi9usYwmfLyuf8FTjpXrJvM
+         cBZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750713836; x=1751318636;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=By+WfrXAyPyITn9F5TDk+hwemNBoK/rCwALmacNE1Jk=;
-        b=aRkDLdEFATZTr7j0jEWcwZatcgKnqnEnzaVREXk182ooBaaoSYRRjKcO4WWu1h5Ck4
-         kgK6U+XwM3bRuT3FIlqJ8oPNSfpSfw6y6zEhhaX6uopxk5tQfFJNjTZzidcQmnFGZumF
-         HAnWlDqEURe90TcTka2VSzg4Wo84mvfZQMrzK2AMIlwyiUplDO4xpFU0V6iNbyGgE9TR
-         lNvxXbmUWeirLiXzKLPhbjckRq7s22AVraoWsymNxQ+OWd4EMuvCe8rXhiMvY3LIGT1n
-         IOphzxWI68totaQS1OQjsszn7kmVH+zTwp2RPtYWxNWpDNvDkLYg4y4q8ofSj81LIUDV
-         4PJg==
-X-Gm-Message-State: AOJu0YzT5jl3cdfVOZgEyVDre/81/vDEajtAt+8bEs3ImZ6FsJ1Jiz38
-	Nz8o0lwUNXolpXMPo0Cwvk5NteTj1uwqReKpmcIN4FnyFiB2QM8frf6Kt2DIKH+J/5uXenvuFuj
-	3v4Y6xxKflT2/04fFNlWzhpQp5U2N7Xl5FIu5p1uwQA==
-X-Gm-Gg: ASbGncscYTHg8prcG/96Hljs6+2uzFAGZEFFdWxk810xYXT5+E56yZ2ok4YkBcjCo/N
-	ujQmaxGfJauvK0CtanbRLOCH1N6RIsCsFuJ3G5IrZ93xhi5AlfnJUuc+5hgJSFjGQg7SsvzeE0x
-	WYWtP0RpUlvobzObOtZ7FU70L3HnQyit1iUAkJCr49aPKi/dcjupOwHSX6GIEci2dYJsHLfDqrb
-	MGq
-X-Google-Smtp-Source: AGHT+IHJlRRLWWoQ6yh3AeFZC83NODh6v6Ss+DAN43JkjEBbpOfz48bjecKNoDN25759ZXlyzX8KWTWbCxW22IU+1EE=
-X-Received: by 2002:a17:90b:38c9:b0:313:f995:91cc with SMTP id
- 98e67ed59e1d1-315ccc32116mr1516367a91.2.1750713835691; Mon, 23 Jun 2025
- 14:23:55 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1750714089; x=1751318889;
+        h=content-transfer-encoding:in-reply-to:content-language:references
+         :cc:to:from:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mmg3QjE2BdxChGIIWWePaatjao0EfwLXqcZXwwKYC+A=;
+        b=krZqM+pTd7gFlBkGFN4VjYGuLEiIsWDg09mTPFyqS5nDTI2OaL5/uH/CNunsOqpN1g
+         45PlmOGo2VC7uU96XsCV4Ze4K31qXTs4kCPq6HwUnw0C4M694h9PGZli9Apsu21WAvOI
+         125UVbXCsp7vDoFUmNxmYrm+CBlNJezt0bHM3yMQxXLCeaP4A083hAXGvvArgP1eqZrr
+         ddmpkArJNwGRIYBw+iVscykQYLRh9O8OI+3iPxFxNucmXus+BDqykzF1NRIkbQIPoUao
+         i3SLqRjzYjJ7VWcFR37VgGn769fjZ7KpxzS3teudVLooONFac+5U9LymYks9LsFu8gB2
+         SeLg==
+X-Forwarded-Encrypted: i=1; AJvYcCWEFEZPuWlpZY8yKYKHAP1EOAH0ABILEivjpBdTO6KLz0ubBnwObcKi1xRdr8JFG1XsoZ/qlhEF120=@vger.kernel.org, AJvYcCXo2efMQJUL05yW2aFsCKIHAFsaQfzDWeiRo5DBestI1uRbrJkwAViSb2YdIvTFk7wkU6PaVpld@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMtfJbZh+OEIe/gOXFmvN953UMHxyQuOk0OljcPcplyxS/FQ5k
+	l9RsFFM9dZMoadPMBIHTn5wzshJTOtx5HEG3YY4mzgRZCXe3vd9GtAJ4
+X-Gm-Gg: ASbGncvJ+hlGnxYzv+lML5LnM0yJa42i5QDVifSnZuW4eSM6L2CnT8FHNIw8I2rHTx3
+	xEBzrzK5x6saMRUgaERkcIRHJhSkk23kx54FeHPfZQtzZ7NgjLFPcR3omCtcA1l2uI4EcYIpgQ4
+	cBaIZcJHG9bwSrcnMvtPcURShiTG/JEE2kI/4Xppc7J1WKcAbpBDI6Xg1oAhsIOyGvKI7GQkbpi
+	M8OjbIKg6QUVndx4NIl5zPP7bJB9pwNdtGXP7S9g8u+keqrxBPJCOZGkzIRwlo9uqD/jPQwa0DG
+	gS7W/Wi/n8Ur261yj4DvBWVMip+/XKWGkn6Js3Qwiy11W/riFNW11wmehINQ7Vo=
+X-Google-Smtp-Source: AGHT+IGMp2D173TTSTMU8VIk4VqmO6g0lVUpD7nUPuZHAAmYTIqx3KZhAsGTNzEPrXH7ly3mDyftVQ==
+X-Received: by 2002:a05:6e02:3b85:b0:3de:128d:15c4 with SMTP id e9e14a558f8ab-3de38609a32mr161505805ab.0.1750714088955;
+        Mon, 23 Jun 2025 14:28:08 -0700 (PDT)
+Received: from ?IPV6:2601:282:d00:94b1::174? ([2601:282:d00:94b1::174])
+        by smtp.gmail.com with ESMTPSA id e9e14a558f8ab-3de37747762sm31687575ab.58.2025.06.23.14.28.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Jun 2025 14:28:08 -0700 (PDT)
+Message-ID: <ef467aa9-6ec5-4917-966c-596640852c9a@gmail.com>
+Date: Mon, 23 Jun 2025 15:28:05 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250623130626.910356556@linuxfoundation.org>
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 24 Jun 2025 02:53:43 +0530
-X-Gm-Features: Ac12FXzeAzIXRWJ7lKN4j0ifqWtMYFRuT9M7G2PFqIjYGj7Dh1wwE6lAMfMxRVY
-Message-ID: <CA+G9fYtROQg1rpX_6uG-AYktDOHqaEzEPVvL9Fxi9mQfLy6zBQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6 000/290] 6.6.95-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [regression v6.12.30..v6.12.32] mmc1: mmc_select_hs400 failed,
+ error -110 / boot regression on Lenovo IdeaPad 1 15ADA7
+From: Jeremy Lincicome <w0jrl1@gmail.com>
+To: Salvatore Bonaccorso <carnil@debian.org>
+Cc: Shawn Lin <shawn.lin@rock-chips.com>, regressions@lists.linux.dev,
+ Ulf Hansson <ulf.hansson@linaro.org>, linux-mmc@vger.kernel.org,
+ 1108065@bugs.debian.org, stable@vger.kernel.org, net147@gmail.com
+References: <aFW0ia8Jj4PQtFkS@eldamar.lan> <aFXCv50hth-mafOR@eldamar.lan>
+ <004c6e95-7c1b-4a7f-ab68-1774ce5a51d7@rock-chips.com>
+ <aFmPQL3mzTag5OxY@eldamar.lan>
+ <35be0df5-b769-43ce-a9c4-7df4d4683dab@gmail.com>
+ <aFml-1X0-vItR2Au@eldamar.lan>
+ <8f8671c5-fefb-494a-9cb6-0f6412566164@gmail.com>
+Content-Language: en-US
+In-Reply-To: <8f8671c5-fefb-494a-9cb6-0f6412566164@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 23 Jun 2025 at 18:39, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On 6/23/25 15:08, Jeremy Lincicome wrote:
+> Hi,
 >
-> This is the start of the stable review cycle for the 6.6.95 release.
-> There are 290 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On 6/23/25 13:07, Salvatore Bonaccorso wrote:
+>> Hi,
+>>
+>> On Mon, Jun 23, 2025 at 12:58:43PM -0600, Jeremy Lincicome wrote:
+>>> On 6/23/25 11:30, Salvatore Bonaccorso wrote:
+>>>> On Mon, Jun 23, 2025 at 05:13:38PM +0800, Shawn Lin wrote:
+>>>>> + Jonathan Liu
+>>>>>
+>>>>> 在 2025/06/21 星期六 4:21, Salvatore Bonaccorso 写道:
+>>>>>> On Fri, Jun 20, 2025 at 09:20:41PM +0200, Salvatore Bonaccorso 
+>>>>>> wrote:
+>>>>>>> Hi
+>>>>>>>
+>>>>>>> In Debian we got a regression report booting on a Lenovo IdeaPad 1
+>>>>>>> 15ADA7 dropping finally into the initramfs shell after updating 
+>>>>>>> from
+>>>>>>> 6.12.30 to 6.12.32 with messages before dropping into the intiramfs
+>>>>>>> shell:
+>>>>>>>
+>>>>>>> mmc1: mmc_select_hs400 failed, error -110
+>>>>>>> mmc1: error -110 whilst initialising MMC card
+>>>>>>>
+>>>>>>> The original report is athttps://bugs.debian.org/1107979 and the
+>>>>>>> reporter tested as well kernel up to 6.15.3 which still fails to 
+>>>>>>> boot.
+>>>>>>>
+>>>>>>> Another similar report landed with after the same version update as
+>>>>>>> https://bugs.debian.org/1107979 .
+>>>>>>>
+>>>>>>> I only see three commits touching drivers/mmc between
+>>>>>>> 6.12.30..6.12.32:
+>>>>>>>
+>>>>>>> 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing 
+>>>>>>> parameters")
+>>>>>>> 38828e0dc771 ("mmc: dw_mmc: add exynos7870 DW MMC support")
+>>>>>>> 67bb2175095e ("mmc: host: Wait for Vdd to settle on card power 
+>>>>>>> off")
+>>>>>>>
+>>>>>>> I have found a potential similar issue reported in ArchLinux at
+>>>>>>> https://bbs.archlinux.org/viewtopic.php?id=306024
+>>>>>>>
+>>>>>>> I have asked if we can get more information out of the boot, but 
+>>>>>>> maybe
+>>>>>>> this regression report already rings  bell for you?
+>>>>> Jonathan reported a similar failure regarding to hs400 on RK3399
+>>>>> platform.
+>>>>> https://lkml.org/lkml/2025/6/19/145
+>>>>>
+>>>>> Maybe you could try to revert :
+>>>>> 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing
+>>>>> parameters")
+>>>> Thanks.
+>>>>
+>>>> Jeremy, could you test the (unofficial!) packages at
+>>>> https://people.debian.org/~carnil/tmp/linux/1108065/ which consist of
+>>>> 6.12.33-1 with the revert patch applied on top?
+>>>>
+>>>> I have put a sha256sum file and signed it with my key in the Debian
+>>>> keyring for verification.
+>>> Do I need all those packages?
+>> Just the linux-image-6.12+unreleased-amd64-unsigned package to test
+>> the patched kernel image and modules.
 >
-> Responses should be made by Wed, 25 Jun 2025 13:05:53 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.95-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> I installed the package, and this is as far as I got.
+> <https://share.bemyeyes.com/chat/oJcrv3N22q>
+> for anyone who doesn't know, the above link is from Be My Eyes, an app 
+> that allows me to read information not available with a screen reader 
+> like Orca.
+> I'm blind, and unable to read the Grub menu independently.
+> I ran a bash script to extract the menu number for that kernel, then 
+> ran grub-reboot to try and boot it on the next reboot.
+> As far as I can tell, the system is trying to boot,but fails and 
+> returns to Grub. Am I doing something wrong?
 
-Regressions on parisc, s390 allmodconfig builds with gcc-13 and gcc-11 failed on
-the Linux stable-rc 6.6.95-rc1.
+For those of you who got my last message twice, I apologize. Some of the 
+lists rejected it for having html.
 
-Regressions found on s390
-* parisc, build
-  - gcc-11-allmodconfig
+-- 
+Sincerely,
+Jeremy Lincicome W0JRL
+JL Applied Technologies:
+https://jlappliedtechnologies.com
+SkyHubLink System:
+https://skyhublink.com
 
-* s390, build
-  - gcc-13-allmodconfig
-
-Regression Analysis:
- - New regression? Yes
- - Reproducibility? Yes
-
-Build regression: stable-rc 6.6.95-rc1 s390 parisc allmodconfig
-sdhci-esdhc-imx.c 'sdhc_esdhc_tuning_restore' defined but not used
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build errors
-drivers/mmc/host/sdhci-esdhc-imx.c:1571:13: error:
-'sdhc_esdhc_tuning_restore' defined but not used
-[-Werror=unused-function]
- 1571 | static void sdhc_esdhc_tuning_restore(struct sdhci_host *host)
-      |             ^~~~~~~~~~~~~~~~~~~~~~~~~
-drivers/mmc/host/sdhci-esdhc-imx.c:1549:13: error:
-'sdhc_esdhc_tuning_save' defined but not used
-[-Werror=unused-function]
- 1549 | static void sdhc_esdhc_tuning_save(struct sdhci_host *host)
-      |             ^~~~~~~~~~~~~~~~~~~~~~
-cc1: all warnings being treated as errors
-
-## Source
-* Kernel version: 6.6.95-rc1
-* Git tree: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-* Git sha: 44f41e69469d0de714a6e7e56848c3e423ac2bb9
-* Git describe: v6.6.94-291-g44f41e69469d
-* Project details:
-https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.6.y/v6.6.94-291-g44f41e69469d/
-* Architectures: parisc, s390
-* Toolchains: gcc-11, gcc-13
-* Kconfigs: allmodconfig
-
-## Build s390
-* Build log: https://qa-reports.linaro.org/api/testruns/28839625/log_file/
-* Build details:
-https://regressions.linaro.org/lkft/linux-stable-rc-linux-6.6.y/v6.6.94-291-g44f41e69469d/build/gcc-13-allmodconfig/
-* Build link:  https://storage.tuxsuite.com/public/linaro/lkft/builds/2yuYHPJ5UcFEMxXVXUOIqaCBQWP/
-* Kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2yuYHPJ5UcFEMxXVXUOIqaCBQWP/config
-
-## Steps to reproduce
-  - tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
---kconfig allmodconfig
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
