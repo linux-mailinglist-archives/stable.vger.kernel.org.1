@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8B8AE4FF5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47AC8AE523D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78A307A544F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86C74A5571
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29E087482;
-	Mon, 23 Jun 2025 21:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAD722222A9;
+	Mon, 23 Jun 2025 21:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KdaSZct4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nh5MRcjd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D96E4223335;
-	Mon, 23 Jun 2025 21:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9600219D084;
+	Mon, 23 Jun 2025 21:41:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713506; cv=none; b=J+U4rvB9bjoClEXqKDVwXG0IkKoxDuIvXXP5mdSKYBV4WpmMV5H0wbv0qs3QVoc0PIRRjMLNFeZyR358zmsompvqfgZ64rMdyPOOFCuR6PSqkv566D/kyGwTsd3e5ajl95U9lCEqNQ+RZt1eXH4AHjHcwFLbSBxSTEX1CoSIBVM=
+	t=1750714904; cv=none; b=GE84kSCEA6Ye/thG0c3sR7GxDyAzt3bu3gyFKJct5tiQQ8BdjWK870CZcfF0+P42IiKzwKPExumiMHbyGGghUdza7UGmjfcj1o3EIi0AX8d+HF04C6uI99wPro0oh7JCKfb/0fAIaAt3L17j8Ot/Tv7sT3hTIRGswI34FIlnrgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713506; c=relaxed/simple;
-	bh=6pEoo+EYYSNyMZJD0iLVfOtbQJf2KucKIaTSsK/gXg8=;
+	s=arc-20240116; t=1750714904; c=relaxed/simple;
+	bh=jRmmgP3Xp5j0a4bFk5SMA6Lvtcv0nefXfUUvzCz+VGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiJU6k4KTwoF0uScvBXgP72enTGIvK0h7l4rP5DCAYrW5nqmNAhUrH8vwUDoJ1Z3DBT2liQ+ei8cPMzmY+XpsybF6PomDjHsbjiGfjseGvsQAS4QxJ06AXNzNQmAygzBD0UmCREJ7qsJrlQzDFky1I7QIvMvBK0DEjToTdMlSXM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KdaSZct4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C3AC4CEEA;
-	Mon, 23 Jun 2025 21:18:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l2Yego53xS0dzAmqRzM50jTqou7kVnSHgiNNOZCBnEBnHSdzSexVcm4Ek+xVr/0e6O5hPaBE7hQu69/Z5xkokGwfiZC5IcrIkBgYCk9P0dxOYnnm+uOgXAB3PYyrSEEQpsnXeZqFjCxOxL2MRQJpZbgFdV1+65HZQGPw1KSNxDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nh5MRcjd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DB4EC4CEEA;
+	Mon, 23 Jun 2025 21:41:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713506;
-	bh=6pEoo+EYYSNyMZJD0iLVfOtbQJf2KucKIaTSsK/gXg8=;
+	s=korg; t=1750714904;
+	bh=jRmmgP3Xp5j0a4bFk5SMA6Lvtcv0nefXfUUvzCz+VGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KdaSZct4YZDUDlx5OyDCQXPcFOGP8T7o0aqjCixSWQvx1teVwgqZdsfAw0gU21nPb
-	 sXHFxuEyelIRgKlmvZ+CS52lrib/Ab/OXPnXYPCSH65MRyyxiYqK3QxUMAT2zyxVaZ
-	 xVrJEG0nW66VPa+FKyX5ykdb3/QIWNa2R4Txf3NY=
+	b=Nh5MRcjdNju4HyCq/7bTBmb2zesZ08Y4u8peT0BMVAQcmAJLYV8oM6r1GQ28nHNnu
+	 gnhOLOmJxvms7c9LFYpA/LP1M2dN0+Sg5ZGu3Q5S0p333KPI8+FYwPhzkyJCpCAXPa
+	 Fd3bycz277E9WWzBlSvHXh5S5LlAEW4S0EkOwb8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zeal Robot <zealci@zte.com.cn>,
-	zhang songyi <zhang.songyi@zte.com.cn>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/411] Input: synaptics-rmi4 - convert to use sysfs_emit() APIs
+	John Schoenick <johns@valvesoftware.com>,
+	=?UTF-8?q?Andr=C3=A9=20Almeida?= <andrealmeid@igalia.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.12 138/414] ovl: Fix nested backing file paths
 Date: Mon, 23 Jun 2025 15:04:35 +0200
-Message-ID: <20250623130636.868999039@linuxfoundation.org>
+Message-ID: <20250623130645.504107701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: zhang songyi <zhang.songyi@zte.com.cn>
+From: André Almeida <andrealmeid@igalia.com>
 
-[ Upstream commit 9dedc915937c33302df7fcab01c45e7936d6195a ]
+commit 924577e4f6ca473de1528953a0e13505fae61d7b upstream.
 
-Follow the advice of the Documentation/filesystems/sysfs.rst and show()
-should only use sysfs_emit() or sysfs_emit_at() when formatting the value
-to be returned to user space.
+When the lowerdir of an overlayfs is a merged directory of another
+overlayfs, ovl_open_realfile() will fail to open the real file and point
+to a lower dentry copy, without the proper parent path. After this,
+d_path() will then display the path incorrectly as if the file is placed
+in the root directory.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: zhang songyi <zhang.songyi@zte.com.cn>
-Link: https://lore.kernel.org/r/20220927070936.258300-1-zhang.songyi@zte.com.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Stable-dep-of: ca39500f6af9 ("Input: synaptics-rmi - fix crash with unsupported versions of F34")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This bug can be triggered with the following setup:
+
+ mkdir -p ovl-A/lower ovl-A/upper ovl-A/merge ovl-A/work
+ mkdir -p ovl-B/upper ovl-B/merge ovl-B/work
+
+ cp /bin/cat ovl-A/lower/
+
+ mount -t overlay overlay -o \
+ lowerdir=ovl-A/lower,upperdir=ovl-A/upper,workdir=ovl-A/work \
+ ovl-A/merge
+
+ mount -t overlay overlay -o \
+ lowerdir=ovl-A/merge,upperdir=ovl-B/upper,workdir=ovl-B/work \
+ ovl-B/merge
+
+ ovl-A/merge/cat /proc/self/maps | grep --color cat
+ ovl-B/merge/cat /proc/self/maps | grep --color cat
+
+The first cat will correctly show `/ovl-A/merge/cat`, while the second
+one shows just `/cat`.
+
+To fix that, uses file_user_path() inside of backing_file_open() to get
+the correct file path for the dentry.
+
+Co-developed-by: John Schoenick <johns@valvesoftware.com>
+Signed-off-by: John Schoenick <johns@valvesoftware.com>
+Signed-off-by: André Almeida <andrealmeid@igalia.com>
+Fixes: def3ae83da02 ("fs: store real path instead of fake path in backing file f_path")
+Cc: <stable@vger.kernel.org> # v6.7
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/rmi4/rmi_f34.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ fs/overlayfs/file.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
-index e5dca9868f87f..c26808f10827a 100644
---- a/drivers/input/rmi4/rmi_f34.c
-+++ b/drivers/input/rmi4/rmi_f34.c
-@@ -321,13 +321,13 @@ static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
- 		f34 = dev_get_drvdata(&fn->dev);
+--- a/fs/overlayfs/file.c
++++ b/fs/overlayfs/file.c
+@@ -48,8 +48,8 @@ static struct file *ovl_open_realfile(co
+ 		if (!inode_owner_or_capable(real_idmap, realinode))
+ 			flags &= ~O_NOATIME;
  
- 		if (f34->bl_version == 5)
--			return scnprintf(buf, PAGE_SIZE, "%c%c\n",
--					 f34->bootloader_id[0],
--					 f34->bootloader_id[1]);
-+			return sysfs_emit(buf, "%c%c\n",
-+					  f34->bootloader_id[0],
-+					  f34->bootloader_id[1]);
- 		else
--			return scnprintf(buf, PAGE_SIZE, "V%d.%d\n",
--					 f34->bootloader_id[1],
--					 f34->bootloader_id[0]);
-+			return sysfs_emit(buf, "V%d.%d\n",
-+					  f34->bootloader_id[1],
-+					  f34->bootloader_id[0]);
+-		realfile = backing_file_open(&file->f_path, flags, realpath,
+-					     current_cred());
++		realfile = backing_file_open(file_user_path((struct file *) file),
++					     flags, realpath, current_cred());
  	}
+ 	revert_creds(old_cred);
  
- 	return 0;
-@@ -346,7 +346,7 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
- 	if (fn) {
- 		f34 = dev_get_drvdata(&fn->dev);
- 
--		return scnprintf(buf, PAGE_SIZE, "%s\n", f34->configuration_id);
-+		return sysfs_emit(buf, "%s\n", f34->configuration_id);
- 	}
- 
- 	return 0;
-@@ -499,7 +499,7 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
- 	if (data->f34_container)
- 		update_status = rmi_f34_status(data->f34_container);
- 
--	return scnprintf(buf, PAGE_SIZE, "%d\n", update_status);
-+	return sysfs_emit(buf, "%d\n", update_status);
- }
- 
- static DEVICE_ATTR(update_fw_status, 0444,
--- 
-2.39.5
-
 
 
 
