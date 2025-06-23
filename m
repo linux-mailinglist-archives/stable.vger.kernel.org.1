@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155745-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E93C3AE4378
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F10ADAE43A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C2A28189E0E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D2C163B7DC6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A06924E019;
-	Mon, 23 Jun 2025 13:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71447252910;
+	Mon, 23 Jun 2025 13:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jZSzznrj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOD0VT7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2573E24DCFD;
-	Mon, 23 Jun 2025 13:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E4C7248191;
+	Mon, 23 Jun 2025 13:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685227; cv=none; b=EytpLrl93yNpxSAEX7tR/FJpdZVzdic6APyeOB0ma5RP2AVIvuNysc+vuPdfrXLNqQlBglCQwHwQBgZgTtWAKpB6ncosrb0UJrygOYTbwqOQLHd+jlgXnvypeQXe+18Ebd9FPPbYdqLIyOFG9QTyaRW7jhQI2/n7MZSZ8v0IUno=
+	t=1750685237; cv=none; b=l8MTldLOv0XW9Kzwo58SIRT+EFG+FJ10DC4fwKJ+cHNr8MgUW09QojJxmNnSNx+m7bAUTLhoU4YQfWoO7DxlWslZGpOb299dSuXN2utj27nUm/d4mv1SU+3/ziR7twvIBV4FzXTDDEM/sWeMav9HFcQ7pBYm8OO98YVpy1GV3GY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685227; c=relaxed/simple;
-	bh=5z02bEFeqXLqwNdARNBm0Wxdgvh6UVfouiZT8IHvQNQ=;
+	s=arc-20240116; t=1750685237; c=relaxed/simple;
+	bh=+Iv6yYr0yn+ILhI+sw9k5sVgZ9Z+mNYiOLCwJrBJAJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tEE/8oZiGig85gfEbygDrH7p5GSDdFsSX7uWmncCNC//H2HVUO5DDOPl13cFXgzNKXVEHwHFEaU2dT+QRjeL8+bmM9sdLvNDk7jfhCkOAxxeKykhRqfatxdc+si8OU9yptL2UtGm2kmeO/PNK6sPkB8FMV+jT9DXNFCPaiFXJzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jZSzznrj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 522A3C4CEEA;
-	Mon, 23 Jun 2025 13:27:06 +0000 (UTC)
+	 MIME-Version; b=ViTaRd9HSzecA0A/8avfVt2MFJdEiFELEixUourHKVTe+m3Gw3I/EV+1vQk3usbUn1G7muiPTyI0fC19i49tQFO6BfaOqUl9oWYRzajoOBrwHmrchBJwMtBis8cedzPKNrTgbFWNfx6pCD+AzHwySUT0GIBwzzhRBYX2awxaUhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOD0VT7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A33C4CEEA;
+	Mon, 23 Jun 2025 13:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685226;
-	bh=5z02bEFeqXLqwNdARNBm0Wxdgvh6UVfouiZT8IHvQNQ=;
+	s=korg; t=1750685236;
+	bh=+Iv6yYr0yn+ILhI+sw9k5sVgZ9Z+mNYiOLCwJrBJAJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jZSzznrjG7jP1JT2NK4X/i16opYluEzzdWlaQW+ZcMpjS0kQ9krXI2gpEXlkXFZZc
-	 lgHUQFu7vlh++CiKr21xaMd2XayXeqrdNepCGaOWgB0Em8exhikBg5aQeOA63zXUxC
-	 1hWHBVD23ZE1P1RhNjL23kS3rWmL5Le7vvZ9v2vg=
+	b=uOD0VT7RKXeflHr7t5XF+l/2pk1vgSkW/4GJ7XDvBeUHK7/ByXz6x6xdzFdnToVEg
+	 DSKfnBCZoGO1zp1D+4kGZkz2wLklNIY8eoK4jQJ9ZS5WuV8jlPxLNIJa1gnIin8did
+	 MyMYkmEQXMfXLlgnaTda/o/Ii8PqayOBlKCu2tU4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Larry Bassel <larry.bassel@oracle.com>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/222] NFSD: Fix NFSv3 SETATTR/CREATEs handling of large file sizes
-Date: Mon, 23 Jun 2025 15:06:51 +0200
-Message-ID: <20250623130614.388460275@linuxfoundation.org>
+Subject: [PATCH 5.4 077/222] scsi: iscsi: Fix incorrect error path labels for flashnode operations
+Date: Mon, 23 Jun 2025 15:06:52 +0200
+Message-ID: <20250623130614.416838391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,46 +67,97 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit a648fdeb7c0e17177a2280344d015dba3fbe3314 ]
+[ Upstream commit 9b17621366d210ffee83262a8754086ebbde5e55 ]
 
-iattr::ia_size is a loff_t, so these NFSv3 procedures must be
-careful to deal with incoming client size values that are larger
-than s64_max without corrupting the value.
+Correct the error handling goto labels used when host lookup fails in
+various flashnode-related event handlers:
 
-Silently capping the value results in storing a different value
-than the client passed in which is unexpected behavior, so remove
-the min_t() check in decode_sattr3().
+ - iscsi_new_flashnode()
+ - iscsi_del_flashnode()
+ - iscsi_login_flashnode()
+ - iscsi_logout_flashnode()
+ - iscsi_logout_flashnode_sid()
 
-Note that RFC 1813 permits only the WRITE procedure to return
-NFS3ERR_FBIG. We believe that NFSv3 reference implementations
-also return NFS3ERR_FBIG when ia_size is too large.
+scsi_host_put() is not required when shost is NULL, so jumping to the
+correct label avoids unnecessary operations. These functions previously
+jumped to the wrong goto label (put_host), which did not match the
+intended cleanup logic.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-(cherry picked from commit a648fdeb7c0e17177a2280344d015dba3fbe3314)
-[Larry: backport to 5.4.y. Minor conflict resolved due to missing commit 9cde9360d18d
-NFSD: Update the SETATTR3args decoder to use struct xdr_stream]
-Signed-off-by: Larry Bassel <larry.bassel@oracle.com>
+Use the correct exit labels (exit_new_fnode, exit_del_fnode, etc.) to
+ensure proper error handling.  Also remove the unused put_host label
+under iscsi_new_flashnode() as it is no longer needed.
+
+No functional changes beyond accurate error path correction.
+
+Fixes: c6a4bb2ef596 ("[SCSI] scsi_transport_iscsi: Add flash node mgmt support")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://lore.kernel.org/r/20250530193012.3312911-1-alok.a.tiwari@oracle.com
+Reviewed-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs3xdr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/scsi_transport_iscsi.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/nfs3xdr.c b/fs/nfsd/nfs3xdr.c
-index 03e8c45a52f3c..25b6b4db0af24 100644
---- a/fs/nfsd/nfs3xdr.c
-+++ b/fs/nfsd/nfs3xdr.c
-@@ -122,7 +122,7 @@ decode_sattr3(__be32 *p, struct iattr *iap, struct user_namespace *userns)
- 
- 		iap->ia_valid |= ATTR_SIZE;
- 		p = xdr_decode_hyper(p, &newsize);
--		iap->ia_size = min_t(u64, newsize, NFS_OFFSET_MAX);
-+		iap->ia_size = newsize;
+diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
+index d75097f13efcc..0977e4a09db03 100644
+--- a/drivers/scsi/scsi_transport_iscsi.c
++++ b/drivers/scsi/scsi_transport_iscsi.c
+@@ -3235,7 +3235,7 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.new_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_new_fnode;
  	}
- 	if ((tmp = ntohl(*p++)) == 1) {	/* set to server time */
- 		iap->ia_valid |= ATTR_ATIME;
+ 
+ 	index = transport->new_flashnode(shost, data, len);
+@@ -3245,7 +3245,6 @@ static int iscsi_new_flashnode(struct iscsi_transport *transport,
+ 	else
+ 		err = -EIO;
+ 
+-put_host:
+ 	scsi_host_put(shost);
+ 
+ exit_new_fnode:
+@@ -3270,7 +3269,7 @@ static int iscsi_del_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.del_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_del_fnode;
+ 	}
+ 
+ 	idx = ev->u.del_flashnode.flashnode_idx;
+@@ -3312,7 +3311,7 @@ static int iscsi_login_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.login_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_login_fnode;
+ 	}
+ 
+ 	idx = ev->u.login_flashnode.flashnode_idx;
+@@ -3364,7 +3363,7 @@ static int iscsi_logout_flashnode(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.logout_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_logout_fnode;
+ 	}
+ 
+ 	idx = ev->u.logout_flashnode.flashnode_idx;
+@@ -3414,7 +3413,7 @@ static int iscsi_logout_flashnode_sid(struct iscsi_transport *transport,
+ 		pr_err("%s could not find host no %u\n",
+ 		       __func__, ev->u.logout_flashnode.host_no);
+ 		err = -ENODEV;
+-		goto put_host;
++		goto exit_logout_sid;
+ 	}
+ 
+ 	session = iscsi_session_lookup(ev->u.logout_flashnode_sid.sid);
 -- 
 2.39.5
 
