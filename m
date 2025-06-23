@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB898AE4EA4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6576AE502C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 48B997AAB79
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 844C87A1E47
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDA321638A;
-	Mon, 23 Jun 2025 21:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C05D1E5B71;
+	Mon, 23 Jun 2025 21:20:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z78g4u6F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8jDTO+g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD5970838;
-	Mon, 23 Jun 2025 21:07:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1612C9D;
+	Mon, 23 Jun 2025 21:20:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712866; cv=none; b=eXW3EV/4lSPhSH2DnsS+/1uKZOP9sObZCOWTKBp/qy8hTCQo1KemPZ4kVWWPaTaD/7c5XDW+br1VHpWFyUNPBCm0XbM72y/IAetQNE+BLsZfJxyLiH5G2wTZqhi/SnWED+u5/VC7dlLCoZAZJTtq5xswttaCKmdFWzq7bT5rUdw=
+	t=1750713629; cv=none; b=E+BaQWFCPERJ6B+7bHy440N9IkIGuCNNtavXcUpy3lJjScdspjeffw9wsqnAHhvorAlRaSjh7kMXkhV+bOU9RV8va08LhRwqbDmwLl+4KtZhkpHoRUwlRp5Tx1Y6s2209NFHrY1cvsqXSSJbfe5n/JGEkP61BZiNW7ciZbZCo+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712866; c=relaxed/simple;
-	bh=/rxYUFcOvPqxRRlW04/Z9nAitDtxEoHuyBDMSFOd/DE=;
+	s=arc-20240116; t=1750713629; c=relaxed/simple;
+	bh=zF10Zy/D/o3I3iB1ttk8HZR4fomUZlkWIAxGf1KVcvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=npELrbjBHAsQJcjLvfOdaXwF0I8dmlcsWdmga8fUJoiBm0QH5NcuiK5uEuHkAAIqPKSrzs0bw3M0CXEv+gBMqBbaQOi7QbunqWvxt4s1PvWxLNY+IvazVryjQR6Am9z48SyqqLtVW4OAlMa5wZLHb5A6eMdyq9II8ct3HU9uIG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z78g4u6F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B63C4CEEA;
-	Mon, 23 Jun 2025 21:07:45 +0000 (UTC)
+	 MIME-Version; b=nO6vRj3IoTN3iptKcxAn8hUZTnleVgaA2KV1Uv379bb+dBP5txXKOw9ol6CkbwzqFeGKS8as3OScGtXS6tfM22mzXYP2LrQ+F1NyC4Jq4kS998hEV9pQ6Kymle4lLIMOuTq2DMa/eZUCJu7lt7PHXReSu7pEr4jIi8YMmAo5w/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8jDTO+g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786B9C4CEEA;
+	Mon, 23 Jun 2025 21:20:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712866;
-	bh=/rxYUFcOvPqxRRlW04/Z9nAitDtxEoHuyBDMSFOd/DE=;
+	s=korg; t=1750713628;
+	bh=zF10Zy/D/o3I3iB1ttk8HZR4fomUZlkWIAxGf1KVcvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z78g4u6F3DDWGsSug3oeZRtwnkgr3cF7Z9+jhpMBMGWV3cAaziZmK+CEqiFjjeGnS
-	 2D0N3AZPygA4vhDHY7BMWDE+VxzMpqQKguO60RqRX5bHu02AscKoriOv9/9IrjdtIn
-	 4zX+WhlIWCJD8SU6cyFZp+hsMPs6uRfGadgWFi70=
+	b=N8jDTO+glmmEmmmf1MbU7KkBA+0BUlsHWckqLTxSN6dHCbL54BYdUyl6ekjlfxzcx
+	 QgOrLz1F535DZhkVPjgIIT8qVTjsRkUppIPy4rIH6/FJkuccxvD3lsjltoHKI5WKnW
+	 eFkfcjJnJLFqJQDdHZ45tWdXh9iJtJggbWQr2bzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fei Shao <fshao@chromium.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 035/290] media: mediatek: vcodec: Correct vsi_core framebuffer size
+	Frank Wunderlich <frank-w@public-files.de>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 338/592] net: phy: mediatek: do not require syscon compatible for pio property
 Date: Mon, 23 Jun 2025 15:04:56 +0200
-Message-ID: <20250623130628.052308224@linuxfoundation.org>
+Message-ID: <20250623130708.492975048@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Frank Wunderlich <frank-w@public-files.de>
 
-commit f19035b86382f635a0d13d177b601babaf263a12 upstream.
+[ Upstream commit 15d7b3dfafa98270eade6c77d2336790dde0a40d ]
 
-The framebuffer size for decoder instances was being incorrectly set -
-inst->vsi_core->fb.y.size was assigned twice consecutively.
+Current implementation requires syscon compatible for pio property
+which is used for driving the switch leds on mt7988.
 
-Assign the second picinfo framebuffer size to the C framebuffer instead,
-which appears to be the intended target based on the surrounding code.
+Replace syscon_regmap_lookup_by_phandle with of_parse_phandle and
+device_node_to_regmap to get the regmap already assigned by pinctrl
+driver.
 
-Fixes: 2674486aac7d ("media: mediatek: vcodec: support stateless hevc decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+Link: https://patch.msgid.link/20250510174933.154589-1-linux@fw-web.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mediatek/mtk-ge-soc.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
-+++ b/drivers/media/platform/mediatek/vcodec/decoder/vdec/vdec_hevc_req_multi_if.c
-@@ -821,7 +821,7 @@ static int vdec_hevc_slice_setup_core_bu
- 	inst->vsi_core->fb.y.dma_addr = y_fb_dma;
- 	inst->vsi_core->fb.y.size = ctx->picinfo.fb_sz[0];
- 	inst->vsi_core->fb.c.dma_addr = c_fb_dma;
--	inst->vsi_core->fb.y.size = ctx->picinfo.fb_sz[1];
-+	inst->vsi_core->fb.c.size = ctx->picinfo.fb_sz[1];
+diff --git a/drivers/net/phy/mediatek/mtk-ge-soc.c b/drivers/net/phy/mediatek/mtk-ge-soc.c
+index 175cf5239bba8..21975ef946d5b 100644
+--- a/drivers/net/phy/mediatek/mtk-ge-soc.c
++++ b/drivers/net/phy/mediatek/mtk-ge-soc.c
+@@ -7,6 +7,7 @@
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/phy.h>
+ #include <linux/regmap.h>
++#include <linux/of.h>
  
- 	inst->vsi_core->dec.vdec_fb_va = (unsigned long)fb;
+ #include "../phylib.h"
+ #include "mtk.h"
+@@ -1319,6 +1320,7 @@ static int mt7988_phy_probe_shared(struct phy_device *phydev)
+ {
+ 	struct device_node *np = dev_of_node(&phydev->mdio.bus->dev);
+ 	struct mtk_socphy_shared *shared = phy_package_get_priv(phydev);
++	struct device_node *pio_np;
+ 	struct regmap *regmap;
+ 	u32 reg;
+ 	int ret;
+@@ -1336,7 +1338,13 @@ static int mt7988_phy_probe_shared(struct phy_device *phydev)
+ 	 * The 4 bits in TPBANK0 are kept as package shared data and are used to
+ 	 * set LED polarity for each of the LED0.
+ 	 */
+-	regmap = syscon_regmap_lookup_by_phandle(np, "mediatek,pio");
++	pio_np = of_parse_phandle(np, "mediatek,pio", 0);
++	if (!pio_np)
++		return -ENODEV;
++
++	regmap = device_node_to_regmap(pio_np);
++	of_node_put(pio_np);
++
+ 	if (IS_ERR(regmap))
+ 		return PTR_ERR(regmap);
  
+-- 
+2.39.5
+
 
 
 
