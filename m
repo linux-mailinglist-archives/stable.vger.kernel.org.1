@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71E7FAE5206
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C07BAAE540B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E4E177A5F60
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 251CA3A9F68
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9AD7222581;
-	Mon, 23 Jun 2025 21:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 616D91FECBA;
+	Mon, 23 Jun 2025 21:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xiIU9Qin"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DhhsnnNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FFA4221FC7;
-	Mon, 23 Jun 2025 21:39:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D79D1B87D9;
+	Mon, 23 Jun 2025 21:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714777; cv=none; b=Qu4WHZju4Q5nA7P4Y66svUKY5fIsVlRKp3ghY/t9gaxqTmI1LfsCe+Yu2NC8Fz1H56BAeXEvlhIwLWkfbyC5mSQre6zcS94+dqZb+HOxIlls5T9+521AQ1t3eUoO/i8XCTouEylBj89cW0dUl35Wiswog8JsUgPhINdTozdLeOY=
+	t=1750715905; cv=none; b=U5UlPlOP01kQasa05gRZSOVoN0LFOLrkqH92yBivOy2gBrenDHU6XiJkRI7emm/1/nf9IgcoCy/B9hhOkCKFSaOaES/Rn9NHVQ4cdXN7aBIRBft/qRu1axV8It6AlcldjB3SrXuxJaE2Oaf5jv8LgMkZOALfho7fgrQMWBpPZWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714777; c=relaxed/simple;
-	bh=08V6iBuTaesFZvRS310YHXSqr3yZZFHkT+9OWGr5Tgc=;
+	s=arc-20240116; t=1750715905; c=relaxed/simple;
+	bh=+HRtdODQ6kP6L1eGMD4WhsZuW0x2EjpZnBqWItijsdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b/7I+r9OwGFbC7hkgP9b9vgss2rPFx0Zl+1eePPCvxz1x9URqZ2qQut+pdoXBS1KxjpxB3lJKmr1J1OA3kAMbhD/3GSyfG2Az9fl2Z/wxiLhRvuktiqZGt9m546QLknMzDNvh+Raz2dXLaVjL/NhhnWoILGBkgvKIqWYlKr4TLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xiIU9Qin; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFCAAC4CEEA;
-	Mon, 23 Jun 2025 21:39:36 +0000 (UTC)
+	 MIME-Version; b=pa8T/gzKAe3iE6YWbICDH/HeurXPJJUHt11KhSyBcwFKEgmuHh4UVmWxHRSFau6ligsnoazseWWMyykzOhsNPHk5fdOcIaNlCrKdReoG5dpIgWRUOTDzrj+VyKE/n/9TZ3+uzdJI80vjFGwSWOsvdW7o8j/M7ItZ5xwjEKKYM+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DhhsnnNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA3BFC4CEEA;
+	Mon, 23 Jun 2025 21:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714777;
-	bh=08V6iBuTaesFZvRS310YHXSqr3yZZFHkT+9OWGr5Tgc=;
+	s=korg; t=1750715905;
+	bh=+HRtdODQ6kP6L1eGMD4WhsZuW0x2EjpZnBqWItijsdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xiIU9QinvhzhZmVf6OLEenV282NmBMeOh75UKgwg0QAR2kVH9jceI20FSsADmq6lg
-	 gVSNOeL3ulWW2322lBZbPmML+3i25lIgVZr5UgqRK4zv/xQILdHUbIkVuMasthrXxP
-	 GiEvBG9Uwjp+UM65KHPczLT0t80SMgVwmefVDi3Y=
+	b=DhhsnnNw6q1OK/dnQnTxfBubJjvy/qqPFkUhfvSPlykY+ACXY8fBsHTV4uj7Q6+a9
+	 F21lQBEQjw1S0Yp6hp18cwS/ra1QnA2U8nZPt78LBUdcsO668zViTH0KZ0LKyLmNDv
+	 NE1yPCj1VPdMScf+YZbD++WXyuyZxoKEj0qYjCTQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Rouven Czerwinski <rouven@czerwinskis.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 415/592] octeontx2-pf: Add error log forcn10k_map_unmap_rq_policer()
+Subject: [PATCH 6.12 236/414] wifi: mac80211: do not offer a mesh path if forwarding is disabled
 Date: Mon, 23 Jun 2025 15:06:13 +0200
-Message-ID: <20250623130710.309728222@linuxfoundation.org>
+Message-ID: <20250623130647.940164633@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-[ Upstream commit 9c056ec6dd1654b1420dafbbe2a69718850e6ff2 ]
+[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
 
-The cn10k_free_matchall_ipolicer() calls the cn10k_map_unmap_rq_policer()
-for each queue in a for loop without checking for any errors.
+When processing a PREQ the code would always check whether we have a
+mesh path locally and reply accordingly. However, when forwarding is
+disabled then we should not reply with this information as we will not
+forward data packets down that path.
 
-Check the return value of the cn10k_map_unmap_rq_policer() function during
-each loop, and report a warning if the function fails.
+Move the check for dot11MeshForwarding up in the function and skip the
+mesh path lookup in that case. In the else block, set forward to false
+so that the rest of the function becomes a no-op and the
+dot11MeshForwarding check does not need to be duplicated.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250408032602.2909-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This explains an effect observed in the Freifunk community where mesh
+forwarding is disabled. In that case a mesh with three STAs and only bad
+links in between them, individual STAs would occionally have indirect
+mpath entries. This should not have happened.
+
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
+Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ net/mac80211/mesh_hwmp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-index c3b6e0f60a799..7f6a435ac6806 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-@@ -357,9 +357,12 @@ int cn10k_free_matchall_ipolicer(struct otx2_nic *pfvf)
- 	mutex_lock(&pfvf->mbox.lock);
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index 2922a9fec950d..ba8aeb47bffd7 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -636,7 +636,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 				mesh_path_add_gate(mpath);
+ 		}
+ 		rcu_read_unlock();
+-	} else {
++	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
+ 		rcu_read_lock();
+ 		mpath = mesh_path_lookup(sdata, target_addr);
+ 		if (mpath) {
+@@ -654,6 +654,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 		rcu_read_unlock();
++	} else {
++		forward = false;
+ 	}
  
- 	/* Remove RQ's policer mapping */
--	for (qidx = 0; qidx < hw->rx_queues; qidx++)
--		cn10k_map_unmap_rq_policer(pfvf, qidx,
--					   hw->matchall_ipolicer, false);
-+	for (qidx = 0; qidx < hw->rx_queues; qidx++) {
-+		rc = cn10k_map_unmap_rq_policer(pfvf, qidx, hw->matchall_ipolicer, false);
-+		if (rc)
-+			dev_warn(pfvf->dev, "Failed to unmap RQ %d's policer (error %d).",
-+				 qidx, rc);
-+	}
+ 	if (reply) {
+@@ -671,7 +673,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 	}
  
- 	rc = cn10k_free_leaf_profile(pfvf, hw->matchall_ipolicer);
+-	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
++	if (forward) {
+ 		u32 preq_id;
+ 		u8 hopcount;
  
 -- 
 2.39.5
