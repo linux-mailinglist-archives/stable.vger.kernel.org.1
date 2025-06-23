@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7269CAE5539
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:09:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 441EEAE5583
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9446C4A19E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9B324C4821
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA34225417;
-	Mon, 23 Jun 2025 22:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CACA222576;
+	Mon, 23 Jun 2025 22:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xgh5RmKY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M96jvaZm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD2921FF2B;
-	Mon, 23 Jun 2025 22:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4809D225A38;
+	Mon, 23 Jun 2025 22:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716515; cv=none; b=sKGkOYsPCdO4Fn5FJw2agaRpueHuPJ3HohIjbfhLUiKxBMK3xIRwAoDIUZiIkauodPxKBarXTqMkVmsjaVJtY3R2uXBlcyKkq6YGv1RosCekJHRNFpzLyOyvAwIj6D86N1i0VPdQwBEyt7AKgWEnxzhA0uL5/g0qKKIvQ6A79zk=
+	t=1750716669; cv=none; b=GD3Zaek7s4y7gxHnPTn/y1+6foVrO8lc/d7wPGMYoExjZM1UyMpCLf9hnhX90Znwhws0HuhtG5OB8vRSd33wH3Kv2buVjHu8nqQAez2H7/1TSjoseOwGyNMWOk6QYJSAFCXNbMGtYmutaA7GhWuHu5tSLGaLnIP8cgarxnV6Jww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716515; c=relaxed/simple;
-	bh=BXXOy2dPk1iI0E7KQJ+57z0AWoReDPmdqNIjvlyrkF8=;
+	s=arc-20240116; t=1750716669; c=relaxed/simple;
+	bh=HQOwFkwRQVrT6P53xN04uMNYXTJDNVCJpMBlnJEt8sE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RBh9KZq3YAdxLCv4A6jjll74yO64Jva644X4Hq6dmn8uCAa9d/6jf9VD7xYmTRhHtYCqaT6wEfZgxLdir5bAZ/KlTN2i3f8oHRdm844fk/3qyDEokCuhhr02Am23DRE2PymIDJsc2zaXuPm8j9P+SJjh6FMfQ4qHwnxpUH64LQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xgh5RmKY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A855FC4CEEA;
-	Mon, 23 Jun 2025 22:08:34 +0000 (UTC)
+	 MIME-Version; b=Bic+7WsXBnm93scdyh1WTXy4MYP68mmHmX2kmYAsWsxE74NpCNzg0ib7bx8Eu4Wj/9O1Jj1QKHc5hD96PILUev72se/SSbRqOWiZ7PMaXDhA/OBG87Ik4hLyazhOOJAvxLHi9XOoOzZ4z39ZHFB4YpquNJ8ApcnnQq88Vtprd7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M96jvaZm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F8BC4CEEA;
+	Mon, 23 Jun 2025 22:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716515;
-	bh=BXXOy2dPk1iI0E7KQJ+57z0AWoReDPmdqNIjvlyrkF8=;
+	s=korg; t=1750716669;
+	bh=HQOwFkwRQVrT6P53xN04uMNYXTJDNVCJpMBlnJEt8sE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xgh5RmKYt6KLVpNc86bVpDTPNR/X0dmLbTSF4958bU7jtGYQVhW+lR6UZlGNewKw2
-	 dvpw6TIP2f4yYvqqSCm67AiSMyPt1GtSEO+7H5FLojPcnTQFqbcPSmW3I2jyP1NJGU
-	 VK+3NI2dwkAZbHAS792jFTveNg/dSo6znf11tnWE=
+	b=M96jvaZmLQ8NkUIvUuEbUlq7kElqKcKNEZf/JXIaxvjV6z7H5CnwwK39duzeBMhiZ
+	 nwRoGJW03LdSCgYH1MduPtdFFI2DTTBQmFXlxlWjCkZhjDEeMMoH8lCVCapkMba/5Q
+	 D6Ni8kzQsQxDrMKPExgh8lY9HrdTZcaOh0ty/erE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Lane <jon@borg.moe>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 360/411] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
+	Alexander Duyck <alexanderduyck@fb.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 546/592] eth: fbnic: avoid double free when failing to DMA-map FW msg
 Date: Mon, 23 Jun 2025 15:08:24 +0200
-Message-ID: <20250623130642.704275679@linuxfoundation.org>
+Message-ID: <20250623130713.428755419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Lane <jon@borg.moe>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
+[ Upstream commit 5bd1bafd4474ee26f504b41aba11f3e2a1175b88 ]
 
-Like many Dell laptops, the 3.5mm port by default can not detect a
-combined headphones+mic headset or even a pure microphone.  This
-change enables the port's functionality.
+The semantics are that caller of fbnic_mbx_map_msg() retains
+the ownership of the message on error. All existing callers
+dutifully free the page.
 
-Signed-off-by: Jonathan Lane <jon@borg.moe>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: da3cde08209e ("eth: fbnic: Add FW communication mechanism")
+Reviewed-by: Alexander Duyck <alexanderduyck@fb.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250616195510.225819-1-kuba@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/meta/fbnic/fbnic_fw.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9214,6 +9214,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
-+	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
+diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+index 3d9636a6c968e..0c3985613ea18 100644
+--- a/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
++++ b/drivers/net/ethernet/meta/fbnic/fbnic_fw.c
+@@ -127,11 +127,8 @@ static int fbnic_mbx_map_msg(struct fbnic_dev *fbd, int mbx_idx,
+ 		return -EBUSY;
+ 
+ 	addr = dma_map_single(fbd->dev, msg, PAGE_SIZE, direction);
+-	if (dma_mapping_error(fbd->dev, addr)) {
+-		free_page((unsigned long)msg);
+-
++	if (dma_mapping_error(fbd->dev, addr))
+ 		return -ENOSPC;
+-	}
+ 
+ 	mbx->buf_info[tail].msg = msg;
+ 	mbx->buf_info[tail].addr = addr;
+-- 
+2.39.5
+
 
 
 
