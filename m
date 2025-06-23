@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-157492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A718AE5438
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDA6EAE4EE4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D3254C08A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01E843BEA58
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5708A223DEF;
-	Mon, 23 Jun 2025 22:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4465521CA07;
+	Mon, 23 Jun 2025 21:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqAtTL41"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDYNep90"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 146161E5206;
-	Mon, 23 Jun 2025 22:00:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0265E70838;
+	Mon, 23 Jun 2025 21:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716000; cv=none; b=Z+3Oxd734P5HtpdTY6KOzI0KikBPjNEWwyK6G5Id6PSPboqPDm7HjaAotZnoLysvUfdsgEazF61CfI3CW0cm9VBG7bs86Xkn1E+NR1Z0KIiNxFT25DPICjrnAXFnhn6lu6odkYeHDfIOI/N4WiAIgreWVuao8Nt/LN7YNgJdq0Q=
+	t=1750713015; cv=none; b=QJhIOqEGkGa2K04CFzLDep6KxM2dZZXL7AYI1uKPjIucZAkQAeVweeQTMOcar8zpNM+baVi475uTukuCRb83s7bZXxC4D//C2DdpLVftqaLSxmmX5o7ikYYNVdktux2eOpMQzw3xoZcKpW20UJGSzp1j0JVPvhKdKQz44USdp0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716000; c=relaxed/simple;
-	bh=hBatiPfj5xX6DU9xlcEstGk3MI/PyXc/LZGsXZWDFkk=;
+	s=arc-20240116; t=1750713015; c=relaxed/simple;
+	bh=HtsJvmzNmqNyLdyS+mUZ98SbFCTTX/w7ybC8FpUO/24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAuYtgSyuGEZIFwtV3Mgi6wMrNN7QRNeTSOSR47tiYbWAPBAtsYPaaGahVbcQjJGcIOkL5EUNGyNRU6T0bVtg+xfm4EPZklmqg+NnLjpDNGesLVppAeQo5eMpW2694iqy1phBPKk6pANkJIKJUARaGNFaJ9c5XjjaJxuBv5vAWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqAtTL41; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00EFC4CEEA;
-	Mon, 23 Jun 2025 21:59:59 +0000 (UTC)
+	 MIME-Version; b=SCXmkaL+KhgFcyMUuH0k/uHc8boC4sCncXLk7Mw1SVSlPyc+p07yh81DRGnXss9T8vOaV1JKr/K19gH3cp9rJSld5SnjKKyZo8jjxKqrJAy/QiubagMtgimoARZKFqnrbjJJ4Z/CqF0nJ4SZtmeEnkR0Hx938SwZPhrA89j0qwA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDYNep90; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB4CC4CEEA;
+	Mon, 23 Jun 2025 21:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715999;
-	bh=hBatiPfj5xX6DU9xlcEstGk3MI/PyXc/LZGsXZWDFkk=;
+	s=korg; t=1750713014;
+	bh=HtsJvmzNmqNyLdyS+mUZ98SbFCTTX/w7ybC8FpUO/24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqAtTL41zDaRzGiXlcIVRyijM5k0OMe9Ckz4xNyx3CWsz5gEKZ4SLQFZEH70D5HkU
-	 PnzMieLRkPm2VhKtm65s/cehfVGq4gkVrQlvZaREV4EyL0DUYZlTAsvBnJPWhpLVY4
-	 tifjIjQrwxG34TNSfgtsD7J3pkdVHL7eqNSSkxL8=
+	b=cDYNep90kp/I8asyB8hBGAPnuLyfFdnsu6lbCp8d74L7R47IuIYkc5huXwyTR4e0a
+	 3JByQcIMo5w86I7MPuS21OPhqSQMiojXLXaS2qok56LC7Mzo6d6McI+ZLzjIY9nHek
+	 R1J68ReD9v01mOdY8euyBciZ8uWnQXvTSKVOykhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.6 234/290] ALSA: hda/intel: Add Thinkpad E15 to PM deny list
+	Tan En De <ende.tan@starfivetech.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 160/222] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:08:15 +0200
-Message-ID: <20250623130633.964485639@linuxfoundation.org>
+Message-ID: <20250623130616.894520646@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Tan En De <ende.tan@starfivetech.com>
 
-commit c987a390f1b3b8bdac11031d7004e3410fe259bd upstream.
+[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
 
-Lenovo Thinkpad E15 with Conexant CX8070 codec seems causing ugly
-noises after runtime-PM suspend.  Disable the codec runtime PM as a
-workaround.
+Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
+the runtime suspend is invoked immediately when unregistering a slave.
+This prevents a race condition where suspend was skipped when
+unregistering and registering slave in quick succession.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=220210
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250608091415.21170-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, consider the rapid sequence of
+`delete_device -> new_device -> delete_device -> new_device`.
+In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
+might not be invoked after `delete_device` operation.
+
+This is because after `delete_device` operation, when the
+pm_runtime_put() is about to trigger suspend, the following `new_device`
+operation might race and cancel the suspend.
+
+If that happens, during the `new_device` operation,
+dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
+means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
+Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
+skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
+the interrupt mask register using devmem, it will show as zero.
+
+Example shell script to reproduce the issue:
+```
+  #!/bin/sh
+
+  SLAVE_LADDR=0x1010
+  SLAVE_BUS=13
+  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
+  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
+
+  # Create initial device
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  sleep 2
+
+  # Rapid sequence of
+  # delete_device -> new_device -> delete_device -> new_device
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+
+  # Using devmem to inspect IC_INTR_MASK will show as zero
+```
+
+Signed-off-by: Tan En De <ende.tan@starfivetech.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/hda_intel.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/hda_intel.c
-+++ b/sound/pci/hda/hda_intel.c
-@@ -2266,6 +2266,8 @@ static const struct snd_pci_quirk power_
- 	SND_PCI_QUIRK(0x1734, 0x1232, "KONTRON SinglePC", 0),
- 	/* Dell ALC3271 */
- 	SND_PCI_QUIRK(0x1028, 0x0962, "Dell ALC3271", 0),
-+	/* https://bugzilla.kernel.org/show_bug.cgi?id=220210 */
-+	SND_PCI_QUIRK(0x17aa, 0x5079, "Lenovo Thinkpad E15", 0),
- 	{}
- };
- #endif /* CONFIG_PM */
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index f5f001738df5e..57e67962a602f 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -96,7 +96,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
+ 	dev->disable(dev);
+ 	synchronize_irq(dev->irq);
+ 	dev->slave = NULL;
+-	pm_runtime_put(dev->dev);
++	pm_runtime_put_sync_suspend(dev->dev);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
