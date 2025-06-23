@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155367-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 111AFAE43E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4045DAE41AC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:09:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 664797A4198
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 62C083A5E2E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3256253F35;
-	Mon, 23 Jun 2025 13:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4E99251792;
+	Mon, 23 Jun 2025 13:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0LIzeHG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3taF5Li"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B163F4C6E;
-	Mon, 23 Jun 2025 13:32:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1A8E2512F1;
+	Mon, 23 Jun 2025 13:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685577; cv=none; b=haM1QtorS4R8cdafUjCgJCg6DwLAD5aYbgR1SOGIyk4RDk+Er4tSoewC1wxMd/4kd31iJjaSJLMdyYbjpfdCtq8Tu+uHSwsgkZ06ebAANz8wRsUrewv6ovbAnSJcS1Z9uIuZG/C9pRwcbRX09YVgXM7T8PVlpMnkXkeCoSOUX9U=
+	t=1750684176; cv=none; b=ttr7tPG0w0/CVEZNVdiMAm8TIhYBOlXn8hrEp6kSdnuK8TzSYxWI8Tswg2T0sgAERZcpN583dWkflYZVz1XU9hOIGG9R0NfpXqDzvnugg5c8ytODd23/YwfrsTWcE0xWBcK9ZD6u+yiaO9KN5lxFjx4wzbj6pHS7eR/fwkp+EuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685577; c=relaxed/simple;
-	bh=Qpf032d/LevHgfNKcgssQC73OnXLmzzWu+itWnDm4PA=;
+	s=arc-20240116; t=1750684176; c=relaxed/simple;
+	bh=5LNitT7uTvJIghn8cMCpoKfx5bWoc5a8vHq+N2A38B4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQEEK4bHPsseBfY6GOoVCHnnqV1o8/At7tjvkjga736mCGbvvUhM8GHz+yAgnoiJNeRVWbaBbPSc26rM8U0f5B6fCw94j8bQi3rDNoP+Rn5+rPQQ7wVgVNKSbW4JxfTjHXifmgGBs5UFIwZWNJEFXEDn6lSWoda+714ez9vqInM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0LIzeHG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43A72C4CEEA;
-	Mon, 23 Jun 2025 13:32:57 +0000 (UTC)
+	 MIME-Version; b=W3GQY7/H3qcs83HToPwcsHyIVX6ut9j7O4RoG0fVf/PcvcICtka/qTndjmOehW6N6Ma2isZqObxiUiudvlnDD+TeHfT0/z0Tm0CsBcmEjoXJUoTybINuvRyqA6FxaqzHFE5ZD+y2lVxAk8XvmpT4VYBEqBv9twefQMBWI1xsxwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3taF5Li; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20ED4C4CEEA;
+	Mon, 23 Jun 2025 13:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685577;
-	bh=Qpf032d/LevHgfNKcgssQC73OnXLmzzWu+itWnDm4PA=;
+	s=korg; t=1750684176;
+	bh=5LNitT7uTvJIghn8cMCpoKfx5bWoc5a8vHq+N2A38B4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y0LIzeHGxakZjLRjeavgEJjn4BqIBZ28bym5jsnzdAF23z7skGLSAfU75irkxE0jf
-	 G+zi0GW43HNpErbVTdAHbbIdTOOCRGkmMmCUoO7ZWKiEOByhLtWX0c1ZFB90TuUv+4
-	 48aylWX5f+hYrRUEzx8IxLcxppgH4BF6h5Xd2kQk=
+	b=D3taF5LiVS4QqsmT8ZYkBH+avXg6bhqoozNU7EvK/BvCzvinniNCewAl9+HUSo+y+
+	 ByDRWlAgHR0L6Km4u2Q+kdj9nCNrUjXJacuu1n6abI/fa0u0caEDJvpRt2Wr0ySTQq
+	 iR+B8LGM1F5oPvzLwuTLLA9s4JuLa8nYx2xfl3fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 060/355] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
-Date: Mon, 23 Jun 2025 15:04:21 +0200
-Message-ID: <20250623130628.627646645@linuxfoundation.org>
+	Joel Becker <jlbec@evilplan.org>,
+	Breno Leitao <leitao@debian.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: [PATCH 6.6 001/290] configfs: Do not override creating attribute file failure in populate_attrs()
+Date: Mon, 23 Jun 2025 15:04:22 +0200
+Message-ID: <20250623130626.966214997@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
+commit f830edbae247b89228c3e09294151b21e0dc849c upstream.
 
-Dataflash did not work on my board. After checking schematics and using
-the proper GPIO, it works now. Also, make it active low to avoid:
+populate_attrs() may override failure for creating attribute files
+by success for creating subsequent bin attribute files, and have
+wrong return value.
 
-flash@0 enforce active low on GPIO handle
+Fix by creating bin attribute files under successfully creating
+attribute files.
 
-Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 03607ace807b ("configfs: implement binary attributes")
+Cc: stable@vger.kernel.org
+Reviewed-by: Joel Becker <jlbec@evilplan.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250507-fix_configfs-v3-2-fe2d96de8dc4@quicinc.com
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/usb_a9263.dts | 2 +-
+ fs/configfs/dir.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index 8a0cfbfd0c452..d1c07503ff76f 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -58,7 +58,7 @@
- 			};
- 
- 			spi0: spi@fffa4000 {
--				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
-+				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
- 				status = "okay";
- 				mtd_dataflash@0 {
- 					compatible = "atmel,at45", "atmel,dataflash";
--- 
-2.39.5
-
+--- a/fs/configfs/dir.c
++++ b/fs/configfs/dir.c
+@@ -593,7 +593,7 @@ static int populate_attrs(struct config_
+ 				break;
+ 		}
+ 	}
+-	if (t->ct_bin_attrs) {
++	if (!error && t->ct_bin_attrs) {
+ 		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
+ 			error = configfs_create_bin_file(item, bin_attr);
+ 			if (error)
 
 
 
