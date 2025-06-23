@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9536BAE54A3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30598AE53BB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 690C71BC2042
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:06 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC6EB7B0FF6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E9821FF50;
-	Mon, 23 Jun 2025 22:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F11C22425B;
+	Mon, 23 Jun 2025 21:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk3DUM8u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f/aRIYtq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753BE1D86DC;
-	Mon, 23 Jun 2025 22:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F047B1AD3FA;
+	Mon, 23 Jun 2025 21:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716228; cv=none; b=DsY6StFfzg4vNkwVyLofgNwykwZduW3RkdOqBteX3sQbwuB/EqqrtsC+woFZsaBw6CS3riET/QEEVOkOjbkUoYEyMVhBBeRyRUAdP258DPgfjHAcz37BFj4XaRSiNy7jFBm51abs5ELxCgkb+GkbIzcEh9orfXAllwjTYA8Pb50=
+	t=1750715759; cv=none; b=rtkpxmQTxhT44i6kG6xeYRAzRExzd8RLRTMEMb0X6KlWiUuk3XK1qS7bce76rCLjlMcaNlfrepfMELrK+h23SF+7CkDUmnvX5FItEiDo0yoG2s0HUv8fDha7IGUHFT4f3yOkV77g0v66kTIGv0+HVsr29K97OpJHwzOMPK7Zbj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716228; c=relaxed/simple;
-	bh=OKAZI3OYjSNPXFoL7eiMqjezk3tn8iu3TbBrU5TbHv4=;
+	s=arc-20240116; t=1750715759; c=relaxed/simple;
+	bh=c8auwU4uCyW4j1csV2dEiOXyrb1E59ujc3Jqx+ZZ88M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B59YQKLLD44i+y2OZ1L0kC/sQwOoU1Mey+aANrA4HQ58GSx51CIeWAuWVyXCPJm5TjF0nZm2Bl1E8zZkXA1VFAHQElJkvK2oKcDxr8NGzDRvAMZp15B3R65HTLkLVNYkYhKkoGHlg7KcKptyDqArw1X7HSUJcp+1J4+/qb21+3I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk3DUM8u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1D0C4CEEA;
-	Mon, 23 Jun 2025 22:03:47 +0000 (UTC)
+	 MIME-Version; b=hJyj7zWz6JN0ZWWO2KUdnbnRlG/95qQPEBDK8e+d5N4fEfmVF/nlA645PRpucYpmLkMNOW4hMZWGYO7hFywzVPl059BXxlYOUsyi1H5dOXMH5Cz76HlZkMz96PUS1MJQiGFTxkjmgv0u0Z1Uvk7aP60dJywYywBC9lRIRNUjOQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f/aRIYtq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39F7AC4CEED;
+	Mon, 23 Jun 2025 21:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716228;
-	bh=OKAZI3OYjSNPXFoL7eiMqjezk3tn8iu3TbBrU5TbHv4=;
+	s=korg; t=1750715758;
+	bh=c8auwU4uCyW4j1csV2dEiOXyrb1E59ujc3Jqx+ZZ88M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qk3DUM8ujINURBIWUG1y1API+v78yiktYacHCRfFwPKmYqt1FTVjky9Jf6AY6p77G
-	 6NBLrDEyusQE2kRW+Xu6yUutzNlcliG0PcEW1t72eYiIG92fuaPUkpDJ6bj9zYmm3M
-	 6/ODxC2zPBBi85vRSUhmMsnqvEQ7KoFsIDBVI7DI=
+	b=f/aRIYtqzQ4wYJsNRQlhBLmAlrKTOATEqQx17Xa4AqnNgRQmpkyhIaHXi9KWJ/AGi
+	 GZE5iLhXuRNlE4WHe4OmBeSnqTNeAyxCJPnGI+wMti6xvLzdGguPS4b9OYvV4f51l2
+	 h6KoeKgzjfgLBYZeknapHOqprTteOGl3vg+vOi4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 336/411] octeontx2-pf: Add error log forcn10k_map_unmap_rq_policer()
+	stable@kernel.org,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.6 219/290] scsi: storvsc: Increase the timeouts to storvsc_timeout
 Date: Mon, 23 Jun 2025 15:08:00 +0200
-Message-ID: <20250623130642.107286440@linuxfoundation.org>
+Message-ID: <20250623130633.517678126@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit 9c056ec6dd1654b1420dafbbe2a69718850e6ff2 ]
+commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
 
-The cn10k_free_matchall_ipolicer() calls the cn10k_map_unmap_rq_policer()
-for each queue in a for loop without checking for any errors.
+Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
+5s and 10s are used elsewhere. It turns out that rarely the 5s is not
+enough on Azure, so let's use storvsc_timeout everywhere.
 
-Check the return value of the cn10k_map_unmap_rq_policer() function during
-each loop, and report a warning if the function fails.
+In case a timeout happens and storvsc_channel_init() returns an error,
+close the VMBus channel so that any host-to-guest messages in the
+channel's ringbuffer, which might come late, can be safely ignored.
 
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250408032602.2909-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add a "const" to storvsc_timeout.
+
+Cc: stable@kernel.org
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
+Reviewed-by: Long Li <longli@microsoft.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/scsi/storvsc_drv.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-index 942ec8f394559..59fef7b50ebb6 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/cn10k.c
-@@ -351,9 +351,12 @@ int cn10k_free_matchall_ipolicer(struct otx2_nic *pfvf)
- 	mutex_lock(&pfvf->mbox.lock);
+--- a/drivers/scsi/storvsc_drv.c
++++ b/drivers/scsi/storvsc_drv.c
+@@ -362,7 +362,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
+ /*
+  * Timeout in seconds for all devices managed by this driver.
+  */
+-static int storvsc_timeout = 180;
++static const int storvsc_timeout = 180;
  
- 	/* Remove RQ's policer mapping */
--	for (qidx = 0; qidx < hw->rx_queues; qidx++)
--		cn10k_map_unmap_rq_policer(pfvf, qidx,
--					   hw->matchall_ipolicer, false);
-+	for (qidx = 0; qidx < hw->rx_queues; qidx++) {
-+		rc = cn10k_map_unmap_rq_policer(pfvf, qidx, hw->matchall_ipolicer, false);
-+		if (rc)
-+			dev_warn(pfvf->dev, "Failed to unmap RQ %d's policer (error %d).",
-+				 qidx, rc);
-+	}
+ #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
+ static struct scsi_transport_template *fc_transport_template;
+@@ -768,7 +768,7 @@ static void  handle_multichannel_storage
+ 		return;
+ 	}
  
- 	rc = cn10k_free_leaf_profile(pfvf, hw->matchall_ipolicer);
+-	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0) {
+ 		dev_err(dev, "Failed to create sub-channel: timed out\n");
+ 		return;
+@@ -833,7 +833,7 @@ static int storvsc_execute_vstor_op(stru
+ 	if (ret != 0)
+ 		return ret;
  
--- 
-2.39.5
-
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return -ETIMEDOUT;
+ 
+@@ -1351,6 +1351,8 @@ static int storvsc_connect_to_vsp(struct
+ 		return ret;
+ 
+ 	ret = storvsc_channel_init(device, is_fc);
++	if (ret)
++		vmbus_close(device->channel);
+ 
+ 	return ret;
+ }
+@@ -1668,7 +1670,7 @@ static int storvsc_host_reset_handler(st
+ 	if (ret != 0)
+ 		return FAILED;
+ 
+-	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
++	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
+ 	if (t == 0)
+ 		return TIMEOUT_ERROR;
+ 
 
 
 
