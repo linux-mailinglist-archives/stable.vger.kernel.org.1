@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD7E8AE557A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74EA4AE571F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5C51BC450B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 48C8D1C23DAD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537F81F7580;
-	Mon, 23 Jun 2025 22:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF97223DCC;
+	Mon, 23 Jun 2025 22:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8A9cvwj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RI4lvDuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CD81222576;
-	Mon, 23 Jun 2025 22:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CCF52222B2;
+	Mon, 23 Jun 2025 22:26:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716657; cv=none; b=i89S4Bi/HjrTDwCx2GPNCTHNdtwfMYogZNwekQ/NCUTEkVKWLAAqY3YCO7IGaAUFDjhYA4UwlEMnRreKPJw69KAm+gZ8cMg0ZeVlZwetDuT0FYDrt7AoG9Gep4LaTpHiTEQFMNZf8ts22m8V2O5MF1yjQC/1FoJOsjLXuVRV/PY=
+	t=1750717581; cv=none; b=PHsaXaY5jkFAJazDhV+i0c0PO22Mmy/V6CfzJjnVdkuquJOhLlWJUhLvmRHpLhQMQhtOBByA31AHMa+FUOhD1ice/NCmaRqp0qVmfugU4TlzdeMUzzeh0a4CXLeuS4PTqtu8HTBQmTP0F4fuUroKuUUMHyQV3EP+Gq1GMXYfxmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716657; c=relaxed/simple;
-	bh=X14ylerMHmbwEuwzjbZsQ3+zkaidEogYI6cK5UGbunw=;
+	s=arc-20240116; t=1750717581; c=relaxed/simple;
+	bh=JtI4/li/MVXiXQkv+mrzEFt2zVQvTtDorGDcmCswVhc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LkXxY4NgZEdtipa3NjJY0SScKaDcJm1tPNTZAthdzqPGjlCIJc7abHkcwRR35ZeQ0S9hfB/J9IncQEtBvmwPgFqeY8vi4SrZuI3JvrT0hifkvy473YOzg9O22Y86lB0N+D9dCPP9+NJttGsbtzAhJzYMpfSjjLTVuA6lnw45aHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8A9cvwj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97CA8C4CEEA;
-	Mon, 23 Jun 2025 22:10:56 +0000 (UTC)
+	 MIME-Version; b=bpbQ9BYSgOgooE3LCc0Ayif/ZkFpBs+njo6c/zEleV+yzRriiQs5yZCofh7zXQyvg52am8LWnUB/a8vZsL7oOicsDLwIGDXeuDkl22PQsRkau20gfmP+Q36nj1NcjwlKZTLZR3YF9+K4p7KCCpJepzun7Jpj1e7zQGKWS149cng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RI4lvDuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C25C4CEEA;
+	Mon, 23 Jun 2025 22:26:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716656;
-	bh=X14ylerMHmbwEuwzjbZsQ3+zkaidEogYI6cK5UGbunw=;
+	s=korg; t=1750717580;
+	bh=JtI4/li/MVXiXQkv+mrzEFt2zVQvTtDorGDcmCswVhc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8A9cvwjma1felmyERV7517qI8uSD4sTo/1+lXs0RH/2Ms0KECQdS8+DR1wPCjRtM
-	 c8zTg7IcjXuTaJ7QKJpF6ol0LoiFj2IwMCxikc10y3V+qw/0jNqytR9duPmf/nkNVK
-	 kenGpYCGODjDKn83nz8vU78JBpfUGJkpuIGTVyEM=
+	b=RI4lvDuF05YHk/ovTC3x59tJx5V//QwfxyIxJgHXtDX2UWrQX6f7bEbTkRpL1OQN8
+	 DxqwP8+pRKPLaShbD80JmzXIYCX9bw0lFAdOdM4cyYJq3IpWDLJ1gbmxHrYcup0IXD
+	 xnD24DAv2F1dsrpNe8VG6bAG5BAwAOfOE40FcmD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 545/592] tcp: fix passive TFO socket having invalid NAPI ID
+	syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.1 458/508] wifi: cfg80211: init wiphy_work before allocating rfkill fails
 Date: Mon, 23 Jun 2025 15:08:23 +0200
-Message-ID: <20250623130713.403627399@linuxfoundation.org>
+Message-ID: <20250623130656.399246574@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit dbe0ca8da1f62b6252e7be6337209f4d86d4a914 ]
+commit fc88dee89d7b63eeb17699393eb659aadf9d9b7c upstream.
 
-There is a bug with passive TFO sockets returning an invalid NAPI ID 0
-from SO_INCOMING_NAPI_ID. Normally this is not an issue, but zero copy
-receive relies on a correct NAPI ID to process sockets on the right
-queue.
+syzbort reported a uninitialize wiphy_work_lock in cfg80211_dev_free. [1]
 
-Fix by adding a sk_mark_napi_id_set().
+After rfkill allocation fails, the wiphy release process will be performed,
+which will cause cfg80211_dev_free to access the uninitialized wiphy_work
+related data.
 
-Fixes: e5907459ce7e ("tcp: Record Rx hash and NAPI ID in tcp_child_process")
-Signed-off-by: David Wei <dw@davidwei.uk>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250617212102.175711-5-dw@davidwei.uk
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move the initialization of wiphy_work to before rfkill initialization to
+avoid this issue.
+
+[1]
+INFO: trying to register non-static key.
+The code is fine but needs lockdep annotation, or maybe
+you didn't initialize this object before use?
+turning off the locking correctness validator.
+CPU: 0 UID: 0 PID: 5935 Comm: syz-executor550 Not tainted 6.14.0-rc6-syzkaller-00103-g4003c9e78778 #0
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
+ assign_lock_key kernel/locking/lockdep.c:983 [inline]
+ register_lock_class+0xc39/0x1240 kernel/locking/lockdep.c:1297
+ __lock_acquire+0x135/0x3c40 kernel/locking/lockdep.c:5103
+ lock_acquire.part.0+0x11b/0x380 kernel/locking/lockdep.c:5851
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x60 kernel/locking/spinlock.c:162
+ cfg80211_dev_free+0x30/0x3d0 net/wireless/core.c:1196
+ device_release+0xa1/0x240 drivers/base/core.c:2568
+ kobject_cleanup lib/kobject.c:689 [inline]
+ kobject_release lib/kobject.c:720 [inline]
+ kref_put include/linux/kref.h:65 [inline]
+ kobject_put+0x1e4/0x5a0 lib/kobject.c:737
+ put_device+0x1f/0x30 drivers/base/core.c:3774
+ wiphy_free net/wireless/core.c:1224 [inline]
+ wiphy_new_nm+0x1c1f/0x2160 net/wireless/core.c:562
+ ieee80211_alloc_hw_nm+0x1b7a/0x2260 net/mac80211/main.c:835
+ mac80211_hwsim_new_radio+0x1d6/0x54e0 drivers/net/wireless/virtual/mac80211_hwsim.c:5185
+ hwsim_new_radio_nl+0xb42/0x12b0 drivers/net/wireless/virtual/mac80211_hwsim.c:6242
+ genl_family_rcv_msg_doit+0x202/0x2f0 net/netlink/genetlink.c:1115
+ genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
+ genl_rcv_msg+0x565/0x800 net/netlink/genetlink.c:1210
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2533
+ genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
+ netlink_unicast_kernel net/netlink/af_netlink.c:1312 [inline]
+ netlink_unicast+0x53c/0x7f0 net/netlink/af_netlink.c:1338
+ netlink_sendmsg+0x8b8/0xd70 net/netlink/af_netlink.c:1882
+ sock_sendmsg_nosec net/socket.c:718 [inline]
+ __sock_sendmsg net/socket.c:733 [inline]
+ ____sys_sendmsg+0xaaf/0xc90 net/socket.c:2573
+ ___sys_sendmsg+0x135/0x1e0 net/socket.c:2627
+ __sys_sendmsg+0x16e/0x220 net/socket.c:2659
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xcd/0x250 arch/x86/entry/common.c:83
+
+Fixes: 72d520476a2f ("wifi: cfg80211: cancel wiphy_work before freeing wiphy")
+Reported-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Close: https://syzkaller.appspot.com/bug?extid=aaf0488c83d1d5f4f029
+Tested-by: syzbot+aaf0488c83d1d5f4f029@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_258DD9121DDDB9DD9A1939CFAA0D8625B107@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_fastopen.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/wireless/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 1a6b1bc542451..dd8b60f5c5553 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -3,6 +3,7 @@
- #include <linux/tcp.h>
- #include <linux/rcupdate.h>
- #include <net/tcp.h>
-+#include <net/busy_poll.h>
+--- a/net/wireless/core.c
++++ b/net/wireless/core.c
+@@ -546,6 +546,9 @@ use_default_name:
+ 	INIT_WORK(&rdev->mgmt_registrations_update_wk,
+ 		  cfg80211_mgmt_registrations_update_wk);
+ 	spin_lock_init(&rdev->mgmt_registrations_lock);
++	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
++	INIT_LIST_HEAD(&rdev->wiphy_work_list);
++	spin_lock_init(&rdev->wiphy_work_lock);
  
- void tcp_fastopen_init_key_once(struct net *net)
- {
-@@ -279,6 +280,8 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
+ #ifdef CONFIG_CFG80211_DEFAULT_PS
+ 	rdev->wiphy.flags |= WIPHY_FLAG_PS_ON_BY_DEFAULT;
+@@ -563,9 +566,6 @@ use_default_name:
+ 		return NULL;
+ 	}
  
- 	refcount_set(&req->rsk_refcnt, 2);
- 
-+	sk_mark_napi_id_set(child, skb);
-+
- 	/* Now finish processing the fastopen child socket. */
- 	tcp_init_transfer(child, BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB, skb);
- 
--- 
-2.39.5
-
+-	INIT_WORK(&rdev->wiphy_work, cfg80211_wiphy_work);
+-	INIT_LIST_HEAD(&rdev->wiphy_work_list);
+-	spin_lock_init(&rdev->wiphy_work_lock);
+ 	INIT_WORK(&rdev->rfkill_block, cfg80211_rfkill_block_work);
+ 	INIT_WORK(&rdev->conn_work, cfg80211_conn_work);
+ 	INIT_WORK(&rdev->event_work, cfg80211_event_work);
 
 
 
