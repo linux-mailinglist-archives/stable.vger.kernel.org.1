@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82AE3AE5137
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46089AE52FF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC0644163D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C674444414F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEDF77080C;
-	Mon, 23 Jun 2025 21:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D12A136348;
+	Mon, 23 Jun 2025 21:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEi//xtr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXCmXhbv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9F1C2E0;
-	Mon, 23 Jun 2025 21:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7DF1E22E6;
+	Mon, 23 Jun 2025 21:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714311; cv=none; b=UvyZu4plbU2v4/+eso+Pg5iWlZHlR1D67kkgP2XT9TaUcnSeeark0VG+6hNkfuDCuairXaqJflJ+x7EF1FOGYlqYUZRMiCELMw1MxlWEOMErq2BkwJwSm6nf26WrTdmRF3THAtZPQEHfesy+7E8M0UO4MDiqsEHNx2/43olNvQs=
+	t=1750715334; cv=none; b=qRTJuHtVzjEa8rC/6vAtEb9PRvpvQqhg0dvJgLXTNVO/J07739ybbb4Wiw0k/42jPCD1H67xEuz+5VU8WeM5wm9OcOWfaV7qhN0iWL/H4Jgmdg90JQMqOew5giTfSSdMIVAtAW2AoWiVPv/dPJeEFn3kGKinOkeKuaYqfgu92PQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714311; c=relaxed/simple;
-	bh=d5a/1oAZj19igkuc4nPknQidBIwy4GEiFgoeXSfnmoE=;
+	s=arc-20240116; t=1750715334; c=relaxed/simple;
+	bh=zJprbTTjS79XKrcUxG52r+Ih9JF9Y4OSDEj7NTBJTqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxeckRrVEnJ0ntbWrCilA0KjGJrULYD7CiCuWDXTqIB4p4x+0XhWzq7SP9wefxiwENjzidm4jkxQ9jonFpGvFeYYwXCN7+AKbAE4PJtR6LKsnXaut8rw626gjWPzcFccJ1t1fgMVSz8aauPsSaI/74P4cbpnhpjSpyKyieT8QxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEi//xtr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2475FC4CEEA;
-	Mon, 23 Jun 2025 21:31:50 +0000 (UTC)
+	 MIME-Version; b=Z2v/z8cRJ3VK0BFIsAjscTNRmVIDKpju39pMb/sSJcgsAYvbQsdiDm1BywqkowYTep2PwLSWLTKF71RkhLKXnUBf11PNFbQu5wzZooRK5So4Q7LyHbgr9a6dLIlcutJP0hPmrdjJ77XqYWALgWy0TWP69R+FSUEJUGpgalMuziU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXCmXhbv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B572CC4CEEA;
+	Mon, 23 Jun 2025 21:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714311;
-	bh=d5a/1oAZj19igkuc4nPknQidBIwy4GEiFgoeXSfnmoE=;
+	s=korg; t=1750715334;
+	bh=zJprbTTjS79XKrcUxG52r+Ih9JF9Y4OSDEj7NTBJTqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lEi//xtr1zD97B9F7FiIzNaCp1NolbpKJTB/rHitkYExClx4FszrK6ykKD1Iff1Ss
-	 7ho2ps53FpCIxvu6FrdtqVt6FrHPw/2ptS7BtlwvX61WzRwYIkVDGzpH0Q/SwIZsnI
-	 33x0cXhFzk4hyAh/0p4tJ/A1F37MQ5g7lnPcGaU8=
+	b=tXCmXhbvWewFUQ4dHl1EQuVBL0T7205PXreMTQ8M5szBIyfjSleOXz7wlgNJMGTLj
+	 P+ECd/b80Cy86g2QJR6API35JZEJvKG4+KkQhEVZ574CQhPL0oRm90xMgl7dABItWx
+	 LJkV31X1G4M20M/4Dhjs0gnV/6dOQEy0xM+ExAEs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuanjun Gong <ruc_gongyuanjun@163.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/290] ASoC: tegra210_ahub: Add check to of_device_get_match_data()
+	Ye Bin <yebin10@huawei.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 246/411] ftrace: Fix UAF when lookup kallsym after ftrace disabled
 Date: Mon, 23 Jun 2025 15:06:30 +0200
-Message-ID: <20250623130630.805730784@linuxfoundation.org>
+Message-ID: <20250623130639.846222811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +61,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yuanjun Gong <ruc_gongyuanjun@163.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 04cb269c204398763a620d426cbee43064854000 ]
+commit f914b52c379c12288b7623bb814d0508dbe7481d upstream.
 
-In tegra_ahub_probe(), check the result of function
-of_device_get_match_data(), return an error code in case it fails.
+The following issue happens with a buggy module:
 
-Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Link: https://patch.msgid.link/20250513123744.3041724-1-ruc_gongyuanjun@163.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+BUG: unable to handle page fault for address: ffffffffc05d0218
+PGD 1bd66f067 P4D 1bd66f067 PUD 1bd671067 PMD 101808067 PTE 0
+Oops: Oops: 0000 [#1] SMP KASAN PTI
+Tainted: [O]=OOT_MODULE, [E]=UNSIGNED_MODULE
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+RIP: 0010:sized_strscpy+0x81/0x2f0
+RSP: 0018:ffff88812d76fa08 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: ffffffffc0601010 RCX: dffffc0000000000
+RDX: 0000000000000038 RSI: dffffc0000000000 RDI: ffff88812608da2d
+RBP: 8080808080808080 R08: ffff88812608da2d R09: ffff88812608da68
+R10: ffff88812608d82d R11: ffff88812608d810 R12: 0000000000000038
+R13: ffff88812608da2d R14: ffffffffc05d0218 R15: fefefefefefefeff
+FS:  00007fef552de740(0000) GS:ffff8884251c7000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffc05d0218 CR3: 00000001146f0000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ftrace_mod_get_kallsym+0x1ac/0x590
+ update_iter_mod+0x239/0x5b0
+ s_next+0x5b/0xa0
+ seq_read_iter+0x8c9/0x1070
+ seq_read+0x249/0x3b0
+ proc_reg_read+0x1b0/0x280
+ vfs_read+0x17f/0x920
+ ksys_read+0xf3/0x1c0
+ do_syscall_64+0x5f/0x2e0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The above issue may happen as follows:
+(1) Add kprobe tracepoint;
+(2) insmod test.ko;
+(3)  Module triggers ftrace disabled;
+(4) rmmod test.ko;
+(5) cat /proc/kallsyms; --> Will trigger UAF as test.ko already removed;
+ftrace_mod_get_kallsym()
+...
+strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+...
+
+The problem is when a module triggers an issue with ftrace and
+sets ftrace_disable. The ftrace_disable is set when an anomaly is
+discovered and to prevent any more damage, ftrace stops all text
+modification. The issue that happened was that the ftrace_disable stops
+more than just the text modification.
+
+When a module is loaded, its init functions can also be traced. Because
+kallsyms deletes the init functions after a module has loaded, ftrace
+saves them when the module is loaded and function tracing is enabled. This
+allows the output of the function trace to show the init function names
+instead of just their raw memory addresses.
+
+When a module is removed, ftrace_release_mod() is called, and if
+ftrace_disable is set, it just returns without doing anything more. The
+problem here is that it leaves the mod_list still around and if kallsyms
+is called, it will call into this code and access the module memory that
+has already been freed as it will return:
+
+  strscpy(module_name, mod_map->mod->name, MODULE_NAME_LEN);
+
+Where the "mod" no longer exists and triggers a UAF bug.
+
+Link: https://lore.kernel.org/all/20250523135452.626d8dcd@gandalf.local.home/
+
+Cc: stable@vger.kernel.org
+Fixes: aba4b5c22cba ("ftrace: Save module init functions kallsyms symbols for tracing")
+Link: https://lore.kernel.org/20250529111955.2349189-2-yebin@huaweicloud.com
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/tegra/tegra210_ahub.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/trace/ftrace.c |   10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
-index ab3c6b2544d20..140cb27f73287 100644
---- a/sound/soc/tegra/tegra210_ahub.c
-+++ b/sound/soc/tegra/tegra210_ahub.c
-@@ -1359,6 +1359,8 @@ static int tegra_ahub_probe(struct platform_device *pdev)
- 		return -ENOMEM;
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -6468,9 +6468,10 @@ void ftrace_release_mod(struct module *m
  
- 	ahub->soc_data = of_device_get_match_data(&pdev->dev);
-+	if (!ahub->soc_data)
-+		return -ENODEV;
+ 	mutex_lock(&ftrace_lock);
  
- 	platform_set_drvdata(pdev, ahub);
+-	if (ftrace_disabled)
+-		goto out_unlock;
+-
++	/*
++	 * To avoid the UAF problem after the module is unloaded, the
++	 * 'mod_map' resource needs to be released unconditionally.
++	 */
+ 	list_for_each_entry_safe(mod_map, n, &ftrace_mod_maps, list) {
+ 		if (mod_map->mod == mod) {
+ 			list_del_rcu(&mod_map->list);
+@@ -6479,6 +6480,9 @@ void ftrace_release_mod(struct module *m
+ 		}
+ 	}
  
--- 
-2.39.5
-
++	if (ftrace_disabled)
++		goto out_unlock;
++
+ 	/*
+ 	 * Each module has its own ftrace_pages, remove
+ 	 * them from the list.
 
 
 
