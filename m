@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156255-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BE66AE4ED0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:09:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 396B5AE50E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E2F1189FDBF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CBB717FD1C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FDE202983;
-	Mon, 23 Jun 2025 21:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22163221299;
+	Mon, 23 Jun 2025 21:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yFIiYen+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCpGp8fw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F5BE70838;
-	Mon, 23 Jun 2025 21:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D540A1EDA0F;
+	Mon, 23 Jun 2025 21:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712963; cv=none; b=uK30DZWZd1N7Jntg6oFba40NqD48+oqiepg0/0jWBVFBMD61ipRseraF40saouzDNahFeZWQ2GUMoUfahEh58+gM2fahIKpApEBQUOD/074ULc02jLtz2FahIbjeySYw8bkM3JbAIqvO0WNtJ72kHS+I7SNduo7aLc36tcWBwoQ=
+	t=1750714147; cv=none; b=Nh/RUIS1l3OxSQ/L8+Ur2kibxKuFh4aorcz/c25pE9okTPffb/WUsoU4qEXDd8E29ZQnX2Q30GBmdKkhrc5oe8+k6oU3x79yyB5o1dtSNXSCVB62z2KJJ8GHgebkxf21+yzvlQjkYw59t1BqHoPkl95Lo4wUjdn+egsNB1OkCfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712963; c=relaxed/simple;
-	bh=fGPN0XvXb09IWfdf55R31hOHllI9r1e+ovH3QCPL0Zc=;
+	s=arc-20240116; t=1750714147; c=relaxed/simple;
+	bh=ntgaNXtJAaERJoSo/gKK4XgSO1EAx9fAWYWLeCOLpRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgMvR1omgZBc2icDjELskNANsVcXYAP0VUrVSy4k37VyF6vmHuNhssuM2Urx/CafDKYDJyIRgzlGo9ilZhdmk4FSw0IFFb6v5M0tKITpdG3oxnhLxz4mRyfox8082T5PXII1C9fjXHEXtpl6VTkFLW8VBM92Inbh1Ny+OliGtIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yFIiYen+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A932C4CEEA;
-	Mon, 23 Jun 2025 21:09:22 +0000 (UTC)
+	 MIME-Version; b=FHbuZFQEGoN6hAj73kxBr9zn6bA0P6fR9TM+qnspgE50U4uOAi48FreyXsHtuAZkXMQiL4Ouf8Ni9sh9xSQ8N1b3XoiL5SxWhhBmYVm/fIiw1IPrwxk+l3mxMHwJteBaQcik3BVBV6SPN/RvvSej4PfFRRDHSwEUBAlE7NDXDkY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCpGp8fw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E5B9C4CEEA;
+	Mon, 23 Jun 2025 21:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712962;
-	bh=fGPN0XvXb09IWfdf55R31hOHllI9r1e+ovH3QCPL0Zc=;
+	s=korg; t=1750714147;
+	bh=ntgaNXtJAaERJoSo/gKK4XgSO1EAx9fAWYWLeCOLpRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yFIiYen+KFxRzl5/Sse+cCREhJc/SWv0ap7J354PS/mCPvRLF5O55wL0XRXGPQVEi
-	 EsUbuX22LxHwKYMgON5Uk+A9MGOa4MdvyZXXR/ldj6zHv89PGEt3fy2B8EEy38VC64
-	 l98x5giXHLu3xtG5ljzzYr236IDSL3ZJYvDfK8IA=
+	b=jCpGp8fweD6zMdQ/tQ/nPO2jcw2xfw0sv8H5R38oib3VscSLSomTbYdAFehVrfu2Z
+	 cdMIZ2oNSs5Yc9jApuscLDd+2vWBmFZqxA/F6j3Se0XyXvVS13hbS9EBO7ifL8T5AK
+	 PKLOIiIX2VkfhI9oNtYRo7G4HtBzItuOVCBQ3wKc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Gladkov <legion@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 098/411] mfd: stmpe-spi: Correct the name used in MODULE_DEVICE_TABLE
+	Heiner Kallweit <hkallweit1@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 105/414] net: ftgmac100: select FIXED_PHY
 Date: Mon, 23 Jun 2025 15:04:02 +0200
-Message-ID: <20250623130635.953491523@linuxfoundation.org>
+Message-ID: <20250623130644.723958455@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 59d60c16ed41475f3b5f7b605e75fbf8e3628720 ]
+commit ae409629e022fbebbc6d31a1bfeccdbbeee20fd6 upstream.
 
-The name used in the macro does not exist.
+Depending on e.g. DT configuration this driver uses a fixed link.
+So we shouldn't rely on the user to enable FIXED_PHY, select it in
+Kconfig instead. We may end up with a non-functional driver otherwise.
 
-drivers/mfd/stmpe-spi.c:132:26: error: use of undeclared identifier 'stmpe_id'
-  132 | MODULE_DEVICE_TABLE(spi, stmpe_id);
-
-Fixes: e789995d5c61 ("mfd: Add support for STMPE SPI interface")
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/79d5a847303e45a46098f2d827d3d8a249a32be3.1745591072.git.legion@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 38561ded50d0 ("net: ftgmac100: support fixed link")
+Cc: stable@vger.kernel.org
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://patch.msgid.link/476bb33b-5584-40f0-826a-7294980f2895@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/stmpe-spi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/faraday/Kconfig |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
-index 7351734f75938..07fa56e5337d1 100644
---- a/drivers/mfd/stmpe-spi.c
-+++ b/drivers/mfd/stmpe-spi.c
-@@ -129,7 +129,7 @@ static const struct spi_device_id stmpe_spi_id[] = {
- 	{ "stmpe2403", STMPE2403 },
- 	{ }
- };
--MODULE_DEVICE_TABLE(spi, stmpe_id);
-+MODULE_DEVICE_TABLE(spi, stmpe_spi_id);
- 
- static struct spi_driver stmpe_spi_driver = {
- 	.driver = {
--- 
-2.39.5
-
+--- a/drivers/net/ethernet/faraday/Kconfig
++++ b/drivers/net/ethernet/faraday/Kconfig
+@@ -31,6 +31,7 @@ config FTGMAC100
+ 	depends on ARM || COMPILE_TEST
+ 	depends on !64BIT || BROKEN
+ 	select PHYLIB
++	select FIXED_PHY
+ 	select MDIO_ASPEED if MACH_ASPEED_G6
+ 	select CRC32
+ 	help
 
 
 
