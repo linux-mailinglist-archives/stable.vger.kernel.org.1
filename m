@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157157-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D45B9AE52CB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C682AE51D1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45F627AFDB3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7EBC244287E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C1D4224AFA;
-	Mon, 23 Jun 2025 21:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 967B92222CA;
+	Mon, 23 Jun 2025 21:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zY93Uf4y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4ShHlZ4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A421224244;
-	Mon, 23 Jun 2025 21:46:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 535BF21D3DD;
+	Mon, 23 Jun 2025 21:37:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715176; cv=none; b=Gva+x5/8zUlTnig4zY7Q8npNnEngdjcdbvZ+68mGlDrOzkWt2eeSY7b3AsApbKt9Yy3cph/WuaNiD0qdrWogZYRrUabVaHqfET+ps9FnzmP6703HMtL1NEtEOrIq4XAzFoXPLnUhyTyUjVrbSw3iM6gsVkafl+sw68CgaOvskZU=
+	t=1750714662; cv=none; b=V6/1FW8jg9EUa84mZSdnqXxMMJ7rI5FOpfgeQM6hNBn2nkUB8KpVnOaNn7vbRP6YeO8M47lRFeo6PgpOYwkMQ9ftvssEhzyyk7SYRVm6p9r3MfP9vK+eMjZ6M47S8qxiP1mHrSp1x9nPZfnrrAHJ1Q6Ox1RjgY2AQC0MbOlkm10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715176; c=relaxed/simple;
-	bh=CDreZwAeV42QTXPTyD3jJaYcZh9Vpzeb6lz0SUqdZbk=;
+	s=arc-20240116; t=1750714662; c=relaxed/simple;
+	bh=p3/qNWRPkj5EQOUeAePKdBsS8dUB9B6qeYiC/LiOUyQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o5JfaP16PUMIlYOilvQ/iS+Ogvu1UtSo1PQhK6+EXvjNqUpd3uRUmf3SkYj1S2zWdc3r/A6wByYaFNoQRC/UTsCPjXpaYAvSZ04vCHWrIONqXUxZYI9XA7uxh4N9g8RVTZSB3kwuS1gCKcG3+15KG8LZCV8cUNw41XKib1VvDrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zY93Uf4y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E4FC4CEEA;
-	Mon, 23 Jun 2025 21:46:15 +0000 (UTC)
+	 MIME-Version; b=OKugeSZdB/KHvNl9p7lHrttJF2Z8Dfxb9GsHFABSRWIandt6kpHD5Lm2iP7JFAmpXDReE4vrcnt7ylcpGnHpTz+ojQZsXkMo4+k7CCG78V2CAAQoH1Ickm41ifn2CYbeHAStxceMvSppIWFMDOiur/vYx9/89YmDMSQ5SgVANww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4ShHlZ4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD19C4CEEA;
+	Mon, 23 Jun 2025 21:37:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715176;
-	bh=CDreZwAeV42QTXPTyD3jJaYcZh9Vpzeb6lz0SUqdZbk=;
+	s=korg; t=1750714662;
+	bh=p3/qNWRPkj5EQOUeAePKdBsS8dUB9B6qeYiC/LiOUyQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zY93Uf4yh5wtvCA3mzvBTHcbQvAHy67TnD5uMTBqweYzHNRlu5slNibq1N19tgwU3
-	 vGlLtQ2v5/tFJIOgLnZLmZXYWorEvVnsgGevB57f3F6bX4YH21QzccwYe5bNsnTAfR
-	 qGzlgZ5gxuQr/82H7yfB9IP8DkxAwqyftrtiB7Z4=
+	b=n4ShHlZ4rHP+ivnP/P4zcNj03937XTI0UVxxbYnLODkgTM/6gSaXKz1dyZZsfGj7/
+	 BQZ/LqhfvCmDnzqMsFNtBHP12Rp7sH+IvW3eWTlm/xrVUf2Tf2FzXaAT6q+aHckdSE
+	 M17L0P9uyvet5o0DwFrDiPfMSr4phpr8rOoSCBt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.15 463/592] scsi: storvsc: Increase the timeouts to storvsc_timeout
-Date: Mon, 23 Jun 2025 15:07:01 +0200
-Message-ID: <20250623130711.439643103@linuxfoundation.org>
+	Peter Marheine <pmarheine@chromium.org>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 221/355] ACPI: battery: negate current when discharging
+Date: Mon, 23 Jun 2025 15:07:02 +0200
+Message-ID: <20250623130633.385516249@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Peter Marheine <pmarheine@chromium.org>
 
-commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
+[ Upstream commit 234f71555019d308c6bc6f98c78c5551cb8cd56a ]
 
-Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
-5s and 10s are used elsewhere. It turns out that rarely the 5s is not
-enough on Azure, so let's use storvsc_timeout everywhere.
+The ACPI specification requires that battery rate is always positive,
+but the kernel ABI for POWER_SUPPLY_PROP_CURRENT_NOW
+(Documentation/ABI/testing/sysfs-class-power) specifies that it should
+be negative when a battery is discharging. When reporting CURRENT_NOW,
+massage the value to match the documented ABI.
 
-In case a timeout happens and storvsc_channel_init() returns an error,
-close the VMBus channel so that any host-to-guest messages in the
-channel's ringbuffer, which might come late, can be safely ignored.
+This only changes the sign of `current_now` and not `power_now` because
+documentation doesn't describe any particular meaning for `power_now` so
+leaving `power_now` unchanged is less likely to confuse userspace
+unnecessarily, whereas becoming consistent with the documented ABI is
+worth potentially confusing clients that read `current_now`.
 
-Add a "const" to storvsc_timeout.
-
-Cc: stable@kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Marheine <pmarheine@chromium.org>
+Link: https://patch.msgid.link/20250508024146.1436129-1-pmarheine@chromium.org
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/acpi/battery.c | 19 ++++++++++++++++---
+ 1 file changed, 16 insertions(+), 3 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -362,7 +362,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
- /*
-  * Timeout in seconds for all devices managed by this driver.
-  */
--static int storvsc_timeout = 180;
-+static const int storvsc_timeout = 180;
- 
- #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
- static struct scsi_transport_template *fc_transport_template;
-@@ -768,7 +768,7 @@ static void  handle_multichannel_storage
- 		return;
- 	}
- 
--	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0) {
- 		dev_err(dev, "Failed to create sub-channel: timed out\n");
- 		return;
-@@ -833,7 +833,7 @@ static int storvsc_execute_vstor_op(stru
- 	if (ret != 0)
- 		return ret;
- 
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return -ETIMEDOUT;
- 
-@@ -1350,6 +1350,8 @@ static int storvsc_connect_to_vsp(struct
- 		return ret;
- 
- 	ret = storvsc_channel_init(device, is_fc);
-+	if (ret)
-+		vmbus_close(device->channel);
- 
- 	return ret;
- }
-@@ -1668,7 +1670,7 @@ static int storvsc_host_reset_handler(st
- 	if (ret != 0)
- 		return FAILED;
- 
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return TIMEOUT_ERROR;
- 
+diff --git a/drivers/acpi/battery.c b/drivers/acpi/battery.c
+index f9fb092f33a26..4a188cc28b5ce 100644
+--- a/drivers/acpi/battery.c
++++ b/drivers/acpi/battery.c
+@@ -255,10 +255,23 @@ static int acpi_battery_get_property(struct power_supply *psy,
+ 		break;
+ 	case POWER_SUPPLY_PROP_CURRENT_NOW:
+ 	case POWER_SUPPLY_PROP_POWER_NOW:
+-		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN)
++		if (battery->rate_now == ACPI_BATTERY_VALUE_UNKNOWN) {
+ 			ret = -ENODEV;
+-		else
+-			val->intval = battery->rate_now * 1000;
++			break;
++		}
++
++		val->intval = battery->rate_now * 1000;
++		/*
++		 * When discharging, the current should be reported as a
++		 * negative number as per the power supply class interface
++		 * definition.
++		 */
++		if (psp == POWER_SUPPLY_PROP_CURRENT_NOW &&
++		    (battery->state & ACPI_BATTERY_STATE_DISCHARGING) &&
++		    acpi_battery_handle_discharging(battery)
++				== POWER_SUPPLY_STATUS_DISCHARGING)
++			val->intval = -val->intval;
++
+ 		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN:
+ 	case POWER_SUPPLY_PROP_ENERGY_FULL_DESIGN:
+-- 
+2.39.5
+
 
 
 
