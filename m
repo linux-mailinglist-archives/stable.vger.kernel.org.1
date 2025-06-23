@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F335AE4F90
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73F1AAE535B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427E21B61170
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EEFCC4A7AAA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECAD2236EF;
-	Mon, 23 Jun 2025 21:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A522222C2;
+	Mon, 23 Jun 2025 21:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HisIMs5B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VEWJdGHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6AC1F3B96;
-	Mon, 23 Jun 2025 21:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7081E22E6;
+	Mon, 23 Jun 2025 21:52:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713397; cv=none; b=DcWApNTMofKPlMS9p8jAtwg85SiVq0kaCVvbfhKQd+9rJ7Os8I1C7W3dpSAqxbjEtGl32l6R61dnUEwUGhzYLw5zQ9Uy3KPfuyk2cuvRv4y0r+IqpDYYGP0EM6FEJqFbfARv7tJlS2uaGYXIkXatzYzwoB9vY0x5UmMcJI0I/qc=
+	t=1750715550; cv=none; b=f84BdzQo5dHUl/6AaHVdCBSNAfR8zaszXX0hMpbKVR4fZT1NbTZEtWI5dlRrpQJsqcuE2J2QW/m2qGo/HqXRb7hjPxMPsnttCL3/aJsnjazSIwH9BFD+tFA2n443Si8GWoLGfcjQC95hDtRrFr/qLE6s0EEYPMvUYdmAqsLKdfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713397; c=relaxed/simple;
-	bh=xkRPF2hHPUOdhxVAW3gBbsw+y8DmadkSZM9Oni0rr34=;
+	s=arc-20240116; t=1750715550; c=relaxed/simple;
+	bh=wP6+prrHRT5p50ZMHowVfo4EnejRGP6r0WwbOfdDHZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ctViG90ygKaxvBvrZJWPwjOv9X+nCQIGMBQrAAYtkQ8OOhu0Ij7BGoHGdpdf5S6GJPApb5TGJPwsV6z7Gu9wHO9yMuy0+VTMGNcQrOaDd6vge2XscD+gyCUDyrS5Fx0RJxRsgRqS3nkkE/hP9W7XjyBlAj+KzJGEtJDae46PqRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HisIMs5B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03789C4CEEA;
-	Mon, 23 Jun 2025 21:16:36 +0000 (UTC)
+	 MIME-Version; b=YpEN5/lG/YpnBpIy0VQ9j9lpBVdCIo9dWcawZHQWwiy6W9WOvYqvcas/gtheiJGgY6fM26q/H9yS5rjyoWabcb69q+dWttSrmVk4TsoL88sF428N+ilAhg+d60wSr600aawzoAQHx4ZMebg1Hx7qi2cn0EXKW/03j8sdx3hNrpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VEWJdGHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34FDBC4CEEA;
+	Mon, 23 Jun 2025 21:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713397;
-	bh=xkRPF2hHPUOdhxVAW3gBbsw+y8DmadkSZM9Oni0rr34=;
+	s=korg; t=1750715550;
+	bh=wP6+prrHRT5p50ZMHowVfo4EnejRGP6r0WwbOfdDHZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HisIMs5BCLTUyKsFO5+Q72x7f2c9rLxl7ncMFvdcJ+eMZCuk7tp1US2K8TodDS0dd
-	 KyEuOLUgGTEqwlsuXG1GE7CdIIgfuoG9T3ce9PA3rgVZ/rbvuuQOsCHO5hlxRCrd+u
-	 sRgrNyIa2Sw6Rd1HUbwPXUDluekLBvML1UJduh9M=
+	b=VEWJdGHTV4pszw/EvTz/9GMU92LjUyPjWtSUKiWz3hamCRzAtqfNSoEZmiGpTPB2A
+	 a/r5yVq6ExzEaRCQxemWo42DJBBLHbEPJrifw/F0HfGDmDrIipUeEvtysPlCfZLbof
+	 5aL175AI8oi8L6054wcRAZripNfVmIBKBEHumFHo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Naresh Kamboju <naresh.kamboju@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.10 149/355] kbuild: Add KBUILD_CPPFLAGS to as-option invocation
+	Baochen Qiang <quic_bqiang@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 213/414] wifi: ath12k: fix a possible dead lock caused by ab->base_lock
 Date: Mon, 23 Jun 2025 15:05:50 +0200
-Message-ID: <20250623130631.187651791@linuxfoundation.org>
+Message-ID: <20250623130647.334400663@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Baochen Qiang <quic_bqiang@quicinc.com>
 
-commit 43fc0a99906e04792786edf8534d8d58d1e9de0c upstream.
+[ Upstream commit ef115c265a21e3c11deee7f73bd1061775a7bf20 ]
 
-After commit feb843a469fb ("kbuild: add $(CLANG_FLAGS) to
-KBUILD_CPPFLAGS"), there is an error while building certain PowerPC
-assembly files with clang:
+spin_lock/spin_unlock are used in ath12k_reg_chan_list_event
+to acquire/release ab->base_lock. For now this is safe because
+that function is only called in soft IRQ context.
 
-  arch/powerpc/lib/copypage_power7.S: Assembler messages:
-  arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000'
-  arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010'
-  arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000'
-  arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010'
-  arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010'
-  clang: error: assembler command failed with exit code 1 (use -v to see invocation)
+But ath12k_reg_chan_list_event() will be called from process
+context in an upcoming patch, and this can result in a deadlock
+if ab->base_lock is acquired in process context and then soft
+IRQ occurs on the same CPU and tries to acquire that lock.
 
-as-option only uses KBUILD_AFLAGS, so after removing CLANG_FLAGS from
-KBUILD_AFLAGS, there is no more '--target=' or '--prefix=' flags. As a
-result of those missing flags, the host target
-will be tested during as-option calls and likely fail, meaning necessary
-flags may not get added when building assembly files, resulting in
-errors like seen above.
+Fix it by using spin_lock_bh and spin_unlock_bh instead.
 
-Add KBUILD_CPPFLAGS to as-option invocations to clear up the errors.
-This should have been done in commit d5c8d6e0fa61 ("kbuild: Update
-assembler calls to use proper flags and language target"), which
-switched from using the assembler target to the assembler-with-cpp
-target, so flags that affect preprocessing are passed along in all
-relevant tests. as-option now mirrors cc-option.
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
 
-Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Closes: https://lore.kernel.org/CA+G9fYs=koW9WardsTtora+nMgLR3raHz-LSLr58tgX4T5Mxag@mail.gmail.com/
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250418-ath12k-6g-lp-vlp-v1-1-c869c86cad60@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Kbuild.include |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/scripts/Kbuild.include
-+++ b/scripts/Kbuild.include
-@@ -104,7 +104,7 @@ try-run = $(shell set -e;		\
- # Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 17ac54047f9a7..c38d3493c6911 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -5784,7 +5784,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 		goto fallback;
+ 	}
  
- as-option = $(call try-run,\
--	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
-+	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+-	spin_lock(&ab->base_lock);
++	spin_lock_bh(&ab->base_lock);
+ 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
+ 		/* Once mac is registered, ar is valid and all CC events from
+ 		 * fw is considered to be received due to user requests
+@@ -5808,7 +5808,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
+ 		ab->default_regd[pdev_idx] = regd;
+ 	}
+ 	ab->dfs_region = reg_info->dfs_region;
+-	spin_unlock(&ab->base_lock);
++	spin_unlock_bh(&ab->base_lock);
  
- # as-instr
- # Usage: aflags-y += $(call as-instr,instr,option1,option2)
+ 	goto mem_free;
+ 
+-- 
+2.39.5
+
 
 
 
