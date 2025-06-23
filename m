@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2D54AE42F8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0975AE4410
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 40625173AF5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FC824414DE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:31:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B41E9254873;
-	Mon, 23 Jun 2025 13:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C298253F1D;
+	Mon, 23 Jun 2025 13:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WHrUY1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FCMR3mlP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F23A242D90;
-	Mon, 23 Jun 2025 13:20:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FF804C7F;
+	Mon, 23 Jun 2025 13:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684849; cv=none; b=tU4kGj7s2hE/j5WkPiGwpWz+6/s4JccuAf9I5zzZVBylzgv2MKI9Ef+ci48s6wOnaFDHqFQDDCGcVT/TTiLsIesnNptrdb8ADbEk4hAyyQuS5k9H1LnrnIq8Mo5qf0odUUeYILaW2qtLYWVOr6KiU8CkSNIjALEVfqx10U0an1c=
+	t=1750685460; cv=none; b=cCZ0EsvFXy2vJDcDLh4jABybt/dPthlNBR5TcGNTCKni260hNBIj3A4aGLBytnTQ7cc7ND2rvrFpKrTksg+VsNusM8UPlYT46ui+7OOqXJhcikvah3ZQsgZcEKA3/mfUm+b+5mHz1ASKj1mOg9IPCyFTWMT86tb/GulTm+ILaOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684849; c=relaxed/simple;
-	bh=4Ot9r9fih76jgoQoh2NBJ3I26n9PJiq4lhev3JQk+RQ=;
+	s=arc-20240116; t=1750685460; c=relaxed/simple;
+	bh=PDOhWdH7ED9hQR8le2dQj50L9IxbsH5yE9OA6ue0EPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hb/TsNGhD+je4dNZSa5ob8AnNmQ2vQob/zOKtSpltGTv+oT6oSzHSyRxhRMGSnJymyKCmqfL0rmtT3+bLuVE5lvyVBDgoKPAolGQ0wzvpTnDLXX7cPdxVmqN2xJP7qO8dsPArCf+Tr2ZRcz9qtYVFOI+K2+Fa3OZwxWYM2Xy/9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WHrUY1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EA4C4CEEA;
-	Mon, 23 Jun 2025 13:20:48 +0000 (UTC)
+	 MIME-Version; b=K1HOqjhNLLHMKPNUZ/cTwbR7nsrUWyTRD0Ufao3DD2StoyISsjb3OUXCCsaacEk3V5s14FtoEL4BDOzaAZxY6ZlSw0h4CXtXXgsWnWvBsyrhPBTUfBOLlQv46VA+XYUC+ze1Qyxss4ae2ZtR+Rdk6x9yrJMLQ2YF2O/AletpbHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FCMR3mlP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C5DC4CEEA;
+	Mon, 23 Jun 2025 13:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684849;
-	bh=4Ot9r9fih76jgoQoh2NBJ3I26n9PJiq4lhev3JQk+RQ=;
+	s=korg; t=1750685460;
+	bh=PDOhWdH7ED9hQR8le2dQj50L9IxbsH5yE9OA6ue0EPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WHrUY1GiaO9gGKLLim2tdUBFS3NGFL4VIS58FCFKiGiZQ6Wxu8Xh9jz8mYmoVw0v
-	 bCroGcEMfXPav+2vzH2pwUrb2r5TwOUOMsQS7SV6gW3HurqJQT4LUA2IwcK9XhfmQk
-	 ci5The9eRFm8oGBHLnvRb731Ww2699kkxjnBUYSs=
+	b=FCMR3mlPGXTRtjy2M0POIf3y88uGRDYJ+79+bFzS7R4HSj3nh+2Vcsmc0m2qQhKKV
+	 VjCd8XnrOgTrKom2KLokslr9tk6osxyla/56vDCfVxQlmGFjZiEr4qiq8pEJTuQ6nX
+	 bU0ueE40j/j9vmQHhErMpBQ5HLg3Hed/Bmjk4zA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.10 003/355] pinctrl: armada-37xx: set GPIO output value before setting direction
+	Ilya Leoshkevich <iii@linux.ibm.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 060/411] s390/bpf: Store backchain even for leaf progs
 Date: Mon, 23 Jun 2025 15:03:24 +0200
-Message-ID: <20250623130626.824818631@linuxfoundation.org>
+Message-ID: <20250623130634.793002374@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Ilya Leoshkevich <iii@linux.ibm.com>
 
-commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
+[ Upstream commit 5f55f2168432298f5a55294831ab6a76a10cb3c3 ]
 
-Changing the direction before updating the output value in the
-OUTPUT_VAL register may result in a glitch on the output line
-if the previous value in the OUTPUT_VAL register is different
-from the one we want to set.
+Currently a crash in a leaf prog (caused by a bug) produces the
+following call trace:
 
-In order to avoid that, update the output value before changing
-the direction.
+     [<000003ff600ebf00>] bpf_prog_6df0139e1fbf2789_fentry+0x20/0x78
+     [<0000000000000000>] 0x0
 
-Cc: stable@vger.kernel.org
-Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because leaf progs do not store backchain. Fix by making all
+progs do it. This is what GCC and Clang-generated code does as well.
+Now the call trace looks like this:
+
+     [<000003ff600eb0f2>] bpf_prog_6df0139e1fbf2789_fentry+0x2a/0x80
+     [<000003ff600ed096>] bpf_trampoline_201863462940+0x96/0xf4
+     [<000003ff600e3a40>] bpf_prog_05f379658fdd72f2_classifier_0+0x58/0xc0
+     [<000003ffe0aef070>] bpf_test_run+0x210/0x390
+     [<000003ffe0af0dc2>] bpf_prog_test_run_skb+0x25a/0x668
+     [<000003ffe038a90e>] __sys_bpf+0xa46/0xdb0
+     [<000003ffe038ad0c>] __s390x_sys_bpf+0x44/0x50
+     [<000003ffe0defea8>] __do_syscall+0x150/0x280
+     [<000003ffe0e01d5c>] system_call+0x74/0x98
+
+Fixes: 054623105728 ("s390/bpf: Add s390x eBPF JIT compiler backend")
+Signed-off-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/r/20250512122717.54878-1-iii@linux.ibm.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ arch/s390/net/bpf_jit_comp.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
 
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -413,23 +413,22 @@ static int armada_37xx_gpio_direction_ou
- 					     unsigned int offset, int value)
- {
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
--	unsigned int val_offset = offset;
--	unsigned int reg = OUTPUT_EN;
-+	unsigned int en_offset = offset;
-+	unsigned int reg = OUTPUT_VAL;
- 	unsigned int mask, val, ret;
- 
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
-+	val = value ? mask : 0;
- 
--	ret = regmap_update_bits(info->regmap, reg, mask, mask);
--
-+	ret = regmap_update_bits(info->regmap, reg, mask, val);
- 	if (ret)
- 		return ret;
- 
--	reg = OUTPUT_VAL;
--	armada_37xx_update_reg(&reg, &val_offset);
-+	reg = OUTPUT_EN;
-+	armada_37xx_update_reg(&reg, &en_offset);
- 
--	val = value ? mask : 0;
--	regmap_update_bits(info->regmap, reg, mask, val);
-+	regmap_update_bits(info->regmap, reg, mask, mask);
- 
- 	return 0;
+diff --git a/arch/s390/net/bpf_jit_comp.c b/arch/s390/net/bpf_jit_comp.c
+index 88020b4ddbab6..0c7f4c1ff3479 100644
+--- a/arch/s390/net/bpf_jit_comp.c
++++ b/arch/s390/net/bpf_jit_comp.c
+@@ -543,17 +543,15 @@ static void bpf_jit_prologue(struct bpf_jit *jit, u32 stack_depth)
+ 	}
+ 	/* Setup stack and backchain */
+ 	if (is_first_pass(jit) || (jit->seen & SEEN_STACK)) {
+-		if (is_first_pass(jit) || (jit->seen & SEEN_FUNC))
+-			/* lgr %w1,%r15 (backchain) */
+-			EMIT4(0xb9040000, REG_W1, REG_15);
++		/* lgr %w1,%r15 (backchain) */
++		EMIT4(0xb9040000, REG_W1, REG_15);
+ 		/* la %bfp,STK_160_UNUSED(%r15) (BPF frame pointer) */
+ 		EMIT4_DISP(0x41000000, BPF_REG_FP, REG_15, STK_160_UNUSED);
+ 		/* aghi %r15,-STK_OFF */
+ 		EMIT4_IMM(0xa70b0000, REG_15, -(STK_OFF + stack_depth));
+-		if (is_first_pass(jit) || (jit->seen & SEEN_FUNC))
+-			/* stg %w1,152(%r15) (backchain) */
+-			EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
+-				      REG_15, 152);
++		/* stg %w1,152(%r15) (backchain) */
++		EMIT6_DISP_LH(0xe3000000, 0x0024, REG_W1, REG_0,
++			      REG_15, 152);
+ 	}
  }
+ 
+-- 
+2.39.5
+
 
 
 
