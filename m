@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E43AFAE442B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 968E2AE445B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1007017D7B6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 710F14A14DC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E052524DFF3;
-	Mon, 23 Jun 2025 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC39254AEC;
+	Mon, 23 Jun 2025 13:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gf2NZvIj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcuFsGIl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E54330E84D;
-	Mon, 23 Jun 2025 13:33:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC1030E84D;
+	Mon, 23 Jun 2025 13:35:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685621; cv=none; b=JrVxtKOI549uXP8doTD61Ib28U5Z4QtX5zKGfhoTCo3UB83mXT7YfJRdyDeH5QFTRImABEdBVYUVBacwEhTP7j6uNKvdcbK9UyKccGlvINLp3NnmuPGbMghFjDDJKp9T0D3tZHqiB0zBgWSctCxwiwo4PGCO+UnzgFXi9mpUCLg=
+	t=1750685706; cv=none; b=PCs2Fp0mQpOkp0FiEw6tXV2aFwbcUe8q+90kNwdpuUQfyZSNslHhKP2jwGvAJHwG7SHoAPzBzV8Jk0Ho24v+IyDe7q4A0C0UPNjVnmn5dBgAjtq+EE4+YptmZB/lHvewBsaqZOJ7xM2uwhGfCUuKRXJICa3D4AZ7qPWlVFL0MQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685621; c=relaxed/simple;
-	bh=pg+GJkCGyMx5uz/ss9zqCTXx7iomeCOHMNdPTlxovik=;
+	s=arc-20240116; t=1750685706; c=relaxed/simple;
+	bh=jBU4ObT3cerIaka4g4gJgz59uaOkSOEiNyRHxDbj9fA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ig7F++4XI/fWHYipj6T6qwz4IK0ZAGv22DIS9f8KgMLStLwXy/T1lec0BMAJgUsmQJ6Ol+Hr2TKr31bEH0lN6aFMk9yL6XFo2Cn8+bG0jg9mN5rgjxFXslvfB3GpnwHs4lIj8lr3D2lnUUZ5RBHujBybiQbxHqpz0UfpkGsKnfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gf2NZvIj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7F6EC4CEEA;
-	Mon, 23 Jun 2025 13:33:40 +0000 (UTC)
+	 MIME-Version; b=LW3taUXP0yhfgL9XBtaQXAERa7MG8yb6H1EB0V8cRuaEu1Qwni0VZyEXSzSJr5zqF2Aahuiyrx2dt83s+P901OjnhmhOoUqLQUFrIkG6Cwk9Egng1VzcDaYBxWPNS+YJOEILNqIH/XT9SK5iX0XwwSDnGIc0rDcfLUh+jSSzvHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcuFsGIl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9226DC4CEEA;
+	Mon, 23 Jun 2025 13:35:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685621;
-	bh=pg+GJkCGyMx5uz/ss9zqCTXx7iomeCOHMNdPTlxovik=;
+	s=korg; t=1750685705;
+	bh=jBU4ObT3cerIaka4g4gJgz59uaOkSOEiNyRHxDbj9fA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gf2NZvIjfrULSjcpRVIRcR74IVjHaMxdcq4XXnWvTJp+QVTiALV0iRkcT+QFnj4zP
-	 jwjwk0q3aOD4ZBL4+FloKa76oZ8v8yWBnaisWIETGEh9fEvnnSh0WS2gMtVqpnKXYN
-	 ABypd9ID/DEmGDSnb3uYXHn6S9mfTYcozsyAgtNo=
+	b=RcuFsGIlVBBvQ4BakA9S8WgETGAikOEoZ1zUWDyYMVJMmOJZ69mu49CNude/PwnhK
+	 w1J0pcnmVFt+Xwxngq4wW1c0lbs7bR622crvqaYNMuTKgWMExHMW/KfkC8k789cm+j
+	 MHbtA8lWgSkNBQH9QZ+B1VlWRV4C2yz5kPtCE8RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Raczynski <j.raczynski@samsung.com>,
-	Wenjing Shan <wenjing.shan@samsung.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 096/222] net/mdiobus: Fix potential out-of-bounds read/write access
-Date: Mon, 23 Jun 2025 15:07:11 +0200
-Message-ID: <20250623130614.995034353@linuxfoundation.org>
+Subject: [PATCH 5.4 097/222] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
+Date: Mon, 23 Jun 2025 15:07:12 +0200
+Message-ID: <20250623130615.025290070@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,59 +66,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jakub Raczynski <j.raczynski@samsung.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 0e629694126ca388916f059453a1c36adde219c4 ]
+[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
 
-When using publicly available tools like 'mdio-tools' to read/write data
-from/to network interface and its PHY via mdiobus, there is no verification of
-parameters passed to the ioctl and it accepts any mdio address.
-Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
-but it is possible to pass higher value than that via ioctl.
-While read/write operation should generally fail in this case,
-mdiobus provides stats array, where wrong address may allow out-of-bounds
-read/write.
+fs_name() has @index as unsigned int, so there is underflow risk for
+operation '@index--'.
 
-Fix that by adding address verification before read/write operation.
-While this excludes this access from any statistics, it improves security of
-read/write operation.
+Fix by breaking the for loop when '@index == 0' which is also more proper
+than '@index <= 0' for unsigned integer comparison.
 
-Fixes: 080bb352fad00 ("net: phy: Maintain MDIO device and bus statistics")
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
-Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/filesystems.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index e5c25beae21e0..931b9a6c5dc50 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -565,6 +565,9 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+--- a/fs/filesystems.c
++++ b/fs/filesystems.c
+@@ -155,15 +155,19 @@ static int fs_index(const char __user *
+ static int fs_name(unsigned int index, char __user * buf)
+ {
+ 	struct file_system_type * tmp;
+-	int len, res;
++	int len, res = -EINVAL;
  
- 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
+ 	read_lock(&file_systems_lock);
+-	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
+-		if (index <= 0 && try_module_get(tmp->owner))
++	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
++		if (index == 0) {
++			if (try_module_get(tmp->owner))
++				res = 0;
+ 			break;
++		}
++	}
+ 	read_unlock(&file_systems_lock);
+-	if (!tmp)
+-		return -EINVAL;
++	if (res)
++		return res;
  
-+	if (addr >= PHY_MAX_ADDR)
-+		return -ENXIO;
-+
- 	if (bus->read)
- 		retval = bus->read(bus, addr, regnum);
- 	else
-@@ -593,6 +596,9 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
- 
- 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
- 
-+	if (addr >= PHY_MAX_ADDR)
-+		return -ENXIO;
-+
- 	if (bus->write)
- 		err = bus->write(bus, addr, regnum, val);
- 	else
--- 
-2.39.5
-
+ 	/* OK, we got the reference, so we can safely block */
+ 	len = strlen(tmp->name) + 1;
 
 
 
