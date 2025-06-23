@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD04AE4FB6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F560AE533E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6AA901B615E5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0C0211B66751
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1D4F1EF397;
-	Mon, 23 Jun 2025 21:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C65A1F4628;
+	Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OIN1PQhW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="amZkpWs/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF13A1EDA0F;
-	Mon, 23 Jun 2025 21:18:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C12A19049B;
+	Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713487; cv=none; b=L8kFPYwe26x/RJ65pwPSqJIMo4oxCn3+oWDmXguj8O6eHTgciyaY8xpVwdGN7G3avN0dNBnDDbdKmJ+NsyrcJsm3dfZHSwghoQD1hfH0p514cD5Lqkx0orsvxJwY4L7kP2LLqWIbRoiFkkawe5m9cZz43xZ/xW3ANP3BHS0Rjxc=
+	t=1750715477; cv=none; b=W8RM/yeZAq58J7xSSPyEzsiCCQY27Vm2D4fXNvR4ITE68grtd0G7KP2G6H62fFB5NDMhyWuSWidI0rbMLjWDRYbe+Wi78+9sc4gajkoi2IlVXy6xeJwodyyWiLvThI9eNXPQBsI90poIiGPxW0mP9zeMG2BNa1KkvLWDmBVFOEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713487; c=relaxed/simple;
-	bh=Spn/OWQqEkdrqAj5onNNE9JY93AbSw18WHnHnBMyqMA=;
+	s=arc-20240116; t=1750715477; c=relaxed/simple;
+	bh=XhIrbpUoksmRlnWo5tsAoscKSh2Mqw9a+w0LsweCK9c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmShApxhPCCaNrIk8VBiz9icZqTHI9WO08F9xsaLc+tD+diLahJCMTiq7YgnHeQDN4w/Toi3JGIDQcNncb1cM6X6wxffLA6OhcSacAj7eUS8ul0szmkjAMRgzbslB/l11vs+kuISnjfBxfSptx11euKgK/HSKb5CDL72UCsAI50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OIN1PQhW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46354C4CEEA;
-	Mon, 23 Jun 2025 21:18:07 +0000 (UTC)
+	 MIME-Version; b=ZHDD1yxxgEi/IdK5zwwFc/xYplET22yoFY9FLhRUV2r300x4QKGOwWQ2j2gmCTyl+6Swy5RebFnLjeGi18sm2dU9ELv2mge4ysh7vMqNTXxXNdS7LS69NSi3l4aORsJZ6gAUSCzV4KnT2tEFT7SYXeZIcBi5AmdoO2cGgCbJa7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=amZkpWs/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8016C4CEEA;
+	Mon, 23 Jun 2025 21:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713487;
-	bh=Spn/OWQqEkdrqAj5onNNE9JY93AbSw18WHnHnBMyqMA=;
+	s=korg; t=1750715477;
+	bh=XhIrbpUoksmRlnWo5tsAoscKSh2Mqw9a+w0LsweCK9c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OIN1PQhWgHHTGwjb6bYSF37cWawvw4s32MqCnKW3eAYisZX5Z6hf6LZPQck8j+CZN
-	 rMA2rBGWJ5+vJwK9bytm/ijQD820BMqVQ+KiLSwscRBNe/C2FZuqOouf8i95y6nPt2
-	 neKfuQ4DgaQw4uz6DobIOy1a0Hb/jH2QizggU3EM=
+	b=amZkpWs/CIqh3BsrNVPcGCko2RUvOml1EmIajAhamATDi6Vm/amJdoiojf7yZ6gDt
+	 zZzgizwbACfV7kQyIKO120fHSfiR33RY8dUGuuqkIV+JlM1/xGzgszpRb47faP08Uy
+	 bUuJb/+mSRL5RMaCkye1bI7SZmUEobBISJXYQW+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Daniel Wagner <wagi@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 350/592] net: page_pool: Dont recycle into cache on PREEMPT_RT
+Subject: [PATCH 6.1 263/508] nvmet-fcloop: access fcpreq only when holding reqlock
 Date: Mon, 23 Jun 2025 15:05:08 +0200
-Message-ID: <20250623130708.772199303@linuxfoundation.org>
+Message-ID: <20250623130651.717531128@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit 32471b2f481dea8624f27669d36ffd131d24b732 ]
+[ Upstream commit 47a827cd7929d0550c3496d70b417fcb5649b27b ]
 
-With preemptible softirq and no per-CPU locking in local_bh_disable() on
-PREEMPT_RT the consumer can be preempted while a skb is returned.
+The abort handling logic expects that the state and the fcpreq are only
+accessed when holding the reqlock lock.
 
-Avoid the race by disabling the recycle into the cache on PREEMPT_RT.
+While at it, only handle the aborts in the abort handler.
 
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Cc: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250512092736.229935-2-bigeasy@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/page_pool.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvme/target/fcloop.c | 31 ++++++++++++++++---------------
+ 1 file changed, 16 insertions(+), 15 deletions(-)
 
-diff --git a/net/core/page_pool.c b/net/core/page_pool.c
-index 2d9c51f480fb5..3eabe78c93f4c 100644
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -836,6 +836,10 @@ static bool page_pool_napi_local(const struct page_pool *pool)
- 	const struct napi_struct *napi;
- 	u32 cpuid;
+diff --git a/drivers/nvme/target/fcloop.c b/drivers/nvme/target/fcloop.c
+index 787dfb3859a0d..74fffcab88155 100644
+--- a/drivers/nvme/target/fcloop.c
++++ b/drivers/nvme/target/fcloop.c
+@@ -613,12 +613,13 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ {
+ 	struct fcloop_fcpreq *tfcp_req =
+ 		container_of(work, struct fcloop_fcpreq, fcp_rcv_work);
+-	struct nvmefc_fcp_req *fcpreq = tfcp_req->fcpreq;
++	struct nvmefc_fcp_req *fcpreq;
+ 	unsigned long flags;
+ 	int ret = 0;
+ 	bool aborted = false;
  
-+	/* On PREEMPT_RT the softirq can be preempted by the consumer */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT))
-+		return false;
+ 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
++	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_START:
+ 		tfcp_req->inistate = INI_IO_ACTIVE;
+@@ -633,16 +634,19 @@ fcloop_fcp_recv_work(struct work_struct *work)
+ 	}
+ 	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+ 
+-	if (unlikely(aborted))
+-		ret = -ECANCELED;
+-	else {
+-		if (likely(!check_for_drop(tfcp_req)))
+-			ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
+-				&tfcp_req->tgt_fcp_req,
+-				fcpreq->cmdaddr, fcpreq->cmdlen);
+-		else
+-			pr_info("%s: dropped command ********\n", __func__);
++	if (unlikely(aborted)) {
++		/* the abort handler will call fcloop_call_host_done */
++		return;
++	}
 +
- 	if (unlikely(!in_softirq()))
- 		return false;
++	if (unlikely(check_for_drop(tfcp_req))) {
++		pr_info("%s: dropped command ********\n", __func__);
++		return;
+ 	}
++
++	ret = nvmet_fc_rcv_fcp_req(tfcp_req->tport->targetport,
++				   &tfcp_req->tgt_fcp_req,
++				   fcpreq->cmdaddr, fcpreq->cmdlen);
+ 	if (ret)
+ 		fcloop_call_host_done(fcpreq, tfcp_req, ret);
  
+@@ -659,9 +663,10 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 	unsigned long flags;
+ 
+ 	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+-	fcpreq = tfcp_req->fcpreq;
+ 	switch (tfcp_req->inistate) {
+ 	case INI_IO_ABORTED:
++		fcpreq = tfcp_req->fcpreq;
++		tfcp_req->fcpreq = NULL;
+ 		break;
+ 	case INI_IO_COMPLETED:
+ 		completed = true;
+@@ -683,10 +688,6 @@ fcloop_fcp_abort_recv_work(struct work_struct *work)
+ 		nvmet_fc_rcv_fcp_abort(tfcp_req->tport->targetport,
+ 					&tfcp_req->tgt_fcp_req);
+ 
+-	spin_lock_irqsave(&tfcp_req->reqlock, flags);
+-	tfcp_req->fcpreq = NULL;
+-	spin_unlock_irqrestore(&tfcp_req->reqlock, flags);
+-
+ 	fcloop_call_host_done(fcpreq, tfcp_req, -ECANCELED);
+ 	/* call_host_done releases reference for abort downcall */
+ }
 -- 
 2.39.5
 
