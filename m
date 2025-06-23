@@ -1,56 +1,69 @@
-Return-Path: <stable+bounces-157930-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F221AE5649
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60A41AE5609
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93AB21671B3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCEA27B1E76
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049212253B0;
-	Mon, 23 Jun 2025 22:17:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 924EA223708;
+	Mon, 23 Jun 2025 22:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BLFzthqm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j/WNtzvM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D421FF2B;
-	Mon, 23 Jun 2025 22:17:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EFB01F7580;
+	Mon, 23 Jun 2025 22:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717067; cv=none; b=TdFtAqSmUWomZSU3jpAT/Z02oMa+rqsZhAL0QG7XYR2TL+Sk2JsryrkBnQjlkbTTCcWb+CwhnCTvpLhPGRKODuMFcH0gp5pypMdlX5QaJPKIdrFo+YlLbYgGsz4wVTWRTXP2sgxUi55q2qbwTkfKXPQfX4u3mxZgEfcfdRGRybA=
+	t=1750717033; cv=none; b=n8a9srIXEw16Yt3BWvNBeYqGzy/9dNk3VUP0d8p3buVUGdaqqB5nEuMmrTtL4C2eipEXHvoZdLJ68ghT8yAr34OAW3N1veBUrlNVSbPT8CAEVVpCquGET2FvvhBEtWAE6ZRjkexForNW4o8Bo2WBJ5GlOnPPIBJQ9VqJDcOXcNM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717067; c=relaxed/simple;
-	bh=2mZqwiOZc1NQ5EgdSaHVQT3kNGxRZ0fjnSI/Rfh8wFU=;
+	s=arc-20240116; t=1750717033; c=relaxed/simple;
+	bh=mA2JlrbQl7AhTgYiKSUMX9E18GuHyPp2Va7WjYH+Jlg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/5kcnPAFamoW6eKzLPQqjUUSYMvnNjfwisdaPsxS0HTxyuDGuD+wUjhWmNmWO4dL1KCi/MJ3qRZz5zVDQxgWHq6DitiJLtmN01/K3EqDK1PrQwjCRyZF+REHk37KrfrnwcoVO7eHQNOky1iYpb3pQjign99dCkLOkZswDaeW0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BLFzthqm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47963C4CEEA;
-	Mon, 23 Jun 2025 22:17:47 +0000 (UTC)
+	 MIME-Version; b=ppWbSLW1qlliJBjoTk1eqbyfi5EH0FqpS0sgCC4E3qSAWlHk1MaFj7hgNSHKv0LVHtAEiQ9bO9650bstnRYsZGTJ83S/e0bpvVpftk3/YXtcxjFj8yPtQ8c/z8fLlTv21rdUnLhtqjcKaOG8jklidonprtLO176dblMIXlvyj3w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j/WNtzvM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5F0CC4CEEA;
+	Mon, 23 Jun 2025 22:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717067;
-	bh=2mZqwiOZc1NQ5EgdSaHVQT3kNGxRZ0fjnSI/Rfh8wFU=;
+	s=korg; t=1750717033;
+	bh=mA2JlrbQl7AhTgYiKSUMX9E18GuHyPp2Va7WjYH+Jlg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BLFzthqmx7hPcLKPDbBFbHrETQSRpb2zyBELEO6mPq9JhzsJ/k/80WlzaQCJ2+bsg
-	 WSQrlNSZEivYeAXnOf8HOfih2FGdWlhj2734Q6WhqITZ/s9CXrtcsR/XNmtI2nMGfz
-	 wD5N/XTjNbEKQ2CmhOKcXHoDHOsXEpMiC1W1LW7M=
+	b=j/WNtzvM69MKamLRDYZVBUO4Mkpzbkb2q39LHzkUFjQLLZ1NRqwuXGVugSsVV+taQ
+	 k0H+zlAdJbNAeSD2bo1TU2TAZ4hjISCbW/jF3oVXrMI/H/PhUNynA6YEWM2pWKDCrG
+	 pD+EcOajDkSuNuOTET31a3i+Sibp2JF6KSaE4O9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Morse <james.morse@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Pu Lehui <pulehui@huawei.com>
-Subject: [PATCH 5.15 392/411] arm64: proton-pack: Expose whether the branchy loop k value
-Date: Mon, 23 Jun 2025 15:08:56 +0200
-Message-ID: <20250623130643.545537108@linuxfoundation.org>
+	Ian Rogers <irogers@google.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Jiapeng Chong <jiapeng.chong@linux.alibaba.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Michael Petlan <mpetlan@redhat.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Namhyung Kim <namhyung.kim@lge.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 579/592] perf evsel: Missed close() when probing hybrid core PMUs
+Date: Mon, 23 Jun 2025 15:08:57 +0200
+Message-ID: <20250623130714.209725389@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +75,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit a1152be30a043d2d4dcb1683415f328bf3c51978 ]
+[ Upstream commit ebec62bc7ec435b475722a5467d67c720a1ad79f ]
 
-Add a helper to expose the k value of the branchy loop. This is needed
-by the BPF JIT to generate the mitigation sequence in BPF programs.
+Add missing close() to avoid leaking perf events.
 
-Signed-off-by: James Morse <james.morse@arm.com>
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Pu Lehui <pulehui@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In past perfs this mattered little as the function was just used by 'perf
+list'.
+
+As the function is now used to detect hybrid PMUs leaking the perf event
+is somewhat more painful.
+
+Fixes: b41f1cec91c37eee ("perf list: Skip unsupported events")
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Andi Kleen <ak@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiapeng Chong <jiapeng.chong@linux.alibaba.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Michael Petlan <mpetlan@redhat.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Namhyung Kim <namhyung.kim@lge.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Tiezhu Yang <yangtiezhu@loongson.cn>
+Link: https://lore.kernel.org/r/20250614004108.1650988-2-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/spectre.h |    1 +
- arch/arm64/kernel/proton-pack.c  |    5 +++++
- 2 files changed, 6 insertions(+)
+ tools/perf/util/print-events.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/arm64/include/asm/spectre.h
-+++ b/arch/arm64/include/asm/spectre.h
-@@ -97,6 +97,7 @@ enum mitigation_state arm64_get_meltdown
+diff --git a/tools/perf/util/print-events.c b/tools/perf/util/print-events.c
+index a786cbfb0ff56..83aaf7cda6359 100644
+--- a/tools/perf/util/print-events.c
++++ b/tools/perf/util/print-events.c
+@@ -268,6 +268,7 @@ bool is_event_supported(u8 type, u64 config)
+ 			ret = evsel__open(evsel, NULL, tmap) >= 0;
+ 		}
  
- enum mitigation_state arm64_get_spectre_bhb_state(void);
- bool is_spectre_bhb_affected(const struct arm64_cpu_capabilities *entry, int scope);
-+u8 get_spectre_bhb_loop_value(void);
- bool is_spectre_bhb_fw_mitigated(void);
- void spectre_bhb_enable_mitigation(const struct arm64_cpu_capabilities *__unused);
- bool try_emulate_el1_ssbs(struct pt_regs *regs, u32 instr);
---- a/arch/arm64/kernel/proton-pack.c
-+++ b/arch/arm64/kernel/proton-pack.c
-@@ -998,6 +998,11 @@ bool is_spectre_bhb_affected(const struc
- 	return true;
- }
++		evsel__close(evsel);
+ 		evsel__delete(evsel);
+ 	}
  
-+u8 get_spectre_bhb_loop_value(void)
-+{
-+	return max_bhb_k;
-+}
-+
- static void this_cpu_set_vectors(enum arm64_bp_harden_el1_vectors slot)
- {
- 	const char *v = arm64_get_bp_hardening_vector(slot);
+-- 
+2.39.5
+
 
 
 
