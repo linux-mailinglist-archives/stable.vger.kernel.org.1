@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBD4AE554D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54516AE55BA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B464C135C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 308213B9D01
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 371E4221DA8;
-	Mon, 23 Jun 2025 22:09:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F17522A4DA;
+	Mon, 23 Jun 2025 22:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w1X2TqRa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XAZcQBkF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F041F7580;
-	Mon, 23 Jun 2025 22:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A907B676;
+	Mon, 23 Jun 2025 22:11:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716563; cv=none; b=U6cf/8vyeL5Ej+rWR/JCLrX2itLAYW0Wco/GJSr6jLd4P7TLl/HMjzZQk1RzvO9iXtAxitb5nwRot4DVv9HSsGA8QIHp2yTDNzmSF2PjTgONO4+QHgbO/2BC+lK22fmbHdYb7wZ2DzT7YvvIgpOKoQXOWeb5VRO1IA5EAG8Hc8M=
+	t=1750716713; cv=none; b=gTFQ5dr5JvWFBU/dQ/iE4SLDpl8GxeDaF5OqPcJj8w9AYGw9N7sSlcFSFZgxFkiTfMyDFQ2gsP0nLv7//GOV4Ux6f8DpXL6M+lLBebArKqZOD/vBUiT4LHgPLyCE6m/hTkuEd9QQ468tLzoVaXLefb9y6IcTNLgl/VKHg4VNlHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716563; c=relaxed/simple;
-	bh=oGPFw4EiPXTdvdB1XN/8FvIh+QczlHy59gMnjihVoDg=;
+	s=arc-20240116; t=1750716713; c=relaxed/simple;
+	bh=XGmgBrySy82Ub6N+ZYyGMnH2XqazRGVTyAJEetRsTg4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rt5Ndl80MaPCk+4bbIaGsir6n1M845clN9Ly99Vy54dg090/aMWosCKDeFmDjpptV5WSKufU471m0XBzr+lKorSGq1ZujEuG0ltNgPK1w2Mk3voLLn203RtCcOilLu1L8Mh+29imvWiwgX51CuHBWul4V0oNRCaKxKJt4LdAIl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w1X2TqRa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE3EC4CEEA;
-	Mon, 23 Jun 2025 22:09:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s6wCCv0bhnV+4gHtMRI4MeYiXF+ay9oPGH1kCEGQJZrPrNGcTShP3UIycwrv8Jo++Pc4RV00EoQl/Gf38axHksCiNelej1S/TLa7NE76IBFT1TVlyfVz4jn8zkZuxw9ZiNeeQdO35Y02iaqRV6BeQaki0VG3ziq31uGrxoyhiwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XAZcQBkF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE171C4CEEA;
+	Mon, 23 Jun 2025 22:11:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716561;
-	bh=oGPFw4EiPXTdvdB1XN/8FvIh+QczlHy59gMnjihVoDg=;
+	s=korg; t=1750716713;
+	bh=XGmgBrySy82Ub6N+ZYyGMnH2XqazRGVTyAJEetRsTg4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w1X2TqRaKDMxRRDeGdoALMQi3UqPUnrfoKJNXK8U8vdG/birjYxUGr/rlvcNXiwru
-	 3vQzx5s9moZ/l9mh0/c5PEKD2q4cAIk9NlrB5tRhosr3X/tMf2wxBe0YstQqiTWKFL
-	 xhtB4yrgTRGMybN7cLfZu5+WEP3F02pd1SlreHlc=
+	b=XAZcQBkF+GwhSHhLR/Un7ea4K+1RgosB9P0QVSvSe4El1sVcnKT6eNWwop1dI/cSR
+	 fyQ9CJcXJEAxE/pJbzpAZ2RHtfXAAZYLHlCsbpan6P1DmBkLFT8zI9Vd5mL5JWPD7E
+	 YD65WUlpQrw43vHKUOKHSH/ZG425UIXtQMjH2e18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 538/592] mpls: Use rcu_dereference_rtnl() in mpls_route_input_rcu().
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 5.15 352/411] selftests/x86: Add a test to detect infinite SIGTRAP handler loop
 Date: Mon, 23 Jun 2025 15:08:16 +0200
-Message-ID: <20250623130713.233401694@linuxfoundation.org>
+Message-ID: <20250623130642.509572419@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 6dbb0d97c5096072c78a6abffe393584e57ae945 ]
+commit f287822688eeb44ae1cf6ac45701d965efc33218 upstream.
 
-As syzbot reported [0], mpls_route_input_rcu() can be called
-from mpls_getroute(), where is under RTNL.
+When FRED is enabled, if the Trap Flag (TF) is set without an external
+debugger attached, it can lead to an infinite loop in the SIGTRAP
+handler.  To avoid this, the software event flag in the augmented SS
+must be cleared, ensuring that no single-step trap remains pending when
+ERETU completes.
 
-net->mpls.platform_label is only updated under RTNL.
+This test checks for that specific scenario—verifying whether the kernel
+correctly prevents an infinite SIGTRAP loop in this edge case when FRED
+is enabled.
 
-Let's use rcu_dereference_rtnl() in mpls_route_input_rcu() to
-silence the splat.
+The test should _always_ pass with IDT event delivery, thus no need to
+disable the test even when FRED is not enabled.
 
-[0]:
-WARNING: suspicious RCU usage
-6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 Not tainted
- ----------------------------
-net/mpls/af_mpls.c:84 suspicious rcu_dereference_check() usage!
-
-other info that might help us debug this:
-
-rcu_scheduler_active = 2, debug_locks = 1
-1 lock held by syz.2.4451/17730:
- #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnl_lock net/core/rtnetlink.c:80 [inline]
- #0: ffffffff9012a3e8 (rtnl_mutex){+.+.}-{4:4}, at: rtnetlink_rcv_msg+0x371/0xe90 net/core/rtnetlink.c:6961
-
-stack backtrace:
-CPU: 1 UID: 0 PID: 17730 Comm: syz.2.4451 Not tainted 6.15.0-rc7-syzkaller-00082-g5cdb2c77c4c3 #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/07/2025
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x16c/0x1f0 lib/dump_stack.c:120
- lockdep_rcu_suspicious+0x166/0x260 kernel/locking/lockdep.c:6865
- mpls_route_input_rcu+0x1d4/0x200 net/mpls/af_mpls.c:84
- mpls_getroute+0x621/0x1ea0 net/mpls/af_mpls.c:2381
- rtnetlink_rcv_msg+0x3c9/0xe90 net/core/rtnetlink.c:6964
- netlink_rcv_skb+0x16d/0x440 net/netlink/af_netlink.c:2534
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa98/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmmsg+0x200/0x420 net/socket.c:2709
- __do_sys_sendmmsg net/socket.c:2736 [inline]
- __se_sys_sendmmsg net/socket.c:2733 [inline]
- __x64_sys_sendmmsg+0x9c/0x100 net/socket.c:2733
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x230 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0a2818e969
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007f0a28f52038 EFLAGS: 00000246 ORIG_RAX: 0000000000000133
-RAX: ffffffffffffffda RBX: 00007f0a283b5fa0 RCX: 00007f0a2818e969
-RDX: 0000000000000003 RSI: 0000200000000080 RDI: 0000000000000003
-RBP: 00007f0a28210ab1 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 0000000000000000 R14: 00007f0a283b5fa0 R15: 00007ffce5e9f268
- </TASK>
-
-Fixes: 0189197f4416 ("mpls: Basic routing support")
-Reported-by: syzbot+8a583bdd1a5cc0b0e068@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/68507981.a70a0220.395abc.01ef.GAE@google.com/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616201532.1036568-1-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250609084054.2083189-3-xin%40zytor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mpls/af_mpls.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/x86/Makefile       |    2 
+ tools/testing/selftests/x86/sigtrap_loop.c |  101 +++++++++++++++++++++++++++++
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/x86/sigtrap_loop.c
 
-diff --git a/net/mpls/af_mpls.c b/net/mpls/af_mpls.c
-index 1f63b32d76d67..aab2e79fcff04 100644
---- a/net/mpls/af_mpls.c
-+++ b/net/mpls/af_mpls.c
-@@ -81,8 +81,8 @@ static struct mpls_route *mpls_route_input_rcu(struct net *net, unsigned index)
+--- a/tools/testing/selftests/x86/Makefile
++++ b/tools/testing/selftests/x86/Makefile
+@@ -12,7 +12,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_
  
- 	if (index < net->mpls.platform_labels) {
- 		struct mpls_route __rcu **platform_label =
--			rcu_dereference(net->mpls.platform_label);
--		rt = rcu_dereference(platform_label[index]);
-+			rcu_dereference_rtnl(net->mpls.platform_label);
-+		rt = rcu_dereference_rtnl(platform_label[index]);
- 	}
- 	return rt;
- }
--- 
-2.39.5
-
+ TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
+ 			check_initial_reg_state sigreturn iopl ioperm \
+-			test_vsyscall mov_ss_trap \
++			test_vsyscall mov_ss_trap sigtrap_loop \
+ 			syscall_arg_fault fsgsbase_restore sigaltstack
+ TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
+ 			test_FCMOV test_FCOMI test_FISTTP \
+--- /dev/null
++++ b/tools/testing/selftests/x86/sigtrap_loop.c
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
++#define _GNU_SOURCE
++
++#include <err.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ucontext.h>
++
++#ifdef __x86_64__
++# define REG_IP REG_RIP
++#else
++# define REG_IP REG_EIP
++#endif
++
++static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *), int flags)
++{
++	struct sigaction sa;
++
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_sigaction = handler;
++	sa.sa_flags = SA_SIGINFO | flags;
++	sigemptyset(&sa.sa_mask);
++
++	if (sigaction(sig, &sa, 0))
++		err(1, "sigaction");
++
++	return;
++}
++
++static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
++{
++	ucontext_t *ctx = (ucontext_t *)ctx_void;
++	static unsigned int loop_count_on_same_ip;
++	static unsigned long last_trap_ip;
++
++	if (last_trap_ip == ctx->uc_mcontext.gregs[REG_IP]) {
++		printf("\tTrapped at %016lx\n", last_trap_ip);
++
++		/*
++		 * If the same IP is hit more than 10 times in a row, it is
++		 * _considered_ an infinite loop.
++		 */
++		if (++loop_count_on_same_ip > 10) {
++			printf("[FAIL]\tDetected SIGTRAP infinite loop\n");
++			exit(1);
++		}
++
++		return;
++	}
++
++	loop_count_on_same_ip = 0;
++	last_trap_ip = ctx->uc_mcontext.gregs[REG_IP];
++	printf("\tTrapped at %016lx\n", last_trap_ip);
++}
++
++int main(int argc, char *argv[])
++{
++	sethandler(SIGTRAP, sigtrap, 0);
++
++	/*
++	 * Set the Trap Flag (TF) to single-step the test code, therefore to
++	 * trigger a SIGTRAP signal after each instruction until the TF is
++	 * cleared.
++	 *
++	 * Because the arithmetic flags are not significant here, the TF is
++	 * set by pushing 0x302 onto the stack and then popping it into the
++	 * flags register.
++	 *
++	 * Four instructions in the following asm code are executed with the
++	 * TF set, thus the SIGTRAP handler is expected to run four times.
++	 */
++	printf("[RUN]\tSIGTRAP infinite loop detection\n");
++	asm volatile(
++#ifdef __x86_64__
++		/*
++		 * Avoid clobbering the redzone
++		 *
++		 * Equivalent to "sub $128, %rsp", however -128 can be encoded
++		 * in a single byte immediate while 128 uses 4 bytes.
++		 */
++		"add $-128, %rsp\n\t"
++#endif
++		"push $0x302\n\t"
++		"popf\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"push $0x202\n\t"
++		"popf\n\t"
++#ifdef __x86_64__
++		"sub $-128, %rsp\n\t"
++#endif
++	);
++
++	printf("[OK]\tNo SIGTRAP infinite loop detected\n");
++	return 0;
++}
 
 
 
