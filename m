@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-157663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A50CEAE5501
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ED33AE5517
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6DC441B683D1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 270C83B9599
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6B62221FD6;
-	Mon, 23 Jun 2025 22:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 386B7222581;
+	Mon, 23 Jun 2025 22:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kkfk59E3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u+jRMHSu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F85A1E22E6;
-	Mon, 23 Jun 2025 22:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E783F1E22E6;
+	Mon, 23 Jun 2025 22:07:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716419; cv=none; b=fnthIbNGMmvi+lc8M9WXCQjDRZvK/vUP61u7x5z5GYVcBUYg1YE3HQ5AwPJaTQwrt1z0HiNkRG7DtpcOz/4EkRx0bQR65SsMPw4sw8fssdMEnbFisI9Pi/Q6ovTi+SetLBKZQGrLJ+WUoxb+oOeKNXQiLs6kw9bGfwi90jfHLRo=
+	t=1750716437; cv=none; b=Obxi0RBb44Jwj/XiaX/e84EqZM5CJ9dpKgBorgCliSJNAwBLBfSzxjUL4GG7r4BBiXNWN8g0egYtpzNvfxGD1gACLycCHXpfze8WIBtVXTftUrdJ2Sjqjwazxyhs3eTyMBVN91rvb8k4AfgtQ+7ll7tKlSSuQP2k+4mYDHe9JxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716419; c=relaxed/simple;
-	bh=z7XQ/OC366l9gJvKJHWBbC8qpSHv9LYhlSxLzJQZtI0=;
+	s=arc-20240116; t=1750716437; c=relaxed/simple;
+	bh=BAJLHlwU0JVwpPjdWYkYw21IpNIZRB5TUib7DDNI1NM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NRnDEBRCZcpWhA9FTwVB45vp/7+6oJIQ1bFsImyYRrkJju4763VgR9PH9wP+fug+Vbfb2x1fCIz72F4XXP7aok3G6X2dFR/8iYz9H/2G160RgGPPgefu+QQPJWY4STIj76d3+dSePCrmjsyZUtsseUU0NQPGYiXxwmxYcwAif2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kkfk59E3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B31C4CEEA;
-	Mon, 23 Jun 2025 22:06:59 +0000 (UTC)
+	 MIME-Version; b=Q0YwY2xOaSYSoIo/7M6G9MU2ltc/o6TmZc/X09d/GkyQhu04f0fnrxHfhsD48/pGS+h2WiLApihSV2ZSeNeOmR8uBt5xi2GzAHZ3+8s3dUTw5LJpGyaaro24OGbufaKE5CTyAu+uC7Mrs+/+sLPVgJF7Lw70lWCWxU0a2ENIwcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u+jRMHSu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72596C4CEEA;
+	Mon, 23 Jun 2025 22:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716419;
-	bh=z7XQ/OC366l9gJvKJHWBbC8qpSHv9LYhlSxLzJQZtI0=;
+	s=korg; t=1750716436;
+	bh=BAJLHlwU0JVwpPjdWYkYw21IpNIZRB5TUib7DDNI1NM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kkfk59E3ADqX5Yl+zmpVp530tKw7wAub53AjC/H/p5xxCmyGBerXnuID5mpv8Cm5O
-	 HdiV9y+b3mAYX3RAZ8tPZ+J7M32pH6jicPskL27fW/NFBM6tJVJ4MXFMkTVML7/ebH
-	 ogfDB4ncDC9v0nZd1gwcMOZDinN/PlP/LeavNI8M=
+	b=u+jRMHSuAiw+DHi/+Yi8EZb/XCS7ePFsz/ZIm5HOqm4QmeBQkGUHxRcg9KhJtY4wA
+	 P1G8vYhnf6PWdjB5xgyTSCUWTxKwmpJ2Q5YHhrpWaXbKPlBtoj8sTV0rcEWTHrfmr6
+	 bBHXP40/h7lkfHJX/dHo8WMWKxiRwYGPmeeO3ndk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Miaoqing Pan <quic_miaoqing@quicinc.com>,
 	Johan Hovold <johan+linaro@kernel.org>,
+	Steev Klimaszewski <steev@kali.org>,
+	Jens Glathe <jens.glathe@oldschoolsolutions.biz>,
 	Clayton Craft <clayton@craftyguy.net>,
 	Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Subject: [PATCH 6.1 301/508] wifi: ath11k: fix rx completion meta data corruption
-Date: Mon, 23 Jun 2025 15:05:46 +0200
-Message-ID: <20250623130652.707819576@linuxfoundation.org>
+Subject: [PATCH 6.1 302/508] wifi: ath11k: fix ring-buffer corruption
+Date: Mon, 23 Jun 2025 15:05:47 +0200
+Message-ID: <20250623130652.733009233@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -68,99 +71,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan+linaro@kernel.org>
 
-commit ab52e3e44fe9b666281752e2481d11e25b0e3fdd upstream.
+commit 6d037a372f817e9fcb56482f37917545596bd776 upstream.
 
-Add the missing memory barrier to make sure that the REO dest ring
-descriptor is read after the head pointer to avoid using stale data on
-weakly ordered architectures like aarch64.
+Users of the Lenovo ThinkPad X13s have reported that Wi-Fi sometimes
+breaks and the log fills up with errors like:
 
-This may fix the ring-buffer corruption worked around by commit
-f9fff67d2d7c ("wifi: ath11k: Fix SKB corruption in REO destination
-ring") by silently discarding data, and may possibly also address user
-reported errors like:
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1484, expected 1492
+    ath11k_pci 0006:01:00.0: HTC Rx: insufficient length, got 1460, expected 1484
 
-	ath11k_pci 0006:01:00.0: msdu_done bit in attention is not set
+which based on a quick look at the driver seemed to indicate some kind
+of ring-buffer corruption.
+
+Miaoqing Pan tracked it down to the host seeing the updated destination
+ring head pointer before the updated descriptor, and the error handling
+for that in turn leaves the ring buffer in an inconsistent state.
+
+Add the missing memory barrier to make sure that the descriptor is read
+after the head pointer to address the root cause of the corruption while
+fixing up the error handling in case there are ever any (ordering) bugs
+on the device side.
+
+Note that the READ_ONCE() are only needed to avoid compiler mischief in
+case the ring-buffer helpers are ever inlined.
 
 Tested-on: WCN6855 hw2.1 WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.41
 
 Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218623
+Link: https://lore.kernel.org/20250310010217.3845141-3-quic_miaoqing@quicinc.com
+Cc: Miaoqing Pan <quic_miaoqing@quicinc.com>
 Cc: stable@vger.kernel.org	# 5.6
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=218005
 Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Reviewed-by: Miaoqing Pan <quic_miaoqing@quicinc.com>
+Tested-by: Steev Klimaszewski <steev@kali.org>
+Tested-by: Jens Glathe <jens.glathe@oldschoolsolutions.biz>
 Tested-by: Clayton Craft <clayton@craftyguy.net>
-Link: https://patch.msgid.link/20250321145302.4775-1-johan+linaro@kernel.org
+Link: https://patch.msgid.link/20250321094916.19098-1-johan+linaro@kernel.org
 Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c |   25 ++++++++++++++++---------
- 1 file changed, 16 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath11k/ce.c  |   11 +++++------
+ drivers/net/wireless/ath/ath11k/hal.c |    4 ++--
+ 2 files changed, 7 insertions(+), 8 deletions(-)
 
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2648,7 +2648,7 @@ int ath11k_dp_process_rx(struct ath11k_b
- 	struct ath11k *ar;
- 	struct hal_reo_dest_ring *desc;
- 	enum hal_reo_dest_ring_push_reason push_reason;
--	u32 cookie;
-+	u32 cookie, info0, rx_msdu_info0, rx_mpdu_info0;
- 	int i;
- 
- 	for (i = 0; i < MAX_RADIOS; i++)
-@@ -2661,11 +2661,14 @@ int ath11k_dp_process_rx(struct ath11k_b
- try_again:
- 	ath11k_hal_srng_access_begin(ab, srng);
+--- a/drivers/net/wireless/ath/ath11k/ce.c
++++ b/drivers/net/wireless/ath/ath11k/ce.c
+@@ -393,11 +393,10 @@ static int ath11k_ce_completed_recv_next
+ 		goto err;
+ 	}
  
 +	/* Make sure descriptor is read after the head pointer. */
 +	dma_rmb();
 +
- 	while (likely(desc =
- 	      (struct hal_reo_dest_ring *)ath11k_hal_srng_dst_get_next_entry(ab,
- 									     srng))) {
- 		cookie = FIELD_GET(BUFFER_ADDR_INFO1_SW_COOKIE,
--				   desc->buf_addr_info.info1);
-+				   READ_ONCE(desc->buf_addr_info.info1));
- 		buf_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_BUF_ID,
- 				   cookie);
- 		mac_id = FIELD_GET(DP_RXDMA_BUF_COOKIE_PDEV_ID, cookie);
-@@ -2694,8 +2697,9 @@ try_again:
+ 	*nbytes = ath11k_hal_ce_dst_status_get_length(desc);
+-	if (*nbytes == 0) {
+-		ret = -EIO;
+-		goto err;
+-	}
  
- 		num_buffs_reaped[mac_id]++;
+ 	*skb = pipe->dest_ring->skb[sw_index];
+ 	pipe->dest_ring->skb[sw_index] = NULL;
+@@ -430,8 +429,8 @@ static void ath11k_ce_recv_process_cb(st
+ 		dma_unmap_single(ab->dev, ATH11K_SKB_RXCB(skb)->paddr,
+ 				 max_nbytes, DMA_FROM_DEVICE);
  
-+		info0 = READ_ONCE(desc->info0);
- 		push_reason = FIELD_GET(HAL_REO_DEST_RING_INFO0_PUSH_REASON,
--					desc->info0);
-+					info0);
- 		if (unlikely(push_reason !=
- 			     HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION)) {
- 			dev_kfree_skb_any(msdu);
-@@ -2703,18 +2707,21 @@ try_again:
+-		if (unlikely(max_nbytes < nbytes)) {
+-			ath11k_warn(ab, "rxed more than expected (nbytes %d, max %d)",
++		if (unlikely(max_nbytes < nbytes || nbytes == 0)) {
++			ath11k_warn(ab, "unexpected rx length (nbytes %d, max %d)",
+ 				    nbytes, max_nbytes);
+ 			dev_kfree_skb_any(skb);
  			continue;
- 		}
+--- a/drivers/net/wireless/ath/ath11k/hal.c
++++ b/drivers/net/wireless/ath/ath11k/hal.c
+@@ -601,7 +601,7 @@ u32 ath11k_hal_ce_dst_status_get_length(
+ 		(struct hal_ce_srng_dst_status_desc *)buf;
+ 	u32 len;
  
--		rxcb->is_first_msdu = !!(desc->rx_msdu_info.info0 &
-+		rx_msdu_info0 = READ_ONCE(desc->rx_msdu_info.info0);
-+		rx_mpdu_info0 = READ_ONCE(desc->rx_mpdu_info.info0);
-+
-+		rxcb->is_first_msdu = !!(rx_msdu_info0 &
- 					 RX_MSDU_DESC_INFO0_FIRST_MSDU_IN_MPDU);
--		rxcb->is_last_msdu = !!(desc->rx_msdu_info.info0 &
-+		rxcb->is_last_msdu = !!(rx_msdu_info0 &
- 					RX_MSDU_DESC_INFO0_LAST_MSDU_IN_MPDU);
--		rxcb->is_continuation = !!(desc->rx_msdu_info.info0 &
-+		rxcb->is_continuation = !!(rx_msdu_info0 &
- 					   RX_MSDU_DESC_INFO0_MSDU_CONTINUATION);
- 		rxcb->peer_id = FIELD_GET(RX_MPDU_DESC_META_DATA_PEER_ID,
--					  desc->rx_mpdu_info.meta_data);
-+					  READ_ONCE(desc->rx_mpdu_info.meta_data));
- 		rxcb->seq_no = FIELD_GET(RX_MPDU_DESC_INFO0_SEQ_NUM,
--					 desc->rx_mpdu_info.info0);
-+					 rx_mpdu_info0);
- 		rxcb->tid = FIELD_GET(HAL_REO_DEST_RING_INFO0_RX_QUEUE_NUM,
--				      desc->info0);
-+				      info0);
+-	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, desc->flags);
++	len = FIELD_GET(HAL_CE_DST_STATUS_DESC_FLAGS_LEN, READ_ONCE(desc->flags));
+ 	desc->flags &= ~HAL_CE_DST_STATUS_DESC_FLAGS_LEN;
  
- 		rxcb->mac_id = mac_id;
- 		__skb_queue_tail(&msdu_list[mac_id], msdu);
+ 	return len;
+@@ -802,7 +802,7 @@ void ath11k_hal_srng_access_begin(struct
+ 		srng->u.src_ring.cached_tp =
+ 			*(volatile u32 *)srng->u.src_ring.tp_addr;
+ 	} else {
+-		srng->u.dst_ring.cached_hp = *srng->u.dst_ring.hp_addr;
++		srng->u.dst_ring.cached_hp = READ_ONCE(*srng->u.dst_ring.hp_addr);
+ 
+ 		/* Try to prefetch the next descriptor in the ring */
+ 		if (srng->flags & HAL_SRNG_FLAGS_CACHED)
 
 
 
