@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB0F1AE512A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3B11AE4F98
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C1E73A4DBD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A635D1B61254
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D4D1C5D46;
-	Mon, 23 Jun 2025 21:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B26312248A4;
+	Mon, 23 Jun 2025 21:16:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gqDGQLhd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJ/A//U2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23824C2E0;
-	Mon, 23 Jun 2025 21:31:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF5C224244;
+	Mon, 23 Jun 2025 21:16:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714280; cv=none; b=PDd3wzWMW7jKl1qReQgfdyuJHmlUch0z8pDvxMRgjy/AuYFRnY1NbyjteRS+uKFsDkVYS/D7weJPlNPa0+3MdcuTw0KNp6B9hcN+b1e6joti45Wh0fXDSDVTvcuLvp3rXu6qhAS5T48SOHVPSdLzJD0wTwCRCGXRwGqhozro04Q=
+	t=1750713413; cv=none; b=GdWMaHm2IcLtI+fQVzeSeHuYnGQQ+Hd2nmHP+cDbFm9ir57vVyI5+i3KPg/FaO4CDANoLo+Tl/dnhihlt9Xccv1WZTaQwm6jbDte5BAJi1ylSCD+2qNtliML+QPCyX/pCBxu5THGFyMTetxwf6Ff0a9lUvo4kc/Ta5E1ZXYkai4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714280; c=relaxed/simple;
-	bh=EoZDJGrraGdPOofVqoLZd0/hnB0dTvUTYd76Cozn/o0=;
+	s=arc-20240116; t=1750713413; c=relaxed/simple;
+	bh=eplStVWqseqt8kme4nJCi/Oks70DFYSO25Rzg2e9RVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HerGwussRWYHWi819eOS3wLiQqUfQLsuAZXUEvxoHK0FAE6GeEEVSmKHuF0JrT3bdDltvn6FIlmOlXr5CaAOPNon3HzMjjTRNxpDrkJtJZUdJrsdycI+P6BL8rhTDYnVGD1XlgH8qRYI/o7FLRUiAnDcRdncYPT/x1lyBpmbKf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gqDGQLhd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42834C4CEEA;
-	Mon, 23 Jun 2025 21:31:19 +0000 (UTC)
+	 MIME-Version; b=pJnZor1YQrpOGGWlzFHwGYawiqR+gWSMsDK4RMFSS/anL2xZg5xXH+VCCEq+oPZwcB38mH3uB7vrd/GGY8xMpj2nxayaeu9RxvIeFMJaVnG6NYSnWTmBlzgaIJo6x7QKuD7YLUTIcFa54BLgQL8evefWxeTBRiyXr19/zzyyTqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJ/A//U2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE01C4CEED;
+	Mon, 23 Jun 2025 21:16:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714279;
-	bh=EoZDJGrraGdPOofVqoLZd0/hnB0dTvUTYd76Cozn/o0=;
+	s=korg; t=1750713412;
+	bh=eplStVWqseqt8kme4nJCi/Oks70DFYSO25Rzg2e9RVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gqDGQLhdsvjeslRC3ZjjCsSXJjqL7/y4CkaELDSlbatdAt/v/ivfpLX01v4dssJ8a
-	 YG+K3hX5PJjgp8qF52XXvc6H22cD/w7aVYzfVi8hrgf/GkVg1C3MUAXUk5yXVkLP4t
-	 ZjukyfKy3xuKqLJ3foEUn1MpfXAOyxCFxtQ3CBig=
+	b=aJ/A//U27UQapylMlBhPUfTF8bVLaHsWv/dE9fKyTgRrqAfkrmHawWKl8WDv2QTMp
+	 EwT+F8igAuEbJw0WfTLXnFWbmK7f3qL+d4hKvZqtvz5nu5C4uHfaJF2Ne2PXyTx4aI
+	 EBda/lD3VlbBG1cXVYIIVPXinppFqlN1HdeOzrYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Nathan Lynch <nathan.lynch@amd.com>,
-	Peter Ujfalusi <peter.ujfalusi@gmail.com>,
-	Vinod Koul <vkoul@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 154/508] dmaengine: ti: Add NULL check in udma_probe()
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 062/414] media: videobuf2: use sgtable-based scatterlist wrappers
 Date: Mon, 23 Jun 2025 15:03:19 +0200
-Message-ID: <20250623130649.069448334@linuxfoundation.org>
+Message-ID: <20250623130643.623309916@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit fd447415e74bccd7362f760d4ea727f8e1ebfe91 ]
+commit a704a3c503ae1cfd9de8a2e2d16a0c9430e98162 upstream.
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-udma_probe() does not check for this case, which results in a NULL
-pointer dereference.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgt->nents.
 
-Add NULL check after devm_kasprintf() to prevent this issue.
-
-Fixes: 25dcb5dd7b7c ("dmaengine: ti: New driver for K3 UDMA")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Reviewed-by: Nathan Lynch <nathan.lynch@amd.com>
-Acked-by: Peter Ujfalusi <peter.ujfalusi@gmail.com>
-Link: https://lore.kernel.org/r/20250402023900.43440-1-bsdhenrymartin@gmail.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma/ti/k3-udma.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma/ti/k3-udma.c b/drivers/dma/ti/k3-udma.c
-index edad538928dd7..1d12dc141070a 100644
---- a/drivers/dma/ti/k3-udma.c
-+++ b/drivers/dma/ti/k3-udma.c
-@@ -5490,7 +5490,8 @@ static int udma_probe(struct platform_device *pdev)
- 		uc->config.dir = DMA_MEM_TO_MEM;
- 		uc->name = devm_kasprintf(dev, GFP_KERNEL, "%s chan%d",
- 					  dev_name(dev), i);
--
-+		if (!uc->name)
-+			return -ENOMEM;
- 		vchan_init(&uc->vc, &ud->ddev);
- 		/* Use custom vchan completion handling */
- 		tasklet_setup(&uc->vc.task, udma_vchan_complete);
--- 
-2.39.5
-
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -469,7 +469,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(s
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
+ 
+-	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
+ 
+@@ -480,7 +480,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
+ 
+-	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
+ 
 
 
 
