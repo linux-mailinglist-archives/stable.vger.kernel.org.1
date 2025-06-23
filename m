@@ -1,312 +1,354 @@
-Return-Path: <stable+bounces-156143-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156144-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C38AE4937
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 17:50:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E4CAE497A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 18:01:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A066C3A5BE2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:50:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B80BB7A9AB4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:58:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A22E28DEF0;
-	Mon, 23 Jun 2025 15:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE7415E5BB;
+	Mon, 23 Jun 2025 16:00:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hmgNmeSg"
+	dkim=pass (2048-bit key) header.d=zadara.com header.i=@zadara.com header.b="MoQKhguZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737EE29A9E1
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 15:49:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750693787; cv=fail; b=H7WapWbC9DDkDJgm3ulnjQ0f/Nn5reiE+0O9s4N+RglMX919ksQH+K90Xf3vhQtvDfEU0Xbx9rmUdQyQb1nfBnv8dNtBwyNNY6AYgi7qcbZdf3LWiL2NVlt0gcMBsoSJ9QNFGNxQ5/vNgSaU1MHybpbuDzEgczOekVqPjDeaUv8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750693787; c=relaxed/simple;
-	bh=JD6sR7T/5NVQsVmJhSD79kY/ZKboY4GMu/3FXPVESUA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=f5Xo920pVZ0G66UbAfHgQuuhYZInMiNXArpqrVkarCrvoOD0kP7XFt6vyJGsuCNDy6SVg9wEjMNkaCgYvvi5K7oyW+stufDKfX+E0aGkRZe/1hHBDllgoan3C3H6vkrEaawXIGOmxjLVHSFJY5iTky27qkEJyQjsTlnRq8ANDQ8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hmgNmeSg; arc=fail smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750693782; x=1782229782;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=JD6sR7T/5NVQsVmJhSD79kY/ZKboY4GMu/3FXPVESUA=;
-  b=hmgNmeSgVHdaODXEqRhtSrxGh3KeQO11Px3j/cn8kLGAOkayPBOCzMXm
-   g02NLQDZxad+JJK8alHNwxx16imcfTt2ReUbvo5deEEfoc34RYLp3HXtf
-   wUThC8ITlNsz4qfcX5+h/pRk8fh6oNcCow5O0RC2TaWFUVCLhbelR2TCF
-   6amyaU+xpp17vSmvC/snFR792Bf7FPu/MUjTeko0C+3cFV9VvLO491AbF
-   muvn+Rs3iJOSjtA5YH/tDQ6+Zzi7XEs3E1TWwy+OQ//HZRg68UZPQeMc3
-   Q9wYGoEDgnEOO99TcAaWnrrCgnyuMQkIm/MI48cC3VG5yldaw0AaIfMgS
-   A==;
-X-CSE-ConnectionGUID: btQhNEDnRTCSO6sbLuoVAQ==
-X-CSE-MsgGUID: o6PLR6VdQ4CpKRjJhtEDBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11473"; a="52877295"
-X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; 
-   d="scan'208";a="52877295"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 08:49:41 -0700
-X-CSE-ConnectionGUID: b8z2wv24TvuMXo6Jt3FkBQ==
-X-CSE-MsgGUID: rj2theB5Rx67puwxzaZm4A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,259,1744095600"; 
-   d="scan'208";a="182680650"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Jun 2025 08:49:41 -0700
-Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 23 Jun 2025 08:49:41 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25 via Frontend Transport; Mon, 23 Jun 2025 08:49:41 -0700
-Received: from NAM02-DM3-obe.outbound.protection.outlook.com (40.107.95.60) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.25; Mon, 23 Jun 2025 08:49:40 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=HS105ffsiZ6IO+Tk+mCvnp2iZyW+uTGlr0pciy3W3Han88b5XE+iercRfHLIXirMXPnLEo1QRV5gQT4zN5jf2A1VgoTDgyQtJH2dnCXI2gOBxrqj/t/vbE8BWDsBlHQieKZejDaoULULN/ECt7x0Q3OdZyinkTHSyfDa17w2lNPhMuZU2vdCmGxHgxqxrDPwk4F7SZ582q4P0FVeUyh46VHNkD1pntCCvuKhNfxly3i1Qez5y0JxG2SyIoLMcHn0xugwSRkiLN4kS5GKmn3EbF3CAGR8orjEmYkfTJ8++/nYLfOzYXV3GmIXlWMR0HubQYqkP6cQgsBhzyMI+9aBSg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QlDiW649U0fefGDO7BeAzxe9JzKh5yQomSgIDT43NhI=;
- b=NngIgFyUtz8cDmC/wg9W+FMjWAJLO2XcXb4o7owL7npe3ZkmGtPmgyS5GH/p5mKSLKNrHbo9k6gzdYVUX+hDVvekFh9SY3q5i0TA5Bq6R0IP6RMLD3WJf3fjJX3mFyvMqZe0xXTuOx8kvn9R+nb8q7TAObYVNo+BaqxeuYq/YYQs1ZPgro88PN+TZPgMEvPWrYzAyG6yQYcONfRc8XMNxRXaC+u4pCSnhy7maCcN/efgB8JjE4b7/P9b6xAH98otg67J8IeYkna3XJ6JudrFF3mGImnMyOziAclt6+Xl4iNx0Z2GLFvEaFu0sy2EIy4iTBT46NrF7IJV/FJONm4i3Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
- by PH8PR11MB6928.namprd11.prod.outlook.com (2603:10b6:510:224::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.30; Mon, 23 Jun
- 2025 15:49:38 +0000
-Received: from PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
- ([fe80::9e94:e21f:e11a:332%5]) with mapi id 15.20.8857.016; Mon, 23 Jun 2025
- 15:49:38 +0000
-Date: Mon, 23 Jun 2025 08:51:17 -0700
-From: Matthew Brost <matthew.brost@intel.com>
-To: Matthew Auld <matthew.auld@intel.com>
-CC: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
-	<dri-devel@lists.freedesktop.org>, <amd-gfx@lists.freedesktop.org>,
-	<christian.koenig@amd.com>, <alexander.deucher@amd.com>,
-	<stable@vger.kernel.org>, "intel-xe@lists.freedesktop.org"
-	<intel-xe@lists.freedesktop.org>
-Subject: Re: [PATCH 2/2] drm/amdgpu: Reset the clear flag in buddy during
- resume
-Message-ID: <aFl39emiGSrk2G+/@lstrano-desk.jf.intel.com>
-References: <20250623055253.56630-1-Arunpravin.PaneerSelvam@amd.com>
- <20250623055253.56630-2-Arunpravin.PaneerSelvam@amd.com>
- <2250a163-76ee-4da0-8804-9157d269c84b@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2250a163-76ee-4da0-8804-9157d269c84b@intel.com>
-X-ClientProxiedBy: MW4PR03CA0341.namprd03.prod.outlook.com
- (2603:10b6:303:dc::16) To PH7PR11MB6522.namprd11.prod.outlook.com
- (2603:10b6:510:212::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE8E1B85F8
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 16:00:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750694415; cv=none; b=R3PMYKPyvSePBKUtuqK/rsodY1YqW4YyjCuHm0RSDFWtJ25kiEYVAXgJ/qmrUI0GJboJudVCuqwRODW00ylaZfsEYd69ZhNu2RKUjgrJqO4JhCFqdXOF2V11iEkFpo/3CVMco1A+kD/mhrBZ1+o9kTtoZhd6DrWZVOmH6ObHzFg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750694415; c=relaxed/simple;
+	bh=KgVneFiwanNdjZmsrTPI3jys2oT5pqdPY+d0+vD6I2I=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=GYg7nuriDFkF+/Tt3LS5QybbWIzImENwbyJMMGapQCA9Jmj2Qur3fzNaZGT1K+07qpxjBzHZ3/BmhY3JYAF1S2w2F0350WqhQ8GN1sBHM3zL4AGFUaOc7z2UXnc8pl7bZyWT3nAX4+OCfCF7qnYHhnUpJDOWF1FRTNjDaujFyu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zadara.com; spf=pass smtp.mailfrom=zadarastorage.com; dkim=pass (2048-bit key) header.d=zadara.com header.i=@zadara.com header.b=MoQKhguZ; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zadara.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zadarastorage.com
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-3a536ecbf6fso2453199f8f.2
+        for <stable@vger.kernel.org>; Mon, 23 Jun 2025 09:00:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=zadara.com; s=google; t=1750694411; x=1751299211; darn=vger.kernel.org;
+        h=message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fNmwvQDnjROo/3M6XvH7wKQwGPFqYK4I0GED/lcOc/U=;
+        b=MoQKhguZSEV8egGqetE5rubWVVq/w1pWyHVC8eapAc6JZ6coTmzwGGflpP0n94BHzz
+         eo5UMbUSojXnU7wYIdwzt5Irb6h/D4pTeheLj79P6EAlKSuAZdsRkGFWpb7hfyxk3kT8
+         JYam59q9BfVTAhItfRlG48SEjnt8Dx673UfM2Y1Y8/i1l6mBClQP8U87dIMo/84SnlhM
+         3muG15V9H8dov04LRe17234HiBYsuIng7K05WtIfadtuB8BZzSBeCcf6cuaduT5ciIk6
+         9D6dbl7NUEa/HEwUz+2WhE9KY9wkLFZy+v2wQDks7BSL9HlT7S7DogUSLoBKC3qX50Z1
+         zOPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1750694411; x=1751299211;
+        h=message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fNmwvQDnjROo/3M6XvH7wKQwGPFqYK4I0GED/lcOc/U=;
+        b=vFmu1TEelUOlWs9qmh2XPcoalVFS2kDUzOgvkvW97T6MeUzLcg5YxoBtqWPe7JBm+A
+         s5wouo+7z6VN52qQrPfI4ynG3GrXAEO9pUP1iVRFjj8ARrbXwOXl2CHFlnpSsOxbuP5H
+         IMV/J01SpzmQ4Hw4RxDZGR02HjSZz+Wf1OcjnDak9Ajnb9XJ1acpcPqwycU9ifsg92Qj
+         kaVZ4hqrJ0hUfE/0iWUXb8PhYxu2J/jVi4Il4/f3l35kmd9/biS/KH4nY853jddoQgBF
+         u1EuynB9MwhPxxMqi1LsWoaPxRBVJU0C3v+EtJoFB4OLXUyWOJED3EWE+jrZX0QMHXOU
+         eNcQ==
+X-Gm-Message-State: AOJu0Yzi3V6g8Q2MuvqTyvEUMCx/GGA+YHXg2EStpxWRN0mfluqR+eDI
+	JZh2IQKLFV1i6M8q11Yymi257zs+FY+hk7hGHdJwzc27riY3DSqRFzp4cUbc16zvfe/NO8v+fTo
+	k2vI39Og=
+X-Gm-Gg: ASbGncsMN+UeCdQZwQoyWsNIjrCrvxOgQeXC8oTcFby+zeMXnagBrbfeleIgptVxG0i
+	pTZEIfSSMLPaJG/Z35ARQN2NK+vKer1oH3xRp88edCMXEVq6i5HjpxH9+ZE6KpHxA6qFCr2sw/F
+	faQYnUe79QRaqhjIuZmL+9YjxQ6IZpTvipp02bsEL6I4TXoavwnPYnu3Bt2n6H6RloLN0BLJ70b
+	spNWQ2aKdZK2boMYrHp5w6b+MdslCJIrYSp96GdOOL66srlCkWmCoqhdCniAYDa2RUPPQINMLQw
+	Nc+LGt3hUdY9BIElAuDxCvFpF7TKHfP9tC5c3nXK/Iede5pxtqXTq1rsM9HSrdg=
+X-Google-Smtp-Source: AGHT+IFg34Twct4X9nnoxSvXKz7S9CObVivNwDj1T/mQffDhljsbNTr3vteZUDFtJ5a3qffdXSosVQ==
+X-Received: by 2002:a05:6000:4284:b0:3a4:e844:745d with SMTP id ffacd0b85a97d-3a6d13315c2mr11566465f8f.56.1750694410888;
+        Mon, 23 Jun 2025 09:00:10 -0700 (PDT)
+Received: from localhost.localdomain ([82.166.81.77])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3a6d117c02fsm9914610f8f.50.2025.06.23.09.00.09
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 23 Jun 2025 09:00:10 -0700 (PDT)
+From: Alex Lyakas <alex@zadara.com>
+To: stable@vger.kernel.org
+Cc: alex@zadara.com,
+	josef@toxicpanda.com
+Subject: [PATCH] btrfs: check delayed refs when we're checking if a ref exists
+Date: Mon, 23 Jun 2025 18:58:31 +0300
+Message-Id: <1750694311-28848-1-git-send-email-alex@zadara.com>
+X-Mailer: git-send-email 1.9.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|PH8PR11MB6928:EE_
-X-MS-Office365-Filtering-Correlation-Id: 7dd50640-b760-4113-f676-08ddb26d8f99
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|7053199007;
-X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?60i8NPnGFRct6LbCavtdsv4QteOY5XvDHXVIzrn0/BU0Y8nmJMbz78+ICt?=
- =?iso-8859-1?Q?4C1V1TEu0Aa1p03PtTT+f/3ULUHPTJ0H3ChBmWDyCx8FINZiacrl4eIqCA?=
- =?iso-8859-1?Q?Ra72xqSfU5Ng5i6VcDkp9xZ3/EQqC+g8hTHyqRIp7MS0borU7Urit284Zn?=
- =?iso-8859-1?Q?Wm9pWDkkHcKiijrywBbEp80JK6SRhsYCgZ0ugzTjXvSNPonalMIpJjAGeM?=
- =?iso-8859-1?Q?ndrB2YCVefGxySZayA3LvYC6Z1BivgJye/n6POb4PQ3kBQj9hifs3F1PvM?=
- =?iso-8859-1?Q?RdJZVEPKYhp5YyfZLFicx9Wrn+tp6UAfJwqdIOIWle7DlyYhJrD1WcOJWh?=
- =?iso-8859-1?Q?pc9StXYlk2IHjnotfLDs6yItN8FJnzqZw8rHaJVhjz1NAEY4hUK3xzXDO6?=
- =?iso-8859-1?Q?QnZ95+yaoG3TIC2UKLlsHhVF6EZ8EzVaWcAxTF5qeB7teeXOFG+bz6qSke?=
- =?iso-8859-1?Q?KRebp+dyR5G25npbKa5M6BKBqgaQ1zo4fLH28Q9dLYeCMBFojxBXXR/qtn?=
- =?iso-8859-1?Q?SQprU038ibEnok1e5wJGElNpCuvkpSsJqLlD4zUWUyVVXK2BoBmi6bpHdz?=
- =?iso-8859-1?Q?a9CAA6WLOdyMlVdEziBcuiz30pVVru2/+LUIfCyKFU99/7/HP8JUz9buef?=
- =?iso-8859-1?Q?1+qrEy43CIiXBc928OTGH7jCLTxVI7zuurStiASrA5gz2Gd+HbbhD0MLEA?=
- =?iso-8859-1?Q?coTVdjFsZyvmGVbXyCj0sf/KpKKnvUhCM92MW9tZjiSdY5/tRmMXGk4N92?=
- =?iso-8859-1?Q?PJdPr5qmgOlF+/9IpN3LEsfTglsoQM88xckLLDyp60AVm+9jW7yN+G9cBs?=
- =?iso-8859-1?Q?tYNN489KHoFHreTht2vLwSOiVwUOqMjxwaK1TQfwG7dTyLYu8+7tK+I7vb?=
- =?iso-8859-1?Q?vj9WBpKQHo6wIy6cRbD15w2ah4UWKUMQ9mNVDeFwrWZk+W329TYxxcb+Lt?=
- =?iso-8859-1?Q?St3bHif1wmY7TpPjlje0b63KwA/q05YVgrtqA7EF/MblpaW1TtwGIeoCA5?=
- =?iso-8859-1?Q?qTRJ0k0poQbER7PD27URAdrU9lylvmLuKTkeyvcz8WKjl3xXtsSDb2HJzc?=
- =?iso-8859-1?Q?vthJwG401j3UBYtjdQ8HoRRl94Mn70sqLv8S3AUIJoEpinhAJ1qbaGfJoi?=
- =?iso-8859-1?Q?zS7wt6mnVDuoQ8k9d2XHg1hpbkzS652Ys/mfyPOaRuFvjfU/W5hBUVo8yx?=
- =?iso-8859-1?Q?A/4cJFPH6cCFSuLeSJ0dMI/hmaFElbPQ+bQ6aq/nCFHLBcHyHHfnUJBJX2?=
- =?iso-8859-1?Q?FB36Z63Ia3xNRmveKTAnzGYANbsjl8egAs1SZbF4pBblzNhHsg/0WrxGJ8?=
- =?iso-8859-1?Q?sleEctDOe8vLS+36vMk5Au/ppoitylJTcNP9Qm25EAoUO0J9ubVQbpXC/Y?=
- =?iso-8859-1?Q?5b+GeFSsHMh+Ml9orbkmsVVDXLpW166QnMp/OTRbgd12wA4nxaF3M=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7053199007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?F2L8V8Ey/OBqjMNeNP5hachx+D74BM8tKGO494T184efRe4vRlfmDvcn0y?=
- =?iso-8859-1?Q?/i+lW7kvZmZrjjjKL6sgZbO2sEmzILZMQYssOIHTgAtunAonj122hc7KxL?=
- =?iso-8859-1?Q?bdWEnKwtNYBbOOXON+JJYG1OZuigaPSaYoAhxPEfalOQ1vp5IUCxt692pa?=
- =?iso-8859-1?Q?FjnoWaFPlY6DrzKZNIcpMJzRRS9Qw/K1GC72QuTHl/SvNoStv13wFrklnC?=
- =?iso-8859-1?Q?VuFolr7BO3oPUzBKrILm5AYIus65e8ijMPSpfyCzFXKZj1DdrJybvOBSat?=
- =?iso-8859-1?Q?vNmwTwut3zDX4kKa6pBzGe7XkTW50dfnNcJsLomFFrjG//snXBS4xdX6mg?=
- =?iso-8859-1?Q?vXVrWuNc1i+7tCQ99z5ZDsR1SsxOdK4i1rrOEsoPv6e830WFnrv5OVU8yQ?=
- =?iso-8859-1?Q?U8IjTzCYtEwRpmyoiHBGKHGjLyQLLCpQIzbqsWaluhKRwGjAkD/tfuzTfP?=
- =?iso-8859-1?Q?V7Nzuyvzu/RS7r2INOhoSe2ENXhHv+zI7h9D46Lk0IOIqWxAIXg6SyF/DR?=
- =?iso-8859-1?Q?2oc0Wxdbsp8aTSXpJs26u/r8amoGj/zufIaxDguUzVGdJyqyEsGrY1aZ0F?=
- =?iso-8859-1?Q?+lXhmO+JcBxvqPTxwfpa4e1DES2hyd+5tj4xpPXIHwYekCt1/nmFdZR4AT?=
- =?iso-8859-1?Q?HOiuRDpHN7iIOEKXI+85/oaOhIuwvBtkuUkmVoJE8/ZQEoPgYy1ujIw9py?=
- =?iso-8859-1?Q?J/MVWRsKEc7lpOfE7A/OLmd3VR/fme7oMlmXNNPb0JLqju35uIskjwIjzD?=
- =?iso-8859-1?Q?vDH865SrXNuXJamq/+TF3wJcm8DbmzEYUq+Bq2pbqD5Md9r8pJphr8Z+G4?=
- =?iso-8859-1?Q?C0ig1muL262EsGzCudZCbETFtQWWOcD5BIwwVYLrBEq+vTrN62DI+Z9ptt?=
- =?iso-8859-1?Q?2WGtFNKVGfzCAeEy52mwrkwlFjRO54tr0khJSblkrb475vfEsH+jE7Grxf?=
- =?iso-8859-1?Q?1t8AZBfUFq6jvdMzHo/pciNTjcfsglxf8UIpSE/n/20uG9NlgCWjV0Nfdc?=
- =?iso-8859-1?Q?tPIZmZoHrksBBuVADqWgtNJteGeZtT6E6oV+P0+6C+FQjKkD27gKxrPfc2?=
- =?iso-8859-1?Q?VideSbdU2yx7mfgXL7Vo7Ln1c09mxutSuFeo/bsgr+KP61p0fzr/ifmi5r?=
- =?iso-8859-1?Q?I/GdtamuDLdrPrh6tYP/8b6xcfNbQ5wrnicf2SAF3W4Yd/oDo34XCceLYo?=
- =?iso-8859-1?Q?1nRPkI4jn1PPdIFLgmHYYCorCd5uZPFWWp1bOq4e+/+1bLr+rCvn6LyQFC?=
- =?iso-8859-1?Q?29Rjtn3x5rH8abN/ZKNKdFPkdC7F4qkJS5WB0+w3AEbi1/yO+5gihDCili?=
- =?iso-8859-1?Q?ZAn6V1Qm+BGnjnxf0ZSaUtQtomV9P3OA3ZY5qTA/ru6tAWsKurExIWnO5k?=
- =?iso-8859-1?Q?OLTstJd+96lA/x8oS167quO83U97DGBQBBfS78KzLocJ5YaufDyUdBMSWU?=
- =?iso-8859-1?Q?C7GkbrIbMKQI1m0b1vys+HSXkmHWWSvp/atUSY54rE9ibnscC4WHjmPubb?=
- =?iso-8859-1?Q?N8CMBIiRSK8Z6Efg9zg68ModlACgKOUrpUJhuEa34+P9/OwEngyt3+TilA?=
- =?iso-8859-1?Q?2CxhP0QB4yaRBtb0kYKv08N5WRzGTkiMhp0Ov38P3+g2JBYVgTzV1Obc2f?=
- =?iso-8859-1?Q?wcKXqAA1PM1Vf6NEuFg+CvAnXXQJ9EndikVd1jhrzD2IqXUGLAhpkMvw?=
- =?iso-8859-1?Q?=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7dd50640-b760-4113-f676-08ddb26d8f99
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jun 2025 15:49:38.8762
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: tDS3eAbtKPeHs5GtTOHCs7kPGTRHmpHD5no75JkJGf8xPqJoIxDScWUj+FFMNgH89w9Qh6xVgJcGt2aOElKapg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB6928
-X-OriginatorOrg: intel.com
 
-On Mon, Jun 23, 2025 at 01:37:35PM +0100, Matthew Auld wrote:
-> +Matt B who is adding clear-on-free support in xe. I'm not sure if we might
-> also see something like this.
-> 
+[upstream commit 42fac187b5c746227c92d024f1caf33bc1d337e4]
 
-Thanks for the heads up.
+This is a backport of the above upstream commit by Josef Bacik to the
+stable linux-6.6.y branch. I tested it to the best of my abilities.
+I was able to test the part where the reference exists in the extent tree,
+which means the patch doesn't break existing functionality.
+However, I was not able to test the case where we only have the delayed reference.
 
-> On 23/06/2025 06:52, Arunpravin Paneer Selvam wrote:
-> > - Added a handler in DRM buddy manager to reset the cleared
-> >    flag for the blocks in the freelist.
-> > 
-> > - This is necessary because, upon resuming, the VRAM becomes
-> >    cluttered with BIOS data, yet the VRAM backend manager
-> >    believes that everything has been cleared.
-> > 
-> > Signed-off-by: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
-> > Suggested-by: Christian König <christian.koenig@amd.com>
-> > Cc: stable@vger.kernel.org
-> > Fixes: a68c7eaa7a8f ("drm/amdgpu: Enable clear page functionality")
-> > Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3812
-> > ---
-> >   drivers/gpu/drm/amd/amdgpu/amdgpu_device.c   |  2 ++
-> >   drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h |  5 ++++
-> >   drivers/gpu/drm/drm_buddy.c                  | 24 ++++++++++++++++++++
-> >   include/drm/drm_buddy.h                      |  2 ++
-> >   4 files changed, 33 insertions(+)
-> > 
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> > index a59f194e3360..eb67d6c97392 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-> > @@ -5193,6 +5193,8 @@ int amdgpu_device_resume(struct drm_device *dev, bool notify_clients)
-> >   		dev->dev->power.disable_depth--;
-> >   #endif
-> >   	}
-> > +
-> > +	amdgpu_vram_mgr_clear_reset_blocks(&adev->mman.vram_mgr.mm);
-> >   	adev->in_suspend = false;
-> >   	if (amdgpu_acpi_smart_shift_update(dev, AMDGPU_SS_DEV_D0))
-> > diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h
-> > index 1019c5806ec7..e9e2928fa4d1 100644
-> > --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h
-> > +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vram_mgr.h
-> > @@ -58,6 +58,11 @@ static inline bool amdgpu_vram_mgr_is_cleared(struct drm_buddy_block *block)
-> >   	return drm_buddy_block_is_clear(block);
-> >   }
-> > +static inline void amdgpu_vram_mgr_clear_reset_blocks(struct drm_buddy *mm)
-> > +{
-> > +	drm_buddy_clear_reset_blocks(mm);
-> 
-> No lock needed?
-> 
-> > +}
-> > +
-> >   static inline struct amdgpu_vram_mgr_resource *
-> >   to_amdgpu_vram_mgr_resource(struct ttm_resource *res)
-> >   {
-> > diff --git a/drivers/gpu/drm/drm_buddy.c b/drivers/gpu/drm/drm_buddy.c
-> > index a1e652b7631d..b5e44867adf2 100644
-> > --- a/drivers/gpu/drm/drm_buddy.c
-> > +++ b/drivers/gpu/drm/drm_buddy.c
-> > @@ -405,6 +405,30 @@ drm_get_buddy(struct drm_buddy_block *block)
-> >   }
-> >   EXPORT_SYMBOL(drm_get_buddy);
-> > +/**
-> > + * drm_buddy_clear_reset_blocks - reset cleared blocks
-> > + *
-> > + * @mm: DRM buddy manager
-> > + *
-> > + * Reset all the cleared blocks in the freelist.
-> > + */
-> > +void drm_buddy_clear_reset_blocks(struct drm_buddy *mm)
-> > +{
-> > +	unsigned int i;
-> > +
-> 
-> This might be a good spot to also force merge freed blocks back together,
-> for the ones that have the clear vs dirty mismatch. Otherwise with the below
-> loop we can have two buddies that are now dirty but don't get merged back
-> together? Fairly sure fini() can chuck a warning otherwise. Also a simple
-> kunit test for this would be good.
-> 
-> > +	for (i = 0; i <= mm->max_order; ++i) {
-> > +		struct drm_buddy_block *block;
-> > +
-> > +		list_for_each_entry_reverse(block, &mm->free_list[i], link) {
-> > +			if (drm_buddy_block_is_clear(block)) {
-> > +				clear_reset(block);
-> > +				mm->clear_avail -= drm_buddy_block_size(mm, block);
-> > +			}
-> > +		}
-> > +	}
-> > +}
-> > +EXPORT_SYMBOL(drm_buddy_clear_reset_blocks);
-> > +
-> >   /**
-> >    * drm_buddy_free_block - free a block
-> >    *
-> > diff --git a/include/drm/drm_buddy.h b/include/drm/drm_buddy.h
-> > index 9689a7c5dd36..da569dea16b7 100644
-> > --- a/include/drm/drm_buddy.h
-> > +++ b/include/drm/drm_buddy.h
-> > @@ -160,6 +160,8 @@ int drm_buddy_block_trim(struct drm_buddy *mm,
-> >   			 u64 new_size,
-> >   			 struct list_head *blocks);
-> > +void drm_buddy_clear_reset_blocks(struct drm_buddy *mm);
-> > +
+Josef, I would appreciate if you could review the patch.
 
-I think a polarity argument here would be good. Following up if on Intel
-GPUs the inverse is true - our VRAM is entirely cleared. Either way
-having this function being able to flip the state either way would be
-good.
+Original commit message by Josef:
 
-Matt
+    In the patch 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete
+    resume") I added some code to handle file systems that had been
+    corrupted by a bug that incorrectly skipped updating the drop progress
+    key while dropping a snapshot.  This code would check to see if we had
+    already deleted our reference for a child block, and skip the deletion
+    if we had already.
 
-> >   void drm_buddy_free_block(struct drm_buddy *mm, struct drm_buddy_block *block);
-> >   void drm_buddy_free_list(struct drm_buddy *mm,
-> 
+    Unfortunately there is a bug, as the check would only check the on-disk
+    references.  I made an incorrect assumption that blocks in an already
+    deleted snapshot that was having the deletion resume on mount wouldn't
+    be modified.
+
+    If we have 2 pending deleted snapshots that share blocks, we can easily
+    modify the rules for a block.  Take the following example
+
+    subvolume a exists, and subvolume b is a snapshot of subvolume a.  They
+    share references to block 1.  Block 1 will have 2 full references, one
+    for subvolume a and one for subvolume b, and it belongs to subvolume a
+    (btrfs_header_owner(block 1) == subvolume a).
+
+    When deleting subvolume a, we will drop our full reference for block 1,
+    and because we are the owner we will drop our full reference for all of
+    block 1's children, convert block 1 to FULL BACKREF, and add a shared
+    reference to all of block 1's children.
+
+    Then we will start the snapshot deletion of subvolume b.  We look up the
+    extent info for block 1, which checks delayed refs and tells us that
+    FULL BACKREF is set, so sets parent to the bytenr of block 1.  However
+    because this is a resumed snapshot deletion, we call into
+    check_ref_exists().  Because check_ref_exists() only looks at the disk,
+    it doesn't find the shared backref for the child of block 1, and thus
+    returns 0 and we skip deleting the reference for the child of block 1
+    and continue.  This orphans the child of block 1.
+
+    The fix is to lookup the delayed refs, similar to what we do in
+    btrfs_lookup_extent_info().  However we only care about whether the
+    reference exists or not.  If we fail to find our reference on disk, go
+    look up the bytenr in the delayed refs, and if it exists look for an
+    existing ref in the delayed ref head.  If that exists then we know we
+    can delete the reference safely and carry on.  If it doesn't exist we
+    know we have to skip over this block.
+
+    This bug has existed since I introduced this fix, however requires
+    having multiple deleted snapshots pending when we unmount.  We noticed
+    this in production because our shutdown path stops the container on the
+    system, which deletes a bunch of subvolumes, and then reboots the box.
+    This gives us plenty of opportunities to hit this issue.  Looking at the
+    history we've seen this occasionally in production, but we had a big
+    spike recently thanks to faster machines getting jobs with multiple
+    subvolumes in the job.
+
+    Chris Mason wrote a reproducer which does the following
+
+    mount /dev/nvme4n1 /btrfs
+    btrfs subvol create /btrfs/s1
+    simoop -E -f 4k -n 200000 -z /btrfs/s1
+    while(true) ; do
+    	btrfs subvol snap /btrfs/s1 /btrfs/s2
+    	simoop -f 4k -n 200000 -r 10 -z /btrfs/s2
+    	btrfs subvol snap /btrfs/s2 /btrfs/s3
+    	btrfs balance start -dusage=80 /btrfs
+    	btrfs subvol del /btrfs/s2 /btrfs/s3
+    	umount /btrfs
+    	btrfsck /dev/nvme4n1 || exit 1
+    	mount /dev/nvme4n1 /btrfs
+    done
+
+    On the second loop this would fail consistently, with my patch it has
+    been running for hours and hasn't failed.
+
+    I also used dm-log-writes to capture the state of the failure so I could
+    debug the problem.  Using the existing failure case to test my patch
+    validated that it fixes the problem.
+
+    Fixes: 78c52d9eb6b7 ("btrfs: check for refs on snapshot delete resume")
+    CC: stable@vger.kernel.org # 5.4+
+
+Signed-off-by: Alex Lyakas <alex@zadara.com>
+---
+ fs/btrfs/delayed-ref.c | 71 ++++++++++++++++++++++++++++++++++++++++++++++++++
+ fs/btrfs/delayed-ref.h |  2 ++
+ fs/btrfs/extent-tree.c | 53 ++++++++++++++++++++++++++++++++-----
+ 3 files changed, 119 insertions(+), 7 deletions(-)
+
+diff --git a/fs/btrfs/delayed-ref.c b/fs/btrfs/delayed-ref.c
+index 6f2e48d..b143194 100644
+--- a/fs/btrfs/delayed-ref.c
++++ b/fs/btrfs/delayed-ref.c
+@@ -1115,6 +1115,77 @@ struct btrfs_delayed_ref_head *
+ 	return find_ref_head(delayed_refs, bytenr, false);
+ }
+ 
++static int find_comp(struct btrfs_delayed_ref_node *entry, u64 root, u64 parent)
++{
++	int type = parent ? BTRFS_SHARED_BLOCK_REF_KEY : BTRFS_TREE_BLOCK_REF_KEY;
++	struct btrfs_delayed_tree_ref *tree_ref;
++
++	if (type < entry->type)
++		return -1;
++	if (type > entry->type)
++		return 1;
++
++	tree_ref = btrfs_delayed_node_to_tree_ref(entry);
++
++	if (type == BTRFS_TREE_BLOCK_REF_KEY) {
++		if (root < tree_ref->root)
++			return -1;
++		if (root > tree_ref->root)
++			return 1;
++	} else {
++		if (parent < tree_ref->parent)
++			return -1;
++		if (parent > tree_ref->parent)
++			return 1;
++	}
++	return 0;
++}
++
++/* btrfs: check delayed refs when we're checking if a ref exists */
++/*
++ * Check to see if a given root/parent reference is attached to the head.  This
++ * only checks for BTRFS_ADD_DELAYED_REF references that match, as that
++ * indicates the reference exists for the given root or parent.  This is for
++ * tree blocks only.
++ *
++ * @head: the head of the bytenr we're searching.
++ * @root: the root objectid of the reference if it is a normal reference.
++ * @parent: the parent if this is a shared backref.
++ */
++bool btrfs_find_delayed_tree_ref(struct btrfs_delayed_ref_head *head,
++				 u64 root, u64 parent)
++{
++	struct rb_node *node;
++	bool found = false;
++
++	lockdep_assert_held(&head->mutex);
++
++	spin_lock(&head->lock);
++	node = head->ref_tree.rb_root.rb_node;
++	while (node) {
++		struct btrfs_delayed_ref_node *entry;
++		int ret;
++
++		entry = rb_entry(node, struct btrfs_delayed_ref_node, ref_node);
++		ret = find_comp(entry, root, parent);
++		if (ret < 0) {
++			node = node->rb_left;
++		} else if (ret > 0) {
++			node = node->rb_right;
++		} else {
++			/*
++			 * We only want to count ADD actions, as drops mean the
++			 * ref doesn't exist.
++			 */
++			if (entry->action == BTRFS_ADD_DELAYED_REF)
++				found = true;
++			break;
++		}
++	}
++	spin_unlock(&head->lock);
++	return found;
++}
++
+ void __cold btrfs_delayed_ref_exit(void)
+ {
+ 	kmem_cache_destroy(btrfs_delayed_ref_head_cachep);
+diff --git a/fs/btrfs/delayed-ref.h b/fs/btrfs/delayed-ref.h
+index fd9bf2b..c4f2495 100644
+--- a/fs/btrfs/delayed-ref.h
++++ b/fs/btrfs/delayed-ref.h
+@@ -409,6 +409,8 @@ int btrfs_delayed_refs_rsv_refill(struct btrfs_fs_info *fs_info,
+ void btrfs_migrate_to_delayed_refs_rsv(struct btrfs_fs_info *fs_info,
+ 				       u64 num_bytes);
+ bool btrfs_check_space_for_delayed_refs(struct btrfs_fs_info *fs_info);
++bool btrfs_find_delayed_tree_ref(struct btrfs_delayed_ref_head *head,
++				 u64 root, u64 parent);
+ 
+ /*
+  * helper functions to cast a node into its container
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index ef77d42..7e180c8 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -5241,23 +5241,62 @@ static int check_ref_exists(struct btrfs_trans_handle *trans,
+ 			    struct btrfs_root *root, u64 bytenr, u64 parent,
+ 			    int level)
+ {
++	struct btrfs_delayed_ref_root *delayed_refs;
++	struct btrfs_delayed_ref_head *head;
+ 	struct btrfs_path *path;
+ 	struct btrfs_extent_inline_ref *iref;
+ 	int ret;
++	bool exists = false;
+ 
+ 	path = btrfs_alloc_path();
+ 	if (!path)
+ 		return -ENOMEM;
+-
++again:
+ 	ret = lookup_extent_backref(trans, path, &iref, bytenr,
+ 				    root->fs_info->nodesize, parent,
+-				    root->root_key.objectid, level, 0);
++				    btrfs_root_id(root), level, 0);
++	if (ret != -ENOENT) {
++		/*
++		 * If we get 0 then we found our reference, return 1, else
++		 * return the error if it's not -ENOENT;
++		 */
++		btrfs_free_path(path);
++		return (ret < 0 ) ? ret : 1;
++	}
++
++	/*
++	 * We could have a delayed ref with this reference, so look it up while
++	 * we're holding the path open to make sure we don't race with the
++	 * delayed ref running.
++	 */
++	delayed_refs = &trans->transaction->delayed_refs;
++	spin_lock(&delayed_refs->lock);
++	head = btrfs_find_delayed_ref_head(delayed_refs, bytenr);
++	if (!head)
++		goto out;
++	if (!mutex_trylock(&head->mutex)) {
++		/*
++		 * We're contended, means that the delayed ref is running, get a
++		 * reference and wait for the ref head to be complete and then
++		 * try again.
++		 */
++		refcount_inc(&head->refs);
++		spin_unlock(&delayed_refs->lock);
++
++		btrfs_release_path(path);
++
++		mutex_lock(&head->mutex);
++		mutex_unlock(&head->mutex);
++		btrfs_put_delayed_ref_head(head);
++		goto again;
++	}
++
++	exists = btrfs_find_delayed_tree_ref(head, root->root_key.objectid, parent);
++	mutex_unlock(&head->mutex);
++out:
++	spin_unlock(&delayed_refs->lock);
+ 	btrfs_free_path(path);
+-	if (ret == -ENOENT)
+-		return 0;
+-	if (ret < 0)
+-		return ret;
+-	return 1;
++	return exists ? 1 : 0;
+ }
+ 
+ /*
+-- 
+1.9.1
+
 
