@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-155377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F983AE41C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:11:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C22C1AE425C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8C3B174102
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:11:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A5AB23B71FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F6472550D7;
-	Mon, 23 Jun 2025 13:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36DF3253924;
+	Mon, 23 Jun 2025 13:17:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4RQDY9Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HGkShVzB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7502550CF;
-	Mon, 23 Jun 2025 13:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E759A253356;
+	Mon, 23 Jun 2025 13:17:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684206; cv=none; b=K7mXmve0bRiHSxvYa8mMpptcgy1JhFmlU37X8rzL9+VAc0lDDGALll2fJ2v0wHBcju3hPaQsrLc5BVGNTpVfUUbYRtjB5mwQ+UcCqV69GPcV+J6o5taM7lDRQWdsj39V8PHZSkxmdxWNDaEubKvjVyMPkTZDJyWXucRDIQ3URQM=
+	t=1750684656; cv=none; b=oMirjBHOBztrmo856H2En5T0p6hRFAtXzhrcOepyW735QOE7m6DRV+M3Fdab7DxNAX1aTm2h5UoSmiW/+80eutv5Tbwr6svqIhgsMfkpQpIbO9SBpw5yr/RLvXcSDuvMw9Qsdlj87DBzEUl9j9ZU7PS0rs8PtKx7GNnkNjtt61s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684206; c=relaxed/simple;
-	bh=h+DlhHvdFnEZ6E5FyzEo3PXGHpzfIWaABQ1Wxofipu8=;
+	s=arc-20240116; t=1750684656; c=relaxed/simple;
+	bh=RLOYN8U4G3qHeuIQfspj29AcFdhFeyPgSaIE6FwycaY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b0IWC2sTHLH6U+34n4Q7qeLLs/AGG9wd4TC+BrHIDWQ6NtpkVvmNEYeYzWOX+09YkeTw5MjyGHZkqgxu4dqEIHWVTqHTKlD2GtY/VtRenbfoLkgrL5ez0zkYWKv5c3BU5j9qC6XZl068ycho2B+h6dte8ar79JkGFDlh1Tlbwcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4RQDY9Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 403A6C4CEEA;
-	Mon, 23 Jun 2025 13:10:05 +0000 (UTC)
+	 MIME-Version; b=p0vzgsVng2hgL1qrkb2lxN7YTWrfKUmALJlUsZhu9ul74uZZsf7tvOXDW5XRm8hvURkCEbgZZwG7ReGuhxVWl/r5/XNGEF6oqcOKndoBEcbN1vIAfAWqcx7u8A8+qYOThhBImbGn+gXKvxdm7QnprdU7GMI8ieqmxSdhRihwdNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HGkShVzB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B543C4CEF0;
+	Mon, 23 Jun 2025 13:17:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684205;
-	bh=h+DlhHvdFnEZ6E5FyzEo3PXGHpzfIWaABQ1Wxofipu8=;
+	s=korg; t=1750684655;
+	bh=RLOYN8U4G3qHeuIQfspj29AcFdhFeyPgSaIE6FwycaY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4RQDY9Z2WYb+foAv+xSDJR9bAxnnYXoUbU/+sPzMoFIeZ2sw3r2c/h3Fo2ckl2OT
-	 YBEGhrq20AAKt1QSAz5FHNOtZKH0AegS9iEAmB5+UY9xTO/CMm7im6FmUAENnluz93
-	 4b2t895eMdogbCApOglnKunQK6Pc+QtDoGCnbXEA=
+	b=HGkShVzBVP4wx88lImalLeDAPYpD5ihu5IBmSyc5PBxn6K7J/VXCp5VF/h/bFuxSd
+	 70WPtrP0NbPIvMC5UBgZJuTd1JK2/gczRhaQwCtMq6mj8GwQrCf2iW2AjQr07jRwPT
+	 4KMvGXgOvujQdl3nnUZ9VdNVmHyWuc/8MnQhI3DM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Andrew Lunn <andrew@lunn.ch>,
 	Gabor Juhos <j4g8y7@gmail.com>,
 	Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 5.4 002/222] pinctrl: armada-37xx: use correct OUTPUT_VAL register for GPIOs > 31
-Date: Mon, 23 Jun 2025 15:05:37 +0200
-Message-ID: <20250623130611.971736266@linuxfoundation.org>
+Subject: [PATCH 5.4 003/222] pinctrl: armada-37xx: set GPIO output value before setting direction
+Date: Mon, 23 Jun 2025 15:05:38 +0200
+Message-ID: <20250623130612.000741061@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -69,47 +69,61 @@ Content-Transfer-Encoding: 8bit
 
 From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 947c93eb29c2a581c0b0b6d5f21af3c2b7ff6d25 upstream.
+commit e6ebd4942981f8ad37189bbb36a3c8495e21ef4c upstream.
 
-The controller has two consecutive OUTPUT_VAL registers and both
-holds output value for 32 GPIOs. Due to a missing adjustment, the
-current code always uses the first register while setting the
-output value whereas it should use the second one for GPIOs > 31.
+Changing the direction before updating the output value in the
+OUTPUT_VAL register may result in a glitch on the output line
+if the previous value in the OUTPUT_VAL register is different
+from the one we want to set.
 
-Add the missing armada_37xx_update_reg() call to adjust the register
-according to the 'offset' parameter of the function to fix the issue.
+In order to avoid that, update the output value before changing
+the direction.
 
 Cc: stable@vger.kernel.org
 Fixes: 6702abb3bf23 ("pinctrl: armada-37xx: Fix direction_output() callback behavior")
 Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-1-07e9ac1ab737@gmail.com
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-2-07e9ac1ab737@gmail.com
 Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c |   15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
 
 --- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
 +++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -409,6 +409,7 @@ static int armada_37xx_gpio_direction_ou
+@@ -409,23 +409,22 @@ static int armada_37xx_gpio_direction_ou
  					     unsigned int offset, int value)
  {
  	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
-+	unsigned int val_offset = offset;
- 	unsigned int reg = OUTPUT_EN;
+-	unsigned int val_offset = offset;
+-	unsigned int reg = OUTPUT_EN;
++	unsigned int en_offset = offset;
++	unsigned int reg = OUTPUT_VAL;
  	unsigned int mask, val, ret;
  
-@@ -421,6 +422,8 @@ static int armada_37xx_gpio_direction_ou
+ 	armada_37xx_update_reg(&reg, &offset);
+ 	mask = BIT(offset);
++	val = value ? mask : 0;
+ 
+-	ret = regmap_update_bits(info->regmap, reg, mask, mask);
+-
++	ret = regmap_update_bits(info->regmap, reg, mask, val);
+ 	if (ret)
  		return ret;
  
- 	reg = OUTPUT_VAL;
-+	armada_37xx_update_reg(&reg, &val_offset);
-+
- 	val = value ? mask : 0;
- 	regmap_update_bits(info->regmap, reg, mask, val);
+-	reg = OUTPUT_VAL;
+-	armada_37xx_update_reg(&reg, &val_offset);
++	reg = OUTPUT_EN;
++	armada_37xx_update_reg(&reg, &en_offset);
  
+-	val = value ? mask : 0;
+-	regmap_update_bits(info->regmap, reg, mask, val);
++	regmap_update_bits(info->regmap, reg, mask, mask);
+ 
+ 	return 0;
+ }
 
 
 
