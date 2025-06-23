@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155670-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60D2FAE435C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A93CAE44FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:47:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8149E17A3F1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2ED016CC10
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61065252900;
-	Mon, 23 Jun 2025 13:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E07052475E3;
+	Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wzEA12pp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QM7A1H0i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2044D23BF9F;
-	Mon, 23 Jun 2025 13:23:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A4248891;
+	Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685029; cv=none; b=NiCNbpV5Ree18qzARRTvJRZz+lDuPFuqZM6rAU2KmpSaTBeiZ3jbqZu4G4D8Wyo/oRX5tmOEUcKIH/K2iMzWUlDojiH/zMhE7H8YRUTDeWzzK53C1I9XIlQRM+Rnwamm6gAmzHx9TzNXJqbayGUKdHfSF9lKl1BkBTf0wEy/eiM=
+	t=1750686109; cv=none; b=GF36EZxcNo/FN8+76w0H1e2fVN45HHX+LA+Yf8twrTJNvbbwUvdhHAI/ENc0MY3CX9ZUqWldSrVQcRSalI1EY9wqhUVnoXmUql3m5rpKV7mNFVT7IEErNGU5V1pc20ZDtek1DilIY2jDQGV8t2HW//pdA6ena4iOVRRNGP6qxYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685029; c=relaxed/simple;
-	bh=trQ8Jr/IhYQM0bGdQVVqGWy+EP9VF08qucoiIdUzBKY=;
+	s=arc-20240116; t=1750686109; c=relaxed/simple;
+	bh=yfe9flI3bV5y+bJWBFdmxFJhLRsdUoMl2QcS814l5yY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGf/o1XJEZUSctxS9nNVUlGr5hx+E7OK3us+X1WpIhfvKNGgGujEzXXV4auDxoSDUlW/mYFBce9xC8KRs47S4EZWYyquStiT/l3mOBOwDDfPWK0buKO6MImh+rz0QYNioCLfsBsf3S2jgztpfiOtOSZJwSTUqpw36aJroqQwAvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wzEA12pp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A93C2C4CEEA;
-	Mon, 23 Jun 2025 13:23:48 +0000 (UTC)
+	 MIME-Version; b=X11Z8Yn55V73h8yMyU80Yr8CQhI6feyAAPjqfoq8qB28KZEw7I74+sEismjYOnl763jTVHZUkNIj4FikLZynlEK9GMmqENt1+AWwEwsOMUpC1dD2Xy/WY1xSZ+HcdN/sIEsX3hnrJpK6R1mnTemyXBeyPwWANY75a0TvM7HvNGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QM7A1H0i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4A6C4CEEA;
+	Mon, 23 Jun 2025 13:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685029;
-	bh=trQ8Jr/IhYQM0bGdQVVqGWy+EP9VF08qucoiIdUzBKY=;
+	s=korg; t=1750686109;
+	bh=yfe9flI3bV5y+bJWBFdmxFJhLRsdUoMl2QcS814l5yY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wzEA12ppFRi1cqceLI1Od+veqh2mEUgfsEpb1lJfA92RXxWUzPNcTsGTiMicHRtbE
-	 ja+zTIIVRqTGCgqbH+BF5jZI4wbuxj/GvXwp6kBLnwA02xLG8ds9aCAj4Br8UeV9LD
-	 76Gx3FFbvVZf4n9rx9/VdTRDcnVLgATQAsPqIsss=
+	b=QM7A1H0iuqLKRsOygYUSDzTxaacOg8cW7WOhyIMu/1t0ro/sVDlca2kFMQ8N1hXZ8
+	 NhEEDX5U5NTkD3jG43wA65mha5QlQpqopid7G9PZ7W7XakbNXaBVV96PU1pLuDPp4/
+	 RJEUGM9wh23Qjt9GchoK2Ohx8eWCbGK4BhxmLEsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Fangzhi Zuo <Jerry.Zuo@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/355] spi: sh-msiof: Fix maximum DMA transfer size
+Subject: [PATCH 6.15 267/592] drm/amd/display: Do Not Consider DSC if Valid Config Not Found
 Date: Mon, 23 Jun 2025 15:03:45 +0200
-Message-ID: <20250623130627.529693948@linuxfoundation.org>
+Message-ID: <20250623130706.667671746@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +64,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Fangzhi Zuo <Jerry.Zuo@amd.com>
 
-[ Upstream commit 0941d5166629cb766000530945e54b4e49680c68 ]
+[ Upstream commit 146a4429b5674b7520a96aea34233949731c6086 ]
 
-The maximum amount of data to transfer in a single DMA request is
-calculated from the FIFO sizes (which is technically not 100% correct,
-but a simplification, as it is limited by the maximum word count values
-in the Transmit and Control Data Registers).  However, in case there is
-both data to transmit and to receive, the transmit limit is overwritten
-by the receive limit.
+[why]
+In the mode validation, mst dsc is considered for bw calculation after
+common dsc config is determined. Currently it considered common dsc config
+is found if max and min target bpp are non zero which is not accurate. Invalid
+max and min target bpp values would not get max_kbps and min_kbps calculated,
+leading to falsefully pass a mode that does not have valid dsc parameters
+available.
 
-Fix this by using the minimum applicable FIFO size instead.  Move the
-calculation outside the loop, so it is not repeated for each individual
-DMA transfer.
+[how]
+Use the return value of decide_dsc_bandwidth_range() to determine whether valid
+dsc common config is found or not. Prune out modes that do not have valid common
+dsc config determined.
 
-As currently tx_fifo_size is always equal to rx_fifo_size, this bug had
-no real impact.
-
-Fixes: fe78d0b7691c0274 ("spi: sh-msiof: Fix FIFO size to 64 word from 256 word")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/d9961767a97758b2614f2ee8afe1bd56dc900a60.1747401908.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Fangzhi Zuo <Jerry.Zuo@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-sh-msiof.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-sh-msiof.c b/drivers/spi/spi-sh-msiof.c
-index 12fd02f92e37b..f1ca8b5356bcf 100644
---- a/drivers/spi/spi-sh-msiof.c
-+++ b/drivers/spi/spi-sh-msiof.c
-@@ -915,6 +915,7 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	void *rx_buf = t->rx_buf;
- 	unsigned int len = t->len;
- 	unsigned int bits = t->bits_per_word;
-+	unsigned int max_wdlen = 256;
- 	unsigned int bytes_per_word;
- 	unsigned int words;
- 	int n;
-@@ -928,17 +929,17 @@ static int sh_msiof_transfer_one(struct spi_controller *ctlr,
- 	if (!spi_controller_is_slave(p->ctlr))
- 		sh_msiof_spi_set_clk_regs(p, clk_get_rate(p->clk), t->speed_hz);
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index 5cdbc86ef8f5a..25e8befbcc479 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -1739,16 +1739,17 @@ static bool is_dsc_common_config_possible(struct dc_stream_state *stream,
+ 					  struct dc_dsc_bw_range *bw_range)
+ {
+ 	struct dc_dsc_policy dsc_policy = {0};
++	bool is_dsc_possible;
  
-+	if (tx_buf)
-+		max_wdlen = min(max_wdlen, p->tx_fifo_size);
-+	if (rx_buf)
-+		max_wdlen = min(max_wdlen, p->rx_fifo_size);
-+
- 	while (ctlr->dma_tx && len > 15) {
- 		/*
- 		 *  DMA supports 32-bit words only, hence pack 8-bit and 16-bit
- 		 *  words, with byte resp. word swapping.
- 		 */
--		unsigned int l = 0;
+ 	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
+-	dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
+-				       stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
+-				       dsc_policy.min_target_bpp * 16,
+-				       dsc_policy.max_target_bpp * 16,
+-				       &stream->sink->dsc_caps.dsc_dec_caps,
+-				       &stream->timing, dc_link_get_highest_encoding_format(stream->link), bw_range);
 -
--		if (tx_buf)
--			l = min(round_down(len, 4), p->tx_fifo_size * 4);
--		if (rx_buf)
--			l = min(round_down(len, 4), p->rx_fifo_size * 4);
-+		unsigned int l = min(round_down(len, 4), max_wdlen * 4);
+-	return bw_range->max_target_bpp_x16 && bw_range->min_target_bpp_x16;
++	is_dsc_possible = dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
++							 stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
++							 dsc_policy.min_target_bpp * 16,
++							 dsc_policy.max_target_bpp * 16,
++							 &stream->sink->dsc_caps.dsc_dec_caps,
++							 &stream->timing, dc_link_get_highest_encoding_format(stream->link), bw_range);
++
++	return is_dsc_possible;
+ }
+ #endif
  
- 		if (bits <= 8) {
- 			copy32 = copy_bswap32;
 -- 
 2.39.5
 
