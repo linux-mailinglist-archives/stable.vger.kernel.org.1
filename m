@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8B94AE5622
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 327F3AE55B8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D00BF1882F60
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23E241BC64A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1716D223708;
-	Mon, 23 Jun 2025 22:16:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12731228CBE;
+	Mon, 23 Jun 2025 22:13:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KnzQVTLB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Snvc0ET4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94CE22333B;
-	Mon, 23 Jun 2025 22:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C463B223DD0;
+	Mon, 23 Jun 2025 22:13:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716996; cv=none; b=lOkxnarFYxolBwk1VcLQ2UbdLphsc0frRT3Krfjzx0oSR0IkBjbAAQN9SFFw0nXZR35ebqXWSVhyFGEpNWZ2EAMeGERcwK2NpDMLRDRwtskVcp8xOcNNAK29Sa09JWBq7hopgnxLOL7QivYRp6PnNWHRrNn4FIjQN5gW/Ioo/do=
+	t=1750716793; cv=none; b=ZJi/bjX1TjdjtTQ5F9vJvQGhRaxuYALDhBeV0w0Kv1r0G+rNJJSz9bffH6/bvp16D/xHGlHRTb6Cl2/LOK9FUtJJfjqOFNFGaYPxDKOP3wFGgRk8sIldwCAW0yKgl6WvCQF/Vp6gitxifYQ89YEFCw0FWUwPca9YU85R+VMRIP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716996; c=relaxed/simple;
-	bh=y0nZez4b1w1zIxCYtb7mB0NL0A2lp61rGa89lsErJS4=;
+	s=arc-20240116; t=1750716793; c=relaxed/simple;
+	bh=RjrSo28YDP9qwvrzZO2G1KAzm2VtaJcxaL97Yyvruic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qZ6kR5jtMYQ6hrm9G59fcXtTYthuZ6p8JVAtR0OAlSWXfrJAgieHOtHcVXO0QZqBLjum+vpRoD+IsQBFr9ByQIcUXrXyX+zKRS+bprp58ruY9MxjwS5tfr7h8nelrxpCeV7+xKBnBy92BA4H7XRq0XeJ9bi6s4udsnoZrF/L0n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KnzQVTLB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAB5C4CEEA;
-	Mon, 23 Jun 2025 22:16:36 +0000 (UTC)
+	 MIME-Version; b=HNPOwzcypF7K57xgoO7jgjJcbBtYmAipIaAN0my1MvevF9F6nkk5P4vtFH1rw1GzG1AXRPiJ4iDXjzVQ5xFJgVVVKLplAycZzc31GoNUf7ZNDEJ1E9yJsKiZPa7xkxjWAsVcp2aMw5tLwLDk8XSieesy9McVRYHCgPGyXFIhE8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Snvc0ET4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AEB3C4CEED;
+	Mon, 23 Jun 2025 22:13:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716996;
-	bh=y0nZez4b1w1zIxCYtb7mB0NL0A2lp61rGa89lsErJS4=;
+	s=korg; t=1750716793;
+	bh=RjrSo28YDP9qwvrzZO2G1KAzm2VtaJcxaL97Yyvruic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KnzQVTLBlrkKWTdOx+MAyGwk3MSBW0K7jweaY+NvhpJo5fAMEL5X3sOHaF+4YkzLL
-	 6XCrlTZ1TXsKS4fARPAGziC8n96g5KmHbIFX83BNphWYms9MWjniV18LwIbS7NJQWM
-	 49OZ0OuXsLV+9XidKM9PwCG0kKA2BliRNZJ6mmDQ=
+	b=Snvc0ET4emm/V3ilT/1qDhQH9hff0ujO4Sot7UTUXrZZUM2Q1xSY2q0I72gAH/p6y
+	 aHJHVGzYEVSvBmE/VfCBcVTLlMzjDg0M0kolq55jIuXEH1j17RMQmZUsiIZ4ZmSNmT
+	 1d1vmW3wS9Xm9zPF0j8b/JQL27iSsLbwoyiqw+r0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -47,9 +47,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Baokun Li <libaokun1@huawei.com>,
 	Theodore Tso <tytso@mit.edu>,
 	stable@kernel.org
-Subject: [PATCH 6.1 336/508] ext4: factor out ext4_get_maxbytes()
-Date: Mon, 23 Jun 2025 15:06:21 +0200
-Message-ID: <20250623130653.598879240@linuxfoundation.org>
+Subject: [PATCH 6.1 337/508] ext4: ensure i_size is smaller than maxbytes
+Date: Mon, 23 Jun 2025 15:06:22 +0200
+Message-ID: <20250623130653.624616797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -70,73 +70,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Zhang Yi <yi.zhang@huawei.com>
 
-commit dbe27f06fa38b9bfc598f8864ae1c5d5831d9992 upstream.
+commit 1a77a028a392fab66dd637cdfac3f888450d00af upstream.
 
-There are several locations that get the correct maxbytes value based on
-the inode's block type. It would be beneficial to extract a common
-helper function to make the code more clear.
+The inode i_size cannot be larger than maxbytes, check it while loading
+inode from the disk.
 
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
 Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-3-yi.zhang@huaweicloud.com
+Link: https://patch.msgid.link/20250506012009.3896990-4-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Cc: stable@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ext4.h    |    7 +++++++
- fs/ext4/extents.c |    7 +------
- fs/ext4/file.c    |    7 +------
- 3 files changed, 9 insertions(+), 12 deletions(-)
+ fs/ext4/inode.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/ext4.h
-+++ b/fs/ext4/ext4.h
-@@ -3354,6 +3354,13 @@ static inline unsigned int ext4_flex_bg_
- 	return 1 << sbi->s_log_groups_per_flex;
- }
- 
-+static inline loff_t ext4_get_maxbytes(struct inode *inode)
-+{
-+	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		return inode->i_sb->s_maxbytes;
-+	return EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+}
-+
- #define ext4_std_error(sb, errno)				\
- do {								\
- 	if ((errno))						\
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -4974,12 +4974,7 @@ static const struct iomap_ops ext4_iomap
- 
- static int ext4_fiemap_check_ranges(struct inode *inode, u64 start, u64 *len)
- {
--	u64 maxbytes;
--
--	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
--		maxbytes = inode->i_sb->s_maxbytes;
--	else
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
-+	u64 maxbytes = ext4_get_maxbytes(inode);
- 
- 	if (*len == 0)
- 		return -EINVAL;
---- a/fs/ext4/file.c
-+++ b/fs/ext4/file.c
-@@ -880,12 +880,7 @@ static int ext4_file_open(struct inode *
- loff_t ext4_llseek(struct file *file, loff_t offset, int whence)
- {
- 	struct inode *inode = file->f_mapping->host;
--	loff_t maxbytes;
--
--	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
--		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
--	else
--		maxbytes = inode->i_sb->s_maxbytes;
-+	loff_t maxbytes = ext4_get_maxbytes(inode);
- 
- 	switch (whence) {
- 	default:
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4968,7 +4968,8 @@ struct inode *__ext4_iget(struct super_b
+ 		ei->i_file_acl |=
+ 			((__u64)le16_to_cpu(raw_inode->i_file_acl_high)) << 32;
+ 	inode->i_size = ext4_isize(sb, raw_inode);
+-	if ((size = i_size_read(inode)) < 0) {
++	size = i_size_read(inode);
++	if (size < 0 || size > ext4_get_maxbytes(inode)) {
+ 		ext4_error_inode(inode, function, line, 0,
+ 				 "iget: bad i_size value: %lld", size);
+ 		ret = -EFSCORRUPTED;
 
 
 
