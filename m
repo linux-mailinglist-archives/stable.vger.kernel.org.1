@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-155903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7E90AE4479
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0624AE43C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F8984434E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E3A5189AB52
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 427EF253932;
-	Mon, 23 Jun 2025 13:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92D22252912;
+	Mon, 23 Jun 2025 13:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMnJbyI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0W0hUU95"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D5E253358;
-	Mon, 23 Jun 2025 13:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEB5230BC2;
+	Mon, 23 Jun 2025 13:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685634; cv=none; b=M2gyPv/zkDAu4iAL68fPHLn2ZzvxPxN+7tQt1HBbm3xOAqPbRoyrU7soguUxOiBnnSfWLlI9ZvO9sk6+PvvKxD/1rKfYtlBnXmmR64WoTnDCMhk0izPqNNPZbw85fxBTT6eEyfpTVkug7NU8i4oHQWIDK8aZCLCiCB2F7Hintog=
+	t=1750685364; cv=none; b=dmjGRoZhxWTyLwt4usaZ7lmkpw3RoDX8z2z5txPufu/DbQrTvLaybrl0ZiXgSWNcNbxnQ5q8YFnUApIpLQ8HQc6SHrZBudbKRJwqWVx14dLApZ0duE1fOwUaDy527TZsQR1DcLU9wOFFIq9JKjLS0xxJxaLntHDMm/6Kt20cv7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685634; c=relaxed/simple;
-	bh=qFbjKwAsHwK3QOcxP/8KlM6fjNRuEkQJO7dI0zPL1JA=;
+	s=arc-20240116; t=1750685364; c=relaxed/simple;
+	bh=RV1ri2DnalP+VXGt58jfsRUO2PfINLpn/ql8D76hdq8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QnBMm2Ok0aC2xFmTEzweuyMBX0BE1PTZFfLwcACvcVUx4LKD+eGL/+YG7HvRst0HddtsPj8TpEWamAbrleBmZMZ68bmIS9FukiIPjscSumH+wHjgJLBRNQb/y6F3LY45WHZZlRCfFEaKkbNqPxQT8BQIrIPelzDWsNbnLCuKkNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMnJbyI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B94DC4CEEA;
-	Mon, 23 Jun 2025 13:33:53 +0000 (UTC)
+	 MIME-Version; b=gUfQCko0/QljDpmtRx3Oxhe+hsNblz/CLKy+TWaK/DgLaZ3LXa3CKmnpQlLsBcZKwz7ncxS4RnbcGD5RZo+sFmp2DWYZJXi98reVy7+dJFb55q1ToWoYSGrmhn1RJ8Qqy41QdQcoQfeIXvirMSBlGdl79Fc3iAGNZ0F3BY23III=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0W0hUU95; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8821C4CEEA;
+	Mon, 23 Jun 2025 13:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685633;
-	bh=qFbjKwAsHwK3QOcxP/8KlM6fjNRuEkQJO7dI0zPL1JA=;
+	s=korg; t=1750685364;
+	bh=RV1ri2DnalP+VXGt58jfsRUO2PfINLpn/ql8D76hdq8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMnJbyI0YCXkxyABmWsIOl6/Hv5QTOGqmEdRyW5mAVxA98HYzlzwrcid9zfBSKDDp
-	 Wny7a24oho89L2tb0fwIx13L9Qjna5cR2vid+PpQA63ZljJeq2jkQxdZuJj7SrJPub
-	 SoNjSO7zc7h/vubb9mDjRRFdBFwXBJcBqkpZetGQ=
+	b=0W0hUU95y1a13CwnCP+k2DTlQo40tg6Q8/eDhEMR3ZV6/01mNJsvHI1GZZkGC5/T7
+	 yKTLW+X71mApcV4j1bXSgnNJ8QP0XrZzxTWgtyUY1/aNmvsou6tp3is6kKG0ruvMJ/
+	 elmmJAmjkYXkcNr2IgonEvITDJ5rs7S21eIVMgCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Hansen Dsouza <hansen.dsouza@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Ray Wu <ray.wu@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 048/411] libbpf: Use proper errno value in linker
+Subject: [PATCH 6.15 234/592] drm/amd/display: disable DPP RCG before DPP CLK enable
 Date: Mon, 23 Jun 2025 15:03:12 +0200
-Message-ID: <20250623130634.439844981@linuxfoundation.org>
+Message-ID: <20250623130705.857431228@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +65,247 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 358b1c0f56ebb6996fcec7dcdcf6bae5dcbc8b6c ]
+[ Upstream commit 1bcd679209420305a86833bc357d50021909edaf ]
 
-Return values of the linker_append_sec_data() and the
-linker_append_elf_relos() functions are propagated all the
-way up to users of libbpf API. In some error cases these
-functions return -1 which will be seen as -EPERM from user's
-point of view. Instead, return a more reasonable -EINVAL.
+[why]
+DPP CLK enable needs to disable DPPCLK RCG first.
+The DPPCLK_en in dccg should always be enabled when the corresponding
+pipe is enabled.
 
-Fixes: faf6ed321cf6 ("libbpf: Add BPF static linker APIs")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250430120820.2262053-1-a.s.protopopov@gmail.com
+Reviewed-by: Hansen Dsouza <hansen.dsouza@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Ray Wu <ray.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/linker.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../amd/display/dc/dccg/dcn35/dcn35_dccg.c    | 38 ++++++++++++-------
+ .../amd/display/dc/hwss/dcn35/dcn35_hwseq.c   | 21 ++++++----
+ 2 files changed, 38 insertions(+), 21 deletions(-)
 
-diff --git a/tools/lib/bpf/linker.c b/tools/lib/bpf/linker.c
-index fc91814a35e8e..3e06af5b5352e 100644
---- a/tools/lib/bpf/linker.c
-+++ b/tools/lib/bpf/linker.c
-@@ -1181,7 +1181,7 @@ static int linker_append_sec_data(struct bpf_linker *linker, struct src_obj *obj
- 		} else {
- 			if (!secs_match(dst_sec, src_sec)) {
- 				pr_warn("ELF sections %s are incompatible\n", src_sec->sec_name);
--				return -1;
-+				return -EINVAL;
- 			}
+diff --git a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+index b363f5360818d..ad910065f463f 100644
+--- a/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
++++ b/drivers/gpu/drm/amd/display/dc/dccg/dcn35/dcn35_dccg.c
+@@ -391,6 +391,7 @@ static void dccg35_set_dppclk_rcg(struct dccg *dccg,
  
- 			/* "license" and "version" sections are deduped */
-@@ -2027,7 +2027,7 @@ static int linker_append_elf_relos(struct bpf_linker *linker, struct src_obj *ob
- 			}
- 		} else if (!secs_match(dst_sec, src_sec)) {
- 			pr_warn("sections %s are not compatible\n", src_sec->sec_name);
--			return -1;
-+			return -EINVAL;
+ 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
+ 
++
+ 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp && enable)
+ 		return;
+ 
+@@ -411,6 +412,8 @@ static void dccg35_set_dppclk_rcg(struct dccg *dccg,
+ 	BREAK_TO_DEBUGGER();
+ 		break;
+ 	}
++	//DC_LOG_DEBUG("%s: inst(%d) DPPCLK rcg_disable: %d\n", __func__, inst, enable ? 0 : 1);
++
+ }
+ 
+ static void dccg35_set_dpstreamclk_rcg(
+@@ -1112,30 +1115,24 @@ static void dcn35_set_dppclk_enable(struct dccg *dccg,
+ {
+ 	struct dcn_dccg *dccg_dcn = TO_DCN_DCCG(dccg);
+ 
++
+ 	switch (dpp_inst) {
+ 	case 0:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK0_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	case 1:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK1_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK1_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	case 2:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK2_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK2_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	case 3:
+ 		REG_UPDATE(DPPCLK_CTRL, DPPCLK3_EN, enable);
+-		if (dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+-			REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK3_ROOT_GATE_DISABLE, enable);
+ 		break;
+ 	default:
+ 		break;
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) DPPCLK_EN = %d\n", __func__, dpp_inst, enable);
+ 
+ }
+ 
+@@ -1163,14 +1160,18 @@ static void dccg35_update_dpp_dto(struct dccg *dccg, int dpp_inst,
+ 			ASSERT(false);
+ 			phase = 0xff;
  		}
++		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
  
- 		/* add_dst_sec() above could have invalidated linker->secs */
+ 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+ 				DPPCLK0_DTO_PHASE, phase,
+ 				DPPCLK0_DTO_MODULO, modulo);
+ 
+ 		dcn35_set_dppclk_enable(dccg, dpp_inst, true);
+-	} else
++	} else {
+ 		dcn35_set_dppclk_enable(dccg, dpp_inst, false);
++		/*we have this in hwss: disable_plane*/
++		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
++	}
+ 	dccg->pipe_dppclk_khz[dpp_inst] = req_dppclk;
+ }
+ 
+@@ -1182,6 +1183,7 @@ static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
+ 	if (!dccg->ctx->dc->debug.root_clock_optimization.bits.dpp)
+ 		return;
+ 
++
+ 	switch (dpp_inst) {
+ 	case 0:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL6, DPPCLK0_ROOT_GATE_DISABLE, enable);
+@@ -1198,6 +1200,8 @@ static void dccg35_set_dppclk_root_clock_gating(struct dccg *dccg,
+ 	default:
+ 		break;
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) rcg: %d\n", __func__, dpp_inst, enable);
++
+ }
+ 
+ static void dccg35_get_pixel_rate_div(
+@@ -1521,28 +1525,30 @@ static void dccg35_set_physymclk_root_clock_gating(
+ 	switch (phy_inst) {
+ 	case 0:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYASYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 1:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYBSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 2:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYCSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 3:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYDSYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	case 4:
+ 		REG_UPDATE(DCCG_GATE_DISABLE_CNTL2,
+-				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 1 : 0);
++				PHYESYMCLK_ROOT_GATE_DISABLE, enable ? 0 : 1);
+ 		break;
+ 	default:
+ 		BREAK_TO_DEBUGGER();
+ 		return;
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) PHYESYMCLK_ROOT_GATE_DISABLE:\n", __func__, phy_inst, enable ? 0 : 1);
++
+ }
+ 
+ static void dccg35_set_physymclk(
+@@ -1643,6 +1649,8 @@ static void dccg35_dpp_root_clock_control(
+ 		return;
+ 
+ 	if (clock_on) {
++		dccg35_set_dppclk_rcg(dccg, dpp_inst, false);
++
+ 		/* turn off the DTO and leave phase/modulo at max */
+ 		dcn35_set_dppclk_enable(dccg, dpp_inst, 1);
+ 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+@@ -1654,6 +1662,8 @@ static void dccg35_dpp_root_clock_control(
+ 		REG_SET_2(DPPCLK_DTO_PARAM[dpp_inst], 0,
+ 			  DPPCLK0_DTO_PHASE, 0,
+ 			  DPPCLK0_DTO_MODULO, 1);
++		/*we have this in hwss: disable_plane*/
++		//dccg35_set_dppclk_rcg(dccg, dpp_inst, true);
+ 	}
+ 
+ 	dccg->dpp_clock_gated[dpp_inst] = !clock_on;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+index 922b8d71cf1aa..63077c1fad859 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -241,11 +241,6 @@ void dcn35_init_hw(struct dc *dc)
+ 			dc->res_pool->hubbub->funcs->allow_self_refresh_control(dc->res_pool->hubbub,
+ 					!dc->res_pool->hubbub->ctx->dc->debug.disable_stutter);
+ 	}
+-	if (res_pool->dccg->funcs->dccg_root_gate_disable_control) {
+-		for (i = 0; i < res_pool->pipe_count; i++)
+-			res_pool->dccg->funcs->dccg_root_gate_disable_control(res_pool->dccg, i, 0);
+-	}
+-
+ 	for (i = 0; i < res_pool->audio_count; i++) {
+ 		struct audio *audio = res_pool->audios[i];
+ 
+@@ -901,12 +896,18 @@ void dcn35_init_pipes(struct dc *dc, struct dc_state *context)
+ void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
+ 			       struct dc_state *context)
+ {
++	struct dpp *dpp = pipe_ctx->plane_res.dpp;
++	struct dccg *dccg = dc->res_pool->dccg;
++
++
+ 	/* enable DCFCLK current DCHUB */
+ 	pipe_ctx->plane_res.hubp->funcs->hubp_clk_cntl(pipe_ctx->plane_res.hubp, true);
+ 
+ 	/* initialize HUBP on power up */
+ 	pipe_ctx->plane_res.hubp->funcs->hubp_init(pipe_ctx->plane_res.hubp);
+-
++	/*make sure DPPCLK is on*/
++	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, true);
++	dpp->funcs->dpp_dppclk_control(dpp, false, true);
+ 	/* make sure OPP_PIPE_CLOCK_EN = 1 */
+ 	pipe_ctx->stream_res.opp->funcs->opp_pipe_clock_control(
+ 			pipe_ctx->stream_res.opp,
+@@ -923,6 +924,7 @@ void dcn35_enable_plane(struct dc *dc, struct pipe_ctx *pipe_ctx,
+ 		// Program system aperture settings
+ 		pipe_ctx->plane_res.hubp->funcs->hubp_set_vm_system_aperture_settings(pipe_ctx->plane_res.hubp, &apt);
+ 	}
++	//DC_LOG_DEBUG("%s: dpp_inst(%d) =\n", __func__, dpp->inst);
+ 
+ 	if (!pipe_ctx->top_pipe
+ 		&& pipe_ctx->plane_state
+@@ -938,6 +940,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ {
+ 	struct hubp *hubp = pipe_ctx->plane_res.hubp;
+ 	struct dpp *dpp = pipe_ctx->plane_res.dpp;
++	struct dccg *dccg = dc->res_pool->dccg;
++
+ 
+ 	dc->hwss.wait_for_mpcc_disconnect(dc, dc->res_pool, pipe_ctx);
+ 
+@@ -955,7 +959,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 	hubp->funcs->hubp_clk_cntl(hubp, false);
+ 
+ 	dpp->funcs->dpp_dppclk_control(dpp, false, false);
+-/*to do, need to support both case*/
++	dccg->funcs->dccg_root_gate_disable_control(dccg, dpp->inst, false);
++
+ 	hubp->power_gated = true;
+ 
+ 	hubp->funcs->hubp_reset(hubp);
+@@ -967,6 +972,8 @@ void dcn35_plane_atomic_disable(struct dc *dc, struct pipe_ctx *pipe_ctx)
+ 	pipe_ctx->top_pipe = NULL;
+ 	pipe_ctx->bottom_pipe = NULL;
+ 	pipe_ctx->plane_state = NULL;
++	//DC_LOG_DEBUG("%s: dpp_inst(%d)=\n", __func__, dpp->inst);
++
+ }
+ 
+ void dcn35_disable_plane(struct dc *dc, struct dc_state *state, struct pipe_ctx *pipe_ctx)
 -- 
 2.39.5
 
