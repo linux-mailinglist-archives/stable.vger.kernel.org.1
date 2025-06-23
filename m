@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-158043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97F3AE5702
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C5FDAE55D7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8B6343B13D4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 423A318970DA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D8A22370A;
-	Mon, 23 Jun 2025 22:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3485C22A4E5;
+	Mon, 23 Jun 2025 22:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4S+xbjj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMIlQ0vq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BDF199FBA;
-	Mon, 23 Jun 2025 22:22:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E518A22A1EF;
+	Mon, 23 Jun 2025 22:13:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717343; cv=none; b=AUt4UCB8CiRVOgtFBtZGR6ogH5c43Ids4lau1M9aD4OTkejmTbIgwphrTX2JHqR0uRIGsP/KZvFUaY4tHcu75IwbalIg2fF5EUoLWUYzCWkl0x+C9u4hwa+AeyyKlSKbMjUtK3JwpYM5ubVgPsbqP8ZokMs6G6wHdXFKh57tlDQ=
+	t=1750716833; cv=none; b=NNAgIe+JVSQp5egrHp/wFFlMtqfVw7S2FYLaIehunA71ClYJGKLMadei3f8HymAD746k99a7AUuwiYz82iWrIWp9rzZc1K/awEALDqCau8y5XZr5e1ZG+lkf37iPh5+GsVc9mEsENTS/ea9ejZCMBgs4B61cYP/cGHFKIxb5ZRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717343; c=relaxed/simple;
-	bh=fImO82QCXva0QjAm1ZUP5Vuy5zxL5Z2vdgkKYvxcSsI=;
+	s=arc-20240116; t=1750716833; c=relaxed/simple;
+	bh=iugnTkEgppgEx6Ne9oF/pKaY9x+l34CmCTb+ScmQLT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D9z7SAQpgBtkpR6ldqYcpaFK4lGDEPnpHjdKRnKmY++kfYAjZtYve6fqaaZ/L2FXtSzEikAJs0x3Tuoh6aHgCpvswMVyV+9N0vED2nXy4cNuNa0zQigzpxw0cXbhB4wAR0jnxBY6DYWe4RfBg2SJN/YaQyTU72t6dqG4r02bcSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4S+xbjj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B71C4CEEA;
-	Mon, 23 Jun 2025 22:22:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=n33MgTm94j27Ahoo6k9cbl1nLpnC3yM6w8dqIfTZNq/a4p7fgAmc4KPNZK8kK6tHrdMY0su9NZwRTEaSCXebsgcSwZf4PMxchYgGHI418Z6KoK2YokdKcyz/xeaHCB9dgI8ryHVBFPJrGNL4pUUSR1R3Ai0I0ZSdPsLL6XDx1VQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMIlQ0vq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C078C4CEEA;
+	Mon, 23 Jun 2025 22:13:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717343;
-	bh=fImO82QCXva0QjAm1ZUP5Vuy5zxL5Z2vdgkKYvxcSsI=;
+	s=korg; t=1750716832;
+	bh=iugnTkEgppgEx6Ne9oF/pKaY9x+l34CmCTb+ScmQLT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R4S+xbjjgJbwDz0/zqed0i9kHvGvAcjDhu/WIreIEDPFB2pOXUpDtSteBJK8Q0mSA
-	 HhdObN7tBsmD5RvmR9kgLw4xRvau4dc2ZZgCrlKURwftWv5J46/O9YJOOo7s1C4rDy
-	 SwhHGKxn7h4UkXHMahQ04wjJs0TQWUn3SycqNdV4=
+	b=EMIlQ0vqD8EHlEHcKXJjZrFQBuSZRJE3Uq3elMvfcTLthJJka7FwPK6UvreONJUwT
+	 CCd18Rb3KWGmExZBNaNwMMA7DxCJ2O2RPT3sn7t2Q4+jMhHeQ4Rz5gmicITfFQS/tc
+	 EmZJUWq4fNT/ZYJsqOr/FtP9oC8Ika7k9Z1wlN9U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 408/508] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
+Subject: [PATCH 6.12 316/414] udmabuf: use sgtable-based scatterlist wrappers
 Date: Mon, 23 Jun 2025 15:07:33 +0200
-Message-ID: <20250623130655.266302435@linuxfoundation.org>
+Message-ID: <20250623130649.898040312@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
+commit afe382843717d44b24ef5014d57dcbaab75a4052 upstream.
 
-The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
-propagate their error values back to the stack instead of silently
-ignoring those.
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgtable's nents.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1ffe09590121 ("udmabuf: fix dma-buf cpu access")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Vivek Kasireddy <vivek.kasireddy@intel.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Link: https://lore.kernel.org/r/20250507160913.2084079-3-m.szyprowski@samsung.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/dma-buf/udmabuf.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index e9032359a68a5..3ada8dcaa806b 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -474,16 +474,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
- {
- 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct gpio_chip *chip = range->gc;
-+	int ret;
+--- a/drivers/dma-buf/udmabuf.c
++++ b/drivers/dma-buf/udmabuf.c
+@@ -223,8 +223,7 @@ static int begin_cpu_udmabuf(struct dma_
+ 			ubuf->sg = NULL;
+ 		}
+ 	} else {
+-		dma_sync_sg_for_cpu(dev, ubuf->sg->sgl, ubuf->sg->nents,
+-				    direction);
++		dma_sync_sgtable_for_cpu(dev, ubuf->sg, direction);
+ 	}
  
- 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
- 		offset, range->name, offset, input ? "input" : "output");
+ 	return ret;
+@@ -239,7 +238,7 @@ static int end_cpu_udmabuf(struct dma_bu
+ 	if (!ubuf->sg)
+ 		return -EINVAL;
  
- 	if (input)
--		armada_37xx_gpio_direction_input(chip, offset);
-+		ret = armada_37xx_gpio_direction_input(chip, offset);
- 	else
--		armada_37xx_gpio_direction_output(chip, offset, 0);
-+		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
- 
--	return 0;
-+	return ret;
+-	dma_sync_sg_for_device(dev, ubuf->sg->sgl, ubuf->sg->nents, direction);
++	dma_sync_sgtable_for_device(dev, ubuf->sg, direction);
+ 	return 0;
  }
  
- static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
--- 
-2.39.5
-
 
 
 
