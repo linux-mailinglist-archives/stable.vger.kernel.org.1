@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-155672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155720-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD76AE4329
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FC6AE439B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:34:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1B771893CBA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DE7CE17C52F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82A6B2522B1;
-	Mon, 23 Jun 2025 13:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A94F424BBEB;
+	Mon, 23 Jun 2025 13:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t8cDUcTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ou7NiIwi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4017424678E;
-	Mon, 23 Jun 2025 13:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642724C7F;
+	Mon, 23 Jun 2025 13:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685034; cv=none; b=QvZStSm4DdXfHsC/W3cOaYpGs5gW6GULTntKHNoaLs1vo1QGxqLYSvL8ZvauqxbI/SlkFaBBFPnM+zUpjte6m+oHpnumyjwz9r9FOxZ4AXagDl9wtCj7xKaX+SCy7NgC0CSwnnU7qwnTi2nigBElDfZ5Jz1DlwekCMI2ZKncR8c=
+	t=1750685160; cv=none; b=hemSIFQQoB5pkFDtGCkRJbTQt+y3jkCSDxNJsIYqIx/ltU7/uUdeRZFCejFX/6XYRYc83/JFYL0Mud6vdXVMv79vtAv9epGR8MZsfa7x3YXBOXoJD8PEboYnEJjh6NevjFowh7SiJjECeku+u/ELUGkd/daTSCm6vdrh4KCIDlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685034; c=relaxed/simple;
-	bh=a8bEXEi/nWtUake6V7kRvo1Dsp1i/uvld0ZciqjP4yM=;
+	s=arc-20240116; t=1750685160; c=relaxed/simple;
+	bh=YsEE0FMg8gsSt+YfiZ3uEhcLVVElAfXay1IbmE/RkbA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5MiYou8QEN72xlb6Myj+ZRCABnfFMEcSp4d23MDcAcSNoAIXFzekfpMoof5WbzcCxNMWYCr6hvfW+5NwYkExDgGseL/xFOI5Ye6wEsnUmfc/BP3boNXJ8jk5DISnflkoZQomjhFk5HXlJJ/JUG3ncqYimiWrJpBX7xnR0gZtoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t8cDUcTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9E1BC4CEEA;
-	Mon, 23 Jun 2025 13:23:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=S5Q9xvzwz1XF6g23/zygTev0juJuLEBnCD/f8GZ4AwMFCozaOm4WDQm5u+q2aPqU0StlrW6ENYpoNdnITALGPYL8yg8gJpLvitbqrcsarpzSKzT8cHQf5hKj8F67yOJVB5wYQwITSyekXi6oVeSzVqjjN7hFHrxFaSn+1fWTv7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ou7NiIwi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED9EBC4CEEA;
+	Mon, 23 Jun 2025 13:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685034;
-	bh=a8bEXEi/nWtUake6V7kRvo1Dsp1i/uvld0ZciqjP4yM=;
+	s=korg; t=1750685160;
+	bh=YsEE0FMg8gsSt+YfiZ3uEhcLVVElAfXay1IbmE/RkbA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t8cDUcTBqkW7jSiuL2fR42e8s/PmSn9SUVPdZqTwQ7NtNto3JuWWdAoeFeU8kb2/X
-	 kv5FmXKzFWBpuQXvqKPfU6i7xOcTjp+aT5DPoqDuMMH7XG3VHjgyH444aqvkNYNBxl
-	 5pn+kXIYg8V7Tu/JiiIUOiT2tc/kJx8MQWccMp6Q=
+	b=Ou7NiIwinOm6VxT/e3peR0FNVjAvCEvEMkJ4nQeu0hMzj8KYrYMtnBL2be2Ys+m5U
+	 XZYHCFj0hN/Vobp1cV3ORBJQ/bLq/6hR0jEJezsR1nv1Z9eZAmN7/rQssDc+lgtSpC
+	 SKN00JtlGOCtpNA5EqE/ZRSB/D8p2ydmS9qLHU80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Alexandre Mergnat <amergnat@baylibre.com>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 062/222] rtc: sh: assign correct interrupts with DT
-Date: Mon, 23 Jun 2025 15:06:37 +0200
-Message-ID: <20250623130613.976451746@linuxfoundation.org>
+Subject: [PATCH 5.4 063/222] rtc: Fix offset calculation for .start_secs < 0
+Date: Mon, 23 Jun 2025 15:06:38 +0200
+Message-ID: <20250623130614.006743391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -60,55 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Alexandre Mergnat <amergnat@baylibre.com>
 
-[ Upstream commit 8f2efdbc303fe7baa83843d3290dd6ea5ba3276c ]
+[ Upstream commit fe9f5f96cfe8b82d0f24cbfa93718925560f4f8d ]
 
-The DT bindings for this driver define the interrupts in the order as
-they are numbered in the interrupt controller. The old platform_data,
-however, listed them in a different order. So, for DT based platforms,
-they are mixed up. Assign them specifically for DT, so we can keep the
-bindings stable. After the fix, 'rtctest' passes again on the Renesas
-Genmai board (RZ-A1 / R7S72100).
+The comparison
 
-Fixes: dab5aec64bf5 ("rtc: sh: add support for rza series")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250227134256.9167-11-wsa+renesas@sang-engineering.com
+        rtc->start_secs > rtc->range_max
+
+has a signed left-hand side and an unsigned right-hand side.
+So the comparison might become true for negative start_secs which is
+interpreted as a (possibly very large) positive value.
+
+As a negative value can never be bigger than an unsigned value
+the correct representation of the (mathematical) comparison
+
+        rtc->start_secs > rtc->range_max
+
+in C is:
+
+        rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max
+
+Use that to fix the offset calculation currently used in the
+rtc-mt6397 driver.
+
+Fixes: 989515647e783 ("rtc: Add one offset seconds to expand RTC range")
+Signed-off-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+Link: https://lore.kernel.org/r/20250428-enable-rtc-v4-2-2b2f7e3f9349@baylibre.com
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rtc/rtc-sh.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/rtc/class.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/rtc/rtc-sh.c b/drivers/rtc/rtc-sh.c
-index 579b3ff5c644f..8b4a2ef59e609 100644
---- a/drivers/rtc/rtc-sh.c
-+++ b/drivers/rtc/rtc-sh.c
-@@ -485,9 +485,15 @@ static int __init sh_rtc_probe(struct platform_device *pdev)
- 		return -ENOENT;
- 	}
- 
--	rtc->periodic_irq = ret;
--	rtc->carry_irq = platform_get_irq(pdev, 1);
--	rtc->alarm_irq = platform_get_irq(pdev, 2);
-+	if (!pdev->dev.of_node) {
-+		rtc->periodic_irq = ret;
-+		rtc->carry_irq = platform_get_irq(pdev, 1);
-+		rtc->alarm_irq = platform_get_irq(pdev, 2);
-+	} else {
-+		rtc->alarm_irq = ret;
-+		rtc->periodic_irq = platform_get_irq(pdev, 1);
-+		rtc->carry_irq = platform_get_irq(pdev, 2);
-+	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_IO, 0);
- 	if (!res)
+diff --git a/drivers/rtc/class.c b/drivers/rtc/class.c
+index 8b434213bc7ad..87cb34acadde3 100644
+--- a/drivers/rtc/class.c
++++ b/drivers/rtc/class.c
+@@ -270,7 +270,7 @@ static void rtc_device_get_offset(struct rtc_device *rtc)
+ 	 *
+ 	 * Otherwise the offset seconds should be 0.
+ 	 */
+-	if (rtc->start_secs > rtc->range_max ||
++	if ((rtc->start_secs >= 0 && rtc->start_secs > rtc->range_max) ||
+ 	    rtc->start_secs + range_secs - 1 < rtc->range_min)
+ 		rtc->offset_secs = rtc->start_secs - rtc->range_min;
+ 	else if (rtc->start_secs > rtc->range_min)
 -- 
 2.39.5
 
