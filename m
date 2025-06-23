@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-157735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B6AFAE5560
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4928CAE572A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 81BBF1BC4A8F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF4814E2D58
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A631222A4EF;
-	Mon, 23 Jun 2025 22:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2906225785;
+	Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrdY2av5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Df/UaCfW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C8C22A4E1;
-	Mon, 23 Jun 2025 22:09:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3BA622370A;
+	Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716593; cv=none; b=hqmt0Gir6fMnBgctEe1PbkAxQufxc0n+nIJS8uf8MgdmeOvwsKcfk4P7NWJkMEXsc5yRkgy7Vikb9axSruxf3XGPPU3IcL3zmnWwGGS0p9iQ3rn+lEWkRwCr99SKR3+KdxjU4vHxmZMvwuyXE2EKvyqylup8uHUV9ts59ylUoRQ=
+	t=1750717604; cv=none; b=f6jOXFfiwxFJVxsMU9lWhRg+IaZXBPru5JD6RLKUbjpKus7CF0MX/x5/iLcgSqQTU+GE/xEcENXkP+4Dj+dH3gUPMB49qbDebXfDEHyJ90SZnYz+V9ogczWDMX3J5EySL0DWpAvCBjZXH9O75TXMJwjty2OD+w+fsbdBDNlPKyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716593; c=relaxed/simple;
-	bh=i1pYAlS3K6SOmBeIqkYRxO36QI/QFK5AIK8gr1DDQrY=;
+	s=arc-20240116; t=1750717604; c=relaxed/simple;
+	bh=i5L+HbxuEhwwh8Y3q4oFmttZTqvW8MfEZUkliR54EJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ca90M1yp8OKasW7swc/Vrx40YW72qsrChwsNGqiSkJzhkIFZKU/r1ht7MwrXK7+vx+9jqZ8K6Ub5U2kFd3m39zNG7Cmqlhb623O0at5xeG0tglbNtorhe9iyW2lSrsE1KcQvwsmEJSNhifVY2G3f5UiFaHoPH3Dla1jLp3PXAFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrdY2av5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EECB5C4CEF6;
-	Mon, 23 Jun 2025 22:09:52 +0000 (UTC)
+	 MIME-Version; b=bS52Huk16u9EyYN/xl8P/xOi3WgMwEyw5D82YzGFtiHzXfC5oBRuSCvQOQatpE8hDFYNJLf/cbtOQsDLf25eGdrknAInDIHYR4BY0OKkTQdkrsjTaZzNquATZdXPJnGJkS/Dr1GXJFwVw3RgXun0I8EIEp0yEW3Hs0AMwlFQsm4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Df/UaCfW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C546C4CEED;
+	Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716593;
-	bh=i1pYAlS3K6SOmBeIqkYRxO36QI/QFK5AIK8gr1DDQrY=;
+	s=korg; t=1750717604;
+	bh=i5L+HbxuEhwwh8Y3q4oFmttZTqvW8MfEZUkliR54EJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrdY2av52DfyTBMSYv4dZyVLuIgC85iCuDGYyi28t330kBH2MRkgeY/TZF3Asr4rI
-	 FZQF2oB3GweOPuj0ebcLG2eWCPGdcogxWRbAzmtrTkkQ+qwAqVeOZqNUp6UR2OoNB+
-	 MsQFJtAo6BOWiKjQv+F1yIsuP88pBpfT+ufnkBrA=
+	b=Df/UaCfWRr9qzYG1zLEObTMS5Y8MVaJOr77Y5xrtGmQeSGojEQ4qL2r+Z2pZ0d9oc
+	 7aJPlcoDOpTM9Enpw0Zb+VcnYljB9IO4Ta2r8njN4P1pz48pl8AAy9xNfCwpU+VCAU
+	 dw/cJ5Y/LpQbS3Nh0HTy4fOcLeuA04dHRuxsYf7Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Foster <colin.foster@in-advantage.com>,
-	Kevin Hilman <khilman@baylibre.com>,
-	"Nobuhiro Iwamatsu (CIP)" <nobuhiro1.iwamatsu@toshiba.co.jp>
-Subject: [PATCH 6.6 275/290] ARM: dts: am335x-bone-common: Increase MDIO reset deassert time
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Subject: [PATCH 6.12 399/414] serial: sh-sci: Increment the runtime usage counter for the earlycon device
 Date: Mon, 23 Jun 2025 15:08:56 +0200
-Message-ID: <20250623130635.195494801@linuxfoundation.org>
+Message-ID: <20250623130651.913249351@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Foster <colin.foster@in-advantage.com>
+From: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
 
-commit b9bf5612610aa7e38d58fee16f489814db251c01 upstream.
+commit 651dee03696e1dfde6d9a7e8664bbdcd9a10ea7f upstream.
 
-Prior to commit df16c1c51d81 ("net: phy: mdio_device: Reset device only
-when necessary") MDIO reset deasserts were performed twice during boot.
-Now that the second deassert is no longer performed, device probe
-failures happen due to the change in timing with the following error
-message:
+In the sh-sci driver, serial ports are mapped to the sci_ports[] array,
+with earlycon mapped at index zero.
 
-SMSC LAN8710/LAN8720: probe of 4a101000.mdio:00 failed with error -5
+The uart_add_one_port() function eventually calls __device_attach(),
+which, in turn, calls pm_request_idle(). The identified code path is as
+follows:
 
-Restore the original effective timing, which resolves the probe
-failures.
+uart_add_one_port() ->
+  serial_ctrl_register_port() ->
+    serial_core_register_port() ->
+      serial_core_port_device_add() ->
+        serial_base_port_add() ->
+          device_add() ->
+            bus_probe_device() ->
+              device_initial_probe() ->
+                __device_attach() ->
+                  // ...
+                  if (dev->p->dead) {
+                    // ...
+                  } else if (dev->driver) {
+                    // ...
+                  } else {
+                    // ...
+                    pm_request_idle(dev);
+                    // ...
+                  }
 
-Signed-off-by: Colin Foster <colin.foster@in-advantage.com>
-Link: https://lore.kernel.org/r/20240531183817.2698445-1-colin.foster@in-advantage.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
-Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
+The earlycon device clocks are enabled by the bootloader. However, the
+pm_request_idle() call in __device_attach() disables the SCI port clocks
+while earlycon is still active.
+
+The earlycon write function, serial_console_write(), calls
+sci_poll_put_char() via serial_console_putchar(). If the SCI port clocks
+are disabled, writing to earlycon may sometimes cause the SR.TDFE bit to
+remain unset indefinitely, causing the while loop in sci_poll_put_char()
+to never exit. On single-core SoCs, this can result in the system being
+blocked during boot when this issue occurs.
+
+To resolve this, increment the runtime PM usage counter for the earlycon
+SCI device before registering the UART port.
+
+Fixes: 0b0cced19ab1 ("serial: sh-sci: Add CONFIG_SERIAL_EARLYCON support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://lore.kernel.org/r/20250116182249.3828577-6-claudiu.beznea.uj@bp.renesas.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/sh-sci.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-+++ b/arch/arm/boot/dts/ti/omap/am335x-bone-common.dtsi
-@@ -385,7 +385,7 @@
- 		/* Support GPIO reset on revision C3 boards */
- 		reset-gpios = <&gpio1 8 GPIO_ACTIVE_LOW>;
- 		reset-assert-us = <300>;
--		reset-deassert-us = <6500>;
-+		reset-deassert-us = <13000>;
- 	};
- };
+--- a/drivers/tty/serial/sh-sci.c
++++ b/drivers/tty/serial/sh-sci.c
+@@ -3455,6 +3455,22 @@ static int sci_probe_single(struct platf
  
+ 	if (sci_uart_earlycon && sci_ports[0].port.mapbase == sci_res->start) {
+ 		/*
++		 * In case:
++		 * - this is the earlycon port (mapped on index 0 in sci_ports[]) and
++		 * - it now maps to an alias other than zero and
++		 * - the earlycon is still alive (e.g., "earlycon keep_bootcon" is
++		 *   available in bootargs)
++		 *
++		 * we need to avoid disabling clocks and PM domains through the runtime
++		 * PM APIs called in __device_attach(). For this, increment the runtime
++		 * PM reference counter (the clocks and PM domains were already enabled
++		 * by the bootloader). Otherwise the earlycon may access the HW when it
++		 * has no clocks enabled leading to failures (infinite loop in
++		 * sci_poll_put_char()).
++		 */
++		pm_runtime_get_noresume(&dev->dev);
++
++		/*
+ 		 * Skip cleanup the sci_port[0] in early_console_exit(), this
+ 		 * port is the same as the earlycon one.
+ 		 */
 
 
 
