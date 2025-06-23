@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-155852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F455AE4403
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8CEAE4247
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 142AA17F0BC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58C4017436F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:15:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B5EA24DFF3;
-	Mon, 23 Jun 2025 13:31:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45E37248895;
+	Mon, 23 Jun 2025 13:15:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SmATPKJ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d/Hf3D1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEC76253F20;
-	Mon, 23 Jun 2025 13:31:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0104E1E487;
+	Mon, 23 Jun 2025 13:15:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685503; cv=none; b=jzdKZtoo2CVrAIh1HGiw8K+KZa/FhEuJ3+XiO0ygIbScGugUwTvbdem3Of3uJ8GWKCaIMtGmByVCinV6rwjtyGU7Y6EOBXWYpJsS4NttMnOQytLN4AGbwcKF6AyH7AgOxt+3vwkM4jPkVWSxoprPlVonGGIVpsaN4fM8FpqXky4=
+	t=1750684515; cv=none; b=MuWPv+iQ/86sh6X+bu9annY0lpySr511LGgrM8+/QmHmtYdyiWR7b4tINzWlOSav8bFNqdgbpP8DZjUj5ZlfRGKck+uDi2St/N1UBUJhbNTdg0xQn5PRhVFA6XQkL2QN+35HUv+5RLkqtl5rvyEmGj9epajBmE3qDjtHyejcJyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685503; c=relaxed/simple;
-	bh=b6PRhTbnCFjsisuMUCpV8+/cr8zuIRmEG8W7hbLYv94=;
+	s=arc-20240116; t=1750684515; c=relaxed/simple;
+	bh=ziDLXIbWAXOZE0tn2IhuFQDf1Ho5tZ4LRzAACAs/fLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i4bmEuzCV5BjLpCtPPaBQiK4PzRbltBnWy1sLbJ3WOiLZW4WiJtoX7/Qhd7KiJxu+Wx6b5ToMropVSR0aVw+VQv/aEALDthQKbgd37LchNk26vztSQT0bI5tI/fDkH3qLAbxMy/BRRkQcx2614s3BA15QzEO3vksRe12PYZb36k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SmATPKJ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531BCC4CEEA;
-	Mon, 23 Jun 2025 13:31:43 +0000 (UTC)
+	 MIME-Version; b=VqTQ250/ugVoXQCTgiss53KlP3071iECt9AZRlBBn5g/RWPxIS1nvQtXVqZSHzkhSxqR9CqvZ8M2mRaUveJBIg68/xWrULgN0PLImIIOgBOncCsazYmgyKuNyhgbTByrHYbuYkkFTR11UJ+JrZi23bCGUHTclG68Fbr7/GAC3AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d/Hf3D1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879EBC4CEEA;
+	Mon, 23 Jun 2025 13:15:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685503;
-	bh=b6PRhTbnCFjsisuMUCpV8+/cr8zuIRmEG8W7hbLYv94=;
+	s=korg; t=1750684514;
+	bh=ziDLXIbWAXOZE0tn2IhuFQDf1Ho5tZ4LRzAACAs/fLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SmATPKJ6rLJ7+LwPYJlwkO1US1xEbzPAzzWVrtyCQSf43VUww6KRSgXw/Lwlhr1sy
-	 Rxn2+41ZNJUxhI8y1z23tAnAXvdj+jIJOksJVoXTrKs9MnAyxImp/ajDrhrKsN/RKy
-	 yGr1neLsw8986tgBIZAlMBKVKHLW8LOxl+28MEWs=
+	b=d/Hf3D1zUu06mur9UbfaA0eU7fEa69Q10mV8qijuPY8hQ91NJsAgp/QE4r6xnHr68
+	 aRy/Od293ydP6IIu7KM6dCzBtBaBrlJF5DTM5lc73O9fKYvJUjmZycQnYOzpTJlISM
+	 GcGsMH2KWYHuKMKyxavDFpe4UlgtLLBtuzrZvoxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Hsin-chen Chuang <chharry@chromium.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.1 011/508] Bluetooth: hci_qca: move the SoC type check to the right place
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Hannes Reinecke <hare@suse.de>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.15 098/592] block: Clear BIO_EMULATES_ZONE_APPEND flag on BIO completion
 Date: Mon, 23 Jun 2025 15:00:56 +0200
-Message-ID: <20250623130645.532981536@linuxfoundation.org>
+Message-ID: <20250623130702.608252826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-commit 0fb410c914eb03c7e9d821e26d03bac0a239e5db upstream.
+commit f705d33c2f0353039d03e5d6f18f70467d86080e upstream.
 
-Commit 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL
-returned by gpiod_get_optional()") accidentally changed the prevous
-behavior where power control would be disabled without the BT_EN GPIO
-only on QCA_WCN6750 and QCA_WCN6855 while also getting the error check
-wrong. We should treat every IS_ERR() return value from
-devm_gpiod_get_optional() as a reason to bail-out while we should only
-set power_ctrl_enabled to false on the two models mentioned above. While
-at it: use dev_err_probe() to save a LOC.
+When blk_zone_write_plug_bio_endio() is called for a regular write BIO
+used to emulate a zone append operation, that is, a BIO flagged with
+BIO_EMULATES_ZONE_APPEND, the BIO operation code is restored to the
+original REQ_OP_ZONE_APPEND but the BIO_EMULATES_ZONE_APPEND flag is not
+cleared. Clear it to fully return the BIO to its orginal definition.
 
+Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
 Cc: stable@vger.kernel.org
-Fixes: 3d05fc82237a ("Bluetooth: qca: set power_ctrl_enabled on NULL returned by gpiod_get_optional()")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Tested-by: Hsin-chen Chuang <chharry@chromium.org>
-Reviewed-by: Hsin-chen Chuang <chharry@chromium.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20250611005915.89843-1-dlemoal@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/hci_qca.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ block/blk-zoned.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/bluetooth/hci_qca.c
-+++ b/drivers/bluetooth/hci_qca.c
-@@ -2263,14 +2263,14 @@ static int qca_serdev_probe(struct serde
+--- a/block/blk-zoned.c
++++ b/block/blk-zoned.c
+@@ -1225,6 +1225,7 @@ void blk_zone_write_plug_bio_endio(struc
+ 	if (bio_flagged(bio, BIO_EMULATES_ZONE_APPEND)) {
+ 		bio->bi_opf &= ~REQ_OP_MASK;
+ 		bio->bi_opf |= REQ_OP_ZONE_APPEND;
++		bio_clear_flag(bio, BIO_EMULATES_ZONE_APPEND);
+ 	}
  
- 		qcadev->bt_en = devm_gpiod_get_optional(&serdev->dev, "enable",
- 					       GPIOD_OUT_LOW);
--		if (IS_ERR(qcadev->bt_en) &&
--		    (data->soc_type == QCA_WCN6750 ||
--		     data->soc_type == QCA_WCN6855)) {
--			dev_err(&serdev->dev, "failed to acquire BT_EN gpio\n");
--			return PTR_ERR(qcadev->bt_en);
--		}
-+		if (IS_ERR(qcadev->bt_en))
-+			return dev_err_probe(&serdev->dev,
-+					     PTR_ERR(qcadev->bt_en),
-+					     "failed to acquire BT_EN gpio\n");
- 
--		if (!qcadev->bt_en)
-+		if (!qcadev->bt_en &&
-+		    (data->soc_type == QCA_WCN6750 ||
-+		     data->soc_type == QCA_WCN6855))
- 			power_ctrl_enabled = false;
- 
- 		qcadev->sw_ctrl = devm_gpiod_get_optional(&serdev->dev, "swctrl",
+ 	/*
 
 
 
