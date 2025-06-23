@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19D20AE51C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98245AE50F2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AAEFE4A46CF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ECB54A25BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66400221DA8;
-	Mon, 23 Jun 2025 21:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24A05221723;
+	Mon, 23 Jun 2025 21:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bQTnleDp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lgvhEtfs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 210934409;
-	Mon, 23 Jun 2025 21:37:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D510B1EDA0F;
+	Mon, 23 Jun 2025 21:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714635; cv=none; b=hir4TVdd9W2KQYGj1SD3DuTfGrQqaFRkwKndehAeIDYjKB2HvPz8s+P7+4D5AhcxmF2k9MpLwOaMS8BVeNVpm1Y2FC6WNXfXq7gsygzJuq711eZiqeazl9X/P8h+uez9UTSDUlQsOa7DjH1ey3m58s3ZKGhPjc91I5GgaQYaZNc=
+	t=1750714172; cv=none; b=V4YC/64hMAFrwOPOtSLCjP4oTmEn56IKv+G9UmcJkhtNx7gAWKj2jnWgfh8XK19rqT1VSCEcY9Fb7fyNUui6p10hnQdqX+9wP5QWGzQHYgm0z6U8t4aFVsKSOS9bH0YG6CbwmRKC1EFJ6ZfUnqHgNO+rwDyDM9/qCos8OHkvsU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714635; c=relaxed/simple;
-	bh=2HTazyz7+eberrSatoHSCEfsrctxmCb3AfV6sMb1xcM=;
+	s=arc-20240116; t=1750714172; c=relaxed/simple;
+	bh=cTghTPxNQ9SPFkVIOlJI+dY8kiQXv/eLr2Pguax9inU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ga/pxiCdloPPoZPc6iffKz46ql6PCmkdoHMkQfYc7KTER3hSFfagUE3y/3f4MG2UetPalnmOb0Z1w/X84blPcwP9uqmkrcZhICWk9/YEPoQ5HFfwMRYfDs5q+eCIBdp8WOnNLARb+18QIgLFK2wpY5zcODz91kic30eBk9DpCK4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bQTnleDp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC257C4CEEA;
-	Mon, 23 Jun 2025 21:37:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ib3QlgdUc3HIN4xTksudWGotEOJHkW7qDY9Kury2s1FvcNJWBFurV7szmTgT6zGoEja+OIVAMqhTMH2Sud5f6pLQlh4zbOy87SdK2I03Ey9ugz0NdWtPsXe8HWS2RQ3RtPi4lkWxiRWTwzGE/LRF5JhbheUCGQaNezgPhWYY5Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lgvhEtfs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C802BC4CEEA;
+	Mon, 23 Jun 2025 21:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714635;
-	bh=2HTazyz7+eberrSatoHSCEfsrctxmCb3AfV6sMb1xcM=;
+	s=korg; t=1750714172;
+	bh=cTghTPxNQ9SPFkVIOlJI+dY8kiQXv/eLr2Pguax9inU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bQTnleDpv48z5hbRYrcrIcW/jfcn0q6Yy9pRBYme2F7d3A6kPkH8wV7EupJK5J30I
-	 prk6/kP7dkbkS8GS0NPSwgp3vVy3NZcj7ZQdJ47dsN72+8K2fitWJr/POhxvEnYhw2
-	 CaFgLASf1QRhFSFKJmuqyXz/mOwy6CS6TsHSLlVw=
+	b=lgvhEtfsyt2p0eIi6JutHsQQQdfG0OdpJMjLzIEttVtZgm2IjyUJfemClkE/wyFMt
+	 kmaAHCq1sAWBm2qz1HcyzVOs/GEpPFGtcCZXpcXsvyIADi/rCXfO7ezbfBKS1zjIK1
+	 E/XS6jgrF0kudRijH6WLp1m0uwzyyYiXd0npCmWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/290] wifi: ath12k: fix a possible dead lock caused by ab->base_lock
-Date: Mon, 23 Jun 2025 15:06:50 +0200
-Message-ID: <20250623130631.376853573@linuxfoundation.org>
+	Sean Nyekjaer <sean@geanix.com>,
+	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 210/355] iio: imu: inv_icm42600: Fix temperature calculation
+Date: Mon, 23 Jun 2025 15:06:51 +0200
+Message-ID: <20250623130633.057498478@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +61,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baochen Qiang <quic_bqiang@quicinc.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-[ Upstream commit ef115c265a21e3c11deee7f73bd1061775a7bf20 ]
+commit e2f820014239df9360064079ae93f838ff3b7f8c upstream.
 
-spin_lock/spin_unlock are used in ath12k_reg_chan_list_event
-to acquire/release ab->base_lock. For now this is safe because
-that function is only called in soft IRQ context.
+>From the documentation:
+"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
+Offset should be applied before multiplying scale, so divide offset by
+scale to make this correct.
 
-But ath12k_reg_chan_list_event() will be called from process
-context in an upcoming patch, and this can result in a deadlock
-if ab->base_lock is acquired in process context and then soft
-IRQ occurs on the same CPU and tries to acquire that lock.
-
-Fix it by using spin_lock_bh and spin_unlock_bh instead.
-
-Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0.c5-00481-QCAHMTSWPL_V1.0_V2.0_SILICONZ-3
-
-Signed-off-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250418-ath12k-6g-lp-vlp-v1-1-c869c86cad60@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
+Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index a0ac2f350934f..31af940bc5722 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -5503,7 +5503,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
- 		goto fallback;
- 	}
- 
--	spin_lock(&ab->base_lock);
-+	spin_lock_bh(&ab->base_lock);
- 	if (test_bit(ATH12K_FLAG_REGISTERED, &ab->dev_flags)) {
- 		/* Once mac is registered, ar is valid and all CC events from
- 		 * fw is considered to be received due to user requests
-@@ -5527,7 +5527,7 @@ static int ath12k_reg_chan_list_event(struct ath12k_base *ab, struct sk_buff *sk
- 		ab->default_regd[pdev_idx] = regd;
- 	}
- 	ab->dfs_region = reg_info->dfs_region;
--	spin_unlock(&ab->base_lock);
-+	spin_unlock_bh(&ab->base_lock);
- 
- 	goto mem_free;
- 
--- 
-2.39.5
-
+--- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
++++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
+@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct ii
+ 		return IIO_VAL_INT;
+ 	/*
+ 	 * T°C = (temp / 132.48) + 25
+-	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
++	 * Tm°C = 1000 * ((temp / 132.48) + 25)
++	 * Tm°C = 7.548309 * temp + 25000
++	 * Tm°C = (temp + 3312) * 7.548309
+ 	 * scale: 100000 / 13248 ~= 7.548309
+-	 * offset: 25000
++	 * offset: 3312
+ 	 */
+ 	case IIO_CHAN_INFO_SCALE:
+ 		*val = 7;
+ 		*val2 = 548309;
+ 		return IIO_VAL_INT_PLUS_MICRO;
+ 	case IIO_CHAN_INFO_OFFSET:
+-		*val = 25000;
++		*val = 3312;
+ 		return IIO_VAL_INT;
+ 	default:
+ 		return -EINVAL;
 
 
 
