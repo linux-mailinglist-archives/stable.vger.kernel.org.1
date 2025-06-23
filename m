@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-157315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF971AE5364
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC8DAE4FA4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D25A4A7BC4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D58716BAA7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5167D218AC1;
-	Mon, 23 Jun 2025 21:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6251221FC7;
+	Mon, 23 Jun 2025 21:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mH8nCaUj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PVxbBho6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4619049B;
-	Mon, 23 Jun 2025 21:52:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BE7B221299;
+	Mon, 23 Jun 2025 21:17:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715568; cv=none; b=gcClmzZHhB6cG97rAo9d+x9oS7W5TLD3vzgPGKn/+/iqirIBgx8duaF4UsZFshILJkQlc2uLZbBbNP1sUT98uFxtz6NVYjro1lSOuRQgmWcOflTktmHoUcmcpDBs2u1UjS/A9+jNkW0jVfn7xXrNrX8oKX/T6F5F/ZKl6oAThwE=
+	t=1750713436; cv=none; b=j0zQ5CGx3m8BnISo/gD3O/HNlkx89hn/ghXb/+p8TT4sruCScXRek2yPeQZCZs5iz/k+aE3BnnfJ7QIMg4c53iFz78FtyDSD/yo70fP2k6LwV+pH7DemqRTxJCQ2oHSxU+dWYiUvxXEGsFnCZH8YB0jrGMHE5SYJsSdTMI/oHw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715568; c=relaxed/simple;
-	bh=jdAPuwwbBkFcoE90aHc3ANe364yKtQBtyYJgmjzssxc=;
+	s=arc-20240116; t=1750713436; c=relaxed/simple;
+	bh=cYrYNQyKH3RiPcV4Q6Pi8sk2oLgKiCX8CmOXWeWNAkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4OmGnu7gGT9IJeqFzjiUHbKCFiOX5zcJg8gkd9ahCEGKcZoMhbkxfSu4/zEvgCpoXbjWCVO/rzSf1Bo9/lwRXtF8xoIwPGX/b/T/JW7OFUlQZ5INI1LmUFVFHIU48iUMJc5FH9dZ2DMejL3GDs8awn603sEm/RrPKfqmVqNtK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mH8nCaUj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43386C4CEEA;
-	Mon, 23 Jun 2025 21:52:47 +0000 (UTC)
+	 MIME-Version; b=nFd4yldKpGjbCj8DlI6guSy0SfMHQDzzS0BmNmuw6oiWYIKSbbr/54/YvWRkf/63hMDGdKQtsoHbdeecxXnqyyEhaWYFZi/zO8ahWJQIk0RsXBS0Bz2i8gHU7FdkZLtot67ZSlSSh2042ppUfPymDDIEHXHeDOI5NLq5YDMUncU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PVxbBho6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2518FC4CEED;
+	Mon, 23 Jun 2025 21:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715567;
-	bh=jdAPuwwbBkFcoE90aHc3ANe364yKtQBtyYJgmjzssxc=;
+	s=korg; t=1750713436;
+	bh=cYrYNQyKH3RiPcV4Q6Pi8sk2oLgKiCX8CmOXWeWNAkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mH8nCaUj7KTdsmAFTZBkEUlFwO98LftMGGJ8DOBlKQnDz99mZOyxYTo3LLcBdnSYh
-	 hVSBxYfPGx6eZx3ZbpzGO8Ggu0mn66V5ugsrktI8BmrNcQThYaVY0oFB3uwWZlPixF
-	 niGNfXVMooQlwDDBZqwFh2zC4JbqQuZR3eaHz2js=
+	b=PVxbBho651FG0GcKpoISXm0pBUlZIj8C8JGYrhPZ1Bnfh4HyDchw6Rt3XfdFH4VD6
+	 lyeiL/nYhrswsj2dwcc5G1SePNyl3zVP7BrFxGrVP72TKcImBnhnewZP1Jmuiaz1MY
+	 ypTV2qrCL2p6r4GPhmYJ3EiNQMGqLNdfICN8x4s0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Baochen Qiang <quic_bqiang@quicinc.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 214/414] wifi: ath11k: Fix QMI memory reuse logic
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.6 090/290] dm-verity: fix a memory leak if some arguments are specified multiple times
 Date: Mon, 23 Jun 2025 15:05:51 +0200
-Message-ID: <20250623130647.359834019@linuxfoundation.org>
+Message-ID: <20250623130629.682478970@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,75 +60,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit cd2e7bae92bd7e65063ab8d04721d2b711ba4cbe ]
+commit 66be40a14e496689e1f0add50118408e22c96169 upstream.
 
-Firmware requests 2 segments at first. The first segment is of 6799360
-whose allocation fails due to dma remapping not available. The success
-is returned to firmware. Then firmware asks for 22 smaller segments
-instead of 2 big ones. Those get allocated successfully. At suspend/
-hibernation time, these segments aren't freed as they will be reused
-by firmware after resuming.
+If some of the arguments "check_at_most_once", "ignore_zero_blocks",
+"use_fec_from_device", "root_hash_sig_key_desc" were specified more than
+once on the target line, a memory leak would happen.
 
-After resuming, the firmware asks for the 2 segments again with the
-first segment of 6799360 size. Since chunk->vaddr is not NULL, the
-type and size are compared with the previous type and size to know if
-it can be reused or not. Unfortunately, it is detected that it cannot
-be reused and this first smaller segment is freed. Then we continue to
-allocate 6799360 size memory which fails and ath11k_qmi_free_target_mem_chunk()
-is called which frees the second smaller segment as well. Later success
-is returned to firmware which asks for 22 smaller segments again. But
-as we had freed 2 segments already, we'll allocate the first 2 new
-smaller segments again and reuse the remaining 20. Hence 20 small
-segments are being reused instead of 22.
+This commit fixes the memory leak. It also fixes error handling in
+verity_verify_sig_parse_opt_args.
 
-Add skip logic when vaddr is set, but size/type don't match. Use the
-same skip and success logic as used when dma_alloc_coherent() fails.
-By skipping, the possibility of resume failure due to kernel failing to
-allocate memory for QMI can be avoided.
-
-	kernel: ath11k_pci 0000:03:00.0: failed to allocate dma memory for qmi (524288 B type 1)
-	ath11k_pci 0000:03:00.0: failed to allocate qmi target memory: -22
-
-Tested-on: WCN6855 WLAN.HSP.1.1-03926.13-QCAHSPSWPL_V2_SILICONZ_CE-2.52297.6
-
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Baochen Qiang <quic_bqiang@quicinc.com>
-Link: https://patch.msgid.link/20250428080242.466901-1-usama.anjum@collabora.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/qmi.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/md/dm-verity-fec.c        |    4 ++++
+ drivers/md/dm-verity-target.c     |    8 +++++++-
+ drivers/md/dm-verity-verify-sig.c |   17 +++++++++++++----
+ 3 files changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/qmi.c b/drivers/net/wireless/ath/ath11k/qmi.c
-index 7a22483b35cd9..a5555c959dec9 100644
---- a/drivers/net/wireless/ath/ath11k/qmi.c
-+++ b/drivers/net/wireless/ath/ath11k/qmi.c
-@@ -1989,6 +1989,15 @@ static int ath11k_qmi_alloc_target_mem_chunk(struct ath11k_base *ab)
- 			    chunk->prev_size == chunk->size)
- 				continue;
+--- a/drivers/md/dm-verity-fec.c
++++ b/drivers/md/dm-verity-fec.c
+@@ -624,6 +624,10 @@ int verity_fec_parse_opt_args(struct dm_
+ 	(*argc)--;
  
-+			if (ab->qmi.mem_seg_count <= ATH11K_QMI_FW_MEM_REQ_SEGMENT_CNT) {
-+				ath11k_dbg(ab, ATH11K_DBG_QMI,
-+					   "size/type mismatch (current %d %u) (prev %d %u), try later with small size\n",
-+					    chunk->size, chunk->type,
-+					    chunk->prev_size, chunk->prev_type);
-+				ab->qmi.target_mem_delayed = true;
-+				return 0;
-+			}
+ 	if (!strcasecmp(arg_name, DM_VERITY_OPT_FEC_DEV)) {
++		if (v->fec->dev) {
++			ti->error = "FEC device already specified";
++			return -EINVAL;
++		}
+ 		r = dm_get_device(ti, arg_value, BLK_OPEN_READ, &v->fec->dev);
+ 		if (r) {
+ 			ti->error = "FEC device lookup failed";
+--- a/drivers/md/dm-verity-target.c
++++ b/drivers/md/dm-verity-target.c
+@@ -1043,6 +1043,9 @@ static int verity_alloc_most_once(struct
+ {
+ 	struct dm_target *ti = v->ti;
+ 
++	if (v->validated_blocks)
++		return 0;
 +
- 			/* cannot reuse the existing chunk */
- 			dma_free_coherent(ab->dev, chunk->prev_size,
- 					  chunk->vaddr, chunk->paddr);
--- 
-2.39.5
-
+ 	/* the bitset can only handle INT_MAX blocks */
+ 	if (v->data_blocks > INT_MAX) {
+ 		ti->error = "device too large to use check_at_most_once";
+@@ -1066,6 +1069,9 @@ static int verity_alloc_zero_digest(stru
+ 	struct ahash_request *req;
+ 	u8 *zero_data;
+ 
++	if (v->zero_digest)
++		return 0;
++
+ 	v->zero_digest = kmalloc(v->digest_size, GFP_KERNEL);
+ 
+ 	if (!v->zero_digest)
+@@ -1405,7 +1411,7 @@ static int verity_ctr(struct dm_target *
+ 			goto bad;
+ 	}
+ 
+-	/* Root hash signature is  a optional parameter*/
++	/* Root hash signature is an optional parameter */
+ 	r = verity_verify_root_hash(root_hash_digest_to_validate,
+ 				    strlen(root_hash_digest_to_validate),
+ 				    verify_args.sig,
+--- a/drivers/md/dm-verity-verify-sig.c
++++ b/drivers/md/dm-verity-verify-sig.c
+@@ -71,9 +71,14 @@ int verity_verify_sig_parse_opt_args(str
+ 				     const char *arg_name)
+ {
+ 	struct dm_target *ti = v->ti;
+-	int ret = 0;
++	int ret;
+ 	const char *sig_key = NULL;
+ 
++	if (v->signature_key_desc) {
++		ti->error = DM_VERITY_VERIFY_ERR("root_hash_sig_key_desc already specified");
++		return -EINVAL;
++	}
++
+ 	if (!*argc) {
+ 		ti->error = DM_VERITY_VERIFY_ERR("Signature key not specified");
+ 		return -EINVAL;
+@@ -83,14 +88,18 @@ int verity_verify_sig_parse_opt_args(str
+ 	(*argc)--;
+ 
+ 	ret = verity_verify_get_sig_from_key(sig_key, sig_opts);
+-	if (ret < 0)
++	if (ret < 0) {
+ 		ti->error = DM_VERITY_VERIFY_ERR("Invalid key specified");
++		return ret;
++	}
+ 
+ 	v->signature_key_desc = kstrdup(sig_key, GFP_KERNEL);
+-	if (!v->signature_key_desc)
++	if (!v->signature_key_desc) {
++		ti->error = DM_VERITY_VERIFY_ERR("Could not allocate memory for signature key");
+ 		return -ENOMEM;
++	}
+ 
+-	return ret;
++	return 0;
+ }
+ 
+ /*
 
 
 
