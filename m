@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158007-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70584AE5636
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:34 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC99AE5698
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3BDF4A238F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6498F17A79C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C965722A4CC;
-	Mon, 23 Jun 2025 22:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90117223DE8;
+	Mon, 23 Jun 2025 22:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q7FX7Vu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PwioGi1/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E6F19E7F9;
-	Mon, 23 Jun 2025 22:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DFFB16D9BF;
+	Mon, 23 Jun 2025 22:20:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716923; cv=none; b=l16TbzVmWNqBlgNFETRlUuPdRtkoRAL0V2iT0aSk+LFCQpnTHZj6fxxBDxNAVt8VGYhn76GLXA4ZBFJTtdOIVKExpWTXvVJpkoIfFq+66g15xtULmoUhi5p+z7IT12MYposACs1iX8GS09Mmm7OkWTCJ1evNenzYj3Mb94i7tp4=
+	t=1750717256; cv=none; b=XOZAubhy7AmztzlSyO83zDZs0R7F1tl8x2HVR0cIX/ixWqD6ubS/OAReKJyAnXhOlkCCb6lxVxf+IsC2KzkEIlDRN/G/lP8ghBqRRg/ADPD9XeHc+HbK/i/39rFpKE1HY1P0gmG1tLnokwM4NuTU0nmtEoQUeMAFgfquzXRCIW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716923; c=relaxed/simple;
-	bh=FNA9rsWXSMdEIhLUB6VL8MZgxX/akA5FaVTz6aAC07w=;
+	s=arc-20240116; t=1750717256; c=relaxed/simple;
+	bh=pwUeHaqXp/WK1+7pBVT8ftbl9qGTKj8gcGJJCxBFlVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D0fUW1YKHKLkSjZUAEuxkFxg8lPnh76/OBQNbGQauXhUwvbjWtFu1JBEHXCAPdZ/WeVv5YJCWViehRGG61+aqFeXodV+5I2NlXncVKGUnvkjuqoskXNiU+bBQ8gbF+3e4r/Jz4T0La/f2hA7lGJdXgQUCN/FKSzMmF7p3VkbeJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q7FX7Vu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA8AC4CEEA;
-	Mon, 23 Jun 2025 22:15:22 +0000 (UTC)
+	 MIME-Version; b=ovb0UwGL//SkM9SAFZXu0NhSoat6HtkNoPDYPnvmdW+0BkV+aRgwtfhhLivOGDsx5qpN9KySUL67qvZLXeJyYvaA6MtAQZWM+8zql4knd8X3gB9xom+KLas+WS+e0kmxs0NRkFYO8sxLdRaLmFhxhg8mHi8ZPz8NPjCyFOLNvjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PwioGi1/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8C0C4CEED;
+	Mon, 23 Jun 2025 22:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716923;
-	bh=FNA9rsWXSMdEIhLUB6VL8MZgxX/akA5FaVTz6aAC07w=;
+	s=korg; t=1750717255;
+	bh=pwUeHaqXp/WK1+7pBVT8ftbl9qGTKj8gcGJJCxBFlVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q7FX7Vu3Nl8Gk+JsOZWklh1HBcUKNgAYqj0+lJS68sn96QrM+cQzyuizQYKlS7+mB
-	 rmfIFSu/jWCqUiesVT0yS1PA1fh1mgFA2QxTwpwcZDbSSM+qLJjUggdlEG/Jff1uc1
-	 x0WXj/smVS6FGOpku6YMzz6nfJhV0mJFCSCludEo=
+	b=PwioGi1/E0nqwT1E5T+IYhrZZigp1ZfpiCySqCrEKWn6TJ1Wg9E99XVquFVZ2SOtr
+	 JjyeF1VkrMd5NAuJKSkpXjrkc6R3blyys/RCcCAiO7drFoKqNNsdyWOby3DXyZ+zF0
+	 vJ83E7iO5r6GXQt1wdOi1KLZy9mSs8yjQ7Rt6Kxk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 298/414] platform/loongarch: laptop: Get brightness setting from EC on probe
+	syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com,
+	Hou Tao <houtao1@huawei.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 390/508] bpf: Check rcu_read_lock_trace_held() in bpf_map_lookup_percpu_elem()
 Date: Mon, 23 Jun 2025 15:07:15 +0200
-Message-ID: <20250623130649.458444624@linuxfoundation.org>
+Message-ID: <20250623130654.873705692@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Hou Tao <houtao1@huawei.com>
 
-commit 1205088fd0393bd9eae96b62bf1e4b9eb1b73edf upstream.
+[ Upstream commit d4965578267e2e81f67c86e2608481e77e9c8569 ]
 
-Previously during driver probe, 1 is unconditionally taken as current
-brightness value and set to props.brightness, which will be considered
-as the brightness before suspend and restored to EC on resume. Since a
-brightness value of 1 almost never matches EC's state on coldboot (my
-laptop's EC defaults to 80), this causes surprising changes of screen
-brightness on the first time of resume after coldboot.
+bpf_map_lookup_percpu_elem() helper is also available for sleepable bpf
+program. When BPF JIT is disabled or under 32-bit host,
+bpf_map_lookup_percpu_elem() will not be inlined. Using it in a
+sleepable bpf program will trigger the warning in
+bpf_map_lookup_percpu_elem(), because the bpf program only holds
+rcu_read_lock_trace lock. Therefore, add the missed check.
 
-Let's get brightness from EC and take it as the current brightness on
-probe of the laptop driver to avoid the surprising behavior. Tested on
-TongFang L860-T2 Loongson-3A5000 laptop.
-
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/bpf/000000000000176a130617420310@google.com/
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Link: https://lore.kernel.org/r/20250526062534.1105938-1-houtao@huaweicloud.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/helpers.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -392,8 +392,8 @@ static int laptop_backlight_register(voi
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
+diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
+index 4fef0a0155255..94e85d311641b 100644
+--- a/kernel/bpf/helpers.c
++++ b/kernel/bpf/helpers.c
+@@ -125,7 +125,8 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
  
--	props.brightness = 1;
- 	props.max_brightness = status;
-+	props.brightness = ec_get_brightness();
- 	props.type = BACKLIGHT_PLATFORM;
+ BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
+ {
+-	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
++	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
++		     !rcu_read_lock_bh_held());
+ 	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
+ }
  
- 	backlight_device_register("loongson_laptop",
+-- 
+2.39.5
+
 
 
 
