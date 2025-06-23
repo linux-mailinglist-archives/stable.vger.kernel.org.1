@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-156269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F97EAE4EDE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4A9FAE4EE5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A380517D76C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82101B60063
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7198A21FF2B;
-	Mon, 23 Jun 2025 21:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF86C21FF2B;
+	Mon, 23 Jun 2025 21:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z8osv2gL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nL/7a/sn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E68270838;
-	Mon, 23 Jun 2025 21:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95D70838;
+	Mon, 23 Jun 2025 21:10:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713000; cv=none; b=l67Z0mOiyX4SFhUh6vea9h5iqLqH63drfuqIrPp2gikAj2v9phRObykSIe/hzmvbKqEkgXdAbLoV3x1ozMI9vKwCQnw665zDszSv3RncYyhG/S8B97DrcwLyVQGnEDfA/eOmfjsdYC2JiPXBC9+i95WaJNv1m13oMPVnE9U0E2k=
+	t=1750713017; cv=none; b=s8ZatGTJpESwIxSY8CxyZfqxQilPl1KxFG1c4PJC+F+0fGqxVnx/TcCo58wF7fcawVOyy88jI45K76Yo4HTrGR39YKvi1ST6b0yrOIVRivmyeBi9dY38aPOXAQT1fqF4+w06lZ443mRXt34rl7DMdbFMv50QrpadI57UGr4qiSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713000; c=relaxed/simple;
-	bh=CyQWrnJTnvcPujBALS34ww529fjpzIlfr5l8VFaKI/A=;
+	s=arc-20240116; t=1750713017; c=relaxed/simple;
+	bh=/xsJUh9+gi7pFjav6nZ6Z/BTFxQzossEpplOU8Cmt2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W6iIjAxssu9wLkG4sW8vgPbOHYrHcHnVZxd0X97sLFiZTsdyQIBLVumcptHeaMSmIoqGlFHGsrAVFlLpAZ7RYqeY+s0z4wZsFkvCueLe28LmSTMqJOr5nQt7FUBLx8A2DH/moj/DOE1ap/s+u1ZI0BKuU2OcRsYUqgegag3kx3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z8osv2gL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB60FC4CEEA;
-	Mon, 23 Jun 2025 21:09:59 +0000 (UTC)
+	 MIME-Version; b=oLVCYmh4VjHTHuHGCz7NW6q04AW74EFq91TXtIDBqPePCJyyQ53Bxvv/oIBeIcx5/vUbDX4ye6Tgxv+6twsBz1nt+kw5tF8FrBgIq7qMojcurkxKJNAo2IoDRMmTXnMSaIoUvFJnAMLPkRvi5lLuJgcLoZkZnFrjc/yQJyeQZrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nL/7a/sn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15168C4CEEA;
+	Mon, 23 Jun 2025 21:10:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713000;
-	bh=CyQWrnJTnvcPujBALS34ww529fjpzIlfr5l8VFaKI/A=;
+	s=korg; t=1750713017;
+	bh=/xsJUh9+gi7pFjav6nZ6Z/BTFxQzossEpplOU8Cmt2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z8osv2gL2E8OWkwV90wc+BPoS38pXTqj9fNPDBV08y85fyO+wrijhN0BUNaIu7Eo2
-	 SeQKCEbUjZej2vXnPILBRZH2jSx9cXyu6E2DwlTLwHJcKpKlXo/3N7JeNmoXQ/u+Xa
-	 37c1+16jmyOGscZ1S1in0RITCuT+OCgHYllVnW1c=
+	b=nL/7a/snYtLsG+473St9lefZTb9uezsQfO418DXC33nGs6qmFRirXSS0dl80xQnPx
+	 3k/OI7BzA3vsHBGP9IO91Me+jHpAXewpRWksDmQXBpQxkszBs3PK7mBux14KxB7gK2
+	 w2Q8diycVboYhchTvxqD9CfZkbtuNjoqI318qymE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 071/508] bpf: Fix uninitialized values in BPF_{CORE,PROBE}_READ
-Date: Mon, 23 Jun 2025 15:01:56 +0200
-Message-ID: <20250623130646.985334488@linuxfoundation.org>
+Subject: [PATCH 6.1 072/508] clk: qcom: dispcc-sm6350: Add *_wait_val values for GDSCs
+Date: Mon, 23 Jun 2025 15:01:57 +0200
+Message-ID: <20250623130647.010207169@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,56 +67,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit 41d4ce6df3f4945341ec509a840cc002a413b6cc ]
+[ Upstream commit 673989d27123618afab56df1143a75454178b4ae ]
 
-With the latest LLVM bpf selftests build will fail with
-the following error message:
+Compared to the msm-4.19 driver the mainline GDSC driver always sets the
+bits for en_rest, en_few & clk_dis, and if those values are not set
+per-GDSC in the respective driver then the default value from the GDSC
+driver is used. The downstream driver only conditionally sets
+clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
 
-    progs/profiler.inc.h:710:31: error: default initialization of an object of type 'typeof ((parent_task)->real_cred->uid.val)' (aka 'const unsigned int') leaves the object uninitialized and is incompatible with C++ [-Werror,-Wdefault-const-init-unsafe]
-      710 |         proc_exec_data->parent_uid = BPF_CORE_READ(parent_task, real_cred, uid.val);
-          |                                      ^
-    tools/testing/selftests/bpf/tools/include/bpf/bpf_core_read.h:520:35: note: expanded from macro 'BPF_CORE_READ'
-      520 |         ___type((src), a, ##__VA_ARGS__) __r;                               \
-          |                                          ^
+Correct this situation by explicitly setting those values. For all GDSCs
+the reset value of those bits are used.
 
-This happens because BPF_CORE_READ (and other macro) declare the
-variable __r using the ___type macro which can inherit const modifier
-from intermediate types.
-
-Fix this by using __typeof_unqual__, when supported. (And when it
-is not supported, the problem shouldn't appear, as older compilers
-haven't complained.)
-
-Fixes: 792001f4f7aa ("libbpf: Add user-space variants of BPF_CORE_READ() family of macros")
-Fixes: a4b09a9ef945 ("libbpf: Add non-CO-RE variants of BPF_CORE_READ() macro family")
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250502193031.3522715-1-a.s.protopopov@gmail.com
+Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-2-1f252d9c5e4e@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/bpf_core_read.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/clk/qcom/dispcc-sm6350.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/lib/bpf/bpf_core_read.h b/tools/lib/bpf/bpf_core_read.h
-index 41740ae8aad73..18c2ab57a9bff 100644
---- a/tools/lib/bpf/bpf_core_read.h
-+++ b/tools/lib/bpf/bpf_core_read.h
-@@ -312,7 +312,13 @@ enum bpf_enum_value_kind {
- #define ___arrow10(a, b, c, d, e, f, g, h, i, j) a->b->c->d->e->f->g->h->i->j
- #define ___arrow(...) ___apply(___arrow, ___narg(__VA_ARGS__))(__VA_ARGS__)
+diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
+index ddacb4f76eca5..ea98a63746f0f 100644
+--- a/drivers/clk/qcom/dispcc-sm6350.c
++++ b/drivers/clk/qcom/dispcc-sm6350.c
+@@ -680,6 +680,9 @@ static struct clk_branch disp_cc_xo_clk = {
  
-+#if defined(__clang__) && (__clang_major__ >= 19)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#elif defined(__GNUC__) && (__GNUC__ >= 14)
-+#define ___type(...) __typeof_unqual__(___arrow(__VA_ARGS__))
-+#else
- #define ___type(...) typeof(___arrow(__VA_ARGS__))
-+#endif
- 
- #define ___read(read_fn, dst, src_type, src, accessor)			    \
- 	read_fn((void *)(dst), sizeof(*(dst)), &((src_type)(src))->accessor)
+ static struct gdsc mdss_gdsc = {
+ 	.gdscr = 0x1004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "mdss_gdsc",
+ 	},
 -- 
 2.39.5
 
