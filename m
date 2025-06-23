@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56DEEAE4350
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21515AE436B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 007F6188CC5C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AB4D3BEDF8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441624C7F;
-	Mon, 23 Jun 2025 13:25:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3D324BBEB;
+	Mon, 23 Jun 2025 13:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUdbCNUd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VoGpXH7k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01048239E63;
-	Mon, 23 Jun 2025 13:25:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 892924C7F;
+	Mon, 23 Jun 2025 13:26:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685153; cv=none; b=FVtJGQAumXD+ZRYM1DHRgYupg2cxWlfhORiqUZunfDvPPbOQMVJz41BzI5aznNG3/Qsta3wkiCLJX7EDsJN4MEtgVKjl1BpNHTWY0kzmJRUcMhvlKOuJP9//YJx90e9s3ey3tzGDBHzxJpy1Drlz+wIzp62kPpqEa3uscS7zn2Q=
+	t=1750685165; cv=none; b=LZuOi1uzwBwfLurFMUUwi6Ti+LsKfugzC7GoG3oWj3HO5La/CWn0Xg84u6kVkvrTxA2+gBNYgcw12XP7OO8zHYGczn+Uvxx7TYfeWgDK72997n9pxjCBf7BX4K4TlRnWC4yGyp9Lh+A/5U6r7Su3Oig9pc5nDO2xwvwv/wzN0+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685153; c=relaxed/simple;
-	bh=z+4zJNYNw9HrVz2Ui7iBDQ47DP/2PVUAPRCyyTnxmdM=;
+	s=arc-20240116; t=1750685165; c=relaxed/simple;
+	bh=MhTXEYxYmEzryqgYC1c02RMk/eFGdL+c98gUUalMsww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BmiNoq5vU6HbP4SHeWE4EN88P8g3c+82IMG/32JWrT1I1u16ral57tg3XukeZvYGdIfo04gddIHQoFHTgztUjZRDgo31LGRqwqsR6HMhOj8aqI2YrlBZlS53h6fD8MDnK1cWfPpFaBs2vZ4saPV8lruAN1w8+KeZ2u0I17LXUjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUdbCNUd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F3D7C4CEF2;
-	Mon, 23 Jun 2025 13:25:52 +0000 (UTC)
+	 MIME-Version; b=kR2OZI5lodkoVfpm8jaVT74dVCu6cd468nfltyrBX65AkaxS6omS5Au2NPw88Z6xv1En/J6G9rhV37IB8YQxrvH2hDOBcN4EF0y+vZRy0kvaRZzZ7+BlcLtoPhYvOhOMZG7dHc8BpBtIy2LhpEPm8HYskfShoj+YwU+yvkUkU/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VoGpXH7k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C87AC4CEEA;
+	Mon, 23 Jun 2025 13:26:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685152;
-	bh=z+4zJNYNw9HrVz2Ui7iBDQ47DP/2PVUAPRCyyTnxmdM=;
+	s=korg; t=1750685165;
+	bh=MhTXEYxYmEzryqgYC1c02RMk/eFGdL+c98gUUalMsww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oUdbCNUduqjaLRBvDWDrL/9Op3QYDijxkKgjavX4+89cPqf56igLUlTpF2UqPuP+A
-	 f0y20r00FjesKaUld7bNPJOP1Pg/7kj/QrDw9veMGKwFqdRD21chMQjDshY3NddGZn
-	 quETtLPqkSTDhJXy2yzXwyyGIAl7lmFQnQbIsMsc=
+	b=VoGpXH7k40vR+VIIba+mKf74PJXqTK5yGJRW7pDf8u/YVQCNl/fs9yZMbtVeGpygT
+	 FqyqaWwkO8DDcUuccwNTj6IGKjOkfiG1H02eJcEtbObZJLLQmuFIXAgUh1rWqw+i00
+	 /EoPdmxAwo9x3D4nFcwSjB+yNmnkvAOEjTZceFKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chris Bainbridge <chris.bainbridge@gmail.com>
-Subject: [PATCH 5.4 070/222] PM: sleep: Fix power.is_suspended cleanup for direct-complete devices
-Date: Mon, 23 Jun 2025 15:06:45 +0200
-Message-ID: <20250623130614.210771885@linuxfoundation.org>
+	Christian Brauner <brauner@kernel.org>,
+	"Orlando, Noah" <Noah.Orlando@deshaw.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 071/222] do_change_type(): refuse to operate on unmounted/not ours mounts
+Date: Mon, 23 Jun 2025 15:06:46 +0200
+Message-ID: <20250623130614.238911212@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,58 +67,38 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit d46c4c839c20a599a0eb8d73708ce401f9c7d06d ]
+[ Upstream commit 12f147ddd6de7382dad54812e65f3f08d05809fc ]
 
-Commit 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete
-set on errors") caused power.is_suspended to be set for devices with
-power.direct_complete set, but it forgot to ensure the clearing of that
-flag for them in device_resume(), so power.is_suspended is still set for
-them during the next system suspend-resume cycle.
+Ensure that propagation settings can only be changed for mounts located
+in the caller's mount namespace. This change aligns permission checking
+with the rest of mount(2).
 
-If that cycle is aborted in dpm_suspend(), the subsequent invocation of
-dpm_resume() will trigger a device_resume() call for every device and
-because power.is_suspended is set for the devices in question, they will
-not be skipped by device_resume() as expected which causes scary error
-messages to be logged (as appropriate).
-
-To address this issue, move the clearing of power.is_suspended in
-device_resume() immediately after the power.is_suspended check so it
-will be always cleared for all devices processed by that function.
-
-Fixes: 03f1444016b7 ("PM: sleep: Fix handling devices with direct_complete set on errors")
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4280
-Reported-and-tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://patch.msgid.link/4990586.GXAFRqVoOG@rjwysocki.net
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 07b20889e305 ("beginning of the shared-subtree proper")
+Reported-by: "Orlando, Noah" <Noah.Orlando@deshaw.com>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/namespace.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/base/power/main.c b/drivers/base/power/main.c
-index 7375624de5646..6ad29e0793a5f 100644
---- a/drivers/base/power/main.c
-+++ b/drivers/base/power/main.c
-@@ -971,6 +971,8 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
- 	if (!dev->power.is_suspended)
- 		goto Complete;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index a5cb608778b1e..8a35144897686 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2246,6 +2246,10 @@ static int do_change_type(struct path *path, int ms_flags)
+ 		return -EINVAL;
  
-+	dev->power.is_suspended = false;
-+
- 	if (dev->power.direct_complete) {
- 		/* Match the pm_runtime_disable() in __device_suspend(). */
- 		pm_runtime_enable(dev);
-@@ -1026,7 +1028,6 @@ static int device_resume(struct device *dev, pm_message_t state, bool async)
- 
-  End:
- 	error = dpm_run_callback(callback, dev, state, info);
--	dev->power.is_suspended = false;
- 
- 	device_unlock(dev);
- 	dpm_watchdog_clear(&wd);
+ 	namespace_lock();
++	if (!check_mnt(mnt)) {
++		err = -EINVAL;
++		goto out_unlock;
++	}
+ 	if (type == MS_SHARED) {
+ 		err = invent_group_ids(mnt, recurse);
+ 		if (err)
 -- 
 2.39.5
 
