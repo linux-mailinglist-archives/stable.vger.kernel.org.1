@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-155491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6032AE425D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9CB1AE4372
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:32:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D2C3175733
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7A1A7ABEE8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59ED1248895;
-	Mon, 23 Jun 2025 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 380A524C060;
+	Mon, 23 Jun 2025 13:29:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Au6/0sn9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AAEMDQXO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C0613A265;
-	Mon, 23 Jun 2025 13:16:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA893253358;
+	Mon, 23 Jun 2025 13:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684568; cv=none; b=R4OA/TXsvgNfGAPJlIn1nZw9jPFOBGZoZ9M+4Bw1FSSX2MUAlbpNcQnY6dsh3aRY19Ez/J8iqUxt2t7c8wtCYE4Xej0fanRVXjuG0JV9of2liFmwolUCMgrFX3im1oiHMr8Izw2dcTuDRcgKWajKG7FqgmvSdtMTDvIYQr1wmIs=
+	t=1750685377; cv=none; b=aNCQ1HNy4oJAgc0VI0QOHZstMplHUWgLSn+ANEMm0fT3s1Tzsm6MnzBBcEGjkTdX0qN2oixaObrAK7M5ls6r4pxIphP4PrgWpF81esC01lVvZOEvL7GhX/pAYIhTKVklrWR3UKiUht/psb0BjEzi79UpG5SYfwjOL//q/nQAOZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684568; c=relaxed/simple;
-	bh=YIUztGI8+S7tk9eaIWPWCHM9BhnQEmDdhEQMToWi67o=;
+	s=arc-20240116; t=1750685377; c=relaxed/simple;
+	bh=7xGhy/HMEWyHqpCGKbthK9+eUuyoFD4yVnwle8Zwis8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eBiYgOz8Dz6C9zhkz30IKb/L9xKV1LLRrXxKCRlxHlywOvfrlR20yZZXQj0QSgirn/09JeGd0nhLS1P9BnjRrEymEH8TOx0dYCGfhCAkmTwaNcqgxrcXGg/LQd/PevM00UY+mJREePRJj9UnMtGVT10MtLsJSheN3PR/Cq6LXig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Au6/0sn9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C801C4CEEA;
-	Mon, 23 Jun 2025 13:16:07 +0000 (UTC)
+	 MIME-Version; b=ko7szTWQ3j+uQkiaAAwiQ1jQ/pqstGCilxjTV1aYkdhTW+fZ4DzguN4jpmIOB4cwbTEi1j1QrDeZT6T8l92qmxSq6DjCeGOfg6TSjWhmVWvRGS6mqCXOlD1/TlPqLmt0cLquqPkwziNytvpypVSzu6UMJoTz/O1Ck2TVcek6BTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AAEMDQXO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B554C4CEEA;
+	Mon, 23 Jun 2025 13:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684568;
-	bh=YIUztGI8+S7tk9eaIWPWCHM9BhnQEmDdhEQMToWi67o=;
+	s=korg; t=1750685376;
+	bh=7xGhy/HMEWyHqpCGKbthK9+eUuyoFD4yVnwle8Zwis8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Au6/0sn9vx64sg8/pKL/BpXSyH/Ij3JQ+OZ77sqtmVJ+XqlC4eH0HdQutWHoKuPhd
-	 6G6iuYLbIsI5YPKcwfLJ7UJZo9OjH1BEr8zqALjPwrIdjMKmHNnANMfWsD8Fm8+dMI
-	 A/JocrPZFYmJ4Io60wAfLQZAAUUADlVe5Zan4sS8=
+	b=AAEMDQXOX0JW3ktSiKS4Mml7vzJTFZ/EovQPdVAYz7PjSTUnEE5KOm+ugcOJ5YPIE
+	 E+yGmnAVElGF3B0cjIBYqsTZ4cAFsRzysavwmlDhyTGlkMgXdSKoSj6s0hYtOrwi7m
+	 fOaspMcyihhpVKIsTbX+Ob3y6T//woTOPgOzKPuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.15 115/592] ext4: fix incorrect punch max_end
+	Vishwaroop A <va@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 028/508] spi: tegra210-quad: remove redundant error handling code
 Date: Mon, 23 Jun 2025 15:01:13 +0200
-Message-ID: <20250623130703.009545713@linuxfoundation.org>
+Message-ID: <20250623130645.941409591@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Vishwaroop A <va@nvidia.com>
 
-commit 29ec9bed2395061350249ae356fb300dd82a78e7 upstream.
+[ Upstream commit 400d9f1a27cc2fceabdb1ed93eaf0b89b6d32ba5 ]
 
-For the extents based inodes, the maxbytes should be sb->s_maxbytes
-instead of sbi->s_bitmap_maxbytes. Additionally, for the calculation of
-max_end, the -sb->s_blocksize operation is necessary only for
-indirect-block based inodes. Correct the maxbytes and max_end value to
-correct the behavior of punch hole.
+Remove unnecessary error handling code that terminated transfers and
+executed delay on errors. This code was redundant as error handling is
+already done at a higher level in the SPI core.
 
-Fixes: 2da376228a24 ("ext4: limit length to bitmap_maxbytes - blocksize in punch_hole")
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Link: https://patch.msgid.link/20250506012009.3896990-2-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b8342cc4a38 ("spi: tegra210-quad: combined sequence mode")
+Signed-off-by: Vishwaroop A <va@nvidia.com>
+Link: https://patch.msgid.link/20250416110606.2737315-3-va@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inode.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/spi/spi-tegra210-quad.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4006,7 +4006,7 @@ int ext4_punch_hole(struct file *file, l
- 	struct inode *inode = file_inode(file);
- 	struct super_block *sb = inode->i_sb;
- 	ext4_lblk_t start_lblk, end_lblk;
--	loff_t max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
-+	loff_t max_end = sb->s_maxbytes;
- 	loff_t end = offset + length;
- 	handle_t *handle;
- 	unsigned int credits;
-@@ -4015,14 +4015,20 @@ int ext4_punch_hole(struct file *file, l
- 	trace_ext4_punch_hole(inode, offset, length, 0);
- 	WARN_ON_ONCE(!inode_is_locked(inode));
+diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
+index b84dc830c4333..d09e0b9ac18c4 100644
+--- a/drivers/spi/spi-tegra210-quad.c
++++ b/drivers/spi/spi-tegra210-quad.c
+@@ -1168,10 +1168,6 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
  
-+	/*
-+	 * For indirect-block based inodes, make sure that the hole within
-+	 * one block before last range.
-+	 */
-+	if (!ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
-+		max_end = EXT4_SB(sb)->s_bitmap_maxbytes - sb->s_blocksize;
-+
- 	/* No need to punch hole beyond i_size */
- 	if (offset >= inode->i_size || offset >= max_end)
- 		return 0;
+ exit:
+ 	msg->status = ret;
+-	if (ret < 0) {
+-		tegra_qspi_transfer_end(spi);
+-		spi_transfer_delay_exec(xfer);
+-	}
  
- 	/*
- 	 * If the hole extends beyond i_size, set the hole to end after
--	 * the page that contains i_size, and also make sure that the hole
--	 * within one block before last range.
-+	 * the page that contains i_size.
- 	 */
- 	if (end > inode->i_size)
- 		end = round_up(inode->i_size, PAGE_SIZE);
+ 	return ret;
+ }
+-- 
+2.39.5
+
 
 
 
