@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-156424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D498AE4F8B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03A63AE5076
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 553BF3AB546
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:16:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E301D1B613A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CCED225760;
-	Mon, 23 Jun 2025 21:16:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D8771EEA3C;
+	Mon, 23 Jun 2025 21:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7Z9IcNL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h8VLjUmh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A34E221FDC;
-	Mon, 23 Jun 2025 21:16:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E00381E51FA;
+	Mon, 23 Jun 2025 21:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713381; cv=none; b=L05oQvJKRpk0i95TaApZEJj9dyS6l0Nmlp23Tt7OCgH9w9349ntrTczdBzyuboCkB3ydmcD3fUVG1+yb5DuKkuIuJFE4BwB7aqdXeu7ZJFCXFuTz16h+wGgmnPZRBvEoAZ6aMCKVyM2Yx1Jth++M9ZhPdpt78h0Q+NNMKatbQXs=
+	t=1750713894; cv=none; b=XO80HVwYM2T/AeDS6r6iyEXC1Q+uBEWoAMbp3KtyuuvVCkWkKYkk8XpzANhgEoKHniKu8Uhe5/Ssc2lKD0kAAAjRIWuCuJTHtgHQySnfWSrG4nU0TqNrcHHCq75I2f7P3wYQTrhcFnzC6d8GIp/n6GJqPeD7smBo2uxbYiaYU3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713381; c=relaxed/simple;
-	bh=8E4qmek7ywOqqb9t/HRUs8fxndbYJsU0d+qBnnx34F0=;
+	s=arc-20240116; t=1750713894; c=relaxed/simple;
+	bh=SdhCiqURNWeEz+jTcWQsln3/vf5HwTzSYkVz3B5C0Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jQlfM1Ny05LYnXGtuo4NkYgtDfbpbp9QR0Au70E2Tagb0uPpEURXg2c5FHip6x3Th/cMM5ulLlVAOrsyKF/lRAYP4TaS0Wl/8xg3a1OFFENCZo92C8idbSATBERC/b92EXNc2GG197gqpbQH/twsyr6STn+cTCJzilEGaPcKbgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7Z9IcNL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AF5CC4CEF0;
-	Mon, 23 Jun 2025 21:16:17 +0000 (UTC)
+	 MIME-Version; b=Z52Ey2MKoKzfzudbNpdtIr8i07THsNYzO9k8Qw7Mspic/aA809gfQ777njYP7mZ6N1lWWBtIh9nR5lYVcbbwuJHH4kvAijXOzP014nnPJB3FhUx73eWsBHsSAruQgmDcbG3zEkdKj6cysIw0HAJLRhoCtnD8Pq2KycZZ+4rRoQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h8VLjUmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78D6EC4CEEA;
+	Mon, 23 Jun 2025 21:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713377;
-	bh=8E4qmek7ywOqqb9t/HRUs8fxndbYJsU0d+qBnnx34F0=;
+	s=korg; t=1750713893;
+	bh=SdhCiqURNWeEz+jTcWQsln3/vf5HwTzSYkVz3B5C0Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7Z9IcNLl3c/j6oO08m99GtKC4JDRzsYo8dYYt+QqHOH7M96SQN6D1URB3UlMfuri
-	 1gKGzKZSy0sTo0JcLkOdrgH6B5S9mwerXaemriSwGtGuUqExZKnVM1ZHkDS6F35feO
-	 APRZxM490wn07Bhsnm/KSffPgFWdDVK6NXYbJKVw=
+	b=h8VLjUmhl2H8u50x/blr2ObTH9hqdlZkz9XayTrYH7UZWJPVqpiHMEhUbwQB8Z9xz
+	 wKFcNIRMmv8evK6qfpSHsr0v83Aep3wGUhkbacbDZ8fOsMVN/k50+pEesNispUvMqs
+	 uUPz1zD/L6QxlxYSliSepfQ3h8afO8bAnV/yENUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 041/414] media: ov8856: suppress probe deferral errors
+	Ingo Molnar <mingo@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	James Clark <james.clark@linaro.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 133/508] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
 Date: Mon, 23 Jun 2025 15:02:58 +0200
-Message-ID: <20250623130643.062667687@linuxfoundation.org>
+Message-ID: <20250623130648.561969445@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +68,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Arnaldo Carvalho de Melo <acme@redhat.com>
 
-commit e3d86847fba58cf71f66e81b6a2515e07039ae17 upstream.
+[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
 
-Probe deferral should not be logged as an error:
+In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
+perf_hpp_list") it assumes that act->thread is set prior to calling
+do_zoom_thread().
 
-	ov8856 24-0010: failed to get HW configuration: -517
+This doesn't happen when we use ESC or the Left arrow key to Zoom out of
+a specific thread, making this operation not to work and we get stuck
+into the thread zoom.
 
-Use dev_err_probe() for the clock lookup and drop the (mostly) redundant
-dev_err() from sensor probe() to suppress it.
+In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
+pstack_peek()") it says no need to set actions->thread, and at that
+point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
+check was added before the zoom out of thread could kick in.
 
-Note that errors during regulator lookup is already correctly logged
-using dev_err_probe().
+We can zoom out using the alternative 't' thread zoom toggle hotkey to
+finally set actions->thread before calling do_zoom_thread() and zoom
+out, but lets also fix the ESC/Zoom out of thread case.
 
-Fixes: 0c2c7a1e0d69 ("media: ov8856: Add devicetree support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov8856.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ tools/perf/ui/browsers/hists.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/ov8856.c
-+++ b/drivers/media/i2c/ov8856.c
-@@ -2276,8 +2276,8 @@ static int ov8856_get_hwcfg(struct ov885
- 	if (!is_acpi_node(fwnode)) {
- 		ov8856->xvclk = devm_clk_get(dev, "xvclk");
- 		if (IS_ERR(ov8856->xvclk)) {
--			dev_err(dev, "could not get xvclk clock (%pe)\n",
--				ov8856->xvclk);
-+			dev_err_probe(dev, PTR_ERR(ov8856->xvclk),
-+				      "could not get xvclk clock\n");
- 			return PTR_ERR(ov8856->xvclk);
- 		}
- 
-@@ -2382,11 +2382,8 @@ static int ov8856_probe(struct i2c_clien
- 		return -ENOMEM;
- 
- 	ret = ov8856_get_hwcfg(ov8856, &client->dev);
--	if (ret) {
--		dev_err(&client->dev, "failed to get HW configuration: %d",
--			ret);
-+	if (ret)
- 		return ret;
--	}
- 
- 	v4l2_i2c_subdev_init(&ov8856->sd, client, &ov8856_subdev_ops);
- 
+diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
+index fd3e67d2c6bdd..a68d3ee1769d6 100644
+--- a/tools/perf/ui/browsers/hists.c
++++ b/tools/perf/ui/browsers/hists.c
+@@ -3238,10 +3238,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
+ 				/*
+ 				 * No need to set actions->dso here since
+ 				 * it's just to remove the current filter.
+-				 * Ditto for thread below.
+ 				 */
+ 				do_zoom_dso(browser, actions);
+ 			} else if (top == &browser->hists->thread_filter) {
++				actions->thread = thread;
+ 				do_zoom_thread(browser, actions);
+ 			} else if (top == &browser->hists->socket_filter) {
+ 				do_zoom_socket(browser, actions);
+-- 
+2.39.5
+
 
 
 
