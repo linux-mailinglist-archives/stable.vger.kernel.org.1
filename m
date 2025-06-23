@@ -1,52 +1,58 @@
-Return-Path: <stable+bounces-155384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9057BAE41C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 932DAAE41D7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D2C6188D411
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:12:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2453B3B0AFB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2870724EAB1;
-	Mon, 23 Jun 2025 13:11:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8C42528FC;
+	Mon, 23 Jun 2025 13:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1fPIETS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XQXIHT2o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB61D24EA85;
-	Mon, 23 Jun 2025 13:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C0B82505CB;
+	Mon, 23 Jun 2025 13:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684289; cv=none; b=X+Xpyz7nFyuvq8smLrpSnTZR50wq97YyOIt4K2SfXH/UEfltreF2wpK7kH4gno0kF5seSZLemM9QQnzmsWAeoLxsTfabxSL5nwghbzPUpjSXgRIERHz17UHUMlCB3Ijm/lekcpNE/P++6YQg0ozwM97wq9kNtOR2+d7n5N6qjSs=
+	t=1750684318; cv=none; b=A5yNTdkUPDbh6sHXrPWsm312lHeSJxvPWIySXZSSk9e/NvHjlmZZTMtYHvQpv7DwWWG1KEjWMAJcXAjBkQoEBaCWkNhPNoQDIaiHwGVUCvlzhrdDUJDF/0dc2ud20dxoiZNpBYEG/OGZue/eVM1GHpT2z+UNZLCKIX06AcOCQfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684289; c=relaxed/simple;
-	bh=LI5dq8veMhtKHaAl4w9eTzv+uWiO2Ds3/PWNV6XP6AY=;
+	s=arc-20240116; t=1750684318; c=relaxed/simple;
+	bh=V0XQJg99Zq237grrDbcbstePjAdtCyQD7EobNiXn3qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooIgyFLdFBc+ivDNvLaryjK9xa8wpTUJ0ncFN5WQ0FD5yNllxdvGFr+sMcWeR4rWRPoQkxPtdoVlLY9OPN4+s5upZfXaZ4ZRaQsxoPam6HrJHZpzFE2MmuL0qp9HJ9AgwyAkZ5fkharJSJyK5by2Wn1oOa6Y+3Xh6+BBFsHZNNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1fPIETS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A2DC4CEEA;
-	Mon, 23 Jun 2025 13:11:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NYb2Ks9fizfKJzLY/PfFuLtfWm3UnpO5TjntQx+5Qjr2Zfjh0X+Kpk5MWci64gmiIB5+tJgLjtov35wq8Eaaub2R3rsmizS7TYSeDpcpIEBm/JiSOqF3n0dkPWhCgBMTrGTwgaZXH+vLCPUftS0mJgFyxpJpe34Al5AKIiuDCpc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XQXIHT2o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793DCC4CEEA;
+	Mon, 23 Jun 2025 13:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684289;
-	bh=LI5dq8veMhtKHaAl4w9eTzv+uWiO2Ds3/PWNV6XP6AY=;
+	s=korg; t=1750684317;
+	bh=V0XQJg99Zq237grrDbcbstePjAdtCyQD7EobNiXn3qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1fPIETSLHLWJxbRJJiUVkzCNwwYfk9w2HG+K2Q+cOLWJB4rr3hX2bZciVVWEJ1fr
-	 6RBLdBkvUgBQUkde0p4pkMmb52MCPYmD03xW1vw9z1MfGzPLFnHabzndmp6Czx6/f2
-	 XH59DYyNRe0UJBLbps/ylFAEu15PRDFFlGpVWHwA=
+	b=XQXIHT2ooZUAo1o4q0QkBEAjUU0/Y2byZH+F3Vs8Gk4SjbGZIDg9B3WGB30VJEsua
+	 SrEIRfsRMlh6Bk6wIDAf1gFSdfAuU2cpMon6eoD25VPxOAo25Qtef1LTRWtG4UY+CH
+	 AYY+cQX/dSWsmTcpgw27ijTdMgyJ+3BbNoHn9Nig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
-	Alexander Aring <aahringo@redhat.com>
-Subject: [PATCH 6.15 004/592] gfs2: move msleep to sleepable context
-Date: Mon, 23 Jun 2025 14:59:22 +0200
-Message-ID: <20250623130700.324300470@linuxfoundation.org>
+	Jon Kohler <jon@nutanix.com>,
+	Gauri Patwardhan <gauri.patwardhan@nutanix.com>,
+	Rahul Chunduru <rahul.chunduru@nutanix.com>,
+	Harshit Agarwal <harshit@nutanix.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Phil Auld <pauld@redhat.com>,
+	Will Ton <william.ton@nutanix.com>
+Subject: [PATCH 6.15 005/592] sched/rt: Fix race in push_rt_task
+Date: Mon, 23 Jun 2025 14:59:23 +0200
+Message-ID: <20250623130700.348108289@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -59,49 +65,298 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Harshit Agarwal <harshit@nutanix.com>
 
-commit ac5ee087d31ed93b6e45d2968a66828c6f621d8c upstream.
+commit 690e47d1403e90b7f2366f03b52ed3304194c793 upstream.
 
-This patch moves the msleep_interruptible() out of the non-sleepable
-context by moving the ls->ls_recover_spin spinlock around so
-msleep_interruptible() will be called in a sleepable context.
+Overview
+========
+When a CPU chooses to call push_rt_task and picks a task to push to
+another CPU's runqueue then it will call find_lock_lowest_rq method
+which would take a double lock on both CPUs' runqueues. If one of the
+locks aren't readily available, it may lead to dropping the current
+runqueue lock and reacquiring both the locks at once. During this window
+it is possible that the task is already migrated and is running on some
+other CPU. These cases are already handled. However, if the task is
+migrated and has already been executed and another CPU is now trying to
+wake it up (ttwu) such that it is queued again on the runqeue
+(on_rq is 1) and also if the task was run by the same CPU, then the
+current checks will pass even though the task was migrated out and is no
+longer in the pushable tasks list.
 
+Crashes
+=======
+This bug resulted in quite a few flavors of crashes triggering kernel
+panics with various crash signatures such as assert failures, page
+faults, null pointer dereferences, and queue corruption errors all
+coming from scheduler itself.
+
+Some of the crashes:
+-> kernel BUG at kernel/sched/rt.c:1616! BUG_ON(idx >= MAX_RT_PRIO)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? do_error_trap+0x64/0xa0
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? exc_invalid_op+0x4c/0x60
+   ? pick_next_task_rt+0x6e/0x1d0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? pick_next_task_rt+0x6e/0x1d0
+   __schedule+0x5cb/0x790
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
+
+-> BUG: kernel NULL pointer dereference, address: 00000000000000c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? __warn+0x8a/0xe0
+   ? exc_page_fault+0x3d6/0x520
+   ? asm_exc_page_fault+0x1e/0x30
+   ? pick_next_task_rt+0xb5/0x1d0
+   ? pick_next_task_rt+0x8c/0x1d0
+   __schedule+0x583/0x7e0
+   ? update_ts_time_stats+0x55/0x70
+   schedule_idle+0x1e/0x40
+   do_idle+0x15e/0x200
+   cpu_startup_entry+0x19/0x20
+   start_secondary+0x117/0x160
+   secondary_startup_64_no_verify+0xb0/0xbb
+
+-> BUG: unable to handle page fault for address: ffff9464daea5900
+   kernel BUG at kernel/sched/rt.c:1861! BUG_ON(rq->cpu != task_cpu(p))
+
+-> kernel BUG at kernel/sched/rt.c:1055! BUG_ON(!rq->nr_running)
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? die+0x2a/0x50
+   ? do_trap+0x85/0x100
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? do_error_trap+0x64/0xa0
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? exc_invalid_op+0x4c/0x60
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   ? asm_exc_invalid_op+0x12/0x20
+   ? dequeue_top_rt_rq+0xa2/0xb0
+   dequeue_rt_entity+0x1f/0x70
+   dequeue_task_rt+0x2d/0x70
+   __schedule+0x1a8/0x7e0
+   ? blk_finish_plug+0x25/0x40
+   schedule+0x3c/0xb0
+   futex_wait_queue_me+0xb6/0x120
+   futex_wait+0xd9/0x240
+   do_futex+0x344/0xa90
+   ? get_mm_exe_file+0x30/0x60
+   ? audit_exe_compare+0x58/0x70
+   ? audit_filter_rules.constprop.26+0x65e/0x1220
+   __x64_sys_futex+0x148/0x1f0
+   do_syscall_64+0x30/0x80
+   entry_SYSCALL_64_after_hwframe+0x62/0xc7
+
+-> BUG: unable to handle page fault for address: ffff8cf3608bc2c0
+   Call Trace:
+   ? __die_body+0x1a/0x60
+   ? no_context+0x183/0x350
+   ? spurious_kernel_fault+0x171/0x1c0
+   ? exc_page_fault+0x3b6/0x520
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? asm_exc_page_fault+0x1e/0x30
+   ? _cond_resched+0x15/0x30
+   ? futex_wait_queue_me+0xc8/0x120
+   ? futex_wait+0xd9/0x240
+   ? try_to_wake_up+0x1b8/0x490
+   ? futex_wake+0x78/0x160
+   ? do_futex+0xcd/0xa90
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? plist_del+0x6a/0xd0
+   ? plist_check_list+0x15/0x40
+   ? plist_check_list+0x2e/0x40
+   ? dequeue_pushable_task+0x20/0x70
+   ? __schedule+0x382/0x7e0
+   ? asm_sysvec_reschedule_ipi+0xa/0x20
+   ? schedule+0x3c/0xb0
+   ? exit_to_user_mode_prepare+0x9e/0x150
+   ? irqentry_exit_to_user_mode+0x5/0x30
+   ? asm_sysvec_reschedule_ipi+0x12/0x20
+
+Above are some of the common examples of the crashes that were observed
+due to this issue.
+
+Details
+=======
+Let's look at the following scenario to understand this race.
+
+1) CPU A enters push_rt_task
+  a) CPU A has chosen next_task = task p.
+  b) CPU A calls find_lock_lowest_rq(Task p, CPU Z’s rq).
+  c) CPU A identifies CPU X as a destination CPU (X < Z).
+  d) CPU A enters double_lock_balance(CPU Z’s rq, CPU X’s rq).
+  e) Since X is lower than Z, CPU A unlocks CPU Z’s rq. Someone else has
+     locked CPU X’s rq, and thus, CPU A must wait.
+
+2) At CPU Z
+  a) Previous task has completed execution and thus, CPU Z enters
+     schedule, locks its own rq after CPU A releases it.
+  b) CPU Z dequeues previous task and begins executing task p.
+  c) CPU Z unlocks its rq.
+  d) Task p yields the CPU (ex. by doing IO or waiting to acquire a
+     lock) which triggers the schedule function on CPU Z.
+  e) CPU Z enters schedule again, locks its own rq, and dequeues task p.
+  f) As part of dequeue, it sets p.on_rq = 0 and unlocks its rq.
+
+3) At CPU B
+  a) CPU B enters try_to_wake_up with input task p.
+  b) Since CPU Z dequeued task p, p.on_rq = 0, and CPU B updates
+     B.state = WAKING.
+  c) CPU B via select_task_rq determines CPU Y as the target CPU.
+
+4) The race
+  a) CPU A acquires CPU X’s lock and relocks CPU Z.
+  b) CPU A reads task p.cpu = Z and incorrectly concludes task p is
+     still on CPU Z.
+  c) CPU A failed to notice task p had been dequeued from CPU Z while
+     CPU A was waiting for locks in double_lock_balance. If CPU A knew
+     that task p had been dequeued, it would return NULL forcing
+     push_rt_task to give up the task p's migration.
+  d) CPU B updates task p.cpu = Y and calls ttwu_queue.
+  e) CPU B locks Ys rq. CPU B enqueues task p onto Y and sets task
+     p.on_rq = 1.
+  f) CPU B unlocks CPU Y, triggering memory synchronization.
+  g) CPU A reads task p.on_rq = 1, cementing its assumption that task p
+     has not migrated.
+  h) CPU A decides to migrate p to CPU X.
+
+This leads to A dequeuing p from Y's queue and various crashes down the
+line.
+
+Solution
+========
+The solution here is fairly simple. After obtaining the lock (at 4a),
+the check is enhanced to make sure that the task is still at the head of
+the pushable tasks list. If not, then it is anyway not suitable for
+being pushed out.
+
+Testing
+=======
+The fix is tested on a cluster of 3 nodes, where the panics due to this
+are hit every couple of days. A fix similar to this was deployed on such
+cluster and was stable for more than 30 days.
+
+Co-developed-by: Jon Kohler <jon@nutanix.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Co-developed-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Signed-off-by: Gauri Patwardhan <gauri.patwardhan@nutanix.com>
+Co-developed-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Rahul Chunduru <rahul.chunduru@nutanix.com>
+Signed-off-by: Harshit Agarwal <harshit@nutanix.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: "Steven Rostedt (Google)" <rostedt@goodmis.org>
+Reviewed-by: Phil Auld <pauld@redhat.com>
+Tested-by: Will Ton <william.ton@nutanix.com>
 Cc: stable@vger.kernel.org
-Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
-Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Link: https://lore.kernel.org/r/20250225180553.167995-1-harshit@nutanix.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/lock_dlm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/sched/rt.c |   54 ++++++++++++++++++++++++++----------------------------
+ 1 file changed, 26 insertions(+), 28 deletions(-)
 
---- a/fs/gfs2/lock_dlm.c
-+++ b/fs/gfs2/lock_dlm.c
-@@ -996,14 +996,15 @@ locks_done:
- 		if (sdp->sd_args.ar_spectator) {
- 			fs_info(sdp, "Recovery is required. Waiting for a "
- 				"non-spectator to mount.\n");
-+			spin_unlock(&ls->ls_recover_spin);
- 			msleep_interruptible(1000);
- 		} else {
- 			fs_info(sdp, "control_mount wait1 block %u start %u "
- 				"mount %u lvb %u flags %lx\n", block_gen,
- 				start_gen, mount_gen, lvb_gen,
- 				ls->ls_recover_flags);
-+			spin_unlock(&ls->ls_recover_spin);
- 		}
--		spin_unlock(&ls->ls_recover_spin);
- 		goto restart;
- 	}
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -1883,6 +1883,27 @@ static int find_lowest_rq(struct task_st
+ 	return -1;
+ }
  
++static struct task_struct *pick_next_pushable_task(struct rq *rq)
++{
++	struct task_struct *p;
++
++	if (!has_pushable_tasks(rq))
++		return NULL;
++
++	p = plist_first_entry(&rq->rt.pushable_tasks,
++			      struct task_struct, pushable_tasks);
++
++	BUG_ON(rq->cpu != task_cpu(p));
++	BUG_ON(task_current(rq, p));
++	BUG_ON(task_current_donor(rq, p));
++	BUG_ON(p->nr_cpus_allowed <= 1);
++
++	BUG_ON(!task_on_rq_queued(p));
++	BUG_ON(!rt_task(p));
++
++	return p;
++}
++
+ /* Will lock the rq it finds */
+ static struct rq *find_lock_lowest_rq(struct task_struct *task, struct rq *rq)
+ {
+@@ -1913,18 +1934,16 @@ static struct rq *find_lock_lowest_rq(st
+ 			/*
+ 			 * We had to unlock the run queue. In
+ 			 * the mean time, task could have
+-			 * migrated already or had its affinity changed.
+-			 * Also make sure that it wasn't scheduled on its rq.
++			 * migrated already or had its affinity changed,
++			 * therefore check if the task is still at the
++			 * head of the pushable tasks list.
+ 			 * It is possible the task was scheduled, set
+ 			 * "migrate_disabled" and then got preempted, so we must
+ 			 * check the task migration disable flag here too.
+ 			 */
+-			if (unlikely(task_rq(task) != rq ||
++			if (unlikely(is_migration_disabled(task) ||
+ 				     !cpumask_test_cpu(lowest_rq->cpu, &task->cpus_mask) ||
+-				     task_on_cpu(rq, task) ||
+-				     !rt_task(task) ||
+-				     is_migration_disabled(task) ||
+-				     !task_on_rq_queued(task))) {
++				     task != pick_next_pushable_task(rq))) {
+ 
+ 				double_unlock_balance(rq, lowest_rq);
+ 				lowest_rq = NULL;
+@@ -1944,27 +1963,6 @@ static struct rq *find_lock_lowest_rq(st
+ 	return lowest_rq;
+ }
+ 
+-static struct task_struct *pick_next_pushable_task(struct rq *rq)
+-{
+-	struct task_struct *p;
+-
+-	if (!has_pushable_tasks(rq))
+-		return NULL;
+-
+-	p = plist_first_entry(&rq->rt.pushable_tasks,
+-			      struct task_struct, pushable_tasks);
+-
+-	BUG_ON(rq->cpu != task_cpu(p));
+-	BUG_ON(task_current(rq, p));
+-	BUG_ON(task_current_donor(rq, p));
+-	BUG_ON(p->nr_cpus_allowed <= 1);
+-
+-	BUG_ON(!task_on_rq_queued(p));
+-	BUG_ON(!rt_task(p));
+-
+-	return p;
+-}
+-
+ /*
+  * If the current CPU has more than one RT task, see if the non
+  * running task can migrate over to a CPU that is running a task
 
 
 
