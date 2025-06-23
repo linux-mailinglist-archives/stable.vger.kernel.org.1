@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF686AE43CC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A0C8AE4340
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6013217B1E1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A86913BA7EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E560D25178C;
-	Mon, 23 Jun 2025 13:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 798DA2367B0;
+	Mon, 23 Jun 2025 13:24:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSIPwXVc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A0VrvwGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07E9230BC2;
-	Mon, 23 Jun 2025 13:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37703239E63;
+	Mon, 23 Jun 2025 13:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685351; cv=none; b=U96sKmGHciHP2MQ3eimCC+mD04Rlw1nUuB7XlsmawTPNzcSkQ10YbCQWGQPy8fmYgw5+9uC/8f+1brI7qGBsAS6e6vqOJrcTW2KPCm4BeoY8HIWj2o9+8SjKe4tV4WNsyznmXh+fMpmkAUZq7HGf9Lk9qH4LZlzh5mgXimpkSO8=
+	t=1750685042; cv=none; b=DaZENQWZ+JisYDowcWQZNQ/pOVMpnkpyb5jfNMX3XvSnyJNQmYFPfoEgFvU/GYXblKeRzrUy0l3AsWXSKdyfI7Yqv3SKspce3FC41+UxrQpOZp1OBB2UrB+lGvyD0N49g6v5I2xi1tI03oYbglw+4oYnqJ27EtjvJmIKJyKtQWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685351; c=relaxed/simple;
-	bh=VRgfYyxrh2GKksDzZ/JBnjv4XyoltPqtaNPluUmaLps=;
+	s=arc-20240116; t=1750685042; c=relaxed/simple;
+	bh=AScLikdxe+f5beaBX3Gg/aFr5xDnSkDoEis/Y3Ywg+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mm6X8xaEstjBlufbJauxCovdFTG93fD1ylUo59w/lgL6knfgXBK+OJbgM8wZQPGurvX2WLQZTpBm5jq9/cZv27ByjGQNOeKl7h9GLREf5Bjck67/7NCD3B+HbOa/svd7GLcoetla00qwJElguSjioWBKHOG6Nl6CkkxvlAgp6No=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSIPwXVc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34C38C4CEEA;
-	Mon, 23 Jun 2025 13:29:11 +0000 (UTC)
+	 MIME-Version; b=RMUr12I19lSiXDXc243rcWxYwQYbPdAUndxi9TVnYs4KOX6ezvX58NfGIIIL3YEWK8/CuoO2rQcFHJoSFB8jxcYMGAFIuSTB+Y76KOC9pFAs3R6s3oWiz+aQRDBT1HppyaISMVDHGtupzGRqBQ4E57ueR6JRQyJtFyyr0fFMnao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A0VrvwGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71DC0C4CEF0;
+	Mon, 23 Jun 2025 13:24:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685351;
-	bh=VRgfYyxrh2GKksDzZ/JBnjv4XyoltPqtaNPluUmaLps=;
+	s=korg; t=1750685041;
+	bh=AScLikdxe+f5beaBX3Gg/aFr5xDnSkDoEis/Y3Ywg+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSIPwXVczwP/WuDt3r42om/GK0maLdYA8vzfXKphio14gcQs0aMC+yT7AneGeOrZi
-	 kGu104WllGJXHifPRj4LJJoIPvq1Z5woLeKZLYwO3/CcF4ahSZhK2KiQcuNh1jzZUS
-	 rra3YKM85f9HptfPYMnEDpYgnJGZ8moo7j0Sdovw=
+	b=A0VrvwGExWl8UHNrh54Ckp4hviYLvggGWwM6VjkqYrlZd72dTYPrM3a8RYKDF1X9W
+	 4vKAZto1hWKk4vTlBtuV5b06G5xc1nKWhaN30Z52+gUq5w1sXPdTOGnZOWG1n4oCpG
+	 xs1ni9d94DYWUkVPGGt+pS+dQWCg/Ma1I4KLuKWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
+	Yuanjun Gong <ruc_gongyuanjun@163.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 227/592] platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
-Date: Mon, 23 Jun 2025 15:03:05 +0200
-Message-ID: <20250623130705.690713275@linuxfoundation.org>
+Subject: [PATCH 6.15 228/592] ASoC: tegra210_ahub: Add check to of_device_get_match_data()
+Date: Mon, 23 Jun 2025 15:03:06 +0200
+Message-ID: <20250623130705.714286662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,45 +66,34 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit 9a958e1fd40d6fae8c66385687a00ebd9575a7d2 ]
+[ Upstream commit 04cb269c204398763a620d426cbee43064854000 ]
 
-platform_device_msi_init_and_alloc_irqs() performs two tasks: allocating
-the MSI domain for a platform device, and allocate a number of MSIs in that
-domain.
+In tegra_ahub_probe(), check the result of function
+of_device_get_match_data(), return an error code in case it fails.
 
-platform_device_msi_free_irqs_all() only frees the MSIs, and leaves the MSI
-domain alive.
-
-Given that platform_device_msi_init_and_alloc_irqs() is the sole tool a
-platform device has to allocate platform MSIs, it makes sense for
-platform_device_msi_free_irqs_all() to teardown the MSI domain at the same
-time as the MSIs.
-
-This avoids warnings and unexpected behaviours when a driver repeatedly
-allocates and frees MSIs.
-
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/all/20250414-ep-msi-v18-1-f69b49917464@nxp.com
+Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
+Link: https://patch.msgid.link/20250513123744.3041724-1-ruc_gongyuanjun@163.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/platform-msi.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/tegra/tegra210_ahub.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/base/platform-msi.c b/drivers/base/platform-msi.c
-index 0e60dd650b5e0..70db08f3ac6fa 100644
---- a/drivers/base/platform-msi.c
-+++ b/drivers/base/platform-msi.c
-@@ -95,5 +95,6 @@ EXPORT_SYMBOL_GPL(platform_device_msi_init_and_alloc_irqs);
- void platform_device_msi_free_irqs_all(struct device *dev)
- {
- 	msi_domain_free_irqs_all(dev, MSI_DEFAULT_DOMAIN);
-+	msi_remove_device_irq_domain(dev, MSI_DEFAULT_DOMAIN);
- }
- EXPORT_SYMBOL_GPL(platform_device_msi_free_irqs_all);
+diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
+index 99683f292b5d8..ae4965a9f7649 100644
+--- a/sound/soc/tegra/tegra210_ahub.c
++++ b/sound/soc/tegra/tegra210_ahub.c
+@@ -1359,6 +1359,8 @@ static int tegra_ahub_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	ahub->soc_data = of_device_get_match_data(&pdev->dev);
++	if (!ahub->soc_data)
++		return -ENODEV;
+ 
+ 	platform_set_drvdata(pdev, ahub);
+ 
 -- 
 2.39.5
 
