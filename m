@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5B44AE5476
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43171AE5363
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B0EC3A41F5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CE8984A7B96
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C5DA1D86DC;
-	Mon, 23 Jun 2025 22:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC8D0222576;
+	Mon, 23 Jun 2025 21:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2sZvo+YV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pY9E26Dm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FC14C74;
-	Mon, 23 Jun 2025 22:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B1721B9C9;
+	Mon, 23 Jun 2025 21:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716078; cv=none; b=BdEy0zG5liFGozDwGqI46WiMhjsrX/l7NCiUSJXtxVJsr/v/WxSHFdqIZBI5fxbQ84Np+ONmj/m+km+NlYWCkzUrlbt+1NTxOLeTXcAMCoacBIWpS3mBDf/NdbbYQBbAjPHmgc5B93AwoSZ8rE4IK9/4u25/J3lAqzRGSaABtqo=
+	t=1750715565; cv=none; b=hdMORlMGgNoIU3TCCky/RnZ6bqxV1wjpzWReMPYK/56OIeNmRneeg7lpBvpcpseAKyLch4Xm5juHqemVslPN9tnCAudq5UE2KegeUFLWpcX6Cj9NBCQvoqpMWqsS2it3+CTl4xHOXSaC65pAvqZP0NDCruMrkqnP7XIdQN3VIjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716078; c=relaxed/simple;
-	bh=2QUyV2e4KtEHuiV3yKZq7To2q4V/x43PjFOcDEWGCCQ=;
+	s=arc-20240116; t=1750715565; c=relaxed/simple;
+	bh=TgaUlxowQjGIDYV1C30oL3wiW2pgG1nZLKHZsm5ECmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HPpuTWEAVtrEhs8xGS7RXfQOwnxxBNS8zZfXsWjuRzlXGAetJY35CxDhuW1jaOdmw7nztntxqMqqsBgCPZdiEzPv5B2cVL3d1MBX8YBdEKj8IIKKSbPo7YJQrOzvmVTHxMtYZkzpgWcuQi3kKtJsM4HX8LkHhbUufrKWkDYePNM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2sZvo+YV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E746BC4CEED;
-	Mon, 23 Jun 2025 22:01:17 +0000 (UTC)
+	 MIME-Version; b=RGVq7Z7Nbctd+oliTGGSGiHOICHjN5N70sCdV7EhnVtOvyPDxT9NqmNJM7Rc3C1itydVFf1BTJ4pk9oPTU0DU1NYlyyL920erCRjW1EYIJHTvf3idqzGPbk+Yqzvf0b5oJt8XlUwbct9X5lJ4ScsYuDhTADzTJwAQq4Zq5SUc4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pY9E26Dm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2831C4CEEA;
+	Mon, 23 Jun 2025 21:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716078;
-	bh=2QUyV2e4KtEHuiV3yKZq7To2q4V/x43PjFOcDEWGCCQ=;
+	s=korg; t=1750715565;
+	bh=TgaUlxowQjGIDYV1C30oL3wiW2pgG1nZLKHZsm5ECmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2sZvo+YV357Swv0GmfM3Ni/y+QcX8NnujSvOka7dKDOpslpYIyuTywMxV6/RpZ5dI
-	 mZyMfnPoR3HCBSBsZoq7jLqW7iuCuRINt+6JjLzYuCmiSKTJNiQJJskxOdOGeJBcfH
-	 3RVpW4QJIPDjkGbdpS+ySO/gjhEsLfqNm4Efk/y4=
+	b=pY9E26DmfiEDJ1+lxr1S76o6mOLcQcIJF8wVTLWd0/3LUwzG9xQa+/ZbNEAPraYRZ
+	 PVjE0KBwTVPg+JpouCfoWNMs/P4mUdU8rM/W/BcxJIqdfRsH3Q3mqomEgDm3BjBeRz
+	 4XipWM3oDRdKcHBG5I1o9YbnK6Y3s6N41T1T9YpA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 301/411] nios2: force update_mmu_cache on spurious tlb-permission--related pagefaults
+	Danilo Krummrich <dakr@kernel.org>,
+	Alexandre Courbot <acourbot@nvidia.com>,
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Zhi Wang <zhiw@nvidia.com>
+Subject: [PATCH 6.15 487/592] drm/nouveau/nvkm: introduce new GSP reply policy NVKM_GSP_RPC_REPLY_POLL
 Date: Mon, 23 Jun 2025 15:07:25 +0200
-Message-ID: <20250623130641.223790056@linuxfoundation.org>
+Message-ID: <20250623130712.018962834@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Zhi Wang <zhiw@nvidia.com>
 
-[ Upstream commit 2d8a3179ea035f9341b6a73e5ba4029fc67e983d ]
+commit a738fa9105ac2897701ba4067c33e85faa27d1e2 upstream.
 
-NIOS2 uses a software-managed TLB for virtual address translation. To
-flush a cache line, the original mapping is replaced by one to physical
-address 0x0 with no permissions (rwx mapped to 0) set. This can lead to
-TLB-permission--related traps when such a nominally flushed entry is
-encountered as a mapping for an otherwise valid virtual address within a
-process (e.g. due to an MMU-PID-namespace rollover that previously
-flushed the complete TLB including entries of existing, running
-processes).
+Some GSP RPC commands need a new reply policy: "caller don't care about
+the message content but want to make sure a reply is received". To
+support this case, a new reply policy is introduced.
 
-The default ptep_set_access_flags implementation from mm/pgtable-generic.c
-only forces a TLB-update when the page-table entry has changed within the
-page table:
+NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY is a large GSP RPC command. The actual
+required policy is NVKM_GSP_RPC_REPLY_POLL. This can be observed from the
+dump of the GSP message queue. After the large GSP RPC command is issued,
+GSP will write only an empty RPC header in the queue as the reply.
 
-	/*
-	 * [...] We return whether the PTE actually changed, which in turn
-	 * instructs the caller to do things like update__mmu_cache. [...]
-	 */
-	int ptep_set_access_flags(struct vm_area_struct *vma,
-				  unsigned long address, pte_t *ptep,
-				  pte_t entry, int dirty)
-	{
-		int changed = !pte_same(*ptep, entry);
-		if (changed) {
-			set_pte_at(vma->vm_mm, address, ptep, entry);
-			flush_tlb_fix_spurious_fault(vma, address);
-		}
-		return changed;
-	}
+Without this change, the policy "receiving the entire message" is used
+for NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY. This causes the timeout of receiving
+the returned GSP message in the suspend/resume path.
 
-However, no cross-referencing with the TLB-state occurs, so the
-flushing-induced pseudo entries that are responsible for the pagefault
-in the first place are never pre-empted from TLB on this code path.
+Introduce the new reply policy NVKM_GSP_RPC_REPLY_POLL, which waits for
+the returned GSP message but discards it for the caller. Use the new policy
+NVKM_GSP_RPC_REPLY_POLL on the GSP RPC command
+NV_VGPU_MSG_FUNCTION_ALLOC_MEMORY.
 
-This commit fixes this behaviour by always requesting a TLB-update in
-this part of the pagefault handling, fixing spurious page-faults on the
-way. The handling is a straightforward port of the logic from the MIPS
-architecture via an arch-specific ptep_set_access_flags function ported
-from arch/mips/include/asm/pgtable.h.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50f290053d79 ("drm/nouveau: support handling the return of large GSP message")
+Cc: Danilo Krummrich <dakr@kernel.org>
+Cc: Alexandre Courbot <acourbot@nvidia.com>
+Tested-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20250227013554.8269-3-zhiw@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/nios2/include/asm/pgtable.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h  |    4 ++++
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c     |    3 +++
+ drivers/gpu/drm/nouveau/nvkm/subdev/instmem/r535.c |    2 +-
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-index 4a995fa628eef..58208325462cd 100644
---- a/arch/nios2/include/asm/pgtable.h
-+++ b/arch/nios2/include/asm/pgtable.h
-@@ -275,4 +275,20 @@ extern void __init mmu_init(void);
- extern void update_mmu_cache(struct vm_area_struct *vma,
- 			     unsigned long address, pte_t *pte);
+--- a/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
++++ b/drivers/gpu/drm/nouveau/include/nvkm/subdev/gsp.h
+@@ -44,10 +44,14 @@ typedef void (*nvkm_gsp_event_func)(stru
+  * NVKM_GSP_RPC_REPLY_RECV - If specified, wait and receive the entire GSP
+  * RPC message after the GSP RPC command is issued.
+  *
++ * NVKM_GSP_RPC_REPLY_POLL - If specified, wait for the specific reply and
++ * discard the reply before returning to the caller.
++ *
+  */
+ enum nvkm_gsp_rpc_reply_policy {
+ 	NVKM_GSP_RPC_REPLY_NOWAIT = 0,
+ 	NVKM_GSP_RPC_REPLY_RECV,
++	NVKM_GSP_RPC_REPLY_POLL,
+ };
  
-+static inline int pte_same(pte_t pte_a, pte_t pte_b);
-+
-+#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
-+static inline int ptep_set_access_flags(struct vm_area_struct *vma,
-+					unsigned long address, pte_t *ptep,
-+					pte_t entry, int dirty)
-+{
-+	if (!pte_same(*ptep, entry))
-+		set_ptes(vma->vm_mm, address, ptep, entry, 1);
-+	/*
-+	 * update_mmu_cache will unconditionally execute, handling both
-+	 * the case that the PTE changed and the spurious fault case.
-+	 */
-+	return true;
-+}
-+
- #endif /* _ASM_NIOS2_PGTABLE_H */
--- 
-2.39.5
-
+ struct nvkm_gsp {
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/r535.c
+@@ -602,6 +602,9 @@ r535_gsp_rpc_handle_reply(struct nvkm_gs
+ 		else
+ 			repv = reply;
+ 		break;
++	case NVKM_GSP_RPC_REPLY_POLL:
++		repv = r535_gsp_msg_recv(gsp, fn, 0);
++		break;
+ 	}
+ 
+ 	return repv;
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/r535.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/instmem/r535.c
+@@ -105,7 +105,7 @@ fbsr_memlist(struct nvkm_gsp_device *dev
+ 			rpc->pteDesc.pte_pde[i].pte = (phys >> 12) + i;
+ 	}
+ 
+-	ret = nvkm_gsp_rpc_wr(gsp, rpc, NVKM_GSP_RPC_REPLY_RECV);
++	ret = nvkm_gsp_rpc_wr(gsp, rpc, NVKM_GSP_RPC_REPLY_POLL);
+ 	if (ret)
+ 		return ret;
+ 
 
 
 
