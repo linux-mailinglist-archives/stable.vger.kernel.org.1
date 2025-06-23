@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-157241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E2E9AE532C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE48CAE5339
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D01B7A2CF2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D6301B66756
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3386819049B;
-	Mon, 23 Jun 2025 21:49:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899C81AD3FA;
+	Mon, 23 Jun 2025 21:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DWKEwZY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYWZoKdw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26D81AD3FA;
-	Mon, 23 Jun 2025 21:49:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 475B81DD0C7;
+	Mon, 23 Jun 2025 21:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715387; cv=none; b=csDwgS4jtWuZnb9PFc4AishByMvzDXigC77LHqY/TYP/St7z68nKg+He/XBJFykO8KmRGF19tQkgl4r91PccNdXbsYUtlih1z6iK2kkqDMftWi3wGcp82Qxolfo2XopW0erG08U0Ni1Z21B113KUVR38apQUc6iB38wGue8mdjw=
+	t=1750715455; cv=none; b=B97WH9ccpBLhhb6sA/vSelReyc3naIZTpQ6TLy+Vt9+ESGqrEJGmwq/mK93ECwip5IxHNc5sOZ9PVxyO9aWnrIy8w7zbWqTj9Se7uuMYoRmPB4SZS+IidgFxmwiucCofub+PaDQH7WvSaRYqu8qCkXCOM2uTdE53hRIOgPJYw00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715387; c=relaxed/simple;
-	bh=qt2JTlz/NmXeMDpKig+ucIh3Zf+ugHsOpi+WuHuitdU=;
+	s=arc-20240116; t=1750715455; c=relaxed/simple;
+	bh=m5mgpvNGsE6eL1ivqtDsG5u5Kw+0hx81mXE9qC56XBw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SsX4/BOqAbUBJHQxE4c3VjNYiHr1SFarjrFGIb93UXiomlaF2VGAfw1KWDv3AU3G6f79EbeDmODQBmP3na6hWEW+OtrTjS97BgVQwifhxc7FTFphdBgOipUTY5Cn088WJzJ09rebtp1mQFrcoa/RwfyKvkubqvRHIk2zoLFdPaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DWKEwZY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13A15C4CEEA;
-	Mon, 23 Jun 2025 21:49:45 +0000 (UTC)
+	 MIME-Version; b=cM/MwX2bYyg9Kk9hCX4bqmVs4yrvjm+JaxXUjxNPEqvlMUOk3fd7Gw2/29EZI1XP+InAN/jbOAsGdesM48bxR8p5NDN46VtKfgde/U/s4JtpqByupaS71VY8cb/ZM9ful+odiNF974G+MVedhRcPhUkPNJd+lCh3DU2xwapCx1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYWZoKdw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3955C4CEEA;
+	Mon, 23 Jun 2025 21:50:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715386;
-	bh=qt2JTlz/NmXeMDpKig+ucIh3Zf+ugHsOpi+WuHuitdU=;
+	s=korg; t=1750715455;
+	bh=m5mgpvNGsE6eL1ivqtDsG5u5Kw+0hx81mXE9qC56XBw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2DWKEwZYSk3jrx6fO3Cpg8ot99zTMt9PF0BJYDZql3bTi4ZestTAM9Yh0wxvWZvIQ
-	 +SJ+afSodIYRHDjxFFjRE8e0T8NX/rKoW7MoMUNMsJBfo/MEp8aKf1It6VLx1eZWFE
-	 OmaRbczjyNCt7VvAO3nQMDBtPzox6OSDjzHi+7UQ=
+	b=UYWZoKdwJhwgIcpTrwkGSxO+CrkWUXzHHMH4M/1ZcZcoboEfSGSJ82vYM3jK7DwyZ
+	 2rh22NLT2z43efj17K/fAiLSFuGGZ7gggyMNVYesuUbKx846LHHpC0RFqpq2D2IKv6
+	 U+LhNg9ouCAhHSmf3L0BKcKg+z/3eh2p/EncIHaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Collin Funk <collin.funk1@gmail.com>,
+	Paul Eggert <eggert@cs.ucla.edu>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 260/355] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
+Subject: [PATCH 6.6 200/290] fs/xattr.c: fix simple_xattr_list()
 Date: Mon, 23 Jun 2025 15:07:41 +0200
-Message-ID: <20250623130634.568898352@linuxfoundation.org>
+Message-ID: <20250623130632.953568760@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +64,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
+[ Upstream commit 800d0b9b6a8b1b354637b4194cc167ad1ce2bdd3 ]
 
-The regmap_update_bits() function can fail, so propagate its error
-up to the stack instead of silently ignoring that.
+commit 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always
+include security.* xattrs") failed to reset err after the call to
+security_inode_listsecurity(), which returns the length of the
+returned xattr name. This results in simple_xattr_list() incorrectly
+returning this length even if a POSIX acl is also set on the inode.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-by: Collin Funk <collin.funk1@gmail.com>
+Closes: https://lore.kernel.org/selinux/8734ceal7q.fsf@gmail.com/
+Reported-by: Paul Eggert <eggert@cs.ucla.edu>
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2369561
+Fixes: 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always include security.* xattrs")
+
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Link: https://lore.kernel.org/20250605165116.2063-1-stephen.smalley.work@gmail.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/xattr.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index d74d280447bff..b17d0e80f25af 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -354,9 +354,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
+diff --git a/fs/xattr.c b/fs/xattr.c
+index 5fed22c22a2be..7574d24b982ef 100644
+--- a/fs/xattr.c
++++ b/fs/xattr.c
+@@ -1342,6 +1342,7 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
+ 		buffer += err;
+ 	}
+ 	remaining_size -= err;
++	err = 0;
  
- 	val = grp->val[func];
- 
--	regmap_update_bits(info->regmap, reg, mask, val);
--
--	return 0;
-+	return regmap_update_bits(info->regmap, reg, mask, val);
- }
- 
- static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
+ 	read_lock(&xattrs->lock);
+ 	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
 -- 
 2.39.5
 
