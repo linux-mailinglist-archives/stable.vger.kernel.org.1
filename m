@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05A82AE4F33
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA1CAE5488
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDEC61B608E4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74F96189FF16
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE290202983;
-	Mon, 23 Jun 2025 21:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC31519DF4A;
+	Mon, 23 Jun 2025 22:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qe5hrIIR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEpVJwKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC6E51DF98B;
-	Mon, 23 Jun 2025 21:13:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A63A4C74;
+	Mon, 23 Jun 2025 22:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713204; cv=none; b=uPhGp8CeIyh9pjUlxE6yI9exZGew4y/3G9oZw24I+l2id/sq6dOnhsVaYWw69P6Gqthd6ZfVKTLf9AdexctYv7etlmEAz7inE8yJhNOFA6MlxnjmJQXgzcEz441xOoZb+FOCECHH8Gmx8bgnE4O65f+UBcAAVapFXfpA9FmtWP4=
+	t=1750716132; cv=none; b=YAkWdqhFQYPuhUzdX0F1tmgwPROLlapWVO/kArKJGqIrTQyakzb+YTHQ95MSDdS0cl/cE+DjaK8FDbcM1XHBa5ovmBEQcE92q+GDmeJOoQmaHWw8wWgailrc11up5Hp6e7IyDLIp2KqeHFTcgtsfakunXHnh0G/2t0YfEZc2Ko8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713204; c=relaxed/simple;
-	bh=DA5PKorBnw8NiM2JXr6C+WHKP+FGdTO7txPgBsuDPew=;
+	s=arc-20240116; t=1750716132; c=relaxed/simple;
+	bh=rKASpjpWT1ZOG6NMp74XgnhBq1oFNy9jo8sq5ZpX0ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5lz3NkK3VzKDdrQ48mAGnUHI0bwvOJlEk82k2Wuta15Iep1s6/M1Y9QaxLLXIn1j0XmL5keywvHnMCM4xp9yvKrYbNNImquCjRXk9YcyZj0G8k30Vz2NeZx8qT0B1/K4J4u0riWFCUq4FwbdkVJHTA9Er/W49nM1kPJD2B8Jxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qe5hrIIR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E57C4CEEA;
-	Mon, 23 Jun 2025 21:13:24 +0000 (UTC)
+	 MIME-Version; b=PMn0fbxPsCi8aTrM5SRy2fquKHjm+LVUW6LoOH35gPF+LRSwQ8c1EuWcgqFfTmybb/cxVZlkU1LMEs+SWaoPspflmOWWxrM+mm16+kDoYfuC+m0qhj0OxQOa3BRS6VkH+WiEP+YCQ4cEfVjk2zuDaCPJVRx3szHgf+aKsyUbQ58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEpVJwKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0122BC4CEEA;
+	Mon, 23 Jun 2025 22:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713204;
-	bh=DA5PKorBnw8NiM2JXr6C+WHKP+FGdTO7txPgBsuDPew=;
+	s=korg; t=1750716132;
+	bh=rKASpjpWT1ZOG6NMp74XgnhBq1oFNy9jo8sq5ZpX0ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qe5hrIIRKjWbWxNEOT/5k3ndGJ0jQB1yk7zQP8dvIg2v5UzNWJQ3Hlo7f+BPk396p
-	 1OcITwWgg+WQo+yzqcS0SGbXYW3R/FSaBizNtS7KeVs2Ob1AULyygp/dnFbg8FYpPB
-	 ikjY7EAPqRN/+ZFJE9Xv5pPgZ0YmxX3O621C0IRc=
+	b=fEpVJwKijjCMwRoRenZezIQKa2ciUzkifoS9lKzcpaEkoo3bGmM2/YXAKftRMB7yk
+	 3idNyyYYvCNZw/DuYsVBe6tR67Hb0+nRCTB6/3EfETXmo5Y/AAGtG/FGLcawNCFUGf
+	 /51vuKHVfnWKshlFuLx49fUvEsRXt7eLqpo4wzQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 168/222] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get_direction()
+	stable@kernel.org,
+	tianshuo han <hantianshuo233@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.6 242/290] sunrpc: handle SVC_GARBAGE during svc auth processing as auth error
 Date: Mon, 23 Jun 2025 15:08:23 +0200
-Message-ID: <20250623130617.128403761@linuxfoundation.org>
+Message-ID: <20250623130634.209034136@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Jeff Layton <jlayton@kernel.org>
 
-[ Upstream commit 6481c0a83367b0672951ccc876fbae7ee37b594b ]
+commit 94d10a4dba0bc482f2b01e39f06d5513d0f75742 upstream.
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+tianshuo han reported a remotely-triggerable crash if the client sends a
+kernel RPC server a specially crafted packet. If decoding the RPC reply
+fails in such a way that SVC_GARBAGE is returned without setting the
+rq_accept_statp pointer, then that pointer can be dereferenced and a
+value stored there.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-6-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+If it's the first time the thread has processed an RPC, then that
+pointer will be set to NULL and the kernel will crash. In other cases,
+it could create a memory scribble.
+
+The server sunrpc code treats a SVC_GARBAGE return from svc_authenticate
+or pg_authenticate as if it should send a GARBAGE_ARGS reply. RFC 5531
+says that if authentication fails that the RPC should be rejected
+instead with a status of AUTH_ERR.
+
+Handle a SVC_GARBAGE return as an AUTH_ERROR, with a reason of
+AUTH_BADCRED instead of returning GARBAGE_ARGS in that case. This
+sidesteps the whole problem of touching the rpc_accept_statp pointer in
+this situation and avoids the crash.
+
+Cc: stable@kernel.org
+Fixes: 29cd2927fb91 ("SUNRPC: Fix encoding of accepted but unsuccessful RPC replies")
+Reported-by: tianshuo han <hantianshuo233@gmail.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/sunrpc/svc.c |   11 ++---------
+ 1 file changed, 2 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 5e0b04e593dc2..d3d156b25e96d 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -395,10 +395,13 @@ static int armada_37xx_gpio_get_direction(struct gpio_chip *chip,
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = OUTPUT_EN;
- 	unsigned int val, mask;
-+	int ret;
+--- a/net/sunrpc/svc.c
++++ b/net/sunrpc/svc.c
+@@ -1344,7 +1344,8 @@ svc_process_common(struct svc_rqst *rqst
+ 	case SVC_OK:
+ 		break;
+ 	case SVC_GARBAGE:
+-		goto err_garbage_args;
++		rqstp->rq_auth_stat = rpc_autherr_badcred;
++		goto err_bad_auth;
+ 	case SVC_SYSERR:
+ 		goto err_system_err;
+ 	case SVC_DENIED:
+@@ -1485,14 +1486,6 @@ err_bad_proc:
+ 	*rqstp->rq_accept_statp = rpc_proc_unavail;
+ 	goto sendit;
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
- 
- 	return !(val & mask);
- }
--- 
-2.39.5
-
+-err_garbage_args:
+-	svc_printk(rqstp, "failed to decode RPC header\n");
+-
+-	if (serv->sv_stats)
+-		serv->sv_stats->rpcbadfmt++;
+-	*rqstp->rq_accept_statp = rpc_garbage_args;
+-	goto sendit;
+-
+ err_system_err:
+ 	if (serv->sv_stats)
+ 		serv->sv_stats->rpcbadfmt++;
 
 
 
