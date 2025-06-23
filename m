@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26E2DAE51DE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86A6DAE5208
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B83161B6437A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 153814A4E5E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05A302236F8;
-	Mon, 23 Jun 2025 21:38:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8453221FC7;
+	Mon, 23 Jun 2025 21:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EOd7dLOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jOjz8oR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60BA4409;
-	Mon, 23 Jun 2025 21:38:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 938F519D084;
+	Mon, 23 Jun 2025 21:39:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714691; cv=none; b=K5Ivha1/JIeBo1qx2g0Xo97YoqaE75msbJaSRIKYIQWJ9o3zWZ3gaIyCpPJFsRQRCstavVaLBKMSNUrIFuR7zeYJ2yjvcXsJf+UWZh8s1UB3xvwpqWsSt8zoBQrO0ZC9aS0DcCdu0dLGJv2IOC9cASvwM9czhkSf9KXgpFbH7VY=
+	t=1750714789; cv=none; b=rJXv1wwjiCENzAavPg/MsLc6vD/y9vKRaxkdc/FgA89gA7HyTo3COPKu7o985dGW/Ldba0D6Tb8cM9xQ+EjQHnZJCm7B9WWMCJz1T0Np4RFCpdcD5eHccxwzDXHRIF9b6gqJLOWcTNM7RIcByteLV7WwvI0mesNZyJBOr1vKGBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714691; c=relaxed/simple;
-	bh=hKn+ZZ2NKpoBlWjBVjTULORrWNq/gBV8IZF5A8C1P3I=;
+	s=arc-20240116; t=1750714789; c=relaxed/simple;
+	bh=Qic5lZReJ4hk3TpQj9ZB3ZFHnu/pEmymOvJiIdqcHEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dKlw/qkXQakCoghI94Lv48iz9Uk3nqwB49RhGGbecqQ+T4UqBs89E2c65sLe2okB9msEBQuO+R7SLp0BIyhh3xdHJk4w1iZIaYpMsBOt3EhQ7K4ZysCW3mtlYy8kClR3NCUWGC3P3KzykfYOWJ+kK/9r/5lRVvamdV5qcO/IXC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EOd7dLOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC8CC4CEED;
-	Mon, 23 Jun 2025 21:38:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YvK2EYqy/nKothW1pacAevn7VBkE4fKaxrWZpaQ7D4UrrAvEdCfpNSqDbRq0Kl0w9sJvKdlNwoy8D0DCdoJvYYnv1yaX8NzP5TbkgV7RMmv+F5ePP3X15037PwfCeYa3xKFwHZL0K+yqqrVKVca0yLjCx8do6W7eeCEiYxoUvoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jOjz8oR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AB72C4CEEA;
+	Mon, 23 Jun 2025 21:39:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714691;
-	bh=hKn+ZZ2NKpoBlWjBVjTULORrWNq/gBV8IZF5A8C1P3I=;
+	s=korg; t=1750714789;
+	bh=Qic5lZReJ4hk3TpQj9ZB3ZFHnu/pEmymOvJiIdqcHEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EOd7dLOgQ5Dsu9fJ8Ta7naPQu8pcC1KtESPV0JIgQ97h/acqu1QARUtdyRnjQ+yEC
-	 pO4wSUzdj9iJzobV2B84fcynqNG3ih4iRAQ4ek0+TWLWqE4rkAFgCdKurdoMFRerRY
-	 qyrbpyW1rSbu/uQgB0emQZoT2g3k2kVMbqEsXR24=
+	b=0jOjz8oRtve7uxvoPZafBMBx5R+lWvJGm6ujx/HtUaPR2LER8UV+G/1dB89mFr4DY
+	 0SDbav6K/F9035cGiu1RTLpbHZaTDVvoHe82yFh92lzXiLLCCxBPByPj/UQVqrqI3I
+	 ATqbyN4YVK76YJHWCKUejLlqEsdxpdHSuFFmymOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Gao <chao.gao@intel.com>,
-	Kai Huang <kai.huang@intel.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.12 124/414] KVM: VMX: Flush shadow VMCS on emergency reboot
+	=?UTF-8?q?Hanno=20B=C3=B6ck?= <hanno@hboeck.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 216/508] Input: synaptics-rmi - fix crash with unsupported versions of F34
 Date: Mon, 23 Jun 2025 15:04:21 +0200
-Message-ID: <20250623130645.166397817@linuxfoundation.org>
+Message-ID: <20250623130650.577940504@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +60,267 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Gao <chao.gao@intel.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit a0ee1d5faff135e28810f29e0f06328c66f89852 upstream.
+[ Upstream commit ca39500f6af9cfe6823dc5aa8fbaed788d6e35b2 ]
 
-Ensure the shadow VMCS cache is evicted during an emergency reboot to
-prevent potential memory corruption if the cache is evicted after reboot.
+Sysfs interface for updating firmware for RMI devices is available even
+when F34 probe fails. The code checks for presence of F34 "container"
+pointer and then tries to use the function data attached to the
+sub-device. F34 assigns the function data early, before it knows if
+probe will succeed, leaving behind a stale pointer.
 
-This issue was identified through code inspection, as __loaded_vmcs_clear()
-flushes both the normal VMCS and the shadow VMCS.
+Fix this by expanding checks to not only test for presence of F34
+"container" but also check if there is driver data assigned to the
+sub-device, and call dev_set_drvdata() only after we are certain that
+probe is successful.
 
-Avoid checking the "launched" state during an emergency reboot, unlike the
-behavior in __loaded_vmcs_clear(). This is important because reboot NMIs
-can interfere with operations like copy_shadow_to_vmcs12(), where shadow
-VMCSes are loaded directly using VMPTRLD. In such cases, if NMIs occur
-right after the VMCS load, the shadow VMCSes will be active but the
-"launched" state may not be set.
+This is not a complete fix, since F34 will be freed during firmware
+update, so there is still a race when fetching and accessing this
+pointer. This race will be addressed in follow-up changes.
 
-Fixes: 16f5b9034b69 ("KVM: nVMX: Copy processor-specific shadow-vmcs to VMCS12")
+Reported-by: Hanno Böck <hanno@hboeck.de>
+Fixes: 29fd0ec2bdbe ("Input: synaptics-rmi4 - add support for F34 device reflash")
 Cc: stable@vger.kernel.org
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Link: https://lore.kernel.org/r/20250324140849.2099723-1-chao.gao@intel.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/aBlAl6sGulam-Qcx@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/vmx/vmx.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/input/rmi4/rmi_f34.c | 135 ++++++++++++++++++++---------------
+ 1 file changed, 76 insertions(+), 59 deletions(-)
 
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -770,8 +770,11 @@ void vmx_emergency_disable_virtualizatio
- 		return;
+diff --git a/drivers/input/rmi4/rmi_f34.c b/drivers/input/rmi4/rmi_f34.c
+index 0d9a5756e3f59..cae1e41664921 100644
+--- a/drivers/input/rmi4/rmi_f34.c
++++ b/drivers/input/rmi4/rmi_f34.c
+@@ -4,6 +4,7 @@
+  * Copyright (C) 2016 Zodiac Inflight Innovations
+  */
  
- 	list_for_each_entry(v, &per_cpu(loaded_vmcss_on_cpu, cpu),
--			    loaded_vmcss_on_cpu_link)
-+			    loaded_vmcss_on_cpu_link) {
- 		vmcs_clear(v->vmcs);
-+		if (v->shadow_vmcs)
-+			vmcs_clear(v->shadow_vmcs);
++#include "linux/device.h"
+ #include <linux/kernel.h>
+ #include <linux/rmi.h>
+ #include <linux/firmware.h>
+@@ -298,39 +299,30 @@ static int rmi_f34_update_firmware(struct f34_data *f34,
+ 	return ret;
+ }
+ 
+-static int rmi_f34_status(struct rmi_function *fn)
+-{
+-	struct f34_data *f34 = dev_get_drvdata(&fn->dev);
+-
+-	/*
+-	 * The status is the percentage complete, or once complete,
+-	 * zero for success or a negative return code.
+-	 */
+-	return f34->update_status;
+-}
+-
+ static ssize_t rmi_driver_bootloader_id_show(struct device *dev,
+ 					     struct device_attribute *dattr,
+ 					     char *buf)
+ {
+ 	struct rmi_driver_data *data = dev_get_drvdata(dev);
+-	struct rmi_function *fn = data->f34_container;
++	struct rmi_function *fn;
+ 	struct f34_data *f34;
+ 
+-	if (fn) {
+-		f34 = dev_get_drvdata(&fn->dev);
+-
+-		if (f34->bl_version == 5)
+-			return sysfs_emit(buf, "%c%c\n",
+-					  f34->bootloader_id[0],
+-					  f34->bootloader_id[1]);
+-		else
+-			return sysfs_emit(buf, "V%d.%d\n",
+-					  f34->bootloader_id[1],
+-					  f34->bootloader_id[0]);
+-	}
++	fn = data->f34_container;
++	if (!fn)
++		return -ENODEV;
+ 
+-	return 0;
++	f34 = dev_get_drvdata(&fn->dev);
++	if (!f34)
++		return -ENODEV;
++
++	if (f34->bl_version == 5)
++		return sysfs_emit(buf, "%c%c\n",
++				  f34->bootloader_id[0],
++				  f34->bootloader_id[1]);
++	else
++		return sysfs_emit(buf, "V%d.%d\n",
++				  f34->bootloader_id[1],
++				  f34->bootloader_id[0]);
+ }
+ 
+ static DEVICE_ATTR(bootloader_id, 0444, rmi_driver_bootloader_id_show, NULL);
+@@ -343,13 +335,16 @@ static ssize_t rmi_driver_configuration_id_show(struct device *dev,
+ 	struct rmi_function *fn = data->f34_container;
+ 	struct f34_data *f34;
+ 
+-	if (fn) {
+-		f34 = dev_get_drvdata(&fn->dev);
++	fn = data->f34_container;
++	if (!fn)
++		return -ENODEV;
+ 
+-		return sysfs_emit(buf, "%s\n", f34->configuration_id);
+-	}
++	f34 = dev_get_drvdata(&fn->dev);
++	if (!f34)
++		return -ENODEV;
+ 
+-	return 0;
++
++	return sysfs_emit(buf, "%s\n", f34->configuration_id);
+ }
+ 
+ static DEVICE_ATTR(configuration_id, 0444,
+@@ -365,10 +360,14 @@ static int rmi_firmware_update(struct rmi_driver_data *data,
+ 
+ 	if (!data->f34_container) {
+ 		dev_warn(dev, "%s: No F34 present!\n", __func__);
+-		return -EINVAL;
++		return -ENODEV;
+ 	}
+ 
+ 	f34 = dev_get_drvdata(&data->f34_container->dev);
++	if (!f34) {
++		dev_warn(dev, "%s: No valid F34 present!\n", __func__);
++		return -ENODEV;
 +	}
  
- 	kvm_cpu_vmxoff();
+ 	if (f34->bl_version >= 7) {
+ 		if (data->pdt_props & HAS_BSR) {
+@@ -494,10 +493,18 @@ static ssize_t rmi_driver_update_fw_status_show(struct device *dev,
+ 						char *buf)
+ {
+ 	struct rmi_driver_data *data = dev_get_drvdata(dev);
+-	int update_status = 0;
++	struct f34_data *f34;
++	int update_status = -ENODEV;
+ 
+-	if (data->f34_container)
+-		update_status = rmi_f34_status(data->f34_container);
++	/*
++	 * The status is the percentage complete, or once complete,
++	 * zero for success or a negative return code.
++	 */
++	if (data->f34_container) {
++		f34 = dev_get_drvdata(&data->f34_container->dev);
++		if (f34)
++			update_status = f34->update_status;
++	}
+ 
+ 	return sysfs_emit(buf, "%d\n", update_status);
  }
+@@ -517,33 +524,21 @@ static const struct attribute_group rmi_firmware_attr_group = {
+ 	.attrs = rmi_firmware_attrs,
+ };
+ 
+-static int rmi_f34_probe(struct rmi_function *fn)
++static int rmi_f34v5_probe(struct f34_data *f34)
+ {
+-	struct f34_data *f34;
+-	unsigned char f34_queries[9];
++	struct rmi_function *fn = f34->fn;
++	u8 f34_queries[9];
+ 	bool has_config_id;
+-	u8 version = fn->fd.function_version;
+-	int ret;
+-
+-	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
+-	if (!f34)
+-		return -ENOMEM;
+-
+-	f34->fn = fn;
+-	dev_set_drvdata(&fn->dev, f34);
+-
+-	/* v5 code only supported version 0, try V7 probe */
+-	if (version > 0)
+-		return rmi_f34v7_probe(f34);
++	int error;
+ 
+ 	f34->bl_version = 5;
+ 
+-	ret = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
+-			     f34_queries, sizeof(f34_queries));
+-	if (ret) {
++	error = rmi_read_block(fn->rmi_dev, fn->fd.query_base_addr,
++			       f34_queries, sizeof(f34_queries));
++	if (error) {
+ 		dev_err(&fn->dev, "%s: Failed to query properties\n",
+ 			__func__);
+-		return ret;
++		return error;
+ 	}
+ 
+ 	snprintf(f34->bootloader_id, sizeof(f34->bootloader_id),
+@@ -569,11 +564,11 @@ static int rmi_f34_probe(struct rmi_function *fn)
+ 		f34->v5.config_blocks);
+ 
+ 	if (has_config_id) {
+-		ret = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
+-				     f34_queries, sizeof(f34_queries));
+-		if (ret) {
++		error = rmi_read_block(fn->rmi_dev, fn->fd.control_base_addr,
++				       f34_queries, sizeof(f34_queries));
++		if (error) {
+ 			dev_err(&fn->dev, "Failed to read F34 config ID\n");
+-			return ret;
++			return error;
+ 		}
+ 
+ 		snprintf(f34->configuration_id, sizeof(f34->configuration_id),
+@@ -582,12 +577,34 @@ static int rmi_f34_probe(struct rmi_function *fn)
+ 			 f34_queries[2], f34_queries[3]);
+ 
+ 		rmi_dbg(RMI_DEBUG_FN, &fn->dev, "Configuration ID: %s\n",
+-			 f34->configuration_id);
++			f34->configuration_id);
+ 	}
+ 
+ 	return 0;
+ }
+ 
++static int rmi_f34_probe(struct rmi_function *fn)
++{
++	struct f34_data *f34;
++	u8 version = fn->fd.function_version;
++	int error;
++
++	f34 = devm_kzalloc(&fn->dev, sizeof(struct f34_data), GFP_KERNEL);
++	if (!f34)
++		return -ENOMEM;
++
++	f34->fn = fn;
++
++	/* v5 code only supported version 0 */
++	error = version == 0 ? rmi_f34v5_probe(f34) : rmi_f34v7_probe(f34);
++	if (error)
++		return error;
++
++	dev_set_drvdata(&fn->dev, f34);
++
++	return 0;
++}
++
+ int rmi_f34_create_sysfs(struct rmi_device *rmi_dev)
+ {
+ 	return sysfs_create_group(&rmi_dev->dev.kobj, &rmi_firmware_attr_group);
+-- 
+2.39.5
+
 
 
 
