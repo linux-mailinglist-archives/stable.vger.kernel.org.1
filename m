@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-157681-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED0F0AE5514
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CADAE56AF
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6BD31BC370E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:08:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 573134A415A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06678221DAE;
-	Mon, 23 Jun 2025 22:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE2721F6667;
+	Mon, 23 Jun 2025 22:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="blbBTbgP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qt3o2T4o"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5CF23597E;
-	Mon, 23 Jun 2025 22:07:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79E5819E7F9;
+	Mon, 23 Jun 2025 22:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716463; cv=none; b=DEaWWYOCYlM7yJqlKOte327LWpSJTMyk+oDbfXmluDKp8gP6M/LVIdbyiZ4hTrsZtRYX2RR+Dy43fVo3OSkDd1gJ3vPezHDL7INjWEoVaUxCFcrTqwK9G2g6M1eyOUgvztJeZbXfTaIy8rb7u3AhbkO54L6bLIhi4ucbqNoiPp0=
+	t=1750717153; cv=none; b=GVpZri8M8LdzhEu/0MQszcQi2RiwAS+mXQZTt8+5/UnkFymtwyPvKfG5DbCoX8TDxVWF0RzFCs6LJRrmhk3wRBQAxnfH8kfn6F98P0M2rFEN5b9JouzHhb8ldJrwKThOHDdhQ1X5qf6RZYF45sfbh6pf7+5DbfmcLvjJgFy/j14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716463; c=relaxed/simple;
-	bh=Svwh1NmwXBqTbInxLpB8VZMC0ncT4AfL67I0JuOuwFc=;
+	s=arc-20240116; t=1750717153; c=relaxed/simple;
+	bh=Ps3IOZxc7BuxRu78OTXOLw65DHl664wM5tWPMveIznQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f8oBiCZgVHotcBZSi+9Ry3udOsBw9sfH5S8rQHEr5Igikp0AjsdSN81jl7CBd630eR+/pm8RzRoG0vaO9WZt/Y5sqxrTXLTp25h2OerNjzX7d6/tkg/D2sXlwTA4X5HSjezoyofLpTrfHtbEVVhKl92kj0hy/phcU23fCC4T1SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=blbBTbgP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D34EC4CEEA;
-	Mon, 23 Jun 2025 22:07:43 +0000 (UTC)
+	 MIME-Version; b=BruFKTGDOqUSN7LSp1M6G/wJfd288LJV5YYFvAsiT3fxtx7oFcAXbSOdkLoj3ogMpDrlZajFDH1y7XgxSo3FITyo/pEiCaYGvYvbd+N1TXo8iL2KOb+tbnlCFpuZkNYpdaBMwMH4RbcBALpoYunmu2LdGxKHyy6iF41sV1uJlLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qt3o2T4o; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DE0C4CEEA;
+	Mon, 23 Jun 2025 22:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716463;
-	bh=Svwh1NmwXBqTbInxLpB8VZMC0ncT4AfL67I0JuOuwFc=;
+	s=korg; t=1750717153;
+	bh=Ps3IOZxc7BuxRu78OTXOLw65DHl664wM5tWPMveIznQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=blbBTbgPt4L2/DbnzUA+n7d9szQaX5YXFJSwKxhg5nFLWQvXWjMCFxW0EFGSXRLgn
-	 OkeuhPE91rDIenptLIDTB6BdAHR2db+w8ZTmY003OKO25iWQZ4oXpW5xYjmqHljnQa
-	 d53t2ujhmffGv2TQQC881RGA/Ev9bqJCHgF69WMc=
+	b=Qt3o2T4oPm+mhCh74iMU++MTeeNIpqgIK8Opoa64RTG5DaeXh8p7om1BL9kTJ1u6+
+	 V6ZH/LGa1GevC4g4J8HuXjd9MOl3iYj586rY+AOxylUlbSqXPFoqvykWnyoW30aoV7
+	 +EkiZExsqSiBlv8LfaLXF8ALWgIUatCdpOUDQ+sU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Wei <weiwei.danny@bytedance.com>,
-	Aaron Lu <ziqianlu@bytedance.com>
-Subject: [PATCH 5.10 350/355] Revert "selftests/bpf: make test_align selftest more robust"
-Date: Mon, 23 Jun 2025 15:09:11 +0200
-Message-ID: <20250623130637.244059748@linuxfoundation.org>
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 5.15 408/411] s390/pci: Fix __pcilg_mio_inuser() inline assembly
+Date: Mon, 23 Jun 2025 15:09:12 +0200
+Message-ID: <20250623130643.954344749@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Lu <ziqianlu@bytedance.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-This reverts commit 4af2d9ddb7e78f97c23f709827e5075c6d866e34 which is
-commit 4f999b767769b76378c3616c624afd6f4bb0d99f upstream.
+commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
 
-The backport of bpf precision tracking related changes has caused bpf
-verifier to panic while loading some certain bpf prog so revert them.
+Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
+assembly. The used "d" constraint allows the compiler to use any general
+purpose register for the shift operand, including register zero.
 
-Link: https://lkml.kernel.org/r/20250605070921.GA3795@bytedance/
-Reported-by: Wei Wei <weiwei.danny@bytedance.com>
-Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
+If register zero is used this my result in incorrect code generation:
+
+ 8f6:   a7 0a ff f8             ahi     %r0,-8
+ 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+
+If register zero is selected to contain the shift value, the srlg
+instruction ignores the contents of the register and always shifts zero
+bits. Therefore use the "a" constraint which does not permit to select
+register zero.
+
+Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Cc: stable@vger.kernel.org
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/bpf/prog_tests/align.c |   36 +++++++++----------------
- 1 file changed, 13 insertions(+), 23 deletions(-)
+ arch/s390/pci/pci_mmio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/tools/testing/selftests/bpf/prog_tests/align.c
-+++ b/tools/testing/selftests/bpf/prog_tests/align.c
-@@ -2,7 +2,7 @@
- #include <test_progs.h>
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -222,7 +222,7 @@ static inline int __pcilg_mio_inuser(
+ 		[ioaddr_len] "+&d" (ioaddr_len.pair),
+ 		[cc] "+d" (cc), [val] "=d" (val),
+ 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
+-		[shift] "+d" (shift)
++		[shift] "+a" (shift)
+ 		:: "cc", "memory");
  
- #define MAX_INSNS	512
--#define MAX_MATCHES	24
-+#define MAX_MATCHES	16
- 
- struct bpf_reg_match {
- 	unsigned int line;
-@@ -267,7 +267,6 @@ static struct bpf_align_test tests[] = {
- 			 */
- 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
- 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
--			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
- 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_4, 4),
-@@ -281,7 +280,6 @@ static struct bpf_align_test tests[] = {
- 			BPF_MOV64_REG(BPF_REG_5, BPF_REG_2),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 14),
- 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
--			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
- 			BPF_ALU64_IMM(BPF_ADD, BPF_REG_5, 4),
- 			BPF_ALU64_REG(BPF_ADD, BPF_REG_5, BPF_REG_6),
- 			BPF_MOV64_REG(BPF_REG_4, BPF_REG_5),
-@@ -313,52 +311,44 @@ static struct bpf_align_test tests[] = {
- 			{15, "R4=pkt(id=1,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			{15, "R5=pkt(id=1,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Variable offset is added to R5 packet pointer,
--			 * resulting in auxiliary alignment of 4. To avoid BPF
--			 * verifier's precision backtracking logging
--			 * interfering we also have a no-op R4 = R5
--			 * instruction to validate R5 state. We also check
--			 * that R4 is what it should be in such case.
-+			 * resulting in auxiliary alignment of 4.
- 			 */
--			{19, "R4_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
--			{19, "R5_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{18, "R5_w=pkt(id=2,off=0,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Constant offset is added to R5, resulting in
- 			 * reg->off of 14.
- 			 */
--			{20, "R5_w=pkt(id=2,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{19, "R5_w=pkt(id=2,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* At the time the word size load is performed from R5,
- 			 * its total fixed offset is NET_IP_ALIGN + reg->off
- 			 * (14) which is 16.  Then the variable offset is 4-byte
- 			 * aligned, so the total offset is 4-byte aligned and
- 			 * meets the load's requirements.
- 			 */
--			{24, "R4=pkt(id=2,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
--			{24, "R5=pkt(id=2,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{23, "R4=pkt(id=2,off=18,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{23, "R5=pkt(id=2,off=14,r=18,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Constant offset is added to R5 packet pointer,
- 			 * resulting in reg->off value of 14.
- 			 */
--			{27, "R5_w=pkt(id=0,off=14,r=8"},
-+			{26, "R5_w=pkt(id=0,off=14,r=8"},
- 			/* Variable offset is added to R5, resulting in a
--			 * variable offset of (4n). See comment for insn #19
--			 * for R4 = R5 trick.
-+			 * variable offset of (4n).
- 			 */
--			{29, "R4_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
--			{29, "R5_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{27, "R5_w=pkt(id=3,off=14,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* Constant is added to R5 again, setting reg->off to 18. */
--			{30, "R5_w=pkt(id=3,off=18,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
-+			{28, "R5_w=pkt(id=3,off=18,r=0,umax_value=1020,var_off=(0x0; 0x3fc))"},
- 			/* And once more we add a variable; resulting var_off
- 			 * is still (4n), fixed offset is not changed.
- 			 * Also, we create a new reg->id.
- 			 */
--			{32, "R4_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
--			{32, "R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{29, "R5_w=pkt(id=4,off=18,r=0,umax_value=2040,var_off=(0x0; 0x7fc)"},
- 			/* At the time the word size load is performed from R5,
- 			 * its total fixed offset is NET_IP_ALIGN + reg->off (18)
- 			 * which is 20.  Then the variable offset is (4n), so
- 			 * the total offset is 4-byte aligned and meets the
- 			 * load's requirements.
- 			 */
--			{35, "R4=pkt(id=4,off=22,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
--			{35, "R5=pkt(id=4,off=18,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{33, "R4=pkt(id=4,off=22,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
-+			{33, "R5=pkt(id=4,off=18,r=22,umax_value=2040,var_off=(0x0; 0x7fc)"},
- 		},
- 	},
- 	{
+ 	/* did we write everything to the user space buffer? */
 
 
 
