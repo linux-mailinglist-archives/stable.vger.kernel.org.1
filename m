@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156346-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D55AE4F9B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C86AE4F2A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26B6D1B61290
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4A2F61B60880
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15238223DD7;
-	Mon, 23 Jun 2025 21:17:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FA1022069F;
+	Mon, 23 Jun 2025 21:13:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="thvhnukH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTyOc05V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C602D1EEA3C;
-	Mon, 23 Jun 2025 21:16:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F237B1DF98B;
+	Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713419; cv=none; b=K0iH96JQtsYB6ZAXJC6kCye78/9DvU0/+fUyJ6aR759PoPcgNKx1FFkhQ6+kD5Q91LS1d7hq+quvkShmhNaIU2CuiI1pzuCN+5UFuP/MNqsGrgCnQYvcZiDzzEwD598ocMfKk87JiTFaHV/iJTJ3xVPxWhTme5umM0Q1TDl/G6M=
+	t=1750713190; cv=none; b=m5UtbtSBZZhY1ZV1uCQbareGDL60G5G8uZk5hIX/ZNi3gTd1y9qqyecjYZYIFOgpd9wVnvUQ3r9tDrJAkdsyHzEyJsTlJXMdA6ISoA08qvp2lW72UYWdhVaU2PVuzeP3okHhZRz7X7ny+Ojy9AxxzmbRMYsd4fpB+3oANcZGyvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713419; c=relaxed/simple;
-	bh=S6hJrKqPPem59+ioLsrggLLJTkkJso9TNAhBmf1MWmQ=;
+	s=arc-20240116; t=1750713190; c=relaxed/simple;
+	bh=Dect0mPDWo+B5KtR7I9DLdYepVAfpkBy0GBOYInrq1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ieJxVJ0wulxafzoeCj9I+dsHyojfSoI2HY9yYVhYwSW/mfWPIUuXmeL65G6MzQqfsthy2T2XucIwjllxJ3/ugQ31oGAWnenguJFPsZm1ZpKTeGwWMckrlI0S30SF5h1y3cssk9OQYGd3KpRph/OMBD9qnE/f4z1LTPendSf2oIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=thvhnukH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D658C4CEEA;
-	Mon, 23 Jun 2025 21:16:58 +0000 (UTC)
+	 MIME-Version; b=ua3sV9Ph3bnBq3VbZqqMvH/NfbZpASxBzUgK9iTl6kmbsIqLHHTm4zb/+rk2ahiAtxJcieEdBrkyrm8y2AQlhNhMuHszgujJIea4prJm29yjDct8OV3g7GV8l5jLc3WDwg4EYabZ91O7m3tB7+FNeU/oEcVifcd00vJw33/t994=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTyOc05V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A555C4CEEA;
+	Mon, 23 Jun 2025 21:13:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713419;
-	bh=S6hJrKqPPem59+ioLsrggLLJTkkJso9TNAhBmf1MWmQ=;
+	s=korg; t=1750713189;
+	bh=Dect0mPDWo+B5KtR7I9DLdYepVAfpkBy0GBOYInrq1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=thvhnukHy62lZB4kcbChi7deGvsHRNJoyBttCrReHMID5YL1SScnF/rJuVNfho7L7
-	 GA3NsN3TcD+2tgMxhbW9trOUtHsj12Lj27ZX0EEYgx5jgaaHbjMfGHeYa1y9ubr6wE
-	 upx16i1WDEK/Tga2jEbzMkZP1gwxnI7OPpsIyk3s=
+	b=MTyOc05VH3viOetjKNLM3O5X7hXgByidU27sQWfZZSc26sprBhROAW19BguLsos4H
+	 aCvMUumMGP1va4iMJygq5DGqqp9e36SI2BxEQsr2zWVGpOR1vICrHYyoI0Okt01knD
+	 p4qvjHUeHgS7AJLo3NIRndU/i5FATokRcukTm6LM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/508] ARM: dts: qcom: apq8064 merge hw splinlock into corresponding syscon device
-Date: Mon, 23 Jun 2025 15:02:47 +0200
-Message-ID: <20250623130648.297584757@linuxfoundation.org>
+	Olga Kornievskaia <okorniev@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 031/414] nfsd: nfsd4_spo_must_allow() must check this is a v4 compound request
+Date: Mon, 23 Jun 2025 15:02:48 +0200
+Message-ID: <20250623130642.803757931@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 325c6a441ae1f8fcb1db9bb945b8bdbd3142141e ]
+commit 1244f0b2c3cecd3f349a877006e67c9492b41807 upstream.
 
-Follow up the expected way of describing the SFPB hwspinlock and merge
-hwspinlock node into corresponding syscon node, fixing several dt-schema
-warnings.
+If the request being processed is not a v4 compound request, then
+examining the cstate can have undefined results.
 
-Fixes: 24a9baf933dc ("ARM: dts: qcom: apq8064: Add hwmutex and SMEM nodes")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250318-fix-nexus-4-v2-7-bcedd1406790@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch adds a check that the rpc procedure being executed
+(rq_procinfo) is the NFSPROC4_COMPOUND procedure.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/qcom-apq8064.dtsi | 13 ++++---------
- 1 file changed, 4 insertions(+), 9 deletions(-)
+ fs/nfsd/nfs4proc.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/qcom-apq8064.dtsi b/arch/arm/boot/dts/qcom-apq8064.dtsi
-index 2b3927a829b70..da7e780dc3351 100644
---- a/arch/arm/boot/dts/qcom-apq8064.dtsi
-+++ b/arch/arm/boot/dts/qcom-apq8064.dtsi
-@@ -212,12 +212,6 @@
- 		};
- 	};
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -3658,7 +3658,8 @@ bool nfsd4_spo_must_allow(struct svc_rqs
+ 	struct nfs4_op_map *allow = &cstate->clp->cl_spo_must_allow;
+ 	u32 opiter;
  
--	sfpb_mutex: hwmutex {
--		compatible = "qcom,sfpb-mutex";
--		syscon = <&sfpb_wrapper_mutex 0x604 0x4>;
--		#hwlock-cells = <1>;
--	};
--
- 	smem {
- 		compatible = "qcom,smem";
- 		memory-region = <&smem_region>;
-@@ -361,9 +355,10 @@
- 			pinctrl-0 = <&ps_hold>;
- 		};
+-	if (!cstate->minorversion)
++	if (rqstp->rq_procinfo != &nfsd_version4.vs_proc[NFSPROC4_COMPOUND] ||
++	    cstate->minorversion == 0)
+ 		return false;
  
--		sfpb_wrapper_mutex: syscon@1200000 {
--			compatible = "syscon";
--			reg = <0x01200000 0x8000>;
-+		sfpb_mutex: hwmutex@1200600 {
-+			compatible = "qcom,sfpb-mutex";
-+			reg = <0x01200600 0x100>;
-+			#hwlock-cells = <1>;
- 		};
- 
- 		intc: interrupt-controller@2000000 {
--- 
-2.39.5
-
+ 	if (cstate->spo_must_allowed)
 
 
 
