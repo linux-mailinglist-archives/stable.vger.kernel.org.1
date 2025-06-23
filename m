@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECE8AE4EEB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A78AE506D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D5613BEB36
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BEB8D440087
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7565C21FF2B;
-	Mon, 23 Jun 2025 21:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 155981EEA3C;
+	Mon, 23 Jun 2025 21:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VvfgJPoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z5OUimZb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E8470838;
-	Mon, 23 Jun 2025 21:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6DA81E521E;
+	Mon, 23 Jun 2025 21:25:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713032; cv=none; b=D1ONsUK+YlKX5IdxQMelugKh1cKYHBCq3wNsq3pWszxQw+rY6y/u4VR/8ewz3QSpa0geneEp9DsSAkrSghZXz2AVzolts6uXqVlHIm0GwzweLjkLo8H//2UQpS/XbTs9HBQU9ej9+Bm8EktviSzB6YlbtGNm5e1jEZ52+NUYhgo=
+	t=1750713908; cv=none; b=H2+AhQzE55xmJpgizyRvSonY34ZU8QGtO3yAgeWGsju16YTPI7jOYd/5WAuNsNjQbLbiJPdnG+9SGerv2jv6MeDm+6za3qHYIIwUlwbhgbN5kx51incyiSy+r84UIs/KlKi97shLgOXNZHAYUNJEAhFcFqUDWLmVt9LP7BhPSBU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713032; c=relaxed/simple;
-	bh=MtKtPTvuUWwmE248WXtRsK/3OsNsCO3wUDfvcvtz2E4=;
+	s=arc-20240116; t=1750713908; c=relaxed/simple;
+	bh=LCkZz2V/8gm1Sj/0NYaH1TpKREffNt33LOykeZPLBBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q4vO5O6upiTE5fh1eZR05T8IY8jDPgQZLGwrBOCBaLETf+0l62paccO+9A5LP+hhMVby33Qn2X1LRMDHIBQ3LgHZMLNqmy23xJJ41PNcxIdcQYpaVil5ebBpWVsmCyRi8HP2BcdDzgC/mcn69LWPWvftpToTEdH626fnRQ1y3js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VvfgJPoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34A2C4CEEA;
-	Mon, 23 Jun 2025 21:10:31 +0000 (UTC)
+	 MIME-Version; b=ZkxsIvO/1AMQ1nZGfPBgtUWr9Qx1ElTAs+vI+TgNyOFSCbuho513hURYwLWqdIdmXwHOejW/k97/XIwZLRMqGXECJYj4ilGrpttc6D72dvEXBsUGMHzbvkMByoUiRjX0yA84Oj3G7uITCKL99xzSgyYk+qSMeJckwgi4Y2TiXAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z5OUimZb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BCF4C4CEEA;
+	Mon, 23 Jun 2025 21:25:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713032;
-	bh=MtKtPTvuUWwmE248WXtRsK/3OsNsCO3wUDfvcvtz2E4=;
+	s=korg; t=1750713908;
+	bh=LCkZz2V/8gm1Sj/0NYaH1TpKREffNt33LOykeZPLBBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VvfgJPoSoXdns18EZsDPehR0Lc1yBC6PgrLPJ2CV0/5QSyV3hEzcGqEG3x+31Fn20
-	 lq+D3qFF7uNSeYP+yBv3+ImMMTzm3grbIIFhAt4d3ctdHS/8cVHCPYAOZzcWsHMcZM
-	 +iNsb1PXpC4YqnXlJhPdJFIqcJwahLIVrr5qm6UI=
+	b=Z5OUimZb2y75zP8hYWsPRjsf+WHH3X8ItOd/zOQmqqOdi4oR9WtNC6zlPKy6KaIWJ
+	 S8l0cdKPI190v5xSlXqDK6sH94J70OpbQxQ4u15DJ4A4h4+Mqlp0MHuq4rjzv9GH+R
+	 jp+QE/M1Ah8vV2b6LZfbot8aRFQmUCbOQ2uZim30=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan+linaro@kernel.org>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 042/414] media: ov5675: suppress probe deferral errors
+	Damien Le Moal <dlemoal@kernel.org>,
+	Benjamin Marzinski <bmarzins@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/508] dm: dont change md if dm_table_set_restrictions() fails
 Date: Mon, 23 Jun 2025 15:02:59 +0200
-Message-ID: <20250623130643.087681845@linuxfoundation.org>
+Message-ID: <20250623130648.586219826@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Benjamin Marzinski <bmarzins@redhat.com>
 
-commit 8268da3c474a43a79a6540fb06c5d3b730a0d5a5 upstream.
+[ Upstream commit 9eb7109a5bfc5b8226e9517e9f3cc6d414391884 ]
 
-Probe deferral should not be logged as an error:
+__bind was changing the disk capacity, geometry and mempools of the
+mapped device before calling dm_table_set_restrictions() which could
+fail, forcing dm to drop the new table. Failing here would leave the
+device using the old table but with the wrong capacity and mempools.
 
-	ov5675 24-0010: failed to get HW configuration: -517
+Move dm_table_set_restrictions() earlier in __bind(). Since it needs the
+capacity to be set, save the old version and restore it on failure.
 
-Drop the (mostly) redundant dev_err() from sensor probe() to suppress
-it.
-
-Note that errors during clock and regulator lookup are already correctly
-logged using dev_err_probe().
-
-Fixes: 49d9ad719e89 ("media: ov5675: add device-tree support and support runtime PM")
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bb37d77239af2 ("dm: introduce zone append emulation")
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Tested-by: Damien Le Moal <dlemoal@kernel.org>
+Signed-off-by: Benjamin Marzinski <bmarzins@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5675.c |    5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/md/dm.c | 22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/drivers/media/i2c/ov5675.c
-+++ b/drivers/media/i2c/ov5675.c
-@@ -1295,11 +1295,8 @@ static int ov5675_probe(struct i2c_clien
- 		return -ENOMEM;
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 4767265793de7..2b8fe98c515ed 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -2165,21 +2165,29 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 			       struct queue_limits *limits)
+ {
+ 	struct dm_table *old_map;
+-	sector_t size;
++	sector_t size, old_size;
+ 	int ret;
  
- 	ret = ov5675_get_hwcfg(ov5675, &client->dev);
+ 	lockdep_assert_held(&md->suspend_lock);
+ 
+ 	size = dm_table_get_size(t);
+ 
++	old_size = dm_get_size(md);
++	set_capacity(md->disk, size);
++
++	ret = dm_table_set_restrictions(t, md->queue, limits);
++	if (ret) {
++		set_capacity(md->disk, old_size);
++		old_map = ERR_PTR(ret);
++		goto out;
++	}
++
+ 	/*
+ 	 * Wipe any geometry if the size of the table changed.
+ 	 */
+-	if (size != dm_get_size(md))
++	if (size != old_size)
+ 		memset(&md->geometry, 0, sizeof(md->geometry));
+ 
+-	set_capacity(md->disk, size);
+-
+ 	dm_table_event_callback(t, event_callback, md);
+ 
+ 	if (dm_table_request_based(t)) {
+@@ -2212,12 +2220,6 @@ static struct dm_table *__bind(struct mapped_device *md, struct dm_table *t,
+ 		t->mempools = NULL;
+ 	}
+ 
+-	ret = dm_table_set_restrictions(t, md->queue, limits);
 -	if (ret) {
--		dev_err(&client->dev, "failed to get HW configuration: %d",
--			ret);
-+	if (ret)
- 		return ret;
+-		old_map = ERR_PTR(ret);
+-		goto out;
 -	}
- 
- 	v4l2_i2c_subdev_init(&ov5675->sd, client, &ov5675_subdev_ops);
- 
+-
+ 	old_map = rcu_dereference_protected(md->map, lockdep_is_held(&md->suspend_lock));
+ 	rcu_assign_pointer(md->map, (void *)t);
+ 	md->immutable_target_type = dm_table_get_immutable_target_type(t);
+-- 
+2.39.5
+
 
 
 
