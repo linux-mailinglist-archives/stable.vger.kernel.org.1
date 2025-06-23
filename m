@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB25BAE53A8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03AC3AE524E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC401B67470
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8EB914A5822
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A542222B7;
-	Mon, 23 Jun 2025 21:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F9E02222A9;
+	Mon, 23 Jun 2025 21:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVi2BCWa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a86uD0Q5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB0D1AD3FA;
-	Mon, 23 Jun 2025 21:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD4C4315A;
+	Mon, 23 Jun 2025 21:42:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715673; cv=none; b=KelUeHwl9RWVByrCG+fi7UF4pekEscqMEBS4glLcT4ONB1demDIgsuj6igiDItFjYn9fN2k3hmUI0sfCIxseG7XSb4X0SKogc2wNyllfMuYcCQT84YJZ0hfhl8ZYcQ2jZWt91Z0i6KrR8anz5Z440OGKYS7yz/pdkMSUITOv5mM=
+	t=1750714946; cv=none; b=kKu/5s99wzm3TLFlwJtM/DVOecAe38+wlIh+qRXXf8ZBWZ3GePz6tBrOKk36V9nL298B+XKTA75O+BdYnymxbRqJ4n1EPVggEcSh3kTCCpOnhz9vbjKxxZd53Uxr/HqcEoStGnH05/tZH9YPxm1KT10ec5LnTajvMlBIIaBIs2w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715673; c=relaxed/simple;
-	bh=FoAQvr+K6bPAdSGHG+CNvx/B06temFLtgTeZ+RQfvKw=;
+	s=arc-20240116; t=1750714946; c=relaxed/simple;
+	bh=svCL+OTkgEEzgFO1anx3htOtiNuXJNnIIKtYtFJHFCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F+K0/9HS6OZC0BBCbsMGbWmBjEut0oJAMuBbSwjEou928igxppRR1WKjSafLJUof5s63kP/RMokDY42uf6j/lz9tiABFwCtvNc3KGpUqA6GnXKyDUZXji3EF0FM95Xr3Rs/ZLWGUNMB4PC58PVTXrRLSfKj2W3e4cKEUqescBtY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVi2BCWa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB35AC4CEEA;
-	Mon, 23 Jun 2025 21:54:32 +0000 (UTC)
+	 MIME-Version; b=FrXDZRMmIhUNZmIlncBFunv2BpmMRVvxKJqLIKmL2YJvt7cgplI+Wz8s0nDPGKFtsm3MbfPmFTWvXRJkkGxGuC5OVeCWWZLR7tCElnRkx7/tLl7w7ofiivQ580IjlHSXBwEcFQjNC2ZuUzl1cwwpWjyQmtX3ThhgmZSmjC5cjJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a86uD0Q5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8501C4CEEA;
+	Mon, 23 Jun 2025 21:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715673;
-	bh=FoAQvr+K6bPAdSGHG+CNvx/B06temFLtgTeZ+RQfvKw=;
+	s=korg; t=1750714946;
+	bh=svCL+OTkgEEzgFO1anx3htOtiNuXJNnIIKtYtFJHFCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XVi2BCWazfdEbMdWeRfF5eGoVCgVRp1UtBZN1vzKA4grO/1BEifWObQf4bECNTClq
-	 J8QuG58i10wSvqYxDndGowabvYmkyJfCFGFx7cNBXxKvalvvPFhBqJ9/pVuam2J50u
-	 IHVLJ92nzy3fF0nkgNbCHdG1NoIg4Bbsy5RQgK1U=
+	b=a86uD0Q59iu4yRmEi8HSdx4hWzB5QQmPW4nGbz1NGhQkz2hr8zUQpzXbksSpJ86OS
+	 WOWJ67X7gWcH0/UrR6cg1TQEzvKcjTzicCC+F//egskWfICwwRG9AgQVx9D4cDqzQc
+	 TR119rOI+s/NfuGcrVtTqL+gKkI45ASgbbPSN+uE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
-Subject: [PATCH 6.15 473/592] x86/its: move its_pages array to struct mod_arch_specific
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 170/290] wifi: iwlwifi: pcie: make sure to lock rxq->read
 Date: Mon, 23 Jun 2025 15:07:11 +0200
-Message-ID: <20250623130711.683046009@linuxfoundation.org>
+Message-ID: <20250623130632.006060708@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,120 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport (Microsoft) <rppt@kernel.org>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-commit 0b0cae7119a0ec9449d7261b5e672a5fed765068 upstream.
+[ Upstream commit 1cc2c48c4af81bed5ddbe9f2c9d6e20fa163acf9 ]
 
-The of pages with ITS thunks allocated for modules are tracked by an
-array in 'struct module'.
+rxq->read is accessed without the rxq->lock in a few places,
+Make sure to have the lock there.
 
-Since this is very architecture specific data structure, move it to
-'struct mod_arch_specific'.
-
-No functional changes.
-
-Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
-Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lkml.kernel.org/r/20250603111446.2609381-4-rppt@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Tested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://patch.msgid.link/20250424153620.73725f207aaa.I1a3e4b6c5fd370e029fdacfcdc9ee335788afa98@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/module.h |    8 ++++++++
- arch/x86/kernel/alternative.c |   19 ++++++++++---------
- include/linux/module.h        |    5 -----
- 3 files changed, 18 insertions(+), 14 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/x86/include/asm/module.h
-+++ b/arch/x86/include/asm/module.h
-@@ -5,12 +5,20 @@
- #include <asm-generic/module.h>
- #include <asm/orc_types.h>
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index e9807fcca6ad1..5c2e8d2883976 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2701,6 +2701,8 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
+ 	for (i = 0; i < trans->num_rx_queues && pos < bufsz; i++) {
+ 		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
  
-+struct its_array {
-+#ifdef CONFIG_MITIGATION_ITS
-+	void **pages;
-+	int num;
-+#endif
-+};
++		spin_lock_bh(&rxq->lock);
 +
- struct mod_arch_specific {
- #ifdef CONFIG_UNWINDER_ORC
- 	unsigned int num_orcs;
- 	int *orc_unwind_ip;
- 	struct orc_entry *orc_unwind;
- #endif
-+	struct its_array its_pages;
- };
- 
- #endif /* _ASM_X86_MODULE_H */
---- a/arch/x86/kernel/alternative.c
-+++ b/arch/x86/kernel/alternative.c
-@@ -195,8 +195,8 @@ void its_fini_mod(struct module *mod)
- 	its_page = NULL;
- 	mutex_unlock(&text_mutex);
- 
--	for (int i = 0; i < mod->its_num_pages; i++) {
--		void *page = mod->its_page_array[i];
-+	for (int i = 0; i < mod->arch.its_pages.num; i++) {
-+		void *page = mod->arch.its_pages.pages[i];
- 		execmem_restore_rox(page, PAGE_SIZE);
+ 		pos += scnprintf(buf + pos, bufsz - pos, "queue#: %2d\n",
+ 				 i);
+ 		pos += scnprintf(buf + pos, bufsz - pos, "\tread: %u\n",
+@@ -2721,6 +2723,7 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
+ 			pos += scnprintf(buf + pos, bufsz - pos,
+ 					 "\tclosed_rb_num: Not Allocated\n");
+ 		}
++		spin_unlock_bh(&rxq->lock);
  	}
- }
-@@ -206,11 +206,11 @@ void its_free_mod(struct module *mod)
- 	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
- 		return;
- 
--	for (int i = 0; i < mod->its_num_pages; i++) {
--		void *page = mod->its_page_array[i];
-+	for (int i = 0; i < mod->arch.its_pages.num; i++) {
-+		void *page = mod->arch.its_pages.pages[i];
- 		execmem_free(page);
- 	}
--	kfree(mod->its_page_array);
-+	kfree(mod->arch.its_pages.pages);
- }
- #endif /* CONFIG_MODULES */
- 
-@@ -223,14 +223,15 @@ static void *its_alloc(void)
- 
- #ifdef CONFIG_MODULES
- 	if (its_mod) {
--		void *tmp = krealloc(its_mod->its_page_array,
--				     (its_mod->its_num_pages+1) * sizeof(void *),
-+		struct its_array *pages = &its_mod->arch.its_pages;
-+		void *tmp = krealloc(pages->pages,
-+				     (pages->num+1) * sizeof(void *),
- 				     GFP_KERNEL);
- 		if (!tmp)
- 			return NULL;
- 
--		its_mod->its_page_array = tmp;
--		its_mod->its_page_array[its_mod->its_num_pages++] = page;
-+		pages->pages = tmp;
-+		pages->pages[pages->num++] = page;
- 
- 		execmem_make_temp_rw(page, PAGE_SIZE);
- 	}
---- a/include/linux/module.h
-+++ b/include/linux/module.h
-@@ -586,11 +586,6 @@ struct module {
- 	atomic_t refcnt;
- #endif
- 
--#ifdef CONFIG_MITIGATION_ITS
--	int its_num_pages;
--	void **its_page_array;
--#endif
--
- #ifdef CONFIG_CONSTRUCTORS
- 	/* Constructor functions. */
- 	ctor_fn_t *ctors;
+ 	ret = simple_read_from_buffer(user_buf, count, ppos, buf, pos);
+ 	kfree(buf);
+@@ -3385,8 +3388,11 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans,
+ 		/* Dump RBs is supported only for pre-9000 devices (1 queue) */
+ 		struct iwl_rxq *rxq = &trans_pcie->rxq[0];
+ 		/* RBs */
++		spin_lock_bh(&rxq->lock);
+ 		num_rbs = iwl_get_closed_rb_stts(trans, rxq);
+ 		num_rbs = (num_rbs - rxq->read) & RX_QUEUE_MASK;
++		spin_unlock_bh(&rxq->lock);
++
+ 		len += num_rbs * (sizeof(*data) +
+ 				  sizeof(struct iwl_fw_error_dump_rb) +
+ 				  (PAGE_SIZE << trans_pcie->rx_page_order));
+-- 
+2.39.5
+
 
 
 
