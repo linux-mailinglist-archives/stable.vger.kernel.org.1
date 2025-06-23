@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156725-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 360E6AE537D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF12AE50D9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59F4D3B38F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 31F7D1B62F4D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB5342236E5;
-	Mon, 23 Jun 2025 21:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E3B22173D;
+	Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgcDoRta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1yNEDgpP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A0572624;
-	Mon, 23 Jun 2025 21:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3D621EFFA6;
+	Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715594; cv=none; b=LJh37HxzzLqL3VmcDjHk+hqElDRZLt7UsYop4sAdNPYINTxcQwIph9fd4IqbkMHhPKy0gxFZ4e8vt27c6vsoNUG3dojlijvdWO6o2ZLdDbCGoRQ8HhWg2+DTcJDm2Tkzuu5U/eF4gNYolR801iIibWNbPVA1KFT2AaGYmfyuMnM=
+	t=1750714113; cv=none; b=UJERSozE+CoLeOoueCwksEZaY3CKkIrhFu1W6nMMuAvv6OOSrZhH8ybeUSpQQn+3UkNbNOSt944SRDMy2sOwedT5LhzxauRv1JSB4w3W9w29zNN/E8M7QG8HDljRhC+V+yXCtJMEvQ0IjoySFXq/RmMwxHRRrfEPKsESVyVtGdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715594; c=relaxed/simple;
-	bh=14nm5H3nhTnBLFk33o0mg222+asTlknC1cz/VNtmWuU=;
+	s=arc-20240116; t=1750714113; c=relaxed/simple;
+	bh=a06sAdX6PMIXSE+HzOraqgewOJH+fSxop2wwR/9vDM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EUV1JbnS3z3oGLt8JbbFz6PtbqPdgq+KFY5NuDeACOy+BvoFKD2H7p0rVOR8uG8ySU3qy3mITv+7v9AW0XxMZnMf20DuI8AtXtMw34oOGKLOkPGjJj58t9kmQoxDuBofsd14YgWbHMU2ChdYAIixIr7MScDkQ1i81tYhEvxjb/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgcDoRta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10D49C4CEEA;
-	Mon, 23 Jun 2025 21:53:13 +0000 (UTC)
+	 MIME-Version; b=raRQlC5dhnWqrfht/Ou3dg0o/wnuZd7Fxl+h90c9qj80FixSzipZnmHI+E+dAxbwi1MhPVm5nBeZyKxepCeoAUnxybTr1vgdPbvjQBukD4mhL38uoyK5s+qNiXkFKQfBuTAhsYdySLBt7e5F+geu6Cpy8i8465Uezd3agr1F85Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1yNEDgpP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB44C4CEEA;
+	Mon, 23 Jun 2025 21:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715594;
-	bh=14nm5H3nhTnBLFk33o0mg222+asTlknC1cz/VNtmWuU=;
+	s=korg; t=1750714113;
+	bh=a06sAdX6PMIXSE+HzOraqgewOJH+fSxop2wwR/9vDM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MgcDoRtamNSh6EgyCcuW/pIKIBxwm9Oqoc7vBAUM1RP3kiLtTseVSr1KAHHLhe8NV
-	 JZg6+yD2+s9MxVSIC91A9ytXVl7of/dW87rHFher+6q+cHsOlNjkjZT8xOELwJGWAw
-	 6M4KktdyGP0PmLX/gX46EkvojIKp5zj4xTI6DIdI=
+	b=1yNEDgpPRu/DIKlki5dPaEosD10hlo1y/CAlxg1W4VB7/MTI5FWDSnYRQZyf1fUk0
+	 77U351u8AtZHXZfJGC9jwdOYww67WYQ20JZIC+88wTYFZTv7TbVSJGDBy81GK9Qrxe
+	 0LYNFRnvGEAx7PSDL8fihSF9NBBJFN/RFIaI4BKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com,
-	Hou Tao <houtao1@huawei.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 195/414] bpf: Check rcu_read_lock_trace_held() in bpf_map_lookup_percpu_elem()
+	I Hsin Cheng <richard120310@gmail.com>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.15 188/411] drm/meson: Use 1000ULL when operating with mode->clock
 Date: Mon, 23 Jun 2025 15:05:32 +0200
-Message-ID: <20250623130646.890205794@linuxfoundation.org>
+Message-ID: <20250623130638.412661364@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,48 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: I Hsin Cheng <richard120310@gmail.com>
 
-[ Upstream commit d4965578267e2e81f67c86e2608481e77e9c8569 ]
+commit eb0851e14432f3b87c77b704c835ac376deda03a upstream.
 
-bpf_map_lookup_percpu_elem() helper is also available for sleepable bpf
-program. When BPF JIT is disabled or under 32-bit host,
-bpf_map_lookup_percpu_elem() will not be inlined. Using it in a
-sleepable bpf program will trigger the warning in
-bpf_map_lookup_percpu_elem(), because the bpf program only holds
-rcu_read_lock_trace lock. Therefore, add the missed check.
+Coverity scan reported the usage of "mode->clock * 1000" may lead to
+integer overflow. Use "1000ULL" instead of "1000"
+when utilizing it to avoid potential integer overflow issue.
 
-Reported-by: syzbot+dce5aae19ae4d6399986@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/bpf/000000000000176a130617420310@google.com/
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Link: https://lore.kernel.org/r/20250526062534.1105938-1-houtao@huaweicloud.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://scan5.scan.coverity.com/#/project-view/10074/10063?selectedIssue=1646759
+Signed-off-by: I Hsin Cheng <richard120310@gmail.com>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Fixes: 1017560164b6 ("drm/meson: use unsigned long long / Hz for frequency types")
+Link: https://lore.kernel.org/r/20250505184338.678540-1-richard120310@gmail.com
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/bpf/helpers.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/meson/meson_encoder_hdmi.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index a05aeb3458964..9173d107758d4 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -129,7 +129,8 @@ const struct bpf_func_proto bpf_map_peek_elem_proto = {
+--- a/drivers/gpu/drm/meson/meson_encoder_hdmi.c
++++ b/drivers/gpu/drm/meson/meson_encoder_hdmi.c
+@@ -73,7 +73,7 @@ static void meson_encoder_hdmi_set_vclk(
+ 	unsigned long long venc_freq;
+ 	unsigned long long hdmi_freq;
  
- BPF_CALL_3(bpf_map_lookup_percpu_elem, struct bpf_map *, map, void *, key, u32, cpu)
- {
--	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_bh_held());
-+	WARN_ON_ONCE(!rcu_read_lock_held() && !rcu_read_lock_trace_held() &&
-+		     !rcu_read_lock_bh_held());
- 	return (unsigned long) map->ops->map_lookup_percpu_elem(map, key, cpu);
- }
+-	vclk_freq = mode->clock * 1000;
++	vclk_freq = mode->clock * 1000ULL;
  
--- 
-2.39.5
-
+ 	/* For 420, pixel clock is half unlike venc clock */
+ 	if (encoder_hdmi->output_bus_fmt == MEDIA_BUS_FMT_UYYVYY8_0_5X24)
+@@ -121,7 +121,7 @@ static enum drm_mode_status meson_encode
+ 	struct meson_encoder_hdmi *encoder_hdmi = bridge_to_meson_encoder_hdmi(bridge);
+ 	struct meson_drm *priv = encoder_hdmi->priv;
+ 	bool is_hdmi2_sink = display_info->hdmi.scdc.supported;
+-	unsigned long long clock = mode->clock * 1000;
++	unsigned long long clock = mode->clock * 1000ULL;
+ 	unsigned long long phy_freq;
+ 	unsigned long long vclk_freq;
+ 	unsigned long long venc_freq;
 
 
 
