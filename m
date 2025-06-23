@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-155910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0497FAE4423
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:40:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 419F1AE44C8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 021101BC11AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2567417D714
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36AA8253F1D;
-	Mon, 23 Jun 2025 13:34:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E91422472AF;
+	Mon, 23 Jun 2025 13:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1f75labO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oysd/dcW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE311253F08;
-	Mon, 23 Jun 2025 13:34:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A0416419;
+	Mon, 23 Jun 2025 13:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685652; cv=none; b=bCpQnY3NfbeyooPArT+qRe6lVOhjm339HcbDXdbZGJrh+/sAEsMqKBut4pyZ74xCypf8GPBdybh8VdtD/C/WEKzSd9Qt00sGe6/MkfTQSZ2NxrBLXlB16CWBDJX0XeOivF9RxOqZ4C1lc/iWR79ZKOdiXWRCzr7gsSTRFFTFyVQ=
+	t=1750685986; cv=none; b=Bno3EeiClmJGjcIj0xQmzBLjYjbuQvAzMl90mdYXCoY6TnwdrFrIyhBjnoNWPLaokdqKyzCIjKxKLmbE9UXAeu7CFGGIzRMoF7JjOezqhwQt6NuKd8lrDvugoce7BgS+kLI7f4pO4yhQ4fPdGE/LFdEpljcrE+5dv0ZTv2Av+vY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685652; c=relaxed/simple;
-	bh=VE33V5B1LNjgFEHT2drbtH387GO/VNDWw0HBht60/wk=;
+	s=arc-20240116; t=1750685986; c=relaxed/simple;
+	bh=Lj7QYC67anznBAgT7PNaChcPOtF+N0pCEtuYE3qLt9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IhB/rzbjpSheEkxjFwOOfClx4fZXVTSJBPCCsOMJca0XYtEtV0+JaeS+jKOyFEdUf+gwj4raKVYMjUBbDkq+KKHVcW13rd5q4CB/8pUAtHbdCxUQweR7ziT4OqmcnQzaxtdopKzctAJ2emOJQ9cOzm/WaQGp3ePad8wE7hgozKE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1f75labO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72930C4CEEA;
-	Mon, 23 Jun 2025 13:34:11 +0000 (UTC)
+	 MIME-Version; b=u8y9ekyZqz1ci48w9NBtsLym1WwVScDeaoAyG7MDzh3suFKn1WIrY5fh7VwSnsdS6x327HUbnD8P1EYwhltw3Aeh5Ip3wVY5kFRQwQlG6XsQRhDvY9ZJDkPBTdvqXjavg4Y7tYEAtD8d0ZkUW/B5u06oGnyzyGCvLU31hms1DLM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oysd/dcW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B5AC4CEEA;
+	Mon, 23 Jun 2025 13:39:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685651;
-	bh=VE33V5B1LNjgFEHT2drbtH387GO/VNDWw0HBht60/wk=;
+	s=korg; t=1750685986;
+	bh=Lj7QYC67anznBAgT7PNaChcPOtF+N0pCEtuYE3qLt9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1f75labOjprWabV82/dL+lYLSD+Lj0NurHKAZJbXd+kRxmrS4bCPli0JjZOZzrKlc
-	 ovtlFdLBDeh8Np8GEWaw/BlCsQHu1W33nnbel03Qc75q86R8FvSlDayYxqhDt79Uow
-	 uR2Wt/dFkj43Ldz8gAVO1P77iOYuAT6QEyK+0kfQ=
+	b=Oysd/dcWA+KoJ38b8uO0MUqczSF9DMyu5SucxrDmUzdiH8XbBDmB2CiK3HxEQun39
+	 424Sw9xrbVfU6Il5riXt9J4WDg4IkxBw657DsM20xoqyQr+lNk1VvNdzy7l04kRNRo
+	 muG13NhcM3i8iMLDuOI7wiehlaomj7dzB+qJzOkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ayushi Makhija <quic_amakhija@quicinc.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Li RongQing <lirongqing@baidu.com>,
+	Alex Williamson <alex.williamson@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 250/592] drm/bridge: anx7625: change the gpiod_set_value API
+Subject: [PATCH 5.15 064/411] vfio/type1: Fix error unwind in migration dirty bitmap allocation
 Date: Mon, 23 Jun 2025 15:03:28 +0200
-Message-ID: <20250623130706.242542553@linuxfoundation.org>
+Message-ID: <20250623130634.922621630@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,65 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayushi Makhija <quic_amakhija@quicinc.com>
+From: Li RongQing <lirongqing@baidu.com>
 
-[ Upstream commit 50935044e58e563cdcfd556d62f27bc8744dd64e ]
+[ Upstream commit 4518e5a60c7fbf0cdff393c2681db39d77b4f87e ]
 
-Use gpiod_set_value_cansleep() instead of gpiod_set_value()
-to fix the below call trace in the boot log:
+When setting up dirty page tracking at the vfio IOMMU backend for
+device migration, if an error is encountered allocating a tracking
+bitmap, the unwind loop fails to free previously allocated tracking
+bitmaps.  This occurs because the wrong loop index is used to
+generate the tracking object.  This results in unintended memory
+usage for the life of the current DMA mappings where bitmaps were
+successfully allocated.
 
-[    5.690534] Call trace:
-[    5.690536]  gpiod_set_value+0x40/0xa4
-[    5.690540]  anx7625_runtime_pm_resume+0xa0/0x324 [anx7625]
-[    5.690545]  __rpm_callback+0x48/0x1d8
-[    5.690549]  rpm_callback+0x6c/0x78
+Use the correct loop index to derive the tracking object for
+freeing during unwind.
 
-Certain GPIO controllers require access via message-based buses
-such as I2C or SPI, which may cause the GPIOs to enter a sleep
-state. Therefore, use the gpiod_set_value_cansleep().
-
-Signed-off-by: Ayushi Makhija <quic_amakhija@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20250505094245.2660750-7-quic_amakhija@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Fixes: d6a4c185660c ("vfio iommu: Implementation of ioctl for dirty pages tracking")
+Signed-off-by: Li RongQing <lirongqing@baidu.com>
+Link: https://lore.kernel.org/r/20250521034647.2877-1-lirongqing@baidu.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/vfio/vfio_iommu_type1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 99ef3f27ae429..95d5a4e265788 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -1257,10 +1257,10 @@ static void anx7625_power_on(struct anx7625_data *ctx)
- 	usleep_range(11000, 12000);
+diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
+index 66bbb125d7615..6a89bbec738f6 100644
+--- a/drivers/vfio/vfio_iommu_type1.c
++++ b/drivers/vfio/vfio_iommu_type1.c
+@@ -303,7 +303,7 @@ static int vfio_dma_bitmap_alloc_all(struct vfio_iommu *iommu, size_t pgsize)
+ 			struct rb_node *p;
  
- 	/* Power on pin enable */
--	gpiod_set_value(ctx->pdata.gpio_p_on, 1);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 1);
- 	usleep_range(10000, 11000);
- 	/* Power reset pin enable */
--	gpiod_set_value(ctx->pdata.gpio_reset, 1);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 1);
- 	usleep_range(10000, 11000);
+ 			for (p = rb_prev(n); p; p = rb_prev(p)) {
+-				struct vfio_dma *dma = rb_entry(n,
++				struct vfio_dma *dma = rb_entry(p,
+ 							struct vfio_dma, node);
  
- 	DRM_DEV_DEBUG_DRIVER(dev, "power on !\n");
-@@ -1280,9 +1280,9 @@ static void anx7625_power_standby(struct anx7625_data *ctx)
- 		return;
- 	}
- 
--	gpiod_set_value(ctx->pdata.gpio_reset, 0);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_reset, 0);
- 	usleep_range(1000, 1100);
--	gpiod_set_value(ctx->pdata.gpio_p_on, 0);
-+	gpiod_set_value_cansleep(ctx->pdata.gpio_p_on, 0);
- 	usleep_range(1000, 1100);
- 
- 	ret = regulator_bulk_disable(ARRAY_SIZE(ctx->pdata.supplies),
+ 				vfio_dma_bitmap_free(dma);
 -- 
 2.39.5
 
