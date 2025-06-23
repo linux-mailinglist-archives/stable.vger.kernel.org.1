@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-157136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C53FAE52A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18392AE509A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C85FC4A647E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 342191B62A9A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3E91225397;
-	Mon, 23 Jun 2025 21:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1439B222599;
+	Mon, 23 Jun 2025 21:26:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t7+1rPwf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1VXz2+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11E0B676;
-	Mon, 23 Jun 2025 21:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CC7221FBE;
+	Mon, 23 Jun 2025 21:25:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715122; cv=none; b=B/ScI1svgmG4tD0N/wwLN7Zalu/OWBt6eCqRMomglLp5LKI/rLyW65fkDAau/0cUDxrrPakkTbiZHH/KyvPi11EUm3u9YBTROA1Q4dd58xdm0f7C4Mq2aMOhlJCvlOLpM30y4b3OHP9VIgbG0lPyF82sB+kW/YbCQE7nOBscVf0=
+	t=1750713959; cv=none; b=psT9LUF5EMFogUrfa+FsgloI56ZcWfeEeFLFIIinh/a2KtOh4v+LQqSgk4hmTS0qh2VpZSCw+wUZM/MgVJzTGDyjaxA0/dBnsj9rwgt3sCrYFWEMqTQJeCBkskOhvPOnngbxTKc6o3cSjlafFMTYGbt84z5caX+k6uabBnM6tOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715122; c=relaxed/simple;
-	bh=Z4QnY2OfqE9vTkT0ecP35VYB2/gpTzPyUI4s9Fp27Ws=;
+	s=arc-20240116; t=1750713959; c=relaxed/simple;
+	bh=+f9zpa2XhzY2B5kE8By4emJaCijBs88WspJUQlSQP4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATHwxdUrPHSwv8whSjz6ni8BZnNSLAe/zSvplNWkmK+ttgK1th8ajDPbwf05nyUi4lN/e1KQ9mNt/SFqH5xNEUOll6oCqJykVg6sni+oHHbpmDQ88kEcZvYTNlh/uqun68rQVaBiKAiueEJw+TY+UO2lAHKLdKUTHM2DPmHYlpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t7+1rPwf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4803DC4CEEA;
-	Mon, 23 Jun 2025 21:45:22 +0000 (UTC)
+	 MIME-Version; b=Oa8gdkpsTC0Bwk9NU6DeuOaLgenyA3fNANaGJMnhsAc2Fa+xd2z0k0TBrIDDUX4XdJBO9mmTWh2K6AqGb3wTFU1pLH1EakfUjOgg6n4Nyv6mExxJpp7JsAfGxPyj1/suO8KguMHxKXgC/QbKkzUp3rbSpHMFrFmmQbL6rF5sEnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1VXz2+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FBB1C4CEEA;
+	Mon, 23 Jun 2025 21:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715122;
-	bh=Z4QnY2OfqE9vTkT0ecP35VYB2/gpTzPyUI4s9Fp27Ws=;
+	s=korg; t=1750713959;
+	bh=+f9zpa2XhzY2B5kE8By4emJaCijBs88WspJUQlSQP4o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t7+1rPwfBlX0fXQ/EOFc3R7jfw3ybWipfZNWZIOTzAZSPQKfLo9pg286gPG5sqf25
-	 gCdn1NW5tuurA6RLWzPxkggJeqbuGc4eQuyM9CiFz6KJ2Vphx/LxKbJ6X79ii9aypc
-	 Jx/Ckx9/J3nJlBpEbLpvRm/eoUwWpV51nbn4jVAo=
+	b=j1VXz2+K14T7/+475xYQ5iXtL876nnLbALjaqXbbKiHOvVxVr/4lOMdFWvF2DiKAE
+	 7t0iGAt0k+s1CoBj5Ma1DfqtEiW/dpYdf6/67OGv+Q1yLCzBzsVqoXtFZ1OWhi7nVV
+	 yWA1gycJgLcvfmFA0R3U4Sp+bAsKun4eO7hUa2oA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.12 164/414] iio: adc: ad7944: mask high bits on direct read
+	Gavi Teitz <gavi@nvidia.com>,
+	Roi Dayan <roid@nvidia.com>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 157/411] net/mlx5: Fix return value when searching for existing flow group
 Date: Mon, 23 Jun 2025 15:05:01 +0200
-Message-ID: <20250623130646.135410398@linuxfoundation.org>
+Message-ID: <20250623130637.594864164@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +64,68 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-commit 7cdfbc0113d087348b8e65dd79276d0f57b89a10 upstream.
+[ Upstream commit 8ec40e3f1f72bf8f8accf18020d487caa99f46a4 ]
 
-Apply a mask to the raw value received over the SPI bus for unsigned
-direct reads. As we found recently, SPI controllers may not set unused
-bits to 0 when reading with bits_per_word != {8,16,32}. The ad7944 uses
-bits_per_word of 14 and 18, so we need to mask the value to be sure we
-returning the correct value to userspace during a direct read.
+When attempting to add a rule to an existing flow group, if a matching
+flow group exists but is not active, the error code returned should be
+EAGAIN, so that the rule can be added to the matching flow group once
+it is active, rather than ENOENT, which indicates that no matching
+flow group was found.
 
-Fixes: d1efcf8871db ("iio: adc: ad7944: add driver for AD7944/AD7985/AD7986")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20250505-iio-adc-ad7944-max-high-bits-on-direct-read-v1-1-b173facceefe@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bd71b08ec2ee ("net/mlx5: Support multiple updates of steering rules in parallel")
+Signed-off-by: Gavi Teitz <gavi@nvidia.com>
+Signed-off-by: Roi Dayan <roid@nvidia.com>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250610151514.1094735-4-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7944.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/mellanox/mlx5/core/fs_core.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7944.c
-+++ b/drivers/iio/adc/ad7944.c
-@@ -290,6 +290,8 @@ static int ad7944_single_conversion(stru
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+index 8ff2b81960de7..ef56a71e43d70 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fs_core.c
+@@ -1876,6 +1876,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 	struct mlx5_flow_handle *rule;
+ 	struct match_list *iter;
+ 	bool take_write = false;
++	bool try_again = false;
+ 	struct fs_fte *fte;
+ 	u64  version = 0;
+ 	int err;
+@@ -1935,6 +1936,7 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 		nested_down_write_ref_node(&g->node, FS_LOCK_PARENT);
  
- 	if (chan->scan_type.sign == 's')
- 		*val = sign_extend32(*val, chan->scan_type.realbits - 1);
-+	else
-+		*val &= GENMASK(chan->scan_type.realbits - 1, 0);
- 
- 	return IIO_VAL_INT;
- }
+ 		if (!g->node.active) {
++			try_again = true;
+ 			up_write_ref_node(&g->node, false);
+ 			continue;
+ 		}
+@@ -1956,7 +1958,8 @@ try_add_to_existing_fg(struct mlx5_flow_table *ft,
+ 			tree_put_node(&fte->node, false);
+ 		return rule;
+ 	}
+-	rule = ERR_PTR(-ENOENT);
++	err = try_again ? -EAGAIN : -ENOENT;
++	rule = ERR_PTR(err);
+ out:
+ 	kmem_cache_free(steering->ftes_cache, fte);
+ 	return rule;
+-- 
+2.39.5
+
 
 
 
