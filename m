@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42A2EAE5063
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D0F4AE511C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D37034A0DE2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 340874A2E18
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF4FF1EF397;
-	Mon, 23 Jun 2025 21:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A6B7080C;
+	Mon, 23 Jun 2025 21:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rbQYJfGb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdiLe+EQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E21A1E51FA;
-	Mon, 23 Jun 2025 21:24:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D44B2AD04;
+	Mon, 23 Jun 2025 21:30:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713891; cv=none; b=FWSd7fOQxHryhrDZCz2n+YHdESbnO17E7QKwdHXEOhLQD8O7v4i3gT0Vs7wnXA4PRivOX3ThbpL+YREDYmAwYiRvr8EzXMejjUIBqaO9gl4aovqN6uSPkxyJvbNrre8pRxtv6cAQ3IRZmTEs6bari46kEOlN0iT9SYiPcmsjdhA=
+	t=1750714257; cv=none; b=ihi+f5XLM9ggX9uVRrAmOAV1I8UNmBlC6g85Q0b5NvntH8AdiXCDqXliYm3NovOo+2s66j6Fn0U1/Lzjzhycl8Tfid1i/hWvwGC1atPhPzJm/GAGk0lc8qGIod6WeWubdRDv3TXvUpZXtA7tOUcpxKnM5hufFH6VkJ4vyJqzC7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713891; c=relaxed/simple;
-	bh=PsJLo9Hsqqy7OAPDwv4jCOSj6Kl2+vndjO9JH1hBbAA=;
+	s=arc-20240116; t=1750714257; c=relaxed/simple;
+	bh=VOx1IKajXhhbPqd4NTLObrkcYHp11qfBb4jbbO8CW1E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EQI3BDDKVrgCsb9pSMGaR5HUBvKYOZJdLYnAC28FLbFiIMWOvYZ44nbrtufVVoRsgvc2M1PdSTDL4xZi8ZbUaLTDujHXmwrx5F1i7pS3EwNwZf6vqUXVTPqRTk4s+nmBn8tc+Iggzk2UMjnqOgpvjQrfm4MPscuMVev03fI3+SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rbQYJfGb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 176B2C4CEEA;
-	Mon, 23 Jun 2025 21:24:50 +0000 (UTC)
+	 MIME-Version; b=B8ul5/P+xnk20kX7dFnWEsohd/hZYf5ehioJaZKNbh24DxDYSkBquOL5aogIQc38+5f6CK2z4PfKEgnHT5gD1VwqVbg1nfrtNWvQd9w5h60G94gyQgTXBfRIpTUXaI9zCFamUkyjvtj/PgOLVElFkoRScrCEhABH1Drmb5D0/zI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdiLe+EQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35600C4CEEA;
+	Mon, 23 Jun 2025 21:30:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713891;
-	bh=PsJLo9Hsqqy7OAPDwv4jCOSj6Kl2+vndjO9JH1hBbAA=;
+	s=korg; t=1750714257;
+	bh=VOx1IKajXhhbPqd4NTLObrkcYHp11qfBb4jbbO8CW1E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rbQYJfGba6iBjzz3I+nPJLzL7O6CYmq2qn9asPs8GV+EnX1p4Rt+Ye50rk1BBrtH9
-	 P7/b5Xw/OIWkjnVhZA70E+AIRD5XT/4U26cFxq/kaswNuzHOukjAXIVo19nZteSW9/
-	 O/2hdmBs5oDfCYdrAg8fN/ILEB3UkMmlPnBtd4OA=
+	b=AdiLe+EQVIZ7i3U1ow559m19DesTF38x5UFLrN9RIp5S/eC9g6hHJ4HlPKnzDY1EG
+	 nKUOHppNJmX+OLxehnR1T/UPaag/XnzJJyTxhBhslYD+b7I0Gw0oKZnaaxR9iL3/xb
+	 83UqZtNIr6Tj2NOv1DahLBz6hIG7wZNylvDRT/80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 069/414] media: uvcvideo: Return the number of processed controls
+	Brian Pellegrino <bpellegrino@arka.org>,
+	Sam Winchenbach <swinchenbach@arka.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 161/508] iio: filter: admv8818: Support frequencies >= 2^32
 Date: Mon, 23 Jun 2025 15:03:26 +0200
-Message-ID: <20250623130643.797256854@linuxfoundation.org>
+Message-ID: <20250623130649.238477151@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,76 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Brian Pellegrino <bpellegrino@arka.org>
 
-commit ba4fafb02ad6a4eb2e00f861893b5db42ba54369 upstream.
+[ Upstream commit 9016776f1301627de78a633bda7c898425a56572 ]
 
-If we let know our callers that we have not done anything, they will be
-able to optimize their decisions.
+This patch allows writing u64 values to the ADMV8818's high and low-pass
+filter frequencies. It includes the following changes:
 
-Cc: stable@kernel.org
-Fixes: b4012002f3a3 ("[media] uvcvideo: Add support for control events")
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Message-ID: <20250224-uvc-data-backup-v2-1-de993ed9823b@chromium.org>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+- Rejects negative frequencies in admv8818_write_raw.
+- Adds a write_raw_get_fmt function to admv8818's iio_info, returning
+  IIO_VAL_INT_64 for the high and low-pass filter 3dB frequency channels.
+
+Fixes: f34fe888ad05 ("iio:filter:admv8818: add support for ADMV8818")
+Signed-off-by: Brian Pellegrino <bpellegrino@arka.org>
+Signed-off-by: Sam Winchenbach <swinchenbach@arka.org>
+Link: https://patch.msgid.link/20250328174831.227202-7-sam.winchenbach@framepointer.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_ctrl.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/iio/filter/admv8818.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
---- a/drivers/media/usb/uvc/uvc_ctrl.c
-+++ b/drivers/media/usb/uvc/uvc_ctrl.c
-@@ -1830,12 +1830,17 @@ int uvc_ctrl_begin(struct uvc_video_chai
- 	return mutex_lock_interruptible(&chain->ctrl_mutex) ? -ERESTARTSYS : 0;
- }
- 
-+/*
-+ * Returns the number of uvc controls that have been correctly set, or a
-+ * negative number if there has been an error.
-+ */
- static int uvc_ctrl_commit_entity(struct uvc_device *dev,
- 				  struct uvc_fh *handle,
- 				  struct uvc_entity *entity,
- 				  int rollback,
- 				  struct uvc_control **err_ctrl)
- {
-+	unsigned int processed_ctrls = 0;
- 	struct uvc_control *ctrl;
- 	unsigned int i;
- 	int ret;
-@@ -1870,6 +1875,9 @@ static int uvc_ctrl_commit_entity(struct
- 		else
- 			ret = 0;
- 
-+		if (!ret)
-+			processed_ctrls++;
-+
- 		if (rollback || ret < 0)
- 			memcpy(uvc_ctrl_data(ctrl, UVC_CTRL_DATA_CURRENT),
- 			       uvc_ctrl_data(ctrl, UVC_CTRL_DATA_BACKUP),
-@@ -1888,7 +1896,7 @@ static int uvc_ctrl_commit_entity(struct
- 			uvc_ctrl_set_handle(handle, ctrl, handle);
- 	}
- 
--	return 0;
-+	return processed_ctrls;
- }
- 
- static int uvc_ctrl_find_ctrl_idx(struct uvc_entity *entity,
-@@ -1935,6 +1943,7 @@ int __uvc_ctrl_commit(struct uvc_fh *han
- 
- 	if (!rollback)
- 		uvc_ctrl_send_events(handle, ctrls->controls, ctrls->count);
-+	ret = 0;
- done:
- 	mutex_unlock(&chain->ctrl_mutex);
+diff --git a/drivers/iio/filter/admv8818.c b/drivers/iio/filter/admv8818.c
+index 2dfa92e052af8..b83d655274325 100644
+--- a/drivers/iio/filter/admv8818.c
++++ b/drivers/iio/filter/admv8818.c
+@@ -400,6 +400,19 @@ static int admv8818_read_lpf_freq(struct admv8818_state *st, u64 *lpf_freq)
  	return ret;
+ }
+ 
++static int admv8818_write_raw_get_fmt(struct iio_dev *indio_dev,
++								struct iio_chan_spec const *chan,
++								long mask)
++{
++	switch (mask) {
++	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
++	case IIO_CHAN_INFO_HIGH_PASS_FILTER_3DB_FREQUENCY:
++		return IIO_VAL_INT_64;
++	default:
++		return -EINVAL;
++	}
++}
++
+ static int admv8818_write_raw(struct iio_dev *indio_dev,
+ 			      struct iio_chan_spec const *chan,
+ 			      int val, int val2, long info)
+@@ -408,6 +421,9 @@ static int admv8818_write_raw(struct iio_dev *indio_dev,
+ 
+ 	u64 freq = ((u64)val2 << 32 | (u32)val);
+ 
++	if ((s64)freq < 0)
++		return -EINVAL;
++
+ 	switch (info) {
+ 	case IIO_CHAN_INFO_LOW_PASS_FILTER_3DB_FREQUENCY:
+ 		return admv8818_lpf_select(st, freq);
+@@ -524,6 +540,7 @@ static int admv8818_set_mode(struct iio_dev *indio_dev,
+ 
+ static const struct iio_info admv8818_info = {
+ 	.write_raw = admv8818_write_raw,
++	.write_raw_get_fmt = admv8818_write_raw_get_fmt,
+ 	.read_raw = admv8818_read_raw,
+ 	.debugfs_reg_access = &admv8818_reg_access,
+ };
+-- 
+2.39.5
+
 
 
 
