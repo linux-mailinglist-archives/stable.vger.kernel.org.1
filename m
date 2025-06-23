@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-156013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE352AE44B8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84E42AE449A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D95E4A2737
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB0267AB7C8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC6D1253F35;
-	Mon, 23 Jun 2025 13:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB6E254B09;
+	Mon, 23 Jun 2025 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/8mVxuP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+QPFd/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A87A16419;
-	Mon, 23 Jun 2025 13:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173CA24DCFD;
+	Mon, 23 Jun 2025 13:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685923; cv=none; b=pFPggENTDFqPGalpWiMk2CW0hu+sUH01R9zbsb7xmxjXJ+QE+/pIXGjonOTV7EBK8VIe4JGW4WA/kcDI8OofFwnFf99hvwHYogJfE+/cYqSKG3BxZpMPcH233YlMSj8fhwJLFGYbctYWaHSA4CUss5WNXrObyWwyqmGAF27HaOo=
+	t=1750685941; cv=none; b=mwdqFlqgFDBqvfhR6+0ZqLTn3AG1FP+2WlXOY9YOcBGS+LwXeDnRyvnxmVY8YGQDVby9EUfVQ0tRnF4MhaNEKbCXWEHxu05ZcAvaeOmGw7cJA7Kiu1RzCsNgHYRIdgCRz6UZ49cViSpb7s5+2l+kVower4dR3Gy4taR5LtffYyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685923; c=relaxed/simple;
-	bh=1Fh+Pfmu82ZOI2IF8WaPLhLUC+chv+EddooA5cd6Np8=;
+	s=arc-20240116; t=1750685941; c=relaxed/simple;
+	bh=CG5Dz6HYwuQh+9pVqNHMJTOng9Pt2g6Kpo3AkjDgZmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bQXSosJvofHFyRyQTWFDp3D98s01F2GaiZz2qYRTIxXChkA9doHwIvUkSJ4FycN2jBAyYbFcK2zKljEv10j3My1cO1y92EY3anKxoHnhCmIPr2TDu5nRGf7yWS5Cz4lihw1O+ENs25me39aHhP1IjkpQ8cIa8+Da41COt/3sRKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/8mVxuP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C280C4CEEA;
-	Mon, 23 Jun 2025 13:38:42 +0000 (UTC)
+	 MIME-Version; b=ufkdeVk4NaAnLhS/3YaTipFn0OkN2xEeqgmZfeUL5QCEWHcmmdSSU5nm9/BdEBPz8r7aM/dQXVS94FHEZo3kzdwR23dU7pw4HhE0Ed27MFl7FGK7io13zthted5J/yeiHSAX+ac2+n7zKLAh8h9yYOd6OKrHH019SdOzxVnww9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+QPFd/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC7AC4CEEA;
+	Mon, 23 Jun 2025 13:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685923;
-	bh=1Fh+Pfmu82ZOI2IF8WaPLhLUC+chv+EddooA5cd6Np8=;
+	s=korg; t=1750685941;
+	bh=CG5Dz6HYwuQh+9pVqNHMJTOng9Pt2g6Kpo3AkjDgZmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/8mVxuPcGuPJ6dilwpYkqSxa4KL1sNuveTuagKClZf3lBUCPuSJNBn2De4mhdpCz
-	 6p8CXcLm/pnFt0cC5gVXN5POMCj8i8OslsmJwDsCz0WTJ2MlR3knD95gKPBxqaWgnt
-	 87UJMrluCdToG+kIVIYm0anr896pwBCSvQLUO7Zc=
+	b=t+QPFd/BZo/wA9urpJ/3Lv69kBWP6N1qborXILSfw+N+aSLHHM8SKAyFExyoJ8MGN
+	 JcZGJFqDA/oCeyoMHNa3VZ3dOD8jpnf1cH594gSPz1X4WCF6ozlIaRqHATYtcOJ9yC
+	 dBl6kBWzbC+fndmwjqUwTAA2X/IRjOggfLRwQSqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Gladkov <legion@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Leo Yan <leo.yan@arm.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	James Clark <james.clark@linaro.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/355] mfd: stmpe-spi: Correct the name used in MODULE_DEVICE_TABLE
-Date: Mon, 23 Jun 2025 15:04:41 +0200
-Message-ID: <20250623130629.221826086@linuxfoundation.org>
+Subject: [PATCH 5.10 081/355] perf tests switch-tracking: Fix timestamp comparison
+Date: Mon, 23 Jun 2025 15:04:42 +0200
+Message-ID: <20250623130629.248667020@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -67,38 +71,100 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Gladkov <legion@kernel.org>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 59d60c16ed41475f3b5f7b605e75fbf8e3628720 ]
+[ Upstream commit 628e124404b3db5e10e17228e680a2999018ab33 ]
 
-The name used in the macro does not exist.
+The test might fail on the Arm64 platform with the error:
 
-drivers/mfd/stmpe-spi.c:132:26: error: use of undeclared identifier 'stmpe_id'
-  132 | MODULE_DEVICE_TABLE(spi, stmpe_id);
+  # perf test -vvv "Track with sched_switch"
+  Missing sched_switch events
+  #
 
-Fixes: e789995d5c61 ("mfd: Add support for STMPE SPI interface")
-Signed-off-by: Alexey Gladkov <legion@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/79d5a847303e45a46098f2d827d3d8a249a32be3.1745591072.git.legion@kernel.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+The issue is caused by incorrect handling of timestamp comparisons. The
+comparison result, a signed 64-bit value, was being directly cast to an
+int, leading to incorrect sorting for sched events.
+
+The case does not fail everytime, usually I can trigger the failure
+after run 20 ~ 30 times:
+
+  # while true; do perf test "Track with sched_switch"; done
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : FAILED!
+  106: Track with sched_switch                                         : Ok
+  106: Track with sched_switch                                         : Ok
+
+I used cross compiler to build Perf tool on my host machine and tested on
+Debian / Juno board.  Generally, I think this issue is not very specific
+to GCC versions.  As both internal CI and my local env can reproduce the
+issue.
+
+My Host Build compiler:
+
+  # aarch64-linux-gnu-gcc --version
+  aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+
+Juno Board:
+
+  # lsb_release -a
+  No LSB modules are available.
+  Distributor ID: Debian
+  Description:    Debian GNU/Linux 12 (bookworm)
+  Release:        12
+  Codename:       bookworm
+
+Fix this by explicitly returning 0, 1, or -1 based on whether the result
+is zero, positive, or negative.
+
+Fixes: d44bc558297222d9 ("perf tests: Add a test for tracking with sched_switch")
+Reviewed-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: James Clark <james.clark@linaro.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20250331172759.115604-1-leo.yan@arm.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/stmpe-spi.c | 2 +-
+ tools/perf/tests/switch-tracking.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
-index 7351734f75938..07fa56e5337d1 100644
---- a/drivers/mfd/stmpe-spi.c
-+++ b/drivers/mfd/stmpe-spi.c
-@@ -129,7 +129,7 @@ static const struct spi_device_id stmpe_spi_id[] = {
- 	{ "stmpe2403", STMPE2403 },
- 	{ }
- };
--MODULE_DEVICE_TABLE(spi, stmpe_id);
-+MODULE_DEVICE_TABLE(spi, stmpe_spi_id);
+diff --git a/tools/perf/tests/switch-tracking.c b/tools/perf/tests/switch-tracking.c
+index db5e1f70053a8..7b28d468fc6e8 100644
+--- a/tools/perf/tests/switch-tracking.c
++++ b/tools/perf/tests/switch-tracking.c
+@@ -255,7 +255,7 @@ static int compar(const void *a, const void *b)
+ 	const struct event_node *nodeb = b;
+ 	s64 cmp = nodea->event_time - nodeb->event_time;
  
- static struct spi_driver stmpe_spi_driver = {
- 	.driver = {
+-	return cmp;
++	return cmp < 0 ? -1 : (cmp > 0 ? 1 : 0);
+ }
+ 
+ static int process_events(struct evlist *evlist,
 -- 
 2.39.5
 
