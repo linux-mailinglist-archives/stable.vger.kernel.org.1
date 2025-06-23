@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE430AE5227
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B721BAE525D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427E21B64840
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A0AB7AF417
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346802222CA;
-	Mon, 23 Jun 2025 21:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4F41DDC04;
+	Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfCF3uRX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk2V+p30"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E661A19D084;
-	Mon, 23 Jun 2025 21:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973A21F5820;
+	Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714856; cv=none; b=Rz3jFnUBbPJxGNMUiWBwpyKSAbbwJ/4GB3U/EnPz41YJqn1rPdKTIRVpQG1sKnh9q4rzkE3nwhcYFTkgHkp4O9hj+QrPqN3DBDlks33YFNfrZ8E+vYYGzVz0lIez8zNyTydRJlcD8PmCX0Ptkz3qqA0Fiqq+YjKx1LSMBNh1PwQ=
+	t=1750714987; cv=none; b=QtLMJoXHJNNMOO3SIaSeXi+/MgO6wGhoVedcw7y9hAl/vapgHdEVHIERL4Er9TrRoBxvWkXFEZd3uIOXJ73HHGwWZxmrXI2PMjyr0eHLBDw5qrs2HbVwo+66pIpcMjrcEtOCGBDQIbRCyTUGuLZ468IdCR2ayv7tCNxmYFOnBnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714856; c=relaxed/simple;
-	bh=QYOt5t+haK5FiPTa7IA+5jRHjnN5mxZUaFERbJZMfiI=;
+	s=arc-20240116; t=1750714987; c=relaxed/simple;
+	bh=Tgon6siZGWaxaYn3WDxTR+ligFlVIZWCQDWxb13zMck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b4YUqdHzMnLsXU8c7jdPuxuepFiJZPEbafoq7iYMiu/hphbf0CMn4AEbJoqLmEnlIVj49TF+82EiHDGKZlmbB+cHXHiF+vTTAJk9JuaOdXHLSgLOT0yzbNIMwowT/DHcbfkuADgRIFZS+niLe1hCUH5M4KT/4Ee6iYwdhmILz8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfCF3uRX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D6F5C4CEEA;
-	Mon, 23 Jun 2025 21:40:55 +0000 (UTC)
+	 MIME-Version; b=W+tTeBnOtRHPbZNWN9bM3Fa5trKo9MYMw1jUt36oo9HG7pZ+6hh3ExkBoerTDQozk02D5VVQ9b8lryYg/cPm76gHM6ffLNaGv59NPW8K6jbLCQVbwkdKgpN/L/OUDD9W8LgfAp9NvUNzY+c7637uPD1ce0Ju4VPubWGnzUXki4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk2V+p30; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27732C4CEEA;
+	Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714855;
-	bh=QYOt5t+haK5FiPTa7IA+5jRHjnN5mxZUaFERbJZMfiI=;
+	s=korg; t=1750714987;
+	bh=Tgon6siZGWaxaYn3WDxTR+ligFlVIZWCQDWxb13zMck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZfCF3uRXt2y2qdgBzhwFBj2VgI7VbSJwRHAgcZa+HxrdDpocJL5fYgv92W+zuZ3ir
-	 FoDzrdhnrtMVLrbBdJ5SlJs0QgO5jwhpwbXj9ZCuTIb85UGJ231N+zT/zTB8V7HHUn
-	 O+3o2gpaVbIcS31paEr7XH2K0sLU8MQKwg2HIgGE=
+	b=sk2V+p30hWQvE//PVcMWoadSF43HAxfSW2NY/IT+xGlLi0DVJN/PbmDMHQIwUmyq6
+	 pmretY88MxzkrhRvlSZhtc85GOszYbyxIBH7pH2xsrezrR6K50INDwxRWedl2NcrHp
+	 RMfT2fiXgSSS8jh+bT1RRc60gw9etd0Wycd+X9hY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Simon Schuster <schuster.simon@siemens-energy.com>,
+	Andreas Oetken <andreas.oetken@siemens-energy.com>,
+	Dinh Nguyen <dinguyen@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/290] usbnet: asix AX88772: leave the carrier control to phylink
+Subject: [PATCH 5.10 245/355] nios2: force update_mmu_cache on spurious tlb-permission--related pagefaults
 Date: Mon, 23 Jun 2025 15:07:26 +0200
-Message-ID: <20250623130632.437171464@linuxfoundation.org>
+Message-ID: <20250623130634.112329816@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,158 +61,88 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Hałasa <khalasa@piap.pl>
+From: Simon Schuster <schuster.simon@siemens-energy.com>
 
-[ Upstream commit 4145f00227ee80f21ab274e9cd9c09758e9bcf3d ]
+[ Upstream commit 2d8a3179ea035f9341b6a73e5ba4029fc67e983d ]
 
-ASIX AX88772B based USB 10/100 Ethernet adapter doesn't come
-up ("carrier off"), despite the built-in 100BASE-FX PHY positive link
-indication. The internal PHY is configured (using EEPROM) in fixed
-100 Mbps full duplex mode.
+NIOS2 uses a software-managed TLB for virtual address translation. To
+flush a cache line, the original mapping is replaced by one to physical
+address 0x0 with no permissions (rwx mapped to 0) set. This can lead to
+TLB-permission--related traps when such a nominally flushed entry is
+encountered as a mapping for an otherwise valid virtual address within a
+process (e.g. due to an MMU-PID-namespace rollover that previously
+flushed the complete TLB including entries of existing, running
+processes).
 
-The primary problem appears to be using carrier_netif_{on,off}() while,
-at the same time, delegating carrier management to phylink. Use only the
-latter and remove "manual control" in the asix driver.
+The default ptep_set_access_flags implementation from mm/pgtable-generic.c
+only forces a TLB-update when the page-table entry has changed within the
+page table:
 
-I don't have any other AX88772 board here, but the problem doesn't seem
-specific to a particular board or settings - it's probably
-timing-dependent.
+	/*
+	 * [...] We return whether the PTE actually changed, which in turn
+	 * instructs the caller to do things like update__mmu_cache. [...]
+	 */
+	int ptep_set_access_flags(struct vm_area_struct *vma,
+				  unsigned long address, pte_t *ptep,
+				  pte_t entry, int dirty)
+	{
+		int changed = !pte_same(*ptep, entry);
+		if (changed) {
+			set_pte_at(vma->vm_mm, address, ptep, entry);
+			flush_tlb_fix_spurious_fault(vma, address);
+		}
+		return changed;
+	}
 
-Remove unused asix_adjust_link() as well.
+However, no cross-referencing with the TLB-state occurs, so the
+flushing-induced pseudo entries that are responsible for the pagefault
+in the first place are never pre-empted from TLB on this code path.
 
-Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/m3plhmdfte.fsf_-_@t19.piap.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This commit fixes this behaviour by always requesting a TLB-update in
+this part of the pagefault handling, fixing spurious page-faults on the
+way. The handling is a straightforward port of the logic from the MIPS
+architecture via an arch-specific ptep_set_access_flags function ported
+from arch/mips/include/asm/pgtable.h.
+
+Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
+Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix.h         |  1 -
- drivers/net/usb/asix_common.c  | 22 ----------------------
- drivers/net/usb/asix_devices.c | 17 ++++-------------
- 3 files changed, 4 insertions(+), 36 deletions(-)
+ arch/nios2/include/asm/pgtable.h | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/net/usb/asix.h b/drivers/net/usb/asix.h
-index 74162190bccc1..8531b804021aa 100644
---- a/drivers/net/usb/asix.h
-+++ b/drivers/net/usb/asix.h
-@@ -224,7 +224,6 @@ int asix_write_rx_ctl(struct usbnet *dev, u16 mode, int in_pm);
+diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
+index 2600d76c310c4..966fef8249bbb 100644
+--- a/arch/nios2/include/asm/pgtable.h
++++ b/arch/nios2/include/asm/pgtable.h
+@@ -277,4 +277,20 @@ extern void __init mmu_init(void);
+ extern void update_mmu_cache(struct vm_area_struct *vma,
+ 			     unsigned long address, pte_t *pte);
  
- u16 asix_read_medium_status(struct usbnet *dev, int in_pm);
- int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm);
--void asix_adjust_link(struct net_device *netdev);
- 
- int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm);
- 
-diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
-index 72ffc89b477ad..7fd763917ae2c 100644
---- a/drivers/net/usb/asix_common.c
-+++ b/drivers/net/usb/asix_common.c
-@@ -414,28 +414,6 @@ int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm)
- 	return ret;
- }
- 
--/* set MAC link settings according to information from phylib */
--void asix_adjust_link(struct net_device *netdev)
--{
--	struct phy_device *phydev = netdev->phydev;
--	struct usbnet *dev = netdev_priv(netdev);
--	u16 mode = 0;
--
--	if (phydev->link) {
--		mode = AX88772_MEDIUM_DEFAULT;
--
--		if (phydev->duplex == DUPLEX_HALF)
--			mode &= ~AX_MEDIUM_FD;
--
--		if (phydev->speed != SPEED_100)
--			mode &= ~AX_MEDIUM_PS;
--	}
--
--	asix_write_medium_mode(dev, mode, 0);
--	phy_print_status(phydev);
--	usbnet_link_change(dev, phydev->link, 0);
--}
--
- int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm)
- {
- 	int ret;
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index ec4dcf89cbedd..119295f5f3b35 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -752,7 +752,6 @@ static void ax88772_mac_link_down(struct phylink_config *config,
- 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
- 
- 	asix_write_medium_mode(dev, 0, 0);
--	usbnet_link_change(dev, false, false);
- }
- 
- static void ax88772_mac_link_up(struct phylink_config *config,
-@@ -783,7 +782,6 @@ static void ax88772_mac_link_up(struct phylink_config *config,
- 		m |= AX_MEDIUM_RFC;
- 
- 	asix_write_medium_mode(dev, m, 0);
--	usbnet_link_change(dev, true, false);
- }
- 
- static const struct phylink_mac_ops ax88772_phylink_mac_ops = {
-@@ -1350,10 +1348,9 @@ static const struct driver_info ax88772_info = {
- 	.description = "ASIX AX88772 USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
- 	.stop = ax88772_stop,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR | FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- };
-@@ -1362,11 +1359,9 @@ static const struct driver_info ax88772b_info = {
- 	.description = "ASIX AX88772B USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
- 	.stop = ax88772_stop,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
--	         FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- 	.data = FLAG_EEPROM_MAC,
-@@ -1376,11 +1371,9 @@ static const struct driver_info lxausb_t1l_info = {
- 	.description = "Linux Automation GmbH USB 10Base-T1L",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
- 	.stop = ax88772_stop,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
--		 FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- 	.data = FLAG_EEPROM_MAC,
-@@ -1412,10 +1405,8 @@ static const struct driver_info hg20f9_info = {
- 	.description = "HG20F9 USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
--	         FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- 	.data = FLAG_EEPROM_MAC,
++static inline int pte_same(pte_t pte_a, pte_t pte_b);
++
++#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
++static inline int ptep_set_access_flags(struct vm_area_struct *vma,
++					unsigned long address, pte_t *ptep,
++					pte_t entry, int dirty)
++{
++	if (!pte_same(*ptep, entry))
++		set_ptes(vma->vm_mm, address, ptep, entry, 1);
++	/*
++	 * update_mmu_cache will unconditionally execute, handling both
++	 * the case that the PTE changed and the spurious fault case.
++	 */
++	return true;
++}
++
+ #endif /* _ASM_NIOS2_PGTABLE_H */
 -- 
 2.39.5
 
