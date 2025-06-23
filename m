@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-155868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6B0AE4415
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4300EAE4407
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 324E317FCC8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08AE01BC0D89
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA0B92528F3;
-	Mon, 23 Jun 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76EEE25392C;
+	Mon, 23 Jun 2025 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oxWDmpCQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZEHds/+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86770246BC9;
-	Mon, 23 Jun 2025 13:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343072F24;
+	Mon, 23 Jun 2025 13:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685544; cv=none; b=VqQ9RDrBQ7Jp8UesL518/uhpp9FY1oqHgGnqHEgsCquMxHgv5VUNp5CPe+BsdzPXEoWKQQRE9UlVfvP1dwDSX9JZptqgHPLWEeBILT1e2I2Y0HceF4C+Lrl0GjRbeqpo1obG8P2VNCxjEZTRx143dyYrnazuIVJ306vbXTKB2ec=
+	t=1750685557; cv=none; b=O7EKZ/7pWqQRxYSpIKzI5VS5VVj2eoIaos0S/+gu7x8Q4SBwPHNibXRWZ+XewVoFHfG43XFn3ZnqGrkL0XxBOOGENi+dyczc/CGA6UIquSTV/ipaLMknnvvIYuFOhbEihx5rmDJFO4JSOq8UR78OOv2DU8ss2owy7xwwBqtZx1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685544; c=relaxed/simple;
-	bh=e1gSudKc45POidW6q/BKG5eAIPrD1KUJj1Jyk9YliOM=;
+	s=arc-20240116; t=1750685557; c=relaxed/simple;
+	bh=rY1e9aHxi4i2UofoAmVIrVI2hUP/ep+6hAcXjhxwVxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfBJSku2RGD+/eyIMMcxkBup7yQE6mPAM5msMM6A0+vqmWgoU6TfKKjoqtCXM1uKxdAmG3S6UU4DpV3a6RCCsQ3z1XuIdKFoD3kzaxYyqKbCXvVHSV6zqrysjiCe1mfEOT+TOf0NMUZ8mINClHxRfQRCSS9ZwnkIL/hlCperhKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oxWDmpCQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11A30C4CEEA;
-	Mon, 23 Jun 2025 13:32:23 +0000 (UTC)
+	 MIME-Version; b=cW4bY0nE93R59ACNZ5OOKxaCi+4UHIehEWkiUtuwc6PP6u98mD0Pg6zFWk2CotmvrQ472CCwP/1OU6NuqqUgyygXu7F/yV0EBT0JaKzfj6/YD6faFSY3YihUwCS5yP/kLXki+E3E8fYCDbxs37zFa2j3Lmoz+atXYBVHFTlGoh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZEHds/+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEEAC4CEEA;
+	Mon, 23 Jun 2025 13:32:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685544;
-	bh=e1gSudKc45POidW6q/BKG5eAIPrD1KUJj1Jyk9YliOM=;
+	s=korg; t=1750685557;
+	bh=rY1e9aHxi4i2UofoAmVIrVI2hUP/ep+6hAcXjhxwVxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oxWDmpCQ2nwJcaDXw8e0TZJsVp8Rk3YDJWkmYmwH//gDr+tvCiebH1RTsZkx/5FAe
-	 Wwg4DhhAOhqXYh/IRu6yIFdp3miIeteX2hwlskIuwlcFPHe4rgolopwDD3HAMzmMUl
-	 GyCvKEPRvpNl1oCvdeSO4CA5O7MjivcKhxP5wdf4=
+	b=ZEHds/+GAZ0ZmjqNf72R4Wzd4IknqJVqTnDj/gEAkSmdHN1dMSJuDL8vLhdWWOECr
+	 ITAJd8AmCfIr6RuRYHaHeYWSPFzhbal3+OsxmC0tdwA9tPaPIq1+BmmpYzQwfoG9mR
+	 ShfJAYJs+T+DhuOdNEUhhFjLQkwk05nDp0F3CD7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Becker <jlbec@evilplan.org>,
-	Breno Leitao <leitao@debian.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH 5.4 102/222] configfs: Do not override creating attribute file failure in populate_attrs()
-Date: Mon, 23 Jun 2025 15:07:17 +0200
-Message-ID: <20250623130615.183047038@linuxfoundation.org>
+	Andreas Gruenbacher <agruenba@redhat.com>,
+	Alexander Aring <aahringo@redhat.com>
+Subject: [PATCH 5.4 103/222] gfs2: move msleep to sleepable context
+Date: Mon, 23 Jun 2025 15:07:18 +0200
+Message-ID: <20250623130615.212582811@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,40 +65,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit f830edbae247b89228c3e09294151b21e0dc849c upstream.
+commit ac5ee087d31ed93b6e45d2968a66828c6f621d8c upstream.
 
-populate_attrs() may override failure for creating attribute files
-by success for creating subsequent bin attribute files, and have
-wrong return value.
+This patch moves the msleep_interruptible() out of the non-sleepable
+context by moving the ls->ls_recover_spin spinlock around so
+msleep_interruptible() will be called in a sleepable context.
 
-Fix by creating bin attribute files under successfully creating
-attribute files.
-
-Fixes: 03607ace807b ("configfs: implement binary attributes")
 Cc: stable@vger.kernel.org
-Reviewed-by: Joel Becker <jlbec@evilplan.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250507-fix_configfs-v3-2-fe2d96de8dc4@quicinc.com
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+Fixes: 4a7727725dc7 ("GFS2: Fix recovery issues for spectators")
+Suggested-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/configfs/dir.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/gfs2/lock_dlm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -619,7 +619,7 @@ static int populate_attrs(struct config_
- 				break;
+--- a/fs/gfs2/lock_dlm.c
++++ b/fs/gfs2/lock_dlm.c
+@@ -905,14 +905,15 @@ locks_done:
+ 		if (sdp->sd_args.ar_spectator) {
+ 			fs_info(sdp, "Recovery is required. Waiting for a "
+ 				"non-spectator to mount.\n");
++			spin_unlock(&ls->ls_recover_spin);
+ 			msleep_interruptible(1000);
+ 		} else {
+ 			fs_info(sdp, "control_mount wait1 block %u start %u "
+ 				"mount %u lvb %u flags %lx\n", block_gen,
+ 				start_gen, mount_gen, lvb_gen,
+ 				ls->ls_recover_flags);
++			spin_unlock(&ls->ls_recover_spin);
  		}
+-		spin_unlock(&ls->ls_recover_spin);
+ 		goto restart;
  	}
--	if (t->ct_bin_attrs) {
-+	if (!error && t->ct_bin_attrs) {
- 		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
- 			error = configfs_create_bin_file(item, bin_attr);
- 			if (error)
+ 
 
 
 
