@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDA6EAE4EE4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB1F7AE53B4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01E843BEA58
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8AAF74A85CE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4465521CA07;
-	Mon, 23 Jun 2025 21:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B700E222576;
+	Mon, 23 Jun 2025 21:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cDYNep90"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v4NTJOwo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0265E70838;
-	Mon, 23 Jun 2025 21:10:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757EF3FB1B;
+	Mon, 23 Jun 2025 21:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713015; cv=none; b=QJhIOqEGkGa2K04CFzLDep6KxM2dZZXL7AYI1uKPjIucZAkQAeVweeQTMOcar8zpNM+baVi475uTukuCRb83s7bZXxC4D//C2DdpLVftqaLSxmmX5o7ikYYNVdktux2eOpMQzw3xoZcKpW20UJGSzp1j0JVPvhKdKQz44USdp0M=
+	t=1750715746; cv=none; b=Cyhe5aCDwwHYuQ2PKWJLTyp1I4Pakn4/EYhtCSwZ9i0vb2gwEyH8CgMJ+HDSKxgtoVIkb5YdD1sMcqVHy9VOmYg0Y3uz0qSgm6N6M/UZZvvKH/2n1O01e322TzZt4tCOXjCZmIQSeHRGYwnlpTVkX2A/IPpSvd1r/KzlwpP4Myw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713015; c=relaxed/simple;
-	bh=HtsJvmzNmqNyLdyS+mUZ98SbFCTTX/w7ybC8FpUO/24=;
+	s=arc-20240116; t=1750715746; c=relaxed/simple;
+	bh=jy3hTWsIwzmXN4dQulGp4mb4oIrMWJ8R98RY2fvBQag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SCXmkaL+KhgFcyMUuH0k/uHc8boC4sCncXLk7Mw1SVSlPyc+p07yh81DRGnXss9T8vOaV1JKr/K19gH3cp9rJSld5SnjKKyZo8jjxKqrJAy/QiubagMtgimoARZKFqnrbjJJ4Z/CqF0nJ4SZtmeEnkR0Hx938SwZPhrA89j0qwA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cDYNep90; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB4CC4CEEA;
-	Mon, 23 Jun 2025 21:10:14 +0000 (UTC)
+	 MIME-Version; b=dKqMnl34r6GLykr5U5CX/pahWtuxngjlrnWJz6uBf2ufhttSj57Jx12BNEwWn2yG6qR+CwH8WfLztyuB8mm3rbu/EN88GYX7W1h2VChk2H/qHBAsmQlobzzTVYvF+9Aai/zMcaXxf9SXFpQD6KOQQqYrQU/AhI5+gDpN/7YCKI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v4NTJOwo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B6E6C4CEEA;
+	Mon, 23 Jun 2025 21:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713014;
-	bh=HtsJvmzNmqNyLdyS+mUZ98SbFCTTX/w7ybC8FpUO/24=;
+	s=korg; t=1750715746;
+	bh=jy3hTWsIwzmXN4dQulGp4mb4oIrMWJ8R98RY2fvBQag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cDYNep90kp/I8asyB8hBGAPnuLyfFdnsu6lbCp8d74L7R47IuIYkc5huXwyTR4e0a
-	 3JByQcIMo5w86I7MPuS21OPhqSQMiojXLXaS2qok56LC7Mzo6d6McI+ZLzjIY9nHek
-	 R1J68ReD9v01mOdY8euyBciZ8uWnQXvTSKVOykhA=
+	b=v4NTJOwo3uB3hPsOn6DueBg/iXdkk5hWFJNfaEW3So83HkSb4eCKScLWCPkGWhkDv
+	 M+L3g0KY+N31dw+gmjAz0VXyqVTzbL1d4Oou9FG00tM/Ezfo4z952+eKJjN/KKDtfT
+	 wFhUnX4yQgrWRff+er0qp7Z9WeV+pkykbS05350g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tan En De <ende.tan@starfivetech.com>,
-	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 160/222] i2c: designware: Invoke runtime suspend on quick slave re-registration
+	wangdicheng <wangdicheng@kylinos.cn>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.10 294/355] ALSA: usb-audio: Rename ALSA kcontrol PCM and PCM1 for the KTMicro sound card
 Date: Mon, 23 Jun 2025 15:08:15 +0200
-Message-ID: <20250623130616.894520646@linuxfoundation.org>
+Message-ID: <20250623130635.615214763@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tan En De <ende.tan@starfivetech.com>
+From: wangdicheng <wangdicheng@kylinos.cn>
 
-[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
+commit 93adf20ff4d6e865e0b974110d3cf2f07c057177 upstream.
 
-Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
-the runtime suspend is invoked immediately when unregistering a slave.
-This prevents a race condition where suspend was skipped when
-unregistering and registering slave in quick succession.
+PCM1 not in Pulseaudio's control list; standardize control to
+"Speaker" and "Headphone".
 
-For example, consider the rapid sequence of
-`delete_device -> new_device -> delete_device -> new_device`.
-In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
-might not be invoked after `delete_device` operation.
-
-This is because after `delete_device` operation, when the
-pm_runtime_put() is about to trigger suspend, the following `new_device`
-operation might race and cancel the suspend.
-
-If that happens, during the `new_device` operation,
-dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
-means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
-Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
-skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
-the interrupt mask register using devmem, it will show as zero.
-
-Example shell script to reproduce the issue:
-```
-  #!/bin/sh
-
-  SLAVE_LADDR=0x1010
-  SLAVE_BUS=13
-  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
-  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
-
-  # Create initial device
-  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
-  sleep 2
-
-  # Rapid sequence of
-  # delete_device -> new_device -> delete_device -> new_device
-  echo $SLAVE_LADDR > $DELETE_DEVICE
-  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
-  echo $SLAVE_LADDR > $DELETE_DEVICE
-  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
-
-  # Using devmem to inspect IC_INTR_MASK will show as zero
-```
-
-Signed-off-by: Tan En De <ende.tan@starfivetech.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: wangdicheng <wangdicheng@kylinos.cn>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250613063636.239683-1-wangdich9700@163.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-designware-slave.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/usb/mixer_maps.c |   12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
-index f5f001738df5e..57e67962a602f 100644
---- a/drivers/i2c/busses/i2c-designware-slave.c
-+++ b/drivers/i2c/busses/i2c-designware-slave.c
-@@ -96,7 +96,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
- 	dev->disable(dev);
- 	synchronize_irq(dev->irq);
- 	dev->slave = NULL;
--	pm_runtime_put(dev->dev);
-+	pm_runtime_put_sync_suspend(dev->dev);
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -367,6 +367,13 @@ static const struct usbmix_name_map cors
+ 	{ 0 }
+ };
  
- 	return 0;
- }
--- 
-2.39.5
-
++/* KTMicro USB */
++static struct usbmix_name_map s31b2_0022_map[] = {
++	{ 23, "Speaker Playback" },
++	{ 18, "Headphone Playback" },
++	{ 0 }
++};
++
+ /* ASUS ROG Zenith II with Realtek ALC1220-VB */
+ static const struct usbmix_name_map asus_zenith_ii_map[] = {
+ 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
+@@ -649,6 +656,11 @@ static const struct usbmix_ctl_map usbmi
+ 		.id = USB_ID(0x1395, 0x0025),
+ 		.map = sennheiser_pc8_map,
+ 	},
++	{
++		/* KTMicro USB */
++		.id = USB_ID(0X31b2, 0x0022),
++		.map = s31b2_0022_map,
++	},
+ 	{ 0 } /* terminator */
+ };
+ 
 
 
 
