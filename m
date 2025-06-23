@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC7CAE518B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3759CAE54B3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ED6B81B62D34
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 654B14472E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F33D1222599;
-	Mon, 23 Jun 2025 21:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADBDA218580;
+	Mon, 23 Jun 2025 22:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vI8XCIGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1G3/6hf8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B194F221FD2;
-	Mon, 23 Jun 2025 21:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4943FB1B;
+	Mon, 23 Jun 2025 22:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714482; cv=none; b=Kh9/MMTHy8IWX8qnDg/kOc7RIAE05CcQFvlKwu/iFUZgELbMCljYNqRxS+2ilP1YZdoBIVT2xFHVkUwU7d2uq5aaYNtcNlqf4ip0IQQgZaIWQkPRSWSgkickuwdqhBViGshOKE/662gHC4Py0brpEp8pAR9rlxuuBRxaKBl2uXA=
+	t=1750716248; cv=none; b=g/qGEFiPUyv4k0Yv+IPoWrhBSua8OUj02oKpmzD+UdgeQTboxlXiJJ1DtHMHK8LtHidmrIsoqY2D+Fv9xdWDpXASYnwRaca+CX02q5yBrdiLTAz50BaWhz3a7Sm3mtPFAIqTVjoySToohmTExQ13KHJiTvSXBzeyRpZr3vvlzrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714482; c=relaxed/simple;
-	bh=Tnbd0HF1AA72mt2mYfn381e3oVpIkhWlZ4xmva4Xats=;
+	s=arc-20240116; t=1750716248; c=relaxed/simple;
+	bh=faW1s6yOuQBAx7ABNVP9VsS8UJ/WPB+V6VpF5lvsVv8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r+V+sSslQoZCO66QD/sJeGele4AO9RGSLtWFjNFlMJhlIZFRaIlNTTBIIl3RBQ4Vrp22rKKW53iV1QspHm7xL8Ef0EEYHWz9F0yaddwrOekZawPGJfOELuG3d0aRR8tWP0v767SMN2n4XE4cDAeMmRxChCY0y11F0CkC6vMcGo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vI8XCIGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EDF4C4CEEA;
-	Mon, 23 Jun 2025 21:34:42 +0000 (UTC)
+	 MIME-Version; b=GFhkQAIMf65LQDRXOf76pIoAu4aeqMgV+poFhLHdLlrNkVoTCMhIBH8uBi4tWDH2EMvZiidVWrjzyaA0Zk9nEvdBk7vkZJ4eDSceuVn2w233/qDlZrPMEu2gIorO6dECTjPWr56Hth6Dfi8R0+42Hc5BhFbEekGFHepiZ/GoEGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1G3/6hf8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84655C4CEEA;
+	Mon, 23 Jun 2025 22:04:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714482;
-	bh=Tnbd0HF1AA72mt2mYfn381e3oVpIkhWlZ4xmva4Xats=;
+	s=korg; t=1750716247;
+	bh=faW1s6yOuQBAx7ABNVP9VsS8UJ/WPB+V6VpF5lvsVv8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vI8XCIGqQSOdCL1c1F7aeU3lEvivp+SjqDTkG+rdh21G1+VaUdYVpbzRjHVFwEwjC
-	 YFnPYXT9/uDJDj77lGoUq29bJXiCf/nUX0eLJdljTrAFe7LNS5/xI6Wmlx8u0rz8OC
-	 2Be2obPSR+2XWZ+QFPhEE3qEUhrAMcrEV0dxDWwU=
+	b=1G3/6hf8gDaabV9nfu3uHQvyeYXa6FANwtERQTk324A4CiOcxMwqmUa3DG5MR0vYr
+	 RdBCo4ZyNfpEVrF3lkgR46CsMkzC4en/N9JJIUBnPO8J8PX7JnerH8cvbc/vdZ2H8w
+	 SEkwOuqQPTbln5jlwa97mSjM4bzBxr9qJA6MMt7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 211/411] media: gspca: Add error handling for stv06xx_read_sensor()
-Date: Mon, 23 Jun 2025 15:05:55 +0200
-Message-ID: <20250623130638.980760473@linuxfoundation.org>
+Subject: [PATCH 6.1 311/508] media: ccs-pll: Check for too high VT PLL multiplier in dual PLL case
+Date: Mon, 23 Jun 2025 15:05:56 +0200
+Message-ID: <20250623130652.970440333@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 398a1b33f1479af35ca915c5efc9b00d6204f8fa upstream.
+commit 6868b955acd6e5d7405a2b730c2ffb692ad50d2c upstream.
 
-In hdcs_init(), the return value of stv06xx_read_sensor() needs to be
-checked. A proper implementation can be found in vv6410_dump(). Add a
-check in loop condition and propergate error code to fix this issue.
+The check for VT PLL upper limit in dual PLL case was missing. Add it now.
 
-Fixes: 4c98834addfe ("V4L/DVB (10048): gspca - stv06xx: New subdriver.")
-Cc: stable@vger.kernel.org # v2.6+
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Fixes: 6c7469e46b60 ("media: ccs-pll: Add trivial dual PLL support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ccs-pll.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-+++ b/drivers/media/usb/gspca/stv06xx/stv06xx_hdcs.c
-@@ -520,12 +520,13 @@ static int hdcs_init(struct sd *sd)
- static int hdcs_dump(struct sd *sd)
- {
- 	u16 reg, val;
-+	int err = 0;
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -312,6 +312,11 @@ __ccs_pll_calculate_vt_tree(struct devic
+ 	dev_dbg(dev, "more_mul2: %u\n", more_mul);
  
- 	pr_info("Dumping sensor registers:\n");
+ 	pll_fr->pll_multiplier = mul * more_mul;
++	if (pll_fr->pll_multiplier > lim_fr->max_pll_multiplier) {
++		dev_dbg(dev, "pll multiplier %u too high\n",
++			pll_fr->pll_multiplier);
++		return -EINVAL;
++	}
  
--	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH; reg++) {
--		stv06xx_read_sensor(sd, reg, &val);
-+	for (reg = HDCS_IDENT; reg <= HDCS_ROWEXPH && !err; reg++) {
-+		err = stv06xx_read_sensor(sd, reg, &val);
- 		pr_info("reg 0x%02x = 0x%02x\n", reg, val);
- 	}
--	return 0;
-+	return (err < 0) ? err : 0;
- }
+ 	if (pll_fr->pll_multiplier * pll_fr->pll_ip_clk_freq_hz >
+ 	    lim_fr->max_pll_op_clk_freq_hz)
 
 
 
