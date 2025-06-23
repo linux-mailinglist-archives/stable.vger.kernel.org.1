@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8300BAE502A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A54AE5213
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0CA643BC71E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 876CB7A7118
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21C561E5B71;
-	Mon, 23 Jun 2025 21:22:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E265221FCC;
+	Mon, 23 Jun 2025 21:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sia4ttqc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Khr6l9QY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43C0219E0;
-	Mon, 23 Jun 2025 21:22:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE27B1E22E6;
+	Mon, 23 Jun 2025 21:40:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713768; cv=none; b=q59osckpDPaPpM2bQEDKNPw+xynyPPrr+SYzCkeqOZguELpAkKPjexhLxmg0dLYaC4rpRoFtvMQtR7HmMXx9kBKUfnqx6hwEhZJjtOk0y+2TTY5FaCP1QcHO6k7YTmK00+W/9W1NQrV/rX1h8DrpreTnlVktad6GxdS8acJD9fs=
+	t=1750714811; cv=none; b=L4wnXmgbfBOtvz4L84eKll6erhRy1GOR84kVcrirSWQucXNYjwzVSoSXfNb3OLMs12E+4lymV6lWUFoHtssTVUvkaGZafotfUyji20+JUh69fMsyrDkisWmJe5HnCIaMddUIbJvADKoOjZhYRCWd4JvGrejHSEwLW2oGScVaR5A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713768; c=relaxed/simple;
-	bh=PssDxJ/HftaUASlRDgS7UHSr5EBRuyZ2RVOO9im6f7c=;
+	s=arc-20240116; t=1750714811; c=relaxed/simple;
+	bh=twKijJsBYAABSvyl0Vhhiw2JIMPuSuHExDv1CfymBus=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pq68hDxkzpKXcizILWsZ04nKLKBZvXxkLmxn8gDMA3JZFm7HbjDOjQM74tQPaAihjQblrVG5jS3TJRM/OAj0I4FSBS0+TIGBdHXywUHoqPiK6GDOGQR4v2b4LOVTJHEyoz7sHkGXhBXs1skCMfQQldd0ZoyTalxp73op+nCTsOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sia4ttqc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E58BC4CEEA;
-	Mon, 23 Jun 2025 21:22:48 +0000 (UTC)
+	 MIME-Version; b=P0za+sKuyGXQnNy75HWFwJIOkqNS1dRN+eeoltgVGJ1DPP05ym54Z4626L26QT+F5Sj7IF6ImSpjOieDMdinKuGvxOnOwMP0PWBQCcBElyr85MFiCtVA5qcV/ffAXzRG2/4+Lz3+vl+KG1UBNFZHj38I7ghFSgffPrr/QXJPi38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Khr6l9QY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B7AC4CEEA;
+	Mon, 23 Jun 2025 21:40:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713768;
-	bh=PssDxJ/HftaUASlRDgS7UHSr5EBRuyZ2RVOO9im6f7c=;
+	s=korg; t=1750714811;
+	bh=twKijJsBYAABSvyl0Vhhiw2JIMPuSuHExDv1CfymBus=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Sia4ttqc6I7hOturmuLPZiMyKZvpW+eeLjYkXy6oEpQNpyYVVB70ouuAHOIO1Q1Rz
-	 Fm49+we7ISdUod1cJxvgYW5O2plktBqWNI40XaFKaBBdfcVx+252jqZVSFagWuo/w2
-	 g0zYDwqCjexpePB98E/RrsA/7ytA4Zyw7EB75rH0=
+	b=Khr6l9QYmdhPI2xWgYbBuY1On/i991n24FUZE3ktdh7MZVSBiq+B4fDaJOe10qb/Y
+	 5HMeEel8A069eUg1nWteoVJ+rDXJa+U1YKuwTkGoXBWvewkd7UtiSci2tHeaXl/FDB
+	 LzuyeMr8hrv3es+3hlswRvIYyNfD6+ziaRtXfO28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 114/290] iio: imu: inv_icm42600: Fix temperature calculation
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 231/411] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
 Date: Mon, 23 Jun 2025 15:06:15 +0200
-Message-ID: <20250623130630.378348186@linuxfoundation.org>
+Message-ID: <20250623130639.474281340@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +59,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit e2f820014239df9360064079ae93f838ff3b7f8c upstream.
+commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
 
->From the documentation:
-"offset to be added to <type>[Y]_raw prior toscaling by <type>[Y]_scale"
-Offset should be applied before multiplying scale, so divide offset by
-scale to make this correct.
+The "len" variable comes from the firmware and we generally do
+trust firmware, but it's always better to double check.  If the "len"
+is too large it could result in memory corruption when we do
+"memcpy(fragment->data, rec->data, len);"
 
-Fixes: bc3eb0207fb5 ("iio: imu: inv_icm42600: add temperature sensor support")
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Acked-by: Jean-Baptiste Maneyrol <jean-baptiste.maneyrol@tdk.com>
-Link: https://patch.msgid.link/20250502-imu-v1-1-129b8391a4e3@geanix.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/input/misc/ims-pcu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-+++ b/drivers/iio/imu/inv_icm42600/inv_icm42600_temp.c
-@@ -67,16 +67,18 @@ int inv_icm42600_temp_read_raw(struct ii
- 		return IIO_VAL_INT;
- 	/*
- 	 * T°C = (temp / 132.48) + 25
--	 * Tm°C = 1000 * ((temp * 100 / 13248) + 25)
-+	 * Tm°C = 1000 * ((temp / 132.48) + 25)
-+	 * Tm°C = 7.548309 * temp + 25000
-+	 * Tm°C = (temp + 3312) * 7.548309
- 	 * scale: 100000 / 13248 ~= 7.548309
--	 * offset: 25000
-+	 * offset: 3312
- 	 */
- 	case IIO_CHAN_INFO_SCALE:
- 		*val = 7;
- 		*val2 = 548309;
- 		return IIO_VAL_INT_PLUS_MICRO;
- 	case IIO_CHAN_INFO_OFFSET:
--		*val = 25000;
-+		*val = 3312;
- 		return IIO_VAL_INT;
- 	default:
- 		return -EINVAL;
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
+ 		addr = be32_to_cpu(rec->addr) / 2;
+ 		len = be16_to_cpu(rec->len);
+ 
++		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
++			dev_err(pcu->dev,
++				"Invalid record length in firmware: %d\n", len);
++			return -EINVAL;
++		}
++
+ 		fragment = (void *)&pcu->cmd_buf[1];
+ 		put_unaligned_le32(addr, &fragment->addr);
+ 		fragment->len = len;
 
 
 
