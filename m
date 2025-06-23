@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156454-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27F30AE4FAB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67C21AE4EA2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF6CF1B613E7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDB553BB89C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78076223714;
-	Mon, 23 Jun 2025 21:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 810A2221DBD;
+	Mon, 23 Jun 2025 21:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b1w1elyE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pSvhUYZr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365AC2236EF;
-	Mon, 23 Jun 2025 21:17:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E1F6217668;
+	Mon, 23 Jun 2025 21:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713451; cv=none; b=RtM+0TX8XL++nlKcbZWluQukX7gDQ4SvE0uUcgimozFP8zvXmmZlTBYI6AszvAdHW+4fjYpaXOaW8JFVafksEly2gaPazBWuitbhjteWHlPEz/zjQP/IMrni1pHYPK9nx22vIltFco8GRN3dFNjKXw8cer/r79Fh1wmIw4OiDWo=
+	t=1750712854; cv=none; b=G9EieoPTMMPW29WgsvbcP0r3dnRyVcrk5m1Lamat00K21sWkHrFPLxvKRZyjr2XwDtpabEcLAOSmWozpCEPJg1plD8FiyyG6r+emEPGEA/Vbev2aOFzhbwwmFpFmG/FyLMnIken8ldo0WJP5m6ca2OdzUJgJKKVTSTL4g7Lf0So=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713451; c=relaxed/simple;
-	bh=fo+n+TjGy5iiJi1VuasNT7ro8+v3VoLjXcu4hfsuJB8=;
+	s=arc-20240116; t=1750712854; c=relaxed/simple;
+	bh=9ni3iwJlcNxsd4O4TBj7FE2EO0rkmKS0rpsOGK/vwYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d9BCl5QqpC9nOvNKT90zF82NQlR32LgUimt1jxz5K9enR058OZoxAjFKjfpakGtFTcNG4QAmvLvouoF70z+v10fFD8D4AAZdC9fx5BTKJV0evumt2FBMCUplVQdXQjJxcoJnJJI+aRMg0vYSZIYPkVORh3yQAq9yeGlLGyuId/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b1w1elyE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B4CC4CEEA;
-	Mon, 23 Jun 2025 21:17:30 +0000 (UTC)
+	 MIME-Version; b=teCOgLMq7bDjQEoWKHgfUVUCve1W5UBi6mr+NR/07zb7ct26y5ng8bIO4l7d1Z24p8Ylm58Vhvm+uBoMG003ttRpypjw4qPHpy1F4sH0JpYSVwMc3a43Hac0rfJRim1XVG6LebtN7D5fjLVU/osabIyCrjjnqP/xD91GtrAX9eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pSvhUYZr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA7F0C4CEEA;
+	Mon, 23 Jun 2025 21:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713451;
-	bh=fo+n+TjGy5iiJi1VuasNT7ro8+v3VoLjXcu4hfsuJB8=;
+	s=korg; t=1750712854;
+	bh=9ni3iwJlcNxsd4O4TBj7FE2EO0rkmKS0rpsOGK/vwYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b1w1elyE9Zgaav/PlUW36FGOFmKJ/juy9lZS/vwoI6vquY43AiKOhXxWXrRfJ4CEw
-	 9n1jOFprgtmKdqu+GeB/3m5q9RloTVKj+v8WrL0ZCPXS58XE9JxbuEmb7/7GROn+Kl
-	 3YmmxuwKICUyjZBn7m6Zu1V61XF0iCgdUNOV/ol0=
+	b=pSvhUYZrGVxGfGL/NOy/76T1tkiuzSCQ8YpfZgV4qfmZxh0zDU3Gtex1Mn05MxQ5C
+	 rKD/Exr6vcSfxEFWecaktyfORJkTfIJGEcuFpWKtGsM37fVOB0uNLfSanb2XshdXDT
+	 G1QHaRwdQvskALkPIRSYL2L6fpKIlz17D2s96YNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 107/508] ARM: dts: at91: usb_a9263: fix GPIO for Dataflash chip select
+	Gerd Bayer <gbayer@linux.ibm.com>,
+	Julian Ruess <julianr@linux.ibm.com>,
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.12 015/414] s390/pci: Remove redundant bus removal and disable from zpci_release_device()
 Date: Mon, 23 Jun 2025 15:02:32 +0200
-Message-ID: <20250623130647.913608666@linuxfoundation.org>
+Message-ID: <20250623130642.408055923@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+From: Niklas Schnelle <schnelle@linux.ibm.com>
 
-[ Upstream commit 67ba341e57ab158423818ed33bfa1c40eb0e5e7e ]
+commit d76f9633296785343d45f85199f4138cb724b6d2 upstream.
 
-Dataflash did not work on my board. After checking schematics and using
-the proper GPIO, it works now. Also, make it active low to avoid:
+Remove zpci_bus_remove_device() and zpci_disable_device() calls from
+zpci_release_device(). These calls were done when the device
+transitioned into the ZPCI_FN_STATE_STANDBY state which is guaranteed to
+happen before it enters the ZPCI_FN_STATE_RESERVED state. When
+zpci_release_device() is called the device is known to be in the
+ZPCI_FN_STATE_RESERVED state which is also checked by a WARN_ON().
 
-flash@0 enforce active low on GPIO handle
-
-Fixes: 2432d201468d ("ARM: at91: dt: usb-a9263: add dataflash support")
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Link: https://lore.kernel.org/r/20250404112742.67416-2-wsa+renesas@sang-engineering.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: a46044a92add ("s390/pci: fix zpci_zdev_put() on reserve")
+Reviewed-by: Gerd Bayer <gbayer@linux.ibm.com>
+Reviewed-by: Julian Ruess <julianr@linux.ibm.com>
+Tested-by: Gerd Bayer <gbayer@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/usb_a9263.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/s390/pci/pci.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/usb_a9263.dts b/arch/arm/boot/dts/usb_a9263.dts
-index b6cb9cdf81973..c9d0058e90813 100644
---- a/arch/arm/boot/dts/usb_a9263.dts
-+++ b/arch/arm/boot/dts/usb_a9263.dts
-@@ -58,7 +58,7 @@
- 			};
+--- a/arch/s390/pci/pci.c
++++ b/arch/s390/pci/pci.c
+@@ -943,12 +943,6 @@ void zpci_release_device(struct kref *kr
  
- 			spi0: spi@fffa4000 {
--				cs-gpios = <&pioB 15 GPIO_ACTIVE_HIGH>;
-+				cs-gpios = <&pioA 5 GPIO_ACTIVE_LOW>;
- 				status = "okay";
- 				flash@0 {
- 					compatible = "atmel,at45", "atmel,dataflash";
--- 
-2.39.5
-
+ 	WARN_ON(zdev->state != ZPCI_FN_STATE_RESERVED);
+ 
+-	if (zdev->zbus->bus)
+-		zpci_bus_remove_device(zdev, false);
+-
+-	if (zdev_enabled(zdev))
+-		zpci_disable_device(zdev);
+-
+ 	if (zdev->has_hp_slot)
+ 		zpci_exit_slot(zdev);
+ 
 
 
 
