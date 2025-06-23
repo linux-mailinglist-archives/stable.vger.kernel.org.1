@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19B90AE53BC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE124AE53E0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 23ABF1B6123C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4B1544A8B4D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D2BF1FECBA;
-	Mon, 23 Jun 2025 21:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C228220686;
+	Mon, 23 Jun 2025 21:57:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W9pKhNXX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F5BISntp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC365222576;
-	Mon, 23 Jun 2025 21:55:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD3EF1AD3FA;
+	Mon, 23 Jun 2025 21:57:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715720; cv=none; b=AU2bm1yLBNx7amSxSft0PFJe4Qx50bd41nZVqFQn7C2RCIKmkttKBqTW+0lAALP6W5L8/mxUuNPVi77iQGs8/qyZRpta5ZqFjUfJOu2vCM6ZSK8sb7S6+So5fFg7raEiHa7w/ogZ9uCWysKZMBKZJfrWySZO0FTcNye2V82V3PQ=
+	t=1750715836; cv=none; b=KWUNlfV+u+Aw7PfNjICy38RmoStaXluea3pkxHlZrg0KvHAkMYbp6wGf7tXsrFRX/MA9FGEKownlC8TsVHZBpJIlTjhT/Ziex6hAnY+gExa2scMyDdmdlVEkmUPQ+HShF/+OtfcPFqyVkEgqmq3WQMM0iDAZH/rquFdqJump4HI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715720; c=relaxed/simple;
-	bh=kexV3X6pYpyq4KcIHXnBiWEwykoBYLvgUBO8Zpgoq2Y=;
+	s=arc-20240116; t=1750715836; c=relaxed/simple;
+	bh=JBXmKVpIhajF30lP9eIsTXEfV/vOL8CRCV3Wyxs2LRw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLb1sTjJqJNSh3btMfRZULJUWT0zXtTecrx+DCDZogWFFjTtlsOd38hn5mS6Dh/3izBHjgubJRhtZDsYYrE81xq/EkfesiDQJwwvC9be/whXDmPKVWJwKOchDVhDFb2d5J4BL8tgVIbdYUrC0uzJdbVyGq+gYgB6/5SV7Utnp3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W9pKhNXX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38CE8C4CEEA;
-	Mon, 23 Jun 2025 21:55:19 +0000 (UTC)
+	 MIME-Version; b=SDkzRFH1qdabHmyU6j0aN8lamnNxss/GTUGRanYPqgaAwdzuf4XX/scUBUmUCtKYb3mQm5w/EJkm8szncFd2Ig8EJlCPRDuCsO25d3h2vab0RGti/Nn6jJQCipZibYJam3AkcDHIaw41w0ertEYNuLLrWrL6Mi2zwmJU+EbGDPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F5BISntp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63CE6C4CEEA;
+	Mon, 23 Jun 2025 21:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715719;
-	bh=kexV3X6pYpyq4KcIHXnBiWEwykoBYLvgUBO8Zpgoq2Y=;
+	s=korg; t=1750715836;
+	bh=JBXmKVpIhajF30lP9eIsTXEfV/vOL8CRCV3Wyxs2LRw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W9pKhNXXIHV/z8SsLZ/KZsy9dOGeOFlcsk84oQ78bj5NmnA5ZCqoG+nsgCP4uJnS7
-	 uGLP0HUtzrIHwCBe0pHVS0uEFl2lQkI5fJkmwOxBcC0gS9vMXwxZZZkgmvi6+Pryb+
-	 o3sClibE0b1zyRpAXe8nfy6IJzCGQ7tC3y4xxKxk=
+	b=F5BISntp5rquihcuRlsNfTNpfWSa7WUTPC9rUDz5xW5e+1EnW0ApltatRacwa0k4+
+	 iRXvmn0WEOZn9I8oY2aHVO/BHd3VJoHHP1ZWaBP85hKsGGPyPoScdrlxKfAkY2sfB0
+	 DxIIt0QbpBuh0tezGW9qxUec4W+kblihpRppiJSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.15 476/592] x86/virt/tdx: Avoid indirect calls to TDX assembly functions
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 290/411] media: rkvdec: Initialize the m2m context before the controls
 Date: Mon, 23 Jun 2025 15:07:14 +0200
-Message-ID: <20250623130711.755612039@linuxfoundation.org>
+Message-ID: <20250623130640.952067274@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Huang <kai.huang@intel.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-commit 0b3bc018e86afdc0cbfef61328c63d5c08f8b370 upstream.
+[ Upstream commit d43d7db3c8a1868dcbc6cb8de90a3cdf309d6cbb ]
 
-Two 'static inline' TDX helper functions (sc_retry() and
-sc_retry_prerr()) take function pointer arguments which refer to
-assembly functions.  Normally, the compiler inlines the TDX helper,
-realizes that the function pointer targets are completely static --
-thus can be resolved at compile time -- and generates direct call
-instructions.
+Setting up the control handler calls into .s_ctrl ops. While validating
+the controls the ops may need to access some of the context state, which
+could lead to a crash if not properly initialized.
 
-But, other times (like when CONFIG_CC_OPTIMIZE_FOR_SIZE=y), the
-compiler declines to inline the helpers and will instead generate
-indirect call instructions.
-
-Indirect calls to assembly functions require special annotation (for
-various Control Flow Integrity mechanisms).  But TDX assembly
-functions lack the special annotations and can only be called
-directly.
-
-Annotate both the helpers as '__always_inline' to prod the compiler
-into maintaining the direct calls. There is no guarantee here, but
-Peter has volunteered to report the compiler bug if this assumption
-ever breaks[1].
-
-Fixes: 1e66a7e27539 ("x86/virt/tdx: Handle SEAMCALL no entropy error in common code")
-Fixes: df01f5ae07dd ("x86/virt/tdx: Add SEAMCALL error printing for module initialization")
-Signed-off-by: Kai Huang <kai.huang@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/20250605145914.GW39944@noisy.programming.kicks-ass.net/ [1]
-Link: https://lore.kernel.org/all/20250606130737.30713-1-kai.huang%40intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/tdx.h  |    2 +-
- arch/x86/virt/vmx/tdx/tdx.c |    5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/staging/media/rkvdec/rkvdec.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -100,7 +100,7 @@ void tdx_init(void);
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index 9c85370fd81bc..41b93f09e6df0 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -794,24 +794,24 @@ static int rkvdec_open(struct file *filp)
+ 	rkvdec_reset_decoded_fmt(ctx);
+ 	v4l2_fh_init(&ctx->fh, video_devdata(filp));
  
- typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
+-	ret = rkvdec_init_ctrls(ctx);
+-	if (ret)
+-		goto err_free_ctx;
+-
+ 	ctx->fh.m2m_ctx = v4l2_m2m_ctx_init(rkvdec->m2m_dev, ctx,
+ 					    rkvdec_queue_init);
+ 	if (IS_ERR(ctx->fh.m2m_ctx)) {
+ 		ret = PTR_ERR(ctx->fh.m2m_ctx);
+-		goto err_cleanup_ctrls;
++		goto err_free_ctx;
+ 	}
  
--static inline u64 sc_retry(sc_func_t func, u64 fn,
-+static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
- 			   struct tdx_module_args *args)
- {
- 	int retry = RDRAND_RETRY_LOOPS;
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -69,8 +69,9 @@ static inline void seamcall_err_ret(u64
- 			args->r9, args->r10, args->r11);
- }
++	ret = rkvdec_init_ctrls(ctx);
++	if (ret)
++		goto err_cleanup_m2m_ctx;
++
+ 	filp->private_data = &ctx->fh;
+ 	v4l2_fh_add(&ctx->fh);
  
--static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
--				 u64 fn, struct tdx_module_args *args)
-+static __always_inline int sc_retry_prerr(sc_func_t func,
-+					  sc_err_func_t err_func,
-+					  u64 fn, struct tdx_module_args *args)
- {
- 	u64 sret = sc_retry(func, fn, args);
+ 	return 0;
  
+-err_cleanup_ctrls:
+-	v4l2_ctrl_handler_free(&ctx->ctrl_hdl);
++err_cleanup_m2m_ctx:
++	v4l2_m2m_ctx_release(ctx->fh.m2m_ctx);
+ 
+ err_free_ctx:
+ 	kfree(ctx);
+-- 
+2.39.5
+
 
 
 
