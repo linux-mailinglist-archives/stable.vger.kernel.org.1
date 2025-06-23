@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A69CAE54AA
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7329EAE537B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A64716D36C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D67A01B6722C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82ECD1A4F12;
-	Mon, 23 Jun 2025 22:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147202248A4;
+	Mon, 23 Jun 2025 21:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rPmrdUT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HlgZf7NU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA7D4C74;
-	Mon, 23 Jun 2025 22:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C61BF224244;
+	Mon, 23 Jun 2025 21:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716191; cv=none; b=lnh41a8W0ZMQC6e+AGR+yZVpr5bcqFvMyk3B17Yiz5WTE0t8b1/BdBNIwDsqzP3PBukn7x0zItULg8/B6G8MRaWJYt9vxWrFpPRpNkkOOHhGd4OhtaVlN9tBuc0KfSup3zMYD1uGljfHqg8TiDvmkV6mnOtAjw+Iz0ERsRat3kY=
+	t=1750715601; cv=none; b=Z5MBQMUjHXaoD7WAea7xcMkQjCd4v54V1DD1u1sptQF5zfMMvSuOt8sHzS74M6SMIT2329u8YvI65g2FQPIb0iNqopfDbR2J5ctM4EDD/CTGroMK0pdtqSwWMZcbdbjFk+MYf4oBMWVWocA9zjRLYrd2OW/2AqM/KGkIT7k+95A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716191; c=relaxed/simple;
-	bh=YrofZ9LSgjdgHrtY+Z4ShQqhzVF/CJjIRWmYN1I5US4=;
+	s=arc-20240116; t=1750715601; c=relaxed/simple;
+	bh=/HKvXN4GQ3kvx7pr8JwWMmup8p/B+cvxLdQi9GIGv4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGmMW8Bdnlw99AkNyFQ2IG8rZ+QNXZ8SIq2xzCUbmm8nFes+twwLqJiYbyq/wzBK+wxgMzqt773/ytBHMoawNUiKBY0qKzKFSAq/BtNJi6L5OqKZMbpPs7Ym7wzdL3S66M6zMNpbxnbPtql3D40o+vouy5VfxCm0nX14ykoFVMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rPmrdUT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC424C4CEEA;
-	Mon, 23 Jun 2025 22:03:10 +0000 (UTC)
+	 MIME-Version; b=n2VvBU1jBbkyoPywEaecVStEw6Q4CydpH2bKCGBY0xxiJRgeUHlHOxV/+gwVE4b2n2uRCTNdIndj4cuy6hwcQ8tf8XsMKkCcePpwpV2qzyk7gCIwKz3JB/JJQbmHYL2pzMoczqKNDsvObR2LPgLC2PdjQZVWqoSTGihGnKo7kzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HlgZf7NU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EAD9C4CEEA;
+	Mon, 23 Jun 2025 21:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716191;
-	bh=YrofZ9LSgjdgHrtY+Z4ShQqhzVF/CJjIRWmYN1I5US4=;
+	s=korg; t=1750715601;
+	bh=/HKvXN4GQ3kvx7pr8JwWMmup8p/B+cvxLdQi9GIGv4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2rPmrdUTQ6/7/l6JtQphRmabxTLOunLLw6WJXkaTG+cDR4BofyPFmvnFNNX7wttuH
-	 IIOUuyvpuY3lDKxf40ZTg2iuzGk71MMUYAfVL7c17WSvRD2u2F0C3Ajp+eeNEdC8gx
-	 JJaGT7RXTdIn13qWkghYjKW4F9O6E04Z3UmpBEHw=
+	b=HlgZf7NUntVidnWAhSXahHsLv9mKNKzLzFAe7Khll4EEDAqaqjqgt9IxiUwa6VlM7
+	 jQuSDs/RK4VnD70gn5ZKWFKw2cP1GKEMjblx6oThdw8I7bmW0GQ3FXiU7oLebvPIvY
+	 dU6JfGdcCdNu8WhNc2aNUxh915vH4EOiouG2Z1hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chuyi Zhou <zhouchuyi@bytedance.com>,
-	Waiman Long <longman@redhat.com>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 528/592] workqueue: Initialize wq_isolated_cpumask in workqueue_init_early()
+	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: [PATCH 5.10 285/355] jffs2: check that raw node were preallocated before writing summary
 Date: Mon, 23 Jun 2025 15:08:06 +0200
-Message-ID: <20250623130712.993301480@linuxfoundation.org>
+Message-ID: <20250623130635.345345662@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuyi Zhou <zhouchuyi@bytedance.com>
+From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
 
-[ Upstream commit 261dce3d64021e7ec828a17b4975ce9182e54ceb ]
+commit ec9e6f22bce433b260ea226de127ec68042849b0 upstream.
 
-Now when isolcpus is enabled via the cmdline, wq_isolated_cpumask does
-not include these isolated CPUs, even wq_unbound_cpumask has already
-excluded them. It is only when we successfully configure an isolate cpuset
-partition that wq_isolated_cpumask gets overwritten by
-workqueue_unbound_exclude_cpumask(), including both the cmdline-specified
-isolated CPUs and the isolated CPUs within the cpuset partitions.
+Syzkaller detected a kernel bug in jffs2_link_node_ref, caused by fault
+injection in jffs2_prealloc_raw_node_refs. jffs2_sum_write_sumnode doesn't
+check return value of jffs2_prealloc_raw_node_refs and simply lets any
+error propagate into jffs2_sum_write_data, which eventually calls
+jffs2_link_node_ref in order to link the summary to an expectedly allocated
+node.
 
-Fix this issue by initializing wq_isolated_cpumask properly in
-workqueue_init_early().
+kernel BUG at fs/jffs2/nodelist.c:592!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 1 PID: 31277 Comm: syz-executor.7 Not tainted 6.1.128-syzkaller-00139-ge10f83ca10a1 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:jffs2_link_node_ref+0x570/0x690 fs/jffs2/nodelist.c:592
+Call Trace:
+ <TASK>
+ jffs2_sum_write_data fs/jffs2/summary.c:841 [inline]
+ jffs2_sum_write_sumnode+0xd1a/0x1da0 fs/jffs2/summary.c:874
+ jffs2_do_reserve_space+0xa18/0xd60 fs/jffs2/nodemgmt.c:388
+ jffs2_reserve_space+0x55f/0xaa0 fs/jffs2/nodemgmt.c:197
+ jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
+ jffs2_write_end+0x726/0x15d0 fs/jffs2/file.c:301
+ generic_perform_write+0x314/0x5d0 mm/filemap.c:3856
+ __generic_file_write_iter+0x2ae/0x4d0 mm/filemap.c:3973
+ generic_file_write_iter+0xe3/0x350 mm/filemap.c:4005
+ call_write_iter include/linux/fs.h:2265 [inline]
+ do_iter_readv_writev+0x20f/0x3c0 fs/read_write.c:735
+ do_iter_write+0x186/0x710 fs/read_write.c:861
+ vfs_iter_write+0x70/0xa0 fs/read_write.c:902
+ iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
+ do_splice_from fs/splice.c:763 [inline]
+ direct_splice_actor+0x10c/0x170 fs/splice.c:950
+ splice_direct_to_actor+0x337/0xa10 fs/splice.c:896
+ do_splice_direct+0x1a9/0x280 fs/splice.c:1002
+ do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
+ __do_sys_sendfile64 fs/read_write.c:1323 [inline]
+ __se_sys_sendfile64 fs/read_write.c:1309 [inline]
+ __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
 
-Fixes: fe28f631fa94 ("workqueue: Add workqueue_unbound_exclude_cpumask() to exclude CPUs from wq_unbound_cpumask")
-Signed-off-by: Chuyi Zhou <zhouchuyi@bytedance.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this issue by checking return value of jffs2_prealloc_raw_node_refs
+before calling jffs2_sum_write_data.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Cc: stable@vger.kernel.org
+Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
+Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/workqueue.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/jffs2/summary.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index 1ea62b8c76b32..c8083dd300167 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -7756,7 +7756,8 @@ void __init workqueue_init_early(void)
- 		restrict_unbound_cpumask("workqueue.unbound_cpus", &wq_cmdline_cpumask);
+--- a/fs/jffs2/summary.c
++++ b/fs/jffs2/summary.c
+@@ -858,7 +858,10 @@ int jffs2_sum_write_sumnode(struct jffs2
+ 	spin_unlock(&c->erase_completion_lock);
  
- 	cpumask_copy(wq_requested_unbound_cpumask, wq_unbound_cpumask);
--
-+	cpumask_andnot(wq_isolated_cpumask, cpu_possible_mask,
-+						housekeeping_cpumask(HK_TYPE_DOMAIN));
- 	pwq_cache = KMEM_CACHE(pool_workqueue, SLAB_PANIC);
+ 	jeb = c->nextblock;
+-	jffs2_prealloc_raw_node_refs(c, jeb, 1);
++	ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++
++	if (ret)
++		goto out;
  
- 	unbound_wq_update_pwq_attrs_buf = alloc_workqueue_attrs();
--- 
-2.39.5
-
+ 	if (!c->summary->sum_num || !c->summary->sum_list_head) {
+ 		JFFS2_WARNING("Empty summary info!!!\n");
+@@ -872,6 +875,8 @@ int jffs2_sum_write_sumnode(struct jffs2
+ 	datasize += padsize;
+ 
+ 	ret = jffs2_sum_write_data(c, jeb, infosize, datasize, padsize);
++
++out:
+ 	spin_lock(&c->erase_completion_lock);
+ 	return ret;
+ }
 
 
 
