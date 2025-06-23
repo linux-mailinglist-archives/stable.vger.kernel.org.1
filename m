@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A782AE5321
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:50:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06888AE5119
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26EB9444810
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:50:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 845FF4A2AFF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB24224B1F;
-	Mon, 23 Jun 2025 21:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F49A218580;
+	Mon, 23 Jun 2025 21:30:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KWUXJYOw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aKLoUL7W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A751224AFA;
-	Mon, 23 Jun 2025 21:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE1B22AD04;
+	Mon, 23 Jun 2025 21:30:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715416; cv=none; b=H3QXer5hmGrpuWNXy1SPakeWZjlTJMryuzqU1DbN4zVcDEEwAqAN3y3jn+CfVR9hb+ViR0ftwopHc2zqp57E2rXGITw6cZbItWTO+k11DC7oPvsfGuoMkUw4pX7hzR16LbNJfw/pVkO4i4DVDycGtUP/AYYqcruYnpa+jr9vF/E=
+	t=1750714243; cv=none; b=WOnhqticq9KwY9NIlIpKFre4r6Vv8O8QymfLbj+kjbSjeHqsag4vLD/yybdPIIeDXD2sYsc4HhLZruAIPOUTX/3Hloer38oCF6Aii7grECTnfcPpSzRoOkmryaj2Rl/eJ6xNSnDfpIqeiPavcR3EmpP7PJRtacD6Vl4iqmjaPwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715416; c=relaxed/simple;
-	bh=RFU8064JVMgOLPkCAQLQgH7aSLWCMwn2bm7sgcLPfL4=;
+	s=arc-20240116; t=1750714243; c=relaxed/simple;
+	bh=TUQN+U8lMF4rah0kcf8lX1BIAXrpEMRj22xNlRjbnwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MekgDSw15U4ON//+BEZavfmst659CIHufPMSNTLdiA1+eX64gNhYcCPd18xyuZ/OauieYA50RvBo7DCxw0OlNnLjowtTziQlLlmdbG8OD8WvjjD6VMqU2RChSV59nzAtwiZUhNYGlL7QzR3obR/7OKKDmL6vVQia2flKOSwUKqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KWUXJYOw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D618EC4CEEA;
-	Mon, 23 Jun 2025 21:50:15 +0000 (UTC)
+	 MIME-Version; b=E4qrJC0q+ULC/jG/d4L+GCKQGVT8Lcs1xLhL858ccF12V1e6+4ijfZMf19OQUQDZzS87sUGnTG7AtyuQ+Gn3RZWSf376+GfcNM5s7ewo8KDYAK278HQfXEnGzopb9zcU7r3AdPlgosWJpICId3akpDo5xlaDWCtbZGTyArQzLvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aKLoUL7W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A26C4CEEA;
+	Mon, 23 Jun 2025 21:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715416;
-	bh=RFU8064JVMgOLPkCAQLQgH7aSLWCMwn2bm7sgcLPfL4=;
+	s=korg; t=1750714242;
+	bh=TUQN+U8lMF4rah0kcf8lX1BIAXrpEMRj22xNlRjbnwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KWUXJYOwJaFZbUVCUPJaR3tJiho283Wb2/wpp/Pd18JlZu5xbsjIaVn5lGfko7M9o
-	 14Cu2wJnCvPgRIOwyT9c2yz/KCCLCGJXz59deVQsCl8mJL9oT4wiFFVgEJHFy89PkV
-	 f+S4AB2sQ01Gu8SIAwaeWklhgXTfOg9n8ECF1Lxo=
+	b=aKLoUL7WDnsc5Xu9gK06pbO7ZLSAuUt9kHDjUZU9QPWT8VoX8uQV0JlGZZmuajIk9
+	 wuzug5ChmjbBeJaujln/0yMvsXr0Fi1SgudgbzHexbRzF8lACYOe0pJ9SbwHJlkVW4
+	 63EryW2ep5tOMWJP6qXCNQRBXCNa505CftRFOqd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Peng Fan <peng.fan@nxp.com>
-Subject: [PATCH 5.15 251/411] remoteproc: core: Cleanup acquired resources when rproc_handle_resources() fails in rproc_attach()
+	syzbot+9c09fda97a1a65ea859b@syzkaller.appspotmail.com,
+	Yi Yang <yiyang13@huawei.com>,
+	GONG Ruiqi <gongruiqi1@huawei.com>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 194/355] vgacon: Add check for vc_origin address range in vgacon_scroll()
 Date: Mon, 23 Jun 2025 15:06:35 +0200
-Message-ID: <20250623130639.967413275@linuxfoundation.org>
+Message-ID: <20250623130632.507238063@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,88 +63,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: GONG Ruiqi <gongruiqi1@huawei.com>
 
-commit 7692c9fbedd9087dc9050903f58095915458d9b1 upstream.
+commit 864f9963ec6b4b76d104d595ba28110b87158003 upstream.
 
-When rproc->state = RPROC_DETACHED and rproc_attach() is used
-to attach to the remote processor, if rproc_handle_resources()
-returns a failure, the resources allocated by imx_rproc_prepare()
-should be released, otherwise the following memory leak will occur.
+Our in-house Syzkaller reported the following BUG (twice), which we
+believed was the same issue with [1]:
 
-Since almost the same thing is done in imx_rproc_prepare() and
-rproc_resource_cleanup(), Function rproc_resource_cleanup() is able
-to deal with empty lists so it is better to fix the "goto" statements
-in rproc_attach(). replace the "unprepare_device" goto statement with
-"clean_up_resources" and get rid of the "unprepare_device" label.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in vcs_scr_readw+0xc2/0xd0 drivers/tty/vt/vt.c:4740
+Read of size 2 at addr ffff88800f5bef60 by task syz.7.2620/12393
+...
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x72/0xa0 lib/dump_stack.c:106
+ print_address_description.constprop.0+0x6b/0x3d0 mm/kasan/report.c:364
+ print_report+0xba/0x280 mm/kasan/report.c:475
+ kasan_report+0xa9/0xe0 mm/kasan/report.c:588
+ vcs_scr_readw+0xc2/0xd0 drivers/tty/vt/vt.c:4740
+ vcs_write_buf_noattr drivers/tty/vt/vc_screen.c:493 [inline]
+ vcs_write+0x586/0x840 drivers/tty/vt/vc_screen.c:690
+ vfs_write+0x219/0x960 fs/read_write.c:584
+ ksys_write+0x12e/0x260 fs/read_write.c:639
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
+ ...
+ </TASK>
 
-unreferenced object 0xffff0000861c5d00 (size 128):
-comm "kworker/u12:3", pid 59, jiffies 4294893509 (age 149.220s)
-hex dump (first 32 bytes):
-00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ................
-00 00 02 88 00 00 00 00 00 00 10 00 00 00 00 00 ............
-backtrace:
- [<00000000f949fe18>] slab_post_alloc_hook+0x98/0x37c
- [<00000000adbfb3e7>] __kmem_cache_alloc_node+0x138/0x2e0
- [<00000000521c0345>] kmalloc_trace+0x40/0x158
- [<000000004e330a49>] rproc_mem_entry_init+0x60/0xf8
- [<000000002815755e>] imx_rproc_prepare+0xe0/0x180
- [<0000000003f61b4e>] rproc_boot+0x2ec/0x528
- [<00000000e7e994ac>] rproc_add+0x124/0x17c
- [<0000000048594076>] imx_rproc_probe+0x4ec/0x5d4
- [<00000000efc298a1>] platform_probe+0x68/0xd8
- [<00000000110be6fe>] really_probe+0x110/0x27c
- [<00000000e245c0ae>] __driver_probe_device+0x78/0x12c
- [<00000000f61f6f5e>] driver_probe_device+0x3c/0x118
- [<00000000a7874938>] __device_attach_driver+0xb8/0xf8
- [<0000000065319e69>] bus_for_each_drv+0x84/0xe4
- [<00000000db3eb243>] __device_attach+0xfc/0x18c
- [<0000000072e4e1a4>] device_initial_probe+0x14/0x20
+Allocated by task 5614:
+ kasan_save_stack+0x20/0x40 mm/kasan/common.c:45
+ kasan_set_track+0x25/0x30 mm/kasan/common.c:52
+ ____kasan_kmalloc mm/kasan/common.c:374 [inline]
+ __kasan_kmalloc+0x8f/0xa0 mm/kasan/common.c:383
+ kasan_kmalloc include/linux/kasan.h:201 [inline]
+ __do_kmalloc_node mm/slab_common.c:1007 [inline]
+ __kmalloc+0x62/0x140 mm/slab_common.c:1020
+ kmalloc include/linux/slab.h:604 [inline]
+ kzalloc include/linux/slab.h:721 [inline]
+ vc_do_resize+0x235/0xf40 drivers/tty/vt/vt.c:1193
+ vgacon_adjust_height+0x2d4/0x350 drivers/video/console/vgacon.c:1007
+ vgacon_font_set+0x1f7/0x240 drivers/video/console/vgacon.c:1031
+ con_font_set drivers/tty/vt/vt.c:4628 [inline]
+ con_font_op+0x4da/0xa20 drivers/tty/vt/vt.c:4675
+ vt_k_ioctl+0xa10/0xb30 drivers/tty/vt/vt_ioctl.c:474
+ vt_ioctl+0x14c/0x1870 drivers/tty/vt/vt_ioctl.c:752
+ tty_ioctl+0x655/0x1510 drivers/tty/tty_io.c:2779
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:871 [inline]
+ __se_sys_ioctl+0x12d/0x190 fs/ioctl.c:857
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-Fixes: 10a3d4079eae ("remoteproc: imx_rproc: move memory parsing to rproc_ops")
-Suggested-by: Mathieu Poirier <mathieu.poirier@linaro.org>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Last potentially related work creation:
+ kasan_save_stack+0x20/0x40 mm/kasan/common.c:45
+ __kasan_record_aux_stack+0x94/0xa0 mm/kasan/generic.c:492
+ __call_rcu_common.constprop.0+0xc3/0xa10 kernel/rcu/tree.c:2713
+ netlink_release+0x620/0xc20 net/netlink/af_netlink.c:802
+ __sock_release+0xb5/0x270 net/socket.c:663
+ sock_close+0x1e/0x30 net/socket.c:1425
+ __fput+0x408/0xab0 fs/file_table.c:384
+ __fput_sync+0x4c/0x60 fs/file_table.c:465
+ __do_sys_close fs/open.c:1580 [inline]
+ __se_sys_close+0x68/0xd0 fs/open.c:1565
+ do_syscall_x64 arch/x86/entry/common.c:51 [inline]
+ do_syscall_64+0x59/0x110 arch/x86/entry/common.c:81
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+Second to last potentially related work creation:
+ kasan_save_stack+0x20/0x40 mm/kasan/common.c:45
+ __kasan_record_aux_stack+0x94/0xa0 mm/kasan/generic.c:492
+ __call_rcu_common.constprop.0+0xc3/0xa10 kernel/rcu/tree.c:2713
+ netlink_release+0x620/0xc20 net/netlink/af_netlink.c:802
+ __sock_release+0xb5/0x270 net/socket.c:663
+ sock_close+0x1e/0x30 net/socket.c:1425
+ __fput+0x408/0xab0 fs/file_table.c:384
+ task_work_run+0x154/0x240 kernel/task_work.c:239
+ exit_task_work include/linux/task_work.h:45 [inline]
+ do_exit+0x8e5/0x1320 kernel/exit.c:874
+ do_group_exit+0xcd/0x280 kernel/exit.c:1023
+ get_signal+0x1675/0x1850 kernel/signal.c:2905
+ arch_do_signal_or_restart+0x80/0x3b0 arch/x86/kernel/signal.c:310
+ exit_to_user_mode_loop kernel/entry/common.c:111 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0x1b3/0x1e0 kernel/entry/common.c:218
+ do_syscall_64+0x66/0x110 arch/x86/entry/common.c:87
+ entry_SYSCALL_64_after_hwframe+0x78/0xe2
+
+The buggy address belongs to the object at ffff88800f5be000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 2656 bytes to the right of
+ allocated 1280-byte region [ffff88800f5be000, ffff88800f5be500)
+
+...
+
+Memory state around the buggy address:
+ ffff88800f5bee00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88800f5bee80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+>ffff88800f5bef00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                                                       ^
+ ffff88800f5bef80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ffff88800f5bf000: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+==================================================================
+
+By analyzing the vmcore, we found that vc->vc_origin was somehow placed
+one line prior to vc->vc_screenbuf when vc was in KD_TEXT mode, and
+further writings to /dev/vcs caused out-of-bounds reads (and writes
+right after) in vcs_write_buf_noattr().
+
+Our further experiments show that in most cases, vc->vc_origin equals to
+vga_vram_base when the console is in KD_TEXT mode, and it's around
+vc->vc_screenbuf for the KD_GRAPHICS mode. But via triggerring a
+TIOCL_SETVESABLANK ioctl beforehand, we can make vc->vc_origin be around
+vc->vc_screenbuf while the console is in KD_TEXT mode, and then by
+writing the special 'ESC M' control sequence to the tty certain times
+(depends on the value of `vc->state.y - vc->vc_top`), we can eventually
+move vc->vc_origin prior to vc->vc_screenbuf. Here's the PoC, tested on
+QEMU:
+
+```
+int main() {
+	const int RI_NUM = 10; // should be greater than `vc->state.y - vc->vc_top`
+	int tty_fd, vcs_fd;
+	const char *tty_path = "/dev/tty0";
+	const char *vcs_path = "/dev/vcs";
+	const char escape_seq[] = "\x1bM";  // ESC + M
+	const char trigger_seq[] = "Let's trigger an OOB write.";
+	struct vt_sizes vt_size = { 70, 2 };
+	int blank = TIOCL_BLANKSCREEN;
+
+	tty_fd = open(tty_path, O_RDWR);
+
+	char vesa_mode[] = { TIOCL_SETVESABLANK, 1 };
+	ioctl(tty_fd, TIOCLINUX, vesa_mode);
+
+	ioctl(tty_fd, TIOCLINUX, &blank);
+	ioctl(tty_fd, VT_RESIZE, &vt_size);
+
+	for (int i = 0; i < RI_NUM; ++i)
+		write(tty_fd, escape_seq, sizeof(escape_seq) - 1);
+
+	vcs_fd = open(vcs_path, O_RDWR);
+	write(vcs_fd, trigger_seq, sizeof(trigger_seq));
+
+	close(vcs_fd);
+	close(tty_fd);
+	return 0;
+}
+```
+
+To solve this problem, add an address range validation check in
+vgacon_scroll(), ensuring vc->vc_origin never precedes vc_screenbuf.
+
+Reported-by: syzbot+9c09fda97a1a65ea859b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9c09fda97a1a65ea859b [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20250430092043.1819308-2-xiaolei.wang@windriver.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Co-developed-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: GONG Ruiqi <gongruiqi1@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/remoteproc/remoteproc_core.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/video/console/vgacon.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/remoteproc/remoteproc_core.c
-+++ b/drivers/remoteproc/remoteproc_core.c
-@@ -1726,7 +1726,7 @@ static int rproc_attach(struct rproc *rp
- 	ret = rproc_set_rsc_table(rproc);
- 	if (ret) {
- 		dev_err(dev, "can't load resource table: %d\n", ret);
--		goto unprepare_device;
-+		goto clean_up_resources;
- 	}
- 
- 	/* reset max_notifyid */
-@@ -1743,7 +1743,7 @@ static int rproc_attach(struct rproc *rp
- 	ret = rproc_handle_resources(rproc, rproc_loading_handlers);
- 	if (ret) {
- 		dev_err(dev, "Failed to process resources: %d\n", ret);
--		goto unprepare_device;
-+		goto clean_up_resources;
- 	}
- 
- 	/* Allocate carveout resources associated to rproc */
-@@ -1762,7 +1762,6 @@ static int rproc_attach(struct rproc *rp
- 
- clean_up_resources:
- 	rproc_resource_cleanup(rproc);
--unprepare_device:
- 	/* release HW resources if needed */
- 	rproc_unprepare_device(rproc);
- disable_iommu:
+--- a/drivers/video/console/vgacon.c
++++ b/drivers/video/console/vgacon.c
+@@ -1200,7 +1200,7 @@ static bool vgacon_scroll(struct vc_data
+ 				     c->vc_screenbuf_size - delta);
+ 			c->vc_origin = vga_vram_end - c->vc_screenbuf_size;
+ 			vga_rolled_over = 0;
+-		} else
++		} else if (oldo - delta >= (unsigned long)c->vc_screenbuf)
+ 			c->vc_origin -= delta;
+ 		c->vc_scr_end = c->vc_origin + c->vc_screenbuf_size;
+ 		scr_memsetw((u16 *) (c->vc_origin), c->vc_video_erase_char,
 
 
 
