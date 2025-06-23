@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-156331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F9C7AE4F25
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC163AE501F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD7C27AB828
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91C747AD60E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9657B221FCA;
-	Mon, 23 Jun 2025 21:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132211E521E;
+	Mon, 23 Jun 2025 21:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddC9zE1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iryCWGcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 533631ACEDA;
-	Mon, 23 Jun 2025 21:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E807482;
+	Mon, 23 Jun 2025 21:19:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713153; cv=none; b=o+8wzqBGBL+dRAbFzO82l4YlzHXLEms+0XS8dqITd6oh5Gt+wEbR4E/hbordhGZ4fztCGHazl8TabGlNAx+Yhpizt9D/4VjXq0uOXdsCJ7cDpg4PGGobK0h5hlhJAK8Lbs6xd+5RFziD7zehEKIwCHAIUVcC5de1T2pwiuhuIow=
+	t=1750713594; cv=none; b=W+ZUzvwWLd2Y27W712TgK8Qi0dRp02jhCaGvTdk7an/7f4cPP+Xe8IpGz/3rJzCxjpCmOaZkzs/Jmc5VT0YkgOF53rN9xUJ9HUTLMFs1Rsm12a4+IjQLsNqY0QNfqmb0+xku5W42wJ1TwSqxjHJ+bLKHQbulVgAE9IRgVnIIMkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713153; c=relaxed/simple;
-	bh=7Cq9gvQhukfLFmuO6VXj3xXZvm8r58Az7BjGQWfSnW8=;
+	s=arc-20240116; t=1750713594; c=relaxed/simple;
+	bh=YViEm5A7eGaBFKqQBHnsRYgC56FbCyQHsHKqxrwm9uM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGGlaDSOmSJHhLPZBV1Acaq/4ogsB4OxrrEuvT3jiJDGu/KS2hyF18JEdmksq16CyqfJtmkmuVp5tGZUQHeH5TvBC4RiKSYA7u0+4VWmIG+4RXzTXzQbjfQY/sXsX5Sz5puwzvo0zDV0wgegpcIJ9vvOpJyN4KkZwSoTgxhZBkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddC9zE1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3890C4CEEA;
-	Mon, 23 Jun 2025 21:12:32 +0000 (UTC)
+	 MIME-Version; b=sfbYsGm6crf9j4YhBOTadXyFsGAXw7n1mS3GoFGNcSGBsY8A3FRjGq3wyu/rpxF+tAzyhPp8LQQIW/Mkl34qG11/R0rH0NvOlFqnTNt9hGK4aTYsxv2KS4rCkY0HyZ9FSL1j+XUW3PjOEc4JSo4vH6rqNSLCvZEo2nFY2RDsY64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iryCWGcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED98C4CEEA;
+	Mon, 23 Jun 2025 21:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713153;
-	bh=7Cq9gvQhukfLFmuO6VXj3xXZvm8r58Az7BjGQWfSnW8=;
+	s=korg; t=1750713594;
+	bh=YViEm5A7eGaBFKqQBHnsRYgC56FbCyQHsHKqxrwm9uM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ddC9zE1/3N/ZzdlM1NPQMSJRN3yJutc3I9XZVLRBgYbjPaUs2+RF6BHWkGdtMIkAz
-	 GCDzHinbFH8DDky2oDj9Rb7MajVzBVTyPN8C3H0+J2jhjMT3URNnjvQbfJQfM927dI
-	 i4bCR4CHqzG9peYTzyTI4PpFG5BfvZMUB/fC+tFA=
+	b=iryCWGcFHtOuBvOHEltk7IByKmtVpocqcl1f3v3ScovVL6Z0xPtZrNwBQ2koISbDl
+	 Zgc63LKQPHlndzII4e1z+Wrv9J5s9oLpQt+JWfuWJlG1HH0j2eeeQSZdiPwszJ5065
+	 A9T2VznxKsDa6TUiHtrpyKlIcFbB4DcVXQBbMRfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 127/411] seg6: Fix validation of nexthop addresses
-Date: Mon, 23 Jun 2025 15:04:31 +0200
-Message-ID: <20250623130636.763127420@linuxfoundation.org>
+Subject: [PATCH 5.15 128/411] fix propagation graph breakage by MOVE_MOUNT_SET_GROUP move_mount(2)
+Date: Mon, 23 Jun 2025 15:04:32 +0200
+Message-ID: <20250623130636.788800879@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -68,46 +66,58 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit 7632fedb266d93ed0ed9f487133e6c6314a9b2d1 ]
+[ Upstream commit d8cc0362f918d020ca1340d7694f07062dc30f36 ]
 
-The kernel currently validates that the length of the provided nexthop
-address does not exceed the specified length. This can lead to the
-kernel reading uninitialized memory if user space provided a shorter
-length than the specified one.
+9ffb14ef61ba "move_mount: allow to add a mount into an existing group"
+breaks assertions on ->mnt_share/->mnt_slave.  For once, the data structures
+in question are actually documented.
 
-Fix by validating that the provided length exactly matches the specified
-one.
+Documentation/filesystem/sharedsubtree.rst:
+        All vfsmounts in a peer group have the same ->mnt_master.  If it is
+	non-NULL, they form a contiguous (ordered) segment of slave list.
 
-Fixes: d1df6fd8a1d2 ("ipv6: sr: define core operations for seg6local lightweight tunnel")
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20250604113252.371528-1-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+do_set_group() puts a mount into the same place in propagation graph
+as the old one.  As the result, if old mount gets events from somewhere
+and is not a pure event sink, new one needs to be placed next to the
+old one in the slave list the old one's on.  If it is a pure event
+sink, we only need to make sure the new one doesn't end up in the
+middle of some peer group.
+
+"move_mount: allow to add a mount into an existing group" ends up putting
+the new one in the beginning of list; that's definitely not going to be
+in the middle of anything, so that's fine for case when old is not marked
+shared.  In case when old one _is_ marked shared (i.e. is not a pure event
+sink), that breaks the assumptions of propagation graph iterators.
+
+Put the new mount next to the old one on the list - that does the right thing
+in "old is marked shared" case and is just as correct as the current behaviour
+if old is not marked shared (kudos to Pavel for pointing that out - my original
+suggested fix changed behaviour in the "nor marked" case, which complicated
+things for no good reason).
+
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Fixes: 9ffb14ef61ba ("move_mount: allow to add a mount into an existing group")
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/seg6_local.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/namespace.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/seg6_local.c b/net/ipv6/seg6_local.c
-index 0b64cf5b0f267..98af48b3fcce6 100644
---- a/net/ipv6/seg6_local.c
-+++ b/net/ipv6/seg6_local.c
-@@ -1123,10 +1123,8 @@ static const struct nla_policy seg6_local_policy[SEG6_LOCAL_MAX + 1] = {
- 	[SEG6_LOCAL_SRH]	= { .type = NLA_BINARY },
- 	[SEG6_LOCAL_TABLE]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_VRFTABLE]	= { .type = NLA_U32 },
--	[SEG6_LOCAL_NH4]	= { .type = NLA_BINARY,
--				    .len = sizeof(struct in_addr) },
--	[SEG6_LOCAL_NH6]	= { .type = NLA_BINARY,
--				    .len = sizeof(struct in6_addr) },
-+	[SEG6_LOCAL_NH4]	= NLA_POLICY_EXACT_LEN(sizeof(struct in_addr)),
-+	[SEG6_LOCAL_NH6]	= NLA_POLICY_EXACT_LEN(sizeof(struct in6_addr)),
- 	[SEG6_LOCAL_IIF]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_OIF]	= { .type = NLA_U32 },
- 	[SEG6_LOCAL_BPF]	= { .type = NLA_NESTED },
+diff --git a/fs/namespace.c b/fs/namespace.c
+index a99a060e89316..76a1cf75457be 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2765,7 +2765,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
+ 	if (IS_MNT_SLAVE(from)) {
+ 		struct mount *m = from->mnt_master;
+ 
+-		list_add(&to->mnt_slave, &m->mnt_slave_list);
++		list_add(&to->mnt_slave, &from->mnt_slave);
+ 		to->mnt_master = m;
+ 	}
+ 
 -- 
 2.39.5
 
