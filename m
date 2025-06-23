@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-156086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 454E2AE456B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:52:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92DC9AE44DB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE0573B414F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 038527A1E2F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 291EC2475E3;
-	Mon, 23 Jun 2025 13:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9968E2475E3;
+	Mon, 23 Jun 2025 13:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gNL8Vz+O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJ6hvTGz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB71E16419;
-	Mon, 23 Jun 2025 13:41:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E17347DD;
+	Mon, 23 Jun 2025 13:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686114; cv=none; b=IWDtR9dyDOnm76+N94tQ0IK9y5lnAxO6fK4h/zueBrwT7BRqzEnsUrRauBDGvl09IT3GhIhyEDl29fTEjFyGlSq4uxdEeATyewUFaNBuRb7IW+Dr8f5EFI8y6/V6OJd7UHDOf0lGCmDKA7zkksXpWzvQ0q8qoW6v9wbItjR5Z8w=
+	t=1750686132; cv=none; b=dPZWRMu+vwJRBAXIVUSx79Bz1HSExrJHE/PppCjeN+rfasfmv3Q3bAaOoDKlzJJhKWYCDPW055sBgWybp9gfagiFeEkmBcPmVpHYVSeuhlcI6o7IKE5wwUhfYMoEc63EYN4ldEx0og+rhr3vxl66zLQQYC3xe8l90NyjB+IspBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686114; c=relaxed/simple;
-	bh=Tz8ElIo7HmIZkMv+l+81S39tfSKvLZicDjWpG1Ev+wc=;
+	s=arc-20240116; t=1750686132; c=relaxed/simple;
+	bh=II8ytU23JHN9MABiHzk4HsA01Z/rOG2b7qrMT/JV3Rk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cfkbpSQLwZ/By9nNVjVq1wNZ5MsAYX9CX5d7vgm88EXgItOS4ewOxtF1yvCnnp6InM3bswd5fufdrzsCQUyUTrMlPzWJVxyyu6x+7OmmwWf/IznnVib4MVWOgcfszw7+YqET5kqVwWwiACYoT2jwNleIHyUNJ2Zm7wwcGrRD1hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gNL8Vz+O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30CDBC4CEEA;
-	Mon, 23 Jun 2025 13:41:54 +0000 (UTC)
+	 MIME-Version; b=TvyK4dvhINOnZZEWd3Txn9g4Iba9GiIaEDxkguOe0RED/z3BSPXXsznGf8E6+n5GJhZoBCxDz+K6wXzgIEDx+OvHfSov/G6Byhsnv/k3kyfeC5EKYfaC2o76mnWFAmeQcjYiHrWAV1FCLrzJNbj735saY52Ujn0sWaAbQlcjQ6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJ6hvTGz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB428C4CEF1;
+	Mon, 23 Jun 2025 13:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686114;
-	bh=Tz8ElIo7HmIZkMv+l+81S39tfSKvLZicDjWpG1Ev+wc=;
+	s=korg; t=1750686132;
+	bh=II8ytU23JHN9MABiHzk4HsA01Z/rOG2b7qrMT/JV3Rk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gNL8Vz+OSfQ4UL3S1+eg+pNkbDz64ja5T/kDdJjeCYU1Api6yiTYla2M4LPk0DCIC
-	 t7RKSzrfJRXi/dC9egzGR9hGzZqZjVR5HfwW9Wvbd4swl+YPObcLSfp0u4btNiSaIH
-	 r0NR2LFXZaX0btjwV1uD7pjkcjHTlPEc5Aj9Z82Q=
+	b=HJ6hvTGz7pq+d8tI2x5+PfcNwZFINBV1SYPRG82TUbVCoS6zysWlEU6NJgmC6kEPo
+	 D/Ps5nSp5+wmFJxnFeHMqZVxPMqezrudvaV/TJegUFtiCQ2I2avHN5VEvmusPzqnIH
+	 oqjSjT/spyQ5OZVLhs7fYBa5T11vJP3uldYD7GOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
-	Jerry Lv <Jerry.Lv@axis.com>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Patrick Daly <quic_pdaly@quicinc.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 138/222] power: supply: bq27xxx: Retrieve again when busy
-Date: Mon, 23 Jun 2025 15:07:53 +0200
-Message-ID: <20250623130616.241958661@linuxfoundation.org>
+Subject: [PATCH 5.4 139/222] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
+Date: Mon, 23 Jun 2025 15:07:54 +0200
+Message-ID: <20250623130616.272714709@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -61,92 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Lv <Jerry.Lv@axis.com>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-[ Upstream commit f16d9fb6cf03fdbdefa41a8b32ba1e57afb7ae3d ]
+[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
 
-Multiple applications may access the battery gauge at the same time, so
-the gauge may be busy and EBUSY will be returned. The driver will set a
-flag to record the EBUSY state, and this flag will be kept until the next
-periodic update. When this flag is set, bq27xxx_battery_get_property()
-will just return ENODEV until the flag is updated.
+pm_runtime_put_autosuspend() schedules a hrtimer to expire
+at "dev->power.timer_expires". If the hrtimer's callback,
+pm_suspend_timer_fn(), observes that the current time equals
+"dev->power.timer_expires", it unexpectedly bails out instead of
+proceeding with runtime suspend.
 
-Even if the gauge was busy during the last accessing attempt, returning
-ENODEV is not ideal, and can cause confusion in the applications layer.
+pm_suspend_timer_fn():
 
-Instead, retry accessing the I2C to update the flag is as expected, for
-the gauge typically recovers from busy state within a few milliseconds.
-If still failed to access the gauge, the real error code would be returned
-instead of ENODEV (as suggested by Pali Rohár).
+ if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
+ 	dev->power.timer_expires = 0;
+ 	rpm_suspend(..)
+ }
 
-Reviewed-by: Pali Rohár <pali@kernel.org>
-Signed-off-by: Jerry Lv <Jerry.Lv@axis.com>
-Link: https://lore.kernel.org/r/20250415-foo-fix-v2-1-5b45a395e4cc@axis.com
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Additionally, as ->timer_expires is not cleared, all the future auto
+suspend requests will not schedule hrtimer to perform auto suspend.
+
+rpm_suspend():
+
+ if ((rpmflags & RPM_AUTO) &&...) {
+ 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
+ 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
+ 	}
+ }
+
+Fix this by as well checking if current time reaches the set expiration.
+
+Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/bq27xxx_battery.c     |  2 +-
- drivers/power/supply/bq27xxx_battery_i2c.c | 13 ++++++++++++-
- 2 files changed, 13 insertions(+), 2 deletions(-)
+ drivers/base/power/runtime.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/bq27xxx_battery.c b/drivers/power/supply/bq27xxx_battery.c
-index e6c4dfdc58c47..1cfec675f82f3 100644
---- a/drivers/power/supply/bq27xxx_battery.c
-+++ b/drivers/power/supply/bq27xxx_battery.c
-@@ -1780,7 +1780,7 @@ static int bq27xxx_battery_get_property(struct power_supply *psy,
- 	mutex_unlock(&di->lock);
- 
- 	if (psp != POWER_SUPPLY_PROP_PRESENT && di->cache.flags < 0)
--		return -ENODEV;
-+		return di->cache.flags;
- 
- 	switch (psp) {
- 	case POWER_SUPPLY_PROP_STATUS:
-diff --git a/drivers/power/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index 08c7e2b4155ad..bf235d0a96033 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -14,6 +14,7 @@
-  * GNU General Public License for more details.
-  */
- 
-+#include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -40,6 +41,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
- 	struct i2c_msg msg[2];
- 	u8 data[2];
- 	int ret;
-+	int retry = 0;
- 
- 	if (!client->adapter)
- 		return -ENODEV;
-@@ -56,7 +58,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
- 	else
- 		msg[1].len = 2;
- 
--	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
-+	do {
-+		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
-+		if (ret == -EBUSY && ++retry < 3) {
-+			/* sleep 10 milliseconds when busy */
-+			usleep_range(10000, 11000);
-+			continue;
-+		}
-+		break;
-+	} while (1);
-+
- 	if (ret < 0)
- 		return ret;
- 
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index d301a6de762df..7fa231076ad5f 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -982,7 +982,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
+ 	 * If 'expires' is after the current time, we've been called
+ 	 * too early.
+ 	 */
+-	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
++	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
+ 		dev->power.timer_expires = 0;
+ 		rpm_suspend(dev, dev->power.timer_autosuspends ?
+ 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
 -- 
 2.39.5
 
