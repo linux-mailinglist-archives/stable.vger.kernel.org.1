@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157339-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DFBAE540F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:48 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D142AE5386
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5077D446106
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B1021B670A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 572CF222581;
-	Mon, 23 Jun 2025 21:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F26522258C;
+	Mon, 23 Jun 2025 21:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DjhYZTlv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0R8794r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1492C1B87D9;
-	Mon, 23 Jun 2025 21:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE6D72624;
+	Mon, 23 Jun 2025 21:53:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715910; cv=none; b=rHIPOiDO4/KCbUe1NLv3l4X00uxROh1mFzp/uX4iUkbWXUslmZVdRuvtXfTjmsrzFHdUaTn9KENUhP7eL5Y1lInvZzBiYwp3MCD8twePNVula4bBDpMkFnEknUyRipBNnusTfLX52tvPvYLYEKJete1gtTuVOryADbP9gVMVYoA=
+	t=1750715626; cv=none; b=N2NUV0UMiJDXIfAdqk6N6TKy2UifUc5jAr1x0P4pQJ7SVYlBus+t7GU9+W2R+yIn69lGcYTVlWzwSyLhBmf0H9cHWjpY7TxHiBkKHrIUBIQKZ4YUSW4KBTMPGBGvgjWQfKMUQi/EM8CRBfg7DQOuBoO6fjJ5/8YVgJkl1XwbMW4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715910; c=relaxed/simple;
-	bh=caQ1qONYXjoOC4hFfvOEoLXzL4ZYUYtJ+jR2I0uyGGg=;
+	s=arc-20240116; t=1750715626; c=relaxed/simple;
+	bh=pjokfFGTJFkE5tsC4M9qpVjPM7E7cyyGuWSVgnOfUYs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T3GF0pJ5h96rTKRMw+zbLLp3RVPHq4/sOqxJsyX5R5NBMztPa6LkPy7vEIburR807szxfdfWzpIGVKAcKxVMZ4QiOLAUsyKsymvVe7k8L84ay3wjZB3wCS/RDgDY/PJA8yRFsWLkUAIOjDJTxz8UqxhDAmKNwEy+BCEsM4uiqf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DjhYZTlv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDDEC4CEEA;
-	Mon, 23 Jun 2025 21:58:29 +0000 (UTC)
+	 MIME-Version; b=MsxrWUJ/xtdIEBz7gnVVDx5xcPcXLchgECCLXGemCdZj2AUVzP70O269hZkax6djjHp9jhYjoOWtmmL5PiToz2Jc8Mq+oeb1BySn87m8CkUxb+sQcGxjpmzaM39nteNRbeFSbFscqQB3CmJ98ZmC4uCHaSt5ZRj+DeuSiiZbSEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0R8794r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA51AC4CEEA;
+	Mon, 23 Jun 2025 21:53:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715909;
-	bh=caQ1qONYXjoOC4hFfvOEoLXzL4ZYUYtJ+jR2I0uyGGg=;
+	s=korg; t=1750715626;
+	bh=pjokfFGTJFkE5tsC4M9qpVjPM7E7cyyGuWSVgnOfUYs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DjhYZTlvAb4X78dUseN9RzwS2XE2gdVINFA5buEEiGFinHGSNvIiB3X32zCoJzeAJ
-	 TEl275sFhEp1iFAyTcT6aHCzyshzWl8+FaNUFdBVyF0ANr3yCcoHa9KUb9tLsOTMOK
-	 T8BX6YZEulsTJkPH68eO0c5zG/G7tLtohis0MhI0=
+	b=I0R8794rYypE8iMF67epXUOVlhj/2Cw3MvMruuJKwYsNL4mOHCiZ+ZJz0VEWKE1RC
+	 EpPLJC8DShUsaocfThTdOrSyUi6YX05Vy237xUsvlJOPx5BjLL1bNAKwuP/5WNp+KA
+	 RZ2ai1WiVq8phq2xjxPOEcj4lN/2aVAi5gsGFsmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joel Becker <jlbec@evilplan.org>,
-	Breno Leitao <leitao@debian.org>,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Andreas Hindborg <a.hindborg@kernel.org>
-Subject: [PATCH 6.1 289/508] configfs: Do not override creating attribute file failure in populate_attrs()
+	Tan En De <ende.tan@starfivetech.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 197/414] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:05:34 +0200
-Message-ID: <20250623130652.384379673@linuxfoundation.org>
+Message-ID: <20250623130646.937347010@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Tan En De <ende.tan@starfivetech.com>
 
-commit f830edbae247b89228c3e09294151b21e0dc849c upstream.
+[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
 
-populate_attrs() may override failure for creating attribute files
-by success for creating subsequent bin attribute files, and have
-wrong return value.
+Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
+the runtime suspend is invoked immediately when unregistering a slave.
+This prevents a race condition where suspend was skipped when
+unregistering and registering slave in quick succession.
 
-Fix by creating bin attribute files under successfully creating
-attribute files.
+For example, consider the rapid sequence of
+`delete_device -> new_device -> delete_device -> new_device`.
+In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
+might not be invoked after `delete_device` operation.
 
-Fixes: 03607ace807b ("configfs: implement binary attributes")
-Cc: stable@vger.kernel.org
-Reviewed-by: Joel Becker <jlbec@evilplan.org>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/r/20250507-fix_configfs-v3-2-fe2d96de8dc4@quicinc.com
-Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This is because after `delete_device` operation, when the
+pm_runtime_put() is about to trigger suspend, the following `new_device`
+operation might race and cancel the suspend.
+
+If that happens, during the `new_device` operation,
+dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
+means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
+Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
+skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
+the interrupt mask register using devmem, it will show as zero.
+
+Example shell script to reproduce the issue:
+```
+  #!/bin/sh
+
+  SLAVE_LADDR=0x1010
+  SLAVE_BUS=13
+  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
+  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
+
+  # Create initial device
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  sleep 2
+
+  # Rapid sequence of
+  # delete_device -> new_device -> delete_device -> new_device
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+
+  # Using devmem to inspect IC_INTR_MASK will show as zero
+```
+
+Signed-off-by: Tan En De <ende.tan@starfivetech.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/configfs/dir.c |    2 +-
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -593,7 +593,7 @@ static int populate_attrs(struct config_
- 				break;
- 		}
- 	}
--	if (t->ct_bin_attrs) {
-+	if (!error && t->ct_bin_attrs) {
- 		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
- 			error = configfs_create_bin_file(item, bin_attr);
- 			if (error)
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index f0f0f1f2131d0..602e98e61cc01 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -94,7 +94,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
+ 	i2c_dw_disable(dev);
+ 	synchronize_irq(dev->irq);
+ 	dev->slave = NULL;
+-	pm_runtime_put(dev->dev);
++	pm_runtime_put_sync_suspend(dev->dev);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
