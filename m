@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C16AAE519A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57619AE5375
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0F3FF188A494
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EB38B7AF473
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A014522068B;
-	Mon, 23 Jun 2025 21:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43DB8221FBE;
+	Mon, 23 Jun 2025 21:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JjJMWjEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7AOXyFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D8191EE7C6;
-	Mon, 23 Jun 2025 21:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00FCF72624;
+	Mon, 23 Jun 2025 21:52:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714524; cv=none; b=Vu1emNM5DZIxeHN/S8vcHRf4B1E/RUthbYzjMpXgwzGRyefjO2Fz/TneqnN52HRmS0uxxpEZJERXgijY/wJI+wqRIXUWlZnumwkOvyRRO9zt2x3xSqQ5hckA8znHw9A+EIxEStjZggZwZka8N+dBG24Fvp3rFVDW3bSXyC/mmew=
+	t=1750715575; cv=none; b=RRMs0KUWrRRTv7Pusxz9WtOQTW4YPxV7l+fuqOAiag/fwiQy65cq4pawRm/WRVzGXgSF/uWfH6Ql0kBJfrc+xFUnB8gyBCiB8YTNPjs1bN87pk6nGScxbDrl6Zjpj/tmi3zZj0zjOaKRymaGNLDBRNMycOT2O9Lr8hJYRVNrU14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714524; c=relaxed/simple;
-	bh=ju+1wnqRYorKeP9pVIhd6EKVihvUsyxoR2ZHv1SLe6Q=;
+	s=arc-20240116; t=1750715575; c=relaxed/simple;
+	bh=JmFqn0LcSslupBG5kjHKdw+b50Gp7n7lg0uiPP+/W6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nqd7uoKqSr3ymbf799wdnYGiFxZKSaMwSM/wkkBgS9bwgoJ7ro18K7AOK6RtkN/r4Tf1SEJjX8XlbLnTfi8LZXBZHmjMEU07J8VkP3PFyYbTaEmlmj0ylM8UCIr+sAoN97sbRXsoZc/XvlTDWjHxpyip9N/T/JZLf1mKw71+C48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JjJMWjEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8E36C4CEEA;
-	Mon, 23 Jun 2025 21:35:23 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Nqnxs/jb89T8BvEhRnKk77tBQ5d+NCVhK7UECGar8s4r2yWNSwJVFyTVi2UC9u7x55CDX8H044QZSpXCrioYZlw0LoqdiW9RwthCKADvxEZohW0fkDnSJt4cBYARaZSZ8auVZjuaRVKbDT8AH2JIV6Rj+/OGqfcLxu0RB2VJeOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7AOXyFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0F4C4CEEA;
+	Mon, 23 Jun 2025 21:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714524;
-	bh=ju+1wnqRYorKeP9pVIhd6EKVihvUsyxoR2ZHv1SLe6Q=;
+	s=korg; t=1750715574;
+	bh=JmFqn0LcSslupBG5kjHKdw+b50Gp7n7lg0uiPP+/W6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JjJMWjElnAlBx/d1cKVxR3h6aq6IjwERK9odJ0VBQ0drcgcHLImZrhR1ZOftvyyls
-	 VYd+uFAIMx2VCwpruau9vIfgjh0CrpfjUQuecS0URB11Tw2kqcurQkNGW8KBL80UyY
-	 MkDwCn8cBxqJh+ZURxxyY7UYUuW9rDBcAq2BEdrM=
+	b=d7AOXyFRDGVLjdHC2MXRn2XNTBSMTU+6Pk/1HoM7S64XaoL6rwE3ooLHKFfdzOrIb
+	 GfiO86Ru//DJHsV6txnI4ZHGdVBBqDBhVQV5ApR4Sz1XgttT66mCAwYwYfB71jGJKd
+	 7XQSy1qAGEYMExnrhIWUfooXKxW81M6n6411ZsIw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/290] wireless: purelifi: plfxlc: fix memory leak in plfxlc_usb_wreq_asyn()
-Date: Mon, 23 Jun 2025 15:07:04 +0200
-Message-ID: <20250623130631.801610913@linuxfoundation.org>
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 467/592] net: clear the dst when changing skb protocol
+Date: Mon, 23 Jun 2025 15:07:05 +0200
+Message-ID: <20250623130711.538590230@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 63a9a727d373fa5b8ce509eef50dbc45e0f745b9 ]
+commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 upstream.
 
-Add usb_free_urb() in the error path to prevent memory leak.
+A not-so-careful NAT46 BPF program can crash the kernel
+if it indiscriminately flips ingress packets from v4 to v6:
 
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Link: https://patch.msgid.link/aA3_maPlEJzO7wrL@pc
-[fix subject]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+    process_backlog (net/core/dev.c:6186:4)
+    napi_poll (net/core/dev.c:6906:9)
+    net_rx_action (net/core/dev.c:7028:13)
+    do_softirq (kernel/softirq.c:462:3)
+    netif_rx (net/core/dev.c:5326:3)
+    dev_loopback_xmit (net/core/dev.c:4015:2)
+    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+    NF_HOOK (./include/linux/netfilter.h:314:9)
+    ip_mc_output (net/ipv4/ip_output.c:400:5)
+    dst_output (./include/net/dst.h:459:9)
+    ip_local_out (net/ipv4/ip_output.c:130:9)
+    ip_send_skb (net/ipv4/ip_output.c:1496:8)
+    udp_send_skb (net/ipv4/udp.c:1040:8)
+    udp_sendmsg (net/ipv4/udp.c:1328:10)
+
+The output interface has a 4->6 program attached at ingress.
+We try to loop the multicast skb back to the sending socket.
+Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
+and changes skb->protocol to v6. We enter ip6_rcv_core which
+tries to use skb_dst(). But the dst is still an IPv4 one left
+after IPv4 mcast output.
+
+Clear the dst in all BPF helpers which change the protocol.
+Try to preserve metadata dsts, those may carry non-routing
+metadata.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
+Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/purelifi/plfxlc/usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/core/filter.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
-index 311676c1ece0a..8151bc5e00ccc 100644
---- a/drivers/net/wireless/purelifi/plfxlc/usb.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
-@@ -503,8 +503,10 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
- 			  (void *)buffer, buffer_len, complete_fn, context);
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3233,6 +3233,13 @@ static const struct bpf_func_proto bpf_s
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ };
  
- 	r = usb_submit_urb(urb, GFP_ATOMIC);
--	if (r)
-+	if (r) {
-+		usb_free_urb(urb);
- 		dev_err(&udev->dev, "Async write submit failed (%d)\n", r);
-+	}
++static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
++{
++	skb->protocol = htons(proto);
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++}
++
+ static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+ {
+ 	/* Caller already did skb_cow() with len as headroom,
+@@ -3329,7 +3336,7 @@ static int bpf_skb_proto_4_to_6(struct s
+ 		}
+ 	}
  
- 	return r;
- }
--- 
-2.39.5
-
+-	skb->protocol = htons(ETH_P_IPV6);
++	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3359,7 +3366,7 @@ static int bpf_skb_proto_6_to_4(struct s
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IP);
++	bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3550,10 +3557,10 @@ static int bpf_skb_net_grow(struct sk_bu
+ 		/* Match skb->protocol to new outer l3 protocol */
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+-			skb->protocol = htons(ETH_P_IPV6);
++			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 		else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+-			skb->protocol = htons(ETH_P_IP);
++			bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	}
+ 
+ 	if (skb_is_gso(skb)) {
+@@ -3606,10 +3613,10 @@ static int bpf_skb_net_shrink(struct sk_
+ 	/* Match skb->protocol to new outer l3 protocol */
+ 	if (skb->protocol == htons(ETH_P_IP) &&
+ 	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
+-		skb->protocol = htons(ETH_P_IPV6);
++		bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
+-		skb->protocol = htons(ETH_P_IP);
++		bpf_skb_change_protocol(skb, ETH_P_IP);
+ 
+ 	if (skb_is_gso(skb)) {
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
 
 
 
