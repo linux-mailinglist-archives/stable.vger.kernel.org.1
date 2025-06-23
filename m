@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D33AE545F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC243AE4F61
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:15:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7EA321B66665
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48D8D17E938
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75E67225413;
-	Mon, 23 Jun 2025 21:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 156D41E521E;
+	Mon, 23 Jun 2025 21:15:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2A6IXbhz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrVVPAqM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3412E2253B0;
-	Mon, 23 Jun 2025 21:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A304C62;
+	Mon, 23 Jun 2025 21:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715995; cv=none; b=ijDIR95w96TRnhFSdeiR7sqYYVHBDasiUMZPrDw/OPID6w3eCYvhOPxBFPamSF0BjuHW5EsFhVQ0X5EXKKN8qoqso6RQsvRmoa2eXoN65WOxRoPF3Wc1mFjm8JYTDrWhwQ5p92+HJDONBsQvBz3ndvS4Yx326b+rvfhbJWcO2fM=
+	t=1750713321; cv=none; b=kfi3OfMB1XEYZmP42HBcWnkvBiiEZFKkPj7/IIgKFFTEFdl6L0q9NJtGSyAxb5+nuMkLVKKpNdMUOnfzWtQtTAm5VAStTzUD6AYNUa503yWo8j67x9mrqCOBFgRgOYwlrrtCnGiQNGdfCrcmfYnYuneP65v1a1XFNCn9h72+Nw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715995; c=relaxed/simple;
-	bh=Re1gODyhEOoOGQtZLlRrr/5kGcnqEhO3C3/wAiNhAlw=;
+	s=arc-20240116; t=1750713321; c=relaxed/simple;
+	bh=edsxRqTjSlbm4uApd3sWjNlfKhOjVcaPbdCRCb5utGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gX+JDsyBquL1jEIGqvJPQ/yTN3qnCtJ0KcecRGmWaF6Cj31Bwv0eN6HLrxf1xj4bz3Iqi2LhN7v5GRkzhzamrfCcsZ8e6Kw3UhNZw85DWKbweZ/p+x/ObGE04LqDYMarz/W4ynjJVMAJX2ahV/LgUrl8YeeQ1BCSP1EOYCcuADM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2A6IXbhz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1448C4CEEA;
-	Mon, 23 Jun 2025 21:59:54 +0000 (UTC)
+	 MIME-Version; b=obDb9ldrLNwzTnwGmSLNyIOdn8xnj2evtMQEPt5M4R3CsRYVFAm/SrKrJ/UBzyuchwUmwKhVsq3RoNXIoBmdi9GXSlZWd1UkE+bj1ScamYLtnFXGrXQJOFNNtYkN/d9JD4ZLlEmsxRaBGiyEyoRRbaOdM5dKq3V9oTYWKDCAzYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrVVPAqM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C35FC4CEEA;
+	Mon, 23 Jun 2025 21:15:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715995;
-	bh=Re1gODyhEOoOGQtZLlRrr/5kGcnqEhO3C3/wAiNhAlw=;
+	s=korg; t=1750713319;
+	bh=edsxRqTjSlbm4uApd3sWjNlfKhOjVcaPbdCRCb5utGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2A6IXbhzcJfxS/yzunIq8z+yTzZY6sZXp3N+Ghs2gy/8dzfc9AEKXoc23A10dY76I
-	 P+j7ZHmlP2GwPMYOz+5vSOxuj3I4uj0nK4hq4SW/K5PsCG1MmmmIr/pON8MFTaSOF2
-	 fsxnytmcB9/ozf1dCQERI0Qt4yfnCXjRMNdsCvjY=
+	b=CrVVPAqMSRm/pmpRl/kOTpVZnLTIcIQQBm/dX4+lMncTpqT+7LnlVBNKliwfLWa6h
+	 2aMa+mu7twnROOgXcpvzhnzfj9Qg0EwGILZtH6PFYQbQg1mLDlO2Z/j5SPhT8Fl1fC
+	 +YKdivLayd/VVw2bygKp3PRRWIKMoOYVDyhbCa7U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haixia Qu <hxqu@hillstonenet.com>,
-	Tung Nguyen <tung.quang.nguyen@est.tech>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sukrut Bellary <sbellary@baylibre.com>,
+	Judith Mendez <jm@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 314/355] tipc: fix null-ptr-deref when acquiring remote ip of ethernet bearer
+Subject: [PATCH 5.4 180/222] ARM: OMAP2+: Fix l4ls clk domain handling in STANDBY
 Date: Mon, 23 Jun 2025 15:08:35 +0200
-Message-ID: <20250623130636.217851845@linuxfoundation.org>
+Message-ID: <20250623130617.581185512@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haixia Qu <hxqu@hillstonenet.com>
+From: Sukrut Bellary <sbellary@baylibre.com>
 
-[ Upstream commit f82727adcf2992822e12198792af450a76ebd5ef ]
+[ Upstream commit 47fe74098f3dadba2f9cc1e507d813a4aa93f5f3 ]
 
-The reproduction steps:
-1. create a tun interface
-2. enable l2 bearer
-3. TIPC_NL_UDP_GET_REMOTEIP with media name set to tun
+Don't put the l4ls clk domain to sleep in case of standby.
+Since CM3 PM FW[1](ti-v4.1.y) doesn't wake-up/enable the l4ls clk domain
+upon wake-up, CM3 PM FW fails to wake-up the MPU.
 
-tipc: Started in network mode
-tipc: Node identity 8af312d38a21, cluster identity 4711
-tipc: Enabled bearer <eth:syz_tun>, priority 1
-Oops: general protection fault
-KASAN: null-ptr-deref in range
-CPU: 1 UID: 1000 PID: 559 Comm: poc Not tainted 6.16.0-rc1+ #117 PREEMPT
-Hardware name: QEMU Ubuntu 24.04 PC
-RIP: 0010:tipc_udp_nl_dump_remoteip+0x4a4/0x8f0
+[1] https://git.ti.com/cgit/processor-firmware/ti-amx3-cm3-pm-firmware/
 
-the ub was in fact a struct dev.
-
-when bid != 0 && skip_cnt != 0, bearer_list[bid] may be NULL or
-other media when other thread changes it.
-
-fix this by checking media_id.
-
-Fixes: 832629ca5c313 ("tipc: add UDP remoteip dump to netlink API")
-Signed-off-by: Haixia Qu <hxqu@hillstonenet.com>
-Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
-Link: https://patch.msgid.link/20250617055624.2680-1-hxqu@hillstonenet.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250318230042.3138542-2-sbellary@baylibre.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/udp_media.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/mach-omap2/clockdomain.h           |  1 +
+ arch/arm/mach-omap2/clockdomains33xx_data.c |  2 +-
+ arch/arm/mach-omap2/cm33xx.c                | 14 +++++++++++++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/net/tipc/udp_media.c b/net/tipc/udp_media.c
-index 25e733919131c..881f4c160dbf5 100644
---- a/net/tipc/udp_media.c
-+++ b/net/tipc/udp_media.c
-@@ -481,7 +481,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+diff --git a/arch/arm/mach-omap2/clockdomain.h b/arch/arm/mach-omap2/clockdomain.h
+index 68550b23c938d..eb6ca2ea80679 100644
+--- a/arch/arm/mach-omap2/clockdomain.h
++++ b/arch/arm/mach-omap2/clockdomain.h
+@@ -48,6 +48,7 @@
+ #define CLKDM_NO_AUTODEPS			(1 << 4)
+ #define CLKDM_ACTIVE_WITH_MPU			(1 << 5)
+ #define CLKDM_MISSING_IDLE_REPORTING		(1 << 6)
++#define CLKDM_STANDBY_FORCE_WAKEUP		BIT(7)
  
- 		rtnl_lock();
- 		b = tipc_bearer_find(net, bname);
--		if (!b) {
-+		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
- 			rtnl_unlock();
- 			return -EINVAL;
- 		}
-@@ -492,7 +492,7 @@ int tipc_udp_nl_dump_remoteip(struct sk_buff *skb, struct netlink_callback *cb)
+ #define CLKDM_CAN_HWSUP		(CLKDM_CAN_ENABLE_AUTO | CLKDM_CAN_DISABLE_AUTO)
+ #define CLKDM_CAN_SWSUP		(CLKDM_CAN_FORCE_SLEEP | CLKDM_CAN_FORCE_WAKEUP)
+diff --git a/arch/arm/mach-omap2/clockdomains33xx_data.c b/arch/arm/mach-omap2/clockdomains33xx_data.c
+index 32c90fd9eba26..3303c41dcefe8 100644
+--- a/arch/arm/mach-omap2/clockdomains33xx_data.c
++++ b/arch/arm/mach-omap2/clockdomains33xx_data.c
+@@ -27,7 +27,7 @@ static struct clockdomain l4ls_am33xx_clkdm = {
+ 	.pwrdm		= { .name = "per_pwrdm" },
+ 	.cm_inst	= AM33XX_CM_PER_MOD,
+ 	.clkdm_offs	= AM33XX_CM_PER_L4LS_CLKSTCTRL_OFFSET,
+-	.flags		= CLKDM_CAN_SWSUP,
++	.flags		= CLKDM_CAN_SWSUP | CLKDM_STANDBY_FORCE_WAKEUP,
+ };
  
- 		rtnl_lock();
- 		b = rtnl_dereference(tn->bearer_list[bid]);
--		if (!b) {
-+		if (!b || b->bcast_addr.media_id != TIPC_MEDIA_TYPE_UDP) {
- 			rtnl_unlock();
- 			return -EINVAL;
- 		}
+ static struct clockdomain l3s_am33xx_clkdm = {
+diff --git a/arch/arm/mach-omap2/cm33xx.c b/arch/arm/mach-omap2/cm33xx.c
+index 084d454f60748..430a9de563a4e 100644
+--- a/arch/arm/mach-omap2/cm33xx.c
++++ b/arch/arm/mach-omap2/cm33xx.c
+@@ -28,6 +28,9 @@
+ #include "cm-regbits-34xx.h"
+ #include "cm-regbits-33xx.h"
+ #include "prm33xx.h"
++#if IS_ENABLED(CONFIG_SUSPEND)
++#include <linux/suspend.h>
++#endif
+ 
+ /*
+  * CLKCTRL_IDLEST_*: possible values for the CM_*_CLKCTRL.IDLEST bitfield:
+@@ -336,8 +339,17 @@ static int am33xx_clkdm_clk_disable(struct clockdomain *clkdm)
+ {
+ 	bool hwsup = false;
+ 
++#if IS_ENABLED(CONFIG_SUSPEND)
++	/*
++	 * In case of standby, Don't put the l4ls clk domain to sleep.
++	 * Since CM3 PM FW doesn't wake-up/enable the l4ls clk domain
++	 * upon wake-up, CM3 PM FW fails to wake-up th MPU.
++	 */
++	if (pm_suspend_target_state == PM_SUSPEND_STANDBY &&
++	    (clkdm->flags & CLKDM_STANDBY_FORCE_WAKEUP))
++		return 0;
++#endif
+ 	hwsup = am33xx_cm_is_clkdm_in_hwsup(clkdm->cm_inst, clkdm->clkdm_offs);
+-
+ 	if (!hwsup && (clkdm->flags & CLKDM_CAN_FORCE_SLEEP))
+ 		am33xx_clkdm_sleep(clkdm);
+ 
 -- 
 2.39.5
 
