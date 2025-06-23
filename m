@@ -1,357 +1,208 @@
-Return-Path: <stable+bounces-155305-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90DF8AE362B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 08:49:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 143F6AE3631
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 08:49:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BC4B03AE542
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 06:49:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 633C0170C85
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 06:49:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 434941E47AE;
-	Mon, 23 Jun 2025 06:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CA4F1EBFE0;
+	Mon, 23 Jun 2025 06:49:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="G3r+GMjf"
+	dkim=pass (1024-bit key) header.d=konplan.com header.i=@konplan.com header.b="G+8dB1oO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from ZRZP278CU001.outbound.protection.outlook.com (mail-switzerlandnorthazon11021115.outbound.protection.outlook.com [40.107.167.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 220E01624D5;
-	Mon, 23 Jun 2025 06:49:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750661361; cv=none; b=AqaStPGHmOsNh3qdtz5VO40duFiCWXIAn6VMQqVoxDxjeXZ7NbfExINXaVcrSiHmsQJjCltAOhPms/9s/SFZEWeOC7D8R6yXnMmWEki9rDEYF5T4GmriE9sjbI2+eaUKn1tPsrUzX/2xEwxOriVkXl0TdU6oiGvM79K1g0+X/l8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750661361; c=relaxed/simple;
-	bh=W1yQkAY6G3BsxMU3L7Sq1NSsX2JLyr/WgRaENX3rVho=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TUVYYPJWf14Uj68PPdPE034qsjOWbrS0/RY8dyCydKTQtFj9L8gMKz17KDpTKyPTX+cASWjd6leWKI+BmqlYjODVBrxz1UnY+iwcim40XutPqC+AJgCdi8TATTUGdUfWb6PjYrpHEBjmHJ3Q+Q5ewFdO9MEnBRWRifSuOWXmpGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=G3r+GMjf; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1750661359; x=1782197359;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=W1yQkAY6G3BsxMU3L7Sq1NSsX2JLyr/WgRaENX3rVho=;
-  b=G3r+GMjf/TuPbDAtzG4JIT10046ftDpaphfHw3nbHkl0ISfbmqE+0ujE
-   fnetKJ23KPtWdmIW5R0bKYSYRbPLnYOCcVRt0ppOHAhS4z+w10oqE4YR5
-   8pnntmTajkgfBMdPVX+o/d1ELXlTEAyTEG086HDGs4dwdrmZyLse2KKqL
-   yp8AXtu03z33IhvatgfALHv9Yu50GpeuKgI7yipUdeEcyQahCZXvpzdfU
-   a9IqCNbyMCwJHUkbQFyZLc4pFCcmyADeBbDPHN2cumlkEszJIpaGe6J5a
-   AOKFcizc4JkqpvOQmcVEP9pgQQxHKEQFrSD04dJSY+EHKQPQa/RKKfE7e
-   A==;
-X-CSE-ConnectionGUID: 3TpDewCsQHWWsyB57QK+2Q==
-X-CSE-MsgGUID: UOCgy555SG+t7SAM4M5s5g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11472"; a="56665128"
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="56665128"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:49:18 -0700
-X-CSE-ConnectionGUID: 4xMZAiOTT82haujllFiibg==
-X-CSE-MsgGUID: Vvsrls2pRs+APgHL3M7bnQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.16,258,1744095600"; 
-   d="scan'208";a="155524215"
-Received: from jinlan1x-mobl.ccr.corp.intel.com (HELO [10.124.241.132]) ([10.124.241.132])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2025 23:49:14 -0700
-Message-ID: <4018038c-8c96-49e0-b6b7-f54e0f52a65f@linux.intel.com>
-Date: Mon, 23 Jun 2025 14:49:11 +0800
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE761F181F
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 06:49:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.167.115
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1750661372; cv=fail; b=hmOfbfIsE2qCCD1nEFEIom2IKLKTKLkssTcQshrhBwciifEUxl29SqyX3Kkb9W13NlnCXYEsyRmjBQFF3GQpf/xcXdESU7lXTW8JzG5ZcvR/Pxq1vogcaOYE4jF8mCoJWWs+LkBnaPBkGZWHiG8ZFKNu74TtVgifh/BJtbervhk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1750661372; c=relaxed/simple;
+	bh=3TeIrfP5vKV+3Dq4zyNire0UIptNc1vnjr8XPaImYjA=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=O8xs4kOp6eEcme7uJFc42NCSIiRspcAzSGYPRGtLQSb/uxxn/jhJ1j00cwr0vwKJS/NXxLk0ywBzsuM/iahoyx/b8JT6WdImz5lGumCvJPN1TUuANAgi9yszoFbtfQxmsukIDrbWJbclegrPWzUBOvGWOLoASA/PNlovI1LvGj4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konplan.com; spf=pass smtp.mailfrom=konplan.com; dkim=pass (1024-bit key) header.d=konplan.com header.i=@konplan.com header.b=G+8dB1oO; arc=fail smtp.client-ip=40.107.167.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=konplan.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=konplan.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=wE5SoqxR7Pa/T/y9MRVq6C+4MIxrQTcEGNc8CSYd70rm+65F6IAPXbeol648c7eVQHMApEThh1jywXlBcWuK1eVO1L3eHXJHMNzKxy0ccVNHBfWP3qfVgxhYCMBergVCVL4I5BlVnfv0eYt4logKzmFDkaN6UZtQAJTE4Gi/2ct198r3LBlXhcsTu2fGSv/SUP8LByry5uZKx/CLDLVIEaVOacBG+qd/vzaJu+ZFTDst6szO3T37WsQZUdkNQZWd2C9jZbOpKyWRNFbUCwAqXGpl4kivv7Th9R2jKmwXpbfvL5gPQhi7VBtXsQtA2KWBnBjSuHAuG9m7jVmH+q5RaA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3TeIrfP5vKV+3Dq4zyNire0UIptNc1vnjr8XPaImYjA=;
+ b=X+Pwk83rYL3NMu6tWNH4Cc4lqjomrobV7apxDMrDhMrVRWH/BK74SKRWKxu7aAneIeNx+P38+yH9sRqf3uQbeWAKW5A4ZEAX8HExjqFNX3PW8UC4aQtjNm9EAN0TFC/5kCbgQBcXHV3oOOLFW4hhEAE+NPx+0cNdyTrqJsuF9kRgEDbbfM2oWQF7HoYYdicNvYULQe1SFuhD+PTDsMS6BQyh1meGmSGQpNAsmsgOZWPT5JubDsE+xKK58CvBL9ruJQ3avKEUUntSCVjwOMxxpuzQhJHNH47vxf5XeFw0enERrnRwcakBFln2l2KyJiNvZzBDJX7B5uNc+n4sXU1sRQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=konplan.com; dmarc=pass action=none header.from=konplan.com;
+ dkim=pass header.d=konplan.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=konplan.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3TeIrfP5vKV+3Dq4zyNire0UIptNc1vnjr8XPaImYjA=;
+ b=G+8dB1oOtpT38N/TMy9mjGNvdWzfQW060DeIddHHICvSi3hD/zkL81NXUajXWy0FbUp67IqL/M3mf4mXTU/riuVe4jQlSBaR5+j5q5QKvRUnnnYcVMts8OKpkxg1iggLwLZ6wMQA1LVfkUZQ35/rXePc0Y+buTxnz7PtGnuQUfc=
+Received: from ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:57::12)
+ by ZR0P278MB0846.CHEP278.PROD.OUTLOOK.COM (2603:10a6:910:43::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8857.29; Mon, 23 Jun
+ 2025 06:49:26 +0000
+Received: from ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::ddb:a69d:c7e6:28ab]) by ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM
+ ([fe80::ddb:a69d:c7e6:28ab%5]) with mapi id 15.20.8857.026; Mon, 23 Jun 2025
+ 06:49:26 +0000
+From: Sebastian Priebe <sebastian.priebe@konplan.com>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC: "stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: AW: BLOCK_LEGACY_AUTOLOAD not default y in Linux 5.15.179+
+Thread-Topic: BLOCK_LEGACY_AUTOLOAD not default y in Linux 5.15.179+
+Thread-Index: AdvekB6VDQOyY8zdQ2OLKqU1kdTP4QDabT6AAIQslvA=
+Date: Mon, 23 Jun 2025 06:49:25 +0000
+Message-ID:
+ <ZR0P278MB09746D529099F1B9CD61B7559F79A@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
+References:
+ <ZR0P278MB097497EF6CFD85E72819447E9F70A@ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM>
+ <2025062007-fall-brim-a7ba@gregkh>
+In-Reply-To: <2025062007-fall-brim-a7ba@gregkh>
+Accept-Language: de-DE, en-US
+Content-Language: de-DE
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-bromium-msgid: 94ee2458-e688-4366-a85b-128a8b9dcff0
+x-codetwoprocessed: true
+x-codetwo-clientsignature-inserted: true
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=konplan.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: ZR0P278MB0974:EE_|ZR0P278MB0846:EE_
+x-ms-office365-filtering-correlation-id: 4451ebb9-c9c9-4cbf-bac2-08ddb2221829
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|1800799024|376014|366016|10070799003|7053199007|38070700018;
+x-microsoft-antispam-message-info:
+ =?iso-8859-1?Q?XWIl+F5G7wlbp3Fd+fGZ1+VlUtjA91mKEmFaxtDyMZQRuX4WlvAFQ5tYAm?=
+ =?iso-8859-1?Q?/BE31GqMX8xjkCqX32qsvCkV8GPUKwyyYOsfKc9ab3h8L+sLOHHPnnGC3l?=
+ =?iso-8859-1?Q?BxJetesISpglziFKLtAkbPoMFBY0jdG24bg1NO1/kIOawFo+kFUT9vkjW6?=
+ =?iso-8859-1?Q?yCED3PRcwvDu7s9+0YSf6aZAsXFUpFGs1pipsbKkvBMeF8vNu9BZOlTAiI?=
+ =?iso-8859-1?Q?feKtAXwjhlWT4w2yxyBBDzm+Na0seHFFSCeWbq5xf8rjfdp+M+6/j6u8ho?=
+ =?iso-8859-1?Q?dc/mg5jiORQ3i48VSbYUT738e0YRglm8oIHGZUdZWNw+eslbM1mcGtxIKp?=
+ =?iso-8859-1?Q?YtYGaleA1hLLIx+3ujKljpiOINwbTaOpc3dTev6K6c47adfwCLGmRxy38o?=
+ =?iso-8859-1?Q?plPxnYdY4or7z5hI/0X5nXRRY6VxwX/hJaqDX7f33JsTAT0cUxBiXvq4Ic?=
+ =?iso-8859-1?Q?Af2vJjbvKT2qLPhyUy41zi2CC6xJqORfTvcJEo2CGjtP9ubZ5PR3leCKMJ?=
+ =?iso-8859-1?Q?bz+30ql5VkopbRoy3CNMb4oFFEvs+AKFyqKGLWGf/4I4l9IY+xVNGxhX5O?=
+ =?iso-8859-1?Q?EkP4/zLRuXppsMakakmeb4vu3HepvVtTS3L7evjsVLm5iaehYG7GL+kOw/?=
+ =?iso-8859-1?Q?WeS+fC9nWwIzzUtD0gMxlBEva9t+3IRUaOSH4nur8c8BYfoNDEMwieNmHD?=
+ =?iso-8859-1?Q?PH9EPT0UYbEQNWqZ7geQcNhYqbmoqc+znrgRCWTExYnnhwRUTCPuzi3T2A?=
+ =?iso-8859-1?Q?kDukkzLQ1t9kPo64lb3j9anWDqq4OFIUEUjNSEEkPeifFeAFbAf2Kw7oF/?=
+ =?iso-8859-1?Q?YBKSsdWRCItqVCrwmwgCO0y3Ld65Brda2RcQlCiKJhLzDRRythHwxVs9+N?=
+ =?iso-8859-1?Q?tzeYIC1bW1tlPo+ztyYLQJ2mvN/B3q9lj9IrjdWPCCu99M1ccSR6phL9uz?=
+ =?iso-8859-1?Q?P2oTwIQNR8RHFShj4RVOePs7AkN0OqWJYBRSvrCu6Rq8Dv5kXA7V0Ms1O6?=
+ =?iso-8859-1?Q?ThL1pMtzflWqmBBac+4VxA7mA0bYwT6mdPxb8PEg2V76D47vg++txb2cFu?=
+ =?iso-8859-1?Q?tGEOuNzE7zRTacekwJ1QZM3avLxfutDmB1JVSEfBIWJ9mFhd9UOs2G36H4?=
+ =?iso-8859-1?Q?bMUZsPAkbYg4jhgz1i3tH9mWN+P/fhMEn22LrWILLlan3OR7PKcZYjyr88?=
+ =?iso-8859-1?Q?v5NhN3PsGCjccffe4gEbrFfKuCvJiCOJmr2KEPqv+CI7iSGoeHCpVHWrOP?=
+ =?iso-8859-1?Q?7vhWqPzQjzMtkxsXd8/caZJLXN5F1Tx53tj5aoPaDilBtzPA+hQMePcvjy?=
+ =?iso-8859-1?Q?3aVUxwxiyj3gdfeP0PPxZozncx9pzEUCn5OQU6MMTtjq92rUOvhC/Dodoe?=
+ =?iso-8859-1?Q?m+tQEXf5wYwRmujtRO50/lheVdO8DtU85MltJyrrpbJQvoy7O53Xe7jhyS?=
+ =?iso-8859-1?Q?Mc0SQdzqIIPedgElsUQrlb6Jd8qAcM6umchyyA70vC1YBuXUmP1/D0aCUC?=
+ =?iso-8859-1?Q?F6ClebO1/ZzxMNDkzvSmueWXqIdFyvAO07kalgnrcBHQ=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(10070799003)(7053199007)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?iso-8859-1?Q?3Y6kOx+5eQpvuhIjmd5ZBMOwaMgG/0bAo5oKXtNlFOd2+E39OR/zZUiAV1?=
+ =?iso-8859-1?Q?LC+0X1LrZGMVz/ibawRV12+mMGAZcVjB2TinQwKOLIll26P1dnH+IFDEv+?=
+ =?iso-8859-1?Q?+anqRrMR4JiU8XI4ZQF2UQeXFpD9UUxRkJnxzjNCiMlOhOLboaqEmmgfH6?=
+ =?iso-8859-1?Q?hGGessS6EfJLEhi62sbLM05JbyUqBXGzKOxjV4R7RwK7hongqTW37fwUrD?=
+ =?iso-8859-1?Q?BXRAhU0flYisYa88q2/jxvkNuOJHmoD4ioPFuc+U4YnIgcCPMLSAcjsXL1?=
+ =?iso-8859-1?Q?qr5YjruuepZ431oc3ATzLXsusUOeGuOAultVwvfYr1Duzeph+J7YbzFIxQ?=
+ =?iso-8859-1?Q?W10HBc14CVeJSrQ+5BIULvBYdS/40/jTaOGcPi78SpLK95LylRqsuiuxGu?=
+ =?iso-8859-1?Q?ODnDRU886yOHb9ifcX0AmCGTYKCn6rweyMWs95iNjTjEgOJpVzcZTm2i/z?=
+ =?iso-8859-1?Q?RjwXL4z6Ae/3z2GThTaPehtnl/QJka6kjNldzVn8NXdvCgI/yuXQ/MvjZX?=
+ =?iso-8859-1?Q?VL0h0QUuYaCt2vRcLtxov0lRetFXgwTYINnodgbdUOi+A8V1AzdWVB8Rx4?=
+ =?iso-8859-1?Q?8VznBXjOm7HhZQIYjM7jmDcFFPAmSQex6jVbJczc7mlWfxlctk+S3nzzwc?=
+ =?iso-8859-1?Q?lN4wKc9Q9ZpcbGfJd4/eZGfDONCgtDAYIaZczy+4SvYvszb1mmcfOkKJBf?=
+ =?iso-8859-1?Q?yhVBgVfm2zHcUCgbCZ3OI7mI2V53hT7ODkP7e0O9avRafmsjwHpwWLloNK?=
+ =?iso-8859-1?Q?NPKfbyaosSvw4sejiWnsuZYVlLvjN4Noem2/ycLehlyovOtzHXJza5zBRy?=
+ =?iso-8859-1?Q?1KIOp70ww3P4/8lQcHlLUElu4QDl9ZRXiR3W0XKPjtQqvQCAE9e1TqWf16?=
+ =?iso-8859-1?Q?pfuDoxJ4tjk8aGhpDWyX+seKiGR47ecL/VgUfWbkwKVlzIJi2+y0C4Cper?=
+ =?iso-8859-1?Q?qkyjiatDd9i8hJpwKZgvv2R622AiQ2G3aHCnBA0mGGTFQwyeykpm8QMUUc?=
+ =?iso-8859-1?Q?+rkw4Vl99vlToe28ATdhG9IpE/ypmjSHVW4MWpDzbWY1rN1OeYXe1h7LM9?=
+ =?iso-8859-1?Q?whPDCUSSn20MO0LZqCvF8XQiRiQ58IjUiQCXafEqW8sX5A1ZRCww+88oht?=
+ =?iso-8859-1?Q?GvoLfsOf3j3KfMHTaHcM0Rx539PJKqMuAAoNFTvQBmUtZowTPnPh7FsNGS?=
+ =?iso-8859-1?Q?lohn5sAvcHTwYb8mIsjAHoC8l62g7YuIES4RX4hwoHFQLSHBob92gM1qxz?=
+ =?iso-8859-1?Q?5DkAQXNn4C3v8WMHPoTLJgOxIk5ySPdJ/rE4zK2c915IMqMpsEDZXrbbT+?=
+ =?iso-8859-1?Q?mcFTAkmly5JVQhugON1/NIyatoi/Fo04jfphLkAGocS0Knm5crohZ/0qZL?=
+ =?iso-8859-1?Q?TQCgApqFok7Kj2Ib6bmv2gufuzVoVwOWja5VBK2f8Y+Z3FlTdiI66WaUS/?=
+ =?iso-8859-1?Q?E89la4uOKGtdkYyQnraZB1hfSvrq4EPJl4FzELFGVFko6BGflffJDByCUO?=
+ =?iso-8859-1?Q?3eNrxTBmZVn4vhJcT6nMWbbk39NhCLewrzLRXo3gp129KwUktQK0UTAYub?=
+ =?iso-8859-1?Q?jwJpG8YzZ0XJ8y2hobsT7Sfo563C+Vw4rFSq32SjVRnjoABYuvtb1epD9A?=
+ =?iso-8859-1?Q?DPeiPKluq4a+HBABy5/T/CVjHKA5sux0TpNWU6AmjYU+ey5UW+Seq5ss6k?=
+ =?iso-8859-1?Q?t+dHXr49d048RMkiBCrBYSWEcJHs5G6mAsf4fQ2g4bSY0O5MAkPzsRF6Dm?=
+ =?iso-8859-1?Q?Z/hQ=3D=3D?=
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/2] x86/traps: Initialize DR6 by writing its
- architectural reset value
-To: "Xin Li (Intel)" <xin@zytor.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org, stable@vger.kernel.org
-Cc: tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- seanjc@google.com, pbonzini@redhat.com, peterz@infradead.org,
- sohil.mehta@intel.com, brgerst@gmail.com, tony.luck@intel.com,
- fenghuay@nvidia.com
-References: <20250620231504.2676902-1-xin@zytor.com>
- <20250620231504.2676902-2-xin@zytor.com>
-From: Ethan Zhao <haifeng.zhao@linux.intel.com>
-Autocrypt: addr=haifeng.zhao@linux.intel.com; keydata=
- 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
- 8TCx1OJHpvWFmL4Deq8=
-In-Reply-To: <20250620231504.2676902-2-xin@zytor.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: konplan.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: ZR0P278MB0974.CHEP278.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4451ebb9-c9c9-4cbf-bac2-08ddb2221829
+X-MS-Exchange-CrossTenant-originalarrivaltime: 23 Jun 2025 06:49:26.0360
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: b76f2463-3edd-4a7d-86dd-7d82ee91fe05
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 7qT+rJh5qkB8/kwSMGZQuhpA+s4sP8c82YEhGiqLDzrtX+Q9oonLmkYDrATBTfaH4ATIgjFfOFkdyVG6oX7+EEPGv+2oXZ1lMoW6m6zf1O4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ZR0P278MB0846
 
-
-在 2025/6/21 7:15, Xin Li (Intel) 写道:
-> Initialize DR6 by writing its architectural reset value to avoid
-> incorrectly zeroing DR6 to clear DR6.BLD at boot time, which leads
-> to a false bus lock detected warning.
->
-> The Intel SDM says:
->
->    1) Certain debug exceptions may clear bits 0-3 of DR6.
->
->    2) BLD induced #DB clears DR6.BLD and any other debug exception
->       doesn't modify DR6.BLD.
->
->    3) RTM induced #DB clears DR6.RTM and any other debug exception
->       sets DR6.RTM.
->
->    To avoid confusion in identifying debug exceptions, debug handlers
->    should set DR6.BLD and DR6.RTM, and clear other DR6 bits before
->    returning.
->
-> The DR6 architectural reset value 0xFFFF0FF0, already defined as
-> macro DR6_RESERVED, satisfies these requirements, so just use it to
-> reinitialize DR6 whenever needed.
->
-> Since clear_all_debug_regs() no longer zeros all debug registers,
-> rename it to initialize_debug_regs() to better reflect its current
-> behavior.
->
-> Since debug_read_clear_dr6() no longer clears DR6, rename it to
-> debug_read_reset_dr6() to better reflect its current behavior.
->
-> Reported-by: Sohil Mehta <sohil.mehta@intel.com>
-> Link: https://lore.kernel.org/lkml/06e68373-a92b-472e-8fd9-ba548119770c@intel.com/
-> Fixes: ebb1064e7c2e9 ("x86/traps: Handle #DB for bus lock")
-> Suggested-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> Tested-by: Sohil Mehta <sohil.mehta@intel.com>
-> Reviewed-by: H. Peter Anvin (Intel) <hpa@zytor.com>
-> Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-> Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+> -----Urspr=FCngliche Nachricht-----
+> Von: gregkh@linuxfoundation.org <gregkh@linuxfoundation.org>
+> Gesendet: Freitag, 20. Juni 2025 17:42
+> An: Sebastian Priebe <sebastian.priebe@konplan.com>
 > Cc: stable@vger.kernel.org
-> ---
->
-> Changes in v3:
-> *) Polish initialize_debug_regs() (PeterZ).
-> *) Rewrite the comment for DR6_RESERVED definition (Sohil and Sean).
-> *) Collect TB, RB, AB (PeterZ and Sohil).
->
-> Changes in v2:
-> *) Use debug register index 6 rather than DR_STATUS (PeterZ and Sean).
-> *) Move this patch the first of the patch set to ease backporting.
-> ---
->   arch/x86/include/uapi/asm/debugreg.h | 21 ++++++++++++++++-
->   arch/x86/kernel/cpu/common.c         | 24 ++++++++------------
->   arch/x86/kernel/traps.c              | 34 +++++++++++++++++-----------
->   3 files changed, 51 insertions(+), 28 deletions(-)
->
-> diff --git a/arch/x86/include/uapi/asm/debugreg.h b/arch/x86/include/uapi/asm/debugreg.h
-> index 0007ba077c0c..41da492dfb01 100644
-> --- a/arch/x86/include/uapi/asm/debugreg.h
-> +++ b/arch/x86/include/uapi/asm/debugreg.h
-> @@ -15,7 +15,26 @@
->      which debugging register was responsible for the trap.  The other bits
->      are either reserved or not of interest to us. */
->   
-> -/* Define reserved bits in DR6 which are always set to 1 */
-> +/*
-> + * Define bits in DR6 which are set to 1 by default.
-> + *
-> + * This is also the DR6 architectural value following Power-up, Reset or INIT.
-> + *
-> + * Note, with the introduction of Bus Lock Detection (BLD) and Restricted
-> + * Transactional Memory (RTM), the DR6 register has been modified:
-> + *
-> + * 1) BLD flag (bit 11) is no longer reserved to 1 if the CPU supports
-> + *    Bus Lock Detection.  The assertion of a bus lock could clear it.
-> + *
-> + * 2) RTM flag (bit 16) is no longer reserved to 1 if the CPU supports
-> + *    restricted transactional memory.  #DB occurred inside an RTM region
-> + *    could clear it.
-> + *
-> + * Apparently, DR6.BLD and DR6.RTM are active low bits.
-> + *
-> + * As a result, DR6_RESERVED is an incorrect name now, but it is kept for
-> + * compatibility.
-> + */
->   #define DR6_RESERVED	(0xFFFF0FF0)
->   
->   #define DR_TRAP0	(0x1)		/* db0 */
-> diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-> index 8feb8fd2957a..0f6c280a94f0 100644
-> --- a/arch/x86/kernel/cpu/common.c
-> +++ b/arch/x86/kernel/cpu/common.c
-> @@ -2243,20 +2243,16 @@ EXPORT_PER_CPU_SYMBOL(__stack_chk_guard);
->   #endif
->   #endif
->   
-> -/*
-> - * Clear all 6 debug registers:
-> - */
-> -static void clear_all_debug_regs(void)
-> +static void initialize_debug_regs(void)
->   {
-> -	int i;
-> -
-> -	for (i = 0; i < 8; i++) {
-> -		/* Ignore db4, db5 */
-> -		if ((i == 4) || (i == 5))
-> -			continue;
-> -
-> -		set_debugreg(0, i);
-> -	}
-> +	/* Control register first -- to make sure everything is disabled. */
+> Betreff: Re: BLOCK_LEGACY_AUTOLOAD not default y in Linux 5.15.179+
+>=20
+> On Mon, Jun 16, 2025 at 07:28:25AM +0000, Sebastian Priebe wrote:
+> > Hello,
+> >
+> > we're facing a regression after updating to 5.15.179+.
+> > I've found that fbdee71bb5d8d054e1bdb5af4c540f2cb86fe296 (block: deprec=
+ate
+> autoloading based on dev_t) was merged that disabled autoloading of modul=
+es.
+> >
+> > This broke mounting loopback devices on our side.
+> >
+> > Why wasn't 451f0b6f4c44d7b649ae609157b114b71f6d7875 (block: default
+> BLOCK_LEGACY_AUTOLOAD to y) merged, too?
+> >
+> > This commit was merged for 6.1.y, 6.6.y and 6.12y, but not for 5.15.y.
+> >
+> > Please consider merging this for 5.15.y soon.
+>=20
+> I'll queue this up now, but note, unless you are starting with a new fres=
+h .config file,
+> the default value change will probably not be noticed by 'make oldconfig'=
+ so you
+> would probably have still hit this issue.
+>=20
+> thanks,
+>=20
+> greg k-h
 
-In the Figure 19-1. Debug Registers of SDM section 19.2 DEBUG REGISTERS,
-
-bit 10, 12, 14, 15 of DR7 are marked as gray (Reversed) and their value 
-are filled as
-
-1, 0, 0,0 ; should we clear them all here ?  I didn't find any other 
-description in the
-
-SDM about the result if they are cleaned. of course, this patch doesn't 
-change
-
-the behaviour of original DR7 initialization code, no justification needed,
-
-just out of curiosity.
-
-
-Thanks,
-
-Ethan
-
-> +	set_debugreg(0, 7);
-> +	set_debugreg(DR6_RESERVED, 6);
-> +	/* dr5 and dr4 don't exist */
-> +	set_debugreg(0, 3);
-> +	set_debugreg(0, 2);
-> +	set_debugreg(0, 1);
-> +	set_debugreg(0, 0);
->   }
->   
->   #ifdef CONFIG_KGDB
-> @@ -2417,7 +2413,7 @@ void cpu_init(void)
->   
->   	load_mm_ldt(&init_mm);
->   
-> -	clear_all_debug_regs();
-> +	initialize_debug_regs();
->   	dbg_restore_debug_regs();
->   
->   	doublefault_init_cpu_tss();
-> diff --git a/arch/x86/kernel/traps.c b/arch/x86/kernel/traps.c
-> index c5c897a86418..36354b470590 100644
-> --- a/arch/x86/kernel/traps.c
-> +++ b/arch/x86/kernel/traps.c
-> @@ -1022,24 +1022,32 @@ static bool is_sysenter_singlestep(struct pt_regs *regs)
->   #endif
->   }
->   
-> -static __always_inline unsigned long debug_read_clear_dr6(void)
-> +static __always_inline unsigned long debug_read_reset_dr6(void)
->   {
->   	unsigned long dr6;
->   
-> +	get_debugreg(dr6, 6);
-> +	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
-> +
->   	/*
->   	 * The Intel SDM says:
->   	 *
-> -	 *   Certain debug exceptions may clear bits 0-3. The remaining
-> -	 *   contents of the DR6 register are never cleared by the
-> -	 *   processor. To avoid confusion in identifying debug
-> -	 *   exceptions, debug handlers should clear the register before
-> -	 *   returning to the interrupted task.
-> +	 *   Certain debug exceptions may clear bits 0-3 of DR6.
-> +	 *
-> +	 *   BLD induced #DB clears DR6.BLD and any other debug
-> +	 *   exception doesn't modify DR6.BLD.
->   	 *
-> -	 * Keep it simple: clear DR6 immediately.
-> +	 *   RTM induced #DB clears DR6.RTM and any other debug
-> +	 *   exception sets DR6.RTM.
-> +	 *
-> +	 *   To avoid confusion in identifying debug exceptions,
-> +	 *   debug handlers should set DR6.BLD and DR6.RTM, and
-> +	 *   clear other DR6 bits before returning.
-> +	 *
-> +	 * Keep it simple: write DR6 with its architectural reset
-> +	 * value 0xFFFF0FF0, defined as DR6_RESERVED, immediately.
->   	 */
-> -	get_debugreg(dr6, 6);
->   	set_debugreg(DR6_RESERVED, 6);
-> -	dr6 ^= DR6_RESERVED; /* Flip to positive polarity */
->   
->   	return dr6;
->   }
-> @@ -1239,13 +1247,13 @@ static noinstr void exc_debug_user(struct pt_regs *regs, unsigned long dr6)
->   /* IST stack entry */
->   DEFINE_IDTENTRY_DEBUG(exc_debug)
->   {
-> -	exc_debug_kernel(regs, debug_read_clear_dr6());
-> +	exc_debug_kernel(regs, debug_read_reset_dr6());
->   }
->   
->   /* User entry, runs on regular task stack */
->   DEFINE_IDTENTRY_DEBUG_USER(exc_debug)
->   {
-> -	exc_debug_user(regs, debug_read_clear_dr6());
-> +	exc_debug_user(regs, debug_read_reset_dr6());
->   }
->   
->   #ifdef CONFIG_X86_FRED
-> @@ -1264,7 +1272,7 @@ DEFINE_FREDENTRY_DEBUG(exc_debug)
->   {
->   	/*
->   	 * FRED #DB stores DR6 on the stack in the format which
-> -	 * debug_read_clear_dr6() returns for the IDT entry points.
-> +	 * debug_read_reset_dr6() returns for the IDT entry points.
->   	 */
->   	unsigned long dr6 = fred_event_data(regs);
->   
-> @@ -1279,7 +1287,7 @@ DEFINE_FREDENTRY_DEBUG(exc_debug)
->   /* 32 bit does not have separate entry points. */
->   DEFINE_IDTENTRY_RAW(exc_debug)
->   {
-> -	unsigned long dr6 = debug_read_clear_dr6();
-> +	unsigned long dr6 = debug_read_reset_dr6();
->   
->   	if (user_mode(regs))
->   		exc_debug_user(regs, dr6);
-
--- 
-"firm, enduring, strong, and long-lived"
+Hello,
+thanks a lot.
+We're using a custom defconfig in our build environment so this should work=
+. But I will have an eye on it.
 
 
