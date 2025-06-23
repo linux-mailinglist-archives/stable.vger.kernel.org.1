@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D729DAE504E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A9BAE4F70
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE637ADE20
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BE75E3BF316
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DC311E5B71;
-	Mon, 23 Jun 2025 21:22:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2CB321B9C9;
+	Mon, 23 Jun 2025 21:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zbX9DlTp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6+QG0Rf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFF5B219E0;
-	Mon, 23 Jun 2025 21:22:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2331F3FF8;
+	Mon, 23 Jun 2025 21:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713762; cv=none; b=R+d3Y8ocrzuMflgOi44S9FZH4/9dFjHpBcwPYiRBLg+qc2s89dg6SELxMGmHTIylv98nvoevvENFmmmOfu/DtYps7xEtEdtwWSEEnpLs+TxDZxKE1KgNEQ8SZEt8gAbJvSjSZ3GMFZtreG1vP6IxaESh//d/1/UiCH/rP2K5M5M=
+	t=1750713358; cv=none; b=G2odq4jsDn73x92S+J0zLNT3ZxktSZCqXnPYBj/ZN4yBVKUBe6AM7uhOBoCxYqVMlLkK4YNM5aivXiEttMDQsJWn8qMnTB6txlpLbHEw9HFb/HgQwdCehkYkseeg7YKS4canR635IWUalNogglEzXaPEy02ytH1qnjkz2/agGCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713762; c=relaxed/simple;
-	bh=LFVsr262+4O031anlMYLvzUKCm2NLtaeAixyGZAheTk=;
+	s=arc-20240116; t=1750713358; c=relaxed/simple;
+	bh=n60aG+bdWOQWMeXyzoQMf7igex74wJaH9odel6WjSDU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPFV/C7Vigi3HfK+xByLUsudBmleo6ZfLC39o7ON8kQgmJm7RXECDqOX5tPM7HHyawGXPxz2mdxMIV4HQIp+3ZL41c2WqA+nqsFgJd6Al/rYKgLSdkRrsfiZxS9kJ3NlvQGeREzkAWG6x02G4zIYbWXnXEZs/5RuWUjMo9CGyfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zbX9DlTp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2677BC4CEEA;
-	Mon, 23 Jun 2025 21:22:41 +0000 (UTC)
+	 MIME-Version; b=IrBC0cLa+ja6hnaw2msl1SIkCla2wXNW0HxTccrCrK0CPTPXPaUEDho+tQBpXdfa/+F+qx47vPlDnig+iC/xLWUy4jzeJ53guq7H7KQ6VoAl4pggX+SCcGFXv6IB5S0D89qqJt8T+FscJ8v8KX/SGk560hIeZsnmI3UL9BBnpUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6+QG0Rf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 230C4C4CEED;
+	Mon, 23 Jun 2025 21:15:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713761;
-	bh=LFVsr262+4O031anlMYLvzUKCm2NLtaeAixyGZAheTk=;
+	s=korg; t=1750713358;
+	bh=n60aG+bdWOQWMeXyzoQMf7igex74wJaH9odel6WjSDU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zbX9DlTpuX3CsgZufSKC7aT7VKjS0tepUKEhk90siyvsfvnWb1bnw0Lm8NoIpexoe
-	 DBGeKxj9RK4pZZbwbWD6dr+iAubu3zbOnf8EEVaReV4C8yTLo2CWNXa3AfZcc87KHr
-	 M3ALDOoZY6FuKrpEetH3A24tw8laaepVHpoI6bZA=
+	b=S6+QG0RfMgA5eMzvPao0EJmSTtmSCAt5eJ1LLB2LEDpQqgawtddlvH3fyfoJUDbhz
+	 HYZZc0zJBi4AAd/Mu/k9AbrZ/oZu9PdOh/XIkoMjih418a+GS8gHvE27b4GIeLVls6
+	 tqiuZu7EwHNJOl0kblXjGlJZdhsJ8KZTDrpBoU4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thiago Jung Bauermann <thiago.bauermann@linaro.org>,
-	Ingo Saitz <ingo@hannover.ccc.de>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 131/508] randstruct: gcc-plugin: Fix attribute addition
-Date: Mon, 23 Jun 2025 15:02:56 +0200
-Message-ID: <20250623130648.514262906@linuxfoundation.org>
+	Liangliang Zou <rawdiamondmc@outlook.com>,
+	Mingcong Bai <jeffbai@aosc.io>,
+	Ping-Ke Shih <pkshih@realtek.com>
+Subject: [PATCH 6.12 040/414] wifi: rtlwifi: disable ASPM for RTL8723BE with subsystem ID 11ad:1723
+Date: Mon, 23 Jun 2025 15:02:57 +0200
+Message-ID: <20250623130643.038705788@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,139 +62,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Mingcong Bai <jeffbai@aosc.io>
 
-[ Upstream commit f39f18f3c3531aa802b58a20d39d96e82eb96c14 ]
+commit 77a6407c6ab240527166fb19ee96e95f5be4d3cd upstream.
 
-Based on changes in the 2021 public version of the randstruct
-out-of-tree GCC plugin[1], more carefully update the attributes on
-resulting decls, to avoid tripping checks in GCC 15's
-comptypes_check_enum_int() when it has been configured with
-"--enable-checking=misc":
+RTL8723BE found on some ASUSTek laptops, such as F441U and X555UQ with
+subsystem ID 11ad:1723 are known to output large amounts of PCIe AER
+errors during and after boot up, causing heavy lags and at times lock-ups:
 
-arch/arm64/kernel/kexec_image.c:132:14: internal compiler error: in comptypes_check_enum_int, at c/c-typeck.cc:1519
-  132 | const struct kexec_file_ops kexec_image_ops = {
-      |              ^~~~~~~~~~~~~~
- internal_error(char const*, ...), at gcc/gcc/diagnostic-global-context.cc:517
- fancy_abort(char const*, int, char const*), at gcc/gcc/diagnostic.cc:1803
- comptypes_check_enum_int(tree_node*, tree_node*, bool*), at gcc/gcc/c/c-typeck.cc:1519
- ...
+  pcieport 0000:00:1c.5: AER: Correctable error message received from 0000:00:1c.5
+  pcieport 0000:00:1c.5: PCIe Bus Error: severity=Correctable, type=Physical Layer, (Receiver ID)
+  pcieport 0000:00:1c.5:   device [8086:9d15] error status/mask=00000001/00002000
+  pcieport 0000:00:1c.5:    [ 0] RxErr
 
-Link: https://archive.org/download/grsecurity/grsecurity-3.1-5.10.41-202105280954.patch.gz [1]
-Reported-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Closes: https://github.com/KSPP/linux/issues/367
-Closes: https://lore.kernel.org/lkml/20250530000646.104457-1-thiago.bauermann@linaro.org/
-Reported-by: Ingo Saitz <ingo@hannover.ccc.de>
-Closes: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1104745
-Fixes: 313dd1b62921 ("gcc-plugins: Add the randstruct plugin")
-Tested-by: Thiago Jung Bauermann <thiago.bauermann@linaro.org>
-Link: https://lore.kernel.org/r/20250530221824.work.623-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Disable ASPM on this combo as a quirk.
+
+This patch is a revision of a previous patch (linked below) which
+attempted to disable ASPM for RTL8723BE on all Intel Skylake and Kaby Lake
+PCIe bridges. I take a more conservative approach as all known reports
+point to ASUSTek laptops of these two generations with this particular
+wireless card.
+
+Please note, however, before the rtl8723be finishes probing, the AER
+errors remained. After the module finishes probing, all AER errors would
+indeed be eliminated, along with heavy lags, poor network throughput,
+and/or occasional lock-ups.
+
+Cc: <stable@vger.kernel.org>
+Fixes: a619d1abe20c ("rtlwifi: rtl8723be: Add new driver")
+Reported-by: Liangliang Zou <rawdiamondmc@outlook.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218127
+Link: https://lore.kernel.org/lkml/05390e0b-27fd-4190-971e-e70a498c8221@lwfinger.net/T/
+Tested-by: Liangliang Zou <rawdiamondmc@outlook.com>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250422061755.356535-1-jeffbai@aosc.io
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/gcc-plugins/gcc-common.h              | 32 +++++++++++++++++++
- scripts/gcc-plugins/randomize_layout_plugin.c | 22 ++++++-------
- 2 files changed, 43 insertions(+), 11 deletions(-)
+ drivers/net/wireless/realtek/rtlwifi/pci.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
-index 1ae39b9f4a95e..90e83d62adb54 100644
---- a/scripts/gcc-plugins/gcc-common.h
-+++ b/scripts/gcc-plugins/gcc-common.h
-@@ -128,6 +128,38 @@ static inline tree build_const_char_string(int len, const char *str)
- 	return cstr;
+--- a/drivers/net/wireless/realtek/rtlwifi/pci.c
++++ b/drivers/net/wireless/realtek/rtlwifi/pci.c
+@@ -155,6 +155,16 @@ static void _rtl_pci_update_default_sett
+ 	    ((u8)init_aspm) == (PCI_EXP_LNKCTL_ASPM_L0S |
+ 				PCI_EXP_LNKCTL_ASPM_L1 | PCI_EXP_LNKCTL_CCC))
+ 		ppsc->support_aspm = false;
++
++	/* RTL8723BE found on some ASUSTek laptops, such as F441U and
++	 * X555UQ with subsystem ID 11ad:1723 are known to output large
++	 * amounts of PCIe AER errors during and after boot up, causing
++	 * heavy lags, poor network throughput, and occasional lock-ups.
++	 */
++	if (rtlpriv->rtlhal.hw_type == HARDWARE_TYPE_RTL8723BE &&
++	    (rtlpci->pdev->subsystem_vendor == 0x11ad &&
++	     rtlpci->pdev->subsystem_device == 0x1723))
++		ppsc->support_aspm = false;
  }
  
-+static inline void __add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree oldattr;
-+
-+	if (type == NULL_TREE)
-+		return;
-+	oldattr = lookup_attribute(attr, TYPE_ATTRIBUTES(type));
-+	if (oldattr != NULL_TREE) {
-+		gcc_assert(TREE_VALUE(oldattr) == args || TREE_VALUE(TREE_VALUE(oldattr)) == TREE_VALUE(args));
-+		return;
-+	}
-+
-+	TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
-+	TYPE_ATTRIBUTES(type) = tree_cons(get_identifier(attr), args, TYPE_ATTRIBUTES(type));
-+}
-+
-+static inline void add_type_attr(tree type, const char *attr, tree args)
-+{
-+	tree main_variant = TYPE_MAIN_VARIANT(type);
-+
-+	__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	__add_type_attr(TYPE_CANONICAL(main_variant), attr, args);
-+	__add_type_attr(main_variant, attr, args);
-+
-+	for (type = TYPE_NEXT_VARIANT(main_variant); type; type = TYPE_NEXT_VARIANT(type)) {
-+		if (!lookup_attribute(attr, TYPE_ATTRIBUTES(type)))
-+			TYPE_ATTRIBUTES(type) = TYPE_ATTRIBUTES(main_variant);
-+
-+		__add_type_attr(TYPE_CANONICAL(type), attr, args);
-+	}
-+}
-+
- #define PASS_INFO(NAME, REF, ID, POS)		\
- struct register_pass_info NAME##_pass_info = {	\
- 	.pass = make_##NAME##_pass(),		\
-diff --git a/scripts/gcc-plugins/randomize_layout_plugin.c b/scripts/gcc-plugins/randomize_layout_plugin.c
-index 2b93dd14bd7b6..b00681ad3e383 100644
---- a/scripts/gcc-plugins/randomize_layout_plugin.c
-+++ b/scripts/gcc-plugins/randomize_layout_plugin.c
-@@ -77,6 +77,9 @@ static tree handle_randomize_layout_attr(tree *node, tree name, tree args, int f
- 
- 	if (TYPE_P(*node)) {
- 		type = *node;
-+	} else if (TREE_CODE(*node) == FIELD_DECL) {
-+		*no_add_attrs = false;
-+		return NULL_TREE;
- 	} else {
- 		gcc_assert(TREE_CODE(*node) == TYPE_DECL);
- 		type = TREE_TYPE(*node);
-@@ -363,15 +366,14 @@ static int relayout_struct(tree type)
- 		TREE_CHAIN(newtree[i]) = newtree[i+1];
- 	TREE_CHAIN(newtree[num_fields - 1]) = NULL_TREE;
- 
-+	add_type_attr(type, "randomize_performed", NULL_TREE);
-+	add_type_attr(type, "designated_init", NULL_TREE);
-+	if (has_flexarray)
-+		add_type_attr(type, "has_flexarray", NULL_TREE);
-+
- 	main_variant = TYPE_MAIN_VARIANT(type);
--	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant)) {
-+	for (variant = main_variant; variant; variant = TYPE_NEXT_VARIANT(variant))
- 		TYPE_FIELDS(variant) = newtree[0];
--		TYPE_ATTRIBUTES(variant) = copy_list(TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("randomize_performed"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		TYPE_ATTRIBUTES(variant) = tree_cons(get_identifier("designated_init"), NULL_TREE, TYPE_ATTRIBUTES(variant));
--		if (has_flexarray)
--			TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("has_flexarray"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
- 
- 	/*
- 	 * force a re-layout of the main variant
-@@ -439,10 +441,8 @@ static void randomize_type(tree type)
- 	if (lookup_attribute("randomize_layout", TYPE_ATTRIBUTES(TYPE_MAIN_VARIANT(type))) || is_pure_ops_struct(type))
- 		relayout_struct(type);
- 
--	for (variant = TYPE_MAIN_VARIANT(type); variant; variant = TYPE_NEXT_VARIANT(variant)) {
--		TYPE_ATTRIBUTES(type) = copy_list(TYPE_ATTRIBUTES(type));
--		TYPE_ATTRIBUTES(type) = tree_cons(get_identifier("randomize_considered"), NULL_TREE, TYPE_ATTRIBUTES(type));
--	}
-+	add_type_attr(type, "randomize_considered", NULL_TREE);
-+
- #ifdef __DEBUG_PLUGIN
- 	fprintf(stderr, "Marking randomize_considered on struct %s\n", ORIG_TYPE_NAME(type));
- #ifdef __DEBUG_VERBOSE
--- 
-2.39.5
-
+ static bool _rtl_pci_platform_switch_device_pci_aspm(
 
 
 
