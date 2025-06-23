@@ -1,62 +1,55 @@
-Return-Path: <stable+bounces-156651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2167AE5079
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B481AAE5496
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8998C4A1072
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7452A1BC1B25
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D501EF397;
-	Mon, 23 Jun 2025 21:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCA2224B1F;
+	Mon, 23 Jun 2025 22:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="axOqgK1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ReOlVpym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31FAC1E51FA;
-	Mon, 23 Jun 2025 21:25:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B20224B01;
+	Mon, 23 Jun 2025 22:02:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713935; cv=none; b=j6Oa/VDmWUBIsPiTBUsdqFyDZ5N1LlzFB0l5rLpGGhllst/zzAI7ViJgCL8FjRsr2/3S7CldFh0ughywUR8ho0cbUm5A3DFxVfs0lBocQan8DG1hLuXQCBPyaH1pL7R1bkh8pUNZ4g3I0N0Gsk8CuFWhPfQJb8LLvfYLv6lOFHA=
+	t=1750716166; cv=none; b=pabLt9ZRR0aGMKwYOhGHlU1OIg/ZI8TicsBD6prReA6kQwOIyv/ZZLL2EkF5idpBmiLqQVZ3GbfDXI487eZw0FWMiAom7d3BwdjH70BXpJJgd4BIOhcg+xP0p4JJl6NVzwnfscEVzHRRxvb4lKUiuRvfsGZf494Q0/Elm/Hap8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713935; c=relaxed/simple;
-	bh=8exWpqsetsb2xCz1BQvwx/ZdGNiFGVusP0tZgZeJGNU=;
+	s=arc-20240116; t=1750716166; c=relaxed/simple;
+	bh=K42ok3Pj0VKM6qWK2PL17DtIxEnwwPsZbLuycrWjnTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OrB2ZY4x8viT5P0sw1JXNpjAWR8VCg2QEfxtGxfnyFYnQ286beagzWD/5MddoQpgv/aKK/OOk6LFPdA3bJNj1oHjHV4qQuHb3+sbMWpFmFHmtoKY2UitvfBv+0cPnSPAMU7lzUpGpTN27mVIuDcExIk+cLYaDbxRVIEqqXrc2xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=axOqgK1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE9B6C4CEEA;
-	Mon, 23 Jun 2025 21:25:34 +0000 (UTC)
+	 MIME-Version; b=gAjFGufWX9D0n6lFkJAzfP5Ms14JAVldDkpprVCxb5gGZO4MS6ywvmrtTkuaoUx7CMpY4stVc9KJLYND721w2t5pvLXRKFdPWSXXwJ0/Xxu6NzwM+Z4SlsHm18BpAYCOoR4/ECgyrcp6l07p2aRP4kcphtnWTSZNFAsa+eGjTJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ReOlVpym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FA0AC4CEEA;
+	Mon, 23 Jun 2025 22:02:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713935;
-	bh=8exWpqsetsb2xCz1BQvwx/ZdGNiFGVusP0tZgZeJGNU=;
+	s=korg; t=1750716166;
+	bh=K42ok3Pj0VKM6qWK2PL17DtIxEnwwPsZbLuycrWjnTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=axOqgK1PrEVnO0wsxAHqB7rT9Kv8WIeFlGVHkoInK7DzndqZ4fLAGPh7+mh0YmIuD
-	 HPINxvdesHU9iLZKXaOfQ7jRlRpogt25oCCAhKVeq5s1kYduV257ZFA/JFn4VZnWRq
-	 3+X9geNze/bp/MrkY7Tivdt2Q+3EMDjjerjmLH2I=
+	b=ReOlVpymT/nrjE8ly+/PM8rSDNfF7d45zl5s4t72NTLzHYVxD6aBUu1SUvrBCVk5o
+	 8cdm+YHmzKXnF98VW9HrGfCi9S6AQKoPBtd1y5vnP5NQ1f0ym0N3ov/W9SuPm7CUaD
+	 XFhmFnedTq74cVlUFQUecEvuNS5s9TITOHySEyPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gavin Guo <gavinguo@igalia.com>,
-	David Hildenbrand <david@redhat.com>,
-	Hugh Dickins <hughd@google.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Florent Revest <revest@google.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.4 217/222] mm/huge_memory: fix dereferencing invalid pmd migration entry
-Date: Mon, 23 Jun 2025 15:09:12 +0200
-Message-ID: <20250623130618.823493688@linuxfoundation.org>
+	Wei Wei <weiwei.danny@bytedance.com>,
+	Aaron Lu <ziqianlu@bytedance.com>
+Subject: [PATCH 5.10 352/355] Revert "bpf: stop setting precise in current state"
+Date: Mon, 23 Jun 2025 15:09:13 +0200
+Message-ID: <20250623130637.304027346@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,81 +61,176 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gavin Guo <gavinguo@igalia.com>
+From: Aaron Lu <ziqianlu@bytedance.com>
 
-commit be6e843fc51a584672dfd9c4a6a24c8cb81d5fb7 upstream.
+This reverts commit 7ca3e7459f4a5795e78b14390635879f534d9741 which is
+commit f63181b6ae79fd3b034cde641db774268c2c3acf upstream.
 
-When migrating a THP, concurrent access to the PMD migration entry during
-a deferred split scan can lead to an invalid address access, as
-illustrated below.  To prevent this invalid access, it is necessary to
-check the PMD migration entry and return early.  In this context, there is
-no need to use pmd_to_swp_entry and pfn_swap_entry_to_page to verify the
-equality of the target folio.  Since the PMD migration entry is locked, it
-cannot be served as the target.
+The backport of bpf precision tracking related changes has caused bpf
+verifier to panic while loading some certain bpf prog so revert them.
 
-Mailing list discussion and explanation from Hugh Dickins: "An anon_vma
-lookup points to a location which may contain the folio of interest, but
-might instead contain another folio: and weeding out those other folios is
-precisely what the "folio != pmd_folio((*pmd)" check (and the "risk of
-replacing the wrong folio" comment a few lines above it) is for."
-
-BUG: unable to handle page fault for address: ffffea60001db008
-CPU: 0 UID: 0 PID: 2199114 Comm: tee Not tainted 6.14.0+ #4 NONE
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:split_huge_pmd_locked+0x3b5/0x2b60
-Call Trace:
-<TASK>
-try_to_migrate_one+0x28c/0x3730
-rmap_walk_anon+0x4f6/0x770
-unmap_folio+0x196/0x1f0
-split_huge_page_to_list_to_order+0x9f6/0x1560
-deferred_split_scan+0xac5/0x12a0
-shrinker_debugfs_scan_write+0x376/0x470
-full_proxy_write+0x15c/0x220
-vfs_write+0x2fc/0xcb0
-ksys_write+0x146/0x250
-do_syscall_64+0x6a/0x120
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The bug is found by syzkaller on an internal kernel, then confirmed on
-upstream.
-
-Link: https://lkml.kernel.org/r/20250421113536.3682201-1-gavinguo@igalia.com
-Link: https://lore.kernel.org/all/20250414072737.1698513-1-gavinguo@igalia.com/
-Link: https://lore.kernel.org/all/20250418085802.2973519-1-gavinguo@igalia.com/
-Fixes: 84c3fc4e9c56 ("mm: thp: check pmd migration entry in common path")
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Acked-by: Hugh Dickins <hughd@google.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Gavin Shan <gshan@redhat.com>
-Cc: Florent Revest <revest@google.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[gavin: backport the migration checking logic to __split_huge_pmd]
-Signed-off-by: Gavin Guo <gavinguo@igalia.com>
+Link: https://lkml.kernel.org/r/20250605070921.GA3795@bytedance/
+Reported-by: Wei Wei <weiwei.danny@bytedance.com>
+Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/huge_memory.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c |  103 +++++---------------------------------------------
+ 1 file changed, 12 insertions(+), 91 deletions(-)
 
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -2334,7 +2334,7 @@ void __split_huge_pmd(struct vm_area_str
- 	VM_BUG_ON(freeze && !page);
- 	if (page) {
- 		VM_WARN_ON_ONCE(!PageLocked(page));
--		if (page != pmd_page(*pmd))
-+		if (is_pmd_migration_entry(*pmd) || page != pmd_page(*pmd))
- 			goto out;
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -2028,11 +2028,8 @@ static void mark_all_scalars_precise(str
+ 
+ 	/* big hammer: mark all scalars precise in this path.
+ 	 * pop_stack may still get !precise scalars.
+-	 * We also skip current state and go straight to first parent state,
+-	 * because precision markings in current non-checkpointed state are
+-	 * not needed. See why in the comment in __mark_chain_precision below.
+ 	 */
+-	for (st = st->parent; st; st = st->parent) {
++	for (; st; st = st->parent)
+ 		for (i = 0; i <= st->curframe; i++) {
+ 			func = st->frame[i];
+ 			for (j = 0; j < BPF_REG_FP; j++) {
+@@ -2050,88 +2047,8 @@ static void mark_all_scalars_precise(str
+ 				reg->precise = true;
+ 			}
+ 		}
+-	}
+ }
+ 
+-/*
+- * __mark_chain_precision() backtracks BPF program instruction sequence and
+- * chain of verifier states making sure that register *regno* (if regno >= 0)
+- * and/or stack slot *spi* (if spi >= 0) are marked as precisely tracked
+- * SCALARS, as well as any other registers and slots that contribute to
+- * a tracked state of given registers/stack slots, depending on specific BPF
+- * assembly instructions (see backtrack_insns() for exact instruction handling
+- * logic). This backtracking relies on recorded jmp_history and is able to
+- * traverse entire chain of parent states. This process ends only when all the
+- * necessary registers/slots and their transitive dependencies are marked as
+- * precise.
+- *
+- * One important and subtle aspect is that precise marks *do not matter* in
+- * the currently verified state (current state). It is important to understand
+- * why this is the case.
+- *
+- * First, note that current state is the state that is not yet "checkpointed",
+- * i.e., it is not yet put into env->explored_states, and it has no children
+- * states as well. It's ephemeral, and can end up either a) being discarded if
+- * compatible explored state is found at some point or BPF_EXIT instruction is
+- * reached or b) checkpointed and put into env->explored_states, branching out
+- * into one or more children states.
+- *
+- * In the former case, precise markings in current state are completely
+- * ignored by state comparison code (see regsafe() for details). Only
+- * checkpointed ("old") state precise markings are important, and if old
+- * state's register/slot is precise, regsafe() assumes current state's
+- * register/slot as precise and checks value ranges exactly and precisely. If
+- * states turn out to be compatible, current state's necessary precise
+- * markings and any required parent states' precise markings are enforced
+- * after the fact with propagate_precision() logic, after the fact. But it's
+- * important to realize that in this case, even after marking current state
+- * registers/slots as precise, we immediately discard current state. So what
+- * actually matters is any of the precise markings propagated into current
+- * state's parent states, which are always checkpointed (due to b) case above).
+- * As such, for scenario a) it doesn't matter if current state has precise
+- * markings set or not.
+- *
+- * Now, for the scenario b), checkpointing and forking into child(ren)
+- * state(s). Note that before current state gets to checkpointing step, any
+- * processed instruction always assumes precise SCALAR register/slot
+- * knowledge: if precise value or range is useful to prune jump branch, BPF
+- * verifier takes this opportunity enthusiastically. Similarly, when
+- * register's value is used to calculate offset or memory address, exact
+- * knowledge of SCALAR range is assumed, checked, and enforced. So, similar to
+- * what we mentioned above about state comparison ignoring precise markings
+- * during state comparison, BPF verifier ignores and also assumes precise
+- * markings *at will* during instruction verification process. But as verifier
+- * assumes precision, it also propagates any precision dependencies across
+- * parent states, which are not yet finalized, so can be further restricted
+- * based on new knowledge gained from restrictions enforced by their children
+- * states. This is so that once those parent states are finalized, i.e., when
+- * they have no more active children state, state comparison logic in
+- * is_state_visited() would enforce strict and precise SCALAR ranges, if
+- * required for correctness.
+- *
+- * To build a bit more intuition, note also that once a state is checkpointed,
+- * the path we took to get to that state is not important. This is crucial
+- * property for state pruning. When state is checkpointed and finalized at
+- * some instruction index, it can be correctly and safely used to "short
+- * circuit" any *compatible* state that reaches exactly the same instruction
+- * index. I.e., if we jumped to that instruction from a completely different
+- * code path than original finalized state was derived from, it doesn't
+- * matter, current state can be discarded because from that instruction
+- * forward having a compatible state will ensure we will safely reach the
+- * exit. States describe preconditions for further exploration, but completely
+- * forget the history of how we got here.
+- *
+- * This also means that even if we needed precise SCALAR range to get to
+- * finalized state, but from that point forward *that same* SCALAR register is
+- * never used in a precise context (i.e., it's precise value is not needed for
+- * correctness), it's correct and safe to mark such register as "imprecise"
+- * (i.e., precise marking set to false). This is what we rely on when we do
+- * not set precise marking in current state. If no child state requires
+- * precision for any given SCALAR register, it's safe to dictate that it can
+- * be imprecise. If any child state does require this register to be precise,
+- * we'll mark it precise later retroactively during precise markings
+- * propagation from child state to parent states.
+- */
+ static int __mark_chain_precision(struct bpf_verifier_env *env, int frame, int regno,
+ 				  int spi)
+ {
+@@ -2149,10 +2066,6 @@ static int __mark_chain_precision(struct
+ 	if (!env->bpf_capable)
+ 		return 0;
+ 
+-	/* Do sanity checks against current state of register and/or stack
+-	 * slot, but don't set precise flag in current state, as precision
+-	 * tracking in the current state is unnecessary.
+-	 */
+ 	func = st->frame[frame];
+ 	if (regno >= 0) {
+ 		reg = &func->regs[regno];
+@@ -2160,7 +2073,11 @@ static int __mark_chain_precision(struct
+ 			WARN_ONCE(1, "backtracing misuse");
+ 			return -EFAULT;
+ 		}
+-		new_marks = true;
++		if (!reg->precise)
++			new_marks = true;
++		else
++			reg_mask = 0;
++		reg->precise = true;
  	}
  
+ 	while (spi >= 0) {
+@@ -2173,7 +2090,11 @@ static int __mark_chain_precision(struct
+ 			stack_mask = 0;
+ 			break;
+ 		}
+-		new_marks = true;
++		if (!reg->precise)
++			new_marks = true;
++		else
++			stack_mask = 0;
++		reg->precise = true;
+ 		break;
+ 	}
+ 
+@@ -9358,7 +9279,7 @@ static bool regsafe(struct bpf_verifier_
+ 		if (env->explore_alu_limits)
+ 			return false;
+ 		if (rcur->type == SCALAR_VALUE) {
+-			if (!rold->precise)
++			if (!rold->precise && !rcur->precise)
+ 				return true;
+ 			/* new val must satisfy old val knowledge */
+ 			return range_within(rold, rcur) &&
 
 
 
