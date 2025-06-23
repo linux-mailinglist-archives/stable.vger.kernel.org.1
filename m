@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58D7FAE42B7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 250C2AE42B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8DFB2189A5FA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 06C4E189A734
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE1D25228D;
-	Mon, 23 Jun 2025 13:19:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64BE253340;
+	Mon, 23 Jun 2025 13:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oq5fcW04"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MTTcWlLr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC73C1EDA14;
-	Mon, 23 Jun 2025 13:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94848252906;
+	Mon, 23 Jun 2025 13:19:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684777; cv=none; b=sXGzg5V5fzOws1JD/j539mg6LHKDdP+wCq4Yx1usQbSFVE6n1HS+F5P796Fiqp5Yl3ninevqEM+d4f19AsZxN+OxnsN1Ir6UoHpgIGOMRcXKmVdyYiWrtZ2DZtByOhXLIXbTbWX8Oh/ZGIWscdo3mr6Qsrme2xd2xUatxNJ03rg=
+	t=1750684784; cv=none; b=KEHOOpsHcyXw+Dxw3joibpEK3Gsv+59FAIW2bHxI+qeck2BQWs56l0TgEaCkHCtZBHwAJX+62GRwxXXrVIiy6BRGnPsWfLwyoVfaZdl24mhFzrVaovVjFqZa4OB+NfQsHJpMMSTwEJthdxhIQkl0vQiOgTzK+oZor4h6LnyMZPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684777; c=relaxed/simple;
-	bh=FNF//D55NjXb26Tv5tt1EIbMijE3sanO4c0tahRKqWo=;
+	s=arc-20240116; t=1750684784; c=relaxed/simple;
+	bh=G8qIyFR45xZRLon4zjj6so7QARSXy+iNlF/N6SZ//qA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDZexG3LaBRbBjI8KwMxzfTLgw8eF4OPv5L2gJixXt9/kg9rE1IvPkB/+OHd1VaSbhMThgyrE+vBFMelVh00HQBtZkBGvbF4jpBFTZmHnHmGIMsTUadICG379c9oWQnAeY1gNEmLI2DaRq6TA/fZT3/m6KB+Ul5IFKtzBeoFavY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oq5fcW04; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FABC4CEEA;
-	Mon, 23 Jun 2025 13:19:36 +0000 (UTC)
+	 MIME-Version; b=hALdz/o1N+80gchTuQ8eTabmBGvqXLJJdIvOKVPnev8OropdMwP1fgxq1Q10ryvAfqLjxk9vKF8jWU4OzNNhUp+1us7kx4iHvgmq7tSofyAJMfZwvFw4qpjPtEd+67GbROZRAosC1Da5faG/jZBNvV9S7OgAN/jwx2Yslj+kARg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MTTcWlLr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28A59C4CEF0;
+	Mon, 23 Jun 2025 13:19:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684776;
-	bh=FNF//D55NjXb26Tv5tt1EIbMijE3sanO4c0tahRKqWo=;
+	s=korg; t=1750684784;
+	bh=G8qIyFR45xZRLon4zjj6so7QARSXy+iNlF/N6SZ//qA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Oq5fcW04BnvgvXOOihHs3W4SFbpIwvbQHWMcWA93pdsr5++Y5Ij7+73l70ZpWS1S2
-	 U1YEkJJH2H66rvLFQazZdCRyC/of91538n/QQWW10tVhXwzIY4x71PPCC+/UNaAbpk
-	 clhwuuFssCWST5WNBUyuDjwg7Zo/b4xX8+6qVvF8=
+	b=MTTcWlLrfoQQYzICNvocO7cOXElR978QxqI9cYlpV4alGjUXliJgYFtyFYaFgjYvW
+	 7p2GmFK3dSeQeFsOe5sbRK0FACtQW/3xCGvSO+uIa8hUCbR5QuWb/GoukL7D1R1QjS
+	 xsxDBzwme1aU7MiPHsrNWhQMc38lrOLoYnPIoBzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>,
-	Paul Fertser <fercerpav@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 027/222] net: ncsi: Fix GCPS 64-bit member variables
-Date: Mon, 23 Jun 2025 15:06:02 +0200
-Message-ID: <20250623130612.713590388@linuxfoundation.org>
+Subject: [PATCH 5.4 028/222] wifi: rtw88: do not ignore hardware read error during DPK
+Date: Mon, 23 Jun 2025 15:06:03 +0200
+Message-ID: <20250623130612.743008530@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,159 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit e8a1bd8344054ce27bebf59f48e3f6bc10bc419b ]
+[ Upstream commit 20d3c19bd8f9b498173c198eadf54580c8caa336 ]
 
-Correct Get Controller Packet Statistics (GCPS) 64-bit wide member
-variables, as per DSP0222 v1.0.0 and forward specs. The Driver currently
-collects these stats, but they are yet to be exposed to the user.
-Therefore, no user impact.
+In 'rtw8822c_dpk_cal_coef1()', do not ignore error returned
+by 'check_hw_ready()' but issue a warning to denote possible
+DPK issue. Compile tested only.
 
-Statistics fixes:
-Total Bytes Received (byte range 28..35)
-Total Bytes Transmitted (byte range 36..43)
-Total Unicast Packets Received (byte range 44..51)
-Total Multicast Packets Received (byte range 52..59)
-Total Broadcast Packets Received (byte range 60..67)
-Total Unicast Packets Transmitted (byte range 68..75)
-Total Multicast Packets Transmitted (byte range 76..83)
-Total Broadcast Packets Transmitted (byte range 84..91)
-Valid Bytes Received (byte range 204..11)
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Signed-off-by: Hari Kalavakunta <kalavakunta.hari.prasad@gmail.com>
-Reviewed-by: Paul Fertser <fercerpav@gmail.com>
-Link: https://patch.msgid.link/20250410012309.1343-1-kalavakunta.hari.prasad@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 5227c2ee453d ("rtw88: 8822c: add SW DPK support")
+Suggested-by: Ping-Ke Shih <pkshih@realtek.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20250415090720.194048-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ncsi/internal.h | 21 ++++++++++-----------
- net/ncsi/ncsi-pkt.h | 23 +++++++++++------------
- net/ncsi/ncsi-rsp.c | 21 ++++++++++-----------
- 3 files changed, 31 insertions(+), 34 deletions(-)
+ drivers/net/wireless/realtek/rtw88/rtw8822c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ncsi/internal.h b/net/ncsi/internal.h
-index 1dde6dc841b88..b723452768d48 100644
---- a/net/ncsi/internal.h
-+++ b/net/ncsi/internal.h
-@@ -119,16 +119,15 @@ struct ncsi_channel_vlan_filter {
- };
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8822c.c b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+index 72d711a62b07b..0cc8d507165af 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
++++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
+@@ -2857,7 +2857,8 @@ void rtw8822c_dpk_cal_coef1(struct rtw_dev *rtwdev)
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001148);
+ 	rtw_write32(rtwdev, REG_NCTL0, 0x00001149);
  
- struct ncsi_channel_stats {
--	u32 hnc_cnt_hi;		/* Counter cleared            */
--	u32 hnc_cnt_lo;		/* Counter cleared            */
--	u32 hnc_rx_bytes;	/* Rx bytes                   */
--	u32 hnc_tx_bytes;	/* Tx bytes                   */
--	u32 hnc_rx_uc_pkts;	/* Rx UC packets              */
--	u32 hnc_rx_mc_pkts;     /* Rx MC packets              */
--	u32 hnc_rx_bc_pkts;	/* Rx BC packets              */
--	u32 hnc_tx_uc_pkts;	/* Tx UC packets              */
--	u32 hnc_tx_mc_pkts;	/* Tx MC packets              */
--	u32 hnc_tx_bc_pkts;	/* Tx BC packets              */
-+	u64 hnc_cnt;		/* Counter cleared            */
-+	u64 hnc_rx_bytes;	/* Rx bytes                   */
-+	u64 hnc_tx_bytes;	/* Tx bytes                   */
-+	u64 hnc_rx_uc_pkts;	/* Rx UC packets              */
-+	u64 hnc_rx_mc_pkts;     /* Rx MC packets              */
-+	u64 hnc_rx_bc_pkts;	/* Rx BC packets              */
-+	u64 hnc_tx_uc_pkts;	/* Tx UC packets              */
-+	u64 hnc_tx_mc_pkts;	/* Tx MC packets              */
-+	u64 hnc_tx_bc_pkts;	/* Tx BC packets              */
- 	u32 hnc_fcs_err;	/* FCS errors                 */
- 	u32 hnc_align_err;	/* Alignment errors           */
- 	u32 hnc_false_carrier;	/* False carrier detection    */
-@@ -157,7 +156,7 @@ struct ncsi_channel_stats {
- 	u32 hnc_tx_1023_frames;	/* Tx 512-1023 bytes frames   */
- 	u32 hnc_tx_1522_frames;	/* Tx 1024-1522 bytes frames  */
- 	u32 hnc_tx_9022_frames;	/* Tx 1523-9022 bytes frames  */
--	u32 hnc_rx_valid_bytes;	/* Rx valid bytes             */
-+	u64 hnc_rx_valid_bytes;	/* Rx valid bytes             */
- 	u32 hnc_rx_runt_pkts;	/* Rx error runt packets      */
- 	u32 hnc_rx_jabber_pkts;	/* Rx error jabber packets    */
- 	u32 ncsi_rx_cmds;	/* Rx NCSI commands           */
-diff --git a/net/ncsi/ncsi-pkt.h b/net/ncsi/ncsi-pkt.h
-index 3fbea7e74fb1c..2729581360ec9 100644
---- a/net/ncsi/ncsi-pkt.h
-+++ b/net/ncsi/ncsi-pkt.h
-@@ -246,16 +246,15 @@ struct ncsi_rsp_gp_pkt {
- /* Get Controller Packet Statistics */
- struct ncsi_rsp_gcps_pkt {
- 	struct ncsi_rsp_pkt_hdr rsp;            /* Response header            */
--	__be32                  cnt_hi;         /* Counter cleared            */
--	__be32                  cnt_lo;         /* Counter cleared            */
--	__be32                  rx_bytes;       /* Rx bytes                   */
--	__be32                  tx_bytes;       /* Tx bytes                   */
--	__be32                  rx_uc_pkts;     /* Rx UC packets              */
--	__be32                  rx_mc_pkts;     /* Rx MC packets              */
--	__be32                  rx_bc_pkts;     /* Rx BC packets              */
--	__be32                  tx_uc_pkts;     /* Tx UC packets              */
--	__be32                  tx_mc_pkts;     /* Tx MC packets              */
--	__be32                  tx_bc_pkts;     /* Tx BC packets              */
-+	__be64                  cnt;            /* Counter cleared            */
-+	__be64                  rx_bytes;       /* Rx bytes                   */
-+	__be64                  tx_bytes;       /* Tx bytes                   */
-+	__be64                  rx_uc_pkts;     /* Rx UC packets              */
-+	__be64                  rx_mc_pkts;     /* Rx MC packets              */
-+	__be64                  rx_bc_pkts;     /* Rx BC packets              */
-+	__be64                  tx_uc_pkts;     /* Tx UC packets              */
-+	__be64                  tx_mc_pkts;     /* Tx MC packets              */
-+	__be64                  tx_bc_pkts;     /* Tx BC packets              */
- 	__be32                  fcs_err;        /* FCS errors                 */
- 	__be32                  align_err;      /* Alignment errors           */
- 	__be32                  false_carrier;  /* False carrier detection    */
-@@ -284,11 +283,11 @@ struct ncsi_rsp_gcps_pkt {
- 	__be32                  tx_1023_frames; /* Tx 512-1023 bytes frames   */
- 	__be32                  tx_1522_frames; /* Tx 1024-1522 bytes frames  */
- 	__be32                  tx_9022_frames; /* Tx 1523-9022 bytes frames  */
--	__be32                  rx_valid_bytes; /* Rx valid bytes             */
-+	__be64                  rx_valid_bytes; /* Rx valid bytes             */
- 	__be32                  rx_runt_pkts;   /* Rx error runt packets      */
- 	__be32                  rx_jabber_pkts; /* Rx error jabber packets    */
- 	__be32                  checksum;       /* Checksum                   */
--};
-+}  __packed __aligned(4);
+-	check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55);
++	if (!check_hw_ready(rtwdev, 0x2d9c, MASKBYTE0, 0x55))
++		rtw_warn(rtwdev, "DPK stuck, performance may be suboptimal");
  
- /* Get NCSI Statistics */
- struct ncsi_rsp_gns_pkt {
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 876622e9a5b2b..b7d311f979051 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -931,16 +931,15 @@ static int ncsi_rsp_handler_gcps(struct ncsi_request *nr)
- 
- 	/* Update HNC's statistics */
- 	ncs = &nc->stats;
--	ncs->hnc_cnt_hi         = ntohl(rsp->cnt_hi);
--	ncs->hnc_cnt_lo         = ntohl(rsp->cnt_lo);
--	ncs->hnc_rx_bytes       = ntohl(rsp->rx_bytes);
--	ncs->hnc_tx_bytes       = ntohl(rsp->tx_bytes);
--	ncs->hnc_rx_uc_pkts     = ntohl(rsp->rx_uc_pkts);
--	ncs->hnc_rx_mc_pkts     = ntohl(rsp->rx_mc_pkts);
--	ncs->hnc_rx_bc_pkts     = ntohl(rsp->rx_bc_pkts);
--	ncs->hnc_tx_uc_pkts     = ntohl(rsp->tx_uc_pkts);
--	ncs->hnc_tx_mc_pkts     = ntohl(rsp->tx_mc_pkts);
--	ncs->hnc_tx_bc_pkts     = ntohl(rsp->tx_bc_pkts);
-+	ncs->hnc_cnt            = be64_to_cpu(rsp->cnt);
-+	ncs->hnc_rx_bytes       = be64_to_cpu(rsp->rx_bytes);
-+	ncs->hnc_tx_bytes       = be64_to_cpu(rsp->tx_bytes);
-+	ncs->hnc_rx_uc_pkts     = be64_to_cpu(rsp->rx_uc_pkts);
-+	ncs->hnc_rx_mc_pkts     = be64_to_cpu(rsp->rx_mc_pkts);
-+	ncs->hnc_rx_bc_pkts     = be64_to_cpu(rsp->rx_bc_pkts);
-+	ncs->hnc_tx_uc_pkts     = be64_to_cpu(rsp->tx_uc_pkts);
-+	ncs->hnc_tx_mc_pkts     = be64_to_cpu(rsp->tx_mc_pkts);
-+	ncs->hnc_tx_bc_pkts     = be64_to_cpu(rsp->tx_bc_pkts);
- 	ncs->hnc_fcs_err        = ntohl(rsp->fcs_err);
- 	ncs->hnc_align_err      = ntohl(rsp->align_err);
- 	ncs->hnc_false_carrier  = ntohl(rsp->false_carrier);
-@@ -969,7 +968,7 @@ static int ncsi_rsp_handler_gcps(struct ncsi_request *nr)
- 	ncs->hnc_tx_1023_frames = ntohl(rsp->tx_1023_frames);
- 	ncs->hnc_tx_1522_frames = ntohl(rsp->tx_1522_frames);
- 	ncs->hnc_tx_9022_frames = ntohl(rsp->tx_9022_frames);
--	ncs->hnc_rx_valid_bytes = ntohl(rsp->rx_valid_bytes);
-+	ncs->hnc_rx_valid_bytes = be64_to_cpu(rsp->rx_valid_bytes);
- 	ncs->hnc_rx_runt_pkts   = ntohl(rsp->rx_runt_pkts);
- 	ncs->hnc_rx_jabber_pkts = ntohl(rsp->rx_jabber_pkts);
- 
+ 	rtw_write8(rtwdev, 0x1b10, 0x0);
+ 	rtw_write32_mask(rtwdev, REG_NCTL0, BIT_SUBPAGE, 0x0000000c);
 -- 
 2.39.5
 
