@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9285AE5577
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F39FAE55DE
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4F9C1BC45A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E33351B674F6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61FDE2940B;
-	Mon, 23 Jun 2025 22:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BE922B5A3;
+	Mon, 23 Jun 2025 22:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wjd3nQyZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udLMVoFV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D699226888;
-	Mon, 23 Jun 2025 22:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D2EF22AE65;
+	Mon, 23 Jun 2025 22:14:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716652; cv=none; b=MWIGyQFjDQ/wi6h3o0TfJrXuE7RgXSmSftqFVitNtajcGpi4h35B0jMgjMtbjgZnXAFYbXUV2EXmbkIfgSzcBTxKf9EJn435dIGNmoHBoPi7GxZuegXu6vvdsFDd2B7rSjWyXi8dByrq1FXD/k6W2GWZ54L6gYB+DEZEmNugRV8=
+	t=1750716840; cv=none; b=j601e1ximVO8xJ8aqUaEWASOdKvnj/Zb1ec0kq6wtfSkHW7U985A3oZQWzjibo3HBzhWLYF6iMJaXZ7yXRLKXiiJ3FMNscW695kCZLXeqCRACRUdwnlZcnii1m3WeRrNkNU936p1bSqR/GlbQQkHo2k/AJoEAYOLNKoR+ZkoBuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716652; c=relaxed/simple;
-	bh=3YHIuV9yJG4l9/XpH+n51KMXXUxeMIZi7b3xGVN1ejM=;
+	s=arc-20240116; t=1750716840; c=relaxed/simple;
+	bh=/ne8tI+hUYoPwUCCegZskvPQLAK0LKulixS+uSrqeLY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=V5UQ31tJ11pjbLmQekzI6nzPmcPq2ublXPZCEfvJODHPg58m9gyGUwxTfSg9zkj9JLZDPDQzJ5ztSMfBylLHIznTtxDjO7IlvHxEDwClNnbt8QWn4Kz4HFmJc2CT9bormiTJJhHZvSbZKVS422ZVY7aatmllnWKb0f4hZSd/hlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wjd3nQyZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7EACC4CEEA;
-	Mon, 23 Jun 2025 22:10:51 +0000 (UTC)
+	 MIME-Version; b=Juq2MmnrksA/KrVvGltj8H7Ymw5naELWW4RxQ74JfmYFc2sW0P60x0jLwobC86WR4e8iGwdmjynqTsaQsDYbWrdxst2C/CfDT4GgIPScqLmozkyeq1L7qbLSE8NKMuD6XglFNw2VXs2Ru7ZI4tQw8lW9vTko97xzGmcfpnE2OCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udLMVoFV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFB4C4CEEA;
+	Mon, 23 Jun 2025 22:13:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716652;
-	bh=3YHIuV9yJG4l9/XpH+n51KMXXUxeMIZi7b3xGVN1ejM=;
+	s=korg; t=1750716840;
+	bh=/ne8tI+hUYoPwUCCegZskvPQLAK0LKulixS+uSrqeLY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wjd3nQyZ+reXMuTMobjJ4Y3TM7B7C0PzoEv9W8eT8648aqJfCvll/7zvK4un5c6qU
-	 Fr4jgrrkR3+C2Fp/aXI+Z+SW8J8NjTk5n5ifKWSQoEFD09oUstRyiPNXI40WetXvGh
-	 72Xw5rsND4LClIrLSydL+gli+nYOQjYgVYArwBRM=
+	b=udLMVoFVaOx2DZt233Jb5ZajfB72wwwNIwspBJFyb1GiL4c6hG7BL0qVImK3agI7J
+	 cN1BhwsvCxgyUTMqB1gx52CWYiLWQKAFxN+yemgAfTE408iJ0ayL+m2yAXecIEf9IZ
+	 gQew4jGMgPEW2ENZkRiXZylv8DHZggzoRCieG/9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Krzysztof=20Ha=C5=82asa?= <khalasa@piap.pl>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 272/414] usbnet: asix AX88772: leave the carrier control to phylink
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>
+Subject: [PATCH 6.1 364/508] remoteproc: core: Release rproc->clean_table after rproc_attach() fails
 Date: Mon, 23 Jun 2025 15:06:49 +0200
-Message-ID: <20250623130648.829089215@linuxfoundation.org>
+Message-ID: <20250623130654.317387463@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,161 +60,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Hałasa <khalasa@piap.pl>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 4145f00227ee80f21ab274e9cd9c09758e9bcf3d ]
+commit bcd241230fdbc6005230f80a4f8646ff5a84f15b upstream.
 
-ASIX AX88772B based USB 10/100 Ethernet adapter doesn't come
-up ("carrier off"), despite the built-in 100BASE-FX PHY positive link
-indication. The internal PHY is configured (using EEPROM) in fixed
-100 Mbps full duplex mode.
+When rproc->state = RPROC_DETACHED is attached to remote processor
+through rproc_attach(), if rproc_handle_resources() returns failure,
+then the clean table should be released, otherwise the following
+memory leak will occur.
 
-The primary problem appears to be using carrier_netif_{on,off}() while,
-at the same time, delegating carrier management to phylink. Use only the
-latter and remove "manual control" in the asix driver.
+unreferenced object 0xffff000086a99800 (size 1024):
+comm "kworker/u12:3", pid 59, jiffies 4294893670 (age 121.140s)
+hex dump (first 32 bytes):
+00 00 00 00 00 80 00 00 00 00 00 00 00 00 10 00 ............
+00 00 00 00 00 00 08 00 00 00 00 00 00 00 00 00 ............
+backtrace:
+ [<000000008bbe4ca8>] slab_post_alloc_hook+0x98/0x3fc
+ [<000000003b8a272b>] __kmem_cache_alloc_node+0x13c/0x230
+ [<000000007a507c51>] __kmalloc_node_track_caller+0x5c/0x260
+ [<0000000037818dae>] kmemdup+0x34/0x60
+ [<00000000610f7f57>] rproc_boot+0x35c/0x56c
+ [<0000000065f8871a>] rproc_add+0x124/0x17c
+ [<00000000497416ee>] imx_rproc_probe+0x4ec/0x5d4
+ [<000000003bcaa37d>] platform_probe+0x68/0xd8
+ [<00000000771577f9>] really_probe+0x110/0x27c
+ [<00000000531fea59>] __driver_probe_device+0x78/0x12c
+ [<0000000080036a04>] driver_probe_device+0x3c/0x118
+ [<000000007e0bddcb>] __device_attach_driver+0xb8/0xf8
+ [<000000000cf1fa33>] bus_for_each_drv+0x84/0xe4
+ [<000000001a53b53e>] __device_attach+0xfc/0x18c
+ [<00000000d1a2a32c>] device_initial_probe+0x14/0x20
+ [<00000000d8f8b7ae>] bus_probe_device+0xb0/0xb4
+ unreferenced object 0xffff0000864c9690 (size 16):
 
-I don't have any other AX88772 board here, but the problem doesn't seem
-specific to a particular board or settings - it's probably
-timing-dependent.
-
-Remove unused asix_adjust_link() as well.
-
-Signed-off-by: Krzysztof Hałasa <khalasa@piap.pl>
-Tested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/m3plhmdfte.fsf_-_@t19.piap.pl
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 9dc9507f1880 ("remoteproc: Properly deal with the resource table when detaching")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20250430092043.1819308-3-xiaolei.wang@windriver.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix.h         |  1 -
- drivers/net/usb/asix_common.c  | 22 ----------------------
- drivers/net/usb/asix_devices.c | 17 ++++-------------
- 3 files changed, 4 insertions(+), 36 deletions(-)
+ drivers/remoteproc/remoteproc_core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/usb/asix.h b/drivers/net/usb/asix.h
-index 74162190bccc1..8531b804021aa 100644
---- a/drivers/net/usb/asix.h
-+++ b/drivers/net/usb/asix.h
-@@ -224,7 +224,6 @@ int asix_write_rx_ctl(struct usbnet *dev, u16 mode, int in_pm);
- 
- u16 asix_read_medium_status(struct usbnet *dev, int in_pm);
- int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm);
--void asix_adjust_link(struct net_device *netdev);
- 
- int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm);
- 
-diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
-index 72ffc89b477ad..7fd763917ae2c 100644
---- a/drivers/net/usb/asix_common.c
-+++ b/drivers/net/usb/asix_common.c
-@@ -414,28 +414,6 @@ int asix_write_medium_mode(struct usbnet *dev, u16 mode, int in_pm)
+--- a/drivers/remoteproc/remoteproc_core.c
++++ b/drivers/remoteproc/remoteproc_core.c
+@@ -1653,6 +1653,7 @@ clean_up_resources:
+ 	rproc_resource_cleanup(rproc);
+ 	/* release HW resources if needed */
+ 	rproc_unprepare_device(rproc);
++	kfree(rproc->clean_table);
+ disable_iommu:
+ 	rproc_disable_iommu(rproc);
  	return ret;
- }
- 
--/* set MAC link settings according to information from phylib */
--void asix_adjust_link(struct net_device *netdev)
--{
--	struct phy_device *phydev = netdev->phydev;
--	struct usbnet *dev = netdev_priv(netdev);
--	u16 mode = 0;
--
--	if (phydev->link) {
--		mode = AX88772_MEDIUM_DEFAULT;
--
--		if (phydev->duplex == DUPLEX_HALF)
--			mode &= ~AX_MEDIUM_FD;
--
--		if (phydev->speed != SPEED_100)
--			mode &= ~AX_MEDIUM_PS;
--	}
--
--	asix_write_medium_mode(dev, mode, 0);
--	phy_print_status(phydev);
--	usbnet_link_change(dev, phydev->link, 0);
--}
--
- int asix_write_gpio(struct usbnet *dev, u16 value, int sleep, int in_pm)
- {
- 	int ret;
-diff --git a/drivers/net/usb/asix_devices.c b/drivers/net/usb/asix_devices.c
-index da24941a6e444..9b0318fb50b55 100644
---- a/drivers/net/usb/asix_devices.c
-+++ b/drivers/net/usb/asix_devices.c
-@@ -752,7 +752,6 @@ static void ax88772_mac_link_down(struct phylink_config *config,
- 	struct usbnet *dev = netdev_priv(to_net_dev(config->dev));
- 
- 	asix_write_medium_mode(dev, 0, 0);
--	usbnet_link_change(dev, false, false);
- }
- 
- static void ax88772_mac_link_up(struct phylink_config *config,
-@@ -783,7 +782,6 @@ static void ax88772_mac_link_up(struct phylink_config *config,
- 		m |= AX_MEDIUM_RFC;
- 
- 	asix_write_medium_mode(dev, m, 0);
--	usbnet_link_change(dev, true, false);
- }
- 
- static const struct phylink_mac_ops ax88772_phylink_mac_ops = {
-@@ -1350,10 +1348,9 @@ static const struct driver_info ax88772_info = {
- 	.description = "ASIX AX88772 USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
- 	.stop = ax88772_stop,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR | FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- };
-@@ -1362,11 +1359,9 @@ static const struct driver_info ax88772b_info = {
- 	.description = "ASIX AX88772B USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
- 	.stop = ax88772_stop,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
--	         FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- 	.data = FLAG_EEPROM_MAC,
-@@ -1376,11 +1371,9 @@ static const struct driver_info lxausb_t1l_info = {
- 	.description = "Linux Automation GmbH USB 10Base-T1L",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
- 	.stop = ax88772_stop,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
--		 FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- 	.data = FLAG_EEPROM_MAC,
-@@ -1412,10 +1405,8 @@ static const struct driver_info hg20f9_info = {
- 	.description = "HG20F9 USB 2.0 Ethernet",
- 	.bind = ax88772_bind,
- 	.unbind = ax88772_unbind,
--	.status = asix_status,
- 	.reset = ax88772_reset,
--	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_LINK_INTR |
--	         FLAG_MULTI_PACKET,
-+	.flags = FLAG_ETHER | FLAG_FRAMING_AX | FLAG_MULTI_PACKET,
- 	.rx_fixup = asix_rx_fixup_common,
- 	.tx_fixup = asix_tx_fixup,
- 	.data = FLAG_EEPROM_MAC,
--- 
-2.39.5
-
 
 
 
