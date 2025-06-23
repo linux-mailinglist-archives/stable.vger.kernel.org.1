@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-156195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A553AE4E8B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F412AE5007
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA35517BF54
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5657B1B618A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC08321ADB5;
-	Mon, 23 Jun 2025 21:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B6C221FC7;
+	Mon, 23 Jun 2025 21:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rj/4E1SY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jBOrjKk5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A56170838;
-	Mon, 23 Jun 2025 21:06:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51406221734;
+	Mon, 23 Jun 2025 21:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712817; cv=none; b=FulJzLwIQ/btD/31eit6g4losfUvYQWxNh0ePcEM2lBi069b8SVw5Df+vkG0pDHnO4J0lP/1W0/dadx/TBuNquD2A/6e65NWY6vjhGL7xfygP5sDHAqhSlltz74BgnS7Sn1WoU3R1o801p6QXncUk5EdFDacsqk8dnSf4DKSCjM=
+	t=1750713702; cv=none; b=EzmNoslUabw3YNlHmXiAbxhao17E4So773hJypVQcrSH4H61UgvIh2U8KbO+wb0a1ICyuLAVdpwpBLiXpFBH6Ts8YB71kdWr7uDYvtmRJVJxMqir4HEGYCfehkZlERoor/yiLPUVxPtQ8NYNp/VQVTIyy8kusaYEx2MKTfW3jYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712817; c=relaxed/simple;
-	bh=Tv3pDQ7Zzf8h1/sWsw2BXQnN9kHu5Cz7YzjKBWJ47fc=;
+	s=arc-20240116; t=1750713702; c=relaxed/simple;
+	bh=m2+d8bYtr91j+uxOWuHSTXzM5uJepDBj+WkTVxPSeXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AoJaEBBJ3ICUqIO8lr4NmxU0vsZB9R+D54y+pVuxEJAhG8xOpAk0SHIk6fUGagCdd2ckI4ha6eBMJUhNivO/lehzT0SimbHqYx1w7Xfv14w06bFeo4mkbY6vTlSeyCbJNLg8/BYQPBvm4I/9PpnghEdNI3GBQE/1RX4D/sUeKmY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rj/4E1SY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 218C6C4CEEA;
-	Mon, 23 Jun 2025 21:06:56 +0000 (UTC)
+	 MIME-Version; b=PFbsbKHB+mn6RCTgAcp/4Z20Nhmuo5HN/3e86ggzB9vJL6CiNfsHk+eXvG2FrVuVtg5fpnY5sFVhpVdjfd/67EKkrOudROzO1uLy8R4N8pSLmWW5nr4VMoaNgmpoidkavUYbMDCt13Q0Gu/IqcUi1V3Yn3Ab0rT1/65mE+iw5oM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jBOrjKk5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBD5CC4CEED;
+	Mon, 23 Jun 2025 21:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712817;
-	bh=Tv3pDQ7Zzf8h1/sWsw2BXQnN9kHu5Cz7YzjKBWJ47fc=;
+	s=korg; t=1750713702;
+	bh=m2+d8bYtr91j+uxOWuHSTXzM5uJepDBj+WkTVxPSeXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rj/4E1SYpg46QUjczQ6Jje14pdTwzXfBB2Vd8U961kxrRNtJJ6VsA3idkN1mQNSSw
-	 xVhSBPE6UeUpED6FMCddR3lpluBLMdBbZz/liqqYuwAAf64Sht8RaGjYfr/bn4PoPC
-	 ml5EsfQYJ34wPNwadDpM6YT/jLz4JX1Uqme8Ertw=
+	b=jBOrjKk58T9ks5aIb1pCl86CuKjOkiE/voE6RdzKlXquiDtWZuI2ef/sgItlmA641
+	 1hjcITP4G/I5BRuiHra3KcNADz68BN0V6TgHZauEh/OUp8HaLwf5LFWlwd4knk8dOU
+	 rai6mrUSWsMwBkMze5205qr3W/ZRvKW57/qXX6Vw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pavel Begunkov <asml.silence@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 013/414] io_uring/kbuf: account ring io_buffer_list memory
-Date: Mon, 23 Jun 2025 15:02:30 +0200
-Message-ID: <20250623130642.357567491@linuxfoundation.org>
+	Xilin Wu <wuxilin123@gmail.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 106/508] arm64: dts: qcom: sm8250: Fix CPU7 opp table
+Date: Mon, 23 Jun 2025 15:02:31 +0200
+Message-ID: <20250623130647.889565325@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Xilin Wu <wuxilin123@gmail.com>
 
-commit 475a8d30371604a6363da8e304a608a5959afc40 upstream.
+[ Upstream commit 28f997b89967afdc0855d8aa7538b251fb44f654 ]
 
-Follow the non-ringed pbuf struct io_buffer_list allocations and account
-it against the memcg. There is low chance of that being an actual
-problem as ring provided buffer should either pin user memory or
-allocate it, which is already accounted.
+There is a typo in cpu7_opp9. Fix it to get rid of the following
+errors.
 
-Cc: stable@vger.kernel.org # 6.1
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/3985218b50d341273cafff7234e1a7e6d0db9808.1747150490.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    0.198043] cpu cpu7: Voltage update failed freq=1747200
+[    0.198052] cpu cpu7: failed to update OPP for freq=1747200
+
+Fixes: 8e0e8016cb79 ("arm64: dts: qcom: sm8250: Add CPU opp tables")
+Signed-off-by: Xilin Wu <wuxilin123@gmail.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250308-fix-sm8250-cpufreq-v1-1-8a0226721399@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/kbuf.c |    2 +-
+ arch/arm64/boot/dts/qcom/sm8250.dtsi | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/kbuf.c
-+++ b/io_uring/kbuf.c
-@@ -728,7 +728,7 @@ int io_register_pbuf_ring(struct io_ring
- 		io_destroy_bl(ctx, bl);
- 	}
+diff --git a/arch/arm64/boot/dts/qcom/sm8250.dtsi b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+index eb500cb67c86c..72ab4ca129459 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250.dtsi
+@@ -569,7 +569,7 @@
+ 		};
  
--	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL);
-+	free_bl = bl = kzalloc(sizeof(*bl), GFP_KERNEL_ACCOUNT);
- 	if (!bl)
- 		return -ENOMEM;
+ 		cpu7_opp9: opp-1747200000 {
+-			opp-hz = /bits/ 64 <1708800000>;
++			opp-hz = /bits/ 64 <1747200000>;
+ 			opp-peak-kBps = <5412000 42393600>;
+ 		};
  
+-- 
+2.39.5
+
 
 
 
