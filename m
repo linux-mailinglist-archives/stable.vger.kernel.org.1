@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-155911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF1DEAE4491
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8342AE4438
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5E6D33A324D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA547AC562
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCAC1255F5E;
-	Mon, 23 Jun 2025 13:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FFE3250BEC;
+	Mon, 23 Jun 2025 13:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jihywH/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PeS6GDSV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 932A72550D3;
-	Mon, 23 Jun 2025 13:34:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DEE516419;
+	Mon, 23 Jun 2025 13:34:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685654; cv=none; b=kMQc9bhyLDCFx5p/W5FhFdCw85GGRhmcwUYLOea3V2IjN1tzX5k2lb0G5Bs1yY61CXWacDB6rNB0BUwLA+u3B4bIDddS5ZXevshjN+UGd85T2rXplDiCrFiYHl+3u9ae5f5MMNLVAqgkInqO6OZ+1+uHBuvaJ9/PgPzyefkCy6w=
+	t=1750685667; cv=none; b=KBayGZQpuaJ1TvHTObPAOKenl89Vl8UHnnaj+QT5vClj6rTZhTvzpmAZKigPdLSehgNUFPhq15BODi+183Oq2BCHorLW5GIlOCpkvdOhxVUQpCZi9XleU/lh+fDoQ6/2cWt9kczMebrnHPUfoTQed2dIH98qe+COgBmmYeRFXMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685654; c=relaxed/simple;
-	bh=zgI3tEJzyMhFfbCPg0SFMj8wcr2R1CRzwxXrtp3jM4w=;
+	s=arc-20240116; t=1750685667; c=relaxed/simple;
+	bh=+yg/0ADJaKy5JxcGf8XQTnj7Av01v962/PNil6/bxTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eydr7TGj+DMliAciuwqJBDSxw4Nrf8+rNgX1a6y8qYlGeDuWsIeinDQBWF4gigczaZWo429sqPeyokvjUNbMXrJNb7n1kWS/LuLmmAe+ESggv8qJW6X+GmyeYDBhsx3wlgYaVul5t1w5gBmvkeNaXeKb5K4lcdZvIrrxafpCq04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jihywH/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBB0BC4CEF1;
-	Mon, 23 Jun 2025 13:34:13 +0000 (UTC)
+	 MIME-Version; b=SfFTUHAmeKeRvKi6nbMgQsywgfvTM9EAGty+3bWoSN4e529wYY12yTMOfyYp6zViNKHcCAIEFbCliJMsLEEl/rj0JZddSmPkUV3Gpw8B1Ww9vMWKp/9XzOeGuv3dhGsCi/Coc6UsVEwtwJg7VBLoH/8zPR9qgfsF4jfml4lPawE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PeS6GDSV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC37C4CEF0;
+	Mon, 23 Jun 2025 13:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685654;
-	bh=zgI3tEJzyMhFfbCPg0SFMj8wcr2R1CRzwxXrtp3jM4w=;
+	s=korg; t=1750685666;
+	bh=+yg/0ADJaKy5JxcGf8XQTnj7Av01v962/PNil6/bxTo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jihywH/l0JidRBcdH1HUdk8UOOT4L7X4h/TE4CqI8HPnxnDz9aMhREKtxpvA5TWS
-	 HVgB4MexX8ANd4CWLVGxWYX2+fmokbjtg43fmGw19tb9I9rKaGQ8mN33eRgHN0h7Tl
-	 mXngTFyscWDrpnB37PIh8yBE7BM8EUC1mUwagLJo=
+	b=PeS6GDSVpLAVMwWpUnkG8eGRqx3I9m2Qj6+C2MHJ+W2GtEn+okvLi3t3MRqVRvsBB
+	 51reCNsoBHnPelaV0iy2QNt59Gfl3a88arbll/sd8k9+KtbzEHyySZ1PzalPSTfEW1
+	 Eg/Z5L+VHLFaHurQT3GYVdhh/DnI7JmacM5xONzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tasos Sahanidis <tasos@tasossah.com>,
-	Niklas Cassel <cassel@kernel.org>
-Subject: [PATCH 5.4 110/222] ata: pata_via: Force PIO for ATAPI devices on VT6415/VT6330
-Date: Mon, 23 Jun 2025 15:07:25 +0200
-Message-ID: <20250623130615.417424433@linuxfoundation.org>
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 5.4 111/222] bus: fsl-mc: do not add a device-link for the UAPI used DPMCP device
+Date: Mon, 23 Jun 2025 15:07:26 +0200
+Message-ID: <20250623130615.445753928@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -65,49 +65,61 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tasos Sahanidis <tasos@tasossah.com>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-commit d29fc02caad7f94b62d56ee1b01c954f9c961ba7 upstream.
+commit dd7d8e012b23de158ca0188239c7a1f2a83b4484 upstream.
 
-The controller has a hardware bug that can hard hang the system when
-doing ATAPI DMAs without any trace of what happened. Depending on the
-device attached, it can also prevent the system from booting.
+The fsl-mc bus associated to the root DPRC in a DPAA2 system exports a
+device file for userspace access to the MC firmware. In case the DPRC's
+local MC portal (DPMCP) is currently in use, a new DPMCP device is
+allocated through the fsl_mc_portal_allocate() function.
 
-In this case, the system hangs when reading the ATIP from optical media
-with cdrecord -vvv -atip on an _NEC DVD_RW ND-4571A 1-01 and an
-Optiarc DVD RW AD-7200A 1.06 attached to an ASRock 990FX Extreme 4,
-running at UDMA/33.
+In this case, the call to fsl_mc_portal_allocate() will fail with -EINVAL
+when trying to add a device link between the root DPRC (consumer) and
+the newly allocated DPMCP device (supplier). This is because the DPMCP
+is a dependent of the DPRC device (the bus).
 
-The issue can be reproduced by running the same command with a cygwin
-build of cdrecord on WinXP, although it requires more attempts to cause
-it. The hang in that case is also resolved by forcing PIO. It doesn't
-appear that VIA has produced any drivers for that OS, thus no known
-workaround exists.
+Fix this by not adding a device link in case the DPMCP is allocated for
+the root DPRC's usage.
 
-HDDs attached to the controller do not suffer from any DMA issues.
-
+Fixes: afb77422819f ("bus: fsl-mc: automatically add a device_link on fsl_mc_[portal,object]_allocate")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 Cc: stable@vger.kernel.org
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/916677
-Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
-Link: https://lore.kernel.org/r/20250519085508.1398701-1-tasos@tasossah.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Link: https://lore.kernel.org/r/20250408105814.2837951-3-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_via.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/bus/fsl-mc/mc-io.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/ata/pata_via.c
-+++ b/drivers/ata/pata_via.c
-@@ -368,7 +368,8 @@ static unsigned long via_mode_filter(str
+--- a/drivers/bus/fsl-mc/mc-io.c
++++ b/drivers/bus/fsl-mc/mc-io.c
+@@ -214,12 +214,19 @@ int __must_check fsl_mc_portal_allocate(
+ 	if (error < 0)
+ 		goto error_cleanup_resource;
+ 
+-	dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
+-						   &dpmcp_dev->dev,
+-						   DL_FLAG_AUTOREMOVE_CONSUMER);
+-	if (!dpmcp_dev->consumer_link) {
+-		error = -EINVAL;
+-		goto error_cleanup_mc_io;
++	/* If the DPRC device itself tries to allocate a portal (usually for
++	 * UAPI interaction), don't add a device link between them since the
++	 * DPMCP device is an actual child device of the DPRC and a reverse
++	 * dependency is not allowed.
++	 */
++	if (mc_dev != mc_bus_dev) {
++		dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
++							   &dpmcp_dev->dev,
++							   DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!dpmcp_dev->consumer_link) {
++			error = -EINVAL;
++			goto error_cleanup_mc_io;
++		}
  	}
  
- 	if (dev->class == ATA_DEV_ATAPI &&
--	    dmi_check_system(no_atapi_dma_dmi_table)) {
-+	    (dmi_check_system(no_atapi_dma_dmi_table) ||
-+	     config->id == PCI_DEVICE_ID_VIA_6415)) {
- 		ata_dev_warn(dev, "controller locks up on ATAPI DMA, forcing PIO\n");
- 		mask &= ATA_MASK_PIO;
- 	}
+ 	*new_mc_io = mc_io;
 
 
 
