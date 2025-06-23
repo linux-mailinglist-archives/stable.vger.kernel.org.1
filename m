@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158094-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22E16AE567B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5610EAE56EC
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8FEE1C21CE2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF6181C23395
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1D0E16D9BF;
-	Mon, 23 Jun 2025 22:20:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2148B222581;
+	Mon, 23 Jun 2025 22:24:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpRslAC3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cdlM0RPB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA93223708;
-	Mon, 23 Jun 2025 22:20:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3EB92192EC;
+	Mon, 23 Jun 2025 22:24:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717218; cv=none; b=Iv/MWWGKXr1zA+FYGCk16Ag6Z4/m6SUjl9GVpCEYKDpkd2zdRAN/fU7TExamKsM3GpiiVIciZiKy7oaRVo7bWF/fkkkujvRB3Kk7Wdf1FZk0xdhCAjNOVyTesh3u+32MRRqZnnsaxt0BwUdz/SPSnAEfIaBw0T0HIhk7XBxQIZM=
+	t=1750717467; cv=none; b=jmxmjSbjZuNEnSspAfwQocx2v5dzs+O5RIorhoPmAb1nMqnTvAEtRQ0uD0zS1J9GNx8X7+pexssXlmoBd8VgKOGWemNTIMI84jCFHgNio5f/pPeF69IMgZH+CN4VglZy7YW15VVeUk88F6iLLV+Nfa47i9U4l0JTD9IXC5grDt8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717218; c=relaxed/simple;
-	bh=WJvXQX0hBi1c14qDzlnPYRo+0tnPFmBJDv6kCFRfBSI=;
+	s=arc-20240116; t=1750717467; c=relaxed/simple;
+	bh=lU1VXDOfNlcQXCKRILo7crSsO8rzDKXSEpVCWUoF+d8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mMY1yXNUi1OB9LaNIlKQ4mu4DllC7YeDo6Wi3IyOHjwnk9PE+HZz6FqPI5u68URmOEeSbC3oG4rf66DZpeYx/J/KGr0Tktc+P4rC+HPZ13Jvai5u62KTPkkk/y4N9x2Csm5RMHHLvWHsofGNxjyKcC4r3EMPhRtxkHV/0Kk+Ksk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpRslAC3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB8C2C4CEEA;
-	Mon, 23 Jun 2025 22:20:16 +0000 (UTC)
+	 MIME-Version; b=S0k4jbW2a9TSCPRe/7drNvkqnv0rb1JW2/NF4W/qu044Clrrk0vMYaRKjMqwWc/+RsvqVjMerbUs7hKm+3nYsLlWsaS6UD9oOUzD94/oaqeozOnJkKBgum+H82g8DUbZhtbHToFpjxXagy3TGVY77essLYvQT1y3kvUc1f4Uc/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cdlM0RPB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63964C4CEEA;
+	Mon, 23 Jun 2025 22:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717217;
-	bh=WJvXQX0hBi1c14qDzlnPYRo+0tnPFmBJDv6kCFRfBSI=;
+	s=korg; t=1750717467;
+	bh=lU1VXDOfNlcQXCKRILo7crSsO8rzDKXSEpVCWUoF+d8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpRslAC3pzXCktsz+wWMgJKSiQOT+GNDQ9qvoXMO0SvrRxf2awPBHwkRhqJss4iCN
-	 MxGmUncrirUTmIWBcIzUdvFEPtxmIjOeJuZuhXOiDfXb0fdBm/w2nFYsNnqWWvzOOq
-	 XB9aL8ooledqjaDv0sLeBvEOFUQbPF6UywfOvNYA=
+	b=cdlM0RPBCBPr4zEB+A8syx0Vo5ieDzDgPnHd4vCM8+1Gkbb/qgFweFqLnMJkKfhxu
+	 nujZuRRhLwxxxr3x6ivQMn2KR++AqPPA1N4ERmOWqfciOdGnKx95azy4ZcJjPAeIys
+	 pvcYoQDK6Iw+1S8bqcR9PFur4zZnJsvyELhcK1lw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Fiona Behrens <me@Kloenk.dev>,
-	Nicolas Schier <n.schier@avm.de>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.12 340/414] kbuild: rust: add rustc-min-version support function
+	syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com,
+	Kees Cook <kees@kernel.org>,
+	Helge Deller <deller@gmx.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 432/508] fbcon: Make sure modelist not set on unregistered console
 Date: Mon, 23 Jun 2025 15:07:57 +0200
-Message-ID: <20250623130650.481231861@linuxfoundation.org>
+Message-ID: <20250623130655.801373939@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Kees Cook <kees@kernel.org>
 
-commit ac954145e1ee3f72033161cbe4ac0b16b5354ae7 upstream.
+[ Upstream commit cedc1b63394a866bf8663a3e40f4546f1d28c8d8 ]
 
-Introduce `rustc-min-version` support function that mimics
-`{gcc,clang}-min-version` ones, following commit 88b61e3bff93
-("Makefile.compiler: replace cc-ifversion with compiler-specific macros").
+It looks like attempting to write to the "store_modes" sysfs node will
+run afoul of unregistered consoles:
 
-In addition, use it in the first use case we have in the kernel (which
-was done independently to minimize the changes needed for the fix).
+UBSAN: array-index-out-of-bounds in drivers/video/fbdev/core/fbcon.c:122:28
+index -1 is out of range for type 'fb_info *[32]'
+...
+ fbcon_info_from_console+0x192/0x1a0 drivers/video/fbdev/core/fbcon.c:122
+ fbcon_new_modelist+0xbf/0x2d0 drivers/video/fbdev/core/fbcon.c:3048
+ fb_new_modelist+0x328/0x440 drivers/video/fbdev/core/fbmem.c:673
+ store_modes+0x1c9/0x3e0 drivers/video/fbdev/core/fbsysfs.c:113
+ dev_attr_store+0x55/0x80 drivers/base/core.c:2439
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Fiona Behrens <me@Kloenk.dev>
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+static struct fb_info *fbcon_registered_fb[FB_MAX];
+...
+static signed char con2fb_map[MAX_NR_CONSOLES];
+...
+static struct fb_info *fbcon_info_from_console(int console)
+...
+        return fbcon_registered_fb[con2fb_map[console]];
+
+If con2fb_map contains a -1 things go wrong here. Instead, return NULL,
+as callers of fbcon_info_from_console() are trying to compare against
+existing "info" pointers, so error handling should kick in correctly.
+
+Reported-by: syzbot+a7d4444e7b6e743572f7@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/679d0a8f.050a0220.163cdc.000c.GAE@google.com/
+Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/kbuild/makefiles.rst |   14 ++++++++++++++
- arch/arm64/Makefile                |    2 +-
- scripts/Makefile.compiler          |    4 ++++
- 3 files changed, 19 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbcon.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/Documentation/kbuild/makefiles.rst
-+++ b/Documentation/kbuild/makefiles.rst
-@@ -656,6 +656,20 @@ cc-cross-prefix
-             endif
-     endif
+diff --git a/drivers/video/fbdev/core/fbcon.c b/drivers/video/fbdev/core/fbcon.c
+index 538e932055ca5..3f9d2178d3871 100644
+--- a/drivers/video/fbdev/core/fbcon.c
++++ b/drivers/video/fbdev/core/fbcon.c
+@@ -115,9 +115,14 @@ static signed char con2fb_map_boot[MAX_NR_CONSOLES];
  
-+$(RUSTC) support functions
-+--------------------------
-+
-+rustc-min-version
-+  rustc-min-version tests if the value of $(CONFIG_RUSTC_VERSION) is greater
-+  than or equal to the provided value and evaluates to y if so.
-+
-+  Example::
-+
-+    rustflags-$(call rustc-min-version, 108500) := -Cfoo
-+
-+  In this example, rustflags-y will be assigned the value -Cfoo if
-+  $(CONFIG_RUSTC_VERSION) is >= 1.85.0.
-+
- $(LD) support functions
- -----------------------
+ static struct fb_info *fbcon_info_from_console(int console)
+ {
++	signed char fb;
+ 	WARN_CONSOLE_UNLOCKED();
  
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -48,7 +48,7 @@ KBUILD_CFLAGS	+= $(CC_FLAGS_NO_FPU) \
- KBUILD_CFLAGS	+= $(call cc-disable-warning, psabi)
- KBUILD_AFLAGS	+= $(compat_vdso)
- 
--ifeq ($(call test-ge, $(CONFIG_RUSTC_VERSION), 108500),y)
-+ifeq ($(call rustc-min-version, 108500),y)
- KBUILD_RUSTFLAGS += --target=aarch64-unknown-none-softfloat
- else
- KBUILD_RUSTFLAGS += --target=aarch64-unknown-none -Ctarget-feature="-neon"
---- a/scripts/Makefile.compiler
-+++ b/scripts/Makefile.compiler
-@@ -67,6 +67,10 @@ gcc-min-version = $(call test-ge, $(CONF
- # Usage: cflags-$(call clang-min-version, 110000) += -foo
- clang-min-version = $(call test-ge, $(CONFIG_CLANG_VERSION), $1)
- 
-+# rustc-min-version
-+# Usage: rustc-$(call rustc-min-version, 108500) += -Cfoo
-+rustc-min-version = $(call test-ge, $(CONFIG_RUSTC_VERSION), $1)
+-	return fbcon_registered_fb[con2fb_map[console]];
++	fb = con2fb_map[console];
++	if (fb < 0 || fb >= ARRAY_SIZE(fbcon_registered_fb))
++		return NULL;
 +
- # ld-option
- # Usage: KBUILD_LDFLAGS += $(call ld-option, -X, -Y)
- ld-option = $(call try-run, $(LD) $(KBUILD_LDFLAGS) $(1) -v,$(1),$(2),$(3))
++	return fbcon_registered_fb[fb];
+ }
+ 
+ static int logo_lines;
+-- 
+2.39.5
+
 
 
 
