@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-158023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3268AE56F2
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69524AE5685
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E90E43A9FCA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B9E9443798
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11DB225A38;
-	Mon, 23 Jun 2025 22:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25111F6667;
+	Mon, 23 Jun 2025 22:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDQtTCIi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPkdUayR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F375199FBA;
-	Mon, 23 Jun 2025 22:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FBF19F120;
+	Mon, 23 Jun 2025 22:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717294; cv=none; b=lTk8O7YFENvXUkzR9B0zGOM8R28uCcGEY5R/a+ziKOG8WOLESmeBvNVMMAKoLPCFPBgsvIrOLUp7PmEAZTCT730ey8y6+xxJBXVUetmcXEj2Lco+drFdJsX92lbkE9+FOeAmnuzNQU43qWbqV9v4wWGfQ3yscujTbm2yt+DPXmw=
+	t=1750717080; cv=none; b=tzXyhCxuolYvGgw5vkOY9+TYnrRbOhCaLuHvgK9quFv5hIRW+cj6MN5vxfw06KsSNVT/mn53uRIHVR9vYJU0yFgubaIBXkSqK9NJrqSjdhW6DXjU9sTosXR4zA913mQvjffygA2Ay9p+AVAfK39CR9Rb1IMSLu61j0F+yhbbMco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717294; c=relaxed/simple;
-	bh=vlTGuWSjRab+6LWgl27+YSqj1YZ0aBZNeejTxQtaQ70=;
+	s=arc-20240116; t=1750717080; c=relaxed/simple;
+	bh=bdKMON2JPCB1uMpEAAd/SfFDMcdRXnEIeruK6mFvMVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlFlsNfOI5TXrcFEyT+uCEjY/ZXhp4zCw8F647gkeDI/O9PCsB1qZ3GMVXiXmKozqYDQ4G5I3T1IkOkmHOEwCLFFLIrpbPtvUitA7Ad19rXBV38ca3yzdRyDb2XIsmCmLxjuNYNTPI+/aJv4JfmECOhqSsn+n43Z7sGrYjVspgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDQtTCIi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24440C4CEEF;
-	Mon, 23 Jun 2025 22:21:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=b2RjVHhiz9kua3q/bAVQWz+IE4DaF+SsM+eUj9Mnnji15/tJxO6ePuiNV/pEJpyo5s//8euR0T7ZjsFV5m+FoUZcfWpCq0pHeYllVAg6AWJcxDNRkluX6WXXcz3DBARXtN0ijoinVyM37kLVVs4isbXJsFA3Vwp+G9zpz61TYCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPkdUayR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BD1C4CEEA;
+	Mon, 23 Jun 2025 22:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717294;
-	bh=vlTGuWSjRab+6LWgl27+YSqj1YZ0aBZNeejTxQtaQ70=;
+	s=korg; t=1750717079;
+	bh=bdKMON2JPCB1uMpEAAd/SfFDMcdRXnEIeruK6mFvMVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDQtTCIiZy49f/iYRSRrl4hw+RsuPrVbk3BwSJgLY4lqz/IgLYyW6XsOYk9u3d0QV
-	 7UoXKCNWjJ/2DYiuHLqDnxzqkpYQbYsGqk8XwfwnYm43vC8oKmXZ/H42WF5cnrnr2x
-	 +rYFKrhhw8a06IauW7pIo/IRfvk5m28ooQujWX8s=
+	b=ZPkdUayR0+rvobsga3MY5rICrW/Kf4GC1IeKD5sOgmQfz4vXqpU2UY+PMPsLbmYS0
+	 hTh0zzVDoSV2ilYgMGB6GdH+z66Iz2+zlzIaTWaWx2wH3zku2VYh8nWmyPXO11ARIZ
+	 2eTz7qdoZvhpHyZ1j3pHX3dE0PpU8TFiRSxWmQ2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Huang <kai.huang@intel.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>
-Subject: [PATCH 6.12 317/414] x86/virt/tdx: Avoid indirect calls to TDX assembly functions
-Date: Mon, 23 Jun 2025 15:07:34 +0200
-Message-ID: <20250623130649.923695204@linuxfoundation.org>
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.12 318/414] selftests/x86: Add a test to detect infinite SIGTRAP handler loop
+Date: Mon, 23 Jun 2025 15:07:35 +0200
+Message-ID: <20250623130649.947183933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -59,75 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Huang <kai.huang@intel.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-commit 0b3bc018e86afdc0cbfef61328c63d5c08f8b370 upstream.
+commit f287822688eeb44ae1cf6ac45701d965efc33218 upstream.
 
-Two 'static inline' TDX helper functions (sc_retry() and
-sc_retry_prerr()) take function pointer arguments which refer to
-assembly functions.  Normally, the compiler inlines the TDX helper,
-realizes that the function pointer targets are completely static --
-thus can be resolved at compile time -- and generates direct call
-instructions.
+When FRED is enabled, if the Trap Flag (TF) is set without an external
+debugger attached, it can lead to an infinite loop in the SIGTRAP
+handler.  To avoid this, the software event flag in the augmented SS
+must be cleared, ensuring that no single-step trap remains pending when
+ERETU completes.
 
-But, other times (like when CONFIG_CC_OPTIMIZE_FOR_SIZE=y), the
-compiler declines to inline the helpers and will instead generate
-indirect call instructions.
+This test checks for that specific scenario—verifying whether the kernel
+correctly prevents an infinite SIGTRAP loop in this edge case when FRED
+is enabled.
 
-Indirect calls to assembly functions require special annotation (for
-various Control Flow Integrity mechanisms).  But TDX assembly
-functions lack the special annotations and can only be called
-directly.
+The test should _always_ pass with IDT event delivery, thus no need to
+disable the test even when FRED is not enabled.
 
-Annotate both the helpers as '__always_inline' to prod the compiler
-into maintaining the direct calls. There is no guarantee here, but
-Peter has volunteered to report the compiler bug if this assumption
-ever breaks[1].
-
-Fixes: 1e66a7e27539 ("x86/virt/tdx: Handle SEAMCALL no entropy error in common code")
-Fixes: df01f5ae07dd ("x86/virt/tdx: Add SEAMCALL error printing for module initialization")
-Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
 Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/20250605145914.GW39944@noisy.programming.kicks-ass.net/ [1]
-Link: https://lore.kernel.org/all/20250606130737.30713-1-kai.huang%40intel.com
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250609084054.2083189-3-xin%40zytor.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/tdx.h  |    2 +-
- arch/x86/virt/vmx/tdx/tdx.c |    5 +++--
- 2 files changed, 4 insertions(+), 3 deletions(-)
+ tools/testing/selftests/x86/Makefile       |    2 
+ tools/testing/selftests/x86/sigtrap_loop.c |  101 +++++++++++++++++++++++++++++
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/x86/sigtrap_loop.c
 
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -97,7 +97,7 @@ void tdx_init(void);
+--- a/tools/testing/selftests/x86/Makefile
++++ b/tools/testing/selftests/x86/Makefile
+@@ -12,7 +12,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_
  
- typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
- 
--static inline u64 sc_retry(sc_func_t func, u64 fn,
-+static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
- 			   struct tdx_module_args *args)
- {
- 	int retry = RDRAND_RETRY_LOOPS;
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -69,8 +69,9 @@ static inline void seamcall_err_ret(u64
- 			args->r9, args->r10, args->r11);
- }
- 
--static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
--				 u64 fn, struct tdx_module_args *args)
-+static __always_inline int sc_retry_prerr(sc_func_t func,
-+					  sc_err_func_t err_func,
-+					  u64 fn, struct tdx_module_args *args)
- {
- 	u64 sret = sc_retry(func, fn, args);
- 
+ TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
+ 			check_initial_reg_state sigreturn iopl ioperm \
+-			test_vsyscall mov_ss_trap \
++			test_vsyscall mov_ss_trap sigtrap_loop \
+ 			syscall_arg_fault fsgsbase_restore sigaltstack
+ TARGETS_C_BOTHBITS += nx_stack
+ TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
+--- /dev/null
++++ b/tools/testing/selftests/x86/sigtrap_loop.c
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
++#define _GNU_SOURCE
++
++#include <err.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ucontext.h>
++
++#ifdef __x86_64__
++# define REG_IP REG_RIP
++#else
++# define REG_IP REG_EIP
++#endif
++
++static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *), int flags)
++{
++	struct sigaction sa;
++
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_sigaction = handler;
++	sa.sa_flags = SA_SIGINFO | flags;
++	sigemptyset(&sa.sa_mask);
++
++	if (sigaction(sig, &sa, 0))
++		err(1, "sigaction");
++
++	return;
++}
++
++static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
++{
++	ucontext_t *ctx = (ucontext_t *)ctx_void;
++	static unsigned int loop_count_on_same_ip;
++	static unsigned long last_trap_ip;
++
++	if (last_trap_ip == ctx->uc_mcontext.gregs[REG_IP]) {
++		printf("\tTrapped at %016lx\n", last_trap_ip);
++
++		/*
++		 * If the same IP is hit more than 10 times in a row, it is
++		 * _considered_ an infinite loop.
++		 */
++		if (++loop_count_on_same_ip > 10) {
++			printf("[FAIL]\tDetected SIGTRAP infinite loop\n");
++			exit(1);
++		}
++
++		return;
++	}
++
++	loop_count_on_same_ip = 0;
++	last_trap_ip = ctx->uc_mcontext.gregs[REG_IP];
++	printf("\tTrapped at %016lx\n", last_trap_ip);
++}
++
++int main(int argc, char *argv[])
++{
++	sethandler(SIGTRAP, sigtrap, 0);
++
++	/*
++	 * Set the Trap Flag (TF) to single-step the test code, therefore to
++	 * trigger a SIGTRAP signal after each instruction until the TF is
++	 * cleared.
++	 *
++	 * Because the arithmetic flags are not significant here, the TF is
++	 * set by pushing 0x302 onto the stack and then popping it into the
++	 * flags register.
++	 *
++	 * Four instructions in the following asm code are executed with the
++	 * TF set, thus the SIGTRAP handler is expected to run four times.
++	 */
++	printf("[RUN]\tSIGTRAP infinite loop detection\n");
++	asm volatile(
++#ifdef __x86_64__
++		/*
++		 * Avoid clobbering the redzone
++		 *
++		 * Equivalent to "sub $128, %rsp", however -128 can be encoded
++		 * in a single byte immediate while 128 uses 4 bytes.
++		 */
++		"add $-128, %rsp\n\t"
++#endif
++		"push $0x302\n\t"
++		"popf\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"push $0x202\n\t"
++		"popf\n\t"
++#ifdef __x86_64__
++		"sub $-128, %rsp\n\t"
++#endif
++	);
++
++	printf("[OK]\tNo SIGTRAP infinite loop detected\n");
++	return 0;
++}
 
 
 
