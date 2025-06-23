@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156488-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4606CAE4FC9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:19:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E78FAE5200
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5A6C1B61A5E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:19:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6B9D442E69
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78499221F0F;
-	Mon, 23 Jun 2025 21:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C7662236FB;
+	Mon, 23 Jun 2025 21:39:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uww/6bG5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yIaytkEG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AEC4C62;
-	Mon, 23 Jun 2025 21:18:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 397BF221FC7;
+	Mon, 23 Jun 2025 21:39:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713536; cv=none; b=Jxpk/fIXBWxm8DAg2o5EMZb1xhE+bsMJtr8KVAd0yrK8gKRNnDGitS9ea0wfZcIpgxeTbS3QR3S57X8eVxNwgDBVy7Fy3KJLtAhVwG9zT/A+S/bfebZXRUzOFd4bv5fGbJj5uJTgrqy4wbYzttrKqW3xJQ2ULKuG5wADa4WEvTg=
+	t=1750714770; cv=none; b=rqnzjCPp+5B1hhxQPScCBCboK4xYApPg85IP4ZLHrqgfB0ICP/zHFEjxs6J7D5MHvnBSLNBOyc/Yzd90X3VQoHBcD7FnLmtV2Iv9BgGENpeAI6AS77u8ms3M16d2lVJh/YDX348HRw7wnT1Ved/+ZXvswkC9AO8EFj3EPKJvrq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713536; c=relaxed/simple;
-	bh=JU43upnr4MzMJzT52veZN8nG+MeISef27o5uYnivFQc=;
+	s=arc-20240116; t=1750714770; c=relaxed/simple;
+	bh=a2S7gdUVq9ygX+CFqKAl+1wByy7vif5uLJpFMKX7baE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPJlmDfL85IA6HZGPK/j84jymS3tDWiTM7pl3F5eDcV1MdXTojnxwjgett9GBvjrOcx0uQiaa7xbXBboJJgeeBKxfsjdayxJgjxAFFOgHD/MqCyQ4esymur5ZFXv/00ZoI4kkLx44LU6qg3hiKSk44gXiqDS1x2UB9zau4WhRig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uww/6bG5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFE62C4CEEA;
-	Mon, 23 Jun 2025 21:18:55 +0000 (UTC)
+	 MIME-Version; b=aqIz8mJVGcQ+uuz/D4fmSaevHNIUeXXxZCQrAg2q5Bc7OidQtVooV/j9VfnqYkJphSmPXErkIs1cKU7PYYD8n6WOncyA/b5TZAS1CKM8cREUu4YSImBInA/2S+ZZ4s8ie7VVM7Bi6vCGSBoqPciHhJS5DFs5VXzbq7bgLSuJRag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yIaytkEG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBEFC4CEEA;
+	Mon, 23 Jun 2025 21:39:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713536;
-	bh=JU43upnr4MzMJzT52veZN8nG+MeISef27o5uYnivFQc=;
+	s=korg; t=1750714769;
+	bh=a2S7gdUVq9ygX+CFqKAl+1wByy7vif5uLJpFMKX7baE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uww/6bG5BM2D7x0WM7jpaLuLiw5If+DCPIvAQuU4dzweGFm46bPs1OeFlnVPhjsbn
-	 y8evBPLJ+6M6fGxMAKFzMVCXHXYVtIducRAcKm6H0Skaceg1TFrJV1N6FnPqP2+lAh
-	 V/3jepLq2TOf3Skyqo5ecZEdN+2RICIT5fcDvC2o=
+	b=yIaytkEGm50PJ3Q7rqlPgZj7T92BBzmCnGWDbZFaHcaeMcUHqYH5bfLUln7bvAAq2
+	 P7YZKXObqQSRtEq2ndhLADxGGOS9Wl+RbGDnHPPrNL6fmQ2Za3yzIAPK70pB8AYkVQ
+	 /2ZDMHmYd/eySR5VD0T9goMQflY9pocqws+gqVf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 5.10 151/355] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 5.15 208/411] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
 Date: Mon, 23 Jun 2025 15:05:52 +0200
-Message-ID: <20250623130631.243987109@linuxfoundation.org>
+Message-ID: <20250623130638.907249699@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
+commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
 
-usb core avoids sending a Set-Interface altsetting 0 request after device
-reset, and instead relies on calling usb_disable_interface() and
-usb_enable_interface() to flush and reset host-side of those endpoints.
+The PLL calculator does a search of the PLL configuration space for all
+valid OP pre-PLL clock dividers. The maximum did not take into account the
+CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
+dividers (other than 1) are valid. Do that now.
 
-xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
-during usb_hcd_alloc_bandwidth() callback, which in this case is called
-before flushing the endpoint in usb_disable_interface().
-
-Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
-URBs are flushed before new ring buffers for the endpoints are allocated.
-
-Otherwise host driver will attempt to find and remove old stale URBs
-from a freshly allocated new ringbuffer.
-
-Cc: stable <stable@kernel.org>
-Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
+Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/core/hub.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ccs-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -6014,6 +6014,7 @@ static int usb_reset_and_verify_device(s
- 	struct usb_hub			*parent_hub;
- 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
- 	struct usb_device_descriptor	descriptor;
-+	struct usb_interface		*intf;
- 	struct usb_host_bos		*bos;
- 	int				i, j, ret = 0;
- 	int				port1 = udev->portnum;
-@@ -6074,6 +6075,18 @@ static int usb_reset_and_verify_device(s
- 	if (!udev->actconfig)
- 		goto done;
- 
-+	/*
-+	 * Some devices can't handle setting default altsetting 0 with a
-+	 * Set-Interface request. Disable host-side endpoints of those
-+	 * interfaces here. Enable and reset them back after host has set
-+	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
-+	 */
-+	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
-+		intf = udev->actconfig->interface[i];
-+		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
-+			usb_disable_interface(udev, intf, true);
-+	}
-+
- 	mutex_lock(hcd->bandwidth_mutex);
- 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
- 	if (ret < 0) {
-@@ -6105,12 +6118,11 @@ static int usb_reset_and_verify_device(s
- 	 */
- 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
- 		struct usb_host_config *config = udev->actconfig;
--		struct usb_interface *intf = config->interface[i];
- 		struct usb_interface_descriptor *desc;
- 
-+		intf = config->interface[i];
- 		desc = &intf->cur_altsetting->desc;
- 		if (desc->bAlternateSetting == 0) {
--			usb_disable_interface(udev, intf, true);
- 			usb_enable_interface(udev, intf, true);
- 			ret = 0;
- 		} else {
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
+ 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
+ 	max_op_pre_pll_clk_div =
+ 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
+-		      clk_div_even(pll->ext_clk_freq_hz /
++		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
+ 				   op_lim_fr->min_pll_ip_clk_freq_hz));
+ 	min_op_pre_pll_clk_div =
+ 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
 
 
 
