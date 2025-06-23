@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-157804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7A51AE55AC
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:13:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676AEAE55C0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 906A71BC60D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A8536170F8F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 394EC223DEF;
-	Mon, 23 Jun 2025 22:12:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91307227581;
+	Mon, 23 Jun 2025 22:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0pDp9Myp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UP1FeCkt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4F0D223DD0;
-	Mon, 23 Jun 2025 22:12:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E0781F7580;
+	Mon, 23 Jun 2025 22:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716760; cv=none; b=Ieesn9Fwc4RVu35g6v+QOSIww6RPTw78mlyfvpuObD2mGiBBCgJKqaZegUJaw21XPdqtz5ncz9hxlBUegrxBc1Jv3OGqwsYecjVdyUoBho16IJ264+UGqkErHma/J/yLDx1lesNek+fpkuvdp2n8MnD0DDD6f+NSHbDGOF058ME=
+	t=1750716774; cv=none; b=jY55DqdKZ7RQkSw/L3z0rFNOHgrwRHpdsKfU8vaifPMHz4ZAMdt28McFZY/12w829sJJZYp7s8PqapGug2LC2wVDg7+zsV56vAJO1f7IaZ6Tmr0M2IBysVPahM6+VBFnLSbej0qUPxwXGSm/e2ozUZOSo5pMPQIWUjaQQDd5EDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716760; c=relaxed/simple;
-	bh=kD3+dMd/xyihxO4zFJNYuRAaBUG2XdoxEQt8op7J4og=;
+	s=arc-20240116; t=1750716774; c=relaxed/simple;
+	bh=9Cv0Y/c/CqGxO2Gh70CHxF09UO1t64z+oVF7b9ndCCE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I+Y81maX3mBjTDHP1nxihh62KIcKWbIcregSTVqBzRKh7WXEru9Clu4Z36nxCt8tgHO7k87+zF1NhhYsXb08LeXuG3kfs0pHOYzUVKxQb4xYJJ0y+PWKrOLGmwtkXGwEGeIvQXTDyIPrHyu+An6CeypwUJ38wmotdR5tKWd+xps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0pDp9Myp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FB1CC4CEF2;
-	Mon, 23 Jun 2025 22:12:39 +0000 (UTC)
+	 MIME-Version; b=bvwzrnIkp6894B9RqE6GYG/Ayt7zWEYAVdUCfIMqddyF4csn8Af6tHkvP8fPKbL23bpTUWecd9zW4RQ+42VSQEaWEt9oTG90cjt2yawr0mPrPHqy/AebXFNDuB0pkWPC4LC6kMTsfzhwqyrz3zVvCh+DXhEmMGfbaTrRcFKv+OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UP1FeCkt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA023C4CEF1;
+	Mon, 23 Jun 2025 22:12:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716759;
-	bh=kD3+dMd/xyihxO4zFJNYuRAaBUG2XdoxEQt8op7J4og=;
+	s=korg; t=1750716774;
+	bh=9Cv0Y/c/CqGxO2Gh70CHxF09UO1t64z+oVF7b9ndCCE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0pDp9Myp/LuKDfCmKVzrBxyQm2o41WoGuICE2MJBSqtYuoHprl4R0ZrwmiOSEyrg+
-	 abdSJyoWL3+EEl0O28iq8VIa4FfOrvwlXsqlWJmeTyjY8mBaveg4nLwnPAgq86fzC4
-	 hsTrv19uKqW90hjsRWTcfvneGuKfSy4FopWLKaCo=
+	b=UP1FeCkt4Az8t45pKiPq7awp4BlSzn96mH3umagQHKc4xMemHnE+zISY/dQuJuqje
+	 H2gJNIylibV+W3buondWQdETBdB/lKhddtKgDQqp9KQO9W9hor+CCBbMmKK1jDzUsz
+	 3PkvcVOVYCaxrG8LVKi6w7NRP2Cm0ounLU3BkXfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suraj P Kizhakkethil <quic_surapk@quicinc.com>,
-	Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
+	Vlad Dogaru <vdogaru@nvidia.com>,
+	Yevgeny Kliteynik <kliteyn@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 280/414] wifi: ath12k: Pass correct values of center freq1 and center freq2 for 160 MHz
-Date: Mon, 23 Jun 2025 15:06:57 +0200
-Message-ID: <20250623130649.020853645@linuxfoundation.org>
+Subject: [PATCH 6.12 281/414] net/mlx5: HWS, Harden IP version definer checks
+Date: Mon, 23 Jun 2025 15:06:58 +0200
+Message-ID: <20250623130649.045547270@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,60 +68,123 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
+From: Vlad Dogaru <vdogaru@nvidia.com>
 
-[ Upstream commit b1b01e46a3db5ad44d1e4691ba37c1e0832cd5cf ]
+[ Upstream commit 6991a975e416154576b0f5f06256aec13e23b0a7 ]
 
-Currently, for 160 MHz bandwidth, center frequency1 and
-center frequency2 are not passed correctly to the firmware.
-Set center frequency1 as the center frequency
-of the primary 80 MHz channel segment and center frequency2 as
-the center frequency of the 160 MHz channel and pass the values
-to the firmware.
+Replicate some sanity checks that firmware does, since hardware steering
+does not go through firmware.
 
-Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+When creating a definer, disallow matching on IP addresses without also
+matching on IP version. The latter can be satisfied by matching either
+on the version field in the IP header, or on the ethertype field.
 
-Signed-off-by: Suraj P Kizhakkethil <quic_surapk@quicinc.com>
-Reviewed-by: Aditya Kumar Singh <aditya.kumar.singh@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250304095315.3050325-2-quic_surapk@quicinc.com
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
+Also refuse to match IPv4 IHL alongside IPv6.
+
+Signed-off-by: Vlad Dogaru <vdogaru@nvidia.com>
+Reviewed-by: Yevgeny Kliteynik <kliteyn@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20250422092540.182091-3-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath12k/wmi.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ .../mlx5/core/steering/hws/mlx5hws_definer.c  | 44 ++++++++++++++++++-
+ 1 file changed, 42 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
-index c38d3493c6911..5c2130f77dac6 100644
---- a/drivers/net/wireless/ath/ath12k/wmi.c
-+++ b/drivers/net/wireless/ath/ath12k/wmi.c
-@@ -980,14 +980,24 @@ int ath12k_wmi_vdev_down(struct ath12k *ar, u8 vdev_id)
- static void ath12k_wmi_put_wmi_channel(struct ath12k_wmi_channel_params *chan,
- 				       struct wmi_vdev_start_req_arg *arg)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
+index 0d0591ba41fdb..fc9ba534d5d97 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/steering/hws/mlx5hws_definer.c
+@@ -508,9 +508,9 @@ static int
+ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 		       u32 *match_param)
  {
-+	u32 center_freq1 = arg->band_center_freq1;
-+
- 	memset(chan, 0, sizeof(*chan));
++	bool is_ipv6, smac_set, dmac_set, ip_addr_set, ip_ver_set;
+ 	struct mlx5hws_definer_fc *fc = cd->fc;
+ 	struct mlx5hws_definer_fc *curr_fc;
+-	bool is_ipv6, smac_set, dmac_set;
+ 	u32 *s_ipv6, *d_ipv6;
  
- 	chan->mhz = cpu_to_le32(arg->freq);
--	chan->band_center_freq1 = cpu_to_le32(arg->band_center_freq1);
--	if (arg->mode == MODE_11AC_VHT80_80)
-+	chan->band_center_freq1 = cpu_to_le32(center_freq1);
-+	if (arg->mode == MODE_11BE_EHT160) {
-+		if (arg->freq > center_freq1)
-+			chan->band_center_freq1 = cpu_to_le32(center_freq1 + 40);
-+		else
-+			chan->band_center_freq1 = cpu_to_le32(center_freq1 - 40);
+ 	if (HWS_IS_FLD_SET_SZ(match_param, outer_headers.l4_type, 0x2) ||
+@@ -520,6 +520,20 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 		return -EINVAL;
+ 	}
+ 
++	ip_addr_set = HWS_IS_FLD_SET_SZ(match_param,
++					outer_headers.src_ipv4_src_ipv6,
++					0x80) ||
++		      HWS_IS_FLD_SET_SZ(match_param,
++					outer_headers.dst_ipv4_dst_ipv6, 0x80);
++	ip_ver_set = HWS_IS_FLD_SET(match_param, outer_headers.ip_version) ||
++		     HWS_IS_FLD_SET(match_param, outer_headers.ethertype);
 +
-+		chan->band_center_freq2 = cpu_to_le32(center_freq1);
-+	} else if (arg->mode == MODE_11BE_EHT80_80) {
- 		chan->band_center_freq2 = cpu_to_le32(arg->band_center_freq2);
--	else
-+	} else {
- 		chan->band_center_freq2 = 0;
++	if (ip_addr_set && !ip_ver_set) {
++		mlx5hws_err(cd->ctx,
++			    "Unsupported match on IP address without version or ethertype\n");
++		return -EINVAL;
 +	}
++
+ 	/* L2 Check ethertype */
+ 	HWS_SET_HDR(fc, match_param, ETH_TYPE_O,
+ 		    outer_headers.ethertype,
+@@ -575,6 +589,12 @@ hws_definer_conv_outer(struct mlx5hws_definer_conv_data *cd,
+ 	is_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2] ||
+ 		  d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
  
- 	chan->info |= le32_encode_bits(arg->mode, WMI_CHAN_INFO_MODE);
- 	if (arg->passive)
++	/* IHL is an IPv4-specific field. */
++	if (is_ipv6 && HWS_IS_FLD_SET(match_param, outer_headers.ipv4_ihl)) {
++		mlx5hws_err(cd->ctx, "Unsupported match on IPv6 address and IPv4 IHL\n");
++		return -EINVAL;
++	}
++
+ 	if (is_ipv6) {
+ 		/* Handle IPv6 source address */
+ 		HWS_SET_HDR(fc, match_param, IPV6_SRC_127_96_O,
+@@ -664,9 +684,9 @@ static int
+ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 		       u32 *match_param)
+ {
++	bool is_ipv6, smac_set, dmac_set, ip_addr_set, ip_ver_set;
+ 	struct mlx5hws_definer_fc *fc = cd->fc;
+ 	struct mlx5hws_definer_fc *curr_fc;
+-	bool is_ipv6, smac_set, dmac_set;
+ 	u32 *s_ipv6, *d_ipv6;
+ 
+ 	if (HWS_IS_FLD_SET_SZ(match_param, inner_headers.l4_type, 0x2) ||
+@@ -676,6 +696,20 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 		return -EINVAL;
+ 	}
+ 
++	ip_addr_set = HWS_IS_FLD_SET_SZ(match_param,
++					inner_headers.src_ipv4_src_ipv6,
++					0x80) ||
++		      HWS_IS_FLD_SET_SZ(match_param,
++					inner_headers.dst_ipv4_dst_ipv6, 0x80);
++	ip_ver_set = HWS_IS_FLD_SET(match_param, inner_headers.ip_version) ||
++		     HWS_IS_FLD_SET(match_param, inner_headers.ethertype);
++
++	if (ip_addr_set && !ip_ver_set) {
++		mlx5hws_err(cd->ctx,
++			    "Unsupported match on IP address without version or ethertype\n");
++		return -EINVAL;
++	}
++
+ 	/* L2 Check ethertype */
+ 	HWS_SET_HDR(fc, match_param, ETH_TYPE_I,
+ 		    inner_headers.ethertype,
+@@ -730,6 +764,12 @@ hws_definer_conv_inner(struct mlx5hws_definer_conv_data *cd,
+ 	is_ipv6 = s_ipv6[0] || s_ipv6[1] || s_ipv6[2] ||
+ 		  d_ipv6[0] || d_ipv6[1] || d_ipv6[2];
+ 
++	/* IHL is an IPv4-specific field. */
++	if (is_ipv6 && HWS_IS_FLD_SET(match_param, inner_headers.ipv4_ihl)) {
++		mlx5hws_err(cd->ctx, "Unsupported match on IPv6 address and IPv4 IHL\n");
++		return -EINVAL;
++	}
++
+ 	if (is_ipv6) {
+ 		/* Handle IPv6 source address */
+ 		HWS_SET_HDR(fc, match_param, IPV6_SRC_127_96_I,
 -- 
 2.39.5
 
