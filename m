@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C27AAE5582
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92BA3AE56F1
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF35E4A1166
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AC893A9454
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC45225A47;
-	Mon, 23 Jun 2025 22:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D16F22422F;
+	Mon, 23 Jun 2025 22:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qs/EH0nO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="slf4+Ud1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890AE21FF2B;
-	Mon, 23 Jun 2025 22:10:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B418223DE8;
+	Mon, 23 Jun 2025 22:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716632; cv=none; b=livu+3v6U7kBy68u0pm+4aEe649reZb5RJgW5LrpFphq9GooQiiTCy95d3V9xTHhT+I+IVd1qoJWkGvEVD0dhpZ89q2HJEnMVtYaO16JiknAsQNdiDobspkjOR7zoB8qKrTcZHLXMy5SqfO5H92RVEKOun26LdljhzRWZ0bt4KQ=
+	t=1750717287; cv=none; b=XOIkBMyYRFRQCk77l4BxxgetoBSUeXyJLF4hSlL9mvW/htECjarKOc2+5ZhlmjKqC4sGHCKevDdZlD4c+yZ6m5G25gM6g0WugJCZtRlLxvEjApvXwy5eDklHntb+TzrELoloyOAxTMaIxo5YZb3OYbYXcNH9A7k4eGVUSZm2Q5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716632; c=relaxed/simple;
-	bh=/ghtPXo/LS1La+oxwOtR7uutwpubueVKOk3gTX7VwRs=;
+	s=arc-20240116; t=1750717287; c=relaxed/simple;
+	bh=uNdxtHlNipq62m2W0srn7Blq6fSS4OgsJvmv/XIxJ4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K0SEbYsKKcOvnAqoMkl8JYELofva9tbCNvIPSjPu1Qj9rBJNfXkq/LOzMCR4Vv/ZDjyvLRnlQdaV5rPNCZWKH4n4+xpJUuC9a+yWp4VCE+aM4n4urgqjZXhEk9dPVJyGvkH+1hX7tiHPe35ngBj12Z5nq8xZIzRlXAkLlhK6po0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qs/EH0nO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 226E9C4CEEA;
-	Mon, 23 Jun 2025 22:10:31 +0000 (UTC)
+	 MIME-Version; b=u6GxfFd4FiOOui9nporgiltOFK50WEWhB2a71dIjtS3PYb7BvRoysDGZ1PaaOa0jSF7sst8DWD/xMQDagf8/S0ex2nliBfdSLhNKFaY/ZQo67qToHJulAQ+gwtdrt3eWUKvdNU8Ps5JtGF9Rn4wqR2E4Fky72DWDvkTr3MorsDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=slf4+Ud1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6A84C4CEEA;
+	Mon, 23 Jun 2025 22:21:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716632;
-	bh=/ghtPXo/LS1La+oxwOtR7uutwpubueVKOk3gTX7VwRs=;
+	s=korg; t=1750717287;
+	bh=uNdxtHlNipq62m2W0srn7Blq6fSS4OgsJvmv/XIxJ4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qs/EH0nOmT8zxZWNVBOGN6S+EVZSm007Q3PmXYv0+G6gSUW6IcpPDCHKSawllWJ4m
-	 wYO8VE6yoB4t//Ueka47yLKrH+MpC9EId0hbw1V3p1Uxox0ooFn3PzxEMyzLgEWySl
-	 4dEJhBmWMOSyyoDAm/q7ncvkUvb2in0MRtAj5U2g=
+	b=slf4+Ud1FPej2q+tTej1Wd6B+HM0amPJuKmsSoIvCPFOmd9dID6EpN5Ua7oqhSFKh
+	 WCDTWpXHo9Zu2TASA3CKqnWEu+hxUYtt1QspiGAkCmb4TSpd/r+4WyZQttVPSvw41H
+	 OOe9PbT60ZjrjE45hDoZ1PNySU84WL4m/foSERkk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	maher azz <maherazz04@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 346/411] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+	"James A. MacInnes" <james.a.macinnes@gmail.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 353/414] drm/msm/disp: Correct porch timing for SDM845
 Date: Mon, 23 Jun 2025 15:08:10 +0200
-Message-ID: <20250623130642.357654124@linuxfoundation.org>
+Message-ID: <20250623130650.798828979@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: James A. MacInnes <james.a.macinnes@gmail.com>
 
-commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
+[ Upstream commit 146e87f3e11de0dfa091ff87e34b4bc6eec761a4 ]
 
-In
+Type-C DisplayPort inoperable due to incorrect porch settings.
+- Re-used wide_bus_en as flag to prevent porch shifting
 
-riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
-   -> cm_chan_msg_send()
-      -> riocm_ch_send()
-
-cm_chan_msg_send() checks that userspace didn't send too much data but
-riocm_ch_send() failed to check that userspace sent sufficient data.  The
-result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
-which were outside the bounds of the space which cm_chan_msg_send()
-allocated.
-
-Address this by teaching riocm_ch_send() to check that the entire
-rio_ch_chan_hdr was copied in from userspace.
-
-Reported-by: maher azz <maherazz04@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c943b4948b58 ("drm/msm/dp: add displayPort driver support")
+Signed-off-by: James A. MacInnes <james.a.macinnes@gmail.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/636945/
+Link: https://lore.kernel.org/r/20250212-sdm845_dp-v2-2-4954e51458f4@gmail.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rapidio/rio_cm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c   | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
---- a/drivers/rapidio/rio_cm.c
-+++ b/drivers/rapidio/rio_cm.c
-@@ -787,6 +787,9 @@ static int riocm_ch_send(u16 ch_id, void
- 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
- 		return -EINVAL;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index d8a2edebfe8c3..b7699ca89dcc5 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -94,17 +94,21 @@ static void drm_mode_to_intf_timing_params(
+ 		timing->vsync_polarity = 0;
+ 	}
  
-+	if (len < sizeof(struct rio_ch_chan_hdr))
-+		return -EINVAL;		/* insufficient data from user */
+-	/* for DP/EDP, Shift timings to align it to bottom right */
+-	if (phys_enc->hw_intf->cap->type == INTF_DP) {
++	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
++	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
 +
- 	ch = riocm_get_channel(ch_id);
- 	if (!ch) {
- 		riocm_error("%s(%d) ch_%d not found", current->comm,
++	/*
++	 *  For DP/EDP, Shift timings to align it to bottom right.
++	 *  wide_bus_en is set for everything excluding SDM845 &
++	 *  porch changes cause DisplayPort failure and HDMI tearing.
++	 */
++	if (phys_enc->hw_intf->cap->type == INTF_DP && timing->wide_bus_en) {
+ 		timing->h_back_porch += timing->h_front_porch;
+ 		timing->h_front_porch = 0;
+ 		timing->v_back_porch += timing->v_front_porch;
+ 		timing->v_front_porch = 0;
+ 	}
+ 
+-	timing->wide_bus_en = dpu_encoder_is_widebus_enabled(phys_enc->parent);
+-	timing->compression_en = dpu_encoder_is_dsc_enabled(phys_enc->parent);
+-
+ 	/*
+ 	 * for DP, divide the horizonal parameters by 2 when
+ 	 * widebus is enabled
+-- 
+2.39.5
+
 
 
 
