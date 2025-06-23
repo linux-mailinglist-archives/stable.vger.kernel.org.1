@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-157932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443DCAE5684
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99798AE56A3
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B97983B9AB8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0497C7B3076
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D029B221FC7;
-	Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93C2222599;
+	Mon, 23 Jun 2025 22:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="16fHXXdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JyVACwLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E2C8B676;
-	Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A6915ADB4;
+	Mon, 23 Jun 2025 22:22:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717072; cv=none; b=YsAbXrObtVBhJIOJVH5aatqOgSMBZuATHUESMSZR+gQ5DtWw9dMGleqdEdA2QmDkRS1BTUcJIidYpf10nSMTKRsDj5MSR8i2VDwsxd2BLVW1NBMzzEASbY55p/z2PJtccm3KUto2NY1OdAUzfc9lnUTrATQVn+yBJ1V5IFhrboE=
+	t=1750717321; cv=none; b=lsCH61YI+UKoY9kmU1og3LQzndGucYPUWS6LhnrYJVnqqRKqpwF4/e6K+8xkjI91k15opgjo7GtZ/wcPh07NbROrYhNPgjXoSD1zPs2BThO/Gi480tAT6UgsyzAKJsadBZzzUB6Vbwm1unGT5qgRjvJJFFMhPGKWX8GMxe3BKnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717072; c=relaxed/simple;
-	bh=Oj6tc0XrxoYpet6jmEotqFPC1jf+qTOpk5a0W2rpsl8=;
+	s=arc-20240116; t=1750717321; c=relaxed/simple;
+	bh=HeItyzJhSukG4FuwIbyofLOOjRtwRtTyNlfVktW2fgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gfrWyD4jO/EQ3nHhWsLQ62TnBWQZaMr0oHMb2VFK/KqdtCjkAamP1FvPQl4VBTLjXUjIDWAgbsz5N/1ChdKLPbFz6J2entlDaOlBAFOUar5Cot1qTM9SFJTrv5BXiSbIH9ws/eXlTFk+9LbZYkJolcR0XFueQn84bOGDhMOJfyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=16fHXXdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269CFC4CEEA;
-	Mon, 23 Jun 2025 22:17:52 +0000 (UTC)
+	 MIME-Version; b=lm4IpIBef9uJprLr+HdfQ8kA002Sf79dt4PxnwNsnYufsctaQ4XyfQPkZ1y20DKoU2dnZs9Psprf5UdijLVeHwad+VwgUsl1xhuZ7YH2Aclqw5AHgEzWSbzxEa4cyAVhT6IOSOqpRfMCeym5pH7TzxkGcYMS3WHD7mvAoSHFCsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JyVACwLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1772C4CEEA;
+	Mon, 23 Jun 2025 22:22:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717072;
-	bh=Oj6tc0XrxoYpet6jmEotqFPC1jf+qTOpk5a0W2rpsl8=;
+	s=korg; t=1750717321;
+	bh=HeItyzJhSukG4FuwIbyofLOOjRtwRtTyNlfVktW2fgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=16fHXXdv1SpggsAcCGyL8ty6cqEsD+o1+GlVNKlIRt4e75WF7XCKTA5FLdEK/9WIs
-	 cVdzuDRnQeoQTc4xARM7h7ad42je9q//2CAAdyyUPgHL6cnuREPWaAdvUJqa4ngplr
-	 Acf7ysRCGnIjFosIJtKOKlgCbb+lxeLFOsX/a99M=
+	b=JyVACwLZofPb/eeZhosqii4IQVjH6qS5cEwdqOxcm43XbU1GDNZ5t/sPZNtseHhV3
+	 taii6mNwJhBdwE3k2IVoR/Mr3ICOfbySzU44zdXK4/RfsMsowFdo0dpYE+BPxwdkbH
+	 QV8eCpfqDQGm6roV9nPM6XXv+31xKkDPnqe1nQbU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 312/414] nvme: always punt polled uring_cmd end_io work to task_work
+	David Ahern <dsahern@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 404/508] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
 Date: Mon, 23 Jun 2025 15:07:29 +0200
-Message-ID: <20250623130649.801288567@linuxfoundation.org>
+Message-ID: <20250623130655.179822277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 9ce6c9875f3e995be5fd720b65835291f8a609b1 upstream.
+[ Upstream commit 1c0829788a6e6e165846b9bedd0b908ef16260b6 ]
 
-Currently NVMe uring_cmd completions will complete locally, if they are
-polled. This is done because those completions are always invoked from
-task context. And while that is true, there's no guarantee that it's
-invoked under the right ring context, or even task. If someone does
-NVMe passthrough via multiple threads and with a limited number of
-poll queues, then ringA may find completions from ringB. For that case,
-completing the request may not be sound.
+The statistics are incremented with raw_cpu_inc() assuming it always
+happens with bottom half disabled. Without per-CPU locking in
+local_bh_disable() on PREEMPT_RT this is no longer true.
 
-Always just punt the passthrough completions via task_work, which will
-redirect the completion, if needed.
+Use this_cpu_inc() on PREEMPT_RT for the increment to not worry about
+preemption.
 
-Cc: stable@vger.kernel.org
-Fixes: 585079b6e425 ("nvme: wire up async polling for io passthrough commands")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: David Ahern <dsahern@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20250512092736.229935-4-bigeasy@linutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/ioctl.c |   21 +++++++--------------
- 1 file changed, 7 insertions(+), 14 deletions(-)
+ net/ipv4/route.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -442,21 +442,14 @@ static enum rq_end_io_ret nvme_uring_cmd
- 	pdu->result = le64_to_cpu(nvme_req(req)->result.u64);
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 4574dcba9f193..8701081010173 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -192,7 +192,11 @@ const __u8 ip_tos2prio[16] = {
+ EXPORT_SYMBOL(ip_tos2prio);
  
- 	/*
--	 * For iopoll, complete it directly. Note that using the uring_cmd
--	 * helper for this is safe only because we check blk_rq_is_poll().
--	 * As that returns false if we're NOT on a polled queue, then it's
--	 * safe to use the polled completion helper.
--	 *
--	 * Otherwise, move the completion to task work.
-+	 * IOPOLL could potentially complete this request directly, but
-+	 * if multiple rings are polling on the same queue, then it's possible
-+	 * for one ring to find completions for another ring. Punting the
-+	 * completion via task_work will always direct it to the right
-+	 * location, rather than potentially complete requests for ringA
-+	 * under iopoll invocations from ringB.
- 	 */
--	if (blk_rq_is_poll(req)) {
--		if (pdu->bio)
--			blk_rq_unmap_user(pdu->bio);
--		io_uring_cmd_iopoll_done(ioucmd, pdu->result, pdu->status);
--	} else {
--		io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
--	}
--
-+	io_uring_cmd_do_in_task_lazy(ioucmd, nvme_uring_task_cb);
- 	return RQ_END_IO_FREE;
- }
+ static DEFINE_PER_CPU(struct rt_cache_stat, rt_cache_stat);
++#ifndef CONFIG_PREEMPT_RT
+ #define RT_CACHE_STAT_INC(field) raw_cpu_inc(rt_cache_stat.field)
++#else
++#define RT_CACHE_STAT_INC(field) this_cpu_inc(rt_cache_stat.field)
++#endif
  
+ #ifdef CONFIG_PROC_FS
+ static void *rt_cache_seq_start(struct seq_file *seq, loff_t *pos)
+-- 
+2.39.5
+
 
 
 
