@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156834-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF13BAE51EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 44368AE5155
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99CEE1B64474
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1166E1B639AE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81F52222A9;
-	Mon, 23 Jun 2025 21:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D122236E5;
+	Mon, 23 Jun 2025 21:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnDjZFtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maYut4ok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F7221FCC;
-	Mon, 23 Jun 2025 21:38:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1203F21B8F6;
+	Mon, 23 Jun 2025 21:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714718; cv=none; b=fpEjNzQF0Ked/iN9a6PGOUTpPlJwvflcVqN0HfPd1K4bdZckifHVWeVXqc73QZWeeGP/cjfsM/pVsDcyl9scBoPXULOW9OMjH7OMdogo5l1ZZkhOBUUwBYME+ESKHWPPFAb2tItnXCmZBoSD8e8ciNZHULArkRWoCKfvc1n7nGM=
+	t=1750714380; cv=none; b=FhBFg4BSYuFFn/rRA3+n6PnPGt4fUcFl7DCqRMphPoxThRrfgtIEau+6gZc4/P0AQzpMyFCL+B5YqoOwFnBZgr3nfRt3y0R7K2dl/pWG0g/CByndMjMg87m6K/vH0aHx2RLSWUT6RB1B159jvbE9quDZywLufBW8CJXs/JI/dJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714718; c=relaxed/simple;
-	bh=WAor2sqyToqZHdt4YfMvox0L6krzIhfo32Lf08w0ngg=;
+	s=arc-20240116; t=1750714380; c=relaxed/simple;
+	bh=xMax8O3s9QTpBMClX9PlJCX8FF0NAejH+7XgveIKxJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h66hjAIMig0gIBqLwsr96Dx/5/Qujx0gEqhYxggA1j38KyVVH760UDHEAjDorZOVO16vWq0m9pUvRvllJ/12dDa5mjAgzXdNmLJACPL1UYhRQgMSs6y8MLnK9zO9KDivC+QWr9hylv4n0UbeROkGUGrgcpUGXjqgmjuRmisE5IM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnDjZFtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35767C4CEEA;
-	Mon, 23 Jun 2025 21:38:38 +0000 (UTC)
+	 MIME-Version; b=dMJp1CxNpiqgs2xFyx+YqmIYQ0jzN2TMWt87RQsAEDe3+xVs7ghtQBPD2Hrt41TxwsaskK0QiWZTXcx7pHqHIsQwcUdg4GMs3pVTLr5gFUa/QLcrwNBCsW8skXZ0awFRY6fOXdPXwNUzgukaq9M9VZuQf3zq1EUdcDysvMuMEOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maYut4ok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A97C4CEEA;
+	Mon, 23 Jun 2025 21:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714718;
-	bh=WAor2sqyToqZHdt4YfMvox0L6krzIhfo32Lf08w0ngg=;
+	s=korg; t=1750714379;
+	bh=xMax8O3s9QTpBMClX9PlJCX8FF0NAejH+7XgveIKxJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VnDjZFtKjgzUFT/pklaMym0e9d1ITwWDv/yzMSBET8jr7R6/YPHdHyNKwKiJ2lMAP
-	 Vu0FtxkMkCDiaeNsi2ojSa0Z7WQCZfDvWMzXvKlwLM9Lj9QJRCCEhJIF9hXrEPRwph
-	 88M+7fOrrnF1A+oMr0DCI3R+dz9+6wtZzSba2oCw=
+	b=maYut4okOk6JifOdwSpsu0LSd5V3c3x3ss9uGRurAyede16KDFX5mKMxsAt3cXkLL
+	 L4AZCT6rYWujrnxvSX4fjiZ8VsNXFDwzVkNeYHs1UggYBdPp0p9DZkg041BKrMuB+Q
+	 b8SL9IF80s8Iaajv3ErwR4uRldW6Y16M4V2C5P+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/508] xfs: fix interval filtering in multi-step fsmap queries
+	syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.12 099/414] f2fs: fix to do sanity check on ino and xnid
 Date: Mon, 23 Jun 2025 15:03:56 +0200
-Message-ID: <20250623130649.970894479@linuxfoundation.org>
+Message-ID: <20250623130644.573053687@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,194 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 63ef7a35912dd743cabd65d5bb95891625c0dd46 ]
+commit 061cf3a84bde038708eb0f1d065b31b7c2456533 upstream.
 
-I noticed a bug in ranged GETFSMAP queries:
+syzbot reported a f2fs bug as below:
 
-# xfs_io -c 'fsmap -vvvv' /opt
- EXT: DEV  BLOCK-RANGE           OWNER              FILE-OFFSET      AG AG-OFFSET           TOTAL
-   0: 8:80 [0..7]:               static fs metadata                  0  (0..7)                  8
-<snip>
-   9: 8:80 [192..223]:           137                0..31            0  (192..223)             32
-# xfs_io -c 'fsmap -vvvv -d 208 208' /opt
-#
+INFO: task syz-executor140:5308 blocked for more than 143 seconds.
+      Not tainted 6.14.0-rc7-syzkaller-00069-g81e4f8d68c66 #0
+"echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+task:syz-executor140 state:D stack:24016 pid:5308  tgid:5308  ppid:5306   task_flags:0x400140 flags:0x00000006
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5378 [inline]
+ __schedule+0x190e/0x4c90 kernel/sched/core.c:6765
+ __schedule_loop kernel/sched/core.c:6842 [inline]
+ schedule+0x14b/0x320 kernel/sched/core.c:6857
+ io_schedule+0x8d/0x110 kernel/sched/core.c:7690
+ folio_wait_bit_common+0x839/0xee0 mm/filemap.c:1317
+ __folio_lock mm/filemap.c:1664 [inline]
+ folio_lock include/linux/pagemap.h:1163 [inline]
+ __filemap_get_folio+0x147/0xb40 mm/filemap.c:1917
+ pagecache_get_page+0x2c/0x130 mm/folio-compat.c:87
+ find_get_page_flags include/linux/pagemap.h:842 [inline]
+ f2fs_grab_cache_page+0x2b/0x320 fs/f2fs/f2fs.h:2776
+ __get_node_page+0x131/0x11b0 fs/f2fs/node.c:1463
+ read_xattr_block+0xfb/0x190 fs/f2fs/xattr.c:306
+ lookup_all_xattrs fs/f2fs/xattr.c:355 [inline]
+ f2fs_getxattr+0x676/0xf70 fs/f2fs/xattr.c:533
+ __f2fs_get_acl+0x52/0x870 fs/f2fs/acl.c:179
+ f2fs_acl_create fs/f2fs/acl.c:375 [inline]
+ f2fs_init_acl+0xd7/0x9b0 fs/f2fs/acl.c:418
+ f2fs_init_inode_metadata+0xa0f/0x1050 fs/f2fs/dir.c:539
+ f2fs_add_inline_entry+0x448/0x860 fs/f2fs/inline.c:666
+ f2fs_add_dentry+0xba/0x1e0 fs/f2fs/dir.c:765
+ f2fs_do_add_link+0x28c/0x3a0 fs/f2fs/dir.c:808
+ f2fs_add_link fs/f2fs/f2fs.h:3616 [inline]
+ f2fs_mknod+0x2e8/0x5b0 fs/f2fs/namei.c:766
+ vfs_mknod+0x36d/0x3b0 fs/namei.c:4191
+ unix_bind_bsd net/unix/af_unix.c:1286 [inline]
+ unix_bind+0x563/0xe30 net/unix/af_unix.c:1379
+ __sys_bind_socket net/socket.c:1817 [inline]
+ __sys_bind+0x1e4/0x290 net/socket.c:1848
+ __do_sys_bind net/socket.c:1853 [inline]
+ __se_sys_bind net/socket.c:1851 [inline]
+ __x64_sys_bind+0x7a/0x90 net/socket.c:1851
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-That's not right -- we asked what block maps block 208, and we should've
-received a mapping for inode 137 offset 16.  Instead, we get nothing.
+Let's dump and check metadata of corrupted inode, it shows its xattr_nid
+is the same to its i_ino.
 
-The root cause of this problem is a mis-interaction between the fsmap
-code and how btree ranged queries work.  xfs_btree_query_range returns
-any btree record that overlaps with the query interval, even if the
-record starts before or ends after the interval.  Similarly, GETFSMAP is
-supposed to return a recordset containing all records that overlap the
-range queried.
+dump.f2fs -i 3 chaseyu.img.raw
+i_xattr_nid                             [0x       3 : 3]
 
-However, it's possible that the recordset is larger than the buffer that
-the caller provided to convey mappings to userspace.  In /that/ case,
-userspace is supposed to copy the last record returned to fmh_keys[0]
-and call GETFSMAP again.  In this case, we do not want to return
-mappings that we have already supplied to the caller.  The call to
-xfs_btree_query_range is the same, but now we ignore any records that
-start before fmh_keys[0].
+So that, during mknod in the corrupted directory, it tries to get and
+lock inode page twice, result in deadlock.
 
-Unfortunately, we didn't implement the filtering predicate correctly.
-The predicate should only be called when we're calling back for more
-records.  Accomplish this by setting info->low.rm_blockcount to a
-nonzero value and ensuring that it is cleared as necessary.  As a
-result, we no longer want to adjust dkeys[0] in the main setup function
-because that's confusing.
+- f2fs_mknod
+ - f2fs_add_inline_entry
+  - f2fs_get_inode_page --- lock dir's inode page
+   - f2fs_init_acl
+    - f2fs_acl_create(dir,..)
+     - __f2fs_get_acl
+      - f2fs_getxattr
+       - lookup_all_xattrs
+        - __get_node_page --- try to lock dir's inode page
 
-This patch doesn't touch the logdev/rtbitmap backends because they have
-bigger problems that will be addressed by subsequent patches.
+In order to fix this, let's add sanity check on ino and xnid.
 
-Found via xfs/556 with parent pointers enabled.
-
-Fixes: e89c041338ed ("xfs: implement the GETFSMAP ioctl")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+cc448dcdc7ae0b4e4ffa@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/67e06150.050a0220.21942d.0005.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_fsmap.c | 67 +++++++++++++++++++++++++++++++++-------------
- 1 file changed, 48 insertions(+), 19 deletions(-)
+ fs/f2fs/inode.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
-index a5b9754c62d1c..2011f1bf7ce0f 100644
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -162,7 +162,14 @@ struct xfs_getfsmap_info {
- 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
- 	u64			missing_owner;	/* owner of holes */
- 	u32			dev;		/* device id */
--	struct xfs_rmap_irec	low;		/* low rmap key */
-+	/*
-+	 * Low rmap key for the query.  If low.rm_blockcount is nonzero, this
-+	 * is the second (or later) call to retrieve the recordset in pieces.
-+	 * xfs_getfsmap_rec_before_start will compare all records retrieved
-+	 * by the rmapbt query to filter out any records that start before
-+	 * the last record.
-+	 */
-+	struct xfs_rmap_irec	low;
- 	struct xfs_rmap_irec	high;		/* high rmap key */
- 	bool			last;		/* last extent? */
- };
-@@ -237,6 +244,17 @@ xfs_getfsmap_format(
- 	xfs_fsmap_from_internal(rec, xfm);
- }
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -286,6 +286,12 @@ static bool sanity_check_inode(struct in
+ 		return false;
+ 	}
  
-+static inline bool
-+xfs_getfsmap_rec_before_start(
-+	struct xfs_getfsmap_info	*info,
-+	const struct xfs_rmap_irec	*rec,
-+	xfs_daddr_t			rec_daddr)
-+{
-+	if (info->low.rm_blockcount)
-+		return xfs_rmap_compare(rec, &info->low) < 0;
-+	return false;
-+}
-+
- /*
-  * Format a reverse mapping for getfsmap, having translated rm_startblock
-  * into the appropriate daddr units.
-@@ -260,7 +278,7 @@ xfs_getfsmap_helper(
- 	 * Filter out records that start before our startpoint, if the
- 	 * caller requested that.
- 	 */
--	if (xfs_rmap_compare(rec, &info->low) < 0) {
-+	if (xfs_getfsmap_rec_before_start(info, rec, rec_daddr)) {
- 		rec_daddr += XFS_FSB_TO_BB(mp, rec->rm_blockcount);
- 		if (info->next_daddr < rec_daddr)
- 			info->next_daddr = rec_daddr;
-@@ -606,9 +624,27 @@ __xfs_getfsmap_datadev(
- 	error = xfs_fsmap_owner_to_rmap(&info->low, &keys[0]);
- 	if (error)
- 		return error;
--	info->low.rm_blockcount = 0;
-+	info->low.rm_blockcount = XFS_BB_TO_FSBT(mp, keys[0].fmr_length);
- 	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
- 
-+	/* Adjust the low key if we are continuing from where we left off. */
-+	if (info->low.rm_blockcount == 0) {
-+		/* empty */
-+	} else if (XFS_RMAP_NON_INODE_OWNER(info->low.rm_owner) ||
-+		   (info->low.rm_flags & (XFS_RMAP_ATTR_FORK |
-+					  XFS_RMAP_BMBT_BLOCK |
-+					  XFS_RMAP_UNWRITTEN))) {
-+		info->low.rm_startblock += info->low.rm_blockcount;
-+		info->low.rm_owner = 0;
-+		info->low.rm_offset = 0;
-+
-+		start_fsb += info->low.rm_blockcount;
-+		if (XFS_FSB_TO_DADDR(mp, start_fsb) >= eofs)
-+			return 0;
-+	} else {
-+		info->low.rm_offset += info->low.rm_blockcount;
++	if (ino_of_node(node_page) == fi->i_xattr_nid) {
++		f2fs_warn(sbi, "%s: corrupted inode i_ino=%lx, xnid=%x, run fsck to fix.",
++			  __func__, inode->i_ino, fi->i_xattr_nid);
++		return false;
 +	}
 +
- 	info->high.rm_startblock = -1U;
- 	info->high.rm_owner = ULLONG_MAX;
- 	info->high.rm_offset = ULLONG_MAX;
-@@ -659,12 +695,8 @@ __xfs_getfsmap_datadev(
- 		 * Set the AG low key to the start of the AG prior to
- 		 * moving on to the next AG.
- 		 */
--		if (pag->pag_agno == start_ag) {
--			info->low.rm_startblock = 0;
--			info->low.rm_owner = 0;
--			info->low.rm_offset = 0;
--			info->low.rm_flags = 0;
--		}
-+		if (pag->pag_agno == start_ag)
-+			memset(&info->low, 0, sizeof(info->low));
- 
- 		/*
- 		 * If this is the last AG, report any gap at the end of it
-@@ -901,21 +933,17 @@ xfs_getfsmap(
- 	 * blocks could be mapped to several other files/offsets.
- 	 * According to rmapbt record ordering, the minimal next
- 	 * possible record for the block range is the next starting
--	 * offset in the same inode. Therefore, bump the file offset to
--	 * continue the search appropriately.  For all other low key
--	 * mapping types (attr blocks, metadata), bump the physical
--	 * offset as there can be no other mapping for the same physical
--	 * block range.
-+	 * offset in the same inode. Therefore, each fsmap backend bumps
-+	 * the file offset to continue the search appropriately.  For
-+	 * all other low key mapping types (attr blocks, metadata), each
-+	 * fsmap backend bumps the physical offset as there can be no
-+	 * other mapping for the same physical block range.
- 	 */
- 	dkeys[0] = head->fmh_keys[0];
- 	if (dkeys[0].fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
--		dkeys[0].fmr_physical += dkeys[0].fmr_length;
--		dkeys[0].fmr_owner = 0;
- 		if (dkeys[0].fmr_offset)
- 			return -EINVAL;
--	} else
--		dkeys[0].fmr_offset += dkeys[0].fmr_length;
--	dkeys[0].fmr_length = 0;
-+	}
- 	memset(&dkeys[1], 0xFF, sizeof(struct xfs_fsmap));
- 
- 	if (!xfs_getfsmap_check_keys(dkeys, &head->fmh_keys[1]))
-@@ -960,6 +988,7 @@ xfs_getfsmap(
- 		info.dev = handlers[i].dev;
- 		info.last = false;
- 		info.pag = NULL;
-+		info.low.rm_blockcount = 0;
- 		error = handlers[i].fn(tp, dkeys, &info);
- 		if (error)
- 			break;
--- 
-2.39.5
-
+ 	if (f2fs_has_extra_attr(inode)) {
+ 		if (!f2fs_sb_has_extra_attr(sbi)) {
+ 			f2fs_warn(sbi, "%s: inode (ino=%lx) is with extra_attr, but extra_attr feature is off",
 
 
 
