@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-156884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DEB8AE5194
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E4FEAE4E7F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7BC721899392
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 999FA17BE36
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4920221FCA;
-	Mon, 23 Jun 2025 21:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD79322069F;
+	Mon, 23 Jun 2025 21:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ipet5aNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/i50UDM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913171EEA5D;
-	Mon, 23 Jun 2025 21:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699D1217668;
+	Mon, 23 Jun 2025 21:06:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714502; cv=none; b=n1fRw0GIh73NI+pkFQTM4iUPMgrrJsHhBS6aYOhBxPMBsPwpN4lAjWLqp+1n9ITK6yO9YpH59Z3kkaQ9USYm59gFhOjmxrNtIuLJopUE0NZgknkwPhl68TslYfJnRpKdXeUeHVxsKRqij+8V85OibY3ndMMkxIFTydD7S+F33/s=
+	t=1750712779; cv=none; b=RIqvCmCUHkUKMHMacjY2evZVg3Qu3a5y+nYHsZRgyKeU+FYj0YtL8irTgOjQHg2lYWIZ48TWZ0O7xOo27Y58eGIGtk7jbqSWar5Re1/Cme+9uPizv6/L6av7D3LXR3YGArWOhz1eFJwmsrhAo9usPgR9gNWgmNoHg3KPc/ScxRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714502; c=relaxed/simple;
-	bh=95jLmIR3rXf61Lfovkb/5fy96gRjmh8kmn6Xvnae6bs=;
+	s=arc-20240116; t=1750712779; c=relaxed/simple;
+	bh=7Rwyxw/W46KAtdSONRYV7t90Z00gu+O/OOaDAOd8puM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=elfRJjxOA/3RWg1NrMDki0eu2t0rOwEQ26BqB86DXJmdbBKdUAztTi8L0gKShc03r5M+ASjr+GGSuhVdhqfz3kRKnF6QP3Pnz/LYy+uNxgPhxVn0npUMeMVArHV8qzfwPM+mkn4msGfIZ4vIlv3dDYt5pYaC75BiOyboM4omRuQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ipet5aNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6B21C4CEEA;
-	Mon, 23 Jun 2025 21:35:01 +0000 (UTC)
+	 MIME-Version; b=hPmpbSdwxVE3WpDs+9+C8jLWN023mwgbr3fwqBqXBbqDhMLXXphlDOoH3C26vaDkWIC2l2rmmcEtq9HXzP9ZnSVlycPVzjyuadqAUd+agRAOU9N168xi6jWhoIA0K3PDSiKSYOTk0ZlW4n4I5L2vpTCkhaCk3YxzAEA7AJE0/2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/i50UDM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF30AC4CEEA;
+	Mon, 23 Jun 2025 21:06:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714502;
-	bh=95jLmIR3rXf61Lfovkb/5fy96gRjmh8kmn6Xvnae6bs=;
+	s=korg; t=1750712779;
+	bh=7Rwyxw/W46KAtdSONRYV7t90Z00gu+O/OOaDAOd8puM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ipet5aNWRiD6511k+p3Qs0mQ8voCqlt7QuBjShDoHu4sx7YKvHu9gq8k7asjdtKT7
-	 xdzN8rad6xyS2nXSxEvX380vHOPljM1w2Kp88fKa4S/GL151yhOoZt5p+3ncgQje3Q
-	 kVRi6Ak6a+EesQYodQ1f2RJzuJkaXR6/jYqkaN3w=
+	b=g/i50UDMa4d7SKQvYTcQU5UAhsFNbPs+b8SrDhux4lZGY75ODD8fqICkrLTF81s7x
+	 3qWP9lo1lftYPLebUKkkJ2fPqqqTT3qi87UBKg1badDrYH4S/rb8c/sFvEPlotJGbX
+	 sbFOhnwkoxItHtrPoqU+rdqUTsHfM8UY19Dynh/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Helge Deller <deller@gmx.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Zsolt Kajtar <soci@c64.rulez.org>
-Subject: [PATCH 6.12 133/414] sysfb: Fix screen_info type check for VGA
+	Rengarajan S <rengarajan.s@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 312/592] net: lan743x: Modify the EEPROM and OTP size for PCI1xxxx devices
 Date: Mon, 23 Jun 2025 15:04:30 +0200
-Message-ID: <20250623130645.380091165@linuxfoundation.org>
+Message-ID: <20250623130707.838173969@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +60,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Rengarajan S <rengarajan.s@microchip.com>
 
-commit f670b50ef5e4a69bf4d2ec5ac6a9228d93b13a7a upstream.
+[ Upstream commit 3b9935586a9b54d2da27901b830d3cf46ad66a1e ]
 
-Use the helper screen_info_video_type() to get the framebuffer
-type from struct screen_info. Handle supported values in sorted
-switch statement.
+Maximum OTP and EEPROM size for hearthstone PCI1xxxx devices are 8 Kb
+and 64 Kb respectively. Adjust max size definitions and return correct
+EEPROM length based on device. Also prevent out-of-bound read/write.
 
-Reading orig_video_isVGA is unreliable. On most systems it is a
-VIDEO_TYPE_ constant. On some systems with VGA it is simply set
-to 1 to signal the presence of a VGA output. See vga_probe() for
-an example. Retrieving the screen_info type with the helper
-screen_info_video_type() detects these cases and returns the
-appropriate VIDEO_TYPE_ constant. For VGA, sysfb creates a device
-named "vga-framebuffer".
-
-The sysfb code has been taken from vga16fb, where it likely didn't
-work correctly either. With this bugfix applied, vga16fb loads for
-compatible vga-framebuffer devices.
-
-Fixes: 0db5b61e0dc0 ("fbdev/vga16fb: Create EGA/VGA devices in sysfb code")
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: Tzung-Bi Shih <tzungbi@kernel.org>
-Cc: Helge Deller <deller@gmx.de>
-Cc: "Uwe Kleine-König" <u.kleine-koenig@baylibre.com>
-Cc: Zsolt Kajtar <soci@c64.rulez.org>
-Cc: <stable@vger.kernel.org> # v6.1+
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://lore.kernel.org/r/20250603154838.401882-1-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Rengarajan S <rengarajan.s@microchip.com>
+Link: https://patch.msgid.link/20250523173326.18509-1-rengarajan.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/sysfb.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ .../net/ethernet/microchip/lan743x_ethtool.c   | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/drivers/firmware/sysfb.c
-+++ b/drivers/firmware/sysfb.c
-@@ -124,6 +124,7 @@ static __init int sysfb_init(void)
- {
- 	struct screen_info *si = &screen_info;
- 	struct device *parent;
-+	unsigned int type;
- 	struct simplefb_platform_data mode;
- 	const char *name;
- 	bool compatible;
-@@ -151,17 +152,26 @@ static __init int sysfb_init(void)
- 			goto put_device;
- 	}
+diff --git a/drivers/net/ethernet/microchip/lan743x_ethtool.c b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+index 1459acfb1e618..64a3b953cc175 100644
+--- a/drivers/net/ethernet/microchip/lan743x_ethtool.c
++++ b/drivers/net/ethernet/microchip/lan743x_ethtool.c
+@@ -18,6 +18,8 @@
+ #define EEPROM_MAC_OFFSET		    (0x01)
+ #define MAX_EEPROM_SIZE			    (512)
+ #define MAX_OTP_SIZE			    (1024)
++#define MAX_HS_OTP_SIZE			    (8 * 1024)
++#define MAX_HS_EEPROM_SIZE		    (64 * 1024)
+ #define OTP_INDICATOR_1			    (0xF3)
+ #define OTP_INDICATOR_2			    (0xF7)
  
-+	type = screen_info_video_type(si);
+@@ -272,6 +274,9 @@ static int lan743x_hs_otp_read(struct lan743x_adapter *adapter, u32 offset,
+ 	int ret;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_OTP_SIZE)
++		return -EINVAL;
 +
- 	/* if the FB is incompatible, create a legacy framebuffer device */
--	if (si->orig_video_isVGA == VIDEO_TYPE_EFI)
--		name = "efi-framebuffer";
--	else if (si->orig_video_isVGA == VIDEO_TYPE_VLFB)
--		name = "vesa-framebuffer";
--	else if (si->orig_video_isVGA == VIDEO_TYPE_VGAC)
--		name = "vga-framebuffer";
--	else if (si->orig_video_isVGA == VIDEO_TYPE_EGAC)
-+	switch (type) {
-+	case VIDEO_TYPE_EGAC:
- 		name = "ega-framebuffer";
--	else
-+		break;
-+	case VIDEO_TYPE_VGAC:
-+		name = "vga-framebuffer";
-+		break;
-+	case VIDEO_TYPE_VLFB:
-+		name = "vesa-framebuffer";
-+		break;
-+	case VIDEO_TYPE_EFI:
-+		name = "efi-framebuffer";
-+		break;
-+	default:
- 		name = "platform-framebuffer";
-+		break;
-+	}
+ 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (ret < 0)
+ 		return ret;
+@@ -320,6 +325,9 @@ static int lan743x_hs_otp_write(struct lan743x_adapter *adapter, u32 offset,
+ 	int ret;
+ 	int i;
  
- 	pd = platform_device_alloc(name, 0);
- 	if (!pd) {
++	if (offset + length > MAX_HS_OTP_SIZE)
++		return -EINVAL;
++
+ 	ret = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (ret < 0)
+ 		return ret;
+@@ -497,6 +505,9 @@ static int lan743x_hs_eeprom_read(struct lan743x_adapter *adapter,
+ 	u32 val;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_EEPROM_SIZE)
++		return -EINVAL;
++
+ 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (retval < 0)
+ 		return retval;
+@@ -539,6 +550,9 @@ static int lan743x_hs_eeprom_write(struct lan743x_adapter *adapter,
+ 	u32 val;
+ 	int i;
+ 
++	if (offset + length > MAX_HS_EEPROM_SIZE)
++		return -EINVAL;
++
+ 	retval = lan743x_hs_syslock_acquire(adapter, LOCK_TIMEOUT_MAX_CNT);
+ 	if (retval < 0)
+ 		return retval;
+@@ -604,9 +618,9 @@ static int lan743x_ethtool_get_eeprom_len(struct net_device *netdev)
+ 	struct lan743x_adapter *adapter = netdev_priv(netdev);
+ 
+ 	if (adapter->flags & LAN743X_ADAPTER_FLAG_OTP)
+-		return MAX_OTP_SIZE;
++		return adapter->is_pci11x1x ? MAX_HS_OTP_SIZE : MAX_OTP_SIZE;
+ 
+-	return MAX_EEPROM_SIZE;
++	return adapter->is_pci11x1x ? MAX_HS_EEPROM_SIZE : MAX_EEPROM_SIZE;
+ }
+ 
+ static int lan743x_ethtool_get_eeprom(struct net_device *netdev,
+-- 
+2.39.5
+
 
 
 
