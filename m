@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0837AE525C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AF02AE507B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 83A577A280D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A84434401BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9D721D3DD;
-	Mon, 23 Jun 2025 21:43:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8D551F4628;
+	Mon, 23 Jun 2025 21:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yVAo6K6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vCLK8AA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2C719D084;
-	Mon, 23 Jun 2025 21:43:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A66B21E51FA;
+	Mon, 23 Jun 2025 21:25:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714983; cv=none; b=JnJw//GNNVqm+lRRBQ3Ax4SmCsqWMb9njwDj7/GkBEam43VgFHzc2w7TOfBx3Qwn1zvyWmfnOxMO/EwjnSsSKydfiQQJGa9Yl0u3fSsWgQGPwIBBBkIuFZ0sO5C+fWR0ILeaKFVO4IIoAXh+0KWg33ZkoiglXDnPZyWWQe5KDrU=
+	t=1750713937; cv=none; b=UEnrd0jXvmOyxgYL5nxYE6FDohLJVxcHlwG02LIChrgW8kDxev27N9wX0KucGpS+SQkkDJIaqhQD8y9tU77OfXfmSTbvMmrPw1edLrB/HaPlrLnlEANNsm7uNQg7pxLlU89xMuVhhfwzg65uBg29Hcdn50ijyjmMpO2/SfgcOJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714983; c=relaxed/simple;
-	bh=D9YKm19cmeddaIxcjOZFR1Qt0rea7c5TJH2LdqFGhjY=;
+	s=arc-20240116; t=1750713937; c=relaxed/simple;
+	bh=32FkWqIu3wM5sCrl7XrYFT09VBq1Rm0Gwe1qtsC/3B0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JZJpQTy7VPam3SPlm15LehV2E5QvlC7U9dRbJMwXI4nFPC8gRo8AU2UEj8sRCPPqchIj7cmyonmjGftljzuj9CnXSH7m83gmvBvuNaGgN14bKHO0Z2aFXcHpuIMjDyv/n2UzzK3vxB7j2ajwYZqzgrf2GqtuyLSgOF+F6vOvfbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yVAo6K6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494C3C4CEEA;
-	Mon, 23 Jun 2025 21:43:02 +0000 (UTC)
+	 MIME-Version; b=ORMXiryA3qG0yh60ux0ZgvP212X63E2XDtQdG7Q/H4gjqDwJWwAXw1Y+ZI1R1A9WX4jqeP8swMVMrllEvsVg5AYFhL4vtaJt2gW8m++6i94FJBZG6TJ93+tgaQaaafVF7s8gv+UY1GwRJuQ2FYtZNvc8mdLkpVZBu1RtWlQpUQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vCLK8AA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35AEAC4CEEA;
+	Mon, 23 Jun 2025 21:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714982;
-	bh=D9YKm19cmeddaIxcjOZFR1Qt0rea7c5TJH2LdqFGhjY=;
+	s=korg; t=1750713937;
+	bh=32FkWqIu3wM5sCrl7XrYFT09VBq1Rm0Gwe1qtsC/3B0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yVAo6K6rbpu0AW3M6f7iP2BGnpucQ+eMOgdj/E9XK6J+gaQkn3qR8VDzBb1fIaMEN
-	 fcJam0kvQennY/kn4JKjcp4dYOBDx0dHngXZysjEm28hmwaafXkKG1zqcL50VbSyTu
-	 3HOw7CTlW7rONODYRvEWVE5YjaET69ULFNhANOm8=
+	b=vCLK8AA+yt/ii4eJaoFHmcx/3rRrMgLlxbCvHIfm2c9z2CKuW1B2VuyvQqBB5JxdW
+	 juTFwgPPiHHRw7DeJmLf7Ir2VEfuj6TzctECEihHMw0KvDidi7ciImxqDesnN9FCeU
+	 3MX5XFCuCd9AepgwCxm5AZPYpV6FggL/Od4hlKFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Kemnade <andreas@kemnade.info>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 5.15 221/411] ARM: omap: pmic-cpcap: do not mess around without CPCAP or OMAP4
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 104/290] cifs: dns resolution is needed only for primary channel
 Date: Mon, 23 Jun 2025 15:06:05 +0200
-Message-ID: <20250623130639.226109773@linuxfoundation.org>
+Message-ID: <20250623130630.086054430@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Kemnade <andreas@kemnade.info>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit 7397daf1029d5bfd3415ec8622f5179603d5702d upstream.
+commit b4f60a053a2534c3e510ba0c1f8727566adf8317 upstream.
 
-The late init call just writes to omap4 registers as soon as
-CONFIG_MFD_CPCAP is enabled without checking whether the
-cpcap driver is actually there or the SoC is indeed an
-OMAP4.
-Rather do these things only with the right device combination.
+When calling cifs_reconnect, before the connection to the
+server is reestablished, the code today does a DNS resolution and
+updates server->dstaddr.
 
-Fixes booting the BT200 with said configuration enabled and non-factory
-X-Loader and probably also some surprising behavior on other devices.
+However, this is not necessary for secondary channels. Secondary
+channels use the interface list returned by the server to decide
+which address to connect to. And that happens after tcon is reconnected
+and server interfaces are requested.
 
-Fixes: c145649bf262 ("ARM: OMAP2+: Configure voltage controller for cpcap to low-speed")
-CC: stable@vger.kernel.org
-Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
-Reivewed-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20250331144439.769697-1-andreas@kemnade.info
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-omap2/pmic-cpcap.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm/mach-omap2/pmic-cpcap.c
-+++ b/arch/arm/mach-omap2/pmic-cpcap.c
-@@ -264,7 +264,11 @@ int __init omap4_cpcap_init(void)
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -408,7 +408,8 @@ static int __cifs_reconnect(struct TCP_S
+ 		try_to_freeze();
+ 		cifs_server_lock(server);
  
- static int __init cpcap_late_init(void)
- {
--	omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
-+	if (!of_find_compatible_node(NULL, NULL, "motorola,cpcap"))
-+		return 0;
-+
-+	if (soc_is_omap443x() || soc_is_omap446x() || soc_is_omap447x())
-+		omap4_vc_set_pmic_signaling(PWRDM_POWER_RET);
- 
- 	return 0;
- }
+-		if (!cifs_swn_set_server_dstaddr(server)) {
++		if (!cifs_swn_set_server_dstaddr(server) &&
++		    !SERVER_IS_CHAN(server)) {
+ 			/* resolve the hostname again to make sure that IP address is up-to-date */
+ 			rc = reconn_set_ipaddr_from_hostname(server);
+ 			cifs_dbg(FYI, "%s: reconn_set_ipaddr_from_hostname: rc=%d\n", __func__, rc);
 
 
 
