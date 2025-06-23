@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DA03AE54AE
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68318AE5481
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4863F17588F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 948C21BC13AC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 489A91D86DC;
-	Mon, 23 Jun 2025 22:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E17381D86DC;
+	Mon, 23 Jun 2025 22:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDNlgk1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Moeh76n+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05B9A4C74;
-	Mon, 23 Jun 2025 22:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C01B4409;
+	Mon, 23 Jun 2025 22:01:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716206; cv=none; b=NA8SWkbZf8cz2AuSmO+LSOhEinPvqCkkixhVQOq7HrleK17rcPR5H9+mxxehdU9w2JMhsfVSsd5zgMsLcXh3hYFq2Bd6PHETqjd40XoCYPnYcRTEJw4J3Y2RlAHIWIXaJ/VNCse8tFqtMVHARJwtB3W7WukDSmAzJirEfaNc8HU=
+	t=1750716105; cv=none; b=RG2bdT0KwuImHUA3+aIK6xiS6NKjj7kydckd+y+d/SY78bBOf67mnkJF7aR+MNRAnPdkmmeHLNkwXs8aFnWfslDlAkYqbvdcX/HquMWtcF8L8NypI09T6bmJlLxNgDh39uyMnmpWQcNlvTkjpP9Z5NLUp7VrzN+KslPUfudQYpY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716206; c=relaxed/simple;
-	bh=mPdALuOpMVjJWWhBBv6WZaFtzkn/BlcQ7NYiK5bvxfs=;
+	s=arc-20240116; t=1750716105; c=relaxed/simple;
+	bh=dQuF50X8fPcqKn9+kJ0GW0QM2vB3QIslsyld30FW1O8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1ClDPNQPJlHOneLYgn0pZyiZsTKSg224nr/1YSfv0QM8to+KVWw7k8UCRYctm9/OxUzCx83OQ0N7WrKQy1x+achOocZMqfKQMWHD30JBJ1Nc+60G1QLHoP8CZryMlnOvTkpq2Gs+j9A4XRmZgMKn/jyjWBOHzKtoPiJsd/kt/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDNlgk1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DC71C4CEEA;
-	Mon, 23 Jun 2025 22:03:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sMsz5XloVOhK8tp0r/d8PeDbtKcXPhmsf5l1ZSsRvxvEfsZpCjiHOge/zAAMqnjZC0yEuNddqdBLxJeOg/zVlsH1M7+9C00YRl96gch/wIknxTx/rUYu62iDpqAdNMRiTBd93uDhgguV712uL8ro5q/mCl0A3KuBbcgrFvbwFRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Moeh76n+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B59C4CEEA;
+	Mon, 23 Jun 2025 22:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716205;
-	bh=mPdALuOpMVjJWWhBBv6WZaFtzkn/BlcQ7NYiK5bvxfs=;
+	s=korg; t=1750716105;
+	bh=dQuF50X8fPcqKn9+kJ0GW0QM2vB3QIslsyld30FW1O8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDNlgk1Q+rjZyiObOurX7FnA7uLzqWDHw9X2NJ8vGNiuAGEOEGm/yWbD7sbAhj11K
-	 qDt2x4Oy6UJ/++rdAOGt5cXYcVzytaM1z7Ts9cIUj18FPND9mMcpwRpSu7MdF5V0ob
-	 WkLJ4gWf0SFplL0kgP4EgkysjFAT181h22ZS1o4M=
+	b=Moeh76n+FAE/Mzsu0j5PhjUgh+keTn7gUzwrQW2Tu5Onr99JwBTKq/6nxSDG7Evdo
+	 xFvdWj/Q2dIM8EhRo8o/jvjCUrfWWEISy6lCyTU81mUO8I/eE3akoCM/DZlE73RuGu
+	 kjYxLt49FSvAb8+sy0fjmLRqxKU0dnnspb2VqBec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 316/411] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
+	Matthew Brost <matthew.brost@intel.com>,
+	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Maarten Lankhorst <dev@lankhorst.se>,
+	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>
+Subject: [PATCH 6.15 502/592] drm/xe/svm: Fix regression disallowing 64K SVM migration
 Date: Mon, 23 Jun 2025 15:07:40 +0200
-Message-ID: <20250623130641.593660861@linuxfoundation.org>
+Message-ID: <20250623130712.374242998@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Maarten Lankhorst <dev@lankhorst.se>
 
-[ Upstream commit 1c0829788a6e6e165846b9bedd0b908ef16260b6 ]
+commit d6fb4f01736a1d18cc981eb04fa2907a7121fc27 upstream.
 
-The statistics are incremented with raw_cpu_inc() assuming it always
-happens with bottom half disabled. Without per-CPU locking in
-local_bh_disable() on PREEMPT_RT this is no longer true.
+When changing the condition from >= SZ_64K, it was changed to <= SZ_64K.
+This disallows migration of 64K, which is the exact minimum allowed.
 
-Use this_cpu_inc() on PREEMPT_RT for the increment to not worry about
-preemption.
-
-Cc: David Ahern <dsahern@kernel.org>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Link: https://patch.msgid.link/20250512092736.229935-4-bigeasy@linutronix.de
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/5057
+Fixes: 794f5493f518 ("drm/xe: Strict migration policy for atomic SVM faults")
+Cc: stable@vger.kernel.org
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Signed-off-by: Maarten Lankhorst <dev@lankhorst.se>
+Link: https://lore.kernel.org/r/20250521090102.2965100-1-dev@lankhorst.se
+(cherry picked from commit 531bef26d189b28bf0d694878c0e064b30990b6c)
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/route.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_svm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/route.c b/net/ipv4/route.c
-index a4884d434038e..cbc584c386e9e 100644
---- a/net/ipv4/route.c
-+++ b/net/ipv4/route.c
-@@ -200,7 +200,11 @@ const __u8 ip_tos2prio[16] = {
- EXPORT_SYMBOL(ip_tos2prio);
+--- a/drivers/gpu/drm/xe/xe_svm.c
++++ b/drivers/gpu/drm/xe/xe_svm.c
+@@ -750,7 +750,7 @@ static bool xe_svm_range_needs_migrate_t
+ 		return false;
+ 	}
  
- static DEFINE_PER_CPU(struct rt_cache_stat, rt_cache_stat);
-+#ifndef CONFIG_PREEMPT_RT
- #define RT_CACHE_STAT_INC(field) raw_cpu_inc(rt_cache_stat.field)
-+#else
-+#define RT_CACHE_STAT_INC(field) this_cpu_inc(rt_cache_stat.field)
-+#endif
- 
- #ifdef CONFIG_PROC_FS
- static void *rt_cache_seq_start(struct seq_file *seq, loff_t *pos)
--- 
-2.39.5
-
+-	if (range_size <= SZ_64K && !supports_4K_migration(vm->xe)) {
++	if (range_size < SZ_64K && !supports_4K_migration(vm->xe)) {
+ 		drm_dbg(&vm->xe->drm, "Platform doesn't support SZ_4K range migration\n");
+ 		return false;
+ 	}
 
 
 
