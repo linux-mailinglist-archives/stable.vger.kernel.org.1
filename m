@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-155505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEA9EAE4256
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4A6F3AE44E4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B9D92188F16F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:17:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C8BFD1899D78
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254B324E019;
-	Mon, 23 Jun 2025 13:16:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4013F1E487;
+	Mon, 23 Jun 2025 13:41:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRZTRTYc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IdoKzH6n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5ADA13A265;
-	Mon, 23 Jun 2025 13:16:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAAE72F24;
+	Mon, 23 Jun 2025 13:41:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684606; cv=none; b=uXMgsgMkt1cdXKgtPzJER1SpezzWloBvLg9fTIE6KnpZu2Zcx9/XtXAsaEuow83L0sn5hpQArvoAxG9/NyvCaKp0DIUgeV3yfPPJ3py7m/RnQp/xPm/0TmhIR171BOA6SW/+NGv9tLhEhaBOkvLaQuIkI1FdacMkg85abT5mRcE=
+	t=1750686069; cv=none; b=lQt4QjvMTbStoy+EKSspi4WBu0ySn3OchqlVP9ppDZenU/MBv8sC0KemB8pLgcpSau0l2XR2rDgAUQhz5uhnx/0JKwIIEG2cptMyCG7nTwLULqpwgU9tLx/WPNr19zgAdis62xNb1k3Ql9Kz5pS78aQf1yKLNbw05cwEiKgjj0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684606; c=relaxed/simple;
-	bh=U2k9ZEoT8wtH5BcxbxNMq6kDG0z/c+oFMhXuPek1nf8=;
+	s=arc-20240116; t=1750686069; c=relaxed/simple;
+	bh=6dBLHXBgqAzTLzX0Qbll+YR1gkuMwQLPsuEVHjAoGio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YR/LS8zbEl2xgOGg7wJCtw4Qi+VLo4gvh+bHt6EvH5PZFSuDKPK0EnMTO/FBFrgHSAsmLLv/d3V52w1Zg+I/0ZbfsG6I2hI4IFQVKkbyCPB72Q2mpny0+KyBlwF8v+XkdCxjoRu5ZpOdlKG2WglDa6oghRTNbzAoyEaUeQztV/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRZTRTYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FDECC4CEEA;
-	Mon, 23 Jun 2025 13:16:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FYXojOsiNNKluKAl983vag4uQ0NijWjbQ7eHR9StXxjhuUyoyDNFXxMSrNlp8e13BpiYY8IV/YYItZ3Tr9nIFuZbq3jWsTlFQgfJPg/lQQqAfm5YaFWwW1vtkCfnhQKMKxeW+GzWmi2MEGJbw83Ui0vDM3dRnE1a2mM/ot7S5Rs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IdoKzH6n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73EE3C4CEEA;
+	Mon, 23 Jun 2025 13:41:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684606;
-	bh=U2k9ZEoT8wtH5BcxbxNMq6kDG0z/c+oFMhXuPek1nf8=;
+	s=korg; t=1750686068;
+	bh=6dBLHXBgqAzTLzX0Qbll+YR1gkuMwQLPsuEVHjAoGio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DRZTRTYc2tm6knqchR8Ehr3/WJ4Oc549qf4GzNf45UyjRl5wDnJ5tCW3LeXrgAlMV
-	 KkmRqYgRPpq6ahiTGA/t7MbfI6UuwGxlCnRDHAuJwftyaI9bweTmlnsZdS/oIsXBD4
-	 QE5KY+xULdcFFL4O/dMk+5CkNb0bWF+44nAPMsns=
+	b=IdoKzH6n9+pPJnwD068dWFBbYhpUosxJwh5LFz/8Bq6PhJgYnvgTkyvNNeloUh4N8
+	 oQjwRZRy4BFsKugUHtszZ0mQBw3jBGTIc4eoC8l+o7bKVytibZm3SAk3U/73TELjjs
+	 LwlSC6LyM+4TtPlptLT3gdb0E5kTY7dI6/lTRNPQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Dinh Nguyen <dinguyen@kernel.org>,
-	stable@kernel.org
-Subject: [PATCH 6.15 132/592] EDAC/altera: Use correct write width with the INTTEST register
-Date: Mon, 23 Jun 2025 15:01:30 +0200
-Message-ID: <20250623130703.412249231@linuxfoundation.org>
+	=?UTF-8?q?Kornel=20Dul=C4=99ba?= <korneld@google.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 046/508] arm64: Support ARM64_VA_BITS=52 when setting ARCH_MMAP_RND_BITS_MAX
+Date: Mon, 23 Jun 2025 15:01:31 +0200
+Message-ID: <20250623130646.377402129@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +61,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+From: Kornel Dulęba <korneld@google.com>
 
-commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
+[ Upstream commit f101c56447717c595d803894ba0e215f56c6fba4 ]
 
-On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
-A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
+When the 52-bit virtual addressing was introduced the select like
+ARCH_MMAP_RND_BITS_MAX logic was never updated to account for it.
+Because of that the rnd max bits knob is set to the default value of 18
+when ARM64_VA_BITS=52.
+Fix this by setting ARCH_MMAP_RND_BITS_MAX to the same value that would
+be used if 48-bit addressing was used. Higher values can't used here
+because 52-bit addressing is used only if the caller provides a hint to
+mmap, with a fallback to 48-bit. The knob in question is an upper bound
+for what the user can set in /proc/sys/vm/mmap_rnd_bits, which in turn
+is used to determine how many random bits can be inserted into the base
+address used for mmap allocations. Since 48-bit allocations are legal
+with ARM64_VA_BITS=52, we need to make sure that the base address is
+small enough to facilitate this.
 
-  [ bp: AI-massage the commit message. ]
-
-Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
-Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
-Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Acked-by: Dinh Nguyen <dinguyen@kernel.org>
-Cc: stable@kernel.org
-Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b6d00d47e81a ("arm64: mm: Introduce 52-bit Kernel VAs")
+Signed-off-by: Kornel Dulęba <korneld@google.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20250417114754.3238273-1-korneld@google.com
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/altera_edac.c |    6 +++---
+ arch/arm64/Kconfig | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/edac/altera_edac.c
-+++ b/drivers/edac/altera_edac.c
-@@ -1746,9 +1746,9 @@ altr_edac_a10_device_trig(struct file *f
- 
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	else
--		writel(priv->ce_set_mask, set_addr);
-+		writew(priv->ce_set_mask, set_addr);
- 
- 	/* Ensure the interrupt test bits are set */
- 	wmb();
-@@ -1778,7 +1778,7 @@ altr_edac_a10_device_trig2(struct file *
- 
- 	local_irq_save(flags);
- 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
--		writel(priv->ue_set_mask, set_addr);
-+		writew(priv->ue_set_mask, set_addr);
- 	} else {
- 		/* Setup read/write of 4 bytes */
- 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 57b437ed09747..6bb23a041e328 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -280,9 +280,9 @@ config ARCH_MMAP_RND_BITS_MAX
+ 	default 24 if ARM64_VA_BITS=39
+ 	default 27 if ARM64_VA_BITS=42
+ 	default 30 if ARM64_VA_BITS=47
+-	default 29 if ARM64_VA_BITS=48 && ARM64_64K_PAGES
+-	default 31 if ARM64_VA_BITS=48 && ARM64_16K_PAGES
+-	default 33 if ARM64_VA_BITS=48
++	default 29 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_64K_PAGES
++	default 31 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52) && ARM64_16K_PAGES
++	default 33 if (ARM64_VA_BITS=48 || ARM64_VA_BITS=52)
+ 	default 14 if ARM64_64K_PAGES
+ 	default 16 if ARM64_16K_PAGES
+ 	default 18
+-- 
+2.39.5
+
 
 
 
