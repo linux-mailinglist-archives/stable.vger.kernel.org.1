@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F125AE530D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D2BFAE5100
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07431188E2C3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E2E1B62217
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95571223DD7;
-	Mon, 23 Jun 2025 21:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11B3221299;
+	Mon, 23 Jun 2025 21:29:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ery/x0QN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXLGqrOT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5243721B9E5;
-	Mon, 23 Jun 2025 21:49:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FED31E5B71;
+	Mon, 23 Jun 2025 21:29:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715355; cv=none; b=f4TX7ctGZ9AAaIEt6oYvLxYWAF/r293VPRvOq2D+DEwwvxyXzv2k2I/7Okv7eCKEqPTxERz5OO9tl2NMGmTlVuSTgSB/FN25HL8SeH+4R3n9AfmCifHaRlMBI3UlHTSz8gJDKJkDpJ6lckRtXuepHUim4E0OW4nnAftIBIYCuLk=
+	t=1750714187; cv=none; b=XDeyau8dZ9eR+dcwzFHzmGN1w+GHjegHPR+gjiaa9V34XdDWEBB37T6HhdKXnposqGMKmjSz2RA2sOPj01R5faZSdumHOTrvop1W47L7iTjhgzCXEMpn45UMhIUcIfeIAcSEMRT8ngOiXET3nrr/67FGqW2NYrT+gd5PuWpEpnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715355; c=relaxed/simple;
-	bh=4th/54VGsmh8XqnaRBeZdc3FZby+zD+d3HVFzuisuuY=;
+	s=arc-20240116; t=1750714187; c=relaxed/simple;
+	bh=0t4Yl9+7i26pnsVytwoiacGZRAKb8tXusMArdJt7/P0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aA0Nhmv6/drI8REi+4ucTp7EPUNYD1MnmS83Soqz8h3a8OXbXoME2XS0YVn7EhN34ZUlXKX6JFw3x4F9KI5v1y40CfwnNDZgIw17luIANB+dBiaB5Bi8aNzqibXTN+nni79WwNRww+jplRXa50D98Du9f4PYzI3kWEpNckuozcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ery/x0QN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8601FC4CEEA;
-	Mon, 23 Jun 2025 21:49:13 +0000 (UTC)
+	 MIME-Version; b=EXo9wTTUkI4TSh/IniUzuu9Sn3SHWtpTe4M7A65EKvTYMIDXabK6fYSmL0adW9UG3FyW4KsXytBvSd7NPzilZ5L+3w8Ho5hEsBsy04AAshkvoxNPnsfNreQXxaLlP5HFksg6Ag91wMEvYNlOJwutApsPVc+HO+3Q0Bhb/OegmIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXLGqrOT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA5DC4CEEA;
+	Mon, 23 Jun 2025 21:29:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715353;
-	bh=4th/54VGsmh8XqnaRBeZdc3FZby+zD+d3HVFzuisuuY=;
+	s=korg; t=1750714186;
+	bh=0t4Yl9+7i26pnsVytwoiacGZRAKb8tXusMArdJt7/P0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ery/x0QNAN6SWEnP5r3tLIraOAMUXXXyaWhLHFyIZUQJT9Ad8wQde1BGOCAob1m9R
-	 KpUxPC0YdVIKHHKyanL5yD/aYC+YhNkxgF/Kgn+qkib7qz7GiRi9cPCB8ZKYmmq4GR
-	 HkBYJDV4aln6wI6SeDLLIiBFo1/NUiWubSLDmMVQ=
+	b=lXLGqrOThwc3hHulobO96+B3VIn6wPpZyPRfp2UdZZOlNJ8GzTn5yCFqQJ6+kIPIm
+	 e17KILNJ1sTk8/5ckUufXkdHeCyw0xyKFbNsAmXuTMnwLPYmqmG6vZgF+wsL5aEcXh
+	 cIyKfAr5c7lhnoxEyP0k4PeTmnRk8lAQsVkcTVFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 453/592] LoongArch: Fix panic caused by NULL-PMD in huge_pte_offset()
-Date: Mon, 23 Jun 2025 15:06:51 +0200
-Message-ID: <20250623130711.205247475@linuxfoundation.org>
+	David Lechner <dlechner@baylibre.com>,
+	Angelo Dureghello <adureghello@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.10 211/355] iio: adc: ad7606_spi: fix reg write value mask
+Date: Mon, 23 Jun 2025 15:06:52 +0200
+Message-ID: <20250623130633.086937868@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianyang Zhang <zhangtianyang@loongson.cn>
+From: David Lechner <dlechner@baylibre.com>
 
-commit ee084fa96123ede8b0563a1b5a9b23adc43cd50d upstream.
+commit 89944d88f8795c6c89b9514cb365998145511cd4 upstream.
 
-ERROR INFO:
+Fix incorrect value mask for register write. Register values are 8-bit,
+not 9. If this function was called with a value > 0xFF and an even addr,
+it would cause writing to the next register.
 
-CPU 25 Unable to handle kernel paging request at virtual address 0x0
-         ...
- Call Trace:
- [<900000000023c30c>] huge_pte_offset+0x3c/0x58
- [<900000000057fd4c>] hugetlb_follow_page_mask+0x74/0x438
- [<900000000051fee8>] __get_user_pages+0xe0/0x4c8
- [<9000000000522414>] faultin_page_range+0x84/0x380
- [<9000000000564e8c>] madvise_vma_behavior+0x534/0xa48
- [<900000000056689c>] do_madvise+0x1bc/0x3e8
- [<9000000000566df4>] sys_madvise+0x24/0x38
- [<90000000015b9e88>] do_syscall+0x78/0x98
- [<9000000000221f18>] handle_syscall+0xb8/0x158
-
-In some cases, pmd may be NULL and rely on NULL as the return value for
-processing, so it is necessary to determine this situation here.
-
-Cc: stable@vger.kernel.org
-Fixes: bd51834d1cf6 ("LoongArch: Return NULL from huge_pte_offset() for invalid PMD")
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
+Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/mm/hugetlbpage.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/iio/adc/ad7606_spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/loongarch/mm/hugetlbpage.c
-+++ b/arch/loongarch/mm/hugetlbpage.c
-@@ -47,7 +47,8 @@ pte_t *huge_pte_offset(struct mm_struct
- 				pmd = pmd_offset(pud, addr);
- 		}
- 	}
--	return pmd_none(pmdp_get(pmd)) ? NULL : (pte_t *) pmd;
-+
-+	return (!pmd || pmd_none(pmdp_get(pmd))) ? NULL : (pte_t *) pmd;
- }
+--- a/drivers/iio/adc/ad7606_spi.c
++++ b/drivers/iio/adc/ad7606_spi.c
+@@ -151,7 +151,7 @@ static int ad7606_spi_reg_write(struct a
+ 	struct spi_device *spi = to_spi_device(st->dev);
  
- uint64_t pmd_to_entrylo(unsigned long pmd_val)
+ 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
+-				  (val & 0x1FF));
++				  (val & 0xFF));
+ 
+ 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
+ }
 
 
 
