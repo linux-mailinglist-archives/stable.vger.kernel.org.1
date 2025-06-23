@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55B7BAE525E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A6CAE4F00
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E5B16769D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 55E541B6037A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A011E1A05;
-	Mon, 23 Jun 2025 21:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 881F61F582A;
+	Mon, 23 Jun 2025 21:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNi6JKdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2lmENYKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434761DDC04;
-	Mon, 23 Jun 2025 21:43:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E5E70838;
+	Mon, 23 Jun 2025 21:11:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714980; cv=none; b=TXwoIEwkx9W9nU/rt4DYFWdwGoR2FXVX5ks9Inb3DfC0k3NzjAPCIgOaj4KsCtAUEWbbVM1VL6tdcYWlUpxyNS2pP9D21hUYQqELzZniTw9xz67hn834+aBxI19T/OtSkTRjhvjU+rWogJiZfBiOAK1eXUt2oIiY/6sTFaOIjIk=
+	t=1750713084; cv=none; b=keT9xNiAMRgsziCvlo7Exoes9VSrWDiOwnzyVv2YxAFMwsxc9aNNOYOYdDSe3ldPZGuV3kTPw5Zmew2NWq8qdD1CGc58g2N8sJ0NVSbpjgbWL/J74QbBZbuyWkH8w7usQrc+E0C0vTM1jrJIN1E0g4+pJ8MPAYkrM1DqFnj2hh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714980; c=relaxed/simple;
-	bh=CWdoPcVQxuHQVdcaV3L+tRzUNefo+1RrnlJEQl18SJw=;
+	s=arc-20240116; t=1750713084; c=relaxed/simple;
+	bh=ni9v78wsF9O+3IzgmHLUtec4IA04nLcu5COzmfmejLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LodRptY1sk1/R89r0XVagCISp3wRKWUsOoVEJAMrvCc7ebHAnJfJVwW0vFtk9ILAm2SVP2qfWhM4SHLpjN3W6W5vTaprDzICEYCWmCz7jsHHZRhSWSg52hDL7qqlDbYohZv6GIERULR2DmTzW6Bq0BFqV3dNavMsB7MtgU2V1P8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNi6JKdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE121C4CEEA;
-	Mon, 23 Jun 2025 21:42:59 +0000 (UTC)
+	 MIME-Version; b=FpRfXpXLbhTpO49ut+JQ207RqBzNFCrVbgoVlDAAStRpMYMiwJJHwHvV+rlGV3hi/+wu8WhnHCVf5ybniH1S4wMYsA7Y7dJjGHQLpRpEXXkwZLcoZnkiRjFieqFwhkGke/qXcKw2pd+GVmkYZSIwhEE1lnfl4dM4ZnQ7PMwCdNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2lmENYKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCA72C4CEEA;
+	Mon, 23 Jun 2025 21:11:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714980;
-	bh=CWdoPcVQxuHQVdcaV3L+tRzUNefo+1RrnlJEQl18SJw=;
+	s=korg; t=1750713084;
+	bh=ni9v78wsF9O+3IzgmHLUtec4IA04nLcu5COzmfmejLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YNi6JKdxj7WJp+F73roCxfAU6bT1EdfDesO0/xXI+xGC0n1nC7Fcw+wmanVC9hKJZ
-	 6pgHDoD1UZF2Mh2H37HozCjfXhxVykkeiM4kakJOGY63nK3tBlkH/r8Oc8fVOwRN8B
-	 pazL9dVmSxLvGzS2kltn48ZWYKzqvFe7vWJIAT8I=
+	b=2lmENYKCk484/8F2zxbdjzXwzsxUHQyvFFM4FM5BvOHAe92PfqfffMgsH/ehbJr1f
+	 DZUBvVQ9oay6MR0TbY2ZEFDz1gH0dqYrCNKl/hgsg046lW3hK2J5SiIJDTIS9B+W+A
+	 PhkmG3LTRa603EjRy7sThrmZ2/1v+wmi+SwjZ+9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.12 148/414] uio_hv_generic: Use correct size for interrupt and monitor pages
+	Leon Yen <leon.yen@mediatek.com>,
+	Ming Yen Hsieh <mingyen.hsieh@mediatek.com>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 327/592] wifi: mt76: mt7925: introduce thermal protection
 Date: Mon, 23 Jun 2025 15:04:45 +0200
-Message-ID: <20250623130645.749663675@linuxfoundation.org>
+Message-ID: <20250623130708.233629011@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +63,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Leon Yen <leon.yen@mediatek.com>
 
-commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
+[ Upstream commit 1d81e893b422a6f0ae70f8648867c2e73edfb413 ]
 
-Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
-This can be different from the system page size.
+Add thermal protection to prevent the chip from possible overheating
+due to prolonged high traffic and adverse operating conditions.
 
-This size is read and used by the user-mode program to determine the
-mapped data region. An example of such user-mode program is the VMBus
-driver in DPDK.
-
-Cc: stable@vger.kernel.org
-Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Leon Yen <leon.yen@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20250509082117.453819-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/uio/uio_hv_generic.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .../net/wireless/mediatek/mt76/mt7925/init.c  |  6 ++++++
+ .../net/wireless/mediatek/mt76/mt7925/mcu.c   | 20 ++++++++++++++++++-
+ .../net/wireless/mediatek/mt76/mt7925/mcu.h   |  1 +
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -274,13 +274,13 @@ hv_uio_probe(struct hv_device *dev,
- 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
- 	pdata->info.mem[INT_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.int_page;
--	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/init.c b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+index 79639be0d29ac..2a83ff59a968c 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/init.c
+@@ -322,6 +322,12 @@ static void mt7925_init_work(struct work_struct *work)
+ 		return;
+ 	}
  
- 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
- 	pdata->info.mem[MON_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.monitor_pages[1];
--	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
++	ret = mt7925_mcu_set_thermal_protect(dev);
++	if (ret) {
++		dev_err(dev->mt76.dev, "thermal protection enable failed\n");
++		return;
++	}
++
+ 	/* we support chip reset now */
+ 	dev->hw_init_done = true;
  
- 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+index dea5b9bcb3fdf..7d96b88cff803 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.c
+@@ -974,6 +974,23 @@ int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable)
+ }
+ EXPORT_SYMBOL_GPL(mt7925_mcu_set_deep_sleep);
+ 
++int mt7925_mcu_set_thermal_protect(struct mt792x_dev *dev)
++{
++	char cmd[64];
++	int ret = 0;
++
++	snprintf(cmd, sizeof(cmd), "ThermalProtGband %d %d %d %d %d %d %d %d %d %d",
++		 0, 100, 90, 80, 30, 1, 1, 115, 105, 5);
++	ret = mt7925_mcu_chip_config(dev, cmd);
++
++	snprintf(cmd, sizeof(cmd), "ThermalProtAband %d %d %d %d %d %d %d %d %d %d",
++		 1, 100, 90, 80, 30, 1, 1, 115, 105, 5);
++	ret |= mt7925_mcu_chip_config(dev, cmd);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mt7925_mcu_set_thermal_protect);
++
+ int mt7925_run_firmware(struct mt792x_dev *dev)
+ {
+ 	int err;
+@@ -3306,7 +3323,8 @@ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 		else
+ 			uni_txd->option = MCU_CMD_UNI_EXT_ACK;
+ 
+-		if (cmd == MCU_UNI_CMD(HIF_CTRL))
++		if (cmd == MCU_UNI_CMD(HIF_CTRL) ||
++		    cmd == MCU_UNI_CMD(CHIP_CONFIG))
+ 			uni_txd->option &= ~MCU_CMD_ACK;
+ 
+ 		goto exit;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+index 8ac43feb26d64..a855a45135028 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mcu.h
+@@ -637,6 +637,7 @@ int mt7925_mcu_add_bss_info(struct mt792x_phy *phy,
+ int mt7925_mcu_set_timing(struct mt792x_phy *phy,
+ 			  struct ieee80211_bss_conf *link_conf);
+ int mt7925_mcu_set_deep_sleep(struct mt792x_dev *dev, bool enable);
++int mt7925_mcu_set_thermal_protect(struct mt792x_dev *dev);
+ int mt7925_mcu_set_channel_domain(struct mt76_phy *phy);
+ int mt7925_mcu_set_radio_en(struct mt792x_phy *phy, bool enable);
+ int mt7925_mcu_set_chctx(struct mt76_phy *phy, struct mt76_vif_link *mvif,
+-- 
+2.39.5
+
 
 
 
