@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156461-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5B0DAE53DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AFB4AE4FE5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A6DB91887DE7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DF047A231E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0404F223714;
-	Mon, 23 Jun 2025 21:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A11223DEE;
+	Mon, 23 Jun 2025 21:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yMY/Lua"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NtdDl4dg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5A34223316;
-	Mon, 23 Jun 2025 21:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A90223DE1;
+	Mon, 23 Jun 2025 21:17:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715792; cv=none; b=OdlyhmG5cLd41CGENzuOLr70aO4CvcuXPj1oX7OW5hpBfCvX2t1rxwiIKwYGHQ6oXG2LScrDf4RZ2Xh5ToU5e4IVuQZChA/TLdLgZkwiJhYaVTygmKEKaaAqPQGM12C8SAf3jVTiS9/M1w+ID6O08Lf8aqTUNThhIMRKIBYp+Yg=
+	t=1750713468; cv=none; b=tDyQRh8+s4cAI34sd/Gg+OtQ/6D90DEsaLgwB+IWSwe+GiHByKQpNVDVvJEj7Se7dUiktOz3IFt7kccVOevkbZXA0imyp268TOPWJG+n4afWp4W0hXt5HtDvMdWpllea0jENf0GCVzNKKjNoWnZxWsfzMbUwcAC6NjVVuFl4gk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715792; c=relaxed/simple;
-	bh=vxC2j17ATF4vODoDiWczFriEN0cgmoNQqA4Hen51yNA=;
+	s=arc-20240116; t=1750713468; c=relaxed/simple;
+	bh=moBkJiRg4meP8GCbxnRwVSyg/0pKDvIGztgwTHGvHU4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PxtPZrBiRsBS/CqtKYX8mc6H4sD2SKTpuSMaZyKFoR6x3RjoXMyPWEfqynqJ7jbNJuiXaAjle7w1PfxJK744RZiUxXe7kChO9tdQwjtNOtPyWBzvgTjjh7Kp/1j/0mgGCtkADhw+TJpBsBf3WChbKDmQvAvf4ai1AhtiLrxvhmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yMY/Lua; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E160C4CEED;
-	Mon, 23 Jun 2025 21:56:32 +0000 (UTC)
+	 MIME-Version; b=gmxOxZKkrM+29BaCfKeS1zrNVEHNLcDY+n6VbevF9yTHN2RSU/8RCEZNA781wnCsVI2IwLzCgxArGqETI4R2sGNrN6GQk/y0f+N0MbqEH1rsxTuZNqaFN3Rr5Qu8sTxayFNcUqBT+kn27gG+vT8X3fBcv6xqy+ds21qGcuqGr+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NtdDl4dg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C000AC4CEEA;
+	Mon, 23 Jun 2025 21:17:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715792;
-	bh=vxC2j17ATF4vODoDiWczFriEN0cgmoNQqA4Hen51yNA=;
+	s=korg; t=1750713468;
+	bh=moBkJiRg4meP8GCbxnRwVSyg/0pKDvIGztgwTHGvHU4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yMY/LuaohlT0HPlxkDN5lwjeGvLd/tAOe0DJ9BTyWgkEKbS+kbaIYwLgwm9Et+8A
-	 XhiZa1/l5L6i0n3/HaSoDMBjtRzg/EDqlw28oN12R1GwAO491PNtHNVSFa3gDrygET
-	 U9g8SwptD4PkzlH3232k/c2EuZL3a6pCz/4bTIzU=
+	b=NtdDl4dghcHQQTqfyyZ5CO+b8TVIxVqbcTAJzAWPVfPFu0/ffcVjXezPqAgsPOtFW
+	 vqZcg08HQSmm5ENzaURM6p6HCo+42MzAeEg8B0JZgM5QbOYHhCT/wOjRKDqMpSvU/A
+	 USYB2NGYvc+tSDR8pu+bFa7163+ul/+A49PP2ZW8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	Christian Brauner <brauner@kernel.org>,
+	David Ahern <dsahern@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 262/508] fs/filesystems: Fix potential unsigned integer underflow in fs_name()
+Subject: [PATCH 6.15 349/592] ipv4/route: Use this_cpu_inc() for stats on PREEMPT_RT
 Date: Mon, 23 Jun 2025 15:05:07 +0200
-Message-ID: <20250623130651.693425759@linuxfoundation.org>
+Message-ID: <20250623130708.748770448@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 1363c134ade81e425873b410566e957fecebb261 ]
+[ Upstream commit 1c0829788a6e6e165846b9bedd0b908ef16260b6 ]
 
-fs_name() has @index as unsigned int, so there is underflow risk for
-operation '@index--'.
+The statistics are incremented with raw_cpu_inc() assuming it always
+happens with bottom half disabled. Without per-CPU locking in
+local_bh_disable() on PREEMPT_RT this is no longer true.
 
-Fix by breaking the for loop when '@index == 0' which is also more proper
-than '@index <= 0' for unsigned integer comparison.
+Use this_cpu_inc() on PREEMPT_RT for the increment to not worry about
+preemption.
 
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://lore.kernel.org/20250410-fix_fs-v1-1-7c14ccc8ebaa@quicinc.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Cc: David Ahern <dsahern@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://patch.msgid.link/20250512092736.229935-4-bigeasy@linutronix.de
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/filesystems.c | 14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ net/ipv4/route.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/filesystems.c b/fs/filesystems.c
-index 58b9067b2391c..95e5256821a53 100644
---- a/fs/filesystems.c
-+++ b/fs/filesystems.c
-@@ -156,15 +156,19 @@ static int fs_index(const char __user * __name)
- static int fs_name(unsigned int index, char __user * buf)
- {
- 	struct file_system_type * tmp;
--	int len, res;
-+	int len, res = -EINVAL;
+diff --git a/net/ipv4/route.c b/net/ipv4/route.c
+index 753704f75b2c6..5d7c7efea66cc 100644
+--- a/net/ipv4/route.c
++++ b/net/ipv4/route.c
+@@ -189,7 +189,11 @@ const __u8 ip_tos2prio[16] = {
+ EXPORT_SYMBOL(ip_tos2prio);
  
- 	read_lock(&file_systems_lock);
--	for (tmp = file_systems; tmp; tmp = tmp->next, index--)
--		if (index <= 0 && try_module_get(tmp->owner))
-+	for (tmp = file_systems; tmp; tmp = tmp->next, index--) {
-+		if (index == 0) {
-+			if (try_module_get(tmp->owner))
-+				res = 0;
- 			break;
-+		}
-+	}
- 	read_unlock(&file_systems_lock);
--	if (!tmp)
--		return -EINVAL;
-+	if (res)
-+		return res;
+ static DEFINE_PER_CPU(struct rt_cache_stat, rt_cache_stat);
++#ifndef CONFIG_PREEMPT_RT
+ #define RT_CACHE_STAT_INC(field) raw_cpu_inc(rt_cache_stat.field)
++#else
++#define RT_CACHE_STAT_INC(field) this_cpu_inc(rt_cache_stat.field)
++#endif
  
- 	/* OK, we got the reference, so we can safely block */
- 	len = strlen(tmp->name) + 1;
+ #ifdef CONFIG_PROC_FS
+ static void *rt_cache_seq_start(struct seq_file *seq, loff_t *pos)
 -- 
 2.39.5
 
