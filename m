@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-157104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2E09AE5278
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 701DCAE5275
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1C5397A3070
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 64D057A33AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B86191DDC04;
-	Mon, 23 Jun 2025 21:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA8F9221FCC;
+	Mon, 23 Jun 2025 21:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+AMDUGp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sE5MvOiZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 737934315A;
-	Mon, 23 Jun 2025 21:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9968D2AEE4;
+	Mon, 23 Jun 2025 21:43:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715043; cv=none; b=hkN7rGFiU+FMjt7/VOLFaU/U19CxtzW+6lSvJ1jaPgg5yF/F2DJHq2HngDuD2IFzuoTMRAOd9TIEYMp7sUrAQM/or01scl9hK6BEMETSkQmCQdE+qiQjvH31erE3rZ/CqILZDit5kL5tnN+dawPP/2VIfLTvHjzQEXc7DizsC00=
+	t=1750715038; cv=none; b=IfFHOO0ZdYSWdRDDZl2EJBC9Plg+jeapQ3w/qcDdKhACLYwyS7WHTUUU6p1DzT8TdRmgi6A8mbFKPHBg7hDRec9yOiF3BfomsGfH9mqWmiamTRI1KYevIoboOeiHYnraPJ9PLMqTimCokNY7h2/NbHV76rJRf6NMQZDfmsnAm64=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715043; c=relaxed/simple;
-	bh=PnLM/BL/G1Og7TZkvMiZ9N8fG0Mzav8fc6Z6cOfRvm4=;
+	s=arc-20240116; t=1750715038; c=relaxed/simple;
+	bh=APX3t7zx2eHOoh0jUhJIiwqZDnLm5evEmLyELypPvvM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=moqHlVSVOA69zt4GDc+o0f0nSCvN5l7VouBJXokK9KF9h/2dI4dhNTjJa4TAJpJb3Mf/acbbpkNLqVilh74iRvAQfjY4g1h2JuST6/HE1MJuCOpHkH9DUzJqXJoZad0A30sKVSZlEFmVEw6THQ4utrwXdTolkTJp+G8pweKhAn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+AMDUGp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 084DAC4CEEA;
-	Mon, 23 Jun 2025 21:44:02 +0000 (UTC)
+	 MIME-Version; b=J86ZJsd0+xPWhtQI/HN64f74/rsY9O8VYAvqQIh4tO6Y0AQwj9rJV8s7hXFPu7MGFC3G+oqyDBD9JGw0WNzUixWGLP5FKRhKYlRIa6hBWmTV9GytsefWwJQ4clcuAKsKglkmsyQCdod1C2ft4dhg8cFH8rQZ9+9v+TmrVvmZtUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sE5MvOiZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3216AC4CEEA;
+	Mon, 23 Jun 2025 21:43:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715043;
-	bh=PnLM/BL/G1Og7TZkvMiZ9N8fG0Mzav8fc6Z6cOfRvm4=;
+	s=korg; t=1750715038;
+	bh=APX3t7zx2eHOoh0jUhJIiwqZDnLm5evEmLyELypPvvM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O+AMDUGpLgcEDMI1jHWPH9TJWPWf32KUHU9hlhw+c/SGVk88XbVxAVGl6pbWmd7A1
-	 bcytU1HFj/62vGX2kz/L5K3n71MzkApp8SfGnQykUIDOQzxEtPwZSxfHs1aLT63jHy
-	 0mFfojuNv3FUYwwMsiYgbG9+npxtWehGuG7iZyVM=
+	b=sE5MvOiZmHMFk268gNFLEbiqrJapI/Gj/2gSNXDXvOgElnZH4DTzkSMLBHFzxQwgM
+	 zBcH520TcUmNtutbgq+a2nJn7JdeGPJvSRDuUu3sulkdxU0dLxRAt5BLsPOl4Dn0XS
+	 ovKsZhePxJIZdTRV2kk+07FneqxMFmUNRyt7reQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/290] vxlan: Do not treat dst cache initialization errors as fatal
-Date: Mon, 23 Jun 2025 15:07:17 +0200
-Message-ID: <20250623130632.176088241@linuxfoundation.org>
+Subject: [PATCH 5.10 237/355] ext4: prevent stale extent cache entries caused by concurrent get es_cache
+Date: Mon, 23 Jun 2025 15:07:18 +0200
+Message-ID: <20250623130633.876717633@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,77 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 20c76dadc783759fd3819d289c72be590660cc8b ]
+[ Upstream commit f22a0ef2231a7d8374bb021eb86404d0e9de5a02 ]
 
-FDB entries are allocated in an atomic context as they can be added from
-the data path when learning is enabled.
+The EXT4_IOC_GET_ES_CACHE and EXT4_IOC_PRECACHE_EXTENTS currently
+invokes ext4_ext_precache() to preload the extent cache without holding
+the inode's i_rwsem. This can result in stale extent cache entries when
+competing with operations such as ext4_collapse_range() which calls
+ext4_ext_remove_space() or ext4_ext_shift_extents().
 
-After converting the FDB hash table to rhashtable, the insertion rate
-will be much higher (*) which will entail a much higher rate of per-CPU
-allocations via dst_cache_init().
+The problem arises when ext4_ext_remove_space() temporarily releases
+i_data_sem due to insufficient journal credits. During this interval, a
+concurrent EXT4_IOC_GET_ES_CACHE or EXT4_IOC_PRECACHE_EXTENTS may cache
+extent entries that are about to be deleted. As a result, these cached
+entries become stale and inconsistent with the actual extents.
 
-When adding a large number of entries (e.g., 256k) in a batch, a small
-percentage (< 0.02%) of these per-CPU allocations will fail [1]. This
-does not happen with the current code since the insertion rate is low
-enough to give the per-CPU allocator a chance to asynchronously create
-new chunks of per-CPU memory.
+Loading the extents cache without holding the inode's i_rwsem or the
+mapping's invalidate_lock is not permitted besides during the writeback.
+Fix this by holding the i_rwsem during EXT4_IOC_GET_ES_CACHE and
+EXT4_IOC_PRECACHE_EXTENTS.
 
-Given that:
-
-a. Only a small percentage of these per-CPU allocations fail.
-
-b. The scenario where this happens might not be the most realistic one.
-
-c. The driver can work correctly without dst caches. The dst_cache_*()
-APIs first check that the dst cache was properly initialized.
-
-d. The dst caches are not always used (e.g., 'tos inherit').
-
-It seems reasonable to not treat these allocation failures as fatal.
-
-Therefore, do not bail when dst_cache_init() fails and suppress warnings
-by specifying '__GFP_NOWARN'.
-
-[1] percpu: allocation failed, size=40 align=8 atomic=1, atomic alloc failed, no space left
-
-(*) 97% reduction in average latency of vxlan_fdb_update() when adding
-256k entries in a batch.
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250415121143.345227-14-idosch@nvidia.com
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250423085257.122685-6-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/extents.c | 2 ++
+ fs/ext4/ioctl.c   | 8 +++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 2ed879a0abc6c..1b6b6acd34894 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -606,10 +606,10 @@ static int vxlan_fdb_append(struct vxlan_fdb *f,
- 	if (rd == NULL)
- 		return -ENOMEM;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index ac97ef3c76e97..12da59c03c7cf 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5034,7 +5034,9 @@ int ext4_get_es_cache(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 	}
  
--	if (dst_cache_init(&rd->dst_cache, GFP_ATOMIC)) {
--		kfree(rd);
--		return -ENOMEM;
--	}
-+	/* The driver can work correctly without a dst cache, so do not treat
-+	 * dst cache initialization errors as fatal.
-+	 */
-+	dst_cache_init(&rd->dst_cache, GFP_ATOMIC | __GFP_NOWARN);
+ 	if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) {
++		inode_lock_shared(inode);
+ 		error = ext4_ext_precache(inode);
++		inode_unlock_shared(inode);
+ 		if (error)
+ 			return error;
+ 		fieinfo->fi_flags &= ~FIEMAP_FLAG_CACHE;
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 56829507e68c8..b6da12b4c8a82 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -1139,8 +1139,14 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		return 0;
+ 	}
+ 	case EXT4_IOC_PRECACHE_EXTENTS:
+-		return ext4_ext_precache(inode);
++	{
++		int ret;
  
- 	rd->remote_ip = *ip;
- 	rd->remote_port = port;
++		inode_lock_shared(inode);
++		ret = ext4_ext_precache(inode);
++		inode_unlock_shared(inode);
++		return ret;
++	}
+ 	case FS_IOC_SET_ENCRYPTION_POLICY:
+ 		if (!ext4_has_feature_encrypt(sb))
+ 			return -EOPNOTSUPP;
 -- 
 2.39.5
 
