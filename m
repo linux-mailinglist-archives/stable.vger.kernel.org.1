@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08818AE53A3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA0CCAE4EC0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0EF6189C5AD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A89C173959
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AEC223316;
-	Mon, 23 Jun 2025 21:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0267D70838;
+	Mon, 23 Jun 2025 21:08:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpWeJmNw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P+yD4zhy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3590A19049B;
-	Mon, 23 Jun 2025 21:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A7A1ACEDA;
+	Mon, 23 Jun 2025 21:08:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715663; cv=none; b=NzIFOn3JnpxRNVHDSro/mw2t0XVgzijR0qHKEyGK4dtFoHVLhp3ECHp2/pOvHn7E4C/zTW7zByatIMcff9pjv+OS5IY21aSeGaWXM44LgLCdTGMDbQK2rHUxvqFjyFZKdYqglbEYMn1YmkkaRkOpcLNNIDiZWhTr2qpXSOfQXRc=
+	t=1750712923; cv=none; b=UvpKbgfwGAyMNUzDqTWqf8NFIi+epJeZAIknKTz7NYivqqg+LAiWzMSa5n1VOJjsVwFHL64SlzZAeEG8xZwg8nUcfJ55KqlfPFHieuxR7HoSVGJ1YPtIcKsCfKnKtqh8w9nCBJ1HIQE6+YpI6ynBrg5qWpPazUKeV8dy2deuc7s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715663; c=relaxed/simple;
-	bh=ZRB/zp/sEPMPwxoHIsEtQ44HdAGo1TAb1bDs/hafttk=;
+	s=arc-20240116; t=1750712923; c=relaxed/simple;
+	bh=JUrQ05FqYI4cEyo8P83wd5E4u20mp3AyqgcdDe7ngqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=USSLHsAD7a3sLucFxbdRvjws1/LZwB+Omgwf3wqfQzAfD0W4txWk4y5jk9QJb4wB4SS/gyCueb710asdOVz1aGiDZKDNv8rNYREj+54XRmV44XrzMp/BE6y0N31mDDBBL40+jf9RlHV6Nrcf1sWTWKRfGa7GmzpsDQL9Edp10c0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpWeJmNw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA819C4CEEA;
-	Mon, 23 Jun 2025 21:54:22 +0000 (UTC)
+	 MIME-Version; b=bqp3frfddEVl35hnrj3pFxqhn/IwJObnzD1QkaFFYhkaxNicPCqfupfD/oLAoLDBJY5KKM+wxSjsDkX/oqaBMDlwVTX1n6ozH9O39BpwopdD5e/QFwxCpmRysFsGGl66D29ThRI+pPzAy4pya6yXmWzlcK1BF12bnApmOfpywCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P+yD4zhy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF8DC4CEEA;
+	Mon, 23 Jun 2025 21:08:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715663;
-	bh=ZRB/zp/sEPMPwxoHIsEtQ44HdAGo1TAb1bDs/hafttk=;
+	s=korg; t=1750712923;
+	bh=JUrQ05FqYI4cEyo8P83wd5E4u20mp3AyqgcdDe7ngqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RpWeJmNwWpze4KKFFsZbg8Ht6CZIl5wPUCUixF6+OTC9dpKB5LsVLI0L99Qok1Q7A
-	 /OEZFCBBfVGnNxAJl/dLGLL/V4irjftH8mE+wWgw0F3Tjrg2nqpSrQylPcDYndI39k
-	 iskBRQqscd66nN8jCXIHC/lWq0JCGQH/B9N4ICnQ=
+	b=P+yD4zhy7ka2nQntT0b2V35UIc52eIdGUfdv/2eEJp5QMTqf2S26Ye0YW7NZ+eSKe
+	 OsSc7sCaBJbs0pCTFmmVOiLVDe90AJtXYbdY9GwFfulYasfNPoj57P8CBrZiV1G0fZ
+	 8bzCsdTDoL01uovN5v4+IcBUgiLgBeqACAW+SjFw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 254/508] Bluetooth: MGMT: Fix sparse errors
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Dikshita Agarwal <quic_dikshita@quicinc.com>,
+	Bryan ODonoghue <bod@kernel.org>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.6 038/290] media: venus: Fix probe error handling
 Date: Mon, 23 Jun 2025 15:04:59 +0200
-Message-ID: <20250623130651.502798009@linuxfoundation.org>
+Message-ID: <20250623130628.145910553@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Loic Poulain <loic.poulain@oss.qualcomm.com>
 
-[ Upstream commit 7dd38ba4acbea9875b4ee061e20a26413e39d9f4 ]
+commit 523cea3a19f0b3b020a4745344c136a636e6ffd7 upstream.
 
-This fixes the following errors:
+Video device registering has been moved earlier in the probe function,
+but the new order has not been propagated to error handling. This means
+we can end with unreleased resources on error (e.g dangling video device
+on missing firmware probe aborting).
 
-net/bluetooth/mgmt.c:5400:59: sparse: sparse: incorrect type in argument 3
-(different base types) @@     expected unsigned short [usertype] handle @@
-got restricted __le16 [usertype] monitor_handle @@
-net/bluetooth/mgmt.c:5400:59: sparse:     expected unsigned short [usertype] handle
-net/bluetooth/mgmt.c:5400:59: sparse:     got restricted __le16 [usertype] monitor_handle
-
-Fixes: e6ed54e86aae ("Bluetooth: MGMT: Fix UAF on mgmt_remove_adv_monitor_complete")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202506060347.ux2O1p7L-lkp@intel.com/
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 08b1cf474b7f7 ("media: venus: core, venc, vdec: Fix probe dependency error")
+Cc: stable@vger.kernel.org
+Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
+Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bluetooth/mgmt.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/platform/qcom/venus/core.c |   16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
-index 123cf62e3c000..08bb78ba988d8 100644
---- a/net/bluetooth/mgmt.c
-+++ b/net/bluetooth/mgmt.c
-@@ -5237,11 +5237,11 @@ static void mgmt_adv_monitor_added(struct sock *sk, struct hci_dev *hdev,
- }
+--- a/drivers/media/platform/qcom/venus/core.c
++++ b/drivers/media/platform/qcom/venus/core.c
+@@ -348,7 +348,7 @@ static int venus_probe(struct platform_d
  
- static void mgmt_adv_monitor_removed(struct sock *sk, struct hci_dev *hdev,
--				     u16 handle)
-+				     __le16 handle)
- {
- 	struct mgmt_ev_adv_monitor_removed ev;
+ 	ret = v4l2_device_register(dev, &core->v4l2_dev);
+ 	if (ret)
+-		goto err_core_deinit;
++		goto err_hfi_destroy;
  
--	ev.monitor_handle = cpu_to_le16(handle);
-+	ev.monitor_handle = handle;
+ 	platform_set_drvdata(pdev, core);
  
- 	mgmt_event(MGMT_EV_ADV_MONITOR_REMOVED, hdev, &ev, sizeof(ev), sk);
- }
--- 
-2.39.5
-
+@@ -380,24 +380,24 @@ static int venus_probe(struct platform_d
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_DEC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_ENC);
+ 	if (ret)
+-		goto err_venus_shutdown;
++		goto err_core_deinit;
+ 
+ 	ret = pm_runtime_put_sync(dev);
+ 	if (ret) {
+ 		pm_runtime_get_noresume(dev);
+-		goto err_dev_unregister;
++		goto err_core_deinit;
+ 	}
+ 
+ 	venus_dbgfs_init(core);
+ 
+ 	return 0;
+ 
+-err_dev_unregister:
+-	v4l2_device_unregister(&core->v4l2_dev);
++err_core_deinit:
++	hfi_core_deinit(core, false);
+ err_venus_shutdown:
+ 	venus_shutdown(core);
+ err_firmware_deinit:
+@@ -408,9 +408,9 @@ err_runtime_disable:
+ 	pm_runtime_put_noidle(dev);
+ 	pm_runtime_disable(dev);
+ 	pm_runtime_set_suspended(dev);
++	v4l2_device_unregister(&core->v4l2_dev);
++err_hfi_destroy:
+ 	hfi_destroy(core);
+-err_core_deinit:
+-	hfi_core_deinit(core, false);
+ err_core_put:
+ 	if (core->pm_ops->core_put)
+ 		core->pm_ops->core_put(core);
 
 
 
