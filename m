@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-158146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4EADAE5727
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03724AE56C2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D2514E2D76
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9A2597B33FC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A35A42264BF;
-	Mon, 23 Jun 2025 22:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B4F22370A;
+	Mon, 23 Jun 2025 22:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CF0g1uj3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM6iICLM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61BD1225A23;
-	Mon, 23 Jun 2025 22:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA21615ADB4;
+	Mon, 23 Jun 2025 22:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717597; cv=none; b=dEcGtUe7bpmUtZCmtPyRQLKdWrG8IArRJmvkEfpkWfE6v21apvnFym9vdjgv8/m7JzfqjIV6JwsCF39t5obtCfo+oP1UMVviFIKAnfx642pz3dTp0eQ+HX4nb6fv/TgiVbgesViiDfIAVly1fm4pvepq01mgGKImbvGJXlSQDps=
+	t=1750717367; cv=none; b=GNDb7JYn7eYMUwZ7vvQunqvrtcj9XkGau7Il2/XfLOr4pCJ+9Bbfb+VRYpaIws6B8YL2kAQAn8OKex1gBnLx7hk9ae+3xZ8nPbDN69GTO6GtZ5NJSRV/3C9o0p/6uxu2xzHQXh9gzkpba8DQPq8AxYuBFIxu0Wwp2wbXH/GJwAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717597; c=relaxed/simple;
-	bh=X0M7VkEWuKZhv2yMZzXllbI3iarWkJ66V+MjJwBE1DM=;
+	s=arc-20240116; t=1750717367; c=relaxed/simple;
+	bh=mO6iaNC+PP80godl9+ptRwBH8g4hzmnkRAsTez5uo/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XZA9lTbYT2sQHkdjsGQ5prrQcY7Q01ldZ48EPb2QQDxT7+/8QngK6LZ2TqHuOyK66CJIO7n4OO6M5GOUlHTgmsb7oLeVceu4YKSKb6vKS4T/3qRPQBqNvqTXzumGSWm5AsSJCcSJSRcvUQ0LOsGQuSBUmVaIrDLHESoa6O+vNLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CF0g1uj3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDD0C4CEF3;
-	Mon, 23 Jun 2025 22:26:36 +0000 (UTC)
+	 MIME-Version; b=NLng/0RtXVh7JvpDRm+OgC5VfZY7bX54gwzbpERP0vQhXrdmHZ0E46rqM4yhQRCyVFdWqBPC9AaOR7cDhim6bOjUmEpXJpTe+lwxs+lYpZVv1w8x9Xygq0vW8Heobsn46CHAzEkbmudGLTI2RVsEU87b87CzEYBS58BR0ZfXdow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zM6iICLM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6772DC4CEED;
+	Mon, 23 Jun 2025 22:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717597;
-	bh=X0M7VkEWuKZhv2yMZzXllbI3iarWkJ66V+MjJwBE1DM=;
+	s=korg; t=1750717367;
+	bh=mO6iaNC+PP80godl9+ptRwBH8g4hzmnkRAsTez5uo/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CF0g1uj322o+acWq6dzwe3ajqslUXrrw9FzzbJ2KhMVebtubz5xp80IxmS/JOU+d7
-	 4yt7fingkB4MBHQ4ew/XqjwJkrbvr86S9CCmQVT5fddsFP9coSb3CQt+xBVXIDszQS
-	 EbkpaYeMJIHhnAm2yuIwnkvkIMFX9Rh4YMw4RXLM=
+	b=zM6iICLM624Q4duJwYZh7h2xHHCwJGKDSS0Yn/eIUOdhBS0IWfr182ILqtXLC9+pS
+	 j62HjAAHjhD9s0YOQlnTUeTotZEji6aVKOrqlARbXLYjqAqGNC+Z5lMSl/H4q4Bbn+
+	 A1I5Z3tOKRWoOfLG9nzTa8TjDcwTGy00I7zjzalU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 465/508] mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race
-Date: Mon, 23 Jun 2025 15:08:30 +0200
-Message-ID: <20250623130656.551708083@linuxfoundation.org>
+	Taehee Yoo <ap420073@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 374/414] eth: bnxt: fix out-of-range access of vnic_info array
+Date: Mon, 23 Jun 2025 15:08:31 +0200
+Message-ID: <20250623130651.305771335@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,61 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Taehee Yoo <ap420073@gmail.com>
 
-commit 1013af4f585fccc4d3e5c5824d174de2257f7d6d upstream.
+[ Upstream commit 919f9f497dbcee75d487400e8f9815b74a6a37df ]
 
-huge_pmd_unshare() drops a reference on a page table that may have
-previously been shared across processes, potentially turning it into a
-normal page table used in another process in which unrelated VMAs can
-afterwards be installed.
+The bnxt_queue_{start | stop}() access vnic_info as much as allocated,
+which indicates bp->nr_vnics.
+So, it should not reach bp->vnic_info[bp->nr_vnics].
 
-If this happens in the middle of a concurrent gup_fast(), gup_fast() could
-end up walking the page tables of another process.  While I don't see any
-way in which that immediately leads to kernel memory corruption, it is
-really weird and unexpected.
-
-Fix it with an explicit broadcast IPI through tlb_remove_table_sync_one(),
-just like we do in khugepaged when removing page tables for a THP
-collapse.
-
-Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-2-1329349bad1a@google.com
-Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-2-f4136f5ec58a@google.com
-Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Jann Horn <jannh@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 661958552eda ("eth: bnxt: do not use BNXT_VNIC_NTUPLE unconditionally in queue restart logic")
+Signed-off-by: Taehee Yoo <ap420073@gmail.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20250316025837.939527-1-ap420073@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Stable-dep-of: 5dacc94c6fe6 ("bnxt_en: Update MRU and RSS table of RSS contexts on queue reset")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -7162,6 +7162,13 @@ int huge_pmd_unshare(struct mm_struct *m
- 		return 0;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 2bb1fce350dbb..d0a87424c74ed 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -15356,7 +15356,7 @@ static int bnxt_queue_start(struct net_device *dev, void *qmem, int idx)
+ 	cpr = &rxr->bnapi->cp_ring;
+ 	cpr->sw_stats->rx.rx_resets++;
  
- 	pud_clear(pud);
-+	/*
-+	 * Once our caller drops the rmap lock, some other process might be
-+	 * using this page table as a normal, non-hugetlb page table.
-+	 * Wait for pending gup_fast() in other threads to finish before letting
-+	 * that happen.
-+	 */
-+	tlb_remove_table_sync_one();
- 	atomic_dec(&virt_to_page(ptep)->pt_share_count);
- 	mm_dec_nr_pmds(mm);
- 	return 1;
+-	for (i = 0; i <= bp->nr_vnics; i++) {
++	for (i = 0; i < bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
+ 
+ 		rc = bnxt_hwrm_vnic_set_rss_p5(bp, vnic, true);
+@@ -15384,7 +15384,7 @@ static int bnxt_queue_stop(struct net_device *dev, void *qmem, int idx)
+ 	struct bnxt_vnic_info *vnic;
+ 	int i;
+ 
+-	for (i = 0; i <= bp->nr_vnics; i++) {
++	for (i = 0; i < bp->nr_vnics; i++) {
+ 		vnic = &bp->vnic_info[i];
+ 		vnic->mru = 0;
+ 		bnxt_hwrm_vnic_update(bp, vnic,
+-- 
+2.39.5
+
 
 
 
