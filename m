@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-155642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155645-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48F3FAE4344
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35E85AE434A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1817517832B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 813951747FB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21CF72550DD;
-	Mon, 23 Jun 2025 13:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C657F255E4E;
+	Mon, 23 Jun 2025 13:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hELL3Lcf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIXY5lpK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D596D23A9BE;
-	Mon, 23 Jun 2025 13:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8245923A9BE;
+	Mon, 23 Jun 2025 13:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684957; cv=none; b=VQzNY6To8+wCij6ZhZxQ5xO0N+E9KGQPQ6D57+AGmNNJYx+QK6u8rcM9KFJdf+tvZIiaMhG/LwzjOZUrz9XFGk7+s5j0M8mHOiI8Fl72KflI/Ep+WJBBfXkzN6FHpxhDGRnKGwP5lhfCSALGvwoYc6TGRXZ3J8oYSD0mOmxmGmE=
+	t=1750684965; cv=none; b=jrpZ/cl00uk0VmjWTjZzpDdm9XvxM6dghbQZeoj2X9YaHw+B9LvZcxm3XkfByvXbJZNHixXfFvX/zp5RDIkmbHtMP6lasfH9JsQTgxb1OTsK9+8Abox+ILiK1smhaImo1MvM9rs6oHHNFx7YUg7shnZkaWBZ1hey6TpdlhK9ErE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684957; c=relaxed/simple;
-	bh=arV5++ewlBMfbhOGToIvyeyx/QMojJD0/4+XAghDIq0=;
+	s=arc-20240116; t=1750684965; c=relaxed/simple;
+	bh=RREaERR22091YeRakDwzPN36su0Krb7FU79g7bkSFUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxxJ0/WmZgWcqpZXmfp/1flXPLw+lC48nuPtewk+3uZbIOxjWM/G5i3j2eu2yehdL5vXJc0sUCH/YkOyOYJBZzthWbbRuMSkpS93Vmpm9ydI1lnCl0rhmZMyFfMhyrs2GVGf3aANRr2Q7UutXlhpq6etdxWGqzs+7gxRONcpWBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hELL3Lcf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD56C4CEEA;
-	Mon, 23 Jun 2025 13:22:37 +0000 (UTC)
+	 MIME-Version; b=PL48sTvL7sFhYJq0OD6P4/fcYtDUmTrTjMV5NEvu+UHRk1/F69VZeBY3MVhOanz7Qtm6fMoA0Tye2k+2Mxip/msz0NDXIz+jUZJE9SKovHtBAj95PXCJ6A4y5/etZMrFZKBVAQTwIedkm6kGBEtAlT73HzDO4+wwfEUofx27Hks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIXY5lpK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1715FC4CEEA;
+	Mon, 23 Jun 2025 13:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684957;
-	bh=arV5++ewlBMfbhOGToIvyeyx/QMojJD0/4+XAghDIq0=;
+	s=korg; t=1750684965;
+	bh=RREaERR22091YeRakDwzPN36su0Krb7FU79g7bkSFUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hELL3LcfOBIT+ax74PRS/beDAObYJAsGaDJvdGvY/HFE9/s9oYXyBvWpQJZsXPdyJ
-	 pMIcT3bxoWkT87ugTCcy2GzTP7Be+rVDi7EmaJ1xm7gSA4+1VMxQrkkPI+E7XoLOQT
-	 lH1KBQoNYGH0T/1/4bg2+XTABpzP5lOw9+zT0Fss=
+	b=IIXY5lpKHudapPjuVWbKxOXIKOhWyhIefY7+GVF6gHLLHQcKIgadlyKstv4nlAINF
+	 oa7AhCp3zYTkALoJqPe+xuAekHLz4HxdGxxNy8j+zt6HyZ3t77WR2aSGursEUJqjip
+	 JCo1F35edbbUlkTdmOvRbFZGJ1CBAseC9JTyxUVM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Arnd Bergmann <arnd@arndb.de>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/222] soc: aspeed: Add NULL check in aspeed_lpc_enable_snoop()
-Date: Mon, 23 Jun 2025 15:06:26 +0200
-Message-ID: <20250623130613.626717085@linuxfoundation.org>
+Subject: [PATCH 5.4 052/222] fbdev: core: fbcvt: avoid division by 0 in fb_cvt_hperiod()
+Date: Mon, 23 Jun 2025 15:06:27 +0200
+Message-ID: <20250623130613.659289388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,71 +66,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit f1706e0e1a74b095cbc60375b9b1e6205f5f4c98 ]
+[ Upstream commit 3f6dae09fc8c306eb70fdfef70726e1f154e173a ]
 
-devm_kasprintf() returns NULL when memory allocation fails. Currently,
-aspeed_lpc_enable_snoop() does not check for this case, which results in a
-NULL pointer dereference.
+In fb_find_mode_cvt(), iff mode->refresh somehow happens to be 0x80000000,
+cvt.f_refresh will become 0 when multiplying it by 2 due to overflow. It's
+then passed to fb_cvt_hperiod(), where it's used as a divider -- division
+by 0 will result in kernel oops. Add a sanity check for cvt.f_refresh to
+avoid such overflow...
 
-Add NULL check after devm_kasprintf() to prevent this issue.
+Found by Linux Verification Center (linuxtesting.org) with the Svace static
+analysis tool.
 
-Fixes: 3772e5da4454 ("drivers/misc: Aspeed LPC snoop output using misc chardev")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Link: https://patch.msgid.link/20250401074647.21300-1-bsdhenrymartin@gmail.com
-[arj: Fix Fixes: tag to use subject from 3772e5da4454]
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Fixes: 96fe6a2109db ("[PATCH] fbdev: Add VESA Coordinated Video Timings (CVT) support")
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/aspeed/aspeed-lpc-snoop.c | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/core/fbcvt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/soc/aspeed/aspeed-lpc-snoop.c b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-index 8a2a22c40ef53..43e30937fc9da 100644
---- a/drivers/soc/aspeed/aspeed-lpc-snoop.c
-+++ b/drivers/soc/aspeed/aspeed-lpc-snoop.c
-@@ -202,11 +202,15 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 	lpc_snoop->chan[channel].miscdev.minor = MISC_DYNAMIC_MINOR;
- 	lpc_snoop->chan[channel].miscdev.name =
- 		devm_kasprintf(dev, GFP_KERNEL, "%s%d", DEVICE_NAME, channel);
-+	if (!lpc_snoop->chan[channel].miscdev.name) {
-+		rc = -ENOMEM;
-+		goto err_free_fifo;
-+	}
- 	lpc_snoop->chan[channel].miscdev.fops = &snoop_fops;
- 	lpc_snoop->chan[channel].miscdev.parent = dev;
- 	rc = misc_register(&lpc_snoop->chan[channel].miscdev);
- 	if (rc)
--		return rc;
-+		goto err_free_fifo;
+diff --git a/drivers/video/fbdev/core/fbcvt.c b/drivers/video/fbdev/core/fbcvt.c
+index 64843464c6613..cd3821bd82e56 100644
+--- a/drivers/video/fbdev/core/fbcvt.c
++++ b/drivers/video/fbdev/core/fbcvt.c
+@@ -312,7 +312,7 @@ int fb_find_mode_cvt(struct fb_videomode *mode, int margins, int rb)
+ 	cvt.f_refresh = cvt.refresh;
+ 	cvt.interlace = 1;
  
- 	/* Enable LPC snoop channel at requested port */
- 	switch (channel) {
-@@ -223,7 +227,8 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		hicrb_en = HICRB_ENSNP1D;
- 		break;
- 	default:
--		return -EINVAL;
-+		rc = -EINVAL;
-+		goto err_misc_deregister;
+-	if (!cvt.xres || !cvt.yres || !cvt.refresh) {
++	if (!cvt.xres || !cvt.yres || !cvt.refresh || cvt.f_refresh > INT_MAX) {
+ 		printk(KERN_INFO "fbcvt: Invalid input parameters\n");
+ 		return 1;
  	}
- 
- 	regmap_update_bits(lpc_snoop->regmap, HICR5, hicr5_en, hicr5_en);
-@@ -233,6 +238,12 @@ static int aspeed_lpc_enable_snoop(struct aspeed_lpc_snoop *lpc_snoop,
- 		regmap_update_bits(lpc_snoop->regmap, HICRB,
- 				hicrb_en, hicrb_en);
- 
-+	return 0;
-+
-+err_misc_deregister:
-+	misc_deregister(&lpc_snoop->chan[channel].miscdev);
-+err_free_fifo:
-+	kfifo_free(&lpc_snoop->chan[channel].fifo);
- 	return rc;
- }
- 
 -- 
 2.39.5
 
