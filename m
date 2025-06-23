@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-157973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A361AE5668
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA9DAE566B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E7412189AADA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7452B1BC0938
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EFE81F7580;
-	Mon, 23 Jun 2025 22:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4A5F19F120;
+	Mon, 23 Jun 2025 22:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD/D9SRn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VXmMPd16"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BF4B16D9BF;
-	Mon, 23 Jun 2025 22:19:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 636E4218EBF;
+	Mon, 23 Jun 2025 22:19:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717173; cv=none; b=GZ6nx7u3SLDwahrJVjGhjaNGHt4xIb5KJD0DsGEOlhyS+RmK0M8SO2xI7WvuqRHZOo10o/z+ioAzl0BBhTtx549XTeVmSkn6fwAVgMvBQg++vRUlPi+wq5Y7BkIrlv/35WwD9d5mSJ9XwVAKMjUpGC+SJed+53Kv9KJdu6gloA0=
+	t=1750717180; cv=none; b=dWy818Bp8lK8Quh3GpXEgjKgYNQPJ13LtDXcQjxkqaoiKRfK4qtCJqWcaLiMQ74jkT53H1YzXXRcNTivjrzv7lorbMV9c66HgEALGRewfTrojNraUQHy356ZQ3kj2cY1+4sPGp7GMkKpN1AdOAcMq5XFTLS9NDFVUQw+ucY23A8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717173; c=relaxed/simple;
-	bh=QUY9veXfGBtoWI17IIgguIrlBu5W0EhgywDbF2GEOy0=;
+	s=arc-20240116; t=1750717180; c=relaxed/simple;
+	bh=V/qMPKHgljwQ6/Qviu79aGt6FgbT5YGBK8H94RnU9xY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YWe+Ki8Fc2CueH/2KSm9QsRHbb7Fw+QE6jw82ilk3B/IVzwEAXXOFo+jE3//q7uZNJITRU+d/uCNdcUD2KvgZZDOVfHOx1UnHc738nw7zX5mhanXy30xPbY6fYDTF4mBxOyUk+KjiMulUiwpbvZPctMz6/6dmlYzcetWJtsQOGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KD/D9SRn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96BEDC4CEEA;
-	Mon, 23 Jun 2025 22:19:32 +0000 (UTC)
+	 MIME-Version; b=Bsa3ddL7AfmRlW9EaPO3EQVjDDPU1T6R679zuWYHh9WKW4TWHr9do3pcOfPWvzgffqffjgtvWJdsPN+mKUYdaBg1Ddc7ANltrXgLeFrYygOX9FGY5jxVnitUGg2x/4ADDMR5fb6u3oUeNhCE3rCxhtU6EthEXmFSJz51dc41VnU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VXmMPd16; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F09B9C4CEEA;
+	Mon, 23 Jun 2025 22:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717172;
-	bh=QUY9veXfGBtoWI17IIgguIrlBu5W0EhgywDbF2GEOy0=;
+	s=korg; t=1750717180;
+	bh=V/qMPKHgljwQ6/Qviu79aGt6FgbT5YGBK8H94RnU9xY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KD/D9SRn0my2b9LBS93KKnzoZZ9rxC+xZRZBTpib2ZOJz/IKFqwAROfsKprLjufmx
-	 h0AJVDR7ln+dAIc9KiCbjmI3EtSxdFsAUn4ONgJRHyz89jMlStzIfi7mwhxvKZNhDh
-	 xZdjIwKOs2YeEfP32whqA0COHf3kcidTjGZwq38A=
+	b=VXmMPd16/WqWzoZ0H47PXX4cEvYttK1QIQUt0yIdaaJyiFCfIxDVD5Jj3ZXqikq94
+	 DZLQ9ZQONbEDpZb7Fw8JByQ+crlCrlh9dnYZU0MqJa0fnMau2x9eb2aIOTOzrfMlwq
+	 Rc9rEEt5Ljpr5TTjXV71hRcaontj0I67HfYnCHsg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Talhah Peerbhai <talhah.peerbhai@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>,
+	"Guilherme G. Piccoli" <gpiccoli@igalia.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 375/508] ASoC: amd: yc: Add quirk for Lenovo Yoga Pro 7 14ASP9
-Date: Mon, 23 Jun 2025 15:07:00 +0200
-Message-ID: <20250623130654.552840953@linuxfoundation.org>
+Subject: [PATCH 6.1 376/508] clocksource: Fix the CPUs choice in the watchdog per CPU verification
+Date: Mon, 23 Jun 2025 15:07:01 +0200
+Message-ID: <20250623130654.575195660@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -66,49 +68,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Talhah Peerbhai <talhah.peerbhai@gmail.com>
+From: Guilherme G. Piccoli <gpiccoli@igalia.com>
 
-[ Upstream commit a28206060dc5848a1a2a15b7f6ac6223d869084d ]
+[ Upstream commit 08d7becc1a6b8c936e25d827becabfe3bff72a36 ]
 
-Similar to many other Lenovo models with AMD chips, the Lenovo
-Yoga Pro 7 14ASP9 (product name 83HN) requires a specific quirk
-to ensure internal mic detection. This patch adds a quirk fixing this.
+Right now, if the clocksource watchdog detects a clocksource skew, it might
+perform a per CPU check, for example in the TSC case on x86.  In other
+words: supposing TSC is detected as unstable by the clocksource watchdog
+running at CPU1, as part of marking TSC unstable the kernel will also run a
+check of TSC readings on some CPUs to be sure it is synced between them
+all.
 
-Signed-off-by: Talhah Peerbhai <talhah.peerbhai@gmail.com>
-Link: https://patch.msgid.link/20250515222741.144616-1-talhah.peerbhai@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+But that check happens only on some CPUs, not all of them; this choice is
+based on the parameter "verify_n_cpus" and in some random cpumask
+calculation. So, the watchdog runs such per CPU checks on up to
+"verify_n_cpus" random CPUs among all online CPUs, with the risk of
+repeating CPUs (that aren't double checked) in the cpumask random
+calculation.
+
+But if "verify_n_cpus" > num_online_cpus(), it should skip the random
+calculation and just go ahead and check the clocksource sync between
+all online CPUs, without the risk of skipping some CPUs due to
+duplicity in the random cpumask calculation.
+
+Tests in a 4 CPU laptop with TSC skew detected led to some cases of the per
+CPU verification skipping some CPU even with verify_n_cpus=8, due to the
+duplicity on random cpumask generation. Skipping the randomization when the
+number of online CPUs is smaller than verify_n_cpus, solves that.
+
+Suggested-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Guilherme G. Piccoli <gpiccoli@igalia.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/all/20250323173857.372390-1-gpiccoli@igalia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/time/clocksource.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 1f94269e121af..d5dc1d48fca94 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -304,6 +304,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83HN"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-@@ -353,7 +360,7 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M5402RA"),
- 		}
- 	},
--        {
-+	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 9e221a97d2274..e89fd0bbc3b35 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -285,7 +285,7 @@ static void clocksource_verify_choose_cpus(void)
+ {
+ 	int cpu, i, n = verify_n_cpus;
+ 
+-	if (n < 0) {
++	if (n < 0 || n >= num_online_cpus()) {
+ 		/* Check all of the CPUs. */
+ 		cpumask_copy(&cpus_chosen, cpu_online_mask);
+ 		cpumask_clear_cpu(smp_processor_id(), &cpus_chosen);
 -- 
 2.39.5
 
