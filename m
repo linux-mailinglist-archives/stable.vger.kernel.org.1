@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F720AE505D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDC75AE4F41
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8635F4A0A61
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5E9F3B508A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2271EF397;
-	Mon, 23 Jun 2025 21:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A2F522157E;
+	Mon, 23 Jun 2025 21:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y4XEfxXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xyp9OsuQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F410B1E51FA;
-	Mon, 23 Jun 2025 21:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B948C1F3FF8;
+	Mon, 23 Jun 2025 21:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713867; cv=none; b=K5QQIPTSrtmTPLpfNnnjJ0erjpA31KYeUcKg+7yx6XWnOWFe3nQDR0Lt7VaCKRl5LR6ntp7NUSSXGNXsBr4XLY0XS/FTqCOhlLcu6+qnSpmik5Qv31jT8xnOy5fmK2dXVOEIyN2KI3AE/sOoBeMMreueEMb5hkSO1ZvzTdPmqLQ=
+	t=1750713233; cv=none; b=cuI24BpWXpRL8fn1lfTjPe2gis3xg9KBVsSoXLGJWaDbPKBjKtblFhvef5QxSVlDZ+Wg+BRSnf30BZ8/lc7wR32OvUHddyYGYGgXpTFmf3N8qp5DE5Js0AP4qoDuWsS2C4ruzVVF+T0Zej8sj9UcbQAAp1liYqwgbuPe+txZNKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713867; c=relaxed/simple;
-	bh=ZYen/0EebK4z1OxkvbWv3NQ5TtyWGtAPK0ZkgZYBXjA=;
+	s=arc-20240116; t=1750713233; c=relaxed/simple;
+	bh=jD/BZnshbKKW59HAFsm5CFKSrJ+0MBUy6LCVyjPuyAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RuKgd1NGAqhZwWzpC+jPxO2i1MSJ5pWEgKnSLyS47G5dVIM6NXwO8pramkdQ8OZHkl8Kznx2swAF1uHszV8AuJJNX4m4TV+vhuI2h94wKe22sGgk8+S4Mhmi8xQmoHnATduR8Tc/9y5NjqcZ1+H3VG6O3BqQ51zUny0GmYTS7CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y4XEfxXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C424C4CEEA;
-	Mon, 23 Jun 2025 21:24:26 +0000 (UTC)
+	 MIME-Version; b=KDksjM7sCioFjwhhwRmHFhZmdaWbmcaWdjc/7BHa+u6TM/8tKlxcEzuL6LVPXK5FPPgPWuJi9OdQZvuaj3wDTtNSPmlFgOaZRNzjWfbWRW9HrZDOmwZijbRxg6TGtBmNNGTLvcjFO/Uj6RzwPwNGaZqvZvbrGQ87BXQCmd+7j/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xyp9OsuQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 539FDC4CEEA;
+	Mon, 23 Jun 2025 21:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713866;
-	bh=ZYen/0EebK4z1OxkvbWv3NQ5TtyWGtAPK0ZkgZYBXjA=;
+	s=korg; t=1750713233;
+	bh=jD/BZnshbKKW59HAFsm5CFKSrJ+0MBUy6LCVyjPuyAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y4XEfxXh/HrxrViDlVOanfiwugmFSlq0Lj4RQqRuDO9VPq8MoPb9TgJZpa40AZsQI
-	 a2RiIyYPi8ZGNbLRrSf4pPEBphcGNFLdtouaIpT9f3RlHi0hsMfAVZp2Nm4xDEwUAq
-	 0BGskoEzk9YhYEBqsO/duBkBOsMUusXv8GmjAAks=
+	b=Xyp9OsuQZntHdChXEDZuKK1YXmloTuXcz3qgg0kQhzGuvH9ZKGIILB1uDu8aprdUD
+	 ZZQgUkO0E50zPzc1Rd8PONEannaOaoI1bOAojHih3ylOnVwcD3LqT0WU60ui2Nocj+
+	 OJ6STiPS5xawDeo7vOHUwIZ72fs20ThHYTF9UhbM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Linux Kernel Functional Testing <lkft@linaro.org>,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 5.15 172/411] drm/amd/display: Do not add -mhard-float to dml_ccflags for clang
+	Dennis Marttinen <twelho@welho.tech>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.6 055/290] ceph: set superblock s_magic for IMA fsmagic matching
 Date: Mon, 23 Jun 2025 15:05:16 +0200
-Message-ID: <20250623130638.021494118@linuxfoundation.org>
+Message-ID: <20250623130628.662426789@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,48 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Chancellor <nathan@kernel.org>
+From: Dennis Marttinen <twelho@welho.tech>
 
-commit 7db038d9790eda558dd6c1dde4cdd58b64789c47 upstream.
+commit 72386d5245b249f5a0a8fabb881df7ad947b8ea4 upstream.
 
-When clang's -Qunused-arguments is dropped from KBUILD_CPPFLAGS, it
-warns:
+The CephFS kernel driver forgets to set the filesystem magic signature in
+its superblock. As a result, IMA policy rules based on fsmagic matching do
+not apply as intended. This causes a major performance regression in Talos
+Linux [1] when mounting CephFS volumes, such as when deploying Rook Ceph
+[2]. Talos Linux ships a hardened kernel with the following IMA policy
+(irrelevant lines omitted):
 
-  clang-16: error: argument unused during compilation: '-mhard-float' [-Werror,-Wunused-command-line-argument]
+[...]
+dont_measure fsmagic=0xc36400 # CEPH_SUPER_MAGIC
+[...]
+measure func=FILE_CHECK mask=^MAY_READ euid=0
+measure func=FILE_CHECK mask=^MAY_READ uid=0
+[...]
 
-Similar to commit 84edc2eff827 ("selftest/fpu: avoid clang warning"),
-just add this flag to GCC builds. Commit 0f0727d971f6 ("drm/amd/display:
-readd -msse2 to prevent Clang from emitting libcalls to undefined SW FP
-routines") added '-msse2' to prevent clang from emitting software
-floating point routines.
+Currently, IMA compares 0xc36400 == 0x0 for CephFS files, resulting in all
+files opened with O_RDONLY or O_RDWR getting measured with SHA512 on every
+open(2):
 
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+10 69990c87e8af323d47e2d6ae4... ima-ng sha512:<hash> /data/cephfs/test-file
+
+Since O_WRONLY is rare, this results in an order of magnitude lower
+performance than expected for practically all file operations. Properly
+setting CEPH_SUPER_MAGIC in the CephFS superblock resolves the regression.
+
+Tests performed on a 3x replicated Ceph v19.3.0 cluster across three
+i5-7200U nodes each equipped with one Micron 7400 MAX M.2 disk (BlueStore)
+and Gigabit ethernet, on Talos Linux v1.10.2:
+
+FS-Mark 3.3
+Test: 500 Files, Empty
+Files/s > Higher Is Better
+6.12.27-talos . 16.6  |====
++twelho patch . 208.4 |====================================================
+
+FS-Mark 3.3
+Test: 500 Files, 1KB Size
+Files/s > Higher Is Better
+6.12.27-talos . 15.6  |=======
++twelho patch . 118.6 |====================================================
+
+FS-Mark 3.3
+Test: 500 Files, 32 Sub Dirs, 1MB Size
+Files/s > Higher Is Better
+6.12.27-talos . 12.7 |===============
++twelho patch . 44.7 |=====================================================
+
+IO500 [3] 2fcd6d6 results (benchmarks within variance omitted):
+
+| IO500 benchmark   | 6.12.27-talos  | +twelho patch  | Speedup   |
+|-------------------|----------------|----------------|-----------|
+| mdtest-easy-write | 0.018524 kIOPS | 1.135027 kIOPS | 6027.33 % |
+| mdtest-hard-write | 0.018498 kIOPS | 0.973312 kIOPS | 5161.71 % |
+| ior-easy-read     | 0.064727 GiB/s | 0.155324 GiB/s | 139.97 %  |
+| mdtest-hard-read  | 0.018246 kIOPS | 0.780800 kIOPS | 4179.29 % |
+
+This applies outside of synthetic benchmarks as well, for example, the time
+to rsync a 55 MiB directory with ~12k of mostly small files drops from an
+unusable 10m5s to a reasonable 26s (23x the throughput).
+
+[1]: https://www.talos.dev/
+[2]: https://www.talos.dev/v1.10/kubernetes-guides/configuration/ceph-with-rook/
+[3]: https://github.com/IO500/io500
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Dennis Marttinen <twelho@welho.tech>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/Makefile |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/ceph/super.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/amd/display/dc/dml/Makefile
-+++ b/drivers/gpu/drm/amd/display/dc/dml/Makefile
-@@ -26,7 +26,8 @@
- # subcomponents.
+--- a/fs/ceph/super.c
++++ b/fs/ceph/super.c
+@@ -1220,6 +1220,7 @@ static int ceph_set_super(struct super_b
+ 	s->s_time_min = 0;
+ 	s->s_time_max = U32_MAX;
+ 	s->s_flags |= SB_NODIRATIME | SB_NOATIME;
++	s->s_magic = CEPH_SUPER_MAGIC;
  
- ifdef CONFIG_X86
--dml_ccflags := -mhard-float -msse
-+dml_ccflags-$(CONFIG_CC_IS_GCC) := -mhard-float
-+dml_ccflags := $(dml_ccflags-y) -msse
- endif
+ 	ceph_fscrypt_set_ops(s);
  
- ifdef CONFIG_PPC64
 
 
 
