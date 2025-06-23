@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2ECC1AE43DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7128AE4263
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189A1179962
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 456A6175051
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55B19254874;
-	Mon, 23 Jun 2025 13:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6532528FC;
+	Mon, 23 Jun 2025 13:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZZqnHvFj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WUj2NBi2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13386253F12;
-	Mon, 23 Jun 2025 13:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1858E2522B1;
+	Mon, 23 Jun 2025 13:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685392; cv=none; b=LoBnN12oODbHO557/r7uCK89ysBJ4ZFKCmubEbrvYQfI8XLOR96EjQMG0AXc/2P+POwL6TaBGcQD37hEorkbGZn6+imAbfjjvomPGu8D3Ufmw4uUsKro6mo6U79UVN5CLyyjE3zTLrFnu0r8GEfGtgyy2hEk/AqqYxA9UwEt+4I=
+	t=1750684573; cv=none; b=JRCOVc+lNoEeq4l+hwq1RsDGVlVeMYdmNgRQeZO2fMg+LbkDd70gIdKuzTGlZjVGUbrdyG230m6lEbaRlc5HIZ3CjdGLDXM371Ftv3shBquuHc9HG+b0fPbpOo5WJBeqJekgMb+gtYE4Wg5T8mHTcdfyJAkt0oVAtxibMS6nEDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685392; c=relaxed/simple;
-	bh=mj/8/gEhMD0gcZPo9R25HpAi7kfcXTWUsWjZ520LIL0=;
+	s=arc-20240116; t=1750684573; c=relaxed/simple;
+	bh=tFwgEH0UKrzzst9rGE4iMFYT0YAYrkvIW4aZ4NvEd/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FLPDOih59YlxB7dX6Czp8Uy7u64S6ihngA7moova61F5wdM09dkdTBepTIoYU7ALUjiK+NGFjWdF3gvACP+FnhYKGwetyNYUD9xgpwwhkKI49bzEku29o6h0zq/Q7ymmsVgxxE6jJ28d+R+Bfxpqgad4ent4n/kFhGaVsJdhEw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZZqnHvFj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EAA0C4CEEA;
-	Mon, 23 Jun 2025 13:29:51 +0000 (UTC)
+	 MIME-Version; b=KRlQClD/kGI5TRQYPNxfsqdCQ4VMifxESkcouwGAm6k+sk0CCyPQiC4O00C5UyG6Uyo49YRl4nfgm1f7cKtNsVfHxkMHeESNDgokPeEnWAetG+kpXTiPdydUqB6jtJW68p7hq5O7RpLG/mFnQsTjXbbGCy+O6hae/70ZtnbCkZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WUj2NBi2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18C1C4CEF2;
+	Mon, 23 Jun 2025 13:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685392;
-	bh=mj/8/gEhMD0gcZPo9R25HpAi7kfcXTWUsWjZ520LIL0=;
+	s=korg; t=1750684573;
+	bh=tFwgEH0UKrzzst9rGE4iMFYT0YAYrkvIW4aZ4NvEd/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZZqnHvFjaxmas3qDSEFBAHOjx6O5QExeJTGNkUSWxpmKIn7XmFgudnAUPbuxUuhHx
-	 BXZT92r9jrEL12IK5/J+WZyZ999Ws2gXy/hCJTmGiiQurSxlpfZSLssJlEs1kSFSBa
-	 hiAfcsSm/irjPY5Hq74qe6j7l/jb89xsTMmmTy/M=
+	b=WUj2NBi2BX7T7RfrhJxQCy6K4qzmTEBokE62c7nqexI9TInwSiYZ7plfYaVMh4VJ2
+	 vlka2ZA3VtxW1ssrAMiWRudhgfz2S5FqbywS7mM+FUcVwyXRqo8XdAolfsXP05NXP/
+	 nfnBx0SoqqqVb4UkWjxWNsa5mWa78nXQxVxhYNNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vishwaroop A <va@nvidia.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 029/508] spi: tegra210-quad: modify chip select (CS) deactivation
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.15 116/592] ext4: factor out ext4_get_maxbytes()
 Date: Mon, 23 Jun 2025 15:01:14 +0200
-Message-ID: <20250623130645.964626630@linuxfoundation.org>
+Message-ID: <20250623130703.031379559@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +64,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vishwaroop A <va@nvidia.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit d8966b65413390d1b5b706886987caac05fbe024 ]
+commit dbe27f06fa38b9bfc598f8864ae1c5d5831d9992 upstream.
 
-Modify the chip select (CS) deactivation and inter-transfer delay
-execution only during the DATA_TRANSFER phase when the cs_change
-flag is not set. This ensures proper CS handling and timing between
-transfers while eliminating redundant operations.
+There are several locations that get the correct maxbytes value based on
+the inode's block type. It would be beneficial to extract a common
+helper function to make the code more clear.
 
-Fixes: 1b8342cc4a38 ("spi: tegra210-quad: combined sequence mode")
-Signed-off-by: Vishwaroop A <va@nvidia.com>
-Link: https://patch.msgid.link/20250416110606.2737315-4-va@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Link: https://patch.msgid.link/20250506012009.3896990-3-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-tegra210-quad.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/ext4/ext4.h    |    7 +++++++
+ fs/ext4/extents.c |    7 +------
+ fs/ext4/file.c    |    7 +------
+ 3 files changed, 9 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/spi/spi-tegra210-quad.c b/drivers/spi/spi-tegra210-quad.c
-index d09e0b9ac18c4..f2a4743efcb47 100644
---- a/drivers/spi/spi-tegra210-quad.c
-+++ b/drivers/spi/spi-tegra210-quad.c
-@@ -1152,16 +1152,16 @@ static int tegra_qspi_combined_seq_xfer(struct tegra_qspi *tqspi,
- 				ret = -EIO;
- 				goto exit;
- 			}
--			if (!xfer->cs_change) {
--				tegra_qspi_transfer_end(spi);
--				spi_transfer_delay_exec(xfer);
--			}
- 			break;
- 		default:
- 			ret = -EINVAL;
- 			goto exit;
- 		}
- 		msg->actual_length += xfer->len;
-+		if (!xfer->cs_change && transfer_phase == DATA_TRANSFER) {
-+			tegra_qspi_transfer_end(spi);
-+			spi_transfer_delay_exec(xfer);
-+		}
- 		transfer_phase++;
- 	}
- 	ret = 0;
--- 
-2.39.5
-
+--- a/fs/ext4/ext4.h
++++ b/fs/ext4/ext4.h
+@@ -3378,6 +3378,13 @@ static inline unsigned int ext4_flex_bg_
+ 	return 1 << sbi->s_log_groups_per_flex;
+ }
+ 
++static inline loff_t ext4_get_maxbytes(struct inode *inode)
++{
++	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
++		return inode->i_sb->s_maxbytes;
++	return EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
++}
++
+ #define ext4_std_error(sb, errno)				\
+ do {								\
+ 	if ((errno))						\
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -4932,12 +4932,7 @@ static const struct iomap_ops ext4_iomap
+ 
+ static int ext4_fiemap_check_ranges(struct inode *inode, u64 start, u64 *len)
+ {
+-	u64 maxbytes;
+-
+-	if (ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS))
+-		maxbytes = inode->i_sb->s_maxbytes;
+-	else
+-		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
++	u64 maxbytes = ext4_get_maxbytes(inode);
+ 
+ 	if (*len == 0)
+ 		return -EINVAL;
+--- a/fs/ext4/file.c
++++ b/fs/ext4/file.c
+@@ -929,12 +929,7 @@ static int ext4_file_open(struct inode *
+ loff_t ext4_llseek(struct file *file, loff_t offset, int whence)
+ {
+ 	struct inode *inode = file->f_mapping->host;
+-	loff_t maxbytes;
+-
+-	if (!(ext4_test_inode_flag(inode, EXT4_INODE_EXTENTS)))
+-		maxbytes = EXT4_SB(inode->i_sb)->s_bitmap_maxbytes;
+-	else
+-		maxbytes = inode->i_sb->s_maxbytes;
++	loff_t maxbytes = ext4_get_maxbytes(inode);
+ 
+ 	switch (whence) {
+ 	default:
 
 
 
