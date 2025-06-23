@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC963AE5557
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD4A1AE551B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:08:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60DD64A149F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F5C5442FBD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7281C21FF2B;
-	Mon, 23 Jun 2025 22:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4204B223316;
+	Mon, 23 Jun 2025 22:07:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UHm9dNzW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H3lsTI7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF371F7580;
-	Mon, 23 Jun 2025 22:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF09C1E22E6;
+	Mon, 23 Jun 2025 22:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716581; cv=none; b=u0D+dxcp+BQk7XH19/rU8rFvN/uemTtVJ67Z7Plwa5dNzyCNLU4pBzw95ZqInPEtXsBBwjqswkHO+bygX6CUYQOFNpNyBwac9CoF2CP4cTLikbuPzT9QUTwlqm0WixdAlAG+y1kSFRpylIw/uwl5nD7STRljDddZfWyztAiEiPc=
+	t=1750716454; cv=none; b=RgeWLgK7Lh6tQ4WM7jWBYBwmNPmKijapZz+Z8XRkCRn+PlkMjl+7d2vkuwdxkmaI1ymdXTtFO8u1v8+1SoWEDBKmkDOzR4GttVkos+5r8vQMhw1y7iIccvj++f8heb297C5Kc/9xFXDo85zC41NgaGd6fVe1acWyM67y63xzpJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716581; c=relaxed/simple;
-	bh=ncpcgd/TrZv6YascrINiJ928OIXC4jN+DHYQgw5c1Ew=;
+	s=arc-20240116; t=1750716454; c=relaxed/simple;
+	bh=7/q6oyqkLHANi/r9cbqyNhOLO5nJkFmBRVrXjkGNjs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RVPdw+dV45pBdOxjLOctesVyYTvRZqHSu1Vl9y9lcWB1qzisuACE1KDUco2ZI6GKqu1KfHExP2gGju83k0FIeZhiyyrBO1/UGOiNZzfztcVlIC42JOZlxv3ze+20o6r/nHnY33z0aHonvYTbgsE3tc8zEXo37CU/RiOUvL0OPPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UHm9dNzW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB4DC4CEEA;
-	Mon, 23 Jun 2025 22:09:40 +0000 (UTC)
+	 MIME-Version; b=lfURcdpzpgoAj0Ca6RWoVFOBHOvGf7LonScF9XJBqOm6ievmWbKwHlA5rRvhzhaIhYOlnyBuv6mLw1KvZVRym5fSdQzUV2P9+D9Gpv6UFbqN03BgYdsdzeu0PtGZhnsrzqGMBZo2+NCfdhLJvcylFv19cglKusJP7YAAj4VFN3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H3lsTI7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83D14C4CEEA;
+	Mon, 23 Jun 2025 22:07:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716581;
-	bh=ncpcgd/TrZv6YascrINiJ928OIXC4jN+DHYQgw5c1Ew=;
+	s=korg; t=1750716453;
+	bh=7/q6oyqkLHANi/r9cbqyNhOLO5nJkFmBRVrXjkGNjs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UHm9dNzW3x3i2xkkwmQ1D1J4vui/thSSuW6OJc742DTBkF+vAxd3R76MwbdMrjsZs
-	 BGn7HPr942pbPnJb6KVaUpS7rdoG2pcOwKrHg42hZ3oGj17A91AfibGfSiztDzbG6d
-	 lKq2NI8UDuZVzV/QqO5A+TDD/VJSh0p2qoITNiU8=
+	b=2H3lsTI7/O2QhYyXk558o5M6oUFxEJzeO/OGLFWy++2EkMHJfOWPeWkRHqiVu3/xo
+	 eAMMsKL7+BsUCFJXDCgfHf1wx98WNyuPb/7iBMyPo/nFl1UMVeJbIa2nKxmFbBhfGo
+	 SyzvfMaNDlilbBpfhS3DkP+/r55Jpl3ACDsceil4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Renato Caldas <renato@calgera.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.6 274/290] platform/x86: ideapad-laptop: add missing Ideapad Pro 5 fn keys
-Date: Mon, 23 Jun 2025 15:08:55 +0200
-Message-ID: <20250623130635.166484558@linuxfoundation.org>
+	James Morse <james.morse@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Pu Lehui <pulehui@huawei.com>
+Subject: [PATCH 5.10 335/355] arm64: proton-pack: Add new CPUs k values for branch mitigation
+Date: Mon, 23 Jun 2025 15:08:56 +0200
+Message-ID: <20250623130636.808301449@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Renato Caldas <renato@calgera.com>
+From: James Morse <james.morse@arm.com>
 
-commit 36e66be874a7ea9d28fb9757629899a8449b8748 upstream.
+[ Upstream commit efe676a1a7554219eae0b0dcfe1e0cdcc9ef9aef ]
 
-The scancodes for the Mic Mute and Airplane keys on the Ideapad Pro 5
-(14AHP9 at least, probably the other variants too) are different and
-were not being picked up by the driver. This adds them to the keymap.
+Update the list of 'k' values for the branch mitigation from arm's
+website.
 
-Apart from what is already supported, the remaining fn keys are
-unfortunately producing windows-specific key-combos.
+Add the values for Cortex-X1C. The MIDR_EL1 value can be found here:
+https://developer.arm.com/documentation/101968/0002/Register-descriptions/AArch>
 
-Signed-off-by: Renato Caldas <renato@calgera.com>
-Link: https://lore.kernel.org/r/20241102183116.30142-1-renato@calgera.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
+Link: https://developer.arm.com/documentation/110280/2-0/?lang=en
+Signed-off-by: James Morse <james.morse@arm.com>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Pu Lehui <pulehui@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/arm64/include/asm/cputype.h |    2 ++
+ arch/arm64/kernel/proton-pack.c  |    1 +
+ 2 files changed, 3 insertions(+)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1101,6 +1101,9 @@ static const struct key_entry ideapad_ke
- 	{ KE_KEY,	0x27 | IDEAPAD_WMI_KEY, { KEY_HELP } },
- 	/* Refresh Rate Toggle */
- 	{ KE_KEY,	0x0a | IDEAPAD_WMI_KEY, { KEY_DISPLAYTOGGLE } },
-+	/* Specific to some newer models */
-+	{ KE_KEY,	0x3e | IDEAPAD_WMI_KEY, { KEY_MICMUTE } },
-+	{ KE_KEY,	0x3f | IDEAPAD_WMI_KEY, { KEY_RFKILL } },
- 
- 	{ KE_END },
- };
+--- a/arch/arm64/include/asm/cputype.h
++++ b/arch/arm64/include/asm/cputype.h
+@@ -80,6 +80,7 @@
+ #define ARM_CPU_PART_CORTEX_A78AE	0xD42
+ #define ARM_CPU_PART_CORTEX_X1		0xD44
+ #define ARM_CPU_PART_CORTEX_A510	0xD46
++#define ARM_CPU_PART_CORTEX_X1C		0xD4C
+ #define ARM_CPU_PART_CORTEX_A520	0xD80
+ #define ARM_CPU_PART_CORTEX_A710	0xD47
+ #define ARM_CPU_PART_CORTEX_A715	0xD4D
+@@ -144,6 +145,7 @@
+ #define MIDR_CORTEX_A78AE	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A78AE)
+ #define MIDR_CORTEX_X1	MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1)
+ #define MIDR_CORTEX_A510 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A510)
++#define MIDR_CORTEX_X1C MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_X1C)
+ #define MIDR_CORTEX_A520 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A520)
+ #define MIDR_CORTEX_A710 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A710)
+ #define MIDR_CORTEX_A715 MIDR_CPU_MODEL(ARM_CPU_IMP_ARM, ARM_CPU_PART_CORTEX_A715)
+--- a/arch/arm64/kernel/proton-pack.c
++++ b/arch/arm64/kernel/proton-pack.c
+@@ -899,6 +899,7 @@ static u8 spectre_bhb_loop_affected(void
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78AE),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A78C),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1),
++		MIDR_ALL_VERSIONS(MIDR_CORTEX_X1C),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_A710),
+ 		MIDR_ALL_VERSIONS(MIDR_CORTEX_X2),
+ 		MIDR_ALL_VERSIONS(MIDR_NEOVERSE_N2),
 
 
 
