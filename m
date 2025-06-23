@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-158151-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157923-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EBFCAE572B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:26:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED17AE563D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 02C541C241AA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0FC434C7D60
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB8F225A47;
-	Mon, 23 Jun 2025 22:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E99052264BF;
+	Mon, 23 Jun 2025 22:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CRGPVkp7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="seRm9uzt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8893B22370A;
-	Mon, 23 Jun 2025 22:26:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A72F8223708;
+	Mon, 23 Jun 2025 22:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717609; cv=none; b=Q9IfRsRfukwoMhj8GgQjoUH8eCscWtHQkjkOUafJOfT3a0CGYc2P/g3V2qxhyCBplgorh2AbiUPfS09K80uZczkegpFCn1cJcVfChG3rL6LCJ0s55UKweXsZe7NKHGI2AeChcJZWqfDSghc5r94bX3KahkLQsCVuFtJlRwj/Dqk=
+	t=1750717050; cv=none; b=QHZufjQYKjt5BPqioVBu8RfV+HxGAIQLwCUVbs5lBRtZMk1RasWPhvXO4NcY9RiZymsgQaPp0J2ZFbv47moYC7r+qvPfb3LpxAWwZUbX1e/K7JYRFBsDPo9bvdsgfIgFEbFgA2YIKvlDjtuHr42O6i9KPwLkiOi4MV7+/nrjJrQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717609; c=relaxed/simple;
-	bh=R7G44ye1t2TaNZxxJiVeZPVXZZFIh/VXAyiClm4Hx2Y=;
+	s=arc-20240116; t=1750717050; c=relaxed/simple;
+	bh=lslYffTdbTL5b+PPEMV/UFZiJFDQy+8K0GSjxu1EBNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSgAZeVmdJAdS9Dw/86F+qNQ+tq4byBYmOcmSi5eg2wHbrP5tOUUILzfQEOqJu15QjS47U2qZxTDi3IbO3MdxeuE3LUGWTepNGGqypkjAwRF5GSJZ6SC6XODcii92xLFe5gsN3MK2UVZxvee9VjUyJ64L6D5RF67PUSNVngzDug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CRGPVkp7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2093BC4CEEA;
-	Mon, 23 Jun 2025 22:26:48 +0000 (UTC)
+	 MIME-Version; b=L/U5p+Pf+FDbatllQpRyF7G7QFfAXcBpjUMYo64TXWq2vF7MwU/PfofL5hAJQBgZlWzq0JQrfHohTK7cjxksGv3Wz/RsrZDHq8kCSrnjU3N+irgIitJmqXjFVMw1E95gl2NNvMbKftuoqcFk+qR5oIEOBwwepcCUrsRsLOK71ZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=seRm9uzt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3663CC4CEEA;
+	Mon, 23 Jun 2025 22:17:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717609;
-	bh=R7G44ye1t2TaNZxxJiVeZPVXZZFIh/VXAyiClm4Hx2Y=;
+	s=korg; t=1750717050;
+	bh=lslYffTdbTL5b+PPEMV/UFZiJFDQy+8K0GSjxu1EBNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CRGPVkp7IJJhVCmzSuNIg1riI281G4vdkf1Yic2I27e9HRyIEhQKqeIjMpawxfWdd
-	 A1fUz3Jjiboz+tpFlGUqOxFQ8x0QDBe0Mu6hTiXvBadwh5o4hIa/DfzcPG+9ZlhS9F
-	 QqlD+H3u/2xx2mj3y0k8Rt4lnYDe2lGANokyKn/k=
+	b=seRm9uztP+C/YOQsTfHDh321flbs1AcPjmFMowRrRvveHnnXeKfm1yujhL5vddlzR
+	 j/bCWxLaybL4nNMWKxFqPH5u2viy6AvYRXhYj9vSBLJteRBXM5HIHD4HiDqe1Oh6/5
+	 4vTiaf1ws+ZcNQ8dkdR8JXC6A28x3wQnCswioPhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>
-Subject: [PATCH 6.1 469/508] erofs: remove unused trace event erofs_destroy_inode
+	Arnd Bergmann <arnd@arndb.de>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 370/411] hwmon: (occ) fix unaligned accesses
 Date: Mon, 23 Jun 2025 15:08:34 +0200
-Message-ID: <20250623130656.639073656@linuxfoundation.org>
+Message-ID: <20250623130642.956232602@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 30b58444807c93bffeaba7d776110f2a909d2f9a upstream.
+[ Upstream commit 2c021b45c154958566aad0cae9f74ab26a2d5732 ]
 
-The trace event `erofs_destroy_inode` was added but remains unused. This
-unused event contributes approximately 5KB to the kernel module size.
+Passing a pointer to an unaligned integer as a function argument is
+undefined behavior:
 
-Reported-by: Steven Rostedt <rostedt@goodmis.org>
-Closes: https://lore.kernel.org/r/20250612224906.15000244@batman.local.home
-Fixes: 13f06f48f7bf ("staging: erofs: support tracepoint")
-Cc: stable@vger.kernel.org
-Reviewed-by: Hongbo Li <lihongbo22@huawei.com>
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20250617054056.3232365-1-hsiangkao@linux.alibaba.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/hwmon/occ/common.c:492:27: warning: taking address of packed member 'accumulator' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  492 |   val = occ_get_powr_avg(&power->accumulator,
+      |                           ^~~~~~~~~~~~~~~~~~
+drivers/hwmon/occ/common.c:493:13: warning: taking address of packed member 'update_tag' of class or structure 'power_sensor_2' may result in an unaligned pointer value [-Waddress-of-packed-member]
+  493 |            &power->update_tag);
+      |             ^~~~~~~~~~~~~~~~~
+
+Move the get_unaligned() calls out of the function and pass these
+through argument registers instead.
+
+Fixes: c10e753d43eb ("hwmon (occ): Add sensor types and versions")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Link: https://lore.kernel.org/r/20250610092553.2641094-1-arnd@kernel.org
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/trace/events/erofs.h |   18 ------------------
- 1 file changed, 18 deletions(-)
+ drivers/hwmon/occ/common.c | 28 +++++++++++++---------------
+ 1 file changed, 13 insertions(+), 15 deletions(-)
 
---- a/include/trace/events/erofs.h
-+++ b/include/trace/events/erofs.h
-@@ -232,24 +232,6 @@ DEFINE_EVENT(erofs__map_blocks_exit, z_e
- 	TP_ARGS(inode, map, flags, ret)
- );
+diff --git a/drivers/hwmon/occ/common.c b/drivers/hwmon/occ/common.c
+index f846c1baff1e7..8b8f50ef36aff 100644
+--- a/drivers/hwmon/occ/common.c
++++ b/drivers/hwmon/occ/common.c
+@@ -458,12 +458,10 @@ static ssize_t occ_show_power_1(struct device *dev,
+ 	return sysfs_emit(buf, "%llu\n", val);
+ }
  
--TRACE_EVENT(erofs_destroy_inode,
--	TP_PROTO(struct inode *inode),
+-static u64 occ_get_powr_avg(u64 *accum, u32 *samples)
++static u64 occ_get_powr_avg(u64 accum, u32 samples)
+ {
+-	u64 divisor = get_unaligned_be32(samples);
 -
--	TP_ARGS(inode),
--
--	TP_STRUCT__entry(
--		__field(	dev_t,		dev		)
--		__field(	erofs_nid_t,	nid		)
--	),
--
--	TP_fast_assign(
--		__entry->dev	= inode->i_sb->s_dev;
--		__entry->nid	= EROFS_I(inode)->nid;
--	),
--
--	TP_printk("dev = (%d,%d), nid = %llu", show_dev_nid(__entry))
--);
--
- #endif /* _TRACE_EROFS_H */
+-	return (divisor == 0) ? 0 :
+-		div64_u64(get_unaligned_be64(accum) * 1000000ULL, divisor);
++	return (samples == 0) ? 0 :
++		mul_u64_u32_div(accum, 1000000UL, samples);
+ }
  
-  /* This part must be outside protection */
+ static ssize_t occ_show_power_2(struct device *dev,
+@@ -488,8 +486,8 @@ static ssize_t occ_show_power_2(struct device *dev,
+ 				  get_unaligned_be32(&power->sensor_id),
+ 				  power->function_id, power->apss_channel);
+ 	case 1:
+-		val = occ_get_powr_avg(&power->accumulator,
+-				       &power->update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->accumulator),
++				       get_unaligned_be32(&power->update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->update_tag) *
+@@ -526,8 +524,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_system\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 1:
+-		val = occ_get_powr_avg(&power->system.accumulator,
+-				       &power->system.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->system.accumulator),
++				       get_unaligned_be32(&power->system.update_tag));
+ 		break;
+ 	case 2:
+ 		val = (u64)get_unaligned_be32(&power->system.update_tag) *
+@@ -540,8 +538,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_proc\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 5:
+-		val = occ_get_powr_avg(&power->proc.accumulator,
+-				       &power->proc.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->proc.accumulator),
++				       get_unaligned_be32(&power->proc.update_tag));
+ 		break;
+ 	case 6:
+ 		val = (u64)get_unaligned_be32(&power->proc.update_tag) *
+@@ -554,8 +552,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_vdd\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 9:
+-		val = occ_get_powr_avg(&power->vdd.accumulator,
+-				       &power->vdd.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdd.accumulator),
++				       get_unaligned_be32(&power->vdd.update_tag));
+ 		break;
+ 	case 10:
+ 		val = (u64)get_unaligned_be32(&power->vdd.update_tag) *
+@@ -568,8 +566,8 @@ static ssize_t occ_show_power_a0(struct device *dev,
+ 		return sysfs_emit(buf, "%u_vdn\n",
+ 				  get_unaligned_be32(&power->sensor_id));
+ 	case 13:
+-		val = occ_get_powr_avg(&power->vdn.accumulator,
+-				       &power->vdn.update_tag);
++		val = occ_get_powr_avg(get_unaligned_be64(&power->vdn.accumulator),
++				       get_unaligned_be32(&power->vdn.update_tag));
+ 		break;
+ 	case 14:
+ 		val = (u64)get_unaligned_be32(&power->vdn.update_tag) *
+-- 
+2.39.5
+
 
 
 
