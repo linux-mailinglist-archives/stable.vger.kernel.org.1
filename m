@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 889BEAE530A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECD63AE5109
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ABD71442397
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B283A4A29B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 409DA1F4628;
-	Mon, 23 Jun 2025 21:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B4651EEA5D;
+	Mon, 23 Jun 2025 21:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SIMAXigJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zZtGnrm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23FA19049B;
-	Mon, 23 Jun 2025 21:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 295DF1EE7C6;
+	Mon, 23 Jun 2025 21:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715382; cv=none; b=FEosDwfEPhiVq5dlQxVFtTi3VFLHVrZvH0AfMbwhxiecctD9IbXIsNO9ryAMZeRUUCDcwEEW9p6UK5R7rI+dgRrr/xqPr6TIuHsTGYyJ6EPkTokw5AtDSGM6rHp3TfpVYuiZyxZZC3sHRr/F3Qdhb5k4TOTgCveUhJL+KjQKyvM=
+	t=1750714216; cv=none; b=iVrve8NZ3lG82q4SagJbnQ9D0MWbFo1j2arXijS3O0OaeFXtKESuggGzaRVoqLSr0gkc+6NOWjqRgs1L9yrj9cKl6Cwzar5vYUCJUTssjNH0coLF8OEuCkQ0sRTlRtrS66eu9YNVvLgxVcTG2+8pqCs6FGwgfYvhCBCdLkXE2to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715382; c=relaxed/simple;
-	bh=kBEu2ene663bIia8g9i0U3PAun9uspMcdEuO8aS8LJ4=;
+	s=arc-20240116; t=1750714216; c=relaxed/simple;
+	bh=Iqvwoc3xEswH6W/TEUDTm8BYpH4fH+drL8bt7ppzi08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=alEPfq0rEJtiYSMqxXhsUe/IKbdNsiTiw/vabLsU63ILJvhj9IRxRKmSb3Cq2JWFZUlffc+8i+hb3zwrLHGpU5yWx6IegEmGK/7aDYJBDcUqqj9O7LSTHtF2alddHYecM36n+fqIh+bLzSuf6hgftD0gS7zPyvqcZP7SL2fNV7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SIMAXigJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF81C4CEEA;
-	Mon, 23 Jun 2025 21:49:40 +0000 (UTC)
+	 MIME-Version; b=lq6S8QpCEf3WaCKu3/v1RP0Xwx5hYXKm967f6tyW8l4G6p15GDbN7rZnK3OQiC42+BzosL9jV5AM3rPLl8z2Vd2kkRqcm5VOs5NhAtuAmuy8uQSy4rQB97s6SE+SReiOMtkLs7ymg4poyDgcFNvxMdWaQdhzBxarYcG7GG6bG7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zZtGnrm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7B24C4CEEA;
+	Mon, 23 Jun 2025 21:30:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715381;
-	bh=kBEu2ene663bIia8g9i0U3PAun9uspMcdEuO8aS8LJ4=;
+	s=korg; t=1750714216;
+	bh=Iqvwoc3xEswH6W/TEUDTm8BYpH4fH+drL8bt7ppzi08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SIMAXigJTUFbHwqessQuef45g2x8+RVe5Dyoj46HwYMc3sHnNUn+kh+PVqM/B73RE
-	 +dmnNOND+7OkwiAlFjgjMpoWraPwCblqYsoX3aw3UPyKIm9r3f6ny+XWs/6/YTO4Qm
-	 Lt9hqEIjFq3nSU20fleakT/fR8Yeu4du9PLtzWFk=
+	b=zZtGnrm4jOP+Uw1X9L5doijAD4d1Btb8tstebPBFKqaOu3W6F7j3CRL8mnZv5rYBv
+	 ScEk4feWb6YqKgu/Y+v0X1kbuOcKksS4gklJ54W5urrkXj9EJcqkLvcyt/0pCJCHow
+	 VxVmpgyuiAulapRgJBKJzSGEq2rV94KRSzM2kziY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khem Raj <raj.khem@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 5.15 249/411] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
+	Niravkumar L Rabara <niravkumar.l.rabara@intel.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Dinh Nguyen <dinguyen@kernel.org>,
+	stable@kernel.org
+Subject: [PATCH 5.10 192/355] EDAC/altera: Use correct write width with the INTTEST register
 Date: Mon, 23 Jun 2025 15:06:33 +0200
-Message-ID: <20250623130639.918517839@linuxfoundation.org>
+Message-ID: <20250623130632.450988336@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khem Raj <raj.khem@gmail.com>
+From: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
 
-commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
+commit e5ef4cd2a47f27c0c9d8ff6c0f63a18937c071a3 upstream.
 
-GCC 15 changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, mips/vdso code uses
-its own CFLAGS without a '-std=' value, which break with this dialect
-change because of the kernel's own definitions of bool, false, and true
-conflicting with the C23 reserved keywords.
+On the SoCFPGA platform, the INTTEST register supports only 16-bit writes.
+A 32-bit write triggers an SError to the CPU so do 16-bit accesses only.
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+  [ bp: AI-massage the commit message. ]
 
-Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
-CFLAGS to eliminate these errors and make the C standard version of these
-areas match the rest of the kernel.
-
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: c7b4be8db8bc ("EDAC, altera: Add Arria10 OCRAM ECC support")
+Signed-off-by: Niravkumar L Rabara <niravkumar.l.rabara@intel.com>
+Signed-off-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Dinh Nguyen <dinguyen@kernel.org>
+Cc: stable@kernel.org
+Link: https://lore.kernel.org/20250527145707.25458-1-matthew.gerlach@altera.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/vdso/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/altera_edac.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -29,6 +29,7 @@ endif
- # offsets.
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	$(filter -std=%,$(KBUILD_CFLAGS)) \
- 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
- 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+--- a/drivers/edac/altera_edac.c
++++ b/drivers/edac/altera_edac.c
+@@ -1704,9 +1704,9 @@ static ssize_t altr_edac_a10_device_trig
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR)
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	else
+-		writel(priv->ce_set_mask, set_addr);
++		writew(priv->ce_set_mask, set_addr);
+ 
+ 	/* Ensure the interrupt test bits are set */
+ 	wmb();
+@@ -1736,7 +1736,7 @@ static ssize_t altr_edac_a10_device_trig
+ 
+ 	local_irq_save(flags);
+ 	if (trig_type == ALTR_UE_TRIGGER_CHAR) {
+-		writel(priv->ue_set_mask, set_addr);
++		writew(priv->ue_set_mask, set_addr);
+ 	} else {
+ 		/* Setup read/write of 4 bytes */
+ 		writel(ECC_WORD_WRITE, drvdata->base + ECC_BLK_DBYTECTRL_OFST);
 
 
 
