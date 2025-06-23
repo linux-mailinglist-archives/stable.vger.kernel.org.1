@@ -1,93 +1,128 @@
-Return-Path: <stable+bounces-155325-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26852AE3996
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:13:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65B89AE399B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:14:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 528053ABD5E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:13:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 09FEA1671F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C7E323183A;
-	Mon, 23 Jun 2025 09:13:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB042232392;
+	Mon, 23 Jun 2025 09:13:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mgWBpimR"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="TMGbPh7n"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m15590.qiye.163.com (mail-m15590.qiye.163.com [101.71.155.90])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4107A63A9;
-	Mon, 23 Jun 2025 09:13:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C39463A9;
+	Mon, 23 Jun 2025 09:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=101.71.155.90
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750670020; cv=none; b=gnKvh0DzulX85Ykp2LdBUkPjVyTVIGvXbb8hehmbFI4YR9C6PSNrxiz3jFE7Nn36Uklvqt17iDCIJ4ckBdj+OC2paSyxwjdTbkDXIjpiKr3UzueGBQzyQdRf238n15PtzkAMgr46G1R7KEuk5TR3E+0fp7dTTW8rFAdLI5K1Pi4=
+	t=1750670038; cv=none; b=qeo7p9To4JvKdYlx+RwpMSK3s+jypSLLaSwp4OjeJc3gyZAmWmpe38/YD1j4/NeOxX40e6xtgn0uaXtBnc457ydDRMp7/xAyHep9GBp0GG18ydAe59ZpnhbaAPfPG/EErKZKhdSfOLXAjd3lnaisTkZo+7nh5mFMsnRw4293zEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750670020; c=relaxed/simple;
-	bh=RTVxXN6hamB6NbmGHb4qVkmVeYkaZYrVdp1uWVXZ/1I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NHj5hfFm0+xSOMOGE5Y9qsE3yjBpCyXfkhdzBQUfvQH/ZvSzK/8KDLPpjDyZWaCTOXYyO+6p+bF9TYa7DIvMTF7X1nr9MTw8mbihsr8Ou8uyV21t5svLRmks1b3RKxPSz78CNMIDP0d4rp7d+X/YV9SAHFzmWyIYES2L6kcRFNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mgWBpimR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C40FC4CEEA;
-	Mon, 23 Jun 2025 09:13:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750670019;
-	bh=RTVxXN6hamB6NbmGHb4qVkmVeYkaZYrVdp1uWVXZ/1I=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mgWBpimR8E9uhTlt4hZIczqIdcAbcaY3eFGsR86weBsCjs6/8xoMoTJWdLj4D1hbX
-	 mcZfB2qpvq5KM7dr4Q6nHXYLPriYrVTGvrmv7IG0nk3JU2v7r+cDsBWxcYtXcFdbIU
-	 y3Yw3iXjROYk6Utzf/YbnrBqgcTh/3d0DzDtVy8E=
-Date: Mon, 23 Jun 2025 11:13:37 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Paul Chaignon <paul.chaignon@gmail.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	netdev@vger.kernel.org, bpf@vger.kernel.org,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	David Ahern <dsahern@kernel.org>, Tom Herbert <tom@herbertland.com>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: Re: [PATCH stable 5.10,5.15 2/2] bpf: Fix L4 csum update on IPv6 in
- CHECKSUM_COMPLETE
-Message-ID: <2025062302-oxford-squiggle-5fa3@gregkh>
-References: <0bd9e0321544730642e1b068dd70178d5a3f8804.1750171422.git.paul.chaignon@gmail.com>
- <2ce92c476e4acba76002b69ad71093c5f8a681c6.1750171422.git.paul.chaignon@gmail.com>
- <2025062357-grove-crisply-a3b2@gregkh>
- <aFkYtN3WK19iK0-d@mail.gmail.com>
+	s=arc-20240116; t=1750670038; c=relaxed/simple;
+	bh=rot3WInRgfCoXSQnTjnLS77VTpo+YcJ/anVZEHawAkc=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=WJyVaPTKzGoR6yVslr8ywZQMvw6FYqony8dIqUE0bhE7KdsbvBP8lseK/Ih6PQR7it9fdFCSvWBzojZOhwcSb7hchqdowk3W2RhLH6UUcXcMVvej+6SrYxTc6oD+G9HU63NGyiRF4EKSnjMldKNqK0hfbAh/39SXEowfix6YEf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=TMGbPh7n; arc=none smtp.client-ip=101.71.155.90
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from [172.16.12.129] (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 199b4e06c;
+	Mon, 23 Jun 2025 17:13:44 +0800 (GMT+08:00)
+Message-ID: <004c6e95-7c1b-4a7f-ab68-1774ce5a51d7@rock-chips.com>
+Date: Mon, 23 Jun 2025 17:13:38 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aFkYtN3WK19iK0-d@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Cc: shawn.lin@rock-chips.com, linux-mmc@vger.kernel.org,
+ 1108065@bugs.debian.org, stable@vger.kernel.org, net147@gmail.com
+Subject: Re: [regression v6.12.30..v6.12.32] mmc1: mmc_select_hs400 failed,
+ error -110 / boot regression on Lenovo IdeaPad 1 15ADA7
+To: Salvatore Bonaccorso <carnil@debian.org>, regressions@lists.linux.dev,
+ Jeremy Lincicome <w0jrl1@gmail.com>, Ulf Hansson <ulf.hansson@linaro.org>
+References: <aFW0ia8Jj4PQtFkS@eldamar.lan> <aFXCv50hth-mafOR@eldamar.lan>
+From: Shawn Lin <shawn.lin@rock-chips.com>
+In-Reply-To: <aFXCv50hth-mafOR@eldamar.lan>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGkpLH1ZJGE1PQhpOSUNKSUNWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+X-HM-Tid: 0a979c109e6709cckunm166c0bc88900f9
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6MAw6LAw5ATEwKCM5NzBONh4W
+	CSkaCxRVSlVKTE5LTUxLS0lOTkhIVTMWGhIXVQgTGgwVVRcSFTsJFBgQVhgTEgsIVRgUFkVZV1kS
+	C1lBWU5DVUlJVUxVSkpPWVdZCAFZQUlDSU83Bg++
+DKIM-Signature:a=rsa-sha256;
+	b=TMGbPh7nh9+DNCdsyZLDiucsAs/DU1OoHkwdIeDhQkX8XS0zJWrFNYMJNXtV6gfFUPNx83cvfprtGA8R8YbYDnbjAG/3jELTxopIJLBdMsl2FtGQXI5LQRtE8qxpOsOifPY5j3Js5bplcPXCLOJ+MZJ20rXn5YYMm1WmuR3Z16E=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=rRS7mqba5IZNQaTjq/rzjK6NiA1kw0qdSnaEJwzGxsg=;
+	h=date:mime-version:subject:message-id:from;
 
-On Mon, Jun 23, 2025 at 11:04:52AM +0200, Paul Chaignon wrote:
-> On Mon, Jun 23, 2025 at 10:46:47AM +0200, Greg Kroah-Hartman wrote:
-> > On Tue, Jun 17, 2025 at 05:49:21PM +0200, Paul Chaignon wrote:
-> > > [ Upstream commit ead7f9b8de65632ef8060b84b0c55049a33cfea1 ]
-> > > [ Note: Fixed conflict due to unrelated comment change. ]
-> > 
-> > This does not apply to the 5.15.y tree at all, due to:
-> > 
-> > > -		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, false);
-> > > +		inet_proto_csum_replace_by_diff(ptr, skb, to, is_pseudo, is_ipv6);
-> > 
-> > This chunk.
-> > 
-> > Can you fix that up and resend just this one?
++ Jonathan Liu
+
+在 2025/06/21 星期六 4:21, Salvatore Bonaccorso 写道:
+> On Fri, Jun 20, 2025 at 09:20:41PM +0200, Salvatore Bonaccorso wrote:
+>> Hi
+>>
+>> In Debian we got a regression report booting on a Lenovo IdeaPad 1
+>> 15ADA7 dropping finally into the initramfs shell after updating from
+>> 6.12.30 to 6.12.32 with messages before dropping into the intiramfs
+>> shell:
+>>
+>> mmc1: mmc_select_hs400 failed, error -110
+>> mmc1: error -110 whilst initialising MMC card
+>>
+>> The original report is at https://bugs.debian.org/1107979 and the
+>> reporter tested as well kernel up to 6.15.3 which still fails to boot.
+>>
+>> Another similar report landed with after the same version update as
+>> https://bugs.debian.org/1107979 .
+>>
+>> I only see three commits touching drivers/mmc between
+>> 6.12.30..6.12.32:
+>>
+>> 28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing parameters")
+>> 38828e0dc771 ("mmc: dw_mmc: add exynos7870 DW MMC support")
+>> 67bb2175095e ("mmc: host: Wait for Vdd to settle on card power off")
+>>
+>> I have found a potential similar issue reported in ArchLinux at
+>> https://bbs.archlinux.org/viewtopic.php?id=306024
+>>
+>> I have asked if we can get more information out of the boot, but maybe
+>> this regression report already rings  bell for you?
+
+Jonathan reported a similar failure regarding to hs400 on RK3399
+platform.
+https://lkml.org/lkml/2025/6/19/145
+
+Maybe you could try to revert :
+28306c58daf8 ("mmc: sdhci: Disable SD card clock before changing 
+parameters")
+
+>>
+>> #regzbot introduced v6.12.30..v6.12.32
+>> #regzbot link: https://bugs.debian.org/1107979
+>> #regzbot link: https://bbs.archlinux.org/viewtopic.php?id=306024
 > 
-> It requires the 1/2 patch to apply correctly. I've tested them on the
-> tip of 5.15.y (1c700860e8bc). Or is there some reason not to backport
-> the 1/2 patch?
+> *sigh* apologies for the "mess", the actual right report is
+> https://bugs.debian.org/1108065 (where #1107979 at least has
+> similarities or might have the same root cause).
+> 
+> #regzbot link: https://bugs.debian.org/1108065
+> 
+> Regards,
+> Salvatore
+> 
+> 
 
-Argh, my fault, I applied patch 1/2 to 5.4.y and 5.10.y, not 5.15.y.
-I'll go fix that up now, sorry for the noise.
-
-greg "drowning in backports" k-h
 
