@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-157968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3B7AE5663
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C55AE56CF
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1BF414C4F32
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 68E343BBC9A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:20:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 153C31F7580;
-	Mon, 23 Jun 2025 22:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDAEB225785;
+	Mon, 23 Jun 2025 22:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jb7M7L6+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gA66YJn+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C720616D9BF;
-	Mon, 23 Jun 2025 22:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7991016D9BF;
+	Mon, 23 Jun 2025 22:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717160; cv=none; b=qbwqGwp+07IbbMeM0PA3g/UG8HdbaYMdBG5Ugjhyx1bRmsBtZm3mqcx20QC7XeGLxdo4rfwQYOQw0cYN0vTscN0ZJuNI/kQXFtrnHgzrL0Mn2FsQvVJsPItvvUe3UoiXvBQVCRZNmA510PvV6lra1OLy7aBf2QaCf4WksLAyioc=
+	t=1750717241; cv=none; b=KbAYW0yUt8jKiR1LPmbj64mRSkBLjjJPIkoUi9DfMsDaUTo8sBTmle+RERialixiCTC6XwxBfQVBbKHFA5fpdM5HegaIo5bj2YVpS41ET0Aa9qzfKqEt29j4kZlyr/DVu4e7zsyVKhvy19G7w7fRjqEHZze2Uvs/an8tVtsd1y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717160; c=relaxed/simple;
-	bh=C1sXbatwffC38qBgbMRmhjGwJ8t6ozE0oCvKQDDCGCI=;
+	s=arc-20240116; t=1750717241; c=relaxed/simple;
+	bh=J4tlI1bxdpAVE5lnY85MIZ0bQES8xQ0pJbBwRSIi7s8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HXQTmheSpJIg1KrXuGZQitrAJoX7othgDPWmsdB962mp6MhrBASu+IkHSaU/L9ACxI9fKtHOB/d8FQSgIUSE779q0x5rYIQu+dz7uOIG668DRHbqLygckuVoztKdcUHamLexGQuZj2i72y/26KnQVlloy8DnesxDxqMrOSWBmvI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jb7M7L6+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E08DC4CEEA;
-	Mon, 23 Jun 2025 22:19:20 +0000 (UTC)
+	 MIME-Version:Content-Type; b=bh0nY1b6Nwi9HkEy7Im3JGQQ/XxJMa3u0cHQnxjECnarf19MIRxDLaPKCGWcrBMvNip9vkbATEoUiPRjAb823XZhKf+eEuvO1+XQjIQkMuQwqquyOpuKScJZlKRkl01uU2/KvUdpxnuLO1SIGHaAfZHYECFLeBjkw2lEULoTh9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gA66YJn+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12B6CC4CEEA;
+	Mon, 23 Jun 2025 22:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717160;
-	bh=C1sXbatwffC38qBgbMRmhjGwJ8t6ozE0oCvKQDDCGCI=;
+	s=korg; t=1750717241;
+	bh=J4tlI1bxdpAVE5lnY85MIZ0bQES8xQ0pJbBwRSIi7s8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jb7M7L6+Dc+qPMfPeMGIE1wfE6w+lvysz97iH9aKTmLSPcAWUR7hw3lyzWwqpud9T
-	 zaUuHwxtW2Sdu5+k5wLw04QnH8jkuaAiFTvBSPPz+iiUY5Of2/reptDqTMyLY9nJEV
-	 zcBErIRTlh26pgFtLoNQj1zGubKyoF6TNi8w7R5w=
+	b=gA66YJn+opucuGkI2fxuDJsUgRAJrA1TPhg9mwOaWBX/MLCSKubz4PTHG2tuA7kGd
+	 wwkm4cDjY7zh0iztFzVxJvh7hCsHn3zuQVm06+bc9y1AKws2j1w45jN2P7s7Z81STu
+	 PSiiSNWZezuyVtogMIVV5ly01S5TaRSqqL5kUqR0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Yan <felixonmars@archlinux.org>,
-	Eric Long <i@hack3r.moe>,
-	Jianfei Zhang <zhangjianfei3@gmail.com>,
-	Mingcong Bai <jeffbai@aosc.io>,
-	Minh Le <minhld139@gmail.com>,
-	Sicheng Zhu <Emmet_Z@outlook.com>,
-	Rong Zhang <i@rong.moe>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.12 320/414] platform/x86: ideapad-laptop: use usleep_range() for EC polling
-Date: Mon, 23 Jun 2025 15:07:37 +0200
-Message-ID: <20250623130649.996268172@linuxfoundation.org>
+	=?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
+	Stephen Smalley <stephen.smalley.work@gmail.com>,
+	Paul Moore <paul@paul-moore.com>
+Subject: [PATCH 6.12 321/414] selinux: fix selinux_xfrm_alloc_user() to set correct ctx_len
+Date: Mon, 23 Jun 2025 15:07:38 +0200
+Message-ID: <20250623130650.019961055@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -72,120 +67,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rong Zhang <i@rong.moe>
+From: Stephen Smalley <stephen.smalley.work@gmail.com>
 
-commit 5808c34216954cd832bd4b8bc52dfa287049122b upstream.
+commit 86c8db86af43f52f682e53a0f2f0828683be1e52 upstream.
 
-It was reported that ideapad-laptop sometimes causes some recent (since
-2024) Lenovo ThinkBook models shut down when:
- - suspending/resuming
- - closing/opening the lid
- - (dis)connecting a charger
- - reading/writing some sysfs properties, e.g., fan_mode, touchpad
- - pressing down some Fn keys, e.g., Brightness Up/Down (Fn+F5/F6)
- - (seldom) loading the kmod
+We should count the terminating NUL byte as part of the ctx_len.
+Otherwise, UBSAN logs a warning:
+  UBSAN: array-index-out-of-bounds in security/selinux/xfrm.c:99:14
+  index 60 is out of range for type 'char [*]'
 
-The issue has existed since the launch day of such models, and there
-have been some out-of-tree workarounds (see Link:) for the issue. One
-disables some functionalities, while another one simply shortens
-IDEAPAD_EC_TIMEOUT. The disabled functionalities have read_ec_data() in
-their call chains, which calls schedule() between each poll.
+The allocation itself is correct so there is no actual out of bounds
+indexing, just a warning.
 
-It turns out that these models suffer from the indeterminacy of
-schedule() because of their low tolerance for being polled too
-frequently. Sometimes schedule() returns too soon due to the lack of
-ready tasks, causing the margin between two polls to be too short.
-In this case, the command is somehow aborted, and too many subsequent
-polls (they poll for "nothing!") may eventually break the state machine
-in the EC, resulting in a hard shutdown. This explains why shortening
-IDEAPAD_EC_TIMEOUT works around the issue - it reduces the total number
-of polls sent to the EC.
-
-Even when it doesn't lead to a shutdown, frequent polls may also disturb
-the ongoing operation and notably delay (+ 10-20ms) the availability of
-EC response. This phenomenon is unlikely to be exclusive to the models
-mentioned above, so dropping the schedule() manner should also slightly
-improve the responsiveness of various models.
-
-Fix these issues by migrating to usleep_range(150, 300). The interval is
-chosen to add some margin to the minimal 50us and considering EC
-responses are usually available after 150-2500us based on my test. It
-should be enough to fix these issues on all models subject to the EC bug
-without introducing latency on other models.
-
-Tested on ThinkBook 14 G7+ ASP and solved both issues. No regression was
-introduced in the test on a model without the EC bug (ThinkBook X IMH,
-thanks Eric).
-
-Link: https://github.com/ty2/ideapad-laptop-tb2024g6plus/commit/6c5db18c9e8109873c2c90a7d2d7f552148f7ad4
-Link: https://github.com/ferstar/ideapad-laptop-tb/commit/42d1e68e5009529d31bd23f978f636f79c023e80
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218771
-Fixes: 6a09f21dd1e2 ("ideapad: add ACPI helpers")
 Cc: stable@vger.kernel.org
-Tested-by: Felix Yan <felixonmars@archlinux.org>
-Tested-by: Eric Long <i@hack3r.moe>
-Tested-by: Jianfei Zhang <zhangjianfei3@gmail.com>
-Tested-by: Mingcong Bai <jeffbai@aosc.io>
-Tested-by: Minh Le <minhld139@gmail.com>
-Tested-by: Sicheng Zhu <Emmet_Z@outlook.com>
-Signed-off-by: Rong Zhang <i@rong.moe>
-Link: https://lore.kernel.org/r/20250525201833.37939-1-i@rong.moe
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Suggested-by: Christian Göttsche <cgzones@googlemail.com>
+Link: https://lore.kernel.org/selinux/CAEjxPJ6tA5+LxsGfOJokzdPeRomBHjKLBVR6zbrg+_w3ZZbM3A@mail.gmail.com/
+Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |   19 +++++++++++++++++--
- 1 file changed, 17 insertions(+), 2 deletions(-)
+ security/selinux/xfrm.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -15,6 +15,7 @@
- #include <linux/bug.h>
- #include <linux/cleanup.h>
- #include <linux/debugfs.h>
-+#include <linux/delay.h>
- #include <linux/device.h>
- #include <linux/dmi.h>
- #include <linux/i8042.h>
-@@ -267,6 +268,20 @@ static void ideapad_shared_exit(struct i
-  */
- #define IDEAPAD_EC_TIMEOUT 200 /* in ms */
+--- a/security/selinux/xfrm.c
++++ b/security/selinux/xfrm.c
+@@ -94,7 +94,7 @@ static int selinux_xfrm_alloc_user(struc
  
-+/*
-+ * Some models (e.g., ThinkBook since 2024) have a low tolerance for being
-+ * polled too frequently. Doing so may break the state machine in the EC,
-+ * resulting in a hard shutdown.
-+ *
-+ * It is also observed that frequent polls may disturb the ongoing operation
-+ * and notably delay the availability of EC response.
-+ *
-+ * These values are used as the delay before the first poll and the interval
-+ * between subsequent polls to solve the above issues.
-+ */
-+#define IDEAPAD_EC_POLL_MIN_US 150
-+#define IDEAPAD_EC_POLL_MAX_US 300
-+
- static int eval_int(acpi_handle handle, const char *name, unsigned long *res)
- {
- 	unsigned long long result;
-@@ -383,7 +398,7 @@ static int read_ec_data(acpi_handle hand
- 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
- 
- 	while (time_before(jiffies, end_jiffies)) {
--		schedule();
-+		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
- 
- 		err = eval_vpcr(handle, 1, &val);
- 		if (err)
-@@ -414,7 +429,7 @@ static int write_ec_cmd(acpi_handle hand
- 	end_jiffies = jiffies + msecs_to_jiffies(IDEAPAD_EC_TIMEOUT) + 1;
- 
- 	while (time_before(jiffies, end_jiffies)) {
--		schedule();
-+		usleep_range(IDEAPAD_EC_POLL_MIN_US, IDEAPAD_EC_POLL_MAX_US);
- 
- 		err = eval_vpcr(handle, 1, &val);
- 		if (err)
+ 	ctx->ctx_doi = XFRM_SC_DOI_LSM;
+ 	ctx->ctx_alg = XFRM_SC_ALG_SELINUX;
+-	ctx->ctx_len = str_len;
++	ctx->ctx_len = str_len + 1;
+ 	memcpy(ctx->ctx_str, &uctx[1], str_len);
+ 	ctx->ctx_str[str_len] = '\0';
+ 	rc = security_context_to_sid(ctx->ctx_str, str_len,
 
 
 
