@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-157572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4F00AE54A0
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F309AE53B3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 692EA447E1C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 921D5445BCE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6039022173D;
-	Mon, 23 Jun 2025 22:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818D8225761;
+	Mon, 23 Jun 2025 21:55:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LSXwWKdz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jthC0IKo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCD41D86DC;
-	Mon, 23 Jun 2025 22:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4000C223DD0;
+	Mon, 23 Jun 2025 21:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716196; cv=none; b=r0DL+j9xYrAdCGqBgITzeBgmZHuUas8lSrlxyjXR6AJFF3LtqERoZI1jhmlXSWIiOTKLN5hAKEWP76COYO1/ydWC4s1qqFlriXmqGK610dJjlfuBx/3TDNbJPKFtdjZ24gmOihYgYP3Ptu/VpEjgzGIT2RRAdB4jDPpKQqJ+yOk=
+	t=1750715727; cv=none; b=kecMbOaB32QU6HtOuPWJJ+2Pd1JZsPMYV+oxxIL6mot9I7tPAQTFVTqFqHjP6/A5YvwvIHBxVIO2mVfue6qAGM7KXX3l0XzhEzONXa0DJCwdOXS1bKjEIrbLRV99oqvrLAWJXhTcFnZZpEeq/5hDq40LKS+yjseaXOPG6lzDXNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716196; c=relaxed/simple;
-	bh=tAG6K8G0bQ7qKwL+eSJcO9IWrvk+CmiMBoVSE4PDqgc=;
+	s=arc-20240116; t=1750715727; c=relaxed/simple;
+	bh=FUJzrs+UnRYI3NngdG3yT+LGJ62VpfSFgKCpLfVZXng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xo4U999j7OTrdDosQ4kp/rD7zF77rtDptjNGIYotOxTbR72lb+qTXflCUX7Vb1xTwbUsL3MTVUwjqlzDYRi1d33Zp1d1e333LzvknFevVzdmyPIuFsLNw7ruBKVnzZMpmvpXXvNLqLPBxBxbuWcxj2JfpJJLXfaWXqUhgtdLxCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LSXwWKdz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAD48C4CEEA;
-	Mon, 23 Jun 2025 22:03:15 +0000 (UTC)
+	 MIME-Version; b=ZfdZRImlDn3gefesV9A5Qg4iDcLtjEjaQ4tRQJAn0Fj4jLTl0b3HsfINzGBWJfgQZfzF7S5BONYJPUo4kSU5HlTuOJ9DV4XROQlXsGFh6icjvDYw4s7GthqXdJvU8OJbrE1b0KE1nJlaQTJybthQWYCDK+HOahWF6JIovI/RyeI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jthC0IKo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB19C4CEEA;
+	Mon, 23 Jun 2025 21:55:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716196;
-	bh=tAG6K8G0bQ7qKwL+eSJcO9IWrvk+CmiMBoVSE4PDqgc=;
+	s=korg; t=1750715726;
+	bh=FUJzrs+UnRYI3NngdG3yT+LGJ62VpfSFgKCpLfVZXng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LSXwWKdzpZMgal3YO9VJKz0vM0iwsvKeom6TzScCdhm1gA4oabdj3dPmBbt5QShxo
-	 MXgNbUfDQ/+yvfY9fylo46iMuGp/7MRO/4YMVt8yS18uzn+Qom4UoEv1+cQOn73Dkh
-	 KSMWhPtMBrUaCz4CGMsHFVgtV0kvaV44BRo0zSDQ=
+	b=jthC0IKoAxBhsmXtJo38f2uQNgaMAVP6Wy8gzxiVNQwvs5PJ4lNERtUGGs/tYYgeg
+	 +KZCBQQ8JluDiCjWuDeJ7QuAXjllb9T+iTYbjMvHkikiEwny6joOvcmAt/DDgaDgfJ
+	 N+Pxu8cpTyubh3hpywrnyXIqqQT3ENXR5vyg8hgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyungwook Boo <bookyungwook@gmail.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.15 334/411] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.6 217/290] cifs: do not disable interface polling on failure
 Date: Mon, 23 Jun 2025 15:07:58 +0200
-Message-ID: <20250623130642.056912685@linuxfoundation.org>
+Message-ID: <20250623130633.456292482@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,53 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyungwook Boo <bookyungwook@gmail.com>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
+commit 42ca547b13a20e7cbb04fbdf8d5f089ac4bb35b7 upstream.
 
-When the device sends a specific input, an integer underflow can occur, leading
-to MMIO write access to an invalid page.
+When a server has multichannel enabled, we keep polling the server
+for interfaces periodically. However, when this query fails, we
+disable the polling. This can be problematic as it takes away the
+chance for the server to start advertizing again.
 
-Prevent the integer underflow by changing the type of related variables.
+This change reschedules the delayed work, even if the current call
+failed. That way, multichannel sessions can recover.
 
-Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
-Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/client/connect.c |    6 +-----
+ fs/smb/client/smb2pdu.c |    9 +++++----
+ 2 files changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
-index 99dd8187476ba..fe8e6db53f23b 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_common.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
-@@ -1061,10 +1061,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
- void i40e_clear_hw(struct i40e_hw *hw)
- {
- 	u32 num_queues, base_queue;
--	u32 num_pf_int;
--	u32 num_vf_int;
-+	s32 num_pf_int;
-+	s32 num_vf_int;
- 	u32 num_vfs;
--	u32 i, j;
-+	s32 i;
-+	u32 j;
- 	u32 val;
- 	u32 eol = 0x7ff;
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -132,13 +132,9 @@ static void smb2_query_server_interfaces
+ 	rc = server->ops->query_server_interfaces(xid, tcon, false);
+ 	free_xid(xid);
  
--- 
-2.39.5
-
+-	if (rc) {
+-		if (rc == -EOPNOTSUPP)
+-			return;
+-
++	if (rc)
+ 		cifs_dbg(FYI, "%s: failed to query server interfaces: %d\n",
+ 				__func__, rc);
+-	}
+ 
+ 	queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+ 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
+--- a/fs/smb/client/smb2pdu.c
++++ b/fs/smb/client/smb2pdu.c
+@@ -437,6 +437,10 @@ skip_sess_setup:
+ 		free_xid(xid);
+ 		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
+ 
++		/* regardless of rc value, setup polling */
++		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
++				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
++
+ 		mutex_unlock(&ses->session_mutex);
+ 
+ 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
+@@ -457,11 +461,8 @@ skip_sess_setup:
+ 		if (ses->chan_max > ses->chan_count &&
+ 		    ses->iface_count &&
+ 		    !SERVER_IS_CHAN(server)) {
+-			if (ses->chan_count == 1) {
++			if (ses->chan_count == 1)
+ 				cifs_server_dbg(VFS, "supports multichannel now\n");
+-				queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
+-						 (SMB_INTERFACE_POLL_INTERVAL * HZ));
+-			}
+ 
+ 			cifs_try_adding_channels(ses);
+ 		}
 
 
 
