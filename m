@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-157374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E97AE53AB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ACAEAE4E87
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 936D4445DCB
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 136687A26B4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:05:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90206223DEE;
-	Mon, 23 Jun 2025 21:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 134A81EE019;
+	Mon, 23 Jun 2025 21:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoVFODgv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUE0L9eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3C41AD3FA;
-	Mon, 23 Jun 2025 21:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0D76219E0;
+	Mon, 23 Jun 2025 21:06:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715712; cv=none; b=Q4IAVtH+E3sxOoVfoNCwa3d8wdGRVlk+ynXSmv29J1q9iDRYYUWsUnRF75upnHT1Qqnu4+N37BxT6uVJ5X6k0GL2IUcxWOIRfx6fRduHO5EZ03GW0wjCZIdYYU+nxH1xyiZLIfnl23YQExmQ+cKf/Zo81cIYO9oDeDc2XmIF62c=
+	t=1750712797; cv=none; b=A7nFovlJq6xCA4b8FvdPuTyip2/aGEhGABJGzOVQbuHe32zEFoTU4E2lbEVp0DAKwooXkNUVft353cklo5R5LjzFu2k8j/hVL9k055mqNrLi/vWjwf0c9LxUNkqIOUx11BC+ro8nr4Gqjj+IlOTL6avs3b4iiQSHxHbXqlZRWZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715712; c=relaxed/simple;
-	bh=UKPVukJpuqMmgxIzC51NH6QLjcxaGqvdb1KwOFuFggM=;
+	s=arc-20240116; t=1750712797; c=relaxed/simple;
+	bh=CbDFNP8mI1mSqzLDczDPsceK9QRSoHIz+aSOP0yxTuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UvM99Ff/J1N+z6CIWEv3G5I6puiORbioVFpONJGZKYFulEh6meF5ACh12S26pPeAfcJURzfzfla94tyignO9E8949idM9gGPyUieTqTUqKRgtIdVcmT+1+E2aRT0azLt7s2tcQ4ta0vD7AFYcNiWo4p+udy7YwDl06LjCCFxy0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoVFODgv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8603C4CEEA;
-	Mon, 23 Jun 2025 21:55:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gEotU0t/OCvlUUf4MnpuLLlP9wCv3fnmxivpDRMyF2KfqlZz1++6tuWDqCUEBKkIjKfZiQlXwIagQau3eF3rP+p/KPt79iTCv6lCv+jgt1N9iSVcOFKg5wkBdbdty5GSVRp/CrLXpwErMFtLFP9mkm4yn5EUY2K+bxAtSBWrw7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUE0L9eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED079C4CEEA;
+	Mon, 23 Jun 2025 21:06:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715712;
-	bh=UKPVukJpuqMmgxIzC51NH6QLjcxaGqvdb1KwOFuFggM=;
+	s=korg; t=1750712797;
+	bh=CbDFNP8mI1mSqzLDczDPsceK9QRSoHIz+aSOP0yxTuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoVFODgvYgymDEH0ivmLy+Pvj4l1tB3PLWYzY9g1loZdoPSU0RUfOx7zA2FAa8yWH
-	 TL08j2bPGph90aFgVYEHVbdew7JysatCg5cvrrUuRVElH8nC2zbWhE5oi8BaQH31Vp
-	 NcG7ais2OlK6OWIyAISrIyl74+HqVWmhcCrtuf68=
+	b=HUE0L9ebOTKYAYqtyZiy9py7zGKtKg6QBsWlRUm6DGcYzwaHcPCtfHw2Ag520VLsX
+	 aWS/tHUiq7u09wbvfFVw6qemadFERVh6Ta495ATDptsb/cIPCIcgHu5JK4jTw84M6o
+	 e1rAP10FEGTntr7ASshfw5psr6QGbMroN/Ryw0GA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianbo Liu <jianbol@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Alex Lazar <alazar@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 257/508] net/mlx5e: Fix leak of Geneve TLV option object
+Subject: [PATCH 5.10 101/355] spi: bcm63xx-hsspi: fix shared reset
 Date: Mon, 23 Jun 2025 15:05:02 +0200
-Message-ID: <20250623130651.575153968@linuxfoundation.org>
+Message-ID: <20250623130629.820855867@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jianbo Liu <jianbol@nvidia.com>
+From: Álvaro Fernández Rojas <noltari@gmail.com>
 
-[ Upstream commit aa9c44b842096c553871bc68a8cebc7861fa192b ]
+[ Upstream commit 3d6d84c8f2f66d3fd6a43a1e2ce8e6b54c573960 ]
 
-Previously, a unique tunnel id was added for the matching on TC
-non-zero chains, to support inner header rewrite with goto action.
-Later, it was used to support VF tunnel offload for vxlan, then for
-Geneve and GRE. To support VF tunnel, a temporary mlx5_flow_spec is
-used to parse tunnel options. For Geneve, if there is TLV option, a
-object is created, or refcnt is added if already exists. But the
-temporary mlx5_flow_spec is directly freed after parsing, which causes
-the leak because no information regarding the object is saved in
-flow's mlx5_flow_spec, which is used to free the object when deleting
-the flow.
+Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
+and HSSPI controllers, so reset shouldn't be exclusive.
 
-To fix the leak, call mlx5_geneve_tlv_option_del() before free the
-temporary spec if it has TLV object.
-
-Fixes: 521933cdc4aa ("net/mlx5e: Support Geneve and GRE with VF tunnel offload")
-Signed-off-by: Jianbo Liu <jianbol@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Alex Lazar <alazar@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20250610151514.1094735-9-mbloch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0eeadddbf09a ("spi: bcm63xx-hsspi: add reset support")
+Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
+Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20250529130915.2519590-3-noltari@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_tc.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/spi/spi-bcm63xx-hsspi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-index 43239555f7850..05888942ef276 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_tc.c
-@@ -1873,9 +1873,8 @@ mlx5e_tc_add_fdb_flow(struct mlx5e_priv *priv,
- 	return err;
- }
+diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
+index 02f56fc001b47..7d8e5c66f6d17 100644
+--- a/drivers/spi/spi-bcm63xx-hsspi.c
++++ b/drivers/spi/spi-bcm63xx-hsspi.c
+@@ -357,7 +357,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
+ 	if (IS_ERR(clk))
+ 		return PTR_ERR(clk);
  
--static bool mlx5_flow_has_geneve_opt(struct mlx5e_tc_flow *flow)
-+static bool mlx5_flow_has_geneve_opt(struct mlx5_flow_spec *spec)
- {
--	struct mlx5_flow_spec *spec = &flow->attr->parse_attr->spec;
- 	void *headers_v = MLX5_ADDR_OF(fte_match_param,
- 				       spec->match_value,
- 				       misc_parameters_3);
-@@ -1907,7 +1906,7 @@ static void mlx5e_tc_del_fdb_flow(struct mlx5e_priv *priv,
- 	}
- 	complete_all(&flow->del_hw_done);
+-	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
++	reset = devm_reset_control_get_optional_shared(dev, NULL);
+ 	if (IS_ERR(reset))
+ 		return PTR_ERR(reset);
  
--	if (mlx5_flow_has_geneve_opt(flow))
-+	if (mlx5_flow_has_geneve_opt(&attr->parse_attr->spec))
- 		mlx5_geneve_tlv_option_del(priv->mdev->geneve);
- 
- 	mlx5_eswitch_del_vlan_action(esw, attr);
-@@ -2415,12 +2414,13 @@ static int parse_tunnel_attr(struct mlx5e_priv *priv,
- 
- 		err = mlx5e_tc_tun_parse(filter_dev, priv, tmp_spec, f, match_level);
- 		if (err) {
--			kvfree(tmp_spec);
- 			NL_SET_ERR_MSG_MOD(extack, "Failed to parse tunnel attributes");
- 			netdev_warn(priv->netdev, "Failed to parse tunnel attributes");
--			return err;
-+		} else {
-+			err = mlx5e_tc_set_attr_rx_tun(flow, tmp_spec);
- 		}
--		err = mlx5e_tc_set_attr_rx_tun(flow, tmp_spec);
-+		if (mlx5_flow_has_geneve_opt(tmp_spec))
-+			mlx5_geneve_tlv_option_del(priv->mdev->geneve);
- 		kvfree(tmp_spec);
- 		if (err)
- 			return err;
 -- 
 2.39.5
 
