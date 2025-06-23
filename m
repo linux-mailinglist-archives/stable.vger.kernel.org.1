@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-157567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA43AE549B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25FC1AE54AD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03E091BC1B25
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C92BB171E0A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 413651D86DC;
-	Mon, 23 Jun 2025 22:03:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7DF621D3F6;
+	Mon, 23 Jun 2025 22:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeI7aq7Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfsBuEaX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3C3E4C74;
-	Mon, 23 Jun 2025 22:03:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8626A3FB1B;
+	Mon, 23 Jun 2025 22:03:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716184; cv=none; b=rVAQRmYKrPuhNl1bf9oZtIlC9lma8zXD3XYu72vGV0tsGw8ufF7WnHvlHugxv1vfHTkhJJGeLeLA2fnmBBzu+wIVUexOu8fafPBm5Xiw42vgp4d/O8zmOqG0JUFj1KotLC5RX/SaOEqhKs0jT9EjvzBnFuJZ/+k1oTPX+rzEOKk=
+	t=1750716198; cv=none; b=YoziW9gQ6H3sLIY8BPY5ag6i4OTgHHmc03jNPujkj2o07e36n2DONPA/wvXYpZwvBVrnCHHZPOSORHZwK7VaB0EYfUA/gkvoRZfQHBTN8xmKEDU9+2LI+tAlRMESoU4uAimhpN41OPHEGqAY7GaTY+P6cNkzwIhA5+WLLTygQ1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716184; c=relaxed/simple;
-	bh=+4fwdKmN8JiVBkSkXH8EhxsUVLKNCNVhQIcdRWD9+z8=;
+	s=arc-20240116; t=1750716198; c=relaxed/simple;
+	bh=lA6n5MB+IAjSaC+XOvscROuOwovHHiUnd/lporEQeww=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OKrknff4t4pPAtoshV6QtMy4NkQXcikOxhVyzhFe/lF/ZODc7o9pwfub0va9GxXs9Q7cZGKCoK2xn86zLRm6yRLX6N25saLjgqQ6R0udkb0S9aOjNhwE3Qw7/X+1QiGsardUKcLi4r6/fJxqQUtgz+Dw523Lblm8H5DEloPTZOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeI7aq7Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8910DC4CEEA;
-	Mon, 23 Jun 2025 22:03:03 +0000 (UTC)
+	 MIME-Version; b=Y9j8nypgQi6k9bwg0ItpsqBi9rOtqU7zUz5rPWs0SsAqaQdSCP2icDrs3Vubvt3PUWLP4H67F2e0eF8Uos7XiUAV0t3fq662KRXo2w65BJHMaauB0ZrYQPFbUS1P/jac/NhaGREXfYuefhfbBAptpWBPU36UR/h5DvkRTcFCXF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfsBuEaX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD42C4CEEA;
+	Mon, 23 Jun 2025 22:03:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716183;
-	bh=+4fwdKmN8JiVBkSkXH8EhxsUVLKNCNVhQIcdRWD9+z8=;
+	s=korg; t=1750716198;
+	bh=lA6n5MB+IAjSaC+XOvscROuOwovHHiUnd/lporEQeww=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeI7aq7YU5x30s+6LOBZeiPR+N+6eouZnx8OhBojpO8wwl0YJ3l1auwNo1RsULpzI
-	 DST8gWK7cN8naFU7sbAMj3XBQMspgdtEdWfOBUb8SL7Ulqi6c1JDLZso7bdWiYFDoI
-	 sB4K5q2q1SyJbjXRZ5a5gSJIRjs420j55PoqaJFk=
+	b=pfsBuEaX7GAZuFPh5mgbvPDGCRnkbE9aT5KaeWN5/vYO69J4duUjzR1UWfEWEane1
+	 voU+Ncyj0XZUKQhSyf8y1FhX4aEb/oK8H+DXyjHQYMfjcw/+MWwrgJU98br7Yj+6A8
+	 MUCxBs+EJEcyhm9zLVt6y197PcGTc8I6M4DFoakY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Wei <weiwei.danny@bytedance.com>,
-	Aaron Lu <ziqianlu@bytedance.com>
-Subject: [PATCH 5.10 353/355] Revert "bpf: allow precision tracking for programs with subprogs"
-Date: Mon, 23 Jun 2025 15:09:14 +0200
-Message-ID: <20250623130637.331791675@linuxfoundation.org>
+	Baisheng Gao <baisheng.gao@unisoc.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 354/355] perf: Fix sample vs do_exit()
+Date: Mon, 23 Jun 2025 15:09:15 +0200
+Message-ID: <20250623130637.359641556@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -65,86 +67,103 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Aaron Lu <ziqianlu@bytedance.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-This reverts commit 2474ec58b96d8a028b046beabdf49f5475eefcf8 which is
-commit be2ef8161572ec1973124ebc50f56dafc2925e07 upstream.
+[ Upstream commit 4f6fc782128355931527cefe3eb45338abd8ab39 ]
 
-The backport of bpf precision tracking related changes has caused bpf
-verifier to panic while loading some certain bpf prog so revert them.
+Baisheng Gao reported an ARM64 crash, which Mark decoded as being a
+synchronous external abort -- most likely due to trying to access
+MMIO in bad ways.
 
-Link: https://lkml.kernel.org/r/20250605070921.GA3795@bytedance/
-Reported-by: Wei Wei <weiwei.danny@bytedance.com>
-Signed-off-by: Aaron Lu <ziqianlu@bytedance.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The crash further shows perf trying to do a user stack sample while in
+exit_mmap()'s tlb_finish_mmu() -- i.e. while tearing down the address
+space it is trying to access.
+
+It turns out that we stop perf after we tear down the userspace mm; a
+receipie for disaster, since perf likes to access userspace for
+various reasons.
+
+Flip this order by moving up where we stop perf in do_exit().
+
+Additionally, harden PERF_SAMPLE_CALLCHAIN and PERF_SAMPLE_STACK_USER
+to abort when the current task does not have an mm (exit_mm() makes
+sure to set current->mm = NULL; before commencing with the actual
+teardown). Such that CPU wide events don't trip on this same problem.
+
+Fixes: c5ebcedb566e ("perf: Add ability to attach user stack dump to sample")
+Reported-by: Baisheng Gao <baisheng.gao@unisoc.com>
+Suggested-by: Mark Rutland <mark.rutland@arm.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20250605110815.GQ39944@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c |   35 +----------------------------------
- 1 file changed, 1 insertion(+), 34 deletions(-)
+ kernel/events/core.c |  7 +++++++
+ kernel/exit.c        | 17 +++++++++--------
+ 2 files changed, 16 insertions(+), 8 deletions(-)
 
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -1359,7 +1359,7 @@ static void __mark_reg_unknown(const str
- 	reg->type = SCALAR_VALUE;
- 	reg->var_off = tnum_unknown;
- 	reg->frameno = 0;
--	reg->precise = !env->bpf_capable;
-+	reg->precise = env->subprog_cnt > 1 || !env->bpf_capable;
- 	__mark_reg_unbounded(reg);
- }
- 
-@@ -2102,42 +2102,12 @@ static int __mark_chain_precision(struct
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index 21f56dd6c05a3..b133abe23a4b1 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -6628,6 +6628,10 @@ perf_sample_ustack_size(u16 stack_size, u16 header_size,
+ 	if (!regs)
  		return 0;
- 	if (!reg_mask && !stack_mask)
- 		return 0;
--
- 	for (;;) {
- 		DECLARE_BITMAP(mask, 64);
- 		u32 history = st->jmp_history_cnt;
  
- 		if (env->log.level & BPF_LOG_LEVEL)
- 			verbose(env, "last_idx %d first_idx %d\n", last_idx, first_idx);
--
--		if (last_idx < 0) {
--			/* we are at the entry into subprog, which
--			 * is expected for global funcs, but only if
--			 * requested precise registers are R1-R5
--			 * (which are global func's input arguments)
--			 */
--			if (st->curframe == 0 &&
--			    st->frame[0]->subprogno > 0 &&
--			    st->frame[0]->callsite == BPF_MAIN_FUNC &&
--			    stack_mask == 0 && (reg_mask & ~0x3e) == 0) {
--				bitmap_from_u64(mask, reg_mask);
--				for_each_set_bit(i, mask, 32) {
--					reg = &st->frame[0]->regs[i];
--					if (reg->type != SCALAR_VALUE) {
--						reg_mask &= ~(1u << i);
--						continue;
--					}
--					reg->precise = true;
--				}
--				return 0;
--			}
--
--			verbose(env, "BUG backtracing func entry subprog %d reg_mask %x stack_mask %llx\n",
--				st->frame[0]->subprogno, reg_mask, stack_mask);
--			WARN_ONCE(1, "verifier backtracking bug");
--			return -EFAULT;
--		}
--
- 		for (i = last_idx;;) {
- 			if (skip_first) {
- 				err = 0;
-@@ -11896,9 +11866,6 @@ static int do_check_common(struct bpf_ve
- 			0 /* frameno */,
- 			subprog);
++	/* No mm, no stack, no dump. */
++	if (!current->mm)
++		return 0;
++
+ 	/*
+ 	 * Check if we fit in with the requested stack size into the:
+ 	 * - TASK_SIZE
+@@ -7228,6 +7232,9 @@ perf_callchain(struct perf_event *event, struct pt_regs *regs)
+ 	const u32 max_stack = event->attr.sample_max_stack;
+ 	struct perf_callchain_entry *callchain;
  
--	state->first_insn_idx = env->subprog_info[subprog].start;
--	state->last_insn_idx = -1;
++	if (!current->mm)
++		user = false;
++
+ 	if (!kernel && !user)
+ 		return &__empty_callchain;
+ 
+diff --git a/kernel/exit.c b/kernel/exit.c
+index af9c8e794e4d7..cfdf2d275bba8 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -844,6 +844,15 @@ void __noreturn do_exit(long code)
+ 	tsk->exit_code = code;
+ 	taskstats_exit(tsk, group_dead);
+ 
++	/*
++	 * Since sampling can touch ->mm, make sure to stop everything before we
++	 * tear it down.
++	 *
++	 * Also flushes inherited counters to the parent - before the parent
++	 * gets woken up by child-exit notifications.
++	 */
++	perf_event_exit_task(tsk);
++
+ 	exit_mm();
+ 
+ 	if (group_dead)
+@@ -860,14 +869,6 @@ void __noreturn do_exit(long code)
+ 	exit_task_work(tsk);
+ 	exit_thread(tsk);
+ 
+-	/*
+-	 * Flush inherited counters to the parent - before the parent
+-	 * gets woken up by child-exit notifications.
+-	 *
+-	 * because of cgroup mode, must be called before cgroup_exit()
+-	 */
+-	perf_event_exit_task(tsk);
 -
- 	regs = state->frame[state->curframe]->regs;
- 	if (subprog || env->prog->type == BPF_PROG_TYPE_EXT) {
- 		ret = btf_prepare_func_args(env, subprog, regs);
+ 	sched_autogroup_exit_task(tsk);
+ 	cgroup_exit(tsk);
+ 
+-- 
+2.39.5
+
 
 
 
