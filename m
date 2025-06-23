@@ -1,61 +1,58 @@
-Return-Path: <stable+bounces-156020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84E42AE449A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D8A3AE44EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CB0267AB7C8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A257A165C76
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:41:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BB6E254B09;
-	Mon, 23 Jun 2025 13:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A23E416419;
+	Mon, 23 Jun 2025 13:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+QPFd/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eo13GTJG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 173CA24DCFD;
-	Mon, 23 Jun 2025 13:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CBF2347DD;
+	Mon, 23 Jun 2025 13:41:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685941; cv=none; b=mwdqFlqgFDBqvfhR6+0ZqLTn3AG1FP+2WlXOY9YOcBGS+LwXeDnRyvnxmVY8YGQDVby9EUfVQ0tRnF4MhaNEKbCXWEHxu05ZcAvaeOmGw7cJA7Kiu1RzCsNgHYRIdgCRz6UZ49cViSpb7s5+2l+kVower4dR3Gy4taR5LtffYyE=
+	t=1750686084; cv=none; b=A75jLJdhu4TTgi2Xg0PQ3RZHk908NzClxoJ2uxHSQm6e1GenhfObHmdYI9lCVMnkhxop62Eumtc1ZI4vMpUf3o87wHWFAJz+f7cXm9FpeUCY5Lf8vk6YaomeZaXzn062OCMT5kIIREpl/cObilTvAe9bi+C7YmHGxP8j82tpEKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685941; c=relaxed/simple;
-	bh=CG5Dz6HYwuQh+9pVqNHMJTOng9Pt2g6Kpo3AkjDgZmo=;
+	s=arc-20240116; t=1750686084; c=relaxed/simple;
+	bh=764WuH6qDSrnPzxYIawVAmLiPy3J/Ix3viUtdvWHenc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufkdeVk4NaAnLhS/3YaTipFn0OkN2xEeqgmZfeUL5QCEWHcmmdSSU5nm9/BdEBPz8r7aM/dQXVS94FHEZo3kzdwR23dU7pw4HhE0Ed27MFl7FGK7io13zthted5J/yeiHSAX+ac2+n7zKLAh8h9yYOd6OKrHH019SdOzxVnww9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+QPFd/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FC7AC4CEEA;
-	Mon, 23 Jun 2025 13:39:00 +0000 (UTC)
+	 MIME-Version; b=iu/gZhbDeqsb8XCM33whTb8BenD5z/0uDQcXQfLAVHgQB9ynmWlI7t4lz2kaTpd03/xoNH4f/XqVNv0T8q/26BucR4uIq28YrHp8zDy5ga/tSG55oS9Nk5WlM6Nth2vnAnALb20Np9N0Vio0grAUzyA+3iGjzllJULFBJPEgRuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eo13GTJG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5F06C4CEEA;
+	Mon, 23 Jun 2025 13:41:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685941;
-	bh=CG5Dz6HYwuQh+9pVqNHMJTOng9Pt2g6Kpo3AkjDgZmo=;
+	s=korg; t=1750686084;
+	bh=764WuH6qDSrnPzxYIawVAmLiPy3J/Ix3viUtdvWHenc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t+QPFd/BZo/wA9urpJ/3Lv69kBWP6N1qborXILSfw+N+aSLHHM8SKAyFExyoJ8MGN
-	 JcZGJFqDA/oCeyoMHNa3VZ3dOD8jpnf1cH594gSPz1X4WCF6ozlIaRqHATYtcOJ9yC
-	 dBl6kBWzbC+fndmwjqUwTAA2X/IRjOggfLRwQSqE=
+	b=eo13GTJGiYMb7SrZ4crLfwqSj9Vl6NcfiK9jewtqZT5use5e2cpt9n0cPuV7Xmz3G
+	 IVOecurb7hsCy/HdZZAjKHk3obEAlSiCeDD9fk50WN5N3PsJkYC8hcI3IUwz0+i8bm
+	 3bRjxoNUPh4tQ+gyUpInExvO9Eq0zeb4CnWh38JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Leo Yan <leo.yan@arm.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	James Clark <james.clark@linaro.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/355] perf tests switch-tracking: Fix timestamp comparison
+	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.6 021/290] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
 Date: Mon, 23 Jun 2025 15:04:42 +0200
-Message-ID: <20250623130629.248667020@linuxfoundation.org>
+Message-ID: <20250623130627.620007744@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,107 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 628e124404b3db5e10e17228e680a2999018ab33 ]
+commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
 
-The test might fail on the Arm64 platform with the error:
+Since handle->h_transaction may be a NULL pointer, so we should change it
+to call is_handle_aborted(handle) first before dereferencing it.
 
-  # perf test -vvv "Track with sched_switch"
-  Missing sched_switch events
-  #
+And the following data-race was reported in my fuzzer:
 
-The issue is caused by incorrect handling of timestamp comparisons. The
-comparison result, a signed 64-bit value, was being directly cast to an
-int, leading to incorrect sorting for sched events.
+==================================================================
+BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
 
-The case does not fail everytime, usually I can trigger the failure
-after run 20 ~ 30 times:
+write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
+ jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
 
-  # while true; do perf test "Track with sched_switch"; done
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : FAILED!
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : FAILED!
-  106: Track with sched_switch                                         : Ok
-  106: Track with sched_switch                                         : Ok
+read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
+ jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
+ __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
+ ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
+ ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
+ __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
+ ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
+....
 
-I used cross compiler to build Perf tool on my host machine and tested on
-Debian / Juno board.  Generally, I think this issue is not very specific
-to GCC versions.  As both internal CI and my local env can reproduce the
-issue.
+value changed: 0x00000000 -> 0x00000001
+==================================================================
 
-My Host Build compiler:
+This issue is caused by missing data-race annotation for jh->b_modified.
+Therefore, the missing annotation needs to be added.
 
-  # aarch64-linux-gnu-gcc --version
-  aarch64-linux-gnu-gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
-
-Juno Board:
-
-  # lsb_release -a
-  No LSB modules are available.
-  Distributor ID: Debian
-  Description:    Debian GNU/Linux 12 (bookworm)
-  Release:        12
-  Codename:       bookworm
-
-Fix this by explicitly returning 0, 1, or -1 based on whether the result
-is zero, positive, or negative.
-
-Fixes: d44bc558297222d9 ("perf tests: Add a test for tracking with sched_switch")
-Reviewed-by: Ian Rogers <irogers@google.com>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20250331172759.115604-1-leo.yan@arm.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
+Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/tests/switch-tracking.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jbd2/transaction.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/tests/switch-tracking.c b/tools/perf/tests/switch-tracking.c
-index db5e1f70053a8..7b28d468fc6e8 100644
---- a/tools/perf/tests/switch-tracking.c
-+++ b/tools/perf/tests/switch-tracking.c
-@@ -255,7 +255,7 @@ static int compar(const void *a, const void *b)
- 	const struct event_node *nodeb = b;
- 	s64 cmp = nodea->event_time - nodeb->event_time;
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1499,7 +1499,7 @@ int jbd2_journal_dirty_metadata(handle_t
+ 				jh->b_next_transaction == transaction);
+ 		spin_unlock(&jh->b_state_lock);
+ 	}
+-	if (jh->b_modified == 1) {
++	if (data_race(jh->b_modified == 1)) {
+ 		/* If it's in our transaction it must be in BJ_Metadata list. */
+ 		if (data_race(jh->b_transaction == transaction &&
+ 		    jh->b_jlist != BJ_Metadata)) {
+@@ -1518,7 +1518,6 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out;
+ 	}
  
--	return cmp;
-+	return cmp < 0 ? -1 : (cmp > 0 ? 1 : 0);
- }
+-	journal = transaction->t_journal;
+ 	spin_lock(&jh->b_state_lock);
  
- static int process_events(struct evlist *evlist,
--- 
-2.39.5
-
+ 	if (is_handle_aborted(handle)) {
+@@ -1533,6 +1532,8 @@ int jbd2_journal_dirty_metadata(handle_t
+ 		goto out_unlock_bh;
+ 	}
+ 
++	journal = transaction->t_journal;
++
+ 	if (jh->b_modified == 0) {
+ 		/*
+ 		 * This buffer's got modified and becoming part
 
 
 
