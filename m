@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D541AE55E9
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69296AE5574
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 60C013AE689
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:13:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B21064C449F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:10:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE57E223DF0;
-	Mon, 23 Jun 2025 22:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877DC228CA3;
+	Mon, 23 Jun 2025 22:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QI66RhYj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evj5o2dx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C8F5C2E0;
-	Mon, 23 Jun 2025 22:13:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40A0A225785;
+	Mon, 23 Jun 2025 22:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716808; cv=none; b=b/MEJLIafxLGmroloBKMpQoRsVNdBUJKDtGR2oN40yo4FFlNxnJXReei2HCeyya34PKgSjiMnb1N8XuGUJu6HmIglmaaW4eAzibKraMMCrE/4gGmCxSMOLhgB9dyM+exxPHJqbvfXl/tOjpmaq+ZhO/23lwSnKVHDYQBFnfXYTs=
+	t=1750716625; cv=none; b=p63hjHNuf6TOwUxXzgwARxbzrXySzcrQ+5kQDsPJr62RIJuFytKZmbfEhPTFeGWh6aUfRKf9tyghCidgU+ZJ9F/250LUYjU5H6JgJ9CY+aKCPW2rocoTxfgu8WFMNG5o4PZ9+nUoRZpXDdMj+Ajtq15w+04HF9tyqvpER5u8BJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716808; c=relaxed/simple;
-	bh=zVZpLWl+s4c5XOyoUrEF5d/bG73tIrmUhsqMSOgE+rI=;
+	s=arc-20240116; t=1750716625; c=relaxed/simple;
+	bh=bb21ZLfaxtzH6NF70JxV6Ymh4lf7xcYXT9ZWXSFIXQ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XX2RWybWSmd9yiF0prhiwMnkD49b/WRNW0w/EsfWFKOBQgiSd4h5kmHhXpkMTkvXgDkL7ABRW0iL5Oadfw7b5DKYmjdoAPmLj0yvnJBiITreLms1r1cF+MA0NZL/cH8J6kjcEVOuWDkwkliZs7zU/eC/Wsw0sRGdKG5up22kFxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QI66RhYj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15E0AC4CEEA;
-	Mon, 23 Jun 2025 22:13:27 +0000 (UTC)
+	 MIME-Version; b=juH3Lptqgp1TPvSwqIyw+SsrWXY6oz9YmSbM7Nej8GwrY/4lHcZwn9cqeRmvvIDyqfOD4hXWMSdH2eckPG9C0g6m+Q8EtUx+bZ0SKogu4QiTor3SnCTq/5hoYw6PfKpktBO1CiAfOPVO3WLJ8E+RUJVs8v8ikcHMPwcaHpt4j2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evj5o2dx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C74D9C4CEEA;
+	Mon, 23 Jun 2025 22:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716808;
-	bh=zVZpLWl+s4c5XOyoUrEF5d/bG73tIrmUhsqMSOgE+rI=;
+	s=korg; t=1750716625;
+	bh=bb21ZLfaxtzH6NF70JxV6Ymh4lf7xcYXT9ZWXSFIXQ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QI66RhYjluoaAX26YuLt9lFQ6fH3BznHQprt4Wrl/dRlc0DfUXYuzKmIztCRULOMB
-	 6T9V+FeK/t8EWxkYk7ODNCTB9qelTeUV+JgFn5QAf5xje71Eyty85120jmy4whhY/z
-	 RHavu6xnQj/qNiLQNj3oTR9LfXQGsqVWWvD/BNoc=
+	b=evj5o2dxfm8cxiJ3NfbNKyiHlaCMK7E40Ghw9T+lY588P+RyB1AFWv7zND8egho8v
+	 tLdXiMlFCMaerk5QGvjeOtJfhXylmgq1pHL2Az0gjuZXqGuTxc4G/p8WqxpJMZK4XU
+	 HyVUr2X7TPcZO3v+wkbMyGczuCzs062tVKBuvZhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Khem Raj <raj.khem@gmail.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Subject: [PATCH 6.1 361/508] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
-Date: Mon, 23 Jun 2025 15:06:46 +0200
-Message-ID: <20250623130654.245442508@linuxfoundation.org>
+	Chen Linxuan <chenlinxuan@uniontech.com>,
+	Winston Wen <wentao@uniontech.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 270/414] RDMA/hns: initialize db in update_srq_db()
+Date: Mon, 23 Jun 2025 15:06:47 +0200
+Message-ID: <20250623130648.780759975@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +63,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Khem Raj <raj.khem@gmail.com>
+From: Chen Linxuan <chenlinxuan@uniontech.com>
 
-commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
+[ Upstream commit ffe1cee21f8b533ae27c3a31bfa56b8c1b27fa6e ]
 
-GCC 15 changed the default C standard dialect from gnu17 to gnu23,
-which should not have impacted the kernel because it explicitly requests
-the gnu11 standard in the main Makefile. However, mips/vdso code uses
-its own CFLAGS without a '-std=' value, which break with this dialect
-change because of the kernel's own definitions of bool, false, and true
-conflicting with the C23 reserved keywords.
+On x86_64 with gcc version 13.3.0, I compile
+drivers/infiniband/hw/hns/hns_roce_hw_v2.c with:
 
-  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
-     11 |         false   = 0,
-        |         ^~~~~
-  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
-  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
-     35 | typedef _Bool                   bool;
-        |                                 ^~~~
-  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
+  make defconfig
+  ./scripts/kconfig/merge_config.sh .config <(
+    echo CONFIG_COMPILE_TEST=y
+    echo CONFIG_HNS3=m
+    echo CONFIG_INFINIBAND=m
+    echo CONFIG_INFINIBAND_HNS_HIP08=m
+  )
+  make KCFLAGS="-fno-inline-small-functions -fno-inline-functions-called-once" \
+    drivers/infiniband/hw/hns/hns_roce_hw_v2.o
 
-Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
-CFLAGS to eliminate these errors and make the C standard version of these
-areas match the rest of the kernel.
+Then I get a compile error:
 
-Signed-off-by: Khem Raj <raj.khem@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    CALL    scripts/checksyscalls.sh
+    DESCEND objtool
+    INSTALL libsubcmd_headers
+    CC [M]  drivers/infiniband/hw/hns/hns_roce_hw_v2.o
+  In file included from drivers/infiniband/hw/hns/hns_roce_hw_v2.c:47:
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c: In function 'update_srq_db':
+  drivers/infiniband/hw/hns/hns_roce_common.h:74:17: error: 'db' is used uninitialized [-Werror=uninitialized]
+     74 |                 *((__le32 *)_ptr + (field_h) / 32) &=                          \
+        |                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_common.h:90:17: note: in expansion of macro '_hr_reg_clear'
+     90 |                 _hr_reg_clear(ptr, field_type, field_h, field_l);              \
+        |                 ^~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_common.h:95:39: note: in expansion of macro '_hr_reg_write'
+     95 | #define hr_reg_write(ptr, field, val) _hr_reg_write(ptr, field, val)
+        |                                       ^~~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:948:9: note: in expansion of macro 'hr_reg_write'
+    948 |         hr_reg_write(&db, DB_TAG, srq->srqn);
+        |         ^~~~~~~~~~~~
+  drivers/infiniband/hw/hns/hns_roce_hw_v2.c:946:31: note: 'db' declared here
+    946 |         struct hns_roce_v2_db db;
+        |                               ^~
+  cc1: all warnings being treated as errors
+
+Signed-off-by: Chen Linxuan <chenlinxuan@uniontech.com>
+Co-developed-by: Winston Wen <wentao@uniontech.com>
+Signed-off-by: Winston Wen <wentao@uniontech.com>
+Link: https://patch.msgid.link/FF922C77946229B6+20250411105459.90782-5-chenlinxuan@uniontech.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/vdso/Makefile |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/mips/vdso/Makefile
-+++ b/arch/mips/vdso/Makefile
-@@ -32,6 +32,7 @@ endif
- # offsets.
- cflags-vdso := $(ccflags-vdso) \
- 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
-+	$(filter -std=%,$(KBUILD_CFLAGS)) \
- 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
- 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
- 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index 985b9d7d69f20..81e44b7381229 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -942,7 +942,7 @@ static void fill_wqe_idx(struct hns_roce_srq *srq, unsigned int wqe_idx)
+ static void update_srq_db(struct hns_roce_srq *srq)
+ {
+ 	struct hns_roce_dev *hr_dev = to_hr_dev(srq->ibsrq.device);
+-	struct hns_roce_v2_db db;
++	struct hns_roce_v2_db db = {};
+ 
+ 	hr_reg_write(&db, DB_TAG, srq->srqn);
+ 	hr_reg_write(&db, DB_CMD, HNS_ROCE_V2_SRQ_DB);
+-- 
+2.39.5
+
 
 
 
