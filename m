@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155849-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2407FAE43F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:38:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CDF6DAE4447
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:41:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87A96188B5A4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A420A1888C5F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:37:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50379254AF5;
-	Mon, 23 Jun 2025 13:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA2E0254AE4;
+	Mon, 23 Jun 2025 13:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+GZc8HV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPB5viDZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB8F25392D;
-	Mon, 23 Jun 2025 13:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F2230E84D;
+	Mon, 23 Jun 2025 13:35:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685496; cv=none; b=LU1z7EP79NVoOOpwyKDcwP8yPfZwMHeRmO6Of0Hx0h6klMylwjJXhT6jAjXkJOS4M1nPhcnO35tS8F2B/kdMhjX4XbTPWD/ZPL3y8obvIpvsvJPqc8EKQz/riPzfwWfNKjFqekXC7hKHvY0yxSSuP0UZWhI+++tSivtSH81hF6k=
+	t=1750685703; cv=none; b=gVZkjdJ9dBJpMvx6SZ3zff5u+i8BRws2ZtKN+9Gxy9Ntu/BkLplHEJDOrjp0SRW3leFiRR8ew+SJrEoUdshaza3C+zRC4Yz/HGA/6bN4wjJ9byzL+fnWcP1E/2mLfOi7xKz9hV6BtvpFSf0cYByj3QfWFrOzRYFjEg0gT9cdLUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685496; c=relaxed/simple;
-	bh=PdZgKg1EP1GbNGHvfScLwX1EGBdPqaCwcTap9DFIwzM=;
+	s=arc-20240116; t=1750685703; c=relaxed/simple;
+	bh=K9WQDYTGVPi04TEAFu2sYmuhPRDF9xdWHQnKjGpP7DU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iN2TU7CgEbCQg1P3tR1n60Jdep9Jtg/fSpFWZgSCijFLMDu+dcRpfvDG8egyx5NPinlndWm1ailKrJKYkMJvsrIZ6wh+JPvCe6avkU0FT4/3jp5b36hqESytu1d/hZ4BR0vGdDQyITgdv+aSvAGTs7pFSkVsjgfuCIK+JN6I0tI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+GZc8HV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C26C4CEF1;
-	Mon, 23 Jun 2025 13:31:35 +0000 (UTC)
+	 MIME-Version; b=qIWQ7mRSHoTe0QF1ZwjVT6W3PcjJTlK0nu7qL9jYgIC5OsLArup540rE7JTBFT7MdVn3Bq8yawTpCReD3cPOA9GX0Y0NzKXS136hTfrLRxFFC4NhuqOe5APcSJeiPBLAC0v0oKwpI/BJ9d3SlwOjA6mCIWFofSa8GnbzpjX03/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPB5viDZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11D7DC4CEEA;
+	Mon, 23 Jun 2025 13:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685495;
-	bh=PdZgKg1EP1GbNGHvfScLwX1EGBdPqaCwcTap9DFIwzM=;
+	s=korg; t=1750685703;
+	bh=K9WQDYTGVPi04TEAFu2sYmuhPRDF9xdWHQnKjGpP7DU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y+GZc8HVTtwPy9FSeQtHWjhdhxRGGWVk9bBI6sCQ6bAUqQM9CqXvMTDxr5u7F10H0
-	 5Or9v276p6Rs3RZjVGJ4hGd3lI2Y05/b5wGIzFHfrb3Mdp4Br4JQHpKYD5YtJ2twNg
-	 GKyy4dn3kxe/Qq33l9A3g9W70N1sYAU/CIxyPu68=
+	b=rPB5viDZ05KykD5w0qFkuE8vBEFQ1WrDFaBVVyt3yE1a/NMPG+I3TGMNtgBlHb2af
+	 bnSYGQiuX/3pluzktWdatbOZmScQjHKzSgLGOsHl7kilWHYLz/hrEZiljZJQmxDOZr
+	 DOp7xFuiFEpfYqIeWdTICFrNGAD8Ym+ljKFuQuyk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Airlie <airlied@redhat.com>,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Timur Tabi <ttabi@nvidia.com>,
+	Luca Weiss <luca.weiss@fairphone.com>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 239/592] drm/dp: add option to disable zero sized address only transactions.
+Subject: [PATCH 5.15 053/411] clk: qcom: gcc-sm6350: Add *_wait_val values for GDSCs
 Date: Mon, 23 Jun 2025 15:03:17 +0200
-Message-ID: <20250623130705.973961329@linuxfoundation.org>
+Message-ID: <20250623130634.588012596@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,115 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Airlie <airlied@redhat.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit f0ddbb1eed1898286d2bd99fd6ab64ca9700d267 ]
+[ Upstream commit afdfd829a99e467869e3ca1955fb6c6e337c340a ]
 
-Some older NVIDIA and some newer NVIDIA hardware/firmware seems to
-have issues with address only transactions (firmware rejects them).
+Compared to the msm-4.19 driver the mainline GDSC driver always sets the
+bits for en_rest, en_few & clk_dis, and if those values are not set
+per-GDSC in the respective driver then the default value from the GDSC
+driver is used. The downstream driver only conditionally sets
+clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
 
-Add an option to the core drm dp to avoid address only transactions,
-This just puts the MOT flag removal on the last message of the transfer
-and avoids the start of transfer transaction.
+Correct this situation by explicitly setting those values. For all GDSCs
+the reset value of those bits are used.
 
-This with the flag set in nouveau, allows eDP probing on GB203 device.
-
-Signed-off-by: Dave Airlie <airlied@redhat.com>
-Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
-Reviewed-by: Timur Tabi <ttabi@nvidia.com>
-Tested-by: Timur Tabi <ttabi@nvidia.com>
-Signed-off-by: Dave Airlie <airlied@redhat.com>
+Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
+Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-3-1f252d9c5e4e@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/display/drm_dp_helper.c | 39 +++++++++++++++----------
- include/drm/display/drm_dp_helper.h     |  5 ++++
- 2 files changed, 28 insertions(+), 16 deletions(-)
+ drivers/clk/qcom/gcc-sm6350.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/gpu/drm/display/drm_dp_helper.c b/drivers/gpu/drm/display/drm_dp_helper.c
-index dbce1c3f49691..753d7c3942a14 100644
---- a/drivers/gpu/drm/display/drm_dp_helper.c
-+++ b/drivers/gpu/drm/display/drm_dp_helper.c
-@@ -2081,14 +2081,17 @@ static int drm_dp_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
+diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+index 0860c6178b4d3..e31a25084b0a3 100644
+--- a/drivers/clk/qcom/gcc-sm6350.c
++++ b/drivers/clk/qcom/gcc-sm6350.c
+@@ -2319,6 +2319,9 @@ static struct clk_branch gcc_video_xo_clk = {
  
- 	for (i = 0; i < num; i++) {
- 		msg.address = msgs[i].addr;
--		drm_dp_i2c_msg_set_request(&msg, &msgs[i]);
--		/* Send a bare address packet to start the transaction.
--		 * Zero sized messages specify an address only (bare
--		 * address) transaction.
--		 */
--		msg.buffer = NULL;
--		msg.size = 0;
--		err = drm_dp_i2c_do_msg(aux, &msg);
-+
-+		if (!aux->no_zero_sized) {
-+			drm_dp_i2c_msg_set_request(&msg, &msgs[i]);
-+			/* Send a bare address packet to start the transaction.
-+			 * Zero sized messages specify an address only (bare
-+			 * address) transaction.
-+			 */
-+			msg.buffer = NULL;
-+			msg.size = 0;
-+			err = drm_dp_i2c_do_msg(aux, &msg);
-+		}
+ static struct gdsc usb30_prim_gdsc = {
+ 	.gdscr = 0x1a004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "usb30_prim_gdsc",
+ 	},
+@@ -2327,6 +2330,9 @@ static struct gdsc usb30_prim_gdsc = {
  
- 		/*
- 		 * Reset msg.request in case in case it got
-@@ -2107,6 +2110,8 @@ static int drm_dp_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
- 			msg.buffer = msgs[i].buf + j;
- 			msg.size = min(transfer_size, msgs[i].len - j);
- 
-+			if (j + msg.size == msgs[i].len && aux->no_zero_sized)
-+				msg.request &= ~DP_AUX_I2C_MOT;
- 			err = drm_dp_i2c_drain_msg(aux, &msg);
- 
- 			/*
-@@ -2124,15 +2129,17 @@ static int drm_dp_i2c_xfer(struct i2c_adapter *adapter, struct i2c_msg *msgs,
- 	}
- 	if (err >= 0)
- 		err = num;
--	/* Send a bare address packet to close out the transaction.
--	 * Zero sized messages specify an address only (bare
--	 * address) transaction.
--	 */
--	msg.request &= ~DP_AUX_I2C_MOT;
--	msg.buffer = NULL;
--	msg.size = 0;
--	(void)drm_dp_i2c_do_msg(aux, &msg);
- 
-+	if (!aux->no_zero_sized) {
-+		/* Send a bare address packet to close out the transaction.
-+		 * Zero sized messages specify an address only (bare
-+		 * address) transaction.
-+		 */
-+		msg.request &= ~DP_AUX_I2C_MOT;
-+		msg.buffer = NULL;
-+		msg.size = 0;
-+		(void)drm_dp_i2c_do_msg(aux, &msg);
-+	}
- 	return err;
- }
- 
-diff --git a/include/drm/display/drm_dp_helper.h b/include/drm/display/drm_dp_helper.h
-index 5ae4241959f24..736dbfdd6321d 100644
---- a/include/drm/display/drm_dp_helper.h
-+++ b/include/drm/display/drm_dp_helper.h
-@@ -518,6 +518,11 @@ struct drm_dp_aux {
- 	 * @powered_down: If true then the remote endpoint is powered down.
- 	 */
- 	bool powered_down;
-+
-+	/**
-+	 * @no_zero_sized: If the hw can't use zero sized transfers (NVIDIA)
-+	 */
-+	bool no_zero_sized;
- };
- 
- int drm_dp_dpcd_probe(struct drm_dp_aux *aux, unsigned int offset);
+ static struct gdsc ufs_phy_gdsc = {
+ 	.gdscr = 0x3a004,
++	.en_rest_wait_val = 0x2,
++	.en_few_wait_val = 0x2,
++	.clk_dis_wait_val = 0xf,
+ 	.pd = {
+ 		.name = "ufs_phy_gdsc",
+ 	},
 -- 
 2.39.5
 
