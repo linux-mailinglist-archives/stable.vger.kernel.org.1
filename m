@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-157939-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157943-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1344EAE5646
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F51EAE5648
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 18D991C20B72
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A4F341C20C70
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC96B1F7580;
-	Mon, 23 Jun 2025 22:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97268222599;
+	Mon, 23 Jun 2025 22:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t5CLPhNJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubLvcY7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A3A6B676;
-	Mon, 23 Jun 2025 22:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54B7719E7F9;
+	Mon, 23 Jun 2025 22:18:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717089; cv=none; b=a0lGpUzt3Q7meo1TvqoftXN+BgBH2YrCDX8HFbpgqBvLMVwhVxn+PaUIIFaQ8unbPtNcq6eu4FbQjPIkEZ3VednRJoQ2coW8FNbTu3b//6HsTX0xv9HYT7EKrIEOwHunF/eb3u+NNb+Yqw8Q9jo7+fizkf+qCxKBKyKpK0JSep0=
+	t=1750717099; cv=none; b=UFCCIQANgmALiIEr6xbWyfNhqqGdSyr/eawejFWY6yTYdef5wl5gUKjzkI2J5PE5yiJTVvg2ShiIjRqg9yiT0Tnv/k+Ew/ck5alfVdvWTK5p6tm74NrnsQ9R5KGc2rrJs1SJNUimaaoBhxfq2iH2k+iH7NIKtD+MMsNazQjuyKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717089; c=relaxed/simple;
-	bh=o580l8T7lFNvRe++amhizN7BGUKSFg66vM7rvxgtF70=;
+	s=arc-20240116; t=1750717099; c=relaxed/simple;
+	bh=i/QyOYSVnipiEwZeJijeZdCrYY2QACzG4hXSa2+TCIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JYEwcXavC4reblLlEZDSfE3RIX7i6YLHq56KbhMSNTZLtK3HKmGZ+5NCUN5Qd4qXHFeoZDYXK3mXCin2oKCHMGDWAYabuveN0OGNEQ0IXcShNq2FWr38n5iBYPYDl/VIT6eTBazmrPo8Um8jEexvrlFBdtbM0H+mwS1Q88Ay4v8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t5CLPhNJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CE3C4CEEA;
-	Mon, 23 Jun 2025 22:18:09 +0000 (UTC)
+	 MIME-Version; b=UyGxcLUnQpIYau777ZWA258TklaD8pBe2XQYhFdbN55D5DqNhWnEoK039/Uujdkvc7K9NZiRhtV9jvdY/UKXaC9sZPT3YyjtKRouFPmNTivYG4CBwEO8NuzFx0qNt6PTd+79/5ZefMpQ7Tthj3iLJLgSkGZh6ZN9giNIH/EtG9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubLvcY7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF239C4CEEA;
+	Mon, 23 Jun 2025 22:18:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717089;
-	bh=o580l8T7lFNvRe++amhizN7BGUKSFg66vM7rvxgtF70=;
+	s=korg; t=1750717099;
+	bh=i/QyOYSVnipiEwZeJijeZdCrYY2QACzG4hXSa2+TCIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t5CLPhNJxw2Lv/7EukHleHzG8Zc5VArdXliCppEx/aFfhL30o0+qKdPsNcxLb9XYJ
-	 03jsXN+pzbqq1TikIavWVFvHjq4t2KFxlSqyijMC5O/xgqIYTib8pAqfNqIsnan/Cb
-	 gjETJ/fwR8maOwE/DRdOCRcZW1v7/TwL/drytCds=
+	b=ubLvcY7vUikLN/276uzT0mdU4bLBnGRAlJ9i5LeR4IonkftglwwRZ/rApdopmn0lK
+	 hAYBGP/UudH+PCgt2cHC4gYu8WA7gfYCSCdTEi5thY8LUQ+Hz8EkwJIx6sMevJ7F01
+	 WOoQlWNRaBleAExnE5nEBCBalbt2TKIogigZlxhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.1 365/508] cifs: reset connections for all channels when reconnect requested
-Date: Mon, 23 Jun 2025 15:06:50 +0200
-Message-ID: <20250623130654.339885860@linuxfoundation.org>
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.1 366/508] uio_hv_generic: Use correct size for interrupt and monitor pages
+Date: Mon, 23 Jun 2025 15:06:51 +0200
+Message-ID: <20250623130654.361979074@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -65,45 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Long Li <longli@microsoft.com>
 
-commit 1f396b9bfe39aaf55ea74a7005806164b236653d upstream.
+commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
 
-cifs_reconnect can be called with a flag to mark the session as needing
-reconnect too. When this is done, we expect the connections of all
-channels to be reconnected too, which is not happening today.
+Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
+This can be different from the system page size.
 
-Without doing this, we have seen bad things happen when primary and
-secondary channels are connected to different servers (in case of cloud
-services like Azure Files SMB).
+This size is read and used by the user-mode program to determine the
+mapped data region. An example of such user-mode program is the VMBus
+driver in DPDK.
 
-This change would force all connections to reconnect as well, not just
-the sessions and tcons.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Cc: stable@vger.kernel.org
+Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/connect.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/uio/uio_hv_generic.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -410,6 +410,13 @@ static int __cifs_reconnect(struct TCP_S
- 	if (!cifs_tcp_ses_needs_reconnect(server, 1))
- 		return 0;
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -288,13 +288,13 @@ hv_uio_probe(struct hv_device *dev,
+ 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
+ 	pdata->info.mem[INT_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.int_page;
+-	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
  
-+	/*
-+	 * if smb session has been marked for reconnect, also reconnect all
-+	 * connections. This way, the other connections do not end up bad.
-+	 */
-+	if (mark_smb_session)
-+		cifs_signal_cifsd_for_reconnect(server, mark_smb_session);
-+
- 	cifs_mark_tcp_ses_conns_for_reconnect(server, mark_smb_session);
+ 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
+ 	pdata->info.mem[MON_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.monitor_pages[1];
+-	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
  
- 	cifs_abort_connection(server);
+ 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
 
 
 
