@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-156037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156044-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6608CAE44A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C52BAE44AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A11097ACAF7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6CC997AD7FF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CAC2252903;
-	Mon, 23 Jun 2025 13:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A81524728E;
+	Mon, 23 Jun 2025 13:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DYrXk0A+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CmJTd4z4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E05DC253B52;
-	Mon, 23 Jun 2025 13:39:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56B502F24;
+	Mon, 23 Jun 2025 13:39:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685982; cv=none; b=o0EsSjwS3oaNRjHPBQ5Wk1yYrx0NA7OtXF+GYp/lm5r4i5a3/WxsZszNkj009STBrCGrpGI/QappxdQd27D+4xyjMnfljnwyhlk1xcbhIU5K0C/0w+/q5DdUgwJYixmFuzHMg9ltAoBv2Whwvu1wK0blhhqQ2w+B11pJzWAhZP8=
+	t=1750685999; cv=none; b=gPDjRoYYtkki/C76yd1Q6Ku9/Yc2ExCD0jfdTHyMRPpNzzCerQkohmQIRYr2G2xKsS7XenMA1Oi4MIBq4pfdGtOst0KAWni3boDZ92JgbcID6ruyzsZPyPf/qv3RerWvQcGgGIfgeuba22Sxlkt4FvgEYYIRvrHT5xosM5otlg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685982; c=relaxed/simple;
-	bh=ju3D+RFiFn/xjKKxDHswndZFp5V84pbLlovTCg6fdRw=;
+	s=arc-20240116; t=1750685999; c=relaxed/simple;
+	bh=sGOoYRBelJm+tQTbOLofalw32yyXA/lBeAF+EYExKzc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m41TC49TsJ1LBCCNr2cxv+6yHDT+54GbzjZomxIJ13Ll7yLswNiMrRfJzXUMq3LyawhtuQHYErsv2+yWrg2BxsMYLkpvuYpxXEsK0fT2Jtsyo20HWtDOqcmNwycLuXeUMIqB5vRfDQDWzcQYmqY8wqpmW+spf36c5vA5nIHWrkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DYrXk0A+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2325CC4CEEA;
-	Mon, 23 Jun 2025 13:39:40 +0000 (UTC)
+	 MIME-Version; b=uEgNXiAzhgsQgr6Ns0l0/1MmoYFLE6weSPD4iezvHv39/YHbmIRjsohOS/orkVz316v367BWUfkCHH3XJA10Zh/7lfk9aL+ThhlNfYDAhA2KwiO5sZcF049j0jEAJqWNzjSzE8UYgZNQ9xWJRHY2BYa5kL3ZoBuDKQjboZijLNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CmJTd4z4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5BAC4CEEA;
+	Mon, 23 Jun 2025 13:39:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685981;
-	bh=ju3D+RFiFn/xjKKxDHswndZFp5V84pbLlovTCg6fdRw=;
+	s=korg; t=1750685999;
+	bh=sGOoYRBelJm+tQTbOLofalw32yyXA/lBeAF+EYExKzc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DYrXk0A+ROWrQYHA/7UtX0Ynkx3tEoEiOl9lm6jgAEbHu+80ugI31ZEbnapKfw3Tj
-	 dMg9AeGrlG7SCGc8iKR08YKsxmeuNV4EDONM83IMa/n2ZxzPWK4Rvu2Mgbhz31ETfu
-	 s9ZWRjVOPuGPLlfmqzIQjqSdi9vu8pCo7/hOXfg4=
+	b=CmJTd4z4NwbOaltdYyA2MxX0sBeNelihT4pR6d7TZylUuk0vN62gKO7rXU3SVcKRk
+	 TeNpI8BcQDw4yhof0EHfmgR8+pMCZ68I6vw6EBo2otfXYXWIcnd3bMwzGmLgPDkSin
+	 CMr2FxdQo0oGdQpxR5MVlK1SoFMYDUoWNgvlNcc0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <longli@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 5.4 131/222] uio_hv_generic: Use correct size for interrupt and monitor pages
-Date: Mon, 23 Jun 2025 15:07:46 +0200
-Message-ID: <20250623130616.035283310@linuxfoundation.org>
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.4 132/222] PCI: Add ACS quirk for Loongson PCIe
+Date: Mon, 23 Jun 2025 15:07:47 +0200
+Message-ID: <20250623130616.065173500@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,47 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Long Li <longli@microsoft.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
+commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
 
-Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
-This can be different from the system page size.
+Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
+allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
+each Root Port can be in a separate IOMMU group.
 
-This size is read and used by the user-mode program to determine the
-mapped data region. An example of such user-mode program is the VMBus
-driver in DPDK.
-
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Cc: stable@vger.kernel.org
-Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
-Signed-off-by: Long Li <longli@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
+Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/uio/uio_hv_generic.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -288,13 +288,13 @@ hv_uio_probe(struct hv_device *dev,
- 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
- 	pdata->info.mem[INT_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.int_page;
--	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4869,6 +4869,18 @@ static int pci_quirk_brcm_acs(struct pci
+ 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ }
  
- 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
- 	pdata->info.mem[MON_PAGE_MAP].addr
- 		= (uintptr_t)vmbus_connection.monitor_pages[1];
--	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
-+	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
- 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
- 
- 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
++static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
++{
++	/*
++	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
++	 * they do not allow peer-to-peer transactions between Root Ports.
++	 * Allow each Root Port to be in a separate IOMMU group by masking
++	 * SV/RR/CR/UF bits.
++	 */
++	return pci_acs_ctrl_enabled(acs_flags,
++		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
++}
++
+ /*
+  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+  * multi-function devices, the hardware isolates the functions by
+@@ -5002,6 +5014,17 @@ static const struct pci_dev_acs_enabled
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
++	/* Loongson PCIe Root Ports */
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
+ 	/* Zhaoxin multi-function devices */
 
 
 
