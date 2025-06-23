@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35733AE549D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FAC1AE54ED
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7B09444554C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B12304A0644
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F32822425B;
-	Mon, 23 Jun 2025 22:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F194621FF2B;
+	Mon, 23 Jun 2025 22:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEoTzebZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oINKA/r8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C72223DEF;
-	Mon, 23 Jun 2025 22:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A619E1E22E6;
+	Mon, 23 Jun 2025 22:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716164; cv=none; b=oHXra+udCpqfYGKs6/DtH1h3MGzIiBBb2MSfWxo2Zgp9haZBr7WTd7hl1aiLPBr+kJsnwt760/mACiMTICmtmU0MsEq8J4HN2jyDYxwBq3GpJP0FUUjHEb5tl67KHQ1hosCh8iQNdeXLuSl0aR83sje2UQBkRTpmGZ4Z6zYd8EI=
+	t=1750716357; cv=none; b=r7pssE1LvrFDrckkMVhiLtqKvy4y4QPWd9QtdiXSVtulAf8MVLEg+cvt193PamapbjAaNDzrdbDpwtOCStd/pa1nVvkhTZyUzrOdlWRVC+fAXHyRvxSfNbc9sNnxV7n/lAuD/sPd5me7uFZInKcMzxsqTe0glLEEf1Q2CCxxKJA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716164; c=relaxed/simple;
-	bh=r3FGzPaOGeyN4tEz0VFKjCkGKXIbtyZi207vcVDo6yQ=;
+	s=arc-20240116; t=1750716357; c=relaxed/simple;
+	bh=qTrSylmrOsMNet7uiJNcv9VrbSnqpTevryuX1EqaRZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uI/W6USz4IxBlLRC/2im8eo2nJeooZPCqiR5Sn3IrSzLxGJV+HNi8/YR1cs4i+RYF9kMOxgXW+ocmODhMSwYgwkaNVTy+hqPIZt2tYwoPLGwm3betzF3MSzgjm0sIGcr+EC27JyAPAM84JXSEvR7uVdnVg+XuTUor8S4pFAGm8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEoTzebZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B64C6C4CEEA;
-	Mon, 23 Jun 2025 22:02:43 +0000 (UTC)
+	 MIME-Version; b=W7FKA2jK0fYvAN8iVOTTjL2OkNFD5JYY8BYOZK7zfgPuViszZauDg0T+srgcp12iphpnXoZPq3sB0vjljLe4meM9qiGAUAY6uXjru+XH1yB7Hw0VdOEMkPw7AcX2KGB8Xh1jO3mkONi4gRQeWrMYHD8yfrTwMxokJacNfLNy5Is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oINKA/r8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E51CC4CEEA;
+	Mon, 23 Jun 2025 22:05:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716164;
-	bh=r3FGzPaOGeyN4tEz0VFKjCkGKXIbtyZi207vcVDo6yQ=;
+	s=korg; t=1750716357;
+	bh=qTrSylmrOsMNet7uiJNcv9VrbSnqpTevryuX1EqaRZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEoTzebZfphhoG2rjEUoMFEnTZnbchw6VCh0bs/C5f2aKA6nfOLilqMiH/iZQRN1v
-	 MdcXCktkJh8yhx2SaRp7g1gWWr6pdvaYeAuLAyvxuRX9BMs2gMl+2HeMD8wagI2R2z
-	 uRAIpOIL2f7Xt2v1F8nBE9TMkA9QQCFU1FPSwdjk=
+	b=oINKA/r8/bQVJ+ke/4XuSClzQ67rESZ5kQUQadXdYrrdWz6rIeYIgNZdTvjGpQyxL
+	 wgPFlx2s/vRwQUJ4G8xVcqXHcouKxisJf7/+YSBMcV+MPZ3Rp7vf5NFF0Yhk7wTfk5
+	 jJAIF+5nm4SBugZaUFEVDLE1U0Zua4QmHXYn8x90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Wagner <wagi@kernel.org>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Tvrtko Ursulin <tursulin@ursulin.net>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 332/411] scsi: lpfc: Use memcpy() for BIOS version
+Subject: [PATCH 6.15 518/592] drm/i915/pmu: Fix build error with GCOV and AutoFDO enabled
 Date: Mon, 23 Jun 2025 15:07:56 +0200
-Message-ID: <20250623130642.009018202@linuxfoundation.org>
+Message-ID: <20250623130712.757937071@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +64,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit ae82eaf4aeea060bb736c3e20c0568b67c701d7d ]
+[ Upstream commit a7137b1825b535eb7258b25beeb0d5425e0037d2 ]
 
-The strlcat() with FORTIFY support is triggering a panic because it
-thinks the target buffer will overflow although the correct target
-buffer size is passed in.
+i915_pmu.c may fail to build with GCOV and AutoFDO enabled.
 
-Anyway, instead of memset() with 0 followed by a strlcat(), just use
-memcpy() and ensure that the resulting buffer is NULL terminated.
+../drivers/gpu/drm/i915/i915_pmu.c:116:3: error: call to '__compiletime_assert_487' declared with 'error' attribute: BUILD_BUG_ON failed: bit > BITS_PER_TYPE(typeof_member(struct i915_pmu, enable)) - 1
+  116 |                 BUILD_BUG_ON(bit >
+      |                 ^
 
-BIOSVersion is only used for the lpfc_printf_log() which expects a
-properly terminated string.
+Here is a way to reproduce the issue:
+$ git checkout v6.15
+$ mkdir build
+$ ./scripts/kconfig/merge_config.sh -O build -n -m <(cat <<EOF
+CONFIG_DRM=y
+CONFIG_PCI=y
+CONFIG_DRM_I915=y
 
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Link: https://lore.kernel.org/r/20250409-fix-lpfc-bios-str-v1-1-05dac9e51e13@kernel.org
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+CONFIG_PERF_EVENTS=y
+
+CONFIG_DEBUG_FS=y
+CONFIG_GCOV_KERNEL=y
+CONFIG_GCOV_PROFILE_ALL=y
+
+CONFIG_AUTOFDO_CLANG=y
+EOF
+)
+$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
+       olddefconfig
+$ PATH=${PATH}:${HOME}/llvm-20.1.5-x86_64/bin make LLVM=1 O=build \
+       CLANG_AUTOFDO_PROFILE=...PATH_TO_SOME_AFDO_PROFILE... \
+       drivers/gpu/drm/i915/i915_pmu.o
+
+Although not super sure what happened, by reviewing the code, it should
+depend on `__builtin_constant_p(bit)` directly instead of assuming
+`__builtin_constant_p(config)` makes `bit` a builtin constant.
+
+Also fix a nit, to reuse the `bit` local variable.
+
+Fixes: a644fde77ff7 ("drm/i915/pmu: Change bitmask of enabled events to u32")
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Tvrtko Ursulin <tursulin@ursulin.net>
+Link: https://lore.kernel.org/r/20250612083023.562585-1-tzungbi@kernel.org
+(cherry picked from commit 686d773186bf72b739bab7e12eb8665d914676ee)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_sli.c | 4 ++--
+ drivers/gpu/drm/i915/i915_pmu.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/lpfc/lpfc_sli.c b/drivers/scsi/lpfc/lpfc_sli.c
-index 68b015bb6d157..fb139e1e35ca3 100644
---- a/drivers/scsi/lpfc/lpfc_sli.c
-+++ b/drivers/scsi/lpfc/lpfc_sli.c
-@@ -5926,9 +5926,9 @@ lpfc_sli4_get_ctl_attr(struct lpfc_hba *phba)
- 	phba->sli4_hba.flash_id = bf_get(lpfc_cntl_attr_flash_id, cntl_attr);
- 	phba->sli4_hba.asic_rev = bf_get(lpfc_cntl_attr_asic_rev, cntl_attr);
+diff --git a/drivers/gpu/drm/i915/i915_pmu.c b/drivers/gpu/drm/i915/i915_pmu.c
+index e5a188ce31857..990bfaba3ce4e 100644
+--- a/drivers/gpu/drm/i915/i915_pmu.c
++++ b/drivers/gpu/drm/i915/i915_pmu.c
+@@ -112,7 +112,7 @@ static u32 config_mask(const u64 config)
+ {
+ 	unsigned int bit = config_bit(config);
  
--	memset(phba->BIOSVersion, 0, sizeof(phba->BIOSVersion));
--	strlcat(phba->BIOSVersion, (char *)cntl_attr->bios_ver_str,
-+	memcpy(phba->BIOSVersion, cntl_attr->bios_ver_str,
- 		sizeof(phba->BIOSVersion));
-+	phba->BIOSVersion[sizeof(phba->BIOSVersion) - 1] = '\0';
+-	if (__builtin_constant_p(config))
++	if (__builtin_constant_p(bit))
+ 		BUILD_BUG_ON(bit >
+ 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
+ 							 enable)) - 1);
+@@ -121,7 +121,7 @@ static u32 config_mask(const u64 config)
+ 			     BITS_PER_TYPE(typeof_member(struct i915_pmu,
+ 							 enable)) - 1);
  
- 	lpfc_printf_log(phba, KERN_INFO, LOG_SLI,
- 			"3086 lnk_type:%d, lnk_numb:%d, bios_ver:%s, "
+-	return BIT(config_bit(config));
++	return BIT(bit);
+ }
+ 
+ static bool is_engine_event(struct perf_event *event)
 -- 
 2.39.5
 
