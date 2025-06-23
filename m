@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C032AE5366
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D108AE5242
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1857A443C8A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 410121B64B64
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 083D8219A7A;
-	Mon, 23 Jun 2025 21:52:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA78821D3DD;
+	Mon, 23 Jun 2025 21:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eAhiT09n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KRiyd7HF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8B631E22E6;
-	Mon, 23 Jun 2025 21:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670F94315A;
+	Mon, 23 Jun 2025 21:41:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715545; cv=none; b=dXuEzk/lewQhTKAHIijt/+Qt94iBWgJ/XswBJ0ygvbG7nb2IJL+Pu4M/KUj/wxOYPsxxTHk9vSWKN+ocMFX4KVqWttwhIccjBlwlhMCOImkrOp0iiyobZIFk1lL0iVgBfzhcTHydhHRU1MkNimiwvYzipGgPZfd3KooV8L3lEo0=
+	t=1750714914; cv=none; b=A7X26nZBTqoZXuqOd2zjP71PMX3N+EwsAHY+qq/TXfFVYgPEMApcd1ATPJISryC8avbc9hJth9I16MfFSPgPkBZZpNKwY58Y3AD3eTfA6c8USfDuMC9ebJA2jcB+97ZPSZSBjbNE89fyq5OoafXCPD2pX29E3JCydxwqOyzuFKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715545; c=relaxed/simple;
-	bh=VgnEf0jS/7qBlvV+APVjxFBt4oO2b6yHEeDktjVMLM0=;
+	s=arc-20240116; t=1750714914; c=relaxed/simple;
+	bh=OiprrUeHyJiDiG/jn4Uan4iV9cvUASgPJuofiqtgfrk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SfNur35QEyGsdt+shzaIzyS3Id2Ho8CDkFNy3+MzHcZb/w8Xn7QgAy36xd8JH2CeRFC23yYNyMYlqlP77MCdERgg28g0eesBnIpUvhlEHyGVzp/TOQn1PJ7bq+N5X83csttb64/F5GQF3AOu3p9HhiQuELG/ekLPxMbCeiGYIBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eAhiT09n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51568C4CEEA;
-	Mon, 23 Jun 2025 21:52:25 +0000 (UTC)
+	 MIME-Version; b=WQjiBSbqORBdcbpzroYp+SJ2ZDfzj4Fc/5F+fLwJUaRKUbEay6E/IOdKxmCTpRg1SAKu11DLswWF9JfW6RFpRo7ddsTJ+8V56F5fnpD2Qhl9ch+g1WTmGc0JrhECxMNmnqhjSoGRm2CY9qyPV7IX2F5A9OqvBnFqk72bNuxkeW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KRiyd7HF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E92F8C4CEEA;
+	Mon, 23 Jun 2025 21:41:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715545;
-	bh=VgnEf0jS/7qBlvV+APVjxFBt4oO2b6yHEeDktjVMLM0=;
+	s=korg; t=1750714914;
+	bh=OiprrUeHyJiDiG/jn4Uan4iV9cvUASgPJuofiqtgfrk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eAhiT09nEhB7YH2yr/niE4V0Dz9az6R9ZjAnCaFpzVKRYZBZbt3e64JNouCSezAU1
-	 BpV5IHdJ6FLMib0e8+RkdP9/h+mcmfhMXRJGfZVyy2Rq334NSM6U97HtwcioLrLXtZ
-	 5HEUUNrd3CFHqiQln5bjhpmZpDq8A0cPAyD6Qb3g=
+	b=KRiyd7HFrlHUV7HFrBOgX01WQnofTGwey8tv/LZ56hg4aH4uXgQaPtTXoRNX5dMqY
+	 GyHVnWfRCpoAFpt/+4PZ07BWX8wQnEAebbJo80+9Q6LXng3enAjnTXmP6QHsvOmlgY
+	 3L5qqNLnlLRmPEnOOYuF3ippHZIGqFKvERxQ4bDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 284/411] media: ccs-pll: Better validate VT PLL branch
-Date: Mon, 23 Jun 2025 15:07:08 +0200
-Message-ID: <20250623130640.798682871@linuxfoundation.org>
+Subject: [PATCH 6.6 168/290] scsi: lpfc: Fix lpfc_check_sli_ndlp() handling for GEN_REQUEST64 commands
+Date: Mon, 23 Jun 2025 15:07:09 +0200
+Message-ID: <20250623130631.946920295@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-[ Upstream commit cd9cb0313a42ae029cd5af9293b0add984ed252e ]
+[ Upstream commit 05ae6c9c7315d844fbc15afe393f5ba5e5771126 ]
 
-Check that the VT PLL dividers are actually found, don't trust they always
-are even though they should be.
+In lpfc_check_sli_ndlp(), the get_job_els_rsp64_did remote_id assignment
+does not apply for GEN_REQUEST64 commands as it only has meaning for a
+ELS_REQUEST64 command.  So, if (iocb->ndlp == ndlp) is false, we could
+erroneously return the wrong value.  Fix by replacing the fallthrough
+statement with a break statement before the remote_id check.
 
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250425194806.3585-2-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ccs-pll.c b/drivers/media/i2c/ccs-pll.c
-index c876ea851ed7c..fe9e3a90749de 100644
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -442,7 +442,7 @@ static int ccs_pll_calculate_vt_tree(struct device *dev,
- 	return -EINVAL;
- }
- 
--static void
-+static int
- ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
- 		     const struct ccs_pll_branch_limits_bk *op_lim_bk,
- 		     struct ccs_pll *pll, struct ccs_pll_branch_fr *pll_fr,
-@@ -565,6 +565,8 @@ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
- 		if (best_pix_div < SHRT_MAX >> 1)
- 			break;
- 	}
-+	if (best_pix_div == SHRT_MAX >> 1)
-+		return -EINVAL;
- 
- 	pll->vt_bk.sys_clk_div = DIV_ROUND_UP(vt_div, best_pix_div);
- 	pll->vt_bk.pix_clk_div = best_pix_div;
-@@ -577,6 +579,8 @@ ccs_pll_calculate_vt(struct device *dev, const struct ccs_pll_limits *lim,
- out_calc_pixel_rate:
- 	pll->pixel_rate_pixel_array =
- 		pll->vt_bk.pix_clk_freq_hz * pll->vt_lanes;
-+
-+	return 0;
- }
- 
- /*
-@@ -852,8 +856,10 @@ int ccs_pll_calculate(struct device *dev, const struct ccs_pll_limits *lim,
- 		if (pll->flags & CCS_PLL_FLAG_DUAL_PLL)
- 			break;
- 
--		ccs_pll_calculate_vt(dev, lim, op_lim_bk, pll, op_pll_fr,
--				     op_pll_bk, cphy, phy_const);
-+		rval = ccs_pll_calculate_vt(dev, lim, op_lim_bk, pll, op_pll_fr,
-+					    op_pll_bk, cphy, phy_const);
-+		if (rval)
-+			continue;
- 
- 		rval = check_bk_bounds(dev, lim, pll, PLL_VT);
- 		if (rval)
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index 5c9bc8af3c2df..ff44283338771 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5101,7 +5101,7 @@ lpfc_check_sli_ndlp(struct lpfc_hba *phba,
+ 		case CMD_GEN_REQUEST64_CR:
+ 			if (iocb->ndlp == ndlp)
+ 				return 1;
+-			fallthrough;
++			break;
+ 		case CMD_ELS_REQUEST64_CR:
+ 			if (remote_id == ndlp->nlp_DID)
+ 				return 1;
 -- 
 2.39.5
 
