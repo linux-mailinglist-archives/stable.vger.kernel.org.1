@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-157292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156279-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86FACAE534C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCCD2AE4EE8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EE884A78BE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E506B3BEAC0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4BCF223DE1;
-	Mon, 23 Jun 2025 21:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E08B1ACEDA;
+	Mon, 23 Jun 2025 21:10:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAiB0xRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgkptfCq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7283B19049B;
-	Mon, 23 Jun 2025 21:51:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF67070838;
+	Mon, 23 Jun 2025 21:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715511; cv=none; b=AmEz6OPPb9UqmesB9S7TWXVUbdE31h1G9zgTd8RXRQeMNa/9syOgDz1nIYcv1MpkzMITzp8i0CwJLYtZ5Nq2hP0iu5Fnx2hYExP3YfFvugThkcB51HpPlp10xDzW44sNywlvWKIflB459DSceHTcUiHXwM7Hh4pZzgpnKkNkFJ0=
+	t=1750713024; cv=none; b=HLh5yB12+bFinK/8a3pnVIeJkj36v3BeKjil4R7kwUtzeD0erCo06fFqVSHGxs/oe7u9B23mYIz+xW41Px+O3HVVvtl/ADAo1POm9n9G0zU4+PJ+NnMwhVm9Zn+PPIdt908Jvk0qgSiwyPyqPV+sLn5aZ28erEqSOHU7Py7sjBo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715511; c=relaxed/simple;
-	bh=HyQ9NMzJgdrcEn2Fge814HvIX9vURGKP9l6dvmDUq9I=;
+	s=arc-20240116; t=1750713024; c=relaxed/simple;
+	bh=x0d6YNegH1rxL2FZCRyIYTR+EA/totKp7ZXv8QbbilU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EI3QCc60YUS6Tg2EAr4p47eV7Ea9gX3rm9EU6xNmTs2FlSzCJR8yRDWpLyY8MuUWCMP9f9FGWpn4Q4oR10Iza4fTi4IU01mebekB2ovLi3ROSXqOkzP2tENloiD21weJ4pnZUvqc22v6GrudM0SxYAGK+h7vd82vj5RPSCOcrOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAiB0xRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05468C4CEEA;
-	Mon, 23 Jun 2025 21:51:50 +0000 (UTC)
+	 MIME-Version; b=eDLFUINaIZWeCwfzEktBJF0kyiQfSpUZovkYvypAqqti8D6rxQrrLH0TI0kWF6r2wvPLsR3bHXqZ3EbTKt1k0vIOSe0ExkKUf475V1hPPNrkbLKx3PIPB6Wvfzxq69yRxQgAqaVsLNGXAewC8LEeZc2MVMGw9i9K1Iiin/qF8bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgkptfCq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A23C4CEEA;
+	Mon, 23 Jun 2025 21:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715511;
-	bh=HyQ9NMzJgdrcEn2Fge814HvIX9vURGKP9l6dvmDUq9I=;
+	s=korg; t=1750713024;
+	bh=x0d6YNegH1rxL2FZCRyIYTR+EA/totKp7ZXv8QbbilU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAiB0xRYl9hXeVKeye3Q+nEHmLiLv+w7R5mWgC5ThpwOj4Cvmi1dhoxPJT57QZoNg
-	 2K2go2wHMMGknf+xFxUYWZfoThFl5HVO3jZFDz2WZzeE01Sb8veSsHAP8cOl/k7/hB
-	 Jdvx0Xjovy0lpFwla+sRL9A4Qam33mBcnxKGKXMQ=
+	b=AgkptfCqUsaLIF8BmLOjz42bfgBbjE+v/oNBi1pUGvl53/34vNZeSZP+tWvRCWPrT
+	 ck/uhPnPsIXl7N24ZPrGFy8HBLUNOSdOLVNOD5Yf5KSq3DVa6alhErNjNUCLZzc1FM
+	 exxHFSTR6YRvc95NFlWrMR8COChtwDHpoB/nG6JM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jann Horn <jannh@google.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Oscar Salvador <osalvador@suse.de>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 300/355] mm/hugetlb: fix huge_pmd_unshare() vs GUP-fast race
-Date: Mon, 23 Jun 2025 15:08:21 +0200
-Message-ID: <20250623130635.798706795@linuxfoundation.org>
+	Imre Kaloz <kaloz@openwrt.org>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 167/222] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_set_by_name()
+Date: Mon, 23 Jun 2025 15:08:22 +0200
+Message-ID: <20250623130617.098391452@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,60 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-commit 1013af4f585fccc4d3e5c5824d174de2257f7d6d upstream.
+[ Upstream commit 4229c28323db141eda69cb99427be75d3edba071 ]
 
-huge_pmd_unshare() drops a reference on a page table that may have
-previously been shared across processes, potentially turning it into a
-normal page table used in another process in which unrelated VMAs can
-afterwards be installed.
+The regmap_update_bits() function can fail, so propagate its error
+up to the stack instead of silently ignoring that.
 
-If this happens in the middle of a concurrent gup_fast(), gup_fast() could
-end up walking the page tables of another process.  While I don't see any
-way in which that immediately leads to kernel memory corruption, it is
-really weird and unexpected.
-
-Fix it with an explicit broadcast IPI through tlb_remove_table_sync_one(),
-just like we do in khugepaged when removing page tables for a THP
-collapse.
-
-Link: https://lkml.kernel.org/r/20250528-hugetlb-fixes-splitrace-v2-2-1329349bad1a@google.com
-Link: https://lkml.kernel.org/r/20250527-hugetlb-fixes-splitrace-v1-2-f4136f5ec58a@google.com
-Fixes: 39dde65c9940 ("[PATCH] shared page table for hugetlb page")
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-7-07e9ac1ab737@gmail.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/hugetlb.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5488,6 +5488,13 @@ int huge_pmd_unshare(struct mm_struct *m
- 		return 0;
+diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+index bee20c97aed41..5e0b04e593dc2 100644
+--- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
++++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
+@@ -353,9 +353,7 @@ static int armada_37xx_pmx_set_by_name(struct pinctrl_dev *pctldev,
  
- 	pud_clear(pud);
-+	/*
-+	 * Once our caller drops the rmap lock, some other process might be
-+	 * using this page table as a normal, non-hugetlb page table.
-+	 * Wait for pending gup_fast() in other threads to finish before letting
-+	 * that happen.
-+	 */
-+	tlb_remove_table_sync_one();
- 	atomic_dec(&virt_to_page(ptep)->pt_share_count);
- 	mm_dec_nr_pmds(mm);
- 	/*
+ 	val = grp->val[func];
+ 
+-	regmap_update_bits(info->regmap, reg, mask, val);
+-
+-	return 0;
++	return regmap_update_bits(info->regmap, reg, mask, val);
+ }
+ 
+ static int armada_37xx_pmx_set(struct pinctrl_dev *pctldev,
+-- 
+2.39.5
+
 
 
 
