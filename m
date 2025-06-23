@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B078EAE5102
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F872AE504F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:24:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46D734A28E9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A4BB4A0A9E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4834221723;
-	Mon, 23 Jun 2025 21:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65AA422172C;
+	Mon, 23 Jun 2025 21:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAdIdASf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0gt3fAZ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E47628EA;
-	Mon, 23 Jun 2025 21:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2120E1F3B96;
+	Mon, 23 Jun 2025 21:24:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714201; cv=none; b=Z+EWsaFeJwBFFWBJdcFl0/bNyr8IbiZEy+YLY7MoPx/hIqT6y83mAKRc5vdPurBv99kJsK3dAjAPltq5CgFnPfBVIfT3osu9qkoY8/4dQQ3+GjP31zA//Hd5pJ3KZzHzBE7DbOb8jTDcilz3fKMtc5oz+qXSkvC+KPB/fpJoNVk=
+	t=1750713840; cv=none; b=SybuvYk1ggygPYHneAgRV2xhmmMW4HCtRtGhjWQDmGY6I4FhBOzbVcmot7nD9ofHMcUt26b+YfwHFYCyEX5OCy7OVNTrsGgw7k1UDzWAfiRGbErAZinyVCmuzgYkzD5tgD2mam664lMc8PrX3AR74fks4Xq9Vmxl0tAzlwclWGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714201; c=relaxed/simple;
-	bh=Ki5PEygmHevPTQV3N4//0FfZR7hkN5aJHBzXxNtaKQQ=;
+	s=arc-20240116; t=1750713840; c=relaxed/simple;
+	bh=VqP8LMVEMUYQkJCvGXXv0N7gJpByhJ9XGy8YPAEvXZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lFJl8cNoTd15m6aJ8ukqWkkXCKzq3xvnWTdZ/+G+RuFmMhttId5HpCeJ52ZCXlndYlafx/RrsyKdbzTq8+WZUDSrR0G4OK27O2P+Cdt5N+1sw9xPWNfXu/IU5B0mxX/JWCjcSi/3dU6HjZ0yAWK3ZF9O0bNj9COYjja56eOv5ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAdIdASf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16036C4CEED;
-	Mon, 23 Jun 2025 21:30:00 +0000 (UTC)
+	 MIME-Version; b=WNDLlaTsO9oKzq3ylsoXsvdR8gVAyCTTSxuRIXGAo+DDIa3FEs/KuhqWlNMgHNHqC7q3Dg5za1MiuaRXCfIYuq4jPCzt/zveCJ0KhjqRvS4sPRh/b5I0BgnUtqQV57AXexxgxc1HeprxvoMRwguIKKNXgGC2G5GHJITVQVK0lJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0gt3fAZ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE207C4CEEA;
+	Mon, 23 Jun 2025 21:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714201;
-	bh=Ki5PEygmHevPTQV3N4//0FfZR7hkN5aJHBzXxNtaKQQ=;
+	s=korg; t=1750713840;
+	bh=VqP8LMVEMUYQkJCvGXXv0N7gJpByhJ9XGy8YPAEvXZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAdIdASfTncnScns1Vd7o2akfRQWSUxF12+M1E6RqtCnegOfktvYiZXe2fe1kUOdN
-	 97dy4qX77vuE6nhn/RliPzIUDK1Qat0OrrxLjOmkuBuNGz/YXmY0V96AqKX6t5SAAc
-	 K1xAkAOIM0v8GD91LQNlY8ExyoMByHr0YAUi3TJk=
+	b=0gt3fAZ3nAclQgj08i0tPNiuYeVu0YNYHcX95EiwJuDf3I0i2onZ59V2LIXzN7wYW
+	 4ukPbWXcgaEGyx3YuWscIJOWF3B07y56/E143athxr/Ygi09IT9QrxzdVtPuKfJy7t
+	 0bvXb5hQDgk9cTAgwJQ2GZw4IB7oPvPLCIkMMO9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 178/508] net: dsa: tag_brcm: legacy: fix pskb_may_pull length
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Subject: [PATCH 6.12 086/414] bus: firewall: Fix missing static inline annotations for stubs
 Date: Mon, 23 Jun 2025 15:03:43 +0200
-Message-ID: <20250623130649.652304574@linuxfoundation.org>
+Message-ID: <20250623130644.235029942@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +59,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit efdddc4484859082da6c7877ed144c8121c8ea55 ]
+commit 66db876162155c1cec87359cd78c62aaafde9257 upstream.
 
-BRCM_LEG_PORT_ID was incorrectly used for pskb_may_pull length.
-The correct check is BRCM_LEG_TAG_LEN + VLAN_HLEN, or 10 bytes.
+Stubs in the header file for !CONFIG_STM32_FIREWALL case should be both
+static and inline, because they do not come with earlier declaration and
+should be inlined in every unit including the header.
 
-Fixes: 964dbf186eaa ("net: dsa: tag_brcm: add support for legacy tags")
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250529124406.2513779-1-noltari@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Patrice Chotard <patrice.chotard@foss.st.com>
+Cc: stable@vger.kernel.org
+Fixes: 5c9668cfc6d7 ("firewall: introduce stm32_firewall framework")
+Link: https://lore.kernel.org/r/20250507092121.95121-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dsa/tag_brcm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/bus/stm32_firewall_device.h |   15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/net/dsa/tag_brcm.c b/net/dsa/tag_brcm.c
-index a65d62fb90094..04b57534fe4de 100644
---- a/net/dsa/tag_brcm.c
-+++ b/net/dsa/tag_brcm.c
-@@ -253,7 +253,7 @@ static struct sk_buff *brcm_leg_tag_rcv(struct sk_buff *skb,
- 	int source_port;
- 	u8 *brcm_tag;
+--- a/include/linux/bus/stm32_firewall_device.h
++++ b/include/linux/bus/stm32_firewall_device.h
+@@ -114,27 +114,30 @@ void stm32_firewall_release_access_by_id
  
--	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_PORT_ID)))
-+	if (unlikely(!pskb_may_pull(skb, BRCM_LEG_TAG_LEN + VLAN_HLEN)))
- 		return NULL;
+ #else /* CONFIG_STM32_FIREWALL */
  
- 	brcm_tag = dsa_etype_header_pos_rx(skb);
--- 
-2.39.5
-
+-int stm32_firewall_get_firewall(struct device_node *np, struct stm32_firewall *firewall,
+-				unsigned int nb_firewall)
++static inline int stm32_firewall_get_firewall(struct device_node *np,
++					      struct stm32_firewall *firewall,
++					      unsigned int nb_firewall)
+ {
+ 	return -ENODEV;
+ }
+ 
+-int stm32_firewall_grant_access(struct stm32_firewall *firewall)
++static inline int stm32_firewall_grant_access(struct stm32_firewall *firewall)
+ {
+ 	return -ENODEV;
+ }
+ 
+-void stm32_firewall_release_access(struct stm32_firewall *firewall)
++static inline void stm32_firewall_release_access(struct stm32_firewall *firewall)
+ {
+ }
+ 
+-int stm32_firewall_grant_access_by_id(struct stm32_firewall *firewall, u32 subsystem_id)
++static inline int stm32_firewall_grant_access_by_id(struct stm32_firewall *firewall,
++						    u32 subsystem_id)
+ {
+ 	return -ENODEV;
+ }
+ 
+-void stm32_firewall_release_access_by_id(struct stm32_firewall *firewall, u32 subsystem_id)
++static inline void stm32_firewall_release_access_by_id(struct stm32_firewall *firewall,
++						       u32 subsystem_id)
+ {
+ }
+ 
 
 
 
