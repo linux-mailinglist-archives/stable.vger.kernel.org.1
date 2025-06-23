@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89486AE42F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A82AE42F2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5D02C3B8277
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4CB031898957
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD362550D2;
-	Mon, 23 Jun 2025 13:21:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C235F256C88;
+	Mon, 23 Jun 2025 13:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NI3xHc6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YmeWe4aa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31BD248895;
-	Mon, 23 Jun 2025 13:21:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4712F24;
+	Mon, 23 Jun 2025 13:21:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684907; cv=none; b=uOT4ttyr2czvaO5jCXMwTt8F1yehxACr3Vwqa7fkrlGPz58tpzMYdgoPYlOLU/vD/rYu4xRK9SnRtZVRuxF0Us7utMGlEVrsyrmGgWjPI/Ek0IGRAHMo6SgrP3endPmxNDsTLaY7pnO9lAjWoH1N3S9L085lsRns7g1F+ovnvVY=
+	t=1750684914; cv=none; b=joP6MK88rSXUmxK3q0ShuUR8UVaZ5421w+lpklrVryf8ZWABEgyDTydcQHpA/14nOAtnkoEqABe/cXnfEvbgUkiyp/VYh/sm2/byUSQoszgMSOZaWMrHaDp15k1WLuCWFjD7aMamwiLtkxikH1pBqW3Jo9x3gbI+lfUY4KKFru0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684907; c=relaxed/simple;
-	bh=Bl1X/85NZD/v7Yp/ia+U8t1HdGVQb/i8e48BysWfWwU=;
+	s=arc-20240116; t=1750684914; c=relaxed/simple;
+	bh=tlSAndm4DrvHrJ4NwDJFM2r2NG4x3e5YHCruBodyskk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XxOkBbzSn/LYaFVHiLjQa6/jPMMN7SYA3V6z7xVuYHXuBCqT0nOXHH/8AeslvEQ9MCsMSLSZcAgVz/oGLkodAqhIzLZJDmZZ+JvK/Xa790+q6Gtbk7Ar8y904SVymPHjwfZHQ0SBUp8dHthUNU+U0+gyf7YVfvYF46LUIyzpywg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NI3xHc6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 792BCC4CEF1;
-	Mon, 23 Jun 2025 13:21:46 +0000 (UTC)
+	 MIME-Version; b=aBN/7+YMyUIT1qbS3zqtt0vF5kyXCt4pzb914yOCYGksg9O8JZEC6C5fk0jW7iHKTK9qe/DB6cr5z/W/sXWGynVV5AbhSVpJXj+9egF4mULMtpkMHvLcuAvkUIajVox6Xr28Bu/dyQXwk4t14SZ711dzlZTYSVuhcJ5ijMPkRoQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YmeWe4aa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F64C4CEEA;
+	Mon, 23 Jun 2025 13:21:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684906;
-	bh=Bl1X/85NZD/v7Yp/ia+U8t1HdGVQb/i8e48BysWfWwU=;
+	s=korg; t=1750684914;
+	bh=tlSAndm4DrvHrJ4NwDJFM2r2NG4x3e5YHCruBodyskk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NI3xHc6rdLMf39Zx20xMQmHTKcUdHNZbZcQwpWKI1ZOZBpK6O7+ZicurO3PZLZxor
-	 C3wNanvjOwPwfSEK38xES54BKoauvKBLx4EXqRxaCHIHZpoirisMkhbiVjhr2HaQmT
-	 n9zbaEvoi/EPNwhAxqnCipEUjLUMiW7bJ4HuoLaw=
+	b=YmeWe4aa3dKh2W5IdKbQKMhZYWhYxZkAijogPIUwO7PpZ8ad88ebyxwA26ue2jrmm
+	 LNxOxTW3EWoxIBQpa3VEZArWZCR3EZzRPRLeuOekXQ9qkelbHQXRpBzz8Mry212WJk
+	 YMtohtsVzOaCk9zojGbSPFdZse+r4eYa/hF8Oivs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
 	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
 	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 045/222] nilfs2: add pointer check for nilfs_direct_propagate()
-Date: Mon, 23 Jun 2025 15:06:20 +0200
-Message-ID: <20250623130613.300557106@linuxfoundation.org>
+Subject: [PATCH 5.4 046/222] nilfs2: do not propagate ENOENT error from nilfs_btree_propagate()
+Date: Mon, 23 Jun 2025 15:06:21 +0200
+Message-ID: <20250623130613.334950905@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -67,54 +67,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit f43f02429295486059605997bc43803527d69791 ]
+[ Upstream commit 8e39fbb1edbb4ec9d7c1124f403877fc167fcecd ]
 
-Patch series "nilfs2: improve sanity checks in dirty state propagation".
+In preparation for writing logs, in nilfs_btree_propagate(), which makes
+parent and ancestor node blocks dirty starting from a modified data block
+or b-tree node block, if the starting block does not belong to the b-tree,
+i.e.  is isolated, nilfs_btree_do_lookup() called within the function
+fails with -ENOENT.
 
-This fixes one missed check for block mapping anomalies and one improper
-return of an error code during a preparation step for log writing, thereby
-improving checking for filesystem corruption on writeback.
+In this case, even though -ENOENT is an internal code, it is propagated to
+the log writer via nilfs_bmap_propagate() and may be erroneously returned
+to system calls such as fsync().
 
-This patch (of 2):
+Fix this issue by changing the error code to -EINVAL in this case, and
+having the bmap layer detect metadata corruption and convert the error
+code appropriately.
 
-In nilfs_direct_propagate(), the printer get from nilfs_direct_get_ptr()
-need to be checked to ensure it is not an invalid pointer.
-
-If the pointer value obtained by nilfs_direct_get_ptr() is
-NILFS_BMAP_INVALID_PTR, means that the metadata (in this case, i_bmap in
-the nilfs_inode_info struct) that should point to the data block at the
-buffer head of the argument is corrupted and the data block is orphaned,
-meaning that the file system has lost consistency.
-
-Add a value check and return -EINVAL when it is an invalid pointer.
-
-Link: https://lkml.kernel.org/r/20250428173808.6452-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20250428173808.6452-2-konishi.ryusuke@gmail.com
-Fixes: 36a580eb489f ("nilfs2: direct block mapping")
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Link: https://lkml.kernel.org/r/20250428173808.6452-3-konishi.ryusuke@gmail.com
+Fixes: 1f5abe7e7dbc ("nilfs2: replace BUG_ON and BUG calls triggerable from ioctl")
 Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: Wentao Liang <vulab@iscas.ac.cn>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/direct.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nilfs2/btree.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/direct.c b/fs/nilfs2/direct.c
-index 7faf8c285d6c9..a72371cd6b956 100644
---- a/fs/nilfs2/direct.c
-+++ b/fs/nilfs2/direct.c
-@@ -273,6 +273,9 @@ static int nilfs_direct_propagate(struct nilfs_bmap *bmap,
- 	dat = nilfs_bmap_get_dat(bmap);
- 	key = nilfs_bmap_data_get_key(bmap, bh);
- 	ptr = nilfs_direct_get_ptr(bmap, key);
-+	if (ptr == NILFS_BMAP_INVALID_PTR)
-+		return -EINVAL;
-+
- 	if (!buffer_nilfs_volatile(bh)) {
- 		oldreq.pr_entry_nr = ptr;
- 		newreq.pr_entry_nr = ptr;
+diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
+index 7c9f4d79bdbc5..4a5e8495fa674 100644
+--- a/fs/nilfs2/btree.c
++++ b/fs/nilfs2/btree.c
+@@ -2097,11 +2097,13 @@ static int nilfs_btree_propagate(struct nilfs_bmap *btree,
+ 
+ 	ret = nilfs_btree_do_lookup(btree, path, key, NULL, level + 1, 0);
+ 	if (ret < 0) {
+-		if (unlikely(ret == -ENOENT))
++		if (unlikely(ret == -ENOENT)) {
+ 			nilfs_crit(btree->b_inode->i_sb,
+ 				   "writing node/leaf block does not appear in b-tree (ino=%lu) at key=%llu, level=%d",
+ 				   btree->b_inode->i_ino,
+ 				   (unsigned long long)key, level);
++			ret = -EINVAL;
++		}
+ 		goto out;
+ 	}
+ 
 -- 
 2.39.5
 
