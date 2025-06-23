@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157596-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F961AE54B5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C82A4AE5192
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 91013445734
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D2711892A8D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF9B21D3F6;
-	Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 599F21EEA5D;
+	Mon, 23 Jun 2025 21:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZCVW7b/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1Lruiuwk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4664C3FB1B;
-	Mon, 23 Jun 2025 22:04:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16B881C5D46;
+	Mon, 23 Jun 2025 21:34:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716255; cv=none; b=OX8oNLaDthDIq2MLpS+2MKtrEDz0gLJ96VCzKWm6gDHrN8ysvcIOiLNZY1Vzc76OQfDxQfRHq1ww1UT2ZTdHqOwhufe+DPoWxTOoA/r06p+6jKCdvG1b0N3DhZ+c85GOYXNYCocT6LDO+uQuRFFOYWkEcKW6X/jmaGmjRj08zvY=
+	t=1750714490; cv=none; b=h10fzPfGnKH5TCXQumDovJVtKY+jimfW/FAyK7J+d+aBKg+QYUHP0q1668Zpu03+RsnQJGWx2cMzFeoExDXX3+DFNTbVrBQ7nocJMLS60FkCx0U5LhDTRZbWLG58rB/NPkc9MNj8ZJAQkbKf6NLpf9aEGJA7azo34Oq2ekg8Gic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716255; c=relaxed/simple;
-	bh=3/+9QZ5/XDida0s28YDWQsQqy0EqdR0okbQfJgKhw7s=;
+	s=arc-20240116; t=1750714490; c=relaxed/simple;
+	bh=1egYDUSuH/qaLGwCKGWN+2JodaFS+vurZZdA9qw3eT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jnw0BWynQK4vdc4W70OxcwRa+0czG5qX6zU1TpuHNJIeAd67Tze6VxVmHM+s5naVSWQhWPdi+o7GPIhs0puOgptRH6u1RSAxW4hfHLsqbiak3UCZRZaQE1QRvA3i0NorM8MWzJxg0w/OgApAhFLogv4BCukIYlvEd52Ozm9lB90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZCVW7b/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF803C4CEEA;
-	Mon, 23 Jun 2025 22:04:14 +0000 (UTC)
+	 MIME-Version; b=cJX/64TvYfXZ+a1fzA+dxztHTMghE8pr+a4QBnRfLJ4ibQRt2R7fijFaqZ8FFmWQdjqGWU/Lf+NfLuIKDZ3h5yGx4Hzxkul0GD10f2Ukx4RxqhdIWBhtWtO8XmSDjhABpd9FYsOuphq9W5Pg07LQkBjGEBvrPOYoG0q+egqVWNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1Lruiuwk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D47C4CEEA;
+	Mon, 23 Jun 2025 21:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716255;
-	bh=3/+9QZ5/XDida0s28YDWQsQqy0EqdR0okbQfJgKhw7s=;
+	s=korg; t=1750714489;
+	bh=1egYDUSuH/qaLGwCKGWN+2JodaFS+vurZZdA9qw3eT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZCVW7b/qbhMpuSrgNP43DCZEwf+wt8KKlLlxgILQ5KQkDBhZxwiezcgHfO2F7lln
-	 RCOgJJQ/vf1rmkKaRvcmGdhpMUVn/rJquYybInS3fYtVjYVbUYeKFdlimDWRBxO+vi
-	 TNflli/YSslcK5YXYRcpBj9dHJ1n5vnbm4phI2+M=
+	b=1LruiuwkhT+h9CWtutQDQSOTZso9rpT64qwcloSwND+aUgdLLIyT+U2UgwL5aSsel
+	 LigySlR+XZRY9HgfmERWamSRnw94bLHN0Q+VYfoq6SnquGS/r26jvPblsG7X3BTH7d
+	 rFMLPGLrFe4B3MnTFSsQyCNAaqsWOP5IEelOM0dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sriram R <quic_srirrama@quicinc.com>,
+	Nithyanantham Paramasivam <quic_nithp@quicinc.com>,
+	Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 239/414] hid-asus: check ROG Ally MCU version and warn
+Subject: [PATCH 6.15 418/592] wifi: ath12k: Fix the enabling of REO queue lookup table feature
 Date: Mon, 23 Jun 2025 15:06:16 +0200
-Message-ID: <20250623130648.021261390@linuxfoundation.org>
+Message-ID: <20250623130710.378235692@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,184 +62,312 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Sriram R <quic_srirrama@quicinc.com>
 
-[ Upstream commit 00e005c952f74f50a3f86af96f56877be4685e14 ]
+[ Upstream commit 0bbcd42b15fa730f393a01bc818802d9f0b04197 ]
 
-ASUS have fixed suspend issues arising from a flag not being cleared in
-the MCU FW in both the ROG Ally 1 and the ROG Ally X.
+Instead of storing the REO queue address inside peer entries, REO
+hardware module prefers them to be stored in SRAM which could be
+directly accessed by REO using peer_ID/TID based lookup table
+mechanism.
 
-Implement a check and a warning to encourage users to update the FW to
-a minimum supported version.
+Fix the enabling of the REO queue lookup table(LUT) feature by
+configuring the LUT address information in the REO hardware register
+and setting the host service flags.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250323023421.78012-2-luke@ljones.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.3.1-00173-QCAHKSWPL_SILICONZ-1
+
+Signed-off-by: Sriram R <quic_srirrama@quicinc.com>
+Signed-off-by: Nithyanantham Paramasivam <quic_nithp@quicinc.com>
+Reviewed-by: Vasanthakumar Thiagarajan <vasanthakumar.thiagarajan@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250402152529.1649402-2-quic_nithp@quicinc.com
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-asus.c | 107 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 105 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp.c    | 77 +++++++++++++++++--------
+ drivers/net/wireless/ath/ath12k/dp.h    |  5 +-
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 10 +++-
+ drivers/net/wireless/ath/ath12k/hal.h   |  6 ++
+ drivers/net/wireless/ath/ath12k/hw.c    |  2 +
+ drivers/net/wireless/ath/ath12k/hw.h    |  3 +
+ drivers/net/wireless/ath/ath12k/wmi.c   |  8 ++-
+ drivers/net/wireless/ath/ath12k/wmi.h   |  1 +
+ 8 files changed, 83 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/hid/hid-asus.c b/drivers/hid/hid-asus.c
-index bcdd168cdc6d7..c5bdf0f1b32f7 100644
---- a/drivers/hid/hid-asus.c
-+++ b/drivers/hid/hid-asus.c
-@@ -52,6 +52,10 @@ MODULE_DESCRIPTION("Asus HID Keyboard and TouchPad");
- #define FEATURE_KBD_LED_REPORT_ID1 0x5d
- #define FEATURE_KBD_LED_REPORT_ID2 0x5e
+diff --git a/drivers/net/wireless/ath/ath12k/dp.c b/drivers/net/wireless/ath/ath12k/dp.c
+index 50c36e6ea1027..34e1bd2934ce3 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.c
++++ b/drivers/net/wireless/ath/ath12k/dp.c
+@@ -1261,22 +1261,24 @@ static void ath12k_dp_reoq_lut_cleanup(struct ath12k_base *ab)
+ 	if (!ab->hw_params->reoq_lut_support)
+ 		return;
  
-+#define ROG_ALLY_REPORT_SIZE 64
-+#define ROG_ALLY_X_MIN_MCU 313
-+#define ROG_ALLY_MIN_MCU 319
-+
- #define SUPPORT_KBD_BACKLIGHT BIT(0)
+-	if (dp->reoq_lut.vaddr) {
++	if (dp->reoq_lut.vaddr_unaligned) {
+ 		ath12k_hif_write32(ab,
+ 				   HAL_SEQ_WCSS_UMAC_REO_REG +
+ 				   HAL_REO1_QDESC_LUT_BASE0(ab), 0);
+-		dma_free_coherent(ab->dev, DP_REOQ_LUT_SIZE,
+-				  dp->reoq_lut.vaddr, dp->reoq_lut.paddr);
+-		dp->reoq_lut.vaddr = NULL;
++		dma_free_coherent(ab->dev, dp->reoq_lut.size,
++				  dp->reoq_lut.vaddr_unaligned,
++				  dp->reoq_lut.paddr_unaligned);
++		dp->reoq_lut.vaddr_unaligned = NULL;
+ 	}
  
- #define MAX_TOUCH_MAJOR 8
-@@ -84,6 +88,7 @@ MODULE_DESCRIPTION("Asus HID Keyboard and TouchPad");
- #define QUIRK_MEDION_E1239T		BIT(10)
- #define QUIRK_ROG_NKEY_KEYBOARD		BIT(11)
- #define QUIRK_ROG_CLAYMORE_II_KEYBOARD BIT(12)
-+#define QUIRK_ROG_ALLY_XPAD		BIT(13)
- 
- #define I2C_KEYBOARD_QUIRKS			(QUIRK_FIX_NOTEBOOK_REPORT | \
- 						 QUIRK_NO_INIT_REPORTS | \
-@@ -534,9 +539,99 @@ static bool asus_kbd_wmi_led_control_present(struct hid_device *hdev)
- 	return !!(value & ASUS_WMI_DSTS_PRESENCE_BIT);
+-	if (dp->ml_reoq_lut.vaddr) {
++	if (dp->ml_reoq_lut.vaddr_unaligned) {
+ 		ath12k_hif_write32(ab,
+ 				   HAL_SEQ_WCSS_UMAC_REO_REG +
+ 				   HAL_REO1_QDESC_LUT_BASE1(ab), 0);
+-		dma_free_coherent(ab->dev, DP_REOQ_LUT_SIZE,
+-				  dp->ml_reoq_lut.vaddr, dp->ml_reoq_lut.paddr);
+-		dp->ml_reoq_lut.vaddr = NULL;
++		dma_free_coherent(ab->dev, dp->ml_reoq_lut.size,
++				  dp->ml_reoq_lut.vaddr_unaligned,
++				  dp->ml_reoq_lut.paddr_unaligned);
++		dp->ml_reoq_lut.vaddr_unaligned = NULL;
+ 	}
  }
  
-+/*
-+ * We don't care about any other part of the string except the version section.
-+ * Example strings: FGA80100.RC72LA.312_T01, FGA80100.RC71LS.318_T01
-+ * The bytes "5a 05 03 31 00 1a 13" and possibly more come before the version
-+ * string, and there may be additional bytes after the version string such as
-+ * "75 00 74 00 65 00" or a postfix such as "_T01"
-+ */
-+static int mcu_parse_version_string(const u8 *response, size_t response_size)
+@@ -1608,39 +1610,66 @@ static int ath12k_dp_cc_init(struct ath12k_base *ab)
+ 	return ret;
+ }
+ 
++static int ath12k_dp_alloc_reoq_lut(struct ath12k_base *ab,
++				    struct ath12k_reo_q_addr_lut *lut)
 +{
-+	const u8 *end = response + response_size;
-+	const u8 *p = response;
-+	int dots, err, version;
-+	char buf[4];
-+
-+	dots = 0;
-+	while (p < end && dots < 2) {
-+		if (*p++ == '.')
-+			dots++;
-+	}
-+
-+	if (dots != 2 || p >= end || (p + 3) >= end)
-+		return -EINVAL;
-+
-+	memcpy(buf, p, 3);
-+	buf[3] = '\0';
-+
-+	err = kstrtoint(buf, 10, &version);
-+	if (err || version < 0)
-+		return -EINVAL;
-+
-+	return version;
-+}
-+
-+static int mcu_request_version(struct hid_device *hdev)
-+{
-+	u8 *response __free(kfree) = kzalloc(ROG_ALLY_REPORT_SIZE, GFP_KERNEL);
-+	const u8 request[] = { 0x5a, 0x05, 0x03, 0x31, 0x00, 0x20 };
-+	int ret;
-+
-+	if (!response)
++	lut->size =  DP_REOQ_LUT_SIZE + HAL_REO_QLUT_ADDR_ALIGN - 1;
++	lut->vaddr_unaligned = dma_alloc_coherent(ab->dev, lut->size,
++						  &lut->paddr_unaligned,
++						  GFP_KERNEL | __GFP_ZERO);
++	if (!lut->vaddr_unaligned)
 +		return -ENOMEM;
 +
-+	ret = asus_kbd_set_report(hdev, request, sizeof(request));
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = hid_hw_raw_request(hdev, FEATURE_REPORT_ID, response,
-+				ROG_ALLY_REPORT_SIZE, HID_FEATURE_REPORT,
-+				HID_REQ_GET_REPORT);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = mcu_parse_version_string(response, ROG_ALLY_REPORT_SIZE);
-+	if (ret < 0) {
-+		pr_err("Failed to parse MCU version: %d\n", ret);
-+		print_hex_dump(KERN_ERR, "MCU: ", DUMP_PREFIX_NONE,
-+			      16, 1, response, ROG_ALLY_REPORT_SIZE, false);
-+	}
-+
-+	return ret;
++	lut->vaddr = PTR_ALIGN(lut->vaddr_unaligned, HAL_REO_QLUT_ADDR_ALIGN);
++	lut->paddr = lut->paddr_unaligned +
++		     ((unsigned long)lut->vaddr - (unsigned long)lut->vaddr_unaligned);
++	return 0;
 +}
 +
-+static void validate_mcu_fw_version(struct hid_device *hdev, int idProduct)
-+{
-+	int min_version, version;
-+
-+	version = mcu_request_version(hdev);
-+	if (version < 0)
-+		return;
-+
-+	switch (idProduct) {
-+	case USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY:
-+		min_version = ROG_ALLY_MIN_MCU;
-+		break;
-+	case USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X:
-+		min_version = ROG_ALLY_X_MIN_MCU;
-+		break;
-+	default:
-+		min_version = 0;
-+	}
-+
-+	if (version < min_version) {
-+		hid_warn(hdev,
-+			"The MCU firmware version must be %d or greater to avoid issues with suspend.\n",
-+			min_version);
-+	}
-+}
-+
- static int asus_kbd_register_leds(struct hid_device *hdev)
+ static int ath12k_dp_reoq_lut_setup(struct ath12k_base *ab)
  {
- 	struct asus_drvdata *drvdata = hid_get_drvdata(hdev);
-+	struct usb_interface *intf;
-+	struct usb_device *udev;
- 	unsigned char kbd_func;
- 	int ret;
+ 	struct ath12k_dp *dp = &ab->dp;
++	u32 val;
++	int ret;
  
-@@ -560,6 +655,14 @@ static int asus_kbd_register_leds(struct hid_device *hdev)
- 			if (ret < 0)
- 				return ret;
- 		}
+ 	if (!ab->hw_params->reoq_lut_support)
+ 		return 0;
+ 
+-	dp->reoq_lut.vaddr = dma_alloc_coherent(ab->dev,
+-						DP_REOQ_LUT_SIZE,
+-						&dp->reoq_lut.paddr,
+-						GFP_KERNEL | __GFP_ZERO);
+-	if (!dp->reoq_lut.vaddr) {
++	ret = ath12k_dp_alloc_reoq_lut(ab, &dp->reoq_lut);
++	if (ret) {
+ 		ath12k_warn(ab, "failed to allocate memory for reoq table");
+-		return -ENOMEM;
++		return ret;
+ 	}
+ 
+-	dp->ml_reoq_lut.vaddr = dma_alloc_coherent(ab->dev,
+-						   DP_REOQ_LUT_SIZE,
+-						   &dp->ml_reoq_lut.paddr,
+-						   GFP_KERNEL | __GFP_ZERO);
+-	if (!dp->ml_reoq_lut.vaddr) {
++	ret = ath12k_dp_alloc_reoq_lut(ab, &dp->ml_reoq_lut);
++	if (ret) {
+ 		ath12k_warn(ab, "failed to allocate memory for ML reoq table");
+-		dma_free_coherent(ab->dev, DP_REOQ_LUT_SIZE,
+-				  dp->reoq_lut.vaddr, dp->reoq_lut.paddr);
+-		dp->reoq_lut.vaddr = NULL;
+-		return -ENOMEM;
++		dma_free_coherent(ab->dev, dp->reoq_lut.size,
++				  dp->reoq_lut.vaddr_unaligned,
++				  dp->reoq_lut.paddr_unaligned);
++		dp->reoq_lut.vaddr_unaligned = NULL;
++		return ret;
+ 	}
+ 
++	/* Bits in the register have address [39:8] LUT base address to be
++	 * allocated such that LSBs are assumed to be zero. Also, current
++	 * design supports paddr upto 4 GB max hence it fits in 32 bit register only
++	 */
 +
-+		if (drvdata->quirks & QUIRK_ROG_ALLY_XPAD) {
-+			intf = to_usb_interface(hdev->dev.parent);
-+			udev = interface_to_usbdev(intf);
-+			validate_mcu_fw_version(hdev,
-+				le16_to_cpu(udev->descriptor.idProduct));
-+		}
+ 	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE0(ab),
+-			   dp->reoq_lut.paddr);
++			   dp->reoq_lut.paddr >> 8);
 +
- 	} else {
- 		/* Initialize keyboard */
- 		ret = asus_kbd_init(hdev, FEATURE_KBD_REPORT_ID);
-@@ -1280,10 +1383,10 @@ static const struct hid_device_id asus_devices[] = {
- 	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY),
--	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
-+	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD | QUIRK_ROG_ALLY_XPAD},
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_NKEY_ALLY_X),
--	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD },
-+	  QUIRK_USE_KBD_BACKLIGHT | QUIRK_ROG_NKEY_KEYBOARD | QUIRK_ROG_ALLY_XPAD },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ASUSTEK,
- 	    USB_DEVICE_ID_ASUSTEK_ROG_CLAYMORE_II_KEYBOARD),
- 	  QUIRK_ROG_CLAYMORE_II_KEYBOARD },
+ 	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_LUT_BASE1(ab),
+ 			   dp->ml_reoq_lut.paddr >> 8);
+ 
++	val = ath12k_hif_read32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab));
++
++	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_ADDR(ab),
++			   val | HAL_REO_QDESC_ADDR_READ_LUT_ENABLE);
++
++	ath12k_hif_write32(ab, HAL_SEQ_WCSS_UMAC_REO_REG + HAL_REO1_QDESC_MAX_PEERID(ab),
++			   HAL_REO_QDESC_MAX_PEERID);
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/net/wireless/ath/ath12k/dp.h b/drivers/net/wireless/ath/ath12k/dp.h
+index 427a87b63dec3..e8dbba0c3bb7d 100644
+--- a/drivers/net/wireless/ath/ath12k/dp.h
++++ b/drivers/net/wireless/ath/ath12k/dp.h
+@@ -311,8 +311,11 @@ struct ath12k_reo_queue_ref {
+ } __packed;
+ 
+ struct ath12k_reo_q_addr_lut {
+-	dma_addr_t paddr;
++	u32 *vaddr_unaligned;
+ 	u32 *vaddr;
++	dma_addr_t paddr_unaligned;
++	dma_addr_t paddr;
++	u32 size;
+ };
+ 
+ struct ath12k_dp {
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 8b1b038d67667..cc5a23a46ea15 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -3255,8 +3255,14 @@ static int ath12k_dp_rx_h_defrag_reo_reinject(struct ath12k *ar,
+ 	reo_ent_ring->rx_mpdu_info.peer_meta_data =
+ 		reo_dest_ring->rx_mpdu_info.peer_meta_data;
+ 
+-	reo_ent_ring->queue_addr_lo = cpu_to_le32(lower_32_bits(rx_tid->paddr));
+-	queue_addr_hi = upper_32_bits(rx_tid->paddr);
++	if (ab->hw_params->reoq_lut_support) {
++		reo_ent_ring->queue_addr_lo = reo_dest_ring->rx_mpdu_info.peer_meta_data;
++		queue_addr_hi = 0;
++	} else {
++		reo_ent_ring->queue_addr_lo = cpu_to_le32(lower_32_bits(rx_tid->paddr));
++		queue_addr_hi = upper_32_bits(rx_tid->paddr);
++	}
++
+ 	reo_ent_ring->info0 = le32_encode_bits(queue_addr_hi,
+ 					       HAL_REO_ENTR_RING_INFO0_QUEUE_ADDR_HI) |
+ 			      le32_encode_bits(dst_ind,
+diff --git a/drivers/net/wireless/ath/ath12k/hal.h b/drivers/net/wireless/ath/ath12k/hal.h
+index c8205672cd3dd..cb8530dfdd911 100644
+--- a/drivers/net/wireless/ath/ath12k/hal.h
++++ b/drivers/net/wireless/ath/ath12k/hal.h
+@@ -21,6 +21,7 @@ struct ath12k_base;
+ #define HAL_MAX_AVAIL_BLK_RES			3
+ 
+ #define HAL_RING_BASE_ALIGN	8
++#define HAL_REO_QLUT_ADDR_ALIGN 256
+ 
+ #define HAL_WBM_IDLE_SCATTER_BUF_SIZE_MAX	32704
+ /* TODO: Check with hw team on the supported scatter buf size */
+@@ -39,6 +40,7 @@ struct ath12k_base;
+ #define HAL_OFFSET_FROM_HP_TO_TP		4
+ 
+ #define HAL_SHADOW_REG(x) (HAL_SHADOW_BASE_ADDR + (4 * (x)))
++#define HAL_REO_QDESC_MAX_PEERID		8191
+ 
+ /* WCSS Relative address */
+ #define HAL_SEQ_WCSS_UMAC_OFFSET		0x00a00000
+@@ -139,6 +141,8 @@ struct ath12k_base;
+ #define HAL_REO1_DEST_RING_CTRL_IX_1		0x00000008
+ #define HAL_REO1_DEST_RING_CTRL_IX_2		0x0000000c
+ #define HAL_REO1_DEST_RING_CTRL_IX_3		0x00000010
++#define HAL_REO1_QDESC_ADDR(ab)		((ab)->hw_params->regs->hal_reo1_qdesc_addr)
++#define HAL_REO1_QDESC_MAX_PEERID(ab)	((ab)->hw_params->regs->hal_reo1_qdesc_max_peerid)
+ #define HAL_REO1_SW_COOKIE_CFG0(ab)	((ab)->hw_params->regs->hal_reo1_sw_cookie_cfg0)
+ #define HAL_REO1_SW_COOKIE_CFG1(ab)	((ab)->hw_params->regs->hal_reo1_sw_cookie_cfg1)
+ #define HAL_REO1_QDESC_LUT_BASE0(ab)	((ab)->hw_params->regs->hal_reo1_qdesc_lut_base0)
+@@ -326,6 +330,8 @@ struct ath12k_base;
+ #define HAL_REO1_SW_COOKIE_CFG_ALIGN			BIT(18)
+ #define HAL_REO1_SW_COOKIE_CFG_ENABLE			BIT(19)
+ #define HAL_REO1_SW_COOKIE_CFG_GLOBAL_ENABLE		BIT(20)
++#define HAL_REO_QDESC_ADDR_READ_LUT_ENABLE		BIT(7)
++#define HAL_REO_QDESC_ADDR_READ_CLEAR_QDESC_ARRAY	BIT(6)
+ 
+ /* CE ring bit field mask and shift */
+ #define HAL_CE_DST_R0_DEST_CTRL_MAX_LEN			GENMASK(15, 0)
+diff --git a/drivers/net/wireless/ath/ath12k/hw.c b/drivers/net/wireless/ath/ath12k/hw.c
+index 1bfb11bae7add..a5fa3b6a831ae 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.c
++++ b/drivers/net/wireless/ath/ath12k/hw.c
+@@ -748,6 +748,8 @@ static const struct ath12k_hw_regs qcn9274_v2_regs = {
+ 	.hal_reo1_sw_cookie_cfg1 = 0x00000070,
+ 	.hal_reo1_qdesc_lut_base0 = 0x00000074,
+ 	.hal_reo1_qdesc_lut_base1 = 0x00000078,
++	.hal_reo1_qdesc_addr = 0x0000007c,
++	.hal_reo1_qdesc_max_peerid = 0x00000088,
+ 	.hal_reo1_ring_base_lsb = 0x00000500,
+ 	.hal_reo1_ring_base_msb = 0x00000504,
+ 	.hal_reo1_ring_id = 0x00000508,
+diff --git a/drivers/net/wireless/ath/ath12k/hw.h b/drivers/net/wireless/ath/ath12k/hw.h
+index 862b11325a902..e1ad03daebcd4 100644
+--- a/drivers/net/wireless/ath/ath12k/hw.h
++++ b/drivers/net/wireless/ath/ath12k/hw.h
+@@ -299,6 +299,9 @@ struct ath12k_hw_regs {
+ 
+ 	u32 hal_tcl_status_ring_base_lsb;
+ 
++	u32 hal_reo1_qdesc_addr;
++	u32 hal_reo1_qdesc_max_peerid;
++
+ 	u32 hal_wbm_idle_ring_base_lsb;
+ 	u32 hal_wbm_idle_ring_misc_addr;
+ 	u32 hal_wbm_r0_idle_list_cntl_addr;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 22f21ecc8f235..56b2feb4ffe05 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -3665,7 +3665,8 @@ ath12k_fill_band_to_mac_param(struct ath12k_base  *soc,
+ }
+ 
+ static void
+-ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cfg,
++ath12k_wmi_copy_resource_config(struct ath12k_base *ab,
++				struct ath12k_wmi_resource_config_params *wmi_cfg,
+ 				struct ath12k_wmi_resource_config_arg *tg_cfg)
+ {
+ 	wmi_cfg->num_vdevs = cpu_to_le32(tg_cfg->num_vdevs);
+@@ -3732,6 +3733,9 @@ ath12k_wmi_copy_resource_config(struct ath12k_wmi_resource_config_params *wmi_cf
+ 					   WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION);
+ 	wmi_cfg->host_service_flags = cpu_to_le32(tg_cfg->is_reg_cc_ext_event_supported <<
+ 				WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT);
++	if (ab->hw_params->reoq_lut_support)
++		wmi_cfg->host_service_flags |=
++			cpu_to_le32(1 << WMI_RSRC_CFG_HOST_SVC_FLAG_REO_QREF_SUPPORT_BIT);
+ 	wmi_cfg->ema_max_vap_cnt = cpu_to_le32(tg_cfg->ema_max_vap_cnt);
+ 	wmi_cfg->ema_max_profile_period = cpu_to_le32(tg_cfg->ema_max_profile_period);
+ 	wmi_cfg->flags2 |= cpu_to_le32(WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET);
+@@ -3772,7 +3776,7 @@ static int ath12k_init_cmd_send(struct ath12k_wmi_pdev *wmi,
+ 	ptr = skb->data + sizeof(*cmd);
+ 	cfg = ptr;
+ 
+-	ath12k_wmi_copy_resource_config(cfg, &arg->res_cfg);
++	ath12k_wmi_copy_resource_config(ab, cfg, &arg->res_cfg);
+ 
+ 	cfg->tlv_header = ath12k_wmi_tlv_cmd_hdr(WMI_TAG_RESOURCE_CONFIG,
+ 						 sizeof(*cfg));
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index be4ac91dd34f5..bd7312f3cf24a 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -2461,6 +2461,7 @@ struct wmi_init_cmd {
+ } __packed;
+ 
+ #define WMI_RSRC_CFG_HOST_SVC_FLAG_REG_CC_EXT_SUPPORT_BIT 4
++#define WMI_RSRC_CFG_HOST_SVC_FLAG_REO_QREF_SUPPORT_BIT   12
+ #define WMI_RSRC_CFG_FLAGS2_RX_PEER_METADATA_VERSION		GENMASK(5, 4)
+ #define WMI_RSRC_CFG_FLAG1_BSS_CHANNEL_INFO_64	BIT(5)
+ #define WMI_RSRC_CFG_FLAGS2_CALC_NEXT_DTIM_COUNT_SET      BIT(9)
 -- 
 2.39.5
 
