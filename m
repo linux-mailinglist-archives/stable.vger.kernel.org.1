@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E563AE43B4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8354BAE435A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C281894240
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 20E9E7ABBA1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51EB22566D3;
-	Mon, 23 Jun 2025 13:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C8E3253F1D;
+	Mon, 23 Jun 2025 13:28:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QdHFQLGK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d22oJwXt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE2D25393A;
-	Mon, 23 Jun 2025 13:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18FB8253924;
+	Mon, 23 Jun 2025 13:28:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685311; cv=none; b=RMH2GiLwLus0p+4xCYIwOcw3ly6vJWSnm9emhIsrYVvL35qD1O0eGHursYkPpBa4DLVpwhih1aoX/K7UzRk7791IIe1l9yyog2ezjI7Qn9Y8S9LzPILFm6MJrl6QcEEMGk8agZ48+HlwzyAViP45oLDckg9GHTH1+bM+1yZPCJE=
+	t=1750685319; cv=none; b=QxFixTGvePS6Cx57TvJpwnJlsF4cCLp7sh6N1bQYZ9ghsu48LMkBdBfZKJ73WMuPUq5QRt4e2g4gBmBdg+7E7pa3itoKnJwk8QLJfIWLPbc+QzezDCrok6Q/ZJ0xdviJLumMAYP2cnbstQZjdb9a11x+PdBRN0gnGHLMFVHL8lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685311; c=relaxed/simple;
-	bh=mlfSFA80V1VBftvNRVBEsOT95sEu4Y4BUNMyHwLWBUQ=;
+	s=arc-20240116; t=1750685319; c=relaxed/simple;
+	bh=mjGGlkENAGm5h/ga3F7Bu4mFALDCenkJKp9F/Sr0O74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GzalLVxRgfm/MMi4ZmO4Zsdxewi9LpVMgac+4twxOICyLBj9T9Erg0DPCR+lzTVtYUK4wxehOMZ1tduqYiTb8iX/bd9wPxGygKCbZf0EFIMWF4NBOAEb5kUGCHHw99b6XV3aXQAK3M+/N7Rvjh3YS3hnt7qi5/9O5DTWCo0jLaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QdHFQLGK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981DCC4CEF0;
-	Mon, 23 Jun 2025 13:28:30 +0000 (UTC)
+	 MIME-Version; b=fCYbxd6i48PGrwheQI8AxWiue7YOLPl51ODVoQkdA1uPNJ4IGiBgWwC5YHN3G4sZnMrDzqqGvF52ZrKXgPeLmYrtYJ9eMFV7ct++tkYvYwACJmD0igSrCjwQ25aEOoZ4tjI5O9LYmQMnqEM4YUyOlej8OmZJSY2PX9N92hlW/Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d22oJwXt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4869DC4CEEA;
+	Mon, 23 Jun 2025 13:28:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685310;
-	bh=mlfSFA80V1VBftvNRVBEsOT95sEu4Y4BUNMyHwLWBUQ=;
+	s=korg; t=1750685318;
+	bh=mjGGlkENAGm5h/ga3F7Bu4mFALDCenkJKp9F/Sr0O74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QdHFQLGKPNWVafxVR970YsH4QrGZCHzQJcoXa9bmKTUTCLZXyIhPXrf5p0/2/dOWi
-	 7R6I0FmdV4m5hKNYgSkTeoaec4slk7clWEF1OINDgsG2HyoBenYlnmqCWuURSfgh0o
-	 skzmNTwfD3Em+GoUtmP+LF3LR4zO8qE+yeMXkSuM=
+	b=d22oJwXtNGvazU7dmyPZkNMcTCGzM8DsQPTggSAUXZOpmfC/N7d1Aly7gdLYeW60C
+	 zQU6iCLn30MIDqNdYJ+EHiq0M2SKzZUIoZnVm3O5P1VQBqECVlq4yZcZj2kh1RM9lx
+	 d0Brt2NAiO5xBoEU+k6OEEXUgBBb+uVmcMOhHJvc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Anton Protopopov <a.s.protopopov@gmail.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 044/355] libbpf: Use proper errno value in nlattr
-Date: Mon, 23 Jun 2025 15:04:05 +0200
-Message-ID: <20250623130628.151124578@linuxfoundation.org>
+Subject: [PATCH 5.10 045/355] pinctrl: at91: Fix possible out-of-boundary access
+Date: Mon, 23 Jun 2025 15:04:06 +0200
+Message-ID: <20250623130628.183014206@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
 References: <20250623130626.716971725@linuxfoundation.org>
@@ -66,116 +66,101 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Anton Protopopov <a.s.protopopov@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit fd5fd538a1f4b34cee6823ba0ddda2f7a55aca96 ]
+[ Upstream commit 762ef7d1e6eefad9896560bfcb9bcf7f1b6df9c1 ]
 
-Return value of the validate_nla() function can be propagated all the
-way up to users of libbpf API. In case of error this libbpf version
-of validate_nla returns -1 which will be seen as -EPERM from user's
-point of view. Instead, return a more reasonable -EINVAL.
+at91_gpio_probe() doesn't check that given OF alias is not available or
+something went wrong when trying to get it. This might have consequences
+when accessing gpio_chips array with that value as an index. Note, that
+BUG() can be compiled out and hence won't actually perform the required
+checks.
 
-Fixes: bbf48c18ee0c ("libbpf: add error reporting in XDP")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Anton Protopopov <a.s.protopopov@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250510182011.2246631-1-a.s.protopopov@gmail.com
+Fixes: 6732ae5cb47c ("ARM: at91: add pinctrl support")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/r/202505052343.UHF1Zo93-lkp@intel.com/
+Link: https://lore.kernel.org/20250508200807.1384558-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/nlattr.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/pinctrl/pinctrl-at91.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/nlattr.c b/tools/lib/bpf/nlattr.c
-index 1a04299a2a604..35ad5a845a147 100644
---- a/tools/lib/bpf/nlattr.c
-+++ b/tools/lib/bpf/nlattr.c
-@@ -63,16 +63,16 @@ static int validate_nla(struct nlattr *nla, int maxtype,
- 		minlen = nla_attr_minlen[pt->type];
+diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
+index bb9348f14b1ba..3b299f4e2c930 100644
+--- a/drivers/pinctrl/pinctrl-at91.c
++++ b/drivers/pinctrl/pinctrl-at91.c
+@@ -1820,12 +1820,16 @@ static int at91_gpio_probe(struct platform_device *pdev)
+ 	struct at91_gpio_chip *at91_chip = NULL;
+ 	struct gpio_chip *chip;
+ 	struct pinctrl_gpio_range *range;
++	int alias_idx;
+ 	int ret = 0;
+ 	int irq, i;
+-	int alias_idx = of_alias_get_id(np, "gpio");
+ 	uint32_t ngpio;
+ 	char **names;
  
- 	if (libbpf_nla_len(nla) < minlen)
--		return -1;
-+		return -EINVAL;
- 
- 	if (pt->maxlen && libbpf_nla_len(nla) > pt->maxlen)
--		return -1;
-+		return -EINVAL;
- 
- 	if (pt->type == LIBBPF_NLA_STRING) {
- 		char *data = libbpf_nla_data(nla);
- 
- 		if (data[libbpf_nla_len(nla) - 1] != '\0')
--			return -1;
-+			return -EINVAL;
- 	}
- 
- 	return 0;
-@@ -118,19 +118,18 @@ int libbpf_nla_parse(struct nlattr *tb[], int maxtype, struct nlattr *head,
- 		if (policy) {
- 			err = validate_nla(nla, maxtype, policy);
- 			if (err < 0)
--				goto errout;
-+				return err;
- 		}
- 
--		if (tb[type])
-+		if (tb[type]) {
- 			pr_warn("Attribute of type %#x found multiple times in message, "
- 				"previous attribute is being ignored.\n", type);
-+		}
- 
- 		tb[type] = nla;
- 	}
- 
--	err = 0;
--errout:
--	return err;
-+	return 0;
- }
- 
- /**
++	alias_idx = of_alias_get_id(np, "gpio");
++	if (alias_idx < 0)
++		return alias_idx;
++
+ 	BUG_ON(alias_idx >= ARRAY_SIZE(gpio_chips));
+ 	if (gpio_chips[alias_idx]) {
+ 		ret = -EBUSY;
 -- 
 2.39.5
 
 
 
-wer/supply/bq27xxx_battery_i2c.c b/drivers/power/supply/bq27xxx_battery_i2c.c
-index ba0d22d904295..868e95f0887e1 100644
---- a/drivers/power/supply/bq27xxx_battery_i2c.c
-+++ b/drivers/power/supply/bq27xxx_battery_i2c.c
-@@ -6,6 +6,7 @@
-  *	Andrew F. Davis <afd@ti.com>
-  */
- 
-+#include <linux/delay.h>
- #include <linux/i2c.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-@@ -31,6 +32,7 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
- 	struct i2c_msg msg[2];
- 	u8 data[2];
- 	int ret;
-+	int retry = 0;
- 
- 	if (!client->adapter)
- 		return -ENODEV;
-@@ -47,7 +49,16 @@ static int bq27xxx_battery_i2c_read(struct bq27xxx_device_info *di, u8 reg,
- 	else
- 		msg[1].len = 2;
- 
--	ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
-+	do {
-+		ret = i2c_transfer(client->adapter, msg, ARRAY_SIZE(msg));
-+		if (ret == -EBUSY && ++retry < 3) {
-+			/* sleep 10 milliseconds when busy */
-+			usleep_range(10000, 11000);
-+			continue;
-+		}
-+		break;
-+	} while (1);
+rd-utils.c
+index 3ae2a212a2e38..355f7ec8943c2 100644
+--- a/sound/soc/generic/simple-card-utils.c
++++ b/sound/soc/generic/simple-card-utils.c
+@@ -1119,12 +1119,16 @@ int graph_util_parse_dai(struct simple_util_priv *priv, struct device_node *ep,
+ 	args.np = ep;
+ 	dai = snd_soc_get_dai_via_args(&args);
+ 	if (dai) {
++		const char *dai_name = snd_soc_dai_name_get(dai);
++		const struct of_phandle_args *dai_args = snd_soc_copy_dai_args(dev, &args);
 +
- 	if (ret < 0)
- 		return ret;
+ 		ret = -ENOMEM;
++		if (!dai_args)
++			goto err;
++
+ 		dlc->of_node  = node;
+-		dlc->dai_name = snd_soc_dai_name_get(dai);
+-		dlc->dai_args = snd_soc_copy_dai_args(dev, &args);
+-		if (!dlc->dai_args)
+-			goto end;
++		dlc->dai_name = dai_name;
++		dlc->dai_args = dai_args;
  
+ 		goto parse_dai_end;
+ 	}
+@@ -1154,16 +1158,17 @@ int graph_util_parse_dai(struct simple_util_priv *priv, struct device_node *ep,
+ 	 *    if he unbinded CPU or Codec.
+ 	 */
+ 	ret = snd_soc_get_dlc(&args, dlc);
+-	if (ret < 0) {
+-		of_node_put(node);
+-		goto end;
+-	}
++	if (ret < 0)
++		goto err;
+ 
+ parse_dai_end:
+ 	if (is_single_link)
+ 		*is_single_link = of_graph_get_endpoint_count(node) == 1;
+ 	ret = 0;
+-end:
++err:
++	if (ret < 0)
++		of_node_put(node);
++
+ 	return simple_ret(priv, ret);
+ }
+ EXPORT_SYMBOL_GPL(graph_util_parse_dai);
 -- 
 2.39.5
 
