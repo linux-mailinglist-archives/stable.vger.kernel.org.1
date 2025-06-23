@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B6C5AE5182
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EB25BAE53A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5AD10189A10B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:34:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CC401B67470
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EBF1F3B96;
-	Mon, 23 Jun 2025 21:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A542222B7;
+	Mon, 23 Jun 2025 21:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cPZwtLwk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XVi2BCWa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 811444409;
-	Mon, 23 Jun 2025 21:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EB0D1AD3FA;
+	Mon, 23 Jun 2025 21:54:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714470; cv=none; b=GfzyLNzIcPqIRwtVtgKbdMk7weclcUn3+diEet9BofV7APe+WZMWJdoVO1WHEaRcNUlkrwrvCIDgL+4izDo5mE2Q7VzX8qchPc71fwW6BcEv1S+DbrDmzfFSe4Zt9ARcZ6oP8uatBYJ6f9oRGz7tDNVKO/tR7cfVkcrmjGbWb5E=
+	t=1750715673; cv=none; b=KelUeHwl9RWVByrCG+fi7UF4pekEscqMEBS4glLcT4ONB1demDIgsuj6igiDItFjYn9fN2k3hmUI0sfCIxseG7XSb4X0SKogc2wNyllfMuYcCQT84YJZ0hfhl8ZYcQ2jZWt91Z0i6KrR8anz5Z440OGKYS7yz/pdkMSUITOv5mM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714470; c=relaxed/simple;
-	bh=+OiklWF7evc6CbH/5u/om4Rq1GSYHxrt2HULJQFzl4U=;
+	s=arc-20240116; t=1750715673; c=relaxed/simple;
+	bh=FoAQvr+K6bPAdSGHG+CNvx/B06temFLtgTeZ+RQfvKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QePtNz3ZE0yUOBHfTzVCYy73BcAF9H/k4NjVOn8L4Wd/GGakt5hR/qZGyqDFsm8savDpJmAeGF3Tv3JgAITaXXSaz1Kmb5SHjbuObydRPEnkLi3LwBJbn+FfDpLqjTArn6WrrjaxbRph8ew/VpPuT7GT1wAmSNshUSbtvfTKSBI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cPZwtLwk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B621C4CEEA;
-	Mon, 23 Jun 2025 21:34:29 +0000 (UTC)
+	 MIME-Version; b=F+K0/9HS6OZC0BBCbsMGbWmBjEut0oJAMuBbSwjEou928igxppRR1WKjSafLJUof5s63kP/RMokDY42uf6j/lz9tiABFwCtvNc3KGpUqA6GnXKyDUZXji3EF0FM95Xr3Rs/ZLWGUNMB4PC58PVTXrRLSfKj2W3e4cKEUqescBtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XVi2BCWa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB35AC4CEEA;
+	Mon, 23 Jun 2025 21:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714470;
-	bh=+OiklWF7evc6CbH/5u/om4Rq1GSYHxrt2HULJQFzl4U=;
+	s=korg; t=1750715673;
+	bh=FoAQvr+K6bPAdSGHG+CNvx/B06temFLtgTeZ+RQfvKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cPZwtLwkrYmXcq+DP9+n5nvVj4V4zIATdk7ESNYPXBlGNl69KcaQJixftfyXg4N5o
-	 r8ReuUx9jBBD4xCyBEoueVU0azyBjTOovQwsPm1cMopEz7v5JPQfCnCsvcaykJkJaw
-	 5H6RYX/fnjIK36LcwGPo72cWm4Ltlx+w9WoycrSU=
+	b=XVi2BCWazfdEbMdWeRfF5eGoVCgVRp1UtBZN1vzKA4grO/1BEifWObQf4bECNTClq
+	 J8QuG58i10wSvqYxDndGowabvYmkyJfCFGFx7cNBXxKvalvvPFhBqJ9/pVuam2J50u
+	 IHVLJ92nzy3fF0nkgNbCHdG1NoIg4Bbsy5RQgK1U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <siqueira@igalia.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 230/355] drm/amdgpu/gfx10: fix CSIB handling
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	"Mike Rapoport (Microsoft)" <rppt@kernel.org>
+Subject: [PATCH 6.15 473/592] x86/its: move its_pages array to struct mod_arch_specific
 Date: Mon, 23 Jun 2025 15:07:11 +0200
-Message-ID: <20250623130633.663373513@linuxfoundation.org>
+Message-ID: <20250623130711.683046009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-[ Upstream commit 683308af030cd9b8d3f1de5cbc1ee51788878feb ]
+commit 0b0cae7119a0ec9449d7261b5e672a5fed765068 upstream.
 
-We shouldn't return after the last section.
-We need to update the rest of the CSIB.
+The of pages with ITS thunks allocated for modules are tracked by an
+array in 'struct module'.
 
-Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Since this is very architecture specific data structure, move it to
+'struct mod_arch_specific'.
+
+No functional changes.
+
+Fixes: 872df34d7c51 ("x86/its: Use dynamic thunks for indirect branches")
+Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Cc: stable@vger.kernel.org
+Link: https://lkml.kernel.org/r/20250603111446.2609381-4-rppt@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/x86/include/asm/module.h |    8 ++++++++
+ arch/x86/kernel/alternative.c |   19 ++++++++++---------
+ include/linux/module.h        |    5 -----
+ 3 files changed, 18 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 72410a2d4e6bf..567183a69660c 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -4002,8 +4002,6 @@ static void gfx_v10_0_get_csb_buffer(struct amdgpu_device *adev,
- 						PACKET3_SET_CONTEXT_REG_START);
- 				for (i = 0; i < ext->reg_count; i++)
- 					buffer[count++] = cpu_to_le32(ext->extent[i]);
--			} else {
--				return;
- 			}
- 		}
+--- a/arch/x86/include/asm/module.h
++++ b/arch/x86/include/asm/module.h
+@@ -5,12 +5,20 @@
+ #include <asm-generic/module.h>
+ #include <asm/orc_types.h>
+ 
++struct its_array {
++#ifdef CONFIG_MITIGATION_ITS
++	void **pages;
++	int num;
++#endif
++};
++
+ struct mod_arch_specific {
+ #ifdef CONFIG_UNWINDER_ORC
+ 	unsigned int num_orcs;
+ 	int *orc_unwind_ip;
+ 	struct orc_entry *orc_unwind;
+ #endif
++	struct its_array its_pages;
+ };
+ 
+ #endif /* _ASM_X86_MODULE_H */
+--- a/arch/x86/kernel/alternative.c
++++ b/arch/x86/kernel/alternative.c
+@@ -195,8 +195,8 @@ void its_fini_mod(struct module *mod)
+ 	its_page = NULL;
+ 	mutex_unlock(&text_mutex);
+ 
+-	for (int i = 0; i < mod->its_num_pages; i++) {
+-		void *page = mod->its_page_array[i];
++	for (int i = 0; i < mod->arch.its_pages.num; i++) {
++		void *page = mod->arch.its_pages.pages[i];
+ 		execmem_restore_rox(page, PAGE_SIZE);
  	}
--- 
-2.39.5
-
+ }
+@@ -206,11 +206,11 @@ void its_free_mod(struct module *mod)
+ 	if (!cpu_feature_enabled(X86_FEATURE_INDIRECT_THUNK_ITS))
+ 		return;
+ 
+-	for (int i = 0; i < mod->its_num_pages; i++) {
+-		void *page = mod->its_page_array[i];
++	for (int i = 0; i < mod->arch.its_pages.num; i++) {
++		void *page = mod->arch.its_pages.pages[i];
+ 		execmem_free(page);
+ 	}
+-	kfree(mod->its_page_array);
++	kfree(mod->arch.its_pages.pages);
+ }
+ #endif /* CONFIG_MODULES */
+ 
+@@ -223,14 +223,15 @@ static void *its_alloc(void)
+ 
+ #ifdef CONFIG_MODULES
+ 	if (its_mod) {
+-		void *tmp = krealloc(its_mod->its_page_array,
+-				     (its_mod->its_num_pages+1) * sizeof(void *),
++		struct its_array *pages = &its_mod->arch.its_pages;
++		void *tmp = krealloc(pages->pages,
++				     (pages->num+1) * sizeof(void *),
+ 				     GFP_KERNEL);
+ 		if (!tmp)
+ 			return NULL;
+ 
+-		its_mod->its_page_array = tmp;
+-		its_mod->its_page_array[its_mod->its_num_pages++] = page;
++		pages->pages = tmp;
++		pages->pages[pages->num++] = page;
+ 
+ 		execmem_make_temp_rw(page, PAGE_SIZE);
+ 	}
+--- a/include/linux/module.h
++++ b/include/linux/module.h
+@@ -586,11 +586,6 @@ struct module {
+ 	atomic_t refcnt;
+ #endif
+ 
+-#ifdef CONFIG_MITIGATION_ITS
+-	int its_num_pages;
+-	void **its_page_array;
+-#endif
+-
+ #ifdef CONFIG_CONSTRUCTORS
+ 	/* Constructor functions. */
+ 	ctor_fn_t *ctors;
 
 
 
