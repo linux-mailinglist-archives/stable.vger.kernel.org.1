@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D891BAE51C6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A565AAE4F58
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id ABDD31B63DF1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:37:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 42C0B17E789
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1CAD221FD2;
-	Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE7221ADB5;
+	Mon, 23 Jun 2025 21:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQGtj/dM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wThWyH8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 906A74409;
-	Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACFF41E8324;
+	Mon, 23 Jun 2025 21:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714642; cv=none; b=KzikdpQZ3+TwjKuM9XBMciJMp0D58hxjnTM6LkmybRHL00BdUkg6BqTnNTfyVbZoUjKVnC9JR7erPCQ2Sao2/IAK3475NCw1xtAjmHv00eaoHZp2xW6m5rjfVh0L1GguyrAZbr+RnX9F/I2KXsM39tVy7P8w66DKmQVSJjEHM4I=
+	t=1750713292; cv=none; b=YuIINQCc63xXlJgmgMDzMeFCDKPV0XeG3LpdgzpxV+kW+yyHG/fD/TGswcTfZLtd4+TIu2DHTCEXvtsB4yLaGfH+9Usx+R0smS4aE98rs7t8oQuGZ5JVrs5QIdshgBk37WKhV6UEBfhgcsz2iOtIsoW/qV9v01UukosoLMsVwVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714642; c=relaxed/simple;
-	bh=HSAm9CTSf98U14MejWTeEmePrpTBIspyq7ae0ZUVyAg=;
+	s=arc-20240116; t=1750713292; c=relaxed/simple;
+	bh=mTnX5VS75AeswuduYWYCWoiv/suq0mPi83EJX75w9a8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryEnKrdZ2PVYlLsLZJT/ZxCD65IoWWP8zrGY8Ph4TEqH8RFw5VHzVGPJeK1NYD9dP7sv5YtY4af4M8zM+JOP/yirOsEKl88Rm7zAr8PzAeMqXUR642yLX1p8nF23nKOEARKwFAxdpTGtHo2OGNlZpOVjX947PItXquD7WtbX1+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQGtj/dM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29617C4CEEA;
-	Mon, 23 Jun 2025 21:37:22 +0000 (UTC)
+	 MIME-Version; b=RLKV/BW4IQtf2Q9a/FcuOXPv738Ykhn3swWVVx6lXCoh9yGNlpyCglt+mlysiEbRqvGjc0yDuJGn8RVIPBOVajwzjdqQ/OkCu/YmJ2743xcI3e5HZDeWEGroZ4LMmseCQSwIlBCFodcKcRpF9C5Po4mB+Kw2ik/fW1Qc+vDMQR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wThWyH8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4558DC4CEEA;
+	Mon, 23 Jun 2025 21:14:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714642;
-	bh=HSAm9CTSf98U14MejWTeEmePrpTBIspyq7ae0ZUVyAg=;
+	s=korg; t=1750713292;
+	bh=mTnX5VS75AeswuduYWYCWoiv/suq0mPi83EJX75w9a8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQGtj/dM4fhVuqjd1zXELjRJeAzdt3bnobU6qgiWXMnkSCtluihZeYrkjotKYttxP
-	 muU85FUSOmKwsklia5PCVcwjGWrNd/lw0z9Y6TeCJsIRiJ6yTqLZeA3zuUflKUd0ID
-	 b3s3tyRdv5GnCdojfghauQhkLjuIAK5DsakSwgKE=
+	b=wThWyH8VjpfCH8QN/ninN51dxZfsD2dSQvdkC0YuKNHGTObFeHbS9woJ0nG90Jw/P
+	 HKeXLRM4BlCEMWKs0Jh/qtsHvS5p+IYbPv9AGtLX1Y1uWgO6Q7cGcv6lxTY53BpVO8
+	 EgvqNG2IoMtYogZvHJdKz9+RCvcA2frAWY23gxWM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH 6.12 121/414] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
-Date: Mon, 23 Jun 2025 15:04:18 +0200
-Message-ID: <20250623130645.095617339@linuxfoundation.org>
+	Yanqing Wang <ot_yanqing.wang@mediatek.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	Biao Huang <biao.huang@mediatek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 115/411] driver: net: ethernet: mtk_star_emac: fix suspend/resume issue
+Date: Mon, 23 Jun 2025 15:04:19 +0200
+Message-ID: <20250623130636.430368097@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Yanqing Wang <ot_yanqing.wang@mediatek.com>
 
-commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
+[ Upstream commit ba99c627aac85bc746fb4a6e2d79edb3ad100326 ]
 
-The function sunxi_nfc_hw_ecc_write_chunk() calls the
-sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
-function sunxi_nfc_randomizer_config(). Consequently, the randomization
-might not conduct correctly, which will affect the lifespan of NAND flash.
-A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
+Identify the cause of the suspend/resume hang: netif_carrier_off()
+is called during link state changes and becomes stuck while
+executing linkwatch_work().
 
-Add the sunxi_nfc_randomizer_config() to config randomizer.
+To resolve this issue, call netif_device_detach() during the Ethernet
+suspend process to temporarily detach the network device from the
+kernel and prevent the suspend/resume hang.
 
-Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
-Cc: stable@vger.kernel.org # v4.6
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
+Signed-off-by: Yanqing Wang <ot_yanqing.wang@mediatek.com>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Signed-off-by: Biao Huang <biao.huang@mediatek.com>
+Link: https://patch.msgid.link/20250528075351.593068-1-macpaul.lin@mediatek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/sunxi_nand.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/mtd/nand/raw/sunxi_nand.c
-+++ b/drivers/mtd/nand/raw/sunxi_nand.c
-@@ -1049,6 +1049,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
- 	if (ret)
- 		return ret;
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index 639cf1c27dbd4..e336730ba1257 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1464,6 +1464,8 @@ static __maybe_unused int mtk_star_suspend(struct device *dev)
+ 	if (netif_running(ndev))
+ 		mtk_star_disable(ndev);
  
-+	sunxi_nfc_randomizer_config(nand, page, false);
- 	sunxi_nfc_randomizer_enable(nand);
- 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
++	netif_device_detach(ndev);
++
+ 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
  
+ 	return 0;
+@@ -1488,6 +1490,8 @@ static __maybe_unused int mtk_star_resume(struct device *dev)
+ 			clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
+ 	}
+ 
++	netif_device_attach(ndev);
++
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
