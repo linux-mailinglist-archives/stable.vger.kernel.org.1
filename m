@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-156946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67773AE51D0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFBC2AE5009
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EEAED1B64212
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F1BFE1B61EC4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8085222582;
-	Mon, 23 Jun 2025 21:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A96C22257E;
+	Mon, 23 Jun 2025 21:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GfqVsIoJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9hiBU/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7498A21D3DD;
-	Mon, 23 Jun 2025 21:37:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A07482;
+	Mon, 23 Jun 2025 21:21:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714657; cv=none; b=fQ/qOmIQdAtcm6Aef9eSbkNXS/bd5b+IS4ihy1xavuhNtZT9Y6iGn5x1ZyU+5+z8ZOshFEXqSfwfu5oVFpo/X8VbFhfh0oLkEJdBsFAEy5gyaRpWOqKhDbNLHI6yfyACxUGY28mUKSBQAC9gV41qhLuAwUMQD9ymjDKvhqIKK8A=
+	t=1750713704; cv=none; b=sPyOwPnjRtfhqdiePH/dyzm5AGOzHpf7TTCJ/7DtW4CpnyrAwMAFJf1NrmFHq1dyuEX09KN+Tfv3XvcQgBTH5ViZfXyg6WDeAJRyXNM71MDC/S5o0cqYXYipRiiUA+wffYEeb/m84f9idxPG22TVS3oSpE9br2KYhIi9Sl/AtzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714657; c=relaxed/simple;
-	bh=U0G4W0YM15Vm4cVQ7+OrMJM5hhRsAokizpuNpRwmBK0=;
+	s=arc-20240116; t=1750713704; c=relaxed/simple;
+	bh=dEGsmv5WZmUdNTTZLKSjx2hOysYoAq/vqJRwp5Fg4gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=es14JJwzWU0hbHzJ4wnAvJZQCJlnfLJ9C4aTALpcq/dqUNRJcOOeUIvOlikg/fjRZheT6d+WVKmUR2bUzYVZhGjNoH7mWuYM9MTG3LQwEbPXAc10UiJndpcIS7LuxmLWmQJE3rw3tg3GXaYgpXztir/MVBOXwLhDf96G9RFobEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GfqVsIoJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBFCC4CEEA;
-	Mon, 23 Jun 2025 21:37:36 +0000 (UTC)
+	 MIME-Version; b=GF4AAy6cRxGQNq191Zk5XObDWRmvk5vIl9L1NZU21k6lac7VfSd8mp+jRN0L9WSV/cKYT7wyUdwVdUN1uC8FAnie/D7qCpRB8u6EKwq6YCGxXKdnFwk6m+Y3hRAlSbHO6Cz1tm8FAqNmHnUeKKGn5IADha/mp2OUBQIng0IIG68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9hiBU/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51590C4CEEA;
+	Mon, 23 Jun 2025 21:21:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714657;
-	bh=U0G4W0YM15Vm4cVQ7+OrMJM5hhRsAokizpuNpRwmBK0=;
+	s=korg; t=1750713704;
+	bh=dEGsmv5WZmUdNTTZLKSjx2hOysYoAq/vqJRwp5Fg4gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GfqVsIoJzzfIZJA26f95dVqogCInzADTZQDcg2wGVniPPrnHkvFGtH+UbcuiVSJXv
-	 AELmXQcCrcRNB/FNPSljYJvi9Z+yv3f/t9QQo1PA0leu2tIs8pOJdRL+yYMk+hCD12
-	 q7DrXdUeBN/7Ecd21u27o7UYTmEl3RO7lsMt89WA=
+	b=y9hiBU/Ut5JqRg8lubbIi1ms03Hx8iEBwQze+viIez36bQxZhZhMo/goCybbWjJ/Q
+	 20QfiqVZ8SgNAmUdndVVALjZo1vAyZduC3FKTxJECio+OwOXF/+zyQQvbk8MH4ckMT
+	 IXW8yRMGrsustqcaPrBpBqSMXjy/kBaWSoUgFESk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 201/411] nfsd: nfsd4_spo_must_allow() must check this is a v4 compound request
-Date: Mon, 23 Jun 2025 15:05:45 +0200
-Message-ID: <20250623130638.733705686@linuxfoundation.org>
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Miquel Raynal <miquel.raynal@bootlin.com>
+Subject: [PATCH 6.6 085/290] mtd: rawnand: sunxi: Add randomizer configuration in sunxi_nfc_hw_ecc_write_chunk
+Date: Mon, 23 Jun 2025 15:05:46 +0200
+Message-ID: <20250623130629.541787391@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-commit 1244f0b2c3cecd3f349a877006e67c9492b41807 upstream.
+commit 44ed1f5ff73e9e115b6f5411744d5a22ea1c855b upstream.
 
-If the request being processed is not a v4 compound request, then
-examining the cstate can have undefined results.
+The function sunxi_nfc_hw_ecc_write_chunk() calls the
+sunxi_nfc_hw_ecc_write_chunk(), but does not call the configuration
+function sunxi_nfc_randomizer_config(). Consequently, the randomization
+might not conduct correctly, which will affect the lifespan of NAND flash.
+A proper implementation can be found in sunxi_nfc_hw_ecc_write_page_dma().
 
-This patch adds a check that the rpc procedure being executed
-(rq_procinfo) is the NFSPROC4_COMPOUND procedure.
+Add the sunxi_nfc_randomizer_config() to config randomizer.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neil@brown.name>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 4be4e03efc7f ("mtd: nand: sunxi: add randomizer support")
+Cc: stable@vger.kernel.org # v4.6
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mtd/nand/raw/sunxi_nand.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -3537,7 +3537,8 @@ bool nfsd4_spo_must_allow(struct svc_rqs
- 	struct nfs4_op_map *allow = &cstate->clp->cl_spo_must_allow;
- 	u32 opiter;
+--- a/drivers/mtd/nand/raw/sunxi_nand.c
++++ b/drivers/mtd/nand/raw/sunxi_nand.c
+@@ -1049,6 +1049,7 @@ static int sunxi_nfc_hw_ecc_write_chunk(
+ 	if (ret)
+ 		return ret;
  
--	if (!cstate->minorversion)
-+	if (rqstp->rq_procinfo != &nfsd_version4.vs_proc[NFSPROC4_COMPOUND] ||
-+	    cstate->minorversion == 0)
- 		return false;
++	sunxi_nfc_randomizer_config(nand, page, false);
+ 	sunxi_nfc_randomizer_enable(nand);
+ 	sunxi_nfc_hw_ecc_set_prot_oob_bytes(nand, oob, 0, bbm, page);
  
- 	if (cstate->spo_must_allowed)
 
 
 
