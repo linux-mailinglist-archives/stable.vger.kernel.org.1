@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-158074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158162-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D864AE56D3
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9D6AE5734
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D1481C231DF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 83BC71C24493
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4338221543;
-	Mon, 23 Jun 2025 22:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E54225413;
+	Mon, 23 Jun 2025 22:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LK3L3OYG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dGaNc957"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6040F223DE5;
-	Mon, 23 Jun 2025 22:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A683A2222B2;
+	Mon, 23 Jun 2025 22:27:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717419; cv=none; b=IUyuTnA6vEnp6/nqfH/e1UrXV2GsQNUojJmJbVrHbD7q0U7WaORR1XolOrRIftIW2xQw4HlhjgzRB6JW2Y6lsM1VeZ62jz9u1lllH56vPmsRjxLL5WGFZGq3EoR7M9CkEymZOaJ6aYBDtT8Opcg+4RaGhAv+PdjBdHHt+CNUTRY=
+	t=1750717636; cv=none; b=f0ZEyaG57JHU4zhVJBlrYAtMkBJBOB2anGOPM89r7IQNsu5rmVhFmUZQfgopkXyqYHaD88uzHvXBtoccZZZy0Ln4HVrmVSId0bv1vdCdOGaGrX+VZMNfROC0W8FF+b5X2sScsyQEnIIFEwhBB50/kIec+DA4372PZcjEGjbLRmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717419; c=relaxed/simple;
-	bh=j8RgE4gy0VEZFnXE6/Y9CoVU0vdQ/OZMmxd0sQdk+e4=;
+	s=arc-20240116; t=1750717636; c=relaxed/simple;
+	bh=wowtVx74Pc8+xhTjDlOxzIiua8uWoYhKn8H+9lASWX8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C0RbUL1y7yPGkxhw2pH3KSZhX4QPIKDo92VWAQtWEN3RZ+Z52FFamEErSrjaLW+KzvqMEm3sNRi+dtP9oErLnw7+zX/JRHUkOHOcjbVotnIgpc2cLap2zHeMnq8M+k9uIGKsqqxTLlRMrCg+AeLVRseoQbqhebJTaAsc+7fO7mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LK3L3OYG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A4FC4CEEA;
-	Mon, 23 Jun 2025 22:23:38 +0000 (UTC)
+	 MIME-Version; b=RrkdqwQoRpH4pzXCP/f9EoxLe/76xXUKUO8XOb4kaqQaFbWjvgvWM7AqS7jiOdaQiPPQbhJbzoI6xIUR90A8XGTp03EiMsn6KIfLNq3M8tIDZLtVF1iEW6GWzKCWmDpVev731bzDAuGQo8xUr5UGvR+qmAShkUDLfDAO9YqLvnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dGaNc957; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350A9C4CEF2;
+	Mon, 23 Jun 2025 22:27:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717418;
-	bh=j8RgE4gy0VEZFnXE6/Y9CoVU0vdQ/OZMmxd0sQdk+e4=;
+	s=korg; t=1750717636;
+	bh=wowtVx74Pc8+xhTjDlOxzIiua8uWoYhKn8H+9lASWX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LK3L3OYGjGn1Kes9LVOVZaAXFnWGzYRMYQDWH2fq2xZbgJL04IyuECg1nr8v+jZyZ
-	 4cmWRjpyBF/w3mszoE/3JjxMduMSrzz0sB65pT3+JWhIs9j5lyPbW8zYPhVQbh6uNl
-	 YqppL1ANVVAFt/0SVe1aUax3JC7jrTRW1CHDlbnc=
+	b=dGaNc9571096LOOXYY5ys7U8De7//fP/NOeRL+moNCk8FZtRHraABX6QJB4W9cxIe
+	 x7Wdn72lm6Vztyx0KuQIZ/V23H4odtFqbxvPvrH+iIBrXdwCC+jM/SZoIIsQJ5/C/v
+	 Q+nZUpNRoSMybFX+pDAU9HAo+0WDcBU91AqhvWUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Wei <dw@davidwei.uk>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Eric Dumazet <edumazet@google.com>,
+	Simon Horman <horms@kernel.org>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 384/414] tcp: fix passive TFO socket having invalid NAPI ID
+Subject: [PATCH 6.1 476/508] pldmfw: Select CRC32 when PLDMFW is selected
 Date: Mon, 23 Jun 2025 15:08:41 +0200
-Message-ID: <20250623130651.552158668@linuxfoundation.org>
+Message-ID: <20250623130656.792802910@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wei <dw@davidwei.uk>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit dbe0ca8da1f62b6252e7be6337209f4d86d4a914 ]
+[ Upstream commit 1224b218a4b9203656ecc932152f4c81a97b4fcc ]
 
-There is a bug with passive TFO sockets returning an invalid NAPI ID 0
-from SO_INCOMING_NAPI_ID. Normally this is not an issue, but zero copy
-receive relies on a correct NAPI ID to process sockets on the right
-queue.
+pldmfw calls crc32 code and depends on it being enabled, else
+there is a link error as follows. So PLDMFW should select CRC32.
 
-Fix by adding a sk_mark_napi_id_set().
+  lib/pldmfw/pldmfw.o: In function `pldmfw_flash_image':
+  pldmfw.c:(.text+0x70f): undefined reference to `crc32_le_base'
 
-Fixes: e5907459ce7e ("tcp: Record Rx hash and NAPI ID in tcp_child_process")
-Signed-off-by: David Wei <dw@davidwei.uk>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250617212102.175711-5-dw@davidwei.uk
+This problem was introduced by commit b8265621f488 ("Add pldmfw library
+for PLDM firmware update").
+
+It manifests as of commit d69ea414c9b4 ("ice: implement device flash
+update via devlink").
+
+And is more likely to occur as of commit 9ad19171b6d6 ("lib/crc: remove
+unnecessary prompt for CONFIG_CRC32 and drop 'default y'").
+
+Found by chance while exercising builds based on tinyconfig.
+
+Fixes: b8265621f488 ("Add pldmfw library for PLDM firmware update")
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250613-pldmfw-crc32-v1-1-f3fad109eee6@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_fastopen.c | 3 +++
- 1 file changed, 3 insertions(+)
+ lib/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/tcp_fastopen.c b/net/ipv4/tcp_fastopen.c
-index 32b28fc21b63c..408985eb74eef 100644
---- a/net/ipv4/tcp_fastopen.c
-+++ b/net/ipv4/tcp_fastopen.c
-@@ -3,6 +3,7 @@
- #include <linux/tcp.h>
- #include <linux/rcupdate.h>
- #include <net/tcp.h>
-+#include <net/busy_poll.h>
+diff --git a/lib/Kconfig b/lib/Kconfig
+index 9bbf8a4b2108e..0610fad65a366 100644
+--- a/lib/Kconfig
++++ b/lib/Kconfig
+@@ -744,6 +744,7 @@ config GENERIC_LIB_DEVMEM_IS_ALLOWED
  
- void tcp_fastopen_init_key_once(struct net *net)
- {
-@@ -279,6 +280,8 @@ static struct sock *tcp_fastopen_create_child(struct sock *sk,
+ config PLDMFW
+ 	bool
++	select CRC32
+ 	default n
  
- 	refcount_set(&req->rsk_refcnt, 2);
- 
-+	sk_mark_napi_id_set(child, skb);
-+
- 	/* Now finish processing the fastopen child socket. */
- 	tcp_init_transfer(child, BPF_SOCK_OPS_PASSIVE_ESTABLISHED_CB, skb);
- 
+ config ASN1_ENCODER
 -- 
 2.39.5
 
