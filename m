@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-158085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE31EAE56E1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E168AE56BD
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BC9C87A372D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A1664A6552
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FB2E22370A;
-	Mon, 23 Jun 2025 22:24:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5723E221FC7;
+	Mon, 23 Jun 2025 22:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15zpMKmB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dBGLE+o5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C1A2192EC;
-	Mon, 23 Jun 2025 22:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15AC61E3DCD;
+	Mon, 23 Jun 2025 22:19:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717446; cv=none; b=ikjiRjabGFZQi9xjM2gXq+kadmsI2yKtMP6Ph4WjFDNvbm8Ffc8p8SJTpsbn9Xb53SVEFsvx6azW7PWMVqS7LyPHJx/CW/ZKeI9YCoGSHflV9xN+9itSw+8klp3hdjk4NYQ384bpC3QV03SorV5H/XzziXWitUmHTsWZrTUiMZA=
+	t=1750717195; cv=none; b=h630IGPnfjb7OqouzBMxDXt3QHRCD1eQVdYzQi9pqPsC0QigHgazID7JM6m5/mtW7bajnajyMgBY6lCA+5mDPquWCjK9+5f0GprcqfS7o+JCWGloSAz+BRQ+JyKCal13qhHnv3Fcv0/n8NdVDlNj/AhCfzbY8Hn/xcByD4C+lUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717446; c=relaxed/simple;
-	bh=pOhjPdOmMDwMEyhUNlUn9RgtiSsAec406E+SEaZtoIk=;
+	s=arc-20240116; t=1750717195; c=relaxed/simple;
+	bh=kQ+EtbMakcFyG6zKR9OCV8lpDoiJnts9cRt6DvxT7SM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMgA5cvVeL8VKyX0D7GmbEa8CB4O2t7gpFFpUtQi1UKSFuiKgTcJJmqIfFsfLOjcUKYgUpmHTaUoS/Jy1AfUaLK1RY6C7YGdOSbUn32A1uT0XG8NcarCNmdtD34+YKrHu1LRFgY/TBzcGWw9Ny+lAXf3cRgh0aok7y0UhWcXdnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15zpMKmB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 799E4C4CEEA;
-	Mon, 23 Jun 2025 22:24:05 +0000 (UTC)
+	 MIME-Version; b=IUQluU/ezUquY/JNV5b2sJbW9Ru5qLBtHv5652eTTpcsBJ+up0W6D9aGubiIxn10DoxZDCxEZ/ntTqSwRoSixJVrx3jX0QbXjD75fHJfD0zn7+YayGbJgi47GDIKCJpIfkuC+5FFNA+Aaoa14X2YxR/qMX6blX7HY92hPm4qhg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dBGLE+o5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1107C4CEEA;
+	Mon, 23 Jun 2025 22:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717445;
-	bh=pOhjPdOmMDwMEyhUNlUn9RgtiSsAec406E+SEaZtoIk=;
+	s=korg; t=1750717195;
+	bh=kQ+EtbMakcFyG6zKR9OCV8lpDoiJnts9cRt6DvxT7SM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15zpMKmB1eHsYL8T9fupE/T8JhkntuH0+fsYdQ5erQ7K33BV+fCqbdpJkT+CHfb0L
-	 sN9hMHb9R2pz9sFTRDwZBpJxemMG3N3Xwv7rpwXv2X2YHaD9gh4+To7/S/j/FLTaH3
-	 LgpmRRNsP/B+SGF2y3vuZP6FuvJV6CAVEs/40c5I=
+	b=dBGLE+o5GG18Y+7mdXOtY56R3uWRNa0ij9gbNx7Nd6LB21qDjyq6od8tBB4PcXU5F
+	 sgB9CAFzWxrXei6K1QpcyPVA8rHPH6mAy9R3fSSIwqfLDc0WB8VTTHv4h7WqZKhTZL
+	 Unxv/3TNK5QaJ1CRatq89eSWyTsgNnGmO10E9Dh4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mateusz Pacuszka <mateuszx.pacuszka@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 428/508] ice: fix check for existing switch rule
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Nick Karaolidis <nick@karaolidis.com>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 336/414] ALSA: hda/realtek: Add quirk for Asus GU605C
 Date: Mon, 23 Jun 2025 15:07:53 +0200
-Message-ID: <20250623130655.709878039@linuxfoundation.org>
+Message-ID: <20250623130650.383276623@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,61 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit a808691df39b52cd9db861b118e88e18b63e2299 ]
+commit 7b23887a0c70d15459f02c51651a111e9e5cab86 upstream.
 
-In case the rule already exists and another VSI wants to subscribe to it
-new VSI list is being created and both VSIs are moved to it.
-Currently, the check for already existing VSI with the same rule is done
-based on fdw_id.hw_vsi_id, which applies only to LOOKUP_RX flag.
-Change it to vsi_handle. This is software VSI ID, but it can be applied
-here, because vsi_map itself is also based on it.
+The GU605C has similar audio hardware to the GU605M so apply the
+same quirk.
 
-Additionally change return status in case the VSI already exists in the
-VSI map to "Already exists". Such case should be handled by the caller.
+Note that in the linked bugzilla there are two separate problems
+with the GU605C. This patch fixes one of the problems, so I haven't
+added a Closes: tag.
 
-Signed-off-by: Mateusz Pacuszka <mateuszx.pacuszka@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Reported-by: Nick Karaolidis <nick@karaolidis.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=220152
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250609102125.63196-1-rf@opensource.cirrus.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 3a29ae46fb397..11dda98e70e5a 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -3013,7 +3013,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
- 		u16 vsi_handle_arr[2];
- 
- 		/* A rule already exists with the new VSI being added */
--		if (cur_fltr->fwd_id.hw_vsi_id == new_fltr->fwd_id.hw_vsi_id)
-+		if (cur_fltr->vsi_handle == new_fltr->vsi_handle)
- 			return -EEXIST;
- 
- 		vsi_handle_arr[0] = cur_fltr->vsi_handle;
-@@ -6014,7 +6014,7 @@ ice_adv_add_update_vsi_list(struct ice_hw *hw,
- 
- 		/* A rule already exists with the new VSI being added */
- 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
--			return 0;
-+			return -EEXIST;
- 
- 		/* Update the previously created VSI list set with
- 		 * the new VSI ID passed in
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10841,6 +10841,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x103c, 0x8e61, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x103c, 0x8e62, "HP Trekker ", ALC287_FIXUP_CS35L41_I2C_2),
+ 	SND_PCI_QUIRK(0x1043, 0x1032, "ASUS VivoBook X513EA", ALC256_FIXUP_ASUS_MIC_NO_PRESENCE),
++	SND_PCI_QUIRK(0x1043, 0x1034, "ASUS GU605C", ALC285_FIXUP_ASUS_GU605_SPI_SPEAKER2_TO_DAC1),
+ 	SND_PCI_QUIRK(0x1043, 0x103e, "ASUS X540SA", ALC256_FIXUP_ASUS_MIC),
+ 	SND_PCI_QUIRK(0x1043, 0x103f, "ASUS TX300", ALC282_FIXUP_ASUS_TX300),
+ 	SND_PCI_QUIRK(0x1043, 0x1054, "ASUS G614FH/FM/FP", ALC287_FIXUP_CS35L41_I2C_2),
 
 
 
