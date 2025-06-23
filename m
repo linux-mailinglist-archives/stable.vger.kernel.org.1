@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB58FAE527A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 67665AE5144
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C21647A36BD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D661B63731
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0751F5820;
-	Mon, 23 Jun 2025 21:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D0D81C5D46;
+	Mon, 23 Jun 2025 21:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u0gUKg/r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ru372Qel"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD322AEE4;
-	Mon, 23 Jun 2025 21:44:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49EDCC2E0;
+	Mon, 23 Jun 2025 21:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715053; cv=none; b=LBRS+GUcT9lZ1BokByX8B//tDBQVFYOCRixBOfPgNqZGDUDHc5ZAw5Rl3FLYBp0ANMbc3oRL1LsFA3YqmjW8kSzJLIsNZiqVn1U2c0kpP8T1JxOjB5q5md0o2fxR6Eic2aGZ4wPQG3GRPjHwbROpEsXJ1qOcbaxD3/XW0LBf8/I=
+	t=1750714343; cv=none; b=Yq06wNPj8mjRkeGob/bNrbdL91JyjNHmHxap1w9alX2Sv5nHwm/wXL0AgMjsEivA2ArD1m1/XmGG1pC1/fcYP+BJ2LOAXkK1Ot5Cgg76OAMYPw2WEyJ8tI5YcCzzcoi0g/kbbLHDXVO/c1g0A7l7O2dfYbVmeXboFchfcvvzezo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715053; c=relaxed/simple;
-	bh=khPw7qlwfoC0lZSp8m+MGaMEiEvNSqll0TPuivmuu04=;
+	s=arc-20240116; t=1750714343; c=relaxed/simple;
+	bh=tlF2eB5lqLWZJUUU33fJXY2J4b2ivL2axKfSXt+JMv0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPYp2zO7ffEfkOPhhbra0oGNAO1FanpE2u9t5v27wrdR3DVq2TSPSm2Xwu5/d1oHZPQYRt1cZLMlaMvK5Uowy7tavUOZbXOJmytfl7BivqUk9BdiM81f9RV1KpPnBPx3nN6ZJbZv8gxTqkqnrBvMha/ExtGciGMD72QkO/2u6s8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u0gUKg/r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89A2C4CEEA;
-	Mon, 23 Jun 2025 21:44:12 +0000 (UTC)
+	 MIME-Version; b=F9VlQi6RVKiyw0nO1O/Wzj23mTe+WG3Qcf9q7yBQncZhjiyEaoojqKlw5AlGi+qhvtKRsLmBXC9w1tttBGFdUfKk09y3VwjbvkoMltFKIXsBMafXz3Cs5BimZleoGGHPBUDJBC5/134UmAEaUx69fvGHc/EZHKFMlE1Cnz6MjTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ru372Qel; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B7BC4CEEA;
+	Mon, 23 Jun 2025 21:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715053;
-	bh=khPw7qlwfoC0lZSp8m+MGaMEiEvNSqll0TPuivmuu04=;
+	s=korg; t=1750714343;
+	bh=tlF2eB5lqLWZJUUU33fJXY2J4b2ivL2axKfSXt+JMv0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u0gUKg/rd87re0IDtp3yPl9Sdqvuha2bYt0TOXdAbFD3s40P6+qCC/GJMFVEG2tW7
-	 GCS2TKKbY7q4dbKGKexwJgHodLr6c1ah0viDF5X3ZdXTju73M17Lnaoh1nJIGpGIju
-	 wL2Mh4ovFvXF2nQz5c5x2fAqW0Ionabh4gFnJ9hQ=
+	b=Ru372QelzUgVaqlK+oBGlv3y8YVOe4etcZgbXwJd3Zh7Ggxdxx40nC8OZ05V6t0ja
+	 66oRmyBabw6m+8K2JqGiHTwIhbwgShrWAQbAdY7Y23rssjTzulQIn2Cej1vFgXe1j5
+	 ODb7IRZOoXCAh123Bm1Xw2eCkYbGwglxothuXVbQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Collin Funk <collin.funk1@gmail.com>,
-	Paul Eggert <eggert@cs.ucla.edu>,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Patrick Daly <quic_pdaly@quicinc.com>,
+	Charan Teja Kalla <quic_charante@quicinc.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 434/592] fs/xattr.c: fix simple_xattr_list()
+Subject: [PATCH 6.6 131/290] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
 Date: Mon, 23 Jun 2025 15:06:32 +0200
-Message-ID: <20250623130710.759939744@linuxfoundation.org>
+Message-ID: <20250623130630.860443420@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,46 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Charan Teja Kalla <quic_charante@quicinc.com>
 
-[ Upstream commit 800d0b9b6a8b1b354637b4194cc167ad1ce2bdd3 ]
+[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
 
-commit 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always
-include security.* xattrs") failed to reset err after the call to
-security_inode_listsecurity(), which returns the length of the
-returned xattr name. This results in simple_xattr_list() incorrectly
-returning this length even if a POSIX acl is also set on the inode.
+pm_runtime_put_autosuspend() schedules a hrtimer to expire
+at "dev->power.timer_expires". If the hrtimer's callback,
+pm_suspend_timer_fn(), observes that the current time equals
+"dev->power.timer_expires", it unexpectedly bails out instead of
+proceeding with runtime suspend.
 
-Reported-by: Collin Funk <collin.funk1@gmail.com>
-Closes: https://lore.kernel.org/selinux/8734ceal7q.fsf@gmail.com/
-Reported-by: Paul Eggert <eggert@cs.ucla.edu>
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2369561
-Fixes: 8b0ba61df5a1 ("fs/xattr.c: fix simple_xattr_list to always include security.* xattrs")
+pm_suspend_timer_fn():
 
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Link: https://lore.kernel.org/20250605165116.2063-1-stephen.smalley.work@gmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+ if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
+ 	dev->power.timer_expires = 0;
+ 	rpm_suspend(..)
+ }
+
+Additionally, as ->timer_expires is not cleared, all the future auto
+suspend requests will not schedule hrtimer to perform auto suspend.
+
+rpm_suspend():
+
+ if ((rpmflags & RPM_AUTO) &&...) {
+ 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
+ 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
+ 	}
+ }
+
+Fix this by as well checking if current time reaches the set expiration.
+
+Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
+Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
+Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xattr.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/base/power/runtime.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/xattr.c b/fs/xattr.c
-index 8ec5b0204bfdc..600ae97969cf2 100644
---- a/fs/xattr.c
-+++ b/fs/xattr.c
-@@ -1479,6 +1479,7 @@ ssize_t simple_xattr_list(struct inode *inode, struct simple_xattrs *xattrs,
- 		buffer += err;
- 	}
- 	remaining_size -= err;
-+	err = 0;
- 
- 	read_lock(&xattrs->lock);
- 	for (rbp = rb_first(&xattrs->rb_root); rbp; rbp = rb_next(rbp)) {
+diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
+index 0af26cf8c0059..0d43bf5b6cecb 100644
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1001,7 +1001,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
+ 	 * If 'expires' is after the current time, we've been called
+ 	 * too early.
+ 	 */
+-	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
++	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
+ 		dev->power.timer_expires = 0;
+ 		rpm_suspend(dev, dev->power.timer_autosuspends ?
+ 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
 -- 
 2.39.5
 
