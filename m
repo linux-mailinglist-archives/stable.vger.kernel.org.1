@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB68BAE52EE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BD47AE54E5
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF1B167A74
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF6F4C2848
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67E131AAA1C;
-	Mon, 23 Jun 2025 21:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BC5218580;
+	Mon, 23 Jun 2025 22:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKTdcV0R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdkA1IU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23E9942056;
-	Mon, 23 Jun 2025 21:48:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1359225A47;
+	Mon, 23 Jun 2025 22:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715282; cv=none; b=GgG65MpXzrhGXH/1HmDNy6UwwcAdVPreX8BP5o04Ov3HQgtNsMK0L6hL9wyYBGw9fema2YDedQdfHiOFxrn1eO6M74dGD7LSpdmlwKj1oijWZtNGOZnWspp0nLnZfW2SFaSMmQj3slhnO1iRaE1Q6RgrR24iRpaPPRCzNs4PiBY=
+	t=1750716331; cv=none; b=dot91yF06erR9BlaiUU62/Su7yCgfOzp+hMIPYxnoLrCpkzAh5gyoRicAPuTScVuv2MZUoTQMunMfaFjHq+saU2qVg3QmUl+AC/eTO98UsUfFCGVb50ho/pJ0mX75SnO07rC53WHAlmy0Nk7+yaUghpnjFqoARua4n87CMypw7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715282; c=relaxed/simple;
-	bh=TH2gjuRo/kO0c0ngg+s96gwf14rHrP3JSSMHrJUyabE=;
+	s=arc-20240116; t=1750716331; c=relaxed/simple;
+	bh=XyHsGRMgJmJ2vZILpww6jTPodltodJVqnpDFZ94lipY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OsK6yFarTeyVwz+UPq4hdNZoWw+x+uBIxJtQVPjiZ5B8LEopxmWSUbV+mpdl+BzSvGK9zM7QU+XQKP1n9ZHEdjNvQWlTZuV2JhPXDIh+kDuZF/UzD0PoKupY2w7FaeC2By5Zzn65XItfuwRhfcu70ceA/+KrLrhR6VsbX+fEJ9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKTdcV0R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC904C4CEEA;
-	Mon, 23 Jun 2025 21:48:01 +0000 (UTC)
+	 MIME-Version; b=g2gKI1hQarGNMkd2S0o+p+Wvg86nEi1seiK6VSRrl0wjqSufbXl3qGINXNey7K4+T5riv8qvUs1QyiWbkWUyyHZKt5eOtmQKWWrQ8vb6THSoeD0nbsN3+h8l9P5Tstmj70Hbu2AwU37uG958gH9YLSdjvQb8xhA4u+OKuAw7wgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdkA1IU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB14C4CEEA;
+	Mon, 23 Jun 2025 22:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715282;
-	bh=TH2gjuRo/kO0c0ngg+s96gwf14rHrP3JSSMHrJUyabE=;
+	s=korg; t=1750716330;
+	bh=XyHsGRMgJmJ2vZILpww6jTPodltodJVqnpDFZ94lipY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKTdcV0RpFMc9Bf7/xMEUZdFfUzXANbuZuFbQvLiQJbN6H76x9M9ZfirdzYjekQU6
-	 0yWc2ts+wYUajJvuewIKDCOFIksHYlf8p+K9eH2RoNHtZZShcdw2C8/d7Z3wV/8N4B
-	 +/3jsyPkpBN3QEtKwgy0RpcSunZUi3sa4x12F60E=
+	b=rdkA1IU5jMYmrwmUz85OwlEvm03mi4XwcQOx18HxgKwwGBjltpoa3lTEpyWLx7Q+q
+	 h3L0gfLT6/naJSV+hbti6tTVSTPjJs/MIfujKvLMUtBk9Z0kQ7wOFsV7IGhh027h5T
+	 3f/J07ndnSHwbMJK5QyMcYtgIW/Gloa3osHy3GC0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin@sipsolutions.net>,
-	Rouven Czerwinski <rouven@czerwinskis.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jason Xing <kernelxing@tencent.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 265/355] wifi: mac80211: do not offer a mesh path if forwarding is disabled
+Subject: [PATCH 5.15 322/411] net: mlx4: add SOF_TIMESTAMPING_TX_SOFTWARE flag when getting ts info
 Date: Mon, 23 Jun 2025 15:07:46 +0200
-Message-ID: <20250623130634.721673773@linuxfoundation.org>
+Message-ID: <20250623130641.742664285@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,68 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin@sipsolutions.net>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
+[ Upstream commit b86bcfee30576b752302c55693fff97242b35dfd ]
 
-When processing a PREQ the code would always check whether we have a
-mesh path locally and reply accordingly. However, when forwarding is
-disabled then we should not reply with this information as we will not
-forward data packets down that path.
+As mlx4 has implemented skb_tx_timestamp() in mlx4_en_xmit(), the
+SOFTWARE flag is surely needed when users are trying to get timestamp
+information.
 
-Move the check for dot11MeshForwarding up in the function and skip the
-mesh path lookup in that case. In the else block, set forward to false
-so that the rest of the function becomes a no-op and the
-dot11MeshForwarding check does not need to be duplicated.
-
-This explains an effect observed in the Freifunk community where mesh
-forwarding is disabled. In that case a mesh with three STAs and only bad
-links in between them, individual STAs would occionally have indirect
-mpath entries. This should not have happened.
-
-Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
-Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
-Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/20250510093442.79711-1-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mesh_hwmp.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
-index 4848e3c2f0af9..a8e80cb6a5cec 100644
---- a/net/mac80211/mesh_hwmp.c
-+++ b/net/mac80211/mesh_hwmp.c
-@@ -620,7 +620,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 				mesh_path_add_gate(mpath);
- 		}
- 		rcu_read_unlock();
--	} else {
-+	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
- 		rcu_read_lock();
- 		mpath = mesh_path_lookup(sdata, target_addr);
- 		if (mpath) {
-@@ -638,6 +638,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 			}
- 		}
- 		rcu_read_unlock();
-+	} else {
-+		forward = false;
- 	}
- 
- 	if (reply) {
-@@ -655,7 +657,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
- 		}
- 	}
- 
--	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
-+	if (forward) {
- 		u32 preq_id;
- 		u8 hopcount;
+diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
+index c3cffb32fb067..d8c1a52d54c67 100644
+--- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
+@@ -1909,6 +1909,7 @@ static int mlx4_en_get_ts_info(struct net_device *dev,
+ 	if (mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_TS) {
+ 		info->so_timestamping |=
+ 			SOF_TIMESTAMPING_TX_HARDWARE |
++			SOF_TIMESTAMPING_TX_SOFTWARE |
+ 			SOF_TIMESTAMPING_RX_HARDWARE |
+ 			SOF_TIMESTAMPING_RAW_HARDWARE;
  
 -- 
 2.39.5
