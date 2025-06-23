@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-155927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0E58AE4457
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:42:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 988B3AE4532
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:49:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F2FE04A1383
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C1BF3B7DCD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6311253F03;
-	Mon, 23 Jun 2025 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716402550B3;
+	Mon, 23 Jun 2025 13:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OztuwpI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbM3rDPQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A055830E84D;
-	Mon, 23 Jun 2025 13:34:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F70B250C06;
+	Mon, 23 Jun 2025 13:35:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685695; cv=none; b=nUGsPfrysFkaSzCiGp8CT8Aq+4vIdZQmU2OM25cHQ4UY+at5/yTBOehTmEA4lY0eHcfky22S5fX1R4/WUc8ill9a7Bmop7974Zgzq5TpJtXvXHJGNBrERBFmWabq3iCaUMdM5rPJXgYb+D9qt1BUhdDEx10dSJ2aT7JvxABc+R0=
+	t=1750685711; cv=none; b=NSJuEu6w+TThaFhS+S65DHYPOE5iEZh46D/Ha/UlawPA5wvsCNNC8FSEhlZaVLFn4pMNW5HfPb31/fBCYG6lzCRoWNQNmWcyIgHIHjdtOUWnyMPI03x3KjdjDtXFqy0yxCP1KnmhCkQlaWy6Yjv2l41Dng5LH3MJrtJcEUQnSZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685695; c=relaxed/simple;
-	bh=wFQGiS8+FSF1RgJhb1rRH+sktIFP/s4pT35/J2WOyvk=;
+	s=arc-20240116; t=1750685711; c=relaxed/simple;
+	bh=lMeENYXfUGO+NgnsThHCcOb9l1dbqMqKOFl/B2xZJYQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WGMeqCjpscQXBrJAcOomzZFlXq/hpkXNsDfQghFOEOIpi4TAfhiXRwJ0N+AeMruKbDC5gSvVd6ltFQXVkThjhY8Sezzdfg6vBPLRaEI+YYyZ/S0EgfHrVRbbxehMqQc1VwaI55bx0N+9ZGifiAdcjmDh5NGotDHBJQdfqQgUBOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OztuwpI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33A1EC4CEEA;
-	Mon, 23 Jun 2025 13:34:55 +0000 (UTC)
+	 MIME-Version; b=CRlX6eKfbuDjH1Vr6vb3hFtcFX3QWEm8xMKmXtLknZGosmrdCqh4XqFWs//5x4CumMzO1UWqI3Sf4KhUdV1RhRks41RV5C2aVOD9Fsm9KRThq1AY9UF314KK41Bs8ATfRDqyTlOcZE5l0woqS+ziLFraCDIaIXuHFFaNuznTMuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbM3rDPQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2BE0C4CEF7;
+	Mon, 23 Jun 2025 13:35:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685695;
-	bh=wFQGiS8+FSF1RgJhb1rRH+sktIFP/s4pT35/J2WOyvk=;
+	s=korg; t=1750685711;
+	bh=lMeENYXfUGO+NgnsThHCcOb9l1dbqMqKOFl/B2xZJYQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OztuwpI0PAzOl5Aj29LCRuQ2LB4gp/qXvtvt+66WQwNpI3gxwrGClPdBCfIbWLiFs
-	 qmyzJPz8k0t4ZYZphq9tu7Sg7UZhcQBil/022+xtBNUiazi/iQd5o/5Zp9+pEBSBiI
-	 wxDTqunRGZ29VBoV1id5HIZo16rkgpJ5BqKuCnow=
+	b=cbM3rDPQqMnZfp/z3FJKqxOdw1bRx3KkXk0vIqL0ptqiQpbFTNWvXugXWagDoCh/+
+	 gM0xQicuRCXrd80nUihZ5vPf/M0aXafpk7vJ6E3/pJcisQkWTp47jqGiNU97hRN3iV
+	 1/RYYAqj+GSxAymfmPrEe9DqaBqSsKm5SCTYi/nA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Davidlohr Bueso <dave@stgolabs.net>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	kdevops@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.4 113/222] ext4: fix calculation of credits for extent tree modification
-Date: Mon, 23 Jun 2025 15:07:28 +0200
-Message-ID: <20250623130615.504300357@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.4 114/222] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
+Date: Mon, 23 Jun 2025 15:07:29 +0200
+Message-ID: <20250623130615.534147907@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -70,66 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 32a93f5bc9b9812fc710f43a4d8a6830f91e4988 upstream.
+commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
 
-Luis and David are reporting that after running generic/750 test for 90+
-hours on 2k ext4 filesystem, they are able to trigger a warning in
-jbd2_journal_dirty_metadata() complaining that there are not enough
-credits in the running transaction started in ext4_do_writepages().
+The "len" variable comes from the firmware and we generally do
+trust firmware, but it's always better to double check.  If the "len"
+is too large it could result in memory corruption when we do
+"memcpy(fragment->data, rec->data, len);"
 
-Indeed the code in ext4_do_writepages() is racy and the extent tree can
-change between the time we compute credits necessary for extent tree
-computation and the time we actually modify the extent tree. Thus it may
-happen that the number of credits actually needed is higher. Modify
-ext4_ext_index_trans_blocks() to count with the worst case of maximum
-tree depth. This can reduce the possible number of writers that can
-operate in the system in parallel (because the credit estimates now won't
-fit in one transaction) but for reasonably sized journals this shouldn't
-really be an issue. So just go with a safe and simple fix.
-
-Link: https://lore.kernel.org/all/20250415013641.f2ppw6wov4kn4wq2@offworld
-Reported-by: Davidlohr Bueso <dave@stgolabs.net>
-Reported-by: Luis Chamberlain <mcgrof@kernel.org>
-Tested-by: kdevops@lists.linux.dev
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250429175535.23125-2-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/input/misc/ims-pcu.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2592,18 +2592,19 @@ int ext4_ext_calc_credits_for_single_ext
- int ext4_ext_index_trans_blocks(struct inode *inode, int extents)
- {
- 	int index;
--	int depth;
+--- a/drivers/input/misc/ims-pcu.c
++++ b/drivers/input/misc/ims-pcu.c
+@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
+ 		addr = be32_to_cpu(rec->addr) / 2;
+ 		len = be16_to_cpu(rec->len);
  
- 	/* If we are converting the inline data, only one is needed here. */
- 	if (ext4_has_inline_data(inode))
- 		return 1;
- 
--	depth = ext_depth(inode);
--
-+	/*
-+	 * Extent tree can change between the time we estimate credits and
-+	 * the time we actually modify the tree. Assume the worst case.
-+	 */
- 	if (extents <= 1)
--		index = depth * 2;
-+		index = EXT4_MAX_EXTENT_DEPTH * 2;
- 	else
--		index = depth * 3;
-+		index = EXT4_MAX_EXTENT_DEPTH * 3;
- 
- 	return index;
- }
++		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
++			dev_err(pcu->dev,
++				"Invalid record length in firmware: %d\n", len);
++			return -EINVAL;
++		}
++
+ 		fragment = (void *)&pcu->cmd_buf[1];
+ 		put_unaligned_le32(addr, &fragment->addr);
+ 		fragment->len = len;
 
 
 
