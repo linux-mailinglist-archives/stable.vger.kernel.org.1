@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-156440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98F10AE4F9A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F335AE4F90
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:17:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE2C23B3A97
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 427E21B61170
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 430BC22424C;
-	Mon, 23 Jun 2025 21:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECAD2236EF;
+	Mon, 23 Jun 2025 21:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKZGvlYR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HisIMs5B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35C318E377;
-	Mon, 23 Jun 2025 21:16:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A6AC1F3B96;
+	Mon, 23 Jun 2025 21:16:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713417; cv=none; b=hbHAFdb/UD9iEUx0RlJH/BRUnsgTcUfWSoMmWRjyu+SsKiFUB0bJVaD0Kf4/XWBwg1dh+4FJRnPUbmi/cU16vE9By17hbeqNa7GhnMcYFWyzZj/ZRLmQWzWFliMxRXt9O4C38V7zzt8hKiRKg32smlojNXFeEy054DvY91s6gaE=
+	t=1750713397; cv=none; b=DcWApNTMofKPlMS9p8jAtwg85SiVq0kaCVvbfhKQd+9rJ7Os8I1C7W3dpSAqxbjEtGl32l6R61dnUEwUGhzYLw5zQ9Uy3KPfuyk2cuvRv4y0r+IqpDYYGP0EM6FEJqFbfARv7tJlS2uaGYXIkXatzYzwoB9vY0x5UmMcJI0I/qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713417; c=relaxed/simple;
-	bh=volKZnI0ykmlNUcU/2XKIqeUfE1jQp8iTPZqBusL7YI=;
+	s=arc-20240116; t=1750713397; c=relaxed/simple;
+	bh=xkRPF2hHPUOdhxVAW3gBbsw+y8DmadkSZM9Oni0rr34=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DuQ6AaeNFQFvGRAODue+hXk2I8EjZSHnmZfLi5FLV+xLIGug5ScBprp4JIGp1SzWBfyZeOGajo9rb9wOPCBTUptjCdZNlQ1kRd/27fgkm1xsxIa8eHSIWXZbUP5JFnBXWp2s9OT5YORm6tTDnlzXDnPlMfi9/FswV1lkj88QnLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKZGvlYR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C2ABC4CEEA;
-	Mon, 23 Jun 2025 21:16:56 +0000 (UTC)
+	 MIME-Version; b=ctViG90ygKaxvBvrZJWPwjOv9X+nCQIGMBQrAAYtkQ8OOhu0Ij7BGoHGdpdf5S6GJPApb5TGJPwsV6z7Gu9wHO9yMuy0+VTMGNcQrOaDd6vge2XscD+gyCUDyrS5Fx0RJxRsgRqS3nkkE/hP9W7XjyBlAj+KzJGEtJDae46PqRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HisIMs5B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03789C4CEEA;
+	Mon, 23 Jun 2025 21:16:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713416;
-	bh=volKZnI0ykmlNUcU/2XKIqeUfE1jQp8iTPZqBusL7YI=;
+	s=korg; t=1750713397;
+	bh=xkRPF2hHPUOdhxVAW3gBbsw+y8DmadkSZM9Oni0rr34=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKZGvlYROjf/NuLe4kJ1wxfMGLgiD0BWBaLSxUc7apRTKJUQ+soevDym+tqEHywy4
-	 9hot8IsGHsAD8tTMu+Uqm3nHBIwEYRAroZJgp4TEvwIlbRxnm2T63up/NSFJUsA1Hg
-	 /f4eWPGcKmImoXTdEA3wSv8/q/CFAYf5+SnYox3g=
+	b=HisIMs5BCLTUyKsFO5+Q72x7f2c9rLxl7ncMFvdcJ+eMZCuk7tp1US2K8TodDS0dd
+	 KyEuOLUgGTEqwlsuXG1GE7CdIIgfuoG9T3ce9PA3rgVZ/rbvuuQOsCHO5hlxRCrd+u
+	 sRgrNyIa2Sw6Rd1HUbwPXUDluekLBvML1UJduh9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 089/290] dm-mirror: fix a tiny race condition
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 5.10 149/355] kbuild: Add KBUILD_CPPFLAGS to as-option invocation
 Date: Mon, 23 Jun 2025 15:05:50 +0200
-Message-ID: <20250623130629.655015666@linuxfoundation.org>
+Message-ID: <20250623130631.187651791@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Nathan Chancellor <nathan@kernel.org>
 
-commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
+commit 43fc0a99906e04792786edf8534d8d58d1e9de0c upstream.
 
-There's a tiny race condition in dm-mirror. The functions queue_bio and
-write_callback grab a spinlock, add a bio to the list, drop the spinlock
-and wake up the mirrord thread that processes bios in the list.
+After commit feb843a469fb ("kbuild: add $(CLANG_FLAGS) to
+KBUILD_CPPFLAGS"), there is an error while building certain PowerPC
+assembly files with clang:
 
-It may be possible that the mirrord thread processes the bio just after
-spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
-wake-up is normally harmless, however if the device mapper device is
-unloaded just after the bio was processed, it may be possible that
-wakeup_mirrord(ms) uses invalid "ms" pointer.
+  arch/powerpc/lib/copypage_power7.S: Assembler messages:
+  arch/powerpc/lib/copypage_power7.S:34: Error: junk at end of line: `0b01000'
+  arch/powerpc/lib/copypage_power7.S:35: Error: junk at end of line: `0b01010'
+  arch/powerpc/lib/copypage_power7.S:37: Error: junk at end of line: `0b01000'
+  arch/powerpc/lib/copypage_power7.S:38: Error: junk at end of line: `0b01010'
+  arch/powerpc/lib/copypage_power7.S:40: Error: junk at end of line: `0b01010'
+  clang: error: assembler command failed with exit code 1 (use -v to see invocation)
 
-Fix this bug by moving wakeup_mirrord inside the spinlock.
+as-option only uses KBUILD_AFLAGS, so after removing CLANG_FLAGS from
+KBUILD_AFLAGS, there is no more '--target=' or '--prefix=' flags. As a
+result of those missing flags, the host target
+will be tested during as-option calls and likely fail, meaning necessary
+flags may not get added when building assembly files, resulting in
+errors like seen above.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
+Add KBUILD_CPPFLAGS to as-option invocations to clear up the errors.
+This should have been done in commit d5c8d6e0fa61 ("kbuild: Update
+assembler calls to use proper flags and language target"), which
+switched from using the assembler target to the assembler-with-cpp
+target, so flags that affect preprocessing are passed along in all
+relevant tests. as-option now mirrors cc-option.
+
+Fixes: feb843a469fb ("kbuild: add $(CLANG_FLAGS) to KBUILD_CPPFLAGS")
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/CA+G9fYs=koW9WardsTtora+nMgLR3raHz-LSLr58tgX4T5Mxag@mail.gmail.com/
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-raid1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ scripts/Kbuild.include |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-raid1.c
-+++ b/drivers/md/dm-raid1.c
-@@ -133,10 +133,9 @@ static void queue_bio(struct mirror_set
- 	spin_lock_irqsave(&ms->lock, flags);
- 	should_wake = !(bl->head);
- 	bio_list_add(bl, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
--
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -104,7 +104,7 @@ try-run = $(shell set -e;		\
+ # Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
  
- static void dispatch_bios(void *context, struct bio_list *bio_list)
-@@ -646,9 +645,9 @@ static void write_callback(unsigned long
- 	if (!ms->failures.head)
- 		should_wake = 1;
- 	bio_list_add(&ms->failures, bio);
--	spin_unlock_irqrestore(&ms->lock, flags);
- 	if (should_wake)
- 		wakeup_mirrord(ms);
-+	spin_unlock_irqrestore(&ms->lock, flags);
- }
+ as-option = $(call try-run,\
+-	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
++	$(CC) -Werror $(KBUILD_CPPFLAGS) $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
  
- static void do_write(struct mirror_set *ms, struct bio *bio)
+ # as-instr
+ # Usage: aflags-y += $(call as-instr,instr,option1,option2)
 
 
 
