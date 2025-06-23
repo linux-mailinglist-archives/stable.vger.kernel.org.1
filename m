@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157944-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158062-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2CB7AE5650
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CFF2AE56D8
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A53416FD3A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858AE16B1A1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6500919F120;
-	Mon, 23 Jun 2025 22:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296CD223DF0;
+	Mon, 23 Jun 2025 22:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwg+cyz5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kRzRMcr2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2277EB676;
-	Mon, 23 Jun 2025 22:18:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB22715ADB4;
+	Mon, 23 Jun 2025 22:23:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717102; cv=none; b=pHw0mm/3dqViXGRKCAOzA8NvnXctS3m7i6/aUIyMaZjHDGO6NhB0X5KemOVQfKOICTEtyCmsRmEF0nTIU915Qz9EsI8I6DKlHNvU/BtnCuoz2M2wEMbziicWUFMyiCb1a08cr3wiR+g5QAzxK7d8GsA+lAs3rYCcnh87e6o8aHs=
+	t=1750717389; cv=none; b=WbXpZ3sQJbbXOJ6dyjWPP4P4nKPX0S91an1VVAvEvy327h389CPi5zxEtNC4NlI11mwmRxAN7UsklPNW+W/UDuxUlGVya5B2URl5vfRQkREg0O8aXlbcF/JaXb7GtgqNzYAqjdKeM7iiPVr71Ctg0OiFB6fVZcEY3ciKRJLC3tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717102; c=relaxed/simple;
-	bh=mPbGkts0HU0oO7PiakOePRzaY+yMjAlGLhTDhwIU08I=;
+	s=arc-20240116; t=1750717389; c=relaxed/simple;
+	bh=vMVyqZFm6bxusQa5hzK80BJs0TAKgZanO4d+4Rx4Dy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dCvxW3nGa2Fi1hQOwViAGucPMeQvwrlswAM32cwzNbQSOWenl4EKcpFJqFYrdaUDcURMsk7B9uoHvZQQxkvuncJPgY6niGAd6M1wQ3MRFSlMFjfWqGt+mYofvTN0XkxmhnK8SStZ4Oi/kO/KANk/PjDwKIqPbH0SJaubdjjM4tE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwg+cyz5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E95BC4CEEA;
-	Mon, 23 Jun 2025 22:18:21 +0000 (UTC)
+	 MIME-Version; b=pEvyq0Ar3ZdVHuhssKAS/vPV4udJpUr6lu7nWTXMSe6cblq4TKIR5eJ5qoDrhfrZNDDZbOnEjaoXF5fKagT5jBpyOwuQuritgM6aJlPxVO1cqART+5mUbdMJcEdBEK5lACohJkMA8FPXGaRD6JMqO2hd1DNvNevGDpnZ2rDtoCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kRzRMcr2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2CBC4CEEA;
+	Mon, 23 Jun 2025 22:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717102;
-	bh=mPbGkts0HU0oO7PiakOePRzaY+yMjAlGLhTDhwIU08I=;
+	s=korg; t=1750717389;
+	bh=vMVyqZFm6bxusQa5hzK80BJs0TAKgZanO4d+4Rx4Dy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwg+cyz5jYppcvY/kELHPszFtEPIf4dZmgTIM9bhQ3lgEMHrFg+/5wMEf9EMlMPg+
-	 jf3Hi4qdjJQi00f4O9FYT0GEEMj6Ft2ZpRksP2cSzVh62qgQVXTtRg0NnUBgNPyOcD
-	 qmZ9uPu6P8vEEYn4WWFmdGy44tMtsZrFXd43luI4=
+	b=kRzRMcr2s/NhWHqHCVsMkLNcZnvmipH7VGSCkmREYIW2xn+y2Rnb7h3Wxigp4ew7b
+	 4122FG6jpT2GHDvFAru5jMREWm4tBiaMKfNTIrtz7u/7o084pfgONQgC78QRzRga8g
+	 sL/CJFDMtsozZ1+dEXunPVrCJvveoiDagQi+z7to=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 324/414] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
-Date: Mon, 23 Jun 2025 15:07:41 +0200
-Message-ID: <20250623130650.094539144@linuxfoundation.org>
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 417/508] scsi: lpfc: Fix lpfc_check_sli_ndlp() handling for GEN_REQUEST64 commands
+Date: Mon, 23 Jun 2025 15:07:42 +0200
+Message-ID: <20250623130655.464414096@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Justin Tee <justin.tee@broadcom.com>
 
-commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
+[ Upstream commit 05ae6c9c7315d844fbc15afe393f5ba5e5771126 ]
 
-In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
-atm_account_tx().
+In lpfc_check_sli_ndlp(), the get_job_els_rsp64_did remote_id assignment
+does not apply for GEN_REQUEST64 commands as it only has meaning for a
+ELS_REQUEST64 command.  So, if (iocb->ndlp == ndlp) is false, we could
+erroneously return the wrong value.  Fix by replacing the fallthrough
+statement with a break statement before the remote_id check.
 
-It is expected to be reverted by atm_pop_raw() later called by
-vcc->dev->ops->send(vcc, skb).
-
-However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
-fails, and then we will leak a socket.
-
-Let's factorise the revert part as atm_return_tx() and call it in
-the failure path.
-
-Note that the corresponding sk_wmem_alloc operation can be found in
-alloc_tx() as of the blamed commit.
-
-  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Justin Tee <justin.tee@broadcom.com>
+Link: https://lore.kernel.org/r/20250425194806.3585-2-justintee8345@gmail.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/atmdev.h |    6 ++++++
- net/atm/common.c       |    1 +
- net/atm/raw.c          |    2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ drivers/scsi/lpfc/lpfc_hbadisc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -249,6 +249,12 @@ static inline void atm_account_tx(struct
- 	ATM_SKB(skb)->atm_options = vcc->atm_options;
- }
- 
-+static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
-+{
-+	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
-+					   &sk_atm(vcc)->sk_wmem_alloc));
-+}
-+
- static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
- {
- 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
- 
- 	skb->dev = NULL; /* for paths shared with net_device interfaces */
- 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
-+		atm_return_tx(vcc, skb);
- 		kfree_skb(skb);
- 		error = -EFAULT;
- 		goto out;
---- a/net/atm/raw.c
-+++ b/net/atm/raw.c
-@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
- 
- 	pr_debug("(%d) %d -= %d\n",
- 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
--	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
-+	atm_return_tx(vcc, skb);
- 	dev_kfree_skb_any(skb);
- 	sk->sk_write_space(sk);
- }
+diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
+index b04112c77fcd1..3a55e410235c0 100644
+--- a/drivers/scsi/lpfc/lpfc_hbadisc.c
++++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
+@@ -5074,7 +5074,7 @@ lpfc_check_sli_ndlp(struct lpfc_hba *phba,
+ 		case CMD_GEN_REQUEST64_CR:
+ 			if (iocb->ndlp == ndlp)
+ 				return 1;
+-			fallthrough;
++			break;
+ 		case CMD_ELS_REQUEST64_CR:
+ 			if (remote_id == ndlp->nlp_DID)
+ 				return 1;
+-- 
+2.39.5
+
 
 
 
