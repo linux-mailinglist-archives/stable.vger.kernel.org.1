@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-156320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0067AE4F14
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96A1EAE4F1C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3759D17DD87
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B58F73BCA81
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70314221FBE;
-	Mon, 23 Jun 2025 21:12:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5CC322156B;
+	Mon, 23 Jun 2025 21:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wT6sVQdY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nEtaoLDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA5E221FA4;
-	Mon, 23 Jun 2025 21:12:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3CEC1DF98B;
+	Mon, 23 Jun 2025 21:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713127; cv=none; b=sNQ9Xd9JkXzw9eNJGqYzu1Ci2Ox28JWr92KqpJEolZBRD5cKvyAYgkOx9uHLJiA39vniyFhHydpJ9F0IZczMfDy8oYLFhic2n8PhJETqOVsstFWwmrmwZpoAK9HczO/rl6Cz0ahEmDKW6lW82/JqvlqejealUYUwUcORNRbZ05Y=
+	t=1750713145; cv=none; b=bmQTf48cN/psfgoM6nsFaQ4OQ6tPq3S0Z9rirAhbAxZSPXYjHBi4IH/9UV3UMv2JavcQJ9atrbcppalOTK7grCiBqAnyn6P9u/ududXMqnLmBXdg9/7u2k7l8OPPI5A5nc30CmuOkx76b6HVJU8IjF5c3zXxmoCCazgCC0E23JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713127; c=relaxed/simple;
-	bh=QHg8kQkIB6V1G1jGy0BxJERJXf03nX4QOa/nv5CuqJM=;
+	s=arc-20240116; t=1750713145; c=relaxed/simple;
+	bh=P9Xd9lCiv3T9rYPCbypddoFf2drgDa5VHzvS+0pv3xQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JMcOCoQuK21JuXILws3c8RQeT6IDI1VuLhEq7NleamqiPL/FxFV0/7izlfbAeitMzx7zqLRAEf76NY0Z700o5UmOkRwRrRJwI1fBUQLGcbwus7XcsqnchOXhUNaDzjUX5pzzqGZHml6/Xqem7iKXj8msiAmUXNXnO3qhX197o/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wT6sVQdY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE48C4CEEA;
-	Mon, 23 Jun 2025 21:12:05 +0000 (UTC)
+	 MIME-Version; b=gTf9eudsKyooC7Ak/6OQgDQyiNLtolGiN1GtOC2YwaJ42owM/en8zyexIX4WtZH1yQfCuqCM8bpLCDTX46iCskw66m9JTyRroubVbcWc3O+0dH20cjMxK5WQ12Wo2SjrohlhGWSSjwxXJcWObA/VrlEB8ebbRrnTPoIWf+i+eRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nEtaoLDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB2CC4CEEA;
+	Mon, 23 Jun 2025 21:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713125;
-	bh=QHg8kQkIB6V1G1jGy0BxJERJXf03nX4QOa/nv5CuqJM=;
+	s=korg; t=1750713145;
+	bh=P9Xd9lCiv3T9rYPCbypddoFf2drgDa5VHzvS+0pv3xQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wT6sVQdYGztHPZ80nnkILWXuQVrpdwn1pFd+ZNPcZXeqSn6LxdS5KdWpHzhOB2j5t
-	 ld+Dbm9Xm7lp4SEI9krE8qvy7OZQ32JT/suwwXiSvhrBMfmW4uIRjmvm55ZIlosz/U
-	 AezFfbm1tzYYtpDp9Tv0BPtYsRCayJic+Ql1gI3c=
+	b=nEtaoLDrsV38VvAA+RXOU1P3zA1ARUTLXZxuSvaCrDa2GZU0bzGxdUzX2T0IGCoBA
+	 J55+ovAeM+vXAnmd9ll1rUEtHD1pMEYV7SPCjQfCcBEueB0KaP6cxIjUFbZdmd5N+g
+	 Wi+tS4p8In6huRjqpqwskvWMaNwP0anedhJI2coQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Bingbu Cao <bingbu.cao@intel.com>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 047/414] media: ov2740: Move pm-runtime cleanup on probe-errors to proper place
-Date: Mon, 23 Jun 2025 15:03:04 +0200
-Message-ID: <20250623130643.217483761@linuxfoundation.org>
+Subject: [PATCH 6.12 048/414] media: ccs-pll: Start OP pre-PLL multiplier search from correct value
+Date: Mon, 23 Jun 2025 15:03:05 +0200
+Message-ID: <20250623130643.244150446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -67,46 +66,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 81cf4f46a03a07b0b86f9d677c34ba782df7d65e upstream.
+commit 660e613d05e449766784c549faf5927ffaf281f1 upstream.
 
-When v4l2_subdev_init_finalize() fails no changes have been made to
-the runtime-pm device state yet, so the probe_error_media_entity_cleanup
-rollback path should not touch the runtime-pm device state.
+The ccs_pll_calculate() function does a search over possible PLL
+configurations to find the "best" one. If the sensor does not support odd
+pre-PLL divisors and the minimum value (with constraints) isn't 1, other
+odd values could be errorneously searched (and selected) for the pre-PLL
+divisor. Fix this.
 
-Instead this should be done from the probe_error_v4l2_subdev_cleanup
-rollback path. Note the pm_runtime_xxx() calls are put above
-the v4l2_subdev_cleanup() call to have the reverse call order of probe().
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Bingbu Cao <bingbu.cao@intel.com>
-Fixes: 289c25923ecd ("media: ov2740: Use sub-device active state")
+Fixes: 415ddd993978 ("media: ccs-pll: Split limits and PLL configuration into front and back parts")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2740.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/ccs-pll.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/i2c/ov2740.c
-+++ b/drivers/media/i2c/ov2740.c
-@@ -1404,12 +1404,12 @@ static int ov2740_probe(struct i2c_clien
- 	return 0;
+--- a/drivers/media/i2c/ccs-pll.c
++++ b/drivers/media/i2c/ccs-pll.c
+@@ -817,6 +817,8 @@ int ccs_pll_calculate(struct device *dev
+ 			      one_or_more(
+ 				      DIV_ROUND_UP(op_lim_fr->max_pll_op_clk_freq_hz,
+ 						   pll->ext_clk_freq_hz))));
++	if (!(pll->flags & CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER))
++		min_op_pre_pll_clk_div = clk_div_even(min_op_pre_pll_clk_div);
+ 	dev_dbg(dev, "pll_op check: min / max op_pre_pll_clk_div: %u / %u\n",
+ 		min_op_pre_pll_clk_div, max_op_pre_pll_clk_div);
  
- probe_error_v4l2_subdev_cleanup:
-+	pm_runtime_disable(&client->dev);
-+	pm_runtime_set_suspended(&client->dev);
- 	v4l2_subdev_cleanup(&ov2740->sd);
- 
- probe_error_media_entity_cleanup:
- 	media_entity_cleanup(&ov2740->sd.entity);
--	pm_runtime_disable(&client->dev);
--	pm_runtime_set_suspended(&client->dev);
- 
- probe_error_v4l2_ctrl_handler_free:
- 	v4l2_ctrl_handler_free(ov2740->sd.ctrl_handler);
 
 
 
