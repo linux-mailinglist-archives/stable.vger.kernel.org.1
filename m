@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4BBEAE52A1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0222AE520F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 78A551B65736
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 578C64A4F16
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D77A224B1F;
-	Mon, 23 Jun 2025 21:45:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5283B19D084;
+	Mon, 23 Jun 2025 21:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uu55A3XJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgIHgTUe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF317220686;
-	Mon, 23 Jun 2025 21:45:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1AE1E22E6;
+	Mon, 23 Jun 2025 21:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715118; cv=none; b=VM5XYlT6eR2/oYKqq8lnPyfdPnOWWo9KSV+xpWqy7MRcoj/vOsM3UvAhETHV9pKThwGDZIgfoQLAvVh9IMuRCKWZXV2BE7yJqjJpetc6ym9Em4Enr9NFgodvRQfi58zCILJs7awYCm5TdB5Lk2t8njKWuhZleyMweWtM1i2UfiQ=
+	t=1750714802; cv=none; b=E9c3zKoDrAWUisqqPYnLFdqLxYABqN1s6w0/iHR8F1n24KEzJ9/HSca1wb1ei6Nlylh9/ORoxzWweND7hNKtXhaJ8bLAswWPWzKyiZK315fm/wmTELCn+MKI8AVXxYQmPXhJh1ZnGniKHzpin6BrbDm5oSj3cSMbzG0SrSfjPHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715118; c=relaxed/simple;
-	bh=oyQS1KUg3zanR/YgOO37v0GTPcrNfzcL4hcisyvq9TE=;
+	s=arc-20240116; t=1750714802; c=relaxed/simple;
+	bh=jgZLBIQ84cjix9JkV5oahAPJ669nx5grUixBIKkFlqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EmaWDf4Ta2azj/j/Rln1ElgDGYNnBADCAxBHTRMz7KOISWsi585UPj59A3ddZlnJhLkfbZ4CEqiffrukEAXJc9GICkmgQyNRcvF47l/JwD8QIr1sL0odSu+3KK2Cv7KgBSY/IMGbgkG3obosQ/tTZSZNEqMgaX4VMUbchX7sBC0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uu55A3XJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78025C4CEED;
-	Mon, 23 Jun 2025 21:45:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p8tpCICsuiS3ahzbQmxPWjbuuknJ1ISbdg00qvc0SYvHZj7pBEu5h6szHmh88TCB4+gRoMyLIQmMrQkG8eCLECM8qmBAKQYP85qx+H/63Tz+9DbtlflXy1o+ZKBQ9CP0nCP8CNRyoZUgBQQBYbVrecrS8hw0ljPNKzfJfXRe64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgIHgTUe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911F3C4CEF0;
+	Mon, 23 Jun 2025 21:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715117;
-	bh=oyQS1KUg3zanR/YgOO37v0GTPcrNfzcL4hcisyvq9TE=;
+	s=korg; t=1750714801;
+	bh=jgZLBIQ84cjix9JkV5oahAPJ669nx5grUixBIKkFlqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uu55A3XJIy6eiKtkLe0+fGOpSCFCqC17j2W3B1Gtwl9jHVyt7XO/wu5YhReqUuVK8
-	 clL3ceZ0w2SvbBwC5zXAm+zi8L9Z5QhKH0s0BkfeWHLMFDeL2bLwvPPghT8OiMWSKu
-	 /hsRh4yJFgtAQhnsV731oSsMYgBxI9gyxcWFxQRo=
+	b=vgIHgTUenOBj+APUVhRY99FZJHcN7ExQn6Gi8ta40ant9f++sosnJPQeb5pNilR3Q
+	 vqYJRoT17wpeJgBif73A0mypuTxcmwtKXgMaA20LWgg5s9oDs8qsjxWfnanMkcRiFg
+	 97eEIun9NdJ/cmKQlqDIqdxSVCFZuA6O3e7qT/S0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Stuart Hayes <stuart.w.hayes@gmail.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 438/592] platform/x86: dell_rbu: Fix list usage
-Date: Mon, 23 Jun 2025 15:06:36 +0200
-Message-ID: <20250623130710.853093568@linuxfoundation.org>
+Subject: [PATCH 6.15 439/592] platform/x86: dell_rbu: Stop overwriting data buffer
+Date: Mon, 23 Jun 2025 15:06:37 +0200
+Message-ID: <20250623130710.876239701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -69,47 +69,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Stuart Hayes <stuart.w.hayes@gmail.com>
 
-[ Upstream commit 61ce04601e0d8265ec6d2ffa6df5a7e1bce64854 ]
+[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
 
-Pass the correct list head to list_for_each_entry*() when looping through
-the packet list.
+The dell_rbu driver will use memset() to clear the data held by each
+packet when it is no longer needed (when the driver is unloaded, the
+packet size is changed, etc).
 
-Without this patch, reading the packet data via sysfs will show the data
-incorrectly (because it starts at the wrong packet), and clearing the
-packet list will result in a NULL pointer dereference.
+The amount of memory that is cleared (before this patch) is the normal
+packet size. However, the last packet in the list may be smaller.
 
-Fixes: d19f359fbdc6 ("platform/x86: dell_rbu: don't open code list_for_each_entry*()")
+Fix this to only clear the memory actually used by each packet, to prevent
+it from writing past the end of data buffer.
+
+Because the packet data buffers are allocated with __get_free_pages() (in
+page-sized increments), this bug could only result in a buffer being
+overwritten when a packet size larger than one page is used. The only user
+of the dell_rbu module should be the Dell BIOS update program, which uses
+a packet size of 4096, so no issues should be seen without the patch, it
+just blocks the possiblity.
+
+Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
 Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-3-stuart.w.hayes@gmail.com
+Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell/dell_rbu.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/platform/x86/dell/dell_rbu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/platform/x86/dell/dell_rbu.c b/drivers/platform/x86/dell/dell_rbu.c
-index e30ca325938cb..e2afe51b66ee8 100644
+index e2afe51b66ee8..8dea70b7f8c15 100644
 --- a/drivers/platform/x86/dell/dell_rbu.c
 +++ b/drivers/platform/x86/dell/dell_rbu.c
-@@ -292,7 +292,7 @@ static int packet_read_list(char *data, size_t * pread_length)
- 	remaining_bytes = *pread_length;
- 	bytes_read = rbu_data.packet_read_count;
- 
--	list_for_each_entry(newpacket, (&packet_data_head.list)->next, list) {
-+	list_for_each_entry(newpacket, &packet_data_head.list, list) {
- 		bytes_copied = do_packet_read(pdest, newpacket,
- 			remaining_bytes, bytes_read, &temp_count);
- 		remaining_bytes -= bytes_copied;
-@@ -315,7 +315,7 @@ static void packet_empty_list(void)
- {
- 	struct packet_data *newpacket, *tmp;
- 
--	list_for_each_entry_safe(newpacket, tmp, (&packet_data_head.list)->next, list) {
-+	list_for_each_entry_safe(newpacket, tmp, &packet_data_head.list, list) {
- 		list_del(&newpacket->list);
- 
- 		/*
+@@ -322,7 +322,7 @@ static void packet_empty_list(void)
+ 		 * zero out the RBU packet memory before freeing
+ 		 * to make sure there are no stale RBU packets left in memory
+ 		 */
+-		memset(newpacket->data, 0, rbu_data.packetsize);
++		memset(newpacket->data, 0, newpacket->length);
+ 		set_memory_wb((unsigned long)newpacket->data,
+ 			1 << newpacket->ordernum);
+ 		free_pages((unsigned long) newpacket->data,
 -- 
 2.39.5
 
