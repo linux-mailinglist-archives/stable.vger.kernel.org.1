@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-155647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2ECEAE4349
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1766FAE44CB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52F7E179A18
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15D3F1BC1276
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D1F255F2B;
-	Mon, 23 Jun 2025 13:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 239BE1E487;
+	Mon, 23 Jun 2025 13:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NV0bHUw6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VeIYdaxK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883A32550D7;
-	Mon, 23 Jun 2025 13:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57A91E480;
+	Mon, 23 Jun 2025 13:40:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684970; cv=none; b=scN0BUcrThNQdnihPDMZ0KPKYAz18y21Rd6VMlzHPrJb4j3gdcmH4Wgw9ybbcYF9zbjUiOhMgMEqa84lSpQXKAbAjIRqnrVq9IZKOSJDueXbLxNDBFox9lu+d/45Hyd7GRzEGSy4zzWLjKL6kMPn4qS09flZsCxVdhkKadTUGwM=
+	t=1750686001; cv=none; b=DaUBSiSfxQP3M+BV8Es/lR308Cm5pVwRRHcmzcbu/WnjYRGrvpsBn1FRpv1yQ4yJG4K1Ma3/HAZIxk8QkSGbtcGOnWscSMYVrQJeE/qM9X0pCsl9Ru7RfTDNlOB9rU3quhKQRAVoaio4u4BiFHj+IrVnkU8I8EeFAaXQPPlXfM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684970; c=relaxed/simple;
-	bh=nbG/glR48gYb8HILA7ifc8w/R3eiWdYIR57hD8REHnM=;
+	s=arc-20240116; t=1750686001; c=relaxed/simple;
+	bh=quGE162zx85C6FEqVPLljDzXSorWtbU6qBuLgCxH4ZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfbJk44rN7/qrvD8PPuc8fo3Sv0x59S7Up6Is21MvKdCjILLkFybILAinarL36RkyA/W2r5CHkBUlKWUoQB1g3zUcoaT+A+zoaqmVN7ivWgrsTSfdnlJLBIXp0hrm4wRCkALPlkEO6+rUi/ygDBlpvGXhpFNFC8gy8KrqX1tiDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NV0bHUw6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA56C4CEEA;
-	Mon, 23 Jun 2025 13:22:49 +0000 (UTC)
+	 MIME-Version; b=GXZTBJ0JxvtVZyc817kO49MhnO5RDG7dV9KyJP8wRNubwIXG0HMJ6oMJCikVInVuHr5YvaQpefvrHTZLEkuFOpdCGyrR8vK1kbR8vpl5YesNfVrRR50EKmbKf0xkNdRm9zHFq4Kpo6opUh3x0YLWeYJ2MvhER2ox4NwYkB+w9Ww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VeIYdaxK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69330C4CEEA;
+	Mon, 23 Jun 2025 13:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684970;
-	bh=nbG/glR48gYb8HILA7ifc8w/R3eiWdYIR57hD8REHnM=;
+	s=korg; t=1750686001;
+	bh=quGE162zx85C6FEqVPLljDzXSorWtbU6qBuLgCxH4ZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NV0bHUw6sHe0ecsDLi7BaJlGSv2ZapaaTxIRm+f1Cpn6EQ9WWtChH6+5VTRfWPOHO
-	 M+Cbwn5lafCFd5M9m0xpY7SIhAmDvVByUI1PKLlIeBBecwbRzMfgQ1iE2ZnqcIa/ly
-	 PLDxU0UGkGKNKmQ2TWr5RAwcmG51k5G8AxagQJ8Q=
+	b=VeIYdaxK1BC18IWddnLgG7dsYvgGZtUITSPmb/rEWLgfvzQp4KRO0+REYFzLPBbmI
+	 z3VL6Fd5r+C6Y8oWaS4N9jEXTnRP+sz+mIVTKZKEOYPm2I92Hm9qbmHQXLaNyIZy/F
+	 oOhNW3eoTdu3ve2AZSQAH8xYwQsynN10VkcV1I1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Zhiguo Niu <zhiguo.niu@unisoc.com>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 017/355] crypto: xts - Only add ecb if it is not already there
+Subject: [PATCH 5.15 074/411] f2fs: fix to correct check conditions in f2fs_cross_rename
 Date: Mon, 23 Jun 2025 15:03:38 +0200
-Message-ID: <20250623130627.304594820@linuxfoundation.org>
+Message-ID: <20250623130635.227882285@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Zhiguo Niu <zhiguo.niu@unisoc.com>
 
-[ Upstream commit 270b6f13454cb7f2f7058c50df64df409c5dcf55 ]
+[ Upstream commit 9883494c45a13dc88d27dde4f988c04823b42a2f ]
 
-Only add ecb to the cipher name if it isn't already ecb.
+Should be "old_dir" here.
 
-Also use memcmp instead of strncmp since these strings are all
-stored in an array of length CRYPTO_MAX_ALG_NAME.
-
-Fixes: f1c131b45410 ("crypto: xts - Convert to skcipher")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 5c57132eaf52 ("f2fs: support project quota")
+Signed-off-by: Zhiguo Niu <zhiguo.niu@unisoc.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/xts.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/f2fs/namei.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/xts.c b/crypto/xts.c
-index 74dc199d54867..a4677e1a1611f 100644
---- a/crypto/xts.c
-+++ b/crypto/xts.c
-@@ -360,7 +360,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
- 
- 	err = crypto_grab_skcipher(&ctx->spawn, skcipher_crypto_instance(inst),
- 				   cipher_name, 0, mask);
--	if (err == -ENOENT) {
-+	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
- 		err = -ENAMETOOLONG;
- 		if (snprintf(ctx->name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
- 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
-@@ -394,7 +394,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
- 	/* Alas we screwed up the naming so we have to mangle the
- 	 * cipher name.
- 	 */
--	if (!strncmp(cipher_name, "ecb(", 4)) {
-+	if (!memcmp(cipher_name, "ecb(", 4)) {
- 		int len;
- 
- 		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
+diff --git a/fs/f2fs/namei.c b/fs/f2fs/namei.c
+index 364731547f696..ecdcde93ade4c 100644
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -1076,7 +1076,7 @@ static int f2fs_cross_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	if ((is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(new_dir)->i_projid,
+ 			F2FS_I(old_inode)->i_projid)) ||
+-	    (is_inode_flag_set(new_dir, FI_PROJ_INHERIT) &&
++	    (is_inode_flag_set(old_dir, FI_PROJ_INHERIT) &&
+ 			!projid_eq(F2FS_I(old_dir)->i_projid,
+ 			F2FS_I(new_inode)->i_projid)))
+ 		return -EXDEV;
 -- 
 2.39.5
 
