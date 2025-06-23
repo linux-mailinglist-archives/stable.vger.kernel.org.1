@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3486AE540E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1444AE53B7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 108904C041C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:58:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8EEE445EFB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14E6421FF2B;
-	Mon, 23 Jun 2025 21:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6892A223DEA;
+	Mon, 23 Jun 2025 21:55:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z+PIlkqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bzJDN/Eb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C777770838;
-	Mon, 23 Jun 2025 21:58:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0CE1AD3FA;
+	Mon, 23 Jun 2025 21:55:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715919; cv=none; b=KnNjqS96qK2tH1rnoRxozD4sgz6c9J6JmlFjdTNNx2ki77iZbO+/aZasa5Td2cAJUc+MAzreCDxioGRxR9PFHW7Z5tKnTXc4QIxLksBOMA1wfLDxvANWA1hxJjIAjrDU7Rlw8samWat1/PDZkg/Hq/yvgCH9aXhc6Y/mJc3Siao=
+	t=1750715737; cv=none; b=C2hkUlp/NIKKOSvhUfT66cjM+nxU3+UFRi+1gjh7D+Kw7p7ZjtaV38NzJ4uCBSrz0/SBJJw4YW/4gHIxppN/MyYUzk0qkAGOIigexXUODbvp62PJoCCxbqJB2Qs9etfopSD9ngEUcM2tSl+188ePs8bicjDjbJRRC3RgOLjehSI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715919; c=relaxed/simple;
-	bh=VTFOE6qqWsxf6glJ2dldK/ir8FckXw1fZwGYSBNfkMM=;
+	s=arc-20240116; t=1750715737; c=relaxed/simple;
+	bh=1QSxbJ1e7YWt38Me20+y9XS9WHaMOuu0jwQYFSrbtpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snNtWwDIlHo+EJyF/HB3lD1bV+Vjo/4oiRji28ixr1OE3/aJ5YaRexcZN4iKGTpNrAEGBARq/wkC3uo44J/tR9BtqEuNlHVYBNpyAXAG1kHJihyW2tegvA+WjzZoMzlVbIDLIaxIfsvJ2keL2Mww0pRh9I7X+2UgrTklEotAZso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z+PIlkqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA280C4CEEA;
-	Mon, 23 Jun 2025 21:58:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=m3Yw2f7rloC0B1IqgkHhxHvD0ReP1AByQy7D+FyO92a2v4x+Eujuk2fz/2RR5aDw6CfWpJy0eJ5/0L8oAtWald8n1gAc6fNWCXoiU+3k4wfwVsIoRm8iSADZZODReMPc+OJc2SeM+k9WonjQVV4mPdfkU4fnq4kSu25CL1b7wnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bzJDN/Eb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4013EC4CEEA;
+	Mon, 23 Jun 2025 21:55:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715917;
-	bh=VTFOE6qqWsxf6glJ2dldK/ir8FckXw1fZwGYSBNfkMM=;
+	s=korg; t=1750715736;
+	bh=1QSxbJ1e7YWt38Me20+y9XS9WHaMOuu0jwQYFSrbtpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z+PIlkqkD6SUlGovj20F9B9fbdbkSeBFy8QwRRk2VTIHYHz1zkI1Otvw/N1ndaACc
-	 xX9zVDyqj78cGbu7pwIDTQaGUinIjZFf5bxwmrEaqP6NOtdr02MPvAZoToooeaQU36
-	 lcMqY1Eq7zLu3/Ke1kwkI/eV8hirttcDuPUwRIUY=
+	b=bzJDN/EbBcXKwOSYB1sJ+kaJ2DSGc6Ur2Rpn6wWs348pQ6Kx3fomF9SK9J7hetQ87
+	 UvSQD5U4gq86xU/Migy+QJ/qQO24HFbb3MSHTI0uNG40kbA0rmCcFOcyIgjbyyZPU8
+	 IDic+++Qulq06hJK7qd34q60fEt7OCCh/jOpIy7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 291/411] sunrpc: fix race in cache cleanup causing stale nextcheck time
+	"Xin Li (Intel)" <xin@zytor.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.15 477/592] selftests/x86: Add a test to detect infinite SIGTRAP handler loop
 Date: Mon, 23 Jun 2025 15:07:15 +0200
-Message-ID: <20250623130640.978088296@linuxfoundation.org>
+Message-ID: <20250623130711.778950214@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +60,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Xin Li (Intel) <xin@zytor.com>
 
-[ Upstream commit 2298abcbe11e9b553d03c0f1d084da786f7eff88 ]
+commit f287822688eeb44ae1cf6ac45701d965efc33218 upstream.
 
-When cache cleanup runs concurrently with cache entry removal, a race
-condition can occur that leads to incorrect nextcheck times. This can
-delay cache cleanup for the cache_detail by up to 1800 seconds:
+When FRED is enabled, if the Trap Flag (TF) is set without an external
+debugger attached, it can lead to an infinite loop in the SIGTRAP
+handler.  To avoid this, the software event flag in the augmented SS
+must be cleared, ensuring that no single-step trap remains pending when
+ERETU completes.
 
-1. cache_clean() sets nextcheck to current time plus 1800 seconds
-2. While scanning a non-empty bucket, concurrent cache entry removal can
-   empty that bucket
-3. cache_clean() finds no cache entries in the now-empty bucket to update
-   the nextcheck time
-4. This maybe delays the next scan of the cache_detail by up to 1800
-   seconds even when it should be scanned earlier based on remaining
-   entries
+This test checks for that specific scenario—verifying whether the kernel
+correctly prevents an infinite SIGTRAP loop in this edge case when FRED
+is enabled.
 
-Fix this by moving the hash_lock acquisition earlier in cache_clean().
-This ensures bucket emptiness checks and nextcheck updates happen
-atomically, preventing the race between cleanup and entry removal.
+The test should _always_ pass with IDT event delivery, thus no need to
+disable the test even when FRED is not enabled.
 
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Xin Li (Intel) <xin@zytor.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Tested-by: Sohil Mehta <sohil.mehta@intel.com>
+Cc:stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20250609084054.2083189-3-xin%40zytor.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/cache.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ tools/testing/selftests/x86/Makefile       |    2 
+ tools/testing/selftests/x86/sigtrap_loop.c |  101 +++++++++++++++++++++++++++++
+ 2 files changed, 102 insertions(+), 1 deletion(-)
+ create mode 100644 tools/testing/selftests/x86/sigtrap_loop.c
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index e8448e9e03d59..715f7d080f7a2 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -451,24 +451,21 @@ static int cache_clean(void)
- 		}
- 	}
+--- a/tools/testing/selftests/x86/Makefile
++++ b/tools/testing/selftests/x86/Makefile
+@@ -12,7 +12,7 @@ CAN_BUILD_WITH_NOPIE := $(shell ./check_
  
-+	spin_lock(&current_detail->hash_lock);
+ TARGETS_C_BOTHBITS := single_step_syscall sysret_ss_attrs syscall_nt test_mremap_vdso \
+ 			check_initial_reg_state sigreturn iopl ioperm \
+-			test_vsyscall mov_ss_trap \
++			test_vsyscall mov_ss_trap sigtrap_loop \
+ 			syscall_arg_fault fsgsbase_restore sigaltstack
+ TARGETS_C_BOTHBITS += nx_stack
+ TARGETS_C_32BIT_ONLY := entry_from_vm86 test_syscall_vdso unwind_vdso \
+--- /dev/null
++++ b/tools/testing/selftests/x86/sigtrap_loop.c
+@@ -0,0 +1,101 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2025 Intel Corporation
++ */
++#define _GNU_SOURCE
 +
- 	/* find a non-empty bucket in the table */
--	while (current_detail &&
--	       current_index < current_detail->hash_size &&
-+	while (current_index < current_detail->hash_size &&
- 	       hlist_empty(&current_detail->hash_table[current_index]))
- 		current_index++;
- 
- 	/* find a cleanable entry in the bucket and clean it, or set to next bucket */
--
--	if (current_detail && current_index < current_detail->hash_size) {
-+	if (current_index < current_detail->hash_size) {
- 		struct cache_head *ch = NULL;
- 		struct cache_detail *d;
- 		struct hlist_head *head;
- 		struct hlist_node *tmp;
- 
--		spin_lock(&current_detail->hash_lock);
--
- 		/* Ok, now to clean this strand */
--
- 		head = &current_detail->hash_table[current_index];
- 		hlist_for_each_entry_safe(ch, tmp, head, cache_list) {
- 			if (current_detail->nextcheck > ch->expiry_time)
-@@ -489,8 +486,10 @@ static int cache_clean(void)
- 		spin_unlock(&cache_list_lock);
- 		if (ch)
- 			sunrpc_end_cache_remove_entry(ch, d);
--	} else
-+	} else {
-+		spin_unlock(&current_detail->hash_lock);
- 		spin_unlock(&cache_list_lock);
++#include <err.h>
++#include <signal.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
++#include <sys/ucontext.h>
++
++#ifdef __x86_64__
++# define REG_IP REG_RIP
++#else
++# define REG_IP REG_EIP
++#endif
++
++static void sethandler(int sig, void (*handler)(int, siginfo_t *, void *), int flags)
++{
++	struct sigaction sa;
++
++	memset(&sa, 0, sizeof(sa));
++	sa.sa_sigaction = handler;
++	sa.sa_flags = SA_SIGINFO | flags;
++	sigemptyset(&sa.sa_mask);
++
++	if (sigaction(sig, &sa, 0))
++		err(1, "sigaction");
++
++	return;
++}
++
++static void sigtrap(int sig, siginfo_t *info, void *ctx_void)
++{
++	ucontext_t *ctx = (ucontext_t *)ctx_void;
++	static unsigned int loop_count_on_same_ip;
++	static unsigned long last_trap_ip;
++
++	if (last_trap_ip == ctx->uc_mcontext.gregs[REG_IP]) {
++		printf("\tTrapped at %016lx\n", last_trap_ip);
++
++		/*
++		 * If the same IP is hit more than 10 times in a row, it is
++		 * _considered_ an infinite loop.
++		 */
++		if (++loop_count_on_same_ip > 10) {
++			printf("[FAIL]\tDetected SIGTRAP infinite loop\n");
++			exit(1);
++		}
++
++		return;
 +	}
- 
- 	return rv;
- }
--- 
-2.39.5
-
++
++	loop_count_on_same_ip = 0;
++	last_trap_ip = ctx->uc_mcontext.gregs[REG_IP];
++	printf("\tTrapped at %016lx\n", last_trap_ip);
++}
++
++int main(int argc, char *argv[])
++{
++	sethandler(SIGTRAP, sigtrap, 0);
++
++	/*
++	 * Set the Trap Flag (TF) to single-step the test code, therefore to
++	 * trigger a SIGTRAP signal after each instruction until the TF is
++	 * cleared.
++	 *
++	 * Because the arithmetic flags are not significant here, the TF is
++	 * set by pushing 0x302 onto the stack and then popping it into the
++	 * flags register.
++	 *
++	 * Four instructions in the following asm code are executed with the
++	 * TF set, thus the SIGTRAP handler is expected to run four times.
++	 */
++	printf("[RUN]\tSIGTRAP infinite loop detection\n");
++	asm volatile(
++#ifdef __x86_64__
++		/*
++		 * Avoid clobbering the redzone
++		 *
++		 * Equivalent to "sub $128, %rsp", however -128 can be encoded
++		 * in a single byte immediate while 128 uses 4 bytes.
++		 */
++		"add $-128, %rsp\n\t"
++#endif
++		"push $0x302\n\t"
++		"popf\n\t"
++		"nop\n\t"
++		"nop\n\t"
++		"push $0x202\n\t"
++		"popf\n\t"
++#ifdef __x86_64__
++		"sub $-128, %rsp\n\t"
++#endif
++	);
++
++	printf("[OK]\tNo SIGTRAP infinite loop detected\n");
++	return 0;
++}
 
 
 
