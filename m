@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-157676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B95E8AE5511
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BFEDAE5516
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121D54C2F93
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 32E434C3124
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C78B621FF2B;
-	Mon, 23 Jun 2025 22:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9756222581;
+	Mon, 23 Jun 2025 22:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wfgQBrCk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w8suDsU4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802D53597E;
-	Mon, 23 Jun 2025 22:07:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B243597E;
+	Mon, 23 Jun 2025 22:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716451; cv=none; b=HEo5qhHzbVPJpHfCcIlsDObQht1/q4oy8ufhaRDnrNB3Wkl999iGhkFuPmbhmQNkvDh16E+xJo/0/EydrHsjLKCRqHp8OpXMXZLc2qzfMTG9cENKed1cuKTIeYGWbSu4r7Rk/tuZXxWd+768llBssyVYtvXwzwFYG3Iwe7IXuug=
+	t=1750716468; cv=none; b=dlqbA7Ho5U7sAUl+xQg1bqe9JViViGhkLPA5EekrkuImrsgbegp5+smX/Fw+3/hxRKnu5ZwI+BLW6nrzdCOcF09KHJJ6smN10sKVeXPB8BwkCv0zZ1syw7AreAecAs27NW/fI922BIrVJIu+F2ohybrjm1ypaFUfWou3uAS2xas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716451; c=relaxed/simple;
-	bh=e5u9bZbULRF+F4IoTJIW5Xq1ijlvAygB3Erz2a9bFQo=;
+	s=arc-20240116; t=1750716468; c=relaxed/simple;
+	bh=jtLCHvU75h/vhBF0bj/a/EOCfh4GFpyG4H1kaqLVi9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WcphBUB/Hbup3b7Vhunw7vD/F4m8soHj0IbQvPqUv6nqs48eIQRdXUrQfYCzox+B3gfAaDDbZt9oKUoovYlElWKKa3ju0HvJZtFjnidqSzpElMNF4Q4Uy1WxeUG7IbQCdc8MY53cZlLB4CMk9s/CSG1i9R0fEg78XikcSpXoZk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wfgQBrCk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1712CC4CEEA;
-	Mon, 23 Jun 2025 22:07:30 +0000 (UTC)
+	 MIME-Version; b=OMIzlI1Tt9VdC6nEacrUz61wjDKqq/8RWzkLLKTLf5QN54RDcza0oBkFGwI+uRQtHFkj48sXM/mmzD6nc2I+5hQ9oN33yBdMGR0FqnJU1TBct2CBavmcFLo0E+ZNZ6gxV08yFke+H12CwH5qL4MWsZA0VhR5U0H5oplXX4kQ3uQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w8suDsU4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB88C4CEEA;
+	Mon, 23 Jun 2025 22:07:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716451;
-	bh=e5u9bZbULRF+F4IoTJIW5Xq1ijlvAygB3Erz2a9bFQo=;
+	s=korg; t=1750716468;
+	bh=jtLCHvU75h/vhBF0bj/a/EOCfh4GFpyG4H1kaqLVi9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wfgQBrCk0ikpfSylnjgYerzPFcSSQ81lFVMBhunrTTDIlC9WGv+uCboDw1IkWWnl8
-	 lTQcTAcv77dofhDngplrSdrvCn2XzheNqpjuY9+arMHtDsW0mdZxZUch17YI4bdeC+
-	 GBEB+RRz0GDsTeCca26+X9q8cJsq8EauqxY21E+c=
+	b=w8suDsU4sKNcrLcv4fCuSHMNSWLg1RW9gbDftpOi/AflKmKHYl6H4jyASbnkr88Dv
+	 sXLrvS6FDG9gzBkXhObgWPT6EcJ5i+lZ4prV0SOWoUzbbzgzpTw4c32Vh6mWpR/b8z
+	 fNKucMKGK+QpvdBiW/tGZJ0q9e8fF3Ei9+wZKGaw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olga Kornievskaia <okorniev@redhat.com>,
 	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neil@brown.name>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 303/508] nfsd: nfsd4_spo_must_allow() must check this is a v4 compound request
-Date: Mon, 23 Jun 2025 15:05:48 +0200
-Message-ID: <20250623130652.759414416@linuxfoundation.org>
+Subject: [PATCH 6.1 304/508] nfsd: Initialize ssc before laundromat_work to prevent NULL dereference
+Date: Mon, 23 Jun 2025 15:05:49 +0200
+Message-ID: <20250623130652.784934003@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,38 +66,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: NeilBrown <neil@brown.name>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 1244f0b2c3cecd3f349a877006e67c9492b41807 upstream.
+commit b31da62889e6d610114d81dc7a6edbcaa503fcf8 upstream.
 
-If the request being processed is not a v4 compound request, then
-examining the cstate can have undefined results.
+In nfs4_state_start_net(), laundromat_work may access nfsd_ssc through
+nfs4_laundromat -> nfsd4_ssc_expire_umount. If nfsd_ssc isn't initialized,
+this can cause NULL pointer dereference.
 
-This patch adds a check that the rpc procedure being executed
-(rq_procinfo) is the NFSPROC4_COMPOUND procedure.
+Normally the delayed start of laundromat_work allows sufficient time for
+nfsd_ssc initialization to complete. However, when the kernel waits too
+long for userspace responses (e.g. in nfs4_state_start_net ->
+nfsd4_end_grace -> nfsd4_record_grace_done -> nfsd4_cld_grace_done ->
+cld_pipe_upcall -> __cld_pipe_upcall -> wait_for_completion path), the
+delayed work may start before nfsd_ssc initialization finishes.
 
-Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Fix this by moving nfsd_ssc initialization before starting laundromat_work.
+
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
 Cc: stable@vger.kernel.org
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: NeilBrown <neil@brown.name>
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4proc.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfsd/nfssvc.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -3536,7 +3536,8 @@ bool nfsd4_spo_must_allow(struct svc_rqs
- 	struct nfs4_op_map *allow = &cstate->clp->cl_spo_must_allow;
- 	u32 opiter;
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -427,13 +427,13 @@ static int nfsd_startup_net(struct net *
+ 	if (ret)
+ 		goto out_filecache;
  
--	if (!cstate->minorversion)
-+	if (rqstp->rq_procinfo != &nfsd_version4.vs_proc[NFSPROC4_COMPOUND] ||
-+	    cstate->minorversion == 0)
- 		return false;
++#ifdef CONFIG_NFSD_V4_2_INTER_SSC
++	nfsd4_ssc_init_umount_work(nn);
++#endif
+ 	ret = nfs4_state_start_net(net);
+ 	if (ret)
+ 		goto out_reply_cache;
  
- 	if (cstate->spo_must_allowed)
+-#ifdef CONFIG_NFSD_V4_2_INTER_SSC
+-	nfsd4_ssc_init_umount_work(nn);
+-#endif
+ 	nn->nfsd_net_up = true;
+ 	return 0;
+ 
 
 
 
