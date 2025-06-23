@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-155683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F3FCAE4345
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C1BDAE4212
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:15:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BA5593B8B7A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1A383B66F8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B258924DCFD;
-	Mon, 23 Jun 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A10B324DFF3;
+	Mon, 23 Jun 2025 13:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNe+yZrk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x4OaeC+u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F25D24678E;
-	Mon, 23 Jun 2025 13:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C84E2505CB;
+	Mon, 23 Jun 2025 13:15:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685062; cv=none; b=XR8RmMN2Gt/yy73mIWGVPl4ibwh5CdPRja0D/zYlKhRpRrXCFV/25kKKxrnm5IvKuldNF5+oyQSGmnH9EhcV51ge4JVXdKG7tHAJ67QUWB9owjEhb3PpsUiCC0joRe3o/ZHf5GIzNlGH6oeBSbyc6hf3WVnqfcYtWByl6iH5WWU=
+	t=1750684502; cv=none; b=qey24LWJJKGmNVuS3QLAf/NvOJzZl0B/P/ATT7M1f40LSP77Qovepxmopa82JRqFdIODK4zWKuiVuLbixU4aAngCxBV+QQHGRmrzUxVxGilMllCi8PZxzuG1odHRjdrpNR/a08jcmZ8jecaX0WxEi1zKX05XzMR+r3uNiMI1oBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685062; c=relaxed/simple;
-	bh=ZhzDCO9BzBY53WxSI7w4CQFeI6tD8fdb8HVE1cTIxkc=;
+	s=arc-20240116; t=1750684502; c=relaxed/simple;
+	bh=iRnweNH7PawYuTLZehxbdg1AVYfVgu/cgXC2zfeBeCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKgkVMBPSkSSxG0b8rSWZqeueGr6ZlsR0fswOZOScS+DHX42QUiNDshaUGSu7oOiJtTHD1rax2UbWoehbvdnErZ22pPSS8GInpGebfoxmsFepsw3uQSLKSFJ5DwapAnf+4bi7mUrIPZf0xFmNCFKfS8rjhbwrp97gkb/z88DEHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNe+yZrk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEF90C4CEEA;
-	Mon, 23 Jun 2025 13:24:21 +0000 (UTC)
+	 MIME-Version; b=vClLjTPb11PK+/exlNnX7mIsRlWCqU2wxG1SLjugLiE30LYS6UXQvqat5uwTsZAF77h5ybrfD+zaFy8edzdzBIx3EOr8gLmjqGbWfssaxG7uQGqyBbG60L4a2tqYnNlHbG+KYhQO3bpGyel7rFv+Ohw2DDK2R0UGXVmT8qep1GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x4OaeC+u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E34D8C4CEEA;
+	Mon, 23 Jun 2025 13:15:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685062;
-	bh=ZhzDCO9BzBY53WxSI7w4CQFeI6tD8fdb8HVE1cTIxkc=;
+	s=korg; t=1750684502;
+	bh=iRnweNH7PawYuTLZehxbdg1AVYfVgu/cgXC2zfeBeCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GNe+yZrk5M4zuCJOJhYYtsz0xTuWMdSyuQJ1Kopr/+r+wcgAjtZlgJwDLbcSilT9k
-	 6uh2hlTTKlVa+MUJkxeHNuccAVLMZbXt+aRtZpye6S2RGm7pzW5cv6y54zB8+YRorm
-	 glOj1C7SlIbifbK4muCWXAdv4OdWlMv988kD6dAg=
+	b=x4OaeC+udjjk+TOSFHOItGM0RfJhAMgSm2eJQTJ2V6CHzBs8yvh2QyAZEgyWKwAze
+	 tZLw8kAfJ3NmRMPkp6BDe8PlduUFRy1+kcmeqHtwFDSyJY8mVa7NgaKEtAsQ8XlDnX
+	 CyrP2LYy6hpBENhOHlK12+PMGTLo4GLQaLR087hw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manu Bretelle <chantr4@gmail.com>,
-	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.1 005/508] acpi-cpufreq: Fix nominal_freq units to KHz in get_max_boost_ratio()
-Date: Mon, 23 Jun 2025 15:00:50 +0200
-Message-ID: <20250623130645.389055752@linuxfoundation.org>
+	Ross Stutterheim <ross.stutterheim@garmin.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>
+Subject: [PATCH 6.15 093/592] ARM: 9447/1: arm/memremap: fix arch_memremap_can_ram_remap()
+Date: Mon, 23 Jun 2025 15:00:51 +0200
+Message-ID: <20250623130702.493258612@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,50 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautham R. Shenoy <gautham.shenoy@amd.com>
+From: Ross Stutterheim <ross.stutterheim@garmin.com>
 
-commit cb6a85f38f456b086c366e346ebb67ffa70c7243 upstream.
+commit 96e0b355883006554a0bee3697da475971d6bba8 upstream.
 
-commit 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-modified get_max_boost_ratio() to return the nominal_freq advertised
-in the _CPC object. This was for the purposes of computing the maximum
-frequency. The frequencies advertised in _CPC objects are in
-MHz. However, cpufreq expects the frequency to be in KHz. Since the
-nominal_freq returned by get_max_boost_ratio() was not in KHz but
-instead in MHz,the cpuinfo_max_frequency that was computed using this
-nominal_freq was incorrect and an invalid value which resulted in
-cpufreq reporting the P0 frequency as the cpuinfo_max_freq.
+arm/memremap: fix arch_memremap_can_ram_remap()
 
-Fix this by converting the nominal_freq to KHz before returning the
-same from get_max_boost_ratio().
+commit 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure
+presence of linear map") added the definition of
+arch_memremap_can_ram_remap() for arm[64] specific filtering of what pages
+can be used from the linear mapping. memblock_is_map_memory() was called
+with the pfn of the address given to arch_memremap_can_ram_remap();
+however, memblock_is_map_memory() expects to be given an address for arm,
+not a pfn.
 
-Reported-by: Manu Bretelle <chantr4@gmail.com>
-Closes: https://lore.kernel.org/lkml/aDaB63tDvbdcV0cg@HQ-GR2X1W2P57/
-Fixes: 083466754596 ("cpufreq: ACPI: Fix max-frequency computation")
-Signed-off-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
-Cc: 6.14+ <stable@vger.kernel.org> # 6.14+
-Link: https://patch.msgid.link/20250529085143.709-1-gautham.shenoy@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This results in calls to memremap() returning a newly mapped area when
+it should return an address in the existing linear mapping.
+
+Fix this by removing the address to pfn translation and pass the
+address directly.
+
+Fixes: 260364d112bc ("arm[64]/memremap: don't abuse pfn_valid() to ensure presence of linear map")
+Signed-off-by: Ross Stutterheim <ross.stutterheim@garmin.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/acpi-cpufreq.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/mm/ioremap.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/cpufreq/acpi-cpufreq.c
-+++ b/drivers/cpufreq/acpi-cpufreq.c
-@@ -666,7 +666,7 @@ static u64 get_max_boost_ratio(unsigned
- 	nominal_perf = perf_caps.nominal_perf;
- 
- 	if (nominal_freq)
--		*nominal_freq = perf_caps.nominal_freq;
-+		*nominal_freq = perf_caps.nominal_freq * 1000;
- 
- 	if (!highest_perf || !nominal_perf) {
- 		pr_debug("CPU%d: highest or nominal performance missing\n", cpu);
+--- a/arch/arm/mm/ioremap.c
++++ b/arch/arm/mm/ioremap.c
+@@ -515,7 +515,5 @@ void __init early_ioremap_init(void)
+ bool arch_memremap_can_ram_remap(resource_size_t offset, size_t size,
+ 				 unsigned long flags)
+ {
+-	unsigned long pfn = PHYS_PFN(offset);
+-
+-	return memblock_is_map_memory(pfn);
++	return memblock_is_map_memory(offset);
+ }
 
 
 
