@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-156411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1422EAE4F82
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BA8CAE51E9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4D887AD234
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 64395172584
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 244CB1EFFA6;
-	Mon, 23 Jun 2025 21:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CFF02222A9;
+	Mon, 23 Jun 2025 21:38:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S6IKRa+4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VVXqgJnI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6B827482;
-	Mon, 23 Jun 2025 21:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFDB221734;
+	Mon, 23 Jun 2025 21:38:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713348; cv=none; b=ffBV6O2gm+5S/g+3i6WQBW6SScbQCNC9fPeMBb+2MPYBi6BXkFhNm9VMxOORQy6kwEYrvu3CDxP9LElMtmn0nC328PKg+yxpWGbiojhLs1OEqSpdCdc1+Jbex0ZzkFj3Ta3gTYKHkvvupHn6WdAotA6ANcH8Q6V977iOGz2cXr8=
+	t=1750714708; cv=none; b=qHppWgkUo6GUiIAyTsVSN0RPI2OQ/NlBP7GYkbH/Jjhx0M7j4Yff2r03hmHicbYQ51+6BQJbbiwcsCvGf9u5Ec0lHQ6zs/VUEdSCK+2uDXn7Vs3Wh0xEb7F72BBjq+6luXbktgYqI7gvE95nYbXZaJLDQh+brjVTMRb7g1kppn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713348; c=relaxed/simple;
-	bh=RzYsh6DnrxStr1DIzYmAHCzKQdLHE+QaRhP6hdNUWjA=;
+	s=arc-20240116; t=1750714708; c=relaxed/simple;
+	bh=3d2Zla+22i8wMJvYnmtM5nKmZNmNEI/hJGThJmrRzXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=S0eyiucqxzEwhdFD7PByV1xGF+kNOTumi0OyouhncZ+KuyapCU4/gIR+hMuC35ncGXfOpyyT5kELnCzOv/qGBYtO1MkIf8FjyNQugD5CJGgQ16/PPNPt0Blw0f1VDbWEkddb0G5z5ThRqxPfFaCkG1Au8qyf8z35IQezv58qh8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S6IKRa+4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C748C4CEEA;
-	Mon, 23 Jun 2025 21:15:48 +0000 (UTC)
+	 MIME-Version; b=u3Ifq12jTx+DLjbGicX4sf+lcerzyAQDcNfIZ5cG+W/pOLlbnHdWXXW+7Ent+z7uYcPvqApJdDfecwZwSoicN7X64YIrOJVSzAez7TRlmDw9j11iiQYAIzVH6f6d+xAoXL65kzMmaESiNlE49J+jjsGjGAfoCHVcx1msDlV4jTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VVXqgJnI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56B28C4CEEA;
+	Mon, 23 Jun 2025 21:38:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713348;
-	bh=RzYsh6DnrxStr1DIzYmAHCzKQdLHE+QaRhP6hdNUWjA=;
+	s=korg; t=1750714708;
+	bh=3d2Zla+22i8wMJvYnmtM5nKmZNmNEI/hJGThJmrRzXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S6IKRa+4wXcZqhITKWiBJlzmvmUX17gtyR96sBLyG8dYvxGWpOpKQW8SObKns3bQI
-	 lR8e6z9g41d6vjZtPF6DYxVjYh7elOpNlAbEJsA/lB+wsZISkukGLT9tMXXZADRGmn
-	 sScNpegrKlHxpQ+nwSbCXjDs8uXU0L58mlpd3HXA=
+	b=VVXqgJnIJ7y6cMGp7GI4E/2+zuwajNmZnuhn+1a0xY4yZG1S5z9y27XFEHslYG/61
+	 gA79R0pwfVtACrG6taDEUrswiBgYSGME7GOIYVTwq9obuis2aB9JtGSoEMxPCgjv3u
+	 HFPuM5m2Z2ceyJIEJ3sB/+DQSuI3KLDlCfDDdB2k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 118/411] spi: bcm63xx-hsspi: fix shared reset
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 6.12 125/414] dm-mirror: fix a tiny race condition
 Date: Mon, 23 Jun 2025 15:04:22 +0200
-Message-ID: <20250623130636.515437587@linuxfoundation.org>
+Message-ID: <20250623130645.188621588@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +58,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Álvaro Fernández Rojas <noltari@gmail.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 3d6d84c8f2f66d3fd6a43a1e2ce8e6b54c573960 ]
+commit 829451beaed6165eb11d7a9fb4e28eb17f489980 upstream.
 
-Some bmips SoCs (bcm6362, bcm63268) share the same SPI reset for both SPI
-and HSSPI controllers, so reset shouldn't be exclusive.
+There's a tiny race condition in dm-mirror. The functions queue_bio and
+write_callback grab a spinlock, add a bio to the list, drop the spinlock
+and wake up the mirrord thread that processes bios in the list.
 
-Fixes: 0eeadddbf09a ("spi: bcm63xx-hsspi: add reset support")
-Reported-by: Jonas Gorski <jonas.gorski@gmail.com>
-Signed-off-by: Álvaro Fernández Rojas <noltari@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20250529130915.2519590-3-noltari@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It may be possible that the mirrord thread processes the bio just after
+spin_unlock_irqrestore is called, before wakeup_mirrord. This spurious
+wake-up is normally harmless, however if the device mapper device is
+unloaded just after the bio was processed, it may be possible that
+wakeup_mirrord(ms) uses invalid "ms" pointer.
+
+Fix this bug by moving wakeup_mirrord inside the spinlock.
+
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-bcm63xx-hsspi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-raid1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-bcm63xx-hsspi.c b/drivers/spi/spi-bcm63xx-hsspi.c
-index 02f56fc001b47..7d8e5c66f6d17 100644
---- a/drivers/spi/spi-bcm63xx-hsspi.c
-+++ b/drivers/spi/spi-bcm63xx-hsspi.c
-@@ -357,7 +357,7 @@ static int bcm63xx_hsspi_probe(struct platform_device *pdev)
- 	if (IS_ERR(clk))
- 		return PTR_ERR(clk);
+--- a/drivers/md/dm-raid1.c
++++ b/drivers/md/dm-raid1.c
+@@ -133,10 +133,9 @@ static void queue_bio(struct mirror_set
+ 	spin_lock_irqsave(&ms->lock, flags);
+ 	should_wake = !(bl->head);
+ 	bio_list_add(bl, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+-
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
  
--	reset = devm_reset_control_get_optional_exclusive(dev, NULL);
-+	reset = devm_reset_control_get_optional_shared(dev, NULL);
- 	if (IS_ERR(reset))
- 		return PTR_ERR(reset);
+ static void dispatch_bios(void *context, struct bio_list *bio_list)
+@@ -646,9 +645,9 @@ static void write_callback(unsigned long
+ 	if (!ms->failures.head)
+ 		should_wake = 1;
+ 	bio_list_add(&ms->failures, bio);
+-	spin_unlock_irqrestore(&ms->lock, flags);
+ 	if (should_wake)
+ 		wakeup_mirrord(ms);
++	spin_unlock_irqrestore(&ms->lock, flags);
+ }
  
--- 
-2.39.5
-
+ static void do_write(struct mirror_set *ms, struct bio *bio)
 
 
 
