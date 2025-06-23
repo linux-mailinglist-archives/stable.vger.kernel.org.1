@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-156827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE460AE514C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9918AAE548E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 794B37A8DCC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C961441DEC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 467B01C5D46;
-	Mon, 23 Jun 2025 21:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28E871E22E6;
+	Mon, 23 Jun 2025 22:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GMiKLc+v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QWIHAkyi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0482AC2E0;
-	Mon, 23 Jun 2025 21:32:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ECF4C74;
+	Mon, 23 Jun 2025 22:02:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714363; cv=none; b=bC5dtM3MReyK9nOgpwMnWrzItRTh50gaQxfZlDDVcLf3boBfNpm0rgAhtcgXSIpwXmvvgn//liCdfFIIJaE7255UkPmq/xsTAi94Om/djVhnM9IZrLe9FecGuZo6bb+1V+OApM6Sy0HzPWr8IChs0+Y4r8LRtg2OucjUflFx/Vw=
+	t=1750716134; cv=none; b=h7mt+xPehXEjySGcXZv8J4Vv+Bxj7v41TH666eNpuQxgtFU7x9oQ2OV7dxxnR/3A5/l6fpKyrKdPkHsaf1s9nD98NDnbpo10mfaPJzdmYHks/NSl2EoOsdbnd0F91AXbc/RAzcK0yWEylqklhJiaDhy1UGKN32virpGc3E/y1BI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714363; c=relaxed/simple;
-	bh=rKroy6KZWhpC0oE5cwELAGo5M/U3iTt446VNLK5BQsk=;
+	s=arc-20240116; t=1750716134; c=relaxed/simple;
+	bh=do4ri06HBTJ0T6Oxz+1MbQKZU6UfHx19nW+ntEiDeFs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ryhHpf3b8kiLZcev4kcbPiXM/wOcndCeKjWjs0V7+2YXe6AvYpYH1+FQKkYWfLaEhESk3iEaKIZzmk8Ret09wtwHCUW7Vcn1uWkWcK/cq5gkJC4sG5XK6C5NGzlF7rWxIrAPES63IR92QrAbd6B+IW1LQNQf9Qpqp/auYTI+GIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GMiKLc+v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86BC8C4CEEA;
-	Mon, 23 Jun 2025 21:32:42 +0000 (UTC)
+	 MIME-Version; b=ug+2ce6qUvUWWRYNKHDk4QcbY6nlWkPfN/bba79J7OXv5Tkm2nUgts5rMuUcY2eig1W+qr39sxBuc/9rTzgEez1mEQ5q4mPqqoyU3LNsqdVFzgIAFRSYC46fSdODJHVMg7RGEB0N/4q7c0Zklb6zuB3JbtI9sNPmwkaHkMvDRM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QWIHAkyi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E511C4CEEA;
+	Mon, 23 Jun 2025 22:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714362;
-	bh=rKroy6KZWhpC0oE5cwELAGo5M/U3iTt446VNLK5BQsk=;
+	s=korg; t=1750716134;
+	bh=do4ri06HBTJ0T6Oxz+1MbQKZU6UfHx19nW+ntEiDeFs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GMiKLc+vN+O/tGEnOmmp19w4WWYCNRRyFJj77yN3Kl/yEkLand8UvTsdEWz5yQWVa
-	 bNF9n86PlWsVWU156imtj5AtDBiUvJdRdOo4EfY5J9WydJ2PbPIgupRMKoJdQlyVxq
-	 VSJqu+pvNQodI33Z69S4TRW78zts75raqtlarWAA=
+	b=QWIHAkyixciQvcGSKw1hTqBlflKheCw8klDe4qyDsxi65fgieI1nFulYgKWSsJuls
+	 Chn2oAjGUe8RYdAjAqwtFkpHpEiQQ9sD+41wFLzy07Q/ZbEa0dsTwqsR85PzpC+NWx
+	 qx+23FI3xznhWZnK49TbU/7riYyITTq2oJo5fFDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amit Sunil Dhamne <amitsd@google.com>,
-	Badhri Jagan Sridharan <badhri@google.com>,
-	Kyle Tso <kyletso@google.com>,
-	stable <stable@kernel.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 5.15 183/411] usb: typec: tcpm/tcpci_maxim: Fix bounds check in process_rx()
+	stable@kernel.org,
+	Stefano Stabellini <stefano.stabellini@amd.com>,
+	Juergen Gross <jgross@suse.com>
+Subject: [PATCH 6.1 282/508] xen/arm: call uaccess_ttbr0_enable for dm_op hypercall
 Date: Mon, 23 Jun 2025 15:05:27 +0200
-Message-ID: <20250623130638.289674582@linuxfoundation.org>
+Message-ID: <20250623130652.199176413@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,49 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Sunil Dhamne <amitsd@google.com>
+From: Stefano Stabellini <stefano.stabellini@amd.com>
 
-commit 0736299d090f5c6a1032678705c4bc0a9511a3db upstream.
+commit 7f9bbc1140ff8796230bc2634055763e271fd692 upstream.
 
-Register read of TCPC_RX_BYTE_CNT returns the total size consisting of:
+dm_op hypercalls might come from userspace and pass memory addresses as
+parameters. The memory addresses typically correspond to buffers
+allocated in userspace to hold extra hypercall parameters.
 
-  PD message (pending read) size + 1 Byte for Frame Type (SOP*)
+On ARM, when CONFIG_ARM64_SW_TTBR0_PAN is enabled, they might not be
+accessible by Xen, as a result ioreq hypercalls might fail. See the
+existing comment in arch/arm64/xen/hypercall.S regarding privcmd_call
+for reference.
 
-This is validated against the max PD message (`struct pd_message`) size
-without accounting for the extra byte for the frame type. Note that the
-struct pd_message does not contain a field for the frame_type. This
-results in false negatives when the "PD message (pending read)" is equal
-to the max PD message size.
+For privcmd_call, Linux calls uaccess_ttbr0_enable before issuing the
+hypercall thanks to commit 9cf09d68b89a. We need to do the same for
+dm_op. This resolves the problem.
 
-Fixes: 6f413b559f86 ("usb: typec: tcpci_maxim: Chip level TCPC driver")
-Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Reviewed-by: Kyle Tso <kyletso@google.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/stable/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d%40google.com
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20250502-b4-new-fix-pd-rx-count-v1-1-e5711ed09b3d@google.com
+Cc: stable@kernel.org
+Fixes: 9cf09d68b89a ("arm64: xen: Enable user access before a privcmd hvc call")
+Signed-off-by: Stefano Stabellini <stefano.stabellini@amd.com>
+Reviewed-by: Juergen Gross <jgross@suse.com>
+Message-ID: <alpine.DEB.2.22.394.2505121446370.8380@ubuntu-linux-20-04-desktop>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci_maxim.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/xen/hypercall.S |   21 ++++++++++++++++++++-
+ 1 file changed, 20 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpci_maxim.c
-+++ b/drivers/usb/typec/tcpm/tcpci_maxim.c
-@@ -171,7 +171,8 @@ static void process_rx(struct max_tcpci_
- 		return;
- 	}
+--- a/arch/arm64/xen/hypercall.S
++++ b/arch/arm64/xen/hypercall.S
+@@ -83,7 +83,26 @@ HYPERCALL3(vcpu_op);
+ HYPERCALL1(platform_op_raw);
+ HYPERCALL2(multicall);
+ HYPERCALL2(vm_assist);
+-HYPERCALL3(dm_op);
++
++SYM_FUNC_START(HYPERVISOR_dm_op)
++	mov x16, #__HYPERVISOR_dm_op;	\
++	/*
++	 * dm_op hypercalls are issued by the userspace. The kernel needs to
++	 * enable access to TTBR0_EL1 as the hypervisor would issue stage 1
++	 * translations to user memory via AT instructions. Since AT
++	 * instructions are not affected by the PAN bit (ARMv8.1), we only
++	 * need the explicit uaccess_enable/disable if the TTBR0 PAN emulation
++	 * is enabled (it implies that hardware UAO and PAN disabled).
++	 */
++	uaccess_ttbr0_enable x6, x7, x8
++	hvc XEN_IMM
++
++	/*
++	 * Disable userspace access from kernel once the hyp call completed.
++	 */
++	uaccess_ttbr0_disable x6, x7
++	ret
++SYM_FUNC_END(HYPERVISOR_dm_op);
  
--	if (count > sizeof(struct pd_message) || count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
-+	if (count > sizeof(struct pd_message) + 1 ||
-+	    count + 1 > TCPC_RECEIVE_BUFFER_LEN) {
- 		dev_err(chip->dev, "Invalid TCPC_RX_BYTE_CNT %d\n", count);
- 		return;
- 	}
+ SYM_FUNC_START(privcmd_call)
+ 	mov x16, x0
 
 
 
