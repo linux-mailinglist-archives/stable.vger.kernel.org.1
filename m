@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60F99AE50B1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA972AE51F5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:39:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E1AB84A1A81
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7C59442C3B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B2FE221734;
-	Mon, 23 Jun 2025 21:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7D2221FCC;
+	Mon, 23 Jun 2025 21:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fBDxEnkd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSTv4aQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2FD1F4628;
-	Mon, 23 Jun 2025 21:27:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE96121D3DD;
+	Mon, 23 Jun 2025 21:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714033; cv=none; b=BorZ9J0eWuh8j3xj2V0IChG8PBeHGe9yYdD03IeBvpBQ/zNNI1c8bJLKBt379htHU6akMNILGJFQoYNkFG9o3m+C1ZXKfiMTdteK47IXEJn0Z0pf5ALpQdIx8GA9ZupqaYZbZyJQBlnzbrjxcG4Ug0EOC0NOufQCTqOZR2AVISk=
+	t=1750714745; cv=none; b=rIpdMD5SFQxTF9B1iuGkZCMQfkYs8yKu+BRLxm/TzUSVTYPaWZtVcSQUthBjvDdI51g47FVzGEj3z70RUUvMxhuxJt+H7cr5GYlJYG8nO/Ckd1QVrp4htq2vvNH1nYCpPgoxX56/Q0EGjkzNOHtvFgTHxctfiWm9eR3WwUfWUI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714033; c=relaxed/simple;
-	bh=qol30QfYAgNZ2AtU8L6o0gTL9m1JNnGrtsWQnkaFhic=;
+	s=arc-20240116; t=1750714745; c=relaxed/simple;
+	bh=fN2qP6o6HiFOcxI5883o1UgMlI/jVyc79xIAVKPLQ4g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rupInPZyj8azSLn/jTdPef0yVg3zpfxzyaFxsLIa/mkhWCmEdhLMaTh/iGN51NttebVwJgKrlOdfq/HsTi0SUFlHtyNMF2vfmcSc+Zr4rGSkSaWRw83MrdRLbPRgtDG3ADKogj19chLiN2OsdSRrIuCHRlqnox1mXwgz6FCngIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fBDxEnkd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A00C4C4CEEA;
-	Mon, 23 Jun 2025 21:27:12 +0000 (UTC)
+	 MIME-Version; b=U1Zf7+p8SyxbR5GxWi7LMui6xK97B23FQ+TkYTDcCJ1SqyzVVS9mPTT9Pc9wsgf9kpL7GbBvEXW03NWPeYvpPFKtQgurG9TlsJALsd8y8vzTyMzbh8zv9vwo6thAbRBjjgIs7qXQz4p89ATCe9hWWh1NP8OzaQVYKOgazOSa6OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSTv4aQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA92C4CEEA;
+	Mon, 23 Jun 2025 21:39:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714032;
-	bh=qol30QfYAgNZ2AtU8L6o0gTL9m1JNnGrtsWQnkaFhic=;
+	s=korg; t=1750714745;
+	bh=fN2qP6o6HiFOcxI5883o1UgMlI/jVyc79xIAVKPLQ4g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fBDxEnkdFgEdBGO69Chcl25sDugXDedilw0526Ztl36YSyB3AQl+dkWEPSBTXFBUA
-	 hx4NG9SNLQU/4kTL9qo2AvFLstLVIwKDRfV36ie3MbeMhtgRl/bUeDcWRFIfNgGJ/K
-	 LCjNhrUOgZxKYAHbRcIUt75x+tSNcvb/XWUW5rVY=
+	b=uSTv4aQqVKBBE4MA9lYTkX4r1HIeM1I9ZMw4zNsWz9x5cT3pDfSpIIZDceNu50pGQ
+	 q+dHIJSNhKaIOC3vxQ9/SAS8qezNgt1DVnxtuzbYYU+A+C9acse/1KRVqn/94zEDWH
+	 DUY3hMvM/WmhJ7VAXfBNOvwujk9BOiPw5kN5/KsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.6 109/290] PCI: Add ACS quirk for Loongson PCIe
-Date: Mon, 23 Jun 2025 15:06:10 +0200
-Message-ID: <20250623130630.232894131@linuxfoundation.org>
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 413/592] bpf, sockmap: Fix data lost during EAGAIN retries
+Date: Mon, 23 Jun 2025 15:06:11 +0200
+Message-ID: <20250623130710.261719899@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
+[ Upstream commit 7683167196bd727ad5f3c3fc6a9ca70f54520a81 ]
 
-Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
-allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
-each Root Port can be in a separate IOMMU group.
+We call skb_bpf_redirect_clear() to clean _sk_redir before handling skb in
+backlog, but when sk_psock_handle_skb() return EAGAIN due to sk_rcvbuf
+limit, the redirect info in _sk_redir is not recovered.
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix skb redir loss during EAGAIN retries by restoring _sk_redir
+information using skb_bpf_set_redir().
+
+Before this patch:
+'''
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
+Setting up benchmark 'sockmap'...
+create socket fd c1:13 p1:14 c2:15 p2:16
+Benchmark 'sockmap' started.
+Send Speed 1343.172 MB/s, BPF Speed 1343.238 MB/s, Rcv Speed   65.271 MB/s
+Send Speed 1352.022 MB/s, BPF Speed 1352.088 MB/s, Rcv Speed   0 MB/s
+Send Speed 1354.105 MB/s, BPF Speed 1354.105 MB/s, Rcv Speed   0 MB/s
+Send Speed 1355.018 MB/s, BPF Speed 1354.887 MB/s, Rcv Speed   0 MB/s
+'''
+Due to the high send rate, the RX processing path may frequently hit the
+sk_rcvbuf limit. Once triggered, incorrect _sk_redir will cause the flow
+to mistakenly enter the "!ingress" path, leading to send failures.
+(The Rcv speed depends on tcp_rmem).
+
+After this patch:
+'''
+./bench sockmap -c 2 -p 1 -a --rx-verdict-ingress
+Setting up benchmark 'sockmap'...
+create socket fd c1:13 p1:14 c2:15 p2:16
+Benchmark 'sockmap' started.
+Send Speed 1347.236 MB/s, BPF Speed 1347.367 MB/s, Rcv Speed   65.402 MB/s
+Send Speed 1353.320 MB/s, BPF Speed 1353.320 MB/s, Rcv Speed   65.536 MB/s
+Send Speed 1353.186 MB/s, BPF Speed 1353.121 MB/s, Rcv Speed   65.536 MB/s
+'''
+
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Link: https://lore.kernel.org/r/20250407142234.47591-2-jiayuan.chen@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/quirks.c |   23 +++++++++++++++++++++++
- 1 file changed, 23 insertions(+)
+ net/core/skmsg.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -4988,6 +4988,18 @@ static int pci_quirk_brcm_acs(struct pci
- 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
- }
- 
-+static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
-+{
-+	/*
-+	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
-+	 * they do not allow peer-to-peer transactions between Root Ports.
-+	 * Allow each Root Port to be in a separate IOMMU group by masking
-+	 * SV/RR/CR/UF bits.
-+	 */
-+	return pci_acs_ctrl_enabled(acs_flags,
-+		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
-+}
-+
- /*
-  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
-  * multi-function devices, the hardware isolates the functions by
-@@ -5121,6 +5133,17 @@ static const struct pci_dev_acs_enabled
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
- 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
-+	/* Loongson PCIe Root Ports */
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
-+	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
- 	/* Amazon Annapurna Labs */
- 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
- 	/* Zhaoxin multi-function devices */
+diff --git a/net/core/skmsg.c b/net/core/skmsg.c
+index 6d689918c2b39..34c51eb1a14fb 100644
+--- a/net/core/skmsg.c
++++ b/net/core/skmsg.c
+@@ -690,7 +690,8 @@ static void sk_psock_backlog(struct work_struct *work)
+ 			if (ret <= 0) {
+ 				if (ret == -EAGAIN) {
+ 					sk_psock_skb_state(psock, state, len, off);
+-
++					/* Restore redir info we cleared before */
++					skb_bpf_set_redir(skb, psock->sk, ingress);
+ 					/* Delay slightly to prioritize any
+ 					 * other work that might be here.
+ 					 */
+-- 
+2.39.5
+
 
 
 
