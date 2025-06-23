@@ -1,142 +1,116 @@
-Return-Path: <stable+bounces-155545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3709AE429D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD772AE42E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3CBF0179595
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2FBE53B3823
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A642550D2;
-	Mon, 23 Jun 2025 13:18:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9950125393C;
+	Mon, 23 Jun 2025 13:21:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="W0o6O/ey"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZC/RYrsG"
 X-Original-To: stable@vger.kernel.org
-Received: from outbound.pv.icloud.com (p-west1-cluster4-host10-snip4-3.eps.apple.com [57.103.65.164])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BCD254B09
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:18:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=57.103.65.164
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575B4239E63
+	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 13:21:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684706; cv=none; b=b/QBUwEypbgKICi++MiypTUPyfrv4pB6DLMtBsbpikYXfle5qJNZ1yi31cfC9PdDXRtT5OlUixtYvQUP02uuSvxNy4fbK/ztxrBZWHR3qddi088gWhTBQI8XNby/nb9eC3sQAp6cSDJ/zgg5VDVMKD+akMnaAGbeCHctJNIKCJI=
+	t=1750684887; cv=none; b=q43FfroVS5OuWl97H90xYiXlL2cYdsXMwCsih9LrktelZnFa75UKtNZ/GURCZ04UOQIcabNu4GIKCy6eP56TCDvBxWTHhjGvWoEOQc+PaYZLrclC01unqXPVvk/OfW9M45jic81RI7hU8Yt6OvmHg6xin1lF4U9a/hnfZDHvj/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684706; c=relaxed/simple;
-	bh=6uy0LFYrWg7xHF33/zV+z/ktLd3QRfymC2Ad3yoEg8w=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=EdHX8azH2dG9deB9Qnm4Cm6dYfcBw58erZF/h429URzeMwMJZaKfmztHgaV1oviPK8mbIH9QB43KOvwWVknKgTIHTimDcC4o6vzXWNxgBXsobiP0RXwQmLi9u6vz4Vr9rnDQ0jmafQQvmP9yGrwQLT1j+WoBaYro+O3qgxHxpxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=W0o6O/ey; arc=none smtp.client-ip=57.103.65.164
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-Received: from outbound.pv.icloud.com (unknown [127.0.0.2])
-	by outbound.pv.icloud.com (Postfix) with ESMTPS id 66EBA1800262;
-	Mon, 23 Jun 2025 13:18:22 +0000 (UTC)
-Dkim-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com; s=1a1hai; bh=kFGiyhJP9jhxrKXxczAwa5t3gkxlw1rtSDudPa7j8BY=; h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:x-icloud-hme; b=W0o6O/eyil0flsQgBkQtR4Tj1efmrJj+DQ94v0LaWLeJxXLXGCLntRHkoR1EiwzYK36/FnLuxNABbqt7Zo+YSLs4MoV1EmSzKQe83cteP265sLg+c9RKoAwAW/+Ktw7no+C39aWJb4pfH6YYF2Ss6qBgdvT0OwXkjDREeD6THyVAKhSBr3/iL1oi93b8ZJRPOuHnbo17ulJLi10771drVvC71qrfBI1nGw1ee/sYUtF73LV61Ah4SQObKSJ2DXU1aLV+eUqV9JPSNrbxCj5rnrU/uGcFqITiGBvevoQ4l5fjNI35OeIxGi32y+FuleyfTpPusEXZbeOeMc83ezbGpQ==
-Received: from [192.168.1.26] (pv-asmtp-me-k8s.p00.prod.me.com [17.56.9.36])
-	by outbound.pv.icloud.com (Postfix) with ESMTPSA id E1D1418001FF;
-	Mon, 23 Jun 2025 13:18:18 +0000 (UTC)
-From: Zijun Hu <zijun_hu@icloud.com>
-Date: Mon, 23 Jun 2025 21:17:39 +0800
-Subject: [PATCH v2 2/2] PCI: of: Fix OF device node refcount leakages in
- of_pci_prop_intr_map()
+	s=arc-20240116; t=1750684887; c=relaxed/simple;
+	bh=ynRkoITAYl2AS3psMrMY/hKN1rkBytxr166qV7LbmVU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pStv1KcOQbxBbS3D4+P9E/SYu3z75Ig3a3kR/ksiis0NXfsz5XdxIdrGK6cofCKtmraf6tCKV/lt4B/N6FPEI2BZFmm8dBoY8QImvV1n1LV8Rx02BIYn2hIpQzNrCgeAHvjaxrOuls1rpIrAol1prMj8t5Tl2tqhxEKO3MEgS+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZC/RYrsG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF50EC4CEEA;
+	Mon, 23 Jun 2025 13:21:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1750684887;
+	bh=ynRkoITAYl2AS3psMrMY/hKN1rkBytxr166qV7LbmVU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=ZC/RYrsGYzvqs26qMDm75U0CFFjlZLA4zf//pgxvqR/JZ19S0xzEDNAxpWu74XPYU
+	 3FCU5IX+LsiT88v9QdXlnU9N6lxCovfiQLceaYbbGi4S9E2OS6q9A9PDFEER5zkApX
+	 UfJnKWRQmyKMaMd7qbvJadx9RxNFuwUueuyQYx07yvI4VemJgbM0bX/hDd3GAnJ72L
+	 bY4EkeSuE1bc9yKpRNdj4j9TJAE8RDBQbkz3JWNB0Uzn/MlcgmUsseBe6+CYj5wsfu
+	 wiKdKMt2WT+dBnMDbTBcMiyyLbfrF/kiCr6XPChzZUP5S6orR5nC4+qEU3aYu6lfnu
+	 Gqu+crmSTJPBg==
+Message-ID: <0b61c829-a41f-47b4-91c2-e8a7babe7060@kernel.org>
+Date: Mon, 23 Jun 2025 09:21:25 -0400
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6.y 0/2] Apply commit 358de8b4f201 to 6.6.y
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, Chuck Lever <chuck.lever@oracle.com>
+References: <2024021932-lavish-expel-58e5@gregkh>
+ <20250617193853.388270-1-cel@kernel.org>
+ <2025062314-modular-robust-7b94@gregkh>
+Content-Language: en-US
+From: Chuck Lever <cel@kernel.org>
+Organization: kernel.org
+In-Reply-To: <2025062314-modular-robust-7b94@gregkh>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20250623-fix_of_pci-v2-2-5bbb65190d47@oss.qualcomm.com>
-References: <20250623-fix_of_pci-v2-0-5bbb65190d47@oss.qualcomm.com>
-In-Reply-To: <20250623-fix_of_pci-v2-0-5bbb65190d47@oss.qualcomm.com>
-To: Bjorn Helgaas <bhelgaas@google.com>, Rob Herring <robh@kernel.org>, 
- Lizhi Hou <lizhi.hou@amd.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- Zijun Hu <zijun_hu@icloud.com>, linux-pci@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Zijun Hu <quic_zijuhu@quicinc.com>, 
- Zijun Hu <zijun.hu@oss.qualcomm.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.2
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjUwNjIzMDA4MCBTYWx0ZWRfX5IyL5d3hacHV
- JmvSNsdIJqbBln/AfO+vK5mmc9jPjy7xcfhgJj9uM8wsrTxgGd/j0OBXs7L7iKXXI6vFLAwwymB
- ibPaduNYnLtyzUuEfquOEAUIoqYXchEIbZF+hSwEUFHsEFrE1MeIOG7gjxPKUxUfbFIbdIj2qQg
- nfZ2yjADXoPpQJ1haLl+i0prQreinVKRug7olf9TzneQNV1ZKZrvGTlWQdOWL+CdRJkPEd5gzl5
- Se+NLwMWXI22fg2EuWnU2LTMTXAPolVECbHmuKAadik0bux1BIXyvqEkL6uRWUGh5AZ+uarpQ=
-X-Proofpoint-GUID: 9hyoxXXMA-oA7DkAHi2A2t-wJ08qcvp3
-X-Proofpoint-ORIG-GUID: 9hyoxXXMA-oA7DkAHi2A2t-wJ08qcvp3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1099,Hydra:6.0.736,FMLib:17.12.80.40
- definitions=2025-06-23_03,2025-06-23_03,2025-03-28_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0
- clxscore=1015 adultscore=0 mlxscore=0 malwarescore=0 phishscore=0 bulkscore=0
- mlxlogscore=999 spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.22.0-2506060001 definitions=main-2506230080
 
-From: Zijun Hu <zijun.hu@oss.qualcomm.com>
+On 6/23/25 2:33 AM, Greg KH wrote:
+> On Tue, Jun 17, 2025 at 03:38:51PM -0400, Chuck Lever wrote:
+>> From: Chuck Lever <chuck.lever@oracle.com>
+>>
+>> Tested: "make binrpm-pkg" on Fedora 39 then installed with "rpm
+>> -ivh ...". Newly installed kernel reboots as expected.
+>>
+>> I will have a look at origin/linux-6.1.y next.
+>>
+>> Jose Ignacio Tornos Martinez (1):
+>>   kbuild: rpm-pkg: simplify installkernel %post
+>>
+>> Masahiro Yamada (1):
+>>   scripts: clean up IA-64 code
+>>
+>>  scripts/checkstack.pl        |  3 ---
+>>  scripts/gdb/linux/tasks.py   | 15 +++------------
+>>  scripts/head-object-list.txt |  1 -
+>>  scripts/kconfig/mconf.c      |  2 +-
+>>  scripts/kconfig/nconf.c      |  2 +-
+>>  scripts/package/kernel.spec  | 28 +++++++++++-----------------
+>>  scripts/package/mkdebian     |  2 +-
+>>  scripts/recordmcount.c       |  1 -
+>>  scripts/recordmcount.pl      |  7 -------
+>>  scripts/xz_wrap.sh           |  1 -
+>>  10 files changed, 17 insertions(+), 45 deletions(-)
+> 
+> Why is this needed in 6.6.y?  Is this just a new feature or fixing
+> something that has always been broken?  It looks to me like a new
+> feature...
 
-Successful of_irq_parse_raw() invocation will increase refcount
-of OF device node @out_irq[].np, but of_pci_prop_intr_map() does
-not decrease the refcount before return, so cause @out_irq[].np
-refcount leakages.
+Hi Greg -
 
-Fix by putting @out_irq[].np refcount before return.
+TL;DR: This commit fixes something that is broken.
 
-Fixes: 407d1a51921e ("PCI: Create device tree node for bridge")
-Cc: Rob Herring (Arm) <robh@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Zijun Hu <zijun.hu@oss.qualcomm.com>
----
- drivers/pci/of_property.c | 20 +++++++++++---------
- 1 file changed, 11 insertions(+), 9 deletions(-)
+Reference bug: https://bugzilla.redhat.com/show_bug.cgi?id=2239008
 
-diff --git a/drivers/pci/of_property.c b/drivers/pci/of_property.c
-index 506fcd5071139e0c11130f4c36f5082ed9789efb..4250a78fafbec4c29af124d7ba5ece7b0b785fb3 100644
---- a/drivers/pci/of_property.c
-+++ b/drivers/pci/of_property.c
-@@ -258,12 +258,16 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 	 * Parsing interrupt failed for all pins. In this case, it does not
- 	 * need to generate interrupt-map property.
- 	 */
--	if (!map_sz)
--		return 0;
-+	if (!map_sz) {
-+		ret = 0;
-+		goto out_put_nodes;
-+	}
- 
- 	int_map = kcalloc(map_sz, sizeof(u32), GFP_KERNEL);
--	if (!int_map)
--		return -ENOMEM;
-+	if (!int_map) {
-+		ret = -ENOMEM;
-+		goto out_put_nodes;
-+	}
- 	mapp = int_map;
- 
- 	list_for_each_entry(child, &pdev->subordinate->devices, bus_list) {
-@@ -305,14 +309,12 @@ static int of_pci_prop_intr_map(struct pci_dev *pdev, struct of_changeset *ocs,
- 	ret = of_changeset_add_prop_u32_array(ocs, np, "interrupt-map-mask",
- 					      int_map_mask,
- 					      ARRAY_SIZE(int_map_mask));
--	if (ret)
--		goto failed;
--
--	kfree(int_map);
--	return 0;
- 
- failed:
- 	kfree(int_map);
-+out_put_nodes:
-+	for (i = 0; i < OF_PCI_MAX_INT_PIN; i++)
-+		of_node_put(out_irq[i].np);
- 	return ret;
- }
- 
+The LTS v6.6 kernel's "make binrpm-pkg" target is broken on Fedora 39
+and 40 due to a change in grubby. This breaks some CI environments.
+
+The commits in this series address the kernel install problem.
+
+Agreed, I should have mentioned that in this cover letter. I assumed
+readers would remember my question about backporting these commits
+from last week, and I was perhaps also leaning on the patch
+descriptions, which have turned out to be obscure. Apologies.
+
 
 -- 
-2.34.1
-
+Chuck Lever
 
