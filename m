@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCB80AE4FA0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81AFDAE5262
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF0F0166312
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:17:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60D101B65130
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BFA224AED;
-	Mon, 23 Jun 2025 21:17:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCD622257E;
+	Mon, 23 Jun 2025 21:43:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Va4TKey6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyPPQ8LB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EAC7482;
-	Mon, 23 Jun 2025 21:17:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7604315A;
+	Mon, 23 Jun 2025 21:43:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713427; cv=none; b=RW5/XGEb5CHtQEAB/8iCKLELcaeJ3dUjVqdgt+SY2Zb43kJPXm3BJYRibc2xTjJeAxxUZEgGsG11jqk6ndApqOm7XuidMw4rLcVIGc8krs6254xP1/7N9gIGUfd6Z+X+kX5qVAo0JPVC2fOOh9lXaNUXl75XqgVwrsKGrp92+sI=
+	t=1750714999; cv=none; b=koRXvi/mceX8nyihplBIZMWysrlBdvZcZxl0FffqP0442PA0jigkIyBZiCu/BzFCaKlVbHIEiKGvahZA+wHkWwGsuJ5ZCWj55aFml9nrshoo/MPvMlYmo6P/k2rEsKJKWCvdlQTo5pP8QBk9/ur2eHwsTDPt2jmfTr2il8u7wUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713427; c=relaxed/simple;
-	bh=TcATOKFyb+BhZULp7TMDiAYcwWwKnGP1o/uHN/BoGmY=;
+	s=arc-20240116; t=1750714999; c=relaxed/simple;
+	bh=M4hvD8k1cWsfYP5Uj5hPhfNSgpVOFRdm4YVnn/voxE8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JC93Ah8YGBEg9219dJzw69UfJKm082M6VeVx+gHOla9sx7onJraHZwIBt5Cu+Re9OmRQrCh1fCAw9US/WO55f8I1pq54HS7cAD1V8tMdCRBpD4bZnl1ekQPdImpeum5dmRr00M1kCjmpQ2C9WXep0IGoNJxoqzyN02DZlJDOsi0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Va4TKey6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB45C4CEEA;
-	Mon, 23 Jun 2025 21:17:06 +0000 (UTC)
+	 MIME-Version; b=utWAHJmLWSfy2L/fZmfZeNLhIZvG9mC6BDebDiiZxfPDLmqpYZip8CJBcb/Ryfe0Ui/EMfvs+9EpTkGtRXtoRBPYSHDVRZhW9YcuQBoGIoQgkRnx0gmdf+BP4EJGzCMopasob5J6teywApaOajsJ64q8DMRqgX1Y1AqjEO0QXMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyPPQ8LB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 596A9C4CEED;
+	Mon, 23 Jun 2025 21:43:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713426;
-	bh=TcATOKFyb+BhZULp7TMDiAYcwWwKnGP1o/uHN/BoGmY=;
+	s=korg; t=1750714999;
+	bh=M4hvD8k1cWsfYP5Uj5hPhfNSgpVOFRdm4YVnn/voxE8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Va4TKey6v8cUUgRLO/Vje/tY3DQzQR9JekTFUEyy7NkPgtAQ5+sCFBnn1xEq9VInW
-	 gRwKcOtwDWpqWgAVX9Xko3U6tKsdxFcZhoxc+6A4MjX8gWzGVN5NoBt9CEbf+id1ha
-	 lryKP/NkZxMH5/NhOMf2eeAXG6cP9Nx80FpDadac=
+	b=gyPPQ8LB3KbA1kCHvImG+0NMZrLBx7d86sGdBQgaFQ0LknlpXzzwVk/4jAR/hWe+3
+	 XKTzNdL/s0+wAOGw1QtOOHC2/Qu26rAFZS9NqALLOk/QR+UBvDIhSS6ZonnUBcvFun
+	 n9ba61ipgO/1hVloMZ8qifGUt5mzitDw43d0Afys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 165/355] net/mlx5: Add error handling in mlx5_query_nic_vport_node_guid()
+	Jeffrey Hugo <quic_jhugo@quicinc.com>,
+	Jeff Hugo <jeff.hugo@oss.qualcomm.com>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Troy Hanson <quic_thanson@quicinc.com>
+Subject: [PATCH 5.15 222/411] bus: mhi: host: Fix conflict between power_up and SYSERR
 Date: Mon, 23 Jun 2025 15:06:06 +0200
-Message-ID: <20250623130631.662426749@linuxfoundation.org>
+Message-ID: <20250623130639.250609554@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: Jeff Hugo <quic_jhugo@quicinc.com>
 
-commit c6bb8a21cdad8c975a3a646b9e5c8df01ad29783 upstream.
+commit 4d92e7c5ccadc79764674ffc2c88d329aabbb7e0 upstream.
 
-The function mlx5_query_nic_vport_node_guid() calls the function
-mlx5_query_nic_vport_context() but does not check its return value.
-A proper implementation can be found in mlx5_nic_vport_query_local_lb().
+When mhi_async_power_up() enables IRQs, it is possible that we could
+receive a SYSERR notification from the device if the firmware has crashed
+for some reason. Then the SYSERR notification queues a work item that
+cannot execute until the pm_mutex is released by mhi_async_power_up().
 
-Add error handling for mlx5_query_nic_vport_context(). If it fails, free
-the out buffer via kvfree() and return error code.
+So the SYSERR work item will be pending. If mhi_async_power_up() detects
+the SYSERR, it will handle it. If the device is in PBL, then the PBL state
+transition event will be queued, resulting in a work item after the
+pending SYSERR work item. Once mhi_async_power_up() releases the pm_mutex,
+the SYSERR work item can run. It will blindly attempt to reset the MHI
+state machine, which is the recovery action for SYSERR. PBL/SBL are not
+interrupt driven and will ignore the MHI Reset unless SYSERR is actively
+advertised. This will cause the SYSERR work item to timeout waiting for
+reset to be cleared, and will leave the host state in SYSERR processing.
+The PBL transition work item will then run, and immediately fail because
+SYSERR processing is not a valid state for PBL transition.
 
-Fixes: 9efa75254593 ("net/mlx5_core: Introduce access functions to query vport RoCE fields")
-Cc: stable@vger.kernel.org # v4.5
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250524163425.1695-1-vulab@iscas.ac.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This leaves the device uninitialized.
+
+This issue has a fairly unique signature in the kernel log:
+
+	mhi mhi3: Requested to power ON
+	Qualcomm Cloud AI 100 0000:36:00.0: Fatal error received from
+	device.  Attempting to recover
+	mhi mhi3: Power on setup success
+	mhi mhi3: Device failed to exit MHI Reset state
+	mhi mhi3: Device MHI is not in valid state
+
+We cannot remove the SYSERR handling from mhi_async_power_up() because the
+device may be in the SYSERR state, but we missed the notification as the
+irq was fired before irqs were enabled. We also can't queue the SYSERR work
+item from mhi_async_power_up() if SYSERR is detected because that may
+result in a duplicate work item, and cause the same issue since the
+duplicate item will blindly issue MHI reset even if SYSERR is no longer
+active.
+
+Instead, add a check in the SYSERR work item to make sure that MHI reset is
+only issued if the device is in SYSERR state for PBL or SBL EEs.
+
+Fixes: a6e2e3522f29 ("bus: mhi: core: Add support for PM state transitions")
+Signed-off-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Jeff Hugo <jeff.hugo@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Troy Hanson <quic_thanson@quicinc.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250328163526.3365497-1-jeff.hugo@oss.qualcomm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/vport.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/bus/mhi/host/pm.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/vport.c
-@@ -440,19 +440,22 @@ int mlx5_query_nic_vport_node_guid(struc
- {
- 	u32 *out;
- 	int outlen = MLX5_ST_SZ_BYTES(query_nic_vport_context_out);
-+	int err;
+--- a/drivers/bus/mhi/host/pm.c
++++ b/drivers/bus/mhi/host/pm.c
+@@ -566,6 +566,7 @@ static void mhi_pm_sys_error_transition(
+ 	struct mhi_cmd *mhi_cmd;
+ 	struct mhi_event_ctxt *er_ctxt;
+ 	struct device *dev = &mhi_cntrl->mhi_dev->dev;
++	bool reset_device = false;
+ 	int ret, i;
  
- 	out = kvzalloc(outlen, GFP_KERNEL);
- 	if (!out)
- 		return -ENOMEM;
+ 	dev_dbg(dev, "Transitioning from PM state: %s to: %s\n",
+@@ -594,8 +595,23 @@ static void mhi_pm_sys_error_transition(
+ 	/* Wake up threads waiting for state transition */
+ 	wake_up_all(&mhi_cntrl->state_event);
  
--	mlx5_query_nic_vport_context(mdev, 0, out);
-+	err = mlx5_query_nic_vport_context(mdev, 0, out);
-+	if (err)
-+		goto out;
- 
- 	*node_guid = MLX5_GET64(query_nic_vport_context_out, out,
- 				nic_vport_context.node_guid);
--
-+out:
- 	kvfree(out);
- 
--	return 0;
-+	return err;
- }
- EXPORT_SYMBOL_GPL(mlx5_query_nic_vport_node_guid);
+-	/* Trigger MHI RESET so that the device will not access host memory */
+ 	if (MHI_REG_ACCESS_VALID(prev_state)) {
++		/*
++		 * If the device is in PBL or SBL, it will only respond to
++		 * RESET if the device is in SYSERR state. SYSERR might
++		 * already be cleared at this point.
++		 */
++		enum mhi_state cur_state = mhi_get_mhi_state(mhi_cntrl);
++		enum mhi_ee_type cur_ee = mhi_get_exec_env(mhi_cntrl);
++
++		if (cur_state == MHI_STATE_SYS_ERR)
++			reset_device = true;
++		else if (cur_ee != MHI_EE_PBL && cur_ee != MHI_EE_SBL)
++			reset_device = true;
++	}
++
++	/* Trigger MHI RESET so that the device will not access host memory */
++	if (reset_device) {
+ 		u32 in_reset = -1;
+ 		unsigned long timeout = msecs_to_jiffies(mhi_cntrl->timeout_ms);
  
 
 
