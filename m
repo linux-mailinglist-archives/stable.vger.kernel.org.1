@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39803AE547F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 605E9AE5043
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 066101BC0BB9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 222C71B62255
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E44819DF4A;
-	Mon, 23 Jun 2025 22:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C81FE46D;
+	Mon, 23 Jun 2025 21:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBLcWlAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rK84WIWK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C8364409;
-	Mon, 23 Jun 2025 22:01:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D2F2628C;
+	Mon, 23 Jun 2025 21:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716103; cv=none; b=QLeqWQDPm7HuH7vWpLzgXsrM8Ay4tgbsB0VPncGzDavqeoEcCWBuN0/iTQD7OPW4eJ/uSPugIQ7spN4qGb0UKXLpcyEdNA75dr8oWJhIriF9xQxNyARqF/YZJB59ACoVnlPlqfSxbJB0XNHQmcy7FdUbo4+A31zMIe/qjpv5jLk=
+	t=1750713813; cv=none; b=ZVjGMbJBgFS09gCzdnxVeyLywyVc51YjrxvkubFVBxJkv32SBUFVpEkezNNpBqzJ5a0r5vg+M9wOcr/NVSIc6/3qMDl+d/0H9ez6ijma7a3eiQf68+lwDJBQe9hrBAka0DHtqBoiCacrXnQg7YlgVidgu3D7pmatjT6bm7hXhJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716103; c=relaxed/simple;
-	bh=ZkywCTHGu5bj0hMkA8h9n61NU9B8yLPD5iBErB6vsmk=;
+	s=arc-20240116; t=1750713813; c=relaxed/simple;
+	bh=ti4YRt0WBJ9O+vKsxAz5Z3pUtmTcVwEsPNLmECx0zZ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VWSl84a/9+BnHaDqO8MCRpqoAAst07CoBlyx4D+V44r/vWXgsadJdYkoU/Hv3TonW3YRTyZH8iumurrK5nw7kbYmyJAp1J1Z+zIcFBMk6obGUJWlAUBqgLngjZkG+IT2kmX+omgpxTSpjsyMDWlH6kabnZ1MF3MjCi1I6+8pl28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBLcWlAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B93B0C4CEEA;
-	Mon, 23 Jun 2025 22:01:42 +0000 (UTC)
+	 MIME-Version; b=porszjrOkA4foE6W963j7NHIyna9zkC2OI/w82Zvs3vwX29eJIDdBLLT7fxmtbXC9oAKMVfiiAMUf2Gwk+5lYoJgd0Yzoy2ZUanVriEGmtSKlBCX0GYPQS1Q9Axw6UAU9c3uvzEHTOdww5uDV5wvQjaomwkrzR4+wU3GYM9/Q08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rK84WIWK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04D9C4CEEA;
+	Mon, 23 Jun 2025 21:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716103;
-	bh=ZkywCTHGu5bj0hMkA8h9n61NU9B8yLPD5iBErB6vsmk=;
+	s=korg; t=1750713813;
+	bh=ti4YRt0WBJ9O+vKsxAz5Z3pUtmTcVwEsPNLmECx0zZ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBLcWlAWbPx8AQiXX5jlypoLIBl3BRU5rNCrTN54heXNMzFOS5LBW60lh5nKCp8Pe
-	 yzprxDzo+WieixTWYQTDAqFi6TOD9LGkbRw4AxxQ2ftOX/q2nLpBGZxEqWoF4CszVB
-	 r380acprFx4saRNDFBt26ByRCMUhcOoiZR/8ivAY=
+	b=rK84WIWKl10xSW5U8SIvU/4fKXlspA+Rwd6O9//3Y2je7JbDfUUhHYf87FUzrnHV+
+	 Pdk3mT5Q8Ly+pvYHobgnT8BjIrAGY3HoFVxzO6lyNNCoILAYuIoxZjuQbYFZ8n6vPa
+	 O1alcQrhQF3KPqrWZgvBN9Ouy5p7iMrt2EfFdQiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>
-Subject: [PATCH 6.1 280/508] usb: Flush altsetting 0 endpoints before reinitializating them after reset.
+	Benjamin Berg <benjamin@sipsolutions.net>,
+	Rouven Czerwinski <rouven@czerwinskis.de>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 367/592] wifi: mac80211: do not offer a mesh path if forwarding is disabled
 Date: Mon, 23 Jun 2025 15:05:25 +0200
-Message-ID: <20250623130652.146698593@linuxfoundation.org>
+Message-ID: <20250623130709.172099914@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +63,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
+From: Benjamin Berg <benjamin@sipsolutions.net>
 
-commit 89bb3dc13ac29a563f4e4c555e422882f64742bd upstream.
+[ Upstream commit cf1b684a06170d253b47d6a5287821de976435bd ]
 
-usb core avoids sending a Set-Interface altsetting 0 request after device
-reset, and instead relies on calling usb_disable_interface() and
-usb_enable_interface() to flush and reset host-side of those endpoints.
+When processing a PREQ the code would always check whether we have a
+mesh path locally and reply accordingly. However, when forwarding is
+disabled then we should not reply with this information as we will not
+forward data packets down that path.
 
-xHCI hosts allocate and set up endpoint ring buffers and host_ep->hcpriv
-during usb_hcd_alloc_bandwidth() callback, which in this case is called
-before flushing the endpoint in usb_disable_interface().
+Move the check for dot11MeshForwarding up in the function and skip the
+mesh path lookup in that case. In the else block, set forward to false
+so that the rest of the function becomes a no-op and the
+dot11MeshForwarding check does not need to be duplicated.
 
-Call usb_disable_interface() before usb_hcd_alloc_bandwidth() to ensure
-URBs are flushed before new ring buffers for the endpoints are allocated.
+This explains an effect observed in the Freifunk community where mesh
+forwarding is disabled. In that case a mesh with three STAs and only bad
+links in between them, individual STAs would occionally have indirect
+mpath entries. This should not have happened.
 
-Otherwise host driver will attempt to find and remove old stale URBs
-from a freshly allocated new ringbuffer.
-
-Cc: stable <stable@kernel.org>
-Fixes: 4fe0387afa89 ("USB: don't send Set-Interface after reset")
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250514132520.225345-1-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Benjamin Berg <benjamin@sipsolutions.net>
+Reviewed-by: Rouven Czerwinski <rouven@czerwinskis.de>
+Link: https://patch.msgid.link/20250430191042.3287004-1-benjamin@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/hub.c |   16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ net/mac80211/mesh_hwmp.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -6087,6 +6087,7 @@ static int usb_reset_and_verify_device(s
- 	struct usb_hub			*parent_hub;
- 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
- 	struct usb_device_descriptor	descriptor;
-+	struct usb_interface		*intf;
- 	struct usb_host_bos		*bos;
- 	int				i, j, ret = 0;
- 	int				port1 = udev->portnum;
-@@ -6140,6 +6141,18 @@ static int usb_reset_and_verify_device(s
- 	if (!udev->actconfig)
- 		goto done;
+diff --git a/net/mac80211/mesh_hwmp.c b/net/mac80211/mesh_hwmp.c
+index c94a9c7ca960e..91444301a84a4 100644
+--- a/net/mac80211/mesh_hwmp.c
++++ b/net/mac80211/mesh_hwmp.c
+@@ -636,7 +636,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 				mesh_path_add_gate(mpath);
+ 		}
+ 		rcu_read_unlock();
+-	} else {
++	} else if (ifmsh->mshcfg.dot11MeshForwarding) {
+ 		rcu_read_lock();
+ 		mpath = mesh_path_lookup(sdata, target_addr);
+ 		if (mpath) {
+@@ -654,6 +654,8 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 			}
+ 		}
+ 		rcu_read_unlock();
++	} else {
++		forward = false;
+ 	}
  
-+	/*
-+	 * Some devices can't handle setting default altsetting 0 with a
-+	 * Set-Interface request. Disable host-side endpoints of those
-+	 * interfaces here. Enable and reset them back after host has set
-+	 * its internal endpoint structures during usb_hcd_alloc_bandwith()
-+	 */
-+	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
-+		intf = udev->actconfig->interface[i];
-+		if (intf->cur_altsetting->desc.bAlternateSetting == 0)
-+			usb_disable_interface(udev, intf, true);
-+	}
-+
- 	mutex_lock(hcd->bandwidth_mutex);
- 	ret = usb_hcd_alloc_bandwidth(udev, udev->actconfig, NULL, NULL);
- 	if (ret < 0) {
-@@ -6171,12 +6184,11 @@ static int usb_reset_and_verify_device(s
- 	 */
- 	for (i = 0; i < udev->actconfig->desc.bNumInterfaces; i++) {
- 		struct usb_host_config *config = udev->actconfig;
--		struct usb_interface *intf = config->interface[i];
- 		struct usb_interface_descriptor *desc;
+ 	if (reply) {
+@@ -671,7 +673,7 @@ static void hwmp_preq_frame_process(struct ieee80211_sub_if_data *sdata,
+ 		}
+ 	}
  
-+		intf = config->interface[i];
- 		desc = &intf->cur_altsetting->desc;
- 		if (desc->bAlternateSetting == 0) {
--			usb_disable_interface(udev, intf, true);
- 			usb_enable_interface(udev, intf, true);
- 			ret = 0;
- 		} else {
+-	if (forward && ifmsh->mshcfg.dot11MeshForwarding) {
++	if (forward) {
+ 		u32 preq_id;
+ 		u8 hopcount;
+ 
+-- 
+2.39.5
+
 
 
 
