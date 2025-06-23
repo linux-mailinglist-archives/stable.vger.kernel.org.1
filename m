@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20DA9AE534E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B2C3AE51E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 46D8B188B4F9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:52:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 401971B64446
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E61A21B9E5;
-	Mon, 23 Jun 2025 21:51:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 824BF221FDC;
+	Mon, 23 Jun 2025 21:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W36+NZaT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yx9RGofU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6AD224B07;
-	Mon, 23 Jun 2025 21:51:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F319221734;
+	Mon, 23 Jun 2025 21:38:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715496; cv=none; b=Einkr/csBWitS4Bl9L5byKpb6wR9bGhEP3BI2z88h8Xenz1XOw6DiEskmxk6AOnCEnJda8wcd/c1a47ObMtwgwjJ0d/nVB1wt+MgWn2fP3U45wFno0C/ZQEV74MlF3vIdobgPxb9X/GD/+DN4jD4ZnRp3CWuT/Kf2k1DcYTDqRU=
+	t=1750714711; cv=none; b=rviMAeYLaM3zK4xdVyyqleoqgiOOaRA/DZ/zodXMa011DwmYA56BDphQOhTms4tMlkW8BrEy5k/jxnvhBhr+MDddCjwVoq0CEl2tRgQTXo6k3akTGp+g9tk/MN5d6r+g/JNu0lOJTm6RmrFy8ngJ1hW/IhQUjvR3VQL0KJxdlPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715496; c=relaxed/simple;
-	bh=PcnRw3ln1PoLyzzXt246pQgF784fGXfnQA4GO0Of7AQ=;
+	s=arc-20240116; t=1750714711; c=relaxed/simple;
+	bh=VT2U2qSyWrFiJT73f/83++Dttc6bNQFq0GLWM3tUZ2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SafW5TPaYGECOa5dVnutIWvUYpwblW3FsA7FbN8qSlULQHXQ9rc5c09cjmTDEyNbXhJfVk/6itHxRF/aP4p7p3csCt26T5V3bMDIahzrAWuUeyugYlBInqwnkw7jF+BN135+fcPPgvMwBAygP26uQ0XFfXPIhH0726DM69NYRCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W36+NZaT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D54C4CEEA;
-	Mon, 23 Jun 2025 21:51:36 +0000 (UTC)
+	 MIME-Version; b=ubJqJIvHvZ1IongpcC3GhCxVXBT3ASI0GT1yRNmTj/faHzcKIJxMEMfDwiwbu8vH6uZalVdl19Hs7x81ZNq1sfvHtSlxkvRretv8+TzlsVuVjox7ahe+a5znldPUX+g3zlE/jp2Uk014wRNExl3wwy5PZ+2ZkjEVqvykkG65bpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yx9RGofU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C27C8C4CEEA;
+	Mon, 23 Jun 2025 21:38:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715496;
-	bh=PcnRw3ln1PoLyzzXt246pQgF784fGXfnQA4GO0Of7AQ=;
+	s=korg; t=1750714711;
+	bh=VT2U2qSyWrFiJT73f/83++Dttc6bNQFq0GLWM3tUZ2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W36+NZaTGCWlBbY2JSge9zFBxgXrJ0dzEjjbvxc3xxS2M9NS52ZjlEzREBTNwIjkx
-	 8Hf396gRzmgsL/6Nv+S/qIlMmqt6zhhwA36NtYQbyUUWy7hWxRHJfdadyw8fgBIkT5
-	 As5EUkFyfIbJPkZ6Bfmu5cVXUU0MiTGi/WCcMSb4=
+	b=Yx9RGofUrOhylVb3+fne9FNefDwI6vopWKIyxx84qkVCYbcs5B4EqQ3h+EfoZ4I+d
+	 fEgtEzy+U9+EwNdZQyC/iMAGIrxyZbQZKF+XKY0Sip0LSDjoBzJMEE5wF4e2gW3ZtA
+	 UlgCJnGj4THOqMnLCJUJ33uUresYI1N4alunLfCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
-	Maya Matuszczyk <maccraft123mc@gmail.com>,
-	Anthony Ruhier <aruhier@mailbox.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	Damon Ding <damon.ding@rock-chips.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 281/411] drm/msm/a6xx: Increase HFI response timeout
+Subject: [PATCH 5.10 224/355] drm/bridge: analogix_dp: Add irq flag IRQF_NO_AUTOEN instead of calling disable_irq()
 Date: Mon, 23 Jun 2025 15:07:05 +0200
-Message-ID: <20250623130640.723602997@linuxfoundation.org>
+Message-ID: <20250623130633.475517564@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <quic_akhilpo@quicinc.com>
+From: Damon Ding <damon.ding@rock-chips.com>
 
-[ Upstream commit 5f02f5e78ec9688e29b6857813185b1181796abe ]
+[ Upstream commit efab13e7d13a641a22c7508cde6e1a5285161944 ]
 
-When ACD feature is enabled, it triggers some internal calibrations
-which result in a pretty long delay during the first HFI perf vote.
-So, increase the HFI response timeout to match the downstream driver.
+The IRQF_NO_AUTOEN can be used for the drivers that don't want
+interrupts to be enabled automatically via devm_request_threaded_irq().
+Using this flag can provide be more robust compared to the way of
+calling disable_irq() after devm_request_threaded_irq() without the
+IRQF_NO_AUTOEN flag.
 
-Signed-off-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Tested-by: Maya Matuszczyk <maccraft123mc@gmail.com>
-Tested-by: Anthony Ruhier <aruhier@mailbox.org>
-Patchwork: https://patchwork.freedesktop.org/patch/649344/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Suggested-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Signed-off-by: Damon Ding <damon.ding@rock-chips.com>
+Link: https://lore.kernel.org/r/20250310104114.2608063-2-damon.ding@rock-chips.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_hfi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/bridge/analogix/analogix_dp_core.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-index d4c65bf0a1b7f..a40ad74877623 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_hfi.c
-@@ -102,7 +102,7 @@ static int a6xx_hfi_wait_for_ack(struct a6xx_gmu *gmu, u32 id, u32 seqnum,
+diff --git a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+index e8baa07450b7d..3d8f08d895612 100644
+--- a/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
++++ b/drivers/gpu/drm/bridge/analogix/analogix_dp_core.c
+@@ -1778,10 +1778,10 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		 * that we can get the current state of the GPIO.
+ 		 */
+ 		dp->irq = gpiod_to_irq(dp->hpd_gpiod);
+-		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING;
++		irq_flags = IRQF_TRIGGER_RISING | IRQF_TRIGGER_FALLING | IRQF_NO_AUTOEN;
+ 	} else {
+ 		dp->irq = platform_get_irq(pdev, 0);
+-		irq_flags = 0;
++		irq_flags = IRQF_NO_AUTOEN;
+ 	}
  
- 	/* Wait for a response */
- 	ret = gmu_poll_timeout(gmu, REG_A6XX_GMU_GMU2HOST_INTR_INFO, val,
--		val & A6XX_GMU_GMU2HOST_INTR_INFO_MSGQ, 100, 5000);
-+		val & A6XX_GMU_GMU2HOST_INTR_INFO_MSGQ, 100, 1000000);
+ 	if (dp->irq == -ENXIO) {
+@@ -1798,7 +1798,6 @@ analogix_dp_probe(struct device *dev, struct analogix_dp_plat_data *plat_data)
+ 		dev_err(&pdev->dev, "failed to request irq\n");
+ 		goto err_disable_clk;
+ 	}
+-	disable_irq(dp->irq);
  
- 	if (ret) {
- 		DRM_DEV_ERROR(gmu->dev,
+ 	return dp;
+ 
 -- 
 2.39.5
 
