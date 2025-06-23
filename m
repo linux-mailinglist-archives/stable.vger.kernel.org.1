@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-156584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AC16AE502B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8BFAE5032
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AC66A4A0670
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 16C9C3B748B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 996A21EFFA6;
-	Mon, 23 Jun 2025 21:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 375A11E5B71;
+	Mon, 23 Jun 2025 21:23:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtDirrNA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="doGSkFkG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58178219E0;
-	Mon, 23 Jun 2025 21:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90332628C;
+	Mon, 23 Jun 2025 21:23:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713771; cv=none; b=Ce65DZq987tnUdJPa6BY5ONMamaIRr3i+DWnsSrXWDZ1mjeu1IaaIk7pR5XzS1pg57wT+dgerjYYY7OY9vpGcc/8WckXi1JSktcIqfUZbSwJDSGpWvbjSdEhSKm2Oa0gN+m0bhm98pRpdcJRrsEbiSd4n93S7CQE5ocERz4HdUA=
+	t=1750713786; cv=none; b=jet0cSGYA5FRo81FiCzqF1Z/1FVYGWaIphgkTQkvBZOIpFVHcT8XPtnF29UszxYybJeCSbSAGKL5h52HWn+r3t5k9if1W7T2GsMgjyN6PVJNhkMjYxJ60jvwWyugG8CSBCaAW66seUR2rme9qhpkC4Ab+Qs8YyovgRK2L+kEXDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713771; c=relaxed/simple;
-	bh=L3SciUFHFghTX/sZwwCXwJfG09FUF6WOhfHWlzFBbuk=;
+	s=arc-20240116; t=1750713786; c=relaxed/simple;
+	bh=3+LyTIazs+IAXHqa62FDDfOvyJiohsGNjPGnc7vwTEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IfSimRH2khhcRHfHy1AUlpkzPaQ2UsUCK4XcGvLN0KCOv6VeEMOTDUvtpH6AtyBx/Bnnz/y8vYahrDSJ4as5emuK3QPINM5hnpzpVJDZR1gQ/fn7EdV/kypZcsGohIV8xO6fonGTyqgxxSy7wbELQgKoCmm15hu/EHMJG0xIC7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtDirrNA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3EA0C4CEEA;
-	Mon, 23 Jun 2025 21:22:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r96hsdCJ39xZea3IeK7JW1bOCw57S/CJRzORMiAr2iJbAvXskZR5s3iYrOisbstAjf2uOUxNTavUCQKyOldZ72EkaJX9q32YRkZ9d6xhj964LX468HdTqyKCIV+WapcSWiTmbRyDUEaojyZeephgkm/zDBp2GBfopgl3cYy3jfo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=doGSkFkG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B64C4CEEA;
+	Mon, 23 Jun 2025 21:23:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713771;
-	bh=L3SciUFHFghTX/sZwwCXwJfG09FUF6WOhfHWlzFBbuk=;
+	s=korg; t=1750713785;
+	bh=3+LyTIazs+IAXHqa62FDDfOvyJiohsGNjPGnc7vwTEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DtDirrNAsZ6CQq9egmLzf165++ISAn5/58eMyGYm8bowXfDmG1zN0CLYDix0RWpaM
-	 Z5ttLDhcg6syo5LUIvMrjROfYAgUXAfobYo04yEyzE5xlAmgGpk7xztudT5nOSQMLq
-	 rUdXRxlwMuSLP2eMsYQMhNyVjTgDYkLxZv8ZiqPk=
+	b=doGSkFkGPmCJnkyxj+T/m76ws87gT5I0A5+kIhTkvM4lrriYTbBX21jeAUEEQQwLH
+	 CCLKP/NK9RJtAD5yRVRLpKVeqfW8QHa9QdnKVU/nDNqvykGiIy6e7AMiSpvLVVWkAl
+	 M0ooufFTDjSsvNZ/bw3C1ZAQ2KZJ4dRfhX64yHU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Heimann <d@dmeh.net>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 166/411] ALSA: usb-audio: Add implicit feedback quirk for RODE AI-1
-Date: Mon, 23 Jun 2025 15:05:10 +0200
-Message-ID: <20250623130637.872987747@linuxfoundation.org>
+	=?UTF-8?q?Beno=C3=AEt=20Sevens?= <bsevens@google.com>,
+	Oleg Nesterov <oleg@redhat.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 167/411] posix-cpu-timers: fix race between handle_posix_cpu_timers() and posix_cpu_timer_del()
+Date: Mon, 23 Jun 2025 15:05:11 +0200
+Message-ID: <20250623130637.897534446@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
 References: <20250623130632.993849527@linuxfoundation.org>
@@ -59,41 +60,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Heimann <d@dmeh.net>
+From: Oleg Nesterov <oleg@redhat.com>
 
-commit 6a3439a417b910e662c666993798e0691bc81147 upstream.
+commit f90fff1e152dedf52b932240ebbd670d83330eca upstream.
 
-The RODE AI-1 audio interface requires implicit feedback sync between
-playback endpoint 0x03 and feedback endpoint 0x84 on interface 3, but
-doesn't advertise this in its USB descriptors.
+If an exiting non-autoreaping task has already passed exit_notify() and
+calls handle_posix_cpu_timers() from IRQ, it can be reaped by its parent
+or debugger right after unlock_task_sighand().
 
-Without this quirk, the device receives audio data but produces no output.
+If a concurrent posix_cpu_timer_del() runs at that moment, it won't be
+able to detect timer->it.cpu.firing != 0: cpu_timer_task_rcu() and/or
+lock_task_sighand() will fail.
 
-Signed-off-by: David Heimann <d@dmeh.net>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/084dc88c-1193-4a94-a002-5599adff936c@app.fastmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add the tsk->exit_state check into run_posix_cpu_timers() to fix this.
+
+This fix is not needed if CONFIG_POSIX_CPU_TIMERS_TASK_WORK=y, because
+exit_task_work() is called before exit_notify(). But the check still
+makes sense, task_work_add(&tsk->posix_cputimers_work.work) will fail
+anyway in this case.
+
+Cc: stable@vger.kernel.org
+Reported-by: Benoît Sevens <bsevens@google.com>
+Fixes: 0bdd2ed4138e ("sched: run_posix_cpu_timers: Don't check ->exit_state, use lock_task_sighand()")
+Signed-off-by: Oleg Nesterov <oleg@redhat.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/usb/implicit.c |    1 +
- 1 file changed, 1 insertion(+)
+ kernel/time/posix-cpu-timers.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/sound/usb/implicit.c
-+++ b/sound/usb/implicit.c
-@@ -57,6 +57,7 @@ static const struct snd_usb_implicit_fb_
- 	IMPLICIT_FB_FIXED_DEV(0x31e9, 0x0002, 0x81, 2), /* Solid State Logic SSL2+ */
- 	IMPLICIT_FB_FIXED_DEV(0x0499, 0x172f, 0x81, 2), /* Steinberg UR22C */
- 	IMPLICIT_FB_FIXED_DEV(0x0d9a, 0x00df, 0x81, 2), /* RTX6001 */
-+	IMPLICIT_FB_FIXED_DEV(0x19f7, 0x000a, 0x84, 3), /* RODE AI-1 */
- 	IMPLICIT_FB_FIXED_DEV(0x22f0, 0x0006, 0x81, 3), /* Allen&Heath Qu-16 */
- 	IMPLICIT_FB_FIXED_DEV(0x1686, 0xf029, 0x82, 2), /* Zoom UAC-2 */
- 	IMPLICIT_FB_FIXED_DEV(0x2466, 0x8003, 0x86, 2), /* Fractal Audio Axe-Fx II */
+--- a/kernel/time/posix-cpu-timers.c
++++ b/kernel/time/posix-cpu-timers.c
+@@ -1432,6 +1432,15 @@ void run_posix_cpu_timers(void)
+ 	lockdep_assert_irqs_disabled();
+ 
+ 	/*
++	 * Ensure that release_task(tsk) can't happen while
++	 * handle_posix_cpu_timers() is running. Otherwise, a concurrent
++	 * posix_cpu_timer_del() may fail to lock_task_sighand(tsk) and
++	 * miss timer->it.cpu.firing != 0.
++	 */
++	if (tsk->exit_state)
++		return;
++
++	/*
+ 	 * If the actual expiry is deferred to task work context and the
+ 	 * work is already scheduled there is no point to do anything here.
+ 	 */
 
 
 
