@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-155615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 293BDAE4308
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A828AE4304
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BD8E17E7EA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 474CB189912A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 243FE253B58;
-	Mon, 23 Jun 2025 13:21:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1962253F1D;
+	Mon, 23 Jun 2025 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rItRYHQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISDb+6W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65E825394C;
-	Mon, 23 Jun 2025 13:21:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFDD9253F1A;
+	Mon, 23 Jun 2025 13:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684889; cv=none; b=DXqUIck+NOSdxMqsaw+YHVl2SnYa24fUB5I48ngaq8yrBa89W8Cj3lSC7peg+xbuwYC5ZtFXDjcGAdlhhjzJ5/5Cfk9bGBu15/xIsMQTy2KSv6MFY23CorcXaKa098ORwu3tXmT3RK3jFdHw+h4zxIkBIZY4IUMVil47LPCYgf8=
+	t=1750684947; cv=none; b=qCa19uY33JJUtb598dLvo82sNEbmj39I+8CBqGwk60pDbw7j+KZhbYYddJJBpzOdDeXEatLXDouX7s10wtAo37ABC/grEpaNBQ7Gm1mELLMFkSRTOTBldY5GQFD2VpE/JO28jCB0lbn4i/ySBU8cBoNBz1s11IkMJ2wfeQU4ZDw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684889; c=relaxed/simple;
-	bh=zFV/inA/j+rQ9+2nR6x/C0kAUQdb7dZdLyIky80Qh2U=;
+	s=arc-20240116; t=1750684947; c=relaxed/simple;
+	bh=Fd9ldUHq2fWRF9X+NPd5TP9YcEjyLgo/jHPLhCwSa0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C4L0ecB66LCUZUXLtNqTzguozFbw7dmX79C21JK2vYo/3ODL0nsOyDs+oc9+QSXnZPzI5KdjcGddws+GSySZ1ifIwXh9sYNL4XfDgBxUMZ9B5PF+Bnq7TQ8bc5QYXiDJQg+u+GO7hxo8bzLFafOlZTluuxAuFHm+Ic0RIPCzjGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rItRYHQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD38C4CEEA;
-	Mon, 23 Jun 2025 13:21:29 +0000 (UTC)
+	 MIME-Version; b=BHEZ5EBIiRNi1hJwQbQ+2qLZ5p0mqPNRY74mSgCCDy2LDr3Ydfo8l1v0rnd/Cdixi0rb1vunZNTBHyZYigzIT7RtHaBxGiTnQKB8qc4k6hR+GTdDHyxDm06TCV0fYoXwaZ25JTb+p/9iWBwzBbvYncsw+oSObMv022s5N9CmV6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISDb+6W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45986C4CEEA;
+	Mon, 23 Jun 2025 13:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684889;
-	bh=zFV/inA/j+rQ9+2nR6x/C0kAUQdb7dZdLyIky80Qh2U=;
+	s=korg; t=1750684947;
+	bh=Fd9ldUHq2fWRF9X+NPd5TP9YcEjyLgo/jHPLhCwSa0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rItRYHQoHYhsRZbugH939ufDIcR+y6YRsa+7JwPJWqazwxMRs2WwP1bBNa0mNIgw3
-	 szh6mOmlY2G5kxlzlwXsIcZsVxLNmZ92LdyI03SED9jUWPOwwBVnQGlP2BkVMr2mGv
-	 Fl1bkE6APITSg6MhSaWtRuhUzPlKr124RwYCqR1w=
+	b=ISDb+6W1lYfmrBwb/Lx4ad562+zMjDIL2PNOEyuLlbV4ocOBANtf5BoAut/MU0L3u
+	 q4x3pj2Rd40RiQKK3XLSzFfRDZ/ytf5pNVFjVZ2T8Byc5C+Ci8VjXyX0vC/S42C7GD
+	 9RZwrCecrDzw6NVspr4t3vRj9MyMPnrEOx5W4iZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
-	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.15 166/592] staging: iio: ad5933: Correct settling cycles encoding per datasheet
-Date: Mon, 23 Jun 2025 15:02:04 +0200
-Message-ID: <20250623130704.228030133@linuxfoundation.org>
+	Khem Raj <raj.khem@gmail.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: [PATCH 6.15 167/592] mips: Add -std= flag specified in KBUILD_CFLAGS to vdso CFLAGS
+Date: Mon, 23 Jun 2025 15:02:05 +0200
+Message-ID: <20250623130704.251450081@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -66,37 +65,48 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+From: Khem Raj <raj.khem@gmail.com>
 
-commit 60638e2a2d4bc03798f00d5ab65ce9b83cb8b03b upstream.
+commit 0f4ae7c6ecb89bfda026d210dcf8216fb67d2333 upstream.
 
-The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
-(2044).
+GCC 15 changed the default C standard dialect from gnu17 to gnu23,
+which should not have impacted the kernel because it explicitly requests
+the gnu11 standard in the main Makefile. However, mips/vdso code uses
+its own CFLAGS without a '-std=' value, which break with this dialect
+change because of the kernel's own definitions of bool, false, and true
+conflicting with the C23 reserved keywords.
 
-Clamp the user input to the maximum effective value of 0x7FC cycles.
+  include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+     11 |         false   = 0,
+        |         ^~~~~
+  include/linux/stddef.h:11:9: note: 'false' is a keyword with '-std=c23' onwards
+  include/linux/types.h:35:33: error: 'bool' cannot be defined via 'typedef'
+     35 | typedef _Bool                   bool;
+        |                                 ^~~~
+  include/linux/types.h:35:33: note: 'bool' is a keyword with '-std=c23' onwards
 
-Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+Add -std as specified in KBUILD_CFLAGS to the decompressor and purgatory
+CFLAGS to eliminate these errors and make the C standard version of these
+areas match the rest of the kernel.
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
-Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
-Link: https://patch.msgid.link/20250420013009.847851-1-gshahrouzi@gmail.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/vdso/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/staging/iio/impedance-analyzer/ad5933.c
-+++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
-@@ -411,7 +411,7 @@ static ssize_t ad5933_store(struct devic
- 		ret = ad5933_cmd(st, 0);
- 		break;
- 	case AD5933_OUT_SETTLING_CYCLES:
--		val = clamp(val, (u16)0, (u16)0x7FF);
-+		val = clamp(val, (u16)0, (u16)0x7FC);
- 		st->settling_cycles = val;
- 
- 		/* 2x, 4x handling, see datasheet */
+--- a/arch/mips/vdso/Makefile
++++ b/arch/mips/vdso/Makefile
+@@ -27,6 +27,7 @@ endif
+ # offsets.
+ cflags-vdso := $(ccflags-vdso) \
+ 	$(filter -W%,$(filter-out -Wa$(comma)%,$(KBUILD_CFLAGS))) \
++	$(filter -std=%,$(KBUILD_CFLAGS)) \
+ 	-O3 -g -fPIC -fno-strict-aliasing -fno-common -fno-builtin -G 0 \
+ 	-mrelax-pic-calls $(call cc-option, -mexplicit-relocs) \
+ 	-fno-stack-protector -fno-jump-tables -DDISABLE_BRANCH_PROFILING \
 
 
 
