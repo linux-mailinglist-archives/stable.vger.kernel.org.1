@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87955AE503E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55B7BAE525E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 209857AE5CA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:13 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A1E5B16769D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB49E1E521E;
-	Mon, 23 Jun 2025 21:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89A011E1A05;
+	Mon, 23 Jun 2025 21:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GphC41K7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YNi6JKdx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FD57482;
-	Mon, 23 Jun 2025 21:21:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434761DDC04;
+	Mon, 23 Jun 2025 21:43:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713692; cv=none; b=bXO4o6SKb7h49XTVJ7mLuiq7lXnhS58NHuvKt88xSIkrQAAioqwYzOYS5TW6D6KiFoRFpLNFWDVa7Xzr+uw6lWxAfAAe8pLX9H+hd8j994XhSX18R3pd7a5JcCK8zZ5Le6vjcU+XKvO8y90dINsOpaVXrznQKnw6UVW6eVZLvUo=
+	t=1750714980; cv=none; b=TXwoIEwkx9W9nU/rt4DYFWdwGoR2FXVX5ks9Inb3DfC0k3NzjAPCIgOaj4KsCtAUEWbbVM1VL6tdcYWlUpxyNS2pP9D21hUYQqELzZniTw9xz67hn834+aBxI19T/OtSkTRjhvjU+rWogJiZfBiOAK1eXUt2oIiY/6sTFaOIjIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713692; c=relaxed/simple;
-	bh=Uven7V7A8mP6HJGJboSQLNjLm9FnMvzvJNTJcqs7sF4=;
+	s=arc-20240116; t=1750714980; c=relaxed/simple;
+	bh=CWdoPcVQxuHQVdcaV3L+tRzUNefo+1RrnlJEQl18SJw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cjlenpVygERdhSibXbtyt0PC1C6WntGrti+u5TXuMq3+/J+opj6hDUJEZzdl67qH3EfVk/gWXQSThP6KLnEXFPYVppzqdS1oTPal+fCBx/WtWezSqYL3xbCcRbuWlO0lO9DuNDzNbAOJuZdEHp+3M2PQ4PVYns1LxxZN2fHEEcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GphC41K7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5F3C4CEEA;
-	Mon, 23 Jun 2025 21:21:31 +0000 (UTC)
+	 MIME-Version; b=LodRptY1sk1/R89r0XVagCISp3wRKWUsOoVEJAMrvCc7ebHAnJfJVwW0vFtk9ILAm2SVP2qfWhM4SHLpjN3W6W5vTaprDzICEYCWmCz7jsHHZRhSWSg52hDL7qqlDbYohZv6GIERULR2DmTzW6Bq0BFqV3dNavMsB7MtgU2V1P8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YNi6JKdx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE121C4CEEA;
+	Mon, 23 Jun 2025 21:42:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713692;
-	bh=Uven7V7A8mP6HJGJboSQLNjLm9FnMvzvJNTJcqs7sF4=;
+	s=korg; t=1750714980;
+	bh=CWdoPcVQxuHQVdcaV3L+tRzUNefo+1RrnlJEQl18SJw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GphC41K7wfW3s+61ZOLuY6+XP4061ek/JFcg8qVxzKq/uJdS94tQ9i/Ag73JRMhXn
-	 1k8EtXe43vRGIdCJxsHCKOgwZyYYWh00IpwxCrM+kNP3irZbXlKBA3UnkA1eWctCgH
-	 uaAV7mT1aqrVn/jgL+UXwfGeBapP1n/52KYTMI+E=
+	b=YNi6JKdxj7WJp+F73roCxfAU6bT1EdfDesO0/xXI+xGC0n1nC7Fcw+wmanVC9hKJZ
+	 6pgHDoD1UZF2Mh2H37HozCjfXhxVykkeiM4kakJOGY63nK3tBlkH/r8Oc8fVOwRN8B
+	 pazL9dVmSxLvGzS2kltn48ZWYKzqvFe7vWJIAT8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Caleb Connolly <caleb.connolly@linaro.org>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 141/411] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
+	Long Li <longli@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.12 148/414] uio_hv_generic: Use correct size for interrupt and monitor pages
 Date: Mon, 23 Jun 2025 15:04:45 +0200
-Message-ID: <20250623130637.149458193@linuxfoundation.org>
+Message-ID: <20250623130645.749663675@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Caleb Connolly <caleb.connolly@linaro.org>
+From: Long Li <longli@microsoft.com>
 
-[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
+commit c951ab8fd3589cf6991ed4111d2130816f2e3ac2 upstream.
 
-In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
-recovery flow, but we still unconditionally call enable again in
-ath10k_snoc_hif_start().
+Interrupt and monitor pages should be in Hyper-V page size (4k bytes).
+This can be different from the system page size.
 
-We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
-before hif_start() is called, so instead check the
-ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
-recovery.
+This size is read and used by the user-mode program to determine the
+mapped data region. An example of such user-mode program is the VMBus
+driver in DPDK.
 
-This fixes unbalanced IRQ enable splats that happen after recovering from
-a crash.
-
-Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
-Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
-Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
-Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 95096f2fbd10 ("uio-hv-generic: new userspace i/o driver for VMBus")
+Signed-off-by: Long Li <longli@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/1746492997-4599-3-git-send-email-longli@linuxonhyperv.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <1746492997-4599-3-git-send-email-longli@linuxonhyperv.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/uio/uio_hv_generic.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
-index 439df8a404d86..b091e5187dbe5 100644
---- a/drivers/net/wireless/ath/ath10k/snoc.c
-+++ b/drivers/net/wireless/ath/ath10k/snoc.c
-@@ -936,7 +936,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
- 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
+--- a/drivers/uio/uio_hv_generic.c
++++ b/drivers/uio/uio_hv_generic.c
+@@ -274,13 +274,13 @@ hv_uio_probe(struct hv_device *dev,
+ 	pdata->info.mem[INT_PAGE_MAP].name = "int_page";
+ 	pdata->info.mem[INT_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.int_page;
+-	pdata->info.mem[INT_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[INT_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[INT_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
  
- 	ath10k_core_napi_enable(ar);
--	ath10k_snoc_irq_enable(ar);
-+	/* IRQs are left enabled when we restart due to a firmware crash */
-+	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
-+		ath10k_snoc_irq_enable(ar);
- 	ath10k_snoc_rx_post(ar);
+ 	pdata->info.mem[MON_PAGE_MAP].name = "monitor_page";
+ 	pdata->info.mem[MON_PAGE_MAP].addr
+ 		= (uintptr_t)vmbus_connection.monitor_pages[1];
+-	pdata->info.mem[MON_PAGE_MAP].size = PAGE_SIZE;
++	pdata->info.mem[MON_PAGE_MAP].size = HV_HYP_PAGE_SIZE;
+ 	pdata->info.mem[MON_PAGE_MAP].memtype = UIO_MEM_LOGICAL;
  
- 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
--- 
-2.39.5
-
+ 	pdata->recv_buf = vzalloc(RECV_BUFFER_SIZE);
 
 
 
