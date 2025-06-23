@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-157440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157127-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56511AE53FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AEC5AE529E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 015194463C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0AFD7ADB4C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C6382222CC;
-	Mon, 23 Jun 2025 21:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BFBD227BB5;
+	Mon, 23 Jun 2025 21:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2UpNXbBs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZhASAQt9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE54A3FB1B;
-	Mon, 23 Jun 2025 21:57:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAE1B22425B;
+	Mon, 23 Jun 2025 21:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715871; cv=none; b=Yu9yhXDMzKo2JGt/woOlPTR0UAmJ8YuYhWgdUWCq8FrDErYEiAUg6be9S8GFqxg9fcOOr3XgEVGE1uC//8WqdMSjQIiPgG71zWD0PDvFe5owiFE+di4Tyemko9XRkOtKn9lz3VdxV0oGH1JDj4UJVGeNQss0VChEw6ZIs0xIWBg=
+	t=1750715100; cv=none; b=DGvBfCRnwRwFSgJb6MIYw0oBG4LfevSiHhPfqrYJJmcm/Xk9eOteh7+5QegYMPPaUxRBx1THi6Qu0rXwfSsMUx/X2C3IvhrAzKoo2v/rXNYnfFB93tiE1duG3pram0OxRIkJ7ddAkPBehLPx/DycX+R+Sh1AUXp5Txb2ggaz6cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715871; c=relaxed/simple;
-	bh=lztnMSGzO4bQqP1xAptBfSSMUWSYRY8skCTDIZ+s3jw=;
+	s=arc-20240116; t=1750715100; c=relaxed/simple;
+	bh=JNvtFg66EfA4e3UpUcuDPtP8m8yAluQRDg8c3AbBx7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nP7pHwqpUdL7HND5j7HL6ahciCrpPPlbLUq9IaQNjpd8B6OnyygMxG2VAfdCA3lSpOcghPG1Rtc7EALCYaeuvQnloo2jHZjS4qaoIYtA/9pAF28VX1v0KN4pUMuwyR/yUFPLbNPt6LLjXmxx53e7Mzs8twCu1IHEYvFmQxOLFE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2UpNXbBs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70262C4CEEA;
-	Mon, 23 Jun 2025 21:57:50 +0000 (UTC)
+	 MIME-Version; b=I7y6XyHwo+b13slL2O9ysWOh8UXHInQfGm4mcLRPBG0iLajWsaXt8UOEIVyWi1AQPWss7XDW9JuLZ/Z0HFFBuvRlGKYUn6/6CfUeX3xvsBoUp/ts/8ApHIH8C1cQcdicqTDpSiYL8VP/1Fw6yMrBBFqFPkAzmT8ogU7TpDsV0pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZhASAQt9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDD6BC4CEF2;
+	Mon, 23 Jun 2025 21:44:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715870;
-	bh=lztnMSGzO4bQqP1xAptBfSSMUWSYRY8skCTDIZ+s3jw=;
+	s=korg; t=1750715100;
+	bh=JNvtFg66EfA4e3UpUcuDPtP8m8yAluQRDg8c3AbBx7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2UpNXbBsEb45PRcn6WTRIDagKWvwnPsUwEwzgPDPkRdrh+cwC7M0gJE+mlesi8YMq
-	 3f5NqqZ9qQr14Ij1fRepNljTihGwNkxbW7Az40gE6mMuS9SSbil34L+jS2qJP4oash
-	 oX22uUQitjaVsRZMGc3W1Sv3zAmikahVSIVSucBE=
+	b=ZhASAQt9Q3svH3Q4+oSDfYmwpliblw1DM66lAyIiT4l7COjHaX5HmGAk6q0NHaVVo
+	 hXVbUjZX6ILjayL8eF/NRT2F+eih6cKFXmchZ+EKCFR0spPzJIWXqu6GA1Fn40haQb
+	 PX8Q+ZmkMtt1JsEkP/BnaJWRgYejhb4enQ9TZ10E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Lorenzo Bianconi <lorenzo@kernel.org>,
 	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 309/411] wifi: mt76: mt76x2: Add support for LiteOn WN4516R,WN4519R
+Subject: [PATCH 5.10 252/355] wifi: mt76: mt76x2: Add support for LiteOn WN4516R,WN4519R
 Date: Mon, 23 Jun 2025 15:07:33 +0200
-Message-ID: <20250623130641.421834760@linuxfoundation.org>
+Message-ID: <20250623130634.325795904@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -102,7 +102,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  2 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
-index 09b01e09bcfe0..1f2990d45d9e3 100644
+index 82a193aac09d7..95c548f45bdf8 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb.c
 @@ -17,6 +17,8 @@ static const struct usb_device_id mt76x2u_device_table[] = {
@@ -115,7 +115,7 @@ index 09b01e09bcfe0..1f2990d45d9e3 100644
  	{ USB_DEVICE(0x0846, 0x9053) },	/* Netgear A6210 */
  	{ USB_DEVICE(0x045e, 0x02e6) },	/* XBox One Wireless Adapter */
 diff --git a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
-index 85dcdc22fbebf..41b9a99665822 100644
+index ffc2deba29ac6..c845e83897659 100644
 --- a/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
 +++ b/drivers/net/wireless/mediatek/mt76/mt76x2/usb_init.c
 @@ -191,6 +191,7 @@ int mt76x2u_register_device(struct mt76x02_dev *dev)
