@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157233-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44983AE54A5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2869AE530B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2F031166B79
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 052384A7303
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9C621FF2B;
-	Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 001E622258C;
+	Mon, 23 Jun 2025 21:49:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="im/+BoHv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqXacxHn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA97821D3F6;
-	Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EE73FB1B;
+	Mon, 23 Jun 2025 21:49:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716176; cv=none; b=Hp/Qf6a8A6hyPgcEQ6ECnB2T4w4YiDQCxIcLcghEMj7jhtjClpkL6ML6+4WEFgw/SIaToc3194IuNpw9Re7o6n4l00OLHnxUtH2ElZxNYsmRMsBDaKzRDuohOR0TCX6Oq+HfyZKB8Z2kFyzpSioKRPpb0ENZwnqsf2/RircJE+w=
+	t=1750715366; cv=none; b=pVrLTw+9Pwezj2/nn9/wJ71jUt7/a0rniqP3wNP750dWV2Ig1baWXSn3QuZYH8zrJMLucbZFTquoX68NQlV4s/XJX1LGMzzaNhBmyf6gihYvYT1FC8BAsss+fIRxcgasFAwxqS79Yg3YnKLKtVd9Eec9ipyKWe7cEtcuWJarNPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716176; c=relaxed/simple;
-	bh=dDANdip0xdvv9GP+Zhack2KLo0P2DQmhRWCLXNmyN3Y=;
+	s=arc-20240116; t=1750715366; c=relaxed/simple;
+	bh=vMZVs/zEkz/t+r9CMsJKetg4nj6GlGThX/LtqDADTr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j0I1wGtNW4YKYXIEAA/GacukVV2GlDz9I0ZMCVMoaNl8fla0NLv9z+MzSWqViRgliuKqcRM1Vfrq0hLVg5RA1hXpDFuV/qbyfDnYbQThL8IvTjw8hAEhv+o86iZHmEdziMTuzqL3F7Cn4pnXs13AlO21WYT9EsWjsrmyecx0NvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=im/+BoHv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D51C4CEEA;
-	Mon, 23 Jun 2025 22:02:56 +0000 (UTC)
+	 MIME-Version; b=Y7Rs+9s/ykQDXuGaulXXT1kJGTsR/n2RVQMMi2XdzILKdZyHhVX4suY0tLS8yM3uuJPklxK/pMP2eMS0ZzC1bfPBbEdY0Zl/9jL8mVprCO6yr7MR8lKnpjeMNGbKNuX8WStPCdqTsQi+Y0OOyNfDFGaKeOCEk/Vxf9E8lY3qBNs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqXacxHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49EB2C4CEEA;
+	Mon, 23 Jun 2025 21:49:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716176;
-	bh=dDANdip0xdvv9GP+Zhack2KLo0P2DQmhRWCLXNmyN3Y=;
+	s=korg; t=1750715366;
+	bh=vMZVs/zEkz/t+r9CMsJKetg4nj6GlGThX/LtqDADTr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=im/+BoHvTWSJrl4SiJr8/PHzU4XjiarQuTxBy+zUKdpVhFUt0r0QiD64SzZ7b2Qft
-	 YFQUzpjsCzYG0YRgQLVRFVw9OlRRjE8oXhOBUvVlA798g+0EQXvtihdfSQr/29q6F7
-	 VBgGOIounHE6XVlCRD+AYP534EQkL111ridOupKE=
+	b=FqXacxHnnbPiqXsADLAgbnobmZDfiwDgSiz7dxFFFcYhx6tEO9+5XfPiUSTxqwrzE
+	 PNi2VgTT3/YaKB+iSNrK7n27zikhskhhmdeBy0gemlwFw+/9HpunIab3/E5Omd8r4y
+	 fUjt/Auo9cCtz+osL3TTAE5vYeZRvDs1d5wMZzZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?V=C3=ADctor=20Gonzalo?= <victor.gonzalo@anddroptable.net>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 255/414] wifi: iwlwifi: Add missing MODULE_FIRMWARE for Qu-c0-jf-b0
+	Gabriel Shahrouzi <gshahrouzi@gmail.com>,
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 5.15 248/411] staging: iio: ad5933: Correct settling cycles encoding per datasheet
 Date: Mon, 23 Jun 2025 15:06:32 +0200
-Message-ID: <20250623130648.418172234@linuxfoundation.org>
+Message-ID: <20250623130639.894503461@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
+From: Gabriel Shahrouzi <gshahrouzi@gmail.com>
 
-[ Upstream commit 2b801487ac3be7bec561ae62d1a6c4d6f5283f8c ]
+commit 60638e2a2d4bc03798f00d5ab65ce9b83cb8b03b upstream.
 
-The module metadata for the firmware file iwlwifi-Qu-c0-jf-b0-* is missing.
+The AD5933 datasheet (Table 13) lists the maximum cycles to be 0x7FC
+(2044).
 
-Signed-off-by: Víctor Gonzalo <victor.gonzalo@anddroptable.net>
-Link: https://patch.msgid.link/20240313180227.2224780-1-victor.gonzalo@anddroptable.net
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Clamp the user input to the maximum effective value of 0x7FC cycles.
+
+Fixes: f94aa354d676 ("iio: impedance-analyzer: New driver for AD5933/4 Impedance Converter, Network Analyzer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gabriel Shahrouzi <gshahrouzi@gmail.com>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Link: https://patch.msgid.link/20250420013009.847851-1-gshahrouzi@gmail.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/intel/iwlwifi/cfg/22000.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/staging/iio/impedance-analyzer/ad5933.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-index 2e2fcb3807efb..10d647fbc971e 100644
---- a/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-+++ b/drivers/net/wireless/intel/iwlwifi/cfg/22000.c
-@@ -44,6 +44,8 @@
- 	IWL_QU_C_HR_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_QU_B_JF_B_MODULE_FIRMWARE(api) \
- 	IWL_QU_B_JF_B_FW_PRE "-" __stringify(api) ".ucode"
-+#define IWL_QU_C_JF_B_MODULE_FIRMWARE(api) \
-+	IWL_QU_C_JF_B_FW_PRE "-" __stringify(api) ".ucode"
- #define IWL_CC_A_MODULE_FIRMWARE(api)			\
- 	IWL_CC_A_FW_PRE "-" __stringify(api) ".ucode"
+--- a/drivers/staging/iio/impedance-analyzer/ad5933.c
++++ b/drivers/staging/iio/impedance-analyzer/ad5933.c
+@@ -412,7 +412,7 @@ static ssize_t ad5933_store(struct devic
+ 		ret = ad5933_cmd(st, 0);
+ 		break;
+ 	case AD5933_OUT_SETTLING_CYCLES:
+-		val = clamp(val, (u16)0, (u16)0x7FF);
++		val = clamp(val, (u16)0, (u16)0x7FC);
+ 		st->settling_cycles = val;
  
-@@ -423,6 +425,7 @@ const struct iwl_cfg iwl_cfg_quz_a0_hr_b0 = {
- MODULE_FIRMWARE(IWL_QU_B_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_C_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QU_B_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
-+MODULE_FIRMWARE(IWL_QU_C_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_HR_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_QUZ_A_JF_B_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
- MODULE_FIRMWARE(IWL_CC_A_MODULE_FIRMWARE(IWL_22000_UCODE_API_MAX));
--- 
-2.39.5
-
+ 		/* 2x, 4x handling, see datasheet */
 
 
 
