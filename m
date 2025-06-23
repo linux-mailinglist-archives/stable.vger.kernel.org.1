@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C541AE548A
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7EE9AE5271
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D77C54C132F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1CBD4439E7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8DEE19DF4A;
-	Mon, 23 Jun 2025 22:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D958121D3DD;
+	Mon, 23 Jun 2025 21:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vVWXA6nN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RANXwysO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A3F4C74;
-	Mon, 23 Jun 2025 22:02:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 981802AEE4;
+	Mon, 23 Jun 2025 21:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716144; cv=none; b=o6WlLszOBijVv/c7NIEOXWSf1+FE2wXa/aonhcytBCWu/yvbHotGTdt0n6bqYDaJQBdpfQctzb6Vg5RQcDJsTsCKeWr8lQibxqEbZ/9y24Njnb/HKw1NYacDIkKO4+Q5LLXeY0vxYP5pAy5TiBPXI+tOlMR9nVqmZRsZtXpRS2w=
+	t=1750715031; cv=none; b=qlhcOHdMXe7wIEoFn7+ioxi7i9gondZoCBhBWWPnqKnHTJMS/R1aOn2RAf1N3qHgNvJKZbk1CVP8si8YB5SGd3EMgdsOnvrgNZX/zjpcve9+i+UGHqd5wkcPUer2G5RyynSLTCK+la5XR5xOTO5xCg39zxt3qu7XsylfdwITGFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716144; c=relaxed/simple;
-	bh=e4ZVeYXCfNd9euVnuAnsKdLdSKzzquo8eJ6zAJAZk5o=;
+	s=arc-20240116; t=1750715031; c=relaxed/simple;
+	bh=6zdhMO3u9+DQXA+RSOQEteOD2CkSM8lhRXgU0xj0hRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bFxcCp11dCtvSbZhCaeQAwDmNY9CKw1nlEAmV2+M0qiCeydq1PxEoIOO4Qhu86D4NwuWlOOYnBfO4kSRMPdrDd3+S6dkoGYHitL9yMNHDQ14IgLjem0lMU9oa8d7W0lgSImGjwKciSH38eXozR2phNIfMh4P032y5/YVDB7nbcs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vVWXA6nN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E58C4CEEA;
-	Mon, 23 Jun 2025 22:02:24 +0000 (UTC)
+	 MIME-Version; b=nvViA9DG1/EnrCmpVXszNalMM1xaHB6ft/SFNfFzFIISpyXbsuLtnvJoK2pLB1S/A6BW3PHohMD7ZR9YljoZOYOFL692QFIPOcoHbIeYC2ZbFNYS0XQsK5BzcjT7LO3wPGRN9FEondq9l+nwcKIRFaKxoFZwWLS2fI+NE/U3EO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RANXwysO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA6DCC4CEEA;
+	Mon, 23 Jun 2025 21:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716144;
-	bh=e4ZVeYXCfNd9euVnuAnsKdLdSKzzquo8eJ6zAJAZk5o=;
+	s=korg; t=1750715031;
+	bh=6zdhMO3u9+DQXA+RSOQEteOD2CkSM8lhRXgU0xj0hRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vVWXA6nNvqaF3Wct/2UHeHXA2SHi8Hi2j/SfBjpvY07Kk+RZ7ICeNCc/VhoQO+amT
-	 +bLwVHQZn1YZ8Uekljtv+vgBj1jQ5L2lbGlMpAE+/1xy7PDSqWxzMNzdeKsiYVVz5y
-	 CTRZ5VVngT9RgsFGftRWkMpdNaNvkBICyVZ6zClg=
+	b=RANXwysO5BNq3l4+7Xf85cJWX7m7gJo/LbPJKd8nxuVY9L8X0MHSHiJDbj/h/LTFt
+	 Nu41mnPy+mFhiIzSaC0NyUTSg6p6L/MelPc2YThmhdENPgKA7JEI0DO0gAI3PN5xDj
+	 8hC7fAb6r5unE9zlDUrymH3D9rRS4+uZ4sJMOo7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 230/414] pinctrl: armada-37xx: propagate error from armada_37xx_pmx_gpio_set_direction()
-Date: Mon, 23 Jun 2025 15:06:07 +0200
-Message-ID: <20250623130647.787938211@linuxfoundation.org>
+	Tasos Sahanidis <tasos@tasossah.com>,
+	Niklas Cassel <cassel@kernel.org>
+Subject: [PATCH 5.15 224/411] ata: pata_via: Force PIO for ATAPI devices on VT6415/VT6330
+Date: Mon, 23 Jun 2025 15:06:08 +0200
+Message-ID: <20250623130639.299023875@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,56 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Tasos Sahanidis <tasos@tasossah.com>
 
-[ Upstream commit bfa0ff804ffa8b1246ade8be08de98c9eb19d16f ]
+commit d29fc02caad7f94b62d56ee1b01c954f9c961ba7 upstream.
 
-The armada_37xx_gpio_direction_{in,out}put() functions can fail, so
-propagate their error values back to the stack instead of silently
-ignoring those.
+The controller has a hardware bug that can hard hang the system when
+doing ATAPI DMAs without any trace of what happened. Depending on the
+device attached, it can also prevent the system from booting.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-5-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In this case, the system hangs when reading the ATIP from optical media
+with cdrecord -vvv -atip on an _NEC DVD_RW ND-4571A 1-01 and an
+Optiarc DVD RW AD-7200A 1.06 attached to an ASRock 990FX Extreme 4,
+running at UDMA/33.
+
+The issue can be reproduced by running the same command with a cygwin
+build of cdrecord on WinXP, although it requires more attempts to cause
+it. The hang in that case is also resolved by forcing PIO. It doesn't
+appear that VIA has produced any drivers for that OS, thus no known
+workaround exists.
+
+HDDs attached to the controller do not suffer from any DMA issues.
+
+Cc: stable@vger.kernel.org
+Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/916677
+Signed-off-by: Tasos Sahanidis <tasos@tasossah.com>
+Link: https://lore.kernel.org/r/20250519085508.1398701-1-tasos@tasossah.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/ata/pata_via.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index c8437d45a3135..f242d24d72b8d 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -472,16 +472,17 @@ static int armada_37xx_pmx_gpio_set_direction(struct pinctrl_dev *pctldev,
- {
- 	struct armada_37xx_pinctrl *info = pinctrl_dev_get_drvdata(pctldev);
- 	struct gpio_chip *chip = range->gc;
-+	int ret;
+--- a/drivers/ata/pata_via.c
++++ b/drivers/ata/pata_via.c
+@@ -368,7 +368,8 @@ static unsigned long via_mode_filter(str
+ 	}
  
- 	dev_dbg(info->dev, "gpio_direction for pin %u as %s-%d to %s\n",
- 		offset, range->name, offset, input ? "input" : "output");
- 
- 	if (input)
--		armada_37xx_gpio_direction_input(chip, offset);
-+		ret = armada_37xx_gpio_direction_input(chip, offset);
- 	else
--		armada_37xx_gpio_direction_output(chip, offset, 0);
-+		ret = armada_37xx_gpio_direction_output(chip, offset, 0);
- 
--	return 0;
-+	return ret;
- }
- 
- static int armada_37xx_gpio_request_enable(struct pinctrl_dev *pctldev,
--- 
-2.39.5
-
+ 	if (dev->class == ATA_DEV_ATAPI &&
+-	    dmi_check_system(no_atapi_dma_dmi_table)) {
++	    (dmi_check_system(no_atapi_dma_dmi_table) ||
++	     config->id == PCI_DEVICE_ID_VIA_6415)) {
+ 		ata_dev_warn(dev, "controller locks up on ATAPI DMA, forcing PIO\n");
+ 		mask &= ATA_MASK_PIO;
+ 	}
 
 
 
