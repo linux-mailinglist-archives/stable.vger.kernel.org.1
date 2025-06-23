@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157173-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157277-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A73AE52DE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85286AE5336
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49FC77B0191
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C164A7653
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F407E1FC0E3;
-	Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5041AD3FA;
+	Mon, 23 Jun 2025 21:51:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iBoNIlX2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cJrQvBX7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B206316D9BF;
-	Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA2C136348;
+	Mon, 23 Jun 2025 21:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715215; cv=none; b=BZqk1lTnfsb97YX0gNGQmpGEIznwqhIIpWGmSrxG0WgugqniLNep4TbjShPWcd79IkWapwp5BZnG+wVxdhIQLfScLnaJuVEMAkqPeiDoJrVQqLzB17lgM8WcN/kYSeqdgBLsQx6TeZ4H+GlKmRhC31AfPOrG4V4SRgRzan92Kdk=
+	t=1750715474; cv=none; b=aSo7oJBcJKA1HVIDiSx4cRhXCIaheSlbwkNZ87gUthcMxZeiIK/nbmhBdaVYn1nmcxvn2/FyF5YaFGoVo7/zs9/Ml+LRkxzyA8uWsTnRPmeFBrLzvkBg45Y9v4vXd36cFQibdWyCha0wVRPDXcHeZZ27dUZayZ+/yYpyBpVx6SY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715215; c=relaxed/simple;
-	bh=uofOEWx31lhEo0pP4KVzTr1vI2HqY7HnODuwVrlqtIY=;
+	s=arc-20240116; t=1750715474; c=relaxed/simple;
+	bh=te/ZfzvNsx18SMN2N7DSpYGFQi8PkvVd8QXsQmd91IU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rhPlm49bL8xruXJL5SBwEIhKVScLoMwspK8f6FtTbzqNGcpEOKrx4UugwsjK1XlvKajdS5sOBHO7ITjWvjn6w1MLACRM0Omuoi9ss6+NefNWLAbRyqakRikXIN5ey0lzN99JYKqEDB6jICR71qeQuaRpkXx8/zs2aGQnoMVS3Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iBoNIlX2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44969C4CEEA;
-	Mon, 23 Jun 2025 21:46:55 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pBphkl1TuPHWYXeE+cQI6lHP4NdvimYiak4KI71o3IN+cEIf7+AlF/R412IC0lNqDENF6DG0KFCbPTNtUPZAfu48YmtzL5f2dcFp+uvH5btqoUGCtFvTtaJ5IMrLLgsIBIpf7E9EpYOtajuplUuMB+w6fj1U2dueZn3MEoM5sfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cJrQvBX7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9D7C4CEEA;
+	Mon, 23 Jun 2025 21:51:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715215;
-	bh=uofOEWx31lhEo0pP4KVzTr1vI2HqY7HnODuwVrlqtIY=;
+	s=korg; t=1750715474;
+	bh=te/ZfzvNsx18SMN2N7DSpYGFQi8PkvVd8QXsQmd91IU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iBoNIlX2Te5f9zstdxErMnuz03dBO3mZDdgHT6CwVA2xCrmFmrxN2FsAEPLltn4hz
-	 aDhwiIHXyk4s0Rxj9CtkegLdvfr2+rJaYyxeXREBlH8iW/XN/cjqj0CybiG8A9US9i
-	 WAluOz8Q0niEhVQ3dsz5cm1dsLVHIFXa2VfeHd1E=
+	b=cJrQvBX7iyHdDLloF3iE/ZDI79kuVO357OFWk85oaEuEd/mdvxRM1YZi1IXlEt7Oy
+	 WCnBlDW+imquXSpWIHar1X/xNwWp9kDCJGwpA23OvRI1UD3/9KS2OJ1R8fK2Emcvi8
+	 aTlLK8iNmqvcw6yFU7aATMzqTkb3hjjbArs6TZFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 282/355] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
+	=?UTF-8?q?Maciej=20=C5=BBenczykowski?= <maze@google.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 222/290] net: clear the dst when changing skb protocol
 Date: Mon, 23 Jun 2025 15:08:03 +0200
-Message-ID: <20250623130635.259192292@linuxfoundation.org>
+Message-ID: <20250623130633.604307701@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,123 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
+commit ba9db6f907ac02215e30128770f85fbd7db2fcf9 upstream.
 
-VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-platforms due to missing host-side PE bridge reconfiguration. In the
-current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-bridge reconfiguration for native host devices, but skips it entirely for
-PEs managed through VFIO in guest passthrough scenarios.
+A not-so-careful NAT46 BPF program can crash the kernel
+if it indiscriminately flips ingress packets from v4 to v6:
 
-This leads to incomplete EEH recovery when a PCI error affects a
-passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-bridge reconfiguration step is silently bypassed. As a result, the PE's
-config space is not fully restored, causing subsequent config space access
-failures or EEH freeze-on-access errors inside the guest.
+  BUG: kernel NULL pointer dereference, address: 0000000000000000
+    ip6_rcv_core (net/ipv6/ip6_input.c:190:20)
+    ipv6_rcv (net/ipv6/ip6_input.c:306:8)
+    process_backlog (net/core/dev.c:6186:4)
+    napi_poll (net/core/dev.c:6906:9)
+    net_rx_action (net/core/dev.c:7028:13)
+    do_softirq (kernel/softirq.c:462:3)
+    netif_rx (net/core/dev.c:5326:3)
+    dev_loopback_xmit (net/core/dev.c:4015:2)
+    ip_mc_finish_output (net/ipv4/ip_output.c:363:8)
+    NF_HOOK (./include/linux/netfilter.h:314:9)
+    ip_mc_output (net/ipv4/ip_output.c:400:5)
+    dst_output (./include/net/dst.h:459:9)
+    ip_local_out (net/ipv4/ip_output.c:130:9)
+    ip_send_skb (net/ipv4/ip_output.c:1496:8)
+    udp_send_skb (net/ipv4/udp.c:1040:8)
+    udp_sendmsg (net/ipv4/udp.c:1328:10)
 
-This patch fixes the issue by ensuring that eeh_pe_configure() always
-invokes the platform's configure_bridge() callback (e.g.,
-pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
-that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
-on the host side, restoring the PE's configuration space after an EEH
-event.
+The output interface has a 4->6 program attached at ingress.
+We try to loop the multicast skb back to the sending socket.
+Ingress BPF runs as part of netif_rx(), pushes a valid v6 hdr
+and changes skb->protocol to v6. We enter ip6_rcv_core which
+tries to use skb_dst(). But the dst is still an IPv4 one left
+after IPv4 mcast output.
 
-This fix is essential for reliable EEH recovery in QEMU/KVM guests using
-VFIO PCI passthrough on PowerNV and pseries systems.
+Clear the dst in all BPF helpers which change the protocol.
+Try to preserve metadata dsts, those may carry non-routing
+metadata.
 
-Tested with:
-- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
-- Injected EEH errors with pseries EEH errinjct tool on host, recovery
-  verified on qemu guest.
-- Verified successful config space access and CAP_EXP DevCtl restoration
-  after recovery
-
-Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Maciej Żenczykowski <maze@google.com>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Fixes: d219df60a70e ("bpf: Add ipip6 and ip6ip decap support for bpf_skb_adjust_room()")
+Fixes: 1b00e0dfe7d0 ("bpf: update skb->protocol in bpf_skb_net_grow")
+Fixes: 6578171a7ff0 ("bpf: add bpf_skb_change_proto helper")
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20250610001245.1981782-1-kuba@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/core/filter.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index 20c417ad9c6de..fbc6eaaf10e1f 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1525,6 +1525,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
- 	/* Invalid PE ? */
- 	if (!pe)
- 		return -ENODEV;
-+	else
-+		ret = eeh_ops->configure_bridge(pe);
+--- a/net/core/filter.c
++++ b/net/core/filter.c
+@@ -3229,6 +3229,13 @@ static const struct bpf_func_proto bpf_s
+ 	.arg1_type      = ARG_PTR_TO_CTX,
+ };
  
- 	return ret;
- }
--- 
-2.39.5
-
++static void bpf_skb_change_protocol(struct sk_buff *skb, u16 proto)
++{
++	skb->protocol = htons(proto);
++	if (skb_valid_dst(skb))
++		skb_dst_drop(skb);
++}
++
+ static int bpf_skb_generic_push(struct sk_buff *skb, u32 off, u32 len)
+ {
+ 	/* Caller already did skb_cow() with len as headroom,
+@@ -3325,7 +3332,7 @@ static int bpf_skb_proto_4_to_6(struct s
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IPV6);
++	bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3355,7 +3362,7 @@ static int bpf_skb_proto_6_to_4(struct s
+ 		}
+ 	}
+ 
+-	skb->protocol = htons(ETH_P_IP);
++	bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	skb_clear_hash(skb);
+ 
+ 	return 0;
+@@ -3546,10 +3553,10 @@ static int bpf_skb_net_grow(struct sk_bu
+ 		/* Match skb->protocol to new outer l3 protocol */
+ 		if (skb->protocol == htons(ETH_P_IP) &&
+ 		    flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV6)
+-			skb->protocol = htons(ETH_P_IPV6);
++			bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 		else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 			 flags & BPF_F_ADJ_ROOM_ENCAP_L3_IPV4)
+-			skb->protocol = htons(ETH_P_IP);
++			bpf_skb_change_protocol(skb, ETH_P_IP);
+ 	}
+ 
+ 	if (skb_is_gso(skb)) {
+@@ -3602,10 +3609,10 @@ static int bpf_skb_net_shrink(struct sk_
+ 	/* Match skb->protocol to new outer l3 protocol */
+ 	if (skb->protocol == htons(ETH_P_IP) &&
+ 	    flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV6)
+-		skb->protocol = htons(ETH_P_IPV6);
++		bpf_skb_change_protocol(skb, ETH_P_IPV6);
+ 	else if (skb->protocol == htons(ETH_P_IPV6) &&
+ 		 flags & BPF_F_ADJ_ROOM_DECAP_L3_IPV4)
+-		skb->protocol = htons(ETH_P_IP);
++		bpf_skb_change_protocol(skb, ETH_P_IP);
+ 
+ 	if (skb_is_gso(skb)) {
+ 		struct skb_shared_info *shinfo = skb_shinfo(skb);
 
 
 
