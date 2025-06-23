@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-156292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5753CAE4EF5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6037BAE4F32
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DF9EA7AC2F6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:09:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 56E087AC9B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FF3202983;
-	Mon, 23 Jun 2025 21:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2106221727;
+	Mon, 23 Jun 2025 21:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OlUcgXsM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D1b/rEYD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2286970838;
-	Mon, 23 Jun 2025 21:10:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F39E1DF98B;
+	Mon, 23 Jun 2025 21:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713057; cv=none; b=km2qVGk4swYWT0hYIcsPTbgpGXF2eGsJvwfb/RhDCRWYVegks6xN+G3je2Ptn5GDxBIxFBbeBrLnfM622y717sf5wttMep0E8F4DoOdUU6uVtB+gMv8RU7PI9Qo0BnK9eOTaIHfUjhv3SqnJ8INlomlneq97TDfL1d7af/rDXSo=
+	t=1750713177; cv=none; b=r+EqRJlvUcqib1AoNZd99bfgY+OGWjQtm1GCG9AVt0wJaLo9Whi88iyNloMGdE8KXrQnuAuluQWqZV92336j/k6+CWQREzZcNmQUeO+ucCul4MEGHqG66OH+eZAqk4ebOl4NA6B7pbkuqLk/41lKVDaMvzXenaUcyM7PIEhSBIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713057; c=relaxed/simple;
-	bh=8x2yZrlPykSoY0Yof8Mv3j9KzQ7j/HIbLyZDEB/oDxk=;
+	s=arc-20240116; t=1750713177; c=relaxed/simple;
+	bh=4m/SnLSAZX86Tk2WVNEw2CdLstplH1U8cot/FMHT/Kw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0KGx+T34QANqzqJsXr9pOk+hvUzBW1X4C8Vr6rDSaWnVMqNcGMtOow3mWDLVeg30BkUZV7mdrK5Gq6T1fnoR7i0isupMnozScJtQnV8nyH93TMZ3nH/LxS9GLJ+oxwRQh8i4MDIciPLDMEpXYkMAy0XPBSYGb/VcDDKDFU2dQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OlUcgXsM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADAD5C4CEEA;
-	Mon, 23 Jun 2025 21:10:56 +0000 (UTC)
+	 MIME-Version; b=DmYVOeLtjblah52C30M3A0xPtVgUEXRFt/t6D53H9K6XLBaB2u4l3sqecJNdpDRvbZu+aPZpoQVBdxYdZqjl6wkXzQd2fU/COV8JuuvXdj2a8L/qjwqq4+fpx+L7+rKsjw8tpytgDNehVfRctOLtwJqVFWG+QsVE79fFEP5bZPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D1b/rEYD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B72C4CEEA;
+	Mon, 23 Jun 2025 21:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713057;
-	bh=8x2yZrlPykSoY0Yof8Mv3j9KzQ7j/HIbLyZDEB/oDxk=;
+	s=korg; t=1750713177;
+	bh=4m/SnLSAZX86Tk2WVNEw2CdLstplH1U8cot/FMHT/Kw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OlUcgXsMVBeHB9wv1dKYblrZ8B2y0Qfg+8nZuN6gwDujWkNcr9u7akERbY2X4ACHF
-	 /HLfgYQLvfLZu6e8hoLOrqZedrrGNumuB5cQUIDDWzJEAG1aqO1A0znvl6fHZ4cSDA
-	 ecEcrPC0618l41NCo8gug7YDmTLkkwweFfmU1jD8=
+	b=D1b/rEYDtafRv1wK4kBSKPgJOzyVgoiRP2+czgwekVHlgSbho3cemZ4oC8Tiy84fM
+	 XhMV1GTR4uokUzyd0aBwgjledk5dwxBdRu9K16qK8ACrLm+3uCf0a7jnZf2dHNalZo
+	 zVh90HppcFZW5su0Sv5i7wTqDCkVa6VCB3xqHcIs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.6 065/290] Input: ims-pcu - check record size in ims_pcu_flash_firmware()
+	Eric Dumazet <edumazet@google.com>,
+	Arjun Roy <arjunroy@google.com>,
+	Wei Wang <weiwan@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 125/355] tcp: factorize logic into tcp_epollin_ready()
 Date: Mon, 23 Jun 2025 15:05:26 +0200
-Message-ID: <20250623130628.956722260@linuxfoundation.org>
+Message-ID: <20250623130630.505328050@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +64,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit a95ef0199e80f3384eb992889322957d26c00102 upstream.
+[ Upstream commit 05dc72aba364d374a27de567fac58c199ff5ee97 ]
 
-The "len" variable comes from the firmware and we generally do
-trust firmware, but it's always better to double check.  If the "len"
-is too large it could result in memory corruption when we do
-"memcpy(fragment->data, rec->data, len);"
+Both tcp_data_ready() and tcp_stream_is_readable() share the same logic.
 
-Fixes: 628329d52474 ("Input: add IMS Passenger Control Unit driver")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/131fd1ae92c828ee9f4fa2de03d8c210ae1f3524.1748463049.git.dan.carpenter@linaro.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add tcp_epollin_ready() helper to avoid duplication.
+
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Arjun Roy <arjunroy@google.com>
+Cc: Wei Wang <weiwan@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 2660a544fdc0 ("net: Fix TOCTOU issue in sk_is_readable()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/ims-pcu.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ include/net/tcp.h    | 12 ++++++++++++
+ net/ipv4/tcp.c       | 18 +++++-------------
+ net/ipv4/tcp_input.c | 11 ++---------
+ 3 files changed, 19 insertions(+), 22 deletions(-)
 
---- a/drivers/input/misc/ims-pcu.c
-+++ b/drivers/input/misc/ims-pcu.c
-@@ -845,6 +845,12 @@ static int ims_pcu_flash_firmware(struct
- 		addr = be32_to_cpu(rec->addr) / 2;
- 		len = be16_to_cpu(rec->len);
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 2aad2e79ac6ad..41f535dcaa3f9 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -1445,6 +1445,18 @@ static inline bool tcp_rmem_pressure(const struct sock *sk)
+ 	return atomic_read(&sk->sk_rmem_alloc) > threshold;
+ }
  
-+		if (len > sizeof(pcu->cmd_buf) - 1 - sizeof(*fragment)) {
-+			dev_err(pcu->dev,
-+				"Invalid record length in firmware: %d\n", len);
-+			return -EINVAL;
-+		}
++static inline bool tcp_epollin_ready(const struct sock *sk, int target)
++{
++	const struct tcp_sock *tp = tcp_sk(sk);
++	int avail = READ_ONCE(tp->rcv_nxt) - READ_ONCE(tp->copied_seq);
 +
- 		fragment = (void *)&pcu->cmd_buf[1];
- 		put_unaligned_le32(addr, &fragment->addr);
- 		fragment->len = len;
++	if (avail <= 0)
++		return false;
++
++	return (avail >= target) || tcp_rmem_pressure(sk) ||
++	       (tcp_receive_window(tp) <= inet_csk(sk)->icsk_ack.rcv_mss);
++}
++
+ extern void tcp_openreq_init_rwin(struct request_sock *req,
+ 				  const struct sock *sk_listener,
+ 				  const struct dst_entry *dst);
+diff --git a/net/ipv4/tcp.c b/net/ipv4/tcp.c
+index 24ebd51c5e0b8..0332fdab942db 100644
+--- a/net/ipv4/tcp.c
++++ b/net/ipv4/tcp.c
+@@ -476,19 +476,11 @@ static void tcp_tx_timestamp(struct sock *sk, u16 tsflags)
+ 	}
+ }
+ 
+-static inline bool tcp_stream_is_readable(const struct tcp_sock *tp,
+-					  int target, struct sock *sk)
++static bool tcp_stream_is_readable(struct sock *sk, int target)
+ {
+-	int avail = READ_ONCE(tp->rcv_nxt) - READ_ONCE(tp->copied_seq);
+-
+-	if (avail > 0) {
+-		if (avail >= target)
+-			return true;
+-		if (tcp_rmem_pressure(sk))
+-			return true;
+-		if (tcp_receive_window(tp) <= inet_csk(sk)->icsk_ack.rcv_mss)
+-			return true;
+-	}
++	if (tcp_epollin_ready(sk, target))
++		return true;
++
+ 	if (sk->sk_prot->stream_memory_read)
+ 		return sk->sk_prot->stream_memory_read(sk);
+ 	return false;
+@@ -565,7 +557,7 @@ __poll_t tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
+ 		    tp->urg_data)
+ 			target++;
+ 
+-		if (tcp_stream_is_readable(tp, target, sk))
++		if (tcp_stream_is_readable(sk, target))
+ 			mask |= EPOLLIN | EPOLLRDNORM;
+ 
+ 		if (!(shutdown & SEND_SHUTDOWN)) {
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 7c2e714527f68..318fdeb1deef3 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -5028,15 +5028,8 @@ int tcp_send_rcvq(struct sock *sk, struct msghdr *msg, size_t size)
+ 
+ void tcp_data_ready(struct sock *sk)
+ {
+-	const struct tcp_sock *tp = tcp_sk(sk);
+-	int avail = tp->rcv_nxt - tp->copied_seq;
+-
+-	if (avail < sk->sk_rcvlowat && !tcp_rmem_pressure(sk) &&
+-	    !sock_flag(sk, SOCK_DONE) &&
+-	    tcp_receive_window(tp) > inet_csk(sk)->icsk_ack.rcv_mss)
+-		return;
+-
+-	sk->sk_data_ready(sk);
++	if (tcp_epollin_ready(sk, sk->sk_rcvlowat))
++		sk->sk_data_ready(sk);
+ }
+ 
+ static void tcp_data_queue(struct sock *sk, struct sk_buff *skb)
+-- 
+2.39.5
+
 
 
 
