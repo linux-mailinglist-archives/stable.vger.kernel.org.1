@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BEDAAE5417
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE18DAE53D4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62E881886504
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6CCC1894985
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CCC1F8722;
-	Mon, 23 Jun 2025 21:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1330E22422F;
+	Mon, 23 Jun 2025 21:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUESRquK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7OjMLyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B1170838;
-	Mon, 23 Jun 2025 21:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13BE1FECBA;
+	Mon, 23 Jun 2025 21:55:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715932; cv=none; b=A8/6swMnMv/mJQMqHUCmUOjNyJMAtrzV4h2EO0ObyxWHvfyMmJ5vgjPilN/73sDiRu53U65p3npJZLL3KJ+Gd+ECcowsfI7U7gA18Ie79dj+FmIXxWMakujgtwmSFkMqotX3nZxr0r21llUprFexfm2J5JVsjr3eLvLe+uj5Sik=
+	t=1750715753; cv=none; b=tbvzKqZTrWK1h/D9aR7zKG1jkT5Q5nKjTGNI2/PXGBOEDZ4GkB+W1a2iEFO82Zqlyr6qLVY2l8P16KNilEqAqXbiPRr4rVCvXeqcfnfRuuYQkUP1A2ZC2F8eoLR8dq238PKKi5YKSBUcV0GG88IciiXVIq42a9QSR//E2NLAKQs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715932; c=relaxed/simple;
-	bh=l98DksYqtW+A/wqOzKdSQt0qAZFdmDYup0fGNjkLxY4=;
+	s=arc-20240116; t=1750715753; c=relaxed/simple;
+	bh=i66EsRU/Z9ms5fDypiQlkHQoSgnPo5CxlFLHM4Qdn24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aVMD9FhGLSrUtwP/mUjCzMgshGCnAUPsCioj/4dp8Eha6O0iU5tv4o1ClVDnJ+8w3PS0v1aW+xnD2wKN8idd5y3ogrnebfM7SuJf8PMffWpQ9ng5Z4/0tH+jo7Vh7rS9CXaVEHZzE++qv3NjLTciUj4Bt2JJIH17WUA0kT2qm5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUESRquK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EEAC4CEEA;
-	Mon, 23 Jun 2025 21:58:51 +0000 (UTC)
+	 MIME-Version; b=XLqZXwxzNMaZuh1aznE+N50tRO8YbEfRO0cnL7EPl/Cye+AKmYM/gcNeKDhaAHqvL5cwsIUeDqv45fNPz7yJaeoGWS8AzjzPeQI0R6fIO4d8ADNpokPO/6UBOT/GeX5JvjVQZYAtQW/Wk9HV5dwWDcbns1XEZhiKOWHBbvEqvWs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7OjMLyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58F6DC4CEEA;
+	Mon, 23 Jun 2025 21:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715931;
-	bh=l98DksYqtW+A/wqOzKdSQt0qAZFdmDYup0fGNjkLxY4=;
+	s=korg; t=1750715753;
+	bh=i66EsRU/Z9ms5fDypiQlkHQoSgnPo5CxlFLHM4Qdn24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUESRquKev3GEviH8Sd6MjL4kn2VsQ3SxzoSfNVpKNAtarxJqqJX7ECV+uwKFiiTs
-	 qp/LNMAZr6kIaPOQi0yOMaxJq49bcg5Pl7qKbtksvDs5XjBhxHYLvzokqdDrCe1Zta
-	 FYovPd7/4YQQoE2abV52gYCp3hs6W9PQ/7T8tboA=
+	b=k7OjMLyyyyZ7KzVKl7b3UzBUHkRPqgQrwep7tJIVm3mjuB8iq8iLQM7XQz26vNR89
+	 elt/i/n1YKVOMXuGmwCH09Qn+p/eOCUhfwbGhf0J82GDtbUxLGDqPBqCHqi/KRqyeS
+	 FjBrjDsNofD9OrLRmeTSsKUIa8rZ7ERu4i3/3+ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 292/411] ext4: prevent stale extent cache entries caused by concurrent get es_cache
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.15 478/592] ksmbd: fix null pointer dereference in destroy_previous_session
 Date: Mon, 23 Jun 2025 15:07:16 +0200
-Message-ID: <20250623130641.003629254@linuxfoundation.org>
+Message-ID: <20250623130711.802888025@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit f22a0ef2231a7d8374bb021eb86404d0e9de5a02 ]
+commit 7ac5b66acafcc9292fb935d7e03790f2b8b2dc0e upstream.
 
-The EXT4_IOC_GET_ES_CACHE and EXT4_IOC_PRECACHE_EXTENTS currently
-invokes ext4_ext_precache() to preload the extent cache without holding
-the inode's i_rwsem. This can result in stale extent cache entries when
-competing with operations such as ext4_collapse_range() which calls
-ext4_ext_remove_space() or ext4_ext_shift_extents().
+If client set ->PreviousSessionId on kerberos session setup stage,
+NULL pointer dereference error will happen. Since sess->user is not
+set yet, It can pass the user argument as NULL to destroy_previous_session.
+sess->user will be set in ksmbd_krb5_authenticate(). So this patch move
+calling destroy_previous_session() after ksmbd_krb5_authenticate().
 
-The problem arises when ext4_ext_remove_space() temporarily releases
-i_data_sem due to insufficient journal credits. During this interval, a
-concurrent EXT4_IOC_GET_ES_CACHE or EXT4_IOC_PRECACHE_EXTENTS may cache
-extent entries that are about to be deleted. As a result, these cached
-entries become stale and inconsistent with the actual extents.
-
-Loading the extents cache without holding the inode's i_rwsem or the
-mapping's invalidate_lock is not permitted besides during the writeback.
-Fix this by holding the i_rwsem during EXT4_IOC_GET_ES_CACHE and
-EXT4_IOC_PRECACHE_EXTENTS.
-
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Link: https://patch.msgid.link/20250423085257.122685-6-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27391
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/extents.c | 2 ++
- fs/ext4/ioctl.c   | 8 +++++++-
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ fs/smb/server/smb2pdu.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index e41a6d642472b..35bc58a26f7f4 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -5041,7 +5041,9 @@ int ext4_get_es_cache(struct inode *inode, struct fiemap_extent_info *fieinfo,
- 	}
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -1607,17 +1607,18 @@ static int krb5_authenticate(struct ksmb
+ 	out_len = work->response_sz -
+ 		(le16_to_cpu(rsp->SecurityBufferOffset) + 4);
  
- 	if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) {
-+		inode_lock_shared(inode);
- 		error = ext4_ext_precache(inode);
-+		inode_unlock_shared(inode);
- 		if (error)
- 			return error;
- 		fieinfo->fi_flags &= ~FIEMAP_FLAG_CACHE;
-diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
-index 18002b0a908ce..bd90b454c6213 100644
---- a/fs/ext4/ioctl.c
-+++ b/fs/ext4/ioctl.c
-@@ -1130,8 +1130,14 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
- 		return 0;
+-	/* Check previous session */
+-	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
+-	if (prev_sess_id && prev_sess_id != sess->id)
+-		destroy_previous_session(conn, sess->user, prev_sess_id);
+-
+ 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
+ 					 out_blob, &out_len);
+ 	if (retval) {
+ 		ksmbd_debug(SMB, "krb5 authentication failed\n");
+ 		return -EINVAL;
  	}
- 	case EXT4_IOC_PRECACHE_EXTENTS:
--		return ext4_ext_precache(inode);
-+	{
-+		int ret;
++
++	/* Check previous session */
++	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
++	if (prev_sess_id && prev_sess_id != sess->id)
++		destroy_previous_session(conn, sess->user, prev_sess_id);
++
+ 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
  
-+		inode_lock_shared(inode);
-+		ret = ext4_ext_precache(inode);
-+		inode_unlock_shared(inode);
-+		return ret;
-+	}
- 	case FS_IOC_SET_ENCRYPTION_POLICY:
- 		if (!ext4_has_feature_encrypt(sb))
- 			return -EOPNOTSUPP;
--- 
-2.39.5
-
+ 	if ((conn->sign || server_conf.enforced_signing) ||
 
 
 
