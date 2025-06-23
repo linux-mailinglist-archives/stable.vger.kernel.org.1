@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-155594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04A3AAE42D2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F059AE41AB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:09:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4797D189E848
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 18BD93A5FA3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9446256C88;
-	Mon, 23 Jun 2025 13:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 749292512FC;
+	Mon, 23 Jun 2025 13:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bz8IIP3r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1u35IpA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86C012F24;
-	Mon, 23 Jun 2025 13:20:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30D782512DD;
+	Mon, 23 Jun 2025 13:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684830; cv=none; b=AeLjRKZ0yHE1BFi8aNcXJS0jtdWhmbx8zyHT5fs8yqEJhY3JK+Ju0P94Zjbjf1CsP4dCz1W4VEiyXY9OsAxWpVuCQTpeXy07hpiUcbPptpWj6TuZeGVbi0P2xwhXKQnxddf/CzXdOt6UyYiH2hZHd65EH/J1hxK3vUHtNd4ydKA=
+	t=1750684174; cv=none; b=pp3a0gK4XRBi5WEl7LwPXzqfHPJTnSeKXxKm2u0iv/lUl2yO3NZnc7LdbLl1MF7C51zXvtgZj0c8ySKnKPyGecKl5LYlB7IVNSpKMB3OTCWUmt8+UEsiLOopSshwgl3m/mHi+tr7Wli51XKKA9dW+2HZQ83vrsRgTbfnfgfGt2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684830; c=relaxed/simple;
-	bh=Of1vnj2kfxPCYMYhHbAzVLPqglF4jhCQoBXzdGcopDU=;
+	s=arc-20240116; t=1750684174; c=relaxed/simple;
+	bh=uHKSqC4o+FVgpVkqX3ruBFd1vaffxZZDXZAxHNMxo2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TUnQCL9D37XdN50wT5xEP7DXs22EQe58JDrSPNPfTku0PFPqd21aoVj7ivlRFjBl2/AtXOKW9JUBudq7UANLza/rJ3fKx8+MpPE3a78smEFZJkiS0rgoZtf/nftrH2NirjN1X4wNmFnck/nkI6BgPWQPziDR9x1FNQgc9fgmqUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bz8IIP3r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAC7C4CEEA;
-	Mon, 23 Jun 2025 13:20:29 +0000 (UTC)
+	 MIME-Version; b=C8HRR8Igrm/1AMOlEwV1Cad++rF7ZyFxSEZx+X0SDjjHjPcTUSxHv6nkvB1n8OPtWI/3us7hbtS6KPUKXIFmQ2KmelvalVsd79DI8KtaNjLXqkysFnkIJAR6/LtUpEJ9euYKpB1JMvVapZLoI7sUYe6LmlMOwMoEMLYDo36qYGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1u35IpA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F586C4CEEA;
+	Mon, 23 Jun 2025 13:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684830;
-	bh=Of1vnj2kfxPCYMYhHbAzVLPqglF4jhCQoBXzdGcopDU=;
+	s=korg; t=1750684173;
+	bh=uHKSqC4o+FVgpVkqX3ruBFd1vaffxZZDXZAxHNMxo2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bz8IIP3rLNKFryynKrJoTxlulAZ5QgQJQJdAbS0Uf4Kd9c9oWEIXfRn4p9XlP25+X
-	 iTpsPjpdfgIiXk70ImEBE+58EaskzApZmxLDBK13bofzw/UOPtaYLfkVKkH3DCkST7
-	 0G7UrZ55RMpccD5Gy+trmXGUl0KecubQ8T3LDueQ=
+	b=1u35IpA8evvgCqU2w3MAz+P3ElPX8S+RygZ3X80sjAy/vaiIkEakjPba4mX1ggDyT
+	 c9NTwFJUG6W4lwSWkUFAzRZp3vDshOjAQ+iOyOaohNN2CiJpz7izO0eqM1imrr3fgN
+	 +/xtOMqqyfoeRcwQ0hR9XObfa40kiHLVClWIMv4E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.15 180/592] PCI: cadence-ep: Correct PBA offset in .set_msix() callback
+	Joel Becker <jlbec@evilplan.org>,
+	Breno Leitao <leitao@debian.org>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: [PATCH 6.12 001/414] configfs: Do not override creating attribute file failure in populate_attrs()
 Date: Mon, 23 Jun 2025 15:02:18 +0200
-Message-ID: <20250623130704.561758169@linuxfoundation.org>
+Message-ID: <20250623130642.057039674@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit c8bcb01352a86bc5592403904109c22b66bd916e upstream.
+commit f830edbae247b89228c3e09294151b21e0dc849c upstream.
 
-While cdns_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
-the calculation of the PBA offset is wrong because it calculates space for
-(N-1) entries instead of N.
+populate_attrs() may override failure for creating attribute files
+by success for creating subsequent bin attribute files, and have
+wrong return value.
 
-This results in the following QEMU error when using PCI passthrough on a
-device which relies on the PCI endpoint subsystem:
+Fix by creating bin attribute files under successfully creating
+attribute files.
 
-  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
-
-Fix the calculation of PBA offset in the MSI-X capability.
-
-[bhelgaas: more specific subject and commit log]
-
-Fixes: 3ef5d16f50f8 ("PCI: cadence: Add MSI-X support to Endpoint driver")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 03607ace807b ("configfs: implement binary attributes")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250514074313.283156-10-cassel@kernel.org
+Reviewed-by: Joel Becker <jlbec@evilplan.org>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250507-fix_configfs-v3-2-fe2d96de8dc4@quicinc.com
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/configfs/dir.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -292,13 +292,14 @@ static int cdns_pcie_ep_set_msix(struct
- 	struct cdns_pcie *pcie = &ep->pcie;
- 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
- 	u32 val, reg;
-+	u16 actual_interrupts = interrupts + 1;
- 
- 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
- 
- 	reg = cap + PCI_MSIX_FLAGS;
- 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
--	val |= interrupts;
-+	val |= interrupts; /* 0's based value */
- 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
- 
- 	/* Set MSI-X BAR and offset */
-@@ -308,7 +309,7 @@ static int cdns_pcie_ep_set_msix(struct
- 
- 	/* Set PBA BAR and offset.  BAR must match MSI-X BAR */
- 	reg = cap + PCI_MSIX_PBA;
--	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
-+	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
- 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
- 
- 	return 0;
+--- a/fs/configfs/dir.c
++++ b/fs/configfs/dir.c
+@@ -600,7 +600,7 @@ static int populate_attrs(struct config_
+ 				break;
+ 		}
+ 	}
+-	if (t->ct_bin_attrs) {
++	if (!error && t->ct_bin_attrs) {
+ 		for (i = 0; (bin_attr = t->ct_bin_attrs[i]) != NULL; i++) {
+ 			if (ops && ops->is_bin_visible && !ops->is_bin_visible(item, bin_attr, i))
+ 				continue;
 
 
 
