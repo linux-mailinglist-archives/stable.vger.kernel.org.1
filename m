@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-158159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3ABAE5768
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:29:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6ADAE554F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 618843B2729
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:26:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A9884C322C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EACC223DF0;
-	Mon, 23 Jun 2025 22:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60F5A223DEE;
+	Mon, 23 Jun 2025 22:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKGUC3OB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQ3681j5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CBA62222B2;
-	Mon, 23 Jun 2025 22:27:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18EF11FC0E3;
+	Mon, 23 Jun 2025 22:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717629; cv=none; b=UbrRMfKaOFVFQeLuExD/Cyg7e9ebJfLs8pYd5+gTIuTmbBo3PeQp08LQceZdy4+kLXgL8gtT5PR4lNrC6n6uHKKoJW8YkeEtDk1RaszzMSFBJCh9xaNh77Yd2g4ze1ZEo+rcv4hw881itKh6omuQM5XZkjl7JhWOttNzOShWFJs=
+	t=1750716564; cv=none; b=eo/Ydw8vOUZDd2FRjfPxNfeRmy+lwnucpItAJJKeNId2CVMMFCTRBUnkA4vahsZhCNz06FgOFgsYDhu/HBXJ73hi76+K2z/hRgNfhmuAdn8HuHCPDH5Sys3diUb2vXGgw02pSRRR6QvS7a1JzyMDrzZ01lRAUCYdWm0B2ofvsHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717629; c=relaxed/simple;
-	bh=guXMzAIUl2LDgBKYb3eR+RirKViZEsE/+78wREkywHA=;
+	s=arc-20240116; t=1750716564; c=relaxed/simple;
+	bh=8ciigWhWOj8bz3bpQBAicJ6slVOjzhHYE8Q+qMwO9R8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m3C0JBI558TL/dydKxlRa6vYMjLtOGTjFsv+LgNOxNFH0Rtw9DaG4Xw6CCvHAxWTPVSV/jznXyHoQeEQ82uwsvsncqDT/pawY2JyIfQNvsTAwna4gU5lIxT+QcCeiqSfxheVWt0zn1ar8bxiyRuexu2NGq4wOBScNBW/zcR7fZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKGUC3OB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9EBFC4CEEA;
-	Mon, 23 Jun 2025 22:27:08 +0000 (UTC)
+	 MIME-Version; b=pmevC83+S+DCPIC0++Y6M7wwZN3UChLrh4FfdYv17W4pFCe2AsYhhGHI++Po7v+iSGsSjfLml6Haka5WHQnHH12dV9xZ1cnYi57j+Bbv6dS6++Mc+0I4NiQLtnmYhPPTb3ylSYrGPS9F0hR6dP7q4twkRQ0nIRbVd/3pOfq/SKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQ3681j5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AA6C4CEF1;
+	Mon, 23 Jun 2025 22:09:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717629;
-	bh=guXMzAIUl2LDgBKYb3eR+RirKViZEsE/+78wREkywHA=;
+	s=korg; t=1750716564;
+	bh=8ciigWhWOj8bz3bpQBAicJ6slVOjzhHYE8Q+qMwO9R8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKGUC3OB05/XcgVVs08sVif+zCKZuISqZ/i6Ez9GXLDZgVLH5Y1ln46U9mI2RLMPo
-	 IF7VDOqLqLZoHcg2795snvB3AyKMfJLyLT6FVicIft8jNSNkMVdhbkmeX2GQOetdrv
-	 /9Usmi1jVejTyIAtkaX80RgcqpEFsX+AbJm3G1ag=
+	b=JQ3681j5uP5AKQIsj4oBed8TKDdc3vJO5zfQnL9hk7JuNAnj6Mf4uhu2fngXmvB2j
+	 GZKdmSYrKl9WLrPCTGf8OQGERpQ551H9Wh66GAESJREhT5LnyfY5Ng0pM5Y4neu+i0
+	 nhKH+Js6dPBgv6UWY5GPGDZFigphJrY3uJlZZyJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Narayana Murty N <nnmlinux@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Ganesh Goudar <ganeshgr@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 440/508] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
+	Tony Lindgren <tony@atomide.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Andreas Kemnade <andreas@kemnade.info>
+Subject: [PATCH 5.15 341/411] Revert "bus: ti-sysc: Probe for l4_wkup and l4_cfg interconnect devices first"
 Date: Mon, 23 Jun 2025 15:08:05 +0200
-Message-ID: <20250623130655.988653211@linuxfoundation.org>
+Message-ID: <20250623130642.233966566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +64,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Narayana Murty N <nnmlinux@linux.ibm.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
+[ Upstream commit 36305857b1ead8f6ca033a913162ebc09bee0b43 ]
 
-VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
-platforms due to missing host-side PE bridge reconfiguration. In the
-current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
-bridge reconfiguration for native host devices, but skips it entirely for
-PEs managed through VFIO in guest passthrough scenarios.
+This reverts commit 4700a00755fb5a4bb5109128297d6fd2d1272ee6.
 
-This leads to incomplete EEH recovery when a PCI error affects a
-passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
-EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
-bridge reconfiguration step is silently bypassed. As a result, the PE's
-config space is not fully restored, causing subsequent config space access
-failures or EEH freeze-on-access errors inside the guest.
+It breaks target-module@2b300050 ("ti,sysc-omap2") probe on AM62x in a case
+when minimally-configured system tries to network-boot:
 
-This patch fixes the issue by ensuring that eeh_pe_configure() always
-invokes the platform's configure_bridge() callback (e.g.,
-pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
-that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
-on the host side, restoring the PE's configuration space after an EEH
-event.
+[    6.888776] probe of 2b300050.target-module returned 517 after 258 usecs
+[   17.129637] probe of 2b300050.target-module returned 517 after 708 usecs
+[   17.137397] platform 2b300050.target-module: deferred probe pending: (reason unknown)
+[   26.878471] Waiting up to 100 more seconds for network.
 
-This fix is essential for reliable EEH recovery in QEMU/KVM guests using
-VFIO PCI passthrough on PowerNV and pseries systems.
+There are minimal configurations possible when the deferred device is not
+being probed any more (because everything else has been successfully
+probed) and deferral lists are not processed any more.
 
-Tested with:
-- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
-- Injected EEH errors with pseries EEH errinjct tool on host, recovery
-  verified on qemu guest.
-- Verified successful config space access and CAP_EXP DevCtl restoration
-  after recovery
+Stable mmc enumeration can be achieved by filling /aliases node properly
+(4700a00755fb commit's rationale).
 
-Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
-Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
+After revert:
+
+[    9.006816] IP-Config: Complete:
+[    9.010058]      device=lan0, ...
+
+Tested-by: Andreas Kemnade <andreas@kemnade.info> # GTA04, Panda, BT200
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://lore.kernel.org/r/20250401090643.2776793-1-alexander.sverdlin@siemens.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/eeh.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bus/ti-sysc.c | 49 -------------------------------------------
+ 1 file changed, 49 deletions(-)
 
-diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
-index ab316e155ea9f..2e286bba2f645 100644
---- a/arch/powerpc/kernel/eeh.c
-+++ b/arch/powerpc/kernel/eeh.c
-@@ -1516,6 +1516,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
- 	/* Invalid PE ? */
- 	if (!pe)
- 		return -ENODEV;
-+	else
-+		ret = eeh_ops->configure_bridge(pe);
- 
- 	return ret;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 05ae577758539..20e0907234855 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -687,51 +687,6 @@ static int sysc_parse_and_check_child_range(struct sysc *ddata)
+ 	return 0;
  }
+ 
+-/* Interconnect instances to probe before l4_per instances */
+-static struct resource early_bus_ranges[] = {
+-	/* am3/4 l4_wkup */
+-	{ .start = 0x44c00000, .end = 0x44c00000 + 0x300000, },
+-	/* omap4/5 and dra7 l4_cfg */
+-	{ .start = 0x4a000000, .end = 0x4a000000 + 0x300000, },
+-	/* omap4 l4_wkup */
+-	{ .start = 0x4a300000, .end = 0x4a300000 + 0x30000,  },
+-	/* omap5 and dra7 l4_wkup without dra7 dcan segment */
+-	{ .start = 0x4ae00000, .end = 0x4ae00000 + 0x30000,  },
+-};
+-
+-static atomic_t sysc_defer = ATOMIC_INIT(10);
+-
+-/**
+- * sysc_defer_non_critical - defer non_critical interconnect probing
+- * @ddata: device driver data
+- *
+- * We want to probe l4_cfg and l4_wkup interconnect instances before any
+- * l4_per instances as l4_per instances depend on resources on l4_cfg and
+- * l4_wkup interconnects.
+- */
+-static int sysc_defer_non_critical(struct sysc *ddata)
+-{
+-	struct resource *res;
+-	int i;
+-
+-	if (!atomic_read(&sysc_defer))
+-		return 0;
+-
+-	for (i = 0; i < ARRAY_SIZE(early_bus_ranges); i++) {
+-		res = &early_bus_ranges[i];
+-		if (ddata->module_pa >= res->start &&
+-		    ddata->module_pa <= res->end) {
+-			atomic_set(&sysc_defer, 0);
+-
+-			return 0;
+-		}
+-	}
+-
+-	atomic_dec_if_positive(&sysc_defer);
+-
+-	return -EPROBE_DEFER;
+-}
+-
+ static struct device_node *stdout_path;
+ 
+ static void sysc_init_stdout_path(struct sysc *ddata)
+@@ -957,10 +912,6 @@ static int sysc_map_and_check_registers(struct sysc *ddata)
+ 	if (error)
+ 		return error;
+ 
+-	error = sysc_defer_non_critical(ddata);
+-	if (error)
+-		return error;
+-
+ 	sysc_check_children(ddata);
+ 
+ 	if (!of_get_property(np, "reg", NULL))
 -- 
 2.39.5
 
