@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-156973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 657BCAE51EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:47 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A978AE4FA7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:18:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448361B64494
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:39:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A35027AD335
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:15:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2910221FC7;
-	Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 916B92222B7;
+	Mon, 23 Jun 2025 21:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="crVEA4Fm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D8DbOaha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBE821D3DD;
-	Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DAE61F3FF8;
+	Mon, 23 Jun 2025 21:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714723; cv=none; b=JvKHHwG/NBCZXRM6VKhmkB1D9zUvqsGKr/4g3JQ2ch6SXSIvqZkLxoER07+HGVy7UJ1AwNHZ6dxkvIIEXGp9wCHOYS7FkZ6DIrcG/EC0Mej4ufDH6Lwb47IhV+jiEhO+YesDbz/YktHxjdH1kjrtbg9ybKqTqAvKRJijORx6cIk=
+	t=1750713385; cv=none; b=EOnk0T6X9bqgr8xVlB/py/WDVMsdfrG/pPqUoHEgLz+geJpDWOalXPA0p40s2BxnCtid4poiSM/E7fa9oDigk3dPbJdvixZ9prcId4daXke2qcWNWa088W8mqAOjFtFFuBcL/whcenEf+m+StfhHwHpFQRadioDQU/oFE+Qu8hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714723; c=relaxed/simple;
-	bh=VeFn3t+SmkhrtHvnFi8EyDdQIgSP9soRyvQkbVhzCME=;
+	s=arc-20240116; t=1750713385; c=relaxed/simple;
+	bh=uYHED6Q58Ms3z8cFG+iJ3rTOaN2R+rTzZM7Gpetv02Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b6Tlg0dLkNOUNRCsV2ZBjNyik5WlcsjWIfiLmaz8vTJn6DL5iV9oasWXnknHRAT5rdur591aWOmM2YDhxPgKxyK/gO3t5yZAbW0UWSZI/TVZ43o7oSjBsWcgbmoCRpK0pqYj1lAm7WVXG3AbmJhF3JiB6rRkgiRPItnL5qRw3AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=crVEA4Fm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256B2C4CEEA;
-	Mon, 23 Jun 2025 21:38:43 +0000 (UTC)
+	 MIME-Version; b=Lor9CpJh79FuvouBf2br+prXmZn0zmBOTmPL1qh0CDaXJp+TeFe5BM70KyAzQI0hgJAIIhv1DUOFv61v1DPLsCGFITbRj6QQIzYfN8A7nXGiv7rtCTgEB+un2p2f52s3fNQztw7zgmXoF3VPyYdZvhArnUVEKxDa5becOXB/wu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D8DbOaha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0A3EC4CEEA;
+	Mon, 23 Jun 2025 21:16:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714723;
-	bh=VeFn3t+SmkhrtHvnFi8EyDdQIgSP9soRyvQkbVhzCME=;
+	s=korg; t=1750713385;
+	bh=uYHED6Q58Ms3z8cFG+iJ3rTOaN2R+rTzZM7Gpetv02Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=crVEA4FmLnDcP9O1wJpZNKrorbXTV08qRxna5lYtyiccFmcStHzIPi/WxloJGQJFZ
-	 YvDdLTd26nYZpQTEZw7BlqXGzmQoTRsUoahl1yV7r4CP8zxXNE7G2Z4OAojhOIRsBQ
-	 JDkznn+8vxjWwI+irCoFeP39ebAN/f/zm2ET+u+I=
+	b=D8DbOahaWLqsIiPeZ0B5DWJLPM5MCi1UQ2STwPgTxcrdnIoayIb77ZIqx2S5DKFCV
+	 +ajDmQyc13muDurYkuE/8D7OkIYr5WaqMblUGkmDXNrzXeFWisbA7ZLkOZ1BUOQHzG
+	 rx/FVuQapXrffSbT0zE+mAZ6zZXN/7JIDJKWk7NM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.12 126/414] dm-verity: fix a memory leak if some arguments are specified multiple times
-Date: Mon, 23 Jun 2025 15:04:23 +0200
-Message-ID: <20250623130645.212639121@linuxfoundation.org>
+	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Michal Kubiak <michal.kubiak@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Jesse Brandeburg <jbrandeburg@cloudflare.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Saritha Sanigani <sarithax.sanigani@intel.com>
+Subject: [PATCH 5.15 120/411] ice: create new Tx scheduler nodes for new queues only
+Date: Mon, 23 Jun 2025 15:04:24 +0200
+Message-ID: <20250623130636.569406735@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,114 +68,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Michal Kubiak <michal.kubiak@intel.com>
 
-commit 66be40a14e496689e1f0add50118408e22c96169 upstream.
+[ Upstream commit 6fa2942578472c9cab13a8fc1dae0d830193e0a1 ]
 
-If some of the arguments "check_at_most_once", "ignore_zero_blocks",
-"use_fec_from_device", "root_hash_sig_key_desc" were specified more than
-once on the target line, a memory leak would happen.
+The current implementation of the Tx scheduler tree attempts
+to create nodes for all Tx queues, ignoring the fact that some
+queues may already exist in the tree. For example, if the VSI
+already has 128 Tx queues and the user requests for 16 new queues,
+the Tx scheduler will compute the tree for 272 queues (128 existing
+queues + 144 new queues), instead of 144 queues (128 existing queues
+and 16 new queues).
+Fix that by modifying the node count calculation algorithm to skip
+the queues that already exist in the tree.
 
-This commit fixes the memory leak. It also fixes error handling in
-verity_verify_sig_parse_opt_args.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5513b920a4f7 ("ice: Update Tx scheduler tree for VSI multi-Tx queue support")
+Reviewed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Michal Kubiak <michal.kubiak@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Jesse Brandeburg <jbrandeburg@cloudflare.com>
+Tested-by: Saritha Sanigani <sarithax.sanigani@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-verity-fec.c        |    4 ++++
- drivers/md/dm-verity-target.c     |    8 +++++++-
- drivers/md/dm-verity-verify-sig.c |   17 +++++++++++++----
- 3 files changed, 24 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_sched.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/md/dm-verity-fec.c
-+++ b/drivers/md/dm-verity-fec.c
-@@ -604,6 +604,10 @@ int verity_fec_parse_opt_args(struct dm_
- 	(*argc)--;
- 
- 	if (!strcasecmp(arg_name, DM_VERITY_OPT_FEC_DEV)) {
-+		if (v->fec->dev) {
-+			ti->error = "FEC device already specified";
-+			return -EINVAL;
-+		}
- 		r = dm_get_device(ti, arg_value, BLK_OPEN_READ, &v->fec->dev);
- 		if (r) {
- 			ti->error = "FEC device lookup failed";
---- a/drivers/md/dm-verity-target.c
-+++ b/drivers/md/dm-verity-target.c
-@@ -1080,6 +1080,9 @@ static int verity_alloc_most_once(struct
+diff --git a/drivers/net/ethernet/intel/ice/ice_sched.c b/drivers/net/ethernet/intel/ice/ice_sched.c
+index 209e3a9d9b7ab..7446ef141410e 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sched.c
++++ b/drivers/net/ethernet/intel/ice/ice_sched.c
+@@ -1576,16 +1576,16 @@ ice_sched_get_agg_node(struct ice_port_info *pi, struct ice_sched_node *tc_node,
+ /**
+  * ice_sched_calc_vsi_child_nodes - calculate number of VSI child nodes
+  * @hw: pointer to the HW struct
+- * @num_qs: number of queues
++ * @num_new_qs: number of new queues that will be added to the tree
+  * @num_nodes: num nodes array
+  *
+  * This function calculates the number of VSI child nodes based on the
+  * number of queues.
+  */
+ static void
+-ice_sched_calc_vsi_child_nodes(struct ice_hw *hw, u16 num_qs, u16 *num_nodes)
++ice_sched_calc_vsi_child_nodes(struct ice_hw *hw, u16 num_new_qs, u16 *num_nodes)
  {
- 	struct dm_target *ti = v->ti;
+-	u16 num = num_qs;
++	u16 num = num_new_qs;
+ 	u8 i, qgl, vsil;
  
-+	if (v->validated_blocks)
-+		return 0;
-+
- 	/* the bitset can only handle INT_MAX blocks */
- 	if (v->data_blocks > INT_MAX) {
- 		ti->error = "device too large to use check_at_most_once";
-@@ -1103,6 +1106,9 @@ static int verity_alloc_zero_digest(stru
- 	struct dm_verity_io *io;
- 	u8 *zero_data;
- 
-+	if (v->zero_digest)
-+		return 0;
-+
- 	v->zero_digest = kmalloc(v->digest_size, GFP_KERNEL);
- 
- 	if (!v->zero_digest)
-@@ -1537,7 +1543,7 @@ static int verity_ctr(struct dm_target *
- 			goto bad;
+ 	qgl = ice_sched_get_qgrp_layer(hw);
+@@ -1833,8 +1833,9 @@ ice_sched_update_vsi_child_nodes(struct ice_port_info *pi, u16 vsi_handle,
+ 			return status;
  	}
  
--	/* Root hash signature is  a optional parameter*/
-+	/* Root hash signature is an optional parameter */
- 	r = verity_verify_root_hash(root_hash_digest_to_validate,
- 				    strlen(root_hash_digest_to_validate),
- 				    verify_args.sig,
---- a/drivers/md/dm-verity-verify-sig.c
-+++ b/drivers/md/dm-verity-verify-sig.c
-@@ -71,9 +71,14 @@ int verity_verify_sig_parse_opt_args(str
- 				     const char *arg_name)
- {
- 	struct dm_target *ti = v->ti;
--	int ret = 0;
-+	int ret;
- 	const char *sig_key = NULL;
- 
-+	if (v->signature_key_desc) {
-+		ti->error = DM_VERITY_VERIFY_ERR("root_hash_sig_key_desc already specified");
-+		return -EINVAL;
-+	}
+-	if (new_numqs)
+-		ice_sched_calc_vsi_child_nodes(hw, new_numqs, new_num_nodes);
++	ice_sched_calc_vsi_child_nodes(hw, new_numqs - prev_numqs,
++				       new_num_nodes);
 +
- 	if (!*argc) {
- 		ti->error = DM_VERITY_VERIFY_ERR("Signature key not specified");
- 		return -EINVAL;
-@@ -83,14 +88,18 @@ int verity_verify_sig_parse_opt_args(str
- 	(*argc)--;
- 
- 	ret = verity_verify_get_sig_from_key(sig_key, sig_opts);
--	if (ret < 0)
-+	if (ret < 0) {
- 		ti->error = DM_VERITY_VERIFY_ERR("Invalid key specified");
-+		return ret;
-+	}
- 
- 	v->signature_key_desc = kstrdup(sig_key, GFP_KERNEL);
--	if (!v->signature_key_desc)
-+	if (!v->signature_key_desc) {
-+		ti->error = DM_VERITY_VERIFY_ERR("Could not allocate memory for signature key");
- 		return -ENOMEM;
-+	}
- 
--	return ret;
-+	return 0;
- }
- 
- /*
+ 	/* Keep the max number of queue configuration all the time. Update the
+ 	 * tree only if number of queues > previous number of queues. This may
+ 	 * leave some extra nodes in the tree if number of queues < previous
+-- 
+2.39.5
+
 
 
 
