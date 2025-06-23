@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157212-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC163AE501F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97A99AE52FB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:49:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 91C747AD60E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:18:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 297B9177CA3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 132211E521E;
-	Mon, 23 Jun 2025 21:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB7E53FD4;
+	Mon, 23 Jun 2025 21:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iryCWGcF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wOI8j+8g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E807482;
-	Mon, 23 Jun 2025 21:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0144315A;
+	Mon, 23 Jun 2025 21:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713594; cv=none; b=W+ZUzvwWLd2Y27W712TgK8Qi0dRp02jhCaGvTdk7an/7f4cPP+Xe8IpGz/3rJzCxjpCmOaZkzs/Jmc5VT0YkgOF53rN9xUJ9HUTLMFs1Rsm12a4+IjQLsNqY0QNfqmb0+xku5W42wJ1TwSqxjHJ+bLKHQbulVgAE9IRgVnIIMkY=
+	t=1750715314; cv=none; b=WADmUCq0olwrYS+A2GxN5AgUO+p4yigc9yH6xIEqhTksO13Usjz0YDItXXoQTEoxQ+FpohMJ4IhNhQYE5Rc5k8l90GppdPTY0xR83hDeuSdWrlu0YIyroaAQ9WpAdPJQ4Pv45N5SQuP28CuAPDB5GyTIR8nvGactDAh0fxxewmc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713594; c=relaxed/simple;
-	bh=YViEm5A7eGaBFKqQBHnsRYgC56FbCyQHsHKqxrwm9uM=;
+	s=arc-20240116; t=1750715314; c=relaxed/simple;
+	bh=qa2yeibhODCCbiZXjqxOwIC3vJ1krdzEqQ+/IQzhmIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfbYsGm6crf9j4YhBOTadXyFsGAXw7n1mS3GoFGNcSGBsY8A3FRjGq3wyu/rpxF+tAzyhPp8LQQIW/Mkl34qG11/R0rH0NvOlFqnTNt9hGK4aTYsxv2KS4rCkY0HyZ9FSL1j+XUW3PjOEc4JSo4vH6rqNSLCvZEo2nFY2RDsY64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iryCWGcF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5ED98C4CEEA;
-	Mon, 23 Jun 2025 21:19:54 +0000 (UTC)
+	 MIME-Version; b=fhgwj9d/Ezu80fjXhmdfSKrbmucO4tcPeBurFdYILwUG4vZHwDLyE3fXMyOK+KKRh86nk6w6fnR8ijIw48IrPilIepmxPKjLY9Ba/sDuRq+rNJgDRHUdrOVDrd2m+0/evOPMJWug8XT+MsCgCsQsraEnMVOdaS+FTtCM4s/FY+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wOI8j+8g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01974C4CEEA;
+	Mon, 23 Jun 2025 21:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713594;
-	bh=YViEm5A7eGaBFKqQBHnsRYgC56FbCyQHsHKqxrwm9uM=;
+	s=korg; t=1750715314;
+	bh=qa2yeibhODCCbiZXjqxOwIC3vJ1krdzEqQ+/IQzhmIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iryCWGcFHtOuBvOHEltk7IByKmtVpocqcl1f3v3ScovVL6Z0xPtZrNwBQ2koISbDl
-	 Zgc63LKQPHlndzII4e1z+Wrv9J5s9oLpQt+JWfuWJlG1HH0j2eeeQSZdiPwszJ5065
-	 A9T2VznxKsDa6TUiHtrpyKlIcFbB4DcVXQBbMRfU=
+	b=wOI8j+8gV9ufGbVEAtHWTWtqh3l8u9W05JYJWtVSlGjld2DbZGLKgBLvm+c+ZYL7G
+	 fERoP0g4aj1Lsoutay/ESWQ9ujdTm3dTgGAEOHFZMicHd7YpREJ1/6g3yp3NsIC4xh
+	 gI8dMA1WepQEK9Ppx4FkRe2APSrf5oQKkNJ8lJ78=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 128/411] fix propagation graph breakage by MOVE_MOUNT_SET_GROUP move_mount(2)
+Subject: [PATCH 6.1 227/508] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
 Date: Mon, 23 Jun 2025 15:04:32 +0200
-Message-ID: <20250623130636.788800879@linuxfoundation.org>
+Message-ID: <20250623130650.847043212@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,62 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit d8cc0362f918d020ca1340d7694f07062dc30f36 ]
+[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
 
-9ffb14ef61ba "move_mount: allow to add a mount into an existing group"
-breaks assertions on ->mnt_share/->mnt_slave.  For once, the data structures
-in question are actually documented.
+In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
+recovery flow, but we still unconditionally call enable again in
+ath10k_snoc_hif_start().
 
-Documentation/filesystem/sharedsubtree.rst:
-        All vfsmounts in a peer group have the same ->mnt_master.  If it is
-	non-NULL, they form a contiguous (ordered) segment of slave list.
+We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
+before hif_start() is called, so instead check the
+ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
+recovery.
 
-do_set_group() puts a mount into the same place in propagation graph
-as the old one.  As the result, if old mount gets events from somewhere
-and is not a pure event sink, new one needs to be placed next to the
-old one in the slave list the old one's on.  If it is a pure event
-sink, we only need to make sure the new one doesn't end up in the
-middle of some peer group.
+This fixes unbalanced IRQ enable splats that happen after recovering from
+a crash.
 
-"move_mount: allow to add a mount into an existing group" ends up putting
-the new one in the beginning of list; that's definitely not going to be
-in the middle of anything, so that's fine for case when old is not marked
-shared.  In case when old one _is_ marked shared (i.e. is not a pure event
-sink), that breaks the assumptions of propagation graph iterators.
-
-Put the new mount next to the old one on the list - that does the right thing
-in "old is marked shared" case and is just as correct as the current behaviour
-if old is not marked shared (kudos to Pavel for pointing that out - my original
-suggested fix changed behaviour in the "nor marked" case, which complicated
-things for no good reason).
-
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Fixes: 9ffb14ef61ba ("move_mount: allow to add a mount into an existing group")
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/namespace.c b/fs/namespace.c
-index a99a060e89316..76a1cf75457be 100644
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -2765,7 +2765,7 @@ static int do_set_group(struct path *from_path, struct path *to_path)
- 	if (IS_MNT_SLAVE(from)) {
- 		struct mount *m = from->mnt_master;
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 4b7266d928470..b43658b016844 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -936,7 +936,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
  
--		list_add(&to->mnt_slave, &m->mnt_slave_list);
-+		list_add(&to->mnt_slave, &from->mnt_slave);
- 		to->mnt_master = m;
- 	}
+ 	ath10k_core_napi_enable(ar);
+-	ath10k_snoc_irq_enable(ar);
++	/* IRQs are left enabled when we restart due to a firmware crash */
++	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
++		ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
  
+ 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
 -- 
 2.39.5
 
