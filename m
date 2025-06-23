@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-156549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B5A3AE4FFA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2FFCAE4EFE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:11:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E6FE517FEF7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7F2711B60381
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D6312628C;
-	Mon, 23 Jun 2025 21:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8636C202983;
+	Mon, 23 Jun 2025 21:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qK4WAB0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dJhTjESI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2EA2C9D;
-	Mon, 23 Jun 2025 21:21:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D63270838;
+	Mon, 23 Jun 2025 21:11:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713685; cv=none; b=b4XZHH5MvUKnC81p+nIY8rfwR6ikHwhtc8l+5DL4lh6PmbQVqUZiwsWCXQpAeaDK5RjmnGMvdPupqGsQcek79UWy1mBdeb+weDNOanozXI/2aOy2WJIW0ycKX2ndOGs6xVXEtz1RR/ZbdAl9iUfOkLosETP7R847j30Y7KNdFmw=
+	t=1750713079; cv=none; b=WOnachATCQBakMQWgYkYqq0WrD6FB/WipDvga7DNQmUKbrFsu0pVpyKFoVfjVEACjOcOMfmISjO+aEV3C+7zEFc0nZSKhqliuxEChWJdUL55V88S1mIdHaKwUVuQxCT50E6Mvh4lASgqEXgZv7gVkHO9uGaxOwCO+GCJvzLu/jc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713685; c=relaxed/simple;
-	bh=MwYcWaREeongA1RsS/wbkzS1EfB+n57a0vrNm1LQgt4=;
+	s=arc-20240116; t=1750713079; c=relaxed/simple;
+	bh=hyUIoXISDd5BspxcGEYnh1ZsCHSprQcBIrpUa2UlTLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mAITBxEU7KWG8EFYQ8RJoe1KlkioGKKWFt8wtxbos1F9htiQ8OfCog5dGvE/s8oWJ3h1vTwh+KcBRR5TiG12ADiaQu8PkM19KHDyLqE/WkYiiyJsmdHqCES108pliC6nsvUaEavNP0iSVK7uPba8NFrcsXC/ve0H5qc4zvSfHs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qK4WAB0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF758C4CEEA;
-	Mon, 23 Jun 2025 21:21:24 +0000 (UTC)
+	 MIME-Version; b=e8C6U3gNRqCHT/hUFx7A0r/IRF/5PIeCcvamtFcBhb/Ah35PEAZAy8sWUFEw/FSV4wJnAi4MJQ0+ycM0vDsl1wZmJ8notxHjyUytH9CC39jCObgDdy6Un2hN3/2uQKIU/niL/AoJs5VGArggA2m9yqbTh9TOUD9ZgvygwhJPjeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dJhTjESI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7B96C4CEEA;
+	Mon, 23 Jun 2025 21:11:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713685;
-	bh=MwYcWaREeongA1RsS/wbkzS1EfB+n57a0vrNm1LQgt4=;
+	s=korg; t=1750713079;
+	bh=hyUIoXISDd5BspxcGEYnh1ZsCHSprQcBIrpUa2UlTLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qK4WAB0fqqh/izzH6e5eiccd/fJTYoWsEaA8YO32H7w3soAUCnTI1CNrMriKHXoiQ
-	 pW2wHnFCC08r8xisGUZTKaB0djYq1HtOyoKZFlPDcBebAqEyFlxqjb9u85gQJAiFn/
-	 +cwMsbYRzsKEiZ0hTqirJ+MMl3q2t5CEttrTdCPY=
+	b=dJhTjESIYFWkJdtqYx4OpqDMDeYJwD3h1VmE/2eU+JKgdzpq2I6S9BungtboOojBS
+	 vrpNsIljkE6zb9UrAaO/kw3XgPy+fPwohb5PtIFEeDiPylH32wgbk4OJrweBgB4KjS
+	 G6/VqchSaAXFboGMwn24Yn+pkolYGDdBk/RYVoH0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinliang Zheng <alexjlzheng@tencent.com>,
-	MengEn Sun <mengensun@tencent.com>,
-	Andrea Righi <andrea@betterlinux.com>,
-	Fenggaung Wu <fengguang.wu@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 084/290] mm: fix ratelimit_pages update error in dirty_ratio_handler()
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>
+Subject: [PATCH 5.10 144/355] kbuild: Update assembler calls to use proper flags and language target
 Date: Mon, 23 Jun 2025 15:05:45 +0200
-Message-ID: <20250623130629.513585337@linuxfoundation.org>
+Message-ID: <20250623130631.040649977@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +64,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinliang Zheng <alexjlzheng@tencent.com>
+From: Nick Desaulniers <ndesaulniers@google.com>
 
-commit f83f362d40ccceb647f7d80eb92206733d76a36b upstream.
+commit d5c8d6e0fa61401a729e9eb6a9c7077b2d3aebb0 upstream.
 
-In dirty_ratio_handler(), vm_dirty_bytes must be set to zero before
-calling writeback_set_ratelimit(), as global_dirty_limits() always
-prioritizes the value of vm_dirty_bytes.
+as-instr uses KBUILD_AFLAGS, but as-option uses KBUILD_CFLAGS. This can
+cause as-option to fail unexpectedly when CONFIG_WERROR is set, because
+clang will emit -Werror,-Wunused-command-line-argument for various -m
+and -f flags in KBUILD_CFLAGS for assembler sources.
 
-It's domain_dirty_limits() that's relevant here, not node_dirty_ok:
+Callers of as-option and as-instr should be adding flags to
+KBUILD_AFLAGS / aflags-y, not KBUILD_CFLAGS / cflags-y. Use
+KBUILD_AFLAGS in all macros to clear up the initial problem.
 
-  dirty_ratio_handler
-    writeback_set_ratelimit
-      global_dirty_limits(&dirty_thresh)           <- ratelimit_pages based on dirty_thresh
-        domain_dirty_limits
-          if (bytes)                               <- bytes = vm_dirty_bytes <--------+
-            thresh = f1(bytes)                     <- prioritizes vm_dirty_bytes      |
-          else                                                                        |
-            thresh = f2(ratio)                                                        |
-      ratelimit_pages = f3(dirty_thresh)                                              |
-    vm_dirty_bytes = 0                             <- it's late! ---------------------+
+Unfortunately, -Wunused-command-line-argument can still be triggered
+with clang by the presence of warning flags or macro definitions because
+'-x assembler' is used, instead of '-x assembler-with-cpp', which will
+consume these flags. Switch to '-x assembler-with-cpp' in places where
+'-x assembler' is used, as the compiler is always used as the driver for
+out of line assembler sources in the kernel.
 
-This causes ratelimit_pages to still use the value calculated based on
-vm_dirty_bytes, which is wrong now.
+Finally, add -Werror to these macros so that they behave consistently
+whether or not CONFIG_WERROR is set.
 
+[nathan: Reworded and expanded on problems in commit message
+         Use '-x assembler-with-cpp' in a couple more places]
 
-The impact visible to userspace is difficult to capture directly because
-there is no procfs/sysfs interface exported to user space.  However, it
-will have a real impact on the balance of dirty pages.
-
-For example:
-
-1. On default, we have vm_dirty_ratio=40, vm_dirty_bytes=0
-
-2. echo 8192 > dirty_bytes, then vm_dirty_bytes=8192,
-   vm_dirty_ratio=0, and ratelimit_pages is calculated based on
-   vm_dirty_bytes now.
-
-3. echo 20 > dirty_ratio, then since vm_dirty_bytes is not reset to
-   zero when writeback_set_ratelimit() -> global_dirty_limits() ->
-   domain_dirty_limits() is called, reallimit_pages is still calculated
-   based on vm_dirty_bytes instead of vm_dirty_ratio.  This does not
-   conform to the actual intent of the user.
-
-Link: https://lkml.kernel.org/r/20250415090232.7544-1-alexjlzheng@tencent.com
-Fixes: 9d823e8f6b1b ("writeback: per task dirty rate limit")
-Signed-off-by: Jinliang Zheng <alexjlzheng@tencent.com>
-Reviewed-by: MengEn Sun <mengensun@tencent.com>
-Cc: Andrea Righi <andrea@betterlinux.com>
-Cc: Fenggaung Wu <fengguang.wu@intel.com>
-Cc: Jinliang Zheng <alexjlzheng@tencent.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Link: https://github.com/ClangBuiltLinux/linux/issues/1699
+Suggested-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page-writeback.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/Kbuild.include  |    8 ++++----
+ scripts/Kconfig.include |    2 +-
+ scripts/as-version.sh   |    2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
---- a/mm/page-writeback.c
-+++ b/mm/page-writeback.c
-@@ -541,8 +541,8 @@ static int dirty_ratio_handler(struct ct
+--- a/scripts/Kbuild.include
++++ b/scripts/Kbuild.include
+@@ -101,16 +101,16 @@ try-run = $(shell set -e;		\
+ 	fi)
  
- 	ret = proc_dointvec_minmax(table, write, buffer, lenp, ppos);
- 	if (ret == 0 && write && vm_dirty_ratio != old_ratio) {
--		writeback_set_ratelimit();
- 		vm_dirty_bytes = 0;
-+		writeback_set_ratelimit();
- 	}
- 	return ret;
- }
+ # as-option
+-# Usage: cflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
++# Usage: aflags-y += $(call as-option,-Wa$(comma)-isa=foo,)
+ 
+ as-option = $(call try-run,\
+-	$(CC) $(KBUILD_CFLAGS) $(1) -c -x assembler /dev/null -o "$$TMP",$(1),$(2))
++	$(CC) -Werror $(KBUILD_AFLAGS) $(1) -c -x assembler-with-cpp /dev/null -o "$$TMP",$(1),$(2))
+ 
+ # as-instr
+-# Usage: cflags-y += $(call as-instr,instr,option1,option2)
++# Usage: aflags-y += $(call as-instr,instr,option1,option2)
+ 
+ as-instr = $(call try-run,\
+-	printf "%b\n" "$(1)" | $(CC) $(KBUILD_AFLAGS) -c -x assembler -o "$$TMP" -,$(2),$(3))
++	printf "%b\n" "$(1)" | $(CC) -Werror $(KBUILD_AFLAGS) -c -x assembler-with-cpp -o "$$TMP" -,$(2),$(3))
+ 
+ # __cc-option
+ # Usage: MY_CFLAGS += $(call __cc-option,$(CC),$(MY_CFLAGS),-march=winchip-c6,-march=i586)
+--- a/scripts/Kconfig.include
++++ b/scripts/Kconfig.include
+@@ -33,7 +33,7 @@ ld-option = $(success,$(LD) -v $(1))
+ 
+ # $(as-instr,<instr>)
+ # Return y if the assembler supports <instr>, n otherwise
+-as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler -o /dev/null -)
++as-instr = $(success,printf "%b\n" "$(1)" | $(CC) $(CLANG_FLAGS) -c -x assembler-with-cpp -o /dev/null -)
+ 
+ # check if $(CC) and $(LD) exist
+ $(error-if,$(failure,command -v $(CC)),compiler '$(CC)' not found)
+--- a/scripts/as-version.sh
++++ b/scripts/as-version.sh
+@@ -45,7 +45,7 @@ orig_args="$@"
+ # Get the first line of the --version output.
+ IFS='
+ '
+-set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler /dev/null -o /dev/null 2>/dev/null)
++set -- $(LC_ALL=C "$@" -Wa,--version -c -x assembler-with-cpp /dev/null -o /dev/null 2>/dev/null)
+ 
+ # Split the line on spaces.
+ IFS=' '
 
 
 
