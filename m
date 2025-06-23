@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-155497-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39687AE422F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:16:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4DF3AE4236
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 674233B567E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B79017711C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:14:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBA8248895;
-	Mon, 23 Jun 2025 13:16:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C996D24BC0A;
+	Mon, 23 Jun 2025 13:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j62suSlV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U/vu+SUD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED72813A265;
-	Mon, 23 Jun 2025 13:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8435A2459FF;
+	Mon, 23 Jun 2025 13:14:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684586; cv=none; b=cGxQDLyHTKcNOueJ7YUwB4tzltlbiLCoMc4vhtk2Hrv7FGZjp5KalYVnIPUbn9mQIFcOtL53/3TD/GQhBxTvHPpq00ZA145pv4kSaFKrt7D0LtSRtHoxLtcuY+aUgNAiQU8K8y1M9CFX0KR2JPv9vYrTm0PJuGZqy0B3pgen+SE=
+	t=1750684471; cv=none; b=prxYXqU/bi1JzwRwdp5FPU4h3/lOmbFqgKvvFrnovdhdssqa6T8icI4HQZ7nPB8EEc2lbBzH28wmMxF4ou52z7/BTW0/5/o9pgQiOWhKgtD/DFMnICttjv5Zx3kvpPqRNB3fAktg4TDcnLMYiDpbmDFwUjgZkD0quM5UNw7dKCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684586; c=relaxed/simple;
-	bh=zJiz5iQqT5KdSNl7lNeBIUxErvn7IXDAIA2V6flnLNY=;
+	s=arc-20240116; t=1750684471; c=relaxed/simple;
+	bh=xC2ujuLai4JYW/ph5Lpw/eQwdPIBU4KSAQ5fnppHuSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ioghBrAlr8cvsrFN14cG2eqd6mFOjtPG8OT5A2kXP4wb8cLTtHDm+XDPJYm1W7Ad1RyRL3FAvPFfzMvbX5yOaKrhnoFTmXUpjfWL6V9W8FQvPliHnHlih67DDjo/Btm9Et0/xLvmfv85eJxiB7ngdRgxe4oHuH3xPr0hKcAwb1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j62suSlV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830E9C4CEEA;
-	Mon, 23 Jun 2025 13:16:25 +0000 (UTC)
+	 MIME-Version; b=QORuXeqc1QllwF+CfgWKSoBIG3Oi7ECpFsl0s/btvSN9CZ/wyUTm7WCd9AYaGRHKd4ac3RC+cMAf/N05I9whaKuDrHnL5bHx85CEz+N//ViTYhToUTYermfIA4R17LvIQjnjxYiKKhVU8Hsa05Nj7xjWJhYzDhj9aeIqpVEv6G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U/vu+SUD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19586C4CEF1;
+	Mon, 23 Jun 2025 13:14:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684585;
-	bh=zJiz5iQqT5KdSNl7lNeBIUxErvn7IXDAIA2V6flnLNY=;
+	s=korg; t=1750684471;
+	bh=xC2ujuLai4JYW/ph5Lpw/eQwdPIBU4KSAQ5fnppHuSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j62suSlVWGHWJs/y0Yrm/Cl9ed578aSIWBEhMSv0hNQn1vq7UP++M+BiCCjNybsG8
-	 8MpPuKR1MlmU47F9EdwAAvgyVdAabe/pqt9z17DWwc9zPhqDbdUJF7lZBNpBWw48pQ
-	 C5DM9Bl+yiTJbeAenOThQuvePrGxrrorDwdVke5A=
+	b=U/vu+SUDUe0Yul0kNGXF9NFK+n+WKG732Kmv3xilayKUiVA+njldlzuXIz6BMU9n3
+	 9WnU1oa1hOhtREzDDULFRaZw208G/GLcd347bqrJlfBTHXP6UUteCU5pvR3UFAea7j
+	 KiOqFpxhvU+qMiIzVRFWI+rWDEpXRMtT+fiaEK20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Dikshita Agarwal <quic_dikshita@quicinc.com>,
-	Bryan ODonoghue <bod@kernel.org>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Tomasz Figa <tfiga@chromium.org>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.15 081/592] media: venus: Fix probe error handling
-Date: Mon, 23 Jun 2025 15:00:39 +0200
-Message-ID: <20250623130702.201430743@linuxfoundation.org>
+Subject: [PATCH 6.15 082/592] media: videobuf2: use sgtable-based scatterlist wrappers
+Date: Mon, 23 Jun 2025 15:00:40 +0200
+Message-ID: <20250623130702.227333570@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,80 +67,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Loic Poulain <loic.poulain@oss.qualcomm.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit 523cea3a19f0b3b020a4745344c136a636e6ffd7 upstream.
+commit a704a3c503ae1cfd9de8a2e2d16a0c9430e98162 upstream.
 
-Video device registering has been moved earlier in the probe function,
-but the new order has not been propagated to error handling. This means
-we can end with unreleased resources on error (e.g dangling video device
-on missing firmware probe aborting).
+Use common wrappers operating directly on the struct sg_table objects to
+fix incorrect use of scatterlists sync calls. dma_sync_sg_for_*()
+functions have to be called with the number of elements originally passed
+to dma_map_sg_*() function, not the one returned in sgt->nents.
 
-Fixes: 08b1cf474b7f7 ("media: venus: core, venc, vdec: Fix probe dependency error")
-Cc: stable@vger.kernel.org
-Signed-off-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Reviewed-by: Dikshita Agarwal <quic_dikshita@quicinc.com>
-Reviewed-by: Bryan O'Donoghue <bod@kernel.org>
-Signed-off-by: Bryan O'Donoghue <bod@kernel.org>
+Fixes: d4db5eb57cab ("media: videobuf2: add begin/end cpu_access callbacks to dma-sg")
+CC: stable@vger.kernel.org
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Acked-by: Tomasz Figa <tfiga@chromium.org>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/qcom/venus/core.c |   16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/media/common/videobuf2/videobuf2-dma-sg.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/media/platform/qcom/venus/core.c
-+++ b/drivers/media/platform/qcom/venus/core.c
-@@ -438,7 +438,7 @@ static int venus_probe(struct platform_d
+--- a/drivers/media/common/videobuf2/videobuf2-dma-sg.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-sg.c
+@@ -469,7 +469,7 @@ vb2_dma_sg_dmabuf_ops_begin_cpu_access(s
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
  
- 	ret = v4l2_device_register(dev, &core->v4l2_dev);
- 	if (ret)
--		goto err_core_deinit;
-+		goto err_hfi_destroy;
- 
- 	platform_set_drvdata(pdev, core);
- 
-@@ -476,24 +476,24 @@ static int venus_probe(struct platform_d
- 
- 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_DEC);
- 	if (ret)
--		goto err_venus_shutdown;
-+		goto err_core_deinit;
- 
- 	ret = venus_enumerate_codecs(core, VIDC_SESSION_TYPE_ENC);
- 	if (ret)
--		goto err_venus_shutdown;
-+		goto err_core_deinit;
- 
- 	ret = pm_runtime_put_sync(dev);
- 	if (ret) {
- 		pm_runtime_get_noresume(dev);
--		goto err_dev_unregister;
-+		goto err_core_deinit;
- 	}
- 
- 	venus_dbgfs_init(core);
- 
+-	dma_sync_sg_for_cpu(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_cpu(buf->dev, sgt, buf->dma_dir);
  	return 0;
+ }
  
--err_dev_unregister:
--	v4l2_device_unregister(&core->v4l2_dev);
-+err_core_deinit:
-+	hfi_core_deinit(core, false);
- err_venus_shutdown:
- 	venus_shutdown(core);
- err_firmware_deinit:
-@@ -506,9 +506,9 @@ err_runtime_disable:
- 	pm_runtime_put_noidle(dev);
- 	pm_runtime_disable(dev);
- 	pm_runtime_set_suspended(dev);
-+	v4l2_device_unregister(&core->v4l2_dev);
-+err_hfi_destroy:
- 	hfi_destroy(core);
--err_core_deinit:
--	hfi_core_deinit(core, false);
- err_core_put:
- 	if (core->pm_ops->core_put)
- 		core->pm_ops->core_put(core);
+@@ -480,7 +480,7 @@ vb2_dma_sg_dmabuf_ops_end_cpu_access(str
+ 	struct vb2_dma_sg_buf *buf = dbuf->priv;
+ 	struct sg_table *sgt = buf->dma_sgt;
+ 
+-	dma_sync_sg_for_device(buf->dev, sgt->sgl, sgt->nents, buf->dma_dir);
++	dma_sync_sgtable_for_device(buf->dev, sgt, buf->dma_dir);
+ 	return 0;
+ }
+ 
 
 
 
