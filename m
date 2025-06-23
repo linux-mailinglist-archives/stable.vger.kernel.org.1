@@ -1,102 +1,122 @@
-Return-Path: <stable+bounces-155327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51E4FAE39A5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:15:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70E81AE39A6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 11:16:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AE4A18966FF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:16:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B1D41896725
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 09:16:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7472A230268;
-	Mon, 23 Jun 2025 09:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qo6A3jw7"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5AF221B19D;
+	Mon, 23 Jun 2025 09:16:02 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33B0C22331E
-	for <stable@vger.kernel.org>; Mon, 23 Jun 2025 09:15:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B2813FD86;
+	Mon, 23 Jun 2025 09:15:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750670148; cv=none; b=rZlVoD18ukmxPM2piFSiwOabybU57nYRdM2MFA6Be66/5OYhQHl5C9wCEibPA0LtXteNMtY7O/56hF3mYGczQTMMXgVc7+ZH8whAjaQwBfKLMlW2YO1ZexM2CmZNpI1EshijvQjmJTIGQDkCTzH4Gk5mGW3JZRfsDSrGNqaVGEI=
+	t=1750670162; cv=none; b=ohfmvWSR6VD1EYlrONZ3BzDZf20KMc5JaEGXM9z/M+90z9jVLiG6Cuio95kk7a9ijGRYh4Aj/pSyN+hVM/DpNZiO85DrWOaii4nL60Ml/dLNyuQ6EfzAXPnWpkTQLEZXEH3srGax2ZE7uTBa5KwBVlhd2PCGhGH2/9lJHmQBbvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750670148; c=relaxed/simple;
-	bh=H3MxyUUr5s0Er51BrWe8nGLS2gI/UvSH1+f5iiT8/I8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K6beipFCRfIQ3FifbnCozEmH/pq++3C5Gx0nSpKVsZYBwDBBBTDCNiuC2e01cSHn3P5LwInY61bvj8oHZ07xuSRJ+Qn01fCYpZbLNxBk8+6SbX/kR1tz83v+0bhFbkWl9Xp/C15ZE2L1gmJepy9VkNnwSlRCVBuanAWBwKgGr2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qo6A3jw7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E88C4CEEA;
-	Mon, 23 Jun 2025 09:15:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750670148;
-	bh=H3MxyUUr5s0Er51BrWe8nGLS2gI/UvSH1+f5iiT8/I8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qo6A3jw7fyjNiw/QMYwarGZPN0gPjNu36AI9VOS17xpXDlNG1Q3DK3er5bfHSAdAn
-	 djiHUZrH6ryRBwlLtWr5na9IIlU1VhQaQC4fZw/F/0l+PW4mKOiLQPceH3oW7vzrS4
-	 Jcp8+NDZ6dJqix18e6IRRYhhEzuxJedeBR4Ic5Y4=
-Date: Mon, 23 Jun 2025 11:15:13 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Alex Lyakas <alex.lyakas@zadara.com>
-Cc: stable@vger.kernel.org
-Subject: Re: stable patch 42fac18 missing from linux-6.6
-Message-ID: <2025062326-tutu-improve-c423@gregkh>
-References: <CAOcd+r0Rg6JGMjwZnCran8s+dbqZ+VyUcgP_u7EucKEXZasOdg@mail.gmail.com>
- <2025062334-circular-tiring-0359@gregkh>
- <CAOcd+r3C3LKPv-Jc1op5t1Xn5aijV9k-M4wm1hopARu=sy+fnQ@mail.gmail.com>
+	s=arc-20240116; t=1750670162; c=relaxed/simple;
+	bh=CdYWB1HHn5KIwcQQ9Kqi9JFPTBckXzWwoZEkVi60h3g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RhHUTcgNnG2lgMEwD/jQUGwFk3LS4m+s8mKvPnZYabjLuHTq+oKM5AAFUzMqHCdp+FZs9QIVUxXZPZRxf47Jk5advIK7QEM2qMyeg48e1+uByyoE18N4hIl1Qb4o5a4EPDicOZ2H4kRz5gjDxkZJWTSaRng+xqKuwBt0+nDDm7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
+Received: by mail.gandi.net (Postfix) with ESMTPSA id BD23D41B5F;
+	Mon, 23 Jun 2025 09:15:48 +0000 (UTC)
+Message-ID: <027ef1a9-6a5c-4dba-8816-159411739b71@ghiti.fr>
+Date: Mon, 23 Jun 2025 11:15:48 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAOcd+r3C3LKPv-Jc1op5t1Xn5aijV9k-M4wm1hopARu=sy+fnQ@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Revert "riscv: Define TASK_SIZE_MAX for __access_ok()"
+To: Nam Cao <namcao@linutronix.de>, Paul Walmsley <paul.walmsley@sifive.com>,
+ Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: rtm@csail.mit.edu, stable@vger.kernel.org
+References: <20250619155858.1249789-1-namcao@linutronix.de>
+Content-Language: en-US
+From: Alexandre Ghiti <alex@ghiti.fr>
+In-Reply-To: <20250619155858.1249789-1-namcao@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-GND-State: clean
+X-GND-Score: -100
+X-GND-Cause: gggruggvucftvghtrhhoucdtuddrgeeffedrtddvgdduieeigecutefuodetggdotefrodftvfcurfhrohhfihhlvgemucfitefpfffkpdcuggftfghnshhusghstghrihgsvgenuceurghilhhouhhtmecufedtudenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtvdejnecuhfhrohhmpeetlhgvgigrnhgurhgvucfihhhithhiuceorghlvgigsehghhhithhirdhfrheqnecuggftrfgrthhtvghrnhephffhuddtveegleeggeefledtudfhudelvdetudfhgeffffeigffgkeethfejudejnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucfkphepvddttddumeekiedumeeffeekvdemvghfledtmedvieeijeemvgejvgdtmeehudeltdemfhgvtdehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehinhgvthepvddttddumeekiedumeeffeekvdemvghfledtmedvieeijeemvgejvgdtmeehudeltdemfhgvtdehpdhhvghloheplgfkrfggieemvddttddumeekiedumeeffeekvdemvghfledtmedvieeijeemvgejvgdtmeehudeltdemfhgvtdehngdpmhgrihhlfhhrohhmpegrlhgvgiesghhhihhtihdrfhhrpdhnsggprhgtphhtthhopeekpdhrtghpthhtohepnhgrmhgtrghosehlihhnuhhtrhhonhhigidruggvpdhrtghpthhtohepphgruhhlrdifrghlmhhslhgvhiesshhifhhivhgvrdgtohhmpdhrtghpthhtohepp
+ hgrlhhmvghrsegurggssggvlhhtrdgtohhmpdhrtghpthhtoheprghouhesvggvtghsrdgsvghrkhgvlhgvhidrvgguuhdprhgtphhtthhopehlihhnuhigqdhrihhstghvsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprhhtmhestghsrghilhdrmhhithdrvgguuhdprhgtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-GND-Sasl: alex@ghiti.fr
 
-On Mon, Jun 23, 2025 at 12:07:42PM +0300, Alex Lyakas wrote:
-> On Mon, Jun 23, 2025 at 9:35 AM Greg KH <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Sun, Jun 15, 2025 at 06:36:44PM +0300, Alex Lyakas wrote:
-> > > Greetings,
-> > >
-> > > The following patch [1]:
-> > > "42fac18 btrfs: check delayed refs when we're checking if a ref exists"
-> > > has been marked as
-> > > "CC: stable@vger.kernel.org # 5.4+"
-> > > but I do not see that it has been backported to linux-6.6.y branch.
-> > >
-> > > Can this patch be picked up in the next version of linux-6.6 please?
-> >
-> > It does not apply cleanly there at all, which is why we did not apply it
-> > already.  How did you test this change works in this tree?
-> Hi Greg,
-> Thank you for your response.
-> 
-> >
-> > If you want it here, great, can you provide a backported and tested
-> > version?
-> I backported the patch and tested it to the best of my ability. I was
-> able to test the part where the reference exists in the extent tree,
-> which means the patch doesn't break existing functionality. However, I
-> was not able to test the case where we only have the delayed
-> reference.
+Hi Nam,
 
-Then it's hard to know if it works :(
+On 6/19/25 17:58, Nam Cao wrote:
+> This reverts commit ad5643cf2f69 ("riscv: Define TASK_SIZE_MAX for
+> __access_ok()").
+>
+> This commit changes TASK_SIZE_MAX to be LONG_MAX to optimize access_ok(),
+> because the previous TASK_SIZE_MAX (default to TASK_SIZE) requires some
+> computation.
+>
+> The reasoning was that all user addresses are less than LONG_MAX, and all
+> kernel addresses are greater than LONG_MAX. Therefore access_ok() can
+> filter kernel addresses.
+>
+> Addresses between TASK_SIZE and LONG_MAX are not valid user addresses, but
+> access_ok() let them pass. That was thought to be okay, because they are
+> not valid addresses at hardware level.
+>
+> Unfortunately, one case is missed: get_user_pages_fast() happily accepts
+> addresses between TASK_SIZE and LONG_MAX. futex(), for instance, uses
+> get_user_pages_fast(). This causes the problem reported by Robert [1].
+>
+> Therefore, revert this commit. TASK_SIZE_MAX is changed to the default:
+> TASK_SIZE.
+>
+> This unfortunately reduces performance, because TASK_SIZE is more expensive
+> to compute compared to LONG_MAX. But correctness first, we can think about
+> optimization later, if required.
+>
+> Reported-by: <rtm@csail.mit.edu>
+> Closes: https://lore.kernel.org/linux-riscv/77605.1750245028@localhost/
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Cc: stable@vger.kernel.org
+> ---
+>   arch/riscv/include/asm/pgtable.h | 1 -
+>   1 file changed, 1 deletion(-)
+>
+> diff --git a/arch/riscv/include/asm/pgtable.h b/arch/riscv/include/asm/pgtable.h
+> index 438ce7df24c39..5bd5aae60d536 100644
+> --- a/arch/riscv/include/asm/pgtable.h
+> +++ b/arch/riscv/include/asm/pgtable.h
+> @@ -1075,7 +1075,6 @@ static inline pte_t pte_swp_clear_exclusive(pte_t pte)
+>    */
+>   #ifdef CONFIG_64BIT
+>   #define TASK_SIZE_64	(PGDIR_SIZE * PTRS_PER_PGD / 2)
+> -#define TASK_SIZE_MAX	LONG_MAX
+>   
+>   #ifdef CONFIG_COMPAT
+>   #define TASK_SIZE_32	(_AC(0x80000000, UL) - PAGE_SIZE)
 
-> Please let me know if this is still good enough, so that I can post
-> this patch for review here (or on linux-stable-commits?).
 
-linux-stable-commits is just for when we apply stuff to the tree,
-stable@vger.kernel.org is for submitting new stuff.
+I agree with this revert, the next step is to implement the same 
+optimization using alternatives (like x86 does).
 
-If you think your backport is correct, sure, submit it, it's your call.
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-thanks,
+It should land into -fixes.
 
-greg k-h
+Thanks,
+
+Alex
+
 
