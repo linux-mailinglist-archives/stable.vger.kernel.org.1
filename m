@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-156208-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D105DAE4E9D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF13BAE51EA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 697A4189F741
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:07:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99CEE1B64474
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:38:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9406622157E;
-	Mon, 23 Jun 2025 21:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81F52222A9;
+	Mon, 23 Jun 2025 21:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T+oEW8mt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VnDjZFtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526E570838;
-	Mon, 23 Jun 2025 21:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58F7221FCC;
+	Mon, 23 Jun 2025 21:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750712849; cv=none; b=Ue+4FpH8//O+FGK5UCg49Xc0lHc83cmhNmJdAiJwc6UTDxIw2dzSPKBIAT7Ju+Tl3soGV7+Ks//DVTxR/qxYyKF9LEPV1jNAXSQx3YwAABPHDOhp8ZzyS+CZJxhe6jjeUUrNbUoZedn8bSzKrZTSjSGCOyA3tUA838zK/T+EfP0=
+	t=1750714718; cv=none; b=fpEjNzQF0Ked/iN9a6PGOUTpPlJwvflcVqN0HfPd1K4bdZckifHVWeVXqc73QZWeeGP/cjfsM/pVsDcyl9scBoPXULOW9OMjH7OMdogo5l1ZZkhOBUUwBYME+ESKHWPPFAb2tItnXCmZBoSD8e8ciNZHULArkRWoCKfvc1n7nGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750712849; c=relaxed/simple;
-	bh=uyRm8PxxDvoXiAvogeoptTj8iRqR0JooAANxPvL7jcY=;
+	s=arc-20240116; t=1750714718; c=relaxed/simple;
+	bh=WAor2sqyToqZHdt4YfMvox0L6krzIhfo32Lf08w0ngg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E6mhrB8DphblNyjY/quR961etA3AvG/apcLWAA7XGWWCu67oewIBouT8e+p2zp8hS3UAfubQBKfJ/UWEGFj94Cpi72NZYamQHXfWchx6fjbMmTRJm9zD4czqNAJxHOWG3WNkPcuSnFGjN0XNpz4fra4Dlel9fNQGBJKBmyre+Jw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T+oEW8mt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1A4C4CEEA;
-	Mon, 23 Jun 2025 21:07:28 +0000 (UTC)
+	 MIME-Version; b=h66hjAIMig0gIBqLwsr96Dx/5/Qujx0gEqhYxggA1j38KyVVH760UDHEAjDorZOVO16vWq0m9pUvRvllJ/12dDa5mjAgzXdNmLJACPL1UYhRQgMSs6y8MLnK9zO9KDivC+QWr9hylv4n0UbeROkGUGrgcpUGXjqgmjuRmisE5IM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VnDjZFtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35767C4CEEA;
+	Mon, 23 Jun 2025 21:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750712849;
-	bh=uyRm8PxxDvoXiAvogeoptTj8iRqR0JooAANxPvL7jcY=;
+	s=korg; t=1750714718;
+	bh=WAor2sqyToqZHdt4YfMvox0L6krzIhfo32Lf08w0ngg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T+oEW8mt0B88JFfb0XUC9rlhjET0bzdlVoU/gFusNOiw0f86dNM1TaYwIRSpcaRF6
-	 QFiKR7sSNG6GadIZlvLDDrIlPanuOapQEt/tdyALKNgCVA+m1ORZR/xz2ewc8rxjjr
-	 NBaKX9t6yNy8eaucGveH6Bt0vIdzdON1XZL3piNk=
+	b=VnDjZFtKjgzUFT/pklaMym0e9d1ITwWDv/yzMSBET8jr7R6/YPHdHyNKwKiJ2lMAP
+	 Vu0FtxkMkCDiaeNsi2ojSa0Z7WQCZfDvWMzXvKlwLM9Lj9QJRCCEhJIF9hXrEPRwph
+	 88M+7fOrrnF1A+oMr0DCI3R+dz9+6wtZzSba2oCw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Molnar <mingo@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/411] perf ui browser hists: Set actions->thread before calling do_zoom_thread()
+Subject: [PATCH 6.1 191/508] xfs: fix interval filtering in multi-step fsmap queries
 Date: Mon, 23 Jun 2025 15:03:56 +0200
-Message-ID: <20250623130635.773350173@linuxfoundation.org>
+Message-ID: <20250623130649.970894479@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,63 +63,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnaldo Carvalho de Melo <acme@redhat.com>
+From: Darrick J. Wong <djwong@kernel.org>
 
-[ Upstream commit 1741189d843a1d5ef38538bc52a3760e2e46cb2e ]
+[ Upstream commit 63ef7a35912dd743cabd65d5bb95891625c0dd46 ]
 
-In 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct
-perf_hpp_list") it assumes that act->thread is set prior to calling
-do_zoom_thread().
+I noticed a bug in ranged GETFSMAP queries:
 
-This doesn't happen when we use ESC or the Left arrow key to Zoom out of
-a specific thread, making this operation not to work and we get stuck
-into the thread zoom.
+# xfs_io -c 'fsmap -vvvv' /opt
+ EXT: DEV  BLOCK-RANGE           OWNER              FILE-OFFSET      AG AG-OFFSET           TOTAL
+   0: 8:80 [0..7]:               static fs metadata                  0  (0..7)                  8
+<snip>
+   9: 8:80 [192..223]:           137                0..31            0  (192..223)             32
+# xfs_io -c 'fsmap -vvvv -d 208 208' /opt
+#
 
-In 6422184b087ff435 ("perf hists browser: Simplify zooming code using
-pstack_peek()") it says no need to set actions->thread, and at that
-point that was true, but in 7cecb7fe8388d5c3 a actions->thread == NULL
-check was added before the zoom out of thread could kick in.
+That's not right -- we asked what block maps block 208, and we should've
+received a mapping for inode 137 offset 16.  Instead, we get nothing.
 
-We can zoom out using the alternative 't' thread zoom toggle hotkey to
-finally set actions->thread before calling do_zoom_thread() and zoom
-out, but lets also fix the ESC/Zoom out of thread case.
+The root cause of this problem is a mis-interaction between the fsmap
+code and how btree ranged queries work.  xfs_btree_query_range returns
+any btree record that overlaps with the query interval, even if the
+record starts before or ends after the interval.  Similarly, GETFSMAP is
+supposed to return a recordset containing all records that overlap the
+range queried.
 
-Fixes: 7cecb7fe8388d5c3 ("perf hists: Move sort__has_comm into struct perf_hpp_list")
-Reported-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Ingo Molnar <mingo@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/Z_TYux5fUg2pW-pF@gmail.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+However, it's possible that the recordset is larger than the buffer that
+the caller provided to convey mappings to userspace.  In /that/ case,
+userspace is supposed to copy the last record returned to fmh_keys[0]
+and call GETFSMAP again.  In this case, we do not want to return
+mappings that we have already supplied to the caller.  The call to
+xfs_btree_query_range is the same, but now we ignore any records that
+start before fmh_keys[0].
+
+Unfortunately, we didn't implement the filtering predicate correctly.
+The predicate should only be called when we're calling back for more
+records.  Accomplish this by setting info->low.rm_blockcount to a
+nonzero value and ensuring that it is cleared as necessary.  As a
+result, we no longer want to adjust dkeys[0] in the main setup function
+because that's confusing.
+
+This patch doesn't touch the logdev/rtbitmap backends because they have
+bigger problems that will be addressed by subsequent patches.
+
+Found via xfs/556 with parent pointers enabled.
+
+Fixes: e89c041338ed ("xfs: implement the GETFSMAP ioctl")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: "Darrick J. Wong" <djwong@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/ui/browsers/hists.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_fsmap.c | 67 +++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 48 insertions(+), 19 deletions(-)
 
-diff --git a/tools/perf/ui/browsers/hists.c b/tools/perf/ui/browsers/hists.c
-index fd3e67d2c6bdd..a68d3ee1769d6 100644
---- a/tools/perf/ui/browsers/hists.c
-+++ b/tools/perf/ui/browsers/hists.c
-@@ -3238,10 +3238,10 @@ static int evsel__hists_browse(struct evsel *evsel, int nr_events, const char *h
- 				/*
- 				 * No need to set actions->dso here since
- 				 * it's just to remove the current filter.
--				 * Ditto for thread below.
- 				 */
- 				do_zoom_dso(browser, actions);
- 			} else if (top == &browser->hists->thread_filter) {
-+				actions->thread = thread;
- 				do_zoom_thread(browser, actions);
- 			} else if (top == &browser->hists->socket_filter) {
- 				do_zoom_socket(browser, actions);
+diff --git a/fs/xfs/xfs_fsmap.c b/fs/xfs/xfs_fsmap.c
+index a5b9754c62d1c..2011f1bf7ce0f 100644
+--- a/fs/xfs/xfs_fsmap.c
++++ b/fs/xfs/xfs_fsmap.c
+@@ -162,7 +162,14 @@ struct xfs_getfsmap_info {
+ 	xfs_daddr_t		next_daddr;	/* next daddr we expect */
+ 	u64			missing_owner;	/* owner of holes */
+ 	u32			dev;		/* device id */
+-	struct xfs_rmap_irec	low;		/* low rmap key */
++	/*
++	 * Low rmap key for the query.  If low.rm_blockcount is nonzero, this
++	 * is the second (or later) call to retrieve the recordset in pieces.
++	 * xfs_getfsmap_rec_before_start will compare all records retrieved
++	 * by the rmapbt query to filter out any records that start before
++	 * the last record.
++	 */
++	struct xfs_rmap_irec	low;
+ 	struct xfs_rmap_irec	high;		/* high rmap key */
+ 	bool			last;		/* last extent? */
+ };
+@@ -237,6 +244,17 @@ xfs_getfsmap_format(
+ 	xfs_fsmap_from_internal(rec, xfm);
+ }
+ 
++static inline bool
++xfs_getfsmap_rec_before_start(
++	struct xfs_getfsmap_info	*info,
++	const struct xfs_rmap_irec	*rec,
++	xfs_daddr_t			rec_daddr)
++{
++	if (info->low.rm_blockcount)
++		return xfs_rmap_compare(rec, &info->low) < 0;
++	return false;
++}
++
+ /*
+  * Format a reverse mapping for getfsmap, having translated rm_startblock
+  * into the appropriate daddr units.
+@@ -260,7 +278,7 @@ xfs_getfsmap_helper(
+ 	 * Filter out records that start before our startpoint, if the
+ 	 * caller requested that.
+ 	 */
+-	if (xfs_rmap_compare(rec, &info->low) < 0) {
++	if (xfs_getfsmap_rec_before_start(info, rec, rec_daddr)) {
+ 		rec_daddr += XFS_FSB_TO_BB(mp, rec->rm_blockcount);
+ 		if (info->next_daddr < rec_daddr)
+ 			info->next_daddr = rec_daddr;
+@@ -606,9 +624,27 @@ __xfs_getfsmap_datadev(
+ 	error = xfs_fsmap_owner_to_rmap(&info->low, &keys[0]);
+ 	if (error)
+ 		return error;
+-	info->low.rm_blockcount = 0;
++	info->low.rm_blockcount = XFS_BB_TO_FSBT(mp, keys[0].fmr_length);
+ 	xfs_getfsmap_set_irec_flags(&info->low, &keys[0]);
+ 
++	/* Adjust the low key if we are continuing from where we left off. */
++	if (info->low.rm_blockcount == 0) {
++		/* empty */
++	} else if (XFS_RMAP_NON_INODE_OWNER(info->low.rm_owner) ||
++		   (info->low.rm_flags & (XFS_RMAP_ATTR_FORK |
++					  XFS_RMAP_BMBT_BLOCK |
++					  XFS_RMAP_UNWRITTEN))) {
++		info->low.rm_startblock += info->low.rm_blockcount;
++		info->low.rm_owner = 0;
++		info->low.rm_offset = 0;
++
++		start_fsb += info->low.rm_blockcount;
++		if (XFS_FSB_TO_DADDR(mp, start_fsb) >= eofs)
++			return 0;
++	} else {
++		info->low.rm_offset += info->low.rm_blockcount;
++	}
++
+ 	info->high.rm_startblock = -1U;
+ 	info->high.rm_owner = ULLONG_MAX;
+ 	info->high.rm_offset = ULLONG_MAX;
+@@ -659,12 +695,8 @@ __xfs_getfsmap_datadev(
+ 		 * Set the AG low key to the start of the AG prior to
+ 		 * moving on to the next AG.
+ 		 */
+-		if (pag->pag_agno == start_ag) {
+-			info->low.rm_startblock = 0;
+-			info->low.rm_owner = 0;
+-			info->low.rm_offset = 0;
+-			info->low.rm_flags = 0;
+-		}
++		if (pag->pag_agno == start_ag)
++			memset(&info->low, 0, sizeof(info->low));
+ 
+ 		/*
+ 		 * If this is the last AG, report any gap at the end of it
+@@ -901,21 +933,17 @@ xfs_getfsmap(
+ 	 * blocks could be mapped to several other files/offsets.
+ 	 * According to rmapbt record ordering, the minimal next
+ 	 * possible record for the block range is the next starting
+-	 * offset in the same inode. Therefore, bump the file offset to
+-	 * continue the search appropriately.  For all other low key
+-	 * mapping types (attr blocks, metadata), bump the physical
+-	 * offset as there can be no other mapping for the same physical
+-	 * block range.
++	 * offset in the same inode. Therefore, each fsmap backend bumps
++	 * the file offset to continue the search appropriately.  For
++	 * all other low key mapping types (attr blocks, metadata), each
++	 * fsmap backend bumps the physical offset as there can be no
++	 * other mapping for the same physical block range.
+ 	 */
+ 	dkeys[0] = head->fmh_keys[0];
+ 	if (dkeys[0].fmr_flags & (FMR_OF_SPECIAL_OWNER | FMR_OF_EXTENT_MAP)) {
+-		dkeys[0].fmr_physical += dkeys[0].fmr_length;
+-		dkeys[0].fmr_owner = 0;
+ 		if (dkeys[0].fmr_offset)
+ 			return -EINVAL;
+-	} else
+-		dkeys[0].fmr_offset += dkeys[0].fmr_length;
+-	dkeys[0].fmr_length = 0;
++	}
+ 	memset(&dkeys[1], 0xFF, sizeof(struct xfs_fsmap));
+ 
+ 	if (!xfs_getfsmap_check_keys(dkeys, &head->fmh_keys[1]))
+@@ -960,6 +988,7 @@ xfs_getfsmap(
+ 		info.dev = handlers[i].dev;
+ 		info.last = false;
+ 		info.pag = NULL;
++		info.low.rm_blockcount = 0;
+ 		error = handlers[i].fn(tp, dkeys, &info);
+ 		if (error)
+ 			break;
 -- 
 2.39.5
 
