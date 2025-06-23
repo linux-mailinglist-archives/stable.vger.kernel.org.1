@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE215AE524B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64089AE545C
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C18591B64D38
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A3CF44702C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 220562222C2;
-	Mon, 23 Jun 2025 21:42:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF0419DF4A;
+	Mon, 23 Jun 2025 22:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFOQBQyo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NXC9lKFR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44674315A;
-	Mon, 23 Jun 2025 21:42:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894764409;
+	Mon, 23 Jun 2025 22:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714938; cv=none; b=h2WzW8ryWEGHDEKY7rLhZTx3OIVJcPBPDhR7p1qeUSnsQ5TFt3ECHXcDFPdI+MckWwW1+FU614OG5dTtGM8FMS5CwCggitWQylEFOOCGmu0vXzhuviFZ2k5wPxG/cyj3DW7lGMlBp5dsei+zrQMEUB8F3oKiImH9Tt1NEHCUcRU=
+	t=1750716046; cv=none; b=aPz25nqW6ItmKVzHE1/2BbLMT4F41hYQnhtm9GubBbS5OdMLSGbaZzxgvFvrScwERj6F+3OJe67pks98AW/fargQd6/2/ZpMn/WjUaU5gp580ITFPLRthAW521jCLO1ezTVuATPrKHMYQG8Z8RPqSajnjpj1QBbPK1ty83u/4gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714938; c=relaxed/simple;
-	bh=piSKYISZLy3LkDHnAjsSKejnS55llDyPE5ExYFawhyI=;
+	s=arc-20240116; t=1750716046; c=relaxed/simple;
+	bh=jj8C/qwPkrZ0T/AkKAtXIK8XIf+SODzCr90mIS/lGNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8LOCeAbW5CB7X4YXZjsUitndiahpqhuGbYlM2x+LnW/WFfOs5Xzjw5nSTJEni0c6sUPkKTLRYgAmGCUVMuMOo1eIeRypLpJGriq/lu+KGCqJsfSXMTxUWYThWs2HyYKOiJDdQU+8w2hOF+2VuvTSBCPOZdlTJklspGHAX+ZW6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFOQBQyo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69DDAC4CEEA;
-	Mon, 23 Jun 2025 21:42:18 +0000 (UTC)
+	 MIME-Version; b=HE0Msj9mpj4pA5BD6fzUAsuGqKTvdjM8FH8e8Q7F8n1600FRqKpiKFGu1XyDNkZxNqsItDyR6KgEw3AaMrSxEV/3npAE1Nx2Q+peZ/m9YhMov9D24HLfZ8kknCZh6iGOMY6PqNAbNCkTkCnIuTRWXoRQvtosZy153o5lbfQpjvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NXC9lKFR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2010AC4CEEA;
+	Mon, 23 Jun 2025 22:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714938;
-	bh=piSKYISZLy3LkDHnAjsSKejnS55llDyPE5ExYFawhyI=;
+	s=korg; t=1750716046;
+	bh=jj8C/qwPkrZ0T/AkKAtXIK8XIf+SODzCr90mIS/lGNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MFOQBQyoiN9PjhLzdal2ayy9BfHXzPabfWmRz4MQVa7+WECj/NNRMMOSoQAXdSjTW
-	 A42Rwvvt4CaTyPxzrChlrWo2B+zf7ZlGr/gbYNF2L2RkRZ6uiWJB+qs66QbFYU/rQl
-	 6XGBKncuIurSNs39pBrIxXhPFSXEpVPsUpTSDtVk=
+	b=NXC9lKFRkB6Wcs8ZLg3ramX+GQEjFFnri/d+TS5/+/taZ+y8dP4QZ93+A34kNFArq
+	 tb2m40HOCkjIpdbt3gn3sxQetTraqDTzHbKs2m5YW70o0tapnt3q3L6zXaH2etlzxy
+	 SpHyjSp74CPIEFE1gge4yyyTWiwV0nkRZqtCLd2w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amber Lin <Amber.Lin@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 242/355] drm/amdkfd: Set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB
+Subject: [PATCH 5.15 299/411] media: platform: exynos4-is: Add hardware sync wait to fimc_is_hw_change_mode()
 Date: Mon, 23 Jun 2025 15:07:23 +0200
-Message-ID: <20250623130634.024258721@linuxfoundation.org>
+Message-ID: <20250623130641.174307236@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amber Lin <Amber.Lin@amd.com>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit ab9fcc6362e0699fc1150aa1d8503c40fce2c1e1 ]
+[ Upstream commit bd9f6ce7d512fa21249415c16af801a4ed5d97b6 ]
 
-When submitting MQD to CP, set SDMA_RLCx_IB_CNTL/SWITCH_INSIDE_IB bit so
-it'll allow SDMA preemption if there is a massive command buffer of
-long-running SDMA commands.
+In fimc_is_hw_change_mode(), the function changes camera modes without
+waiting for hardware completion, risking corrupted data or system hangs
+if subsequent operations proceed before the hardware is ready.
 
-Signed-off-by: Amber Lin <Amber.Lin@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Add fimc_is_hw_wait_intmsr0_intmsd0() after mode configuration, ensuring
+hardware state synchronization and stable interrupt handling.
+
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/platform/exynos4-is/fimc-is-regs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-index dadeb2013fd9a..dc468dfce391e 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_mqd_manager_v9.c
-@@ -396,6 +396,10 @@ static void update_mqd_sdma(struct mqd_manager *mm, void *mqd,
- 	m->sdma_engine_id = q->sdma_engine_id;
- 	m->sdma_queue_id = q->sdma_queue_id;
- 	m->sdmax_rlcx_dummy_reg = SDMA_RLC_DUMMY_DEFAULT;
-+	/* Allow context switch so we don't cross-process starve with a massive
-+	 * command buffer of long-running SDMA commands
-+	 */
-+	m->sdmax_rlcx_ib_cntl |= SDMA0_GFX_IB_CNTL__SWITCH_INSIDE_IB_MASK;
+diff --git a/drivers/media/platform/exynos4-is/fimc-is-regs.c b/drivers/media/platform/exynos4-is/fimc-is-regs.c
+index 366e6393817d2..5f9c44e825a5f 100644
+--- a/drivers/media/platform/exynos4-is/fimc-is-regs.c
++++ b/drivers/media/platform/exynos4-is/fimc-is-regs.c
+@@ -164,6 +164,7 @@ int fimc_is_hw_change_mode(struct fimc_is *is)
+ 	if (WARN_ON(is->config_index >= ARRAY_SIZE(cmd)))
+ 		return -EINVAL;
  
- 	q->is_active = QUEUE_IS_ACTIVE(*q);
- }
++	fimc_is_hw_wait_intmsr0_intmsd0(is);
+ 	mcuctl_write(cmd[is->config_index], is, MCUCTL_REG_ISSR(0));
+ 	mcuctl_write(is->sensor_index, is, MCUCTL_REG_ISSR(1));
+ 	mcuctl_write(is->setfile.sub_index, is, MCUCTL_REG_ISSR(2));
 -- 
 2.39.5
 
