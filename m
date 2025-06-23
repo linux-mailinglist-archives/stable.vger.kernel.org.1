@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-157215-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C4ABAE52F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:48:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B08F2AE50EE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E32DB1B66328
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:48:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 720181892F78
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F341C84A0;
-	Mon, 23 Jun 2025 21:48:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA11221299;
+	Mon, 23 Jun 2025 21:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQQVCsJu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xz8eFaIL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9A5442056;
-	Mon, 23 Jun 2025 21:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869771EEA3C;
+	Mon, 23 Jun 2025 21:29:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715321; cv=none; b=CjxxY+FiVe5EqHL7gionJptNE4u1l3y0LVZgTH7FJVeJrH5C7lLNPA1SyEDkqIalatal718qqbmbco1xi+NL6psTrpi+BLgNqt7fBNNnJX0OSFc7I7JPvJ8Aiayz6vHM/RkiXP4LkrC4XhZFfN2BCedWIlooJpM2/Kg49nFG+t8=
+	t=1750714140; cv=none; b=RlsXdTbVDykpeAGG95N7fJZFcD0ueO7iYabnrL2nbxN5W/DGxe45HT1mrg47bx67f/8+hPMr0E0gl/ZBY5cW+A0Mt77Oj5SGPe5+EvLo+3T19NF/WbVKW/Ry8I4ZHL2DDg/HuSirifWoVhtko73ouUXOIQ4BJREL3MYjW2WhWRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715321; c=relaxed/simple;
-	bh=XSma3ZNutnPzw7bNf8WLSCla3CTG2fesbbfFaiR89ko=;
+	s=arc-20240116; t=1750714140; c=relaxed/simple;
+	bh=xF7hS/LfST8Hs1SLqcDd7sttmSLpb109vNrv8HvW/5k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JN0dpb7Hj9/9eYrgPA5HP8X8JyKGqODv7aaqc+qWah1eOrZqbWQyFrRgfwKgxiqXNQ678NzsbroZOWLw4DoPfCXScffwQ8vNislMYlb7R0oi480Aw1QEw9wt8PO94X9EG9XqLq9SGKaQdhyVKYl9253tRX6TBM+vPJ6KV3bFT4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQQVCsJu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E881C4CEEA;
-	Mon, 23 Jun 2025 21:48:41 +0000 (UTC)
+	 MIME-Version; b=Z6OnjU83APo/gdwwXLLobi1wAalxpui9fIkB5Qw2tsTMHXAV+ZL1xmHvVVHKwYYLPhlRQY4qlMVgYPSn7xjKzT1CeHDmWsendgFcdulVzhb2i7pa+mHXqBUyX9/KIbzWYgVjALoryisMcmCmiK+Vr3a2Tm/neAGVZdvdxq6UVqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xz8eFaIL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14F49C4CEEA;
+	Mon, 23 Jun 2025 21:28:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715321;
-	bh=XSma3ZNutnPzw7bNf8WLSCla3CTG2fesbbfFaiR89ko=;
+	s=korg; t=1750714140;
+	bh=xF7hS/LfST8Hs1SLqcDd7sttmSLpb109vNrv8HvW/5k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQQVCsJu/daKssJiSQE0VCZhRsNUOzbWo7B9/1so4kjHgQNxk/KDobdl2eeFsqkqq
-	 X/5PuyRydsxE+ZeaiMiGm3/8bllZ3V7oLYVu2z5+fqicz8Nhg0J/nmhZ9HU6IXuODR
-	 vPhWyBHbSRoT1+oFqQ0ccUExZgWLN3l3gbTrPJU0=
+	b=Xz8eFaILfrmymosMCWTK0nC8HR3Q9txNQZluqNcy6m1cnSw852G8jVqZYfytWGSrd
+	 fWUEN9B96T52nVWnl6rExDTrgeGL5hjrQBMrS9vAXvN2zwEeZdw8WDgfp1epEDvd+G
+	 XlcA57gS66uR0aROkUvzWMERxHDe4DEGcUaK61EQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nathan Chancellor <nathan@kernel.org>,
-	Yanteng Si <si.yanteng@linux.dev>,
-	WANG Xuerui <git@xen0n.name>,
-	Xi Ruoyao <xry111@xry111.site>,
-	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.15 451/592] LoongArch: vDSO: Correctly use asm parameters in syscall wrappers
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 5.10 208/355] PCI: Add ACS quirk for Loongson PCIe
 Date: Mon, 23 Jun 2025 15:06:49 +0200
-Message-ID: <20250623130711.155594138@linuxfoundation.org>
+Message-ID: <20250623130632.999958836@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit e242bbbb6d7ac7556aa1e358294dc7e3c82cc902 upstream.
+commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
 
-The syscall wrappers use the "a0" register for two different register
-variables, both the first argument and the return value. Here the "ret"
-variable is used as both input and output while the argument register is
-only used as input. Clang treats the conflicting input parameters as an
-undefined behaviour and optimizes away the argument assignment.
+Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
+allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
+each Root Port can be in a separate IOMMU group.
 
-The code seems to work by chance for the most part today but that may
-change in the future. Specifically clock_gettime_fallback() fails with
-clockids from 16 to 23, as implemented by the upcoming auxiliary clocks.
-
-Switch the "ret" register variable to a pure output, similar to the
-other architectures' vDSO code. This works in both clang and GCC.
-
-Link: https://lore.kernel.org/lkml/20250602102825-42aa84f0-23f1-4d10-89fc-e8bbaffd291a@linutronix.de/
-Link: https://lore.kernel.org/lkml/20250519082042.742926976@linutronix.de/
-Fixes: c6b99bed6b8f ("LoongArch: Add VDSO and VSYSCALL support")
-Fixes: 18efd0b10e0f ("LoongArch: vDSO: Wire up getrandom() vDSO implementation")
-Cc: stable@vger.kernel.org
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Reviewed-by: Yanteng Si <si.yanteng@linux.dev>
-Reviewed-by: WANG Xuerui <git@xen0n.name>
-Reviewed-by: Xi Ruoyao <xry111@xry111.site>
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
 Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/vdso/getrandom.h    |    2 +-
- arch/loongarch/include/asm/vdso/gettimeofday.h |    6 +++---
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/quirks.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/arch/loongarch/include/asm/vdso/getrandom.h
-+++ b/arch/loongarch/include/asm/vdso/getrandom.h
-@@ -20,7 +20,7 @@ static __always_inline ssize_t getrandom
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4828,6 +4828,18 @@ static int pci_quirk_brcm_acs(struct pci
+ 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ }
  
- 	asm volatile(
- 	"      syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (buffer), "r" (len), "r" (flags)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7", "$t8",
- 	  "memory");
---- a/arch/loongarch/include/asm/vdso/gettimeofday.h
-+++ b/arch/loongarch/include/asm/vdso/gettimeofday.h
-@@ -25,7 +25,7 @@ static __always_inline long gettimeofday
- 
- 	asm volatile(
- 	"       syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (tv), "r" (tz)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
- 	  "$t8", "memory");
-@@ -44,7 +44,7 @@ static __always_inline long clock_gettim
- 
- 	asm volatile(
- 	"       syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (clkid), "r" (ts)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
- 	  "$t8", "memory");
-@@ -63,7 +63,7 @@ static __always_inline int clock_getres_
- 
- 	asm volatile(
- 	"       syscall 0\n"
--	: "+r" (ret)
-+	: "=r" (ret)
- 	: "r" (nr), "r" (clkid), "r" (ts)
- 	: "$t0", "$t1", "$t2", "$t3", "$t4", "$t5", "$t6", "$t7",
- 	  "$t8", "memory");
++static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
++{
++	/*
++	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
++	 * they do not allow peer-to-peer transactions between Root Ports.
++	 * Allow each Root Port to be in a separate IOMMU group by masking
++	 * SV/RR/CR/UF bits.
++	 */
++	return pci_acs_ctrl_enabled(acs_flags,
++		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
++}
++
+ /*
+  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+  * multi-function devices, the hardware isolates the functions by
+@@ -4961,6 +4973,17 @@ static const struct pci_dev_acs_enabled
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
++	/* Loongson PCIe Root Ports */
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
+ 	/* Zhaoxin multi-function devices */
 
 
 
