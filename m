@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-157098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C12C7AE5270
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7521AE5274
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 580E44A45EC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4ECFF4A5D8D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D3D221D3DD;
-	Mon, 23 Jun 2025 21:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336B2221545;
+	Mon, 23 Jun 2025 21:44:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL6VtYnE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="efbzvcs7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC7F4315A;
-	Mon, 23 Jun 2025 21:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E35CB4315A;
+	Mon, 23 Jun 2025 21:44:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715029; cv=none; b=lZ6EatMwr+LkQuJMWn6WtGiN5nJsKl9IgVdAUXaKofZ8hezAon0KcnlJgq+dlT78vDnFAdcFf8zP3J5aW2jRMAOiE6RqXdKLxUKK0Yql/rysLneiFFQjNm+kbkrQjDAfkMCQEsvLR+maxZiAO9HBTsLySAJpXYQCk6YXzZ99awU=
+	t=1750715046; cv=none; b=Vyb26Sxbxh1QQvcg24NciYYuWm28iLQPbCEBJCfw4r5LASx/tOM7XwgsS8DCPdQHpqb5lN/Uk6mIyucAUtCgFZqY8/XBJiwhzmQx3fDp2SLC5Wa+u9+nOg3hC7UOgPswL9g7OznfXw3BzSh0zMoO1NsbM8Ehvq692g8MK28ByGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715029; c=relaxed/simple;
-	bh=2ifTHBgjENEykLtvJjca10UgWjUAfWm5IreHYF1vGys=;
+	s=arc-20240116; t=1750715046; c=relaxed/simple;
+	bh=ST5Zxq1X7213XcpvZDL2R1bMIvm3MrwjS4STJ1OxV0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XrjONKqd0XUC69k6Ji+mols9bnXPpNotywXVWdGWwk8sdNUWhLyZcE/DUfEQB9RQC5m4Z1GEv1UbRw2QTy3Aoei/K5sfCiOVnDjps6iXDEtmbUDq/UDgRhGLrhxBrfscjqoqH+L9i/LJtcTrO3HTl4h86YCyEQTZIaXEd0M41us=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QL6VtYnE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F70C4CEEA;
-	Mon, 23 Jun 2025 21:43:48 +0000 (UTC)
+	 MIME-Version; b=RWP5dBvkqmLDSJn8UkBt9edgkr9vCX0qxOqDTqas1X7FHRc6u3jVgmKu3moWAn++YD86pchkA4golGLFRW5I7txDBTAgNZ+yCCCw5LMIqVABetqaU92nvh5EsBM+XMOGOW9g7VHCmxdp/TorqokybYbMCr8/BNeRdxJM6RS3P2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=efbzvcs7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CF0BC4CEEA;
+	Mon, 23 Jun 2025 21:44:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715028;
-	bh=2ifTHBgjENEykLtvJjca10UgWjUAfWm5IreHYF1vGys=;
+	s=korg; t=1750715045;
+	bh=ST5Zxq1X7213XcpvZDL2R1bMIvm3MrwjS4STJ1OxV0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QL6VtYnEVvDKJA0Ptn6T6HvPm8htr+UxaI6K7c1+oImpZvUFCZphKltSDvM12z8R0
-	 vr0jatl+977ROzmOAwTWA1Kb0i3f4O+PBmXkYx3/4GyyCcxTbPm0zYmz/4p2WHXLUI
-	 llkW0OyHXAEdbTM8Mpb+GxRWqPq4+LhnWLWx9SkE=
+	b=efbzvcs7aFhMD4dn0BsoYOMfUhNNERyy2OBwV0UY5NMmNpCX6cxPGZlPfIlN7hURL
+	 GbJvcBF9PyKk8fV4Eicn5TESdQyrgyqGt1BLWH5Kh6UjDJ5ghdruW2kkqm7dpMbwvy
+	 R3oExTO+KN9u8+2OH8MaA8wSXo8RWgB5Qy3IdahA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.12 151/414] PCI: dwc: ep: Correct PBA offset in .set_msix() callback
-Date: Mon, 23 Jun 2025 15:04:48 +0200
-Message-ID: <20250623130645.819398767@linuxfoundation.org>
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Bjorn Helgaas <bhelgaas@google.com>
+Subject: [PATCH 6.12 152/414] PCI: Add ACS quirk for Loongson PCIe
+Date: Mon, 23 Jun 2025 15:04:49 +0200
+Message-ID: <20250623130645.843163535@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -68,64 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-commit 810276362bad172d063d1f6be1cc2cb425b90103 upstream.
+commit 1f3303aa92e15fa273779acac2d0023609de30f1 upstream.
 
-While dw_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
-the calculation of the PBA offset is wrong because it calculates space for
-(N-1) entries instead of N.
+Loongson PCIe Root Ports don't advertise an ACS capability, but they do not
+allow peer-to-peer transactions between Root Ports. Add an ACS quirk so
+each Root Port can be in a separate IOMMU group.
 
-This results in the following QEMU error when using PCI passthrough on a
-device which relies on the PCI endpoint subsystem:
-
-  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
-
-Fix the calculation of PBA offset in the MSI-X capability.
-
-[bhelgaas: more specific subject and commit log]
-
-Fixes: 83153d9f36e2 ("PCI: endpoint: Fix ->set_msix() to take BIR and offset as arguments")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250514074313.283156-9-cassel@kernel.org
+Link: https://patch.msgid.link/20250403040756.720409-1-chenhuacai@loongson.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pcie-designware-ep.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/pci/quirks.c |   23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
---- a/drivers/pci/controller/dwc/pcie-designware-ep.c
-+++ b/drivers/pci/controller/dwc/pcie-designware-ep.c
-@@ -398,6 +398,7 @@ static int dw_pcie_ep_set_msix(struct pc
- 	struct dw_pcie *pci = to_dw_pcie_from_ep(ep);
- 	struct dw_pcie_ep_func *ep_func;
- 	u32 val, reg;
-+	u16 actual_interrupts = interrupts + 1;
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -4995,6 +4995,18 @@ static int pci_quirk_brcm_acs(struct pci
+ 		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
+ }
  
- 	ep_func = dw_pcie_ep_get_func_from_ep(ep, func_no);
- 	if (!ep_func || !ep_func->msix_cap)
-@@ -408,7 +409,7 @@ static int dw_pcie_ep_set_msix(struct pc
- 	reg = ep_func->msix_cap + PCI_MSIX_FLAGS;
- 	val = dw_pcie_ep_readw_dbi(ep, func_no, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
--	val |= interrupts;
-+	val |= interrupts; /* 0's based value */
- 	dw_pcie_writew_dbi(pci, reg, val);
- 
- 	reg = ep_func->msix_cap + PCI_MSIX_TABLE;
-@@ -416,7 +417,7 @@ static int dw_pcie_ep_set_msix(struct pc
- 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
- 
- 	reg = ep_func->msix_cap + PCI_MSIX_PBA;
--	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
-+	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
- 	dw_pcie_ep_writel_dbi(ep, func_no, reg, val);
- 
- 	dw_pcie_dbi_ro_wr_dis(pci);
++static int pci_quirk_loongson_acs(struct pci_dev *dev, u16 acs_flags)
++{
++	/*
++	 * Loongson PCIe Root Ports don't advertise an ACS capability, but
++	 * they do not allow peer-to-peer transactions between Root Ports.
++	 * Allow each Root Port to be in a separate IOMMU group by masking
++	 * SV/RR/CR/UF bits.
++	 */
++	return pci_acs_ctrl_enabled(acs_flags,
++		PCI_ACS_SV | PCI_ACS_RR | PCI_ACS_CR | PCI_ACS_UF);
++}
++
+ /*
+  * Wangxun 40G/25G/10G/1G NICs have no ACS capability, but on
+  * multi-function devices, the hardware isolates the functions by
+@@ -5128,6 +5140,17 @@ static const struct pci_dev_acs_enabled
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1762, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0x1763, pci_quirk_mf_endpoint_acs },
+ 	{ PCI_VENDOR_ID_BROADCOM, 0xD714, pci_quirk_brcm_acs },
++	/* Loongson PCIe Root Ports */
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x3C29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A09, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A19, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A29, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A39, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A49, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A59, pci_quirk_loongson_acs },
++	{ PCI_VENDOR_ID_LOONGSON, 0x7A69, pci_quirk_loongson_acs },
+ 	/* Amazon Annapurna Labs */
+ 	{ PCI_VENDOR_ID_AMAZON_ANNAPURNA_LABS, 0x0031, pci_quirk_al_acs },
+ 	/* Zhaoxin multi-function devices */
 
 
 
