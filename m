@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-158060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A16A9AE5713
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:53 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2CB7AE5650
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 12FE43B9ACD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A53416FD3A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443F422422F;
-	Mon, 23 Jun 2025 22:23:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6500919F120;
+	Mon, 23 Jun 2025 22:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFrbG13H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwg+cyz5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02599222581;
-	Mon, 23 Jun 2025 22:23:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2277EB676;
+	Mon, 23 Jun 2025 22:18:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717385; cv=none; b=d9vaUGnaCfe4iKpQJIJQXAUdSVICbVrmkDERNEbi6st3SRjFEOTjOQaX8UQ3e9drS3OZKteFESUcGAUkt7OpfdTjUeaztPynSYSKl8DQD7J8kKh57aIB9iNmBMa7oR8zY5KjxAwjS550fHKp3Z5SQhmJQYEyYCehWTsUGJOiYCU=
+	t=1750717102; cv=none; b=pHw0mm/3dqViXGRKCAOzA8NvnXctS3m7i6/aUIyMaZjHDGO6NhB0X5KemOVQfKOICTEtyCmsRmEF0nTIU915Qz9EsI8I6DKlHNvU/BtnCuoz2M2wEMbziicWUFMyiCb1a08cr3wiR+g5QAzxK7d8GsA+lAs3rYCcnh87e6o8aHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717385; c=relaxed/simple;
-	bh=Trpe0cmuKXBGkrQ0/Z3Q3AK2rTmu0tdqXEvHROYg9n0=;
+	s=arc-20240116; t=1750717102; c=relaxed/simple;
+	bh=mPbGkts0HU0oO7PiakOePRzaY+yMjAlGLhTDhwIU08I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezHs6RYjLlWZSOunlqply+RqfnTvKmDes6Zfbdsz2sE5Cg6v/Rj2Hg+jtHFYiQBJdGzio89/vMOuhw+mIGdwPjknOKh9jQF6qKcBvgcQzdeAFqAgMksK7H6AIMfX/tkHsLlkybBOJtJZNQjbdpYBuxmhQa2/BhGa+7BP7Iv5SV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFrbG13H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8480DC4CEEA;
-	Mon, 23 Jun 2025 22:23:04 +0000 (UTC)
+	 MIME-Version; b=dCvxW3nGa2Fi1hQOwViAGucPMeQvwrlswAM32cwzNbQSOWenl4EKcpFJqFYrdaUDcURMsk7B9uoHvZQQxkvuncJPgY6niGAd6M1wQ3MRFSlMFjfWqGt+mYofvTN0XkxmhnK8SStZ4Oi/kO/KANk/PjDwKIqPbH0SJaubdjjM4tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwg+cyz5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E95BC4CEEA;
+	Mon, 23 Jun 2025 22:18:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717384;
-	bh=Trpe0cmuKXBGkrQ0/Z3Q3AK2rTmu0tdqXEvHROYg9n0=;
+	s=korg; t=1750717102;
+	bh=mPbGkts0HU0oO7PiakOePRzaY+yMjAlGLhTDhwIU08I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JFrbG13HkfWHh8U6u80mgZL/PLjS+l67Wu8eHSaulnwSyCXBk/LQmgaY/gVDQmaO3
-	 RWOZAW+IGfadQrxn3hgyzXyWFebiRbbX5WS0H2s70OkHy0V9/yLporhoti/ti4PYWx
-	 Ep+am3GpvvVd5jeSu6K7AihCMg6MZsULQItiwonw=
+	b=vwg+cyz5jYppcvY/kELHPszFtEPIf4dZmgTIM9bhQ3lgEMHrFg+/5wMEf9EMlMPg+
+	 jf3Hi4qdjJQi00f4O9FYT0GEEMj6Ft2ZpRksP2cSzVh62qgQVXTtRg0NnUBgNPyOcD
+	 qmZ9uPu6P8vEEYn4WWFmdGy44tMtsZrFXd43luI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 416/508] libbpf: Add identical pointer detection to btf_dedup_is_equiv()
+	Simon Horman <horms@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 324/414] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
 Date: Mon, 23 Jun 2025 15:07:41 +0200
-Message-ID: <20250623130655.442261440@linuxfoundation.org>
+Message-ID: <20250623130650.094539144@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit 8e64c387c942229c551d0f23de4d9993d3a2acb6 ]
+commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
 
-Recently as a side-effect of
+In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
+atm_account_tx().
 
-commit ac053946f5c4 ("compiler.h: introduce TYPEOF_UNQUAL() macro")
+It is expected to be reverted by atm_pop_raw() later called by
+vcc->dev->ops->send(vcc, skb).
 
-issues were observed in deduplication between modules and kernel BTF
-such that a large number of kernel types were not deduplicated so
-were found in module BTF (task_struct, bpf_prog etc).  The root cause
-appeared to be a failure to dedup struct types, specifically those
-with members that were pointers with __percpu annotations.
+However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
+fails, and then we will leak a socket.
 
-The issue in dedup is at the point that we are deduplicating structures,
-we have not yet deduplicated reference types like pointers.  If multiple
-copies of a pointer point at the same (deduplicated) integer as in this
-case, we do not see them as identical.  Special handling already exists
-to deal with structures and arrays, so add pointer handling here too.
+Let's factorise the revert part as atm_return_tx() and call it in
+the failure path.
 
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20250429161042.2069678-1-alan.maguire@oracle.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the corresponding sk_wmem_alloc operation can be found in
+alloc_tx() as of the blamed commit.
+
+  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Simon Horman <horms@kernel.org>
+Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/lib/bpf/btf.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ include/linux/atmdev.h |    6 ++++++
+ net/atm/common.c       |    1 +
+ net/atm/raw.c          |    2 +-
+ 3 files changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/tools/lib/bpf/btf.c b/tools/lib/bpf/btf.c
-index 8224a797c2da5..f7e3209d6c641 100644
---- a/tools/lib/bpf/btf.c
-+++ b/tools/lib/bpf/btf.c
-@@ -3939,6 +3939,19 @@ static bool btf_dedup_identical_structs(struct btf_dedup *d, __u32 id1, __u32 id
- 	return true;
+--- a/include/linux/atmdev.h
++++ b/include/linux/atmdev.h
+@@ -249,6 +249,12 @@ static inline void atm_account_tx(struct
+ 	ATM_SKB(skb)->atm_options = vcc->atm_options;
  }
  
-+static bool btf_dedup_identical_ptrs(struct btf_dedup *d, __u32 id1, __u32 id2)
++static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
 +{
-+	struct btf_type *t1, *t2;
-+
-+	t1 = btf_type_by_id(d->btf, id1);
-+	t2 = btf_type_by_id(d->btf, id2);
-+
-+	if (!btf_is_ptr(t1) || !btf_is_ptr(t2))
-+		return false;
-+
-+	return t1->type == t2->type;
++	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
++					   &sk_atm(vcc)->sk_wmem_alloc));
 +}
 +
- /*
-  * Check equivalence of BTF type graph formed by candidate struct/union (we'll
-  * call it "candidate graph" in this description for brevity) to a type graph
-@@ -4071,6 +4084,9 @@ static int btf_dedup_is_equiv(struct btf_dedup *d, __u32 cand_id,
- 		 */
- 		if (btf_dedup_identical_structs(d, hypot_type_id, cand_id))
- 			return 1;
-+		/* A similar case is again observed for PTRs. */
-+		if (btf_dedup_identical_ptrs(d, hypot_type_id, cand_id))
-+			return 1;
- 		return 0;
- 	}
+ static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
+ {
+ 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
+--- a/net/atm/common.c
++++ b/net/atm/common.c
+@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
  
--- 
-2.39.5
-
+ 	skb->dev = NULL; /* for paths shared with net_device interfaces */
+ 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
++		atm_return_tx(vcc, skb);
+ 		kfree_skb(skb);
+ 		error = -EFAULT;
+ 		goto out;
+--- a/net/atm/raw.c
++++ b/net/atm/raw.c
+@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
+ 
+ 	pr_debug("(%d) %d -= %d\n",
+ 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
+-	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
++	atm_return_tx(vcc, skb);
+ 	dev_kfree_skb_any(skb);
+ 	sk->sk_write_space(sk);
+ }
 
 
 
