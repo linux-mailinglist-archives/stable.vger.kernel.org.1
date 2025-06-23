@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B721BAE525D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CFCAAE5480
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4A0AB7AF417
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8982D3AEC5B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC4F41DDC04;
-	Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9CFC21FF50;
+	Mon, 23 Jun 2025 22:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk2V+p30"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bt8i0uQl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973A21F5820;
-	Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 796E84409;
+	Mon, 23 Jun 2025 22:01:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714987; cv=none; b=QtLMJoXHJNNMOO3SIaSeXi+/MgO6wGhoVedcw7y9hAl/vapgHdEVHIERL4Er9TrRoBxvWkXFEZd3uIOXJ73HHGwWZxmrXI2PMjyr0eHLBDw5qrs2HbVwo+66pIpcMjrcEtOCGBDQIbRCyTUGuLZ468IdCR2ayv7tCNxmYFOnBnY=
+	t=1750716095; cv=none; b=ZxG5ZzWT7xAwrDApFq4C6UuZuVWvnW8MyHNMLn2vA4jJZiOWn5jbJii23dV5vUwdar0Eod9XK/HQsUIQeyuaLAxGofM6ixPZiSBrGcXY4EQ5vDGZbd5RcUShkxkVsf892vPVjESH44YmBJEkMRwilRbiN+yhN4erqNY3OZIFp4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714987; c=relaxed/simple;
-	bh=Tgon6siZGWaxaYn3WDxTR+ligFlVIZWCQDWxb13zMck=;
+	s=arc-20240116; t=1750716095; c=relaxed/simple;
+	bh=WuXfuZWcf9hI4X8mYQ+F55SUH8gyIZgDxCOqeZwcHPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W+tTeBnOtRHPbZNWN9bM3Fa5trKo9MYMw1jUt36oo9HG7pZ+6hh3ExkBoerTDQozk02D5VVQ9b8lryYg/cPm76gHM6ffLNaGv59NPW8K6jbLCQVbwkdKgpN/L/OUDD9W8LgfAp9NvUNzY+c7637uPD1ce0Ju4VPubWGnzUXki4s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk2V+p30; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27732C4CEEA;
-	Mon, 23 Jun 2025 21:43:07 +0000 (UTC)
+	 MIME-Version; b=s38I0L+CTXkLiZdENId1MaBdoqvY43Ri4B7x0VZ5tAc4McNEZ1CCGJCtHXmC7eCFHYfKU6B+eHWbGj7BbJ/eVotT85KjQ3h3QYlv7c2WHTqdd1cluNyxq/3I4Wrc4jdfa6aDj+AZxltduJh2Sa1OQcWYIOhMZMacUPKlrgw60As=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bt8i0uQl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DDBAC4CEEA;
+	Mon, 23 Jun 2025 22:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714987;
-	bh=Tgon6siZGWaxaYn3WDxTR+ligFlVIZWCQDWxb13zMck=;
+	s=korg; t=1750716095;
+	bh=WuXfuZWcf9hI4X8mYQ+F55SUH8gyIZgDxCOqeZwcHPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sk2V+p30hWQvE//PVcMWoadSF43HAxfSW2NY/IT+xGlLi0DVJN/PbmDMHQIwUmyq6
-	 pmretY88MxzkrhRvlSZhtc85GOszYbyxIBH7pH2xsrezrR6K50INDwxRWedl2NcrHp
-	 RMfT2fiXgSSS8jh+bT1RRc60gw9etd0Wycd+X9hY=
+	b=Bt8i0uQlQw9gp3DwyWfb5N4Fislsurn2lU6rrqrWsBESeF7QuaNFuu/MpOgYPYEZF
+	 5I4gQ3W1f3UxwnO/vgUVLijP1wFPhZ5FWy4czyvskptZICkU8LodVQQif4ClM4eYZR
+	 X64CkuWa/j5f8gh8KNkl7YJSEMtORFa8ZopxnM80=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Schuster <schuster.simon@siemens-energy.com>,
-	Andreas Oetken <andreas.oetken@siemens-energy.com>,
-	Dinh Nguyen <dinguyen@kernel.org>,
+	Sukrut Bellary <sbellary@baylibre.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Judith Mendez <jm@ti.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 245/355] nios2: force update_mmu_cache on spurious tlb-permission--related pagefaults
+Subject: [PATCH 5.15 302/411] pmdomain: ti: Fix STANDBY handling of PER power domain
 Date: Mon, 23 Jun 2025 15:07:26 +0200
-Message-ID: <20250623130634.112329816@linuxfoundation.org>
+Message-ID: <20250623130641.249318542@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,86 +64,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Schuster <schuster.simon@siemens-energy.com>
+From: Sukrut Bellary <sbellary@baylibre.com>
 
-[ Upstream commit 2d8a3179ea035f9341b6a73e5ba4029fc67e983d ]
+[ Upstream commit 36795548dcc841c73f03793ed6cf741a88130922 ]
 
-NIOS2 uses a software-managed TLB for virtual address translation. To
-flush a cache line, the original mapping is replaced by one to physical
-address 0x0 with no permissions (rwx mapped to 0) set. This can lead to
-TLB-permission--related traps when such a nominally flushed entry is
-encountered as a mapping for an otherwise valid virtual address within a
-process (e.g. due to an MMU-PID-namespace rollover that previously
-flushed the complete TLB including entries of existing, running
-processes).
+Per AM335x TRM[1](section 8.1.4.3 Power mode), in case of STANDBY,
+PER domain should be ON. So, fix the PER power domain handling on standby.
 
-The default ptep_set_access_flags implementation from mm/pgtable-generic.c
-only forces a TLB-update when the page-table entry has changed within the
-page table:
+[1] https://www.ti.com/lit/ug/spruh73q/spruh73q.pdf
 
-	/*
-	 * [...] We return whether the PTE actually changed, which in turn
-	 * instructs the caller to do things like update__mmu_cache. [...]
-	 */
-	int ptep_set_access_flags(struct vm_area_struct *vma,
-				  unsigned long address, pte_t *ptep,
-				  pte_t entry, int dirty)
-	{
-		int changed = !pte_same(*ptep, entry);
-		if (changed) {
-			set_pte_at(vma->vm_mm, address, ptep, entry);
-			flush_tlb_fix_spurious_fault(vma, address);
-		}
-		return changed;
-	}
-
-However, no cross-referencing with the TLB-state occurs, so the
-flushing-induced pseudo entries that are responsible for the pagefault
-in the first place are never pre-empted from TLB on this code path.
-
-This commit fixes this behaviour by always requesting a TLB-update in
-this part of the pagefault handling, fixing spurious page-faults on the
-way. The handling is a straightforward port of the logic from the MIPS
-architecture via an arch-specific ptep_set_access_flags function ported
-from arch/mips/include/asm/pgtable.h.
-
-Signed-off-by: Simon Schuster <schuster.simon@siemens-energy.com>
-Signed-off-by: Andreas Oetken <andreas.oetken@siemens-energy.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
+Signed-off-by: Sukrut Bellary <sbellary@baylibre.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Link: https://lore.kernel.org/r/20250318230042.3138542-3-sbellary@baylibre.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/nios2/include/asm/pgtable.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/soc/ti/omap_prm.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/arch/nios2/include/asm/pgtable.h b/arch/nios2/include/asm/pgtable.h
-index 2600d76c310c4..966fef8249bbb 100644
---- a/arch/nios2/include/asm/pgtable.h
-+++ b/arch/nios2/include/asm/pgtable.h
-@@ -277,4 +277,20 @@ extern void __init mmu_init(void);
- extern void update_mmu_cache(struct vm_area_struct *vma,
- 			     unsigned long address, pte_t *pte);
+diff --git a/drivers/soc/ti/omap_prm.c b/drivers/soc/ti/omap_prm.c
+index 1248d5d56c8d4..544e57fff96ca 100644
+--- a/drivers/soc/ti/omap_prm.c
++++ b/drivers/soc/ti/omap_prm.c
+@@ -19,7 +19,9 @@
+ #include <linux/pm_domain.h>
+ #include <linux/reset-controller.h>
+ #include <linux/delay.h>
+-
++#if IS_ENABLED(CONFIG_SUSPEND)
++#include <linux/suspend.h>
++#endif
+ #include <linux/platform_data/ti-prm.h>
  
-+static inline int pte_same(pte_t pte_a, pte_t pte_b);
-+
-+#define __HAVE_ARCH_PTEP_SET_ACCESS_FLAGS
-+static inline int ptep_set_access_flags(struct vm_area_struct *vma,
-+					unsigned long address, pte_t *ptep,
-+					pte_t entry, int dirty)
-+{
-+	if (!pte_same(*ptep, entry))
-+		set_ptes(vma->vm_mm, address, ptep, entry, 1);
-+	/*
-+	 * update_mmu_cache will unconditionally execute, handling both
-+	 * the case that the PTE changed and the spurious fault case.
-+	 */
-+	return true;
-+}
-+
- #endif /* _ASM_NIOS2_PGTABLE_H */
+ enum omap_prm_domain_mode {
+@@ -89,6 +91,7 @@ struct omap_reset_data {
+ #define OMAP_PRM_HAS_RSTST	BIT(1)
+ #define OMAP_PRM_HAS_NO_CLKDM	BIT(2)
+ #define OMAP_PRM_RET_WHEN_IDLE	BIT(3)
++#define OMAP_PRM_ON_WHEN_STANDBY	BIT(4)
+ 
+ #define OMAP_PRM_HAS_RESETS	(OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_HAS_RSTST)
+ 
+@@ -405,7 +408,8 @@ static const struct omap_prm_data am3_prm_data[] = {
+ 		.name = "per", .base = 0x44e00c00,
+ 		.pwrstctrl = 0xc, .pwrstst = 0x8, .dmap = &omap_prm_noinact,
+ 		.rstctrl = 0x0, .rstmap = am3_per_rst_map,
+-		.flags = OMAP_PRM_HAS_RSTCTRL, .clkdm_name = "pruss_ocp"
++		.flags = OMAP_PRM_HAS_RSTCTRL | OMAP_PRM_ON_WHEN_STANDBY,
++		.clkdm_name = "pruss_ocp",
+ 	},
+ 	{
+ 		.name = "wkup", .base = 0x44e00d00,
 -- 
 2.39.5
 
