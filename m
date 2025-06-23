@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D2BFAE5100
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:29:59 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 675F1AE5385
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 56E2E1B62217
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F094A43FB
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11B3221299;
-	Mon, 23 Jun 2025 21:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C452222B7;
+	Mon, 23 Jun 2025 21:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lXLGqrOT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GICiKght"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FED31E5B71;
-	Mon, 23 Jun 2025 21:29:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DE3220686;
+	Mon, 23 Jun 2025 21:53:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714187; cv=none; b=XDeyau8dZ9eR+dcwzFHzmGN1w+GHjegHPR+gjiaa9V34XdDWEBB37T6HhdKXnposqGMKmjSz2RA2sOPj01R5faZSdumHOTrvop1W47L7iTjhgzCXEMpn45UMhIUcIfeIAcSEMRT8ngOiXET3nrr/67FGqW2NYrT+gd5PuWpEpnI=
+	t=1750715621; cv=none; b=Uc4lKJay97YUkMe+aBSAeJ9hccpPXBCqOoB1PHi27Zc9IB2Vr/PKiDyw/LDpMweHulcdwgQ20WCmSJ9x3wR0WDL0DPu3+act6p87SgKFtdvQ+T3j94bLv6hHiX3eD5Zfyrc61zyXdNL7J3qiHXx5/+s/9aXHOt/ZNhDbhz7nJhQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714187; c=relaxed/simple;
-	bh=0t4Yl9+7i26pnsVytwoiacGZRAKb8tXusMArdJt7/P0=;
+	s=arc-20240116; t=1750715621; c=relaxed/simple;
+	bh=LOkFX0td23e2YcaKYMO4IxFmSo6B8QVteq5/c21z5hg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EXo9wTTUkI4TSh/IniUzuu9Sn3SHWtpTe4M7A65EKvTYMIDXabK6fYSmL0adW9UG3FyW4KsXytBvSd7NPzilZ5L+3w8Ho5hEsBsy04AAshkvoxNPnsfNreQXxaLlP5HFksg6Ag91wMEvYNlOJwutApsPVc+HO+3Q0Bhb/OegmIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lXLGqrOT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AA5DC4CEEA;
-	Mon, 23 Jun 2025 21:29:46 +0000 (UTC)
+	 MIME-Version; b=XfmMlE+Z0tU7Wkh+REr5H1Qqy44C0p4nq07UHPCj6NaHZB2g8Gqr4NInaeQ73PdffCeuzY76glfk6ZGSkxnQtFjTp3+49Kd6w3yYBjMhnNupatbqUdFroWfdmUG77/R5KX026+6n0pf9XAErjg63sw6DMhQjxEC+Upr/a0+W6sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GICiKght; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004F9C4CEEA;
+	Mon, 23 Jun 2025 21:53:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714186;
-	bh=0t4Yl9+7i26pnsVytwoiacGZRAKb8tXusMArdJt7/P0=;
+	s=korg; t=1750715621;
+	bh=LOkFX0td23e2YcaKYMO4IxFmSo6B8QVteq5/c21z5hg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lXLGqrOThwc3hHulobO96+B3VIn6wPpZyPRfp2UdZZOlNJ8GzTn5yCFqQJ6+kIPIm
-	 e17KILNJ1sTk8/5ckUufXkdHeCyw0xyKFbNsAmXuTMnwLPYmqmG6vZgF+wsL5aEcXh
-	 cIyKfAr5c7lhnoxEyP0k4PeTmnRk8lAQsVkcTVFY=
+	b=GICiKghtLwrTSwpPNMTHy5TFytaMmRjtOVwWrJS/bM8SVwOL4OFVIE5fZVsa+yiy7
+	 jKLRM6Qht4SFcnBD8kL9xcYr/vuIDfQhAIHG776QT9+9vOpZ9LwotrLcubOi7Yn5xZ
+	 QfPxZkp3MG/uCQg2SC+OhS/u5uMDZJJV1PLTVv2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Lechner <dlechner@baylibre.com>,
-	Angelo Dureghello <adureghello@baylibre.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 211/355] iio: adc: ad7606_spi: fix reg write value mask
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	gldrk <me@rarity.fan>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 268/411] ACPICA: utilities: Fix overflow check in vsnprintf()
 Date: Mon, 23 Jun 2025 15:06:52 +0200
-Message-ID: <20250623130633.086937868@linuxfoundation.org>
+Message-ID: <20250623130640.402979388@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Lechner <dlechner@baylibre.com>
+From: gldrk <me@rarity.fan>
 
-commit 89944d88f8795c6c89b9514cb365998145511cd4 upstream.
+[ Upstream commit 12b660251007e00a3e4d47ec62dbe3a7ace7023e ]
 
-Fix incorrect value mask for register write. Register values are 8-bit,
-not 9. If this function was called with a value > 0xFF and an even addr,
-it would cause writing to the next register.
+ACPICA commit d9d59b7918514ae55063b93f3ec041b1a569bf49
 
-Fixes: f2a22e1e172f ("iio: adc: ad7606: Add support for software mode for ad7616")
-Signed-off-by: David Lechner <dlechner@baylibre.com>
-Reviewed-by: Angelo Dureghello <adureghello@baylibre.com>
-Link: https://patch.msgid.link/20250428-iio-adc-ad7606_spi-fix-write-value-mask-v1-1-a2d5e85a809f@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The old version breaks sprintf on 64-bit systems for buffers
+outside [0..UINT32_MAX].
+
+Link: https://github.com/acpica/acpica/commit/d9d59b79
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/4994935.GXAFRqVoOG@rjwysocki.net
+Signed-off-by: gldrk <me@rarity.fan>
+[ rjw: Added the tag from gldrk ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606_spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/acpica/utprint.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/drivers/iio/adc/ad7606_spi.c
-+++ b/drivers/iio/adc/ad7606_spi.c
-@@ -151,7 +151,7 @@ static int ad7606_spi_reg_write(struct a
- 	struct spi_device *spi = to_spi_device(st->dev);
+diff --git a/drivers/acpi/acpica/utprint.c b/drivers/acpi/acpica/utprint.c
+index 05426596d1f4a..f910714b51f34 100644
+--- a/drivers/acpi/acpica/utprint.c
++++ b/drivers/acpi/acpica/utprint.c
+@@ -333,11 +333,8 @@ int vsnprintf(char *string, acpi_size size, const char *format, va_list args)
  
- 	st->d16[0] = cpu_to_be16((st->bops->rd_wr_cmd(addr, 1) << 8) |
--				  (val & 0x1FF));
-+				  (val & 0xFF));
+ 	pos = string;
  
- 	return spi_write(spi, &st->d16[0], sizeof(st->d16[0]));
- }
+-	if (size != ACPI_UINT32_MAX) {
+-		end = string + size;
+-	} else {
+-		end = ACPI_CAST_PTR(char, ACPI_UINT32_MAX);
+-	}
++	size = ACPI_MIN(size, ACPI_PTR_DIFF(ACPI_MAX_PTR, string));
++	end = string + size;
+ 
+ 	for (; *format; ++format) {
+ 		if (*format != '%') {
+-- 
+2.39.5
+
 
 
 
