@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B821BAE5404
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:58:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62889AE50C5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10F4D446971
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D2C71B62EF7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA5D221DA8;
-	Mon, 23 Jun 2025 21:58:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 634681EFFA6;
+	Mon, 23 Jun 2025 21:27:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JpZB089b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJOdpzLP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF5DE1F4628;
-	Mon, 23 Jun 2025 21:58:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2185619C554;
+	Mon, 23 Jun 2025 21:27:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715888; cv=none; b=ZnzUGvuyyQNnZHp4CFNmVC28OreUtgzlY0O1pnbIY353y1+9dvFgE8ePcCeIRjznS9XkjmfXhWYa3pT2pMGyExpYk/GzIeVCsWE9qzwabVhLv1B0gjPp+R2Lh0PZYqW6y+f6pQzOsc6V35Socu1Z5ef5VJLc7nX8IieO/vaLT4M=
+	t=1750714065; cv=none; b=L/84UFoZU9nFHDVcQwdDqPFuOgZmXqdUsZxOnFhYgBGaQhFbUaZQq8ILiu/qWuerqpT6klfp7cfT6dLvhoKudBHGd/xXRBs0ukrSMp5IGvPzSrsXOHLSIZOFJ0pzko1DCgvHw4kxgsrLYO8Xs1O977fVzIQDMYuWnKwORqFfK5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715888; c=relaxed/simple;
-	bh=x+JLJZZp5SfCELYYAwWug3f+F9Xi2DIXmXTwPQ/3dTQ=;
+	s=arc-20240116; t=1750714065; c=relaxed/simple;
+	bh=EMVdhpdbS5uLBcwSZhhH5BeK1iWSpG37wmu4eqWtm40=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CofU0UXhzd/7uHDZBrV7fBjZaAc70OATkRK9G3diSZu+60zIYI66UG4MtY+YHzaMO9Ks7uegafIjXC0GiJJTa0O14IJ71QdciX0qDH5Mz/wJ0+kASGHN8HwJzBL4Dn5KoBUglzyI1O0ZQTEJLmVyy3RiHjEHXs4muq+5jnOkQ/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JpZB089b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86FD5C4CEEA;
-	Mon, 23 Jun 2025 21:58:07 +0000 (UTC)
+	 MIME-Version; b=Y35jNW6s1saqoW0PjuibfD+V89Kr2xEdbZwPGx2K03D3HIiiLg8cts9sS0BrpHlYRHrJq1nS05JyEkjEBRaiwZliRm5sSQ5oHF7Jf4/N75BoXyb3IZaMVRmJUlCMkkST5zCwSujTW25wOAMaihASsiocMxYEuB05WcvXv7GR+Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJOdpzLP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57887C4CEEA;
+	Mon, 23 Jun 2025 21:27:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715887;
-	bh=x+JLJZZp5SfCELYYAwWug3f+F9Xi2DIXmXTwPQ/3dTQ=;
+	s=korg; t=1750714064;
+	bh=EMVdhpdbS5uLBcwSZhhH5BeK1iWSpG37wmu4eqWtm40=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JpZB089bLMJVHHEGYqFm/BV0tzNzQsmXx6xqs0RTHM4/wo0J465KZrllJy/5ZMkSy
-	 SNo9m2a+1WXJDlTyoj6MXYjS58clEIYlMm5VwgkoftPS7+j7hue1c20osC6J/viCF2
-	 MALwlVCc47mWMyH5uD7OdqOMGF6Vdr9R0vkRfvZs=
+	b=hJOdpzLPcEYve/Ngu1VjoNtjctrJxzclN9vRLaNVGRYWTNBGWnP4t5kghhE9WrnWR
+	 +k3hhf+z7RKQzUSDLLxTFyN4xquN0N1EV1OnijnBGIbLqUYc+sGVC1Q0ZmwaEU3FZV
+	 9X0hpSAHdB/hBo5HyWxWE0njhoiuOpvn4SlglToE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Salah Triki <salah.triki@gmail.com>,
-	Johannes Berg <johannes.berg@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 235/414] wireless: purelifi: plfxlc: fix memory leak in plfxlc_usb_wreq_asyn()
+	Diederik de Haas <didi.debian@cknow.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH 6.6 111/290] PCI: dw-rockchip: Fix PHY function call sequence in rockchip_pcie_phy_deinit()
 Date: Mon, 23 Jun 2025 15:06:12 +0200
-Message-ID: <20250623130647.913591654@linuxfoundation.org>
+Message-ID: <20250623130630.292727267@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Salah Triki <salah.triki@gmail.com>
+From: Diederik de Haas <didi.debian@cknow.org>
 
-[ Upstream commit 63a9a727d373fa5b8ce509eef50dbc45e0f745b9 ]
+commit 286ed198b899739862456f451eda884558526a9d upstream.
 
-Add usb_free_urb() in the error path to prevent memory leak.
+The documentation for the phy_power_off() function explicitly says that it
+must be called before phy_exit().
 
-Signed-off-by: Salah Triki <salah.triki@gmail.com>
-Link: https://patch.msgid.link/aA3_maPlEJzO7wrL@pc
-[fix subject]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Hence, follow the same rule in rockchip_pcie_phy_deinit().
+
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+[mani: commit message change]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org	# v5.15+
+Link: https://patch.msgid.link/20250417142138.1377451-1-didi.debian@cknow.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/purelifi/plfxlc/usb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
-index 56d1139ba8bcc..7e7bfa532ed25 100644
---- a/drivers/net/wireless/purelifi/plfxlc/usb.c
-+++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
-@@ -503,8 +503,10 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
- 			  (void *)buffer, buffer_len, complete_fn, context);
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -275,8 +275,8 @@ static int rockchip_pcie_phy_init(struct
  
- 	r = usb_submit_urb(urb, GFP_ATOMIC);
--	if (r)
-+	if (r) {
-+		usb_free_urb(urb);
- 		dev_err(&udev->dev, "Async write submit failed (%d)\n", r);
-+	}
- 
- 	return r;
+ static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
+ {
+-	phy_exit(rockchip->phy);
+ 	phy_power_off(rockchip->phy);
++	phy_exit(rockchip->phy);
  }
--- 
-2.39.5
-
+ 
+ static const struct dw_pcie_ops dw_pcie_ops = {
 
 
 
