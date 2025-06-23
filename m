@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FECBAE52B9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87955AE503E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 425624A691B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 209857AE5CA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 699EC224B1E;
-	Mon, 23 Jun 2025 21:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB49E1E521E;
+	Mon, 23 Jun 2025 21:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vJKF4wgs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GphC41K7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 247581C84A0;
-	Mon, 23 Jun 2025 21:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87FD57482;
+	Mon, 23 Jun 2025 21:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715186; cv=none; b=UMFT51hKyFa5isov4S0xYMYsJmrWst+RriC+FXXb8n4BV2HhmmVaH4p8k6A+0qZLKRH3OznAl58R6f9u+SugAWmY8FDtTGF3PDq9edmN6xc218LTzNrYUcn0eNHDM4k/5KLGwWIJnfskqq6IZJ6wMKzEULNbRD53PdjU/0vtnVA=
+	t=1750713692; cv=none; b=bXO4o6SKb7h49XTVJ7mLuiq7lXnhS58NHuvKt88xSIkrQAAioqwYzOYS5TW6D6KiFoRFpLNFWDVa7Xzr+uw6lWxAfAAe8pLX9H+hd8j994XhSX18R3pd7a5JcCK8zZ5Le6vjcU+XKvO8y90dINsOpaVXrznQKnw6UVW6eVZLvUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715186; c=relaxed/simple;
-	bh=sae+piEytPIA76lVBVi+KRvdNIhvoHLTVQ7gACmchQQ=;
+	s=arc-20240116; t=1750713692; c=relaxed/simple;
+	bh=Uven7V7A8mP6HJGJboSQLNjLm9FnMvzvJNTJcqs7sF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G1oMDbSD2DcCFNnTiyk07TL5WXl+p/cTqOI0nYu8SWAa0jOfeQOWCHKFmucucakC4ou/YhIyIAz8kmjKSMbxSjXWqf8BRp0RmhOawZ15DxtUnGd1XcudoqY1l9TZFPF3ZFgN9zRGA1dbL8xlub+c70sV8B9VRYLOyd2vThtG+8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vJKF4wgs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7232C4CEEA;
-	Mon, 23 Jun 2025 21:46:25 +0000 (UTC)
+	 MIME-Version; b=cjlenpVygERdhSibXbtyt0PC1C6WntGrti+u5TXuMq3+/J+opj6hDUJEZzdl67qH3EfVk/gWXQSThP6KLnEXFPYVppzqdS1oTPal+fCBx/WtWezSqYL3xbCcRbuWlO0lO9DuNDzNbAOJuZdEHp+3M2PQ4PVYns1LxxZN2fHEEcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GphC41K7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E5F3C4CEEA;
+	Mon, 23 Jun 2025 21:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715186;
-	bh=sae+piEytPIA76lVBVi+KRvdNIhvoHLTVQ7gACmchQQ=;
+	s=korg; t=1750713692;
+	bh=Uven7V7A8mP6HJGJboSQLNjLm9FnMvzvJNTJcqs7sF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vJKF4wgs1uipALn9fhAToQFW6ITcN/seehkKjZx+MVEf23qitldfFGHiyhFxco7GH
-	 FVz9/+Mdi3koVxIa1ZaD7PqYiUdHFAAq/dmbKnZaD2pIonH/PVpAaQMLAr3gJnbJj5
-	 GMQMlByo9VUDSDitZpq/DhzOO9NrpUAntDptthh0=
+	b=GphC41K7wfW3s+61ZOLuY6+XP4061ek/JFcg8qVxzKq/uJdS94tQ9i/Ag73JRMhXn
+	 1k8EtXe43vRGIdCJxsHCKOgwZyYYWh00IpwxCrM+kNP3irZbXlKBA3UnkA1eWctCgH
+	 uaAV7mT1aqrVn/jgL+UXwfGeBapP1n/52KYTMI+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Greental <yonatan02greental@gmail.com>,
-	Haren Myneni <haren@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Caleb Connolly <caleb.connolly@linaro.org>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 240/508] powerpc/vas: Return -EINVAL if the offset is non-zero in mmap()
+Subject: [PATCH 5.15 141/411] ath10k: snoc: fix unbalanced IRQ enable in crash recovery
 Date: Mon, 23 Jun 2025 15:04:45 +0200
-Message-ID: <20250623130651.159217111@linuxfoundation.org>
+Message-ID: <20250623130637.149458193@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +63,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Caleb Connolly <caleb.connolly@linaro.org>
 
-[ Upstream commit 0d67f0dee6c9176bc09a5482dd7346e3a0f14d0b ]
+[ Upstream commit 1650d32b92b01db03a1a95d69ee74fcbc34d4b00 ]
 
-The user space calls mmap() to map VAS window paste address
-and the kernel returns the complete mapped page for each
-window. So return -EINVAL if non-zero is passed for offset
-parameter to mmap().
+In ath10k_snoc_hif_stop() we skip disabling the IRQs in the crash
+recovery flow, but we still unconditionally call enable again in
+ath10k_snoc_hif_start().
 
-See Documentation/arch/powerpc/vas-api.rst for mmap()
-restrictions.
+We can't check the ATH10K_FLAG_CRASH_FLUSH bit since it is cleared
+before hif_start() is called, so instead check the
+ATH10K_SNOC_FLAG_RECOVERY flag and skip enabling the IRQs during crash
+recovery.
 
-Co-developed-by: Jonathan Greental <yonatan02greental@gmail.com>
-Signed-off-by: Jonathan Greental <yonatan02greental@gmail.com>
-Reported-by: Jonathan Greental <yonatan02greental@gmail.com>
-Fixes: dda44eb29c23 ("powerpc/vas: Add VAS user space API")
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250610021227.361980-2-maddy@linux.ibm.com
+This fixes unbalanced IRQ enable splats that happen after recovering from
+a crash.
+
+Fixes: 0e622f67e041 ("ath10k: add support for WCN3990 firmware crash recovery")
+Signed-off-by: Caleb Connolly <caleb.connolly@linaro.org>
+Tested-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20250318205043.1043148-1-caleb.connolly@linaro.org
+Signed-off-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/book3s/vas-api.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/wireless/ath/ath10k/snoc.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/platforms/book3s/vas-api.c b/arch/powerpc/platforms/book3s/vas-api.c
-index d954ddf7f0592..0f73554c6ae90 100644
---- a/arch/powerpc/platforms/book3s/vas-api.c
-+++ b/arch/powerpc/platforms/book3s/vas-api.c
-@@ -521,6 +521,15 @@ static int coproc_mmap(struct file *fp, struct vm_area_struct *vma)
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/wireless/ath/ath10k/snoc.c b/drivers/net/wireless/ath/ath10k/snoc.c
+index 439df8a404d86..b091e5187dbe5 100644
+--- a/drivers/net/wireless/ath/ath10k/snoc.c
++++ b/drivers/net/wireless/ath/ath10k/snoc.c
+@@ -936,7 +936,9 @@ static int ath10k_snoc_hif_start(struct ath10k *ar)
+ 	bitmap_clear(ar_snoc->pending_ce_irqs, 0, CE_COUNT_MAX);
  
-+	/*
-+	 * Map complete page to the paste address. So the user
-+	 * space should pass 0ULL to the offset parameter.
-+	 */
-+	if (vma->vm_pgoff) {
-+		pr_debug("Page offset unsupported to map paste address\n");
-+		return -EINVAL;
-+	}
-+
- 	/* Ensure instance has an open send window */
- 	if (!txwin) {
- 		pr_err("No send window open?\n");
+ 	ath10k_core_napi_enable(ar);
+-	ath10k_snoc_irq_enable(ar);
++	/* IRQs are left enabled when we restart due to a firmware crash */
++	if (!test_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags))
++		ath10k_snoc_irq_enable(ar);
+ 	ath10k_snoc_rx_post(ar);
+ 
+ 	clear_bit(ATH10K_SNOC_FLAG_RECOVERY, &ar_snoc->flags);
 -- 
 2.39.5
 
