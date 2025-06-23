@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-155616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2321DAE42DC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E70AE4485
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 26CCA1892C90
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D989917E7F4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7C1E253B73;
-	Mon, 23 Jun 2025 13:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E97B02522A8;
+	Mon, 23 Jun 2025 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tqeaVPXY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GbkNYgun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6551C253949;
-	Mon, 23 Jun 2025 13:21:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74EE347DD;
+	Mon, 23 Jun 2025 13:36:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684894; cv=none; b=fL4iW2r6+958D2PUkvCnPxt48drbCATDpEnagrL2Mb8jQYIyGjTs7IdbD6KZlYIQx+3a1Zl/Zc3/bUmhwtOsLrnJRuVNYJc2+4VKH9a53F43RFFxlcaNJpFxEfwEy9ic9JMWvvcOkp8mZPXK+nYqcb+SJhjehVrgalN1xfUOdGo=
+	t=1750685807; cv=none; b=PJcDsYYaxsoUt+WbscCtERYGm/alXsLgTO2rPd4qd/6OVyYVO2LfO3qLXZvyqiv3v5CpBczGJRjiu8A8UhW7bbcT2vUlEkhS8xRSGgEQINamofWBOYbF5IJt82IqkRQjRbzYc7qlBTn78OysZPJSDCfXfsFYynyeHXX2mBh0Z5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684894; c=relaxed/simple;
-	bh=zh3POx0tiL6/0q3OLoAod3+m7HlauKMMbQ1/vDJYWj8=;
+	s=arc-20240116; t=1750685807; c=relaxed/simple;
+	bh=Vq3LdCtP41XH8ASslGrc1EgsHs+/UQIXG0fv3jUaD6E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aXkVA5z0/N2pibk8304bSPwts5d+cma16ZECXNPngrQCd/U5KbB/RpnVo2C4IWCeoxGBGi8X5m8I7LKpWk6Kz7k7BPsr+d//USw7GdH5PJ0zOfTD+he/g53t8zEMJzjQUcOFzdWy5XS7mwyvG7NNbBJnTAyHI/lxiW9eK3MMUlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tqeaVPXY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED2C7C4CEEA;
-	Mon, 23 Jun 2025 13:21:33 +0000 (UTC)
+	 MIME-Version; b=jK3v5JDRqSU64+BLvb+nY1KYY2l7VyOEWDUNQCe03nmdtjMPJWKcg+h9W2YSj0eyeJ1U/1y9p9uy0kzi3yrL6qZpE3OwXiUpP8NUtus8sCuf+3CEq/p0FnCLIF9cka1290B932QPh65jCiLrkORzGYjsx9alvr4SP+DmHfnkFc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GbkNYgun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBBFC4CEEA;
+	Mon, 23 Jun 2025 13:36:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684894;
-	bh=zh3POx0tiL6/0q3OLoAod3+m7HlauKMMbQ1/vDJYWj8=;
+	s=korg; t=1750685807;
+	bh=Vq3LdCtP41XH8ASslGrc1EgsHs+/UQIXG0fv3jUaD6E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tqeaVPXYjQqa1eTGkNsSUEks7ju5GMsi1Xglq6VP5ZseEKRy0Zhb+C2j1znpALqry
-	 +RECczEDb3M1BKO2X+lcRTSSsZdGcEJ5caSCGLQY9ezivwScUFvGZ26d3s0WmKafdX
-	 hADyMzFa2gRFeBGLDVC0OjjAaAy55RM5ffqVnVE0=
+	b=GbkNYgunemRWCzyDVKq/kGeF9z09RRaCHHQ6+7wD686IdwVGVcaC3GU8XQrkEPfW4
+	 BPPuYnsU7FubdA1yiFgrsNzQl1DooNooGob3ajJ1TaWh7n5p2m4y22yb5gIS4cHK0/
+	 fzcn792Y3DamL6kh7mO59a2NX5XnBMDu7D3GL2lU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.15 187/592] hv_netvsc: fix potential deadlock in netvsc_vf_setxdp()
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.12 008/414] crypto: qat - add shutdown handler to qat_dh895xcc
 Date: Mon, 23 Jun 2025 15:02:25 +0200
-Message-ID: <20250623130704.730125655@linuxfoundation.org>
+Message-ID: <20250623130642.236469352@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,99 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saurabh Sengar <ssengar@linux.microsoft.com>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-commit 3ec523304976648b45a3eef045e97d17122ff1b2 upstream.
+commit 2c4e8b228733bfbcaf49408fdf94d220f6eb78fc upstream.
 
-The MANA driver's probe registers netdevice via the following call chain:
+During a warm reset via kexec, the system bypasses the driver removal
+sequence, meaning that the remove() callback is not invoked.
+If a QAT device is not shutdown properly, the device driver will fail to
+load in a newly rebooted kernel.
 
-mana_probe()
-  register_netdev()
-    register_netdevice()
+This might result in output like the following after the kexec reboot:
 
-register_netdevice() calls notifier callback for netvsc driver,
-holding the netdev mutex via netdev_lock_ops().
+    QAT: AE0 is inactive!!
+    QAT: failed to get device out of reset
+    dh895xcc 0000:3f:00.0: qat_hal_clr_reset error
+    dh895xcc 0000:3f:00.0: Failed to init the AEs
+    dh895xcc 0000:3f:00.0: Failed to initialise Acceleration Engine
+    dh895xcc 0000:3f:00.0: Resetting device qat_dev0
+    dh895xcc 0000:3f:00.0: probe with driver dh895xcc failed with error -14
 
-Further this netvsc notifier callback end up attempting to acquire the
-same lock again in dev_xdp_propagate() leading to deadlock.
+Implement the shutdown() handler that hooks into the reboot notifier
+list. This brings down the QAT device and ensures it is shut down
+properly.
 
-netvsc_netdev_event()
-  netvsc_vf_setxdp()
-    dev_xdp_propagate()
-
-This deadlock was not observed so far because net_shaper_ops was never set,
-and thus the lock was effectively a no-op in this case. Fix this by using
-netif_xdp_propagate() instead of dev_xdp_propagate() to avoid recursive
-locking in this path.
-
-And, since no deadlock is observed on the other path which is via
-netvsc_probe, add the lock exclusivly for that path.
-
-Also, clean up the unregistration path by removing the unnecessary call to
-netvsc_vf_setxdp(), since unregister_netdevice_many_notify() already
-performs this cleanup via dev_xdp_uninstall().
-
-Fixes: 97246d6d21c2 ("net: hold netdev instance lock during ndo_bpf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Tested-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Link: https://patch.msgid.link/1748513910-23963-1-git-send-email-ssengar@linux.microsoft.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Cc: <stable@vger.kernel.org>
+Fixes: 7afa232e76ce ("crypto: qat - Intel(R) QAT DH895xcc accelerator")
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/hyperv/netvsc_bpf.c |    2 +-
- drivers/net/hyperv/netvsc_drv.c |    4 ++--
- net/core/dev.c                  |    1 +
- 3 files changed, 4 insertions(+), 3 deletions(-)
+ drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/net/hyperv/netvsc_bpf.c
-+++ b/drivers/net/hyperv/netvsc_bpf.c
-@@ -183,7 +183,7 @@ int netvsc_vf_setxdp(struct net_device *
- 	xdp.command = XDP_SETUP_PROG;
- 	xdp.prog = prog;
+--- a/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
++++ b/drivers/crypto/intel/qat/qat_dh895xcc/adf_drv.c
+@@ -19,6 +19,13 @@
+ #include <adf_dbgfs.h>
+ #include "adf_dh895xcc_hw_data.h"
  
--	ret = dev_xdp_propagate(vf_netdev, &xdp);
-+	ret = netif_xdp_propagate(vf_netdev, &xdp);
- 
- 	if (ret && prog)
- 		bpf_prog_put(prog);
---- a/drivers/net/hyperv/netvsc_drv.c
-+++ b/drivers/net/hyperv/netvsc_drv.c
-@@ -2462,8 +2462,6 @@ static int netvsc_unregister_vf(struct n
- 
- 	netdev_info(ndev, "VF unregistering: %s\n", vf_netdev->name);
- 
--	netvsc_vf_setxdp(vf_netdev, NULL);
--
- 	reinit_completion(&net_device_ctx->vf_add);
- 	netdev_rx_handler_unregister(vf_netdev);
- 	netdev_upper_dev_unlink(vf_netdev, ndev);
-@@ -2631,7 +2629,9 @@ static int netvsc_probe(struct hv_device
- 			continue;
- 
- 		netvsc_prepare_bonding(vf_netdev);
-+		netdev_lock_ops(vf_netdev);
- 		netvsc_register_vf(vf_netdev, VF_REG_IN_PROBE);
-+		netdev_unlock_ops(vf_netdev);
- 		__netvsc_vf_setup(net, vf_netdev);
- 		break;
- 	}
---- a/net/core/dev.c
-+++ b/net/core/dev.c
-@@ -9863,6 +9863,7 @@ int netif_xdp_propagate(struct net_devic
- 
- 	return dev->netdev_ops->ndo_bpf(dev, bpf);
- }
-+EXPORT_SYMBOL_GPL(netif_xdp_propagate);
- 
- u32 dev_xdp_prog_id(struct net_device *dev, enum bpf_xdp_mode mode)
- {
++static void adf_shutdown(struct pci_dev *pdev)
++{
++	struct adf_accel_dev *accel_dev = adf_devmgr_pci_to_accel_dev(pdev);
++
++	adf_dev_down(accel_dev);
++}
++
+ static const struct pci_device_id adf_pci_tbl[] = {
+ 	{ PCI_VDEVICE(INTEL, PCI_DEVICE_ID_INTEL_QAT_DH895XCC), },
+ 	{ }
+@@ -33,6 +40,7 @@ static struct pci_driver adf_driver = {
+ 	.name = ADF_DH895XCC_DEVICE_NAME,
+ 	.probe = adf_probe,
+ 	.remove = adf_remove,
++	.shutdown = adf_shutdown,
+ 	.sriov_configure = adf_sriov_configure,
+ 	.err_handler = &adf_err_handler,
+ };
 
 
 
