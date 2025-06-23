@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C9E4AE5184
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:35:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E57EAE4FE0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B2E927AC762
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3D9CB1B61D70
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D7F22156B;
-	Mon, 23 Jun 2025 21:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB7981E5B71;
+	Mon, 23 Jun 2025 21:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5PwGb5X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="beoVkZ5w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F2E1EE7C6;
-	Mon, 23 Jun 2025 21:34:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8870C2C9D;
+	Mon, 23 Jun 2025 21:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714497; cv=none; b=o8WiXJ4st8aT62UAPaa60MMlDS4nx3mSyyJbcY5kyxJXuUvbr9vYsZQeTEkQn5xPklpsx15EYZRWcLEtsFJbuhTqrjDKoC8zQYlIzbIKP+RX5GrzxcqG4aIUmRBNkuNWWYVQk94PRMCQ4bml37HEhSnXKM2LfvvYq5a3Z7x/sl8=
+	t=1750713604; cv=none; b=lmzEoTYVaCaSUs0OfliekGwgCsjbejrQgIAp01L+tP1EHl6cxfjnj9kY50BGCAEv2QrG0z+UL36EGzu+02Sla+90pJEbSdfuqUbUZVW9QSRDD8c3zDAPz7ldwhakj52MG0qaaZs7i+PnQTEkgOSpSrS8faoXGFtbfwhGmS66HmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714497; c=relaxed/simple;
-	bh=y0baPU/lU8cF33AExgyS14LyXL27I8F6l96tx5XKKsQ=;
+	s=arc-20240116; t=1750713604; c=relaxed/simple;
+	bh=dfZ9gEoy+aEpbxKhT2wmFWr+38lM5ZGb01xxdm3Ydfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FidaaIVoqzQR1ZaeE78EPr7y0dNIAnJXh7KfwQYQjcLCRVhGdzV0oZz+eRMj3X2a4S073uzPF6z0GvpXk1Y9p+J+cZm3Rrq0/qE08jjtE3XE3F/0Zn3XSbdA2ThraU8UaMQRIi+k1HVmP1tjSVaHlsPDyLRef1YgEWMej7o01/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5PwGb5X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3215C4CEEA;
-	Mon, 23 Jun 2025 21:34:56 +0000 (UTC)
+	 MIME-Version; b=NdBNXCqrqHkg4A4mkSk9NKTKcLbPhdtsSAGx2ItLTUaXIVWANUPiAkpvRYvB2wmhmmWAg7eilyYSlP70XuVMaHlSu8+Oox0wh4a9taYuGgs8VachxOllWe+Tw8TXBoZwqqHMPwdxuOyVao561Ax0gzfMdaYhIvXEnfjpvQ7zb+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=beoVkZ5w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214CEC4CEEA;
+	Mon, 23 Jun 2025 21:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714497;
-	bh=y0baPU/lU8cF33AExgyS14LyXL27I8F6l96tx5XKKsQ=;
+	s=korg; t=1750713604;
+	bh=dfZ9gEoy+aEpbxKhT2wmFWr+38lM5ZGb01xxdm3Ydfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E5PwGb5XHYmJ0Fg2919/tw9V7n4LTttEwXEFeUiqb/rYfA5XXlf8V4kn325OC0z2v
-	 zDP9T1pqFoZHLwwi/4ybnOlwF/w6+eFyvJdqxmglGTJ0Aiy8Dx03w5IO869RhqftSd
-	 Dosw8zjt57LxIuIvZXd7VNFhbfZSQarSOcEMxn1o=
+	b=beoVkZ5wNrwVPzsT62bLn8RvU364QNXDr0C3exaeeygCBm/XVSqlgRWVoMMo/uTYB
+	 5Oo+o58MsiCZ7s7WvBX0Z+NCDiaSH3OY3t7p71H6FbAAa3dAuuBeeAUJitJPm9CCH6
+	 rH+VQXwT0xkSBPZHqaEOJMPCNzL0WTc3HiCh+Ojg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 5.15 212/411] media: v4l2-dev: fix error handling in __video_register_device()
+	Oliver Neukum <oneukum@suse.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.10 155/355] net: usb: aqc111: debug info before sanitation
 Date: Mon, 23 Jun 2025 15:05:56 +0200
-Message-ID: <20250623130639.006795561@linuxfoundation.org>
+Message-ID: <20250623130631.364766263@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 2a934fdb01db6458288fc9386d3d8ceba6dd551a upstream.
+commit d3faab9b5a6a0477d69c38bd11c43aa5e936f929 upstream.
 
-Once device_register() failed, we should call put_device() to
-decrement reference count for cleanup. Or it could cause memory leak.
-And move callback function v4l2_device_release() and v4l2_device_get()
-before put_device().
+If we sanitize error returns, the debug statements need
+to come before that so that we don't lose information.
 
-As comment of device_register() says, 'NOTE: _Never_ directly free
-@dev after calling this function, even if it returned an error! Always
-use put_device() to give up the reference initialized in this function
-instead.'
-
-Found by code review.
-
-Cc: stable@vger.kernel.org
-Fixes: dc93a70cc7f9 ("V4L/DVB (9973): v4l2-dev: use the release callback from device instead of cdev")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 405b0d610745 ("net: usb: aqc111: fix error handling of usbnet read calls")
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/v4l2-core/v4l2-dev.c |   14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/usb/aqc111.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/v4l2-core/v4l2-dev.c
-+++ b/drivers/media/v4l2-core/v4l2-dev.c
-@@ -1032,25 +1032,25 @@ int __video_register_device(struct video
- 	vdev->dev.class = &video_class;
- 	vdev->dev.devt = MKDEV(VIDEO_MAJOR, vdev->minor);
- 	vdev->dev.parent = vdev->dev_parent;
-+	vdev->dev.release = v4l2_device_release;
- 	dev_set_name(&vdev->dev, "%s%d", name_base, vdev->num);
-+
-+	/* Increase v4l2_device refcount */
-+	v4l2_device_get(vdev->v4l2_dev);
-+
- 	mutex_lock(&videodev_lock);
- 	ret = device_register(&vdev->dev);
- 	if (ret < 0) {
- 		mutex_unlock(&videodev_lock);
- 		pr_err("%s: device_register failed\n", __func__);
--		goto cleanup;
-+		put_device(&vdev->dev);
-+		return ret;
- 	}
--	/* Register the release callback that will be called when the last
--	   reference to the device goes away. */
--	vdev->dev.release = v4l2_device_release;
+--- a/drivers/net/usb/aqc111.c
++++ b/drivers/net/usb/aqc111.c
+@@ -31,11 +31,11 @@ static int aqc111_read_cmd_nopm(struct u
+ 				   USB_RECIP_DEVICE, value, index, data, size);
  
- 	if (nr != -1 && nr != vdev->num && warn_if_nr_in_use)
- 		pr_warn("%s: requested %s%d, got %s\n", __func__,
- 			name_base, nr, video_device_node_name(vdev));
- 
--	/* Increase v4l2_device refcount */
--	v4l2_device_get(vdev->v4l2_dev);
+ 	if (unlikely(ret < size)) {
+-		ret = ret < 0 ? ret : -ENODATA;
 -
- 	/* Part 5: Register the entity. */
- 	ret = video_register_media_controller(vdev);
+ 		netdev_warn(dev->net,
+ 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
+ 			    cmd, index, ret);
++
++		ret = ret < 0 ? ret : -ENODATA;
+ 	}
  
+ 	return ret;
+@@ -50,11 +50,11 @@ static int aqc111_read_cmd(struct usbnet
+ 			      USB_RECIP_DEVICE, value, index, data, size);
+ 
+ 	if (unlikely(ret < size)) {
+-		ret = ret < 0 ? ret : -ENODATA;
+-
+ 		netdev_warn(dev->net,
+ 			    "Failed to read(0x%x) reg index 0x%04x: %d\n",
+ 			    cmd, index, ret);
++
++		ret = ret < 0 ? ret : -ENODATA;
+ 	}
+ 
+ 	return ret;
 
 
 
