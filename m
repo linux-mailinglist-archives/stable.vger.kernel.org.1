@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B170AE435B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:31:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BB7AE43B6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 331BF3BD2F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:24:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA7DA17E452
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:28:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A0D84C7F;
-	Mon, 23 Jun 2025 13:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBA80253925;
+	Mon, 23 Jun 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LNsSsNYh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L+7zNVNn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAA2248869;
-	Mon, 23 Jun 2025 13:25:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 997E824EA9D;
+	Mon, 23 Jun 2025 13:27:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685121; cv=none; b=UAyproY50jK2ckqlmc/UFVA2TouIhVGodpfmHQrm3gmb/EHM9nG7HNaTHX3sw4aTJVwyNudk0CheCSifEcjSLj7d355LZeA8eWni7Qy5mNKK0R8C4rIeNEVsdLRvjTgEvR59o31InGjsdxtQ9XlxTGZ8w/vXxhENoAQBQk6HOHc=
+	t=1750685262; cv=none; b=NWhPzhUgV1QeXr2BH0tun6ekmc0Midz/D/j4amM4NfPNpkthBkJrWjvbrUR2rpYlgZ+6Lj3SOYnzXBLYUojr83/8ftRZ6cad28q17E1GavlBtB397yXwGvNpFjO5XDMx58Y4kh121Web4xw8s5ZkvGHGoRKvXdsaSNMfKcQIQJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685121; c=relaxed/simple;
-	bh=ivKTjt+KVE4SZ2PT7Tcb2BHh9H9Qdn8VBh3fixHt7Qg=;
+	s=arc-20240116; t=1750685262; c=relaxed/simple;
+	bh=qIcyf175drs8agcSUnRw4UpryP8n9ax6ALFUGwS0a/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLgvVYX0sl2oAWCM68yLt2PFyAgjT3DOhJiTVcc0NOoV+vIUzUkG0ZCKZymdPBQKSADh95iR6yj6m06Ej/XTH9qvAl5M+Gexc5ZMgEJleWl+44yCo06lGGriZG7FEUGHPkeRCsuz9co9w06WyApaQuiElcINA1RAMrg/6xeIpdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LNsSsNYh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2555C4CEEA;
-	Mon, 23 Jun 2025 13:25:20 +0000 (UTC)
+	 MIME-Version; b=UZjjOxLfYAEa+8C6jp9z6SlFPxudcatWgltyTWKKKvH/P/ZPZvBeLhEbE00uSGpataUQhMOsBMgScW00beH49k7k4qBd8osBnso7MobCWAgSQcHSltV5IvDnhpJHoorjrS8oLN1YmslJtcXuLmNJY437VgVPS3pEtXAhZp+1+FE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L+7zNVNn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D2D0C4CEEA;
+	Mon, 23 Jun 2025 13:27:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685121;
-	bh=ivKTjt+KVE4SZ2PT7Tcb2BHh9H9Qdn8VBh3fixHt7Qg=;
+	s=korg; t=1750685262;
+	bh=qIcyf175drs8agcSUnRw4UpryP8n9ax6ALFUGwS0a/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LNsSsNYh/+26Fyc1TVoqSMd+awJRrX2QQfPJ5OYygl+mOWkiu+Q5XWCzcCFiM9p/R
-	 52UDg7Uer/hRUZ5kIuKgu2KRhr/oxyXP2IortRa93gN7a0YW0U4Xubu/boXK6IfaAr
-	 TTbQ/r/81YOVT/ngrKOd3geEkdSqJNBN1wMzAGE4=
+	b=L+7zNVNnaHZtfWyErm4R3yMKzrwMsPxZx5m2mm+9Km4qjF2bZroseozhZ0TRAem1Q
+	 dKckbQvapfkfmuz+qAcEYTxqENW1EXLvgX16Qv2ed0UKMeYIaicVyMLdB0tSHaa4Ig
+	 +1GVGCoXDriPBYqDNRy7Zwx2mvX/8OQ8Ru2kucq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Talhah Peerbhai <talhah.peerbhai@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Feng Xu <feng.f.xu@intel.com>,
+	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Tony Luck <tony.luck@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 207/592] ASoC: amd: yc: Add quirk for Lenovo Yoga Pro 7 14ASP9
+Subject: [PATCH 5.15 021/411] EDAC/skx_common: Fix general protection fault
 Date: Mon, 23 Jun 2025 15:02:45 +0200
-Message-ID: <20250623130705.211870699@linuxfoundation.org>
+Message-ID: <20250623130633.636589176@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Talhah Peerbhai <talhah.peerbhai@gmail.com>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit a28206060dc5848a1a2a15b7f6ac6223d869084d ]
+[ Upstream commit 20d2d476b3ae18041be423671a8637ed5ffd6958 ]
 
-Similar to many other Lenovo models with AMD chips, the Lenovo
-Yoga Pro 7 14ASP9 (product name 83HN) requires a specific quirk
-to ensure internal mic detection. This patch adds a quirk fixing this.
+After loading i10nm_edac (which automatically loads skx_edac_common), if
+unload only i10nm_edac, then reload it and perform error injection testing,
+a general protection fault may occur:
 
-Signed-off-by: Talhah Peerbhai <talhah.peerbhai@gmail.com>
-Link: https://patch.msgid.link/20250515222741.144616-1-talhah.peerbhai@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  mce: [Hardware Error]: Machine check events logged
+  Oops: general protection fault ...
+  ...
+  Workqueue: events mce_gen_pool_process
+  RIP: 0010:string+0x53/0xe0
+  ...
+  Call Trace:
+  <TASK>
+  ? die_addr+0x37/0x90
+  ? exc_general_protection+0x1e7/0x3f0
+  ? asm_exc_general_protection+0x26/0x30
+  ? string+0x53/0xe0
+  vsnprintf+0x23e/0x4c0
+  snprintf+0x4d/0x70
+  skx_adxl_decode+0x16a/0x330 [skx_edac_common]
+  skx_mce_check_error.part.0+0xf8/0x220 [skx_edac_common]
+  skx_mce_check_error+0x17/0x20 [skx_edac_common]
+  ...
+
+The issue arose was because the variable 'adxl_component_count' (inside
+skx_edac_common), which counts the ADXL components, was not reset. During
+the reloading of i10nm_edac, the count was incremented by the actual number
+of ADXL components again, resulting in a count that was double the real
+number of ADXL components. This led to an out-of-bounds reference to the
+ADXL component array, causing the general protection fault above.
+
+Fix this issue by resetting the 'adxl_component_count' in adxl_put(),
+which is called during the unloading of {skx,i10nm}_edac.
+
+Fixes: 123b15863550 ("EDAC, i10nm: make skx_common.o a separate module")
+Reported-by: Feng Xu <feng.f.xu@intel.com>
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Tested-by: Feng Xu <feng.f.xu@intel.com>
+Link: https://lore.kernel.org/r/20250417150724.1170168-2-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/edac/skx_common.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index e632f16c91025..3d9da93d22ee8 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -311,6 +311,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "83AS"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "LENOVO"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "83HN"),
-+		}
-+	},
- 	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
-@@ -360,7 +367,7 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "M5402RA"),
- 		}
- 	},
--        {
-+	{
- 		.driver_data = &acp6x_card,
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_VENDOR, "ASUSTeK COMPUTER INC."),
+diff --git a/drivers/edac/skx_common.c b/drivers/edac/skx_common.c
+index 88c44d5359076..46eeaa142a610 100644
+--- a/drivers/edac/skx_common.c
++++ b/drivers/edac/skx_common.c
+@@ -112,6 +112,7 @@ EXPORT_SYMBOL_GPL(skx_adxl_get);
+ 
+ void skx_adxl_put(void)
+ {
++	adxl_component_count = 0;
+ 	kfree(adxl_values);
+ 	kfree(adxl_msg);
+ }
 -- 
 2.39.5
 
