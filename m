@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-157043-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5A32AE5239
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 522D0AE516D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:34:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D48B4A545B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6962F441EBD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1562B2222C2;
-	Mon, 23 Jun 2025 21:41:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 462791F5820;
+	Mon, 23 Jun 2025 21:34:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBt0SBvJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdbJyssG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7D2B4315A;
-	Mon, 23 Jun 2025 21:41:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0533A1C5D46;
+	Mon, 23 Jun 2025 21:34:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714894; cv=none; b=HWxWIGle3ITQI+eX7Rq44R6QaoFBVvFhZd+Gu/X225cSpD/+k2X/+lx/6z0Ot6oUX4wWTAbO0mZytvbGCif8BrH4vMRzUnRqr8l0eStG1KCvhFWOMMGR26PHwL0JxBP7q/F+CIm5lmN2fbVs8dUBGk75e38BtlT94hKqnK9o0oY=
+	t=1750714444; cv=none; b=kUl59J0hcU9Es7FORfAmPXtZzoPb0hHLmupW7lAQJ50rKFENwBDQOQgkT+EIhSyqfVRmoT/0LdYEJNsiYzOGfPvO9dzVHlyDl6WsHxPFsScHu2/G2zOSvBMTF3pF9i2wdEhfljE+Pyd0FbK/dGs1zs0xv836BtCii8SlBBJRCwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714894; c=relaxed/simple;
-	bh=hlU/T9GUKmnlIh3vc54XNHs36T/afl2zHPCPgggcwqw=;
+	s=arc-20240116; t=1750714444; c=relaxed/simple;
+	bh=j9iZBoo7Lq6DZ2wVGFmN9poIaiyEHTjJkWjZzlCLu6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z2e9+lwKY49zb6lshcXeN/GJ4RrdpTjM0WZYwGfPDcIjORawkY/MYUVYRxz6NqcVFoFgVGiIiihr7VnTossYoVIVPmmCvy+WfVqvZ035QrBLkM+SIXGlRUjjfZlpPUZtLQ62o5Hy6Bg3BHlqE8uOKYcILDX21m/blwD/iCIcwd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBt0SBvJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF6CC4CEEA;
-	Mon, 23 Jun 2025 21:41:34 +0000 (UTC)
+	 MIME-Version; b=n78iKMuy/TwyJM6a9P5AWesJLc7+GeFN0U5rdRiWKlUYTycCcs+f72zZI8qmsncQbhIH0+5YzRnbstDl5u2T/gV6iZRwkaBsZa3mRaqunyUvanDPljP62YO/eTmYAGAMK1tA6cxa3GsWBRjiLDdg0t24vFgK7FVXkyiKeusNig0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdbJyssG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 354AEC4CEEA;
+	Mon, 23 Jun 2025 21:34:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714894;
-	bh=hlU/T9GUKmnlIh3vc54XNHs36T/afl2zHPCPgggcwqw=;
+	s=korg; t=1750714443;
+	bh=j9iZBoo7Lq6DZ2wVGFmN9poIaiyEHTjJkWjZzlCLu6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBt0SBvJeG/JjkDYEKs5tis1YOCZnz/ulMO9dEEqEx7aL5Fx7iRV6fYcYwObNKmeg
-	 bZ+SdE/t7l7eKT3swcMIfQSheYcKOB/ixk6O25oDyv7jAjNKF9aRLv/94KG7v3fAth
-	 IRLmPwr5wUza9LdyFMgDdN9s0SBkpDZu9Ni5UdO0=
+	b=JdbJyssG8XpAxmPLKFO0hk4ykc10T+q98Z3B+5eg9iVI/6B5FPDyedtI70BNQvqDO
+	 CP0DguiEP35RWeCGChJmR6RYnHwgZ8oK3faLbzyv775jLLJURYVCy8trutnMBvCyiB
+	 an6nbgsTPO43thEW/CvcXGhuIn7hIkF8BT/0IriA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/508] xfs: declare xfs_file.c symbols in xfs_file.h
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.12 110/414] parisc/unaligned: Fix hex output to show 8 hex chars
 Date: Mon, 23 Jun 2025 15:04:07 +0200
-Message-ID: <20250623130650.239519930@linuxfoundation.org>
+Message-ID: <20250623130644.841866705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +60,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 00acb28d96746f78389f23a7b5309a917b45c12f ]
+commit 213205889d5ffc19cb8df06aa6778b2d4724c887 upstream.
 
-Move the two public symbols in xfs_file.c to xfs_file.h.  We're about to
-add more public symbols in that source file, so let's finally create the
-header file.
+Change back printk format to 0x%08lx instead of %#08lx, since the latter
+does not seem to reliably format the value to 8 hex chars.
 
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org # v5.18+
+Fixes: e5e9e7f222e5b ("parisc/unaligned: Enhance user-space visible output")
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_file.c  |  1 +
- fs/xfs/xfs_file.h  | 12 ++++++++++++
- fs/xfs/xfs_ioctl.c |  1 +
- fs/xfs/xfs_iops.c  |  1 +
- fs/xfs/xfs_iops.h  |  3 ---
- 5 files changed, 15 insertions(+), 3 deletions(-)
- create mode 100644 fs/xfs/xfs_file.h
+ arch/parisc/kernel/unaligned.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_file.c b/fs/xfs/xfs_file.c
-index 821cb86a83bd5..6f7522977f7f7 100644
---- a/fs/xfs/xfs_file.c
-+++ b/fs/xfs/xfs_file.c
-@@ -24,6 +24,7 @@
- #include "xfs_pnfs.h"
- #include "xfs_iomap.h"
- #include "xfs_reflink.h"
-+#include "xfs_file.h"
+--- a/arch/parisc/kernel/unaligned.c
++++ b/arch/parisc/kernel/unaligned.c
+@@ -25,7 +25,7 @@
+ #define DPRINTF(fmt, args...)
+ #endif
  
- #include <linux/dax.h>
- #include <linux/falloc.h>
-diff --git a/fs/xfs/xfs_file.h b/fs/xfs/xfs_file.h
-new file mode 100644
-index 0000000000000..7d39e3eca56dc
---- /dev/null
-+++ b/fs/xfs/xfs_file.h
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Copyright (c) 2000-2005 Silicon Graphics, Inc.
-+ * All Rights Reserved.
-+ */
-+#ifndef __XFS_FILE_H__
-+#define __XFS_FILE_H__
-+
-+extern const struct file_operations xfs_file_operations;
-+extern const struct file_operations xfs_dir_file_operations;
-+
-+#endif /* __XFS_FILE_H__ */
-diff --git a/fs/xfs/xfs_ioctl.c b/fs/xfs/xfs_ioctl.c
-index c7cb496dc3458..1afb1b1b831ea 100644
---- a/fs/xfs/xfs_ioctl.c
-+++ b/fs/xfs/xfs_ioctl.c
-@@ -38,6 +38,7 @@
- #include "xfs_reflink.h"
- #include "xfs_ioctl.h"
- #include "xfs_xattr.h"
-+#include "xfs_file.h"
+-#define RFMT "%#08lx"
++#define RFMT "0x%08lx"
  
- #include <linux/mount.h>
- #include <linux/namei.h>
-diff --git a/fs/xfs/xfs_iops.c b/fs/xfs/xfs_iops.c
-index 6fbdc0a19e54c..9ca1b8bf1f053 100644
---- a/fs/xfs/xfs_iops.c
-+++ b/fs/xfs/xfs_iops.c
-@@ -25,6 +25,7 @@
- #include "xfs_error.h"
- #include "xfs_ioctl.h"
- #include "xfs_xattr.h"
-+#include "xfs_file.h"
- 
- #include <linux/posix_acl.h>
- #include <linux/security.h>
-diff --git a/fs/xfs/xfs_iops.h b/fs/xfs/xfs_iops.h
-index e570dcb5df8d5..73ff92355eaa7 100644
---- a/fs/xfs/xfs_iops.h
-+++ b/fs/xfs/xfs_iops.h
-@@ -8,9 +8,6 @@
- 
- struct xfs_inode;
- 
--extern const struct file_operations xfs_file_operations;
--extern const struct file_operations xfs_dir_file_operations;
--
- extern ssize_t xfs_vn_listxattr(struct dentry *, char *data, size_t size);
- 
- int xfs_vn_setattr_size(struct user_namespace *mnt_userns,
--- 
-2.39.5
-
+ /* 1111 1100 0000 0000 0001 0011 1100 0000 */
+ #define OPCODE1(a,b,c)	((a)<<26|(b)<<12|(c)<<6) 
 
 
 
