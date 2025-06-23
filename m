@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-157067-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE8FBAE5251
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 730EAAE5219
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A2C443559
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 89D70442F5E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C60692222CA;
-	Mon, 23 Jun 2025 21:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F3142222C2;
+	Mon, 23 Jun 2025 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0hdt/YN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfIB8TKS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83B974315A;
-	Mon, 23 Jun 2025 21:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CD1819D084;
+	Mon, 23 Jun 2025 21:40:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714953; cv=none; b=hNAgnRZoyjhXWvRPRvwtHt1dEgceA63wg4iKNP3UaAN8pDLgn5MWZqC/I4eABIiYwzHGLtf37QvjBLWzTZZJf606thk8RCIrblgBsykg37mlVR85A4tY0+6i6FM2lhCWEpcGpv37CMY1oqiZzDffkEOOKaGWdAd83ti+uafCwME=
+	t=1750714824; cv=none; b=KHqZwGrnSnKC+XXEFbB/3jf1sNJfNHge2KjTtO9Bd/Rzms/CyUqJrRaEuDMtgCEKoqu19oDtoXR95IFcEB02LuVOylYZ0MankOux3ox+GeBc/WDRNsw8SF1/z6yZwZs8nWp6LlEcGg1cnBqxRmcKMDemfv/WaGxpkmyzaGEuewM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714953; c=relaxed/simple;
-	bh=Hw/hbhbTYRAc9vdgHBlp43AF3GW29ik/NUAZGKNcmIc=;
+	s=arc-20240116; t=1750714824; c=relaxed/simple;
+	bh=qECiqUSZ7hN7zS7wTTnTp7qeXjGT/Y7o9+a44kAlSzs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BG8whhArSkPLbbRsBV47R9aHPpfNj8Y/wHzaj67a6BT6Q+3jqmUrFS/BBXEOBQLp+N0yBHvHBZ+b+acXBQRV2EYSOFKGsIu7d8eYH7qE/UzNQQTjIari6r6lC4LoqiU6BcGCxi4OAQ7x1h/EeteM6PptwkIpvRIUOm1Dgi73MHg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0hdt/YN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19AA6C4CEEA;
-	Mon, 23 Jun 2025 21:42:32 +0000 (UTC)
+	 MIME-Version; b=Bgu/THSfBRN5eOZ0ozMW/x007TfhmrfM86uShbssmZ40jHVIFRM0T7WVhyYTq3QWwHkUv/Q1EaR+Vi0FZO3udBqqQZSpdTW6ohiwcqYwixli8WB9er0Nt+QEfUwqwuh4hCbPSTsLEDEw7f4CX8urpKhOmbeNNseU6iMGG1RJ2GE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfIB8TKS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B945DC4CEEA;
+	Mon, 23 Jun 2025 21:40:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714953;
-	bh=Hw/hbhbTYRAc9vdgHBlp43AF3GW29ik/NUAZGKNcmIc=;
+	s=korg; t=1750714824;
+	bh=qECiqUSZ7hN7zS7wTTnTp7qeXjGT/Y7o9+a44kAlSzs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K0hdt/YNJoOo6t7B7RJUi1NIZTJFEVkJJGfdKEjEw54xMI9an40F5B9s/dud8/1lu
-	 GjfeA3R5zorzKakG7Aq+f1fTd1UBJhImGTUJhN2JLrEcNUKar4FM7eQZUlp+azKO+L
-	 lZy3AcoMW8SaQy3QscndjC2facpI7obYa3f1kDgY=
+	b=PfIB8TKSlTwXV8ZjuQ2oO7VVCUJZ8039B9XraPIUi6Xhmo76dOFD7DGl6h8XrtSqK
+	 4TgByv3OZKEM31fSNlQrF9xwnPvtCCrgUYmfsAe1AWNtENmO/orPgBM6Nn+hDzhvwU
+	 DqfWoU2guDtDct6eD4n9dSChNWnDJCksKFrRI9fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil@xs4all.nl>,
-	Maxime Ripard <mripard@kernel.org>,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 243/355] media: tc358743: ignore video while HPD is low
+	Kyungwook Boo <bookyungwook@gmail.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 183/290] i40e: fix MMIO write access to an invalid page in i40e_clear_hw
 Date: Mon, 23 Jun 2025 15:07:24 +0200
-Message-ID: <20250623130634.052766719@linuxfoundation.org>
+Message-ID: <20250623130632.377399704@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +66,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil@xs4all.nl>
+From: Kyungwook Boo <bookyungwook@gmail.com>
 
-[ Upstream commit 6829c5b5d26b1be31880d74ec24cb32d2d75f1ae ]
+[ Upstream commit 015bac5daca978448f2671478c553ce1f300c21e ]
 
-If the HPD is low (happens if there is no EDID or the
-EDID is being updated), then return -ENOLINK in
-tc358743_get_detected_timings() instead of detecting video.
+When the device sends a specific input, an integer underflow can occur, leading
+to MMIO write access to an invalid page.
 
-This avoids userspace thinking that it can start streaming when
-the HPD is low.
+Prevent the integer underflow by changing the type of related variables.
 
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Tested-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/linux-media/20240628-stoic-bettong-of-fortitude-e25611@houat/
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Signed-off-by: Kyungwook Boo <bookyungwook@gmail.com>
+Link: https://lore.kernel.org/lkml/ffc91764-1142-4ba2-91b6-8c773f6f7095@gmail.com/T/
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/tc358743.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/i40e/i40e_common.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/tc358743.c b/drivers/media/i2c/tc358743.c
-index 8e9df9007d2ed..1b3441510b6fa 100644
---- a/drivers/media/i2c/tc358743.c
-+++ b/drivers/media/i2c/tc358743.c
-@@ -309,6 +309,10 @@ static int tc358743_get_detected_timings(struct v4l2_subdev *sd,
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_common.c b/drivers/net/ethernet/intel/i40e/i40e_common.c
+index 4d7caa1199719..5d46a8e5376da 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_common.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_common.c
+@@ -1067,10 +1067,11 @@ int i40e_pf_reset(struct i40e_hw *hw)
+ void i40e_clear_hw(struct i40e_hw *hw)
+ {
+ 	u32 num_queues, base_queue;
+-	u32 num_pf_int;
+-	u32 num_vf_int;
++	s32 num_pf_int;
++	s32 num_vf_int;
+ 	u32 num_vfs;
+-	u32 i, j;
++	s32 i;
++	u32 j;
+ 	u32 val;
+ 	u32 eol = 0x7ff;
  
- 	memset(timings, 0, sizeof(struct v4l2_dv_timings));
- 
-+	/* if HPD is low, ignore any video */
-+	if (!(i2c_rd8(sd, HPD_CTL) & MASK_HPD_OUT0))
-+		return -ENOLINK;
-+
- 	if (no_signal(sd)) {
- 		v4l2_dbg(1, debug, sd, "%s: no valid signal\n", __func__);
- 		return -ENOLINK;
 -- 
 2.39.5
 
