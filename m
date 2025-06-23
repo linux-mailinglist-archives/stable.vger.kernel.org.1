@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-155627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08AC3AE42F5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:27:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3782AE44E6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13FDA188C802
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5D4445AD2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6844224DFF3;
-	Mon, 23 Jun 2025 13:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B417B248895;
+	Mon, 23 Jun 2025 13:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZpJPW2hO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hsAXzLD5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25ECD30E84D;
-	Mon, 23 Jun 2025 13:22:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E7A238C19;
+	Mon, 23 Jun 2025 13:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684922; cv=none; b=ZAILADeun2D/Tv8HI0Ns+VIJ7rv4Xcaq1ZWEgGiussy/BZigGB75DUGkd7C8jW+NGyfstjg4/mTjXdMzU/p/Y1rbdQ8VLEbHImhgIbNWogM4zC01zf66lF8JED+Z6ggwAkBnD/WqyGIF1w1Ae3pguJXgxcY6Lvv7EaIQ26/VYDo=
+	t=1750685918; cv=none; b=ONp9h7ohRZedVFjw1lIJCABKUVM5tmTLcAqJwAqdiwXuRZf67yVmstEYc4h7ZU8hoG8UrblaEiNlK18hrj2s4+oDla2o6Vn8jZkX69oS4qYtGzN3sFGQVinWWt/oxD47wlOuzhjXKzeOv31tQoKRZxfRHTu6yzAMJJX1aPQXUmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684922; c=relaxed/simple;
-	bh=tGOHNyVCnxrmrHG/OgPivLq6C41Z/WVO3dP+malVlB4=;
+	s=arc-20240116; t=1750685918; c=relaxed/simple;
+	bh=h4WsBxgo5ydhSw3mt78JvODGfULnEd5HB3Q4vjF3i5c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ivXQFHccRW0H5KCYNSWfpujI0mcAen3lUpTU8sw7TMBTXfVt6/Env2ZZqOg5O6wlnsZqsy0u2pIb/Lp8OW9z1/DM08IO+ioUMMn1vrtOufDuIjsfIehXxGkc9kt41G+fImWXGuXm5/oDVkkS6YIQzFPJVRcsW0Jr42Pld+P6Qzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZpJPW2hO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF4E2C4CEEA;
-	Mon, 23 Jun 2025 13:22:01 +0000 (UTC)
+	 MIME-Version; b=TYQMu2NpdCRl7CrB6tRv71GDen9PWGKx+eKrJspwP0VYAGehsgMjbHxoAfYfKnB36fg4BywHIsomgusVwVGCEB54UlZPSwjxGcfOgA4QtOdCRDQXjaHggBaJ0ETiQcoMIl7AomGy1xpgUQgQtlyscKkroZj0+bsT/5aezKdNqfQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hsAXzLD5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08781C4CEEA;
+	Mon, 23 Jun 2025 13:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684922;
-	bh=tGOHNyVCnxrmrHG/OgPivLq6C41Z/WVO3dP+malVlB4=;
+	s=korg; t=1750685918;
+	bh=h4WsBxgo5ydhSw3mt78JvODGfULnEd5HB3Q4vjF3i5c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZpJPW2hOgJO+sA6lb0buqJh1fvEEdJfOKIyJqcNoVvIN1TUsFvLWurLfJrw6NF/uN
-	 29zoABgtNcLhLqzyM23Ds4OSvg8WHJD5jCO0TCUII35+sDhokmI0SVXawd0kep0f+S
-	 nOIdgHNihbH4Pl+DJkq/toAt0gVk4GPThI6vFBeA=
+	b=hsAXzLD5qM99EhUodfe9hmKnA4gRYIUT1qHpohRclnI5/YcA+L3No2WW0nZCqX95J
+	 WvjDfGTHsRMc8MQAfqbqYV7RezdK9S8W4ggS9Bxh9Ne6Y6ayW1yMyNQ0EWBHc0Bf8A
+	 KKLTh0wx7Ltdynm20E1lbAPodDD4R9mmdz2uGJAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qing Wang <wangqing7171@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Thangaraj Samynathan <thangaraj.s@microchip.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 011/355] perf/core: Fix broken throttling when max_samples_per_tick=1
-Date: Mon, 23 Jun 2025 15:03:32 +0200
-Message-ID: <20250623130627.094426138@linuxfoundation.org>
+Subject: [PATCH 5.15 069/411] net: lan743x: rename lan743x_reset_phy to lan743x_hw_reset_phy
+Date: Mon, 23 Jun 2025 15:03:33 +0200
+Message-ID: <20250623130635.069630256@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qing Wang <wangqing7171@gmail.com>
+From: Thangaraj Samynathan <thangaraj.s@microchip.com>
 
-[ Upstream commit f51972e6f8b9a737b2b3eb588069acb538fa72de ]
+[ Upstream commit 68927eb52d0af04863584930db06075d2610e194 ]
 
-According to the throttling mechanism, the pmu interrupts number can not
-exceed the max_samples_per_tick in one tick. But this mechanism is
-ineffective when max_samples_per_tick=1, because the throttling check is
-skipped during the first interrupt and only performed when the second
-interrupt arrives.
+rename the function to lan743x_hw_reset_phy to better describe it
+operation.
 
-Perhaps this bug may cause little influence in one tick, but if in a
-larger time scale, the problem can not be underestimated.
-
-When max_samples_per_tick = 1:
-Allowed-interrupts-per-second max-samples-per-second  default-HZ  ARCH
-200                           100                     100         X86
-500                           250                     250         ARM64
-...
-Obviously, the pmu interrupt number far exceed the user's expect.
-
-Fixes: e050e3f0a71b ("perf: Fix broken interrupt rate throttling")
-Signed-off-by: Qing Wang <wangqing7171@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250405141635.243786-3-wangqing7171@gmail.com
+Fixes: 23f0703c125be ("lan743x: Add main source files for new lan743x driver")
+Signed-off-by: Thangaraj Samynathan <thangaraj.s@microchip.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20250526053048.287095-2-thangaraj.s@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/microchip/lan743x_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 8f19d6ab039ef..21f56dd6c05a3 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -9031,14 +9031,14 @@ __perf_event_account_interrupt(struct perf_event *event, int throttle)
- 		hwc->interrupts = 1;
- 	} else {
- 		hwc->interrupts++;
--		if (unlikely(throttle &&
--			     hwc->interrupts > max_samples_per_tick)) {
--			__this_cpu_inc(perf_throttled_count);
--			tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
--			hwc->interrupts = MAX_INTERRUPTS;
--			perf_log_throttle(event, 0);
--			ret = 1;
--		}
-+	}
-+
-+	if (unlikely(throttle && hwc->interrupts >= max_samples_per_tick)) {
-+		__this_cpu_inc(perf_throttled_count);
-+		tick_dep_set_cpu(smp_processor_id(), TICK_DEP_BIT_PERF_EVENTS);
-+		hwc->interrupts = MAX_INTERRUPTS;
-+		perf_log_throttle(event, 0);
-+		ret = 1;
- 	}
+diff --git a/drivers/net/ethernet/microchip/lan743x_main.c b/drivers/net/ethernet/microchip/lan743x_main.c
+index fe919c1974505..49d40685136d4 100644
+--- a/drivers/net/ethernet/microchip/lan743x_main.c
++++ b/drivers/net/ethernet/microchip/lan743x_main.c
+@@ -910,7 +910,7 @@ static int lan743x_mac_set_mtu(struct lan743x_adapter *adapter, int new_mtu)
+ }
  
- 	if (event->attr.freq) {
+ /* PHY */
+-static int lan743x_phy_reset(struct lan743x_adapter *adapter)
++static int lan743x_hw_reset_phy(struct lan743x_adapter *adapter)
+ {
+ 	u32 data;
+ 
+@@ -944,7 +944,7 @@ static void lan743x_phy_update_flowcontrol(struct lan743x_adapter *adapter,
+ 
+ static int lan743x_phy_init(struct lan743x_adapter *adapter)
+ {
+-	return lan743x_phy_reset(adapter);
++	return lan743x_hw_reset_phy(adapter);
+ }
+ 
+ static void lan743x_phy_link_status_change(struct net_device *netdev)
 -- 
 2.39.5
 
