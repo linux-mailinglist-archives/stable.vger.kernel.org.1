@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4F85AE55D8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:15:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C01EAE557F
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5C73E165A85
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:14:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 189D34C4AEF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D0E222652D;
-	Mon, 23 Jun 2025 22:13:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DB4226D04;
+	Mon, 23 Jun 2025 22:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/DKSrHp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SXvewEFU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AA6FB676;
-	Mon, 23 Jun 2025 22:13:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6351223DEE;
+	Mon, 23 Jun 2025 22:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716838; cv=none; b=opXHl7PSK0Bq2dnYz8Px8xKypSjFltxgtIiGgAIndlXlgoOREU7c6wedWsZWe8RsoWyOAdRiPHBZZNMUjoCKE5lygONaK5KjXH2IEGH/7cPiFn4YGqeMCtd5yMKnMYVrh0Gjq+XC84MF2QM/VCxE1K5GxO79lO8r/KiC/1kS33w=
+	t=1750716662; cv=none; b=trXOrhE4/n1iNB6jW5fmH+OGBvEtpDqN8IR3xwHNpwT3nhR+rtRviW4gUyMW5bqXfGiV/hQT4zf//qyJIvkaGkyqz/aQTT8cAIDeWtdOmqrB1qV0AZA8JioWyLYogoIMZzSTqaijvV4uuQHbph2CWnggks+VKkxEXky/hXkvR2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716838; c=relaxed/simple;
-	bh=IOGfq2LA4wZwFPzRXCvo2Og5awG/v4URlQmv8+jeL84=;
+	s=arc-20240116; t=1750716662; c=relaxed/simple;
+	bh=hTIknVAFAAtm37SNiZFAG1ZY4XZai3+iBszAAQi+7UU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j5A8a/DsCqI5iaRbOndGJUNvSdIE2lrrWtkcu6E5zIpPiox2TfZYp3PRXyqd64/+Waq+Im9L44KJ5zOSPKMNmoY7Eu4LjfW3hdM8XCPaoTDAtkhrsXwU155CmfmiM2OzlBsnDqtD49agNYyUW/6Sxg7113prpLtgW/+LbGNq5WU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/DKSrHp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E35C4CEF1;
-	Mon, 23 Jun 2025 22:13:57 +0000 (UTC)
+	 MIME-Version; b=FjP7qe4sZJevaIySqANeP95Jkdm9O99jz8G2TjgWjlP8Ra3DJeg1huwtBjl2UWPZKh3eCFCA/lKjBg8ylQbYjRbXV/kLLKK1rCFkdE4tOQGvF+AQ/ZoASK3v7WHk+GJT+nnyzrYdOq7FdwLAF6695Jtvfi2eFH3uTDWSg/MKD1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SXvewEFU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8165CC4CEEA;
+	Mon, 23 Jun 2025 22:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716837;
-	bh=IOGfq2LA4wZwFPzRXCvo2Og5awG/v4URlQmv8+jeL84=;
+	s=korg; t=1750716661;
+	bh=hTIknVAFAAtm37SNiZFAG1ZY4XZai3+iBszAAQi+7UU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r/DKSrHpkecrK3dSJOhAv2rED/jlGw57NpUmSmVFXJ7GffIN+V+6mbhrluveAZXzv
-	 AWWgxJotCO9f3m0JOVbvZoil4LAkj4FH1B1lAoSawePdiOosks/wQgKNzLwPrtYMVx
-	 dXYwQ9stgTbpyVveRWLW18lDbl4AZ5PRnIaf38E8=
+	b=SXvewEFU4/IGia8d0EkqVuHbRj4HWDB6aXownx0YbFQ3vNS6T1Acy3AYeNyyqJcjT
+	 AU8ieXUOqMe693OcQC3Nl02Zvv6aDgoW8kQSuwT9HYYI8oIBA1BlDf1f5Toxh4PwrT
+	 o3u3Ows1rhVFRyA1P3JrLL5MCQpCrIY9cnaC4dy4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 397/411] net_sched: sch_sfq: annotate data-races around q->perturb_period
+	Niklas Schnelle <schnelle@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.6 280/290] s390/pci: Fix __pcilg_mio_inuser() inline assembly
 Date: Mon, 23 Jun 2025 15:09:01 +0200
-Message-ID: <20250623130643.672026695@linuxfoundation.org>
+Message-ID: <20250623130635.343087936@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit a17ef9e6c2c1cf0fc6cd6ca6a9ce525c67d1da7f upstream.
+commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
 
-sfq_perturbation() reads q->perturb_period locklessly.
-Add annotations to fix potential issues.
+Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
+assembly. The used "d" constraint allows the compiler to use any general
+purpose register for the shift operand, including register zero.
 
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20240430180015.3111398-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If register zero is used this my result in incorrect code generation:
+
+ 8f6:   a7 0a ff f8             ahi     %r0,-8
+ 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+
+If register zero is selected to contain the shift value, the srlg
+instruction ignores the contents of the register and always shifts zero
+bits. Therefore use the "a" constraint which does not permit to select
+register zero.
+
+Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
+Cc: stable@vger.kernel.org
+Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_sfq.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ arch/s390/pci/pci_mmio.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -611,6 +611,7 @@ static void sfq_perturbation(struct time
- 	struct Qdisc *sch = q->sch;
- 	spinlock_t *root_lock = qdisc_lock(qdisc_root_sleeping(sch));
- 	siphash_key_t nkey;
-+	int period;
+--- a/arch/s390/pci/pci_mmio.c
++++ b/arch/s390/pci/pci_mmio.c
+@@ -223,7 +223,7 @@ static inline int __pcilg_mio_inuser(
+ 		[ioaddr_len] "+&d" (ioaddr_len.pair),
+ 		[cc] "+d" (cc), [val] "=d" (val),
+ 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
+-		[shift] "+d" (shift)
++		[shift] "+a" (shift)
+ 		:: "cc", "memory");
  
- 	get_random_bytes(&nkey, sizeof(nkey));
- 	spin_lock(root_lock);
-@@ -619,8 +620,12 @@ static void sfq_perturbation(struct time
- 		sfq_rehash(sch);
- 	spin_unlock(root_lock);
- 
--	if (q->perturb_period)
--		mod_timer(&q->perturb_timer, jiffies + q->perturb_period);
-+	/* q->perturb_period can change under us from
-+	 * sfq_change() and sfq_destroy().
-+	 */
-+	period = READ_ONCE(q->perturb_period);
-+	if (period)
-+		mod_timer(&q->perturb_timer, jiffies + period);
- }
- 
- static int sfq_change(struct Qdisc *sch, struct nlattr *opt)
-@@ -662,7 +667,7 @@ static int sfq_change(struct Qdisc *sch,
- 		q->quantum = ctl->quantum;
- 		q->scaled_quantum = SFQ_ALLOT_SIZE(q->quantum);
- 	}
--	q->perturb_period = ctl->perturb_period * HZ;
-+	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
- 	if (ctl->flows)
- 		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
-@@ -724,7 +729,7 @@ static void sfq_destroy(struct Qdisc *sc
- 	struct sfq_sched_data *q = qdisc_priv(sch);
- 
- 	tcf_block_put(q->block);
--	q->perturb_period = 0;
-+	WRITE_ONCE(q->perturb_period, 0);
- 	del_timer_sync(&q->perturb_timer);
- 	sfq_free(q->ht);
- 	sfq_free(q->slots);
+ 	/* did we write everything to the user space buffer? */
 
 
 
