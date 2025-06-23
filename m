@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D43DCAE560F
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:17:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB95AE569B
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF36516C07A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:16:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2BDE34C0797
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8E39223DE8;
-	Mon, 23 Jun 2025 22:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0906215ADB4;
+	Mon, 23 Jun 2025 22:21:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vc2RSTOZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1EmA5vjj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82C5C223708;
-	Mon, 23 Jun 2025 22:15:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA02016D9BF;
+	Mon, 23 Jun 2025 22:21:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716945; cv=none; b=nVhA9cKh4pTFvyFddiQ6ZhP6LpVA+z0KU6Doi9q4MJcFAgfL5ONpT1bbpEaXMKDXt81KGdmvtR28TZxNWWsng4UPoH70nm+HBedqXBmieZQYgvwFXpJnP20zE0AcKdLcayoSobJ6Xdlbtw1vRrCYL5I25jYoMxojwdF8yBXOiE0=
+	t=1750717267; cv=none; b=H7EQJdZ4fyzJmJmUaas29XfENhQUwyegbRkGVY7S4dBfJ1TXyBGMdx1qc2jP/L36EnCHRtwq9LzWbF/5lYlb41gKO2qWMrJLYBJC9Y5rXHa5zGGOsH65oS4ifj7hz6Vn1t4IpLqoYheqpWseM9hvRMsvwe05AFPl01i7U85138I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716945; c=relaxed/simple;
-	bh=HuUfRxYG8UXuix0L7HYfA64LTW9pbhxlq8iRAvzZrUg=;
+	s=arc-20240116; t=1750717267; c=relaxed/simple;
+	bh=mf0jVpDRQMYzq1kaagXM+mpE4r7rD4rD5yjapqdIfuM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dn8BCaC8CYzMIHbjdrnbyIWcN5HBIVhW2Q5Wys9qwLtVZF9HSPDMj3NxRA3/WyOH70AUurjOfq8kbPM8kR0mB/48Vr3jGhQozy6xcavHbT7eyK11YdNTdw6lYNtSKdCEXQll4Yp9jwTG8CWtoVjhKXtA+wPjeiV9cXO8SFh+GyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vc2RSTOZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B15BC4CEEA;
-	Mon, 23 Jun 2025 22:15:44 +0000 (UTC)
+	 MIME-Version; b=ULh0LRzaQH0tEtjtpsyMk3ZHF8IbbFug6PdYLWO9esgDu8IREft3c8VCYkSBxIZ/NJ3Ons1F5Kxmz7iqcX1kJYwwcI0PePaEvanp+XI7kXFlNFaVonk08aaRMnyNGIxBMRpSd4gbS1U454+ygn4GQq77bU5py8cpb0sB90NH9QI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1EmA5vjj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51C30C4CEEA;
+	Mon, 23 Jun 2025 22:21:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716945;
-	bh=HuUfRxYG8UXuix0L7HYfA64LTW9pbhxlq8iRAvzZrUg=;
+	s=korg; t=1750717267;
+	bh=mf0jVpDRQMYzq1kaagXM+mpE4r7rD4rD5yjapqdIfuM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vc2RSTOZ6z6pRW1VIXnC/K3IAFKT9eJF/t+v/4BfRCubhS0WeW9iWPzr0SHZ3fkVK
-	 2pvRNke3l3SKtaf79eINByogMVpWoHpKxBa+Wv941a1vZJPBXYxAN/fy02qT2Z7lP9
-	 rocqjAITXX0lWNvIyVg125YidnjQ7U1kIPqqAbMo=
+	b=1EmA5vjjdhVkMW6kv7iabYxbEHuKD/t0UvXeKt+7SUKR5qpI1jIe5w04aoVgzIdce
+	 bxM+WD4dE4FuM5/vq9mqe7b1nFNvUY5xahkcpBZitTxC3got99RjUAx/M/9RT41nxH
+	 GgSZinfqrGB9C0NYZ8LwopRPNhTSflS1M2DOqnII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yao Zi <ziyao@disroot.org>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.12 300/414] platform/loongarch: laptop: Add backlight power control support
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 392/508] emulex/benet: correct command version selection in be_cmd_get_stats()
 Date: Mon, 23 Jun 2025 15:07:17 +0200
-Message-ID: <20250623130649.505761450@linuxfoundation.org>
+Message-ID: <20250623130654.917025481@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,150 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yao Zi <ziyao@disroot.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 53c762b47f726e4079a1f06f684bce2fc0d56fba upstream.
+[ Upstream commit edb888d29748cee674006a52e544925dacc7728e ]
 
-loongson_laptop_turn_{on,off}_backlight() are designed for controlling
-the power of the backlight, but they aren't really used in the driver
-previously.
+Logic here always sets hdr->version to 2 if it is not a BE3 or Lancer chip,
+even if it is BE2. Use 'else if' to prevent multiple assignments, setting
+version 0 for BE2, version 1 for BE3 and Lancer, and version 2 for others.
+Fixes potential incorrect version setting when BE2_chip and
+BE3_chip/lancer_chip checks could both be true.
 
-Unify these two functions since they only differ in arguments passed to
-ACPI method, and wire up loongson_laptop_backlight_update() to update
-the power state of the backlight as well. Tested on the TongFang L860-T2
-Loongson-3A5000 laptop.
-
-Cc: stable@vger.kernel.org
-Fixes: 6246ed09111f ("LoongArch: Add ACPI-based generic laptop driver")
-Signed-off-by: Yao Zi <ziyao@disroot.org>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20250519141731.691136-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/loongarch/loongson-laptop.c |   73 +++++++++++++--------------
- 1 file changed, 37 insertions(+), 36 deletions(-)
+ drivers/net/ethernet/emulex/benet/be_cmds.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/platform/loongarch/loongson-laptop.c
-+++ b/drivers/platform/loongarch/loongson-laptop.c
-@@ -56,8 +56,7 @@ static struct input_dev *generic_inputde
- static acpi_handle hotkey_handle;
- static struct key_entry hotkey_keycode_map[GENERIC_HOTKEY_MAP_MAX];
- 
--int loongson_laptop_turn_on_backlight(void);
--int loongson_laptop_turn_off_backlight(void);
-+static bool bl_powered;
- static int loongson_laptop_backlight_update(struct backlight_device *bd);
- 
- /* 2. ACPI Helpers and device model */
-@@ -354,16 +353,42 @@ static int ec_backlight_level(u8 level)
- 	return level;
- }
- 
-+static int ec_backlight_set_power(bool state)
-+{
-+	int status;
-+	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
-+	struct acpi_object_list args = { 1, &arg0 };
-+
-+	arg0.integer.value = state;
-+	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
-+	if (ACPI_FAILURE(status)) {
-+		pr_info("Loongson lvds error: 0x%x\n", status);
-+		return -EIO;
-+	}
-+
-+	return 0;
-+}
-+
- static int loongson_laptop_backlight_update(struct backlight_device *bd)
- {
--	int lvl = ec_backlight_level(bd->props.brightness);
-+	bool target_powered = !backlight_is_blank(bd);
-+	int ret = 0, lvl = ec_backlight_level(bd->props.brightness);
- 
- 	if (lvl < 0)
- 		return -EIO;
-+
- 	if (ec_set_brightness(lvl))
- 		return -EIO;
- 
--	return 0;
-+	if (target_powered != bl_powered) {
-+		ret = ec_backlight_set_power(target_powered);
-+		if (ret < 0)
-+			return ret;
-+
-+		bl_powered = target_powered;
-+	}
-+
-+	return ret;
- }
- 
- static int loongson_laptop_get_brightness(struct backlight_device *bd)
-@@ -384,7 +409,7 @@ static const struct backlight_ops backli
- 
- static int laptop_backlight_register(void)
- {
--	int status = 0;
-+	int status = 0, ret;
- 	struct backlight_properties props;
- 
- 	memset(&props, 0, sizeof(props));
-@@ -392,44 +417,20 @@ static int laptop_backlight_register(voi
- 	if (!acpi_evalf(hotkey_handle, &status, "ECLL", "d"))
- 		return -EIO;
- 
-+	ret = ec_backlight_set_power(true);
-+	if (ret)
-+		return ret;
-+
-+	bl_powered = true;
-+
- 	props.max_brightness = status;
- 	props.brightness = ec_get_brightness();
-+	props.power = BACKLIGHT_POWER_ON;
- 	props.type = BACKLIGHT_PLATFORM;
- 
- 	backlight_device_register("loongson_laptop",
- 				NULL, NULL, &backlight_laptop_ops, &props);
- 
--	return 0;
--}
--
--int loongson_laptop_turn_on_backlight(void)
--{
--	int status;
--	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
--	struct acpi_object_list args = { 1, &arg0 };
--
--	arg0.integer.value = 1;
--	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
--	if (ACPI_FAILURE(status)) {
--		pr_info("Loongson lvds error: 0x%x\n", status);
--		return -ENODEV;
--	}
--
--	return 0;
--}
--
--int loongson_laptop_turn_off_backlight(void)
--{
--	int status;
--	union acpi_object arg0 = { ACPI_TYPE_INTEGER };
--	struct acpi_object_list args = { 1, &arg0 };
--
--	arg0.integer.value = 0;
--	status = acpi_evaluate_object(NULL, "\\BLSW", &args, NULL);
--	if (ACPI_FAILURE(status)) {
--		pr_info("Loongson lvds error: 0x%x\n", status);
--		return -ENODEV;
--	}
- 
- 	return 0;
- }
+diff --git a/drivers/net/ethernet/emulex/benet/be_cmds.c b/drivers/net/ethernet/emulex/benet/be_cmds.c
+index d00f4e29c9d88..17098cd89dfff 100644
+--- a/drivers/net/ethernet/emulex/benet/be_cmds.c
++++ b/drivers/net/ethernet/emulex/benet/be_cmds.c
+@@ -1608,7 +1608,7 @@ int be_cmd_get_stats(struct be_adapter *adapter, struct be_dma_mem *nonemb_cmd)
+ 	/* version 1 of the cmd is not supported only by BE2 */
+ 	if (BE2_chip(adapter))
+ 		hdr->version = 0;
+-	if (BE3_chip(adapter) || lancer_chip(adapter))
++	else if (BE3_chip(adapter) || lancer_chip(adapter))
+ 		hdr->version = 1;
+ 	else
+ 		hdr->version = 2;
+-- 
+2.39.5
+
 
 
 
