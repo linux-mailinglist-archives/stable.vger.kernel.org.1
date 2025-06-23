@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156002-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8F9AE44AE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 958D3AE428B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:22:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DBE4117F65C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93A033B91D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0B02253358;
-	Mon, 23 Jun 2025 13:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9FC256C8D;
+	Mon, 23 Jun 2025 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cqyCyQAu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XtHC6amn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D529252912;
-	Mon, 23 Jun 2025 13:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61629256C7C;
+	Mon, 23 Jun 2025 13:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685895; cv=none; b=lITXSKr3UzPSYIkofdij/MH9qtDf0E7iOE/1mZRK8o5z+dEEkEIBzTRpe5yadYD/hXjKLfhO5lOtplGtx2P50Qq21Vawj1fSOYd4Z2a7XYO2gBdS6D520JV+Fjq3BKoGS+ktc4MWS2qHWKIr/5lhOZQ2QbmhuHwtXvJn7Qmn1EA=
+	t=1750684733; cv=none; b=KHWxVUasyiFWzkV2xtG1OSQlDgUJXSHWvuFVwQPFTUXaRKI4ZqGXADqWhBBwOxrpsiLaS85lal08KnsVmIljOh1fM96k/rpvTxw2zTUP+1jNwORZFA/SohSPIJYrXHOR+CWX8n0EMEln7y0brfwfjQ+AvMF9cchwLWVMjQ6Y+bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685895; c=relaxed/simple;
-	bh=HdBsTJchglwvia/tHzrnX86znurP+fnUmxZSNxO4dn4=;
+	s=arc-20240116; t=1750684733; c=relaxed/simple;
+	bh=6FBoQjH9aBRnjEvZE9CtH7FwiY+2FznLK1bDGckivx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M8ls4CdKAckYPY97xkVOfxxG8+wyWNHnU6k8Hayze1ShVM8ZKUhs3aBHYkDpnYj5NJ1fHVQDNEJeewVYIhg2HkWvAarzJ4aqc0H2y3pXc3syTMayc1hx+cz1EiQpfA4q9mlL9zJ3kDMAcnxfNzmRbsV+H/qQewKgZKS8TSX3Ahw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cqyCyQAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01874C4CEF0;
-	Mon, 23 Jun 2025 13:38:14 +0000 (UTC)
+	 MIME-Version; b=r6L4MYqsHOvR3llDp3e/ItUjLiFbxZNvcIut0UsBZihlfrIcZTerr7N/fyckkmU5QrMPALEj92YpQ0KjQQiedDCvjHlBWMr5XX/j5xMOcvOxk+B0odu7Vnfiee4EN3xfLc4EKasNqsD6QGtCuzw8Fbaw2vxXix1hYZBo6bWeky8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XtHC6amn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1BD9C4CEEA;
+	Mon, 23 Jun 2025 13:18:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685895;
-	bh=HdBsTJchglwvia/tHzrnX86znurP+fnUmxZSNxO4dn4=;
+	s=korg; t=1750684733;
+	bh=6FBoQjH9aBRnjEvZE9CtH7FwiY+2FznLK1bDGckivx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cqyCyQAuRdTHX0xtIIKgCVw+DTEvXKtwhqN7ESmXn8ghN1dJ5tCTJNyqFkk5xeEL2
-	 3acyIJhVU9FZOylVVBff5PSZQzsqv09qY3kKMZT0ft2CvtD9d7YSRSMkZj74FOObLs
-	 nd2+0wPDoCVTJN+F4zXPJFq6OKw7uKMiCaHJbQR8=
+	b=XtHC6amn3AmVtqX9/yABtOxFGuhwZcMxfRbqI+DjWKZJUMQ4/RmqWRhM7tqeuw8Za
+	 7iOiIHh4wDgfNsToPnnRECAL4psWlUCAyPaDFIu6j6b8MllOZyZ3LrIciXvYCOOCsm
+	 F847qaBZ6DOib4nScGolf/9r+IySDxWt9twlc/H4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 036/508] drm/vmwgfx: Add seqno waiter for sync_files
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.15 123/592] f2fs: prevent kernel warning due to negative i_nlink from corrupted image
 Date: Mon, 23 Jun 2025 15:01:21 +0200
-Message-ID: <20250623130646.134664646@linuxfoundation.org>
+Message-ID: <20250623130703.195924487@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,94 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit 0039a3b35b10d9c15d3d26320532ab56cc566750 ]
+commit 42cb74a92adaf88061039601ddf7c874f58b554e upstream.
 
-Because sync_files are passive waiters they do not participate in
-the processing of fences like the traditional vmw_fence_wait IOCTL.
-If userspace exclusively uses sync_files for synchronization then
-nothing in the kernel actually processes fence updates as interrupts
-for fences are masked and ignored if the kernel does not indicate to the
-SVGA device that there are active waiters.
+WARNING: CPU: 1 PID: 9426 at fs/inode.c:417 drop_nlink+0xac/0xd0
+home/cc/linux/fs/inode.c:417
+Modules linked in:
+CPU: 1 UID: 0 PID: 9426 Comm: syz-executor568 Not tainted
+6.14.0-12627-g94d471a4f428 #2 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS
+1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:drop_nlink+0xac/0xd0 home/cc/linux/fs/inode.c:417
+Code: 48 8b 5d 28 be 08 00 00 00 48 8d bb 70 07 00 00 e8 f9 67 e6 ff
+f0 48 ff 83 70 07 00 00 5b 5d e9 9a 12 82 ff e8 95 12 82 ff 90
+&lt;0f&gt; 0b 90 c7 45 48 ff ff ff ff 5b 5d e9 83 12 82 ff e8 fe 5f e6
+ff
+RSP: 0018:ffffc900026b7c28 EFLAGS: 00010293
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff8239710f
+RDX: ffff888041345a00 RSI: ffffffff8239717b RDI: 0000000000000005
+RBP: ffff888054509ad0 R08: 0000000000000005 R09: 0000000000000000
+R10: 0000000000000000 R11: ffffffff9ab36f08 R12: ffff88804bb40000
+R13: ffff8880545091e0 R14: 0000000000008000 R15: ffff8880545091e0
+FS:  000055555d0c5880(0000) GS:ffff8880eb3e3000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f915c55b178 CR3: 0000000050d20000 CR4: 0000000000352ef0
+Call Trace:
+ <task>
+ f2fs_i_links_write home/cc/linux/fs/f2fs/f2fs.h:3194 [inline]
+ f2fs_drop_nlink+0xd1/0x3c0 home/cc/linux/fs/f2fs/dir.c:845
+ f2fs_delete_entry+0x542/0x1450 home/cc/linux/fs/f2fs/dir.c:909
+ f2fs_unlink+0x45c/0x890 home/cc/linux/fs/f2fs/namei.c:581
+ vfs_unlink+0x2fb/0x9b0 home/cc/linux/fs/namei.c:4544
+ do_unlinkat+0x4c5/0x6a0 home/cc/linux/fs/namei.c:4608
+ __do_sys_unlink home/cc/linux/fs/namei.c:4654 [inline]
+ __se_sys_unlink home/cc/linux/fs/namei.c:4652 [inline]
+ __x64_sys_unlink+0xc5/0x110 home/cc/linux/fs/namei.c:4652
+ do_syscall_x64 home/cc/linux/arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xc7/0x250 home/cc/linux/arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fb3d092324b
+Code: 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48 83 c8 ff c3 66
+2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa b8 57 00 00 00 0f 05
+&lt;48&gt; 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01
+48
+RSP: 002b:00007ffdc232d938 EFLAGS: 00000206 ORIG_RAX: 0000000000000057
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb3d092324b
+RDX: 00007ffdc232d960 RSI: 00007ffdc232d960 RDI: 00007ffdc232d9f0
+RBP: 00007ffdc232d9f0 R08: 0000000000000001 R09: 00007ffdc232d7c0
+R10: 00000000fffffffd R11: 0000000000000206 R12: 00007ffdc232eaf0
+R13: 000055555d0cebb0 R14: 00007ffdc232d958 R15: 0000000000000001
+ </task>
 
-This oversight results in a bug where the entire GUI can freeze waiting
-on a sync_file that will never be signalled as we've masked the interrupts
-to signal its completion. This bug is incredibly racy as any process which
-interacts with the fencing code via the 3D stack can process the stuck
-fences on behalf of the stuck process causing it to run again. Even a
-simple app like eglinfo is enough to resume the stuck process. Usually
-this bug is seen at a login screen like GDM because there are no other
-3D apps running.
-
-By adding a seqno waiter we re-enable interrupt based processing of the
-dma_fences associated with the sync_file which is signalled as part of a
-dma_fence_callback.
-
-This has likely been broken since it was initially added to the kernel in
-2017 but has gone unnoticed until mutter recently started using sync_files
-heavily over the course of 2024 as part of their explicit sync support.
-
-Fixes: c906965dee22 ("drm/vmwgfx: Add export fence to file descriptor support")
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20250228200633.642417-1-ian.forbes@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c | 26 +++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ fs/f2fs/namei.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 2f7ac91149fc0..0d12d6af67c09 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -4077,6 +4077,23 @@ static int vmw_execbuf_tie_context(struct vmw_private *dev_priv,
- 	return 0;
- }
- 
-+/*
-+ * DMA fence callback to remove a seqno_waiter
-+ */
-+struct seqno_waiter_rm_context {
-+	struct dma_fence_cb base;
-+	struct vmw_private *dev_priv;
-+};
-+
-+static void seqno_waiter_rm_cb(struct dma_fence *f, struct dma_fence_cb *cb)
-+{
-+	struct seqno_waiter_rm_context *ctx =
-+		container_of(cb, struct seqno_waiter_rm_context, base);
-+
-+	vmw_seqno_waiter_remove(ctx->dev_priv);
-+	kfree(ctx);
-+}
-+
- int vmw_execbuf_process(struct drm_file *file_priv,
- 			struct vmw_private *dev_priv,
- 			void __user *user_commands, void *kernel_commands,
-@@ -4257,6 +4274,15 @@ int vmw_execbuf_process(struct drm_file *file_priv,
- 		} else {
- 			/* Link the fence with the FD created earlier */
- 			fd_install(out_fence_fd, sync_file->file);
-+			struct seqno_waiter_rm_context *ctx =
-+				kmalloc(sizeof(*ctx), GFP_KERNEL);
-+			ctx->dev_priv = dev_priv;
-+			vmw_seqno_waiter_add(dev_priv);
-+			if (dma_fence_add_callback(&fence->base, &ctx->base,
-+						   seqno_waiter_rm_cb) < 0) {
-+				vmw_seqno_waiter_remove(dev_priv);
-+				kfree(ctx);
-+			}
- 		}
+--- a/fs/f2fs/namei.c
++++ b/fs/f2fs/namei.c
+@@ -569,6 +569,15 @@ static int f2fs_unlink(struct inode *dir
+ 		goto fail;
  	}
  
--- 
-2.39.5
-
++	if (unlikely(inode->i_nlink == 0)) {
++		f2fs_warn(F2FS_I_SB(inode), "%s: inode (ino=%lx) has zero i_nlink",
++			  __func__, inode->i_ino);
++		err = -EFSCORRUPTED;
++		set_sbi_flag(F2FS_I_SB(inode), SBI_NEED_FSCK);
++		f2fs_put_page(page, 0);
++		goto fail;
++	}
++
+ 	f2fs_balance_fs(sbi, true);
+ 
+ 	f2fs_lock_op(sbi);
 
 
 
