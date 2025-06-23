@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DCD1AE541E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D9A2AE53EC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:57:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5DA2E446AA2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5728F188EC9B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B8922579E;
-	Mon, 23 Jun 2025 21:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4E6F2222CC;
+	Mon, 23 Jun 2025 21:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yyq+IOap"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/4FSY5y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 133AE225785;
-	Mon, 23 Jun 2025 21:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EA521AD3FA;
+	Mon, 23 Jun 2025 21:57:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715954; cv=none; b=lyS39bW9DtZA22xHTExjzfflAyEZnukzsDNuxq94s4c1IMzIiX3Tz2Lh/YaQKrF9kM4aiGnOqmQHvbAy1O9lrwrhmNALH+mllJKufV0gGit38tUx8FHC86weXXgJZJYDVHLSYZTi8nmy/I1riEchUrkrnvMt+tz2Ma96z8PUnhE=
+	t=1750715839; cv=none; b=PtsZAJyIhZfXqyTkzoOlIbXRqC+RA2BBKr4Q3NLVdpLE07LpbUwqLQxguW10S7oCjLG8taR59ltoqfOq5gKol14v7YSLXcEx27tddJHY5luZ+8vA3hNDj+KdlOhk12LziySmPLxsOPTcURJdUYSPKZtyq7XNJ8Dll2/uzlgH2Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715954; c=relaxed/simple;
-	bh=UuQ29DWcrfBsX/fe+HKGGrpB0Cjyef1sJr/3TPslSeE=;
+	s=arc-20240116; t=1750715839; c=relaxed/simple;
+	bh=rFX8YJEGFRruqKJiYJp48tsmFxPoOtCJUvJCabDMUpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VDpr0b9COsEgpuHOUv2rw9SRNu4Cf1rXSBEUOzscDdu1wTK/dNE+MUO9q755KiiZvkS9wYYKm0vJF27zrzhNBcDpZeQ3G2Rv9xIf2FKHloyNzzbCxXo6NkCyBCPWksPDxXq5ybA9wxFF3rnQ53aKoMV1kLuneb3zmSPzkY213ug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yyq+IOap; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97A92C4CEF1;
-	Mon, 23 Jun 2025 21:59:13 +0000 (UTC)
+	 MIME-Version; b=Exoezjbsy8nfioxedXsnRN6vP+IFKWhsBsWI8hGiwA+omPnD/TJPrOuC6R9bojYaV5pZZiJNAfd1MM6zlvJ6JDHdHSc5B7XFYq+gS0sebchrlNVF+O1nmsOq3aFCTFMtx6PckOUZEnhcQ/C9VpcxMcB7ISSsDahgJjh/vvc+lRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/4FSY5y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8E2C4CEEA;
+	Mon, 23 Jun 2025 21:57:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715953;
-	bh=UuQ29DWcrfBsX/fe+HKGGrpB0Cjyef1sJr/3TPslSeE=;
+	s=korg; t=1750715839;
+	bh=rFX8YJEGFRruqKJiYJp48tsmFxPoOtCJUvJCabDMUpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yyq+IOap7ljxNDVbzPLwCIVE3Uxsm5OZdYV7MsgaGARkOgD2pzo3dpHsYlTkgbjVq
-	 xZXXg/BAW+2w4yrSC15nbgXZ1qfPEwrlg2Vtagcj2gXpp1P/c4ZBOo5RrYP7ohd0S4
-	 VDMZTv49yWPjjJWyv0QuTq6roWR+o/pDWbZdnZ2Q=
+	b=i/4FSY5ySD0LWCUHOqKu73JyVwUkoI/DsHYuGB9foFnqb8OGfJw+/IM4WyH4UiWet
+	 sNm1oWOaApLj3STn/Svqv92RV63SUuCNQEkbYF8ADiVXKg+oUwh6hqS4TY4Xu5z1+h
+	 SLGpq337wwXKZdwKQfdtB8Hje10n5Vlg6O74h+0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Lane <jon@borg.moe>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.15 493/592] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
+	Tan En De <ende.tan@starfivetech.com>,
+	Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 307/411] i2c: designware: Invoke runtime suspend on quick slave re-registration
 Date: Mon, 23 Jun 2025 15:07:31 +0200
-Message-ID: <20250623130712.157327830@linuxfoundation.org>
+Message-ID: <20250623130641.372446609@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Lane <jon@borg.moe>
+From: Tan En De <ende.tan@starfivetech.com>
 
-commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
+[ Upstream commit 2fe2b969d911a09abcd6a47401a3c66c38a310e6 ]
 
-Like many Dell laptops, the 3.5mm port by default can not detect a
-combined headphones+mic headset or even a pure microphone.  This
-change enables the port's functionality.
+Replaced pm_runtime_put() with pm_runtime_put_sync_suspend() to ensure
+the runtime suspend is invoked immediately when unregistering a slave.
+This prevents a race condition where suspend was skipped when
+unregistering and registering slave in quick succession.
 
-Signed-off-by: Jonathan Lane <jon@borg.moe>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For example, consider the rapid sequence of
+`delete_device -> new_device -> delete_device -> new_device`.
+In this sequence, it is observed that the dw_i2c_plat_runtime_suspend()
+might not be invoked after `delete_device` operation.
+
+This is because after `delete_device` operation, when the
+pm_runtime_put() is about to trigger suspend, the following `new_device`
+operation might race and cancel the suspend.
+
+If that happens, during the `new_device` operation,
+dw_i2c_plat_runtime_resume() is skipped (since there was no suspend), which
+means `i_dev->init()`, i.e. i2c_dw_init_slave(), is skipped.
+Since i2c_dw_init_slave() is skipped, i2c_dw_configure_fifo_slave() is
+skipped too, which leaves `DW_IC_INTR_MASK` unconfigured. If we inspect
+the interrupt mask register using devmem, it will show as zero.
+
+Example shell script to reproduce the issue:
+```
+  #!/bin/sh
+
+  SLAVE_LADDR=0x1010
+  SLAVE_BUS=13
+  NEW_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/new_device
+  DELETE_DEVICE=/sys/bus/i2c/devices/i2c-$SLAVE_BUS/delete_device
+
+  # Create initial device
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  sleep 2
+
+  # Rapid sequence of
+  # delete_device -> new_device -> delete_device -> new_device
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+  echo $SLAVE_LADDR > $DELETE_DEVICE
+  echo slave-24c02 $SLAVE_LADDR > $NEW_DEVICE
+
+  # Using devmem to inspect IC_INTR_MASK will show as zero
+```
+
+Signed-off-by: Tan En De <ende.tan@starfivetech.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20250412023303.378600-1-ende.tan@starfivetech.com
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/i2c/busses/i2c-designware-slave.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10509,6 +10509,7 @@ static const struct hda_quirk alc269_fix
- 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
- 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
-+	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
- 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
+diff --git a/drivers/i2c/busses/i2c-designware-slave.c b/drivers/i2c/busses/i2c-designware-slave.c
+index 5b54a9b9ed1a3..09b8ccc040c6e 100644
+--- a/drivers/i2c/busses/i2c-designware-slave.c
++++ b/drivers/i2c/busses/i2c-designware-slave.c
+@@ -97,7 +97,7 @@ static int i2c_dw_unreg_slave(struct i2c_client *slave)
+ 	dev->disable(dev);
+ 	synchronize_irq(dev->irq);
+ 	dev->slave = NULL;
+-	pm_runtime_put(dev->dev);
++	pm_runtime_put_sync_suspend(dev->dev);
+ 
+ 	return 0;
+ }
+-- 
+2.39.5
+
 
 
 
