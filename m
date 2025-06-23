@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-156701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D99AE50C9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:28:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00E62AE515E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:33:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 26FDB440D2E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:19 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFED81B63AAA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:33:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7CFF1F4628;
-	Mon, 23 Jun 2025 21:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40E311EEA5D;
+	Mon, 23 Jun 2025 21:33:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZ7MYap0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P4iIt+T0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7633C19C554;
-	Mon, 23 Jun 2025 21:27:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A1344C77;
+	Mon, 23 Jun 2025 21:33:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714057; cv=none; b=WQlBymQQ9775q8lXh/pDaQRbs9/vjL7PMnBmxc3BNZ78o7Npl+0BkUXz/PWVF4gabK+40vEkFvXeuW35xDVt7kY+B2m1GWjDKa/shZv5Eo8+zV42/YEm73LJ+LTB+9BhckM8gmm688MmqxKaopCBURK1OwulG08j8h2+PH8Sfmg=
+	t=1750714402; cv=none; b=pIEvap0TxFSTa1WuK+4BGZMnU5gWCCTH8QowSjvynSz8sLvB/lctmsgCZDT/0tKRcckB4RqpH/1bbH1uh07+LEZA2yh8d0z0oNVWoh50qjnOmZ2jtdAjquiGcrjQSGNv0lgbmw2jvlbkJTKk/dDA5bBKcBKxTYS78vDteJISnDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714057; c=relaxed/simple;
-	bh=fTXZ4lEjuzwmRyy+wi/lWpeSP3N1sJxzkDXZBjiIsYY=;
+	s=arc-20240116; t=1750714402; c=relaxed/simple;
+	bh=EiCuiFr9vfTZgy++4KU/nXJtPBMngoTpXTTkTYiBAlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LC+wvsLEmv2azPNsSJ7zhzAwqhMPgIy6qeu1gNg2arWxW6jzvSJu4brv0ea3RuTjTDWPEVEwz67x7yPl9PoY8iyAtCoaYcSD82EENcol9vMeZkvLE7Ha1E+dhZdt6oemzbjqNXGSWdgSV4HMFS3dy9ZMFkp9FzNkrW2UZXPFS/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZ7MYap0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10909C4CEEA;
-	Mon, 23 Jun 2025 21:27:36 +0000 (UTC)
+	 MIME-Version; b=Enydu5fe3ldCHRZsE0yXVCCMXBh5O1oc6Mi6QVsb6wcYpYrlCN3cKxD5qv60n1I6lqunE/UXYTiqa0RXxYBox0MZwzrH5mMbkGvUlkEkxK5vXNTwRvSxukI51QAy/IhmwJF1gmnEsbsf5dicVbpb0nAhg8lFQQZhs5ePzzS+9LA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P4iIt+T0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D41C4CEEA;
+	Mon, 23 Jun 2025 21:33:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714057;
-	bh=fTXZ4lEjuzwmRyy+wi/lWpeSP3N1sJxzkDXZBjiIsYY=;
+	s=korg; t=1750714401;
+	bh=EiCuiFr9vfTZgy++4KU/nXJtPBMngoTpXTTkTYiBAlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tZ7MYap0tkThgLhUV2PtTID6XSZvF0cni0tF8GkPKqs8iiVzRPcUvKmnPR4UsbwJ6
-	 +4W/3TavqEyckkGGChlRN48WFgFDzULRBw7HdpKBZiJYFxXaho0gDqCwnNDd/2SH8J
-	 vbubbAte/R7Rm08SAkapqLP37IF58LjX0KExA4xQ=
+	b=P4iIt+T0IGpMgmmXlQ69sp8DjzttElTAItRXSbuii3qCmbwxELJdKL9VCL/j6ehbo
+	 4VJ+83IPuhXQFzFgK3UFrTNEgpO4d6yb0DJfU5q2CeUM4Dy57gYn9gW+IzITWX/rSB
+	 oZPj83IHTqt/AKUFIf2ipQNN1+rdLeB5qqfkxwoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.12 078/414] block: Clear BIO_EMULATES_ZONE_APPEND flag on BIO completion
+	Yanqing Wang <ot_yanqing.wang@mediatek.com>,
+	Macpaul Lin <macpaul.lin@mediatek.com>,
+	Biao Huang <biao.huang@mediatek.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 170/508] driver: net: ethernet: mtk_star_emac: fix suspend/resume issue
 Date: Mon, 23 Jun 2025 15:03:35 +0200
-Message-ID: <20250623130644.031406009@linuxfoundation.org>
+Message-ID: <20250623130649.457907574@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Yanqing Wang <ot_yanqing.wang@mediatek.com>
 
-commit f705d33c2f0353039d03e5d6f18f70467d86080e upstream.
+[ Upstream commit ba99c627aac85bc746fb4a6e2d79edb3ad100326 ]
 
-When blk_zone_write_plug_bio_endio() is called for a regular write BIO
-used to emulate a zone append operation, that is, a BIO flagged with
-BIO_EMULATES_ZONE_APPEND, the BIO operation code is restored to the
-original REQ_OP_ZONE_APPEND but the BIO_EMULATES_ZONE_APPEND flag is not
-cleared. Clear it to fully return the BIO to its orginal definition.
+Identify the cause of the suspend/resume hang: netif_carrier_off()
+is called during link state changes and becomes stuck while
+executing linkwatch_work().
 
-Fixes: 9b1ce7f0c6f8 ("block: Implement zone append emulation")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250611005915.89843-1-dlemoal@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To resolve this issue, call netif_device_detach() during the Ethernet
+suspend process to temporarily detach the network device from the
+kernel and prevent the suspend/resume hang.
+
+Fixes: 8c7bd5a454ff ("net: ethernet: mtk-star-emac: new driver")
+Signed-off-by: Yanqing Wang <ot_yanqing.wang@mediatek.com>
+Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Signed-off-by: Biao Huang <biao.huang@mediatek.com>
+Link: https://patch.msgid.link/20250528075351.593068-1-macpaul.lin@mediatek.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-zoned.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/mediatek/mtk_star_emac.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/block/blk-zoned.c
-+++ b/block/blk-zoned.c
-@@ -1240,6 +1240,7 @@ void blk_zone_write_plug_bio_endio(struc
- 	if (bio_flagged(bio, BIO_EMULATES_ZONE_APPEND)) {
- 		bio->bi_opf &= ~REQ_OP_MASK;
- 		bio->bi_opf |= REQ_OP_ZONE_APPEND;
-+		bio_clear_flag(bio, BIO_EMULATES_ZONE_APPEND);
+diff --git a/drivers/net/ethernet/mediatek/mtk_star_emac.c b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+index c42e9f741f959..a631491a19da1 100644
+--- a/drivers/net/ethernet/mediatek/mtk_star_emac.c
++++ b/drivers/net/ethernet/mediatek/mtk_star_emac.c
+@@ -1475,6 +1475,8 @@ static __maybe_unused int mtk_star_suspend(struct device *dev)
+ 	if (netif_running(ndev))
+ 		mtk_star_disable(ndev);
+ 
++	netif_device_detach(ndev);
++
+ 	clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
+ 
+ 	return 0;
+@@ -1499,6 +1501,8 @@ static __maybe_unused int mtk_star_resume(struct device *dev)
+ 			clk_bulk_disable_unprepare(MTK_STAR_NCLKS, priv->clks);
  	}
  
- 	/*
++	netif_device_attach(ndev);
++
+ 	return ret;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
