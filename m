@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D75BAE542A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EDE6AE528A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 902B5446C31
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ADB16188E24C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF5C22248A4;
-	Mon, 23 Jun 2025 21:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D8DD223337;
+	Mon, 23 Jun 2025 21:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sQwFT99a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ck3JzLto"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D8EF223714;
-	Mon, 23 Jun 2025 21:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585F41E1A05;
+	Mon, 23 Jun 2025 21:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715980; cv=none; b=gN+qH6Q3e35vbHc0+WnpR0OE2QWZecIzsUlDl3srRSVJIkEGvnh2mlBo6nuffpoTkJuE3gWVm28DktUPZ4rE1Tb8Tmq1xXPZNYjUr+BH7OE37QF5QS24Bmjq/WkFOMjszVmuyjF3LaViX9erLAwGWaEzDD7UOxqSZQjgR7PLuGU=
+	t=1750715075; cv=none; b=s496jgoGHQC9NtCjKWa3IKFvjUdWSUvBR3gyFlPtgrDXxtZhhLsqVGT7zKnGC7BlJfZYlmB1f4kxbwI0XGiFn1uWKJ2HTBVv7IGYBp3NsY3ArKI2YKVqmv/BgdYI6dFFsQXGc3yOEOZ5MSv57KLXl2Nho8ccj7+JHo0LQQzGvmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715980; c=relaxed/simple;
-	bh=pJWa5xFv+mq9Nf0SOmHBYM6TWPhufInKD77MaH6+IN4=;
+	s=arc-20240116; t=1750715075; c=relaxed/simple;
+	bh=vQpEAsV+SHEVNdOhjk+0X5i7tRMpPGRNTEu4SaptXlE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CnnBpqRFkfwDAWv0wGGtMd56ga6ZsdGfdOigEjTQchjWjXnVoJuH01gfRStcIM/qz5e7T8eQP0BB6djKpHlfckohqlRKPzILRNq54dqe8XUPiIHp4DChxwABXn0KkwqLb8bzWQN5mnhnKiQDXLtpTKUO7GtTtgiSf+3gRb+CUvA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sQwFT99a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383A3C4CEEA;
-	Mon, 23 Jun 2025 21:59:40 +0000 (UTC)
+	 MIME-Version; b=gzWAsD5Y9DaqbP2dLveeTIs0S/eFFBEl53zRS6CTUkgMEXDXNL5veoHHE14zzheS6cf1Dvhf4boBDUSNXP8M2LISK7tnR8BgtLkd68HUR+nI5i6bFE1ejOmwrrLfz7JEOO/b/c2ztSUw6Up121Oo/TaGm531vJGFkgE/Jdpl7oY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ck3JzLto; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6981C4CEEA;
+	Mon, 23 Jun 2025 21:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715980;
-	bh=pJWa5xFv+mq9Nf0SOmHBYM6TWPhufInKD77MaH6+IN4=;
+	s=korg; t=1750715075;
+	bh=vQpEAsV+SHEVNdOhjk+0X5i7tRMpPGRNTEu4SaptXlE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sQwFT99aTqYdECh+fQwufIjWSnp4rqoA4+BJ4pngjdmgLKfcCPyDCR3OSLW5ngP67
-	 z79lWCHnEWtcbxycykPksOOK+XaMJd2CzhDVnTLb9CCiy51phToReBrjWw/0GYBDVh
-	 tK6JVkpLCBzTfXcrrtMQFVEReNs373++O05lT3J0=
+	b=ck3JzLtoBk/G+51dnWljmkmg7HvMcNSYI/M+rSKB2XX+xfF25R3yZ9I+Er0Nm9VBk
+	 49HkfTMKkV/wlxavHG9paNs8jLVOlixXlDz8My+gOhNUhLwFv2HkA913yVuaTet1xU
+	 lfC08AQFQnSiPmspgk1sNnsTiLIiEldq3J1pCuj0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Dylan J. Wolff" <wolffd@comp.nus.edu.sg>,
-	Jiacheng Xu <stitch@zju.edu.cn>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 295/411] jfs: Fix null-ptr-deref in jfs_ioc_trim
+Subject: [PATCH 6.6 178/290] software node: Correct a OOB check in software_node_get_reference_args()
 Date: Mon, 23 Jun 2025 15:07:19 +0200
-Message-ID: <20250623130641.076584383@linuxfoundation.org>
+Message-ID: <20250623130632.233087368@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dylan Wolff <wolffd@comp.nus.edu.sg>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit a4685408ff6c3e2af366ad9a7274f45ff3f394ee ]
+[ Upstream commit 31e4e12e0e9609850cefd4b2e1adf782f56337d6 ]
 
-[ Syzkaller Report ]
+software_node_get_reference_args() wants to get @index-th element, so
+the property value requires at least '(index + 1) * sizeof(*ref)' bytes
+but that can not be guaranteed by current OOB check, and may cause OOB
+for malformed property.
 
-Oops: general protection fault, probably for non-canonical address
-0xdffffc0000000087: 0000 [#1
-KASAN: null-ptr-deref in range [0x0000000000000438-0x000000000000043f]
-CPU: 2 UID: 0 PID: 10614 Comm: syz-executor.0 Not tainted
-6.13.0-rc6-gfbfd64d25c7a-dirty #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
-Sched_ext: serialise (enabled+all), task: runnable_at=-30ms
-RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
-Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
-90 82 fe ff 4c 89 ff 31 f6
-RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
-RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
-RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
-R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
-FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-? __die_body+0x61/0xb0
-? die_addr+0xb1/0xe0
-? exc_general_protection+0x333/0x510
-? asm_exc_general_protection+0x26/0x30
-? jfs_ioc_trim+0x34b/0x8f0
-jfs_ioctl+0x3c8/0x4f0
-? __pfx_jfs_ioctl+0x10/0x10
-? __pfx_jfs_ioctl+0x10/0x10
-__se_sys_ioctl+0x269/0x350
-? __pfx___se_sys_ioctl+0x10/0x10
-? do_syscall_64+0xfb/0x210
-do_syscall_64+0xee/0x210
-? syscall_exit_to_user_mode+0x1e0/0x330
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fe51f4903ad
-Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48
-89 f7 48 89 d6 48 89 ca 4d
-RSP: 002b:00007fe5202250c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fe51f5cbf80 RCX: 00007fe51f4903ad
-RDX: 0000000020000680 RSI: 00000000c0185879 RDI: 0000000000000005
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe520225640
-R13: 000000000000000e R14: 00007fe51f44fca0 R15: 00007fe52021d000
-</TASK>
-Modules linked in:
----[ end trace 0000000000000000 ]---
-RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
-Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
-90 82 fe ff 4c 89 ff 31 f6
-RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
-RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
-RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
-RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
-R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
-FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Kernel panic - not syncing: Fatal exception
+Fix by using as OOB check '((index + 1) * sizeof(*ref) > prop->length)'.
 
-[ Analysis ]
-
-We believe that we have found a concurrency bug in the `fs/jfs` module
-that results in a null pointer dereference. There is a closely related
-issue which has been fixed:
-
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234
-
-... but, unfortunately, the accepted patch appears to still be
-susceptible to a null pointer dereference under some interleavings.
-
-To trigger the bug, we think that `JFS_SBI(ipbmap->i_sb)->bmap` is set
-to NULL in `dbFreeBits` and then dereferenced in `jfs_ioc_trim`. This
-bug manifests quite rarely under normal circumstances, but is
-triggereable from a syz-program.
-
-Reported-and-tested-by: Dylan J. Wolff<wolffd@comp.nus.edu.sg>
-Reported-and-tested-by: Jiacheng Xu <stitch@zju.edu.cn>
-Signed-off-by: Dylan J. Wolff<wolffd@comp.nus.edu.sg>
-Signed-off-by: Jiacheng Xu <stitch@zju.edu.cn>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/20250414-fix_swnode-v2-1-9c9e6ae11eab@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_discard.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/base/swnode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
-index 5f4b305030ad5..4b660296caf39 100644
---- a/fs/jfs/jfs_discard.c
-+++ b/fs/jfs/jfs_discard.c
-@@ -86,7 +86,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
- 	down_read(&sb->s_umount);
- 	bmp = JFS_SBI(ip->i_sb)->bmap;
+diff --git a/drivers/base/swnode.c b/drivers/base/swnode.c
+index 079bd14bdedc7..a7a3e3b66bb5e 100644
+--- a/drivers/base/swnode.c
++++ b/drivers/base/swnode.c
+@@ -518,7 +518,7 @@ software_node_get_reference_args(const struct fwnode_handle *fwnode,
+ 	if (prop->is_inline)
+ 		return -EINVAL;
  
--	if (minlen > bmp->db_agsize ||
-+	if (bmp == NULL ||
-+	    minlen > bmp->db_agsize ||
- 	    start >= bmp->db_mapsize ||
- 	    range->len < sb->s_blocksize) {
- 		up_read(&sb->s_umount);
+-	if (index * sizeof(*ref) >= prop->length)
++	if ((index + 1) * sizeof(*ref) > prop->length)
+ 		return -ENOENT;
+ 
+ 	ref_array = prop->pointer;
 -- 
 2.39.5
 
