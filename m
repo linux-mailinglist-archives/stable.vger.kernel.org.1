@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-158045-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD80AE56B4
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3268AE56F2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAFA07B328A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E90E43A9FCA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A22E223DE5;
-	Mon, 23 Jun 2025 22:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D11DB225A38;
+	Mon, 23 Jun 2025 22:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HyLIRbMe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDQtTCIi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4776F15ADB4;
-	Mon, 23 Jun 2025 22:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F375199FBA;
+	Mon, 23 Jun 2025 22:21:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717348; cv=none; b=AW1rvVjlJ2ufmSt57EMfQnGgNgwfDV9CAU8V7pxqde5gGn41vaIbMm5nJ8yIeDJf4/AX/jg7nV7pPzlrYJBgHViAwWn8mytSoodi04EWnDesp2B7zitOy6XcWlVAT2Qrs3eiNM5OV2TaUn2kDSb3wga0dRUBZF1h2YgRlDGkwys=
+	t=1750717294; cv=none; b=lTk8O7YFENvXUkzR9B0zGOM8R28uCcGEY5R/a+ziKOG8WOLESmeBvNVMMAKoLPCFPBgsvIrOLUp7PmEAZTCT730ey8y6+xxJBXVUetmcXEj2Lco+drFdJsX92lbkE9+FOeAmnuzNQU43qWbqV9v4wWGfQ3yscujTbm2yt+DPXmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717348; c=relaxed/simple;
-	bh=BGM8aURFkMHCZt7djlhf91flxW+uhYhn058PTcuKXiY=;
+	s=arc-20240116; t=1750717294; c=relaxed/simple;
+	bh=vlTGuWSjRab+6LWgl27+YSqj1YZ0aBZNeejTxQtaQ70=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FX1C4SOgvXfdMaapK9U7uyK5gE/iTrgjjd1cgOsC3Wz6RWbBcyvzaig1WHV5Rth9sjxqjqvi9LUZMV6FLRneXex014HqpjMAa9OSZY57E5+5LKTJK/JQ/HdS+kIY9+K35pgB0gXOuDEnClak4viaOOifNsfSQ0NriSq8eyUP994=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HyLIRbMe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5283C4CEEA;
-	Mon, 23 Jun 2025 22:22:27 +0000 (UTC)
+	 MIME-Version; b=SlFlsNfOI5TXrcFEyT+uCEjY/ZXhp4zCw8F647gkeDI/O9PCsB1qZ3GMVXiXmKozqYDQ4G5I3T1IkOkmHOEwCLFFLIrpbPtvUitA7Ad19rXBV38ca3yzdRyDb2XIsmCmLxjuNYNTPI+/aJv4JfmECOhqSsn+n43Z7sGrYjVspgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDQtTCIi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24440C4CEEF;
+	Mon, 23 Jun 2025 22:21:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717348;
-	bh=BGM8aURFkMHCZt7djlhf91flxW+uhYhn058PTcuKXiY=;
+	s=korg; t=1750717294;
+	bh=vlTGuWSjRab+6LWgl27+YSqj1YZ0aBZNeejTxQtaQ70=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HyLIRbMe7ief68dityYVQsGuJw6p+EahXufq7AJ4uwjW1Yi7Jfnw+IgeVOIOAB5EL
-	 owBBDRSjTYNT8ruPN+bR/iH+Xz5cAJIeCLdKzCWHL0sko+qeGGqepmw6lz1+pR9VZ1
-	 ZTXePEGjk//EGAAxSQmKYnYlPZWo2/o1aVqaFjvA=
+	b=gDQtTCIiZy49f/iYRSRrl4hw+RsuPrVbk3BwSJgLY4lqz/IgLYyW6XsOYk9u3d0QV
+	 7UoXKCNWjJ/2DYiuHLqDnxzqkpYQbYsGqk8XwfwnYm43vC8oKmXZ/H42WF5cnrnr2x
+	 +rYFKrhhw8a06IauW7pIo/IRfvk5m28ooQujWX8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Kaloz <kaloz@openwrt.org>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Gabor Juhos <j4g8y7@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 409/508] pinctrl: armada-37xx: propagate error from armada_37xx_gpio_get()
+	Kai Huang <kai.huang@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>
+Subject: [PATCH 6.12 317/414] x86/virt/tdx: Avoid indirect calls to TDX assembly functions
 Date: Mon, 23 Jun 2025 15:07:34 +0200
-Message-ID: <20250623130655.289261929@linuxfoundation.org>
+Message-ID: <20250623130649.923695204@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,50 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabor Juhos <j4g8y7@gmail.com>
+From: Kai Huang <kai.huang@intel.com>
 
-[ Upstream commit 57273ff8bb16f3842c2597b5bbcd49e7fa12edf7 ]
+commit 0b3bc018e86afdc0cbfef61328c63d5c08f8b370 upstream.
 
-The regmap_read() function can fail, so propagate its error up to
-the stack instead of silently ignoring that.
+Two 'static inline' TDX helper functions (sc_retry() and
+sc_retry_prerr()) take function pointer arguments which refer to
+assembly functions.  Normally, the compiler inlines the TDX helper,
+realizes that the function pointer targets are completely static --
+thus can be resolved at compile time -- and generates direct call
+instructions.
 
-Signed-off-by: Imre Kaloz <kaloz@openwrt.org>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
-Link: https://lore.kernel.org/20250514-pinctrl-a37xx-fixes-v2-4-07e9ac1ab737@gmail.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+But, other times (like when CONFIG_CC_OPTIMIZE_FOR_SIZE=y), the
+compiler declines to inline the helpers and will instead generate
+indirect call instructions.
+
+Indirect calls to assembly functions require special annotation (for
+various Control Flow Integrity mechanisms).  But TDX assembly
+functions lack the special annotations and can only be called
+directly.
+
+Annotate both the helpers as '__always_inline' to prod the compiler
+into maintaining the direct calls. There is no guarantee here, but
+Peter has volunteered to report the compiler bug if this assumption
+ever breaks[1].
+
+Fixes: 1e66a7e27539 ("x86/virt/tdx: Handle SEAMCALL no entropy error in common code")
+Fixes: df01f5ae07dd ("x86/virt/tdx: Add SEAMCALL error printing for module initialization")
+Signed-off-by: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/20250605145914.GW39944@noisy.programming.kicks-ass.net/ [1]
+Link: https://lore.kernel.org/all/20250606130737.30713-1-kai.huang%40intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/mvebu/pinctrl-armada-37xx.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/tdx.h  |    2 +-
+ arch/x86/virt/vmx/tdx/tdx.c |    5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-index 3ada8dcaa806b..f68caea15b03d 100644
---- a/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-+++ b/drivers/pinctrl/mvebu/pinctrl-armada-37xx.c
-@@ -445,11 +445,14 @@ static int armada_37xx_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	struct armada_37xx_pinctrl *info = gpiochip_get_data(chip);
- 	unsigned int reg = INPUT_VAL;
- 	unsigned int val, mask;
-+	int ret;
+--- a/arch/x86/include/asm/tdx.h
++++ b/arch/x86/include/asm/tdx.h
+@@ -97,7 +97,7 @@ void tdx_init(void);
  
- 	armada_37xx_update_reg(&reg, &offset);
- 	mask = BIT(offset);
+ typedef u64 (*sc_func_t)(u64 fn, struct tdx_module_args *args);
  
--	regmap_read(info->regmap, reg, &val);
-+	ret = regmap_read(info->regmap, reg, &val);
-+	if (ret)
-+		return ret;
- 
- 	return (val & mask) != 0;
+-static inline u64 sc_retry(sc_func_t func, u64 fn,
++static __always_inline u64 sc_retry(sc_func_t func, u64 fn,
+ 			   struct tdx_module_args *args)
+ {
+ 	int retry = RDRAND_RETRY_LOOPS;
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -69,8 +69,9 @@ static inline void seamcall_err_ret(u64
+ 			args->r9, args->r10, args->r11);
  }
--- 
-2.39.5
-
+ 
+-static inline int sc_retry_prerr(sc_func_t func, sc_err_func_t err_func,
+-				 u64 fn, struct tdx_module_args *args)
++static __always_inline int sc_retry_prerr(sc_func_t func,
++					  sc_err_func_t err_func,
++					  u64 fn, struct tdx_module_args *args)
+ {
+ 	u64 sret = sc_retry(func, fn, args);
+ 
 
 
 
