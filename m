@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-155991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 644D2AE44E0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28B35AE4499
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1105D4410E3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D0BBF188D883
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6D3B2561B9;
-	Mon, 23 Jun 2025 13:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F31E250BEC;
+	Mon, 23 Jun 2025 13:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCnIi5Ml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tsEHq7kp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 946AF24DCFD;
-	Mon, 23 Jun 2025 13:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5755E24A067;
+	Mon, 23 Jun 2025 13:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685867; cv=none; b=ksQSFlS8uEonXXTjMEVKDhbt9Hxmpk+/6QVsJKHiKM3RH97GJlsytJBcZ0cflm6RnM2MXYKUQPkp/WK9l6aEbDQRJf1fJppFkV9bFKrAB9BxjZCt+T5QBabGTGC+Fjk9blpQ79BcbHKZ1d8K8660jzeQO2RuD4GICZE+JQWviGc=
+	t=1750685885; cv=none; b=iMRGzqx4cWrgAnZ9SVV9Wy72kY0A7ch30oxMSYd+lpXfxFeciX7m7RbiRdp9C2wEozH55VM9tTyaqMsJZoOfi1B6W4A/Y/F2dcP0UqhWTbrNjaWNdh1WNlcXgBXnOPaElZ+64BSW02tlC+60jYaPokqdXDsMMD5c/rl9GyM3wRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685867; c=relaxed/simple;
-	bh=CCg3U/dA14kinUEkcKxQ6svZq3aFFckl718DtQ1RG0w=;
+	s=arc-20240116; t=1750685885; c=relaxed/simple;
+	bh=ExJDsfMPeYQdhiW2Ct4/Tw1BbyYyd7LDjZZ1565WiIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fNb6CYPIzmdzC8o4S91iU4AatJQ9EaB+PyAkGB6X3lH3l7OnnKsl+/EMAiEdwdpio+uCpb+T6incbheuvn7KPWKvDrWVRxxilIo8r/aLy6235DNYaOtzUtozCe3JfjjbCbNuZ50FHruE23b7MpZ65h6u2ik4zlhMdmAOSXTFzA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCnIi5Ml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2936FC4CEEA;
-	Mon, 23 Jun 2025 13:37:47 +0000 (UTC)
+	 MIME-Version; b=pShFRt1z8gOfU5t0WovBVBbT+DP+fiqoEY0nzUnMOW2F+OQKIkYzhmHQY59xVcU4LvCKBZO5O5op3QT9Xx1HW0vxmN9orw4HqnGckT1TYiLMo/zGZL0+vn/G8gDWdmJkqce8pY3pTwB1afltuEWUZdoP3G8T2sMt7zZX39lzmmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tsEHq7kp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE37BC4CEF0;
+	Mon, 23 Jun 2025 13:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685867;
-	bh=CCg3U/dA14kinUEkcKxQ6svZq3aFFckl718DtQ1RG0w=;
+	s=korg; t=1750685885;
+	bh=ExJDsfMPeYQdhiW2Ct4/Tw1BbyYyd7LDjZZ1565WiIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCnIi5Ml4PAK9sCgFNjMfrnZVf3WElH9AMH1YXSjR2qkFILjlwePJEh6a9Yxa+fUr
-	 kd6yArE86uOmZuBPVWSXIU0zEiBOqFiMqbBBsCY1De5UBOoAfLWCwniTME9+H9vWm8
-	 5HUGFyQV551LpwrUEqn5OQnx8b9K7ODtcLS5f/JY=
+	b=tsEHq7kpXgJj6+p1G6+aRTw9efbZfiPh3FwyARMPPsHNSM5DZX7Rv2pY35vUzmK3c
+	 qSUE7YBPZuYXmQkiIylKbjxSGKxzvcjNty25X3cAFVYJ3ElmNRhbkFZIVxBplv4QIY
+	 DEy5JYF+/6wpHw4LU2VatYwZ5qCd4Gr0q2EmlprM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Sakari Ailus <sakari.ailus@linux.intel.com>,
 	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.6 030/290] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
-Date: Mon, 23 Jun 2025 15:04:51 +0200
-Message-ID: <20250623130627.898425237@linuxfoundation.org>
+Subject: [PATCH 6.6 031/290] media: ccs-pll: Check for too high VT PLL multiplier in dual PLL case
+Date: Mon, 23 Jun 2025 15:04:52 +0200
+Message-ID: <20250623130627.933055409@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
 References: <20250623130626.910356556@linuxfoundation.org>
@@ -68,34 +68,34 @@ Content-Transfer-Encoding: 8bit
 
 From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
+commit 6868b955acd6e5d7405a2b730c2ffb692ad50d2c upstream.
 
-The PLL calculator does a search of the PLL configuration space for all
-valid OP pre-PLL clock dividers. The maximum did not take into account the
-CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
-dividers (other than 1) are valid. Do that now.
+The check for VT PLL upper limit in dual PLL case was missing. Add it now.
 
-Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
+Fixes: 6c7469e46b60 ("media: ccs-pll: Add trivial dual PLL support")
 Cc: stable@vger.kernel.org
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ccs-pll.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
 --- a/drivers/media/i2c/ccs-pll.c
 +++ b/drivers/media/i2c/ccs-pll.c
-@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
- 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
- 	max_op_pre_pll_clk_div =
- 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
--		      clk_div_even(pll->ext_clk_freq_hz /
-+		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
- 				   op_lim_fr->min_pll_ip_clk_freq_hz));
- 	min_op_pre_pll_clk_div =
- 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
+@@ -312,6 +312,11 @@ __ccs_pll_calculate_vt_tree(struct devic
+ 	dev_dbg(dev, "more_mul2: %u\n", more_mul);
+ 
+ 	pll_fr->pll_multiplier = mul * more_mul;
++	if (pll_fr->pll_multiplier > lim_fr->max_pll_multiplier) {
++		dev_dbg(dev, "pll multiplier %u too high\n",
++			pll_fr->pll_multiplier);
++		return -EINVAL;
++	}
+ 
+ 	if (pll_fr->pll_multiplier * pll_fr->pll_ip_clk_freq_hz >
+ 	    lim_fr->max_pll_op_clk_freq_hz)
 
 
 
