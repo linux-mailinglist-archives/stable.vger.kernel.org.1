@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-155753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E1AFAE4313
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 044E2AE431D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 877DD7AAC81
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:26:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C10307AB4ED
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:27:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D996F2528F7;
-	Mon, 23 Jun 2025 13:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D83B25291B;
+	Mon, 23 Jun 2025 13:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yskefUUF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZmwqWtDg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E2C13A265;
-	Mon, 23 Jun 2025 13:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B5E223BF9F;
+	Mon, 23 Jun 2025 13:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685247; cv=none; b=l8HdYE9Qwj9Bo6pfZH78/jjd/y2WHO9uWjXwC/joGf8D6vO94akFgGiavX3H/KIVCBJQV7HfMJiUDqB8/i6TRRKvbE9ESp2BqZECvYgHLUulJ6tuPYZCcnvEA02dQoUoGetBFr7BhOF+Rs8u+Q+1KwZkS9o+6+/QAiC7HT/MEp4=
+	t=1750685260; cv=none; b=stDQS9yDR/LgaQDA1cqGnWPPfUgWesNezQf+Y6QyNhSPWIWFfJsZ8gvWULSHQJimFfHhS0rsB0GKKVEqfrmgOZxAxsdwx9iBfWxfpVCaox7zCh/S9KVOIQdNJgscWiej1QQC2fpSxKGAy7QojUS5vnxaulVPguxemphWTmioBOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685247; c=relaxed/simple;
-	bh=SmUiulBthQXZXE5g7JILYv8a/Jq6ecN6am0+M/2gZP0=;
+	s=arc-20240116; t=1750685260; c=relaxed/simple;
+	bh=iv/fKRaWWueOKDn1HKNmpAnzM+FNh0vy/ZRyEeTWJiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sfV+31Ihze94zrNMRrReNNtwhHfKb4uVe+77DGs0K23xw1ZtVvZn5fBZ0lVRz9G0GC6V1hQDPYhReA/skx1WerXWZcFNdWP931nV2xtxF764yiFVrpTVp4ynxziX+514UcRm6ZPukKDnNSR7wtweHEMl3jb4JI4uQrTZJv7djP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yskefUUF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C24C0C4CEF0;
-	Mon, 23 Jun 2025 13:27:26 +0000 (UTC)
+	 MIME-Version; b=k8XA8fAcXn12DSxZ1JBA4/m9bg9TlHFq29WdR7F3ZxPd0W2YpOIHw4YwbKrz5YWRlGb1NdLwjXmiHH3UKZR+43F+DqgThp44Ccel7IutPfM0EcfiKwpTYgUkzh8twutqv/1bAo7wOUcme8DuMI7+K4+pVT+3k/yKeQ/5469RQts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZmwqWtDg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 969ABC4CEEA;
+	Mon, 23 Jun 2025 13:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685247;
-	bh=SmUiulBthQXZXE5g7JILYv8a/Jq6ecN6am0+M/2gZP0=;
+	s=korg; t=1750685259;
+	bh=iv/fKRaWWueOKDn1HKNmpAnzM+FNh0vy/ZRyEeTWJiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yskefUUFk72V51dBwokg6fG6qlqCOCE7+CdC/iTQsKYtXXK0TlCV35IeN4CJy+4fv
-	 diaoxuNrIYu9dZXgj0hvZtN446rupLRqLLv/g91L2aldosKerKdiTOnDaGo/ufgvsI
-	 ofOnaQyGsMrvwaKcLCLTlzAhUhRkvBVnF6vXeBEY=
+	b=ZmwqWtDguEdgF1BeRgL6tthQCC27hhHL8SQ67cmbtuQiyWe4tqZI532Cvo1lb9uY8
+	 IHdLC/TytsXT6WFc25MPnCv0lFRI5ndh1nuUnGF9CK2mhyBX9gjDZFwOReqjmUxXC4
+	 8uprZ2ZQptD64MfzNBTp8hlnhqlqrqe+D4BX1kQM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Robert Malz <robert.malz@canonical.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/222] net_sched: sch_sfq: fix a potential crash on gso_skb handling
-Date: Mon, 23 Jun 2025 15:06:53 +0200
-Message-ID: <20250623130614.445417846@linuxfoundation.org>
+Subject: [PATCH 5.4 079/222] i40e: return false from i40e_reset_vf if reset is in progress
+Date: Mon, 23 Jun 2025 15:06:54 +0200
+Message-ID: <20250623130614.475282979@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -62,72 +61,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Robert Malz <robert.malz@canonical.com>
 
-[ Upstream commit 82ffbe7776d0ac084031f114167712269bf3d832 ]
+[ Upstream commit a2c90d63b71223d69a813333c1abf4fdacddbbe5 ]
 
-SFQ has an assumption of always being able to queue at least one packet.
+The function i40e_vc_reset_vf attempts, up to 20 times, to handle a
+VF reset request, using the return value of i40e_reset_vf as an indicator
+of whether the reset was successfully triggered. Currently, i40e_reset_vf
+always returns true, which causes new reset requests to be ignored if a
+different VF reset is already in progress.
 
-However, after the blamed commit, sch->q.len can be inflated by packets
-in sch->gso_skb, and an enqueue() on an empty SFQ qdisc can be followed
-by an immediate drop.
+This patch updates the return value of i40e_reset_vf to reflect when
+another VF reset is in progress, allowing the caller to properly use
+the retry mechanism.
 
-Fix sfq_drop() to properly clear q->tail in this situation.
-
-Tested:
-
-ip netns add lb
-ip link add dev to-lb type veth peer name in-lb netns lb
-ethtool -K to-lb tso off                 # force qdisc to requeue gso_skb
-ip netns exec lb ethtool -K in-lb gro on # enable NAPI
-ip link set dev to-lb up
-ip -netns lb link set dev in-lb up
-ip addr add dev to-lb 192.168.20.1/24
-ip -netns lb addr add dev in-lb 192.168.20.2/24
-tc qdisc replace dev to-lb root sfq limit 100
-
-ip netns exec lb netserver
-
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-netperf -H 192.168.20.2 -l 100 &
-
-Fixes: a53851e2c321 ("net: sched: explicit locking in gso_cpu fallback")
-Reported-by: Marcus Wichelmann <marcus.wichelmann@hetzner-cloud.de>
-Closes: https://lore.kernel.org/netdev/9da42688-bfaa-4364-8797-e9271f3bdaef@hetzner-cloud.de/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://patch.msgid.link/20250606165127.3629486-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 52424f974bc5 ("i40e: Fix VF hang when reset is triggered on another VF")
+Signed-off-by: Robert Malz <robert.malz@canonical.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/sched/sch_sfq.c b/net/sched/sch_sfq.c
-index d7f910610de97..acda653710288 100644
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -317,7 +317,10 @@ static unsigned int sfq_drop(struct Qdisc *sch, struct sk_buff **to_free)
- 		/* It is difficult to believe, but ALL THE SLOTS HAVE LENGTH 1. */
- 		x = q->tail->next;
- 		slot = &q->slots[x];
--		q->tail->next = slot->next;
-+		if (slot->next == x)
-+			q->tail = NULL; /* no more active slots */
-+		else
-+			q->tail->next = slot->next;
- 		q->ht[slot->hash] = SFQ_EMPTY_SLOT;
- 		goto drop;
- 	}
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+index 81f428d0b7a4c..783581739417f 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
+@@ -1456,8 +1456,8 @@ static void i40e_cleanup_reset_vf(struct i40e_vf *vf)
+  * @vf: pointer to the VF structure
+  * @flr: VFLR was issued or not
+  *
+- * Returns true if the VF is in reset, resets successfully, or resets
+- * are disabled and false otherwise.
++ * Return: True if reset was performed successfully or if resets are disabled.
++ * False if reset is already in progress.
+  **/
+ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+ {
+@@ -1476,7 +1476,7 @@ bool i40e_reset_vf(struct i40e_vf *vf, bool flr)
+ 
+ 	/* If VF is being reset already we don't need to continue. */
+ 	if (test_and_set_bit(I40E_VF_STATE_RESETTING, &vf->vf_states))
+-		return true;
++		return false;
+ 
+ 	i40e_trigger_vf_reset(vf, flr);
+ 
 -- 
 2.39.5
 
