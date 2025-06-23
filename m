@@ -1,211 +1,117 @@
-Return-Path: <stable+bounces-155270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3A666AE32D6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 00:37:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB94AE3339
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 03:11:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D57221890CBE
-	for <lists+stable@lfdr.de>; Sun, 22 Jun 2025 22:37:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3578116D3BA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 01:11:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D52B1219E8C;
-	Sun, 22 Jun 2025 22:37:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 609138BEE;
+	Mon, 23 Jun 2025 01:11:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="wi349IA0"
+	dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b="HcUQYdC1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-m19731118.qiye.163.com (mail-m19731118.qiye.163.com [220.197.31.118])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8814618A6A7;
-	Sun, 22 Jun 2025 22:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AAFB4A1A;
+	Mon, 23 Jun 2025 01:10:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.118
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750631844; cv=none; b=hBFks4+HNEM6cNJ4pu88LAJduyMKZWYkpUqtFvXHajDJLyP9NsQlPkioZPR6I5BmgwrFby/ZcLMXMIK96ivgaDQUGzX9IF7fbYf/j/yBY6Qj0kAu6pc9LM8VLdTzILjPtyHMVUO+NoMZB5Ri6x5qTiNYMOolBP25tHO9RrFW/wA=
+	t=1750641061; cv=none; b=JCaHf+cZXYGS+YDBICkcOpYDHNDNHXYoJX33NISxUMGRpcy3jWgwU1WyBon5BNtWHZ48BZkKs3mwMcG/pR++zuYn23a05fqUTcgfUrllg70dj+kYzQVDLTNt5U9oQMFwVt71hB9ei451Bq7+wKC6zcrvR+pboFy2J/tbrHmHk3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750631844; c=relaxed/simple;
-	bh=SUQWD67K+42SU8c8u3gHkfIQcQFJm+LViFJSIVNhtH8=;
-	h=Date:To:From:Subject:Message-Id; b=iSK2IdGB+ucpkL5QOw+7LaBNfrOrhRkA011Vob5hqaGqTec2kTFmaFG2kak1S4z8ObqYqNmqispk3BvyRB6VUhNRbRBex+6dW462WwoknBLc37OCLv2HfuWsLZEBQ23cIWR1wr555QZhdd3xq0twfKga/JcRqKXTgJnet0XBw8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=wi349IA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 034EAC4CEE3;
-	Sun, 22 Jun 2025 22:37:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1750631844;
-	bh=SUQWD67K+42SU8c8u3gHkfIQcQFJm+LViFJSIVNhtH8=;
-	h=Date:To:From:Subject:From;
-	b=wi349IA0kS85+9SlxZG4STKi9N6bXAUStvJKSTrboNQ1f5c8bQqiqXKdQgjuktc1r
-	 DNaU0r8NEcjDimubWayE5EFycwgnzDZkGcbjlR3XZPQR5VnekwJs+aL0eWNjwdzHli
-	 /MeivUYZhr4y/Ygy4BsGKhXfJQbJ82OHROGcf2Us=
-Date: Sun, 22 Jun 2025 15:37:23 -0700
-To: mm-commits@vger.kernel.org,will@kernel.org,svens@linux.ibm.com,stable@vger.kernel.org,ryan.roberts@arm.com,paul.walmsley@sifive.com,palmer@dabbelt.com,hca@linux.ibm.com,gor@linux.ibm.com,gerald.schaefer@linux.ibm.com,catalin.marinas@arm.com,borntraeger@linux.ibm.com,agordeev@linux.ibm.com,anshuman.khandual@arm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd.patch added to mm-new branch
-Message-Id: <20250622223724.034EAC4CEE3@smtp.kernel.org>
+	s=arc-20240116; t=1750641061; c=relaxed/simple;
+	bh=rwqqDu0KtBplQp8EOinHmccqzODA49z/gqlStx52Hzw=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=WR9lNbMpRkfqjVR4yEDu2faqt4uVMhtgVv6qXT7WXAAt9kU/kJRK0lDs6Xqn8PBYOooDr0REjADJUE5PNWc61+VJGHcQLB4KjvsNeP0FdlDCogjoqYzwUj/Z1I6oAWgP5UqYgOUxlGOuhYvWTExQMJqa09Uxi5cN37weIeEdT/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com; spf=pass smtp.mailfrom=rock-chips.com; dkim=pass (1024-bit key) header.d=rock-chips.com header.i=@rock-chips.com header.b=HcUQYdC1; arc=none smtp.client-ip=220.197.31.118
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rock-chips.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rock-chips.com
+Received: from xxm-vm.localdomain (unknown [58.22.7.114])
+	by smtp.qiye.163.com (Hmail) with ESMTP id 1988856fd;
+	Mon, 23 Jun 2025 09:05:38 +0800 (GMT+08:00)
+From: Simon Xue <xxm@rock-chips.com>
+To: joro@8bytes.org,
+	will@kernel.org,
+	heiko@sntech.de
+Cc: robin.murphy@arm.com,
+	iommu@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-rockchip@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Simon Xue <xxm@rock-chips.com>
+Subject: [PATCH v2] iommu/rockchip: prevent iommus dead loop when two masters share one IOMMU
+Date: Mon, 23 Jun 2025 09:05:32 +0800
+Message-Id: <20250623010532.584409-1-xxm@rock-chips.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20250620073945.572523-1-xxm@rock-chips.com>
+References: <20250620073945.572523-1-xxm@rock-chips.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+	tZV1koWUFDSUNOT01LS0k3V1ktWUFJV1kPCRoVCBIfWUFZGR9KHlZLTkNPSE4ZTExPHktWFRQJFh
+	oXVRMBExYaEhckFA4PWVdZGBILWUFZTkNVSUlVTFVKSk9ZV1kWGg8SFR0UWUFZT0tIVUpLSU9PT0
+	hVSktLVUpCS0tZBg++
+X-HM-Tid: 0a979a51c11e03ackunmb9b4d7f71b74391
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6Nj46Agw5NjEwSy45CB0hHgki
+	Ey0aCRdVSlVKTE5LTU9LTEhCQ0lJVTMWGhIXVQMDFjsJFBgQVhgTEgsIVRgUFkVZV1kSC1lBWU5D
+	VUlJVUxVSkpPWVdZCAFZQUlKTkg3Bg++
+DKIM-Signature:a=rsa-sha256;
+	b=HcUQYdC1n/fdfPwVzWQh5u9nT6IAJItWvktXDa+TMc5smGT+z3y3P+xgxIedR+wOHJy4zDL+gnyEikwHSvyT3oerFWtW+N7XEHoZG/IGDlWMN1id+/67ObSAEIbLcgToHcdUhKq8fLnWSgbgfKEtLNvq8Cry/gPy1kS8SZSimg0=; s=default; c=relaxed/relaxed; d=rock-chips.com; v=1;
+	bh=j/L7z1+3IqwV7z6y8V8VJRap9OXNheZ0n7phc+aB5uM=;
+	h=date:mime-version:subject:message-id:from;
 
+When two masters share an IOMMU, calling ops->of_xlate during
+the second master's driver init may overwrite iommu->domain set
+by the first. This causes the check if (iommu->domain == domain)
+in rk_iommu_attach_device() to fail, resulting in the same
+iommu->node being added twice to &rk_domain->iommus, which can
+lead to an infinite loop in subsequent &rk_domain->iommus operations.
 
-The patch titled
-     Subject: mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
-has been added to the -mm mm-new branch.  Its filename is
-     mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd.patch
+Fixes: 25c2325575cc ("iommu/rockchip: Add missing set_platform_dma_ops callback")
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd.patch
+Signed-off-by: Simon Xue <xxm@rock-chips.com>
+Reviewed-by: Robin Murphy <robin.murphy@arm.com>
 
-This patch will later appear in the mm-new branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Note, mm-new is a provisional staging ground for work-in-progress
-patches, and acceptance into mm-new is a notification for others take
-notice and to finish up reviews.  Please do not hesitate to respond to
-review feedback and post updated versions to replace or incrementally
-fixup patches in mm-new.
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: mm/ptdump: take the memory hotplug lock inside ptdump_walk_pgd()
-Date: Fri, 20 Jun 2025 10:54:27 +0530
-
-Memory hot remove unmaps and tears down various kernel page table regions
-as required.  The ptdump code can race with concurrent modifications of
-the kernel page tables.  When leaf entries are modified concurrently, the
-dump code may log stale or inconsistent information for a VA range, but
-this is otherwise not harmful.
-
-But when intermediate levels of kernel page table are freed, the dump code
-will continue to use memory that has been freed and potentially
-reallocated for another purpose.  In such cases, the ptdump code may
-dereference bogus addresses, leading to a number of potential problems.
-
-To avoid the above mentioned race condition, platforms such as arm64,
-riscv and s390 take memory hotplug lock, while dumping kernel page table
-via the sysfs interface /sys/kernel/debug/kernel_page_tables.
-
-Similar race condition exists while checking for pages that might have
-been marked W+X via /sys/kernel/debug/kernel_page_tables/check_wx_pages
-which in turn calls ptdump_check_wx().  Instead of solving this race
-condition again, let's just move the memory hotplug lock inside generic
-ptdump_check_wx() which will benefit both the scenarios.
-
-Drop get_online_mems() and put_online_mems() combination from all existing
-platform ptdump code paths.
-
-Link: https://lkml.kernel.org/r/20250620052427.2092093-1-anshuman.khandual@arm.com
-Fixes: bbd6ec605c0f ("arm64/mm: Enable memory hot remove")
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Ryan Roberts <ryan.roberts@arm.com>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Sven Schnelle <svens@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+v2:
+   No functional changes.
 ---
+ drivers/iommu/rockchip-iommu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
- arch/arm64/mm/ptdump_debugfs.c |    3 ---
- arch/riscv/mm/ptdump.c         |    3 ---
- arch/s390/mm/dump_pagetables.c |    2 --
- mm/ptdump.c                    |    2 ++
- 4 files changed, 2 insertions(+), 8 deletions(-)
-
---- a/arch/arm64/mm/ptdump_debugfs.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/arch/arm64/mm/ptdump_debugfs.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
+diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
+index 22f74ba33a0e..e6bb3c784017 100644
+--- a/drivers/iommu/rockchip-iommu.c
++++ b/drivers/iommu/rockchip-iommu.c
+@@ -1157,7 +1157,6 @@ static int rk_iommu_of_xlate(struct device *dev,
+ 		return -ENOMEM;
  
- #include <asm/ptdump.h>
-@@ -9,9 +8,7 @@ static int ptdump_show(struct seq_file *
- {
- 	struct ptdump_info *info = m->private;
+ 	data->iommu = platform_get_drvdata(iommu_dev);
+-	data->iommu->domain = &rk_identity_domain;
+ 	dev_iommu_priv_set(dev, data);
  
--	get_online_mems();
- 	ptdump_walk(m, info);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/arch/riscv/mm/ptdump.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/arch/riscv/mm/ptdump.c
-@@ -6,7 +6,6 @@
- #include <linux/efi.h>
- #include <linux/init.h>
- #include <linux/debugfs.h>
--#include <linux/memory_hotplug.h>
- #include <linux/seq_file.h>
- #include <linux/ptdump.h>
+ 	platform_device_put(iommu_dev);
+@@ -1195,6 +1194,8 @@ static int rk_iommu_probe(struct platform_device *pdev)
+ 	if (!iommu)
+ 		return -ENOMEM;
  
-@@ -413,9 +412,7 @@ bool ptdump_check_wx(void)
- 
- static int ptdump_show(struct seq_file *m, void *v)
- {
--	get_online_mems();
- 	ptdump_walk(m, m->private);
--	put_online_mems();
- 
- 	return 0;
- }
---- a/arch/s390/mm/dump_pagetables.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/arch/s390/mm/dump_pagetables.c
-@@ -247,11 +247,9 @@ static int ptdump_show(struct seq_file *
- 		.marker = markers,
- 	};
- 
--	get_online_mems();
- 	mutex_lock(&cpa_mutex);
- 	ptdump_walk_pgd(&st.ptdump, &init_mm, NULL);
- 	mutex_unlock(&cpa_mutex);
--	put_online_mems();
- 	return 0;
- }
- DEFINE_SHOW_ATTRIBUTE(ptdump);
---- a/mm/ptdump.c~mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd
-+++ a/mm/ptdump.c
-@@ -176,6 +176,7 @@ void ptdump_walk_pgd(struct ptdump_state
- {
- 	const struct ptdump_range *range = st->range;
- 
-+	get_online_mems();
- 	mmap_write_lock(mm);
- 	while (range->start != range->end) {
- 		walk_page_range_debug(mm, range->start, range->end,
-@@ -183,6 +184,7 @@ void ptdump_walk_pgd(struct ptdump_state
- 		range++;
- 	}
- 	mmap_write_unlock(mm);
-+	put_online_mems();
- 
- 	/* Flush out the last page */
- 	st->note_page_flush(st);
-_
-
-Patches currently in -mm which might be from anshuman.khandual@arm.com are
-
-mm-ptdump-take-the-memory-hotplug-lock-inside-ptdump_walk_pgd.patch
++	iommu->domain = &rk_identity_domain;
++
+ 	platform_set_drvdata(pdev, iommu);
+ 	iommu->dev = dev;
+ 	iommu->num_mmu = 0;
+-- 
+2.34.1
 
 
