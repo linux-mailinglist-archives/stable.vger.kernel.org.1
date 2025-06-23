@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-156683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157106-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F27D7AE50B3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A33DAE5276
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D6DA3A6232
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:26:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6367443998
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF4C8222576;
-	Mon, 23 Jun 2025 21:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8948E1DDC04;
+	Mon, 23 Jun 2025 21:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PAjr5YKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbKZ5fpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96F8D1E521E;
-	Mon, 23 Jun 2025 21:26:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4711C4315A;
+	Mon, 23 Jun 2025 21:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714013; cv=none; b=GPG5ReB9KRs+siWpVSLA1FQd+/jFlzHtzt9IYgJqzuvOFnSqRGVndNMAUoat1Xh/tyhbt5NhPHvjswNJYp+mncMKUyB/Pt+YorIGoB9UwkuWf76TECTZq0xKgnef0jE90MLgBacVzJKswboNlxlxhFZAH575Du9xOg85joFX+Mo=
+	t=1750715048; cv=none; b=OwSCWMPTBesIDZ/RbmGxp7B20ICp97QSXKUnaga+BaaAIERIf/5s3tseCc/+uttqEXXqoNS902EyLuT4ASMM9RxLxt4wPHmmRLsk8Cbs3y2tTZRZfRUXk9zNh7ADbczkgqhxi/P+OrzGNUghc1Iz/7J06g7Qg20bI+DCg4BDjoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714013; c=relaxed/simple;
-	bh=xRHKnhPpmsiOP7FL1IP+XJSt8nf7MQIVR4Vlx25N6z4=;
+	s=arc-20240116; t=1750715048; c=relaxed/simple;
+	bh=Kt92OhGrxaNgsyvs5msRgXoSZlSMwVBharx4zkhf/38=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hv54yIgk4f7X3Bwy0Q8V6HLw4zeaekfuNYxDhH3fq1gBs8haROnHUadgxbCUJfWJgqjkCodiUxx5wzAZ+A4YctgJN+DKqIA7ja4Alxdw0ohbBeXNQlgK8xyEizdlCp2n7OO9sMB+SqPq8eFtyyPVxKX00E75/IfRh+ed+aZCjCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PAjr5YKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC82C4CEEA;
-	Mon, 23 Jun 2025 21:26:53 +0000 (UTC)
+	 MIME-Version; b=IkMfYud+9ASkkOK6n7XcBGxXyKGeN95P4OQXGSds9HYGoTXuqNkMRXnYBAZcK2HXvtuWEHikhyQ6y9U+KgQlJXUrN08A+hQibAONiUOgZsuO3d/rzH+XxLlx9OTjj5Z5CiFRDzcW52kISKJbiE7a4iA4da9aQYGhn2sxZhOmnOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbKZ5fpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D641CC4CEF1;
+	Mon, 23 Jun 2025 21:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714013;
-	bh=xRHKnhPpmsiOP7FL1IP+XJSt8nf7MQIVR4Vlx25N6z4=;
+	s=korg; t=1750715048;
+	bh=Kt92OhGrxaNgsyvs5msRgXoSZlSMwVBharx4zkhf/38=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PAjr5YKUSXnGsVwxB3JuWDWEfNj13Py4U8a7vjKKxPZUuRRy4thmvQeBmPzoGNqha
-	 s4zwJefkDRpX7tlfoUxVTqVHXJF7P9rEgTwpA9/d36Zr+FQLAQMjvW0/m/mYIRqsPF
-	 1QOn76eo3WznbOP2/Aunyv+GJfw365cApwj1GKWM=
+	b=BbKZ5fpSKnGULXfoRzRdgbF5jl41R6WkPgcx7v6oDW9pOjRzySY0ABT3O+JOvP5h5
+	 x09AXLQ7Ue7LYaWKTyfBGg6J086UY4WVMdozeDR55UreO0Z1HQwa/v1ktbkr1wIs6j
+	 xBNE6xqXa4aIuPEu+xAbjji6wevyp1U1a0sd+DYg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Cassel <cassel@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Wilfred Mallawa <wilfred.mallawa@wdc.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.6 108/290] PCI: cadence-ep: Correct PBA offset in .set_msix() callback
+	Ioana Ciornei <ioana.ciornei@nxp.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>
+Subject: [PATCH 5.15 225/411] bus: fsl-mc: do not add a device-link for the UAPI used DPMCP device
 Date: Mon, 23 Jun 2025 15:06:09 +0200
-Message-ID: <20250623130630.202103870@linuxfoundation.org>
+Message-ID: <20250623130639.326363185@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Ioana Ciornei <ioana.ciornei@nxp.com>
 
-commit c8bcb01352a86bc5592403904109c22b66bd916e upstream.
+commit dd7d8e012b23de158ca0188239c7a1f2a83b4484 upstream.
 
-While cdns_pcie_ep_set_msix() writes the Table Size field correctly (N-1),
-the calculation of the PBA offset is wrong because it calculates space for
-(N-1) entries instead of N.
+The fsl-mc bus associated to the root DPRC in a DPAA2 system exports a
+device file for userspace access to the MC firmware. In case the DPRC's
+local MC portal (DPMCP) is currently in use, a new DPMCP device is
+allocated through the fsl_mc_portal_allocate() function.
 
-This results in the following QEMU error when using PCI passthrough on a
-device which relies on the PCI endpoint subsystem:
+In this case, the call to fsl_mc_portal_allocate() will fail with -EINVAL
+when trying to add a device link between the root DPRC (consumer) and
+the newly allocated DPMCP device (supplier). This is because the DPMCP
+is a dependent of the DPRC device (the bus).
 
-  failed to add PCI capability 0x11[0x50]@0xb0: table & pba overlap, or they don't fit in BARs, or don't align
+Fix this by not adding a device link in case the DPMCP is allocated for
+the root DPRC's usage.
 
-Fix the calculation of PBA offset in the MSI-X capability.
-
-[bhelgaas: more specific subject and commit log]
-
-Fixes: 3ef5d16f50f8 ("PCI: cadence: Add MSI-X support to Endpoint driver")
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Wilfred Mallawa <wilfred.mallawa@wdc.com>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: afb77422819f ("bus: fsl-mc: automatically add a device_link on fsl_mc_[portal,object]_allocate")
+Signed-off-by: Ioana Ciornei <ioana.ciornei@nxp.com>
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20250514074313.283156-10-cassel@kernel.org
+Link: https://lore.kernel.org/r/20250408105814.2837951-3-ioana.ciornei@nxp.com
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/cadence/pcie-cadence-ep.c |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/bus/fsl-mc/mc-io.c |   19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/pci/controller/cadence/pcie-cadence-ep.c
-+++ b/drivers/pci/controller/cadence/pcie-cadence-ep.c
-@@ -294,13 +294,14 @@ static int cdns_pcie_ep_set_msix(struct
- 	struct cdns_pcie *pcie = &ep->pcie;
- 	u32 cap = CDNS_PCIE_EP_FUNC_MSIX_CAP_OFFSET;
- 	u32 val, reg;
-+	u16 actual_interrupts = interrupts + 1;
+--- a/drivers/bus/fsl-mc/mc-io.c
++++ b/drivers/bus/fsl-mc/mc-io.c
+@@ -214,12 +214,19 @@ int __must_check fsl_mc_portal_allocate(
+ 	if (error < 0)
+ 		goto error_cleanup_resource;
  
- 	fn = cdns_pcie_get_fn_from_vfn(pcie, fn, vfn);
+-	dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
+-						   &dpmcp_dev->dev,
+-						   DL_FLAG_AUTOREMOVE_CONSUMER);
+-	if (!dpmcp_dev->consumer_link) {
+-		error = -EINVAL;
+-		goto error_cleanup_mc_io;
++	/* If the DPRC device itself tries to allocate a portal (usually for
++	 * UAPI interaction), don't add a device link between them since the
++	 * DPMCP device is an actual child device of the DPRC and a reverse
++	 * dependency is not allowed.
++	 */
++	if (mc_dev != mc_bus_dev) {
++		dpmcp_dev->consumer_link = device_link_add(&mc_dev->dev,
++							   &dpmcp_dev->dev,
++							   DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!dpmcp_dev->consumer_link) {
++			error = -EINVAL;
++			goto error_cleanup_mc_io;
++		}
+ 	}
  
- 	reg = cap + PCI_MSIX_FLAGS;
- 	val = cdns_pcie_ep_fn_readw(pcie, fn, reg);
- 	val &= ~PCI_MSIX_FLAGS_QSIZE;
--	val |= interrupts;
-+	val |= interrupts; /* 0's based value */
- 	cdns_pcie_ep_fn_writew(pcie, fn, reg, val);
- 
- 	/* Set MSIX BAR and offset */
-@@ -310,7 +311,7 @@ static int cdns_pcie_ep_set_msix(struct
- 
- 	/* Set PBA BAR and offset.  BAR must match MSIX BAR */
- 	reg = cap + PCI_MSIX_PBA;
--	val = (offset + (interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
-+	val = (offset + (actual_interrupts * PCI_MSIX_ENTRY_SIZE)) | bir;
- 	cdns_pcie_ep_fn_writel(pcie, fn, reg, val);
- 
- 	return 0;
+ 	*new_mc_io = mc_io;
 
 
 
