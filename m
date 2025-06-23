@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-157013-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90571AE5218
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:40:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B09A3AE4EE1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2763D4A5159
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:40:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8448C1B60013
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A262222A9;
-	Mon, 23 Jun 2025 21:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BED9222069F;
+	Mon, 23 Jun 2025 21:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jc3xw9IH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CDkedgJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B420119D084;
-	Mon, 23 Jun 2025 21:40:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BE6270838;
+	Mon, 23 Jun 2025 21:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714821; cv=none; b=WYvWPzpwHmCeccsSyOjCo1zQjoybTqsYIP4Hl9Wk4Xr7iuVLnV/XdD+sTfiSbMlIlGV4LsxeZ7h7KH0JjU3PflVbZLxex9u7PXH4zf9tbmXUd95wAYc1skbhWEapD1R2K7nipQVevXHblmyWZHQnOdGXL7/c0RlnxHCZCwIC8/o=
+	t=1750713007; cv=none; b=VmUFMieYH2kTrqPOi6vid5QoE3ebrWFf7FYoG7pDPV+5WtNeTxYp5bTSTTCwanOrg3JLbCXauNrQ2M+7VuBjdEB1hRE/0cxkLj1Kt3DeXn20iYkanEbQdqAkgt6kk+IcHwtXOa6YVwx//PkhEl5P72tYFgt7NEi4tt7pmIAYvpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714821; c=relaxed/simple;
-	bh=fk4MNMz6+SwfTI+wFoI25W3CFnwtkha7LIA0JRQLORQ=;
+	s=arc-20240116; t=1750713007; c=relaxed/simple;
+	bh=NFyB5FXFlGCMpQE7RPyhwc+IVyK/wRCvzfac9Mmzp/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=chbTIcmLo2pVA4VYWK+A+0hBGFnYQnDZCpR2MKurG+7RD/UXIl8DiAhobJW2FETC7kcpwaGNvPKBfJj5Sikktp6pNo5NWOuFUUp4prsNFwZY3UYt1ICeXN8q7feDrQHDg8yMvXoo7APLBNwvNc3/+sUjKG7/sVQt8jfkiAgOirE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jc3xw9IH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492BBC4CEEA;
-	Mon, 23 Jun 2025 21:40:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=B4ItD4TvJEwtj7XWRytSk5/f3lAEhgVjfpSSPCRF0QryzTSMNzR83WtAuEKxfhzE5tjdJMqNl1i4ZOVvFuSitmWRxd/cNEW6qtyDlfgJXgxaAW+Vu4oEI862OYCaS5pzu3B5+Y/c1XIRQxcZP4qnm0wC0LisJocUhz4VjKS7P4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CDkedgJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18EF3C4CEEA;
+	Mon, 23 Jun 2025 21:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714821;
-	bh=fk4MNMz6+SwfTI+wFoI25W3CFnwtkha7LIA0JRQLORQ=;
+	s=korg; t=1750713007;
+	bh=NFyB5FXFlGCMpQE7RPyhwc+IVyK/wRCvzfac9Mmzp/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jc3xw9IHDVr6Cl3+v744CJ5JgwzIwHTzPyG5nGFJaZ8dXRFQBFPPHzhNeSItNN4GH
-	 gESmVLFNeblUV+luUokvS2LWwxvtoh+/gOoagCJDSg3zFB5JU0A+CmESqDlBRVpEZe
-	 HlMyQuMvA3gRdfz933bcsS0griz7DRGChfJHZV5A=
+	b=CDkedgJF/Mi8fImpssQYgh5vlNzNARfyVaDVeliJdWl/empf4NF4CXdUgOU5MfyrQ
+	 PQaeECP0iSKcUgyo8TN4iJCUFY9sKj6Cjp7SIp2AlVN7ExGyi2qxXSsCQJBKQr9cP9
+	 oGVghq55A4OZURRO+sfiaDElcMHEv9PW9mgmSGGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Judith Mendez <jm@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 218/508] arm64: dts: ti: k3-am65-main: Fix sdhci node properties
+Subject: [PATCH 6.15 305/592] media: rcar-vin: Fix stride setting for RAW8 formats
 Date: Mon, 23 Jun 2025 15:04:23 +0200
-Message-ID: <20250623130650.626231772@linuxfoundation.org>
+Message-ID: <20250623130707.656451312@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,86 +62,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Judith Mendez <jm@ti.com>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 8ffe9cb889f2b831a9d5bbb1f7ad42d30e31170f ]
+[ Upstream commit e7376745ad5c8548e31d9ea58adfb5a847e017a4 ]
 
-Update otap-del-sel properties as per datasheet [0].
+Earlier versions of the datasheet where unclear about the stride setting
+for RAW8 capture formats. Later datasheets clarifies that the stride
+only process in this mode for non-image data. For image data the full
+stride shall be used. Compare section "RAW: 8 Bits and Embedded 8-Bit
+Non-Image Data, User Defined 8-bit Data" vs "RAW: 8 Bits".
 
-Add missing clkbuf-sel and itap-del-sel values also as per
-datasheet [0].
+Remove the special case from pixel formats that carry image data and
+treat it as any other image format.
 
-Move clkbuf-sel and ti,trm-icp above the otap-del-sel properties
-so the sdhci nodes could be more uniform across platforms.
-
-[0] https://www.ti.com/lit/ds/symlink/am6548.pdf
-
-Fixes: eac99d38f861 ("arm64: dts: ti: k3-am654-main: Update otap-del-sel values")
-Fixes: d7600d070fb0 ("arm64: dts: ti: k3-am65-main: Add support for sdhci1")
-Signed-off-by: Judith Mendez <jm@ti.com>
-Link: https://lore.kernel.org/r/20240423151732.3541894-2-jm@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Stable-dep-of: f55c9f087cc2 ("arm64: dts: ti: k3-am65-main: Add missing taps to sdhci0")
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Link: https://lore.kernel.org/r/20250402183302.140055-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-am65-main.dtsi | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ .../media/platform/renesas/rcar-vin/rcar-dma.c   | 16 ----------------
+ 1 file changed, 16 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-index 9854cf0e7f7b4..c09457fef2db0 100644
---- a/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-am65-main.dtsi
-@@ -262,6 +262,8 @@ sdhci0: mmc@4f80000 {
- 		interrupts = <GIC_SPI 136 IRQ_TYPE_LEVEL_HIGH>;
- 		mmc-ddr-1_8v;
- 		mmc-hs200-1_8v;
-+		ti,clkbuf-sel = <0x7>;
-+		ti,trm-icp = <0x8>;
- 		ti,otap-del-sel-legacy = <0x0>;
- 		ti,otap-del-sel-mmc-hs = <0x0>;
- 		ti,otap-del-sel-sd-hs = <0x0>;
-@@ -272,8 +274,7 @@ sdhci0: mmc@4f80000 {
- 		ti,otap-del-sel-ddr50 = <0x5>;
- 		ti,otap-del-sel-ddr52 = <0x5>;
- 		ti,otap-del-sel-hs200 = <0x5>;
--		ti,otap-del-sel-hs400 = <0x0>;
--		ti,trm-icp = <0x8>;
-+		ti,itap-del-sel-ddr52 = <0x0>;
- 		dma-coherent;
- 	};
+diff --git a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
+index e303c13e1351f..3af67c1b303d6 100644
+--- a/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
++++ b/drivers/media/platform/renesas/rcar-vin/rcar-dma.c
+@@ -679,22 +679,6 @@ void rvin_crop_scale_comp(struct rvin_dev *vin)
  
-@@ -284,18 +285,22 @@ sdhci1: mmc@4fa0000 {
- 		clocks = <&k3_clks 48 0>, <&k3_clks 48 1>;
- 		clock-names = "clk_ahb", "clk_xin";
- 		interrupts = <GIC_SPI 137 IRQ_TYPE_LEVEL_HIGH>;
-+		ti,clkbuf-sel = <0x7>;
-+		ti,trm-icp = <0x8>;
- 		ti,otap-del-sel-legacy = <0x0>;
- 		ti,otap-del-sel-mmc-hs = <0x0>;
- 		ti,otap-del-sel-sd-hs = <0x0>;
--		ti,otap-del-sel-sdr12 = <0x0>;
--		ti,otap-del-sel-sdr25 = <0x0>;
-+		ti,otap-del-sel-sdr12 = <0xf>;
-+		ti,otap-del-sel-sdr25 = <0xf>;
- 		ti,otap-del-sel-sdr50 = <0x8>;
- 		ti,otap-del-sel-sdr104 = <0x7>;
- 		ti,otap-del-sel-ddr50 = <0x4>;
- 		ti,otap-del-sel-ddr52 = <0x4>;
- 		ti,otap-del-sel-hs200 = <0x7>;
--		ti,clkbuf-sel = <0x7>;
--		ti,trm-icp = <0x8>;
-+		ti,itap-del-sel-legacy = <0xa>;
-+		ti,itap-del-sel-sd-hs = <0x1>;
-+		ti,itap-del-sel-sdr12 = <0xa>;
-+		ti,itap-del-sel-sdr25 = <0x1>;
- 		dma-coherent;
- 	};
+ 	fmt = rvin_format_from_pixel(vin, vin->format.pixelformat);
+ 	stride = vin->format.bytesperline / fmt->bpp;
+-
+-	/* For RAW8 format bpp is 1, but the hardware process RAW8
+-	 * format in 2 pixel unit hence configure VNIS_REG as stride / 2.
+-	 */
+-	switch (vin->format.pixelformat) {
+-	case V4L2_PIX_FMT_SBGGR8:
+-	case V4L2_PIX_FMT_SGBRG8:
+-	case V4L2_PIX_FMT_SGRBG8:
+-	case V4L2_PIX_FMT_SRGGB8:
+-	case V4L2_PIX_FMT_GREY:
+-		stride /= 2;
+-		break;
+-	default:
+-		break;
+-	}
+-
+ 	rvin_write(vin, stride, VNIS_REG);
+ }
  
 -- 
 2.39.5
