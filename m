@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157322-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96F69AE5371
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51788AE4E91
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:07:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 71CAF1B66F3B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C886F3BDEB7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2123223DEF;
-	Mon, 23 Jun 2025 21:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEDFB21ADB5;
+	Mon, 23 Jun 2025 21:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1akRHTP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iPMWgal7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE83A223714;
-	Mon, 23 Jun 2025 21:53:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D86570838;
+	Mon, 23 Jun 2025 21:07:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715584; cv=none; b=qUcXaHlIPsM+WMh0nm6j45uHQS/E2wfuSZxfM65k/U5X35Tv304UfNlqUtsCom6KwqcgDjSDbduoGIZ90epU18kiA7I5phIn8DgShckWe+hAJlizeBNKhlPDwKXvwoFzBjqCIW1SyHkPs5ET6YnLgoP9n+/forIS8eQbh5CnJGA=
+	t=1750712822; cv=none; b=D3G64CT+sO6Ha7+WR+8qkL9nZkHchE4dZ8UtzN88nVdkAlzCsDW4kH4zW3abe4MlCzajHLjadHA11rklUk7X2hkm5QQ88zbLgBXFEZfwf0k6CvO/jyk//LSgbNIe4Q0FE2D57f+g7yxNnoCHmKwXFMnWruD26eolyGZoiHHLCNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715584; c=relaxed/simple;
-	bh=yib6hzuxCZG3eHD/W5GXUIPzvp/p6iV179gOCVTCins=;
+	s=arc-20240116; t=1750712822; c=relaxed/simple;
+	bh=QiOUwO862shY+BfTvzEEVPM0ByHAEmB649+908yJJtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uh0B5T3dVjtjCvFrl7xMATGY88GXA2QxHkHUJmpfe26f4z3M4b5BIeet2L4flGvx/WAfQ9MTYsNb/kF2PDtzxkJUM+THQ3ICMc2i6W+TfwtU1ASIjhJkkBQ0nxOpulJLGkVldm/uD8HVYRj4WNTlTpy6STtdqPsGWfvpx+MQEEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1akRHTP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46EECC4CEF2;
-	Mon, 23 Jun 2025 21:53:04 +0000 (UTC)
+	 MIME-Version; b=ue8Vy5QWm9EWOud+ysP1RTLiHXZq/5ZTovyEB10+QTGZOmt5oMg6+TjkW5yIm5hAuXwSL6modzaaiVvtbk5gDqbxC3h3jJzkEJhJR2oe2OewqSuxMpnACvkMURiLiWnnTleyHyuXXriirFZIKU0wHIdQWZJ9VWfNb2SsDDjtM0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iPMWgal7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1889BC4CEEA;
+	Mon, 23 Jun 2025 21:07:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715584;
-	bh=yib6hzuxCZG3eHD/W5GXUIPzvp/p6iV179gOCVTCins=;
+	s=korg; t=1750712822;
+	bh=QiOUwO862shY+BfTvzEEVPM0ByHAEmB649+908yJJtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1akRHTPMz4hzXj7JjMzv7UeyHlskfK25EDm7E+h5T4zSPPqv6+8HkqpP/MO5fqWR
-	 MdaaZ/3d+SJN24C5Cu35Fi9RnmpNajuu5zD2uhFrQWK5CxpiHuwLAkgUfPWwBFzcZT
-	 Z1aPGy1j5ICyHcDbqKq1iJ4jdryQBX8sG/9SXavw=
+	b=iPMWgal7PpH/Se8KMoXwW8Qx9Iper1+0y/YJOQAgJBv/TqAVIcbygRC7R5iwELI4A
+	 1WYjj+o5edJVQcpccTwUSCY5a/tx5tV6Kn9TWGNlJx2CKSdCXrB04KqhcXIwYLRx6E
+	 xMHMqxI9hcXr9MBthwUHpqYX3+ZP+xzi/eEIcdks=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	maher azz <maherazz04@gmail.com>,
-	Matt Porter <mporter@kernel.crashing.org>,
-	Alexandre Bounine <alex.bou9@gmail.com>,
-	Linus Torvalds <torvalds@linuxfoundation.org>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 284/355] drivers/rapidio/rio_cm.c: prevent possible heap overwrite
+	syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com,
+	Aditya Dutt <duttaditya18@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 150/222] jfs: fix array-index-out-of-bounds read in add_missing_indices
 Date: Mon, 23 Jun 2025 15:08:05 +0200
-Message-ID: <20250623130635.317741082@linuxfoundation.org>
+Message-ID: <20250623130616.599741794@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Aditya Dutt <duttaditya18@gmail.com>
 
-commit 50695153d7ddde3b1696dbf0085be0033bf3ddb3 upstream.
+[ Upstream commit 5dff41a86377563f7a2b968aae00d25b4ceb37c9 ]
 
-In
+stbl is s8 but it must contain offsets into slot which can go from 0 to
+127.
 
-riocm_cdev_ioctl(RIO_CM_CHAN_SEND)
-   -> cm_chan_msg_send()
-      -> riocm_ch_send()
+Added a bound check for that error and return -EIO if the check fails.
+Also make jfs_readdir return with error if add_missing_indices returns
+with an error.
 
-cm_chan_msg_send() checks that userspace didn't send too much data but
-riocm_ch_send() failed to check that userspace sent sufficient data.  The
-result is that riocm_ch_send() can write to fields in the rio_ch_chan_hdr
-which were outside the bounds of the space which cm_chan_msg_send()
-allocated.
-
-Address this by teaching riocm_ch_send() to check that the entire
-rio_ch_chan_hdr was copied in from userspace.
-
-Reported-by: maher azz <maherazz04@gmail.com>
-Cc: Matt Porter <mporter@kernel.crashing.org>
-Cc: Alexandre Bounine <alex.bou9@gmail.com>
-Cc: Linus Torvalds <torvalds@linuxfoundation.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+b974bd41515f770c608b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com./bug?extid=b974bd41515f770c608b
+Signed-off-by: Aditya Dutt <duttaditya18@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rapidio/rio_cm.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/jfs/jfs_dtree.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
---- a/drivers/rapidio/rio_cm.c
-+++ b/drivers/rapidio/rio_cm.c
-@@ -787,6 +787,9 @@ static int riocm_ch_send(u16 ch_id, void
- 	if (buf == NULL || ch_id == 0 || len == 0 || len > RIO_MAX_MSG_SIZE)
- 		return -EINVAL;
+diff --git a/fs/jfs/jfs_dtree.c b/fs/jfs/jfs_dtree.c
+index 4666aee2e1f4b..93df5f3bb3bbb 100644
+--- a/fs/jfs/jfs_dtree.c
++++ b/fs/jfs/jfs_dtree.c
+@@ -2909,7 +2909,7 @@ void dtInitRoot(tid_t tid, struct inode *ip, u32 idotdot)
+  *	     fsck.jfs should really fix this, but it currently does not.
+  *	     Called from jfs_readdir when bad index is detected.
+  */
+-static void add_missing_indices(struct inode *inode, s64 bn)
++static int add_missing_indices(struct inode *inode, s64 bn)
+ {
+ 	struct ldtentry *d;
+ 	struct dt_lock *dtlck;
+@@ -2918,7 +2918,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+ 	struct lv *lv;
+ 	struct metapage *mp;
+ 	dtpage_t *p;
+-	int rc;
++	int rc = 0;
+ 	s8 *stbl;
+ 	tid_t tid;
+ 	struct tlock *tlck;
+@@ -2943,6 +2943,16 @@ static void add_missing_indices(struct inode *inode, s64 bn)
  
-+	if (len < sizeof(struct rio_ch_chan_hdr))
-+		return -EINVAL;		/* insufficient data from user */
+ 	stbl = DT_GETSTBL(p);
+ 	for (i = 0; i < p->header.nextindex; i++) {
++		if (stbl[i] < 0) {
++			jfs_err("jfs: add_missing_indices: Invalid stbl[%d] = %d for inode %ld, block = %lld",
++				i, stbl[i], (long)inode->i_ino, (long long)bn);
++			rc = -EIO;
 +
- 	ch = riocm_get_channel(ch_id);
- 	if (!ch) {
- 		riocm_error("%s(%d) ch_%d not found", current->comm,
++			DT_PUTPAGE(mp);
++			txAbort(tid, 0);
++			goto end;
++		}
++
+ 		d = (struct ldtentry *) &p->slot[stbl[i]];
+ 		index = le32_to_cpu(d->index);
+ 		if ((index < 2) || (index >= JFS_IP(inode)->next_index)) {
+@@ -2960,6 +2970,7 @@ static void add_missing_indices(struct inode *inode, s64 bn)
+ 	(void) txCommit(tid, 1, &inode, 0);
+ end:
+ 	txEnd(tid);
++	return rc;
+ }
+ 
+ /*
+@@ -3313,7 +3324,8 @@ int jfs_readdir(struct file *file, struct dir_context *ctx)
+ 		}
+ 
+ 		if (fix_page) {
+-			add_missing_indices(ip, bn);
++			if ((rc = add_missing_indices(ip, bn)))
++				goto out;
+ 			page_fixed = 1;
+ 		}
+ 
+-- 
+2.39.5
+
 
 
 
