@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD47AE54E5
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15B82AE52D3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9AF6F4C2848
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:05:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3288E3B60F0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30BC5218580;
-	Mon, 23 Jun 2025 22:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A8F7225413;
+	Mon, 23 Jun 2025 21:46:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rdkA1IU5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dWKbIf9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1359225A47;
-	Mon, 23 Jun 2025 22:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DDFB676;
+	Mon, 23 Jun 2025 21:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716331; cv=none; b=dot91yF06erR9BlaiUU62/Su7yCgfOzp+hMIPYxnoLrCpkzAh5gyoRicAPuTScVuv2MZUoTQMunMfaFjHq+saU2qVg3QmUl+AC/eTO98UsUfFCGVb50ho/pJ0mX75SnO07rC53WHAlmy0Nk7+yaUghpnjFqoARua4n87CMypw7g=
+	t=1750715196; cv=none; b=XhpLs6d+eHMLDlGtWfZUzufAMrz9fy/BqEHw+lGIuV4B4fVxQw4/PniEE7eMjL8NxknlW/3FPoweMOfMjjEhes4kmDCwWhiWz3Gx2BganIu03yQguad688uWQvE14XmV6USunqrDhb/QxVwbHfmnMq1qEMBSLLHqwImTLcX+nxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716331; c=relaxed/simple;
-	bh=XyHsGRMgJmJ2vZILpww6jTPodltodJVqnpDFZ94lipY=;
+	s=arc-20240116; t=1750715196; c=relaxed/simple;
+	bh=E0K3v1Q0MwFqomMLaPmOMWWVhvIZN1gUzhLQe7dQkWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2gKI1hQarGNMkd2S0o+p+Wvg86nEi1seiK6VSRrl0wjqSufbXl3qGINXNey7K4+T5riv8qvUs1QyiWbkWUyyHZKt5eOtmQKWWrQ8vb6THSoeD0nbsN3+h8l9P5Tstmj70Hbu2AwU37uG958gH9YLSdjvQb8xhA4u+OKuAw7wgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rdkA1IU5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AB14C4CEEA;
-	Mon, 23 Jun 2025 22:05:30 +0000 (UTC)
+	 MIME-Version; b=REObHvfUzqSRqxg7Xory0OF/3YzowsmxPJt4ScvOE6gi/vYNAxvr9qCMCDI6XnJwTHtVSdDD//vijglaS159Jr3WJv5Tet4DvvnxDOmKksRoBQsvfhg53SwjYGOD3Q5JuDdV78zjFBexXybDphq3AyaL39h6jbjtvoQBvhJMeL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dWKbIf9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811B0C4CEEA;
+	Mon, 23 Jun 2025 21:46:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716330;
-	bh=XyHsGRMgJmJ2vZILpww6jTPodltodJVqnpDFZ94lipY=;
+	s=korg; t=1750715195;
+	bh=E0K3v1Q0MwFqomMLaPmOMWWVhvIZN1gUzhLQe7dQkWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rdkA1IU5jMYmrwmUz85OwlEvm03mi4XwcQOx18HxgKwwGBjltpoa3lTEpyWLx7Q+q
-	 h3L0gfLT6/naJSV+hbti6tTVSTPjJs/MIfujKvLMUtBk9Z0kQ7wOFsV7IGhh027h5T
-	 3f/J07ndnSHwbMJK5QyMcYtgIW/Gloa3osHy3GC0=
+	b=dWKbIf9W8VaH3Y1XTk/50GaS+5J2+7b1EcGASUg6+iPlEPdnfUUraa9cgIAZZ8yfe
+	 6fBpVBBDubW+JEKt4gMitJ0YSXW6wmyKYIpDL8gHNMS/tsU8dbwW2WhxTx8yNsXZzX
+	 66y1aUsxxi7/qdAfS4t3A3FxA0sYpcrlWi+lb4F4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Xing <kernelxing@tencent.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Narayana Murty N <nnmlinux@linux.ibm.com>,
+	Vaibhav Jain <vaibhav@linux.ibm.com>,
+	Ganesh Goudar <ganeshgr@linux.ibm.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 322/411] net: mlx4: add SOF_TIMESTAMPING_TX_SOFTWARE flag when getting ts info
+Subject: [PATCH 6.6 205/290] powerpc/eeh: Fix missing PE bridge reconfiguration during VFIO EEH recovery
 Date: Mon, 23 Jun 2025 15:07:46 +0200
-Message-ID: <20250623130641.742664285@linuxfoundation.org>
+Message-ID: <20250623130633.094741964@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +64,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Narayana Murty N <nnmlinux@linux.ibm.com>
 
-[ Upstream commit b86bcfee30576b752302c55693fff97242b35dfd ]
+[ Upstream commit 33bc69cf6655cf60829a803a45275f11a74899e5 ]
 
-As mlx4 has implemented skb_tx_timestamp() in mlx4_en_xmit(), the
-SOFTWARE flag is surely needed when users are trying to get timestamp
-information.
+VFIO EEH recovery for PCI passthrough devices fails on PowerNV and pseries
+platforms due to missing host-side PE bridge reconfiguration. In the
+current implementation, eeh_pe_configure() only performs RTAS or OPAL-based
+bridge reconfiguration for native host devices, but skips it entirely for
+PEs managed through VFIO in guest passthrough scenarios.
 
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/20250510093442.79711-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This leads to incomplete EEH recovery when a PCI error affects a
+passthrough device assigned to a QEMU/KVM guest. Although VFIO triggers the
+EEH recovery flow through VFIO_EEH_PE_ENABLE ioctl, the platform-specific
+bridge reconfiguration step is silently bypassed. As a result, the PE's
+config space is not fully restored, causing subsequent config space access
+failures or EEH freeze-on-access errors inside the guest.
+
+This patch fixes the issue by ensuring that eeh_pe_configure() always
+invokes the platform's configure_bridge() callback (e.g.,
+pseries_eeh_phb_configure_bridge) even for VFIO-managed PEs. This ensures
+that RTAS or OPAL calls to reconfigure the PE bridge are correctly issued
+on the host side, restoring the PE's configuration space after an EEH
+event.
+
+This fix is essential for reliable EEH recovery in QEMU/KVM guests using
+VFIO PCI passthrough on PowerNV and pseries systems.
+
+Tested with:
+- QEMU/KVM guest using VFIO passthrough (IBM Power9,(lpar)Power11 host)
+- Injected EEH errors with pseries EEH errinjct tool on host, recovery
+  verified on qemu guest.
+- Verified successful config space access and CAP_EXP DevCtl restoration
+  after recovery
+
+Fixes: 212d16cdca2d ("powerpc/eeh: EEH support for VFIO PCI device")
+Signed-off-by: Narayana Murty N <nnmlinux@linux.ibm.com>
+Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Reviewed-by: Ganesh Goudar <ganeshgr@linux.ibm.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250508062928.146043-1-nnmlinux@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx4/en_ethtool.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/kernel/eeh.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-index c3cffb32fb067..d8c1a52d54c67 100644
---- a/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx4/en_ethtool.c
-@@ -1909,6 +1909,7 @@ static int mlx4_en_get_ts_info(struct net_device *dev,
- 	if (mdev->dev->caps.flags2 & MLX4_DEV_CAP_FLAG2_TS) {
- 		info->so_timestamping |=
- 			SOF_TIMESTAMPING_TX_HARDWARE |
-+			SOF_TIMESTAMPING_TX_SOFTWARE |
- 			SOF_TIMESTAMPING_RX_HARDWARE |
- 			SOF_TIMESTAMPING_RAW_HARDWARE;
+diff --git a/arch/powerpc/kernel/eeh.c b/arch/powerpc/kernel/eeh.c
+index ab316e155ea9f..2e286bba2f645 100644
+--- a/arch/powerpc/kernel/eeh.c
++++ b/arch/powerpc/kernel/eeh.c
+@@ -1516,6 +1516,8 @@ int eeh_pe_configure(struct eeh_pe *pe)
+ 	/* Invalid PE ? */
+ 	if (!pe)
+ 		return -ENODEV;
++	else
++		ret = eeh_ops->configure_bridge(pe);
  
+ 	return ret;
+ }
 -- 
 2.39.5
 
