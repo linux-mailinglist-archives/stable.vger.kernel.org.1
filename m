@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-157584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B2CCAE54A1
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B99BAE5120
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 08E241BC1FF5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 962E54A2E62
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C39F21D3F6;
-	Mon, 23 Jun 2025 22:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98E37080C;
+	Mon, 23 Jun 2025 21:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoOf0wGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrOwTF1z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA831D86DC;
-	Mon, 23 Jun 2025 22:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BE2C2E0;
+	Mon, 23 Jun 2025 21:31:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716226; cv=none; b=WgL8aLVa8TJWzFIuPnyA/dYkxMovaIr//+T490ij39QI1RhKNyyH27t887gxbkuDBs9ergyuDoecEci48lOD6VV/HCtba8Qqw4tEs46EvN7kB2a8011U6+kRpDWZ13EW2tgceIMq1yexdyxcr6Jyw/t6QlQwkaF8BNcWhQkyRvg=
+	t=1750714260; cv=none; b=LZvE0D/IJGe9VwUU1AdE8lmgqJHp474/iSVu8vY6id1kaNgSyIouoqjCWzy7I0lh8E28pPtRigArsnmFwmiURRu/7WKthu4Jn1GQl57Lr4wPW7fGQWdJursA2wsRFwC3JTrY3UJX/+NdKL7yeJksF/hcGrJOeLt94f5IhhecBvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716226; c=relaxed/simple;
-	bh=JIRuRj+BIDM7LwpV1ebU4+TiBDsH/n+/SOekI2dtqiI=;
+	s=arc-20240116; t=1750714260; c=relaxed/simple;
+	bh=/z1E7ggWWXQDC3Z72icq/zr0CpsZelT/HrD6MlQ444A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C2jsdHlUYkCmTMTvhx/9SeF7IC+s25Smdhgovy1nUbAA7ehynNXdKUAym14JoAlKxMyYw0RLtjKEg3qgFVy7E7AsCWiTu4wOnyxYQsuXiOKGfWlrZiRK51CmakK6G/Np6LfkozKw9DY/g19ufh1L7RDdxGDOxLY+IR9mjdiWyxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoOf0wGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97034C4CEEA;
-	Mon, 23 Jun 2025 22:03:45 +0000 (UTC)
+	 MIME-Version; b=jTI6xYU4suekFjFNJhimd97OSNRQo+NaVRB2nXh0p9d/c4qPcLTw6jLuIorevwJipeK1aJRrtMe+D9t7r7xPcROt7U5dE1DP3d0IFbblkRpgPxTDbqZgqTF037U6VsqOWvDbcyrc22D8SMB+Q2xHHIASG0kzXXa8UL4SN8ikjxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrOwTF1z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4598C4CEEA;
+	Mon, 23 Jun 2025 21:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716225;
-	bh=JIRuRj+BIDM7LwpV1ebU4+TiBDsH/n+/SOekI2dtqiI=;
+	s=korg; t=1750714260;
+	bh=/z1E7ggWWXQDC3Z72icq/zr0CpsZelT/HrD6MlQ444A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AoOf0wGoNtyE7X8CWnu034/VidKPeTZ1ZBvIcRzpJE/KZza60jlGVZol66Bd45NUQ
-	 qcBhs8ZzO1sG4ewAsSqOBdOcqPAyp5EH3C2a4KhauSRfld1bXkk++91DdG1GZLL2Jw
-	 Htfm8XyIhOl8unKy1J51PK2YnBx9QBx04jb6h8UE=
+	b=nrOwTF1zikN7dR0bDzSBDgpW++kxfIuhUwX6Fyz16X87d1EzhQZN15bL46P+z8ueK
+	 8LvCXddygmdC29Oo1ASsOu1XBZAy3yOk9HNUG+uVV3Lw/ol7Bkp2k2QqgHa3ikBucW
+	 WnSxDAMadprYkDThtJFlcxjfbnMYnlTY3FCsFZOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 258/414] vxlan: Do not treat dst cache initialization errors as fatal
-Date: Mon, 23 Jun 2025 15:06:35 +0200
-Message-ID: <20250623130648.490119476@linuxfoundation.org>
+	Arnd Bergmann <arnd@arndb.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 195/355] parisc: fix building with gcc-15
+Date: Mon, 23 Jun 2025 15:06:36 +0200
+Message-ID: <20250623130632.534868712@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 20c76dadc783759fd3819d289c72be590660cc8b ]
+commit 7cbb015e2d3d6f180256cde0c908eab21268e7b9 upstream.
 
-FDB entries are allocated in an atomic context as they can be added from
-the data path when learning is enabled.
+The decompressor is built with the default C dialect, which is now gnu23
+on gcc-15, and this clashes with the kernel's bool type definition:
 
-After converting the FDB hash table to rhashtable, the insertion rate
-will be much higher (*) which will entail a much higher rate of per-CPU
-allocations via dst_cache_init().
+In file included from include/uapi/linux/posix_types.h:5,
+                 from arch/parisc/boot/compressed/misc.c:7:
+include/linux/stddef.h:11:9: error: cannot use keyword 'false' as enumeration constant
+   11 |         false   = 0,
 
-When adding a large number of entries (e.g., 256k) in a batch, a small
-percentage (< 0.02%) of these per-CPU allocations will fail [1]. This
-does not happen with the current code since the insertion rate is low
-enough to give the per-CPU allocator a chance to asynchronously create
-new chunks of per-CPU memory.
+Add the -std=gnu11 argument here, as we do for all other architectures.
 
-Given that:
-
-a. Only a small percentage of these per-CPU allocations fail.
-
-b. The scenario where this happens might not be the most realistic one.
-
-c. The driver can work correctly without dst caches. The dst_cache_*()
-APIs first check that the dst cache was properly initialized.
-
-d. The dst caches are not always used (e.g., 'tos inherit').
-
-It seems reasonable to not treat these allocation failures as fatal.
-
-Therefore, do not bail when dst_cache_init() fails and suppress warnings
-by specifying '__GFP_NOWARN'.
-
-[1] percpu: allocation failed, size=40 align=8 atomic=1, atomic alloc failed, no space left
-
-(*) 97% reduction in average latency of vxlan_fdb_update() when adding
-256k entries in a batch.
-
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20250415121143.345227-14-idosch@nvidia.com
-Reviewed-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/vxlan/vxlan_core.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/parisc/boot/compressed/Makefile |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/vxlan/vxlan_core.c b/drivers/net/vxlan/vxlan_core.c
-index 474faccf75fd9..1a70770938001 100644
---- a/drivers/net/vxlan/vxlan_core.c
-+++ b/drivers/net/vxlan/vxlan_core.c
-@@ -605,10 +605,10 @@ static int vxlan_fdb_append(struct vxlan_fdb *f,
- 	if (rd == NULL)
- 		return -ENOMEM;
+--- a/arch/parisc/boot/compressed/Makefile
++++ b/arch/parisc/boot/compressed/Makefile
+@@ -22,6 +22,7 @@ KBUILD_CFLAGS += -fno-PIE -mno-space-reg
+ ifndef CONFIG_64BIT
+ KBUILD_CFLAGS += -mfast-indirect-calls
+ endif
++KBUILD_CFLAGS += -std=gnu11
  
--	if (dst_cache_init(&rd->dst_cache, GFP_ATOMIC)) {
--		kfree(rd);
--		return -ENOMEM;
--	}
-+	/* The driver can work correctly without a dst cache, so do not treat
-+	 * dst cache initialization errors as fatal.
-+	 */
-+	dst_cache_init(&rd->dst_cache, GFP_ATOMIC | __GFP_NOWARN);
+ OBJECTS += $(obj)/head.o $(obj)/real2.o $(obj)/firmware.o $(obj)/misc.o $(obj)/piggy.o
  
- 	rd->remote_ip = *ip;
- 	rd->remote_port = port;
--- 
-2.39.5
-
 
 
 
