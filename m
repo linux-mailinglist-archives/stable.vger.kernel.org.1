@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-155783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E58F5AE43B8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:42 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D8BEAE43D1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCA281899655
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 777AB3BC185
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD2A254854;
-	Mon, 23 Jun 2025 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8EDF25394B;
+	Mon, 23 Jun 2025 13:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vdHesvAm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0QnvSio+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9F1253924;
-	Mon, 23 Jun 2025 13:28:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 672B9250BEC;
+	Mon, 23 Jun 2025 13:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685321; cv=none; b=YfPBBdQ1VUSxiGCnCHVCWZmHUyWwkomU9/4ye7tw7Sq+dw9jyuJ4Gk9qJxqKJKlpjplQRTK/jr5xXdIWiEEOro4YlaCchKqn0krbutEc/+YA2fUjZrZ76ZuyU6bE/fWiL/0I8a9d1JZG9sfQlaki/9MXpTTBMeXkwaGQQBpBhZk=
+	t=1750685331; cv=none; b=OiQ7w3ynRFflhuNGK4LI/aCDuAVyWki9arE5hFrjs/Vddp33UFEOCvpo68bvwhep/wxj0Z4fN0rPzd6cIB6BK8M//d04YlbRqDFZNvGTquyaSPKJAXf9VriP7ahmep05PmqayHBtpomIKA1T8OE4hWTUBzx2RaBaA0juqL1UKaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685321; c=relaxed/simple;
-	bh=aG28zNqUBQQLhOZTxvrtZlB01S5viv+YMM/ICmXiKvQ=;
+	s=arc-20240116; t=1750685331; c=relaxed/simple;
+	bh=QSSmpiv5FBe9B/o8u996/+lNauUB17u7wHMbTonn32I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Efs0Q7gbTIP3MA8d2hr3LZAQk9f6VQyNeNBum58Iyql+5eU987QK+QQqOUxLmZioXTAC/uBVKWajZBmgNK/4v28q7IqJ7ah+5Ev6yOS9b05iaXufloe9eEr36FakZcKZtglmRr/09txhJGr2kJBhqOMSwphsgZwwHcN7JJ3FEYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vdHesvAm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3EC3C4CEEA;
-	Mon, 23 Jun 2025 13:28:40 +0000 (UTC)
+	 MIME-Version; b=rivN5C7F/kTqy1ozJPtyr52CovRM7NUiYbMX/l0KprgFR3dpXwWhDEoxZCrAOKRcA2U9LCXcGVcu4kgq4d1Cwal9uC5+7JimS9e76jqHHAWCEVL/YhNrMGR1NYEbXzmNoGXsAXnRlFlXyYqajPhYCz0fzeGLisYpCQUeowdaqzU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0QnvSio+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F04D2C4CEEA;
+	Mon, 23 Jun 2025 13:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685321;
-	bh=aG28zNqUBQQLhOZTxvrtZlB01S5viv+YMM/ICmXiKvQ=;
+	s=korg; t=1750685331;
+	bh=QSSmpiv5FBe9B/o8u996/+lNauUB17u7wHMbTonn32I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vdHesvAmZyR/rMZYoJPvnCiLam+6yhDl1ZjgojZFW6jUW35XNpGQxOOMqwfRem2VP
-	 lAvNVSyzexCQdW3GCFnNGoVvofUhY2yokuXZdmPJGJQkrSxaWBx+P9IAGY9rq3VSrb
-	 NLNJuNQEqbroAQMThQj8tv8q7ikvf+DGWTph3Mso=
+	b=0QnvSio+xfdUGtk9C06uOSjBg66IylBbFzWeiecOiYBfGEcHdkeOpErDz7t3yp3Nn
+	 QOXQOjMxExSkQ7RMlDLBtJw32Qp5aFly9e8odkVurx9Gvn9JQs2csaWs1A7ogFxwiA
+	 0deUBv1axjnvaFb/Iq0N+ozYTTJkRcFXwD5hczxA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gerrard Tai <gerrard.tai@starlabs.sg>,
-	Eric Dumazet <edumazet@google.com>,
-	Zhengchao Shao <shaozhengchao@huawei.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Michael Walle <michael@walle.cc>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/222] net_sched: tbf: fix a race in tbf_change()
-Date: Mon, 23 Jun 2025 15:07:00 +0200
-Message-ID: <20250623130614.658584756@linuxfoundation.org>
+Subject: [PATCH 5.4 086/222] net: mdio: C22 is now optional, EOPNOTSUPP if not provided
+Date: Mon, 23 Jun 2025 15:07:01 +0200
+Message-ID: <20250623130614.689593769@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -68,57 +67,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andrew Lunn <andrew@lunn.ch>
 
-[ Upstream commit 43eb466041216d25dedaef1c383ad7bd89929cbc ]
+[ Upstream commit b063b1924fd9bf0bc157cf644764dc2151d04ccc ]
 
-Gerrard Tai reported a race condition in TBF, whenever SFQ perturb timer
-fires at the wrong time.
+When performing a C22 operation, check that the bus driver actually
+provides the methods, and return -EOPNOTSUPP if not. C45 only busses
+do exist, and in future their C22 methods will be NULL.
 
-The race is as follows:
-
-CPU 0                                 CPU 1
-[1]: lock root
-[2]: qdisc_tree_flush_backlog()
-[3]: unlock root
- |
- |                                    [5]: lock root
- |                                    [6]: rehash
- |                                    [7]: qdisc_tree_reduce_backlog()
- |
-[4]: qdisc_put()
-
-This can be abused to underflow a parent's qlen.
-
-Calling qdisc_purge_queue() instead of qdisc_tree_flush_backlog()
-should fix the race, because all packets will be purged from the qdisc
-before releasing the lock.
-
-Fixes: b05972f01e7d ("net: sched: tbf: don't call qdisc_put() while holding tree lock")
-Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Suggested-by: Gerrard Tai <gerrard.tai@starlabs.sg>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Zhengchao Shao <shaozhengchao@huawei.com>
-Link: https://patch.msgid.link/20250611111515.1983366-4-edumazet@google.com
+Signed-off-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Michael Walle <michael@walle.cc>
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 0e629694126c ("net/mdiobus: Fix potential out-of-bounds read/write access")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_tbf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mdio_bus.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_tbf.c b/net/sched/sch_tbf.c
-index 259a39ca99bfb..9b11e9256336c 100644
---- a/net/sched/sch_tbf.c
-+++ b/net/sched/sch_tbf.c
-@@ -394,7 +394,7 @@ static int tbf_change(struct Qdisc *sch, struct nlattr *opt,
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index fdf8221f46fa5..e5c25beae21e0 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -565,7 +565,10 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
  
- 	sch_tree_lock(sch);
- 	if (child) {
--		qdisc_tree_flush_backlog(q->qdisc);
-+		qdisc_purge_queue(q->qdisc);
- 		old = q->qdisc;
- 		q->qdisc = child;
- 	}
+ 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
+ 
+-	retval = bus->read(bus, addr, regnum);
++	if (bus->read)
++		retval = bus->read(bus, addr, regnum);
++	else
++		retval = -EOPNOTSUPP;
+ 
+ 	trace_mdio_access(bus, 1, addr, regnum, retval, retval);
+ 
+@@ -590,7 +593,10 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+ 
+ 	WARN_ON_ONCE(!mutex_is_locked(&bus->mdio_lock));
+ 
+-	err = bus->write(bus, addr, regnum, val);
++	if (bus->write)
++		err = bus->write(bus, addr, regnum, val);
++	else
++		err = -EOPNOTSUPP;
+ 
+ 	trace_mdio_access(bus, 0, addr, regnum, val, err);
+ 
 -- 
 2.39.5
 
