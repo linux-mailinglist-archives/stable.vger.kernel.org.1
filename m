@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-156336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156702-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC287AE4F2B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:13:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7503AAE50C1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFCA57AC613
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:11:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 414A81B62B99
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F6BB221DAC;
-	Mon, 23 Jun 2025 21:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C8EF2206BB;
+	Mon, 23 Jun 2025 21:27:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oapgn7EJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zy1uQEWd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B5E6220F50;
-	Mon, 23 Jun 2025 21:12:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 499211E5B71;
+	Mon, 23 Jun 2025 21:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713165; cv=none; b=iaDxylXtfQJzl5Aw+NJBYzK8oV4N+PCsD5Y3HxO5ioaAlpV7Q6Ksw2inZooZFsat0XHKyeAJ49X8+gOG9/KyH+clhAAmt3rO9PyB/b50NMUN+SkoHqmncUYBvzGDIA/MxhZeSw/XPoeUSJ0y0t/j/HVSYy+coRAjEinffZFBSRo=
+	t=1750714060; cv=none; b=YIrXZA3I2GQKQOgvMnM/7CplR8+L8vG9sDnA1enHvdG5OikLlrW5sLGGRPMPK9K/yNiyc2/L4e/u8VIUQyk7t1heSgHroU2izV4oKwt0uv81ySqwkUWB8+2k1RNsosYCHfXHYrWBAyRu8h/PrQ0EzcD5MzU0i4crvjil34nIqmE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713165; c=relaxed/simple;
-	bh=KL3u4gYgjDgApU6hM4NZEmL0QYwD8FIktsdCglww3ww=;
+	s=arc-20240116; t=1750714060; c=relaxed/simple;
+	bh=bidgK0pt7ywVO8fbZy+ZvMwP4NUns2OP4oD/BZLIeeI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XfLyW0g6bQf/F0ZJrWY3tbH6FQZ2cr3RD01kdlj2BF6LU9NjxigMUShssjY7zdRYyH0+3sPgCWx5sQKwMWLJVRGyDSWRlq/89d4KR/NrEeURFv9L7JVxbyL/80dnDXCOFyVOOqCCUA1Z5Woo9kNGcF2p6opm/5LcnuD+urfM1uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oapgn7EJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8114C4CEEA;
-	Mon, 23 Jun 2025 21:12:44 +0000 (UTC)
+	 MIME-Version; b=lCMWkErdkmBwtbZ0oZoF4276qwy8jis03pSI3WiHhR43Lr7DAMKhLvrlH+VjEWRvVYATAA7fG9tqp6YWf64sF62Hi4XaowFS2RHHt3qbF8eGTzygkBUDuvduZQfbuB4hhBOrqcdjG5fU83MuTzyach3z8z/wtQlaof2cE7NvVyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zy1uQEWd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C440C4CEEA;
+	Mon, 23 Jun 2025 21:27:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713165;
-	bh=KL3u4gYgjDgApU6hM4NZEmL0QYwD8FIktsdCglww3ww=;
+	s=korg; t=1750714059;
+	bh=bidgK0pt7ywVO8fbZy+ZvMwP4NUns2OP4oD/BZLIeeI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oapgn7EJN0pfE/ukQh7dkveyFngivdsF2Z5a2/4ZXx6N5M+XBmiy6l+DSv1PmWDP5
-	 x+Y68cUabde24MYR7uco82JPOkfaj+l1xnEqVF0tq0/rCZVHvCsmEeFYHZ2SLPfl4A
-	 CgPpT+LiMhyKS/cll7bfWpsO1UhpWyki7chzd8Ts=
+	b=Zy1uQEWdePUFnDxDppgoQb8mQb6H1USPmOBp4pU07rcNiiicu9WyWTyZccGorl4CO
+	 B9IAo44xtF2qXisl7bJ0OCMNFL5S1DeR8D+IJOAyIjqvObDhYARv++axlgpFtn7iKq
+	 q0ZV22HBMzX9ZOJDzk/i0pUiiLYmxgI1MDwhTi6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 049/414] media: ccs-pll: Correct the upper limit of maximum op_pre_pll_clk_div
-Date: Mon, 23 Jun 2025 15:03:06 +0200
-Message-ID: <20250623130643.270053736@linuxfoundation.org>
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Beleswar Padhi <b-padhi@ti.com>,
+	Judith Mendez <jm@ti.com>,
+	Andrew Davis <afd@ti.com>,
+	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 142/508] remoteproc: k3-r5: Drop check performed in k3_r5_rproc_{mbox_callback/kick}
+Date: Mon, 23 Jun 2025 15:03:07 +0200
+Message-ID: <20250623130648.780928322@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sakari Ailus <sakari.ailus@linux.intel.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-commit f639494db450770fa30d6845d9c84b9cb009758f upstream.
+[ Upstream commit 9995dbfc2235efabdb3759606d522e1a7ec3bdcb ]
 
-The PLL calculator does a search of the PLL configuration space for all
-valid OP pre-PLL clock dividers. The maximum did not take into account the
-CCS PLL flag CCS_PLL_FLAG_EXT_IP_PLL_DIVIDER in which case also odd PLL
-dividers (other than 1) are valid. Do that now.
+Commit f3f11cfe8907 ("remoteproc: k3-r5: Acquire mailbox handle during
+probe routine") introduced a check in the "k3_r5_rproc_mbox_callback()"
+and "k3_r5_rproc_kick()" callbacks, causing them to exit if the remote
+core's state is "RPROC_DETACHED". However, the "__rproc_attach()"
+function that is responsible for attaching to a remote core, updates
+the state of the remote core to "RPROC_ATTACHED" only after invoking
+"rproc_start_subdevices()".
 
-Fixes: 4e1e8d240dff ("media: ccs-pll: Add support for extended input PLL clock divider")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The "rproc_start_subdevices()" function triggers the probe of the Virtio
+RPMsg devices associated with the remote core, which require that the
+"k3_r5_rproc_kick()" and "k3_r5_rproc_mbox_callback()" callbacks are
+functional. Hence, drop the check in the callbacks.
+
+Fixes: f3f11cfe8907 ("remoteproc: k3-r5: Acquire mailbox handle during probe routine")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Beleswar Padhi <b-padhi@ti.com>
+Tested-by: Judith Mendez <jm@ti.com>
+Reviewed-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20250513054510.3439842-2-b-padhi@ti.com
+Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ccs-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/remoteproc/ti_k3_r5_remoteproc.c | 8 --------
+ 1 file changed, 8 deletions(-)
 
---- a/drivers/media/i2c/ccs-pll.c
-+++ b/drivers/media/i2c/ccs-pll.c
-@@ -794,7 +794,7 @@ int ccs_pll_calculate(struct device *dev
- 		op_lim_fr->min_pre_pll_clk_div, op_lim_fr->max_pre_pll_clk_div);
- 	max_op_pre_pll_clk_div =
- 		min_t(u16, op_lim_fr->max_pre_pll_clk_div,
--		      clk_div_even(pll->ext_clk_freq_hz /
-+		      DIV_ROUND_UP(pll->ext_clk_freq_hz,
- 				   op_lim_fr->min_pll_ip_clk_freq_hz));
- 	min_op_pre_pll_clk_div =
- 		max_t(u16, op_lim_fr->min_pre_pll_clk_div,
+diff --git a/drivers/remoteproc/ti_k3_r5_remoteproc.c b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+index 580f86de654f2..75f0b8c99e0b1 100644
+--- a/drivers/remoteproc/ti_k3_r5_remoteproc.c
++++ b/drivers/remoteproc/ti_k3_r5_remoteproc.c
+@@ -189,10 +189,6 @@ static void k3_r5_rproc_mbox_callback(struct mbox_client *client, void *data)
+ 	const char *name = kproc->rproc->name;
+ 	u32 msg = omap_mbox_message(data);
+ 
+-	/* Do not forward message from a detached core */
+-	if (kproc->rproc->state == RPROC_DETACHED)
+-		return;
+-
+ 	dev_dbg(dev, "mbox msg: 0x%x\n", msg);
+ 
+ 	switch (msg) {
+@@ -228,10 +224,6 @@ static void k3_r5_rproc_kick(struct rproc *rproc, int vqid)
+ 	mbox_msg_t msg = (mbox_msg_t)vqid;
+ 	int ret;
+ 
+-	/* Do not forward message to a detached core */
+-	if (kproc->rproc->state == RPROC_DETACHED)
+-		return;
+-
+ 	/* send the index of the triggered virtqueue in the mailbox payload */
+ 	ret = mbox_send_message(kproc->mbox, (void *)msg);
+ 	if (ret < 0)
+-- 
+2.39.5
+
 
 
 
