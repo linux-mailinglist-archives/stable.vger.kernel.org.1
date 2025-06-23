@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1A9EAE52D5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00BB1AE4E82
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 865E93B65B0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 042957AAAF6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:05:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DB62253EA;
-	Mon, 23 Jun 2025 21:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFDD3217668;
+	Mon, 23 Jun 2025 21:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kA76k16G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TaHhg7zf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE37223DE1;
-	Mon, 23 Jun 2025 21:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC03219E0;
+	Mon, 23 Jun 2025 21:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715198; cv=none; b=FrrBTh1h4oHWEueB09PSMtiiUHWIv0XUFegXj3BDo2bqoVoNgK44sdieP9uTvZEEY5ipHe4zYag/KVA8e/RQ6hXkuXiXivy8bF1Bkl7umBCOWz420MSGu//5VHZb/latncy0Dx3EjsyavBOGFKDyb1DXlMzoPP2129G/RBeUPGQ=
+	t=1750712784; cv=none; b=G0+htnwizPHKiLCV+nBmwXyzmy54TPF4Iaz4Akn73c4XWPqvllQmH4Sn9dY14/Wl1SlPsWJUXyDlcYff2kwm+pBPA15ohdpA+0QMNJxMmDPKpIWhrZIzshsAf/R+USa/xC8yZz1kFEmXq8IkCPe3c369i5N1z04WnX1MhQywvDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715198; c=relaxed/simple;
-	bh=dzYwy+PAfT/ydxk92fBLqik2ko7PzSQqYqvgYeTh1W8=;
+	s=arc-20240116; t=1750712784; c=relaxed/simple;
+	bh=xtooUyOPRY/TJ5kASzT2uml8zWG6QT96xA1yQEUXQsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uOJ/dMRjcM3aeNwqOORW+8NdN+38tOnjVMnvBz9a0nVpJOoylWdOT9KRo0EbBguGWjwkPkYBLJlfJkEVH1kLiNER8jauoF2sCbXxeooZIXRDqwoDXb7pMo/rrscTqUcGlKytMktAj2MCCsB7d1sw5SM6M4lBEwn0ZrslZOGhosw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kA76k16G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC9DBC4CEEA;
-	Mon, 23 Jun 2025 21:46:37 +0000 (UTC)
+	 MIME-Version; b=HnBBUgUceYL/5jh2TeIi63dvn0QJ6heZIZIpuWFbQ8jorraxSdIb+RyvaxjUF0TPTe1qHS1boVoqzOTEqT/F+TkBPgkodYYN6zM0pOeIKdnrLP40GVkZTt2dB40KEgXStrlpFlY3B1t3KEple/leQEK5gGnfWUslVzJygtEGOZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TaHhg7zf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029F2C4CEED;
+	Mon, 23 Jun 2025 21:06:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715198;
-	bh=dzYwy+PAfT/ydxk92fBLqik2ko7PzSQqYqvgYeTh1W8=;
+	s=korg; t=1750712784;
+	bh=xtooUyOPRY/TJ5kASzT2uml8zWG6QT96xA1yQEUXQsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kA76k16G8zW8p4qx9KLvDVrYmpOtz0t3kEmJ+S4fcZIqJaW6kU7hQdIq9xnim8Z+b
-	 zNbCoWtnqoFjOfs+CKaVKvjljZDMxUWmToq3MQw8pBScZ8eRIuK6N5ULZM7KSCR+jL
-	 /iz81l1mMdzvUGthToy91ROLC19wIijp4MQ2uVug=
+	b=TaHhg7zfInrvx8wsf6BQkSQ8A46cejoFT6iqva+C+smqOyho3EUBdqk75QZXQ6hqY
+	 z9ugoV+jqRqXvFAF+5hXn6nqwxt6Kh0tUkEQ0B+FeygFpAHAMUJ8IoS6RQd+tGtNfN
+	 70yeIxY0LPZHdkI+plP6K7Sn1o50ftLnrRW6/6K4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stuart Hayes <stuart.w.hayes@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Rodrigo Siqueira <siqueira@igalia.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 281/355] platform/x86: dell_rbu: Stop overwriting data buffer
-Date: Mon, 23 Jun 2025 15:08:02 +0200
-Message-ID: <20250623130635.228229407@linuxfoundation.org>
+Subject: [PATCH 5.4 148/222] drm/amdgpu/gfx10: fix CSIB handling
+Date: Mon, 23 Jun 2025 15:08:03 +0200
+Message-ID: <20250623130616.539431148@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
+References: <20250623130611.896514667@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +60,39 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stuart Hayes <stuart.w.hayes@gmail.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit f4b0fa38d5fefe9aed6ed831f3bd3538c168ee19 ]
+[ Upstream commit 683308af030cd9b8d3f1de5cbc1ee51788878feb ]
 
-The dell_rbu driver will use memset() to clear the data held by each
-packet when it is no longer needed (when the driver is unloaded, the
-packet size is changed, etc).
+We shouldn't return after the last section.
+We need to update the rest of the CSIB.
 
-The amount of memory that is cleared (before this patch) is the normal
-packet size. However, the last packet in the list may be smaller.
-
-Fix this to only clear the memory actually used by each packet, to prevent
-it from writing past the end of data buffer.
-
-Because the packet data buffers are allocated with __get_free_pages() (in
-page-sized increments), this bug could only result in a buffer being
-overwritten when a packet size larger than one page is used. The only user
-of the dell_rbu module should be the Dell BIOS update program, which uses
-a packet size of 4096, so no issues should be seen without the patch, it
-just blocks the possiblity.
-
-Fixes: 6c54c28e69f2 ("[PATCH] dell_rbu: new Dell BIOS update driver")
-Signed-off-by: Stuart Hayes <stuart.w.hayes@gmail.com>
-Link: https://lore.kernel.org/r/20250609184659.7210-5-stuart.w.hayes@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Rodrigo Siqueira <siqueira@igalia.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/dell_rbu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/platform/x86/dell_rbu.c b/drivers/platform/x86/dell_rbu.c
-index 0b5c1a0260b7a..68a860a97f319 100644
---- a/drivers/platform/x86/dell_rbu.c
-+++ b/drivers/platform/x86/dell_rbu.c
-@@ -322,7 +322,7 @@ static void packet_empty_list(void)
- 		 * zero out the RBU packet memory before freeing
- 		 * to make sure there are no stale RBU packets left in memory
- 		 */
--		memset(newpacket->data, 0, rbu_data.packetsize);
-+		memset(newpacket->data, 0, newpacket->length);
- 		set_memory_wb((unsigned long)newpacket->data,
- 			1 << newpacket->ordernum);
- 		free_pages((unsigned long) newpacket->data,
+diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+index a84deb3c79a30..44380923b01c8 100644
+--- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
+@@ -944,8 +944,6 @@ static void gfx_v10_0_get_csb_buffer(struct amdgpu_device *adev,
+ 						PACKET3_SET_CONTEXT_REG_START);
+ 				for (i = 0; i < ext->reg_count; i++)
+ 					buffer[count++] = cpu_to_le32(ext->extent[i]);
+-			} else {
+-				return;
+ 			}
+ 		}
+ 	}
 -- 
 2.39.5
 
