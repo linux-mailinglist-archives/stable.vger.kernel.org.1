@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 339CCAE535D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:52:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5638AE54B0
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9E4744220C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D155F1769C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E589225771;
-	Mon, 23 Jun 2025 21:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C8821FF2B;
+	Mon, 23 Jun 2025 22:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UYDutQD6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mkJ4Bbub"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A88A225417;
-	Mon, 23 Jun 2025 21:52:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9D33FB1B;
+	Mon, 23 Jun 2025 22:03:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715521; cv=none; b=Js90ZzT7cBZTJuOliBjKo/yWi3wG7wAlwgPlNrPoZaC1pY5xAQ5GS2aGzUcPDs8hiaXBjqtIxXk1lX/imgX1eGekNDZvvkepqit2kOKvShxysx4tLrkbYVJAm8PYThmiCUtTFZ12Dfoyl0zvj/JtSQxQLG860OyngbXcLHA2imU=
+	t=1750716208; cv=none; b=acT8r7LJNwKD1OFCQultBTj+8un4w7vaI2ClByRf8zx9RqpfnrFbAFvK6Pz8fbdW2Z0y/CgIGvUA9n8uli+sGCBdYy36r6Hq6mcaTsDKEzie8AQwQYm+dwJbBVco5sVBDrcti+EJ0142N+/sA0dcGo40Mrwq649Xe/je5YF2LqA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715521; c=relaxed/simple;
-	bh=oK6bEiBx6V3pwlnfFDWbEcR5UjCwgD8YlP/emdQ5Co4=;
+	s=arc-20240116; t=1750716208; c=relaxed/simple;
+	bh=mqr4XFbkZ1tBbr0vy+9WPDwaxLRoXbGDltspGDtLpAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CCgxHY2Hjd2gKi2/WsSMlD83M/StSfIftDI6jAP6spBxx7fI4CEcU784nby2vB6E4U5ukpRF9QQc9VNsyZwE3Dqr8HlcgWhUGKAXERo1vHuBwYD3nckTwTMc7Ntb4E3G+u/8rID760N5w5szBw29Qk+7yRJQf9w0T0ucZLIghHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UYDutQD6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DE4C4CEF1;
-	Mon, 23 Jun 2025 21:52:00 +0000 (UTC)
+	 MIME-Version; b=X/0zmT7PycZkhqXhZhQ1F4dKwVG3bpDy+oZ6X8ppQJPsrCtUuyEYsZrxnYOAl3K4IAq//LY5zePpvXZSFc4PqpTTYHPHhuQN4+PvyT0K009sroOOVNRJfeVKvbxx3qljKVj02eRtuZcOUoeRVMl/NREm5PpAEXFPpL+tPfO2rZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mkJ4Bbub; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1313FC4CEEA;
+	Mon, 23 Jun 2025 22:03:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715521;
-	bh=oK6bEiBx6V3pwlnfFDWbEcR5UjCwgD8YlP/emdQ5Co4=;
+	s=korg; t=1750716208;
+	bh=mqr4XFbkZ1tBbr0vy+9WPDwaxLRoXbGDltspGDtLpAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UYDutQD6P4YRlVRsKbzfzpOPY3fdngKeL2D6lLSG4LABwXo/u+V/1bW1v0GA+FP5G
-	 NVQEtZ/7GY4qHL1BoOi0OWdVLnouNhFqQHBhlmXDbLVfc5QtpSD1kWS38RD7alCCSJ
-	 zIvLomXyElMi9I612bbA29ne+WJ/C8bLH5S7Y4NA=
+	b=mkJ4BbubmnW3mZN65+QnAuto773h3kte1Z6Bql4w0VhgzzAx1kMO4gmF8Ljgqh5Kb
+	 kzLBS/zcs9d2SCexjdy/7L8PAaqmFX5Lbg2QdvOWO6yemi/RnCFu9IAAwTuT63QTAp
+	 imb6XAGd0mfE4EjekE2LuqsbuphK2aQBPaOoEaz4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Stefan Metzmacher <metze@samba.org>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.6 225/290] ksmbd: fix null pointer dereference in destroy_previous_session
-Date: Mon, 23 Jun 2025 15:08:06 +0200
-Message-ID: <20250623130633.697013202@linuxfoundation.org>
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 529/592] ksmbd: add free_transport ops in ksmbd connection
+Date: Mon, 23 Jun 2025 15:08:07 +0200
+Message-ID: <20250623130713.017800817@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 7ac5b66acafcc9292fb935d7e03790f2b8b2dc0e upstream.
+[ Upstream commit a89f5fae998bdc4d0505306f93844c9ae059d50c ]
 
-If client set ->PreviousSessionId on kerberos session setup stage,
-NULL pointer dereference error will happen. Since sess->user is not
-set yet, It can pass the user argument as NULL to destroy_previous_session.
-sess->user will be set in ksmbd_krb5_authenticate(). So this patch move
-calling destroy_previous_session() after ksmbd_krb5_authenticate().
+free_transport function for tcp connection can be called from smbdirect.
+It will cause kernel oops. This patch add free_transport ops in ksmbd
+connection, and add each free_transports for tcp and smbdirect.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27391
+Fixes: 21a4e47578d4 ("ksmbd: fix use-after-free in __smb2_lease_break_noti()")
+Reviewed-by: Stefan Metzmacher <metze@samba.org>
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ fs/smb/server/connection.c     |  2 +-
+ fs/smb/server/connection.h     |  1 +
+ fs/smb/server/transport_rdma.c | 10 ++++++++--
+ fs/smb/server/transport_tcp.c  |  3 ++-
+ 4 files changed, 12 insertions(+), 4 deletions(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1599,17 +1599,18 @@ static int krb5_authenticate(struct ksmb
- 	out_len = work->response_sz -
- 		(le16_to_cpu(rsp->SecurityBufferOffset) + 4);
- 
--	/* Check previous session */
--	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
--	if (prev_sess_id && prev_sess_id != sess->id)
--		destroy_previous_session(conn, sess->user, prev_sess_id);
--
- 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
- 					 out_blob, &out_len);
- 	if (retval) {
- 		ksmbd_debug(SMB, "krb5 authentication failed\n");
- 		return -EINVAL;
+diff --git a/fs/smb/server/connection.c b/fs/smb/server/connection.c
+index 83764c230e9d4..3f04a2977ba86 100644
+--- a/fs/smb/server/connection.c
++++ b/fs/smb/server/connection.c
+@@ -40,7 +40,7 @@ void ksmbd_conn_free(struct ksmbd_conn *conn)
+ 	kvfree(conn->request_buf);
+ 	kfree(conn->preauth_info);
+ 	if (atomic_dec_and_test(&conn->refcnt)) {
+-		ksmbd_free_transport(conn->transport);
++		conn->transport->ops->free_transport(conn->transport);
+ 		kfree(conn);
  	}
-+
-+	/* Check previous session */
-+	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
-+	if (prev_sess_id && prev_sess_id != sess->id)
-+		destroy_previous_session(conn, sess->user, prev_sess_id);
-+
- 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
+ }
+diff --git a/fs/smb/server/connection.h b/fs/smb/server/connection.h
+index 14620e147dda5..572102098c108 100644
+--- a/fs/smb/server/connection.h
++++ b/fs/smb/server/connection.h
+@@ -132,6 +132,7 @@ struct ksmbd_transport_ops {
+ 			  void *buf, unsigned int len,
+ 			  struct smb2_buffer_desc_v1 *desc,
+ 			  unsigned int desc_len);
++	void (*free_transport)(struct ksmbd_transport *kt);
+ };
  
- 	if ((conn->sign || server_conf.enforced_signing) ||
+ struct ksmbd_transport {
+diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
+index 4998df04ab95a..64a428a06ace0 100644
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -159,7 +159,8 @@ struct smb_direct_transport {
+ };
+ 
+ #define KSMBD_TRANS(t) ((struct ksmbd_transport *)&((t)->transport))
+-
++#define SMBD_TRANS(t)	((struct smb_direct_transport *)container_of(t, \
++				struct smb_direct_transport, transport))
+ enum {
+ 	SMB_DIRECT_MSG_NEGOTIATE_REQ = 0,
+ 	SMB_DIRECT_MSG_DATA_TRANSFER
+@@ -410,6 +411,11 @@ static struct smb_direct_transport *alloc_transport(struct rdma_cm_id *cm_id)
+ 	return NULL;
+ }
+ 
++static void smb_direct_free_transport(struct ksmbd_transport *kt)
++{
++	kfree(SMBD_TRANS(kt));
++}
++
+ static void free_transport(struct smb_direct_transport *t)
+ {
+ 	struct smb_direct_recvmsg *recvmsg;
+@@ -455,7 +461,6 @@ static void free_transport(struct smb_direct_transport *t)
+ 
+ 	smb_direct_destroy_pools(t);
+ 	ksmbd_conn_free(KSMBD_TRANS(t)->conn);
+-	kfree(t);
+ }
+ 
+ static struct smb_direct_sendmsg
+@@ -2281,4 +2286,5 @@ static const struct ksmbd_transport_ops ksmbd_smb_direct_transport_ops = {
+ 	.read		= smb_direct_read,
+ 	.rdma_read	= smb_direct_rdma_read,
+ 	.rdma_write	= smb_direct_rdma_write,
++	.free_transport = smb_direct_free_transport,
+ };
+diff --git a/fs/smb/server/transport_tcp.c b/fs/smb/server/transport_tcp.c
+index abedf510899a7..4e9f98db9ff40 100644
+--- a/fs/smb/server/transport_tcp.c
++++ b/fs/smb/server/transport_tcp.c
+@@ -93,7 +93,7 @@ static struct tcp_transport *alloc_transport(struct socket *client_sk)
+ 	return t;
+ }
+ 
+-void ksmbd_free_transport(struct ksmbd_transport *kt)
++static void ksmbd_tcp_free_transport(struct ksmbd_transport *kt)
+ {
+ 	struct tcp_transport *t = TCP_TRANS(kt);
+ 
+@@ -656,4 +656,5 @@ static const struct ksmbd_transport_ops ksmbd_tcp_transport_ops = {
+ 	.read		= ksmbd_tcp_read,
+ 	.writev		= ksmbd_tcp_writev,
+ 	.disconnect	= ksmbd_tcp_disconnect,
++	.free_transport = ksmbd_tcp_free_transport,
+ };
+-- 
+2.39.5
+
 
 
 
