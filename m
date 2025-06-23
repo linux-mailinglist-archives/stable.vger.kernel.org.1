@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-156337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C25BCAE4F21
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:12:56 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 787D4AE534A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D9CFE3BECF2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:12:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 155B04A77D9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555F0221739;
-	Mon, 23 Jun 2025 21:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B32A2222C2;
+	Mon, 23 Jun 2025 21:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mRi5yAqI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQbUq/dq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13199220F50;
-	Mon, 23 Jun 2025 21:12:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38FFA19049B;
+	Mon, 23 Jun 2025 21:51:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713168; cv=none; b=UPv/8B9sVvC5ttJN0IQf88i3+W+My48Kqr8i6DmtFcBnjcGRnHVzNSeypLNf8CIcbYuqfc9RfAY7AG0tmGmgS9vNAertGYCkS1+EcVJ1gqDhXSqhOwmTRyVS1+rcRNI9+BQBg7GssCWZJqdbvl0qntNu540XYLe6LBemlwrnZA4=
+	t=1750715499; cv=none; b=iwvsTI3yV0Bn8u76mO17w9UbDnGDhPt2Z9JkIwOQLJLymHDR1wz/EDyJPHxMZOdpYfXuir5fdkIjbffRjAeXaUpM87QJCG38i/ufmrm81nHaU+cZRVjDmIuTEMEdDLBVuVDhbH4NeOAZOqk/qboJFCQAbD7mBA4WyF2C/k5Ymzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713168; c=relaxed/simple;
-	bh=hNvaZ3BnQ768LUVARcu9uzp/x6Sdn0k0+aC3yPaw1jM=;
+	s=arc-20240116; t=1750715499; c=relaxed/simple;
+	bh=fdpUCeWTeRqyqucsjTeOrdugIiRCWcvV6gRcLiQpgSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G/T1rZ/J/+zQS32/8c9Y1oXdSGjKPApQWv0ghx2K118Ekqjqgel8nq6/lmTbVizcFQiTagTnO5JY+HBpm1CAU2h7CES8LrxFncYPHAMR1aXBtWmwLlQ+VoltXsbi6uaKaETriE3NK5fvN9+/GhJJjyriPi4pF/UAaqN6Z0pXYZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mRi5yAqI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57273C4CEEA;
-	Mon, 23 Jun 2025 21:12:47 +0000 (UTC)
+	 MIME-Version; b=Cd8MbTm8PGMIlFuSU3slFiMDSUUKDednDW31rqJWh1FbqhlcSvYGZQV1qtAsIbI0osRJZwWT3SYTUDCcmnDKyZumF67SoVBWuI5mRec8h85/sYY6UKfAMASjJw8A3G7TtlEHwFVyUipDlxE83KMVzVgqYQg0zoFjv6nLqV6Slc4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQbUq/dq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5C5DC4CEEA;
+	Mon, 23 Jun 2025 21:51:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713167;
-	bh=hNvaZ3BnQ768LUVARcu9uzp/x6Sdn0k0+aC3yPaw1jM=;
+	s=korg; t=1750715499;
+	bh=fdpUCeWTeRqyqucsjTeOrdugIiRCWcvV6gRcLiQpgSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mRi5yAqIA8Bj3SDOLwx0NynKUqGiaO4lZGmLVKWCJB2Gbzn5tz1qJOSlpJkY9wMSr
-	 RqnIr5l1Ue8ZxtkUX3IU8DsI8fQlEKdTIn6GHwVaNBUE5/HgLhidFpIqbiv/WAY80t
-	 eCLxbcVu0G0r0QMPuWSI1hsGj9OsjK0j8t3vbvXo=
+	b=VQbUq/dqjlrOJDhTRQ3LDHIDjopxj5WV9k18dyIIfIuuFo2XhNZZWKlCox1PQOseG
+	 1hJ3DD4kJJRFpmBF8z1FnvrI50BrdoVC8m/E8bHR4WW/IaFN4xMU5mm4yRxogToCgD
+	 qod6rXZD1NJlGXU2+ApoLu7K4GUE3DwnTD7sRpZY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreu Montiel <Andreu.Montiel@technica-engineering.de>,
-	Carlos Fernandez <carlos.fernandez@technica-engineering.de>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Tung Nguyen <tung.quang.nguyen@est.tech>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/355] macsec: MACsec SCI assignment for ES = 0
+Subject: [PATCH 6.12 193/414] tipc: use kfree_sensitive() for aead cleanup
 Date: Mon, 23 Jun 2025 15:05:30 +0200
-Message-ID: <20250623130630.619396334@linuxfoundation.org>
+Message-ID: <20250623130646.842526506@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,130 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carlos Fernandez <carlos.fernandez@technica-engineering.de>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit d9816ec74e6d6aa29219d010bba3f780ba1d9d75 ]
+[ Upstream commit c8ef20fe7274c5766a317f9193b70bed717b6b3d ]
 
-According to 802.1AE standard, when ES and SC flags in TCI are zero,
-used SCI should be the current active SC_RX. Current code uses the
-header MAC address. Without this patch, when ES flag is 0 (using a
-bridge or switch), header MAC will not fit the SCI and MACSec frames
-will be discarted.
+The tipc_aead_free() function currently uses kfree() to release the aead
+structure. However, this structure contains sensitive information, such
+as key's SALT value, which should be securely erased from memory to
+prevent potential leakage.
 
-In order to test this issue, MACsec link should be stablished between
-two interfaces, setting SC and ES flags to zero and a port identifier
-different than one. For example, using ip macsec tools:
+To enhance security, replace kfree() with kfree_sensitive() when freeing
+the aead structure. This change ensures that sensitive data is explicitly
+cleared before memory deallocation, aligning with the approach used in
+tipc_aead_init() and adhering to best practices for handling confidential
+information.
 
-ip link add link $ETH0 macsec0 type macsec port 11 send_sci off
-end_station off
-ip macsec add macsec0 tx sa 0 pn 2 on key 01 $ETH1_KEY
-ip macsec add macsec0 rx port 11 address $ETH1_MAC
-ip macsec add macsec0 rx port 11 address $ETH1_MAC sa 0 pn 2 on key 02
-ip link set dev macsec0 up
-
-ip link add link $ETH1 macsec1 type macsec port 11 send_sci off
-end_station off
-ip macsec add macsec1 tx sa 0 pn 2 on key 01 $ETH0_KEY
-ip macsec add macsec1 rx port 11 address $ETH0_MAC
-ip macsec add macsec1 rx port 11 address $ETH0_MAC sa 0 pn 2 on key 02
-ip link set dev macsec1 up
-
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Co-developed-by: Andreu Montiel <Andreu.Montiel@technica-engineering.de>
-Signed-off-by: Andreu Montiel <Andreu.Montiel@technica-engineering.de>
-Signed-off-by: Carlos Fernandez <carlos.fernandez@technica-engineering.de>
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Tung Nguyen <tung.quang.nguyen@est.tech>
+Link: https://patch.msgid.link/20250523114717.4021518-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 40 ++++++++++++++++++++++++++++++++++------
- 1 file changed, 34 insertions(+), 6 deletions(-)
+ net/tipc/crypto.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index 5e30fd017b3ac..e6a013da6680c 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -260,15 +260,39 @@ static sci_t make_sci(u8 *addr, __be16 port)
- 	return sci;
+diff --git a/net/tipc/crypto.c b/net/tipc/crypto.c
+index 79f91b6ca8c84..ea5bb131ebd06 100644
+--- a/net/tipc/crypto.c
++++ b/net/tipc/crypto.c
+@@ -425,7 +425,7 @@ static void tipc_aead_free(struct rcu_head *rp)
+ 	}
+ 	free_percpu(aead->tfm_entry);
+ 	kfree_sensitive(aead->key);
+-	kfree(aead);
++	kfree_sensitive(aead);
  }
  
--static sci_t macsec_frame_sci(struct macsec_eth_header *hdr, bool sci_present)
-+static sci_t macsec_active_sci(struct macsec_secy *secy)
- {
--	sci_t sci;
-+	struct macsec_rx_sc *rx_sc = rcu_dereference_bh(secy->rx_sc);
-+
-+	/* Case single RX SC */
-+	if (rx_sc && !rcu_dereference_bh(rx_sc->next))
-+		return (rx_sc->active) ? rx_sc->sci : 0;
-+	/* Case no RX SC or multiple */
-+	else
-+		return 0;
-+}
-+
-+static sci_t macsec_frame_sci(struct macsec_eth_header *hdr, bool sci_present,
-+			      struct macsec_rxh_data *rxd)
-+{
-+	struct macsec_dev *macsec;
-+	sci_t sci = 0;
- 
--	if (sci_present)
-+	/* SC = 1 */
-+	if (sci_present) {
- 		memcpy(&sci, hdr->secure_channel_id,
- 		       sizeof(hdr->secure_channel_id));
--	else
-+	/* SC = 0; ES = 0 */
-+	} else if ((!(hdr->tci_an & (MACSEC_TCI_ES | MACSEC_TCI_SC))) &&
-+		   (list_is_singular(&rxd->secys))) {
-+		/* Only one SECY should exist on this scenario */
-+		macsec = list_first_or_null_rcu(&rxd->secys, struct macsec_dev,
-+						secys);
-+		if (macsec)
-+			return macsec_active_sci(&macsec->secy);
-+	} else {
- 		sci = make_sci(hdr->eth.h_source, MACSEC_PORT_ES);
-+	}
- 
- 	return sci;
- }
-@@ -1096,7 +1120,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 	struct macsec_rxh_data *rxd;
- 	struct macsec_dev *macsec;
- 	unsigned int len;
--	sci_t sci;
-+	sci_t sci = 0;
- 	u32 hdr_pn;
- 	bool cbit;
- 	struct pcpu_rx_sc_stats *rxsc_stats;
-@@ -1143,11 +1167,14 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 
- 	macsec_skb_cb(skb)->has_sci = !!(hdr->tci_an & MACSEC_TCI_SC);
- 	macsec_skb_cb(skb)->assoc_num = hdr->tci_an & MACSEC_AN_MASK;
--	sci = macsec_frame_sci(hdr, macsec_skb_cb(skb)->has_sci);
- 
- 	rcu_read_lock();
- 	rxd = macsec_data_rcu(skb->dev);
- 
-+	sci = macsec_frame_sci(hdr, macsec_skb_cb(skb)->has_sci, rxd);
-+	if (!sci)
-+		goto drop_nosc;
-+
- 	list_for_each_entry_rcu(macsec, &rxd->secys, secys) {
- 		struct macsec_rx_sc *sc = find_rx_sc(&macsec->secy, sci);
- 
-@@ -1270,6 +1297,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 	macsec_rxsa_put(rx_sa);
- drop_nosa:
- 	macsec_rxsc_put(rx_sc);
-+drop_nosc:
- 	rcu_read_unlock();
- drop_direct:
- 	kfree_skb(skb);
+ static int tipc_aead_users(struct tipc_aead __rcu *aead)
 -- 
 2.39.5
 
