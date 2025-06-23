@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 300B7AE4FF2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE274AE504A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C18F517FCE2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:05 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 499F14A0900
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7913418E377;
-	Mon, 23 Jun 2025 21:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3664A1E5B71;
+	Mon, 23 Jun 2025 21:23:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0Cxczsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeWtC+rZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 367647482;
-	Mon, 23 Jun 2025 21:21:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89391ACEDA;
+	Mon, 23 Jun 2025 21:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713663; cv=none; b=nnR/cEOkDWxKCrEEcNBaeHLvcxuRNx1q54aKbSdD51IWllhnar6fGXRB02bQgMzDbebebccS0CEqRFnuvFzOxDxvRRSuMx+djPErpOSy6M0H47GMIQ0fKhTp3VX+rgGjHm7p23B+SaYRCf5ZAciAw2QJYYCB3r/2uXUbzqfeG6k=
+	t=1750713828; cv=none; b=OyTSGVOJmYmwi58Je06uwTJy+UE+AndpVnNfHbKafcKS12oNzgsk9uAlf8ZPEZAE5DsxzIqgJhgELB+injpvt9+KAsoAW/jnmurbu9Nmi9cvq/z9rHc+yqia1CkNx4GL15BkNPxjnx84UiQqSBCIiGzTNFGUCaI7zx3ZQkIN99s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713663; c=relaxed/simple;
-	bh=DGjOACtEnC4kqunEgRET4PmlzrXtjkwHRMYIA4eEbAE=;
+	s=arc-20240116; t=1750713828; c=relaxed/simple;
+	bh=7rcjZ0z6wC9+XIiup5BoAsYw2sIBF8YwYvd6yDikqj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iEHOtYIazOzXU+VugNjMihRMXD16UFaUHNs4g4eMe5gp6j2n+dIdZDaWkWm0jFkY3BTv+aTKlhchBvBzCrEc9qQ7fHIMR3isUsogXm5j8qTbBxz4uQI6JvKOdFrzbHzfxUC4F2yOpXTq65KuXydK04UEGk07f7e7UfZ+QwKfFrQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0Cxczsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4260C4CEEA;
-	Mon, 23 Jun 2025 21:21:02 +0000 (UTC)
+	 MIME-Version; b=nAzuYVzhfqPuYXZqrsez1slDEn1T6yZJ7bsGCGsW5zhU/0M+E977OWRpBdO3JKHbMwV1ZZl2TTtd4ZewTJ0M2ltWvUVeuRt9LEIAvAJKDaRD5pZQ7d2ElRueZMka2d21CPwW3QoG/N72Sv7f9HA+L2/FFwOUDswinuCe7J3zhC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeWtC+rZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80385C4CEEA;
+	Mon, 23 Jun 2025 21:23:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713663;
-	bh=DGjOACtEnC4kqunEgRET4PmlzrXtjkwHRMYIA4eEbAE=;
+	s=korg; t=1750713827;
+	bh=7rcjZ0z6wC9+XIiup5BoAsYw2sIBF8YwYvd6yDikqj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0Cxczsd+GBN4fJ5QdbAkKPXSz3V/KvNTPLyblOO1leGvoHCWVVXxHHqIv5colBqm
-	 48mPLzasObJXw/4witTaraGque49XAqx2Bye7ZVA7odXa1aboSr/1dSmJ6sU+cHpUd
-	 3nhk1KXCtvBYlHD2toFVVdsstOsgU7r9rvW5CsBc=
+	b=KeWtC+rZJl8dhLNAGmBF2wEDUR2Ad46A/4HXqNqjxLDuElPuot7wTyJRiuAtJa11S
+	 o+3KgNqD//UJRYlFlKm/S1+tLAQsS7mKfIftpkP5leLe7nNCPF+ZPqz0c/RZP4GZaG
+	 /o8IBYPYxb4JrbFa2erDx5jGLv0N6xtkKTTjSQec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 056/414] media: intel/ipu6: Fix dma mask for non-secure mode
-Date: Mon, 23 Jun 2025 15:03:13 +0200
-Message-ID: <20250623130643.466121171@linuxfoundation.org>
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 149/508] nfs: ignore SB_RDONLY when remounting nfs
+Date: Mon, 23 Jun 2025 15:03:14 +0200
+Message-ID: <20250623130648.948756742@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 0209916ebe2475079ce6d8dc4114afbc0ccad1c2 upstream.
+[ Upstream commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a ]
 
-We use dma_get_mask() of auxdev device for calculate iova pfn limit.
-This is always 32 bit mask as we do not initialize the mask (and we can
-not do so, since dev->dev_mask is NULL anyways for auxdev).
+In some scenarios, when mounting NFS, more than one superblock may be
+created. The final superblock used is the last one created, but only the
+first superblock carries the ro flag passed from user space. If a ro flag
+is added to the superblock via remount, it will trigger the issue
+described in Link[1].
 
-Since we need 31 bit mask for non-secure mode use mmu_info->aperture_end
-which is properly initialized to correct mask for both modes.
+Link[2] attempted to address this by marking the superblock as ro during
+the initial mount. However, this introduced a new problem in scenarios
+where multiple mount points share the same superblock:
+[root@a ~]# mount /dev/sdb /mnt/sdb
+[root@a ~]# echo "/mnt/sdb *(rw,no_root_squash)" > /etc/exports
+[root@a ~]# echo "/mnt/sdb/test_dir2 *(ro,no_root_squash)" >> /etc/exports
+[root@a ~]# systemctl restart nfs-server
+[root@a ~]# mount -t nfs -o rw 127.0.0.1:/mnt/sdb/test_dir1 /mnt/test_mp1
+[root@a ~]# mount | grep nfs4
+127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (rw,relatime,...
+[root@a ~]# mount -t nfs -o ro 127.0.0.1:/mnt/sdb/test_dir2 /mnt/test_mp2
+[root@a ~]# mount | grep nfs4
+127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (ro,relatime,...
+127.0.0.1:/mnt/sdb/test_dir2 on /mnt/test_mp2 type nfs4 (ro,relatime,...
+[root@a ~]#
 
-Fixes: daabc5c64703 ("media: ipu6: not override the dma_ops of device in driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+When mounting the second NFS, the shared superblock is marked as ro,
+causing the previous NFS mount to become read-only.
+
+To resolve both issues, the ro flag is no longer applied to the superblock
+during remount. Instead, the ro flag on the mount is used to control
+whether the mount point is read-only.
+
+Fixes: 281cad46b34d ("NFS: Create a submount rpc_op")
+Link[1]: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
+Link[2]: https://lore.kernel.org/all/20241130035818.1459775-1-lilingfeng3@huawei.com/
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu6/ipu6-dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfs/super.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/media/pci/intel/ipu6/ipu6-dma.c b/drivers/media/pci/intel/ipu6/ipu6-dma.c
-index 1ca60ca79dba..7296373d36b0 100644
---- a/drivers/media/pci/intel/ipu6/ipu6-dma.c
-+++ b/drivers/media/pci/intel/ipu6/ipu6-dma.c
-@@ -172,7 +172,7 @@ void *ipu6_dma_alloc(struct ipu6_bus_device *sys, size_t size,
- 	count = PHYS_PFN(size);
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index a4679cd75f70a..2dca011da034e 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1017,6 +1017,16 @@ int nfs_reconfigure(struct fs_context *fc)
  
- 	iova = alloc_iova(&mmu->dmap->iovad, count,
--			  PHYS_PFN(dma_get_mask(dev)), 0);
-+			  PHYS_PFN(mmu->dmap->mmu_info->aperture_end), 0);
- 	if (!iova)
- 		goto out_kfree;
+ 	sync_filesystem(sb);
  
-@@ -398,7 +398,7 @@ int ipu6_dma_map_sg(struct ipu6_bus_device *sys, struct scatterlist *sglist,
- 		nents, npages);
- 
- 	iova = alloc_iova(&mmu->dmap->iovad, npages,
--			  PHYS_PFN(dma_get_mask(dev)), 0);
-+			  PHYS_PFN(mmu->dmap->mmu_info->aperture_end), 0);
- 	if (!iova)
- 		return 0;
- 
++	/*
++	 * The SB_RDONLY flag has been removed from the superblock during
++	 * mounts to prevent interference between different filesystems.
++	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
++	 * during reconfiguration; otherwise, it may also result in the
++	 * creation of redundant superblocks when mounting a directory with
++	 * different rw and ro flags multiple times.
++	 */
++	fc->sb_flags_mask &= ~SB_RDONLY;
++
+ 	/*
+ 	 * Userspace mount programs that send binary options generally send
+ 	 * them populated with default values. We have no way to know which
 -- 
-2.50.0
+2.39.5
 
 
 
