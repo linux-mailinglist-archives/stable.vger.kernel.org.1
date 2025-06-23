@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-157591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7816DAE54BB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71FEDAE53CD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7FF854C1617
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 19EB07B11E1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:55:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6173721FF2B;
-	Mon, 23 Jun 2025 22:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95DD71FECBA;
+	Mon, 23 Jun 2025 21:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZhKhvzP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R4jHeItg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F88E3FB1B;
-	Mon, 23 Jun 2025 22:04:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5116D222581;
+	Mon, 23 Jun 2025 21:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716243; cv=none; b=FAx3Ff3MmY/HyUMTUE0hblwi/PJVHJJdhSqgSlFDsXt3YyspjDN9OqX1GqALZPA3CZNQ7+GurTLGoce0yUY00M0BIXHdSf2Isbn0xZg93wvaTj+piPZsPs4tOwd8Fg9P5u1BBlR710qsOw1rr/TUQD8UDtILEbuefBrFmZm2pcw=
+	t=1750715790; cv=none; b=FoF2RHgC6xLc65AYaz4TS6RNGlFWOP1Jms8cX/U/Hqor2189t3KHwH1UR9LtMesYxTShPxV36Uf8v+5Y8OusCnxhEezt4e7H4Fhr3mRHtvwD5nlcgj9XOFIS1zrQ9ynVKyzz/ZahzKogtM4DlAPbADHnHXBPAqFC+p6jTZDleaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716243; c=relaxed/simple;
-	bh=ucs9yuDpXAXYH64rd1Tml9otnXyMLogyAOFBKK0cmoI=;
+	s=arc-20240116; t=1750715790; c=relaxed/simple;
+	bh=JMH+pXX7a7lwz1EPhYv4MZbllg9jHIRi9eIECgf+n+o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r6tgfBSf39sHhIH3i0/2zkSxRyxIyawPPmExssSZCcHbipgB9SAsG9lhVTolRV74g4NewCfOC38XSy4RxcJiFlCGtF63ILjqUOmmgwHWkyYVo5R30v4G8YMzcHSETeCFGcPyyIjINip6NJ0Q57f1jFpS+GaP7GjDzQN9vtCe21A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZhKhvzP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A131AC4CEEA;
-	Mon, 23 Jun 2025 22:04:02 +0000 (UTC)
+	 MIME-Version; b=ez/qAQ6tIcWQWQTvW8HV1wnpHXtENobrgYKTT9VXRkQegHms8VmBC8qVf7JYNXG2W6w2fZ3OBOh5ASLDiv2iPoyWC3XGgOjbPdCAQnEwv7qjIJ6EmjwMerHXzOSh2xUwRihSpeRl/gdWr20UL5jlZ436XJpji6rvKaX1/kw1pY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R4jHeItg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD9BAC4CEEA;
+	Mon, 23 Jun 2025 21:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716243;
-	bh=ucs9yuDpXAXYH64rd1Tml9otnXyMLogyAOFBKK0cmoI=;
+	s=korg; t=1750715790;
+	bh=JMH+pXX7a7lwz1EPhYv4MZbllg9jHIRi9eIECgf+n+o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZhKhvzPEaMb47a2+ZPiXFFJDdJeiu58pdvGDKi18CJviyTUUoQ2NU3DCrLSKS377
-	 RA7P4uIDKjPsZA2Rd0eeKv4lypybMz+nPi0/ui+64QR/WdgpJJClg4AFVr0BE5/bVN
-	 qR9aIrubB7mkQllUcEgLNtYWTs4NQ/AZrtQqIxS0=
+	b=R4jHeItgq+gbZfY5YEqJjap0LFkB6cmGPPnDoXpDifBlaE8W97R//OxnbYpb0J5Yz
+	 h4Txp1GWHSXVi7vx2xb1GlN/tCd7eLMsnRj+sUgb3Kyx4Wewq/CvDTstvhBpTIPc3u
+	 csUP1Evw3SRKnpCAp2Kw+G/dv8zxNlEoUiFfBUvg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marcus Folkesson <marcus.folkesson@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 337/411] watchdog: da9052_wdt: respect TWDMIN
-Date: Mon, 23 Jun 2025 15:08:01 +0200
-Message-ID: <20250623130642.132216931@linuxfoundation.org>
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 221/290] net_sched: sch_sfq: reject invalid perturb period
+Date: Mon, 23 Jun 2025 15:08:02 +0200
+Message-ID: <20250623130633.575632197@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marcus Folkesson <marcus.folkesson@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 325f510fcd9cda5a44bcb662b74ba4e3dabaca10 ]
+commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
 
-We have to wait at least the minimium time for the watchdog window
-(TWDMIN) before writings to the wdt register after the
-watchdog is activated.
-Otherwise the chip will assert TWD_ERROR and power down to reset mode.
+Gerrard Tai reported that SFQ perturb_period has no range check yet,
+and this can be used to trigger a race condition fixed in a separate patch.
 
-Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250326-da9052-fixes-v3-4-a38a560fef0e@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We want to make sure ctl->perturb_period * HZ will not overflow
+and is positive.
+
+Tested:
+
+tc qd add dev lo root sfq perturb -10   # negative value : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 1000000000 # too big : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 2000000 # acceptable value
+tc -s -d qd sh dev lo
+qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/da9052_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/sched/sch_sfq.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/watchdog/da9052_wdt.c b/drivers/watchdog/da9052_wdt.c
-index d708c091bf1b1..180526220d8c4 100644
---- a/drivers/watchdog/da9052_wdt.c
-+++ b/drivers/watchdog/da9052_wdt.c
-@@ -164,6 +164,7 @@ static int da9052_wdt_probe(struct platform_device *pdev)
- 	da9052_wdt = &driver_data->wdt;
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+ 		return -EINVAL;
+ 	}
++
++	if (ctl->perturb_period < 0 ||
++	    ctl->perturb_period > INT_MAX / HZ) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++		return -EINVAL;
++	}
++	perturb_period = ctl->perturb_period * HZ;
++
+ 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
+ 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
+ 		return -EINVAL;
+@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
+ 	headdrop = q->headdrop;
+ 	maxdepth = q->maxdepth;
+ 	maxflows = q->maxflows;
+-	perturb_period = q->perturb_period;
+ 	quantum = q->quantum;
+ 	flags = q->flags;
  
- 	da9052_wdt->timeout = DA9052_DEF_TIMEOUT;
-+	da9052_wdt->min_hw_heartbeat_ms = DA9052_TWDMIN;
- 	da9052_wdt->info = &da9052_wdt_info;
- 	da9052_wdt->ops = &da9052_wdt_ops;
- 	da9052_wdt->parent = dev;
--- 
-2.39.5
-
+ 	/* update and validate configuration */
+ 	if (ctl->quantum)
+ 		quantum = ctl->quantum;
+-	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+ 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
 
 
 
