@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2779BAE4F83
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:16:41 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B343BAE523B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:41:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B215D7AD2FE
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:14:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 872EB1B64ABF
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:41:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E3C71F582A;
-	Mon, 23 Jun 2025 21:15:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0490222576;
+	Mon, 23 Jun 2025 21:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdDMNnRh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1V7p/tra"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA225FDA7;
-	Mon, 23 Jun 2025 21:15:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A438D21D3DD;
+	Mon, 23 Jun 2025 21:41:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713354; cv=none; b=SHx1DmkFH2gyslj3E1aUIiuHDaG5+gAczhSNDrya3iLyY0C29QFYdVFTRI+fV0XLxjseIycGGShWBYhu4SS423+4YSait2pEO4K0aBB+AAd0v30WVxHi3S1aUgwNjzzC8mTMeNuGwhPLAQgQ97Hav1F3NkMerK95fbBNNUEIohU=
+	t=1750714899; cv=none; b=cVqtGZHhDg0xv3EGFSGKO6bLd2vNSI10kli5A5FimgnXF9ZAKDtt8LHpYAolH9ViiDrGEZvOb9Pre4d2YwBaqq5j9/s0OQfv/kgVU/xEtTHEKVw0d3SFPV94kvL782+jGd0MMqph4djSmuHPytfpxXl/t/GGfz+dJ4JckNX466A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713354; c=relaxed/simple;
-	bh=DwGeZT6ZxatV3bHr4v6YAtJvDdap+hsEsml4grEFIig=;
+	s=arc-20240116; t=1750714899; c=relaxed/simple;
+	bh=nflgTGHayodM3S76F3G7dDw9DDRbOOjiIPfJdplUi+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VvHNQkztbXE68GTAvveDj2TgLemfoVpY/R3/gawXH376QB0fBfwpa6G18gnILGv/q1hcPeLuJRByi4h09tSuIX13GLvNcUV5zJQ5alfv+m0dwdfiybP0kbA2p6z2kGCQae5bjViu1RFmscs+BL4SLaqsbf3P7KPbSegkOh7YEx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdDMNnRh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B309C4CEEA;
-	Mon, 23 Jun 2025 21:15:53 +0000 (UTC)
+	 MIME-Version; b=Qp7Y68WVj+qSYJc2X/Pxx6fi4mW0yltfn+Jp5tNKAruD0CQcGj6Uhdgv3LhpECCYWlxz/8XpQoHZp4Es8QOjPwfVBKAqQqFTzKxRVjy0Ig8n8hzwgpaO7VjKvTSB1ZUSm0YsyrSYmAvtNSxxYHLMPA37i6gkunAt17n8O+9NPRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1V7p/tra; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BC37C4CEED;
+	Mon, 23 Jun 2025 21:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713353;
-	bh=DwGeZT6ZxatV3bHr4v6YAtJvDdap+hsEsml4grEFIig=;
+	s=korg; t=1750714899;
+	bh=nflgTGHayodM3S76F3G7dDw9DDRbOOjiIPfJdplUi+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EdDMNnRhlpT4g/wzsvwGIKmvmtnk+x+sAz1sHZDrQKtlG+6xDeEN6NRQsLeLPMBU/
-	 tLJYHbEFTC/9pZ8Jf+/f0lF5w4XFy9MXgrE3XaiJOjFeCgl6Ds5QmYYIpeUclFX8Tx
-	 gVOyblQ+KiXb7E54/ox6B0OOO01ctSzlr8Eh15e4=
+	b=1V7p/tracVUEd6QHQ2emIZhlZCIrxSQk7SqWFswai+jo0iy1IWiNey91wtFC/PbAE
+	 M9HhpfPMhX/IbJmjGd6SQkECk0EhlWo3va6hQJl83z5f1Qc+hA0BMPl2h6kNNde1Vl
+	 CRA6X+Bp8YIGlx3+UUTMDV5rGKB8Kckg2zq2WFtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 322/592] Bluetooth: btmrvl_sdio: Fix wakeup source leaks on device unbind
+	Shyam Prasad N <sprasad@microsoft.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 143/414] cifs: reset connections for all channels when reconnect requested
 Date: Mon, 23 Jun 2025 15:04:40 +0200
-Message-ID: <20250623130708.103038953@linuxfoundation.org>
+Message-ID: <20250623130645.630229846@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,42 +61,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Shyam Prasad N <sprasad@microsoft.com>
 
-[ Upstream commit ba6535e8b494931471df9666addf0f1e5e6efa27 ]
+commit 1f396b9bfe39aaf55ea74a7005806164b236653d upstream.
 
-Device can be unbound or probe can fail, so driver must also release
-memory for the wakeup source.
+cifs_reconnect can be called with a flag to mark the session as needing
+reconnect too. When this is done, we expect the connections of all
+channels to be reconnected too, which is not happening today.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Without doing this, we have seen bad things happen when primary and
+secondary channels are connected to different servers (in case of cloud
+services like Azure Files SMB).
+
+This change would force all connections to reconnect as well, not just
+the sessions and tcons.
+
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btmrvl_sdio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/smb/client/connect.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/bluetooth/btmrvl_sdio.c b/drivers/bluetooth/btmrvl_sdio.c
-index 07cd308f7abf6..93932a0d8625a 100644
---- a/drivers/bluetooth/btmrvl_sdio.c
-+++ b/drivers/bluetooth/btmrvl_sdio.c
-@@ -100,7 +100,9 @@ static int btmrvl_sdio_probe_of(struct device *dev,
- 			}
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -393,6 +393,13 @@ static int __cifs_reconnect(struct TCP_S
+ 	if (!cifs_tcp_ses_needs_reconnect(server, 1))
+ 		return 0;
  
- 			/* Configure wakeup (enabled by default) */
--			device_init_wakeup(dev, true);
-+			ret = devm_device_init_wakeup(dev);
-+			if (ret)
-+				return dev_err_probe(dev, ret, "Failed to init wakeup\n");
- 		}
- 	}
++	/*
++	 * if smb session has been marked for reconnect, also reconnect all
++	 * connections. This way, the other connections do not end up bad.
++	 */
++	if (mark_smb_session)
++		cifs_signal_cifsd_for_reconnect(server, mark_smb_session);
++
+ 	cifs_mark_tcp_ses_conns_for_reconnect(server, mark_smb_session);
  
--- 
-2.39.5
-
+ 	cifs_abort_connection(server);
 
 
 
