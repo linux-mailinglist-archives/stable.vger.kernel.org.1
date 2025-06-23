@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-157653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63431AE54FA
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:06:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B0F7AE566D
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:20:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1CBAB4C29D8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:06:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1EEB44C8301
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:19:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06741221DAE;
-	Mon, 23 Jun 2025 22:06:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2200A1F6667;
+	Mon, 23 Jun 2025 22:19:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="js7FHl5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jA6/1+II"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B61951E87B;
-	Mon, 23 Jun 2025 22:06:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37D019E7F9;
+	Mon, 23 Jun 2025 22:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716394; cv=none; b=J27Wfb0lCSYTiEbn4OdSo6LiW9A4r9PP15pjUWS/G3XUmpktLCna1Kxje6jEpXSHCvLg0flnb7bvDnviJ/8kZHtzqR/6f4ae1ztZKaYHZTxxKD/ImM7TZ7EZqpdTdAqFGK5WYeDPR1gdBaJY5BfIfbA2V4+hF6sGns5zVvgy/r0=
+	t=1750717182; cv=none; b=XJoFP1dtHAxBtE6kFjCeU3vEp9hqaMS8hpVCpx8oON9Y8qooDUKfyzecDANO619o1DTljEbRD8jD47bJpDux0TT0Gx+xbaYA47QWX+phckFBYcgDPmkr2lBmZ8eIUlk6MzqJfDEXsWjO3a7DsZPurlUDGPsQPC/zXUPntXToWYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716394; c=relaxed/simple;
-	bh=sskoEcqTswoU5sD39TnbgB/AUoFDMg+h7UPN17Bk6Og=;
+	s=arc-20240116; t=1750717182; c=relaxed/simple;
+	bh=MoVYi3v3DalYI8kXrZ3gLv/3LYL9KT4/WMIu4Dfbb98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGU0W8S+W7TPN+e6UAk0ZghAPtljQRJWVDvQXP6bOe/AJsR72UQrhFXyZH7Vfcn9Z+rgkBAVbfn/12gdfiMlSGx4S5gz8H5MrQWOEDm11g9RkyfeZwMNEhYUk0uL4kXh6+GCdT38xXG48OVcH9BaNEheW/LwJlSjFYZmxES56+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=js7FHl5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF42C4CEEA;
-	Mon, 23 Jun 2025 22:06:34 +0000 (UTC)
+	 MIME-Version; b=lNkHQoazciEVfMtCB9ut2TCNtAffKK2IZRdIWrpJNA/GRfv39oj4LuCwbnJJSh3zF3rEBCPhQesrolMzRz6iNoPA4PpzjDeevHPplucaLzY4RwQzVEKPPwRgyi7oN57gPlbVfntBM6+0VadKQX0VAl7rxmH+R02hEuSO50wW/3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jA6/1+II; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D7ACC4CEEA;
+	Mon, 23 Jun 2025 22:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716394;
-	bh=sskoEcqTswoU5sD39TnbgB/AUoFDMg+h7UPN17Bk6Og=;
+	s=korg; t=1750717182;
+	bh=MoVYi3v3DalYI8kXrZ3gLv/3LYL9KT4/WMIu4Dfbb98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=js7FHl5P0Fc8l0fi375NrZYS/Ewn4wkothRfK7PUQuLJ4r4Njyj+7g19Ey1Pr5gH1
-	 GffRLf1s7UORDd68LgxrzHkfSuKAtqE0VhRsDD1Bzr3YLjS4LcwWQygWXXJiFFlr7J
-	 CtP1etHvqAkmox2lEFjHJCZN1TvjPhtA0fhD2G7I=
+	b=jA6/1+IIRBZR4oZDbmp7Hl5H2W8aI5ThIPoh3beoUG3/k79nzIW5/UEkHZLYrlqj/
+	 jYdKlbrjG6tDKpEKyl8wje4XmyEaMur+WCJUxFN72fsn3MpdQ0fb9COX1eOgU2/QKU
+	 YxM/INTtr6SBbFQ6zpq6tqsnl0oXT20fHkcudN3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 326/411] scsi: lpfc: Fix lpfc_check_sli_ndlp() handling for GEN_REQUEST64 commands
-Date: Mon, 23 Jun 2025 15:07:50 +0200
-Message-ID: <20250623130641.847550048@linuxfoundation.org>
+	Jonathan Lane <jon@borg.moe>,
+	Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 6.12 334/414] ALSA: hda/realtek: enable headset mic on Latitude 5420 Rugged
+Date: Mon, 23 Jun 2025 15:07:51 +0200
+Message-ID: <20250623130650.334425833@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Justin Tee <justin.tee@broadcom.com>
+From: Jonathan Lane <jon@borg.moe>
 
-[ Upstream commit 05ae6c9c7315d844fbc15afe393f5ba5e5771126 ]
+commit efa6bdf1bc75e26cafaa5f1d775e8bb7c5b0c431 upstream.
 
-In lpfc_check_sli_ndlp(), the get_job_els_rsp64_did remote_id assignment
-does not apply for GEN_REQUEST64 commands as it only has meaning for a
-ELS_REQUEST64 command.  So, if (iocb->ndlp == ndlp) is false, we could
-erroneously return the wrong value.  Fix by replacing the fallthrough
-statement with a break statement before the remote_id check.
+Like many Dell laptops, the 3.5mm port by default can not detect a
+combined headphones+mic headset or even a pure microphone.  This
+change enables the port's functionality.
 
-Signed-off-by: Justin Tee <justin.tee@broadcom.com>
-Link: https://lore.kernel.org/r/20250425194806.3585-2-justintee8345@gmail.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Jonathan Lane <jon@borg.moe>
+Cc: <stable@vger.kernel.org>
+Link: https://patch.msgid.link/20250611193124.26141-2-jon@borg.moe
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/lpfc/lpfc_hbadisc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_hbadisc.c b/drivers/scsi/lpfc/lpfc_hbadisc.c
-index d04669ae878bd..413b7adca0211 100644
---- a/drivers/scsi/lpfc/lpfc_hbadisc.c
-+++ b/drivers/scsi/lpfc/lpfc_hbadisc.c
-@@ -5086,7 +5086,7 @@ lpfc_check_sli_ndlp(struct lpfc_hba *phba,
- 		case CMD_GEN_REQUEST64_CR:
- 			if (iocb->context_un.ndlp == ndlp)
- 				return 1;
--			fallthrough;
-+			break;
- 		case CMD_ELS_REQUEST64_CR:
- 			if (icmd->un.elsreq64.remoteID == ndlp->nlp_DID)
- 				return 1;
--- 
-2.39.5
-
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10449,6 +10449,7 @@ static const struct hda_quirk alc269_fix
+ 	SND_PCI_QUIRK(0x1028, 0x0871, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0872, "Dell Precision 3630", ALC255_FIXUP_DELL_HEADSET_MIC),
+ 	SND_PCI_QUIRK(0x1028, 0x0873, "Dell Precision 3930", ALC255_FIXUP_DUMMY_LINEOUT_VERB),
++	SND_PCI_QUIRK(0x1028, 0x0879, "Dell Latitude 5420 Rugged", ALC269_FIXUP_DELL4_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ad, "Dell WYSE AIO", ALC225_FIXUP_DELL_WYSE_AIO_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x08ae, "Dell WYSE NB", ALC225_FIXUP_DELL1_MIC_NO_PRESENCE),
+ 	SND_PCI_QUIRK(0x1028, 0x0935, "Dell", ALC274_FIXUP_DELL_AIO_LINEOUT_VERB),
 
 
 
