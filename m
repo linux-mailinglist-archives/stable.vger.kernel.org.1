@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-155691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39595AE4336
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CEBB5AE4417
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D9AA189A8DD
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5FF0F18990F9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 646FA23A9BE;
-	Mon, 23 Jun 2025 13:24:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B63C7255F26;
+	Mon, 23 Jun 2025 13:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnjNEtg+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQXtQ7/r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C1F23BF9F;
-	Mon, 23 Jun 2025 13:24:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 741CE2F24;
+	Mon, 23 Jun 2025 13:33:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685085; cv=none; b=e98X7cSqXnr+7hch0mkuv9xoUIi3oDU1iXCWLHlnH6eMGSveeV7hLprRsmpYFMTvKynlo0xS74LnrHY58MrbLAZfNDCuP1b4/LaPzgV+kAlSMryZ4qHjSXBxWtSM1jjmseOU7/gbe+fdlo7Na47uYtlVxzLR3yw49etRgyNgMyA=
+	t=1750685590; cv=none; b=YGYMiE3O79+NHdrY67ulS2/9y1193EWqTHd3FAgsQA1TLglpVjljvgxBzgVx1BQGWOE02CNIqbsCajTMb/INB68HaBjfgh8Ds5F6OpqwvCTxYBpHks36p68D4/GcAlLkAEhBPfCcIz0m48woVfzTRn6SF873uq441zJJUnk5uUA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685085; c=relaxed/simple;
-	bh=jjrJ8rmTosgrQ8aPeFFoUZXKBWM+mm4ouS2G0prpcxg=;
+	s=arc-20240116; t=1750685590; c=relaxed/simple;
+	bh=qjiM0sMEQ2Us99Yv9HN7z0ji/lMtsiz/Mdm0pMT4QPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmsGNq0c4/tGAuIgBMlLFxOwee+gaglZUDg9Jp6w6ezNo0mY6FKmLFvgz8rKmtS69OgOJjx2p7VOJcrG1+TcZbh4KXDYfRtt6GvUwrAEUNbqFRyv3fmu1uRuT+8jALF4Ak8kNI8gRO5LK0d2nQS8lQUs9YVwe2pqm9u48moVj+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnjNEtg+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54921C4CEEA;
-	Mon, 23 Jun 2025 13:24:42 +0000 (UTC)
+	 MIME-Version; b=Pxf6cDgQLBvBlejg7fLjnujeRTRlxb69Zyyup3KnmNeHIbj+eHe3fTsf/Y1GfpMvgJPPU3OTbOpTXyGrdCLUavazeKoCiEnrbkugwEzTHACLhqVWrhKC/kfQ8RdHha7g5pYzeVP8fUJGpiUbvrMEpHRq+naHhFCWjd2rAD6BA98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQXtQ7/r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09472C4CEEA;
+	Mon, 23 Jun 2025 13:33:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685082;
-	bh=jjrJ8rmTosgrQ8aPeFFoUZXKBWM+mm4ouS2G0prpcxg=;
+	s=korg; t=1750685590;
+	bh=qjiM0sMEQ2Us99Yv9HN7z0ji/lMtsiz/Mdm0pMT4QPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnjNEtg+hPZfB0PCGnSs8gbmuOPttUQfdpcS17MlVKxYcBislaUJH1necHCKbLK7S
-	 uumuEGyiA4E+ZNzNwrAWBWTAFF64eYIybgZGyTPDe91cAqy9RoOcKNxdCmhAeE9udu
-	 qh7FWdaSTja4GLEys3ldnk0C1HA6Ys0zBzuVpUZA=
+	b=lQXtQ7/r+wsImnDSJRbDgd2sY/MF5tz3KvKnO7ITvYFdLu5qfxKguqde6CX2e1IoM
+	 MYUVITCHe8/UvyD5oIR/rPAwznsvv4CSOb0xDDARDOY+vo0iwLS+TFgEJUffV/rmtY
+	 cQ5D7Wr4x4fzUbCKgzPJcS5UANQdEHo+moyuahsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrick Daly <quic_pdaly@quicinc.com>,
-	Charan Teja Kalla <quic_charante@quicinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 231/592] PM: runtime: fix denying of auto suspend in pm_suspend_timer_fn()
+Subject: [PATCH 5.15 045/411] iommu: Protect against overflow in iommu_pgsize()
 Date: Mon, 23 Jun 2025 15:03:09 +0200
-Message-ID: <20250623130705.784658558@linuxfoundation.org>
+Message-ID: <20250623130634.354510952@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charan Teja Kalla <quic_charante@quicinc.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 40d3b40dce375d6f1c1dbf08d79eed3aed6c691d ]
+[ Upstream commit e586e22974d2b7acbef3c6c3e01b2d5ce69efe33 ]
 
-pm_runtime_put_autosuspend() schedules a hrtimer to expire
-at "dev->power.timer_expires". If the hrtimer's callback,
-pm_suspend_timer_fn(), observes that the current time equals
-"dev->power.timer_expires", it unexpectedly bails out instead of
-proceeding with runtime suspend.
+On a 32 bit system calling:
+ iommu_map(0, 0x40000000)
 
-pm_suspend_timer_fn():
+When using the AMD V1 page table type with a domain->pgsize of 0xfffff000
+causes iommu_pgsize() to miscalculate a result of:
+  size=0x40000000 count=2
 
- if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
- 	dev->power.timer_expires = 0;
- 	rpm_suspend(..)
- }
+count should be 1. This completely corrupts the mapping process.
 
-Additionally, as ->timer_expires is not cleared, all the future auto
-suspend requests will not schedule hrtimer to perform auto suspend.
+This is because the final test to adjust the pagesize malfunctions when
+the addition overflows. Use check_add_overflow() to prevent this.
 
-rpm_suspend():
-
- if ((rpmflags & RPM_AUTO) &&...) {
- 	if (!(dev->power.timer_expires && ...) { <-- this will fail.
- 		hrtimer_start_range_ns(&dev->power.suspend_timer,...);
- 	}
- }
-
-Fix this by as well checking if current time reaches the set expiration.
-
-Co-developed-by: Patrick Daly <quic_pdaly@quicinc.com>
-Signed-off-by: Patrick Daly <quic_pdaly@quicinc.com>
-Signed-off-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Link: https://patch.msgid.link/20250515064125.1211561-1-quic_charante@quicinc.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: b1d99dc5f983 ("iommu: Hook up '->unmap_pages' driver callback")
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/0-v1-3ad28fc2e3a3+163327-iommu_overflow_pgsize_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/iommu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index 205a4f8828b0a..c55a7c70bc1a8 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1011,7 +1011,7 @@ static enum hrtimer_restart  pm_suspend_timer_fn(struct hrtimer *timer)
- 	 * If 'expires' is after the current time, we've been called
- 	 * too early.
+diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
+index d06dbf035c7c7..01e01ca760cf1 100644
+--- a/drivers/iommu/iommu.c
++++ b/drivers/iommu/iommu.c
+@@ -2411,6 +2411,7 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 	unsigned int pgsize_idx, pgsize_idx_next;
+ 	unsigned long pgsizes;
+ 	size_t offset, pgsize, pgsize_next;
++	size_t offset_end;
+ 	unsigned long addr_merge = paddr | iova;
+ 
+ 	/* Page sizes supported by the hardware and small enough for @size */
+@@ -2451,7 +2452,8 @@ static size_t iommu_pgsize(struct iommu_domain *domain, unsigned long iova,
+ 	 * If size is big enough to accommodate the larger page, reduce
+ 	 * the number of smaller pages.
  	 */
--	if (expires > 0 && expires < ktime_get_mono_fast_ns()) {
-+	if (expires > 0 && expires <= ktime_get_mono_fast_ns()) {
- 		dev->power.timer_expires = 0;
- 		rpm_suspend(dev, dev->power.timer_autosuspends ?
- 		    (RPM_ASYNC | RPM_AUTO) : RPM_ASYNC);
+-	if (offset + pgsize_next <= size)
++	if (!check_add_overflow(offset, pgsize_next, &offset_end) &&
++	    offset_end <= size)
+ 		size = offset;
+ 
+ out_set_count:
 -- 
 2.39.5
 
