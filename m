@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-157316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1721EAE536C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:53:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6251EAE54BA
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 946A01B66E3A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:53:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D33D34A74E5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9246221FBE;
-	Mon, 23 Jun 2025 21:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892CF21FF2B;
+	Mon, 23 Jun 2025 22:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcRdn0kL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfxjEPv2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E6619049B;
-	Mon, 23 Jun 2025 21:52:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A663FB1B;
+	Mon, 23 Jun 2025 22:03:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715570; cv=none; b=WtJkCciiOgS3H/HwWRHKZa/DHziU7ghglV4/hqTcwk1PM1SZLXUVNpMP1kKE5jUe948hfFroi73HWPDemdxXFyypBtTAU+BIaIYUH36Oz1qlc3w9Rg5lYutHVOQyyFV4jKvRfUU+4GwfLiopW05TUA/0/2Af2SoDEgjdgxxpld8=
+	t=1750716238; cv=none; b=Tiufzr1/vpg6VrD6u6hb2/+0l1RdBxxrNwLL74wgdnaYk/hp6M1INJDuHWUUoU8NlWezeZF3WrIQ+/2W4DJbABwDABTe0Cp9Fq2E/X39eDlhWHq7RDAkTsmXszMqM14Sq1/PxCtLumtRjG2juksgvhIUOPf2vHcF/7j86v3V9+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715570; c=relaxed/simple;
-	bh=uzZhOOazN6youXg/acwxWY9FRaGDl+1G1a7HlYVvXqI=;
+	s=arc-20240116; t=1750716238; c=relaxed/simple;
+	bh=HZcmUQhs0J6A6NLujkbRabk3Zt19P1UanXUs/Z2jR88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GlAp+ZvYtGoXeFT7y94Usa0V2+AjAlsyJmDxqFz3lfWnld32+khzvApXo7dBRz1AxDG4cGwGSy1R5vjvpviPLO4zVVw9IOqiA/mxOv8rz4A90WmPqLxIXfFLtJkUKZj+0cANePh0oppiMIg3ueTRTMLJme5bmGrszTUI2yboGIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcRdn0kL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B13D4C4CEEA;
-	Mon, 23 Jun 2025 21:52:49 +0000 (UTC)
+	 MIME-Version; b=GbwbjRf+AwJbBNF2Tjsv+JmnasFdyMczwAARRndCi4lOeKqB+4W/EQdoN5oS4NqUoEbVnGOomcVbhYzIt8O/qyCas+czJaSHDrBwhy5zGd1qnVpJ4QtOnFBFvpQulzXKSuug5ByyTzUHb/euoJhcHYJb44S0+PAT9GPRnvq2TtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfxjEPv2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C95DBC4CEEA;
+	Mon, 23 Jun 2025 22:03:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715570;
-	bh=uzZhOOazN6youXg/acwxWY9FRaGDl+1G1a7HlYVvXqI=;
+	s=korg; t=1750716238;
+	bh=HZcmUQhs0J6A6NLujkbRabk3Zt19P1UanXUs/Z2jR88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mcRdn0kLEMrqsQeCZJSt9SmzAdZyGooeoLOAWmWy8PYkZp3KN8S7+B+qs0hCmOIz3
-	 3oRcAQ6bzcPYqMdhUj3qqb28p83TcGKfifvZ8nisI6+UkFhqA8uu8X9YCx84H4FuGR
-	 BmG19mzSpGs/Jmv5Xqvzz2gKRhHS/x1wwqKiwbmY=
+	b=SfxjEPv2Ali59wZcAmAtyTBBdNvUt1bbOHS6YS7mCB+hBlqK47ZJr5hjP4DoQ/rgw
+	 3iDFP1Mwhz6TLSRTVdq/ml7SJKqKwLgTpURTCENQAp3HYQzwnw8VhE3Hq4wUOXYyVF
+	 CePrw2FJVl/rsTXJ2rRPKqp9/xI4DpGQVEuqJBqM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Simon Horman <horms@kernel.org>,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 228/290] atm: Revert atm_account_tx() if copy_from_iter_full() fails.
+	willemb@google.com,
+	asml.silence@gmail.com,
+	Mina Almasry <almasrymina@google.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 531/592] net: netmem: fix skb_ensure_writable with unreadable skbs
 Date: Mon, 23 Jun 2025 15:08:09 +0200
-Message-ID: <20250623130633.787898841@linuxfoundation.org>
+Message-ID: <20250623130713.063965935@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +65,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
+From: Mina Almasry <almasrymina@google.com>
 
-commit 7851263998d4269125fd6cb3fdbfc7c6db853859 upstream.
+[ Upstream commit 6f793a1d053775f8324b8dba1e7ed224f8b0166f ]
 
-In vcc_sendmsg(), we account skb->truesize to sk->sk_wmem_alloc by
-atm_account_tx().
+skb_ensure_writable should succeed when it's trying to write to the
+header of the unreadable skbs, so it doesn't need an unconditional
+skb_frags_readable check. The preceding pskb_may_pull() call will
+succeed if write_len is within the head and fail if we're trying to
+write to the unreadable payload, so we don't need an additional check.
 
-It is expected to be reverted by atm_pop_raw() later called by
-vcc->dev->ops->send(vcc, skb).
+Removing this check restores DSCP functionality with unreadable skbs as
+it's called from dscp_tg.
 
-However, vcc_sendmsg() misses the same revert when copy_from_iter_full()
-fails, and then we will leak a socket.
-
-Let's factorise the revert part as atm_return_tx() and call it in
-the failure path.
-
-Note that the corresponding sk_wmem_alloc operation can be found in
-alloc_tx() as of the blamed commit.
-
-  $ git blame -L:alloc_tx net/atm/common.c c55fa3cccbc2c~
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: Simon Horman <horms@kernel.org>
-Closes: https://lore.kernel.org/netdev/20250614161959.GR414686@horms.kernel.org/
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Link: https://patch.msgid.link/20250616182147.963333-3-kuni1840@gmail.com
+Cc: willemb@google.com
+Cc: asml.silence@gmail.com
+Fixes: 65249feb6b3d ("net: add support for skbs with unreadable frags")
+Signed-off-by: Mina Almasry <almasrymina@google.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Link: https://patch.msgid.link/20250615200733.520113-1-almasrymina@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/atmdev.h |    6 ++++++
- net/atm/common.c       |    1 +
- net/atm/raw.c          |    2 +-
- 3 files changed, 8 insertions(+), 1 deletion(-)
+ net/core/skbuff.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
---- a/include/linux/atmdev.h
-+++ b/include/linux/atmdev.h
-@@ -249,6 +249,12 @@ static inline void atm_account_tx(struct
- 	ATM_SKB(skb)->atm_options = vcc->atm_options;
- }
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index 74a2d886a35b5..86cc58376392b 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -6220,9 +6220,6 @@ int skb_ensure_writable(struct sk_buff *skb, unsigned int write_len)
+ 	if (!pskb_may_pull(skb, write_len))
+ 		return -ENOMEM;
  
-+static inline void atm_return_tx(struct atm_vcc *vcc, struct sk_buff *skb)
-+{
-+	WARN_ON_ONCE(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize,
-+					   &sk_atm(vcc)->sk_wmem_alloc));
-+}
-+
- static inline void atm_force_charge(struct atm_vcc *vcc,int truesize)
- {
- 	atomic_add(truesize, &sk_atm(vcc)->sk_rmem_alloc);
---- a/net/atm/common.c
-+++ b/net/atm/common.c
-@@ -635,6 +635,7 @@ int vcc_sendmsg(struct socket *sock, str
+-	if (!skb_frags_readable(skb))
+-		return -EFAULT;
+-
+ 	if (!skb_cloned(skb) || skb_clone_writable(skb, write_len))
+ 		return 0;
  
- 	skb->dev = NULL; /* for paths shared with net_device interfaces */
- 	if (!copy_from_iter_full(skb_put(skb, size), size, &m->msg_iter)) {
-+		atm_return_tx(vcc, skb);
- 		kfree_skb(skb);
- 		error = -EFAULT;
- 		goto out;
---- a/net/atm/raw.c
-+++ b/net/atm/raw.c
-@@ -36,7 +36,7 @@ static void atm_pop_raw(struct atm_vcc *
- 
- 	pr_debug("(%d) %d -= %d\n",
- 		 vcc->vci, sk_wmem_alloc_get(sk), ATM_SKB(skb)->acct_truesize);
--	WARN_ON(refcount_sub_and_test(ATM_SKB(skb)->acct_truesize, &sk->sk_wmem_alloc));
-+	atm_return_tx(vcc, skb);
- 	dev_kfree_skb_any(skb);
- 	sk->sk_write_space(sk);
- }
+-- 
+2.39.5
+
 
 
 
