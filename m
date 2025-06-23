@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7047EAE5099
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C9CFAE5485
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:02:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3057C188A2AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:05 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 096061BC1148
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0BB1221FC7;
-	Mon, 23 Jun 2025 21:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452D921D3F6;
+	Mon, 23 Jun 2025 22:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vzdeJU5o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aGGBg4Vx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0A3221FBE;
-	Mon, 23 Jun 2025 21:25:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 026954C74;
+	Mon, 23 Jun 2025 22:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713957; cv=none; b=Remd0NwDLDKYtnbbBQoNJy3vNsDngB/IeAxuFJgzTF5BBnTgVF9V584Sq7RKfywBTnuQpIA0GLtqWgw61YNlj2fy9+ldW37gZBy4pGBq7JtixFQ7o3x918TKcay+Pnl14Uj5ShiQsrmtD4US82SmDjgysDnXMHN+7InSzxqoNt4=
+	t=1750716130; cv=none; b=eOsllXcrTJzHVmJ1BL43mY1xd4O8UnzUYs96RigSUwevkb8Kx0o50Lxgq5km+m5H/PeV+XVWztQgvYGQgeUgaPQAX7gFd6E3UYgI3/Iq5UAOEWoIBD0UiqyTkavSi8+1yV3socgR/0NGf+i04uuqXImNXlMduHbMLZlcNEpr+NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713957; c=relaxed/simple;
-	bh=5tKfD6x+UiCOAFfso5Amm5/oS2bcDsALp2njnij2gzQ=;
+	s=arc-20240116; t=1750716130; c=relaxed/simple;
+	bh=7I6aBsWliRGGTjGq92XHTexLctLxeMyKcMR0SdihF3E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k6gVzywwrCWOwaa8uvst45IiItIYzyPeo0sWPjr3ods0XWCXtkh5EW1Tdsqu8u+TJWOX+2D3ox7INRlIq61FQUC/hCT76jIQbo0iQnZcvE+JqsA8uYVg/jMl7QbXRx49lWlauX5RfLYL0Q5leu0eBxI+6MGC+ddy1eQb1jZ1460=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vzdeJU5o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A82C4CEEA;
-	Mon, 23 Jun 2025 21:25:56 +0000 (UTC)
+	 MIME-Version; b=EoGp+CBAVJOlkoNgBQkkOkyu8iZuQ4svJ/FZ/CUXGLAaUIQW/5GrgaAW4MBNxyVDNcB7cjAtR3bTP1UVP2TUGH5l80/FDhpwc1J9IqpqI2fmIemXjj9R97H8UBqw4k9wtGNH8OM0GRS9H4tTBkYsGyXT+6Fs6Z88C5KCSf2at0E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aGGBg4Vx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F368C4CEEA;
+	Mon, 23 Jun 2025 22:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713957;
-	bh=5tKfD6x+UiCOAFfso5Amm5/oS2bcDsALp2njnij2gzQ=;
+	s=korg; t=1750716129;
+	bh=7I6aBsWliRGGTjGq92XHTexLctLxeMyKcMR0SdihF3E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vzdeJU5oGq3Vr6OSanp0PubDBjJmne3Bcc5hZhRPqI8IZ/0mc742ydjHT9smcru+l
-	 KbgXpEFuyifrgAuwk7xN1R5g6Q03DB6QZjLrLCG0apPBtyCO86/Q5sHTM/3/6L2rtn
-	 S3rCh12BKKs2nmKoL/yKR/0euAdVLOcUMRkQCKAQ=
+	b=aGGBg4Vx3quzmAZIuEY+jR/5JRQ97qgUGY5f8lnzzQREcppU5FVNCwfyh+UHsbWLJ
+	 AtzbqJfTcVTlc6lWEyvcdpY8zSdi4MkSi9uVFGt3ImpvfMCnWXSG7xa5ZMiL/EG/cW
+	 wGFP0oyI1Zeu5XMBm7RNvBIq9tk3cXkjV5xXciGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ruben Devos <devosruben6@gmail.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 105/290] smb: client: add NULL check in automount_fullpath
+	Jason Xing <kernelxing@tencent.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 229/414] net: stmmac: generate software timestamp just before the doorbell
 Date: Mon, 23 Jun 2025 15:06:06 +0200
-Message-ID: <20250623130630.114342626@linuxfoundation.org>
+Message-ID: <20250623130647.761954801@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruben Devos <devosruben6@gmail.com>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit f1e7a277a1736e12cc4bd6d93b8a5c439b8ca20c upstream.
+[ Upstream commit 33d4cc81fcd930fdbcca7ac9e8959225cbec0a5e ]
 
-page is checked for null in __build_path_from_dentry_optional_prefix
-when tcon->origin_fullpath is not set. However, the check is missing when
-it is set.
-Add a check to prevent a potential NULL pointer dereference.
+Make sure the call of skb_tx_timestamp is as close as possbile to the
+doorbell.
 
-Signed-off-by: Ruben Devos <devosruben6@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The patch also adjusts the order of setting SKBTX_IN_PROGRESS and
+generate software timestamp so that without SOF_TIMESTAMPING_OPT_TX_SWHW
+being set the software and hardware timestamps will not appear in the
+error queue of socket nearly at the same time (Please see __skb_tstamp_tx()).
+
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Link: https://patch.msgid.link/20250510134812.48199-4-kerneljasonxing@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/namespace.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
---- a/fs/smb/client/namespace.c
-+++ b/fs/smb/client/namespace.c
-@@ -146,6 +146,9 @@ static char *automount_fullpath(struct d
- 	}
- 	spin_unlock(&tcon->tc_lock);
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index f68e3ece919cc..0250c5cb28ff2 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -4424,8 +4424,6 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (priv->sarc_type)
+ 		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
  
-+	if (unlikely(!page))
-+		return ERR_PTR(-ENOMEM);
-+
- 	s = dentry_path_raw(dentry, page, PATH_MAX);
- 	if (IS_ERR(s))
- 		return s;
+-	skb_tx_timestamp(skb);
+-
+ 	if (unlikely((skb_shinfo(skb)->tx_flags & SKBTX_HW_TSTAMP) &&
+ 		     priv->hwts_tx_en)) {
+ 		/* declare that device is doing timestamping */
+@@ -4460,6 +4458,7 @@ static netdev_tx_t stmmac_tso_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	}
+ 
+ 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
++	skb_tx_timestamp(skb);
+ 
+ 	stmmac_flush_tx_descriptors(priv, queue);
+ 	stmmac_tx_timer_arm(priv, queue);
+@@ -4703,8 +4702,6 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	if (priv->sarc_type)
+ 		stmmac_set_desc_sarc(priv, first, priv->sarc_type);
+ 
+-	skb_tx_timestamp(skb);
+-
+ 	/* Ready to fill the first descriptor and set the OWN bit w/o any
+ 	 * problems because all the descriptors are actually ready to be
+ 	 * passed to the DMA engine.
+@@ -4751,7 +4748,7 @@ static netdev_tx_t stmmac_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	netdev_tx_sent_queue(netdev_get_tx_queue(dev, queue), skb->len);
+ 
+ 	stmmac_enable_dma_transmission(priv, priv->ioaddr, queue);
+-
++	skb_tx_timestamp(skb);
+ 	stmmac_flush_tx_descriptors(priv, queue);
+ 	stmmac_tx_timer_arm(priv, queue);
+ 
+-- 
+2.39.5
+
 
 
 
