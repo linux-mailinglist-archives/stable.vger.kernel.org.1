@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19852AE42E8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:26:56 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB7CBAE43B9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:35:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F04407A7250
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:25:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 52F511899AF5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396AB25392D;
-	Mon, 23 Jun 2025 13:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD45254873;
+	Mon, 23 Jun 2025 13:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DosXHAmB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qmxy1AqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB7924E019;
-	Mon, 23 Jun 2025 13:26:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF464253924;
+	Mon, 23 Jun 2025 13:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685186; cv=none; b=PEQQZdXeRL1ODvYFnSRA341sbGpMpdRygz7enirVJOBeXRiuCvvVaLFRN4aND6fecu6HDL1M0xcTlaVg3dpXdAdfbnlG47LaM0xboJQhHFee+pi2qV43tfIFJU5AVrQEEn7c0x8uVlZ/d8N9BZoW4ZSLSSeKSkFGl7jBBvbpiwU=
+	t=1750685323; cv=none; b=AwtQy7xAYJFO+mHHTqz5WUEbRR0aLIiuMjJtXdmGDuNVSKFc17Zcd1HwlUwrG7m1j8jpPO8wzrwvCYO/2FOJSCD7rBJ/JTWHcVJjfKZ45fReUhqjuPRQHou5E8/TEyxqR12TrTLxbD5lpd05OFyZ4OIvayz5fSxti4hU5y5cGk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685186; c=relaxed/simple;
-	bh=Ma33aRIIPXND+dAk/1Al2LRDMS3jw8KF0TKg95uprOQ=;
+	s=arc-20240116; t=1750685323; c=relaxed/simple;
+	bh=06bTdQqHvNqJnDFNQxI+9fekzU63qYu9W7o7BCT0znI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMTAj+eGPW8Ncy4DsGD2HhYVTA3qTobaK4esFUYJxdv3AZwBFetJhcf4OqeoXtXkqHNobdiTF4SF4NBUjmYnsjFyVWoL/R4FP/kDZaZk5riktew70DFaNDWFynmvyN5eBwc8raZZYXiFZ//TpyGKAckEdr6Dc04cFZZAQdEnpLk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DosXHAmB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8095EC4CEEA;
-	Mon, 23 Jun 2025 13:26:25 +0000 (UTC)
+	 MIME-Version; b=rlvrk4Ta52X9off5sBE0MnrGwmsrXDhWymm3sK6c05HHlCxOeI1UAeHAtSzgsPkgaOaKJIESg/4G/9BxGRw7vxrFNBLoGBsvSJvngs47mIkkhewcL+m1vQ6fLyM0yYeHZh5weC/rCcvpMvcDrpVchmNzNDHq4gEQnWyL068lriE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qmxy1AqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535ADC4CEEA;
+	Mon, 23 Jun 2025 13:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685185;
-	bh=Ma33aRIIPXND+dAk/1Al2LRDMS3jw8KF0TKg95uprOQ=;
+	s=korg; t=1750685323;
+	bh=06bTdQqHvNqJnDFNQxI+9fekzU63qYu9W7o7BCT0znI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DosXHAmB257A2P18Q4TW9A/lj/LW/W7R5+UF6gX3bmqNTGXZqReqmTIADfoBOQrO1
-	 3X1u+zraX9am1TjjGI6/SC8vW8oRfFCDtC5yyR+0eejCuB0b8GFe6EDh0sfqeDDDFb
-	 3QLE7ZQgqQwgXKOd+XYJZId5+yssSBUqmPRNOXQ4=
+	b=qmxy1AqKYDcdTrEHlzWZvRguPgulObtufuwk0ozIYDIyQS+OCnFbiM+uy64FhYp/o
+	 6fatgc6QoALo8rIlWVA6M0+fl5xXGK5bm5I9P00kcRc1W6cSKOL4wNyMZw8bJm8c/U
+	 XmswZB1xOePLwvSfotnbY4SmSgO3cFh39FXe0YVU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ahmed Salem <x0rw3ll@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Charles Han <hanchunchao@inspur.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 212/592] ACPICA: Avoid sequence overread in call to strncmp()
-Date: Mon, 23 Jun 2025 15:02:50 +0200
-Message-ID: <20250623130705.327456173@linuxfoundation.org>
+Subject: [PATCH 5.15 027/411] drm/amd/pp: Fix potential NULL pointer dereference in atomctrl_initialize_mc_reg_table
+Date: Mon, 23 Jun 2025 15:02:51 +0200
+Message-ID: <20250623130633.814156668@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahmed Salem <x0rw3ll@gmail.com>
+From: Charles Han <hanchunchao@inspur.com>
 
-[ Upstream commit 64b9dfd0776e9c38d733094859a09f13282ce6f8 ]
+[ Upstream commit 820116a39f96bdc7d426c33a804b52f53700a919 ]
 
-ACPICA commit 8b83a8d88dfec59ea147fad35fc6deea8859c58c
+The function atomctrl_initialize_mc_reg_table() and
+atomctrl_initialize_mc_reg_table_v2_2() does not check the return
+value of smu_atom_get_data_table(). If smu_atom_get_data_table()
+fails to retrieve vram_info, it returns NULL which is later
+dereferenced.
 
-ap_get_table_length() checks if tables are valid by
-calling ap_is_valid_header(). The latter then calls
-ACPI_VALIDATE_RSDP_SIG(Table->Signature).
-
-ap_is_valid_header() accepts struct acpi_table_header as an argument, so
-the signature size is always fixed to 4 bytes.
-
-The problem is when the string comparison is between ACPI-defined table
-signature and ACPI_SIG_RSDP. Common ACPI table header specifies the
-Signature field to be 4 bytes long[1], with the exception of the RSDP
-structure whose signature is 8 bytes long "RSD PTR " (including the
-trailing blank character)[2]. Calling strncmp(sig, rsdp_sig, 8) would
-then result in a sequence overread[3] as sig would be smaller (4 bytes)
-than the specified bound (8 bytes).
-
-As a workaround, pass the bound conditionally based on the size of the
-signature being passed.
-
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#system-description-table-header [1]
-Link: https://uefi.org/specs/ACPI/6.5_A/05_ACPI_Software_Programming_Model.html#root-system-description-pointer-rsdp-structure [2]
-Link: https://gcc.gnu.org/onlinedocs/gcc/Warning-Options.html#index-Wstringop-overread [3]
-Link: https://github.com/acpica/acpica/commit/8b83a8d8
-Signed-off-by: Ahmed Salem <x0rw3ll@gmail.com>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Link: https://patch.msgid.link/2248233.Mh6RI2rZIc@rjwysocki.net
+Fixes: b3892e2bb519 ("drm/amd/pp: Use atombios api directly in powerplay (v2)")
+Fixes: 5f92b48cf62c ("drm/amd/pm: add mc register table initialization")
+Signed-off-by: Charles Han <hanchunchao@inspur.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/acpi/actypes.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/include/acpi/actypes.h b/include/acpi/actypes.h
-index f7b3c4a4b7e7c..5b9f9a6125484 100644
---- a/include/acpi/actypes.h
-+++ b/include/acpi/actypes.h
-@@ -527,7 +527,7 @@ typedef u64 acpi_integer;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+index 1fbd23922082a..7e37354a03411 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/ppatomctrl.c
+@@ -144,6 +144,10 @@ int atomctrl_initialize_mc_reg_table(
+ 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_1 *)
+ 		smu_atom_get_data_table(hwmgr->adev,
+ 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
++	if (!vram_info) {
++		pr_err("Could not retrieve the VramInfo table!");
++		return -EINVAL;
++	}
  
- /* Support for the special RSDP signature (8 characters) */
+ 	if (module_index >= vram_info->ucNumOfVRAMModule) {
+ 		pr_err("Invalid VramInfo table.");
+@@ -181,6 +185,10 @@ int atomctrl_initialize_mc_reg_table_v2_2(
+ 	vram_info = (ATOM_VRAM_INFO_HEADER_V2_2 *)
+ 		smu_atom_get_data_table(hwmgr->adev,
+ 				GetIndexIntoMasterTable(DATA, VRAM_Info), &size, &frev, &crev);
++	if (!vram_info) {
++		pr_err("Could not retrieve the VramInfo table!");
++		return -EINVAL;
++	}
  
--#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, 8))
-+#define ACPI_VALIDATE_RSDP_SIG(a)       (!strncmp (ACPI_CAST_PTR (char, (a)), ACPI_SIG_RSDP, (sizeof(a) < 8) ? ACPI_NAMESEG_SIZE : 8))
- #define ACPI_MAKE_RSDP_SIG(dest)        (memcpy (ACPI_CAST_PTR (char, (dest)), ACPI_SIG_RSDP, 8))
- 
- /* Support for OEMx signature (x can be any character) */
+ 	if (module_index >= vram_info->ucNumOfVRAMModule) {
+ 		pr_err("Invalid VramInfo table.");
 -- 
 2.39.5
 
