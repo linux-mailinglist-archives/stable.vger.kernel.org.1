@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156581-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F4F0AE4FDC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:20:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C2ADAE5028
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:22:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 662FB1B61925
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:20:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C79F74A059C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:22:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEFD18E377;
-	Mon, 23 Jun 2025 21:19:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479651EFFA6;
+	Mon, 23 Jun 2025 21:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rMOxEaU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KzCFYj0G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E8C219E0;
-	Mon, 23 Jun 2025 21:19:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0634B219E0;
+	Mon, 23 Jun 2025 21:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713590; cv=none; b=YOxgK13ZcRRqJYIUUlg4bSXzAzWlRNNcVv9V1mAAkxl66ocah3Jm9078+Or2sFNiCUpwrb/ejq40yVMmrL2YdVTgzzdI5cvfDJ/AP3hAzYcQWmcKmlJ6We7eUoX9298I4Wk2h6GlBpGfCfn3OxBzYJku2ojiKkWfFqTjfj7cNFE=
+	t=1750713764; cv=none; b=ji3t8QDl7qYMuuF83GZkgc4qQGYljdWWUIeZhLRkDWI3fLxBpdjRM7VdzKKpdP4h5M/lb0hqzOUlZY9qDSI+xeFOJGy+zcyJZK9lz9i7ZsgdCQdtoLX/hSY/L9+pobqSC2vlZBf9Lj2wsX5pH+LAu8LLcdSLLG+clfIt381x8ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713590; c=relaxed/simple;
-	bh=v7MFVQIOOzbkyD1nQhUKQnnuKefqs1VMYrTEujIMX0o=;
+	s=arc-20240116; t=1750713764; c=relaxed/simple;
+	bh=1MaoV85Ti66sAyep45GVl68koMYAPFitY/lMkI6thTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JjY979PAgrMQhTGp/jYh50ZovVjrdA3Nfe/k/ygQ8NaGAAZzyAQuFxAa8Kc06gLC/hizF0L8nu8b71L2q4G6l3ujYwBudX/tUedsq9Fnw5uXPbKddj2Hqc6omUH09lbsm6/cBH1DBu+tAOhbW2H1itXTPt+f4TmBVJjGMMYLs4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rMOxEaU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A47EC4CEEA;
-	Mon, 23 Jun 2025 21:19:49 +0000 (UTC)
+	 MIME-Version; b=nfaN/eCWawnAyfeWzgC/wOTNQxaiT9QUi7SEkQ4QcUe8mEs53sYbVVpTup/ygLykf/jT9whP5NWW+bSli6O8eQesUisAe6NW69DoD5CQGzoJYPt36StnmW07qpgk+p3A1Hv11IoXv73sWnXmtYh4Fi7ad4MgrRQ1gwLpl6RWkf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KzCFYj0G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94313C4CEEA;
+	Mon, 23 Jun 2025 21:22:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713589;
-	bh=v7MFVQIOOzbkyD1nQhUKQnnuKefqs1VMYrTEujIMX0o=;
+	s=korg; t=1750713763;
+	bh=1MaoV85Ti66sAyep45GVl68koMYAPFitY/lMkI6thTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0rMOxEaU7c7Dm/4YEGwBDmvgeEm30k8B3pmg1tNSndhE7bWyuIZhjxfACSt2rDjaw
-	 pipT3jiGDnDuZnL72QdZ5GRtS6bOHHhMGaRiaYl07jOWKqGmKgccxlDCHgAvbAnYSs
-	 S5BQuYdDWQTEjwFnZE8ATgd6n/hktvFTReIw7L4Y=
+	b=KzCFYj0Gs0vaeA1gB1rWhREBtB3TyYL4KSK45uU0sZmUrtCj0x1QVNwyT5x6Scw3r
+	 oPgxisbAfJQTKx4Q73eCGPiHOJjzOjSaajLcAMzvv+qGQNVZxStg/ac0ILYBmC1eKy
+	 QkEcdsfmgb/aP0oooPwNI9gxOMT5Ch01VuLtdbDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Nikiforov <Dm1tryNk@yandex.ru>,
-	Johan Hovold <johan@kernel.org>,
-	Hans Verkuil <hverkuil@xs4all.nl>
-Subject: [PATCH 6.12 052/414] media: davinci: vpif: Fix memory leak in probe error path
-Date: Mon, 23 Jun 2025 15:03:09 +0200
-Message-ID: <20250623130643.351121149@linuxfoundation.org>
+	Alexey Gladkov <legion@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 145/508] mfd: stmpe-spi: Correct the name used in MODULE_DEVICE_TABLE
+Date: Mon, 23 Jun 2025 15:03:10 +0200
+Message-ID: <20250623130648.851641303@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Nikiforov <Dm1tryNk@yandex.ru>
+From: Alexey Gladkov <legion@kernel.org>
 
-commit 024bf40edf1155e7a587f0ec46294049777d9b02 upstream.
+[ Upstream commit 59d60c16ed41475f3b5f7b605e75fbf8e3628720 ]
 
-If an error occurs during the initialization of `pdev_display`,
-the allocated platform device `pdev_capture` is not released properly,
-leading to a memory leak.
+The name used in the macro does not exist.
 
-Adjust error path handling to fix the leak.
+drivers/mfd/stmpe-spi.c:132:26: error: use of undeclared identifier 'stmpe_id'
+  132 | MODULE_DEVICE_TABLE(spi, stmpe_id);
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 43acb728bbc4 ("media: davinci: vpif: fix use-after-free on driver unbind")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Nikiforov <Dm1tryNk@yandex.ru>
-Reviewed-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e789995d5c61 ("mfd: Add support for STMPE SPI interface")
+Signed-off-by: Alexey Gladkov <legion@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/79d5a847303e45a46098f2d827d3d8a249a32be3.1745591072.git.legion@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/ti/davinci/vpif.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/stmpe-spi.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/platform/ti/davinci/vpif.c
-+++ b/drivers/media/platform/ti/davinci/vpif.c
-@@ -504,7 +504,7 @@ static int vpif_probe(struct platform_de
- 	pdev_display = kzalloc(sizeof(*pdev_display), GFP_KERNEL);
- 	if (!pdev_display) {
- 		ret = -ENOMEM;
--		goto err_put_pdev_capture;
-+		goto err_del_pdev_capture;
- 	}
+diff --git a/drivers/mfd/stmpe-spi.c b/drivers/mfd/stmpe-spi.c
+index ad8055a0e2869..6791a53689777 100644
+--- a/drivers/mfd/stmpe-spi.c
++++ b/drivers/mfd/stmpe-spi.c
+@@ -129,7 +129,7 @@ static const struct spi_device_id stmpe_spi_id[] = {
+ 	{ "stmpe2403", STMPE2403 },
+ 	{ }
+ };
+-MODULE_DEVICE_TABLE(spi, stmpe_id);
++MODULE_DEVICE_TABLE(spi, stmpe_spi_id);
  
- 	pdev_display->name = "vpif_display";
-@@ -527,6 +527,8 @@ static int vpif_probe(struct platform_de
- 
- err_put_pdev_display:
- 	platform_device_put(pdev_display);
-+err_del_pdev_capture:
-+	platform_device_del(pdev_capture);
- err_put_pdev_capture:
- 	platform_device_put(pdev_capture);
- err_put_rpm:
+ static struct spi_driver stmpe_spi_driver = {
+ 	.driver = {
+-- 
+2.39.5
+
 
 
 
