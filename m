@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A76FAE5397
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A801AE54AB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:04:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 984CF18813F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C491F448260
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A581AD3FA;
-	Mon, 23 Jun 2025 21:53:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D85B821FF2B;
+	Mon, 23 Jun 2025 22:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoBHboK1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0c4eUlrK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB29D19049B;
-	Mon, 23 Jun 2025 21:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FD71D86DC;
+	Mon, 23 Jun 2025 22:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715633; cv=none; b=bbbyxh1cqm1iOyhjPrRDmWjeCXgh8jYtLVUh7NBSbLVfUBFe/8puvcrg4HHFExKtX+aahPm4BuWqcZ2IWJI2tTpax41lqjH/XZ8iZkNk73pm0YcVCb8/2+xEoK9WfRYoLjRQVM1eFKSgMYRGCH2y9d5Mu5Xcq4vq9obclSdiEbA=
+	t=1750716223; cv=none; b=hJsbqoksSBeMguu2bqp1QAx1NapRPhuNXw5P16y+UulI4d134tMF/Hvv19trsHHaiXtk/e8nR+pJxeLnsIY1vdEr/LBWc79wX326wdbFVRqQLqXX3SwaOjcePRFk4zLZL+dlizZY5aJIql6nzqCRcOQuFTLqNKPoIDzddt06znE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715633; c=relaxed/simple;
-	bh=T6TQdJ3VxVcN64hMg3SFnfdQXcGS9tZ7rza/qk/uGBc=;
+	s=arc-20240116; t=1750716223; c=relaxed/simple;
+	bh=oeAi965yVTviCYjmsCrkQ7ZuCvkWcJ3SiRerBlwI6+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m1KecdZEe2XggUi536QK+942tDRL/RqHtSyXMNAD9bfnpmfMU6stRFXIGJEnFJwzg5EkfsYxuVFvs8WSUb4Kgg2JCqAH9kQPp8WUsagnNYowtMrK7jSTbfo4fcdfujsdDawGYIXM6hetlypewxbx24OHUi97p5pFyUCX+KpIrAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoBHboK1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51410C4CEEA;
-	Mon, 23 Jun 2025 21:53:53 +0000 (UTC)
+	 MIME-Version; b=ai9y2B/TUFtvJJHvVYgJ9pHjVDh9vjdeJv14EsYfNQK2qKfuYD26PYtAA1WLjQZTLMEzFMwvxl5Su4fr3ydA9Z7a4D3L3mV9vn+GbBndSrNKcSFKwVlyMPFhyrxHxjK1/KWjAWmnOOtWLSGrLZYtDK3C61nbHQSSh5Shk1qEP58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0c4eUlrK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DF5AC4CEEA;
+	Mon, 23 Jun 2025 22:03:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715633;
-	bh=T6TQdJ3VxVcN64hMg3SFnfdQXcGS9tZ7rza/qk/uGBc=;
+	s=korg; t=1750716223;
+	bh=oeAi965yVTviCYjmsCrkQ7ZuCvkWcJ3SiRerBlwI6+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IoBHboK1C2jJ9R7PHShnAMXPc8isWw41ddbyedjzwRPyZ9ZJpUNhoi+WvCkgIP51r
-	 MiGqtv+TZpR+BEp+6fIO5oKdvuRFrr2I4VgK7NhY3mc2NPLC8Kc1a8q/0DMxN+ZQYm
-	 mT+K388GV6hIJLxmoEC1M/VBR/19TN+r+PvoMhic=
+	b=0c4eUlrK1IzWedM2M2EIN2JC9DMt2lR4jZ01O+hK4twSK3IEMQQFBixIc9Jcrv3x2
+	 6fit/Yoz6PtjlQ4or7pEGiDrne+8BKX8tMI/hZS0mZBMm0kYjhqPqGQZBH3gCGxZEq
+	 xQPtunA4hYB+4cKXSk7TcxKyGxVDekSIwQtXSxHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 287/355] scsi: storvsc: Increase the timeouts to storvsc_timeout
+	Meghana Malladi <m-malladi@ti.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 530/592] net: ti: icssg-prueth: Fix packet handling for XDP_TX
 Date: Mon, 23 Jun 2025 15:08:08 +0200
-Message-ID: <20250623130635.403917815@linuxfoundation.org>
+Message-ID: <20250623130713.040511341@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Meghana Malladi <m-malladi@ti.com>
 
-commit b2f966568faaad326de97481096d0f3dc0971c43 upstream.
+[ Upstream commit 60524f1d2bdf222db6dc3f680e0272441f697fe4 ]
 
-Currently storvsc_timeout is only used in storvsc_sdev_configure(), and
-5s and 10s are used elsewhere. It turns out that rarely the 5s is not
-enough on Azure, so let's use storvsc_timeout everywhere.
+While transmitting XDP frames for XDP_TX, page_pool is
+used to get the DMA buffers (already mapped to the pages)
+and need to be freed/reycled once the transmission is complete.
+This need not be explicitly done by the driver as this is handled
+more gracefully by the xdp driver while returning the xdp frame.
+__xdp_return() frees the XDP memory based on its memory type,
+under which page_pool memory is also handled. This change fixes
+the transmit queue timeout while running XDP_TX.
 
-In case a timeout happens and storvsc_channel_init() returns an error,
-close the VMBus channel so that any host-to-guest messages in the
-channel's ringbuffer, which might come late, can be safely ignored.
+logs:
+[  309.069682] icssg-prueth icssg1-eth eth2: NETDEV WATCHDOG: CPU: 0: transmit queue 0 timed out 45860 ms
+[  313.933780] icssg-prueth icssg1-eth eth2: NETDEV WATCHDOG: CPU: 0: transmit queue 0 timed out 50724 ms
+[  319.053656] icssg-prueth icssg1-eth eth2: NETDEV WATCHDOG: CPU: 0: transmit queue 0 timed out 55844 ms
+...
 
-Add a "const" to storvsc_timeout.
-
-Cc: stable@kernel.org
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Link: https://lore.kernel.org/r/1749243459-10419-1-git-send-email-decui@microsoft.com
-Reviewed-by: Long Li <longli@microsoft.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 62aa3246f462 ("net: ti: icssg-prueth: Add XDP support")
+Signed-off-by: Meghana Malladi <m-malladi@ti.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20250616063319.3347541-1-m-malladi@ti.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/ti/icssg/icssg_common.c | 19 ++-----------------
+ 1 file changed, 2 insertions(+), 17 deletions(-)
 
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -400,7 +400,7 @@ MODULE_PARM_DESC(ring_avail_percent_lowa
- /*
-  * Timeout in seconds for all devices managed by this driver.
-  */
--static int storvsc_timeout = 180;
-+static const int storvsc_timeout = 180;
+diff --git a/drivers/net/ethernet/ti/icssg/icssg_common.c b/drivers/net/ethernet/ti/icssg/icssg_common.c
+index d88a0180294e0..7ae069e7af92b 100644
+--- a/drivers/net/ethernet/ti/icssg/icssg_common.c
++++ b/drivers/net/ethernet/ti/icssg/icssg_common.c
+@@ -98,20 +98,11 @@ void prueth_xmit_free(struct prueth_tx_chn *tx_chn,
+ {
+ 	struct cppi5_host_desc_t *first_desc, *next_desc;
+ 	dma_addr_t buf_dma, next_desc_dma;
+-	struct prueth_swdata *swdata;
+-	struct page *page;
+ 	u32 buf_dma_len;
  
- #if IS_ENABLED(CONFIG_SCSI_FC_ATTRS)
- static struct scsi_transport_template *fc_transport_template;
-@@ -779,7 +779,7 @@ static void  handle_multichannel_storage
- 		return;
+ 	first_desc = desc;
+ 	next_desc = first_desc;
+ 
+-	swdata = cppi5_hdesc_get_swdata(desc);
+-	if (swdata->type == PRUETH_SWDATA_PAGE) {
+-		page = swdata->data.page;
+-		page_pool_recycle_direct(page->pp, swdata->data.page);
+-		goto free_desc;
+-	}
+-
+ 	cppi5_hdesc_get_obuf(first_desc, &buf_dma, &buf_dma_len);
+ 	k3_udma_glue_tx_cppi5_to_dma_addr(tx_chn->tx_chn, &buf_dma);
+ 
+@@ -135,7 +126,6 @@ void prueth_xmit_free(struct prueth_tx_chn *tx_chn,
+ 		k3_cppi_desc_pool_free(tx_chn->desc_pool, next_desc);
  	}
  
--	t = wait_for_completion_timeout(&request->wait_event, 10*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0) {
- 		dev_err(dev, "Failed to create sub-channel: timed out\n");
- 		return;
-@@ -840,7 +840,7 @@ static int storvsc_execute_vstor_op(stru
- 	if (ret != 0)
- 		return ret;
- 
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return -ETIMEDOUT;
- 
-@@ -1301,6 +1301,8 @@ static int storvsc_connect_to_vsp(struct
- 		return ret;
- 
- 	ret = storvsc_channel_init(device, is_fc);
-+	if (ret)
-+		vmbus_close(device->channel);
- 
- 	return ret;
+-free_desc:
+ 	k3_cppi_desc_pool_free(tx_chn->desc_pool, first_desc);
  }
-@@ -1623,7 +1625,7 @@ static int storvsc_host_reset_handler(st
- 	if (ret != 0)
- 		return FAILED;
+ EXPORT_SYMBOL_GPL(prueth_xmit_free);
+@@ -612,13 +602,8 @@ u32 emac_xmit_xdp_frame(struct prueth_emac *emac,
+ 	k3_udma_glue_tx_dma_to_cppi5_addr(tx_chn->tx_chn, &buf_dma);
+ 	cppi5_hdesc_attach_buf(first_desc, buf_dma, xdpf->len, buf_dma, xdpf->len);
+ 	swdata = cppi5_hdesc_get_swdata(first_desc);
+-	if (page) {
+-		swdata->type = PRUETH_SWDATA_PAGE;
+-		swdata->data.page = page;
+-	} else {
+-		swdata->type = PRUETH_SWDATA_XDPF;
+-		swdata->data.xdpf = xdpf;
+-	}
++	swdata->type = PRUETH_SWDATA_XDPF;
++	swdata->data.xdpf = xdpf;
  
--	t = wait_for_completion_timeout(&request->wait_event, 5*HZ);
-+	t = wait_for_completion_timeout(&request->wait_event, storvsc_timeout * HZ);
- 	if (t == 0)
- 		return TIMEOUT_ERROR;
- 
+ 	/* Report BQL before sending the packet */
+ 	netif_txq = netdev_get_tx_queue(ndev, tx_chn->id);
+-- 
+2.39.5
+
 
 
 
