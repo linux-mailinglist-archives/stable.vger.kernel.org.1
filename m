@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AEB88AE5651
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07E38AE56C4
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80B3170B19
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:18:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 162314E11D6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E75BB676;
-	Mon, 23 Jun 2025 22:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A693E224B07;
+	Mon, 23 Jun 2025 22:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HRd7F/A5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iO3iqvhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7BF19F120;
-	Mon, 23 Jun 2025 22:18:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6347615ADB4;
+	Mon, 23 Jun 2025 22:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717107; cv=none; b=cEzb91cLX9KfBvpGErv2+tQwa5jm+vA5NECh7rl8LuseSuMI81MyDDVpZHQxvSgfauMHt+ZHSVE6CKo+wtxDRfYTjJ3ldk0JpNvFqNiHiadQUj4g+aZrtQBsWG4iVfQPlpCdeobqvRBpdqhhlXJVN8jH2M666kNqoP+/b4qla/U=
+	t=1750717365; cv=none; b=iMDMt7eAytwnwFGlq53jgcxa4xQjIg+2mrNbJFMgDt5z6TrFQvlTgGv6wtPC6aesNAWM2ZK+F6X7qGPPS++xJScbmO3O+MllROSI23RhzXkJcBZRJO4ejRxa9F0H1cTwUyEZVxkWbWcU76VYiQOUB2graOx/kgdmJf3otEVyquY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717107; c=relaxed/simple;
-	bh=KkkBPCKvGpxLWNiZOcN1CwDLRofOEFtJTJCwH582aCY=;
+	s=arc-20240116; t=1750717365; c=relaxed/simple;
+	bh=ZtmRi5YLwOf0YHwcmxICyq31hP3upUgKzXCQN295NHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kDWTXD+gKdT7HopOWJeYC+rIS0A8VczvnfceL19BdO8vfwGp2dDEBVRIafPvH/NaUbeqszjSwa0oAzKNZCxUDhb55ktJmAZwJ5otzk72Atu5wAjiB/L47cHabCypi+Tt7/PUYMgQOJOe3iYlKrOMA/Zp3aCw7hKBFPhLHl9i7+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HRd7F/A5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6DDC4CEEA;
-	Mon, 23 Jun 2025 22:18:26 +0000 (UTC)
+	 MIME-Version; b=Pdzcs2uv+c8sUyKlFSXF9TamD4FUlA+YP5BW11vT2I20nP4moWjy8ZJ//FqTkkD7bRa8HySPKS2nuIu/IWwPx0QIv8kG+ghZQHyd+wG7ftwfSeOaUCdGNIEtECDA98hjwEVdk2xTYvK7v3b2DrxvkAS4EmPuS0leC9leXbMvRhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iO3iqvhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9F7C4CEEA;
+	Mon, 23 Jun 2025 22:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717106;
-	bh=KkkBPCKvGpxLWNiZOcN1CwDLRofOEFtJTJCwH582aCY=;
+	s=korg; t=1750717365;
+	bh=ZtmRi5YLwOf0YHwcmxICyq31hP3upUgKzXCQN295NHg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HRd7F/A5lzfrmxRZQ3KAHFYpqcKJMPdpgXJuz4w2URzE3wALjkXfuRWRPlI1Mwjhr
-	 nAkcr0WDUXkRmKPCy3xxXMpJIDtxx9vPYka3SjWkvt7fZI7L1ojWa2Rs+j6Oih/npd
-	 7k2GntNs6sbMzDuHP+BBg2ww8H0qSawaHCijwljA=
+	b=iO3iqvhdfoIy/tcqfhVoMSbI3JUzA9qdWUA1bkyYUdJwJ8geuBnTMdskn60mq2lTE
+	 +O1Td9Laf4btchxMw+d28get/JPGFk2toB8mMajrB9iX6dFHKbGmuOI22m8scxp5Tc
+	 XSUAjuXc1KFzlggZ5e74AUNO1dzDn3vr0lgGC15g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.12 319/414] ksmbd: fix null pointer dereference in destroy_previous_session
-Date: Mon, 23 Jun 2025 15:07:36 +0200
-Message-ID: <20250623130649.971028081@linuxfoundation.org>
+	Salah Triki <salah.triki@gmail.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 412/508] wireless: purelifi: plfxlc: fix memory leak in plfxlc_usb_wreq_asyn()
+Date: Mon, 23 Jun 2025 15:07:37 +0200
+Message-ID: <20250623130655.353958354@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Salah Triki <salah.triki@gmail.com>
 
-commit 7ac5b66acafcc9292fb935d7e03790f2b8b2dc0e upstream.
+[ Upstream commit 63a9a727d373fa5b8ce509eef50dbc45e0f745b9 ]
 
-If client set ->PreviousSessionId on kerberos session setup stage,
-NULL pointer dereference error will happen. Since sess->user is not
-set yet, It can pass the user argument as NULL to destroy_previous_session.
-sess->user will be set in ksmbd_krb5_authenticate(). So this patch move
-calling destroy_previous_session() after ksmbd_krb5_authenticate().
+Add usb_free_urb() in the error path to prevent memory leak.
 
-Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-27391
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Salah Triki <salah.triki@gmail.com>
+Link: https://patch.msgid.link/aA3_maPlEJzO7wrL@pc
+[fix subject]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c |   11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ drivers/net/wireless/purelifi/plfxlc/usb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -1605,17 +1605,18 @@ static int krb5_authenticate(struct ksmb
- 	out_len = work->response_sz -
- 		(le16_to_cpu(rsp->SecurityBufferOffset) + 4);
+diff --git a/drivers/net/wireless/purelifi/plfxlc/usb.c b/drivers/net/wireless/purelifi/plfxlc/usb.c
+index 311676c1ece0a..8151bc5e00ccc 100644
+--- a/drivers/net/wireless/purelifi/plfxlc/usb.c
++++ b/drivers/net/wireless/purelifi/plfxlc/usb.c
+@@ -503,8 +503,10 @@ int plfxlc_usb_wreq_async(struct plfxlc_usb *usb, const u8 *buffer,
+ 			  (void *)buffer, buffer_len, complete_fn, context);
  
--	/* Check previous session */
--	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
--	if (prev_sess_id && prev_sess_id != sess->id)
--		destroy_previous_session(conn, sess->user, prev_sess_id);
--
- 	retval = ksmbd_krb5_authenticate(sess, in_blob, in_len,
- 					 out_blob, &out_len);
- 	if (retval) {
- 		ksmbd_debug(SMB, "krb5 authentication failed\n");
- 		return -EINVAL;
- 	}
-+
-+	/* Check previous session */
-+	prev_sess_id = le64_to_cpu(req->PreviousSessionId);
-+	if (prev_sess_id && prev_sess_id != sess->id)
-+		destroy_previous_session(conn, sess->user, prev_sess_id);
-+
- 	rsp->SecurityBufferLength = cpu_to_le16(out_len);
+ 	r = usb_submit_urb(urb, GFP_ATOMIC);
+-	if (r)
++	if (r) {
++		usb_free_urb(urb);
+ 		dev_err(&udev->dev, "Async write submit failed (%d)\n", r);
++	}
  
- 	if ((conn->sign || server_conf.enforced_signing) ||
+ 	return r;
+ }
+-- 
+2.39.5
+
 
 
 
