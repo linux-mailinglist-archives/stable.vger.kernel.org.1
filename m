@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-157861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157679-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C53B8AE55FB
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:16:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54526AE5512
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE80E18865A5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:15:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 59DBB4C3046
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A79E31F7580;
-	Mon, 23 Jun 2025 22:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23579221FD6;
+	Mon, 23 Jun 2025 22:07:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LWrjRSev"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMc2Nvyl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6587F223DD0;
-	Mon, 23 Jun 2025 22:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D21123597E;
+	Mon, 23 Jun 2025 22:07:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716899; cv=none; b=OHZX27rpHA5EFo56X3JBNWcXtgYiT117CpZLErCBvueRFMbaLjLUJgmhQjomfiqptnsWoS4974QOMYVWPKyN4+Sh5nv2pV49w2IiMvmei/07fWRVCxbn/LiIt/MsyDLFKoS1FQBQhffW0O6G3S5kb0eShJjWO/Ak+Iv0U3EAWFI=
+	t=1750716458; cv=none; b=HOLw+j3DTnOfapB3j3EJfza0cj7/k7guHy+HV/YB5ID7QH/pTbBfB5wFFvhW5rmIlhOy5ANZiLDtKb9jrtjwu3JuZCsvvvn8Pj3DZc5xBbrBghTWo8/HT8jxIDDBO623haPMYqQZJhLUUYW+QAH6/fo7F0OTBTth5ja/cs51lQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716899; c=relaxed/simple;
-	bh=b9GmubO9aVRSPKherRcHU4wRwLlnfZeE0gO3Ycud2TQ=;
+	s=arc-20240116; t=1750716458; c=relaxed/simple;
+	bh=P0UKYy1OvxLb8/zMsoUUjeJktRa/BGfgebAHpVAGLx0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AchLMzmbhjghvEOFDpWfV0c/mdNyzzCFPjVynDYjRyBCKSfqQO7PhBRWKIrmurFYBZBRKq59PzRQYrRE4MVzWpSxBmMF23IlZfqYfjrE0JrkdhynqJMGVzaIfA6lKm4E7wmkePFL2YuaZBMzfuZJsGiohoI01k32uXZXl2pOqMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LWrjRSev; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96AAC4CEEA;
-	Mon, 23 Jun 2025 22:14:58 +0000 (UTC)
+	 MIME-Version; b=u7Pvs5+DSSX4yUMH1vkzAf/jQcvh+v+mldNRv4a+tU75TRK9L+23GSSvPfyBl8MEq+Ls6wZkZNdD+QX7qlpnelvKtOY4tqWb3bYREpVurq6eif5vFhmgDrGg1BXvSnwKBna1EzDcsibOEhr0WxX9eHxBVDcela8+bl+Ef+0JhYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMc2Nvyl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D5CC4CEEA;
+	Mon, 23 Jun 2025 22:07:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716899;
-	bh=b9GmubO9aVRSPKherRcHU4wRwLlnfZeE0gO3Ycud2TQ=;
+	s=korg; t=1750716458;
+	bh=P0UKYy1OvxLb8/zMsoUUjeJktRa/BGfgebAHpVAGLx0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LWrjRSev8lY5E5FCVlpAcpGghVyh5nJQ7WraS3zfHo0IDykvCDG28U90gXHoKbbXA
-	 +Q9zE35mXnz13Ht4xWDwyskxi+SISLagmCNUn0mpSz48ebkC4E99RPlGjZ79Af9Ulf
-	 dO4UUymiys8Qy+CJhsbduK3h71gvfLVWmn2uo0W8=
+	b=zMc2Nvyl1BwkL8D3vQ6TP8A1k2J6SInBKjQ9SqEIKF8hI5eyd0ybnnHKvnXq1B8Nf
+	 Ia/CNlnJy/MAkm5LzXTh1l0hdfFzzx/4Ch4jMdyyJrCvuFpEzTDcttb/JALxRqQ04c
+	 erHFs8Lzz7u8y3bXPqbeUbrAUGMnWD0HR1pnnEhM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Heiner Kallweit <hkallweit1@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 343/508] net: ftgmac100: select FIXED_PHY
-Date: Mon, 23 Jun 2025 15:06:28 +0200
-Message-ID: <20250623130653.783909754@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Shung-Hsi Yu <shung-hsi.yu@suse.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 252/414] bpf: Use proper type to calculate bpf_raw_tp_null_args.mask index
+Date: Mon, 23 Jun 2025 15:06:29 +0200
+Message-ID: <20250623130648.345660390@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Shung-Hsi Yu <shung-hsi.yu@suse.com>
 
-commit ae409629e022fbebbc6d31a1bfeccdbbeee20fd6 upstream.
+[ Upstream commit 53ebef53a657d7957d35dc2b953db64f1bb28065 ]
 
-Depending on e.g. DT configuration this driver uses a fixed link.
-So we shouldn't rely on the user to enable FIXED_PHY, select it in
-Kconfig instead. We may end up with a non-functional driver otherwise.
+The calculation of the index used to access the mask field in 'struct
+bpf_raw_tp_null_args' is done with 'int' type, which could overflow when
+the tracepoint being attached has more than 8 arguments.
 
-Fixes: 38561ded50d0 ("net: ftgmac100: support fixed link")
-Cc: stable@vger.kernel.org
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://patch.msgid.link/476bb33b-5584-40f0-826a-7294980f2895@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While none of the tracepoints mentioned in raw_tp_null_args[] currently
+have more than 8 arguments, there do exist tracepoints that had more
+than 8 arguments (e.g. iocost_iocg_forgive_debt), so use the correct
+type for calculation and avoid Smatch static checker warning.
+
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Shung-Hsi Yu <shung-hsi.yu@suse.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/bpf/20250418074946.35569-1-shung-hsi.yu@suse.com
+
+Closes: https://lore.kernel.org/r/843a3b94-d53d-42db-93d4-be10a4090146@stanley.mountain/
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/faraday/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/btf.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/faraday/Kconfig b/drivers/net/ethernet/faraday/Kconfig
-index c699bd6bcbb9..474073c7f94d 100644
---- a/drivers/net/ethernet/faraday/Kconfig
-+++ b/drivers/net/ethernet/faraday/Kconfig
-@@ -31,6 +31,7 @@ config FTGMAC100
- 	depends on ARM || COMPILE_TEST
- 	depends on !64BIT || BROKEN
- 	select PHYLIB
-+	select FIXED_PHY
- 	select MDIO_ASPEED if MACH_ASPEED_G6
- 	select CRC32
- 	help
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 2c54c148a94f3..f83bd019db141 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6684,10 +6684,10 @@ bool btf_ctx_access(int off, int size, enum bpf_access_type type,
+ 			/* Is this a func with potential NULL args? */
+ 			if (strcmp(tname, raw_tp_null_args[i].func))
+ 				continue;
+-			if (raw_tp_null_args[i].mask & (0x1 << (arg * 4)))
++			if (raw_tp_null_args[i].mask & (0x1ULL << (arg * 4)))
+ 				info->reg_type |= PTR_MAYBE_NULL;
+ 			/* Is the current arg IS_ERR? */
+-			if (raw_tp_null_args[i].mask & (0x2 << (arg * 4)))
++			if (raw_tp_null_args[i].mask & (0x2ULL << (arg * 4)))
+ 				ptr_err_raw_tp = true;
+ 			break;
+ 		}
 -- 
-2.50.0
+2.39.5
 
 
 
