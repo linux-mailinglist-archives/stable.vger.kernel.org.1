@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-156276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4A9FAE4EE5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:10:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9DFAAE4E7D
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A82101B60063
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:10:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 574757AAAB3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF86C21FF2B;
-	Mon, 23 Jun 2025 21:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221BC22172D;
+	Mon, 23 Jun 2025 21:06:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nL/7a/sn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PZPEW6EP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C95D70838;
-	Mon, 23 Jun 2025 21:10:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0EED202983;
+	Mon, 23 Jun 2025 21:06:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713017; cv=none; b=s8ZatGTJpESwIxSY8CxyZfqxQilPl1KxFG1c4PJC+F+0fGqxVnx/TcCo58wF7fcawVOyy88jI45K76Yo4HTrGR39YKvi1ST6b0yrOIVRivmyeBi9dY38aPOXAQT1fqF4+w06lZ443mRXt34rl7DMdbFMv50QrpadI57UGr4qiSM=
+	t=1750712771; cv=none; b=Hle4+4X3V3gqvg2bAkaw9GlypxJcZb7UWP3lfl01/1mUBUyigPQCjSbsos3tk1/KfQh+dDCnDIA5dRHuj3lNvoNMvzT0kI+Z1MlkCr90b6idCkm8Y3mQDuUQys6GjPDlNxs8rhTDa0sjm5mtdAIxcn8XNkFLbVoSDyT7qIABr6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713017; c=relaxed/simple;
-	bh=/xsJUh9+gi7pFjav6nZ6Z/BTFxQzossEpplOU8Cmt2M=;
+	s=arc-20240116; t=1750712771; c=relaxed/simple;
+	bh=ALMKxJY1tpeeexPocNpuBUQe4MiF5zxnsWz7t7m+uMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oLVCYmh4VjHTHuHGCz7NW6q04AW74EFq91TXtIDBqPePCJyyQ53Bxvv/oIBeIcx5/vUbDX4ye6Tgxv+6twsBz1nt+kw5tF8FrBgIq7qMojcurkxKJNAo2IoDRMmTXnMSaIoUvFJnAMLPkRvi5lLuJgcLoZkZnFrjc/yQJyeQZrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nL/7a/sn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15168C4CEEA;
-	Mon, 23 Jun 2025 21:10:16 +0000 (UTC)
+	 MIME-Version; b=JGMzAzyztnswjfkZUUI2cKbAPcXGy+CdEP4pZKfoLbMd5zZ22m4xAaQg66u3HYKc9jP/H2UXEiOHlas6eCChKrvACs5zjbbyLCG9sF97g8rtKv0sXTIZMsgQ4JQIhvnQKg/Ympm+7sU0gVsRMGMqQLasXhHL237LDlXoh4sOtT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PZPEW6EP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14FB1C4CEEA;
+	Mon, 23 Jun 2025 21:06:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713017;
-	bh=/xsJUh9+gi7pFjav6nZ6Z/BTFxQzossEpplOU8Cmt2M=;
+	s=korg; t=1750712771;
+	bh=ALMKxJY1tpeeexPocNpuBUQe4MiF5zxnsWz7t7m+uMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nL/7a/snYtLsG+473St9lefZTb9uezsQfO418DXC33nGs6qmFRirXSS0dl80xQnPx
-	 3k/OI7BzA3vsHBGP9IO91Me+jHpAXewpRWksDmQXBpQxkszBs3PK7mBux14KxB7gK2
-	 w2Q8diycVboYhchTvxqD9CfZkbtuNjoqI318qymE=
+	b=PZPEW6EPAYh8GwwzLlQrhznokE477AUts4cN4hVNu0WnqWP6qRtUfc1xO0ufr1cXU
+	 QqRJKtOxsKayACP03mDz2PaMSJeqfRalAhWOD07JLI3hfWcvfQazX94H8JqXjQSEJO
+	 7Iai9fF0KxkSIO7c1fuawqHihlnpJAS3tXMsFRu4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Weiss <luca.weiss@fairphone.com>,
-	Taniya Das <quic_tdas@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Tom Zanussi <zanussi@kernel.org>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 072/508] clk: qcom: dispcc-sm6350: Add *_wait_val values for GDSCs
-Date: Mon, 23 Jun 2025 15:01:57 +0200
-Message-ID: <20250623130647.010207169@linuxfoundation.org>
+Subject: [PATCH 6.1 078/508] tracing: Fix error handling in event_trigger_parse()
+Date: Mon, 23 Jun 2025 15:02:03 +0200
+Message-ID: <20250623130647.156831797@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
 References: <20250623130645.255320792@linuxfoundation.org>
@@ -67,43 +71,53 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Luca Weiss <luca.weiss@fairphone.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 673989d27123618afab56df1143a75454178b4ae ]
+[ Upstream commit c5dd28e7fb4f63475b50df4f58311df92939d011 ]
 
-Compared to the msm-4.19 driver the mainline GDSC driver always sets the
-bits for en_rest, en_few & clk_dis, and if those values are not set
-per-GDSC in the respective driver then the default value from the GDSC
-driver is used. The downstream driver only conditionally sets
-clk_dis_wait_val if qcom,clk-dis-wait-val is given in devicetree.
+According to trigger_data_alloc() doc, trigger_data_free() should be
+used to free an event_trigger_data object. This fixes a mismatch introduced
+when kzalloc was replaced with trigger_data_alloc without updating
+the corresponding deallocation calls.
 
-Correct this situation by explicitly setting those values. For all GDSCs
-the reset value of those bits are used.
-
-Fixes: 837519775f1d ("clk: qcom: Add display clock controller driver for SM6350")
-Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
-Reviewed-by: Taniya Das <quic_tdas@quicinc.com>
-Link: https://lore.kernel.org/r/20250425-sm6350-gdsc-val-v1-2-1f252d9c5e4e@fairphone.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Tom Zanussi <zanussi@kernel.org>
+Link: https://lore.kernel.org/20250507145455.944453325@goodmis.org
+Link: https://lore.kernel.org/20250318112737.4174-1-linmq006@gmail.com
+Fixes: e1f187d09e11 ("tracing: Have existing event_command.parse() implementations use helpers")
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+[ SDR: Changed event_trigger_alloc/free() to trigger_data_alloc/free() ]
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sm6350.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/trace/trace_events_trigger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/dispcc-sm6350.c b/drivers/clk/qcom/dispcc-sm6350.c
-index ddacb4f76eca5..ea98a63746f0f 100644
---- a/drivers/clk/qcom/dispcc-sm6350.c
-+++ b/drivers/clk/qcom/dispcc-sm6350.c
-@@ -680,6 +680,9 @@ static struct clk_branch disp_cc_xo_clk = {
+diff --git a/kernel/trace/trace_events_trigger.c b/kernel/trace/trace_events_trigger.c
+index 22bee3eae7cc3..782ccb2433bb4 100644
+--- a/kernel/trace/trace_events_trigger.c
++++ b/kernel/trace/trace_events_trigger.c
+@@ -998,7 +998,7 @@ event_trigger_parse(struct event_command *cmd_ops,
  
- static struct gdsc mdss_gdsc = {
- 	.gdscr = 0x1004,
-+	.en_rest_wait_val = 0x2,
-+	.en_few_wait_val = 0x2,
-+	.clk_dis_wait_val = 0xf,
- 	.pd = {
- 		.name = "mdss_gdsc",
- 	},
+ 	if (remove) {
+ 		event_trigger_unregister(cmd_ops, file, glob+1, trigger_data);
+-		kfree(trigger_data);
++		trigger_data_free(trigger_data);
+ 		ret = 0;
+ 		goto out;
+ 	}
+@@ -1025,7 +1025,7 @@ event_trigger_parse(struct event_command *cmd_ops,
+ 
+  out_free:
+ 	event_trigger_reset_filter(cmd_ops, trigger_data);
+-	kfree(trigger_data);
++	trigger_data_free(trigger_data);
+ 	goto out;
+ }
+ 
 -- 
 2.39.5
 
