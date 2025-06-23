@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-157273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157507-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC5EDAE532E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:51:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10907AE546E
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:01:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 53BFE4A75ED
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94CE91BC1137
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4401E1DD0C7;
-	Mon, 23 Jun 2025 21:51:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9D62940B;
+	Mon, 23 Jun 2025 22:00:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SZEHqJyA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uSs0oZKT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0243719049B;
-	Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C08C94409;
+	Mon, 23 Jun 2025 22:00:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715465; cv=none; b=N3z+PeAKYsExNQwmEk0z9pBaExelAoRGCgUbTsnExdlkj5IkD6DBrkUasBWRZxLgAEF08yukQ+hHtQ08yoDT2Ib0P6KIFFXiim9hHHHfFE18cOt9kVxgJ014SUU0OQ/hxEw+EgXDc9QpxXoQhCyc4XpkRTOxyIgae+h7ClQEmOo=
+	t=1750716036; cv=none; b=hReKD0vduT++LFKQFu3dYlQpFBsftZ771WCav8P+HzN/+naTTrR9qceno1lQ6e6EUWvVkEDhRUhwqBJ0aclLO64KPN7JXBWnhwZF+GBzaTwRisr59NOjFOC/gIWWlbgc6DEHN2O7zn/5LJFI5eKDzh81VpSy0kInIY7q3pYqmBc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715465; c=relaxed/simple;
-	bh=n0rv/3GPQlrmTW4QXYlFI+bPrQHiN9SGUTtQEnnen+g=;
+	s=arc-20240116; t=1750716036; c=relaxed/simple;
+	bh=TW8YTqmdDvJur5+BS8PXd/1UNGAv0goyYm/WBjgyhnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlqI8ikWm7axuMVGUsNQHlgmmRD5ebYw7J2NfVVeXMiXHuUTpCGiKNVSzMW+sMWxpMPTaIkF7rsyKhEhGSt7mNouG5GA7pgJeixEjS4rRNsEiQYkkcpfZZJW5kJ1TLPk7e7zBe+foSxAE08m24nsU5sI5TU52UmTyyCEDbxwF0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SZEHqJyA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3EAC4CEEA;
-	Mon, 23 Jun 2025 21:51:04 +0000 (UTC)
+	 MIME-Version; b=rx2Ajo5yt25TKEHXXbdxbDgSoJVWz4rbKPfrLU4T8JXEfkQkbPLbh4CdUQFEvTWwoJROuc9aMcjItQRNF/AG1zqGMgtwNvkSU4FTQFHrfBU767iygq4O0Ek9DCJEfmNEhCW2MxOpufNKlPMP8ktGT6TDZjAxa45VblPq8QBE9sc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uSs0oZKT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BA3C4CEEA;
+	Mon, 23 Jun 2025 22:00:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715464;
-	bh=n0rv/3GPQlrmTW4QXYlFI+bPrQHiN9SGUTtQEnnen+g=;
+	s=korg; t=1750716036;
+	bh=TW8YTqmdDvJur5+BS8PXd/1UNGAv0goyYm/WBjgyhnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SZEHqJyAooYHJ0hWoEjZHHu34BUSJowQaNrL+bGmRPOEE2ALserJD6Srv+4BtxCvC
-	 ihhjEO5ZAgx9kCmHJdP+d68shn8RSYho+cmUc3mtKaGfn8/itu0OgZ97l4p7pPMzrj
-	 taIOq689IYmO+yk6sNHNYc0rR1yOfwV+iZn2FoOA=
+	b=uSs0oZKTJe5xDRrkE884D2FPBwmG0TR2Fx+ka0dImQRpcyUI/Zu313oBwa6pB4Ga/
+	 qQFZqUHhHkwWk8yf9VP8A8UNz4XpIYUh5j4yh7QXairjbDFoINSxr7ZdgLRPE/V2US
+	 TKBxrTCQNVcbfcjJB9D3Pwu/2hjvyN6NO/QVWzpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Marc Zyngier <maz@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 184/414] platform-msi: Add msi_remove_device_irq_domain() in platform_device_msi_free_irqs_all()
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 6.1 276/508] usb: usbtmc: Fix read_stb function and get_stb ioctl
 Date: Mon, 23 Jun 2025 15:05:21 +0200
-Message-ID: <20250623130646.622077415@linuxfoundation.org>
+Message-ID: <20250623130652.039487571@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-[ Upstream commit 9a958e1fd40d6fae8c66385687a00ebd9575a7d2 ]
+commit acb3dac2805d3342ded7dbbd164add32bbfdf21c upstream.
 
-platform_device_msi_init_and_alloc_irqs() performs two tasks: allocating
-the MSI domain for a platform device, and allocate a number of MSIs in that
-domain.
+The usbtmc488_ioctl_read_stb function relied on a positive return from
+usbtmc_get_stb to reset the srq condition in the driver. The
+USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
+to the user.
 
-platform_device_msi_free_irqs_all() only frees the MSIs, and leaves the MSI
-domain alive.
+Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
+error returns") changed the return value of usbtmc_get_stb to 0 on
+success instead of returning the value of usb_control_msg which is
+positive in the normal case. This change caused the function
+usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
+longer function correctly.
 
-Given that platform_device_msi_init_and_alloc_irqs() is the sole tool a
-platform device has to allocate platform MSIs, it makes sense for
-platform_device_msi_free_irqs_all() to teardown the MSI domain at the same
-time as the MSIs.
+Change the test in usbtmc488_ioctl_read_stb to test for failure
+first and return the failure code immediately.
+Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
+instead of a positive value.
 
-This avoids warnings and unexpected behaviours when a driver repeatedly
-allocates and frees MSIs.
-
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Acked-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/all/20250414-ep-msi-v18-1-f69b49917464@nxp.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/platform-msi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/class/usbtmc.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/base/platform-msi.c b/drivers/base/platform-msi.c
-index 0e60dd650b5e0..70db08f3ac6fa 100644
---- a/drivers/base/platform-msi.c
-+++ b/drivers/base/platform-msi.c
-@@ -95,5 +95,6 @@ EXPORT_SYMBOL_GPL(platform_device_msi_init_and_alloc_irqs);
- void platform_device_msi_free_irqs_all(struct device *dev)
- {
- 	msi_domain_free_irqs_all(dev, MSI_DEFAULT_DOMAIN);
-+	msi_remove_device_irq_domain(dev, MSI_DEFAULT_DOMAIN);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(stru
+ 
+ 	rv = usbtmc_get_stb(file_data, &stb);
+ 
+-	if (rv > 0) {
+-		srq_asserted = atomic_xchg(&file_data->srq_asserted,
+-					srq_asserted);
+-		if (srq_asserted)
+-			stb |= 0x40; /* Set RQS bit */
++	if (rv < 0)
++		return rv;
++
++	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
++	if (srq_asserted)
++		stb |= 0x40; /* Set RQS bit */
++
++	rv = put_user(stb, (__u8 __user *)arg);
+ 
+-		rv = put_user(stb, (__u8 __user *)arg);
+-	}
+ 	return rv;
+ 
  }
- EXPORT_SYMBOL_GPL(platform_device_msi_free_irqs_all);
--- 
-2.39.5
-
+@@ -2201,7 +2202,7 @@ static long usbtmc_ioctl(struct file *fi
+ 
+ 	case USBTMC_IOCTL_GET_STB:
+ 		retval = usbtmc_get_stb(file_data, &tmp_byte);
+-		if (retval > 0)
++		if (!retval)
+ 			retval = put_user(tmp_byte, (__u8 __user *)arg);
+ 		break;
+ 
 
 
 
