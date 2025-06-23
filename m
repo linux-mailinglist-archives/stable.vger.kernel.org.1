@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-155580-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B3C3AE42B8
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:24:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E262AE42C9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:25:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 167393BA811
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1648518837A8
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F7E92580D7;
-	Mon, 23 Jun 2025 13:19:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A145D2566E8;
+	Mon, 23 Jun 2025 13:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qu1Z21xT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yl3gnytb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0672561A8;
-	Mon, 23 Jun 2025 13:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE75248895;
+	Mon, 23 Jun 2025 13:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684795; cv=none; b=InltHysyxpZ+rA3iIc2ZsimUt0E/jjtMEoxRVmFZ2R7aXUZVIDw+cGeIQAKo8grfo+aNOfmCXR8DZOjudXkoIBlJyvSa1kYKUQ4/xmuSOLP1QDQWbu/fqjCXe1c++HdzUSjPefqpcTMBj+GoZk36xckY/l1MkZUvcudVMGZrOC0=
+	t=1750684802; cv=none; b=EHona8dU9SQY4snOyqIXHrsImya+iv22rlnPrXQCsAkDJkmtVY/cpV8Q+uGuXoaw4/5i4GBwyci9Gvca+SBJWuQkXKJ3bXJBhjElgyp5Qbh9mBvwVDwO+OlvVOscSEodpOGdHdxkcpRH1aMEX2peVJuJA86wqn9sFDqgniVfxrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684795; c=relaxed/simple;
-	bh=hwLN4D+uW4NowzYsVOY0gpugnUTfLzDb6+zxNyPy0ys=;
+	s=arc-20240116; t=1750684802; c=relaxed/simple;
+	bh=YHO95B7Qo0gy1xc/b5Vz8JaiVuYJ9UfiO/zp4RqBWXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KncZL9s96zolk0CdgQC8unp8NN/XSOt/4hVMt8K8ZAMUUwUxqm1c4BO3Cex5WO5fJ8VMcN3DkjQDRtu+0L4loXtc8XFEOU7uQEwQ5p7yz7hoancbroMsy6JDLwJwzYvH6EbQoDBYNvI9wreGru/8deISjCrrLPfZ51FAD4KZOck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qu1Z21xT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4837AC4CEF0;
-	Mon, 23 Jun 2025 13:19:54 +0000 (UTC)
+	 MIME-Version; b=qAkeGLh4M92pz8N1y3OIIB/NKd+tqQinlFVo1Le4U9bsVc6S91SZ9kg9NhrtE8ambHHpza33U93miOfFa+2vAr1Aiq5XEzbssbjcbTmXu3Z9dlIbNRSR3BlHsgzDFCpfeo+qYjCjLWRQeMg10sO05zytX9hF6vjsqwlFSIrqR4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yl3gnytb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D8BC4CEEA;
+	Mon, 23 Jun 2025 13:20:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684794;
-	bh=hwLN4D+uW4NowzYsVOY0gpugnUTfLzDb6+zxNyPy0ys=;
+	s=korg; t=1750684802;
+	bh=YHO95B7Qo0gy1xc/b5Vz8JaiVuYJ9UfiO/zp4RqBWXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qu1Z21xTbK0oWh9FqPNZdg2UjykiSTC9gdcT41RIzL6IV0xOOE/93OTNjsm0bfz5R
-	 eBtZdgCgJP/6QF0CT0/tVLhBc2q+RMFsFPQGRfU6i4X0Q4BRq0otNXFGfZTConcxwu
-	 3CBcYuMkm/lMNXxM0SoYD3nQa0rPXC1Ib0W0gi8Q=
+	b=yl3gnytbJEMSO9xHwSq7EoOpPT6pioBOPh3HNKmgaCWT9UFM6v/ztub60g2av0C5z
+	 MlFQdY3V80xLaB/xBlHvUEllvEo4u7oao/7rkpcYZleO5+CUtnIFY+2jCPRs0nb7IK
+	 bp9BiyKNVYGAl2J/71jM53/eqiVoEle+7Y5zTxeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Shyam Prasad N <sprasad@microsoft.com>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 174/592] cifs: update dstaddr whenever channel iface is updated
-Date: Mon, 23 Jun 2025 15:02:12 +0200
-Message-ID: <20250623130704.417460926@linuxfoundation.org>
+Subject: [PATCH 6.15 175/592] cifs: dns resolution is needed only for primary channel
+Date: Mon, 23 Jun 2025 15:02:13 +0200
+Message-ID: <20250623130704.440168464@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
 References: <20250623130700.210182694@linuxfoundation.org>
@@ -67,35 +67,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Shyam Prasad N <sprasad@microsoft.com>
 
-commit c1846893991f3b4ec8a0cc12219ada153f0814d6 upstream.
+commit b4f60a053a2534c3e510ba0c1f8727566adf8317 upstream.
 
-When the server interface info changes (more common in clustered
-servers like Azure Files), the per-channel iface gets updated.
-However, this did not update the corresponding dstaddr. As a result
-these channels will still connect (or try connecting) to older addresses.
+When calling cifs_reconnect, before the connection to the
+server is reestablished, the code today does a DNS resolution and
+updates server->dstaddr.
 
-Fixes: b54034a73baf ("cifs: during reconnect, update interface if necessary")
-Cc: <stable@vger.kernel.org>
+However, this is not necessary for secondary channels. Secondary
+channels use the interface list returned by the server to decide
+which address to connect to. And that happens after tcon is reconnected
+and server interfaces are requested.
+
 Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+Cc: stable@vger.kernel.org
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/sess.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/client/connect.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/smb/client/sess.c
-+++ b/fs/smb/client/sess.c
-@@ -445,6 +445,10 @@ cifs_chan_update_iface(struct cifs_ses *
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -392,7 +392,8 @@ static int __cifs_reconnect(struct TCP_S
+ 		try_to_freeze();
+ 		cifs_server_lock(server);
  
- 	ses->chans[chan_index].iface = iface;
- 	spin_unlock(&ses->chan_lock);
-+
-+	spin_lock(&server->srv_lock);
-+	memcpy(&server->dstaddr, &iface->sockaddr, sizeof(server->dstaddr));
-+	spin_unlock(&server->srv_lock);
- }
- 
- static int
+-		if (!cifs_swn_set_server_dstaddr(server)) {
++		if (!cifs_swn_set_server_dstaddr(server) &&
++		    !SERVER_IS_CHAN(server)) {
+ 			/* resolve the hostname again to make sure that IP address is up-to-date */
+ 			rc = reconn_set_ipaddr_from_hostname(server);
+ 			cifs_dbg(FYI, "%s: reconn_set_ipaddr_from_hostname: rc=%d\n", __func__, rc);
 
 
 
