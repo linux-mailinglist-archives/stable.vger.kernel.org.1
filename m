@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-157912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8C40AE562D
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:18:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34135AE55B2
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:14:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9751897A93
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ECF667A410F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43C371F6667;
-	Mon, 23 Jun 2025 22:17:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F45B226888;
+	Mon, 23 Jun 2025 22:13:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OW5ziiCz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvNgnQO9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFBC221FC7;
-	Mon, 23 Jun 2025 22:17:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D760C2E0;
+	Mon, 23 Jun 2025 22:13:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717024; cv=none; b=cQ7PGUSDf775xjVOMfdDBzkuvoV8KebUEdsTphIzm2swi8YkR1ehL55nrYYj0FJm17uYLjLLjL43Q8UV3pNsH2CLL3rHvo99e1GXTJOaqDUFBRLmJDbfCTVZiOsHxlEijU76v71Se7Q1rke57MB59UNNMw1IGaXek4BP1iM3N30=
+	t=1750716821; cv=none; b=cJ1FYktg7KeJGWDIpmiXNpnnmMwcCRto/lKyGm/htnxq+J3CWVHBhIkJhNaYfg/BGvCa6f3q9bNo6l3fmFCP9DoJg78374cbZRSJh2bMOIJ5ui8vj/LlyidjvUmYaKWXg8cG1P/xEfWU7hx8TWcW4PVX23VbP0mkmcKjrKznbyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717024; c=relaxed/simple;
-	bh=CkqvA3Gd2ZqH6bAkwulOHtn+0DfsYirPIXiPYQuvFEg=;
+	s=arc-20240116; t=1750716821; c=relaxed/simple;
+	bh=Nr4RfBOhlheR6jDZnzJvc+Kfsjgk09eJsbkkcxo+dlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dUV3mLzPU1sR2LRI7BHGody0bTuOSIkRbyqGdWz7g+V7O9cQM3Qi77+mrpFmZlo8pnMSzghMsh/sav2RsqjgPabZNrCbF+JBZ1RSgtQNqB2o8frAdYSfFQ5KOboappsGxB49j+bctm6uuiLbSuwE7Hd0DT0z5gO/2KCJuQFL/Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OW5ziiCz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D99BC4CEEA;
-	Mon, 23 Jun 2025 22:17:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oNM6en/Fxh1ErnvsHYUP7cKm1dMyL19zYJteWzW+Jyt/0ZXbMiIHc3KmIgqJBzMSQaX07/6ZBUr/Waffv8Emh+/l43gMeYuZFfr+x7ultU1bzIoT0+BO6654E2sObhm7PtX0qfa73r1CUklyUKPInBgLkvr8C3j0c7aF9/lAMiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvNgnQO9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527D7C4CEF2;
+	Mon, 23 Jun 2025 22:13:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717023;
-	bh=CkqvA3Gd2ZqH6bAkwulOHtn+0DfsYirPIXiPYQuvFEg=;
+	s=korg; t=1750716820;
+	bh=Nr4RfBOhlheR6jDZnzJvc+Kfsjgk09eJsbkkcxo+dlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OW5ziiCzI5ZvnxES9gi6Et8tGzorLLd9/AW77omBF0CM/dLr+ZrHsz/VhXFRA0BUC
-	 nVhU53ts6KVU20sMswzzjgD9yrh0vPVqXXohy62Qqa5PNt1yEsmE+bPncKfJELy1pi
-	 s6Krs7vMbxmMo7EXPXcgYvTSksjRoiYO4eaQWWsg=
+	b=pvNgnQO9WizZ7qZrFEPfd+DM1pIsw6iND5sB7U4KeXPSAs6RQZtRAWwYrOgz4FUUC
+	 fOKH5TeMWva1B5rkOB1Ed8jJG7lD/gvXEPGaOmfYDK1ShdjmuKRBiMhxpmNnsXPvpf
+	 2zoH5JNeUl73TCvANk6dPxzBDOe5s0UphUUtPyAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 289/414] platform/x86/amd: pmc: Clear metrics table at start of cycle
-Date: Mon, 23 Jun 2025 15:07:06 +0200
-Message-ID: <20250623130649.239081678@linuxfoundation.org>
+Subject: [PATCH 6.12 290/414] platform/x86/amd: pmf: Prevent amd_pmf_tee_deinit() from running twice
+Date: Mon, 23 Jun 2025 15:07:07 +0200
+Message-ID: <20250623130649.262525933@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -69,42 +70,66 @@ Content-Transfer-Encoding: 8bit
 
 From: Mario Limonciello <mario.limonciello@amd.com>
 
-[ Upstream commit 4dbd11796f3a8eb95647507befc41995458a4023 ]
+[ Upstream commit 93103d56650d7a38ed37ba4041578310f82776ae ]
 
-The area of memory that contains the metrics table may contain garbage
-when the cycle starts.  This normally doesn't matter because the cycle
-itself will populate it with valid data, however commit 9f5595d5f03fd
-("platform/x86/amd: pmc: Require at least 2.5 seconds between HW sleep
-cycles") started to use it during the check() phase.  Depending upon
-what garbage is in the table it's possible that the system will wait
-2.5 seconds for even the first cycle, which will be visible to a user.
+If any of the tee init fails, pass up the errors and clear the tee_ctx
+pointer. This will prevent cleaning up multiple times.
 
-To prevent this from happening explicitly clear the table when logging
-is started.
-
-Fixes: 9f5595d5f03fd ("platform/x86/amd: pmc: Require at least 2.5 seconds between HW sleep cycles")
+Fixes: ac052d8c08f9d ("platform/x86/amd/pmf: Add PMF TEE interface")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://lore.kernel.org/r/20250512211154.2510397-3-superm1@kernel.org
 Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20250603132412.3555302-1-superm1@kernel.org
+Link: https://lore.kernel.org/r/20250522003457.1516679-3-superm1@kernel.org
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmc/pmc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/amd/pmf/tee-if.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmc/pmc.c b/drivers/platform/x86/amd/pmc/pmc.c
-index dc071b4257d7b..357a46fdffeda 100644
---- a/drivers/platform/x86/amd/pmc/pmc.c
-+++ b/drivers/platform/x86/amd/pmc/pmc.c
-@@ -393,6 +393,8 @@ static int amd_pmc_setup_smu_logging(struct amd_pmc_dev *dev)
- 			return -ENOMEM;
+diff --git a/drivers/platform/x86/amd/pmf/tee-if.c b/drivers/platform/x86/amd/pmf/tee-if.c
+index b6bcc1d57f968..a9b195ec6f33f 100644
+--- a/drivers/platform/x86/amd/pmf/tee-if.c
++++ b/drivers/platform/x86/amd/pmf/tee-if.c
+@@ -422,12 +422,12 @@ static int amd_pmf_ta_open_session(struct tee_context *ctx, u32 *id, const uuid_
+ 	rc = tee_client_open_session(ctx, &sess_arg, NULL);
+ 	if (rc < 0 || sess_arg.ret != 0) {
+ 		pr_err("Failed to open TEE session err:%#x, rc:%d\n", sess_arg.ret, rc);
+-		return rc;
++		return rc ?: -EINVAL;
  	}
  
-+	memset_io(dev->smu_virt_addr, 0, sizeof(struct smu_metrics));
-+
- 	/* Start the logging */
- 	amd_pmc_send_cmd(dev, 0, NULL, SMU_MSG_LOG_RESET, false);
- 	amd_pmc_send_cmd(dev, 0, NULL, SMU_MSG_LOG_START, false);
+ 	*id = sess_arg.session;
+ 
+-	return rc;
++	return 0;
+ }
+ 
+ static int amd_pmf_register_input_device(struct amd_pmf_dev *dev)
+@@ -462,7 +462,9 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
+ 	dev->tee_ctx = tee_client_open_context(NULL, amd_pmf_amdtee_ta_match, NULL, NULL);
+ 	if (IS_ERR(dev->tee_ctx)) {
+ 		dev_err(dev->dev, "Failed to open TEE context\n");
+-		return PTR_ERR(dev->tee_ctx);
++		ret = PTR_ERR(dev->tee_ctx);
++		dev->tee_ctx = NULL;
++		return ret;
+ 	}
+ 
+ 	ret = amd_pmf_ta_open_session(dev->tee_ctx, &dev->session_id, uuid);
+@@ -502,9 +504,12 @@ static int amd_pmf_tee_init(struct amd_pmf_dev *dev, const uuid_t *uuid)
+ 
+ static void amd_pmf_tee_deinit(struct amd_pmf_dev *dev)
+ {
++	if (!dev->tee_ctx)
++		return;
+ 	tee_shm_free(dev->fw_shm_pool);
+ 	tee_client_close_session(dev->tee_ctx, dev->session_id);
+ 	tee_client_close_context(dev->tee_ctx);
++	dev->tee_ctx = NULL;
+ }
+ 
+ int amd_pmf_init_smart_pc(struct amd_pmf_dev *dev)
 -- 
 2.39.5
 
