@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-155984-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F42EAE448E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:43:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11EBBAE4317
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:28:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CAE581BC0917
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:38:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 410F0175608
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC119255F3C;
-	Mon, 23 Jun 2025 13:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E0C2255E53;
+	Mon, 23 Jun 2025 13:21:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6ABrRM+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eDSEsyg6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655612550D7;
-	Mon, 23 Jun 2025 13:37:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6B325523C;
+	Mon, 23 Jun 2025 13:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685849; cv=none; b=eOrE0+8vJgn6aLG+PtafKFAbQmPkkf2SsTXK/UXi6FDxg7VNzZZRS2pr+TRILUo31KGoSZctfyLesfot30RB7Mal3e1zW8RgtRRo31DwPwyy0JL9LHtywxE6PzkXt/9ciwdXMfcxnJ2INne0/RrQPUFsO+kYPw0VNXHclPAKNl4=
+	t=1750684909; cv=none; b=ulglYgKb1L6xKoQVoR5StuNRNcGG9VMIoAFbOp7jcaqewrcKJCQx0uQoaeggp3/bDNiNrzBG40RhKOKWivyZ1w9mKgC+ftnWvpgISEWT87oIYOWEVoYTCU3jUxuYmHpNwPFVaWyPo6CWSiF2XzfAwZfFJpWTqpP/oC8v5cPZJb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685849; c=relaxed/simple;
-	bh=Whim5WcmjeUinMqtTsm9t9A9YrrqJBXDa8LZ7uK6y1o=;
+	s=arc-20240116; t=1750684909; c=relaxed/simple;
+	bh=BlYNDB16azII6tqduIMcIO5X6qn1U4f2HhsSGisPR7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mDMR480fnsNJm9fFBVUwdo1lYtUjbq8/5sxf3/yXRwhLLKwFimpfFDWYFFRvrTJChaUQ3aPqLNfpN80tqVUpc6F3nQku7PcCkX6idLVf6IYf/y2NUTVBd1xCkQY+TymcLk3h0EThtO3d3SLqU0Ff03MVC7NUN+OGvDDPVnmF6Og=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6ABrRM+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF05BC4CEEA;
-	Mon, 23 Jun 2025 13:37:28 +0000 (UTC)
+	 MIME-Version; b=FA4YYI0MNuXGYVI+/P6Pp+hwoKCID5Br+6At/vWpffwz+qSJ+mZpsqKOrLuJix/vAIWpGcmxSXfXAshg71ZpUioqr1sSv8XEzyJ4QMmJqx6k7YvlB9KmZoBgbQ5mJQCsd/BhCHn9/iV6+8vTiu7aWOzmKU/bRgfiB1hCt2ixQ8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eDSEsyg6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10461C4CEEA;
+	Mon, 23 Jun 2025 13:21:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685849;
-	bh=Whim5WcmjeUinMqtTsm9t9A9YrrqJBXDa8LZ7uK6y1o=;
+	s=korg; t=1750684909;
+	bh=BlYNDB16azII6tqduIMcIO5X6qn1U4f2HhsSGisPR7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z6ABrRM+bExIhc2NWLaHzwdLGSrnclp2qnpsFT5KD9Z7SGs/Hdet9icRxqykSq5dX
-	 znMWduwS+jmsdAm3d0RMvEVmgaZZpbtpn7tL+acvsRZ0Ux+AbFqUgujZf46CLq7yk6
-	 OZR0u56EmZKA8xyHDFxGEGzP3Wg9JYuzGfYPOzhM=
+	b=eDSEsyg6EJTQGtCjf1UfvvzcUIHbeSWGiaZdWgrjaDafRsKeuD4qcRBs+LKg2Ly0I
+	 MeOO5qiTjsJ8Nmj6iMotDrZR9ObPekx2Qq/pvbl5w4UGvXOA8VPHCuwNxJ7qDVP3vf
+	 Ie3x8HjGlPLMfKbDq78cPiFfpkHt2avGe18dODh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hewitt <christianshewitt@gmail.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.12 010/414] ASoC: meson: meson-card-utils: use of_property_present() for DT parsing
+	Marcelo Schmitt <marcelo.schmitt1@gmail.com>,
+	Sean Nyekjaer <sean@geanix.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.15 189/592] iio: accel: fxls8962af: Fix temperature calculation
 Date: Mon, 23 Jun 2025 15:02:27 +0200
-Message-ID: <20250623130642.284595471@linuxfoundation.org>
+Message-ID: <20250623130704.778459170@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+From: Sean Nyekjaer <sean@geanix.com>
 
-commit 171eb6f71e9e3ba6a7410a1d93f3ac213f39dae2 upstream.
+commit 16038474e3a0263572f36326ef85057aaf341814 upstream.
 
-Commit c141ecc3cecd ("of: Warn when of_property_read_bool() is used on
-non-boolean properties") added a warning when trying to parse a property
-with a value (boolean properties are defined as: absent = false, present
-without any value = true). This causes a warning from meson-card-utils.
+According to spec temperature should be returned in milli degrees Celsius.
+Add in_temp_scale to calculate from Celsius to milli Celsius.
 
-meson-card-utils needs to know about the existence of the
-"audio-routing" and/or "audio-widgets" properties in order to properly
-parse them. Switch to of_property_present() in order to silence the
-following warning messages during boot:
-  OF: /sound: Read of boolean property 'audio-routing' with a value.
-  OF: /sound: Read of boolean property 'audio-widgets' with a value.
-
-Fixes: 7864a79f37b5 ("ASoC: meson: add axg sound card support")
-Tested-by: Christian Hewitt <christianshewitt@gmail.com>
+Fixes: a3e0b51884ee ("iio: accel: add support for FXLS8962AF/FXLS8964AF accelerometers")
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20250419213448.59647-1-martin.blumenstingl@googlemail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Marcelo Schmitt <marcelo.schmitt1@gmail.com>
+Signed-off-by: Sean Nyekjaer <sean@geanix.com>
+Link: https://patch.msgid.link/20250505-fxls-v4-1-a38652e21738@geanix.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/meson/meson-card-utils.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/accel/fxls8962af-core.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/sound/soc/meson/meson-card-utils.c
-+++ b/sound/soc/meson/meson-card-utils.c
-@@ -231,7 +231,7 @@ static int meson_card_parse_of_optional(
- 						    const char *p))
- {
- 	/* If property is not provided, don't fail ... */
--	if (!of_property_read_bool(card->dev->of_node, propname))
-+	if (!of_property_present(card->dev->of_node, propname))
- 		return 0;
+--- a/drivers/iio/accel/fxls8962af-core.c
++++ b/drivers/iio/accel/fxls8962af-core.c
+@@ -23,6 +23,7 @@
+ #include <linux/regulator/consumer.h>
+ #include <linux/regmap.h>
+ #include <linux/types.h>
++#include <linux/units.h>
  
- 	/* ... but do fail if it is provided and the parsing fails */
+ #include <linux/iio/buffer.h>
+ #include <linux/iio/events.h>
+@@ -439,8 +440,16 @@ static int fxls8962af_read_raw(struct ii
+ 		*val = FXLS8962AF_TEMP_CENTER_VAL;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+-		*val = 0;
+-		return fxls8962af_read_full_scale(data, val2);
++		switch (chan->type) {
++		case IIO_TEMP:
++			*val = MILLIDEGREE_PER_DEGREE;
++			return IIO_VAL_INT;
++		case IIO_ACCEL:
++			*val = 0;
++			return fxls8962af_read_full_scale(data, val2);
++		default:
++			return -EINVAL;
++		}
+ 	case IIO_CHAN_INFO_SAMP_FREQ:
+ 		return fxls8962af_read_samp_freq(data, val, val2);
+ 	default:
+@@ -736,6 +745,7 @@ static const struct iio_event_spec fxls8
+ 	.type = IIO_TEMP, \
+ 	.address = FXLS8962AF_TEMP_OUT, \
+ 	.info_mask_separate = BIT(IIO_CHAN_INFO_RAW) | \
++			      BIT(IIO_CHAN_INFO_SCALE) | \
+ 			      BIT(IIO_CHAN_INFO_OFFSET),\
+ 	.scan_index = -1, \
+ 	.scan_type = { \
 
 
 
