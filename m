@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-157345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B387AE538A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11890AE510F
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:30:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 394E14A7C56
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 07CB64A2C01
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54D98223DE1;
-	Mon, 23 Jun 2025 21:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A4402222CA;
+	Mon, 23 Jun 2025 21:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udsKA0d5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmGGPjR9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1100C223316;
-	Mon, 23 Jun 2025 21:54:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB73C221734;
+	Mon, 23 Jun 2025 21:30:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715641; cv=none; b=Q6B26HZXYWKsCIQD5hqBSEQZlNP4vn0zpgHdTm71y5ECekPEuQHdQxGugoDYtVsUiC6tNppSYxOBgYnYSyITYGQuZ6tZP/y1/PVkQxyAEwclA6vpbNafSuopWlIGssysrdVl/7ramaDU1O70TKYXI/Ix2Jy6/BSof0Hx6vw/LGE=
+	t=1750714223; cv=none; b=VnlpFcvAqMAdyk3i5ykb71WiBfVJ/REBJ2kVAhKVlP3Q+Ox24FBKbbA3b0Agnd5RhHemL3h7zX/xeOZzbFAoxryZBAHA6baUl3L4TnFMtmqktKHC7VFER7gMw4Bjg1ycjc3JrUQozlkeZIFumfuqlIm6RZyWnnpGNt9vkCa9oQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715641; c=relaxed/simple;
-	bh=+l4VUfI0Ub/CIOHFYBCeQ0T3juTvX+4gLRgHlJN9pd8=;
+	s=arc-20240116; t=1750714223; c=relaxed/simple;
+	bh=jg54u4iaCKVZKGoAt6niYgi6VamCmAld7fmy5UEOtDo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cYmoA85bXf/dHqvqeNJ8OfxN+/+QFtjB78C5LycT0lwhuagGKiXrn1hDNoNHTmiMiK4+BHhKm0yrzxBtRtJxD8u7A0OELRKYQI18/lHFmb3paRfVMLPg7vW1VH2teAzznKIVYQ6l0NHRb7+3eLVhtJHt7fKCTDqk5IDvccGzUeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udsKA0d5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C93CC4AF0B;
-	Mon, 23 Jun 2025 21:54:00 +0000 (UTC)
+	 MIME-Version; b=JBHTPcZ5caSLRJ6iCNoiY7XVoR0o1E+MLutWTs6Mj6Fm0VN0miIWaKjn8zlmuHOva+imOVfM5PGs22TAfEXzqcE5GU2m2kd4zOH4jHTBUkOPKOxojyLBPz8BEBJ6jKpv/F8OzXHrPn6H8ctz/dvfKBP40WwlE8VZPdjwQO3Zahk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmGGPjR9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AA50C4CEEA;
+	Mon, 23 Jun 2025 21:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715640;
-	bh=+l4VUfI0Ub/CIOHFYBCeQ0T3juTvX+4gLRgHlJN9pd8=;
+	s=korg; t=1750714223;
+	bh=jg54u4iaCKVZKGoAt6niYgi6VamCmAld7fmy5UEOtDo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udsKA0d5p4K2w34wmoCpAJ1gYb7CCwvvTaLa0HnOeYeT/3FcRVBrIQiLY2+mSQkBC
-	 /9xlJ1d1jpTUom79fpfq2XQ2JiaIHu31icibMOA58VG3Bp0Sr+68wH1djkr4ka+oB0
-	 +zKlR2lal8ro6YpfmBVGYV6zeyfrhs0tWkZQfB0U=
+	b=DmGGPjR9OqKbxgeTr8OKS6m4BcZxJseasfQFAcaT/EU4JYX7T0bVxuclp7t7KiUJ5
+	 Syn6aLllbvb+3X5ANDxSwQLQ6AefyC13ryWpCUN8zkX4yiV6kXeAuzJp3TECrf5NVw
+	 vDU+EALdpXhuAqfWm6tsBPXlUAnwDJuCGLQJ0Jv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Lin <benjamin-jw.lin@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 198/414] wifi: mt76: mt7996: drop fragments with multicast or broadcast RA
+Subject: [PATCH 6.15 377/592] tracing: Only return an adjusted address if it matches the kernel address
 Date: Mon, 23 Jun 2025 15:05:35 +0200
-Message-ID: <20250623130646.961641715@linuxfoundation.org>
+Message-ID: <20250623130709.405037412@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Lin <benjamin-jw.lin@mediatek.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 80fda1cd7b0a1edd0849dc71403a070d0922118d ]
+[ Upstream commit 00d872dd541cdf22230510201a1baf58f0147db9 ]
 
-IEEE 802.11 fragmentation can only be applied to unicast frames.
-Therefore, drop fragments with multicast or broadcast RA. This patch
-addresses vulnerabilities such as CVE-2020-26145.
+The trace_adjust_address() will take a given address and examine the
+persistent ring buffer to see if the address matches a module that is
+listed there. If it does not, it will just adjust the value to the core
+kernel delta. But if the address was for something that was not part of
+the core kernel text or data it should not be adjusted.
 
-Signed-off-by: Benjamin Lin <benjamin-jw.lin@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20250515032952.1653494-4-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Check the result of the adjustment and only return the adjustment if it
+lands in the current kernel text or data. If not, return the original
+address.
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Link: https://lore.kernel.org/20250506102300.0ba2f9e0@gandalf.local.home
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mac.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ kernel/trace/trace.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-index ef2d7eaaaffdd..0990a3d481f2d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mac.c
-@@ -623,6 +623,14 @@ mt7996_mac_fill_rx(struct mt7996_dev *dev, enum mt76_rxq_id q,
- 		status->last_amsdu = amsdu_info == MT_RXD4_LAST_AMSDU_FRAME;
+diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
+index 766cb3cd254e0..14e1e1ed55058 100644
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -6032,6 +6032,7 @@ unsigned long trace_adjust_address(struct trace_array *tr, unsigned long addr)
+ 	struct trace_module_delta *module_delta;
+ 	struct trace_scratch *tscratch;
+ 	struct trace_mod_entry *entry;
++	unsigned long raddr;
+ 	int idx = 0, nr_entries;
+ 
+ 	/* If we don't have last boot delta, return the address */
+@@ -6045,7 +6046,9 @@ unsigned long trace_adjust_address(struct trace_array *tr, unsigned long addr)
+ 	module_delta = READ_ONCE(tr->module_delta);
+ 	if (!module_delta || !tscratch->nr_entries ||
+ 	    tscratch->entries[0].mod_addr > addr) {
+-		return addr + tr->text_delta;
++		raddr = addr + tr->text_delta;
++		return __is_kernel(raddr) || is_kernel_core_data(raddr) ||
++			is_kernel_rodata(raddr) ? raddr : addr;
  	}
  
-+	/* IEEE 802.11 fragmentation can only be applied to unicast frames.
-+	 * Hence, drop fragments with multicast/broadcast RA.
-+	 * This check fixes vulnerabilities, like CVE-2020-26145.
-+	 */
-+	if ((ieee80211_has_morefrags(fc) || seq_ctrl & IEEE80211_SCTL_FRAG) &&
-+	    FIELD_GET(MT_RXD3_NORMAL_ADDR_TYPE, rxd3) != MT_RXD3_NORMAL_U2M)
-+		return -EINVAL;
-+
- 	hdr_gap = (u8 *)rxd - skb->data + 2 * remove_pad;
- 	if (hdr_trans && ieee80211_has_morefrags(fc)) {
- 		if (mt7996_reverse_frag0_hdr_trans(skb, hdr_gap))
+ 	/* Note that entries must be sorted. */
 -- 
 2.39.5
 
