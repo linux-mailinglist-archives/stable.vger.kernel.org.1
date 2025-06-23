@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-155802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156018-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B591BAE43C4
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:36:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E458AE44B6
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD5B9189B4C1
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:30:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 73573189ADDC
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 991FA253939;
-	Mon, 23 Jun 2025 13:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63D33254844;
+	Mon, 23 Jun 2025 13:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oQppmgFx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kE2cu7SW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56E26253925;
-	Mon, 23 Jun 2025 13:29:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE3E24DCFD;
+	Mon, 23 Jun 2025 13:38:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685369; cv=none; b=iNrwjtO2HtA24yShcigCxG4sGoWnF9uA/5n5VaNcQ2mukaJnLwQh3qO0u8xbftQPO34TDx3JOBJy3pOHsoe/vA00Kpo2GI2Oc6/Wbe67WGRq5/pAon/lvsPyfzbt1oWg18O16U2SPFNG7VkEplYLBaY1lxyYipH+Tqhs/W1NFqc=
+	t=1750685936; cv=none; b=r+aLEiYvRWIVEh2oqJM1bpiFJ8TgLm36AA3SoJ4SzluabYmz7bewGaccuWKu8bddDh1mR83O7vSbc26rZhMuhZ/W202CVBJKJs7SqP5i5+GMgluK2JGihynEG90Ocm2VsyKKUh1OgWS5+FOX5DNZbkz/uWLY3XCWbIkavsNU7YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685369; c=relaxed/simple;
-	bh=eQhoiQ2IR7YuIdQchEHTzhkC5TC8u9NCbs57T52HfPk=;
+	s=arc-20240116; t=1750685936; c=relaxed/simple;
+	bh=USEyD2NBzr7LTMRvzFG7rCbdsZ1+CTD/i1ZQtgwlCko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pwvpoY73fXT119RPLh4s0H5GN7FvLoFbqn9ayHEwxu6YmUhZXMC2vhN7AgBxf3QsttBk9x5nCCQW83sv/Pmf4NzACCy5mQ50J/qWY0SVu6vk4tjBBFCOtW+aEHyAbk8qa6AndY6z4BmWLFe13pWZuD/fkAyVC+KMcA6HhJpipWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oQppmgFx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF4F1C4CEEA;
-	Mon, 23 Jun 2025 13:29:28 +0000 (UTC)
+	 MIME-Version; b=KkZbH5QUAwOBviR6qSYxctbwqlwYFd34KEQVfnyD7Y651rPPgL7h78GHoI7MTs31YYnvzGhs0+kNHBQgYQLsM95LBiIDYHckF6wMQEClCovZNvIm/I/HToc1ByDmiiE54FIMn89n9ny7oC6nPlsCYRMpCv+p5Tl59I3I0mPQ24Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kE2cu7SW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6EF7C4CEEA;
+	Mon, 23 Jun 2025 13:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685369;
-	bh=eQhoiQ2IR7YuIdQchEHTzhkC5TC8u9NCbs57T52HfPk=;
+	s=korg; t=1750685936;
+	bh=USEyD2NBzr7LTMRvzFG7rCbdsZ1+CTD/i1ZQtgwlCko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oQppmgFxbej10QFqfCy4td4PHTXJRKlOY8WyLYsZ4rc3QivoLdljRv77bRT4zEFEA
-	 jmRh/ZvneE/wRusFkNPGxWJUkoUeyFdyqkib3nlWNLHGcFpHL45rmp9ragYhnRdRe1
-	 DlZw25YcjlVa9QB0iVoOJ/osQtsYtF8XACSSaAUw=
+	b=kE2cu7SW0T8WTTMzZUMaRd28/BVW1EIExkh8S6EA63qcDlPgNsRWETex0uDnjMaEo
+	 TihyBXN5efN9vBAA7BKQLUjQCHtJpUQjgmtnX5PapvoYR7Ic/2eFR16MsRkcVyxE8N
+	 NSzvRfKUNyt6RGASMeV7EF6UXPWVFIF4dXyKKgwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tarang Raval <tarang.raval@siliconsignals.io>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	syzkaller <syzkaller@googlegroups.com>,
+	John Cheung <john.cs.hey@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Paul Moore <paul@paul-moore.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 256/592] media: i2c: imx334: Enable runtime PM before sub-device registration
+Subject: [PATCH 5.15 070/411] calipso: Dont call calipso functions for AF_INET sk.
 Date: Mon, 23 Jun 2025 15:03:34 +0200
-Message-ID: <20250623130706.389363151@linuxfoundation.org>
+Message-ID: <20250623130635.101186277@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +65,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tarang Raval <tarang.raval@siliconsignals.io>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit 01dfdf6a80c57151af0589af0db7adbbdd1361c7 ]
+[ Upstream commit 6e9f2df1c550ead7cecb3e450af1105735020c92 ]
 
-Runtime PM is fully initialized before calling
-v4l2_async_register_subdev_sensor(). Moving the runtime PM initialization
-earlier prevents potential access to an uninitialized or powered-down
-device.
+syzkaller reported a null-ptr-deref in txopt_get(). [0]
 
-Signed-off-by: Tarang Raval <tarang.raval@siliconsignals.io>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+The offset 0x70 was of struct ipv6_txoptions in struct ipv6_pinfo,
+so struct ipv6_pinfo was NULL there.
+
+However, this never happens for IPv6 sockets as inet_sk(sk)->pinet6
+is always set in inet6_create(), meaning the socket was not IPv6 one.
+
+The root cause is missing validation in netlbl_conn_setattr().
+
+netlbl_conn_setattr() switches branches based on struct
+sockaddr.sa_family, which is passed from userspace.  However,
+netlbl_conn_setattr() does not check if the address family matches
+the socket.
+
+The syzkaller must have called connect() for an IPv6 address on
+an IPv4 socket.
+
+We have a proper validation in tcp_v[46]_connect(), but
+security_socket_connect() is called in the earlier stage.
+
+Let's copy the validation to netlbl_conn_setattr().
+
+[0]:
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 2 UID: 0 PID: 12928 Comm: syz.9.1677 Not tainted 6.12.0 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+RIP: 0010:txopt_get include/net/ipv6.h:390 [inline]
+RIP: 0010:
+Code: 02 00 00 49 8b ac 24 f8 02 00 00 e8 84 69 2a fd e8 ff 00 16 fd 48 8d 7d 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <80> 3c 02 00 0f 85 53 02 00 00 48 8b 6d 70 48 85 ed 0f 84 ab 01 00
+RSP: 0018:ffff88811b8afc48 EFLAGS: 00010212
+RAX: dffffc0000000000 RBX: 1ffff11023715f8a RCX: ffffffff841ab00c
+RDX: 000000000000000e RSI: ffffc90007d9e000 RDI: 0000000000000070
+RBP: 0000000000000000 R08: ffffed1023715f9d R09: ffffed1023715f9e
+R10: ffffed1023715f9d R11: 0000000000000003 R12: ffff888123075f00
+R13: ffff88810245bd80 R14: ffff888113646780 R15: ffff888100578a80
+FS:  00007f9019bd7640(0000) GS:ffff8882d2d00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f901b927bac CR3: 0000000104788003 CR4: 0000000000770ef0
+PKRU: 80000000
+Call Trace:
+ <TASK>
+ calipso_sock_setattr+0x56/0x80 net/netlabel/netlabel_calipso.c:557
+ netlbl_conn_setattr+0x10c/0x280 net/netlabel/netlabel_kapi.c:1177
+ selinux_netlbl_socket_connect_helper+0xd3/0x1b0 security/selinux/netlabel.c:569
+ selinux_netlbl_socket_connect_locked security/selinux/netlabel.c:597 [inline]
+ selinux_netlbl_socket_connect+0xb6/0x100 security/selinux/netlabel.c:615
+ selinux_socket_connect+0x5f/0x80 security/selinux/hooks.c:4931
+ security_socket_connect+0x50/0xa0 security/security.c:4598
+ __sys_connect_file+0xa4/0x190 net/socket.c:2067
+ __sys_connect+0x12c/0x170 net/socket.c:2088
+ __do_sys_connect net/socket.c:2098 [inline]
+ __se_sys_connect net/socket.c:2095 [inline]
+ __x64_sys_connect+0x73/0xb0 net/socket.c:2095
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xaa/0x1b0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f901b61a12d
+Code: 02 b8 ff ff ff ff c3 66 0f 1f 44 00 00 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f9019bd6fa8 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
+RAX: ffffffffffffffda RBX: 00007f901b925fa0 RCX: 00007f901b61a12d
+RDX: 000000000000001c RSI: 0000200000000140 RDI: 0000000000000003
+RBP: 00007f901b701505 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 0000000000000000 R14: 00007f901b5b62a0 R15: 00007f9019bb7000
+ </TASK>
+Modules linked in:
+
+Fixes: ceba1832b1b2 ("calipso: Set the calipso socket label to match the secattr.")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: John Cheung <john.cs.hey@gmail.com>
+Closes: https://lore.kernel.org/netdev/CAP=Rh=M1LzunrcQB1fSGauMrJrhL6GGps5cPAKzHJXj6GQV+-g@mail.gmail.com/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20250522221858.91240-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/imx334.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/netlabel/netlabel_kapi.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/media/i2c/imx334.c b/drivers/media/i2c/imx334.c
-index a544fc3df39c2..b51721c01e1d6 100644
---- a/drivers/media/i2c/imx334.c
-+++ b/drivers/media/i2c/imx334.c
-@@ -1391,6 +1391,9 @@ static int imx334_probe(struct i2c_client *client)
- 		goto error_handler_free;
- 	}
- 
-+	pm_runtime_set_active(imx334->dev);
-+	pm_runtime_enable(imx334->dev);
+diff --git a/net/netlabel/netlabel_kapi.c b/net/netlabel/netlabel_kapi.c
+index 27511c90a26f4..75b645c1928db 100644
+--- a/net/netlabel/netlabel_kapi.c
++++ b/net/netlabel/netlabel_kapi.c
+@@ -1140,6 +1140,9 @@ int netlbl_conn_setattr(struct sock *sk,
+ 		break;
+ #if IS_ENABLED(CONFIG_IPV6)
+ 	case AF_INET6:
++		if (sk->sk_family != AF_INET6)
++			return -EAFNOSUPPORT;
 +
- 	ret = v4l2_async_register_subdev_sensor(&imx334->sd);
- 	if (ret < 0) {
- 		dev_err(imx334->dev,
-@@ -1398,13 +1401,13 @@ static int imx334_probe(struct i2c_client *client)
- 		goto error_media_entity;
- 	}
- 
--	pm_runtime_set_active(imx334->dev);
--	pm_runtime_enable(imx334->dev);
- 	pm_runtime_idle(imx334->dev);
- 
- 	return 0;
- 
- error_media_entity:
-+	pm_runtime_disable(imx334->dev);
-+	pm_runtime_set_suspended(imx334->dev);
- 	media_entity_cleanup(&imx334->sd.entity);
- error_handler_free:
- 	v4l2_ctrl_handler_free(imx334->sd.ctrl_handler);
+ 		addr6 = (struct sockaddr_in6 *)addr;
+ 		entry = netlbl_domhsh_getentry_af6(secattr->domain,
+ 						   &addr6->sin6_addr);
 -- 
 2.39.5
 
