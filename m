@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-157402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157125-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F0BAE53C5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AC05AE5290
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:45:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A27294A877F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 868081886CB4
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:45:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BB7E222576;
-	Mon, 23 Jun 2025 21:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C57B223DEE;
+	Mon, 23 Jun 2025 21:44:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DtD3hPA0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IcW24UoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5F53FB1B;
-	Mon, 23 Jun 2025 21:56:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320B322257E;
+	Mon, 23 Jun 2025 21:44:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715778; cv=none; b=ndmYEVFCCquSvKlSGdBWLlPbSguw+kDGElLlwE7S1nwQGlbGI7xlhfw6Af0lNuXBymA+8/sjbkbHVR22x+7EOWuQcdjk9cNNywge1mEq9HCHkniF+goVd6Vka6OcETaUJmGNb+PmxEcXc634P3HwsuQ05sKfFSzRQrwSyY0Rfzw=
+	t=1750715095; cv=none; b=rgnfqhOKCPDUBaNPcBIBn+i1uTCgJVp8rFXD/Sb3ZrBGxu2Lm21HOW2YfOcVlZVniuAf7Z/MxGC4vcQro2b/NWDkJNzGcVHxmIMHHMJuu4zPO+8XHkzSQD/aux6/R69sUxnzpzUo5qgqVXZYBGsmrBtro3C86FJMYHF8WBL8p1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715778; c=relaxed/simple;
-	bh=8syInTtwUiqZ1BWSnBuoySG6bcjqDVbOAi8wqPMl78Q=;
+	s=arc-20240116; t=1750715095; c=relaxed/simple;
+	bh=tn78LqaRIqVJkU4nF6YlMeHQwNysXNtJj68n+QXnQ18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QItejo/ny+SBtjQV1rdgaxKsZ1Y5keSuRskegcsp/PYe7NrBq2Okz5lkZqGBR0gMAtsmw/+Yj39+61OBu9NSU6/d+5tpLQthrqpCer4tNN2p64oFH7sdx6naW+isOzhGsNt+lJ7K9Ghlj+Xs2vXfmgnozyJyPjuQtolts2Qaguc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DtD3hPA0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F0EC4CEEA;
-	Mon, 23 Jun 2025 21:56:17 +0000 (UTC)
+	 MIME-Version; b=m8zNavbpZdHUTZt7QWnW2o9vZIp2PZcVppUMebcMx0DbMEa+uWqThsiphYwQKZJqXpAMPPzqsEpPbhxWG9Z2KNZGBmjtJbzrIG0yctFSyrgAs3R0EyNxWz/ulz9XvJj3fanWFFJvj7N1J/bzVbZmfQRjeMPN4koKpVQE9w1zp5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IcW24UoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C58C4CEF5;
+	Mon, 23 Jun 2025 21:44:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715778;
-	bh=8syInTtwUiqZ1BWSnBuoySG6bcjqDVbOAi8wqPMl78Q=;
+	s=korg; t=1750715094;
+	bh=tn78LqaRIqVJkU4nF6YlMeHQwNysXNtJj68n+QXnQ18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DtD3hPA0E7bpre69XiRWjIg+tgJW3VTiaZeag9GqOMA230+a6OdZ22LWl1V0GTnOb
-	 i5vRfQysD2H2s3DpWO3OBZbnGZhVgbSxwKT11aV9JIPHkv7399qjzrjjn5iVuA2Nxa
-	 ArzqxzXtiLmKK4m4Dw+TE5P7Z+gsSxOEue1DS5iU=
+	b=IcW24UoJc8bF2IK7ooUW7usxiY5jX99R//zqgCc6L7stKqGrlqrRQD/VH0o9C9CJ2
+	 4VQiNkCw0gJmeevS5cAXvt0mdlS+pvGdPfGdfu543uUUcocQ7C52Fwbckiduqmdpul
+	 jxGyywB0Aylp0UgsV3Al6DRRz2zVdJ3NfRxx25yU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xu Lu <luxu.kernel@bytedance.com>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 247/508] ACPI: CPPC: Fix NULL pointer dereference when nosmp is used
+	Diederik de Haas <didi.debian@cknow.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Shawn Lin <shawn.lin@rock-chips.com>
+Subject: [PATCH 6.12 155/414] PCI: dw-rockchip: Fix PHY function call sequence in rockchip_pcie_phy_deinit()
 Date: Mon, 23 Jun 2025 15:04:52 +0200
-Message-ID: <20250623130651.328952395@linuxfoundation.org>
+Message-ID: <20250623130645.916390785@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yunhui Cui <cuiyunhui@bytedance.com>
+From: Diederik de Haas <didi.debian@cknow.org>
 
-[ Upstream commit 15eece6c5b05e5f9db0711978c3e3b7f1a2cfe12 ]
+commit 286ed198b899739862456f451eda884558526a9d upstream.
 
-With nosmp in cmdline, other CPUs are not brought up, leaving
-their cpc_desc_ptr NULL. CPU0's iteration via for_each_possible_cpu()
-dereferences these NULL pointers, causing panic.
+The documentation for the phy_power_off() function explicitly says that it
+must be called before phy_exit().
 
-Panic backtrace:
+Hence, follow the same rule in rockchip_pcie_phy_deinit().
 
-[    0.401123] Unable to handle kernel NULL pointer dereference at virtual address 00000000000000b8
-...
-[    0.403255] [<ffffffff809a5818>] cppc_allow_fast_switch+0x6a/0xd4
-...
-Kernel panic - not syncing: Attempted to kill init!
-
-Fixes: 3cc30dd00a58 ("cpufreq: CPPC: Enable fast_switch")
-Reported-by: Xu Lu <luxu.kernel@bytedance.com>
-Signed-off-by: Yunhui Cui <cuiyunhui@bytedance.com>
-Link: https://patch.msgid.link/20250604023036.99553-1-cuiyunhui@bytedance.com
-[ rjw: New subject ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0e898eb8df4e ("PCI: rockchip-dwc: Add Rockchip RK356X host controller driver")
+Signed-off-by: Diederik de Haas <didi.debian@cknow.org>
+[mani: commit message change]
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Acked-by: Shawn Lin <shawn.lin@rock-chips.com>
+Cc: stable@vger.kernel.org	# v5.15+
+Link: https://patch.msgid.link/20250417142138.1377451-1-didi.debian@cknow.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c | 2 +-
+ drivers/pci/controller/dwc/pcie-dw-rockchip.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/acpi/cppc_acpi.c b/drivers/acpi/cppc_acpi.c
-index 0e1fb97d5d763..504fe14c566e3 100644
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -456,7 +456,7 @@ bool cppc_allow_fast_switch(void)
- 	struct cpc_desc *cpc_ptr;
- 	int cpu;
+--- a/drivers/pci/controller/dwc/pcie-dw-rockchip.c
++++ b/drivers/pci/controller/dwc/pcie-dw-rockchip.c
+@@ -377,8 +377,8 @@ static int rockchip_pcie_phy_init(struct
  
--	for_each_possible_cpu(cpu) {
-+	for_each_present_cpu(cpu) {
- 		cpc_ptr = per_cpu(cpc_desc_ptr, cpu);
- 		desired_reg = &cpc_ptr->cpc_regs[DESIRED_PERF];
- 		if (!CPC_IN_SYSTEM_MEMORY(desired_reg) &&
--- 
-2.39.5
-
+ static void rockchip_pcie_phy_deinit(struct rockchip_pcie *rockchip)
+ {
+-	phy_exit(rockchip->phy);
+ 	phy_power_off(rockchip->phy);
++	phy_exit(rockchip->phy);
+ }
+ 
+ static const struct dw_pcie_ops dw_pcie_ops = {
 
 
 
