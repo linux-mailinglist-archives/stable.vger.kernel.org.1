@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CFEAE44AC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:44:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 088C2AE44C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:45:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8A481882F2C
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A82957AD327
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCC2253B52;
-	Mon, 23 Jun 2025 13:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3902C253925;
+	Mon, 23 Jun 2025 13:40:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ymzNhyR+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GyaXazO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AA3725394A;
-	Mon, 23 Jun 2025 13:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8FC9246BC9;
+	Mon, 23 Jun 2025 13:40:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685908; cv=none; b=MDtoFyCIRQWi8lwl03Q3GI9JIANDM82tp7p4+PRyCZpp0sSUpTvBpK2AnA6FNbaOeo/dFC45bP6GIA2O5PyW3JzZj4CEdWoTeAcAR5xKoxVS7IO9XpkCBPf86KCWViRKUhzxtOrmkRFxdn+Kj6EsZYr/CjAQnRyZ9g2orbztbSw=
+	t=1750686038; cv=none; b=h95JmL6JFcjp4tSZ+ygfFrgGNoYmSkiLp9Jc+HI3Gk7+/SPSgPRuQP0zJsiSJLotn9j2K3gF5UUJ2FCKhzdZuw9A1TrYR31WGbC0bCbpTfu7CkC/zdukiDup/D4rbiCl/lTKqAqbK+fArMVdtZ1LhVk4NXY2Nn+4USAgaRNWx1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685908; c=relaxed/simple;
-	bh=D4qqEygardfpY6CCO34sKz6tRbWIEC1lh21H8u2INAs=;
+	s=arc-20240116; t=1750686038; c=relaxed/simple;
+	bh=vGL+VrjZ/h672YOMUwzJX4IV/69vCg7IL4a+BFL/7UI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8ZyUjLg1W0DuSJfXA3fxbdWaxO/kJIAhrb19xAuTMwbYhMuJkuT9ehGHPcSsf4dxs3thgu9D4zOMYLkfoKQ2umGOxu+zQaWxF953VfQ9fQ/7pzXhnc3nrzJTqATBfsRDCsBWAHJvKzHsuz2/OOpB2gayQH1q+YQvAIgP+GS3K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ymzNhyR+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA809C4CEEA;
-	Mon, 23 Jun 2025 13:38:27 +0000 (UTC)
+	 MIME-Version; b=diPQ28wKoJMDnyccJt4JQGnpTnuTrDALqekROi0+F4R28wpqZqw+a9Aj45Kci6s54GqCitW273FiPmPuKUhg2UhfVWWT8TgMSY0F/+Exy+NjRrnN5WkrJXr6PE2mNl+kXzyu1NNHdeNxphlB6srvwC+o10LXIEQpTpsR+OxUnmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GyaXazO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7436DC4CEEA;
+	Mon, 23 Jun 2025 13:40:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685908;
-	bh=D4qqEygardfpY6CCO34sKz6tRbWIEC1lh21H8u2INAs=;
+	s=korg; t=1750686037;
+	bh=vGL+VrjZ/h672YOMUwzJX4IV/69vCg7IL4a+BFL/7UI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ymzNhyR+XWAecxPc4uNddO9fgpQvX5a/wW7ttGRSZOaA/xJOswRxQ8kUCv5lEWtVT
-	 SFHnrobaIGuDifIei5ea0Fykm081EAFPmQKNqJQ3EjJ7iYhZmuKAmA47veE7DJdpYG
-	 GhyViYHnoIuK1g7tA4r1An7Nv2g+luVNSQxDTwFc=
+	b=GyaXazO8KFJ1HxshJc8QZrgh6lJLWYiJ171AVGiPDk51QdOyZDvsexcfu1LG72JpD
+	 6dR76To1044kOq7i0fZoBD4h0AVeskFUIJrzTTFLRm3VrPU6mE83nNO6fJTF9fLiz4
+	 pidDU0NnyZgRv5KnSyIzXGMuRYFeXLwkNX9OXCsU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 079/355] mfd: exynos-lpass: Avoid calling exynos_lpass_disable() twice in exynos_lpass_remove()
+	Max Kellermann <max.kellermann@ionos.com>,
+	Dave Wysochanski <dwysocha@redhat.com>,
+	Anna Schumaker <anna.schumaker@oracle.com>
+Subject: [PATCH 6.6 019/290] fs/nfs/read: fix double-unlock bug in nfs_return_empty_folio()
 Date: Mon, 23 Jun 2025 15:04:40 +0200
-Message-ID: <20250623130629.193677283@linuxfoundation.org>
+Message-ID: <20250623130627.561168967@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
+References: <20250623130626.910356556@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,42 +62,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Max Kellermann <max.kellermann@ionos.com>
 
-[ Upstream commit b70b84556eeca5262d290e8619fe0af5b7664a52 ]
+commit 4c10fa44bc5f700e2ea21de2fbae520ba21f19d9 upstream.
 
-exynos_lpass_disable() is called twice in the remove function. Remove
-one of these calls.
+Sometimes, when a file was read while it was being truncated by
+another NFS client, the kernel could deadlock because folio_unlock()
+was called twice, and the second call would XOR back the `PG_locked`
+flag.
 
-Fixes: 90f447170c6f ("mfd: exynos-lpass: Add runtime PM support")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/74d69e8de10308c9855db6d54155a3de4b11abfd.1745247209.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Most of the time (depending on the timing of the truncation), nobody
+notices the problem because folio_unlock() gets called three times,
+which flips `PG_locked` back off:
+
+ 1. vfs_read, nfs_read_folio, ... nfs_read_add_folio,
+    nfs_return_empty_folio
+ 2. vfs_read, nfs_read_folio, ... netfs_read_collection,
+    netfs_unlock_abandoned_read_pages
+ 3. vfs_read, ... nfs_do_read_folio, nfs_read_add_folio,
+    nfs_return_empty_folio
+
+The problem is that nfs_read_add_folio() is not supposed to unlock the
+folio if fscache is enabled, and a nfs_netfs_folio_unlock() check is
+missing in nfs_return_empty_folio().
+
+Rarely this leads to a warning in netfs_read_collection():
+
+ ------------[ cut here ]------------
+ R=0000031c: folio 10 is not locked
+ WARNING: CPU: 0 PID: 29 at fs/netfs/read_collect.c:133 netfs_read_collection+0x7c0/0xf00
+ [...]
+ Workqueue: events_unbound netfs_read_collection_worker
+ RIP: 0010:netfs_read_collection+0x7c0/0xf00
+ [...]
+ Call Trace:
+  <TASK>
+  netfs_read_collection_worker+0x67/0x80
+  process_one_work+0x12e/0x2c0
+  worker_thread+0x295/0x3a0
+
+Most of the time, however, processes just get stuck forever in
+folio_wait_bit_common(), waiting for `PG_locked` to disappear, which
+never happens because nobody is really holding the folio lock.
+
+Fixes: 000dbe0bec05 ("NFS: Convert buffered read paths to use netfs when fscache is enabled")
+Cc: stable@vger.kernel.org
+Signed-off-by: Max Kellermann <max.kellermann@ionos.com>
+Reviewed-by: Dave Wysochanski <dwysocha@redhat.com>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/exynos-lpass.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/nfs/read.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mfd/exynos-lpass.c b/drivers/mfd/exynos-lpass.c
-index 99bd0e73c19c3..ffda3445d1c0f 100644
---- a/drivers/mfd/exynos-lpass.c
-+++ b/drivers/mfd/exynos-lpass.c
-@@ -144,7 +144,6 @@ static int exynos_lpass_remove(struct platform_device *pdev)
+--- a/fs/nfs/read.c
++++ b/fs/nfs/read.c
+@@ -56,7 +56,8 @@ static int nfs_return_empty_folio(struct
  {
- 	struct exynos_lpass *lpass = platform_get_drvdata(pdev);
+ 	folio_zero_segment(folio, 0, folio_size(folio));
+ 	folio_mark_uptodate(folio);
+-	folio_unlock(folio);
++	if (nfs_netfs_folio_unlock(folio))
++		folio_unlock(folio);
+ 	return 0;
+ }
  
--	exynos_lpass_disable(lpass);
- 	pm_runtime_disable(&pdev->dev);
- 	if (!pm_runtime_status_suspended(&pdev->dev))
- 		exynos_lpass_disable(lpass);
--- 
-2.39.5
-
 
 
 
