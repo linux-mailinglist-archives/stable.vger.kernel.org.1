@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-155551-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6BF6AE4280
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:21:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C33AAE42A5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:23:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 66C683B898B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF1F1179AE1
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:19:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18B1A24BD00;
-	Mon, 23 Jun 2025 13:18:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2C825178C;
+	Mon, 23 Jun 2025 13:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkdO3xf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jFcXMIGW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC4C219E0;
-	Mon, 23 Jun 2025 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1166219E0;
+	Mon, 23 Jun 2025 13:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750684720; cv=none; b=X9lh6+BnVj9XaHCrtcS8Dr+e3XDwntWKZPPCh1k57UNh1b9+KmI68azk+ecASM6Rdxl83zGgP3LT8AnMYHvFmlphF4k6CT6HWivJtnZeYYBk3BfgfFfkbNCj5qdMf8+dwNSVf6Sc9EkVD+JHWuNQon13AuybNSquxolXF7IIYsc=
+	t=1750684725; cv=none; b=QiHEruheS23dZpnN+nQTazY0ABtzBCwrVjslb14Vh5WuIBmpuqRWac7EwQ/0Pu2a+kK4yfIuZJsmdU5DlL52ZPQsQWnsCSXJAnhayh9F6RxHdcrKo/c2Bjvqgg17rgEXh4a3onoK6m21P7EAogfDui8oy+faca8zHeV4hgjVKxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750684720; c=relaxed/simple;
-	bh=9ljnX3PWmwgZfNNlPSP7/4CgiiTktTfFMGs7PZg6AFk=;
+	s=arc-20240116; t=1750684725; c=relaxed/simple;
+	bh=IgW28ZByBE1hX0H6jVIs7eA+vQ81JXfS6Tmhlz8DR4E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IGLyNZL7zWR0x3hcUBZZnyejmQyvsjpau2h4POQAAtf5FDRFaSWlyNl71iZsYuIhj3K3RbXMsfpQQEIQMLA5yLd4fPPxsGhEhsTROwFq7J9nWzR0OrFm02SzPpxYa/eKN6UdhcoFVT7jSNocauVgPtUrH8QaiDHA8unva/5064o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkdO3xf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 051A6C4CEEA;
-	Mon, 23 Jun 2025 13:18:39 +0000 (UTC)
+	 MIME-Version; b=kYe30kCoU5rcD524UFQxEYVdN8JfFp9+HwNwB0fD51EUuG5tyi6bT51LKT3lp9aIuvoHUWU5xA7hktQC9kLPG7ygs5d9twyAe1AaM0XAc6GFk8q3s5+MYn40FyxkwmWl7CrPhxyN/pBiPADisGxgzlL5oBFoJ5uucEESELRAv3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jFcXMIGW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D2A1C4CEEA;
+	Mon, 23 Jun 2025 13:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750684720;
-	bh=9ljnX3PWmwgZfNNlPSP7/4CgiiTktTfFMGs7PZg6AFk=;
+	s=korg; t=1750684725;
+	bh=IgW28ZByBE1hX0H6jVIs7eA+vQ81JXfS6Tmhlz8DR4E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkdO3xf/dYRuSr3gyQMKCcGmKDXh8Tef8+4O7sbNQxJTNzW7gxfvScFFAHkprpg5d
-	 PHFfuFFteey47Z/mdi1VbJ1hZ7N/TLg6TebZ9WByMhqd6HNUODK+vSaQvII8i0LQsm
-	 SfC6NBxGvEh93ZYY1AWtDcVZBS3zsxyJq4aDZ7EY=
+	b=jFcXMIGWsmlIsAg8nsjplPLgJtrjNAORRygbc6hGU6ME38VEXc3qHec6AHJFZ3DGt
+	 J5mX7QO+cuYRWmX1WhwypFl1OKG75TmBHM6c+PxXWZUwnRylhv5hNN9jDLJWjlyvHR
+	 K/z9jes0gmSvLXF6Y3LrztEkERqomYIcots75yfo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zijun Hu <quic_zijuhu@quicinc.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Jiaqing Zhao <jiaqing.zhao@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 015/222] PM: wakeup: Delete space in the end of string shown by pm_show_wakelocks()
-Date: Mon, 23 Jun 2025 15:05:50 +0200
-Message-ID: <20250623130612.358838831@linuxfoundation.org>
+Subject: [PATCH 5.4 016/222] x86/mtrr: Check if fixed-range MTRRs exist in mtrr_save_fixed_ranges()
+Date: Mon, 23 Jun 2025 15:05:51 +0200
+Message-ID: <20250623130612.390964915@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -66,42 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zijun Hu <quic_zijuhu@quicinc.com>
+From: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
 
-[ Upstream commit f0050a3e214aa941b78ad4caf122a735a24d81a6 ]
+[ Upstream commit 824c6384e8d9275d4ec7204f3f79a4ac6bc10379 ]
 
-pm_show_wakelocks() is called to generate a string when showing
-attributes /sys/power/wake_(lock|unlock), but the string ends
-with an unwanted space that was added back by mistake by commit
-c9d967b2ce40 ("PM: wakeup: simplify the output logic of
-pm_show_wakelocks()").
+When suspending, save_processor_state() calls mtrr_save_fixed_ranges()
+to save fixed-range MTRRs.
 
-Remove the unwanted space.
+On platforms without fixed-range MTRRs like the ACRN hypervisor which
+has removed fixed-range MTRR emulation, accessing these MSRs will
+trigger an unchecked MSR access error. Make sure fixed-range MTRRs are
+supported before access to prevent such error.
 
-Fixes: c9d967b2ce40 ("PM: wakeup: simplify the output logic of pm_show_wakelocks()")
-Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
-Link: https://patch.msgid.link/20250505-fix_power-v1-1-0f7f2c2f338c@quicinc.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Since mtrr_state.have_fixed is only set when MTRRs are present and
+enabled, checking the CPU feature flag in mtrr_save_fixed_ranges() is
+unnecessary.
+
+Fixes: 3ebad5905609 ("[PATCH] x86: Save and restore the fixed-range MTRRs of the BSP when suspending")
+Signed-off-by: Jiaqing Zhao <jiaqing.zhao@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/20250509170633.3411169-2-jiaqing.zhao@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/power/wakelock.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/cpu/mtrr/generic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/power/wakelock.c b/kernel/power/wakelock.c
-index 52571dcad768b..4e941999a53ba 100644
---- a/kernel/power/wakelock.c
-+++ b/kernel/power/wakelock.c
-@@ -49,6 +49,9 @@ ssize_t pm_show_wakelocks(char *buf, bool show_active)
- 			len += sysfs_emit_at(buf, len, "%s ", wl->name);
- 	}
+diff --git a/arch/x86/kernel/cpu/mtrr/generic.c b/arch/x86/kernel/cpu/mtrr/generic.c
+index 4ea906fe1c351..d15152126877b 100644
+--- a/arch/x86/kernel/cpu/mtrr/generic.c
++++ b/arch/x86/kernel/cpu/mtrr/generic.c
+@@ -350,7 +350,7 @@ static void get_fixed_ranges(mtrr_type *frs)
  
-+	if (len > 0)
-+		--len;
-+
- 	len += sysfs_emit_at(buf, len, "\n");
+ void mtrr_save_fixed_ranges(void *info)
+ {
+-	if (boot_cpu_has(X86_FEATURE_MTRR))
++	if (mtrr_state.have_fixed)
+ 		get_fixed_ranges(mtrr_state.fixed_ranges);
+ }
  
- 	mutex_unlock(&wakelocks_lock);
 -- 
 2.39.5
 
