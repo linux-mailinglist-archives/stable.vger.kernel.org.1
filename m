@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-158102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158105-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97CAAAE56F8
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DC57AE573A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:27:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 353497ABB0B
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:23:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E18824A1D0C
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:24:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D2C224B1F;
-	Mon, 23 Jun 2025 22:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02E90223DCC;
+	Mon, 23 Jun 2025 22:24:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R0JIdjax"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n6GwxQSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625B62222B2;
-	Mon, 23 Jun 2025 22:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B56F52192EC;
+	Mon, 23 Jun 2025 22:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717489; cv=none; b=ZyWY4n57KOdBbWvWSs+653dZIQ8VL4eK2CXgl4i9fwegB8XLlv5DuZbeaQtCmtAL6aBY1rRziHglkV7YdA+F5zk9MPECi1NtEs3xr+c4MMDEzadVTwhaGJ9NyrUzWF2F3d0qTTpfhFvSN7cL5/ysEJ8SNPxKXyGcnO4cgKNQfuE=
+	t=1750717496; cv=none; b=sYH/fvm9/JmAI0O5r7yfnHagBL5tIbW0gnSxO+I59qqVq/8Qv6sqsNGf3c0E0QgnKByn0ldK+FYL83T3E9E4i6DjU714eo2GmR4245629TQC6SwInaUEdXTvPnu6XRlyVoSxM+EpsZ8Ey7TrSECRG//MqogHwHt8wJJgQkSQgZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717489; c=relaxed/simple;
-	bh=W2i6nV0Kk/B8WZvBFvxYnkRRWQ1z/MW+UMzNGkuz7WA=;
+	s=arc-20240116; t=1750717496; c=relaxed/simple;
+	bh=dwK/xSTVu+zxu4hBCXGAEAJ9yXSAdSZc2Nyp5QjIXfI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Pn4jFCDDiK39yCD4YCzGJB0E1rPfTMLnKmM2SKfT6GpJFfsBZNwozNqRKWByWo27T2jIwth8t3NWJncszDWRwPRWDMus5vzaYnMXMJW85bBK/4OLM4waiylncHDM5b2fGIE2zdR7VCMUxJawFZED+jD+G14krAklkvXkyRDRclA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R0JIdjax; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E93EDC4CEEA;
-	Mon, 23 Jun 2025 22:24:48 +0000 (UTC)
+	 MIME-Version; b=UoZo+S7mzw7l8qlj0ouSoGwuZ+IgHNRGx75STPjWeNxk+XDfYBRml6gwSY4fGsCdfd53OaiOWCa/dpH/LCO0Dzjki2bQrmmqY8Y4BOPhaEEQc+/OQx7g+m3tM1AfDx97uZMfdPzaPYIzxMmOP41NQzPC/4iItyT4TPkhTc6TyJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n6GwxQSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EB51C4CEEA;
+	Mon, 23 Jun 2025 22:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717489;
-	bh=W2i6nV0Kk/B8WZvBFvxYnkRRWQ1z/MW+UMzNGkuz7WA=;
+	s=korg; t=1750717496;
+	bh=dwK/xSTVu+zxu4hBCXGAEAJ9yXSAdSZc2Nyp5QjIXfI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R0JIdjax7Pex/CeLkRdwG7eo5hEqSTL40KWFLieKjcAA196Qw0IbHmgy8VW78AldT
-	 aqEoC+lZPMEes5X5VBt+i902eSjH7FIKSr+fpfNeusagAETzIERGo1X/gi7/uhWWUg
-	 mX4zpF9Jnp1fhhvxrPmw9qKf2Fn+HSgaGCmIFxxI=
+	b=n6GwxQSp4NjfEB9eAhWZVRSzJx3ww6NhXVuV9IRuFjdRnb89Kjee1FRdM1Tu7/ohF
+	 j2ySSlH1qvHJg71+g8ZaJohRdmau0wzHUaQIwtQ0J2IBBHVEgwxiV1KKhuFdykzfZz
+	 KdyYAtkeq4YCoo/foXs6/PAaizAB7UXfrxHi0j3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil R <akhilrajeev@nvidia.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Andi Shyti <andi@smida.it>
-Subject: [PATCH 6.12 396/414] dt-bindings: i2c: nvidia,tegra20-i2c: Specify the required properties
-Date: Mon, 23 Jun 2025 15:08:53 +0200
-Message-ID: <20250623130651.838612722@linuxfoundation.org>
+	Paul Aurich <paul@darkrain42.org>,
+	Bharath SM <bharathsm@microsoft.com>,
+	Ruben Devos <rdevos@oxya.com>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.12 397/414] smb: Log an error when close_all_cached_dirs fails
+Date: Mon, 23 Jun 2025 15:08:54 +0200
+Message-ID: <20250623130651.865202733@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
 References: <20250623130642.015559452@linuxfoundation.org>
@@ -60,84 +61,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil R <akhilrajeev@nvidia.com>
+From: Paul Aurich <paul@darkrain42.org>
 
-commit 903cc7096db22f889d48e2cee8840709ce04fdac upstream.
+commit a2182743a8b4969481f64aec4908ff162e8a206c upstream.
 
-Specify the properties which are essential and which are not for the
-Tegra I2C driver to function correctly. This was not added correctly when
-the TXT binding was converted to yaml. All the existing DT nodes have
-these properties already and hence this does not break the ABI.
+Under low-memory conditions, close_all_cached_dirs() can't move the
+dentries to a separate list to dput() them once the locks are dropped.
+This will result in a "Dentry still in use" error, so add an error
+message that makes it clear this is what happened:
 
-dmas and dma-names which were specified as a must in the TXT binding
-is now made optional since the driver can work in PIO mode if dmas are
-missing.
+[  495.281119] CIFS: VFS: \\otters.example.com\share Out of memory while dropping dentries
+[  495.281595] ------------[ cut here ]------------
+[  495.281887] BUG: Dentry ffff888115531138{i=78,n=/}  still in use (2) [unmount of cifs cifs]
+[  495.282391] WARNING: CPU: 1 PID: 2329 at fs/dcache.c:1536 umount_check+0xc8/0xf0
 
-Fixes: f10a9b722f80 ("dt-bindings: i2c: tegra: Convert to json-schema”)
-Signed-off-by: Akhil R <akhilrajeev@nvidia.com>
-Cc: <stable@vger.kernel.org> # v5.17+
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Andi Shyti <andi@smida.it>
-Link: https://lore.kernel.org/r/20250603153022.39434-1-akhilrajeev@nvidia.com
+Also, bail out of looping through all tcons as soon as a single
+allocation fails, since we're already in trouble, and kmalloc() attempts
+for subseqeuent tcons are likely to fail just like the first one did.
+
+Signed-off-by: Paul Aurich <paul@darkrain42.org>
+Acked-by: Bharath SM <bharathsm@microsoft.com>
+Suggested-by: Ruben Devos <rdevos@oxya.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml |   24 +++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
+ fs/smb/client/cached_dir.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
---- a/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
-+++ b/Documentation/devicetree/bindings/i2c/nvidia,tegra20-i2c.yaml
-@@ -97,7 +97,10 @@ properties:
+--- a/fs/smb/client/cached_dir.c
++++ b/fs/smb/client/cached_dir.c
+@@ -484,8 +484,17 @@ void close_all_cached_dirs(struct cifs_s
+ 		spin_lock(&cfids->cfid_list_lock);
+ 		list_for_each_entry(cfid, &cfids->entries, entry) {
+ 			tmp_list = kmalloc(sizeof(*tmp_list), GFP_ATOMIC);
+-			if (tmp_list == NULL)
+-				break;
++			if (tmp_list == NULL) {
++				/*
++				 * If the malloc() fails, we won't drop all
++				 * dentries, and unmounting is likely to trigger
++				 * a 'Dentry still in use' error.
++				 */
++				cifs_tcon_dbg(VFS, "Out of memory while dropping dentries\n");
++				spin_unlock(&cfids->cfid_list_lock);
++				spin_unlock(&cifs_sb->tlink_tree_lock);
++				goto done;
++			}
+ 			spin_lock(&cfid->fid_lock);
+ 			tmp_list->dentry = cfid->dentry;
+ 			cfid->dentry = NULL;
+@@ -497,6 +506,7 @@ void close_all_cached_dirs(struct cifs_s
+ 	}
+ 	spin_unlock(&cifs_sb->tlink_tree_lock);
  
-   resets:
-     items:
--      - description: module reset
-+      - description:
-+          Module reset. This property is optional for controllers in Tegra194,
-+          Tegra234 etc where an internal software reset is available as an
-+          alternative.
- 
-   reset-names:
-     items:
-@@ -116,6 +119,13 @@ properties:
-       - const: rx
-       - const: tx
- 
-+required:
-+  - compatible
-+  - reg
-+  - interrupts
-+  - clocks
-+  - clock-names
-+
- allOf:
-   - $ref: /schemas/i2c/i2c-controller.yaml
-   - if:
-@@ -169,6 +179,18 @@ allOf:
-       properties:
-         power-domains: false
- 
-+  - if:
-+      not:
-+        properties:
-+          compatible:
-+            contains:
-+              enum:
-+                - nvidia,tegra194-i2c
-+    then:
-+      required:
-+        - resets
-+        - reset-names
-+
- unevaluatedProperties: false
- 
- examples:
++done:
+ 	list_for_each_entry_safe(tmp_list, q, &entry, entry) {
+ 		list_del(&tmp_list->entry);
+ 		dput(tmp_list->dentry);
 
 
 
