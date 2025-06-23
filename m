@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-158182-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B78E4AE575B
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:28:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05D5AAE56AC
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:22:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43184171995
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:28:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC9744E0E59
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:21:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5163422422F;
-	Mon, 23 Jun 2025 22:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74C1B225A3D;
+	Mon, 23 Jun 2025 22:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xpRkD4AK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhZJe8th"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F46E222581;
-	Mon, 23 Jun 2025 22:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3219A225762;
+	Mon, 23 Jun 2025 22:21:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717686; cv=none; b=pr6ABkXsI/lmU5Bc23dR/rsJkWFc7qLlRHnLwGd0yN4Bz6MiZ4JTKw4Jhhb6kqNNnZVYp8dRQSyXWJQZXz6e2+I9XnlEx1dIoSwkpv0vSL8Z8/1aYxWfQMan7xuUdQftLLXAGXL1okr3gJl0OiT31XHCAHZY/XBbFEOkyhfrGOU=
+	t=1750717292; cv=none; b=YpWWGsxUkRNMPgT4ykTlR365TYkHG/CTypEzK83EuMFy+OoL/HsSle9vHZr+9rczKfDY0ekFg8NQuf1naMB4PRkhaQzNn0jy2vklvW+Yz5BMRiSGng7e2f3Bxj38WWg4qvsSWZVHTj4ackSB7PMYxbaTFFWGssyPDA9m19UBlzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717686; c=relaxed/simple;
-	bh=aFY5dGug+OAKgehe4s4PnQfMuP2WHwuzgYGnzA4lgsU=;
+	s=arc-20240116; t=1750717292; c=relaxed/simple;
+	bh=9Hf/zlO//nREhkeVbct807iwJ+9G5mzCPTfKtYjZqVI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zu3SWvhonPrftywLlUNTLTn6iHahEXds6GcYIH3pNZh99MxQPM7Ib6ct3tJ5UZgpZxgZaC4f5BCAmjX5QPkzX6rjalL5Nj0bXIh3WqqLAcc3BpMaAnenKExdbDkyEgEA/J/l6pRmS97xDT0X3kLTD+dAzp0UnuJHc+dNDkrhAwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xpRkD4AK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B32AC4CEEA;
-	Mon, 23 Jun 2025 22:28:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FwGy+1ATb2mwWKpA2xt7KEfYBhwOE/KFL0ppqpOCxW16t5DbrI5S/Bg4HRPQWr8SSiO70joj4dMeZXOQG9XQ0Etyj0umpaTxeMpsbwYWAwcv8rJ9F6JRbkQ06gKSPydUd57Tss4mVZHl0WsuGFtEd/OlR7b8NpGwGaX7AylusYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhZJe8th; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3219C4CEEA;
+	Mon, 23 Jun 2025 22:21:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717685;
-	bh=aFY5dGug+OAKgehe4s4PnQfMuP2WHwuzgYGnzA4lgsU=;
+	s=korg; t=1750717292;
+	bh=9Hf/zlO//nREhkeVbct807iwJ+9G5mzCPTfKtYjZqVI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xpRkD4AKDbL3freFYMdPHIoviBBneK14SvqFVMyJmIrwCKW60RlGzv+kD/kmR/5QQ
-	 hzIZzW9b+/lyu0a0KunyaW8/RmtgyjoeCbFQEGQP11hhS/pYpkvNZK/EmfXZOti7K7
-	 46Y+KW8H5H1sw3tKD4j6xOXX3a8jCQ245yfXHaqQ=
+	b=zhZJe8thKWc/GqRp3XEOMzl9fXBWqDBrp26PCGYEAjWhk3PPBqnSJ2O8mCAEMFPjI
+	 tRIPPqlUWWELD4yKENhdC8Hjrvn1CizLhAvdV9C2sPS8VrQHtNzz5NZ5tmQAETAeZg
+	 rAavVq8OlQ8dzJvoJv/REFd0axuK2CXRL93YT+DY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.1 503/508] s390/pci: Fix __pcilg_mio_inuser() inline assembly
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 590/592] cifs: Remove duplicate fattr->cf_dtype assignment from wsl_to_fattr() function
 Date: Mon, 23 Jun 2025 15:09:08 +0200
-Message-ID: <20250623130657.380571232@linuxfoundation.org>
+Message-ID: <20250623130714.469080258@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +60,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Pali Rohár <pali@kernel.org>
 
-commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
+[ Upstream commit 840738eae94864993a735ab677b9795bb8f3b961 ]
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+Commit 8bd25b61c5a5 ("smb: client: set correct d_type for reparse DFS/DFSR
+and mount point") deduplicated assignment of fattr->cf_dtype member from
+all places to end of the function cifs_reparse_point_to_fattr(). The only
+one missing place which was not deduplicated is wsl_to_fattr(). Fix it.
 
-If register zero is used this my result in incorrect code generation:
-
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
-
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
-
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 8bd25b61c5a5 ("smb: client: set correct d_type for reparse DFS/DFSR and mount point")
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_mmio.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/client/reparse.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -223,7 +223,7 @@ static inline int __pcilg_mio_inuser(
- 		[ioaddr_len] "+&d" (ioaddr_len.pair),
- 		[cc] "+d" (cc), [val] "=d" (val),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:: "cc", "memory");
+diff --git a/fs/smb/client/reparse.c b/fs/smb/client/reparse.c
+index bb25e77c5540c..511611206dab4 100644
+--- a/fs/smb/client/reparse.c
++++ b/fs/smb/client/reparse.c
+@@ -1172,7 +1172,6 @@ static bool wsl_to_fattr(struct cifs_open_info_data *data,
+ 	if (!have_xattr_dev && (tag == IO_REPARSE_TAG_LX_CHR || tag == IO_REPARSE_TAG_LX_BLK))
+ 		return false;
  
- 	/* did we write everything to the user space buffer? */
+-	fattr->cf_dtype = S_DT(fattr->cf_mode);
+ 	return true;
+ }
+ 
+-- 
+2.39.5
+
 
 
 
