@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-156961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65EBAAE51DF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:38:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47737AE52C3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:47:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A45E77A33B9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 37C6F4A6BE0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:47:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 674E9221FDC;
-	Mon, 23 Jun 2025 21:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBB91223DC1;
+	Mon, 23 Jun 2025 21:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGXMDREQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xQypdGsM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 255054409;
-	Mon, 23 Jun 2025 21:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869851AAA1C;
+	Mon, 23 Jun 2025 21:47:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714694; cv=none; b=OFIx7IPBE1z4AhdY+nj4CeL1RE9DSAUe4UwfNpxyBG3LOnr5jzAWYqXTlrGmUCKWzCEkRkORIlfTy+h3yDz2Fzh3JHrpqFggvL7GEJK5BovbDqEnuKT3qNZ/ymJivcsbGfF0DT4dh+4xd+OLak2lokqaHNR3z0D+Nuo6evZylFg=
+	t=1750715225; cv=none; b=s785QONi/PjIArd1hkj+jX2JH9FPMhDoOUr7hpKvOv9clXKhV/m86qJGkIMgWHIXkkrqA0Ai9VSJatSiAptomdIyPwygB78v4J/K28tdESYB2naZeXAESULmCgFPjhykon4qGCRxhr51wQWETIwSxMN4s8kaxnp5DtcbBJF5UXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714694; c=relaxed/simple;
-	bh=J1taC+dlnXLbay+iOthXHJTJCHl4uqv4UjEa6Z/GOq4=;
+	s=arc-20240116; t=1750715225; c=relaxed/simple;
+	bh=/XaAafHuQOvIhWB591cXkJLSLgkJ+q4qnuYYGlns/HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOvnUxhCaVCuLTtrZxZI0pXtqZGLLZW6fQAmlbRpZDPNeBikxMdgKxpNDUnAOT2WRBikUcd25G9ZLV5CbFiH5E20TwqX0nwHdkExjFdXmn49byYG1JoFrasFoBhkHQTQXsR7UPZE+tJ1c2CPFm9sQIQRJS2c29wYPUyBzVJbSQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGXMDREQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3769C4CEEA;
-	Mon, 23 Jun 2025 21:38:13 +0000 (UTC)
+	 MIME-Version; b=vFcuYRkezPCqzZMsiHKosh8/eTZPfk4qG4BAb+zc/yeENcpPBK8l0pgRwJJpmSntW4ZsSZ4tktpzlCaAC16Sn78yhBbo/yw6Z7qgRD7tFL8U6AVSzDGKISyZ2oo8D5DGYeZInm5C0yJEhiSHDzO39ih9YGO4ZNHsdweKTkSeAHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xQypdGsM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E815C4CEEA;
+	Mon, 23 Jun 2025 21:47:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714694;
-	bh=J1taC+dlnXLbay+iOthXHJTJCHl4uqv4UjEa6Z/GOq4=;
+	s=korg; t=1750715225;
+	bh=/XaAafHuQOvIhWB591cXkJLSLgkJ+q4qnuYYGlns/HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sGXMDREQK0MPesyxo8wALVyLRXfeqNOTxBuFdDSWY4Xv5A6ZIu3GRIyQxStQaZJxb
-	 mw81foI6U1TQGDftmHFcnHwG5lToLwF+8tKCR2CjXmIXwo1yXrsw9FpXf43G95pTMi
-	 fejccGPLmmTNoxoQpp0cwc63Cz8Ti2f8YGw6M/V0=
+	b=xQypdGsMbGVdk1XseT7CnXbjsudtYueTZ2Nxk9HcyR/HkaXXo84uhxZTGaV1zaoYV
+	 +28zucT3DQL/2x6sfq4KMoo35ko5YEy/UrMJc7B+NIS4XbHyYsBVuRPilr3wiynrNL
+	 8ThU8mArTkb7L9W7T6KsPrOZMkaV9fuxs43Aottg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Long Li <leo.lilong@huawei.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 223/355] sunrpc: update nextcheck time when adding new cache entries
+	Gerrard Tai <gerrard.tai@starlabs.sg>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.15 466/592] net_sched: sch_sfq: reject invalid perturb period
 Date: Mon, 23 Jun 2025 15:07:04 +0200
-Message-ID: <20250623130633.444061962@linuxfoundation.org>
+Message-ID: <20250623130711.513970405@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
-References: <20250623130626.716971725@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Long Li <leo.lilong@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5ca00634c8bbb2979c73465588f486b9632f5ed5 ]
+commit 7ca52541c05c832d32b112274f81a985101f9ba8 upstream.
 
-The cache_detail structure uses a "nextcheck" field to control hash table
-scanning intervals. When a table scan begins, nextcheck is set to current
-time plus 1800 seconds. During scanning, if cache_detail is not empty and
-a cache entry's expiry time is earlier than the current nextcheck, the
-nextcheck is updated to that expiry time.
+Gerrard Tai reported that SFQ perturb_period has no range check yet,
+and this can be used to trigger a race condition fixed in a separate patch.
 
-This mechanism ensures that:
-1) Empty cache_details are scanned every 1800 seconds to avoid unnecessary
-   scans
-2) Non-empty cache_details are scanned based on the earliest expiry time
-   found
+We want to make sure ctl->perturb_period * HZ will not overflow
+and is positive.
 
-However, when adding a new cache entry to an empty cache_detail, the
-nextcheck time was not being updated, remaining at 1800 seconds. This
-could delay cache cleanup for up to 1800 seconds, potentially blocking
-threads(such as nfsd) that are waiting for cache cleanup.
+Tested:
 
-Fix this by updating the nextcheck time whenever a new cache entry is
-added.
+tc qd add dev lo root sfq perturb -10   # negative value : error
+Error: sch_sfq: invalid perturb period.
 
-Signed-off-by: Long Li <leo.lilong@huawei.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+tc qd add dev lo root sfq perturb 1000000000 # too big : error
+Error: sch_sfq: invalid perturb period.
+
+tc qd add dev lo root sfq perturb 2000000 # acceptable value
+tc -s -d qd sh dev lo
+qdisc sfq 8005: root refcnt 2 limit 127p quantum 64Kb depth 127 flows 128 divisor 1024 perturb 2000000sec
+ Sent 0 bytes 0 pkt (dropped 0, overlimits 0 requeues 0)
+ backlog 0b 0p requeues 0
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: Gerrard Tai <gerrard.tai@starlabs.sg>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20250611083501.1810459-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/cache.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/sched/sch_sfq.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/net/sunrpc/cache.c b/net/sunrpc/cache.c
-index 486c466ab4668..0a91945db88fe 100644
---- a/net/sunrpc/cache.c
-+++ b/net/sunrpc/cache.c
-@@ -133,6 +133,8 @@ static struct cache_head *sunrpc_cache_add_entry(struct cache_detail *detail,
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -656,6 +656,14 @@ static int sfq_change(struct Qdisc *sch,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid quantum");
+ 		return -EINVAL;
+ 	}
++
++	if (ctl->perturb_period < 0 ||
++	    ctl->perturb_period > INT_MAX / HZ) {
++		NL_SET_ERR_MSG_MOD(extack, "invalid perturb period");
++		return -EINVAL;
++	}
++	perturb_period = ctl->perturb_period * HZ;
++
+ 	if (ctl_v1 && !red_check_params(ctl_v1->qth_min, ctl_v1->qth_max,
+ 					ctl_v1->Wlog, ctl_v1->Scell_log, NULL))
+ 		return -EINVAL;
+@@ -672,14 +680,12 @@ static int sfq_change(struct Qdisc *sch,
+ 	headdrop = q->headdrop;
+ 	maxdepth = q->maxdepth;
+ 	maxflows = q->maxflows;
+-	perturb_period = q->perturb_period;
+ 	quantum = q->quantum;
+ 	flags = q->flags;
  
- 	hlist_add_head_rcu(&new->cache_list, head);
- 	detail->entries++;
-+	if (detail->nextcheck > new->expiry_time)
-+		detail->nextcheck = new->expiry_time + 1;
- 	cache_get(new);
- 	spin_unlock(&detail->hash_lock);
- 
--- 
-2.39.5
-
+ 	/* update and validate configuration */
+ 	if (ctl->quantum)
+ 		quantum = ctl->quantum;
+-	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+ 		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
 
 
 
