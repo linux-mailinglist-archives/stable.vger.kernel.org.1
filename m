@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-157138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 126D8AE52A6
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:46:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB59AAE53CE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:56:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E4A2D1B658BF
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:46:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 797D51B67FB9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5081D2253B0;
-	Mon, 23 Jun 2025 21:45:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79DE72248B5;
+	Mon, 23 Jun 2025 21:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuELbz4/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2hScxGwE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B87822258C;
-	Mon, 23 Jun 2025 21:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A9B220686;
+	Mon, 23 Jun 2025 21:55:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715128; cv=none; b=n5L6/vmQpJTbo6XYxQsK5TV+NgRp1uzRrdcCmPYy1BU8JPFcg8NRt+oOpofhTE80uLifNzo8CRXXZqPGaI7PWjm0MHuk8+2Odtoq01nLdpUYPF086MNz1qzlDB6Z9SLUfwe3XnWDvK1+obtXNgNX4U20kEVl06Q2iheNRbQcg68=
+	t=1750715734; cv=none; b=d7keOz7Dked7W6AI9pu3/FngkkijY+zleMFbeaPNyv3DXFVhQBZBNGmKixWknvtveLlvP4XHRv3uLQkyjWU5gJmbcawxj6FvTk/+i33huDMivCBoIQjOM6BJ9W6nhJyC8LaSjF/PZcbQjcEgSzD4L/5liBYFn351wDJv09y4k80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715128; c=relaxed/simple;
-	bh=mcQV4cV2FRTGqCi74/NETMg1LAuef2iLe4I5DTHoj40=;
+	s=arc-20240116; t=1750715734; c=relaxed/simple;
+	bh=sFwoE58H7Xc1+bgGM81akl5Swk6XOiAE9H4bjEBhZ8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ao5cb14aQkdQLIY/vBOd1Vr/KGnKCb1N6WeoW+3H8iiJGA3d0BYxIcLvOjqTfPr5ObF1iwNDzGiqNgsTiXpgdZ8W1ymbNZKfsQHIsLCdjE+mwEqgtv90ssycnAWT9Vf69soF717nrNnsoc1je7A0OIEOpWa/gV9vSiB00S8xRlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuELbz4/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F968C4CEEA;
-	Mon, 23 Jun 2025 21:45:27 +0000 (UTC)
+	 MIME-Version; b=HI0nMkX6Bh7xvhsawMmJwaBwO1juAcGddzcn7eRp9Fy6kR+UhB9HimnvoTQWz1U8b8+djWf/hlq/kfLeAM4v+l9wiUAI7p3kzGLXh0Lp+X06wxTk98eRgOK5lrZeZ6WUnntyO2g1UB+1nvK+hwsvJH+p/gMnr+FqTtY3cpm7FdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2hScxGwE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2CFCC4CEEA;
+	Mon, 23 Jun 2025 21:55:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715127;
-	bh=mcQV4cV2FRTGqCi74/NETMg1LAuef2iLe4I5DTHoj40=;
+	s=korg; t=1750715734;
+	bh=sFwoE58H7Xc1+bgGM81akl5Swk6XOiAE9H4bjEBhZ8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuELbz4/9Mi0/fU3iyvMYkHvPUSufuzOQZUaXucrNoxYBb/gUbU70Qb+WfzG6IOn/
-	 kuHGuRq31GfPTozHMCpIBDOtJ8aV5vBz9fI3Li43StAUAsvq5F0/bnWQQjciMeT6+x
-	 EueB6+LDd25C18ctJqttNmcMnGFc4XNoSSKMxrAo=
+	b=2hScxGwEFXK5ii+HjJRTjbUhm8QBwcN4Ihj1BMmQ5R+ILakoKuPIxJ9Xc5eBHlDU8
+	 bmlCGLKYLkvPNwpgd+YQ8jC7R746c9IkJUT1QX9FRutpUXYVTAznz4yg2rLW+8cI0t
+	 VoXCxq7gHj4Oc1nU142FmX1avvjr3baEOHwbpm04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shyam Prasad N <sprasad@microsoft.com>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.15 460/592] cifs: do not disable interface polling on failure
-Date: Mon, 23 Jun 2025 15:06:58 +0200
-Message-ID: <20250623130711.369242685@linuxfoundation.org>
+	Jianzhou Zhao <xnxc22xnxc22@qq.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 275/411] exfat: fix double free in delayed_free
+Date: Mon, 23 Jun 2025 15:06:59 +0200
+Message-ID: <20250623130640.576712566@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 42ca547b13a20e7cbb04fbdf8d5f089ac4bb35b7 upstream.
+[ Upstream commit 1f3d9724e16d62c7d42c67d6613b8512f2887c22 ]
 
-When a server has multichannel enabled, we keep polling the server
-for interfaces periodically. However, when this query fails, we
-disable the polling. This can be problematic as it takes away the
-chance for the server to start advertizing again.
+The double free could happen in the following path.
 
-This change reschedules the delayed work, even if the current call
-failed. That way, multichannel sessions can recover.
+exfat_create_upcase_table()
+        exfat_create_upcase_table() : return error
+        exfat_free_upcase_table() : free ->vol_utbl
+        exfat_load_default_upcase_table : return error
+     exfat_kill_sb()
+           delayed_free()
+                  exfat_free_upcase_table() <--------- double free
+This patch set ->vol_util as NULL after freeing it.
 
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Jianzhou Zhao <xnxc22xnxc22@qq.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c |    6 +-----
- fs/smb/client/smb2pdu.c |    9 +++++----
- 2 files changed, 6 insertions(+), 9 deletions(-)
+ fs/exfat/nls.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -116,13 +116,9 @@ static void smb2_query_server_interfaces
- 	rc = server->ops->query_server_interfaces(xid, tcon, false);
- 	free_xid(xid);
- 
--	if (rc) {
--		if (rc == -EOPNOTSUPP)
--			return;
--
-+	if (rc)
- 		cifs_dbg(FYI, "%s: failed to query server interfaces: %d\n",
- 				__func__, rc);
--	}
- 
- 	queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
- 			   (SMB_INTERFACE_POLL_INTERVAL * HZ));
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -423,6 +423,10 @@ skip_sess_setup:
- 		free_xid(xid);
- 		ses->flags &= ~CIFS_SES_FLAGS_PENDING_QUERY_INTERFACES;
- 
-+		/* regardless of rc value, setup polling */
-+		queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
-+				   (SMB_INTERFACE_POLL_INTERVAL * HZ));
-+
- 		mutex_unlock(&ses->session_mutex);
- 
- 		if (rc == -EOPNOTSUPP && ses->chan_count > 1) {
-@@ -443,11 +447,8 @@ skip_sess_setup:
- 		if (ses->chan_max > ses->chan_count &&
- 		    ses->iface_count &&
- 		    !SERVER_IS_CHAN(server)) {
--			if (ses->chan_count == 1) {
-+			if (ses->chan_count == 1)
- 				cifs_server_dbg(VFS, "supports multichannel now\n");
--				queue_delayed_work(cifsiod_wq, &tcon->query_interfaces,
--						 (SMB_INTERFACE_POLL_INTERVAL * HZ));
--			}
- 
- 			cifs_try_adding_channels(ses);
- 		}
+diff --git a/fs/exfat/nls.c b/fs/exfat/nls.c
+index 314d5407a1be5..a75d5fb2404c7 100644
+--- a/fs/exfat/nls.c
++++ b/fs/exfat/nls.c
+@@ -804,4 +804,5 @@ int exfat_create_upcase_table(struct super_block *sb)
+ void exfat_free_upcase_table(struct exfat_sb_info *sbi)
+ {
+ 	kvfree(sbi->vol_utbl);
++	sbi->vol_utbl = NULL;
+ }
+-- 
+2.39.5
+
 
 
 
