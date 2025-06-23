@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26D12AE527F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:44:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9889EAE4EB5
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:08:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D74188C8F7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:44:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F79317C837
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:08:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1F53221FCC;
-	Mon, 23 Jun 2025 21:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9BE222257E;
+	Mon, 23 Jun 2025 21:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q27A927N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guNGg11z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA664315A;
-	Mon, 23 Jun 2025 21:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659EF222571;
+	Mon, 23 Jun 2025 21:08:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715055; cv=none; b=n6TAvBVJeRMmPhfGfHPA8a0kA6DyGbPZ7xlFGuYKSEYteqhqA6QMTU9c9dOPymJT6GaujQMPcGFYoaSmq+TMI3QnYhgxOJ26VDIr42E0FG+L6SN9BT9IcPlgx2cDO6Q+ndEFLGGfJbd1AkS8T/1YiNPpeR9sEY7mrK4dM0QPdak=
+	t=1750712892; cv=none; b=t3YULQ4WrG6n4q6QIgCkyPfvkh/pac4/FlN5rZ6UI2aGt2+BiJ/umIXAjeYv7eu3ipbw89kYEEEvyq8DPzh7WNF9mJ0N8mVyE5gQrxEN1b9vUrIwFSNPs5hMTeejB2K9wR5nme97grPIlVrwSVowqzkjty/OsVTowl2ujFbqSmw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715055; c=relaxed/simple;
-	bh=DbEFIL4uTrOUZMsOL9a8bzLV3DVpmWMNB6zzJLg69oc=;
+	s=arc-20240116; t=1750712892; c=relaxed/simple;
+	bh=+o38zznj9MnH0ZpBLQNJLM7iEFbbkN7TLZ7pbSgd8n4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndhfTb1mVdFnayxbkbjHoupLBls2M55ARcL1EumN/PSHH+TVLWnyy7HvsQmdmeYH/uX4Em993CqS+eZ78LU2eC2LhJRAzNumOJlfttqViqK5CsliOVcm/4GXT+bsTwIjUrtOl9I3klXZxOVx/sSPeq4+21O4TsaQb4li1NsHU5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q27A927N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459ABC4CEEA;
-	Mon, 23 Jun 2025 21:44:15 +0000 (UTC)
+	 MIME-Version; b=G3ULzYopbuVW0h/fgqg1UgfAXgcI6oySFZxzrFsJ5ZGiCobQJpunq35CIBpUMBFuNkSEzIKhhTZsZlz6GLs6Zw6W+Amb+MT4G0EcmeUf7k9dFBBuYbdQEf6teeOwIdU0fthfkD5JYYlzWgK+ctkpXM797+RNd3aKT98C/NKV5/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guNGg11z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFD1BC4CEED;
+	Mon, 23 Jun 2025 21:08:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715055;
-	bh=DbEFIL4uTrOUZMsOL9a8bzLV3DVpmWMNB6zzJLg69oc=;
+	s=korg; t=1750712891;
+	bh=+o38zznj9MnH0ZpBLQNJLM7iEFbbkN7TLZ7pbSgd8n4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q27A927N2QuwPPW7rpVpwzVoQ+Z6eMshXXW+GjKkBeKzTfhFDh2S7Pq1wiFkdlPVz
-	 PMyirC5otVTQcIwNbx6TI9AbQBn5V17dhZwPJ51zrgPZZy3Wgh7980HhBw6HrV9xt2
-	 XJNaSJFtkZ5gmJtv4ZQoMkteGu/FnmDi0k1hBMV8=
+	b=guNGg11zf6y5jMJZn7KjWA/QjDeOoms38nzdojywcDb+KaaVO8LF2KODAZXXuDx/I
+	 SqiT9XExsUcYOa3D7+JOI9jdi8hQ3noTzGVTimFRdliTmRKUnEO7LYXcYoLqwuEmq/
+	 4hdS/azJYK3XijU80GKQIyyqJdHx1sialDJlWLA0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 212/508] xfs: take m_growlock when running growfsrt
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.15 299/592] drm/msm/dpu: dont select single flush for active CTL blocks
 Date: Mon, 23 Jun 2025 15:04:17 +0200
-Message-ID: <20250623130650.480634658@linuxfoundation.org>
+Message-ID: <20250623130707.501458537@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,135 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Darrick J. Wong <djwong@kernel.org>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 16e1fbdce9c8d084863fd63cdaff8fb2a54e2f88 ]
+[ Upstream commit e93eee524bb78f3ee4b78654d0083382f98b3d23 ]
 
-Take the grow lock when we're expanding the realtime volume, like we do
-for the other growfs calls.
+In case of ACTIVE CTLs, a single CTL is being used for flushing all INTF
+blocks. Don't skip programming the CTL on those targets.
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/641585/
+Link: https://lore.kernel.org/r/20250307-dpu-active-ctl-v3-5-5d20655f10ca@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_rtalloc.c | 38 +++++++++++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 13 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/xfs_rtalloc.c b/fs/xfs/xfs_rtalloc.c
-index 5cf1e91f4c205..149fcfc485d89 100644
---- a/fs/xfs/xfs_rtalloc.c
-+++ b/fs/xfs/xfs_rtalloc.c
-@@ -953,34 +953,39 @@ xfs_growfs_rt(
- 	/* Needs to have been mounted with an rt device. */
- 	if (!XFS_IS_REALTIME_MOUNT(mp))
- 		return -EINVAL;
-+
-+	if (!mutex_trylock(&mp->m_growlock))
-+		return -EWOULDBLOCK;
- 	/*
- 	 * Mount should fail if the rt bitmap/summary files don't load, but
- 	 * we'll check anyway.
- 	 */
-+	error = -EINVAL;
- 	if (!mp->m_rbmip || !mp->m_rsumip)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Shrink not supported. */
- 	if (in->newblocks <= sbp->sb_rblocks)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Can only change rt extent size when adding rt volume. */
- 	if (sbp->sb_rblocks > 0 && in->extsize != sbp->sb_rextsize)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Range check the extent size. */
- 	if (XFS_FSB_TO_B(mp, in->extsize) > XFS_MAX_RTEXTSIZE ||
- 	    XFS_FSB_TO_B(mp, in->extsize) < XFS_MIN_RTEXTSIZE)
--		return -EINVAL;
-+		goto out_unlock;
- 
- 	/* Unsupported realtime features. */
-+	error = -EOPNOTSUPP;
- 	if (xfs_has_rmapbt(mp) || xfs_has_reflink(mp) || xfs_has_quota(mp))
--		return -EOPNOTSUPP;
-+		goto out_unlock;
- 
- 	nrblocks = in->newblocks;
- 	error = xfs_sb_validate_fsb_count(sbp, nrblocks);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 	/*
- 	 * Read in the last block of the device, make sure it exists.
- 	 */
-@@ -988,7 +993,7 @@ xfs_growfs_rt(
- 				XFS_FSB_TO_BB(mp, nrblocks - 1),
- 				XFS_FSB_TO_BB(mp, 1), 0, &bp, NULL);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 	xfs_buf_relse(bp);
- 
- 	/*
-@@ -996,8 +1001,10 @@ xfs_growfs_rt(
- 	 */
- 	nrextents = nrblocks;
- 	do_div(nrextents, in->extsize);
--	if (!xfs_validate_rtextents(nrextents))
--		return -EINVAL;
-+	if (!xfs_validate_rtextents(nrextents)) {
-+		error = -EINVAL;
-+		goto out_unlock;
-+	}
- 	nrbmblocks = howmany_64(nrextents, NBBY * sbp->sb_blocksize);
- 	nrextslog = xfs_compute_rextslog(nrextents);
- 	nrsumlevels = nrextslog + 1;
-@@ -1009,8 +1016,11 @@ xfs_growfs_rt(
- 	 * the log.  This prevents us from getting a log overflow,
- 	 * since we'll log basically the whole summary file at once.
- 	 */
--	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1))
--		return -EINVAL;
-+	if (nrsumblocks > (mp->m_sb.sb_logblocks >> 1)) {
-+		error = -EINVAL;
-+		goto out_unlock;
-+	}
-+
- 	/*
- 	 * Get the old block counts for bitmap and summary inodes.
- 	 * These can't change since other growfs callers are locked out.
-@@ -1022,10 +1032,10 @@ xfs_growfs_rt(
- 	 */
- 	error = xfs_growfs_rt_alloc(mp, rbmblocks, nrbmblocks, mp->m_rbmip);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 	error = xfs_growfs_rt_alloc(mp, rsumblocks, nrsumblocks, mp->m_rsumip);
- 	if (error)
--		return error;
-+		goto out_unlock;
- 
- 	rsum_cache = mp->m_rsum_cache;
- 	if (nrbmblocks != sbp->sb_rbmblocks)
-@@ -1190,6 +1200,8 @@ xfs_growfs_rt(
- 		}
- 	}
- 
-+out_unlock:
-+	mutex_unlock(&mp->m_growlock);
- 	return error;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+index abd6600046cb3..8220a4012846b 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_vid.c
+@@ -372,7 +372,8 @@ static void dpu_encoder_phys_vid_underrun_irq(void *arg)
+ static bool dpu_encoder_phys_vid_needs_single_flush(
+ 		struct dpu_encoder_phys *phys_enc)
+ {
+-	return phys_enc->split_role != ENC_ROLE_SOLO;
++	return !(phys_enc->hw_ctl->caps->features & BIT(DPU_CTL_ACTIVE_CFG)) &&
++		phys_enc->split_role != ENC_ROLE_SOLO;
  }
  
+ static void dpu_encoder_phys_vid_atomic_mode_set(
 -- 
 2.39.5
 
