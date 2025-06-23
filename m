@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-157954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD63DAE5643
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:19:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7F5AE56CB
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78C727AAF9E
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:41 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5EC907B3655
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA21A223708;
-	Mon, 23 Jun 2025 22:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C455A2222B2;
+	Mon, 23 Jun 2025 22:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T11iQ4gN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aQ8zCxzT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769191F6667;
-	Mon, 23 Jun 2025 22:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 813D315ADB4;
+	Mon, 23 Jun 2025 22:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717126; cv=none; b=a55N7EGome049EceGWPF28af0UT6SOR7wkrjDlPaTl+YMKc6SuDOPsQk/5z4fLbMh+uW0o0us58CM38Osn1+CjRKMoQirQkXAeoqTkmeLzx/o/A1M8/fL7/2Nt6o+8gbtYXzqW8KEMo8fxDzNDmWPwn1SKL7/VBDjMv5srktWOc=
+	t=1750717399; cv=none; b=JEE2Ft912BcpTZpTGPM3smbdQ8CvIYxBmrrKmCrFTH/o7gmE7hTnLQUaxiTn+fTKtju0sscRqTNToau+7sNYi9sjsWvTPzMZCZn+Mv/+a8H7PsihDKSh3Fl++AUWJ+qWVytjGPL09XclqQ2xK9eCPjMWt+TNTbltydFiPl7bi3E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717126; c=relaxed/simple;
-	bh=NtkTUiM5Cj/R8fFnF0ORJvdBK9LSB8y22dhuKioeYWE=;
+	s=arc-20240116; t=1750717399; c=relaxed/simple;
+	bh=/F9okT/xZB+xz8/dtg6i0ndw6PYyXNjbMACf/einwxg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhoOexedsXdznEuEKI2KSB4jVRQPIfh3jMoQNnpRisScNFzBEVQ7ylKAnav85akQYp/AsbKinXCVXpFk6h4S+DNHH2C7fR0knDbrC5OPI2/ZR9wwfOAcfQGIU2Bujxw5hKWCWiZ8oyV/A5fyoI0KsnVZqwLPxXO5Xpm5C2rzrYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T11iQ4gN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CC7AC4CEEA;
-	Mon, 23 Jun 2025 22:18:45 +0000 (UTC)
+	 MIME-Version; b=oBGwBZAqDueXvgQDCW5uCFtqdIcvkiyxBOanQzZFlafwBxIUJ6N1LfF46+dVjEO4Y9qMaOBNxRrDSeQMeZ58amZgf+W9j5b8Am4SrByjtAUkuJmEJsay89upga7kZzGqbEOjegAhnrnk7BkCIPsXUCShDnAm5KAwJarR9NvnKiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aQ8zCxzT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1778AC4CEEA;
+	Mon, 23 Jun 2025 22:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717126;
-	bh=NtkTUiM5Cj/R8fFnF0ORJvdBK9LSB8y22dhuKioeYWE=;
+	s=korg; t=1750717399;
+	bh=/F9okT/xZB+xz8/dtg6i0ndw6PYyXNjbMACf/einwxg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T11iQ4gNCpIygnr58tMZNt92kQGcV9knVM5DrwJXvW2xCI3IY4VennrvCMoyM3Hyx
-	 OGkkCxW3m92leWGXqXg3LBjFMJ+94xjg9ZlaTr/SeOIApHEtFTc00UKV7Ug1X/u0kD
-	 aRxFFmIE7OkR/XVcAiXBYbRdEpKCfb5MphgrEmQ0=
+	b=aQ8zCxzTgA9CFvO0MIB1dsftN8MLAN11zElcwjQAt6I76Zd2NgPet4XgIAvDBgBD5
+	 2GGCiZ4GNMrwDKvAivS+VwOjJX9KHHeov5QUp0SxwPT3bWcaDzovrmAiVpfEt241SP
+	 bmrMXtZEXrZN1urH6Zovzi8r0xH4okzGD2iTGFtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	WangYuli <wangyuli@uniontech.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.12 327/414] Input: sparcspkr - avoid unannotated fall-through
+	syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 419/508] wifi: mac80211_hwsim: Prevent tsf from setting if beacon is disabled
 Date: Mon, 23 Jun 2025 15:07:44 +0200
-Message-ID: <20250623130650.166461849@linuxfoundation.org>
+Message-ID: <20250623130655.508871705@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
-References: <20250623130642.015559452@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: WangYuli <wangyuli@uniontech.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit 8b1d858cbd4e1800e9336404ba7892b5a721230d upstream.
+[ Upstream commit c575f5374be7a5c4be4acb9fe6be3a4669d94674 ]
 
-Fix follow warnings with clang-21i (and reformat for clarity):
-  drivers/input/misc/sparcspkr.c:78:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-     78 |                 case SND_TONE: break;
-        |                 ^
-  drivers/input/misc/sparcspkr.c:78:3: note: insert 'break;' to avoid fall-through
-     78 |                 case SND_TONE: break;
-        |                 ^
-        |                 break;
-  drivers/input/misc/sparcspkr.c:113:3: warning: unannotated fall-through between switch labels [-Wimplicit-fallthrough]
-    113 |                 case SND_TONE: break;
-        |                 ^
-  drivers/input/misc/sparcspkr.c:113:3: note: insert 'break;' to avoid fall-through
-    113 |                 case SND_TONE: break;
-        |                 ^
-        |                 break;
-  2 warnings generated.
+Setting tsf is meaningless if beacon is disabled, so check that beacon
+is enabled before setting tsf.
 
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Link: https://lore.kernel.org/r/6730E40353C76908+20250415052439.155051-1-wangyuli@uniontech.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=064815c6cd721082a52a
+Tested-by: syzbot+064815c6cd721082a52a@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Link: https://patch.msgid.link/tencent_3609AC2EFAAED68CA5A7E3C6D212D1C67806@qq.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/sparcspkr.c |   22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ drivers/net/wireless/mac80211_hwsim.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/input/misc/sparcspkr.c
-+++ b/drivers/input/misc/sparcspkr.c
-@@ -75,9 +75,14 @@ static int bbc_spkr_event(struct input_d
- 		return -1;
+diff --git a/drivers/net/wireless/mac80211_hwsim.c b/drivers/net/wireless/mac80211_hwsim.c
+index abcd165a62cfe..80a2a668cfb9e 100644
+--- a/drivers/net/wireless/mac80211_hwsim.c
++++ b/drivers/net/wireless/mac80211_hwsim.c
+@@ -1091,6 +1091,11 @@ static void mac80211_hwsim_set_tsf(struct ieee80211_hw *hw,
+ 	/* MLD not supported here */
+ 	u32 bcn_int = data->link_data[0].beacon_int;
+ 	u64 delta = abs(tsf - now);
++	struct ieee80211_bss_conf *conf;
++
++	conf = link_conf_dereference_protected(vif, data->link_data[0].link_id);
++	if (conf && !conf->enable_beacon)
++		return;
  
- 	switch (code) {
--		case SND_BELL: if (value) value = 1000;
--		case SND_TONE: break;
--		default: return -1;
-+	case SND_BELL:
-+		if (value)
-+			value = 1000;
-+		break;
-+	case SND_TONE:
-+		break;
-+	default:
-+		return -1;
- 	}
- 
- 	if (value > 20 && value < 32767)
-@@ -113,9 +118,14 @@ static int grover_spkr_event(struct inpu
- 		return -1;
- 
- 	switch (code) {
--		case SND_BELL: if (value) value = 1000;
--		case SND_TONE: break;
--		default: return -1;
-+	case SND_BELL:
-+		if (value)
-+			value = 1000;
-+		break;
-+	case SND_TONE:
-+		break;
-+	default:
-+		return -1;
- 	}
- 
- 	if (value > 20 && value < 32767)
+ 	/* adjust after beaconing with new timestamp at old TBTT */
+ 	if (tsf > now) {
+-- 
+2.39.5
+
 
 
 
