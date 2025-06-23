@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1D87AE5575
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9052BAE56F9
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1E4991BC47F0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:11:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609BF1BC8315
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18FEF224B07;
-	Mon, 23 Jun 2025 22:10:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94C69222581;
+	Mon, 23 Jun 2025 22:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BQKW1mI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cFOKPxzP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79701F7580;
-	Mon, 23 Jun 2025 22:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F612192EC;
+	Mon, 23 Jun 2025 22:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716644; cv=none; b=IBaTWAEZF5iLIihADD5/wKOkjSzqGI/3vjdH1FJAHetcqWLi20IT9jgxX/82DwKMlM+dXZc0bKelaGwKvWZd4n0naOi3aqgTSwGfAF/RrvwFio53vPVWxYsTtfHrT7KnfPfd11U6s+apc8FrHIniVQUkCvio8AS/ClMzBcajNFc=
+	t=1750717494; cv=none; b=ikl62HW/5mO7XBGSmOd9B1uPuKudmKWsT4Wm4U7eHsrH16TYS5Y/JPV4lbbzfZQFaOaIPZTtdar3aHMGn2L81zjASzAtQeH8xVarFMKEtome/5TEK1gh3FZMXkE+la8iDOh4+8bR1fx9u2yUMWcsY2cXBUy9Sh4q2nqW2dqRSbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716644; c=relaxed/simple;
-	bh=k6iFyZZJBemvHREQj4xxcFRhJf0akJNccL7JB37X3cg=;
+	s=arc-20240116; t=1750717494; c=relaxed/simple;
+	bh=NAdYHWS/Tt9F5h7kqL/IYOWPIasEcj3PzORRB6cEyeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k5U/sIcLOk1sLoya9lnINj3/nQdevQXBMtjomuOgBvysaxGv0q1lP8Cc9sHCcgOVu9JWMP48fMTMHtAP1M/o88X9zYTbuAEBCz+h1kHVfPh7FVn5cGWhOQrv1VERcHY5O9K9+iBGFVu9WyepZUAMrHr35G7inGbfK1DNpVay7fI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BQKW1mI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607BEC4CEEA;
-	Mon, 23 Jun 2025 22:10:44 +0000 (UTC)
+	 MIME-Version; b=Rgh9w0TtYsU/NBQzkGc57NjHdnKR1ad36q2iYnrtDWZ8CywGm+W8FldcDiG19PmLhwZKAYlsJ79ssikzM7WeqHvJEcjs2t04jSbSOfFIeOGLie5F5rCpjheAeLXvdEeLg3DKiEamdy7VkrL5zJtt+Qp8u3bIiExnEQVnPQMcUyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cFOKPxzP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4D2BC4CEEA;
+	Mon, 23 Jun 2025 22:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716644;
-	bh=k6iFyZZJBemvHREQj4xxcFRhJf0akJNccL7JB37X3cg=;
+	s=korg; t=1750717494;
+	bh=NAdYHWS/Tt9F5h7kqL/IYOWPIasEcj3PzORRB6cEyeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BQKW1mIhC/Att1JpqBF9FqStCIOexECmBYTvmcLqdQ+kQlD9x5S7UiqMmDEtR3dx
-	 Ea+aV/KHt2n9o1QkqF6RsUfOdV6wa03NduDDISDe9AAdYuhVkfQD7IkiYz8cyDSOhZ
-	 CnwYMtASvs59Re3xFAuZ/CIMKtsZz6RJdU9g9FiE=
+	b=cFOKPxzPnQLw8M9VwV99eiOuacrbBjsGGMSR6GO7WF8v9BTNDXc1l7odkr0Q1aJ87
+	 UB1N72rV5qBlNG8R45h3E2jgdJCjd2kVYKF9gGSB+dlhQ7obst80z+hj4S3cmQ+ElR
+	 Bke0ZK+sRCJsJrS7OdCphygGCgX5vJIr3rBbFkDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Artem Sadovnikov <a.sadovnikov@ispras.ru>,
-	Zhihao Cheng <chengzhihao1@huawei.com>,
-	Richard Weinberger <richard@nod.at>
-Subject: [PATCH 5.15 347/411] jffs2: check that raw node were preallocated before writing summary
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 354/414] drm/msm/dsi/dsi_phy_10nm: Fix missing initial VCO rate
 Date: Mon, 23 Jun 2025 15:08:11 +0200
-Message-ID: <20250623130642.381178341@linuxfoundation.org>
+Message-ID: <20250623130650.823022313@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Sadovnikov <a.sadovnikov@ispras.ru>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit ec9e6f22bce433b260ea226de127ec68042849b0 upstream.
+[ Upstream commit 8a48e35becb214743214f5504e726c3ec131cd6d ]
 
-Syzkaller detected a kernel bug in jffs2_link_node_ref, caused by fault
-injection in jffs2_prealloc_raw_node_refs. jffs2_sum_write_sumnode doesn't
-check return value of jffs2_prealloc_raw_node_refs and simply lets any
-error propagate into jffs2_sum_write_data, which eventually calls
-jffs2_link_node_ref in order to link the summary to an expectedly allocated
-node.
+Driver unconditionally saves current state on first init in
+dsi_pll_10nm_init(), but does not save the VCO rate, only some of the
+divider registers.  The state is then restored during probe/enable via
+msm_dsi_phy_enable() -> msm_dsi_phy_pll_restore_state() ->
+dsi_10nm_pll_restore_state().
 
-kernel BUG at fs/jffs2/nodelist.c:592!
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 1 PID: 31277 Comm: syz-executor.7 Not tainted 6.1.128-syzkaller-00139-ge10f83ca10a1 #0
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:jffs2_link_node_ref+0x570/0x690 fs/jffs2/nodelist.c:592
-Call Trace:
- <TASK>
- jffs2_sum_write_data fs/jffs2/summary.c:841 [inline]
- jffs2_sum_write_sumnode+0xd1a/0x1da0 fs/jffs2/summary.c:874
- jffs2_do_reserve_space+0xa18/0xd60 fs/jffs2/nodemgmt.c:388
- jffs2_reserve_space+0x55f/0xaa0 fs/jffs2/nodemgmt.c:197
- jffs2_write_inode_range+0x246/0xb50 fs/jffs2/write.c:362
- jffs2_write_end+0x726/0x15d0 fs/jffs2/file.c:301
- generic_perform_write+0x314/0x5d0 mm/filemap.c:3856
- __generic_file_write_iter+0x2ae/0x4d0 mm/filemap.c:3973
- generic_file_write_iter+0xe3/0x350 mm/filemap.c:4005
- call_write_iter include/linux/fs.h:2265 [inline]
- do_iter_readv_writev+0x20f/0x3c0 fs/read_write.c:735
- do_iter_write+0x186/0x710 fs/read_write.c:861
- vfs_iter_write+0x70/0xa0 fs/read_write.c:902
- iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
- do_splice_from fs/splice.c:763 [inline]
- direct_splice_actor+0x10c/0x170 fs/splice.c:950
- splice_direct_to_actor+0x337/0xa10 fs/splice.c:896
- do_splice_direct+0x1a9/0x280 fs/splice.c:1002
- do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
- __do_sys_sendfile64 fs/read_write.c:1323 [inline]
- __se_sys_sendfile64 fs/read_write.c:1309 [inline]
- __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+Restoring calls dsi_pll_10nm_vco_set_rate() with
+pll_10nm->vco_current_rate=0, which basically overwrites existing rate of
+VCO and messes with clock hierarchy, by setting frequency to 0 to clock
+tree.  This makes anyway little sense - VCO rate was not saved, so
+should not be restored.
 
-Fix this issue by checking return value of jffs2_prealloc_raw_node_refs
-before calling jffs2_sum_write_data.
+If PLL was not configured configure it to minimum rate to avoid glitches
+and configuring entire in clock hierarchy to 0 Hz.
 
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Cc: stable@vger.kernel.org
-Fixes: 2f785402f39b ("[JFFS2] Reduce visibility of raw_node_ref to upper layers of JFFS2 code.")
-Signed-off-by: Artem Sadovnikov <a.sadovnikov@ispras.ru>
-Reviewed-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Signed-off-by: Richard Weinberger <richard@nod.at>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/sz4kbwy5nwsebgf64ia7uq4ee7wbsa5uy3xmlqwcstsbntzcov@ew3dcyjdzmi2/
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: a4ccc37693a2 ("drm/msm/dsi_pll_10nm: restore VCO rate during
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/654796/
+Link: https://lore.kernel.org/r/20250520111325.92352-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jffs2/summary.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/jffs2/summary.c
-+++ b/fs/jffs2/summary.c
-@@ -858,7 +858,10 @@ int jffs2_sum_write_sumnode(struct jffs2
- 	spin_unlock(&c->erase_completion_lock);
+diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+index 677c625718119..28cc550e22a88 100644
+--- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
++++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_10nm.c
+@@ -703,6 +703,13 @@ static int dsi_pll_10nm_init(struct msm_dsi_phy *phy)
+ 	/* TODO: Remove this when we have proper display handover support */
+ 	msm_dsi_phy_pll_save_state(phy);
  
- 	jeb = c->nextblock;
--	jffs2_prealloc_raw_node_refs(c, jeb, 1);
-+	ret = jffs2_prealloc_raw_node_refs(c, jeb, 1);
++	/*
++	 * Store also proper vco_current_rate, because its value will be used in
++	 * dsi_10nm_pll_restore_state().
++	 */
++	if (!dsi_pll_10nm_vco_recalc_rate(&pll_10nm->clk_hw, VCO_REF_CLK_RATE))
++		pll_10nm->vco_current_rate = pll_10nm->phy->cfg->min_pll_rate;
 +
-+	if (ret)
-+		goto out;
- 
- 	if (!c->summary->sum_num || !c->summary->sum_list_head) {
- 		JFFS2_WARNING("Empty summary info!!!\n");
-@@ -872,6 +875,8 @@ int jffs2_sum_write_sumnode(struct jffs2
- 	datasize += padsize;
- 
- 	ret = jffs2_sum_write_data(c, jeb, infosize, datasize, padsize);
-+
-+out:
- 	spin_lock(&c->erase_completion_lock);
- 	return ret;
+ 	return 0;
  }
+ 
+-- 
+2.39.5
+
 
 
 
