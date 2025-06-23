@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-155829-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D42FAE43E2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2ECEAE4349
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:30:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA5D189C9C7
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:32:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 52F7E179A18
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D611255F57;
-	Mon, 23 Jun 2025 13:30:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D1F255F2B;
+	Mon, 23 Jun 2025 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MPOVPqra"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NV0bHUw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF485347DD;
-	Mon, 23 Jun 2025 13:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 883A32550D7;
+	Mon, 23 Jun 2025 13:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685436; cv=none; b=UHelPza7X8LV6FgZ5VrWg9OYbqza4e1OOLAdn5LtWQhZox8gYHlA/b/AlwhZLdkUYVNMQGRAiDcyZ9i+LQqVliNc96Ewm8PT8umGghfUj3WTkNBLSIMvGoSG+xvDFVLkt8LX8K0595zVSAXIAjQLlB7Tfd6bUhWMG30NXpGY5PY=
+	t=1750684970; cv=none; b=scN0BUcrThNQdnihPDMZ0KPKYAz18y21Rd6VMlzHPrJb4j3gdcmH4Wgw9ybbcYF9zbjUiOhMgMEqa84lSpQXKAbAjIRqnrVq9IZKOSJDueXbLxNDBFox9lu+d/45Hyd7GRzEGSy4zzWLjKL6kMPn4qS09flZsCxVdhkKadTUGwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685436; c=relaxed/simple;
-	bh=Jc6nrkFdNfGnFJATxZLdf5IIR0oofmhiFBgDtRru+DY=;
+	s=arc-20240116; t=1750684970; c=relaxed/simple;
+	bh=nbG/glR48gYb8HILA7ifc8w/R3eiWdYIR57hD8REHnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgqRUvfTn82wPX1JtsxTTS66bB/VV4JbNZ072ixkgoqV2Rq3xa9ErXwDI9KG0c+zqlOree2/7JdSwVazK6b2widtEcJvr4cPRl+lhGQfao1TW7CD+m1rXiY6l08jJif2NoebshmZ+0GKozAh8tUgjE4HGUP+2u+7eM8QGWxsjGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MPOVPqra; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777FEC4CEEA;
-	Mon, 23 Jun 2025 13:30:35 +0000 (UTC)
+	 MIME-Version; b=QfbJk44rN7/qrvD8PPuc8fo3Sv0x59S7Up6Is21MvKdCjILLkFybILAinarL36RkyA/W2r5CHkBUlKWUoQB1g3zUcoaT+A+zoaqmVN7ivWgrsTSfdnlJLBIXp0hrm4wRCkALPlkEO6+rUi/ygDBlpvGXhpFNFC8gy8KrqX1tiDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NV0bHUw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CA56C4CEEA;
+	Mon, 23 Jun 2025 13:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685435;
-	bh=Jc6nrkFdNfGnFJATxZLdf5IIR0oofmhiFBgDtRru+DY=;
+	s=korg; t=1750684970;
+	bh=nbG/glR48gYb8HILA7ifc8w/R3eiWdYIR57hD8REHnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MPOVPqra+yTuXiIZ7QHc927LWAEcgQmMHWkyWHYC62k14MEVHkO5nhpSC4BIALjuO
-	 LhCnB05oeLY79O3S+Fgzqca+nZqRGcey37LqcVqUI9Yabhu66/Iv+YeCUPjl06INBl
-	 /LbpzKesiT1UFavD0UVBN/ms+Ab7WaawniTvsiF4=
+	b=NV0bHUw6sHe0ecsDLi7BaJlGSv2ZapaaTxIRm+f1Cpn6EQ9WWtChH6+5VTRfWPOHO
+	 M+Cbwn5lafCFd5M9m0xpY7SIhAmDvVByUI1PKLlIeBBecwbRzMfgQ1iE2ZnqcIa/ly
+	 PLDxU0UGkGKNKmQ2TWr5RAwcmG51k5G8AxagQJ8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nas Chung <nas.chung@chipsnmedia.com>,
-	Sebastian Fricke <sebastian.fricke@collabora.com>,
-	Hans Verkuil <hverkuil@xs4all.nl>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 260/592] media: uapi: v4l: Fix V4L2_TYPE_IS_OUTPUT condition
+Subject: [PATCH 5.10 017/355] crypto: xts - Only add ecb if it is not already there
 Date: Mon, 23 Jun 2025 15:03:38 +0200
-Message-ID: <20250623130706.487623157@linuxfoundation.org>
+Message-ID: <20250623130627.304594820@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,37 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nas Chung <nas.chung@chipsnmedia.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit f81f69a0e3da141bdd73a16b8676f4e542533d87 ]
+[ Upstream commit 270b6f13454cb7f2f7058c50df64df409c5dcf55 ]
 
-V4L2_TYPE_IS_OUTPUT() returns true for V4L2_BUF_TYPE_VIDEO_OVERLAY
-which definitely belongs to CAPTURE.
+Only add ecb to the cipher name if it isn't already ecb.
 
-Signed-off-by: Nas Chung <nas.chung@chipsnmedia.com>
-Signed-off-by: Sebastian Fricke <sebastian.fricke@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Also use memcmp instead of strncmp since these strings are all
+stored in an array of length CRYPTO_MAX_ALG_NAME.
+
+Fixes: f1c131b45410 ("crypto: xts - Convert to skcipher")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/videodev2.h | 1 -
- 1 file changed, 1 deletion(-)
+ crypto/xts.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/linux/videodev2.h b/include/uapi/linux/videodev2.h
-index c8cb2796130f8..b0e1f660c5f72 100644
---- a/include/uapi/linux/videodev2.h
-+++ b/include/uapi/linux/videodev2.h
-@@ -164,7 +164,6 @@ enum v4l2_buf_type {
- #define V4L2_TYPE_IS_OUTPUT(type)				\
- 	((type) == V4L2_BUF_TYPE_VIDEO_OUTPUT			\
- 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE		\
--	 || (type) == V4L2_BUF_TYPE_VIDEO_OVERLAY		\
- 	 || (type) == V4L2_BUF_TYPE_VIDEO_OUTPUT_OVERLAY	\
- 	 || (type) == V4L2_BUF_TYPE_VBI_OUTPUT			\
- 	 || (type) == V4L2_BUF_TYPE_SLICED_VBI_OUTPUT		\
+diff --git a/crypto/xts.c b/crypto/xts.c
+index 74dc199d54867..a4677e1a1611f 100644
+--- a/crypto/xts.c
++++ b/crypto/xts.c
+@@ -360,7 +360,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 
+ 	err = crypto_grab_skcipher(&ctx->spawn, skcipher_crypto_instance(inst),
+ 				   cipher_name, 0, mask);
+-	if (err == -ENOENT) {
++	if (err == -ENOENT && memcmp(cipher_name, "ecb(", 4)) {
+ 		err = -ENAMETOOLONG;
+ 		if (snprintf(ctx->name, CRYPTO_MAX_ALG_NAME, "ecb(%s)",
+ 			     cipher_name) >= CRYPTO_MAX_ALG_NAME)
+@@ -394,7 +394,7 @@ static int xts_create(struct crypto_template *tmpl, struct rtattr **tb)
+ 	/* Alas we screwed up the naming so we have to mangle the
+ 	 * cipher name.
+ 	 */
+-	if (!strncmp(cipher_name, "ecb(", 4)) {
++	if (!memcmp(cipher_name, "ecb(", 4)) {
+ 		int len;
+ 
+ 		len = strscpy(ctx->name, cipher_name + 4, sizeof(ctx->name));
 -- 
 2.39.5
 
