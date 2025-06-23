@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-156919-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156809-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEDF6AE51B2
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:36:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32683AE513A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F52B3BD615
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:36:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A9663BF9D2
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD0D8221DA8;
-	Mon, 23 Jun 2025 21:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FEF77080C;
+	Mon, 23 Jun 2025 21:31:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xwrXqR8A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tVvQRX8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7761E19CC11;
-	Mon, 23 Jun 2025 21:36:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF910C2E0;
+	Mon, 23 Jun 2025 21:31:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714590; cv=none; b=QFXObJhPVqjvcPuZFlra1TW4Zg12mBpcxWg4/d5qVgrRcz2r+8D0xgIqW8A9Q5XguLnO/dILH358mmqkbU1vTXQu6doJ/7vUwMUVkeiKE7YzC8FYjbQ9TDqsZrwG1JL/hzYyRVEZxF9WNnBkw7QYyAa2vl2xOGuks9w7bEjTzdo=
+	t=1750714319; cv=none; b=Ee2uLZFWVnbq+WkCpxQz6WDcK1OTlydgiM39RVo+LfSNl19cj12j9ENkXJ3YPr3maFAOpak6YqE6MZikCun0/+INh+5X55UjmkNubi9XI3FPyvM5tW0g9aLc7vG4GLLBAl3pKPfCbAkTzfVDUjqc25n1yHvQHwc1xg3Uh+1bgWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714590; c=relaxed/simple;
-	bh=KphNYeSZebmpBUZn8zbdhwDaNTT/Gd1rZz4VmlMfpQc=;
+	s=arc-20240116; t=1750714319; c=relaxed/simple;
+	bh=13SSKrJr0/9GxJu0hnA0x8qWxF/x5uvejsM5bWmLGQg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EU8Bwn2cgJap4Mpou685IKBrW92uj+66f4WiJOy1XJodyAI3nO2r9BhxiwHX1tFOyaffG1uG9g8iKjsaxBiJb6PVfIpKBYzXniXjTwYLKJ5ihe5ZgRVWsHPUWgl4SuP6RSImLubXqcQ/NbFoe7QnYHNPYyZj5JoQQTTAjP6h6NM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xwrXqR8A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10A6BC4CEEA;
-	Mon, 23 Jun 2025 21:36:29 +0000 (UTC)
+	 MIME-Version; b=jst7qPSEoLq35jHzKf9WD6AjjPotfbPfJluChZjJncVXaBwbE9fvPqfx4mPwMZfc1+Jizcb/s4KbS6AJcyQU88ELp4cDzg5Z3V3F51uR/mlHmdAnyg/yo9GEbfCIw6+r5faOP7YBOURPlMy4nnzah0wj/LeaN2afXmnkzKFPJ5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tVvQRX8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77CC4C4CEEA;
+	Mon, 23 Jun 2025 21:31:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714590;
-	bh=KphNYeSZebmpBUZn8zbdhwDaNTT/Gd1rZz4VmlMfpQc=;
+	s=korg; t=1750714318;
+	bh=13SSKrJr0/9GxJu0hnA0x8qWxF/x5uvejsM5bWmLGQg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xwrXqR8Al2VtIG2Mdoh3uisAMRmmSxWvfhjCRnntlu6RGGkOMv/ELnR+LMH9PVGjx
-	 Lh8izQqUNhCfN6OKHN5FCzL9YVENoq23NSoQXEVMkuVw2A9OXz6b6n7RcjXvmbd/Pi
-	 oCwMolBO67haESTWLAKmmSTfcu4Tr29kslkICHmc=
+	b=tVvQRX8BtFFltb8zku1e4V52nF4CRxUXkAAN6FmvqxT/X/lJ1QtT4FGkpk9U/YY3Z
+	 tFX8Jx262TTrJi9u7KJ/utW770g3pnKnJtNf6via0zX/F/jnWZucneM+YQ8AAhbQfW
+	 ggKKvZShVfJRqYQiJSVRiLOnEvutycsLQzDeXk58=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gautam Menghani <gautam@linux.ibm.com>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Vaibhav Jain <vaibhav@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 5.15 197/411] powerpc/pseries/msi: Avoid reading PCI device registers in reduced power states
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.15 383/592] wifi: iwlwifi: pcie: make sure to lock rxq->read
 Date: Mon, 23 Jun 2025 15:05:41 +0200
-Message-ID: <20250623130638.636072951@linuxfoundation.org>
+Message-ID: <20250623130709.552320909@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gautam Menghani <gautam@linux.ibm.com>
+From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
 
-commit 9cc0eafd28c7faef300822992bb08d79cab2a36c upstream.
+[ Upstream commit 1cc2c48c4af81bed5ddbe9f2c9d6e20fa163acf9 ]
 
-When a system is being suspended to RAM, the PCI devices are also
-suspended and the PPC code ends up calling pseries_msi_compose_msg() and
-this triggers the BUG_ON() in __pci_read_msi_msg() because the device at
-this point is in reduced power state. In reduced power state, the memory
-mapped registers of the PCI device are not accessible.
+rxq->read is accessed without the rxq->lock in a few places,
+Make sure to have the lock there.
 
-To replicate the bug:
-1. Make sure deep sleep is selected
-	# cat /sys/power/mem_sleep
-	s2idle [deep]
-
-2. Make sure console is not suspended (so that dmesg logs are visible)
-	echo N > /sys/module/printk/parameters/console_suspend
-
-3. Suspend the system
-	echo mem > /sys/power/state
-
-To fix this behaviour, read the cached msi message of the device when the
-device is not in PCI_D0 power state instead of touching the hardware.
-
-Fixes: a5f3d2c17b07 ("powerpc/pseries/pci: Add MSI domains")
-Cc: stable@vger.kernel.org # v5.15+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-Tested-by: Venkat Rao Bagalkote <venkat88@linux.ibm.com>
-Reviewed-by: Vaibhav Jain <vaibhav@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20250305090237.294633-1-gautam@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Reviewed-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Tested-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://patch.msgid.link/20250424153620.73725f207aaa.I1a3e4b6c5fd370e029fdacfcdc9ee335788afa98@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/msi.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/pcie/trans.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/arch/powerpc/platforms/pseries/msi.c
-+++ b/arch/powerpc/platforms/pseries/msi.c
-@@ -539,7 +539,12 @@ static struct msi_domain_info pseries_ms
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+index 102a6123bba0e..4cc7a2e5746d2 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/trans.c
+@@ -2942,6 +2942,8 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
+ 	for (i = 0; i < trans->num_rx_queues && pos < bufsz; i++) {
+ 		struct iwl_rxq *rxq = &trans_pcie->rxq[i];
  
- static void pseries_msi_compose_msg(struct irq_data *data, struct msi_msg *msg)
- {
--	__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	struct pci_dev *dev = msi_desc_to_pci_dev(irq_data_get_msi_desc(data));
++		spin_lock_bh(&rxq->lock);
 +
-+	if (dev->current_state == PCI_D0)
-+		__pci_read_msi_msg(irq_data_get_msi_desc(data), msg);
-+	else
-+		get_cached_msi_msg(data->irq, msg);
- }
- 
- static struct irq_chip pseries_msi_irq_chip = {
+ 		pos += scnprintf(buf + pos, bufsz - pos, "queue#: %2d\n",
+ 				 i);
+ 		pos += scnprintf(buf + pos, bufsz - pos, "\tread: %u\n",
+@@ -2962,6 +2964,7 @@ static ssize_t iwl_dbgfs_rx_queue_read(struct file *file,
+ 			pos += scnprintf(buf + pos, bufsz - pos,
+ 					 "\tclosed_rb_num: Not Allocated\n");
+ 		}
++		spin_unlock_bh(&rxq->lock);
+ 	}
+ 	ret = simple_read_from_buffer(user_buf, count, ppos, buf, pos);
+ 	kfree(buf);
+@@ -3662,8 +3665,11 @@ iwl_trans_pcie_dump_data(struct iwl_trans *trans, u32 dump_mask,
+ 		/* Dump RBs is supported only for pre-9000 devices (1 queue) */
+ 		struct iwl_rxq *rxq = &trans_pcie->rxq[0];
+ 		/* RBs */
++		spin_lock_bh(&rxq->lock);
+ 		num_rbs = iwl_get_closed_rb_stts(trans, rxq);
+ 		num_rbs = (num_rbs - rxq->read) & RX_QUEUE_MASK;
++		spin_unlock_bh(&rxq->lock);
++
+ 		len += num_rbs * (sizeof(*data) +
+ 				  sizeof(struct iwl_fw_error_dump_rb) +
+ 				  (PAGE_SIZE << trans_pcie->rx_page_order));
+-- 
+2.39.5
+
 
 
 
