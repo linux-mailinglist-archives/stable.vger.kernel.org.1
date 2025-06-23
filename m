@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-156607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE274AE504A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:23:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D8FCAAE4FF9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:21:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 499F14A0900
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:23:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7621117FE57
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:21:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3664A1E5B71;
-	Mon, 23 Jun 2025 21:23:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39E21E5B71;
+	Mon, 23 Jun 2025 21:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KeWtC+rZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GSqsPTJV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89391ACEDA;
-	Mon, 23 Jun 2025 21:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A05C3219E0;
+	Mon, 23 Jun 2025 21:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713828; cv=none; b=OyTSGVOJmYmwi58Je06uwTJy+UE+AndpVnNfHbKafcKS12oNzgsk9uAlf8ZPEZAE5DsxzIqgJhgELB+injpvt9+KAsoAW/jnmurbu9Nmi9cvq/z9rHc+yqia1CkNx4GL15BkNPxjnx84UiQqSBCIiGzTNFGUCaI7zx3ZQkIN99s=
+	t=1750713680; cv=none; b=ZDZjG9myNkbyND1R59FLVJ6GecyIoqQggKjnZc81lcX/euzbrZ7qunMGhetBSz7265xmVCvAVXTTRLPHLUpztB5FurJ/5RCVGdXTjD0fR3SZZwuoTwUznq637GDjC8yPvF+bc2aSSbNx2IZrWbhZNmHoFUmiMBQ9CqvjlbwG6ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713828; c=relaxed/simple;
-	bh=7rcjZ0z6wC9+XIiup5BoAsYw2sIBF8YwYvd6yDikqj4=;
+	s=arc-20240116; t=1750713680; c=relaxed/simple;
+	bh=XdnJRX5irk/hrTGcQDMfMrGPzOly8PncyZ75GGg1nnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nAzuYVzhfqPuYXZqrsez1slDEn1T6yZJ7bsGCGsW5zhU/0M+E977OWRpBdO3JKHbMwV1ZZl2TTtd4ZewTJ0M2ltWvUVeuRt9LEIAvAJKDaRD5pZQ7d2ElRueZMka2d21CPwW3QoG/N72Sv7f9HA+L2/FFwOUDswinuCe7J3zhC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KeWtC+rZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80385C4CEEA;
-	Mon, 23 Jun 2025 21:23:47 +0000 (UTC)
+	 MIME-Version; b=kAXixbyDvtid+iV/mG/0SwlNk3QboMialgyKOMHdjWA8/F56Y7/fphm2oZkMWLXlM5hZgIXiMrOw9yHboCU4+mQYzYfkt5s/ke/BJJFCjsHK7/yZZxrgmi0cDHSQok1hZnwHXblI/DVG2xbUJE87s0oKz5Uk/wMBhJzLjCCTFkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GSqsPTJV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91BFC4CEEA;
+	Mon, 23 Jun 2025 21:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713827;
-	bh=7rcjZ0z6wC9+XIiup5BoAsYw2sIBF8YwYvd6yDikqj4=;
+	s=korg; t=1750713680;
+	bh=XdnJRX5irk/hrTGcQDMfMrGPzOly8PncyZ75GGg1nnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KeWtC+rZJl8dhLNAGmBF2wEDUR2Ad46A/4HXqNqjxLDuElPuot7wTyJRiuAtJa11S
-	 o+3KgNqD//UJRYlFlKm/S1+tLAQsS7mKfIftpkP5leLe7nNCPF+ZPqz0c/RZP4GZaG
-	 /o8IBYPYxb4JrbFa2erDx5jGLv0N6xtkKTTjSQec=
+	b=GSqsPTJV0C8z77cTe181F2YrYirDSHAPWi3p9bNT0HZWjLk12bboA6Hi1AKv92F94
+	 Gj88bvQ8P34wlJ6QjW8sIa1SKj0IKnfZYTJFYSJ8uj9Yg/KHl/oUl6OWbQLHMovUC1
+	 SdW8rzyFviXDX9Hl727aLATt1slxE3xwh5sT4wAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/508] nfs: ignore SB_RDONLY when remounting nfs
+	Hao Yao <hao.yao@intel.com>,
+	Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Hans Verkuil <hverkuil@xs4all.nl>
+Subject: [PATCH 6.12 057/414] media: ipu6: Remove workaround for Meteor Lake ES2
 Date: Mon, 23 Jun 2025 15:03:14 +0200
-Message-ID: <20250623130648.948756742@linuxfoundation.org>
+Message-ID: <20250623130643.495232022@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Hao Yao <hao.yao@intel.com>
 
-[ Upstream commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a ]
+commit d471fb06b21ae54bf76464731ae1dcb26ef1ca68 upstream.
 
-In some scenarios, when mounting NFS, more than one superblock may be
-created. The final superblock used is the last one created, but only the
-first superblock carries the ro flag passed from user space. If a ro flag
-is added to the superblock via remount, it will trigger the issue
-described in Link[1].
+There was a hardware bug which need IPU6 driver to disable the ATS. This
+workaround is not needed anymore as the bug was fixed in hardware level.
 
-Link[2] attempted to address this by marking the superblock as ro during
-the initial mount. However, this introduced a new problem in scenarios
-where multiple mount points share the same superblock:
-[root@a ~]# mount /dev/sdb /mnt/sdb
-[root@a ~]# echo "/mnt/sdb *(rw,no_root_squash)" > /etc/exports
-[root@a ~]# echo "/mnt/sdb/test_dir2 *(ro,no_root_squash)" >> /etc/exports
-[root@a ~]# systemctl restart nfs-server
-[root@a ~]# mount -t nfs -o rw 127.0.0.1:/mnt/sdb/test_dir1 /mnt/test_mp1
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (rw,relatime,...
-[root@a ~]# mount -t nfs -o ro 127.0.0.1:/mnt/sdb/test_dir2 /mnt/test_mp2
-[root@a ~]# mount | grep nfs4
-127.0.0.1:/mnt/sdb/test_dir1 on /mnt/test_mp1 type nfs4 (ro,relatime,...
-127.0.0.1:/mnt/sdb/test_dir2 on /mnt/test_mp2 type nfs4 (ro,relatime,...
-[root@a ~]#
+Additionally, Arrow Lake has the same IPU6 PCI ID and x86 stepping but
+does not have the bug. Removing the Meteor Lake workaround is also
+required for the driver to function on Arrow Lake.
 
-When mounting the second NFS, the shared superblock is marked as ro,
-causing the previous NFS mount to become read-only.
-
-To resolve both issues, the ro flag is no longer applied to the superblock
-during remount. Instead, the ro flag on the mount is used to control
-whether the mount point is read-only.
-
-Fixes: 281cad46b34d ("NFS: Create a submount rpc_op")
-Link[1]: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Link[2]: https://lore.kernel.org/all/20241130035818.1459775-1-lilingfeng3@huawei.com/
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Hao Yao <hao.yao@intel.com>
+Reviewed-by: Stanislaw Gruszka <stanislaw.gruszka@linux.intel.com>
+Fixes: 25fedc021985 ("media: intel/ipu6: add Intel IPU6 PCI device driver")
+Cc: stable@vger.kernel.org
+[Sakari Ailus: Added tags and explanation of what is fixed.]
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Hans Verkuil <hverkuil@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/super.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/media/pci/intel/ipu6/ipu6.c |    5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index a4679cd75f70a..2dca011da034e 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1017,6 +1017,16 @@ int nfs_reconfigure(struct fs_context *fc)
+--- a/drivers/media/pci/intel/ipu6/ipu6.c
++++ b/drivers/media/pci/intel/ipu6/ipu6.c
+@@ -463,11 +463,6 @@ static int ipu6_pci_config_setup(struct
+ {
+ 	int ret;
  
- 	sync_filesystem(sb);
- 
-+	/*
-+	 * The SB_RDONLY flag has been removed from the superblock during
-+	 * mounts to prevent interference between different filesystems.
-+	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
-+	 * during reconfiguration; otherwise, it may also result in the
-+	 * creation of redundant superblocks when mounting a directory with
-+	 * different rw and ro flags multiple times.
-+	 */
-+	fc->sb_flags_mask &= ~SB_RDONLY;
-+
- 	/*
- 	 * Userspace mount programs that send binary options generally send
- 	 * them populated with default values. We have no way to know which
--- 
-2.39.5
-
+-	/* disable IPU6 PCI ATS on mtl ES2 */
+-	if (is_ipu6ep_mtl(hw_ver) && boot_cpu_data.x86_stepping == 0x2 &&
+-	    pci_ats_supported(dev))
+-		pci_disable_ats(dev);
+-
+ 	/* No PCI msi capability for IPU6EP */
+ 	if (is_ipu6ep(hw_ver) || is_ipu6ep_mtl(hw_ver)) {
+ 		/* likely do nothing as msi not enabled by default */
 
 
 
