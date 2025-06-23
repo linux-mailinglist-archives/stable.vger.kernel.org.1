@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-157779-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157937-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87A46AE5598
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:12:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20533AE5688
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318E44C50D3
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A1F447BF0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9D9B225413;
-	Mon, 23 Jun 2025 22:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10363219A7A;
+	Mon, 23 Jun 2025 22:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dM4JltMa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogumnA/c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 686BB2248B5;
-	Mon, 23 Jun 2025 22:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE58219F120;
+	Mon, 23 Jun 2025 22:18:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716701; cv=none; b=AoVPrBXYgnUPITCiNucNVl63J8KiU6ldDRHIgd4UwQucUeBwksdvIldPy3IABR6tZB/S9/3/uufBvAyFzkCKxi9sIOr4Dcxwbnk5SunZScniqANWYW0L3W0tbRX+AYsOXYImqVON3h92ycR4WB8dLzwc7kehKmuyIVDVGo6tZtY=
+	t=1750717084; cv=none; b=ILBuRa6bRKoFLkX/hzubOS7+N8onvTesSF9YdRaS6r9S24pPUQaAXb0DR9aPXKLJhrAeEWU2hLf3pExwzUBGoLWT7Jgu85VymKgl+iVO+PQwuMDy0ib0xQxGLjMZpOEu6xhIcCcdvNacVhYHbnv1olTyFyO97uFG7EJVrIFJFdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716701; c=relaxed/simple;
-	bh=R5IsFHtTKyBpg5g1Yf640heol9+h3xl1ZiHstqDpSAI=;
+	s=arc-20240116; t=1750717084; c=relaxed/simple;
+	bh=VWE/eiw7vxv3bWRACJUfJO9CP1JGtombraeI5xSDcQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IvZT0fr1hvZ+FFUNFnbYZv9KejUgL0N2hR4lsnwsKfXlRNz0gpVnADpA1C2j2uY+UvxqBeVYSTr3WCKpIaSLzVHE/+3PY3G1FSMJgRUb6k6NDs82LkBM1GZd9c6hAXM/mRPddLVFNg/vmNQFwie64HDllHPvNu4kIyDq2XtcZmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dM4JltMa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFCCC4CEEA;
-	Mon, 23 Jun 2025 22:11:40 +0000 (UTC)
+	 MIME-Version; b=tHfw8A/Tpx+ngcwnj/7ZfcMc3fI/cGxt8UF2o9oHoKl6Wc963NDIrTmsUlIaPIzoUr2uk1hEcYlMD4fCS+9ikMLu1Zpq2GHg80iDTRFyqA09T0wi5NvRH9sPvyjuh6A0vjAdyTfFkps4Kg/29ePE7jmvFK+1iwfQvo4Z239DddM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogumnA/c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57095C4CEEA;
+	Mon, 23 Jun 2025 22:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716700;
-	bh=R5IsFHtTKyBpg5g1Yf640heol9+h3xl1ZiHstqDpSAI=;
+	s=korg; t=1750717084;
+	bh=VWE/eiw7vxv3bWRACJUfJO9CP1JGtombraeI5xSDcQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dM4JltMai+dnUcgc/ywJkzGAArsZqFzUaq8o9F/U2TS1kedasWqsb5H5JsE2DLmkx
-	 t8JmkgqHaa/2ls7OYIXxzLtQNxdGmqF6gfh7lz3Zmb4g3bMwfKEpLgpAhT6d4fuYDo
-	 9Q1TmYS7Wyvrp/4aaYfznUWqYJmzWyT7BAIXH+X4=
+	b=ogumnA/caC24VIVIS64SM9YG+Dp2+XTwFBf3FrDFCPJRSaQOb/VSk4drYF1x86Tvn
+	 47zLB+kV0wEHkCrmlGA7ndyNPQjYjJqSQ3SlL2UeepAH6BNyUIKPAJgI59al85oN9p
+	 XA4gcG8UNgIQh+RfFqeS6UBbFrxaHnG/pOtO4scM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luo Gengkun <luogengkun@huaweicloud.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/290] perf/core: Fix WARN in perf_cgroup_switch()
+	Octavian Purdila <tavip@google.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 400/411] net_sched: sch_sfq: use a temporary work area for validating configuration
 Date: Mon, 23 Jun 2025 15:09:04 +0200
-Message-ID: <20250623130635.432438537@linuxfoundation.org>
+Message-ID: <20250623130643.748152265@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luo Gengkun <luogengkun@huaweicloud.com>
+From: Octavian Purdila <tavip@google.com>
 
-[ Upstream commit 3172fb986666dfb71bf483b6d3539e1e587fa197 ]
+commit 8c0cea59d40cf6dd13c2950437631dd614fbade6 upstream.
 
-There may be concurrency between perf_cgroup_switch and
-perf_cgroup_event_disable. Consider the following scenario: after a new
-perf cgroup event is created on CPU0, the new event may not trigger
-a reprogramming, causing ctx->is_active to be 0. In this case, when CPU1
-disables this perf event, it executes __perf_remove_from_context->
-list _del_event->perf_cgroup_event_disable on CPU1, which causes a race
-with perf_cgroup_switch running on CPU0.
+Many configuration parameters have influence on others (e.g. divisor
+-> flows -> limit, depth -> limit) and so it is difficult to correctly
+do all of the validation before applying the configuration. And if a
+validation error is detected late it is difficult to roll back a
+partially applied configuration.
 
-The following describes the details of this concurrency scenario:
+To avoid these issues use a temporary work area to update and validate
+the configuration and only then apply the configuration to the
+internal state.
 
-CPU0						CPU1
-
-perf_cgroup_switch:
-   ...
-   # cpuctx->cgrp is not NULL here
-   if (READ_ONCE(cpuctx->cgrp) == NULL)
-   	return;
-
-						perf_remove_from_context:
-						   ...
-						   raw_spin_lock_irq(&ctx->lock);
-						   ...
-						   # ctx->is_active == 0 because reprogramm is not
-						   # tigger, so CPU1 can do __perf_remove_from_context
-						   # for CPU0
-						   __perf_remove_from_context:
-						         perf_cgroup_event_disable:
-							    ...
-							    if (--ctx->nr_cgroups)
-							    ...
-
-   # this warning will happened because CPU1 changed
-   # ctx.nr_cgroups to 0.
-   WARN_ON_ONCE(cpuctx->ctx.nr_cgroups == 0);
-
-[peterz: use guard instead of goto unlock]
-Fixes: db4a835601b7 ("perf/core: Set cgroup in CPU contexts for new cgroup events")
-Signed-off-by: Luo Gengkun <luogengkun@huaweicloud.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20250604033924.3914647-3-luogengkun@huaweicloud.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Octavian Purdila <tavip@google.com>
+Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c | 22 ++++++++++++++++++++--
- 1 file changed, 20 insertions(+), 2 deletions(-)
+ net/sched/sch_sfq.c |   56 ++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 44 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index e9e785542b9f4..873b17545717c 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -171,6 +171,19 @@ static void perf_ctx_unlock(struct perf_cpu_context *cpuctx,
- 	raw_spin_unlock(&cpuctx->ctx.lock);
- }
- 
-+typedef struct {
-+	struct perf_cpu_context *cpuctx;
-+	struct perf_event_context *ctx;
-+} class_perf_ctx_lock_t;
+--- a/net/sched/sch_sfq.c
++++ b/net/sched/sch_sfq.c
+@@ -631,6 +631,15 @@ static int sfq_change(struct Qdisc *sch,
+ 	struct red_parms *p = NULL;
+ 	struct sk_buff *to_free = NULL;
+ 	struct sk_buff *tail = NULL;
++	unsigned int maxflows;
++	unsigned int quantum;
++	unsigned int divisor;
++	int perturb_period;
++	u8 headdrop;
++	u8 maxdepth;
++	int limit;
++	u8 flags;
 +
-+static inline void class_perf_ctx_lock_destructor(class_perf_ctx_lock_t *_T)
-+{ perf_ctx_unlock(_T->cpuctx, _T->ctx); }
+ 
+ 	if (opt->nla_len < nla_attr_size(sizeof(*ctl)))
+ 		return -EINVAL;
+@@ -656,36 +665,59 @@ static int sfq_change(struct Qdisc *sch,
+ 		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
+ 		return -EINVAL;
+ 	}
 +
-+static inline class_perf_ctx_lock_t
-+class_perf_ctx_lock_constructor(struct perf_cpu_context *cpuctx,
-+				struct perf_event_context *ctx)
-+{ perf_ctx_lock(cpuctx, ctx); return (class_perf_ctx_lock_t){ cpuctx, ctx }; }
+ 	sch_tree_lock(sch);
 +
- #define TASK_TOMBSTONE ((void *)-1L)
- 
- static bool is_kernel_event(struct perf_event *event)
-@@ -866,7 +879,13 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	if (READ_ONCE(cpuctx->cgrp) == cgrp)
- 		return;
- 
--	perf_ctx_lock(cpuctx, cpuctx->task_ctx);
-+	guard(perf_ctx_lock)(cpuctx, cpuctx->task_ctx);
-+	/*
-+	 * Re-check, could've raced vs perf_remove_from_context().
-+	 */
-+	if (READ_ONCE(cpuctx->cgrp) == NULL)
-+		return;
++	limit = q->limit;
++	divisor = q->divisor;
++	headdrop = q->headdrop;
++	maxdepth = q->maxdepth;
++	maxflows = q->maxflows;
++	perturb_period = q->perturb_period;
++	quantum = q->quantum;
++	flags = q->flags;
 +
- 	perf_ctx_disable(&cpuctx->ctx, true);
++	/* update and validate configuration */
+ 	if (ctl->quantum)
+-		q->quantum = ctl->quantum;
+-	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
++		quantum = ctl->quantum;
++	perturb_period = ctl->perturb_period * HZ;
+ 	if (ctl->flows)
+-		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
++		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
+ 	if (ctl->divisor) {
+-		q->divisor = ctl->divisor;
+-		q->maxflows = min_t(u32, q->maxflows, q->divisor);
++		divisor = ctl->divisor;
++		maxflows = min_t(u32, maxflows, divisor);
+ 	}
+ 	if (ctl_v1) {
+ 		if (ctl_v1->depth)
+-			q->maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
++			maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
+ 		if (p) {
+-			swap(q->red_parms, p);
+-			red_set_parms(q->red_parms,
++			red_set_parms(p,
+ 				      ctl_v1->qth_min, ctl_v1->qth_max,
+ 				      ctl_v1->Wlog,
+ 				      ctl_v1->Plog, ctl_v1->Scell_log,
+ 				      NULL,
+ 				      ctl_v1->max_P);
+ 		}
+-		q->flags = ctl_v1->flags;
+-		q->headdrop = ctl_v1->headdrop;
++		flags = ctl_v1->flags;
++		headdrop = ctl_v1->headdrop;
+ 	}
+ 	if (ctl->limit) {
+-		q->limit = min_t(u32, ctl->limit, q->maxdepth * q->maxflows);
+-		q->maxflows = min_t(u32, q->maxflows, q->limit);
++		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
++		maxflows = min_t(u32, maxflows, limit);
+ 	}
  
- 	ctx_sched_out(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
-@@ -884,7 +903,6 @@ static void perf_cgroup_switch(struct task_struct *task)
- 	ctx_sched_in(&cpuctx->ctx, EVENT_ALL|EVENT_CGROUP);
- 
- 	perf_ctx_enable(&cpuctx->ctx, true);
--	perf_ctx_unlock(cpuctx, cpuctx->task_ctx);
- }
- 
- static int perf_cgroup_ensure_storage(struct perf_event *event,
--- 
-2.39.5
-
++	/* commit configuration */
++	q->limit = limit;
++	q->divisor = divisor;
++	q->headdrop = headdrop;
++	q->maxdepth = maxdepth;
++	q->maxflows = maxflows;
++	WRITE_ONCE(q->perturb_period, perturb_period);
++	q->quantum = quantum;
++	q->flags = flags;
++	if (p)
++		swap(q->red_parms, p);
++
+ 	qlen = sch->q.qlen;
+ 	while (sch->q.qlen > q->limit) {
+ 		dropped += sfq_drop(sch, &to_free);
 
 
 
