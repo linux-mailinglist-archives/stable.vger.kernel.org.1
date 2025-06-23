@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-157937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-158118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20533AE5688
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:21:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 20E0CAE570A
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:25:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C8A1F447BF0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:17:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8A201C2380B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10363219A7A;
-	Mon, 23 Jun 2025 22:18:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E956A225792;
+	Mon, 23 Jun 2025 22:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ogumnA/c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FPToCjL/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE58219F120;
-	Mon, 23 Jun 2025 22:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7B82222581;
+	Mon, 23 Jun 2025 22:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750717084; cv=none; b=ILBuRa6bRKoFLkX/hzubOS7+N8onvTesSF9YdRaS6r9S24pPUQaAXb0DR9aPXKLJhrAeEWU2hLf3pExwzUBGoLWT7Jgu85VymKgl+iVO+PQwuMDy0ib0xQxGLjMZpOEu6xhIcCcdvNacVhYHbnv1olTyFyO97uFG7EJVrIFJFdU=
+	t=1750717528; cv=none; b=Zs0sS9trzrRXQ9H0nbU2RMvjt8aGdYiEkZRfd1rNWwr5pwRuhnbHfKVc07/EbIBDSxDDnke4UhtvIYI4LlLcEXBYVAZ3KRu0rDdqjXd1FYmwSl0B0dE/Nfhv/DLPiGzFktXqLjG+S/7reJnVMkt26nIEJZ00utnrXh6/wkGUNAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750717084; c=relaxed/simple;
-	bh=VWE/eiw7vxv3bWRACJUfJO9CP1JGtombraeI5xSDcQ4=;
+	s=arc-20240116; t=1750717528; c=relaxed/simple;
+	bh=MXzvnJA9D7nQ4E18LkmG8aNVVmfu/LECdTcA2UBBTlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHfw8A/Tpx+ngcwnj/7ZfcMc3fI/cGxt8UF2o9oHoKl6Wc963NDIrTmsUlIaPIzoUr2uk1hEcYlMD4fCS+9ikMLu1Zpq2GHg80iDTRFyqA09T0wi5NvRH9sPvyjuh6A0vjAdyTfFkps4Kg/29ePE7jmvFK+1iwfQvo4Z239DddM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ogumnA/c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57095C4CEEA;
-	Mon, 23 Jun 2025 22:18:04 +0000 (UTC)
+	 MIME-Version; b=TPFy6RbBXdhjFyk7sY7tWEtQ4KTNY9DOHbTQ8PW8j9NXrYbkLeB3dz+krw06ahhFVX1nkVKS2cBxj1jJNc1R8gTlFjIOc4biPUh5NE5bRWwnLS2faxrLJXWQae33D1EJgKcaZWOatnb++ZuRQrwxCSzkXUAohX2wObHDEnQaVIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FPToCjL/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3572EC4CEEA;
+	Mon, 23 Jun 2025 22:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750717084;
-	bh=VWE/eiw7vxv3bWRACJUfJO9CP1JGtombraeI5xSDcQ4=;
+	s=korg; t=1750717528;
+	bh=MXzvnJA9D7nQ4E18LkmG8aNVVmfu/LECdTcA2UBBTlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ogumnA/caC24VIVIS64SM9YG+Dp2+XTwFBf3FrDFCPJRSaQOb/VSk4drYF1x86Tvn
-	 47zLB+kV0wEHkCrmlGA7ndyNPQjYjJqSQ3SlL2UeepAH6BNyUIKPAJgI59al85oN9p
-	 XA4gcG8UNgIQh+RfFqeS6UBbFrxaHnG/pOtO4scM=
+	b=FPToCjL/PAOMXfyAlpE3QDRcTZgGR7gPTFXnxJC6W6l8/OYoGPJBaLKYcCvRjUiL4
+	 c8z5C2gSacYqLXz5t582OvkmempG5FuUIwASIDK2hKClMs/DceLljBmEa4hlGgwSz/
+	 4Xt1m4RZL2aHpXiMVFxj8rBoCumbiaFksBdYnFG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Octavian Purdila <tavip@google.com>,
-	Cong Wang <xiyou.wangcong@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 400/411] net_sched: sch_sfq: use a temporary work area for validating configuration
+	Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>,
+	Daniel Wagner <dwagner@suse.de>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 407/414] scsi: elx: efct: Fix memory leak in efct_hw_parse_filter()
 Date: Mon, 23 Jun 2025 15:09:04 +0200
-Message-ID: <20250623130643.748152265@linuxfoundation.org>
+Message-ID: <20250623130652.119903106@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130642.015559452@linuxfoundation.org>
+References: <20250623130642.015559452@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,122 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Octavian Purdila <tavip@google.com>
+From: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
 
-commit 8c0cea59d40cf6dd13c2950437631dd614fbade6 upstream.
+[ Upstream commit 2a8a5a5dd06eef580f9818567773fd75057cb875 ]
 
-Many configuration parameters have influence on others (e.g. divisor
--> flows -> limit, depth -> limit) and so it is difficult to correctly
-do all of the validation before applying the configuration. And if a
-validation error is detected late it is difficult to roll back a
-partially applied configuration.
+strsep() modifies the address of the pointer passed to it so that it no
+longer points to the original address. This means kfree() gets the wrong
+pointer.
 
-To avoid these issues use a temporary work area to update and validate
-the configuration and only then apply the configuration to the
-internal state.
+Fix this by passing unmodified pointer returned from kstrdup() to
+kfree().
 
-Signed-off-by: Octavian Purdila <tavip@google.com>
-Acked-by: Cong Wang <xiyou.wangcong@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 4df84e846624 ("scsi: elx: efct: Driver initialization routines")
+Signed-off-by: Vitaliy Shevtsov <v.shevtsov@mt-integration.ru>
+Link: https://lore.kernel.org/r/20250612163616.24298-1-v.shevtsov@mt-integration.ru
+Reviewed-by: Daniel Wagner <dwagner@suse.de>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_sfq.c |   56 ++++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 44 insertions(+), 12 deletions(-)
+ drivers/scsi/elx/efct/efct_hw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/net/sched/sch_sfq.c
-+++ b/net/sched/sch_sfq.c
-@@ -631,6 +631,15 @@ static int sfq_change(struct Qdisc *sch,
- 	struct red_parms *p = NULL;
- 	struct sk_buff *to_free = NULL;
- 	struct sk_buff *tail = NULL;
-+	unsigned int maxflows;
-+	unsigned int quantum;
-+	unsigned int divisor;
-+	int perturb_period;
-+	u8 headdrop;
-+	u8 maxdepth;
-+	int limit;
-+	u8 flags;
-+
+diff --git a/drivers/scsi/elx/efct/efct_hw.c b/drivers/scsi/elx/efct/efct_hw.c
+index 5a5525054d71c..5b079b8b7a082 100644
+--- a/drivers/scsi/elx/efct/efct_hw.c
++++ b/drivers/scsi/elx/efct/efct_hw.c
+@@ -1120,7 +1120,7 @@ int
+ efct_hw_parse_filter(struct efct_hw *hw, void *value)
+ {
+ 	int rc = 0;
+-	char *p = NULL;
++	char *p = NULL, *pp = NULL;
+ 	char *token;
+ 	u32 idx = 0;
  
- 	if (opt->nla_len < nla_attr_size(sizeof(*ctl)))
- 		return -EINVAL;
-@@ -656,36 +665,59 @@ static int sfq_change(struct Qdisc *sch,
- 		NL_SET_ERR_MSG_MOD(extack, "invalid limit");
- 		return -EINVAL;
+@@ -1132,6 +1132,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
+ 		efc_log_err(hw->os, "p is NULL\n");
+ 		return -ENOMEM;
  	}
-+
- 	sch_tree_lock(sch);
-+
-+	limit = q->limit;
-+	divisor = q->divisor;
-+	headdrop = q->headdrop;
-+	maxdepth = q->maxdepth;
-+	maxflows = q->maxflows;
-+	perturb_period = q->perturb_period;
-+	quantum = q->quantum;
-+	flags = q->flags;
-+
-+	/* update and validate configuration */
- 	if (ctl->quantum)
--		q->quantum = ctl->quantum;
--	WRITE_ONCE(q->perturb_period, ctl->perturb_period * HZ);
-+		quantum = ctl->quantum;
-+	perturb_period = ctl->perturb_period * HZ;
- 	if (ctl->flows)
--		q->maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
-+		maxflows = min_t(u32, ctl->flows, SFQ_MAX_FLOWS);
- 	if (ctl->divisor) {
--		q->divisor = ctl->divisor;
--		q->maxflows = min_t(u32, q->maxflows, q->divisor);
-+		divisor = ctl->divisor;
-+		maxflows = min_t(u32, maxflows, divisor);
- 	}
- 	if (ctl_v1) {
- 		if (ctl_v1->depth)
--			q->maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
-+			maxdepth = min_t(u32, ctl_v1->depth, SFQ_MAX_DEPTH);
- 		if (p) {
--			swap(q->red_parms, p);
--			red_set_parms(q->red_parms,
-+			red_set_parms(p,
- 				      ctl_v1->qth_min, ctl_v1->qth_max,
- 				      ctl_v1->Wlog,
- 				      ctl_v1->Plog, ctl_v1->Scell_log,
- 				      NULL,
- 				      ctl_v1->max_P);
- 		}
--		q->flags = ctl_v1->flags;
--		q->headdrop = ctl_v1->headdrop;
-+		flags = ctl_v1->flags;
-+		headdrop = ctl_v1->headdrop;
- 	}
- 	if (ctl->limit) {
--		q->limit = min_t(u32, ctl->limit, q->maxdepth * q->maxflows);
--		q->maxflows = min_t(u32, q->maxflows, q->limit);
-+		limit = min_t(u32, ctl->limit, maxdepth * maxflows);
-+		maxflows = min_t(u32, maxflows, limit);
- 	}
++	pp = p;
  
-+	/* commit configuration */
-+	q->limit = limit;
-+	q->divisor = divisor;
-+	q->headdrop = headdrop;
-+	q->maxdepth = maxdepth;
-+	q->maxflows = maxflows;
-+	WRITE_ONCE(q->perturb_period, perturb_period);
-+	q->quantum = quantum;
-+	q->flags = flags;
-+	if (p)
-+		swap(q->red_parms, p);
-+
- 	qlen = sch->q.qlen;
- 	while (sch->q.qlen > q->limit) {
- 		dropped += sfq_drop(sch, &to_free);
+ 	idx = 0;
+ 	while ((token = strsep(&p, ",")) && *token) {
+@@ -1144,7 +1145,7 @@ efct_hw_parse_filter(struct efct_hw *hw, void *value)
+ 		if (idx == ARRAY_SIZE(hw->config.filter_def))
+ 			break;
+ 	}
+-	kfree(p);
++	kfree(pp);
+ 
+ 	return rc;
+ }
+-- 
+2.39.5
+
 
 
 
