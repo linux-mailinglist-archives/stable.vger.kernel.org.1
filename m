@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-157090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1170EAE5268
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:43:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BEDAAE5417
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:59:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A67BE7A4084
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 62E881886504
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EE66221545;
-	Mon, 23 Jun 2025 21:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55CCC1F8722;
+	Mon, 23 Jun 2025 21:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oh8KYS4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fUESRquK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBD94315A;
-	Mon, 23 Jun 2025 21:43:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B1170838;
+	Mon, 23 Jun 2025 21:58:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750715009; cv=none; b=V+4wvHnfnAozPW1w9Pq6UPsdeKy9pfh2jUVrVzJn+s81GJuZLff6olpS3940Gqpb5Xwb82CM9p5mlhfPgqs0zRoDP2k7u2rOgo7ABSNdOFieraW9vJW00ix81y2IetlPBqtNQenh4fYeBbtQ3bLbQbWSN8TYfT7Vl2rt/WWxGrA=
+	t=1750715932; cv=none; b=A8/6swMnMv/mJQMqHUCmUOjNyJMAtrzV4h2EO0ObyxWHvfyMmJ5vgjPilN/73sDiRu53U65p3npJZLL3KJ+Gd+ECcowsfI7U7gA18Ie79dj+FmIXxWMakujgtwmSFkMqotX3nZxr0r21llUprFexfm2J5JVsjr3eLvLe+uj5Sik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750715009; c=relaxed/simple;
-	bh=avLFEafeDxb9LN85eyCBe6GlFymC4ozovo+6Gw/8tYw=;
+	s=arc-20240116; t=1750715932; c=relaxed/simple;
+	bh=l98DksYqtW+A/wqOzKdSQt0qAZFdmDYup0fGNjkLxY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dm+M4bcGBVkT+FNiM8C8TFZcWK7f2AKT+0i6xr+fXebn0/w8kqDJKIRklOmp76jom6o0zW2Wnf3sWlJJgW5HVN+ww0u6Ccfo48EJg3HaIZq7dTMtvIiaXEMn3KkQu0l8MDaL6eNLYo+6z0ASQ29fXNfmW9Fc6sTzhlLCS3RiTHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oh8KYS4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F5C2C4CEEA;
-	Mon, 23 Jun 2025 21:43:28 +0000 (UTC)
+	 MIME-Version; b=aVMD9FhGLSrUtwP/mUjCzMgshGCnAUPsCioj/4dp8Eha6O0iU5tv4o1ClVDnJ+8w3PS0v1aW+xnD2wKN8idd5y3ogrnebfM7SuJf8PMffWpQ9ng5Z4/0tH+jo7Vh7rS9CXaVEHZzE++qv3NjLTciUj4Bt2JJIH17WUA0kT2qm5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fUESRquK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95EEAC4CEEA;
+	Mon, 23 Jun 2025 21:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750715009;
-	bh=avLFEafeDxb9LN85eyCBe6GlFymC4ozovo+6Gw/8tYw=;
+	s=korg; t=1750715931;
+	bh=l98DksYqtW+A/wqOzKdSQt0qAZFdmDYup0fGNjkLxY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oh8KYS4TxFuPeitVHNK1zqeLi3lVB2R9CiQtH+oCIEoEy9pi1+nUSmAHWHW+0f42O
-	 ELbbQ8Odo/zFfBvv6BKFSzoH1UWDpoRl/F7oUVKOdvNyrPgcWaPJ1/G1ycz+H1uXPD
-	 947cPiXSYm0mNQLNrjFvh0GvYi1j49dKTTPAUZxQ=
+	b=fUESRquKev3GEviH8Sd6MjL4kn2VsQ3SxzoSfNVpKNAtarxJqqJX7ECV+uwKFiiTs
+	 qp/LNMAZr6kIaPOQi0yOMaxJq49bcg5Pl7qKbtksvDs5XjBhxHYLvzokqdDrCe1Zta
+	 FYovPd7/4YQQoE2abV52gYCp3hs6W9PQ/7T8tboA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yong Wang <yongwang@nvidia.com>,
-	Andy Roulin <aroulin@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	"David S. Miller" <davem@davemloft.net>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/290] net: bridge: mcast: update multicast contex when vlan state is changed
-Date: Mon, 23 Jun 2025 15:07:15 +0200
-Message-ID: <20250623130632.118960714@linuxfoundation.org>
+Subject: [PATCH 5.15 292/411] ext4: prevent stale extent cache entries caused by concurrent get es_cache
+Date: Mon, 23 Jun 2025 15:07:16 +0200
+Message-ID: <20250623130641.003629254@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130626.910356556@linuxfoundation.org>
-References: <20250623130626.910356556@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,166 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yong Wang <yongwang@nvidia.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 6c131043eaf1be2a6cc2d228f92ceb626fbcc0f3 ]
+[ Upstream commit f22a0ef2231a7d8374bb021eb86404d0e9de5a02 ]
 
-When the vlan STP state is changed, which could be manipulated by
-"bridge vlan" commands, similar to port STP state, this also impacts
-multicast behaviors such as igmp query. In the scenario of per-VLAN
-snooping, there's a need to update the corresponding multicast context
-to re-arm the port query timer when vlan state becomes "forwarding" etc.
+The EXT4_IOC_GET_ES_CACHE and EXT4_IOC_PRECACHE_EXTENTS currently
+invokes ext4_ext_precache() to preload the extent cache without holding
+the inode's i_rwsem. This can result in stale extent cache entries when
+competing with operations such as ext4_collapse_range() which calls
+ext4_ext_remove_space() or ext4_ext_shift_extents().
 
-Update br_vlan_set_state() function to enable vlan multicast context
-in such scenario.
+The problem arises when ext4_ext_remove_space() temporarily releases
+i_data_sem due to insufficient journal credits. During this interval, a
+concurrent EXT4_IOC_GET_ES_CACHE or EXT4_IOC_PRECACHE_EXTENTS may cache
+extent entries that are about to be deleted. As a result, these cached
+entries become stale and inconsistent with the actual extents.
 
-Before the patch, the IGMP query does not happen in the last step of the
-following test sequence, i.e. no growth for tx counter:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # sleep 1
- # bridge vlan set vid 1 dev swp1 state 4
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge vlan set vid 1 dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
+Loading the extents cache without holding the inode's i_rwsem or the
+mapping's invalidate_lock is not permitted besides during the writeback.
+Fix this by holding the i_rwsem during EXT4_IOC_GET_ES_CACHE and
+EXT4_IOC_PRECACHE_EXTENTS.
 
-After the patch, the IGMP query happens in the last step of the test:
- # ip link add name br1 up type bridge vlan_filtering 1 mcast_snooping 1 mcast_vlan_snooping 1 mcast_querier 1 mcast_stats_enabled 1
- # bridge vlan global set vid 1 dev br1 mcast_snooping 1 mcast_querier 1 mcast_query_interval 100 mcast_startup_query_count 0
- # ip link add name swp1 up master br1 type dummy
- # sleep 1
- # bridge vlan set vid 1 dev swp1 state 4
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # sleep 1
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-1
- # bridge vlan set vid 1 dev swp1 state 3
- # sleep 2
- # ip -j -p stats show dev swp1 group xstats_slave subgroup bridge suite mcast | jq '.[]["multicast"]["igmp_queries"]["tx_v2"]'
-3
-
-Signed-off-by: Yong Wang <yongwang@nvidia.com>
-Reviewed-by: Andy Roulin <aroulin@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Link: https://patch.msgid.link/20250423085257.122685-6-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_mst.c       |  4 ++--
- net/bridge/br_multicast.c | 26 ++++++++++++++++++++++++++
- net/bridge/br_private.h   | 11 ++++++++++-
- 3 files changed, 38 insertions(+), 3 deletions(-)
+ fs/ext4/extents.c | 2 ++
+ fs/ext4/ioctl.c   | 8 +++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_mst.c b/net/bridge/br_mst.c
-index 1820f09ff59ce..3f24b4ee49c27 100644
---- a/net/bridge/br_mst.c
-+++ b/net/bridge/br_mst.c
-@@ -80,10 +80,10 @@ static void br_mst_vlan_set_state(struct net_bridge_vlan_group *vg,
- 	if (br_vlan_get_state(v) == state)
- 		return;
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index e41a6d642472b..35bc58a26f7f4 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -5041,7 +5041,9 @@ int ext4_get_es_cache(struct inode *inode, struct fiemap_extent_info *fieinfo,
+ 	}
  
--	br_vlan_set_state(v, state);
--
- 	if (v->vid == vg->pvid)
- 		br_vlan_set_pvid_state(vg, state);
-+
-+	br_vlan_set_state(v, state);
- }
+ 	if (fieinfo->fi_flags & FIEMAP_FLAG_CACHE) {
++		inode_lock_shared(inode);
+ 		error = ext4_ext_precache(inode);
++		inode_unlock_shared(inode);
+ 		if (error)
+ 			return error;
+ 		fieinfo->fi_flags &= ~FIEMAP_FLAG_CACHE;
+diff --git a/fs/ext4/ioctl.c b/fs/ext4/ioctl.c
+index 18002b0a908ce..bd90b454c6213 100644
+--- a/fs/ext4/ioctl.c
++++ b/fs/ext4/ioctl.c
+@@ -1130,8 +1130,14 @@ static long __ext4_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+ 		return 0;
+ 	}
+ 	case EXT4_IOC_PRECACHE_EXTENTS:
+-		return ext4_ext_precache(inode);
++	{
++		int ret;
  
- int br_mst_set_state(struct net_bridge_port *p, u16 msti, u8 state,
-diff --git a/net/bridge/br_multicast.c b/net/bridge/br_multicast.c
-index c38244d60ff86..ea71a64f915f9 100644
---- a/net/bridge/br_multicast.c
-+++ b/net/bridge/br_multicast.c
-@@ -4210,6 +4210,32 @@ static void __br_multicast_stop(struct net_bridge_mcast *brmctx)
- #endif
- }
- 
-+void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state)
-+{
-+#if IS_ENABLED(CONFIG_BRIDGE_VLAN_FILTERING)
-+	struct net_bridge *br;
-+
-+	if (!br_vlan_should_use(v))
-+		return;
-+
-+	if (br_vlan_is_master(v))
-+		return;
-+
-+	br = v->port->br;
-+
-+	if (!br_opt_get(br, BROPT_MCAST_VLAN_SNOOPING_ENABLED))
-+		return;
-+
-+	if (br_vlan_state_allowed(state, true))
-+		br_multicast_enable_port_ctx(&v->port_mcast_ctx);
-+
-+	/* Multicast is not disabled for the vlan when it goes in
-+	 * blocking state because the timers will expire and stop by
-+	 * themselves without sending more queries.
-+	 */
-+#endif
-+}
-+
- void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on)
- {
- 	struct net_bridge *br;
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index 9197b511e4597..067d47b8eb8ff 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -1043,6 +1043,7 @@ void br_multicast_port_ctx_init(struct net_bridge_port *port,
- 				struct net_bridge_vlan *vlan,
- 				struct net_bridge_mcast_port *pmctx);
- void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pmctx);
-+void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v, u8 state);
- void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan, bool on);
- int br_multicast_toggle_vlan_snooping(struct net_bridge *br, bool on,
- 				      struct netlink_ext_ack *extack);
-@@ -1479,6 +1480,11 @@ static inline void br_multicast_port_ctx_deinit(struct net_bridge_mcast_port *pm
- {
- }
- 
-+static inline void br_multicast_update_vlan_mcast_ctx(struct net_bridge_vlan *v,
-+						      u8 state)
-+{
-+}
-+
- static inline void br_multicast_toggle_one_vlan(struct net_bridge_vlan *vlan,
- 						bool on)
- {
-@@ -1830,7 +1836,9 @@ bool br_vlan_global_opts_can_enter_range(const struct net_bridge_vlan *v_curr,
- bool br_vlan_global_opts_fill(struct sk_buff *skb, u16 vid, u16 vid_range,
- 			      const struct net_bridge_vlan *v_opts);
- 
--/* vlan state manipulation helpers using *_ONCE to annotate lock-free access */
-+/* vlan state manipulation helpers using *_ONCE to annotate lock-free access,
-+ * while br_vlan_set_state() may access data protected by multicast_lock.
-+ */
- static inline u8 br_vlan_get_state(const struct net_bridge_vlan *v)
- {
- 	return READ_ONCE(v->state);
-@@ -1839,6 +1847,7 @@ static inline u8 br_vlan_get_state(const struct net_bridge_vlan *v)
- static inline void br_vlan_set_state(struct net_bridge_vlan *v, u8 state)
- {
- 	WRITE_ONCE(v->state, state);
-+	br_multicast_update_vlan_mcast_ctx(v, state);
- }
- 
- static inline u8 br_vlan_get_pvid_state(const struct net_bridge_vlan_group *vg)
++		inode_lock_shared(inode);
++		ret = ext4_ext_precache(inode);
++		inode_unlock_shared(inode);
++		return ret;
++	}
+ 	case FS_IOC_SET_ENCRYPTION_POLICY:
+ 		if (!ext4_has_feature_encrypt(sb))
+ 			return -EOPNOTSUPP;
 -- 
 2.39.5
 
