@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-157076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77CC2AE525A
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:42:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9152AAE4E85
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:06:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EB864436A5
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:42:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45BCC189F0A7
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC69C19D084;
-	Mon, 23 Jun 2025 21:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B685E1F582A;
+	Mon, 23 Jun 2025 21:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CWy3+KME"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YI5heMho"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69F1E4315A;
-	Mon, 23 Jun 2025 21:42:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75DD5219E0;
+	Mon, 23 Jun 2025 21:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750714975; cv=none; b=E8rqAxZN0LBNXeNqYur2x7+0bbhhBpszrwEZ2p+C2YqwsquX9H4ObtlENqVwY2QcnnRDVq5W7i82M1mY2kWbQhRHcnDVx9t+8LqHO+T0x0TqSu+VMa85dI1qmanTCLb8N4tLtDcV0FmgnVmr41iZTh1C7YkIub/zBYy0n7BV1g8=
+	t=1750712793; cv=none; b=eYQtgjnpgyBuBX0CO08vR0rzsH7J8AjzaNS8zmQ8sAnCjLdLEtuMcgkEMSeKwrXmkNGKnQ5mHV60o96UStvtH1dvpKUCirkW/cjsJhNZG8k0FvTb9gPyMMiJSqYmD7PRatcdFSCfWao9kUS/3DzCGEfndfWT3VfHP4/HMhSh/P0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750714975; c=relaxed/simple;
-	bh=aKmeVmuhtoamV8UA8a7554j6AcXMhVhXghws1ZCAxHs=;
+	s=arc-20240116; t=1750712793; c=relaxed/simple;
+	bh=RxZwN8jQMyRSU7cS3if0USNroHHaGPtFZMEbhbup0AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WqILGYLZ/OAKIUgM5FEqHRnY8naWFx2p3aKpOho/iEKA0wj0WJfjLEu+mLzz25zG6NNQEFL3Hfg12LitElDRuxFkCY7PGgkLlRKodRHc1xA5n2kuYjTwB6VnliRpuEhOGC0Ncck34mMLILdTg5oy2GEfc+2CmoBrLGAJZmwRhU8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CWy3+KME; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B97C4CEEA;
-	Mon, 23 Jun 2025 21:42:54 +0000 (UTC)
+	 MIME-Version; b=cSUYnqR4rYVvb8d/kj8U6cfW/m8sNKJgkR66EzBHPdgXW4IAM0ueBclfTtmki7pTiDsfCvSgrsxEt0pqL/s6Xwr2neURfOOna1WMXPm2RfO75trPQADL5X3x9T2dLY4Be999NyjAY9Pp0hlWWf4OVujzFRL6OfGGmu9r677Rjn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YI5heMho; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F61C4CEEA;
+	Mon, 23 Jun 2025 21:06:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750714975;
-	bh=aKmeVmuhtoamV8UA8a7554j6AcXMhVhXghws1ZCAxHs=;
+	s=korg; t=1750712792;
+	bh=RxZwN8jQMyRSU7cS3if0USNroHHaGPtFZMEbhbup0AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CWy3+KMEPY7pgDKF/R8PgfW7XE+FUmDR0ojyQkNArMiYvJMK60H30coC2luAqoNQ/
-	 1ryUo7r6/UK6uQs6QouojIcr5gKGaUMUQ2A3eHg8GTHtXzinCTExyCpG5RxXuaONX1
-	 RnVRHB1u1WXQ53ky5HVZQ36pIeCj6D8r8QUz/8O0=
+	b=YI5heMhooD2Dkg+l25nXLBVH2TkUAfWTkUKark6cPJrx2W8S+uiwI6zBxuy9Eib4J
+	 vSajt3NteXL1P98FexWaOATAcBaC8WBfV4ucNmwhVxobbHNNs3vFA9MZhi2NQdujSj
+	 lZMhJg/Nfr+j2mB1mM4OBqbaiD99f/1x/vITQOU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Julian Sun <sunjunchao2870@gmail.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
+	"Dylan J. Wolff" <wolffd@comp.nus.edu.sg>,
+	Jiacheng Xu <stitch@zju.edu.cn>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 207/508] xfs: remove unused parameter in macro XFS_DQUOT_LOGRES
+Subject: [PATCH 6.15 294/592] jfs: Fix null-ptr-deref in jfs_ioc_trim
 Date: Mon, 23 Jun 2025 15:04:12 +0200
-Message-ID: <20250623130650.360399705@linuxfoundation.org>
+Message-ID: <20250623130707.370091759@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,165 +63,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Julian Sun <sunjunchao2870@gmail.com>
+From: Dylan Wolff <wolffd@comp.nus.edu.sg>
 
-[ Upstream commit af5d92f2fad818663da2ce073b6fe15b9d56ffdc ]
+[ Upstream commit a4685408ff6c3e2af366ad9a7274f45ff3f394ee ]
 
-In the macro definition of XFS_DQUOT_LOGRES, a parameter is accepted,
-but it is not used. Hence, it should be removed.
+[ Syzkaller Report ]
 
-This patch has only passed compilation test, but it should be fine.
+Oops: general protection fault, probably for non-canonical address
+0xdffffc0000000087: 0000 [#1
+KASAN: null-ptr-deref in range [0x0000000000000438-0x000000000000043f]
+CPU: 2 UID: 0 PID: 10614 Comm: syz-executor.0 Not tainted
+6.13.0-rc6-gfbfd64d25c7a-dirty #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+Sched_ext: serialise (enabled+all), task: runnable_at=-30ms
+RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
+Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
+90 82 fe ff 4c 89 ff 31 f6
+RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
+RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
+RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
+RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
+R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
+FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+? __die_body+0x61/0xb0
+? die_addr+0xb1/0xe0
+? exc_general_protection+0x333/0x510
+? asm_exc_general_protection+0x26/0x30
+? jfs_ioc_trim+0x34b/0x8f0
+jfs_ioctl+0x3c8/0x4f0
+? __pfx_jfs_ioctl+0x10/0x10
+? __pfx_jfs_ioctl+0x10/0x10
+__se_sys_ioctl+0x269/0x350
+? __pfx___se_sys_ioctl+0x10/0x10
+? do_syscall_64+0xfb/0x210
+do_syscall_64+0xee/0x210
+? syscall_exit_to_user_mode+0x1e0/0x330
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fe51f4903ad
+Code: c3 e8 a7 2b 00 00 0f 1f 80 00 00 00 00 f3 0f 1e fa 48 89 f8 48
+89 f7 48 89 d6 48 89 ca 4d
+RSP: 002b:00007fe5202250c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fe51f5cbf80 RCX: 00007fe51f4903ad
+RDX: 0000000020000680 RSI: 00000000c0185879 RDI: 0000000000000005
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007fe520225640
+R13: 000000000000000e R14: 00007fe51f44fca0 R15: 00007fe52021d000
+</TASK>
+Modules linked in:
+---[ end trace 0000000000000000 ]---
+RIP: 0010:jfs_ioc_trim+0x34b/0x8f0
+Code: e7 e8 59 a4 87 fe 4d 8b 24 24 4d 8d bc 24 38 04 00 00 48 8d 93
+90 82 fe ff 4c 89 ff 31 f6
+RSP: 0018:ffffc900055f7cd0 EFLAGS: 00010206
+RAX: 0000000000000087 RBX: 00005866a9e67ff8 RCX: 000000000000000a
+RDX: 0000000000000001 RSI: 0000000000000004 RDI: 0000000000000001
+RBP: dffffc0000000000 R08: ffff88807c180003 R09: 1ffff1100f830000
+R10: dffffc0000000000 R11: ffffed100f830001 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000001 R15: 0000000000000438
+FS:  00007fe520225640(0000) GS:ffff8880b7e80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00005593c91b2c88 CR3: 000000014927c000 CR4: 00000000000006f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Kernel panic - not syncing: Fatal exception
 
-Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: "Darrick J. Wong" <djwong@kernel.org>
+[ Analysis ]
+
+We believe that we have found a concurrency bug in the `fs/jfs` module
+that results in a null pointer dereference. There is a closely related
+issue which has been fixed:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234
+
+... but, unfortunately, the accepted patch appears to still be
+susceptible to a null pointer dereference under some interleavings.
+
+To trigger the bug, we think that `JFS_SBI(ipbmap->i_sb)->bmap` is set
+to NULL in `dbFreeBits` and then dereferenced in `jfs_ioc_trim`. This
+bug manifests quite rarely under normal circumstances, but is
+triggereable from a syz-program.
+
+Reported-and-tested-by: Dylan J. Wolff<wolffd@comp.nus.edu.sg>
+Reported-and-tested-by: Jiacheng Xu <stitch@zju.edu.cn>
+Signed-off-by: Dylan J. Wolff<wolffd@comp.nus.edu.sg>
+Signed-off-by: Jiacheng Xu <stitch@zju.edu.cn>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_quota_defs.h |  2 +-
- fs/xfs/libxfs/xfs_trans_resv.c | 28 ++++++++++++++--------------
- 2 files changed, 15 insertions(+), 15 deletions(-)
+ fs/jfs/jfs_discard.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/xfs/libxfs/xfs_quota_defs.h b/fs/xfs/libxfs/xfs_quota_defs.h
-index cb035da3f990b..fb05f44f6c754 100644
---- a/fs/xfs/libxfs/xfs_quota_defs.h
-+++ b/fs/xfs/libxfs/xfs_quota_defs.h
-@@ -56,7 +56,7 @@ typedef uint8_t		xfs_dqtype_t;
-  * And, of course, we also need to take into account the dquot log format item
-  * used to describe each dquot.
-  */
--#define XFS_DQUOT_LOGRES(mp)	\
-+#define XFS_DQUOT_LOGRES	\
- 	((sizeof(struct xfs_dq_logformat) + sizeof(struct xfs_disk_dquot)) * 6)
+diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
+index 5f4b305030ad5..4b660296caf39 100644
+--- a/fs/jfs/jfs_discard.c
++++ b/fs/jfs/jfs_discard.c
+@@ -86,7 +86,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ 	down_read(&sb->s_umount);
+ 	bmp = JFS_SBI(ip->i_sb)->bmap;
  
- #define XFS_IS_QUOTA_ON(mp)		((mp)->m_qflags & XFS_ALL_QUOTA_ACCT)
-diff --git a/fs/xfs/libxfs/xfs_trans_resv.c b/fs/xfs/libxfs/xfs_trans_resv.c
-index 5b2f27cbdb808..1bb2891b26ffb 100644
---- a/fs/xfs/libxfs/xfs_trans_resv.c
-+++ b/fs/xfs/libxfs/xfs_trans_resv.c
-@@ -334,11 +334,11 @@ xfs_calc_write_reservation(
- 					blksz);
- 		t1 += adj;
- 		t3 += adj;
--		return XFS_DQUOT_LOGRES(mp) + max3(t1, t2, t3);
-+		return XFS_DQUOT_LOGRES + max3(t1, t2, t3);
- 	}
- 
- 	t4 = xfs_calc_refcountbt_reservation(mp, 1);
--	return XFS_DQUOT_LOGRES(mp) + max(t4, max3(t1, t2, t3));
-+	return XFS_DQUOT_LOGRES + max(t4, max3(t1, t2, t3));
- }
- 
- unsigned int
-@@ -406,11 +406,11 @@ xfs_calc_itruncate_reservation(
- 					xfs_refcountbt_block_count(mp, 4),
- 					blksz);
- 
--		return XFS_DQUOT_LOGRES(mp) + max3(t1, t2, t3);
-+		return XFS_DQUOT_LOGRES + max3(t1, t2, t3);
- 	}
- 
- 	t4 = xfs_calc_refcountbt_reservation(mp, 2);
--	return XFS_DQUOT_LOGRES(mp) + max(t4, max3(t1, t2, t3));
-+	return XFS_DQUOT_LOGRES + max(t4, max3(t1, t2, t3));
- }
- 
- unsigned int
-@@ -436,7 +436,7 @@ STATIC uint
- xfs_calc_rename_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		max((xfs_calc_inode_res(mp, 5) +
- 		     xfs_calc_buf_res(2 * XFS_DIROP_LOG_COUNT(mp),
- 				      XFS_FSB_TO_B(mp, 1))),
-@@ -475,7 +475,7 @@ STATIC uint
- xfs_calc_link_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		xfs_calc_iunlink_remove_reservation(mp) +
- 		max((xfs_calc_inode_res(mp, 2) +
- 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
-@@ -513,7 +513,7 @@ STATIC uint
- xfs_calc_remove_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		xfs_calc_iunlink_add_reservation(mp) +
- 		max((xfs_calc_inode_res(mp, 2) +
- 		     xfs_calc_buf_res(XFS_DIROP_LOG_COUNT(mp),
-@@ -572,7 +572,7 @@ xfs_calc_icreate_resv_alloc(
- STATIC uint
- xfs_calc_icreate_reservation(xfs_mount_t *mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		max(xfs_calc_icreate_resv_alloc(mp),
- 		    xfs_calc_create_resv_modify(mp));
- }
-@@ -581,7 +581,7 @@ STATIC uint
- xfs_calc_create_tmpfile_reservation(
- 	struct xfs_mount        *mp)
- {
--	uint	res = XFS_DQUOT_LOGRES(mp);
-+	uint	res = XFS_DQUOT_LOGRES;
- 
- 	res += xfs_calc_icreate_resv_alloc(mp);
- 	return res + xfs_calc_iunlink_add_reservation(mp);
-@@ -630,7 +630,7 @@ STATIC uint
- xfs_calc_ifree_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		xfs_calc_inode_res(mp, 1) +
- 		xfs_calc_buf_res(3, mp->m_sb.sb_sectsize) +
- 		xfs_calc_iunlink_remove_reservation(mp) +
-@@ -647,7 +647,7 @@ STATIC uint
- xfs_calc_ichange_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		xfs_calc_inode_res(mp, 1) +
- 		xfs_calc_buf_res(1, mp->m_sb.sb_sectsize);
- 
-@@ -756,7 +756,7 @@ STATIC uint
- xfs_calc_addafork_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		xfs_calc_inode_res(mp, 1) +
- 		xfs_calc_buf_res(2, mp->m_sb.sb_sectsize) +
- 		xfs_calc_buf_res(1, mp->m_dir_geo->blksize) +
-@@ -804,7 +804,7 @@ STATIC uint
- xfs_calc_attrsetm_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		xfs_calc_inode_res(mp, 1) +
- 		xfs_calc_buf_res(1, mp->m_sb.sb_sectsize) +
- 		xfs_calc_buf_res(XFS_DA_NODE_MAXDEPTH, XFS_FSB_TO_B(mp, 1));
-@@ -844,7 +844,7 @@ STATIC uint
- xfs_calc_attrrm_reservation(
- 	struct xfs_mount	*mp)
- {
--	return XFS_DQUOT_LOGRES(mp) +
-+	return XFS_DQUOT_LOGRES +
- 		max((xfs_calc_inode_res(mp, 1) +
- 		     xfs_calc_buf_res(XFS_DA_NODE_MAXDEPTH,
- 				      XFS_FSB_TO_B(mp, 1)) +
+-	if (minlen > bmp->db_agsize ||
++	if (bmp == NULL ||
++	    minlen > bmp->db_agsize ||
+ 	    start >= bmp->db_mapsize ||
+ 	    range->len < sb->s_blocksize) {
+ 		up_read(&sb->s_umount);
 -- 
 2.39.5
 
