@@ -1,264 +1,246 @@
-Return-Path: <stable+bounces-155286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155287-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 346FBAE3407
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 05:41:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48448AE3465
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 06:51:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B6763188CB9F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 03:41:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DB794188F657
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 04:52:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96E451AD3E5;
-	Mon, 23 Jun 2025 03:41:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EDA81B87D9;
+	Mon, 23 Jun 2025 04:51:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="URRBUTaR"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="RyFMQ1au"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70578C2FA;
-	Mon, 23 Jun 2025 03:41:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88F32581;
+	Mon, 23 Jun 2025 04:51:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750650065; cv=none; b=YHF0A+Z6Lkk3Ew++8f6J7Xyk0AXMmhk6GEbVy4blaWosUJN0oa+wZBQ1mLbkrhq1xczwW5p2lvek1LFmO6K1WGfQ/z02p+EZ376vopp2A9KybqA/4zSRw55ElTojxSaP/iFaw/IHAqBx4sTiioqQp9XrQqoulbi6ERN99RS+qHM=
+	t=1750654303; cv=none; b=L5it2SXWjsxwuXwO5zsq/qx0P7zh79DqFv5YT4wRX/vi/xh17icgI8+gtQ+ZHkWOnr1kQwcZDQ+cyZMXl6b3t8gfMs8bzQ7tv8J9CA6qbpYjGUN6N/sidCa0sr1sAYCRcUpvqf++htOxkLa+M890fIMpyZsk2um4fwvaEWdbqMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750650065; c=relaxed/simple;
-	bh=PfgxTgg1w9b44LnyP6MGK6vQ5O1KXAaemhxCQNnN3Ss=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gjzZ37ypqr1QJ7f1oOhwp7o1wxsVWtl2RxPHVsCFSNPpN0RLd8R2ovLPrQDBvhCfbT3nkkwfBzK5KrbFackhUkrNyUCugOX4OnFPbpmd9FrESiwWUUJtjY/ef98Ak0GihWlwc2BNjQh5twXb8sDg43LTV2nYQz5pawA+v5BcAk8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=URRBUTaR; arc=none smtp.client-ip=209.85.208.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-32b7cf56cacso35256711fa.1;
-        Sun, 22 Jun 2025 20:41:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1750650061; x=1751254861; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/c49PzwWt7CcmCqEvzNnLBXT5IZU8zFU5FglZ/KCmv0=;
-        b=URRBUTaRytgVIGOBroUXg4jWcWuvCk4RFzLGXJDtpHuHE8HQgZNkUxybbVutFPhf3E
-         WIi/NP5BqzbZd0PTZpfPKWFpSzfOmXAtmaZDywpRbLf4f9g5U7LezTWx6vkcrmfgnmyL
-         IOtBaDPsQx20naYs4ziF+LaoqvzgXFPQ0DvGDDYy4uPooEhp75nuDJBxOkuLbWvI7zrv
-         j83ywPDu5w9MOwbqz8CHZATxxVqmboVGn/XgCQpKEyP4vNI/DV+n5azMphV4gnbTlTJg
-         q/nwDSefQ/Jny/uesCFVekPqb5mptPCqN1RN8oIrVxWtOkxecr1uEHSiZl2IUyyZw8Ev
-         i4Ag==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1750650061; x=1751254861;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/c49PzwWt7CcmCqEvzNnLBXT5IZU8zFU5FglZ/KCmv0=;
-        b=VwCsdmZy4AFID2QSeyK1wXISdmOKQfJ5Ny7PlcXl1R0h1h4LDXV7OPbmKKccUES/q1
-         8xiZFw8G/hqzSHwR+G11n3gtOaAJIrCwm10037RQL1zv5ua2JtrRQnK8eIbN1lVYq2S+
-         a2XXKhoadtFo+2NDJTId5iYQ8bT79fkAuMUEkBTd1ZE+mewGcDXvttrAwJ6EjN+UXftX
-         BLFi6OXQZLHTEkvZFCAC9sTgIQMe8mROG7rHnWN/sUfKc2PtfrQDPTewK5eaIMO9qQaL
-         eg6mRK7kjqEbnhsLDJehk9CULvoKqTk3w3BShEX+acRSL66ZjxHF4u2shyoDhfeA46Hm
-         vzXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVWI2RNUoBvoZYo5n30kgrI4QimbTUNHz/d9RbfIoeY0iQmMMitfH0IMlu9/w3+O/8/JJ/cFUgE@vger.kernel.org, AJvYcCXUN3sRGdne41OY3gVwcUicstTne8ISUJT9aw+6ZZhfSOmXL4pPOpKs/ic0jPPq02zLXwyrPVKYpY9mpwM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzP4YaDewmI1f8NBxPjtXvtR7qtAHn/KNsbDmDeVZ9Nj5fA//FR
-	wlqSga1vwZQt/2se4/sTlMDUgcUxPWo7RkSCJR1+f3vqeqP/vp3/ryjSNFRV+10/V4cqPdcq1jM
-	iWL+e6xIPmwvy4YWYD0ZulU3STxfctF8=
-X-Gm-Gg: ASbGncv7sxnQX+IilV/3zLowkL1n5yKHF3gsATkq3UXBAfj4YL9YKtexgQfI71bbZjQ
-	fIAT2el90AeAEDAUiNy8BZ0VzAQUEvEvkT7NxxqHNEIVF0ZCgm2UH3c860Tdepe0OyuNbEiGx0V
-	/mgPZC32SWBjibsZd3LgJRhBCsFcfaDEi6Ms+SNAPJCGM=
-X-Google-Smtp-Source: AGHT+IHpBlE7pwmohT5p8mSJ9Krlh+08B0qObwm4HzHIRj8/nfduF/1u7PX/Tx+auJJ8/t6Qr8MpqahlzbyC+tpk0zs=
-X-Received: by 2002:a2e:a007:0:b0:32b:82bf:cc53 with SMTP id
- 38308e7fff4ca-32b99460f29mr20238341fa.31.1750650061318; Sun, 22 Jun 2025
- 20:41:01 -0700 (PDT)
+	s=arc-20240116; t=1750654303; c=relaxed/simple;
+	bh=UBExyjH7aS5T3zWk6+Xz4bHJcVuQVr0GYaR5ydUXHJY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ahFWTsXMOh6tuUqWkIkznXaNHZUVo4b3RBMq8UzO6qo496J9fA/ASuODTtAdblCMu3CG94ZU8Ck5weS7JZqv+DTC2j4KOtRdvC0vrEmoyunzLlSj7MvZ22YgPFqCFvQX/uB7J6DM9KOp3MyOJ9ezs0yCsggMZIzh16mTMQ8osXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=RyFMQ1au; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [10.95.67.184] (unknown [167.220.238.152])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 364052115800;
+	Sun, 22 Jun 2025 21:51:32 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 364052115800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1750654295;
+	bh=NWYMyCpVO5cJwW1IpTuR2mZID1lZOhFA7i+jl1U5KRE=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RyFMQ1auY5iSbCkbHizNN3MmHgYaeZAXiyS+/5YlhF7fqdyFvF1kuNLhe5xhfziC6
+	 s0LxYtSDF2bRxVIQlprPurPRLRKHZbvqqWBbo1zwWI8gfRNdFdOKnxpsWB4DGAxedc
+	 mlQagpENnxhMQmbkbyQRigzepxsZHd5pdZmxfbsQ=
+Message-ID: <2e0f1538-bae5-4a58-92fd-1c534fc8c7df@linux.microsoft.com>
+Date: Mon, 23 Jun 2025 10:21:30 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250619175538.15799-1-ryncsn@gmail.com> <20250619175538.15799-2-ryncsn@gmail.com>
- <f90a6072-b75a-40df-a58c-9a98e9ca10ad@linux.alibaba.com> <CAMgjq7B4RSDYAJ5aGijqq9cAzC8Jd8TF6gu-gpKjO5=E9a-RbQ@mail.gmail.com>
- <9e31bbb8-73e7-4e67-973d-491f93ba938f@linux.alibaba.com>
-In-Reply-To: <9e31bbb8-73e7-4e67-973d-491f93ba938f@linux.alibaba.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Mon, 23 Jun 2025 11:40:23 +0800
-X-Gm-Features: AX0GCFsnCGsy1B2Sk45knqmIyOdVKZSU64PmZdWLmlltku9gxf2_ligOXdXe0yY
-Message-ID: <CAMgjq7Amf-ceW914NojmFFGPyypN4iFw7FJNLp7iHKoG=kms2A@mail.gmail.com>
-Subject: Re: [PATCH v2 1/4] mm/shmem, swap: improve cached mTHP handling and
- fix potential hung
-To: Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc: linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>, 
-	Hugh Dickins <hughd@google.com>, Matthew Wilcox <willy@infradead.org>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Chris Li <chrisl@kernel.org>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] tools/hv: fcopy: Fix irregularities with size of ring
+ buffer
+To: Michael Kelley <mhklinux@outlook.com>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
+ Saurabh Sengar <ssengar@linux.microsoft.com>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20250620070618.3097-1-namjain@linux.microsoft.com>
+ <SN6PR02MB41574C54FFDE0D3F3B7A5649D47CA@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB41574C54FFDE0D3F3B7A5649D47CA@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jun 23, 2025 at 11:39=E2=80=AFAM Baolin Wang
-<baolin.wang@linux.alibaba.com> wrote:
-> On 2025/6/23 11:35, Kairui Song wrote:
-> > On Mon, Jun 23, 2025 at 11:26=E2=80=AFAM Baolin Wang
-> > <baolin.wang@linux.alibaba.com> wrote:
-> >>
-> >> Hi Kairui,
-> >>
-> >> On 2025/6/20 01:55, Kairui Song wrote:
-> >>> From: Kairui Song <kasong@tencent.com>
-> >>>
-> >>> The current swap-in code assumes that, when a swap entry in shmem
-> >>> mapping is order 0, its cached folios (if present) must be order 0
-> >>> too, which turns out not always correct.
-> >>>
-> >>> The problem is shmem_split_large_entry is called before verifying the
-> >>> folio will eventually be swapped in, one possible race is:
-> >>>
-> >>>       CPU1                          CPU2
-> >>> shmem_swapin_folio
-> >>> /* swap in of order > 0 swap entry S1 */
-> >>>     folio =3D swap_cache_get_folio
-> >>>     /* folio =3D NULL */
-> >>>     order =3D xa_get_order
-> >>>     /* order > 0 */
-> >>>     folio =3D shmem_swap_alloc_folio
-> >>>     /* mTHP alloc failure, folio =3D NULL */
-> >>>     <... Interrupted ...>
-> >>>                                    shmem_swapin_folio
-> >>>                                    /* S1 is swapped in */
-> >>>                                    shmem_writeout
-> >>>                                    /* S1 is swapped out, folio cached=
- */
-> >>>     shmem_split_large_entry(..., S1)
-> >>>     /* S1 is split, but the folio covering it has order > 0 now */
-> >>>
-> >>> Now any following swapin of S1 will hang: `xa_get_order` returns 0,
-> >>> and folio lookup will return a folio with order > 0. The
-> >>> `xa_get_order(&mapping->i_pages, index) !=3D folio_order(folio)` will
-> >>> always return false causing swap-in to return -EEXIST.
-> >>>
-> >>> And this looks fragile. So fix this up by allowing seeing a larger fo=
-lio
-> >>> in swap cache, and check the whole shmem mapping range covered by the
-> >>> swapin have the right swap value upon inserting the folio. And drop
-> >>> the redundant tree walks before the insertion.
-> >>>
-> >>> This will actually improve the performance, as it avoided two redunda=
-nt
-> >>> Xarray tree walks in the hot path, and the only side effect is that i=
-n
-> >>> the failure path, shmem may redundantly reallocate a few folios
-> >>> causing temporary slight memory pressure.
-> >>>
-> >>> And worth noting, it may seems the order and value check before
-> >>> inserting might help reducing the lock contention, which is not true.
-> >>> The swap cache layer ensures raced swapin will either see a swap cach=
-e
-> >>> folio or failed to do a swapin (we have SWAP_HAS_CACHE bit even if
-> >>> swap cache is bypassed), so holding the folio lock and checking the
-> >>> folio flag is already good enough for avoiding the lock contention.
-> >>> The chance that a folio passes the swap entry value check but the
-> >>> shmem mapping slot has changed should be very low.
-> >>
-> >> Thanks for fixing the issue. Sadly, I haven't reproduced this issue fr=
-om
-> >> my previous test cases :(
-> >>
-> >> And I have a question below.
-> >>
-> >>> Cc: stable@vger.kernel.org
-> >>> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
-> >>> Signed-off-by: Kairui Song <kasong@tencent.com>
-> >>> Reviewed-by: Kemeng Shi <shikemeng@huaweicloud.com>
-> >>> ---
-> >>>    mm/shmem.c | 30 +++++++++++++++++++++---------
-> >>>    1 file changed, 21 insertions(+), 9 deletions(-)
-> >>>
-> >>> diff --git a/mm/shmem.c b/mm/shmem.c
-> >>> index eda35be2a8d9..4e7ef343a29b 100644
-> >>> --- a/mm/shmem.c
-> >>> +++ b/mm/shmem.c
-> >>> @@ -884,7 +884,9 @@ static int shmem_add_to_page_cache(struct folio *=
-folio,
-> >>>                                   pgoff_t index, void *expected, gfp_=
-t gfp)
-> >>>    {
-> >>>        XA_STATE_ORDER(xas, &mapping->i_pages, index, folio_order(foli=
-o));
-> >>> -     long nr =3D folio_nr_pages(folio);
-> >>> +     unsigned long nr =3D folio_nr_pages(folio);
-> >>> +     swp_entry_t iter, swap;
-> >>> +     void *entry;
-> >>>
-> >>>        VM_BUG_ON_FOLIO(index !=3D round_down(index, nr), folio);
-> >>>        VM_BUG_ON_FOLIO(!folio_test_locked(folio), folio);
-> >>> @@ -896,14 +898,24 @@ static int shmem_add_to_page_cache(struct folio=
- *folio,
-> >>>
-> >>>        gfp &=3D GFP_RECLAIM_MASK;
-> >>>        folio_throttle_swaprate(folio, gfp);
-> >>> +     swap =3D iter =3D radix_to_swp_entry(expected);
-> >>>
-> >>>        do {
-> >>>                xas_lock_irq(&xas);
-> >>> -             if (expected !=3D xas_find_conflict(&xas)) {
-> >>> -                     xas_set_err(&xas, -EEXIST);
-> >>> -                     goto unlock;
-> >>> +             xas_for_each_conflict(&xas, entry) {
-> >>> +                     /*
-> >>> +                      * The range must either be empty, or filled wi=
-th
-> >>> +                      * expected swap entries. Shmem swap entries ar=
-e never
-> >>> +                      * partially freed without split of both entry =
-and
-> >>> +                      * folio, so there shouldn't be any holes.
-> >>> +                      */
-> >>> +                     if (!expected || entry !=3D swp_to_radix_entry(=
-iter)) {
-> >>> +                             xas_set_err(&xas, -EEXIST);
-> >>> +                             goto unlock;
-> >>> +                     }
-> >>> +                     iter.val +=3D 1 << xas_get_order(&xas);
-> >>>                }
-> >>> -             if (expected && xas_find_conflict(&xas)) {
-> >>> +             if (expected && iter.val - nr !=3D swap.val) {
-> >>>                        xas_set_err(&xas, -EEXIST);
-> >>>                        goto unlock;
-> >>>                }
-> >>> @@ -2323,7 +2335,7 @@ static int shmem_swapin_folio(struct inode *ino=
-de, pgoff_t index,
-> >>>                        error =3D -ENOMEM;
-> >>>                        goto failed;
-> >>>                }
-> >>> -     } else if (order !=3D folio_order(folio)) {
-> >>> +     } else if (order > folio_order(folio)) {
-> >>>                /*
-> >>>                 * Swap readahead may swap in order 0 folios into swap=
-cache
-> >>>                 * asynchronously, while the shmem mapping can still s=
-tores
-> >>> @@ -2348,15 +2360,15 @@ static int shmem_swapin_folio(struct inode *i=
-node, pgoff_t index,
-> >>>
-> >>>                        swap =3D swp_entry(swp_type(swap), swp_offset(=
-swap) + offset);
-> >>>                }
-> >>> +     } else if (order < folio_order(folio)) {
-> >>> +             swap.val =3D round_down(swp_type(swap), folio_order(fol=
-io));
-> >>
-> >> Why rounding down the swap type? do you mean rounding down the swap of=
-fset?
-> >
-> > Ouch, right, it should be the value:
-> >
-> > swap.val =3D round_down(swap.val, folio_order(folio));
-> >
-> > I messed up the code here during a rebase, let me send a V3 then.
->
-> Should be
->
-> swap.val =3D round_down(swap.val, 1 << folio_order(folio));
->
-> ?
 
-Yes, exactly.
+
+On 6/20/2025 9:35 PM, Michael Kelley wrote:
+> From: Naman Jain <namjain@linux.microsoft.com> Sent: Friday, June 20, 2025 12:06 AM
+>>
+>> Size of ring buffer, as defined in uio_hv_generic driver, is no longer
+>> fixed to 16 KB. This creates a problem in fcopy, since this size was
+>> hardcoded. With the change in place to make ring sysfs node actually
+>> reflect the size of underlying ring buffer, it is safe to get the size
+>> of ring sysfs file and use it for ring buffer size in fcopy daemon.
+>> Fix the issue of disparity in ring buffer size, by making it dynamic
+>> in fcopy uio daemon.
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 0315fef2aff9 ("uio_hv_generic: Align ring size to system page")
+>> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+>> ---
+>>   tools/hv/hv_fcopy_uio_daemon.c | 65 ++++++++++++++++++++++++++++++----
+>>   1 file changed, 58 insertions(+), 7 deletions(-)
+>>
+>> diff --git a/tools/hv/hv_fcopy_uio_daemon.c b/tools/hv/hv_fcopy_uio_daemon.c
+>> index 0198321d14a2..da2b27d6af0e 100644
+>> --- a/tools/hv/hv_fcopy_uio_daemon.c
+>> +++ b/tools/hv/hv_fcopy_uio_daemon.c
+>> @@ -36,6 +36,7 @@
+>>   #define WIN8_SRV_VERSION	(WIN8_SRV_MAJOR << 16 | WIN8_SRV_MINOR)
+>>
+>>   #define FCOPY_UIO		"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/uio"
+>> +#define FCOPY_CHANNELS_PATH	"/sys/bus/vmbus/devices/eb765408-105f-49b6-b4aa-c123b64d17d4/channels"
+>>
+>>   #define FCOPY_VER_COUNT		1
+>>   static const int fcopy_versions[] = {
+>> @@ -47,9 +48,51 @@ static const int fw_versions[] = {
+>>   	UTIL_FW_VERSION
+>>   };
+>>
+>> -#define HV_RING_SIZE		0x4000 /* 16KB ring buffer size */
+>> +#define HV_RING_SIZE_DEFAULT	0x4000 /* 16KB ring buffer size default */
+>>
+>> -static unsigned char desc[HV_RING_SIZE];
+>> +static uint32_t get_ring_buffer_size(void)
+>> +{
+>> +	char ring_path[PATH_MAX];
+>> +	DIR *dir;
+>> +	struct dirent *entry;
+>> +	struct stat st;
+>> +	uint32_t ring_size = 0;
+>> +
+>> +	/* Find the channel directory */
+>> +	dir = opendir(FCOPY_CHANNELS_PATH);
+>> +	if (!dir) {
+>> +		syslog(LOG_ERR, "Failed to open channels directory, using default ring size");
+> 
+> This is where the previous long discussion about racing with user space
+> comes into play. While highly unlikely, it's possible that the "opendir" could fail
+> because of racing with the kernel thread that creates the "channels" directory.
+> The right thing to do would be to sleep for some period of time, then try
+> again. Sleeping for 1 second would be a very generous -- could also go with
+> something like 100 milliseconds.
+
+Makes sense, will add that logic.
+
+> 
+>> +		return HV_RING_SIZE_DEFAULT;
+>> +	}
+>> +
+>> +	while ((entry = readdir(dir)) != NULL) {
+>> +		if (entry->d_type == DT_DIR && strcmp(entry->d_name, ".") != 0 &&
+>> +		    strcmp(entry->d_name, "..") != 0) {
+>> +			snprintf(ring_path, sizeof(ring_path), "%s/%s/ring",
+>> +				 FCOPY_CHANNELS_PATH, entry->d_name);
+>> +
+>> +			if (stat(ring_path, &st) == 0) {
+>> +				/* stat returns size of Tx, Rx rings combined, so take half of it */
+>> +				ring_size = (uint32_t)st.st_size / 2;
+>> +				syslog(LOG_INFO, "Ring buffer size from %s: %u bytes",
+>> +				       ring_path, ring_size);
+>> +				break;
+>> +			}
+>> +		}
+>> +	}
+> 
+> The same race problem could happen with this loop. The "channels" directory
+> might have been created, but the entry for the numbered channel might not.
+> The loop could exit having found only "." and "..". Again, if no numbered
+> channel is found, sleep for a short period of time and try again.
+
+Will cover this too.
+
+> 
+>> +
+>> +	closedir(dir);
+>> +
+>> +	if (!ring_size) {
+>> +		ring_size = HV_RING_SIZE_DEFAULT;
+>> +		syslog(LOG_ERR, "Could not determine ring size, using default: %u bytes",
+>> +		       HV_RING_SIZE_DEFAULT);
+>> +	}
+>> +
+>> +	return ring_size;
+>> +}
+>> +
+>> +static unsigned char *desc;
+>>
+>>   static int target_fd;
+>>   static char target_fname[PATH_MAX];
+>> @@ -406,7 +449,8 @@ int main(int argc, char *argv[])
+>>   	int daemonize = 1, long_index = 0, opt, ret = -EINVAL;
+>>   	struct vmbus_br txbr, rxbr;
+>>   	void *ring;
+>> -	uint32_t len = HV_RING_SIZE;
+>> +	uint32_t ring_size = get_ring_buffer_size();
+> 
+> Getting the ring buffer size before even the command line options
+> are parsed could produce unexpected results. For example, if someone
+> just wanted to see the usage (the -h option), they might get
+> an error about not being able to get the ring size. I'd suggest doing
+> this later, after the /dev/uio<N> entry is successfully opened.
+
+Thanks for pointing this out, I'll take care of it in next version.
+
+Regards,
+Naman
+
+> 
+>> +	uint32_t len = ring_size;
+>>   	char uio_name[NAME_MAX] = {0};
+>>   	char uio_dev_path[PATH_MAX] = {0};
+>>
+>> @@ -416,6 +460,13 @@ int main(int argc, char *argv[])
+>>   		{0,		0,		   0,  0   }
+>>   	};
+>>
+>> +	desc = (unsigned char *)malloc(ring_size * sizeof(unsigned char));
+>> +	if (!desc) {
+>> +		syslog(LOG_ERR, "malloc failed for desc buffer");
+>> +		ret = -ENOMEM;
+>> +		goto exit;
+>> +	}
+>> +
+>>   	while ((opt = getopt_long(argc, argv, "hn", long_options,
+>>   				  &long_index)) != -1) {
+>>   		switch (opt) {
+>> @@ -448,14 +499,14 @@ int main(int argc, char *argv[])
+>>   		goto exit;
+>>   	}
+>>
+>> -	ring = vmbus_uio_map(&fcopy_fd, HV_RING_SIZE);
+>> +	ring = vmbus_uio_map(&fcopy_fd, ring_size);
+>>   	if (!ring) {
+>>   		ret = errno;
+>>   		syslog(LOG_ERR, "mmap ringbuffer failed; error: %d %s", ret, strerror(ret));
+>>   		goto close;
+>>   	}
+>> -	vmbus_br_setup(&txbr, ring, HV_RING_SIZE);
+>> -	vmbus_br_setup(&rxbr, (char *)ring + HV_RING_SIZE, HV_RING_SIZE);
+>> +	vmbus_br_setup(&txbr, ring, ring_size);
+>> +	vmbus_br_setup(&rxbr, (char *)ring + ring_size, ring_size);
+>>
+>>   	rxbr.vbr->imask = 0;
+>>
+>> @@ -472,7 +523,7 @@ int main(int argc, char *argv[])
+>>   			goto close;
+>>   		}
+>>
+>> -		len = HV_RING_SIZE;
+>> +		len = ring_size;
+>>   		ret = rte_vmbus_chan_recv_raw(&rxbr, desc, &len);
+>>   		if (unlikely(ret <= 0)) {
+>>   			/* This indicates a failure to communicate (or worse) */
+>>
+>> base-commit: bc6e0ba6c9bafa6241b05524b9829808056ac4ad
+>> --
+>> 2.34.1
+
+
 
