@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-156646-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F0E4AE5075
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:25:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08818AE53A3
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:55:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 362B74A0DEA
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B0EF6189C5AD
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EEEB1E51FA;
-	Mon, 23 Jun 2025 21:25:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78AEC223316;
+	Mon, 23 Jun 2025 21:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0wfarZNQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RpWeJmNw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D109F1E521E;
-	Mon, 23 Jun 2025 21:25:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3590A19049B;
+	Mon, 23 Jun 2025 21:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713922; cv=none; b=l6F1+JoUCAoP64b+sqmuSxTfP4w3DzX76aIUuAChIU7o1pTeAx5j+LoQpofMaAXtqHnAZx5oyXZZuIBKMqmW3M/up909g/zZ9P+5aagaEH3wXzvORhbmiqpPf3vYhbK/tRJuQ3uzxfskAsEW62xzOD/P527I8YU54QRYSvREZMk=
+	t=1750715663; cv=none; b=NzIFOn3JnpxRNVHDSro/mw2t0XVgzijR0qHKEyGK4dtFoHVLhp3ECHp2/pOvHn7E4C/zTW7zByatIMcff9pjv+OS5IY21aSeGaWXM44LgLCdTGMDbQK2rHUxvqFjyFZKdYqglbEYMn1YmkkaRkOpcLNNIDiZWhTr2qpXSOfQXRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713922; c=relaxed/simple;
-	bh=rt3uwgRLPigtYy1IvclkbQvl6hM9vRO88ZH1/5LcWNg=;
+	s=arc-20240116; t=1750715663; c=relaxed/simple;
+	bh=ZRB/zp/sEPMPwxoHIsEtQ44HdAGo1TAb1bDs/hafttk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ficY65fajaB6Lg/NF/W9CB1vUHV+tjETayw9wFkXWvPBf911lTWioUN0DUerqS1DL5I0A3XBWEaHtAhIrUlJ6t8REGXCAdi3M9tKEXMrN2jGq4mGixspYBlB52PsXQ0Te018iX5viQTapxxoOxVMRoWPzXcjnae/EZsVhDexeMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0wfarZNQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A688C4CEEA;
-	Mon, 23 Jun 2025 21:25:22 +0000 (UTC)
+	 MIME-Version; b=USSLHsAD7a3sLucFxbdRvjws1/LZwB+Omgwf3wqfQzAfD0W4txWk4y5jk9QJb4wB4SS/gyCueb710asdOVz1aGiDZKDNv8rNYREj+54XRmV44XrzMp/BE6y0N31mDDBBL40+jf9RlHV6Nrcf1sWTWKRfGa7GmzpsDQL9Edp10c0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RpWeJmNw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA819C4CEEA;
+	Mon, 23 Jun 2025 21:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713922;
-	bh=rt3uwgRLPigtYy1IvclkbQvl6hM9vRO88ZH1/5LcWNg=;
+	s=korg; t=1750715663;
+	bh=ZRB/zp/sEPMPwxoHIsEtQ44HdAGo1TAb1bDs/hafttk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0wfarZNQuRGdHaZP3kaxvMqD2G0eha9XODL9i+YnY7SM0aUzvydWuT6wfx/kqp3KZ
-	 G/eechuYmfAKeEHaptSW8VeoRQk2Lq++j9kbL0vHaeXnvJHQaJM9CJqMqaBwI2r6/I
-	 QsvneE/Ur+EkGdO4hIrP6a+GLJZ6duZsk166aNTk=
+	b=RpWeJmNwWpze4KKFFsZbg8Ht6CZIl5wPUCUixF6+OTC9dpKB5LsVLI0L99Qok1Q7A
+	 /OEZFCBBfVGnNxAJl/dLGLL/V4irjftH8mE+wWgw0F3Tjrg2nqpSrQylPcDYndI39k
+	 iskBRQqscd66nN8jCXIHC/lWq0JCGQH/B9N4ICnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Raczynski <j.raczynski@samsung.com>,
-	Wenjing Shan <wenjing.shan@samsung.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	kernel test robot <lkp@intel.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/411] net/mdiobus: Fix potential out-of-bounds read/write access
+Subject: [PATCH 6.1 254/508] Bluetooth: MGMT: Fix sparse errors
 Date: Mon, 23 Jun 2025 15:04:59 +0200
-Message-ID: <20250623130637.542199420@linuxfoundation.org>
+Message-ID: <20250623130651.502798009@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
-References: <20250623130632.993849527@linuxfoundation.org>
+In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
+References: <20250623130645.255320792@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Raczynski <j.raczynski@samsung.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 0e629694126ca388916f059453a1c36adde219c4 ]
+[ Upstream commit 7dd38ba4acbea9875b4ee061e20a26413e39d9f4 ]
 
-When using publicly available tools like 'mdio-tools' to read/write data
-from/to network interface and its PHY via mdiobus, there is no verification of
-parameters passed to the ioctl and it accepts any mdio address.
-Currently there is support for 32 addresses in kernel via PHY_MAX_ADDR define,
-but it is possible to pass higher value than that via ioctl.
-While read/write operation should generally fail in this case,
-mdiobus provides stats array, where wrong address may allow out-of-bounds
-read/write.
+This fixes the following errors:
 
-Fix that by adding address verification before read/write operation.
-While this excludes this access from any statistics, it improves security of
-read/write operation.
+net/bluetooth/mgmt.c:5400:59: sparse: sparse: incorrect type in argument 3
+(different base types) @@     expected unsigned short [usertype] handle @@
+got restricted __le16 [usertype] monitor_handle @@
+net/bluetooth/mgmt.c:5400:59: sparse:     expected unsigned short [usertype] handle
+net/bluetooth/mgmt.c:5400:59: sparse:     got restricted __le16 [usertype] monitor_handle
 
-Fixes: 080bb352fad00 ("net: phy: Maintain MDIO device and bus statistics")
-Signed-off-by: Jakub Raczynski <j.raczynski@samsung.com>
-Reported-by: Wenjing Shan <wenjing.shan@samsung.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: e6ed54e86aae ("Bluetooth: MGMT: Fix UAF on mgmt_remove_adv_monitor_complete")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202506060347.ux2O1p7L-lkp@intel.com/
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mdio_bus.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/bluetooth/mgmt.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index c26f46c06a1b2..95536c5e541da 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -757,6 +757,9 @@ int __mdiobus_read(struct mii_bus *bus, int addr, u32 regnum)
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 123cf62e3c000..08bb78ba988d8 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -5237,11 +5237,11 @@ static void mgmt_adv_monitor_added(struct sock *sk, struct hci_dev *hdev,
+ }
  
- 	lockdep_assert_held_once(&bus->mdio_lock);
+ static void mgmt_adv_monitor_removed(struct sock *sk, struct hci_dev *hdev,
+-				     u16 handle)
++				     __le16 handle)
+ {
+ 	struct mgmt_ev_adv_monitor_removed ev;
  
-+	if (addr >= PHY_MAX_ADDR)
-+		return -ENXIO;
-+
- 	if (bus->read)
- 		retval = bus->read(bus, addr, regnum);
- 	else
-@@ -786,6 +789,9 @@ int __mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
+-	ev.monitor_handle = cpu_to_le16(handle);
++	ev.monitor_handle = handle;
  
- 	lockdep_assert_held_once(&bus->mdio_lock);
- 
-+	if (addr >= PHY_MAX_ADDR)
-+		return -ENXIO;
-+
- 	if (bus->write)
- 		err = bus->write(bus, addr, regnum, val);
- 	else
+ 	mgmt_event(MGMT_EV_ADV_MONITOR_REMOVED, hdev, &ev, sizeof(ev), sk);
+ }
 -- 
 2.39.5
 
