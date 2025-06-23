@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-156674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-157580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAEC8AE509D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:27:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A458AE54A7
+	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:03:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A6C74A1367
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A57CC447AA0
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 22:03:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7A491EDA0F;
-	Mon, 23 Jun 2025 21:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 950431E22E6;
+	Mon, 23 Jun 2025 22:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1cDT6VNB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fP2PNlbo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A42D22206BB;
-	Mon, 23 Jun 2025 21:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4363A3FB1B;
+	Mon, 23 Jun 2025 22:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713991; cv=none; b=ZBxxXXBifNWWwGJk/YCFJ68jG3qTUow1+aU6R7hg7WTqzlj7DD5+Gkan1X03W+b+pirN7r+umwDWprEGykEQ/x3h2xWfckF3TOUXALWRQDP3JFvCqRpWGbN2LmC78F+X45rEP/b9k98xpckpeVExNW9FQ5yWlJldHcrV1I5/Pko=
+	t=1750716216; cv=none; b=IUnvX3sURittvNP0/LZiAgVKekOivqzSt7azreCaO1bRokykywkwVySTl5AqC6x1SKg4qsCAKwzAIyb0gEnz2jIakGKu0Cg1pPiHEzzYTCyEjqEF+UVglM7AhqQzp3nJARdvhuarJldnneZ7hewos2KPVi9rIj+BPN3M+jQ/2EA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713991; c=relaxed/simple;
-	bh=5B9IBNDDCswNfadnffNApNE3KqWLeTo35tffjXRHKI4=;
+	s=arc-20240116; t=1750716216; c=relaxed/simple;
+	bh=LPNtnEzh+N68tk6yVhyNmEF+vf2m6UufcV0iAxNneUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAVbk2NvSKG3JHxuaKMV8sNvtCy2R1JnToQoynWU9cvyfSjmBff2HuSxzXxP2S2ZQqUU4zEuIj6PCgK7u6pfAaCZvB8KC0n7usM466iUk9y2OafbM92GntUoonvsWcTB/0+z5HdBXnPkTMvJQ/coEAKD72f7JwsfhNO+G7+pS7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1cDT6VNB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B4BBC4CEEA;
-	Mon, 23 Jun 2025 21:26:31 +0000 (UTC)
+	 MIME-Version; b=H5PHNWz9Sk3P/7huSIaYQBhZZ0COEq/ZdKQMlqxcJs5zbFgEw8GjSD4otRYWxhsS8llPl5kBwFLmmtVsnzcQI6WyNK3VuYRzLm150DpzNBbZl3dVjxh/+Rba06yyYxIXN+GXWl/0GUPAW6n+7ZV0yMGsOgJ4ui4RB3P+9kAW6TU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fP2PNlbo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0029C4CEEA;
+	Mon, 23 Jun 2025 22:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713991;
-	bh=5B9IBNDDCswNfadnffNApNE3KqWLeTo35tffjXRHKI4=;
+	s=korg; t=1750716216;
+	bh=LPNtnEzh+N68tk6yVhyNmEF+vf2m6UufcV0iAxNneUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1cDT6VNBGrLU7gD554W2csk4YzjOYZ4VmRVpNg9b2ONireyxjTJ63pEpfrp7FEAcJ
-	 QbdFnnEzKyPj4aphvvhgnFetprL+DfxqLiJMj1KHNGO0Ymy+L15fhpUSzLcjSoMvYi
-	 92b7vMuvaCWXlXKjudaPXw+oU9vscY2chkn4K+/0=
+	b=fP2PNlborvwPGY81iknyhee6p/Os3D6QMTk6aXkF1Ragbeu9US1LNdPnZEAzqxb7t
+	 aZ+o/f8E15tpj2s1NcdnLDpj449VApKQsSBWCl42UlKg+kW22ilA6rdrIFMZ+KQ/Be
+	 gGLfAZnifCZzWM/FeuVkkbGtkfKzoN6A1b+RnsbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Schnelle <schnelle@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 5.4 220/222] s390/pci: Fix __pcilg_mio_inuser() inline assembly
-Date: Mon, 23 Jun 2025 15:09:15 +0200
-Message-ID: <20250623130618.913423434@linuxfoundation.org>
+	Tengda Wu <wutengda@huaweicloud.com>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 355/355] arm64/ptrace: Fix stack-out-of-bounds read in regs_get_kernel_stack_nth()
+Date: Mon, 23 Jun 2025 15:09:16 +0200
+Message-ID: <20250623130637.386447965@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
-References: <20250623130611.896514667@linuxfoundation.org>
+In-Reply-To: <20250623130626.716971725@linuxfoundation.org>
+References: <20250623130626.716971725@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-commit c4abe6234246c75cdc43326415d9cff88b7cf06c upstream.
+[ Upstream commit 39dfc971e42d886e7df01371cd1bef505076d84c ]
 
-Use "a" constraint for the shift operand of the __pcilg_mio_inuser() inline
-assembly. The used "d" constraint allows the compiler to use any general
-purpose register for the shift operand, including register zero.
+KASAN reports a stack-out-of-bounds read in regs_get_kernel_stack_nth().
 
-If register zero is used this my result in incorrect code generation:
+Call Trace:
+[   97.283505] BUG: KASAN: stack-out-of-bounds in regs_get_kernel_stack_nth+0xa8/0xc8
+[   97.284677] Read of size 8 at addr ffff800089277c10 by task 1.sh/2550
+[   97.285732]
+[   97.286067] CPU: 7 PID: 2550 Comm: 1.sh Not tainted 6.6.0+ #11
+[   97.287032] Hardware name: linux,dummy-virt (DT)
+[   97.287815] Call trace:
+[   97.288279]  dump_backtrace+0xa0/0x128
+[   97.288946]  show_stack+0x20/0x38
+[   97.289551]  dump_stack_lvl+0x78/0xc8
+[   97.290203]  print_address_description.constprop.0+0x84/0x3c8
+[   97.291159]  print_report+0xb0/0x280
+[   97.291792]  kasan_report+0x84/0xd0
+[   97.292421]  __asan_load8+0x9c/0xc0
+[   97.293042]  regs_get_kernel_stack_nth+0xa8/0xc8
+[   97.293835]  process_fetch_insn+0x770/0xa30
+[   97.294562]  kprobe_trace_func+0x254/0x3b0
+[   97.295271]  kprobe_dispatcher+0x98/0xe0
+[   97.295955]  kprobe_breakpoint_handler+0x1b0/0x210
+[   97.296774]  call_break_hook+0xc4/0x100
+[   97.297451]  brk_handler+0x24/0x78
+[   97.298073]  do_debug_exception+0xac/0x178
+[   97.298785]  el1_dbg+0x70/0x90
+[   97.299344]  el1h_64_sync_handler+0xcc/0xe8
+[   97.300066]  el1h_64_sync+0x78/0x80
+[   97.300699]  kernel_clone+0x0/0x500
+[   97.301331]  __arm64_sys_clone+0x70/0x90
+[   97.302084]  invoke_syscall+0x68/0x198
+[   97.302746]  el0_svc_common.constprop.0+0x11c/0x150
+[   97.303569]  do_el0_svc+0x38/0x50
+[   97.304164]  el0_svc+0x44/0x1d8
+[   97.304749]  el0t_64_sync_handler+0x100/0x130
+[   97.305500]  el0t_64_sync+0x188/0x190
+[   97.306151]
+[   97.306475] The buggy address belongs to stack of task 1.sh/2550
+[   97.307461]  and is located at offset 0 in frame:
+[   97.308257]  __se_sys_clone+0x0/0x138
+[   97.308910]
+[   97.309241] This frame has 1 object:
+[   97.309873]  [48, 184) 'args'
+[   97.309876]
+[   97.310749] The buggy address belongs to the virtual mapping at
+[   97.310749]  [ffff800089270000, ffff800089279000) created by:
+[   97.310749]  dup_task_struct+0xc0/0x2e8
+[   97.313347]
+[   97.313674] The buggy address belongs to the physical page:
+[   97.314604] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14f69a
+[   97.315885] flags: 0x15ffffe00000000(node=1|zone=2|lastcpupid=0xfffff)
+[   97.316957] raw: 015ffffe00000000 0000000000000000 dead000000000122 0000000000000000
+[   97.318207] raw: 0000000000000000 0000000000000000 00000001ffffffff 0000000000000000
+[   97.319445] page dumped because: kasan: bad access detected
+[   97.320371]
+[   97.320694] Memory state around the buggy address:
+[   97.321511]  ffff800089277b00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   97.322681]  ffff800089277b80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+[   97.323846] >ffff800089277c00: 00 00 f1 f1 f1 f1 f1 f1 00 00 00 00 00 00 00 00
+[   97.325023]                          ^
+[   97.325683]  ffff800089277c80: 00 00 00 00 00 00 00 00 00 f3 f3 f3 f3 f3 f3 f3
+[   97.326856]  ffff800089277d00: f3 f3 00 00 00 00 00 00 00 00 00 00 00 00 00 00
 
- 8f6:   a7 0a ff f8             ahi     %r0,-8
- 8fa:   eb 32 00 00 00 0c       srlg    %r3,%r2,0  <----
+This issue seems to be related to the behavior of some gcc compilers and
+was also fixed on the s390 architecture before:
 
-If register zero is selected to contain the shift value, the srlg
-instruction ignores the contents of the register and always shifts zero
-bits. Therefore use the "a" constraint which does not permit to select
-register zero.
+ commit d93a855c31b7 ("s390/ptrace: Avoid KASAN false positives in regs_get_kernel_stack_nth()")
 
-Fixes: f058599e22d5 ("s390/pci: Fix s390_mmio_read/write with MIO")
-Cc: stable@vger.kernel.org
-Reported-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Reviewed-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As described in that commit, regs_get_kernel_stack_nth() has confirmed that
+`addr` is on the stack, so reading the value at `*addr` should be allowed.
+Use READ_ONCE_NOCHECK() helper to silence the KASAN check for this case.
+
+Fixes: 0a8ea52c3eb1 ("arm64: Add HAVE_REGS_AND_STACK_ACCESS_API feature")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Link: https://lore.kernel.org/r/20250604005533.1278992-1-wutengda@huaweicloud.com
+[will: Use '*addr' as the argument to READ_ONCE_NOCHECK()]
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/pci/pci_mmio.c |    2 +-
+ arch/arm64/kernel/ptrace.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/s390/pci/pci_mmio.c
-+++ b/arch/s390/pci/pci_mmio.c
-@@ -227,7 +227,7 @@ static inline int __pcilg_mio_inuser(
- 		:
- 		[cc] "+d" (cc), [val] "=d" (val), [len] "+d" (len),
- 		[dst] "+a" (dst), [cnt] "+d" (cnt), [tmp] "=d" (tmp),
--		[shift] "+d" (shift)
-+		[shift] "+a" (shift)
- 		:
- 		[ioaddr] "a" (addr)
- 		: "cc", "memory");
+diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
+index 6c9e7662c07f7..5d52eac22d831 100644
+--- a/arch/arm64/kernel/ptrace.c
++++ b/arch/arm64/kernel/ptrace.c
+@@ -140,7 +140,7 @@ unsigned long regs_get_kernel_stack_nth(struct pt_regs *regs, unsigned int n)
+ 
+ 	addr += n;
+ 	if (regs_within_kernel_stack(regs, (unsigned long)addr))
+-		return *addr;
++		return READ_ONCE_NOCHECK(*addr);
+ 	else
+ 		return 0;
+ }
+-- 
+2.39.5
+
 
 
 
