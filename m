@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-156659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id F11E6AE5098
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D565AE5097
 	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:26:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA28C1B6284D
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:27:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B44B87A94AA
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E4F82222CA;
-	Mon, 23 Jun 2025 21:25:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DB1223DD0;
+	Mon, 23 Jun 2025 21:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rD6NONJU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VN2xhjg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8BA221FBE;
-	Mon, 23 Jun 2025 21:25:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82192222581;
+	Mon, 23 Jun 2025 21:26:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750713955; cv=none; b=gYdovP0ex0/xRr8JCYQ3WKc+PzabqXL8WtnKrbPsqojbaaSCPu/ib6ZF1ifM9I22b6RQseog06Y+jM/hyjT2w3RjfaPEhbjARJkWR+KLT2yqT01bZgLde8bftLCqTrmTkgiE5XGeGbVqCT03PF2hHTFu8uGVBnoZTmrp7jrd9H0=
+	t=1750713974; cv=none; b=fuxJyJCAV86WQYnpXBdk7V3bXRWWIxy3HJM70MBxdedGwpj2h9YA1HgoBkWL0Y28/UXSKAnwxqI7D/mExscsN9p7wUTjq6aIwqySmpnurHLRDD+Jp1KpFllLKkI+Si8YnQQxsy2WBnT/dO5cY+IidZQoQ77ceDLkBoPCqB17hoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750713955; c=relaxed/simple;
-	bh=OJKEXIiqV4WhkahEXLVFLOODgMDP661l8XwlK5s0XvA=;
+	s=arc-20240116; t=1750713974; c=relaxed/simple;
+	bh=pG3HCB/1tcCzUhFlUkDN9XKomjFm5vRN4ViOZIMphzY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u0knevwZWiDXuWcjF+QtBYHfDS5fyNNG8hgUUlZ2F+x+npGG9xNXw0TBhRpEK1RrC4Qx2nJLRHyVoWYhQ7z5gjNg6wxHuQ6IsbFZ/b14ePW+X6I6X+BbnfC2zJ1sqq5hcqTXZ2MpO/fgVc9ZkiHn4x0ngB9bqcnoFKTiqp4GTd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rD6NONJU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7680AC4CEEA;
-	Mon, 23 Jun 2025 21:25:54 +0000 (UTC)
+	 MIME-Version; b=uSjCiU6ADTSkO/usfPqDgblB2uk+UJekXgXrPxIhCv24xmIP7O3p5Jchorh7BrX4h+aBBf801U+xKlP+L+j/p0g20gCBmYJvTYbzuYCOBnrMVVSfRcuQGHtSxv2bCEYvzS+xp8WRgnMV3o5Bt2XBlOzKdSQSPSk03IPDRnOVSeE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VN2xhjg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16B9BC4CEEA;
+	Mon, 23 Jun 2025 21:26:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750713954;
-	bh=OJKEXIiqV4WhkahEXLVFLOODgMDP661l8XwlK5s0XvA=;
+	s=korg; t=1750713974;
+	bh=pG3HCB/1tcCzUhFlUkDN9XKomjFm5vRN4ViOZIMphzY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rD6NONJUkpoePme0+wWuewIFoE7wlaVlA1yx9Yda7HXQuhW9fAKUg3soCPh4QxmWh
-	 SteCyRfPd9gfs8gDF6c4RVZSSR4ck4m/WRp23GgSoouJO+RFdAFBOn14xKHDC6Txch
-	 ASqfJI8E80JJ9slKyHu54byXUHYma3/p2dsEjnpA=
+	b=1VN2xhjgY2JIuWgkRdrojzuaZkQS/8CfEw44fQbKZp4M3Ht7tsQPqOKZlg+ChubJI
+	 XNOHBeLlAKNaNbq8lvN25+/lrA7hWcsi/OgOxYOIg2W5xs+lggCX0IERh+NnT592Gl
+	 rasCsjSJBqQDZhup0sVww3IGq0PwoMzeZsNtRYjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.4 218/222] jbd2: fix data-race and null-ptr-deref in jbd2_journal_dirty_metadata()
-Date: Mon, 23 Jun 2025 15:09:13 +0200
-Message-ID: <20250623130618.852137804@linuxfoundation.org>
+	David Gow <davidgow@google.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Justin Stitt <justinstitt@google.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH 5.4 219/222] rtc: test: Fix invalid format specifier.
+Date: Mon, 23 Jun 2025 15:09:14 +0200
+Message-ID: <20250623130618.883340111@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
 In-Reply-To: <20250623130611.896514667@linuxfoundation.org>
 References: <20250623130611.896514667@linuxfoundation.org>
@@ -68,74 +68,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: David Gow <davidgow@google.com>
 
-commit af98b0157adf6504fade79b3e6cb260c4ff68e37 upstream.
+commit 8a904a3caa88118744062e872ae90f37748a8fd8 upstream.
 
-Since handle->h_transaction may be a NULL pointer, so we should change it
-to call is_handle_aborted(handle) first before dereferencing it.
+'days' is a s64 (from div_s64), and so should use a %lld specifier.
 
-And the following data-race was reported in my fuzzer:
+This was found by extending KUnit's assertion macros to use gcc's
+__printf attribute.
 
-==================================================================
-BUG: KCSAN: data-race in jbd2_journal_dirty_metadata / jbd2_journal_dirty_metadata
-
-write to 0xffff888011024104 of 4 bytes by task 10881 on cpu 1:
- jbd2_journal_dirty_metadata+0x2a5/0x770 fs/jbd2/transaction.c:1556
- __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
- ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
- ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
- __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
- ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
-....
-
-read to 0xffff888011024104 of 4 bytes by task 10880 on cpu 0:
- jbd2_journal_dirty_metadata+0xf2/0x770 fs/jbd2/transaction.c:1512
- __ext4_handle_dirty_metadata+0xe7/0x4b0 fs/ext4/ext4_jbd2.c:358
- ext4_do_update_inode fs/ext4/inode.c:5220 [inline]
- ext4_mark_iloc_dirty+0x32c/0xd50 fs/ext4/inode.c:5869
- __ext4_mark_inode_dirty+0xe1/0x450 fs/ext4/inode.c:6074
- ext4_dirty_inode+0x98/0xc0 fs/ext4/inode.c:6103
-....
-
-value changed: 0x00000000 -> 0x00000001
-==================================================================
-
-This issue is caused by missing data-race annotation for jh->b_modified.
-Therefore, the missing annotation needs to be added.
-
-Reported-by: syzbot+de24c3fe3c4091051710@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=de24c3fe3c4091051710
-Fixes: 6e06ae88edae ("jbd2: speedup jbd2_journal_dirty_metadata()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250514130855.99010-1-aha310510@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 1d1bb12a8b18 ("rtc: Improve performance of rtc_time64_to_tm(). Add tests.")
+Signed-off-by: David Gow <davidgow@google.com>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Reviewed-by: Justin Stitt <justinstitt@google.com>
+Acked-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/rtc/lib_test.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1419,7 +1419,6 @@ int jbd2_journal_dirty_metadata(handle_t
- 		goto out;
- 	}
+--- a/drivers/rtc/lib_test.c
++++ b/drivers/rtc/lib_test.c
+@@ -54,7 +54,7 @@ static void rtc_time64_to_tm_test_date_r
  
--	journal = transaction->t_journal;
- 	jbd_lock_bh_state(bh);
+ 		days = div_s64(secs, 86400);
  
- 	if (is_handle_aborted(handle)) {
-@@ -1434,6 +1433,8 @@ int jbd2_journal_dirty_metadata(handle_t
- 		goto out_unlock_bh;
- 	}
+-		#define FAIL_MSG "%d/%02d/%02d (%2d) : %ld", \
++		#define FAIL_MSG "%d/%02d/%02d (%2d) : %lld", \
+ 			year, month, mday, yday, days
  
-+	journal = transaction->t_journal;
-+
- 	if (jh->b_modified == 0) {
- 		/*
- 		 * This buffer's got modified and becoming part
+ 		KUNIT_ASSERT_EQ_MSG(test, year - 1900, result.tm_year, FAIL_MSG);
 
 
 
