@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-157514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-156794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53256AE545E
-	for <lists+stable@lfdr.de>; Tue, 24 Jun 2025 00:00:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C79A4AE512B
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 23:31:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CDC447AED59
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:59:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9B70B3A691A
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 21:30:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87CAB1A4F12;
-	Mon, 23 Jun 2025 22:00:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DB111DDC04;
+	Mon, 23 Jun 2025 21:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7X7QBGr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0k5vgcVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4640D4409;
-	Mon, 23 Jun 2025 22:00:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3E0C2E0;
+	Mon, 23 Jun 2025 21:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750716054; cv=none; b=B65oeCvBEjY/Gb2vILwY1W605YrL5p8eg+4twFsc0mFcFJGjUfgBzgQ5EJL4IoDDyiDXBnkIgtBVeFs83gdo0f26skUVztVKntHSJI0ySvItitXcD1me7KOoyHzSUYfBzd07XoOEgr+FCkyoro5kYTyYu8OslGC2xP8Z2PBMFhI=
+	t=1750714282; cv=none; b=COhl5TXDMgNXeGT4xuwNdiAeMETqjh+JhAptFNIH8aTbogaZv7A4/xdO4kPOgpT6s42zS3qglnA74kX6oOV/doqo2gA5w96titSCsBJ25omzF6AGS9QT703QT41rdh25D5YOwnFZ/jezBCXd0G4Fsed3Iqe1TzdJfFCfXyC7byc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750716054; c=relaxed/simple;
-	bh=Jdm6XAcQIVE4nQ3lRb8OR5MSeAmX50OOIrGM12yAsGc=;
+	s=arc-20240116; t=1750714282; c=relaxed/simple;
+	bh=9VISglJNjYu13TbqizywU0Hb8a7S9R49wbwM58X9Baw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nv3IbkWqdGh5CLX9xBvMgvm1op/8WuqIo+5X1iiJIYE13HYdkNkYqbRU5Ghvm3+7ShZ4EUHJsw5ZPU/9TgkWaOQnZ1Fxm1LAfu1KgVzS73pznAhnsB+k5+aXBr66AG2LlWOQeTp5TEwTOrlj5Rp2Z595lsbV3ZlyANz0f+onApY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7X7QBGr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75445C4CEEA;
-	Mon, 23 Jun 2025 22:00:53 +0000 (UTC)
+	 MIME-Version; b=DKGBk2fvv29g5u7uQdG7/c7VTnVt0L5NGR7un+qiNlo5xxJC3p/KuoAxBs9WzbBX8Q7yUYxRD7Q3+HvMaJ/Pc8zNYmbF+L4LyPwjc1PCHGbW3HBp+OrnDwXveRc210mG+kZlzV7YQJUBtTe3VHek7EYZzh6IHuPZW8Q9ZGfo+DI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0k5vgcVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7CB8C4CEEA;
+	Mon, 23 Jun 2025 21:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750716053;
-	bh=Jdm6XAcQIVE4nQ3lRb8OR5MSeAmX50OOIrGM12yAsGc=;
+	s=korg; t=1750714282;
+	bh=9VISglJNjYu13TbqizywU0Hb8a7S9R49wbwM58X9Baw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w7X7QBGrtwi0tuo67R/IZfypVQMTGCTn3oTecoxvxUWldTfN9ehRfAfGPEaiUw8UQ
-	 HYYJAdTtqOVEfT8wQA3u8FW3tc5K1ypZE5xIH1oPQ/xwn9r6JLjXtVJ+Fbi4MTmwC1
-	 2zm/XkJPK9EfJomO2y7bBvIfkkkhiSYfs1ITHd1A=
+	b=0k5vgcVXBmSY8kDKA03PUHfyqQ8CiQ4KhxvRqIthdb9EBAd9B/mWyEr5JYaxEC4M2
+	 hIx/OwqnhnD3ao9q3Xo1+NC7ljqHBhshNXf9acGbRYpVCFi3H0nzo0KgtujFmcBZh1
+	 Rjm1dgfaPB49I9ypyQVS1MX8kXl5nLqrQ9VfiEMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Wupeng Ma <mawupeng1@huawei.com>
-Subject: [PATCH 6.1 277/508] VMCI: fix race between vmci_host_setup_notify and vmci_ctx_unset_notify
+	Dave Penkler <dpenkler@gmail.com>
+Subject: [PATCH 5.15 178/411] usb: usbtmc: Fix read_stb function and get_stb ioctl
 Date: Mon, 23 Jun 2025 15:05:22 +0200
-Message-ID: <20250623130652.063562743@linuxfoundation.org>
+Message-ID: <20250623130638.166735600@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,100 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wupeng Ma <mawupeng1@huawei.com>
+From: Dave Penkler <dpenkler@gmail.com>
 
-commit 1bd6406fb5f36c2bb1e96e27d4c3e9f4d09edde4 upstream.
+commit acb3dac2805d3342ded7dbbd164add32bbfdf21c upstream.
 
-During our test, it is found that a warning can be trigger in try_grab_folio
-as follow:
+The usbtmc488_ioctl_read_stb function relied on a positive return from
+usbtmc_get_stb to reset the srq condition in the driver. The
+USBTMC_IOCTL_GET_STB case tested for a positive return to return the stb
+to the user.
 
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 1678 at mm/gup.c:147 try_grab_folio+0x106/0x130
-  Modules linked in:
-  CPU: 0 UID: 0 PID: 1678 Comm: syz.3.31 Not tainted 6.15.0-rc5 #163 PREEMPT(undef)
-  RIP: 0010:try_grab_folio+0x106/0x130
-  Call Trace:
-   <TASK>
-   follow_huge_pmd+0x240/0x8e0
-   follow_pmd_mask.constprop.0.isra.0+0x40b/0x5c0
-   follow_pud_mask.constprop.0.isra.0+0x14a/0x170
-   follow_page_mask+0x1c2/0x1f0
-   __get_user_pages+0x176/0x950
-   __gup_longterm_locked+0x15b/0x1060
-   ? gup_fast+0x120/0x1f0
-   gup_fast_fallback+0x17e/0x230
-   get_user_pages_fast+0x5f/0x80
-   vmci_host_unlocked_ioctl+0x21c/0xf80
-  RIP: 0033:0x54d2cd
-  ---[ end trace 0000000000000000 ]---
+Commit: <cac01bd178d6> ("usb: usbtmc: Fix erroneous get_stb ioctl
+error returns") changed the return value of usbtmc_get_stb to 0 on
+success instead of returning the value of usb_control_msg which is
+positive in the normal case. This change caused the function
+usbtmc488_ioctl_read_stb and the USBTMC_IOCTL_GET_STB ioctl to no
+longer function correctly.
 
-Digging into the source, context->notify_page may init by get_user_pages_fast
-and can be seen in vmci_ctx_unset_notify which will try to put_page. However
-get_user_pages_fast is not finished here and lead to following
-try_grab_folio warning. The race condition is shown as follow:
+Change the test in usbtmc488_ioctl_read_stb to test for failure
+first and return the failure code immediately.
+Change the test for the USBTMC_IOCTL_GET_STB ioctl to test for 0
+instead of a positive value.
 
-cpu0			cpu1
-vmci_host_do_set_notify
-vmci_host_setup_notify
-get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
-lockless_pages_from_mm
-gup_pgd_range
-gup_huge_pmd  // update &context->notify_page
-			vmci_host_do_set_notify
-			vmci_ctx_unset_notify
-			notify_page = context->notify_page;
-			if (notify_page)
-			put_page(notify_page);	// page is freed
-__gup_longterm_locked
-__get_user_pages
-follow_trans_huge_pmd
-try_grab_folio // warn here
-
-To slove this, use local variable page to make notify_page can be seen
-after finish get_user_pages_fast.
-
-Fixes: a1d88436d53a ("VMCI: Fix two UVA mapping bugs")
-Cc: stable <stable@kernel.org>
-Closes: https://lore.kernel.org/all/e91da589-ad57-3969-d979-879bbd10dddd@huawei.com/
-Signed-off-by: Wupeng Ma <mawupeng1@huawei.com>
-Link: https://lore.kernel.org/r/20250510033040.901582-1-mawupeng1@huawei.com
+Fixes: cac01bd178d6 ("usb: usbtmc: Fix erroneous get_stb ioctl error returns")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dave Penkler <dpenkler@gmail.com>
+Link: https://lore.kernel.org/r/20250521121656.18174-3-dpenkler@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/vmw_vmci/vmci_host.c |   11 +++++------
- 1 file changed, 5 insertions(+), 6 deletions(-)
+ drivers/usb/class/usbtmc.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/drivers/misc/vmw_vmci/vmci_host.c
-+++ b/drivers/misc/vmw_vmci/vmci_host.c
-@@ -227,6 +227,7 @@ static int drv_cp_harray_to_user(void __
- static int vmci_host_setup_notify(struct vmci_ctx *context,
- 				  unsigned long uva)
- {
-+	struct page *page;
- 	int retval;
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -565,14 +565,15 @@ static int usbtmc488_ioctl_read_stb(stru
  
- 	if (context->notify_page) {
-@@ -243,13 +244,11 @@ static int vmci_host_setup_notify(struct
- 	/*
- 	 * Lock physical page backing a given user VA.
- 	 */
--	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &context->notify_page);
--	if (retval != 1) {
--		context->notify_page = NULL;
-+	retval = get_user_pages_fast(uva, 1, FOLL_WRITE, &page);
-+	if (retval != 1)
- 		return VMCI_ERROR_GENERIC;
--	}
--	if (context->notify_page == NULL)
--		return VMCI_ERROR_UNAVAILABLE;
+ 	rv = usbtmc_get_stb(file_data, &stb);
+ 
+-	if (rv > 0) {
+-		srq_asserted = atomic_xchg(&file_data->srq_asserted,
+-					srq_asserted);
+-		if (srq_asserted)
+-			stb |= 0x40; /* Set RQS bit */
++	if (rv < 0)
++		return rv;
 +
-+	context->notify_page = page;
++	srq_asserted = atomic_xchg(&file_data->srq_asserted, srq_asserted);
++	if (srq_asserted)
++		stb |= 0x40; /* Set RQS bit */
++
++	rv = put_user(stb, (__u8 __user *)arg);
  
- 	/*
- 	 * Map the locked page and set up notify pointer.
+-		rv = put_user(stb, (__u8 __user *)arg);
+-	}
+ 	return rv;
+ 
+ }
+@@ -2201,7 +2202,7 @@ static long usbtmc_ioctl(struct file *fi
+ 
+ 	case USBTMC_IOCTL_GET_STB:
+ 		retval = usbtmc_get_stb(file_data, &tmp_byte);
+-		if (retval > 0)
++		if (!retval)
+ 			retval = put_user(tmp_byte, (__u8 __user *)arg);
+ 		break;
+ 
 
 
 
