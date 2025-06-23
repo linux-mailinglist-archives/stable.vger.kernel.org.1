@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-155859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A782AE440F
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:39:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BD5EAE43D9
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D935B1787C9
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:33:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 776E74405FE
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:29:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E56552561AE;
-	Mon, 23 Jun 2025 13:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E2B6253935;
+	Mon, 23 Jun 2025 13:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fDS1woZe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LIsWLx2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2B302561A8;
-	Mon, 23 Jun 2025 13:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10F3239E63;
+	Mon, 23 Jun 2025 13:29:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750685521; cv=none; b=th65V1D6QaEpaPoGaP14QkHl0ZXfN3TEymYWvHrLYjR7MEAbUgdu7WjF1Dw4KQwnhoEv5eRXMmcgumCwtjqvWG+S0yk471KRFSa/GtZ/5P075xDyG5HMIxiDw8/OdqBHr88QczOM5bF27UA53F3UE0bYzScZGDeDOHXQ8P5mx1E=
+	t=1750685371; cv=none; b=OBojDIWWWAVIncBObDQ0AWc8ZQD616wCHEYwYhF8t4SamnPiyp/+qpnmPU6dsEz3WdHE+qs5Ec1vcy+6N6DEqOG+cmFA0uybsvrxULn32lMBcacauyzf7ZQZgBrmATth0DAib+o/BcpgROW6XzshMwhaUthnNux1P3Bgzc5VDuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750685521; c=relaxed/simple;
-	bh=oTMgnc7RXhlZ9aKqTIUpFY7tBhKzj4ZwJTe/vOlcBR0=;
+	s=arc-20240116; t=1750685371; c=relaxed/simple;
+	bh=uVbibeV5FulFDxj7aQdxPSemB5df6w+A0pd6Tq62yjQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZYmRlbcD2DKUlTD+DKzM9Z2zBM+L8UQvj2XrohX9jxQZi+nH05XDmI2EENdBiNaO5FKy7GsvzRBlo6ORfFEReemcq8IOClL0RCDJSgMvATrB0dEvr2LVKQFVriIeG45FhF9c6VHE72g/wZXxzuq7IG6D06X0Z0d3iofADegH78o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fDS1woZe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F8F5C4CEEA;
-	Mon, 23 Jun 2025 13:32:01 +0000 (UTC)
+	 MIME-Version; b=lwSO+wbD4/oUJKU/MqhppoOXbpheliOMkwQiBom7rFXOhThEjVZvqVVG9oFZAA9IaHXVO8E5/WUUdDuGhuIUghE7HmSCqR+dWx4IUWDwP56aD1DV0tRJPf8q1nmZWTiwW9aObRTaFB4MDh+Mji/7RHy9FcIrVcJ8qhH14MaGimQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LIsWLx2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D8FC4CEEA;
+	Mon, 23 Jun 2025 13:29:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750685521;
-	bh=oTMgnc7RXhlZ9aKqTIUpFY7tBhKzj4ZwJTe/vOlcBR0=;
+	s=korg; t=1750685371;
+	bh=uVbibeV5FulFDxj7aQdxPSemB5df6w+A0pd6Tq62yjQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fDS1woZeFSwtJ9mqMSC+UFszAH0Iw3qrN65F4Yo8SrxCRkLg4PUwCgG1HekNH/tNG
-	 rqDsxezuJy6TjUw9Ch2O213KiBsqMZgxbqmjRdhvgTIQo5GXU36iVM2iXJTbHgKCIR
-	 ttP4t6btlC5NT52Mehi8W7ZsZCXccD/QpgZyPZEA=
+	b=LIsWLx2I9ji5MWxuPwJsAVsk8MIsh+z77pMTVGzoEcIWiVCaYaIiOUckwW13a5Chp
+	 BYaKDuwITGdHVRH8jejGH4/Z07fiAyRN1L2yFRbMXEeZKxAu5Gof7tGdI/edNPteWJ
+	 YnHfeMSOcIA/FGkhsp2C8cX7pJnCd4Ez/ajaE8eM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	"Shaoyun.liu" <Shaoyun.liu@amd.com>,
-	Prike Liang <Prike.Liang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Cong Wang <xiyou.wangcong@gmail.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	John Fastabend <john.fastabend@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.15 241/592] drm/amdgpu: Fix API status offset for MES queue reset
+Subject: [PATCH 5.15 055/411] ktls, sockmap: Fix missing uncharge operation
 Date: Mon, 23 Jun 2025 15:03:19 +0200
-Message-ID: <20250623130706.023610277@linuxfoundation.org>
+Message-ID: <20250623130634.645468491@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
-References: <20250623130700.210182694@linuxfoundation.org>
+In-Reply-To: <20250623130632.993849527@linuxfoundation.org>
+References: <20250623130632.993849527@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +64,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.15-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse.Zhang <Jesse.Zhang@amd.com>
+From: Jiayuan Chen <jiayuan.chen@linux.dev>
 
-[ Upstream commit ad7c088e31f026d71fe87fd09473fafb7d6ed006 ]
+[ Upstream commit 79f0c39ae7d3dc628c01b02f23ca5d01f9875040 ]
 
-The mes_v11_0_reset_hw_queue and mes_v12_0_reset_hw_queue functions were
-using the wrong union type (MESAPI__REMOVE_QUEUE) when getting the offset
-for api_status. Since these functions handle queue reset operations, they
-should use MESAPI__RESET union instead.
+When we specify apply_bytes, we divide the msg into multiple segments,
+each with a length of 'send', and every time we send this part of the data
+using tcp_bpf_sendmsg_redir(), we use sk_msg_return_zero() to uncharge the
+memory of the specified 'send' size.
 
-This fixes the polling of API status during hardware queue reset operations
-in the MES for both v11 and v12 versions.
+However, if the first segment of data fails to send, for example, the
+peer's buffer is full, we need to release all of the msg. When releasing
+the msg, we haven't uncharged the memory of the subsequent segments.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-By: Shaoyun.liu <Shaoyun.liu@amd.com>
-Reviewed-by: Prike Liang <Prike.Liang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This modification does not make significant logical changes, but only
+fills in the missing uncharge places.
+
+This issue has existed all along, until it was exposed after we added the
+apply test in test_sockmap:
+commit 3448ad23b34e ("selftests/bpf: Add apply_bytes test to test_txmsg_redir_wait_sndmem in test_sockmap")
+
+Fixes: d3b18ad31f93 ("tls: add bpf support to sk_msg handling")
+Reported-by: Cong Wang <xiyou.wangcong@gmail.com>
+Closes: https://lore.kernel.org/bpf/aAmIi0vlycHtbXeb@pop-os.localdomain/T/#t
+Signed-off-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: John Fastabend <john.fastabend@gmail.com>
+Reviewed-by: Cong Wang <xiyou.wangcong@gmail.com>
+Link: https://lore.kernel.org/r/20250425060015.6968-2-jiayuan.chen@linux.dev
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/mes_v11_0.c | 2 +-
- drivers/gpu/drm/amd/amdgpu/mes_v12_0.c | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/tls/tls_sw.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-index ef9538fbbf537..480283da18454 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v11_0.c
-@@ -480,7 +480,7 @@ static int mes_v11_0_reset_hw_queue(struct amdgpu_mes *mes,
- 
- 	return mes_v11_0_submit_pkt_and_poll_completion(mes,
- 			&mes_reset_queue_pkt, sizeof(mes_reset_queue_pkt),
--			offsetof(union MESAPI__REMOVE_QUEUE, api_status));
-+			offsetof(union MESAPI__RESET, api_status));
- }
- 
- static int mes_v11_0_map_legacy_queue(struct amdgpu_mes *mes,
-diff --git a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-index e6ab617b9a404..624c6b4e452c8 100644
---- a/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/mes_v12_0.c
-@@ -500,7 +500,7 @@ static int mes_v12_0_reset_hw_queue(struct amdgpu_mes *mes,
- 
- 	return mes_v12_0_submit_pkt_and_poll_completion(mes, pipe,
- 			&mes_reset_queue_pkt, sizeof(mes_reset_queue_pkt),
--			offsetof(union MESAPI__REMOVE_QUEUE, api_status));
-+			offsetof(union MESAPI__RESET, api_status));
- }
- 
- static int mes_v12_0_map_legacy_queue(struct amdgpu_mes *mes,
+diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
+index 0f93b0ba72df1..6648008f5da73 100644
+--- a/net/tls/tls_sw.c
++++ b/net/tls/tls_sw.c
+@@ -893,6 +893,13 @@ static int bpf_exec_tx_verdict(struct sk_msg *msg, struct sock *sk,
+ 					    &msg_redir, send, flags);
+ 		lock_sock(sk);
+ 		if (err < 0) {
++			/* Regardless of whether the data represented by
++			 * msg_redir is sent successfully, we have already
++			 * uncharged it via sk_msg_return_zero(). The
++			 * msg->sg.size represents the remaining unprocessed
++			 * data, which needs to be uncharged here.
++			 */
++			sk_mem_uncharge(sk, msg->sg.size);
+ 			*copied -= sk_msg_free_nocharge(sk, &msg_redir);
+ 			msg->sg.size = 0;
+ 		}
 -- 
 2.39.5
 
