@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-156049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-155504-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 47ED2AE44D0
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:46:05 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7725AE426E
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 15:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-ECDSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 608F21BC15DC
-	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:40:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 121AD178417
+	for <lists+stable@lfdr.de>; Mon, 23 Jun 2025 13:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973F5246BC9;
-	Mon, 23 Jun 2025 13:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A225224BBE4;
+	Mon, 23 Jun 2025 13:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PM43CzaO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bn7S1igB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 558E6253938;
-	Mon, 23 Jun 2025 13:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6143213A265;
+	Mon, 23 Jun 2025 13:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1750686012; cv=none; b=WU6LPYWIERKEqmx8pXOK+HRW47Hn5F9MXVUIyVhltB6wm43O/KBsHf7yFBgn5EA4GO0N/gG3z4taY8RyET1PTOuNEK+0KZ+nfBsDg08VvbLIKKjvwRYHyHsUkdrY3PKum3MBpKH3mNf1xOgCY1r0tlH2pCs9d3zuFjcyjB6ursA=
+	t=1750684604; cv=none; b=JYTBaBKQuis/pgPnunGWmu2Uio0QVn0RkpKcOsLJ+SdB6DQj662zotkpSsX73xujAfUM2EuFzG6VG9UTmjpKRkIpOf8A2I4/geTbyQEGUQBabaX394SJBbeOtN/dRWhO8CLq0kEa/CAK4g0K5JoOVk5wVNPEIvh4+czyU5f9faI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1750686012; c=relaxed/simple;
-	bh=p4nI1wIm9IW3iTfUi/Hk7IkXLUVoyiX1qm9ELpKKfqY=;
+	s=arc-20240116; t=1750684604; c=relaxed/simple;
+	bh=+VHpog01FFh5WctQe4z+RBqP/8B36nT1E02qkZXJAUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=phqGkTONH3Vh2DoNVyV8o0GvkqOZor6EAPLNG5xHyZhgP2ba9ef3ss+OgBiLC8bU+zuyCM45fv2MG1FVS1/zXc6I4kP/DdISkXd57yeYtdtAB/IGfdqnLkm/thoBeUjYsQ2q+XY9KUTN8w8Vo/9r1r2qXaoc77yDLRyuS/RrroU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PM43CzaO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD69AC4CEF0;
-	Mon, 23 Jun 2025 13:40:11 +0000 (UTC)
+	 MIME-Version; b=M6ZW5s34Hzwj622ky5WpsrMYACaQhToEn1qv64+rZu1ak0dfJTjewLMpPKrX1Gc8e5j9xeX4xo7pE/lw9xFZ+m8iEZ6r+EKJxnmGlMl+JQDS7n+Bp0sWVFmwpwMWGpXh0i0/AngbQDv5V2TODOG1s0szQPg/bGtqGrXQwRAndJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bn7S1igB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861AEC4CEEA;
+	Mon, 23 Jun 2025 13:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1750686012;
-	bh=p4nI1wIm9IW3iTfUi/Hk7IkXLUVoyiX1qm9ELpKKfqY=;
+	s=korg; t=1750684603;
+	bh=+VHpog01FFh5WctQe4z+RBqP/8B36nT1E02qkZXJAUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PM43CzaOiBHRqxvfhgOZK8waO0Mk+/bfFMZVtkFl5Zj+jBSiRZvoehKA8/v7YXT/S
-	 mqVERRHkkL12wI/uQhq7F+bqJPQarhg1Ul0/CSi7+S7XbuPnMu4LcmmoLcQoL2Jx0C
-	 1SO6DiRbS3yXmG6L6U3CybTWMPhp44edD6WQePQY=
+	b=Bn7S1igBrFu9WnnYOxwy7MV8DK2ZdvGGbvS3li6/IsJ0t9Ds9yPPPDbBJwK/XfHgF
+	 NYCk5CjzPEnC9QhRYg4Zf8OLmqG/bfSmw9PTJ8vEzu8nNtDqchXQNe5tbinROXJmov
+	 XJyzx5JvVDYmoBmr5zS9oPH3tpvvqp5KkEjuaTtw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/508] watchdog: exar: Shorten identity name to fit correctly
-Date: Mon, 23 Jun 2025 15:01:28 +0200
-Message-ID: <20250623130646.302429337@linuxfoundation.org>
+	Murad Masimov <m.masimov@mt-integration.ru>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.15 131/592] fbdev: Fix do_register_framebuffer to prevent null-ptr-deref in fb_videomode_to_var
+Date: Mon, 23 Jun 2025 15:01:29 +0200
+Message-ID: <20250623130703.387756675@linuxfoundation.org>
 X-Mailer: git-send-email 2.50.0
-In-Reply-To: <20250623130645.255320792@linuxfoundation.org>
-References: <20250623130645.255320792@linuxfoundation.org>
+In-Reply-To: <20250623130700.210182694@linuxfoundation.org>
+References: <20250623130700.210182694@linuxfoundation.org>
 User-Agent: quilt/0.68
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <kees@kernel.org>
+From: Murad Masimov <m.masimov@mt-integration.ru>
 
-[ Upstream commit 8e28276a569addb8a2324439ae473848ee52b056 ]
+commit 17186f1f90d34fa701e4f14e6818305151637b9e upstream.
 
-The static initializer for struct watchdog_info::identity is too long
-and gets initialized without a trailing NUL byte. Since the length
-of "identity" is part of UAPI and tied to ioctls, just shorten
-the name of the device. Avoids the warning seen with GCC 15's
--Wunterminated-string-initialization option:
+If fb_add_videomode() in do_register_framebuffer() fails to allocate
+memory for fb_videomode, it will later lead to a null-ptr dereference in
+fb_videomode_to_var(), as the fb_info is registered while not having the
+mode in modelist that is expected to be there, i.e. the one that is
+described in fb_info->var.
 
-drivers/watchdog/exar_wdt.c:224:27: warning: initializer-string for array of 'unsigned char' truncates NUL terminator but destination lacks 'nonstring' attribute (33 chars into 32 available) [-Wunterminated-string-initialization]
-  224 |         .identity       = "Exar/MaxLinear XR28V38x Watchdog",
-      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+================================================================
+general protection fault, probably for non-canonical address 0xdffffc0000000001: 0000 [#1] PREEMPT SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000008-0x000000000000000f]
+CPU: 1 PID: 30371 Comm: syz-executor.1 Not tainted 5.10.226-syzkaller #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
+RIP: 0010:fb_videomode_to_var+0x24/0x610 drivers/video/fbdev/core/modedb.c:901
+Call Trace:
+ display_to_var+0x3a/0x7c0 drivers/video/fbdev/core/fbcon.c:929
+ fbcon_resize+0x3e2/0x8f0 drivers/video/fbdev/core/fbcon.c:2071
+ resize_screen drivers/tty/vt/vt.c:1176 [inline]
+ vc_do_resize+0x53a/0x1170 drivers/tty/vt/vt.c:1263
+ fbcon_modechanged+0x3ac/0x6e0 drivers/video/fbdev/core/fbcon.c:2720
+ fbcon_update_vcs+0x43/0x60 drivers/video/fbdev/core/fbcon.c:2776
+ do_fb_ioctl+0x6d2/0x740 drivers/video/fbdev/core/fbmem.c:1128
+ fb_ioctl+0xe7/0x150 drivers/video/fbdev/core/fbmem.c:1203
+ vfs_ioctl fs/ioctl.c:48 [inline]
+ __do_sys_ioctl fs/ioctl.c:753 [inline]
+ __se_sys_ioctl fs/ioctl.c:739 [inline]
+ __x64_sys_ioctl+0x19a/0x210 fs/ioctl.c:739
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
+================================================================
 
-Fixes: 81126222bd3a ("watchdog: Exar/MaxLinear XR28V38x driver")
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20250415225246.work.458-kees@kernel.org
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Even though fbcon_init() checks beforehand if fb_match_mode() in
+var_to_display() fails, it can not prevent the panic because fbcon_init()
+does not return error code. Considering this and the comment in the code
+about fb_match_mode() returning NULL - "This should not happen" - it is
+better to prevent registering the fb_info if its mode was not set
+successfully. Also move fb_add_videomode() closer to the beginning of
+do_register_framebuffer() to avoid having to do the cleanup on fail.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/watchdog/exar_wdt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/fbdev/core/fbmem.c |   18 +++++++++++-------
+ 1 file changed, 11 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/watchdog/exar_wdt.c b/drivers/watchdog/exar_wdt.c
-index 7c61ff3432711..c2e3bb08df899 100644
---- a/drivers/watchdog/exar_wdt.c
-+++ b/drivers/watchdog/exar_wdt.c
-@@ -221,7 +221,7 @@ static const struct watchdog_info exar_wdt_info = {
- 	.options	= WDIOF_KEEPALIVEPING |
- 			  WDIOF_SETTIMEOUT |
- 			  WDIOF_MAGICCLOSE,
--	.identity	= "Exar/MaxLinear XR28V38x Watchdog",
-+	.identity	= "Exar XR28V38x Watchdog",
- };
+--- a/drivers/video/fbdev/core/fbmem.c
++++ b/drivers/video/fbdev/core/fbmem.c
+@@ -388,7 +388,7 @@ static int fb_check_foreignness(struct f
  
- static const struct watchdog_ops exar_wdt_ops = {
--- 
-2.39.5
-
+ static int do_register_framebuffer(struct fb_info *fb_info)
+ {
+-	int i;
++	int i, err = 0;
+ 	struct fb_videomode mode;
+ 
+ 	if (fb_check_foreignness(fb_info))
+@@ -397,10 +397,18 @@ static int do_register_framebuffer(struc
+ 	if (num_registered_fb == FB_MAX)
+ 		return -ENXIO;
+ 
+-	num_registered_fb++;
+ 	for (i = 0 ; i < FB_MAX; i++)
+ 		if (!registered_fb[i])
+ 			break;
++
++	if (!fb_info->modelist.prev || !fb_info->modelist.next)
++		INIT_LIST_HEAD(&fb_info->modelist);
++
++	fb_var_to_videomode(&mode, &fb_info->var);
++	err = fb_add_videomode(&mode, &fb_info->modelist);
++	if (err < 0)
++		return err;
++
+ 	fb_info->node = i;
+ 	refcount_set(&fb_info->count, 1);
+ 	mutex_init(&fb_info->lock);
+@@ -426,16 +434,12 @@ static int do_register_framebuffer(struc
+ 	if (bitmap_empty(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT))
+ 		bitmap_fill(fb_info->pixmap.blit_y, FB_MAX_BLIT_HEIGHT);
+ 
+-	if (!fb_info->modelist.prev || !fb_info->modelist.next)
+-		INIT_LIST_HEAD(&fb_info->modelist);
+-
+ 	if (fb_info->skip_vt_switch)
+ 		pm_vt_switch_required(fb_info->device, false);
+ 	else
+ 		pm_vt_switch_required(fb_info->device, true);
+ 
+-	fb_var_to_videomode(&mode, &fb_info->var);
+-	fb_add_videomode(&mode, &fb_info->modelist);
++	num_registered_fb++;
+ 	registered_fb[i] = fb_info;
+ 
+ #ifdef CONFIG_GUMSTIX_AM200EPD
 
 
 
